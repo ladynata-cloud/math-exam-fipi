@@ -39,6 +39,8 @@ Scope: [YANDEX_PUBLIC_INDEXING_20261027](../tasks/YANDEX_PUBLIC_INDEXING_2026102
 
 - Sitemap exclusions and canonical-route tests: 12 passed.
 - Generated sitemap check: 528 public canonical URLs, no unexpected additions.
+- The existing SEO gate now requires a self-canonical on every sitemap entry,
+  catching metadata loss in future generator rebuilds.
 - SEO entrance check: 30 distinct entrance sets, six static topic pages,
   191 valid local links, 553 canonical declarations and four consistent refreshes.
 - Existing SEO preservation check: all 24 covered entrances pass against base.
@@ -47,6 +49,16 @@ Scope: [YANDEX_PUBLIC_INDEXING_20261027](../tasks/YANDEX_PUBLIC_INDEXING_2026102
 - Catalog parity: three catalogs pass; 69 existing destinations are available
   before JavaScript.
 - Lesson funnel: six Node tests and two static tests pass.
+- Initial cloud CI identified two additional metadata dependencies. The
+  stereometry generator now emits the same canonical as its published HTML.
+  Its rebuild is byte-identical. The percentage preservation check now requires
+  the exact self-canonical and removes only that literal addition before checking
+  the original immutable hashes. No historical fixture/hash was updated.
+- Percentage preservation: four tests pass, including seven rejection cases
+  across each of six trainers for missing/wrong/duplicate canonicals, canonical
+  outside head, injected script, noindex and changed learner content.
+- All 35 existing OGE basics contextual-help/state tests pass. Cloud reruns are
+  recorded in the PR; the initial failed runs are not presented as successes.
 - `git diff --check`: passes after retaining original CRLF lines and fixing the
   one trailing-space case. Initial whitespace findings were resolved, not waived.
 - Initial local jsdom resolution was unavailable; catalog checks then passed

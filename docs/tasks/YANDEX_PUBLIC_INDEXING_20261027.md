@@ -43,6 +43,12 @@ titles for existing public trainers, while preserving every learner interaction.
   the existing sitemap with its existing exclusion policy.
 - Derive static titles/descriptions for ten basics trainers from their actual
   existing `SPEC.title` and `SPEC.lead`; distinguish the two triangle trainers.
+- Retain the same canonical in the stereometry HTML generator. Extend the
+  percentage-source preservation check to require only the exact canonical
+  addition while keeping every historical source hash and adding rejection cases
+  for incorrect metadata, injected scripts and changed content.
+- Enforce self-canonical coverage for every sitemap entry in the existing SEO
+  gate so later generator rebuilds cannot silently discard the metadata.
 - Reconcile the published lesson-funnel release in project status and document
   public audit results and remaining operational work.
 
@@ -73,6 +79,8 @@ titles for existing public trainers, while preserving every learner interaction.
 - `python tools/seo-check.py --base e50fcfb7ffe4a99447ee18e4d2ca2f937cd1dd68`
 - Existing catalog and lesson-funnel checks; full changed-HTML preservation
   comparison and sitemap inventory comparison against base; `git diff --check`.
+- Reproducible stereometry build; four percentage preservation/adversarial tests
+  and 35 existing OGE basics contextual-help/state tests.
 - Final gate: `YANDEX_PUBLIC_INDEXING_OK`.
 - Post-deployment byte checks wait for a separately authorized release.
 

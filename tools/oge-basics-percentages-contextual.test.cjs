@@ -30,7 +30,16 @@ function assertPreservedMap(html) {
   assert.equal(sha(normalized.replace(fixture.injection, '')), file.baseSha256);
 }
 
-test('six current percentage sources and historical provenance are byte-for-byte preserved', () => {
+function assertPreservedTrainer(html, file) {
+  const addition = `<link rel="canonical" href="https://mathexam.space/${file.path}">\n`;
+  assert.equal(html.split(addition).length, 2, file.path + ': one exact HTTPS self-canonical');
+  assert(html.indexOf(addition) < html.indexOf('</head>'), file.path + ': canonical remains in head');
+  // Only this literal, reviewed metadata addition is permitted. Retain the
+  // historical whole-document hashes, including all scripts, styles and body.
+  assert.equal(sha(html.replace(addition, '')), file.baseSha256, file.path);
+}
+
+test('six percentage sources retain their original bytes after one exact head canonical', () => {
   assert.equal(fixture.schemaVersion, 1);
   assert.equal(fixture.baseSha, '59ca8d215312831a21494e3b67099b30b1e6013d');
   assert.equal(fixture.files.length, 7);
@@ -39,9 +48,29 @@ test('six current percentage sources and historical provenance are byte-for-byte
   assert.equal(trainers.length, 6);
   for (const file of trainers) {
     assert.equal(file.currentSha256, file.baseSha256, file.path);
-    assert.equal(sha(fs.readFileSync(path.join(root, file.path))), file.baseSha256, file.path);
+    assertPreservedTrainer(fs.readFileSync(path.join(root, file.path), 'utf8'), file);
   }
   assert.equal(sha(fs.readFileSync(path.join(__dirname, 'fixtures', fixture.historicalFixture))), fixture.historicalFixtureSha256);
+});
+
+test('trainer metadata normalization rejects wrong, missing and duplicate canonicals or content edits', () => {
+  for (const file of fixture.files.filter(x => !x.path.endsWith('/index.html'))) {
+    const html = fs.readFileSync(path.join(root, file.path), 'utf8');
+    const addition = `<link rel="canonical" href="https://mathexam.space/${file.path}">\n`;
+    const mutations = [
+      ['missing canonical', html.replace(addition, '')],
+      ['wrong canonical', html.replace(addition, addition.replace(file.path, 'lessons/'))],
+      ['duplicate canonical', html.replace(addition, addition + addition)],
+      ['canonical in body', html.replace(addition, '').replace('</body>', addition + '</body>')],
+      ['extra script', html.replace(addition, addition + '<script>window.unapproved = true;</script>')],
+      ['noindex', html.replace(addition, addition + '<meta name="robots" content="noindex">')],
+      ['changed content', html.replace('</body>', '<p>Unapproved content</p></body>')],
+    ];
+    for (const [label, changed] of mutations) {
+      assert.notEqual(changed, html, file.path + ': mutation must apply: ' + label);
+      assert.throws(() => assertPreservedTrainer(changed, file), { name: 'AssertionError' }, label);
+    }
+  }
 });
 
 test('percentage map preserves its original hashes after exact navigation and catalog additions', () => {
