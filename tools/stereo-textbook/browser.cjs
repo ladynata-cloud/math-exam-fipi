@@ -32,6 +32,18 @@ const screenshotCases=require('./browser-cases.cjs');
 // line may still break legitimately between operations or adjacent formulas.
 const explanation=stage=>'[data-step="'+stage+'"] > details > p';
 const mathLayoutCases=new Map([
+ // Additional prism formulas: inspect the entire final paragraph and every
+ // radical/fraction operand at both widths, including the fully revealed page.
+ ['ex-main-0289|step-5',[{selector:explanation('step-5'),fractions:[['d²','3']]}]],
+ ['ex-main-0290|step-3',[{selector:explanation('step-3'),fractions:[['(l·cosφ)','cosθ']]}]],
+ ['ex-main-0290|step-4',[{selector:explanation('step-4'),fractions:[['(l²·cos²φ)','(cos²θ)'],['l','cosθ']]}]],
+ ['ex-main-0290|step-5',[{selector:explanation('step-5'),atoms:['√(cos²φ−cos²θ)'],fractions:[['√(cos²φ−cos²θ)','cosθ']]}]],
+ ['ex-main-0290|step-6',[{selector:explanation('step-5'),atoms:['√(cos²φ−cos²θ)'],fractions:[['√(cos²φ−cos²θ)','cosθ']]}]],
+ ['ex-main-0291|step-4',[{selector:explanation('step-4'),runs:['d²·cos²φ','d²·cos²θ']}]],
+ ['ex-main-0291|step-5',[{selector:explanation('step-5'),atoms:['√(cos²φ−cos²θ)']}]],
+ ['ex-main-0291|step-6',[{selector:explanation('step-5'),atoms:['√(cos²φ−cos²θ)']},{selector:explanation('step-4'),runs:['d²·cos²φ','d²·cos²θ']}]],
+ ['ex-main-0292|step-6',[{selector:explanation('step-6'),fractions:[['(6·8)','2'],['(10·AH)','2'],['48','10']]}]],
+ ['ex-main-0293|step-4',[{selector:explanation('step-4'),fractions:[['(2a)','2']]}]],
  ['ex-selfcheck-iii-08|step-4',[{selector:explanation('step-4'),fractions:[['(3ah)','2'],['(5ah)','2']]}]],
  ['ex-selfcheck-iii-09|step-4',[{selector:explanation('step-4'),fractions:[['360°','n']]}]],
  ['ex-selfcheck-iii-13|step-2',[{selector:explanation('step-2'),fractions:[['26','4']]}]],
@@ -83,7 +95,7 @@ async function checkMathLayout(lesson,width,stage){
  const specs=mathLayoutCases.get(lesson.id+'|'+stage);if(!specs)return;
  for(const spec of specs){
   const scope=page.locator(spec.selector);await scope.waitFor({state:'visible'});
-  const actual=await scope.evaluate(node=>{
+  const actual=await scope.evaluate((node,runTexts)=>{
    const flatten=element=>{const copy=element.cloneNode(true);[...copy.querySelectorAll('.stereo-fraction')].reverse().forEach(f=>f.replaceWith(f.querySelector(':scope > .stereo-numerator').textContent+'/'+f.querySelector(':scope > .stereo-denominator').textContent));return copy.textContent;};
    const box=element=>{const b=element.getBoundingClientRect();return {left:b.left,right:b.right,top:b.top,bottom:b.bottom,width:b.width,height:b.height};};
    const measure=element=>{
@@ -96,17 +108,44 @@ async function checkMathLayout(lesson,width,stage){
     }
     return {text:flatten(element),box:box(element),clientWidth:element.clientWidth,scrollWidth:element.scrollWidth,whiteSpace:getComputedStyle(element).whiteSpace,lineTops};
    };
-   return {box:box(node),clientWidth:node.clientWidth,scrollWidth:node.scrollWidth,
+   // A raw Latin-letter power may not have a .stereo-math-atom wrapper.
+   // Locate complete requested strings across adjacent text nodes, then measure
+   // their actual Range line rectangles; this also catches d / ² line splits.
+   const textParts=[],textWalker=document.createTreeWalker(node,NodeFilter.SHOW_TEXT);let offset=0;
+   while(textWalker.nextNode()){
+    const textNode=textWalker.currentNode,end=offset+textNode.textContent.length;
+    textParts.push({node:textNode,start:offset,end});offset=end;
+   }
+   const runs=runTexts.map(text=>{
+    const matches=[],whole=node.textContent;
+    for(let start=whole.indexOf(text);start!==-1;start=whole.indexOf(text,start+text.length)){
+     const end=start+text.length,first=textParts.find(part=>part.start<=start&&start<part.end),last=textParts.find(part=>part.start<end&&end<=part.end);
+     const range=document.createRange();range.setStart(first.node,start-first.start);range.setEnd(last.node,end-last.start);
+     matches.push({text:range.toString(),rects:[...range.getClientRects()].filter(rect=>rect.width>0&&rect.height>0).map(rect=>({left:rect.left,right:rect.right,top:rect.top}))});
+    }
+    return {text,matches};
+   });
+   return {box:box(node),clientWidth:node.clientWidth,scrollWidth:node.scrollWidth,runs,
     atoms:[...node.querySelectorAll('.stereo-math-atom')].map(measure),
     fractions:[...node.querySelectorAll('.stereo-fraction')].map(f=>({numerator:flatten(f.querySelector(':scope > .stereo-numerator')),denominator:flatten(f.querySelector(':scope > .stereo-denominator'))})),
     operands:[...node.querySelectorAll('.stereo-numerator,.stereo-denominator')].map(measure),
     mixed:[...node.querySelectorAll('.stereo-mixed-number')].map(m=>({...measure(m),whole:box(m.querySelector(':scope > .stereo-math-atom')),fraction:box(m.querySelector(':scope > .stereo-fraction'))}))};
-  });
+  },spec.runs||[]);
   const name=lesson.id+' '+width+' '+stage+' '+spec.selector;
   assert(actual.scrollWidth<=actual.clientWidth+1,name+' formula paragraph has no internal horizontal overflow');
   for(const expected of spec.atoms||[])assert(actual.atoms.some(atom=>atom.text===expected),name+' intact mathematical atom '+expected);
   for(const [numerator,denominator] of spec.fractions||[])assert(actual.fractions.some(f=>f.numerator===numerator&&f.denominator===denominator),name+' complete stacked fraction '+numerator+'/'+denominator);
   for(const expected of spec.mixed||[])assert(actual.mixed.some(m=>m.text===expected),name+' whole mixed number '+expected);
+  for(const run of actual.runs){
+   assert(run.matches.length>0,name+' raw mathematical run exists: '+run.text);
+   for(const match of run.matches){
+    assert.equal(match.text,run.text,name+' complete raw mathematical run');
+    assert(match.rects.length>0,name+' measurable raw mathematical run '+run.text);
+    const tops=match.rects.map(rect=>rect.top);
+    assert(Math.max(...tops)-Math.min(...tops)<=1,name+' one text baseline inside raw run '+run.text);
+    for(const rect of match.rects)assert(rect.left>=actual.box.left-1&&rect.right<=actual.box.right+1,name+' raw run stays inside its paragraph: '+run.text);
+   }
+  }
   for(const token of [...actual.atoms,...actual.operands,...actual.mixed]){
    assert.equal(token.whiteSpace,'nowrap',name+' no internal wrapping in '+token.text);
    assert(token.box.width>0&&token.box.height>0,name+' measurable token '+token.text);

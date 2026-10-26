@@ -419,30 +419,40 @@ Updated: 2026-10-25 (Asia/Novosibirsk)
   and the legacy entry were checked. Gate:`ATANASYAN_7_9_CHAPTER_I_PUBLISHED_OK`.
   Later chapters and real-pupil validation remain pending.
 
-## In progress: Atanasyan practical nets 271–275
+## In progress: Atanasyan additional exercises 288–293
 
-- [Scope](tasks/TEXTBOOK_ATANASYAN_POLYHEDRA_PRACTICAL.md), HIGH content review;
-  current owner request «продолжай курс», 2026-10-24. Branch
-  `feat/atanasyan-polyhedra-practical`, base
-  `631d2d644d87162d60585c3efb8365af8311a3f5`.
-- Five source-specific paper nets from printed84 / PDF86, figures95–99:
-  tetrahedron, cube, octahedron, dodecahedron and icosahedron. Add fold/cut
-  guidance, complete matching seams and manually assessed physical assembly.
-  Preserve all474 published cards and the existing interaction/runtime.
-- All five cards are authored and independently approved for source, mathematics
-  and written pedagogy: 37 steps, 75 model states and all 45 seam pairs. The
-  [review record](reviews/ATANASYAN_POLYHEDRA_PRACTICAL_MATH.json) binds the actual
-  source inspection, coordinate checks and complete instructional text to hashes.
-- The candidate contains 479 cards, 1,730 steps and 1,784 model states. All main
-  exercises 1–287, 37 theory points and 40 chapter self-checks are covered.
-  Exact historical fixtures preserve all 474 prior cards and 917 capture cases.
-- Content, schema, runtime and numerical checks passed locally. Eighty added
-  capture cases cover every new view and each complete explanation at 320/1280.
-  Exact-head cloud journeys and independent pixel inspection remain the next
-  release gates; no new content is published at this commit checkpoint.
-- Next actions: complete cloud/browser/visual evidence in one Draft PR; record
-  its exact head and base; obtain a separate release decision. Additional
-  exercises 288 onward remain later work.
+- [Scope](tasks/TEXTBOOK_ATANASYAN_POLYHEDRA_288_293.md), HIGH review; owner
+  requested continuation on 2026-10-26. Branch `content/atanasyan-288-293`
+  is stacked on the unchanged reviewed PR330 head `d2d3c2a059879352002194598a44b055c1c62de3`.
+- Six new cards cover the real additional exercises on printed86 / PDF88:
+  prism element counts, cube surface, rectangular-box lateral areas from angles,
+  a common perpendicular and the angle between prism diagonals. The established
+  learner interaction, all prior479 cards and historical review evidence remain.
+- Source PDF identity and actual page pixels were checked. Exact independent
+  content/coordinate review, gates and cloud/mobile/desktop evidence are recorded
+  in this task's review and PR handoff as they complete. No new publication is
+  claimed. Additional exercises294 onward and later theory remain pending.
+
+## Reviewed, unpublished: Atanasyan practical nets 271–275
+
+- [Scope](tasks/TEXTBOOK_ATANASYAN_POLYHEDRA_PRACTICAL.md), HIGH review;
+  [PR330](https://github.com/ladynata-cloud/math-exam-fipi/pull/330) remains open Draft.
+  Head `d2d3c2a059879352002194598a44b055c1c62de3`; original base `631d2d644d87162d60585c3efb8365af8311a3f5`.
+- Five source-specific paper nets cover figures95–99, all45 seam pairs,
+  37guided steps and75modelstates. Candidate:479cards,1730steps,1784views;
+  all main exercises1–287,37theory points and40self-checks.
+- The completed Oct24 exact-head evidence in PR330 records four passing
+  workflows/eleven jobs,958browser journeys,160inspected new captures and
+  tencomplete instruction pages. This supersedes the old pending-checkpoint text.
+- At this Oct26 continuation, authoritative main was `038aa19ab4d87e52ac1765585fec148185dd5bc3`.
+  Its read-only composition with PR330 is clean, tree `24fd66867d160d1e44270c191893d4dccaec099a`.
+  The same24-path delta and stable patch ID `7e54a2aa7afacaeb246febef33c2915f6fb2e336`
+  are preserved. Only the status-document blob contains concurrent additions.
+  All course/runtime/browser inputs are identical to the reviewed head;
+  21fresh nonbrowser checks pass. Historical browser evidence is not labelled
+  a fresh Oct26 Chromium run. Neither dependency branch nor main was changed.
+- The live bundle was fetched again and still matches the published474-card
+  SHA256 below. Merge/deployment of PR330 requires a separate owner decision.
 
 ## Published: Atanasyan chapter III self-check questions
 
