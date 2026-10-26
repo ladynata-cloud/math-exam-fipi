@@ -345,7 +345,7 @@
 <link rel="stylesheet" href="tire-variant-layout.css">
 <link rel="stylesheet" href="tire-structure-quiz.css">
 <script src="tire-3d.js"></script>
-<script src="practical-discovery.js"></script>
+<script src="practical-discovery.js?v=20261025-oge-course-mirror"></script>
 <script src="practical-minimal.js"></script>
 <script src="tire-learning-flow.js"></script>
 <script src="tire-variant-layout.js"></script>
@@ -535,8 +535,11 @@ VARIANTS.push(AUTHOR_VARIANT);
 const INCH = 25.4;
 const r1 = x => Math.round(x*10)/10;
 const fmt = n => String(n).replace('.', ',');
-function parseNum(raw){ if(raw==null) return null; const s=String(raw).trim().replace(/\s+/g,'').replace(',','.'); if(!s) return null; const v=parseFloat(s); return isNaN(v)?null:v; }
-function approxEq(a,b,tol){ return Math.abs(a-b) <= (tol==null?0.05:tol); }
+function parseNum(raw){ if(raw==null) return null; const s=String(raw).trim().replace(/\s+/g,'').replace(',','.'); if(!/^[-+]?(?:\d+(?:\.\d+)?|\.\d+)$/.test(s))return null; const v=Number(s);return Number.isFinite(v)?v:null; }
+// All expected values are exact terminating decimals, or explicitly rounded to tenths.
+// Larger diagnostic thresholds remain in hints, never in successful grading.
+function approxEq(a,b,tol){ return Number.isFinite(a)&&Number.isFinite(b)&&Math.abs(a-b)<=1e-9; }
+function parseWidths(raw){const tokens=String(raw??'').trim().split(/[,;]+/);if(tokens.some(s=>!s.trim()))return null;const values=tokens.map(parseNum);return values.every(Number.isInteger)?values.sort((a,b)=>a-b):null;}
 
 function tire(m){
   const mm = m.match(/^(\d+)\s*\/\s*(\d+)\s*R?\s*(\d+)$/i);
@@ -686,11 +689,11 @@ function handleSubstepCheck(id){
   const inp=sub.querySelector('.substep-input'); const fb=sub.querySelector('.substep-feedback');
   if(!inp) return;
   if(cfg.custom==='multi'){
-    const got=inp.value.trim().replace(/\s/g,'').split(/[,;]+/).map(s=>parseFloat(s.replace(',','.'))).filter(v=>!isNaN(v)).sort((a,b)=>a-b);
+    const got=parseWidths(inp.value);
     const exp=cfg.expect.slice().sort((a,b)=>a-b);
-    const ok = got.length===exp.length && exp.every((v,i)=>Math.abs(v-got[i])<0.5);
+    const ok = got!==null && got.length===exp.length && exp.every((v,i)=>v===got[i]);
     if(ok){ inp.classList.remove('wrong'); inp.classList.add('correct'); inp.disabled=true; showFb(fb,'correct','<b>Верно!</b> '+cfg.okMsg); markSubstepDone(sub); unlockNextSubstep(sub); }
-    else { inp.classList.remove('correct'); inp.classList.add('wrong'); showFb(fb,'warn', cfg.hint(got)); resetStreak(); }
+    else { inp.classList.remove('correct'); inp.classList.add('wrong'); showFb(fb,'warn', cfg.hint(got||[])); resetStreak(); }
     return;
   }
   if(cfg.custom==='triple'){

@@ -13,7 +13,7 @@ let serial=0;
 const memory=new Map();
 function element(tag,text,cls){const e=doc.createElement(tag);if(text)e.textContent=text;if(cls)e.className=cls;return e;}
 function details(label,body){const d=element('details',null,'pm-details pd-more');d.append(element('summary',label));const c=element('div',null,'pm-content');d.append(c);if(body)c.append(body);return d;}
-function range(host,key,label,min,max,value,step=1){const lab=element('label',null,'pd-control');const txt=element('span',label);const out=element('output',fmt(value));const input=doc.createElement('input');input.type='range';input.min=min;input.max=max;input.step=step;input.value=value;input.dataset.pdKey=key;input.setAttribute('aria-label',label);lab.append(txt,out,input);host.append(lab);input.addEventListener('input',()=>out.textContent=fmt(Number(input.value)));return input;}
+function range(host,key,label,min,max,value,step=1){const lab=element('label',null,'pd-control');const txt=element('span',label);const out=element('output',fmt(value));const input=doc.createElement('input');input.type='range';input.min=min;input.max=max;input.step=step;input.value=value;input.dataset.pdKey=key;input.dataset.pdMin=min;input.dataset.pdMax=max;input.dataset.pdStep=step;input.setAttribute('aria-label',label);lab.append(txt,out,input);host.append(lab);input.addEventListener('input',()=>out.textContent=fmt(Number(input.value)));return input;}
 function select(host,key,label,options){const lab=element('label',label,'pd-control');const input=doc.createElement('select');input.dataset.pdKey=key;input.setAttribute('aria-label',label);for(const [v,t] of options){const o=element('option',t);o.value=v;input.append(o);}lab.append(input);host.append(lab);return input;}
 function button(host,text,action){const b=element('button',text,'pd-action');b.type='button';b.addEventListener('click',action);host.append(b);return b;}
 function picture(host,label){const box=element('div',null,'pd-picture');box.setAttribute('aria-label',label);box.tabIndex=0;host.append(box);const zoom=button(host,'Увеличить модель',()=>{const large=zoom.getAttribute('aria-pressed')!=='true';zoom.setAttribute('aria-pressed',String(large));zoom.textContent=large?'Уменьшить модель':'Увеличить модель';box.classList.toggle('pd-picture-zoomed',large);note.hidden=!large;});zoom.dataset.pdChoice='zoom';zoom.setAttribute('aria-pressed','false');const note=element('p','Рисунок можно прокручивать вправо и влево.','pd-note');note.hidden=true;host.append(note);return body=>box.innerHTML='<svg viewBox="0 0 360 230" role="img" aria-label="'+esc(label)+'">'+body+'</svg>'; }
@@ -37,6 +37,8 @@ function typeFor(page,type,textValue){
   return 'purchase';
  }
  if(page==='apartments'){
+  if(/5\.2/.test(String(type)))return 'cost';
+  if(/5\.[13]/.test(String(type)))return 'compare';
   if(/процент|4\./.test(t))return 'percent';
   if(/пач|упаков|паркет|плитк|досок/.test(t))return 'packs';
   if(/площадь|площади|3\./.test(t))return 'area';
@@ -153,9 +155,10 @@ function buildModel(host,kind,options={}){
   const rows=kind==='capacity'?[[1,6,15.5],[2,10,19.5],[3,8,18]]:kind==='compare'?[[1,45,18000],[2,55,16000],[3,40,19500]]:[[1,40,19000],[2,55,22500],[3,30,17000]];
   const table=element('table',null,'pd-table');table.innerHTML='<thead><tr><th>№</th><th>'+(kind==='capacity'?'От, м³':kind==='lookup'?measureLabel:'Ширина, см')+'</th><th>'+(kind==='capacity'?'До, м³':'Цена, ₽')+'</th></tr></thead><tbody>'+rows.map(r=>'<tr>'+r.map((x,i)=>'<td><button type="button" data-row="'+r[0]+'" data-col="'+i+'">'+fmt(x)+'</button></td>').join('')+'</tr>').join('')+'</tbody>';host.querySelector('.pd-picture').replaceWith(table);host.querySelector('[data-pd-choice=zoom]')?.remove();
   const chosen=kind==='capacity'?range(controls,'need','Объём комнаты, м³',5,20,15,.5):kind==='compare'?range(controls,'need','Максимальная ширина, см',35,60,50,5):select(controls,'col','Нужный столбец',[['1',measureLabel],['2','Цена, ₽']]);
+  qa('button',table).forEach(b=>{b.dataset.pdChoice='cell-'+b.dataset.row+'-'+b.dataset.col;b.setAttribute('aria-pressed','false');});
   const selected=new Set();
-  const run=()=>{qa('tbody tr',table).forEach((tr,i)=>{const yes=kind==='capacity'?rows[i][1]<=+chosen.value&&+chosen.value<=rows[i][2]:kind==='compare'?rows[i][1]<=+chosen.value:true;tr.classList.toggle('pd-unsuitable',!yes);if(!yes)selected.delete(rows[i][0]);if(kind==='capacity'){const button=tr.querySelector('button[data-col="0"]');button.dataset.pdChoice='capacity-'+rows[i][0];button.setAttribute('aria-pressed',String(selected.has(rows[i][0])));}});read(kind==='capacity'?'Нажми номер каждой печи, в диапазон которой попадает объём.':kind==='compare'?'Нажми цену подходящего варианта. Сравни только строки без зачёркивания.':'Нажми клетку во второй строке выбранного столбца.');};
-  table.addEventListener('click',e=>{const btn=e.target.closest('button');if(!btn)return;const row=rows[+btn.dataset.row-1],col=+btn.dataset.col;if(kind==='capacity'&&col!==0){read('Нажми номер печи в первом столбце.');return;}if(kind==='compare'&&col!==2){read('Нажми цену в последнем столбце.');return;}const ok=kind==='capacity'?row[1]<=+chosen.value&&+chosen.value<=row[2]:kind==='compare'?row[1]<=+chosen.value:row[0]===2&&col===+chosen.value;if(!ok){read('Проверь нужную строку, заголовок столбца и ограничения.');return;}if(kind==='capacity'){selected.has(row[0])?selected.delete(row[0]):selected.add(row[0]);btn.setAttribute('aria-pressed',String(selected.has(row[0])));const total=rows.filter(r=>r[1]<=+chosen.value&&+chosen.value<=r[2]).length;read(`Выбрано подходящих печей: ${selected.size} из ${total}. Границы диапазона тоже подходят.`);}else if(kind==='compare'){const min=Math.min(...rows.filter(r=>r[1]<=+chosen.value).map(r=>r[2]));read(row[2]===min?`Подходит и дешевле остальных подходящих: ${fmt(row[2])} ₽.`:'По ширине подходит. Сравни цену с другими подходящими вариантами.');}else read(`Подходит. Выбрано: ${fmt(row[col])}. Теперь проверь аналогичную строку в своей задаче.`);});watch([chosen],run);
+  const run=()=>{qa('tbody tr',table).forEach((tr,i)=>{const yes=kind==='capacity'?rows[i][1]<=+chosen.value&&+chosen.value<=rows[i][2]:kind==='compare'?rows[i][1]<=+chosen.value:true;tr.classList.toggle('pd-unsuitable',!yes);if(!yes)selected.delete(rows[i][0]);if(kind==='capacity'){const button=tr.querySelector('button[data-col="0"]');button.dataset.pdChoice='capacity-'+rows[i][0];button.setAttribute('aria-pressed',String(selected.has(rows[i][0])));}});read(kind==='capacity'?`Нажми номер каждой подходящей печи. Выбрано подходящих печей: ${selected.size} из ${rows.filter(r=>r[1]<=+chosen.value&&+chosen.value<=r[2]).length}. Границы диапазона тоже подходят.`:kind==='compare'?'Нажми цену подходящего варианта. Сравни только строки без зачёркивания.':'Нажми клетку во второй строке выбранного столбца.');};
+  table.addEventListener('click',e=>{const btn=e.target.closest('button');if(!btn)return;const row=rows[+btn.dataset.row-1],col=+btn.dataset.col;if(kind==='capacity'&&col!==0){read('Нажми номер печи в первом столбце.');return;}if(kind==='compare'&&col!==2){read('Нажми цену в последнем столбце.');return;}const ok=kind==='capacity'?row[1]<=+chosen.value&&+chosen.value<=row[2]:kind==='compare'?row[1]<=+chosen.value:row[0]===2&&col===+chosen.value;if(!ok){read('Проверь нужную строку, заголовок столбца и ограничения.');return;}if(kind==='capacity'){selected.has(row[0])?selected.delete(row[0]):selected.add(row[0]);btn.setAttribute('aria-pressed',String(selected.has(row[0])));run();}else if(kind==='compare'){const min=Math.min(...rows.filter(r=>r[1]<=+chosen.value).map(r=>r[2]));read(row[2]===min?`Подходит и дешевле остальных подходящих: ${fmt(row[2])} ₽.`:'По ширине подходит. Сравни цену с другими подходящими вариантами.');}else read(`Подходит. Выбрано: ${fmt(row[col])}. Теперь проверь аналогичную строку в своей задаче.`);});watch([chosen],run);
  }else if(kind==='purchase'){
   const n=range(controls,'n','Количество товара, шт.',1,12,3),delivery=range(controls,'delivery','Доставка из магазина A, ₽',0,1500,600,100),install=range(controls,'install','Установка (в обоих магазинах), ₽',0,2000,400,200);
   watch([n,delivery,install],()=>{const N=+n.value,A=N*500+(+delivery.value)+(+install.value),B=N*600+300+(+install.value),max=Math.max(A,B);draw(text(20,25,'A: товар 500 ₽/шт.',green,'start')+`<rect x="20" y="40" width="${300*A/max}" height="40" fill="${green}"/>`+text(20,120,'B: товар 600 ₽/шт.',blue,'start')+`<rect x="20" y="135" width="${300*B/max}" height="40" fill="${blue}"/>`);read(`A: ${N} · 500 + ${delivery.value} + ${install.value} = ${fmt(A)} ₽. B: ${N} · 600 + 300 + ${install.value} = ${fmt(B)} ₽. ${A===B?'Суммы равны.':'Дешевле '+(A<B?'A':'B')+'.'}`);});
@@ -165,13 +168,16 @@ function buildModel(host,kind,options={}){
  }
 }
 function build(panel,options={}){
- const kind=typeFor(options.page,options.type,options.text),plan=plans[kind];panel.dataset.discoveryModel=kind;
+ const kind=options.boardKind||typeFor(options.page,options.type,options.text),plan=plans[kind];panel.dataset.discoveryModel=kind;
  const first=element('p',plan[0],'pd-first-step');panel.append(first);
  const lab=details('Помочь разобраться на модели?');panel.append(lab);const content=q('.pm-content',lab);
  content.append(element('p',plan[1],'pd-instruction'),element('p',kind==='road-map'?'Это отдельный учебный план. Его буквы и названия не являются ответом к твоему заданию.':kind==='land-map'?'Это учебный план. Затем вернись к своему заданию.':'Учебная модель на других числах. Ответ к своей задаче запиши в её поле ответа.','pd-note'));
  buildModel(content,kind,options);
  const further=details('Почему так?');q('.pm-content',further).append(element('p',plan[2]));content.append(further);
  if(options.steps?.length){const next=details('Как применить к моей задаче?');const box=q('.pm-content',next);options.steps.forEach(s=>{const step=element('div',null,'pm-model-step');step.innerHTML=s;box.append(step);});panel.append(next);}
+ let beforeChoices='';
+ panel.addEventListener('click',()=>{beforeChoices=qa('[data-pd-choice][aria-pressed="true"]',panel).map(b=>b.dataset.pdChoice).join('|');},true);
+ panel.addEventListener('click',event=>{const b=event.target.closest('[data-pd-choice]');const after=qa('[data-pd-choice][aria-pressed="true"]',panel).map(b=>b.dataset.pdChoice).join('|');if(b&&b.dataset.pdChoice!=='zoom'){if(['land-map','road-map','lookup','compare','capacity'].includes(kind)&&beforeChoices===after)panel.dataset.pdLastChoice=b.dataset.pdChoice;else delete panel.dataset.pdLastChoice;}else if(event.target.closest('button')?.textContent==='Начать заново')delete panel.dataset.pdLastChoice;});panel.addEventListener('input',()=>{delete panel.dataset.pdLastChoice;});
  const close=button(panel,'Вернуться к задаче',()=>{options.close?.();});close.classList.add('pd-return');
  return {kind,lab};
 }
@@ -223,6 +229,8 @@ function decorate(page){
  const type=q(metaSelector)?.textContent||'';
  const created=attach(host,page,type,host.textContent,nativeButton,nativePanel);
  if(page==='apartments'){
+  if(/5\.2/.test(String(type)))return 'cost';
+  if(/5\.[13]/.test(String(type)))return 'compare';
   const plan=q('#plan'),panel=host.nextElementSibling?.querySelector('.pd-panel');
   if(created&&plan)plan.classList.remove('pd-show-derived');
   qa('#plan text').filter(t=>/кл\s*·.*м²/.test(t.textContent)).forEach(t=>{t.classList.add('pd-derived');const bg=t.previousElementSibling;if(bg?.tagName.toLowerCase()==='rect')bg.classList.add('pd-derived');});
@@ -232,5 +240,32 @@ function decorate(page){
  // Explanations that already contain arithmetic stay behind explicit help.
  if(page==='stoves'){const panel=host.nextElementSibling?.querySelector('.pd-panel');const note=q('#task-card>.note');if(note&&panel&&!/Окон нет/.test(note.textContent)){const d=details('Ещё одна подсказка');q('.pm-content',d).append(note);panel.insertBefore(d,q('.pd-return',panel));}}
 }
-global.PracticalDiscovery={typeFor,plans,build,decorate,attach};
+function captureState(panel){
+ const kind=panel.dataset.discoveryModel;
+ const selected=qa('[data-pd-choice]',panel).filter(b=>b.getAttribute('aria-pressed')==='true').sort((a,b)=>(+a.dataset.pdOrder||0)-(+b.dataset.pdOrder||0)).map(b=>b.dataset.pdChoice);
+ const wrong=panel.dataset.pdLastChoice||null;
+ return {kind,values:qa('[data-pd-key]',panel).map(input=>[input.dataset.pdKey,input.value]),choices:selected,lastWrong:wrong};
+}
+function modelTemplate(kind){const panel=element('section');build(panel,{boardKind:kind});return panel;}
+function validateState(value,expectedKind){
+ const B=global.PracticalBoard;
+ if(!B||!B.exact(value,['kind','values','choices','lastWrong'])||!Object.hasOwn(plans,value.kind)||(expectedKind&&value.kind!==expectedKind))return false;
+ const panel=modelTemplate(value.kind),inputs=qa('[data-pd-key]',panel),buttons=qa('[data-pd-choice]',panel);
+ if(!Array.isArray(value.values)||value.values.length!==inputs.length||!Array.isArray(value.choices)||value.choices.length>buttons.length||new Set(value.choices).size!==value.choices.length)return false;
+ for(let i=0;i<inputs.length;i++){const input=inputs[i],pair=value.values[i];if(!Array.isArray(pair)||pair.length!==2||pair[0]!==input.dataset.pdKey||typeof pair[1]!=='string')return false;
+  if(input.tagName==='SELECT'){if(!Array.from(input.options).some(o=>o.value===pair[1]))return false;}
+  else {const n=Number(pair[1]),min=Number(input.dataset.pdMin??input.min),max=Number(input.dataset.pdMax??input.max),step=Number(input.dataset.pdStep??input.step)||1;if(!Number.isFinite(n)||n<min||n>max||Math.abs((n-min)/step-Math.round((n-min)/step))>1e-7)return false;}
+ }
+ if(value.choices.some(key=>typeof key!=='string'||!buttons.some(b=>b.dataset.pdChoice===key)))return false;
+ if(value.lastWrong!==null&&(!['land-map','road-map','lookup','compare','capacity'].includes(value.kind)||typeof value.lastWrong!=='string'||!buttons.some(b=>b.dataset.pdChoice===value.lastWrong)))return false;
+ if(value.kind==='arch'&&Number(value.values.find(p=>p[0]==='b')[1])>Number(value.values.find(p=>p[0]==='a')[1]))return false;
+ restoreModel(panel,value);return JSON.stringify(captureState(panel))===JSON.stringify(value);
+}
+function restoreModel(panel,value){
+ for(const [key,v]of value.values){const input=qa('[data-pd-key]',panel).find(i=>i.dataset.pdKey===key);input.value=v;input.dispatchEvent(new Event('input',{bubbles:true}));}
+ for(const key of value.choices){const b=qa('[data-pd-choice]',panel).find(b=>b.dataset.pdChoice===key);if(b.getAttribute('aria-pressed')!=='true')b.click();}
+ if(value.lastWrong)qa('[data-pd-choice]',panel).find(b=>b.dataset.pdChoice===value.lastWrong).click();
+}
+function applyState(panel,value){if(!validateState(value,panel.dataset.discoveryModel))throw new TypeError('Invalid practical model');restoreModel(panel,value);}
+global.PracticalDiscovery={typeFor,plans,build,decorate,attach,captureState,validateState,applyState,isInitialState:value=>JSON.stringify(value)===JSON.stringify(captureState(modelTemplate(value.kind)))};
 })(window);

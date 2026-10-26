@@ -475,6 +475,9 @@
   }
 </style>
 <link rel="stylesheet" href="practical-minimal.css">
+<script src="../oge-course-shared-mode.js"></script>
+<script src="../board-bridge.js"></script>
+<script src="practical-diagnostic-board.js"></script>
 <script src="practical-minimal.js"></script>
 </head>
 <body data-mode="diagnostic" data-practical-page="entry-diagnostic-2026">
@@ -608,7 +611,7 @@
 
     <div class="result-actions">
       <button type="button" class="btn btn-primary" id="review-btn">Разобрать ответы</button>
-      <button type="button" class="btn btn-gold" id="copy-btn">Скопировать результат для Stepik</button>
+      <button type="button" class="btn btn-gold" id="copy-btn">Скопировать результат</button>
       <button type="button" class="btn btn-secondary" id="retry-btn">Пройти другой вариант</button>
       <button type="button" class="btn btn-secondary" onclick="window.print()">Распечатать</button>
     </div>
@@ -622,6 +625,8 @@
 <script>
 (() => {
   'use strict';
+  const shared = window.OgeCourseSharedMode === true;
+  const bridge = window.PracticalDiagnosticBridge;
 
   const STORAGE_KEY = 'mathExamCourseProgress.v1';
   const TOPIC_ID = 'practiceEntryDiagnostic2026';
@@ -694,6 +699,7 @@
     result: null
   };
 
+  let boardAssisted = false;
   const $ = (id) => document.getElementById(id);
   const fmt = (n, digits = 2) => {
     const rounded = Math.round((n + Number.EPSILON) * Math.pow(10, digits)) / Math.pow(10, digits);
@@ -916,7 +922,7 @@
     $('question-visual').innerHTML = q.visual;
 
     const value = state.answers[state.current] ?? '';
-    const disabled = state.finished && state.mode !== 'teacher';
+    const disabled = state.finished && (shared || state.mode !== 'teacher');
     if (q.type === 'select') {
       $('answer-area').innerHTML = `
         <label class="answer-label" for="answer-control">Ваш ответ</label>
@@ -1029,6 +1035,7 @@
     state.mode = 'diagnostic';
     state.startedAt = Date.now();
     state.elapsedSeconds = 0;
+    boardAssisted = false;
     setMode('diagnostic', false);
     $('intro').hidden = true;
     $('result').hidden = true;
@@ -1044,6 +1051,7 @@
 
   function startTimer() {
     stopTimer();
+    if (shared) { $('timer').textContent = 'Совместно · без таймера'; return; }
     state.timerId = window.setInterval(() => {
       state.elapsedSeconds = Math.floor((Date.now() - state.startedAt) / 1000);
       $('timer').textContent = formatTime(state.elapsedSeconds);
@@ -1065,7 +1073,7 @@
     if (unanswered > 0 && !window.confirm(`Без ответа осталось заданий: ${unanswered}. Завершить диагностику всё равно?`)) return;
 
     stopTimer();
-    state.elapsedSeconds = Math.floor((Date.now() - state.startedAt) / 1000);
+    state.elapsedSeconds = shared ? 0 : Math.floor((Date.now() - state.startedAt) / 1000);
     state.finished = true;
     const checks = state.questions.map((q, i) => checkQuestion(q, state.answers[i]));
     const score = checks.filter(Boolean).length;
@@ -1131,6 +1139,7 @@
   }
 
   function saveResult() {
+    if (shared) return;
     try {
       const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {};
       const prev = data[TOPIC_ID] || {};
@@ -1177,7 +1186,7 @@
     const text = resultSummary();
     try {
       await navigator.clipboard.writeText(text);
-      $('copy-status').textContent = 'Результат скопирован. Теперь его можно вставить в ответ на Stepik.';
+      $('copy-status').textContent = 'Результат скопирован. Его можно передать преподавателю.';
       showToast('Результат скопирован');
     } catch (error) {
       const area = document.createElement('textarea');
@@ -1188,7 +1197,7 @@
       area.select();
       document.execCommand('copy');
       area.remove();
-      $('copy-status').textContent = 'Результат скопирован. Теперь его можно вставить в ответ на Stepik.';
+      $('copy-status').textContent = 'Результат скопирован. Его можно передать преподавателю.';
     }
   }
 
@@ -1196,6 +1205,7 @@
     if (mode === 'review' && !state.finished) return;
     if (mode === 'teacher' && confirmTeacher && !window.confirm('Режим «Учитель» показывает правильные ответы. Открыть его?')) return;
     state.mode = mode;
+    if (shared && mode === 'teacher') boardAssisted = true;
     document.body.dataset.mode = mode;
     document.querySelectorAll('.mode-switch button').forEach(btn => btn.classList.toggle('active', btn.dataset.mode === mode));
     const names = { diagnostic: 'Диагностика', review: 'Разбор', teacher: 'Учитель' };
@@ -1216,6 +1226,7 @@
 
   function retry() {
     const next = (state.variantIndex + 1) % VARIANTS.length;
+    if (shared) { state.started = false; state.finished = false; state.current = 0; state.answers = Array(TOTAL).fill(''); state.result = null; boardAssisted = false; }
     $('variant-select').value = String(next);
     $('result').hidden = true;
     $('intro').hidden = false;
@@ -1254,6 +1265,29 @@
 
   window.addEventListener('beforeunload', () => {
     if (state.started && !state.finished) saveCurrentAnswer();
+  });
+
+  if (shared) bridge.connect({
+    id: 'practice-1-5-entry-diagnostic-2026',
+    getState() {
+      return {variant:state.variantIndex,selected:Number($('variant-select').value),index:state.current,answers:state.answers.slice(),started:state.started,finished:state.finished,mode:state.mode,view:!$('intro').hidden?'intro':!$('result').hidden?'result':'work',assisted:boardAssisted};
+    },
+    validateState(v) {
+      if (!bridge.exact(v,['variant','selected','index','answers','started','finished','mode','view','assisted']) || !bridge.integer(v.variant,0,2) || !bridge.integer(v.selected,0,2) || !bridge.integer(v.index,0,9) || !Array.isArray(v.answers) || v.answers.length!==TOTAL || !v.answers.every(bridge.text) || typeof v.started!=='boolean' || typeof v.finished!=='boolean' || typeof v.assisted!=='boolean' || !['diagnostic','review','teacher'].includes(v.mode) || !['intro','work','result'].includes(v.view)) return false;
+      if ((!v.started && (v.finished || v.view!=='intro' || v.answers.some(Boolean))) || (v.finished && !v.started) || (v.view==='result'&&!v.finished) || (v.mode==='review'&&!v.finished) || (v.mode==='teacher'&&!v.assisted)) return false;
+      const questions=buildQuestions(VARIANTS[v.variant]);
+      return v.answers.every((answer,i)=>questions[i].type!=='select'||answer===''||questions[i].options.some(o=>String(o.value)===answer));
+    },
+    applyState(v) {
+      stopTimer();
+      Object.assign(state,{variantIndex:v.variant,current:v.index,answers:v.answers.slice(),questions:buildQuestions(VARIANTS[v.variant]),started:v.started,finished:v.finished,mode:v.mode,startedAt:null,elapsedSeconds:0,result:null});
+      boardAssisted=v.assisted;$('variant-select').value=String(v.selected);$('side-variant').textContent=String(v.variant+1);$('timer').textContent='Совместно · без таймера';
+      $('diagnostic').hidden=true;setMode(v.mode,false);$('review-mode-btn').disabled=!v.finished;document.querySelectorAll('.review-only').forEach(el=>el.hidden=!v.finished);
+      if(v.finished){const checks=state.questions.map((q,i)=>checkQuestion(q,state.answers[i])),topicStats={};state.questions.forEach((q,i)=>{topicStats[q.topic] ||= {correct:0,total:0};topicStats[q.topic].total++;if(checks[i])topicStats[q.topic].correct++;});state.result={checks,score:checks.filter(Boolean).length,topicStats};}
+      if(v.started){buildStepper();renderQuestion();}
+      if(v.view==='result')renderResult();
+      $('intro').hidden=v.view!=='intro';$('diagnostic').hidden=v.view!=='work';$('result').hidden=v.view!=='result';
+    }
   });
 })();
 </script>

@@ -243,6 +243,7 @@ body.minimal-course{background:#f6f7f5;color:#202820;font:18px/1.7 system-ui,-ap
   </div>
   <div class="main" id="main"></div>
 </div>
+<script src="oge-course-shared-mode.js"></script>
 <script>
 'use strict';
 /* ================= ОГЭ №23 · Геометрические задачи на вычисление =================
@@ -269,12 +270,13 @@ const CP=(function(){
   function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
   function num(v){ return (typeof v === "number" && isFinite(v) && v > 0) ? Math.floor(v) : 0; }
   function readAll(){
+    if (window.OgeCourseSharedMode) return {};
     try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(o) ? o : {}; }
     catch (e) { return {}; }
   }
   /* меняет только свою ветку: читает ключ заново прямо перед записью */
   function saveRec(fn){
-    if (RO) return;
+    if (RO || window.OgeCourseSharedMode) return;
     try {
       var all = readAll();
       var rec = isObj(all[TID]) ? all[TID] : {};
@@ -298,7 +300,7 @@ const CP=(function(){
   /* журнал: промах открывает тип, три верных подряд закрывают;
      верный ответ по типу без промахов записи не заводит */
   function mlog(type, ok){
-    if (RO) return;
+    if (RO || window.OgeCourseSharedMode) return;
     try {
       var all = readAll();
       var key = TID + "|" + type;
@@ -326,7 +328,7 @@ const CP=(function(){
      passed по сохранённому best; дальше запись несёт updatedAt и больше
      не трогается */
   function migrate(bestNorm){
-    if (RO) return;
+    if (RO || window.OgeCourseSharedMode) return;
     var r = readAll()[TID];
     if (!isObj(r) || typeof r.updatedAt === "number") return;
     var b = bestNorm(r);
@@ -1488,7 +1490,7 @@ function buildTask(mount,task,mode,onDone){
 
   const row=el('div','ans-row');
   const inp=el('input','ans-inp');inp.type='text';inp.setAttribute('inputmode','decimal');inp.placeholder='ответ';
-  const btn=el('button','btn primary','Проверить');
+  const btn=el('button','btn primary','Проверить');btn.dataset.boardAction='answer';
   row.appendChild(inp);row.appendChild(btn);card.appendChild(row);
   const fb=el('div','fb');fb.setAttribute('role','status');fb.setAttribute('aria-live','polite');card.appendChild(fb);
 
@@ -1511,7 +1513,7 @@ function buildTask(mount,task,mode,onDone){
       back.appendChild(g);card.appendChild(back);
     }
     const next=el('button','btn primary wide','Следующая задача →');
-    next.onclick=()=>report(status);
+    next.dataset.boardAction='next';next.onclick=()=>report(status);
     card.appendChild(next);
   }
   function revealSolution(){
@@ -1546,12 +1548,12 @@ function buildTask(mount,task,mode,onDone){
   let tools=null;
   if(mode!=='quiz'){
     tools=el('div','tools');
-    const bHint=el('button','btn ghost','💡 Подсказка');
+    const bHint=el('button','btn ghost','💡 Подсказка');bHint.dataset.boardAction='hint';
     bHint.onclick=()=>{gaveHint=true;ev('hint',{sub:task.sub});
       let h=$('hintbox-'+task.sub);
       if(!card.querySelector('.hintbox')){const hb=el('div','hintbox');hb.innerHTML='<b>Как подступиться.</b> '+S.refWhy+'<div class="hint-f">'+S.ref+'</div>';card.insertBefore(hb,fb);}
       bHint.disabled=true;};
-    const bStep=el('button','btn ghost','🪜 Шаг за шагом');
+    const bStep=el('button','btn ghost','🪜 Шаг за шагом');bStep.dataset.boardAction='solution-step';
     const steps=S.sol(task.p);
     bStep.onclick=()=>{gaveHint=true;
       /* шаг с готовым вычислением («… = 12») — показ результата, а не подсказка */
@@ -1567,7 +1569,7 @@ function buildTask(mount,task,mode,onDone){
         bStep.disabled=true;ev('gaveup',{sub:task.sub});finishCard('fail');
       } else if(stepIdx>=steps.length){bStep.disabled=true;}
     };
-    const bGive=el('button','btn danger-ghost','Сдаюсь — решение');
+    const bGive=el('button','btn danger-ghost','Сдаюсь — решение');bGive.dataset.boardAction='give';
     bGive.onclick=()=>{if(resolved)return;shown=true;fb.className='fb bad';fb.innerHTML='Правильный ответ: <b>'+ansDisplay(task.sub,task.p)+'</b>';
       revealSolution();ev('gaveup',{sub:task.sub});finishCard('fail');};
     tools.appendChild(bHint);tools.appendChild(bStep);tools.appendChild(bGive);
@@ -1667,19 +1669,22 @@ CONSTRUCT.trapLeg=function(holder,p,onDone){
   function move(ev){if(!dragging)return;const q=toSvg(ev);hx=Math.max(14,Math.min(W-14,q.x));hy=Math.max(14,Math.min(H-14,q.y));
     if(Math.abs(hy-baseY)<26)hy=baseY;                 // прилипание к линии основания
     if(hy===baseY&&Math.abs(hx-footX)<20)hx=footX;     // прилипание к перпендикуляру
-    update();ev.preventDefault();}
-  function up(){if(!dragging)return;dragging=false;handle.setAttribute('cursor','grab');
+    update();if(window.OgePart2ConstructionMoving)window.OgePart2ConstructionMoving([hx,hy]);ev.preventDefault();}
+  function up(){if(!dragging)return;const boardDrafts=window.OgePart2ConstructionDrafts?window.OgePart2ConstructionDrafts():[];dragging=false;handle.setAttribute('cursor','grab');
     const onBase=Math.abs(hy-baseY)<0.5,perp=onBase&&Math.abs(hx-footX)<0.5;
     if(perp)succeed();
     else if(onBase){fb.className='fb warn';fb.innerHTML='Почти! Сдвинь основание перпендикуляра точно под вершину C — тогда угол станет прямым.';}
-    else{fb.className='fb warn';fb.innerHTML='Веди из C прямо вниз до пунктирной линии основания.';}}
+    else{fb.className='fb warn';fb.innerHTML='Веди из C прямо вниз до пунктирной линии основания.';}
+    if(window.OgePart2ConstructionChanged)window.OgePart2ConstructionChanged([hx,hy],boardDrafts);}
   function succeed(){if(solved)return;solved=true;hx=footX;hy=baseY;update();handle.setAttribute('fill',CO.ok);handle.setAttribute('r',6);pulse.style.display='none';
     const onSeg=footX>=Math.min(SA.x,SD.x)&&footX<=Math.max(SA.x,SD.x);
     fb.className='fb good';fb.innerHTML='✓ Высота построена — перпендикуляр из C на основание'+(onSeg?' AD':' (на продолжении AD)')+'. Дальше: h = CD·sin C.';
-    setTimeout(()=>onDone&&onDone(),750);}
+    if(window.OgeCourseSharedMode){if(onDone)onDone();}else setTimeout(()=>onDone&&onDone(),750);}
   handle.addEventListener('pointerdown',down);handle.addEventListener('pointermove',move);
   handle.addEventListener('pointerup',up);handle.addEventListener('pointercancel',up);
-  return {showAnswer:succeed};
+  const api={showAnswer:succeed,position:()=>[hx,hy],moveTo(x,y,finish){if(solved)return;hx=Math.max(14,Math.min(W-14,x));hy=Math.max(14,Math.min(H-14,y));dragging=true;pulse.style.display='none';update();if(finish)up();}};
+  if(window.OgeCourseSharedMode)window.OgePart2Construction=api;
+  return api;
 };
 
 /* ================= РЕЖИМ: ТРЕНИРОВКА (обучающая, пошаговая) ================= */
@@ -1759,7 +1764,7 @@ function buildGuided(mount,task,onDone,opts){
     box.appendChild(el('div','step-q','Не решай сразу. Прочитай, что дано и что ищут, и выбери: <b>какой приём здесь работает?</b>'));
     const fb=el('div','fb');let tries=0;
     const os=recogOptions(task.sub);const wrap=el('div','choices');
-    os.forEach((o,k)=>{const b=el('button','choice-btn',o.t);
+    os.forEach((o,k)=>{const b=el('button','choice-btn',o.t);b.dataset.boardAction='recognize:'+k;
       b.onclick=()=>{if(box.classList.contains('done'))return;
         if(o.ok){b.classList.add('ok');box.classList.add('done');fb.className='fb good';fb.innerHTML='✓ Верно. <b>Как узнать:</b> '+RECOG[task.sub].cue;revealType();ev('recog_ok',{sub:task.sub});startSolve();}
         else{b.classList.add('no');tries++;miss();ev('recog_wrong',{sub:task.sub});
@@ -1784,7 +1789,7 @@ function buildGuided(mount,task,onDone,opts){
       const yes=el('button','btn ghost','Решать без подсказок →');yes.onclick=()=>{trainMode='solo';curFilter=task.sub;setTab('train');};
       nud.appendChild(yes);card.appendChild(nud);
     }
-    const nx=el('button','btn primary wide','Следующая задача →');nx.onclick=()=>onDone&&onDone();card.appendChild(nx);
+    const nx=el('button','btn primary wide','Следующая задача →');nx.dataset.boardAction='next';nx.onclick=()=>onDone&&onDone();card.appendChild(nx);
   }
   function startSolve(){ if(CONSTRUCT[task.sub]) renderConstruct(); else renderStep(); }
   function renderConstruct(){
@@ -1792,7 +1797,7 @@ function buildGuided(mount,task,onDone,opts){
     box.appendChild(el('div','step-num','Построй высоту'));
     box.appendChild(el('div','step-q','Ключевой ход — <b>достроить высоту</b>. Перетащи синюю точку из вершины <b>C</b> вниз до линии основания <b>AD</b> так, чтобы получился прямой угол (перпендикуляр).'));
     const holder=el('div','constr-holder');box.appendChild(holder);
-    const skip=el('button','link-btn','не получается — показать построение');box.appendChild(skip);
+    const skip=el('button','link-btn','не получается — показать построение');skip.dataset.boardAction='construct-show';box.appendChild(skip);
     ladder.appendChild(box);
     let done2=false;
     function fin(){ if(done2)return; done2=true; box.classList.add('done'); skip.remove();
@@ -1816,7 +1821,7 @@ function buildGuided(mount,task,onDone,opts){
     if(st.t==='num'){
       const row=el('div','ans-row');
       const inp=el('input','ans-inp');inp.type='text';inp.setAttribute('inputmode','decimal');inp.placeholder='ответ этого шага';
-      const b=el('button','btn primary','Проверить');
+      const b=el('button','btn primary','Проверить');b.dataset.boardAction='step:'+idx;
       row.appendChild(inp);row.appendChild(b);box.appendChild(row);box.appendChild(fb);
       function chk(){if(box.classList.contains('done'))return;
         const val=parseAns(inp.value);
@@ -1832,7 +1837,7 @@ function buildGuided(mount,task,onDone,opts){
     } else {
       const opts=shuffle(st.opts.map((t,i)=>({t,ok:i===st.ci})));
       const wrap=el('div','choices');
-      opts.forEach((o,k)=>{const b=el('button','choice-btn',o.t);
+      opts.forEach((o,k)=>{const b=el('button','choice-btn',o.t);b.dataset.boardAction='choice:'+idx+':'+k;
         b.onclick=()=>{if(box.classList.contains('done'))return;
           if(o.ok){b.classList.add('ok');fb.className='fb good';fb.innerHTML='✓ '+st.ok;ev('step_ok',{sub:task.sub,step:idx});advance(false);}
           else{b.classList.add('no');tries++;miss();ev('opt_wrong',{sub:task.sub,mode:'guided',step:idx});
@@ -2267,7 +2272,7 @@ if(!CP.RO && document.documentElement.nodeType===1){
     const head=card.querySelector('.q-head');if(head){const settings=document.getElementById('courseSettings');const d=document.createElement('details');const s=document.createElement('summary');s.textContent='Тип задачи и формула';d.append(s,head);card.appendChild(d);}
     const tools=card.querySelector('.tools'),anchor=card.querySelector('.q-text');
     const help=MinimalGeometry.hint(anchor,'<p>Разберём эту задачу по одному шагу. Все принятые шаги останутся на экране.</p>');
-    const start=document.createElement('button');start.className='btn primary';start.type='button';start.textContent='Решать по шагам';start.dataset.guidedStart='true';help.panel.appendChild(start);
+    const start=document.createElement('button');start.className='btn primary';start.type='button';start.textContent='Решать по шагам';start.dataset.guidedStart='true';start.dataset.boardAction='guide';help.panel.appendChild(start);
     start.onclick=()=>{const previous=session.beginGuided();if(!previous)return;const guide=document.createElement('div');help.panel.appendChild(guide);start.disabled=true;buildGuided(guide,task,onDone,{recognize:true,initialShown:previous.shown,initialMissed:previous.missed});guide.querySelectorAll('.q-head,.fig-wrap,.q-text').forEach(node=>node.remove());MinimalGeometry.part2(guide);};
     if(tools)MinimalGeometry.disclosure(help.panel,[tools]);MinimalGeometry.part2(card);
   };
@@ -2276,6 +2281,8 @@ if(!CP.RO && document.documentElement.nodeType===1){
 <script src="task19-textbook-data.js"></script>
 <script src="task19-reference.js"></script>
 <script src="oge-course-reference.js"></script>
-<script src="oge-course-proof.js"></script>
+<script src="oge-course-proof.js?v=20261025-oge-course-mirror"></script>
+<script src="board-bridge.js"></script>
+<script src="oge-part2-geometry-board.js"></script>
 </body>
 </html>

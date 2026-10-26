@@ -39,23 +39,26 @@ test('all first-part prototype families receive contextual help without replacin
 
 test('task22 all nine prototype choices keep the exact graph problem and reasoning identity',async()=>{const t=await boot(22);try{let count=0;for(const nav of t.d.querySelectorAll('.mod-btn')){nav.click();await settle();const buttons=[...t.card().querySelectorAll('.sub-chips button')].slice(1);for(const b of buttons){b.click();await settle();const p=t.card().__problem,work=t.card().querySelector('.oca-work');assert(work);const area=work.querySelector('textarea');area.value='Построение для этого графика';area.dispatchEvent(new t.w.Event('input'));const panel=await openHelp(t);assert.equal(t.card().__problem,p);assert.equal(t.card().querySelector('.oca-work'),work);assert(panel.querySelector('input[type=range]'));count++;}}assert.equal(count,9);assert.deepEqual(t.errors,[]);}finally{t.close();}});
 
-// Frozen source: a006abab6ca2a0148c4b51739da0d5e080f39fe9. Only external presentation includes are added.
+// Reviewed OGE_COURSE_MIRROR_AUDIT native sources: room storage guards/facades,
+// deterministic step construction and accepted/revealed-field locks. Mathematics
+// and banks remain independently protected by the algebra/part2 contract gates.
+// The exact full-engine pins below continue to reject unreviewed native changes.
 const inlineHashes={
-  "7": "ce45d525b6aa7fcd424099b652189936cb08a95722570178971fecbe2041f899",
-  "8": "b6623e7e9d19eb696ad562020aeb45c394c6fb4b2fccdd052db7f1b3c850c8c4",
-  "10": "1f5689ad9e3a070c83971dce41d37d4d5b7f5302ea50129d03d5ef2213111670",
-  "12": "6b066f117e8aeb6c3235afa3597c7f28c67fbee2bb6d01bb8af231044ce3addd",
-  "14": "28733e9d47ed0de2d38b0b51420a8ae13a29e98569a35394c7a0d8cbc1b13840",
-  "20": "440c43105f1aa6fd575c884c1515f682444de7e41d81157fdaa393469b4ac1c7",
-  "21": "8bfedacb0395cc10792313f0a9566474260d66956ffd09ba35451706d5bc2d72",
-  "22": "af49f4c0eb64211d089fe6077e3ad3200b38be4d17147ca7b49a9413bf217859"
+  "7": "1c8377171051d6cd9582537dcfca1d270f00300b0b1a8f15fb0cd0f40f7348dc",
+  "8": "9475a664fbb854c30f0836423e74fc073c08901d37b06ea153a46c52517d6807",
+  "10": "80b6b102ce808e95d41553550273ccfe8aa48b88af04c0d6c8c6d87dbe20e6a9",
+  "12": "cae13f718c529aa282cb587a1407994a13c0da0621cbdd4519c191f0db8cb7a8",
+  "14": "32588d0974854ae60a7e91d931da8c64b9694bfa2b78867bd13a7e3887dc4c00",
+  "20": "f549780df61f1d966e0eab26589d3f426acd29d17ab254b1d6aec35074b07263",
+  "21": "6b266bbaa9ffbd40adaccbd9a5f93c6b290b15566780dbcd770d71622c5982f8",
+  "22": "5298f2da7b65280813d2a97b4353c7c0029182359614625076e5939d2a39c5af"
 };
-test('all eight original inline engines retain their published snapshots outside approved season labels',()=>{
+test('all eight inline engines retain their reviewed mirror-audit snapshots outside approved season labels',()=>{
  for(const [n,suffix]of Object.entries(files)){
   const html=fs.readFileSync(path.join(root,'trainers/oge-task'+n+'-'+suffix+'.html'),'utf8');
   let scripts=[...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].filter(x=>!(/\bsrc\s*=/.test(x[1]))).map(x=>x[2]).join('\n');
   // The 2027 copy update changes these two displayed sentences only.
-  // Keep the historical full-engine digest, including all mathematics and grading.
+  // Keep the reviewed full-engine digest, including all mathematics and grading.
   if(n==='8')scripts=scripts
    .replace('160 задач для подготовки к ОГЭ 2027.</p>', 'все 160 задач из реальных подборок к ОГЭ 2026.</p>')
    .replace('Марафон · 160 задач для подготовки к ОГЭ 2027', 'Марафон · 160 задач формата ОГЭ 2026');

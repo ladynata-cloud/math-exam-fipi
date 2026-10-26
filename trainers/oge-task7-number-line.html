@@ -2,6 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
+<script src="oge-course-shared-mode.js?v=20261025"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Задание 7 ОГЭ. Координатная прямая — тренажёр</title>
 <link rel="canonical" href="https://mathexam.space/trainers/oge-task7-number-line.html">
@@ -161,7 +162,7 @@ body{background:#f6f7f5!important;color:#202820;font-family:var(--ui);font-size:
 <link rel="stylesheet" href="oge-course-reference.css">
 <link rel="stylesheet" href="oge-course-algebra.css">
 </head>
-<body>
+<body data-oge-foundation="7">
 <div class="margin-line"></div>
 <div class="wrap">
 <header class="top">
@@ -355,12 +356,13 @@ const CP=(function(){
   function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
   function num(v){ return (typeof v === "number" && isFinite(v) && v > 0) ? Math.floor(v) : 0; }
   function readAll(){
+    if (window.OgeCourseSharedMode) return {};
     try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(o) ? o : {}; }
     catch (e) { return {}; }
   }
   /* меняет только свою ветку: читает ключ заново прямо перед записью */
   function saveRec(fn){
-    if (RO) return;
+    if (RO || window.OgeCourseSharedMode) return;
     try {
       var all = readAll();
       var rec = isObj(all[TID]) ? all[TID] : {};
@@ -384,7 +386,7 @@ const CP=(function(){
   /* журнал: промах открывает тип, три верных подряд закрывают;
      верный ответ по типу без промахов записи не заводит */
   function mlog(type, ok){
-    if (RO) return;
+    if (RO || window.OgeCourseSharedMode) return;
     try {
       var all = readAll();
       var key = TID + "|" + type;
@@ -407,7 +409,7 @@ const CP=(function(){
     }
     return res;
   }
-  var REVIEW = /[?&]mode=review(&|$)/.test(location.search || "");
+  var REVIEW = !window.OgeCourseSharedMode && /[?&]mode=review(&|$)/.test(location.search || "");
   return { RO:RO, REVIEW:REVIEW, isObj:isObj, num:num, readAll:readAll, saveRec:saveRec,
     solvedOne:solvedOne, finishQuiz:finishQuiz, mlog:mlog, openTypes:openTypes };
 })();
@@ -3230,6 +3232,8 @@ const ASTK={
 /*__ALG_SELFTEST_KIT_END__*/
 </script>
 <script src="oge-course-reference.js"></script>
-<script src="oge-course-algebra.js" data-oge-task="7"></script>
+<script src="oge-course-algebra.js?v=20261025-oge-course-mirror" data-oge-task="7"></script>
+<script src="board-bridge.js"></script>
+<script src="oge-foundation-board.js?v=20261025"></script>
 </body>
 </html>

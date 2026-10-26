@@ -1,6 +1,23 @@
 # MathExam project status
 
-Updated: 2026-10-26 (Asia/Novosibirsk)
+Updated: 2026-10-27 (Asia/Novosibirsk)
+
+## Prepared, not published: PR340 compatibility repair
+
+- Owner requested reconciliation of the existing OGE Draft with current main
+  `92d733a49692744ce043503c57f29b77bfb09a24`; prior head `6dc5980`.
+- [Compatibility record](tasks/OGE_COURSE_MIRROR_AUDIT.md#compatibility-repair-requested-by-owner--2026-10-27):
+  13/6 history divergence, 27 common paths, one real HTML conflict. Both the
+  shared-board link and published lesson contacts survive; 647 main-only files
+  and published PR335 improvements are preserved.
+- Keep 25 new registrations and 31/32 core OGE coverage. The practical archive
+  is rebuilt with current canonical links. No merge or deployment is claimed.
+- Local mathematical, state, saved-work, board primitives and server checks
+  pass; local browser launch is environment-blocked. Exact-head cloud results
+  belong in [PR340](https://github.com/ladynata-cloud/math-exam-fipi/pull/340).
+- Next: complete cloud gates, obtain integrated-head HIGH review or a reasoned
+  task-scoped exception, then seek separate release authorization. Neither old
+  CI nor the PR335 waiver satisfies the current release conditions.
 
 ## Prepared: HTTPS canonicals and static trainer metadata
 
@@ -142,14 +159,19 @@ Updated: 2026-10-26 (Asia/Novosibirsk)
 - Static gate: `COLLEGE_FUNCTIONS_STATIC_OK`. The subsequent synchronization and
   cabinet request is the separate task above.
 
-## In progress: OGE geometry 15–19 shared practice
+## In progress: whole-course OGE audit and shared practice
 
-- [Scope](tasks/OGE_15_19_SHARED_BOARD.md), HIGH review; base `fbacc5b14cca8f698733212c91823ff82437e65b` (published PR334), branch `feat/oge-15-19-board`; routine additive conflicts preserve both releases.
-- Production audit: the five course pages were not registered semantic mirrors; task15 linked only one external-angle lesson.
-- Prepared: restored task15 candidate/remediation (26 types/66 variants), five isolated shared-practice adapters, corrected square/incircle and trapezoid-midline models, and fixed selected-plan cards. Existing personal work and other mirrors remain separate.
-- FIPI project2027 examples checked; no mathematics structure/content change is announced. Task19 remains single-statement understanding practice, not a full exam simulator.
-- Mathematical, DOM/state and actual local Socket.IO tests are recorded in the task. Publication and selected-cabinet activation are not yet claimed.
-- Next: exact-head cloud gates and required external review, then release and live verification if all gates permit it.
+- [Scope](tasks/OGE_COURSE_MIRROR_AUDIT.md), HIGH; base `8e681831e874a9af129f50c16179bd2a424c5474`, branch `feat/oge-course-mirror-audit`.
+- The published core has 32 trainers: numbered 6–25 and twelve practical routes for 1–5. Only six had semantic mirrors before this task.
+- Preparing native shared practice for the remaining numbered trainers and ten practical routes, with real room transport, isolated personal storage, visible capability and content corrections. Tires and supplementary personal routes remain explicitly outside the new mirror claim.
+- [Audit report](tasks/OGE_COURSE_MIRROR_AUDIT_REPORT.md) separates content, supported practice and limitations. Not yet a production claim; exact-head checks, independent review and release decision are required.
+
+## Published: OGE geometry 15–19 shared practice
+
+- [Scope](tasks/OGE_15_19_SHARED_BOARD.md), HIGH; PR335 merged as `8e681831e874a9af129f50c16179bd2a424c5474` after the owner's explicit release instruction.
+- Reviewed head `5c060f665fba823119bf9721b38a1cce4aaa136f`; published tree `1fcdf47df45190a92c913453546e3c0f5c6db82d`. All nine post-merge workflows passed, eighteen runtime assets matched exact reviewed bytes, backend was healthy with 25 mirrors, and live two-window checks passed for 15–19.
+- Restored task15 practice/remediation, added five native shared adapters, corrected circle/trapezoid models, and repaired plan cards. Five references were saved in the selected cabinet and verified after reload and learner preview; no private learner identifiers are retained here.
+- The failed Claude review had no verdict (insufficient credits); the owner's exception was scoped to PR335 and does not waive future reviews.
 
 ## In progress: harder НОК / НОД and a selected two-trainer cabinet
 

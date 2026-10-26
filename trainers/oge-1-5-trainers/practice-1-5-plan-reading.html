@@ -57,6 +57,9 @@
   @media(max-width:560px){.topnav-inner{align-items:flex-start}.nav-left,.nav-right{width:100%}.topic{display:none}.modes{width:100%}.modes button{flex:1}.wrap{padding-left:14px;padding-right:14px}.task-meta{align-items:flex-start;flex-direction:column}.actions .btn{flex:1}.mini-grid{transform:scale(.85);transform-origin:top left;margin-right:-46px;margin-bottom:-30px}}
 </style>
 <link rel="stylesheet" href="practical-minimal.css">
+<script src="../oge-course-shared-mode.js"></script>
+<script src="../board-bridge.js"></script>
+<script src="practical-diagnostic-board.js"></script>
 <script src="practical-minimal.js"></script>
 </head>
 <body data-practical-page="plan-reading">
@@ -158,7 +161,7 @@
         <p id="result-text" style="color:var(--ink2)"></p>
         <div id="skill-list" class="skill-list"></div>
         <div class="result-actions">
-          <button id="copy" class="btn primary" type="button">Скопировать результат для Stepik</button>
+          <button id="copy" class="btn primary" type="button">Скопировать результат</button>
           <button id="again" class="btn secondary" type="button">Пройти ещё раз</button>
         </div>
         <div id="copy-note" class="copy-note"></div>
@@ -169,6 +172,8 @@
 <script>
 (() => {
   'use strict';
+  const shared = window.OgeCourseSharedMode === true;
+  const bridge = window.PracticalDiagnosticBridge;
   const STORAGE_KEY = 'mathExamCourseProgress.v1';
   const TOPIC_ID = 'practicePlanReadingTrainer';
   const skills = ['Вопрос','Масштаб','Данные','Единицы','Алгоритм'];
@@ -184,13 +189,14 @@
     </div>
     <p style="margin-top:10px;color:var(--ink2);font-size:13px;text-align:center">Сторона клетки — 2 км. Сплошная линия — шоссе, пунктир — тропа.</p>`;
   const visualTable = `<table class="data-table"><thead><tr><th>Маршрут</th><th>Расстояние</th><th>Скорость</th></tr></thead><tbody><tr><td>по шоссе</td><td>12 км</td><td>24 км/ч</td></tr><tr><td>по тропе</td><td>8 км</td><td>12 км/ч</td></tr></tbody></table>`;
+  const visualTriangle = `<svg viewBox="0 0 350 300" role="img" aria-label="Прямая тропа — диагональ прямоугольника со сторонами 3 и 4 километра"><path d="M60 250V50H210V250Z" fill="none" stroke="#cbd5e1" stroke-width="2"/><path d="M60 50V250H210" fill="none" stroke="#1e3a5f" stroke-width="5"/><path d="M60 50L210 250" fill="none" stroke="#b8924b" stroke-width="4" stroke-dasharray="8 6"/><path d="M60 232H78V250" fill="none" stroke="#1e3a5f" stroke-width="2"/><text x="135" y="279" text-anchor="middle">3 км</text><text x="45" y="155" text-anchor="end">4 км</text><text x="175" y="145">тропа</text></svg>`;
   const bank = [
     {skill:'Вопрос',type:'single',q:'В условии спрашивают: «Сколько минут займёт поездка?» Какую величину нужно найти?',options:['расстояние','время','скорость','стоимость'],answer:1,hint:'Смотрите на существительное после слова «сколько».',explain:'Нужно найти время. В ответе ожидаются минуты.',context:'Не начинайте с чисел: сначала назовите искомую величину.'},
     {skill:'Масштаб',type:'number',q:'Маршрут занимает 5 клеток. Сторона каждой клетки равна 2 км. Какова длина маршрута?',answer:10,tolerance:0.001,unit:'км',hint:'Число клеток умножьте на длину стороны одной клетки.',explain:'5 · 2 = 10 км.',visual:visualGrid},
     {skill:'Данные',type:'multi',q:'Какие данные нужны, чтобы найти стоимость бензина для поездки?',options:['длина маршрута','расход топлива на 100 км','цена одного литра','время отправления'],answer:[0,1,2],hint:'Стоимость зависит от количества израсходованного топлива и цены литра.',explain:'Нужны расстояние, расход топлива и цена литра. Время отправления на стоимость не влияет.'},
     {skill:'Единицы',type:'number',q:'На плане получено расстояние 3600 м. Сколько это километров?',answer:3.6,tolerance:0.001,unit:'км',hint:'В одном километре 1000 метров.',explain:'3600 : 1000 = 3,6 км.'},
     {skill:'Алгоритм',type:'order',q:'Расположите действия в правильном порядке.',options:['выполнить вычисления','прочитать вопрос','найти масштаб и нужные данные','проверить единицы ответа'],answer:['прочитать вопрос','найти масштаб и нужные данные','выполнить вычисления','проверить единицы ответа'],hint:'Начинаем не с вычислений, а с вопроса.',explain:'Надёжный порядок: вопрос → данные и масштаб → вычисления → проверка единиц.'},
-    {skill:'Алгоритм',type:'single',q:'Прямая тропа образует диагональ прямоугольника со сторонами 3 км и 4 км. Какой приём нужен?',options:['проценты','теорема Пифагора','среднее арифметическое','пропорция'],answer:1,hint:'Известны два катета прямоугольного треугольника.',explain:'Диагональ — гипотенуза: √(3² + 4²) = 5 км.',visual:visualGrid},
+    {skill:'Алгоритм',type:'single',q:'Прямая тропа образует диагональ прямоугольника со сторонами 3 км и 4 км. Какой приём нужен?',options:['проценты','теорема Пифагора','среднее арифметическое','пропорция'],answer:1,hint:'Известны два катета прямоугольного треугольника.',explain:'Диагональ — гипотенуза: √(3² + 4²) = 5 км.',visual:visualTriangle},
     {skill:'Вопрос',type:'number',q:'По таблице найдите время движения по шоссе в минутах.',answer:30,tolerance:0.001,unit:'мин',hint:'t = S : v, затем часы переведите в минуты.',explain:'12 : 24 = 0,5 часа = 30 минут.',visual:visualTable},
     {skill:'Единицы',type:'single',q:'Вопрос требует ответ «в километрах». Вы получили 18 000 м. Что записать в поле ответа?',options:['18 000','1800','18','0,18'],answer:2,hint:'Переведите метры в километры.',explain:'18 000 м = 18 км, поэтому в поле ответа записываем 18.'},
     {skill:'Данные',type:'single',q:'На обычном плане север расположен сверху. Где находится объект, лежащий восточнее школы?',options:['слева','справа','выше','ниже'],answer:1,hint:'Восток на стандартной карте — справа.',explain:'Объект восточнее школы находится справа от неё.'},
@@ -201,6 +207,7 @@
   const sets = {1:[0,1,2,3,4,5,6,7,8,9],2:[2,3,4,5,6,7,8,9,10,11]};
   const $ = id => document.getElementById(id);
   const state = {mode:'learn',variant:1,tasks:[],index:0,score:0,checked:false,answers:{},skillStats:{}};
+  let boardChecks=Array(10).fill(false), boardHelp=Array(10).fill(false), boardFeedback='none';
 
   function setMode(mode){
     state.mode=mode;
@@ -212,6 +219,7 @@
 
   function start(){
     state.variant=Number($('variant').value);
+    boardChecks=Array(10).fill(false);boardHelp=Array(10).fill(false);boardFeedback='none';
     state.tasks=sets[state.variant].map(i=>bank[i]); state.index=0; state.score=0; state.checked=false; state.answers={}; state.skillStats={};
     skills.forEach(s=>state.skillStats[s]={right:0,total:0});
     $('intro').hidden=true; $('result').hidden=true; $('workspace').hidden=false; render(); window.scrollTo({top:0,behavior:'smooth'});
@@ -219,7 +227,7 @@
   $('start').addEventListener('click',start);
 
   function render(){
-    const t=state.tasks[state.index]; state.checked=false;
+    const t=state.tasks[state.index]; state.checked=shared?boardChecks[state.index]:false;boardFeedback='none';
     $('progress-label').textContent=`Задание ${state.index+1} из ${state.tasks.length}`;
     $('score-label').textContent=`Верно: ${state.score}`; $('side-score').textContent=state.score;
     $('bar-fill').style.width=`${state.index/state.tasks.length*100}%`;
@@ -232,6 +240,8 @@
     $('next').hidden=true; $('check').hidden=state.mode==='teacher'; $('hint').hidden=state.mode==='teacher'; $('reset-answer').hidden=state.mode==='teacher';
     renderAnswer(t);
     if(state.mode==='teacher') showTeacher(t);
+    else if(shared&&state.checked) restoreChecked(t);
+    if(shared&&state.mode==='train'&&!state.checked)$('hint').hidden=true;
   }
 
   function renderAnswer(t){
@@ -239,7 +249,7 @@
     if(t.type==='single'||t.type==='multi'){
       const box=document.createElement('div'); box.className='options '+(t.type==='multi'?'multi':'');
       t.options.forEach((text,i)=>{
-        const b=document.createElement('button'); b.type='button'; b.className='option'; b.dataset.index=i;
+        const b=document.createElement('button'); b.type='button'; b.className='option'+((t.type==='single'?state.answers[state.index]===i:(state.answers[state.index]||[]).includes(i))?' selected':''); b.dataset.index=i;
         b.innerHTML=`<span class="mark">${t.type==='multi'?'':'○'}</span><span>${text}</span>`;
         b.addEventListener('click',()=>{
           if(state.checked||state.mode==='teacher')return;
@@ -250,7 +260,7 @@
     } else if(t.type==='number'){
       const row=document.createElement('div'); row.className='number-row';
       row.innerHTML=`<input class="answer-input" id="number-answer" inputmode="decimal" autocomplete="off" placeholder="Введите ответ"><span class="unit">${t.unit||''}</span>`;
-      area.appendChild(row); const inp=$('number-answer'); inp.value=state.answers[state.index]??''; inp.addEventListener('input',()=>state.answers[state.index]=inp.value);
+      area.appendChild(row); const inp=$('number-answer'); inp.value=state.answers[state.index]??''; inp.disabled=state.checked||state.mode==='teacher'; inp.addEventListener('input',()=>state.answers[state.index]=inp.value);
       inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!state.checked)check();});
     } else if(t.type==='order'){
       const ans=document.createElement('div'); ans.className='order-answer'; ans.id='order-answer';
@@ -280,9 +290,11 @@
     return String(a??'').trim()!=='';
   }
   function check(){
+    if(state.checked)return;
     const t=state.tasks[state.index],a=state.answers[state.index];
-    if(!hasAnswer(t,a)){showFeedback(false,'Сначала выберите или введите ответ.');return;}
-    const ok=isCorrect(t,a); state.checked=true; state.skillStats[t.skill].total++;
+    if(!hasAnswer(t,a)){boardFeedback='missing';showFeedback(false,'Сначала выберите или введите ответ.');return;}
+    const ok=isCorrect(t,a); state.checked=true;boardChecks[state.index]=true;boardFeedback='checked';
+    const field=$('number-answer');if(field)field.disabled=true; state.skillStats[t.skill].total++;
     if(ok){state.score++;state.skillStats[t.skill].right++;}
     markOptions(t,ok); showFeedback(ok,t.explain); $('check').hidden=true; $('hint').hidden=true; $('reset-answer').hidden=true; $('next').hidden=false;
     $('score-label').textContent=`Верно: ${state.score}`;$('side-score').textContent=state.score;
@@ -293,13 +305,16 @@
     if(t.type==='multi')document.querySelectorAll('.option').forEach((b,i)=>{if(t.answer.includes(i))b.classList.add('correct');else if(b.classList.contains('selected'))b.classList.add('wrong');});
   }
   function showFeedback(ok,text){const f=$('feedback');f.hidden=false;f.className='feedback '+(ok?'ok':'bad');f.innerHTML=`<strong>${ok?'Верно':'Проверьте ещё раз'}</strong>${text}`;}
-  $('hint').addEventListener('click',()=>{const t=state.tasks[state.index];showFeedback(false,`Подсказка: ${t.hint}`);});
-  $('reset-answer').addEventListener('click',()=>{delete state.answers[state.index];renderAnswer(state.tasks[state.index]);$('feedback').hidden=true;});
+  $('hint').addEventListener('click',()=>{if(shared&&state.mode==='train'&&!state.checked)return;const t=state.tasks[state.index];boardHelp[state.index]=true;boardFeedback='hint';showFeedback(false,`Подсказка: ${t.hint}`);});
+  $('reset-answer').addEventListener('click',()=>{if(state.checked)return;boardFeedback='none';delete state.answers[state.index];renderAnswer(state.tasks[state.index]);$('feedback').hidden=true;});
   $('next').addEventListener('click',()=>{if(state.index<state.tasks.length-1){state.index++;render();window.scrollTo({top:0,behavior:'smooth'});}else finish();});
 
   function showTeacher(t){
+    if(shared){boardHelp[state.index]=true;boardFeedback='teacher';}
+    const draft=state.answers[state.index];
     state.answers[state.index]=t.type==='single'?t.answer:t.type==='multi'?[...t.answer]:t.type==='number'?String(t.answer):[...t.answer];
     renderAnswer(t); markOptions(t,true); showFeedback(true,`Правильный ответ. ${t.explain}`); $('next').hidden=false;
+    if(shared){if(draft===undefined)delete state.answers[state.index];else state.answers[state.index]=draft;}
   }
 
   function finish(){
@@ -316,6 +331,7 @@
     if(state.mode!=='teacher')saveProgress();window.scrollTo({top:0,behavior:'smooth'});
   }
   function saveProgress(){
+    if(shared)return;
     let data={};try{data=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}')||{};}catch(e){}
     const old=data[TOPIC_ID]||{};const best=Math.max(Number(old.bestScore)||0,state.score);
     data[TOPIC_ID]={...old,solved:best,total:10,lastScore:state.score,bestScore:best,completed:best>=8,attempts:(Number(old.attempts)||0)+1,updatedAt:new Date().toISOString()};
@@ -325,9 +341,27 @@
     const weak=skills.filter(s=>{const st=state.skillStats[s];return st.total&&st.right<st.total;});
     return `Тренажёр «Как читать план и условие» (ОГЭ-2027): ${state.score} из 10. Комплект: ${state.variant}. ${weak.length?'Повторить: '+weak.join(', ')+'.':'Все базовые навыки выполнены без ошибок.'}`;
   }
-  $('copy').addEventListener('click',async()=>{const text=resultText();try{await navigator.clipboard.writeText(text);$('copy-note').textContent='Результат скопирован. Вернитесь в Stepik и вставьте его в поле ответа.';}catch(e){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();$('copy-note').textContent='Результат скопирован.';}});
+  $('copy').addEventListener('click',async()=>{const text=resultText();try{await navigator.clipboard.writeText(text);$('copy-note').textContent='Результат скопирован. Его можно передать преподавателю.';}catch(e){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();$('copy-note').textContent='Результат скопирован.';}});
   start();
   $('again').addEventListener('click',()=>{$('result').hidden=true;$('intro').hidden=false;window.scrollTo({top:0,behavior:'smooth'});});
+
+  function restoreChecked(t){state.checked=true;boardFeedback='checked';markOptions(t);showFeedback(isCorrect(t,state.answers[state.index]),t.explain);$('check').hidden=true;$('hint').hidden=true;$('reset-answer').hidden=true;$('next').hidden=false;const field=$('number-answer');if(field)field.disabled=true;}
+  if(shared)bridge.connect({
+    id:'practice-1-5-plan-reading',
+    getState(){return{variant:state.variant,selected:Number($('variant').value),index:state.index,mode:state.mode,view:!$('intro').hidden?'intro':!$('result').hidden?'result':'work',answers:state.tasks.map((t,i)=>{const a=state.answers[i];return a===undefined?null:t.type==='order'?a.map(x=>t.options.indexOf(x)):a;}),checks:boardChecks.slice(),help:boardHelp.slice(),feedback:boardFeedback};},
+    validateState(v){
+      if(!bridge.exact(v,['variant','selected','index','mode','view','answers','checks','help','feedback'])||!bridge.integer(v.variant,1,2)||!bridge.integer(v.selected,1,2)||!bridge.integer(v.index,0,9)||!['learn','train','teacher'].includes(v.mode)||!['intro','work','result'].includes(v.view)||!Array.isArray(v.answers)||v.answers.length!==10||!bridge.bools(v.checks,10)||!bridge.bools(v.help,10)||!['none','hint','missing','checked','teacher'].includes(v.feedback))return false;
+      const tasks=sets[v.variant].map(i=>bank[i]);
+      if(!v.answers.every((a,i)=>{const t=tasks[i];if(a===null)return !v.checks[i];if(t.type==='number')return bridge.text(a)&&(!v.checks[i]||a.trim()!=='');if(t.type==='single')return bridge.integer(a,0,t.options.length-1);return Array.isArray(a)&&a.length<=t.options.length&&new Set(a).size===a.length&&a.every(x=>bridge.integer(x,0,t.options.length-1))&&(!v.checks[i]||a.length>0);}))return false;
+      return !(v.feedback==='checked'&&!v.checks[v.index])&&!(v.feedback==='hint'&&(!v.help[v.index]||v.mode==='train'))&&!(v.feedback==='teacher'&&v.mode!=='teacher')&&!(v.mode==='teacher'&&(!v.help[v.index]||v.feedback!=='teacher'))&&!(v.mode!=='teacher'&&v.checks[v.index]&&v.feedback!=='checked')&&!(v.view==='result'&&v.index!==9);
+    },
+    applyState(v){
+      state.variant=v.variant;state.tasks=sets[v.variant].map(i=>bank[i]);state.index=v.index;state.mode=v.mode;state.answers={};v.answers.forEach((a,i)=>{if(a!==null)state.answers[i]=state.tasks[i].type==='order'?a.map(x=>state.tasks[i].options[x]):Array.isArray(a)?a.slice():a;});boardChecks=v.checks.slice();boardHelp=v.help.slice();state.score=0;state.skillStats={};skills.forEach(s=>state.skillStats[s]={right:0,total:0});state.tasks.forEach((t,i)=>{if(boardChecks[i]){state.skillStats[t.skill].total++;if(isCorrect(t,state.answers[i])){state.score++;state.skillStats[t.skill].right++;}}});
+      $('variant').value=String(v.selected);document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===v.mode));$('teacher-panel').hidden=v.mode!=='teacher';render();
+      boardFeedback=v.feedback;if(v.feedback==='hint'){showFeedback(false,'Подсказка: '+state.tasks[v.index].hint);$('visual').classList.add('pm-hint-open');}else if(v.feedback==='missing')showFeedback(false,'Сначала выберите или введите ответ.');else if(v.feedback==='none')$('feedback').hidden=true;
+      if(v.view==='result')finish();$('intro').hidden=v.view!=='intro';$('workspace').hidden=v.view!=='work';$('result').hidden=v.view!=='result';
+    }
+  });
 })();
 </script>
 </body>

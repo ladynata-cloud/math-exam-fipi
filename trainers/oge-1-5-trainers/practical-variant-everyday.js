@@ -29,7 +29,7 @@ function arcFigure(kind,a,b){
 V.register('stoves',function(){
  const roots=[q('.wrap'),q('.topnav')].filter(Boolean),sets=[[[0,0],[0,1],[0,2]],[[1,0],[1,1],[1,2]],[[2,0],[2,1],[2,2]],[[2,3],[2,4],[2,5]],[[3,0],[3,1]]];
  let records=[],selected=[0,0,0,0,0],serial=0;
- const make=(g,t,fresh)=>({g,t,spec:GROUPS[g].tasks[t].gen(fresh),draft:{},passed:false});
+ const make=(g,t,fresh,seed=global.PracticalBoard?.seed())=>({g,t,seed,fresh,spec:global.PracticalBoard?global.PracticalBoard.seeded(seed,()=>GROUPS[g].tasks[t].gen(fresh)):GROUPS[g].tasks[t].gen(fresh),draft:{},passed:false});
  function ensure(slot){const [g,t]=sets[slot][selected[slot]];const key=g+':'+t;return records[slot][key]||(records[slot][key]=make(g,t,false));}
  function check(rec,values){
   state.g=rec.g;state.t=rec.t;state.current=rec.spec;renderCard(rec.spec);
@@ -43,8 +43,8 @@ V.register('stoves',function(){
   if(rec.g===3){const nums=text(s.prompt).match(/\d+(?:[,.]\d+)?/g).map(Number);condition.append(scrollFigure(arcFigure(rec.t===0?'rect':'sag',nums[0],nums[1]),'Арка кожуха — дуга окружности'));}
   if(rec.g===1&&rec.t===2)condition.append(V.el('p','Окон в парной нет.'));
   const fields=s.match?s.match.map((r,i)=>({key:'match'+i,label:r.label+' — номер печи',value:rec.draft['match'+i]||'',type:'select',options:[['','Выбери номер'],...s.options.map(o=>[o.v,o.t])]})):[{key:'answer',label:(s.meta.split('·').pop().trim())+(s.unit?' ('+s.unit+')':''),value:rec.draft.answer||''}];
-  const c=V.question({id:'stoves-'+slot+'-'+serial,number:slot+1,page:'stoves',title:s.meta,condition,fields,helpType:s.meta,helpNative:()=>'<ol>'+s.hint.map(x=>'<li>'+x+'</li>').join('')+'</ol><details><summary>Полный разбор</summary>'+s.solution.map(x=>'<p>'+x+'</p>').join('')+'</details>',onDraft:values=>{rec.draft={...values};},check:values=>check(rec,values),status:rec.result});
-  c.dataset.prototype=rec.g+':'+rec.t;c.prepend(select('Другой вопрос №'+(slot+1),sets[slot].map(([g,t],i)=>[String(i),GROUPS[g].tasks[t].short]),String(selected[slot]),value=>{selected[slot]=+value;c.replaceWith(card(slot));}));
+  const c=V.question({id:'stoves-'+slot+'-'+serial,number:slot+1,page:'stoves',title:s.meta,condition,fields,helpType:s.meta,helpNative:()=>'<ol>'+s.hint.map(x=>'<li>'+x+'</li>').join('')+'</ol><details><summary>Полный разбор</summary>'+s.solution.map(x=>'<p>'+x+'</p>').join('')+'</details>',onDraft:values=>{rec.draft={...values};rec.result=null;},check:values=>check(rec,values),status:rec.result});
+  c.dataset.prototype=rec.g+':'+rec.t;c.prepend(select('Другой вопрос №'+(slot+1),sets[slot].map(([g,t],i)=>[String(i),GROUPS[g].tasks[t].short]),String(selected[slot]),value=>{selected[slot]=+value;if(global.OgeCourseSharedMode)records[slot]={};c.replaceWith(card(slot));}));
   if(s.regen)c.append(button('Другие числа для этого вопроса',()=>{const [g,t]=sets[slot][selected[slot]];records[slot][g+':'+t]=make(g,t,true);c.replaceWith(card(slot));}));
   return c;
  }
@@ -56,17 +56,23 @@ V.register('stoves',function(){
   V.mount({title:'Печь для бани · задания 1–5',condition:'<p>Хозяин выбирает печь для парного отделения без окон. Длина парной — 3,6 м, ширина — 2 м, высота — 2,2 м. Дверь имеет размеры 0,7 × 1,8 м. Характеристики трёх печей приведены в таблице. Для электрической печи требуется установка кабеля стоимостью 5400 рублей; дровяные печи дополнительной установки не требуют.</p><p>Если в отдельном вопросе указаны другие размеры, используй размеры из этого вопроса. Они подписаны на его рисунке.</p>',visual,tables:node(table),controls,questions:sets.map((_,i)=>card(i)),nativeRoots:roots});
  }
  render(false);
+ const B=global.PracticalBoard;
+ B?.register({id:'practice-1-5-stoves',get:()=>({selected:selected.slice(),items:sets.map((_,i)=>{const r=ensure(i);return{seed:r.seed,fresh:r.fresh};})}),
+ valid:d=>B.exact(d,['selected','items'])&&Array.isArray(d.selected)&&d.selected.length===5&&d.selected.every((v,i)=>Number.isInteger(v)&&v>=0&&v<sets[i].length)&&Array.isArray(d.items)&&d.items.length===5&&d.items.every(r=>B.exact(r,['seed','fresh'])&&B.uint(r.seed)&&typeof r.fresh==='boolean'),
+ describe:d=>sets.map((_,i)=>{const[g,t]=sets[i][d.selected[i]],s=B.seeded(d.items[i].seed,()=>GROUPS[g].tasks[t].gen(d.items[i].fresh));return B.description(B.kind('stoves',s.meta,text(s.prompt)+(s.givens?text(s.givens):'')),s.match?Object.fromEntries(s.match.map((_,j)=>['match'+j,['',...s.options.map(o=>String(o.v))]])):{answer:null},4,g===1||g===3?1:0);}),
+ set:d=>{selected=d.selected.slice();records=sets.map((_,i)=>{const[g,t]=sets[i][selected[i]];return{[g+':'+t]:make(g,t,d.items[i].fresh,d.items[i].seed)};});state.solved=new Set();state.streak=0;render(false);}});
 });
 
 V.register('paper-sheets',function(){
  const roots=[q('body>.wrap')].filter(Boolean),sets=[[0],[1],[2],[3,5],[4]];let records=[],selected=[0,0,0,0,0],serial=0;
- function ensure(slot){const index=sets[slot][selected[slot]];return records[slot][index]||(records[slot][index]={index,spec:TYPES[index].make(),draft:{},solved:false});}
+ function make(index,seed=global.PracticalBoard?.seed()){return{index,seed,spec:global.PracticalBoard?global.PracticalBoard.seeded(seed,()=>TYPES[index].make()):TYPES[index].make(),draft:{},solved:false};}
+ function ensure(slot){const index=sets[slot][selected[slot]];return records[slot][index]||(records[slot][index]=make(index));}
  function check(rec,values){state.typeIdx=rec.index;state.inst=rec.spec;state.instSolved=rec.solved;renderTask();if(rec.spec.kind==='match'){q('#matchAns').value=values.answer||'';}else q('#numAns').value=values.answer||'';onCheck();rec.solved=state.instSolved;const fb=q('#feedback');rec.draft={...values};return rec.result={ok:fb.classList.contains('ok'),html:fractionMarkup(fb.innerHTML)};}
  function card(slot){const rec=ensure(slot),s=rec.spec,condition=V.el('div');condition.append(node(s.promptHTML));
   if(s.kind==='match')condition.append(node('<table><caption>Размеры листов для задания 1</caption><thead><tr><th>Номер листа</th><th>Длина, мм</th><th>Ширина, мм</th></tr></thead><tbody>'+s.sheets.map(row=>`<tr><th>${row.id}</th><td>${row.long}</td><td>${row.short}</td></tr>`).join('')+'</tbody></table>'));
   const label=s.kind==='match'?'Номера листов подряд в порядке '+s.order.join(', '):s.typeId==='count'?'Количество листов (шт.)':s.typeId==='area'?'Площадь листа ('+s.unit+')':s.typeId==='mass'?'Масса пачки ('+s.unit+')':'Отношение, округлённое до десятых';
-  const c=V.question({id:'paper-'+slot+'-'+serial,number:slot+1,page:'paper-sheets',title:TYPE_LABELS[s.typeId],condition,fields:[{key:'answer',label,value:rec.draft.answer||''}],helpType:s.typeId,helpNative:()=>fractionMarkup(s.hintHTML+'<details><summary>Полный разбор</summary>'+s.solveHTML+'</details>'),check:values=>check(rec,values),onDraft:values=>{rec.draft={...values};},status:rec.result});c.dataset.prototype=s.typeId;
-  if(sets[slot].length>1)c.prepend(select('Другой вопрос №'+(slot+1),sets[slot].map((idx,i)=>[String(i),TYPE_LABELS[TYPES[idx].id]]),String(selected[slot]),value=>{selected[slot]=+value;c.replaceWith(card(slot));}));
+  const c=V.question({id:'paper-'+slot+'-'+serial,number:slot+1,page:'paper-sheets',title:TYPE_LABELS[s.typeId],condition,fields:[{key:'answer',label,value:rec.draft.answer||''}],helpType:s.typeId,helpNative:()=>fractionMarkup(s.hintHTML+'<details><summary>Полный разбор</summary>'+s.solveHTML+'</details>'),check:values=>check(rec,values),onDraft:values=>{rec.draft={...values};rec.result=null;},status:rec.result});c.dataset.prototype=s.typeId;
+  if(sets[slot].length>1)c.prepend(select('Другой вопрос №'+(slot+1),sets[slot].map((idx,i)=>[String(i),TYPE_LABELS[TYPES[idx].id]]),String(selected[slot]),value=>{selected[slot]=+value;if(global.OgeCourseSharedMode)records[slot]={};c.replaceWith(card(slot));}));
   c.append(button('Другие числа для этого вопроса',()=>{records[slot][rec.index]=null;c.replaceWith(card(slot));}));return c;
  }
  function paperDiagram(){let current={x:50,y:40,w:490,h:490/Math.SQRT2},pieces=[];for(let n=1;n<=6;n++){const r={...current};if(r.w>=r.h){r.w/=2;current={x:r.x+r.w,y:r.y,w:r.w,h:r.h};}else{r.h/=2;current={x:r.x,y:r.y+r.h,w:r.w,h:r.h};}pieces.push({...r,n});}pieces.push({...current,n:6});return '<svg class="pv-paper-diagram" viewBox="0 0 620 430" style="min-width:620px" role="img" aria-label="Лист А0, последовательно разделённый пополам на А1–А6" xmlns="http://www.w3.org/2000/svg"><text x="50" y="25" font-size="22" fill="#173c2d">А0 — весь прямоугольник</text>'+pieces.map((r,i)=>`<rect data-paper-format="${r.n}" x="${r.x}" y="${r.y}" width="${r.w}" height="${r.h}" fill="${['#e7f2eb','#d9eade','#c5dfce','#b1d3bd','#98c5a9','#7eb493'][Math.min(r.n-1,5)]}" stroke="#29483c" stroke-width="2"/><text x="${r.x+r.w/2}" y="${r.y+r.h/2+7}" text-anchor="middle" font-size="22" fill="#173c2d">А${r.n}</text>`).join('')+'</svg>';}
@@ -75,6 +81,11 @@ V.register('paper-sheets',function(){
   V.mount({title:'Форматы бумаги · задания 1–5',condition:'<p>Лист А0 — прямоугольник площадью 1 м². Каждый следующий формат получают, разрезая предыдущий пополам параллельно его короткой стороне. Все форматы подобны. Размеры в миллиметрах округляют вниз до целого числа; при вычислении площади и массы используй модель А0 = 1 м².</p>',visual:scrollFigure(paperDiagram(),'Деление листа А0'),tables:node(sizes),controls,questions:sets.map((_,i)=>card(i)),nativeRoots:roots});
  }
  render(false);
+ const B=global.PracticalBoard;
+ B?.register({id:'practice-1-5-paper-sheets',get:()=>({selected:selected.slice(),seeds:sets.map((_,i)=>ensure(i).seed)}),
+ valid:d=>B.exact(d,['selected','seeds'])&&Array.isArray(d.selected)&&d.selected.length===5&&d.selected.every((v,i)=>Number.isInteger(v)&&v>=0&&v<sets[i].length)&&Array.isArray(d.seeds)&&d.seeds.length===5&&d.seeds.every(B.uint),
+ describe:d=>sets.map((_,i)=>{const index=sets[i][d.selected[i]],s=B.seeded(d.seeds[i],()=>TYPES[index].make());return B.description(B.kind('paper-sheets',s.typeId,text(s.promptHTML)),{answer:null},4);}),
+ set:d=>{selected=d.selected.slice();records=sets.map((_,i)=>{const index=sets[i][selected[i]];return{[index]:make(index,d.seeds[i])};});render(false);}});
 });
 
 V.register('tariffs',function(){
@@ -89,5 +100,7 @@ V.register('tariffs',function(){
   V.mount({title:'Тарифы · задания 1–5',condition:'<p>На графике показан расход минут и мобильного интернета по месяцам за 2019 год.</p>'+q('.rules').innerHTML,visual:graph(),tables:calculations(),controls,questions,nativeRoots:roots});
  }
  render(false);
+ const B=global.PracticalBoard;
+ B?.register({id:'practice-1-5-tariffs',calculations:48,...global.PracticalNativeVariant,set:d=>{global.PracticalNativeVariant.set(d);render(false);}});
 });
 })(window);

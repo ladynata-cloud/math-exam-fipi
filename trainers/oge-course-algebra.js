@@ -14,7 +14,8 @@
     22: ['.panel:not(.hidden) .mode-host[data-mode="marathon"]', '.statement']
   };
   if (!routes[number] || /[?&]selftest=1(?:&|$)/.test(location.search)) return;
-  const d = document, cards = new WeakMap(), buttonStates = new WeakMap();
+  const d = document, cards = new WeakMap(), buttonStates = new WeakMap(), labBuilders = new WeakMap();
+  const shared = window.OgeCourseSharedMode === true;
   let serial = 0, scheduled = false;
   const node = (tag, text, cls) => { const e = d.createElement(tag); if (text !== undefined) e.textContent = text; if (cls) e.className = cls; return e; };
   const safe = fn => { try { return fn(); } catch (_) { return null; } };
@@ -95,7 +96,7 @@
     const task=safe(()=>cur);if(!task||!Array.isArray(task.letters))return;
     host.append(node('p','Найди в последнем предложении вопрос. Нажми на букву величины, которую нужно получить. Затем найди остальные буквы в данной формуле.'));
     const choices=node('div',undefined,'oca-choices'),fb=node('p',undefined,'oca-observation');fb.setAttribute('aria-live','polite');
-    for(const letter of task.letters){const label=node('span');label.innerHTML=letter.lab||letter.n;const b=action(letter.n+' — '+clean(label.textContent).replace(/\s*\(это ищем\)/,''),()=>{fb.textContent=letter.n===task.target?'Да, ищем '+task.target+'. Для остальных величин перенеси числа и единицы из условия.':letter.n+' — другая величина. Снова прочитай, что требуется найти.';});choices.append(b);}
+    for(const [index,letter] of task.letters.entries()){const label=node('span');label.innerHTML=letter.lab||letter.n;const b=action(letter.n+' — '+clean(label.textContent).replace(/\s*\(это ищем\)/,''),()=>{choices.dataset.ocaChoice=String(index);fb.textContent=letter.n===task.target?'Да, ищем '+task.target+'. Для остальных величин перенеси числа и единицы из условия.':letter.n+' — другая величина. Снова прочитай, что требуется найти.';});choices.append(b);}
     host.append(choices,fb);const table=details(host,'Как аккуратно подставить числа?');table.append(node('p','Сначала выпиши обозначение, затем известное значение вместе с единицей. В одной формуле единицы должны согласовываться. Если нужная буква ещё не выражена, открой шаги решения ниже.'));close(table);
   }
   function sequence(host) {
@@ -119,7 +120,8 @@
     if(panel.querySelector(':scope > .oca-exploration'))return;
     const cfg=labs[number];if(!cfg)return;
     const holder=node('div',undefined,'oca-exploration oca-owned'),box=details(holder,cfg[0]);let built=false;
-    box.addEventListener('toggle',()=>{if(box.open&&!built){built=true;cfg[1](box);close(box);}});panel.prepend(holder);
+    const build=()=>{if(!built){built=true;cfg[1](box);close(box);}};
+    labBuilders.set(holder,build);box.addEventListener('toggle',()=>{if(box.open)build();});panel.prepend(holder);
   }
   function addReference(panel) {
     if(panel.querySelector(':scope > .oca-reference')||!window.OgeCourseReference)return;
@@ -190,7 +192,7 @@
     }
   }
   const noteKey='mathexam.oge.algebra-notes.v1';
-  const readNotes=()=>{const value=safe(()=>JSON.parse(localStorage.getItem(noteKey)||'{}'));return value&&typeof value==='object'&&!Array.isArray(value)?value:{};};
+  const readNotes=()=>{if(shared)return {};const value=safe(()=>JSON.parse(localStorage.getItem(noteKey)||'{}'));return value&&typeof value==='object'&&!Array.isArray(value)?value:{};};
   let memory=readNotes();
   function hash(text){let h=2166136261;for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619);}return(h>>>0).toString(16);}
   function work(card,statement,key) {
@@ -198,32 +200,121 @@
     const existing=card.querySelector('.oca-work');if(existing&&existing.dataset.problem===key)return;if(existing)existing.remove();
     const question=clean(statement.textContent),storageId=number+':'+hash(key),saved=memory[storageId]&&memory[storageId].questionKey===key?memory[storageId]:{};
     const box=node('section',undefined,'oca-work oca-owned');box.dataset.problem=key;box.setAttribute('aria-label','Моё развёрнутое решение');
-    const label=node('label','Моё решение'),textarea=node('textarea');textarea.id=id();textarea.rows=6;textarea.maxLength=20000;textarea.value=saved.text||'';label.htmlFor=textarea.id;
+    const label=node('label','Моё решение'),textarea=node('textarea');textarea.id=id();textarea.rows=6;textarea.maxLength=shared?6000:20000;textarea.value=saved.text||'';label.htmlFor=textarea.id;
     const prompts=number===20?['Укажи ограничения, если есть знаменатели или корни.','Запиши преобразования по строкам и поясни используемое правило.','Проверь найденные значения в исходном условии.']:number===21?['Обозначь неизвестное и укажи его единицу.','Вырази остальные величины и составь уравнение по условию.','Реши уравнение и проверь смысл найденного значения.']:['Укажи область определения и построй каждую часть графика.','Отметь выколотые точки, вершины и другие важные точки.','Объясни, при каких значениях параметра получается нужное число общих точек.'];
-    textarea.placeholder=prompts.join('\n');const note=node('p','Здесь сохраняется твоя запись. Кнопка проверки ответа не оценивает правильность доказательства.','oca-note');const status=node('p',saved.text?'Запись восстановлена.':'','oca-save-status');status.setAttribute('aria-live','polite');box.append(label,textarea,note);
+    textarea.placeholder=prompts.join('\n');const note=node('p','Здесь сохраняется твоя запись. Кнопка проверки ответа не оценивает правильность доказательства.','oca-note');const status=node('p',shared?'Запись видна участникам этой комнаты. Личный зачёт не изменяется.':saved.text?'Запись восстановлена.':'','oca-save-status');status.setAttribute('aria-live','polite');box.append(label,textarea,note);
     const plan=details(box,'Что написать в решении?');const list=node('ol');prompts.forEach(t=>list.append(node('li',t)));plan.append(list);close(plan);
     const check=details(box,'Проверить оформление самостоятельно');const checks=prompts.map((_,i)=>{const lab=node('label',undefined,'oca-check'),input=node('input');input.type='checkbox';input.checked=!!saved.checks?.[i];lab.append(input,node('span',['Обозначения и ограничения понятны.','Каждый переход объяснён.','Ответ проверен и соответствует вопросу.'][i]));check.append(lab);return input;});
     const table=number===21?details(box,'Разложить данные задачи в таблицу'):null;const fields=[];
     if(table){table.append(node('p','Впиши свои обозначения. В каждом столбце укажи, что означает число или выражение; единицы запиши рядом.'));
       const scroll=node('div',undefined,'oca-table-scroll'),t=node('table'),head=node('tr');['Величина / участник','Что известно','Как выразить через неизвестное'].forEach(s=>head.append(node('th',s)));t.append(head);
       for(let r=0;r<3;r++){const row=node('tr');for(let c=0;c<3;c++){const td=node('td'),input=node('input');input.type='text';input.maxLength=200;input.setAttribute('aria-label',['Величина или участник','Известное значение и единица','Выражение через неизвестное'][c]+', строка '+(r+1));input.value=saved.fields?.[r*3+c]||'';fields.push(input);td.append(input);row.append(td);}t.append(row);}scroll.append(t);table.append(scroll);close(table);}
-    function save(){Object.assign(memory,readNotes());memory[storageId]={question,questionKey:key,text:textarea.value,checks:checks.map(x=>x.checked),fields:fields.map(x=>x.value),updated:Date.now(),number};try{localStorage.setItem(noteKey,JSON.stringify(memory));status.textContent='Запись сохранена.';}catch(_){status.textContent='Запись сохранена на этой странице. Хранилище браузера сейчас недоступно.';}}
+    function save(){if(shared){const clean=(v,max)=>v.replace(/</g,'＜').replace(/>/g,'＞').replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g,'').slice(0,max);textarea.value=clean(textarea.value,6000);fields.forEach(x=>{x.value=clean(x.value,200);});}Object.assign(memory,readNotes());memory[storageId]={question,questionKey:key,text:textarea.value,checks:checks.map(x=>x.checked),fields:fields.map(x=>x.value),updated:Date.now(),number};if(shared){status.textContent='Запись видна участникам этой комнаты. Личный зачёт не изменяется.';return;}try{localStorage.setItem(noteKey,JSON.stringify(memory));status.textContent='Запись сохранена.';}catch(_){status.textContent='Запись сохранена на этой странице. Хранилище браузера сейчас недоступно.';}}
     textarea.addEventListener('input',save);checks.forEach(x=>x.addEventListener('change',save));fields.forEach(x=>x.addEventListener('input',save));box.append(status);
     const archive=details(box,'Мои записи к другим задачам');archive.addEventListener('toggle',()=>{if(!archive.open)return;Object.assign(memory,readNotes());archive.querySelectorAll('.oca-saved-entry').forEach(n=>n.remove());const entries=Object.values(memory).filter(x=>x&&x.number===number&&typeof x.question==='string'&&x.questionKey!==key&&(typeof x.text==='string'&&x.text||Array.isArray(x.fields)&&x.fields.some(Boolean))).sort((a,b)=>b.updated-a.updated);if(!entries.length)archive.append(node('p','Пока других записей нет.','oca-saved-entry'));for(const entry of entries){const item=node('details',undefined,'oca-saved-entry');item.append(node('summary',entry.question.slice(0,100)+(entry.question.length>100?'…':'')),node('p',entry.question),node('pre',entry.text||'(Заполнена таблица)'));if(Array.isArray(entry.fields)&&entry.fields.some(Boolean)){const p=node('p');p.textContent=entry.fields.filter(Boolean).join(' · ');item.append(p);}archive.append(item);}});
+    if(shared)archive.hidden=true;
     const anchor=card.querySelector('.oca-instruction')||statement;anchor.after(box);
   }
   function statementOf(card){let s=card.querySelector(routes[number][1]);if(s)return s;return [...card.children].find(n=>!n.classList.contains('oca-owned')&&!n.matches('details,button,.minimal-hint'))||card.firstElementChild;}
-  function scan(){
-    scheduled=false;
-    for(const card of d.querySelectorAll(routes[number][0])){
-      const statement=statementOf(card);if(!statement)continue;const key=clean(statement.innerHTML);if(!key)continue;
+  function enhanceCard(card){
+      const statement=statementOf(card);if(!statement)return;const key=clean(statement.innerHTML);if(!key)return;
       const previous=cards.get(card);if(previous&&previous!==key){card.querySelectorAll('.oca-work,.oca-instruction,.oca-exploration,.oca-reference').forEach(n=>n.remove());}
       cards.set(card,key);inputGuidance(card);work(card,statement,key);
       const panel=helpPanel(card);if(panel){syncHelp(card,panel);addLab(panel);addReference(panel);if(!panel.querySelector(':scope > .oca-return')&&number!==7&&number!==14){const back=action('Вернуться к заданию',()=>{const toggle=card.querySelector('[aria-controls="'+panel.id+'"]')||card.querySelector('.bs,button.minimal-hint');if(toggle&&toggle.tagName==='BUTTON'){toggle.click();toggle.focus();}else{panel.hidden=true;}});back.classList.add('oca-return');panel.append(back);}}
       readableNativeModels(card,panel);
-    }
+  }
+  function scan(){
+    scheduled=false;
+    for(const card of d.querySelectorAll(routes[number][0]))enhanceCard(card);
     if(number>=20)d.querySelectorAll('.minimal-proof-note').forEach(n=>{const text='Проверяется ответ. Развёрнутое решение можно записать выше или в тетради.';if(n.textContent!==text)n.textContent=text;});
   }
+// Bounded semantic state of the optional laboratories and notebook. Native
+  // task/answer/step state remains the responsibility of each trainer adapter.
+  function exactState(value,keys){
+    if(!value||typeof value!=='object'||Array.isArray(value)||![Object.prototype,null].includes(Object.getPrototypeOf(value))||Reflect.ownKeys(value).length!==keys.length)return false;
+    return keys.every(k=>{const p=Object.getOwnPropertyDescriptor(value,k);return p&&p.enumerable&&Object.prototype.hasOwnProperty.call(p,'value');});
+  }
+  function arrayState(value,max,test){
+    if(!Array.isArray(value)||Object.getPrototypeOf(value)!==Array.prototype||value.length>max||Reflect.ownKeys(value).length!==value.length+1)return false;
+    return Array.from({length:value.length},(_,i)=>{const p=Object.getOwnPropertyDescriptor(value,String(i));return p&&p.enumerable&&Object.prototype.hasOwnProperty.call(p,'value')&&test(p.value,i);}).every(Boolean);
+  }
+  const boolState=v=>typeof v==='boolean';
+  const stringState=(v,max)=>typeof v==='string'&&v.length<=max&&!/[<>\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(v);
+  const rangeLimits={7:[[-4,4,.25],[-4,4,.25]],8:[[1,4,1],[1,4,1]],10:[],12:[],14:[[1,7,1],[1,4,1],[1,3,1]],20:[[-5,5,1],[-3,3,1]]};
+  const selectValues={7:[null],8:['product','power','square'],10:['ten','dice'],12:[null],14:['ap','gp'],20:[null]};
+  function sharedCards(scope){return scope?[scope]:Array.from(d.querySelectorAll(routes[number][0]));}
+  function controls(card,build=false){
+    const lab=card.querySelector('.oca-exploration');
+    if(build&&lab)labBuilders.get(lab)?.();
+    const ref=card.querySelector('.oca-reference'),work=card.querySelector('.oca-work');
+    return {lab,labDetails:lab?Array.from(lab.querySelectorAll('details')):[],ranges:lab?Array.from(lab.querySelectorAll('input[type=range]')):[],
+      select:lab?.querySelector('select')||null,marks:lab?Array.from(lab.querySelectorAll('.oca-outcomes button')):[],
+      choices:lab?.querySelector('.oca-choices')||null,referenceDetails:ref?Array.from(ref.querySelectorAll('details')):[],
+      zoom:ref?Array.from(ref.querySelectorAll('.ocr-zoom')):[],work,textarea:work?.querySelector('textarea')||null,
+      checks:work?Array.from(work.querySelectorAll('input[type=checkbox]')):[],fields:work?Array.from(work.querySelectorAll('.oca-table-scroll input')):[],
+      workDetails:work?Array.from(work.querySelectorAll(':scope > details:not([hidden])')):[]};
+  }
+  function getState(scope){
+    const list=sharedCards(scope);if(list.length>16)throw new TypeError('Too many shared algebra cards');
+    return {version:1,task:number,cards:list.map(card=>{
+      enhanceCard(card);const c=controls(card,true);
+      return {lab:c.lab?{select:c.select?.value||null,ranges:c.ranges.map(x=>Number(x.value)),
+        marks:c.marks.flatMap((x,i)=>x.getAttribute('aria-pressed')==='true'?[i]:[]),
+        choice:c.choices?.hasAttribute('data-oca-choice')?Number(c.choices.dataset.ocaChoice):null,details:c.labDetails.map(x=>x.open)}:null,
+        reference:{details:c.referenceDetails.map(x=>x.open),zoom:c.zoom.map(x=>x.getAttribute('aria-pressed')==='true')},
+        work:c.work?{text:c.textarea.value,checks:c.checks.map(x=>x.checked),fields:c.fields.map(x=>x.value),details:c.workDetails.map(x=>x.open)}:null};
+    })};
+  }
+  function validateState(state,scope){
+    const fail=()=>{throw new TypeError('Invalid algebra workspace state');};
+    if(!exactState(state,['version','task','cards'])||state.version!==1||state.task!==number||!arrayState(state.cards,16,card=>{
+      if(!exactState(card,['lab','reference','work'])||!exactState(card.reference,['details','zoom'])||!arrayState(card.reference.details,40,boolState)||!arrayState(card.reference.zoom,20,boolState))return false;
+      if(card.lab!==null){
+        const v=card.lab,limits=rangeLimits[number];
+        if(!limits||!exactState(v,['select','ranges','marks','choice','details'])||!selectValues[number].includes(v.select)||!arrayState(v.ranges,3,(x,i)=>typeof x==='number'&&Number.isFinite(x)&&!!limits[i]&&x>=limits[i][0]&&x<=limits[i][1]&&Math.abs((x-limits[i][0])/limits[i][2]-Math.round((x-limits[i][0])/limits[i][2]))<1e-8)||v.ranges.length!==limits.length||!arrayState(v.details,8,boolState)||!arrayState(v.marks,36,(x,i)=>Number.isInteger(x)&&x>=0&&x<(v.select==='dice'?36:10)&&(i===0||x>v.marks[i-1]))||!(v.choice===null||number===12&&Number.isInteger(v.choice)&&v.choice>=0&&v.choice<12))return false;
+        if(number!==10&&v.marks.length||number!==12&&v.choice!==null)return false;
+      }
+      if(card.work!==null){const w=card.work;if(number<20||!exactState(w,['text','checks','fields','details'])||!stringState(w.text,6000)||!arrayState(w.checks,3,boolState)||w.checks.length!==3||!arrayState(w.fields,9,x=>stringState(x,200))||w.fields.length!==(number===21?9:0)||!arrayState(w.details,4,boolState))return false;}
+      return true;
+    }))fail();
+    if(scope){
+      const list=sharedCards(scope);if(list.length!==state.cards.length)fail();
+      list.forEach((card,i)=>{const v=state.cards[i],c=controls(card);
+        if(!!c.lab!==(v.lab!==null)||!!c.work!==(v.work!==null)||c.referenceDetails.length!==v.reference.details.length||c.zoom.length!==v.reference.zoom.length)fail();
+        if(c.lab&&(c.ranges.length!==v.lab.ranges.length||c.labDetails.length!==v.lab.details.length||(v.lab.choice!==null&&(!c.choices||v.lab.choice>=c.choices.children.length))))fail();
+        if(c.work&&(c.workDetails.length!==v.work.details.length||c.checks.length!==v.work.checks.length||c.fields.length!==v.work.fields.length))fail();
+      });
+    }
+    return true;
+  }
+  function applyState(state,scope){
+    validateState(state);const list=sharedCards(scope);
+    if(list.length!==state.cards.length)throw new TypeError('Algebra workspace does not match this task');
+    list.forEach(card=>{enhanceCard(card);controls(card,true);});
+    // Validate the entire destination before changing its first control.
+    list.forEach((card,i)=>validateState({version:1,task:number,cards:[state.cards[i]]},card));
+    list.forEach((card,i)=>{
+      const v=state.cards[i];let c=controls(card);
+      if(v.lab){
+        if(c.select&&c.select.value!==v.lab.select){c.select.value=v.lab.select;c.select.dispatchEvent(new Event('change',{bubbles:true}));}
+        c=controls(card);
+        c.ranges.forEach((x,j)=>{x.value=String(v.lab.ranges[j]);x.dispatchEvent(new Event('input',{bubbles:true}));});
+        c.marks.forEach((x,j)=>{if((x.getAttribute('aria-pressed')==='true')!==v.lab.marks.includes(j))x.click();});
+        if(v.lab.choice!==null)c.choices.children[v.lab.choice].click();
+        else if(c.choices){delete c.choices.dataset.ocaChoice;const feedback=c.choices.nextElementSibling;if(feedback?.classList.contains('oca-observation'))feedback.textContent='';}
+        c.labDetails.forEach((x,j)=>{x.open=v.lab.details[j];});
+      }
+      c.referenceDetails.forEach((x,j)=>{x.open=v.reference.details[j];});
+      c.zoom.forEach((x,j)=>{if((x.getAttribute('aria-pressed')==='true')!==v.reference.zoom[j])x.click();});
+      if(v.work){
+        c.textarea.value=v.work.text;c.textarea.dispatchEvent(new Event('input',{bubbles:true}));
+        c.checks.forEach((x,j)=>{x.checked=v.work.checks[j];x.dispatchEvent(new Event('change',{bubbles:true}));});
+        c.fields.forEach((x,j)=>{x.value=v.work.fields[j];x.dispatchEvent(new Event('input',{bubbles:true}));});
+        c.workDetails.forEach((x,j)=>{x.open=v.work.details[j];});
+      }
+    });
+  }
+  window.OgeCourseAlgebraShared={enhanceCard,scan,getState,validateState,applyState};
   function schedule(){if(scheduled)return;scheduled=true;setTimeout(scan,0);}
   const observer=new MutationObserver(schedule);observer.observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','hidden']});scan();
   d.documentElement.dataset.ogeAlgebraExperience='ready';
