@@ -28,7 +28,8 @@ concurrency:
 
 jobs:
   contracts-and-browser:
-    runs-on: ubuntu-latest
+    # Locked Playwright 1.55 supports this runner; ubuntu-latest moved to 26.04.
+    runs-on: ubuntu-24.04
     # Verify all 136 active clips, 68 guides and three presets per topic.
     timeout-minutes: 30
     env:
