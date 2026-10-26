@@ -1,6 +1,6 @@
 # MathExam project status
 
-Updated: 2026-10-25 (Asia/Novosibirsk)
+Updated: 2026-10-26 (Asia/Novosibirsk)
 
 ## In progress: lesson enquiries and channel subscriptions
 
