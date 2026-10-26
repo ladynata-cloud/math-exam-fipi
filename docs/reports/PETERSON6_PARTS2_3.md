@@ -82,6 +82,12 @@ The server's unchanged dependencies were materialized and all seven integration
 tests passed. Unrelated broad picker assets remain for full-checkout CI; no
 unrelated trainers were modified to make tests pass.
 
+The first cloud board run separated normal legacy-save migration from the
+strict board storage boundary. The next run exposed long new topic names
+expanding the narrow home grid. Card min-width and word wrapping were corrected
+without clipping content or reducing text size; cloud Chrome confirms equal
+287-pixel document/scroll widths. These findings are retained in PR CI history.
+
 ## Contract, limitations and release
 
 Peterson registers version 2.0.0/state schema 2. Registry readers support schemas

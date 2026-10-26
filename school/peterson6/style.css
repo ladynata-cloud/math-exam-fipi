@@ -6,3 +6,5 @@
 
 /* Continued textbook course: visible task figures and explicit manual work. */
 .number-form label{display:flex;flex-direction:column;gap:8px}.number-form select{min-height:46px;padding:10px;border:1px solid #ccd9d2;border-radius:9px;background:white;font:inherit}.manual-work{padding:18px;background:#f1f7f0;border-radius:12px;margin-top:18px}.manual-work h3{margin-top:0}.task-figure{margin:18px 0;max-width:100%;overflow:auto}.task-figure svg{display:block;max-width:100%;height:auto;margin:auto}.source-note{line-height:1.7}.content-column{min-width:0}.model{margin-top:24px}.prompt{overflow-wrap:anywhere}@media(max-width:600px){.number-form{display:grid;grid-template-columns:1fr}.number-form button{width:100%}.task-heading{align-items:flex-start}.task-figure{max-width:100%}}
+/* Keep long topic names inside cards on narrow screens. */
+.grid,.grid>*{min-width:0}.lesson-card>*{min-width:0}.lesson-card>div{overflow-wrap:anywhere}.lesson-card .lesson-number{flex:0 0 auto}
