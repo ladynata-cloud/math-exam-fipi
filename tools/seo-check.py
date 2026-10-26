@@ -10,6 +10,7 @@ import importlib.util
 import json
 import re
 import subprocess
+import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urljoin, urlsplit
@@ -159,6 +160,14 @@ def check_public_canonical_signals(root=ROOT):
 
 def run(base=None):
     canonical_count, redirect_count = check_public_canonical_signals()
+    # Catch generated public pages that lose their canonical on a later rebuild.
+    # The existing sitemap policy still excludes technical and alternate routes.
+    sitemap_urls = [node.text for node in ET.parse(ROOT / "sitemap.xml").findall(
+        ".//{http://www.sitemaps.org/schemas/sitemap/0.9}loc")]
+    require(sitemap_urls, "public sitemap must not be empty")
+    for url in sitemap_urls:
+        page = Page(local_path(url).read_text(encoding="utf-8"))
+        require(page.canonicals == [url], url + ": sitemap entry needs one exact HTTPS self-canonical")
     titles, descriptions = set(), set()
     checked_links = 0
     for relative in ENTRANCES + TOPICS:
@@ -252,6 +261,7 @@ def run(base=None):
     require("ПредОГЭ" in Page((ROOT / "trainers/oge-basics/index.html").read_text()).title[0], "preserve PreOGE title")
     print(f"SEO_ENTRANCES_OK: {len(titles)} distinct titles/descriptions/canonicals; {len(TOPICS)} static topic pages; {checked_links} valid local links.")
     print(f"SEO_CANONICAL_SIGNALS_OK: {canonical_count} public-path canonical declarations; {redirect_count} consistent refresh destinations.")
+    print(f"SEO_SITEMAP_CANONICALS_OK: {len(sitemap_urls)} public URLs retain their self-canonical.")
     if base:
         print(f"SEO_PRESERVATION_OK: 24 existing pages retain scripts/styles/directives outside bounded catalog additions against {base}.")
 

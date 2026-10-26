@@ -2,6 +2,20 @@
 
 Updated: 2026-10-26 (Asia/Novosibirsk)
 
+## Prepared: HTTPS canonicals and static trainer metadata
+
+- [Scope](tasks/YANDEX_PUBLIC_INDEXING_20261027.md), SMALL metadata-only task,
+  base `e50fcfb7ffe4a99447ee18e4d2ca2f937cd1dd68`.
+- [Public audit and checks](reports/YANDEX_PUBLIC_INDEXING_20261027.md): all 529
+  published sitemap URLs respond successfully and match the base source.
+- Prepared 455 canonical declarations, 12 specific static titles and 10 topic
+  descriptions. The known task-19 duplicate remains usable but points to its
+  established main route; the resulting sitemap contains 528 canonical URLs.
+- Runtime scripts, styles, indexing exclusions and learner content are retained.
+  HTTP-to-HTTPS hosting enforcement remains an operational follow-up.
+- Next: Draft PR checks and separate owner release authorization. These metadata
+  changes are not yet published; crawl acceptance and search indexing are separate.
+
 ## Prepared: Pogorelov course accompanying numbered textbook exercises
 
 - [Scope](tasks/POGORELOV_TEXTBOOK_COMPANION.md), MEDIUM isolated companion;
@@ -42,13 +56,14 @@ Updated: 2026-10-26 (Asia/Novosibirsk)
   HTML/CSS/sitemap byte checks passed. Invitations cover 11 public pages.
 - Personal Telegram/VK and channel Telegram/MAX links are available. Clicks
   were not collected in that release; messages/bookings are not inferred.
-- New task [LESSON_FUNNEL_METRIKA](tasks/LESSON_FUNNEL_METRIKA.md) prepares counter
-  113810914 with separate page, invitation-view and click events. Local tests,
-  static preservation/SEO and 22 responsive browser journeys pass. Real counter
-  delivery and goal configuration are not yet verified.
-- Next: review/publish the scoped analytics PR after authorization, create the
-  six goals, verify receipt in Metrika. The Webmaster connection does not grant
-  Metrika report access; weekly monitoring cannot yet claim traffic numbers.
+- [LESSON_FUNNEL_METRIKA](tasks/LESSON_FUNNEL_METRIKA.md),
+  [PR #356](https://github.com/ladynata-cloud/math-exam-fipi/pull/356), is published
+  as `e50fcfb7ffe4a99447ee18e4d2ca2f937cd1dd68`: counter 113810914 on the 11 pages,
+  with separate page, invitation-view and click events. Deployment and all 12
+  checked live HTML/JS resources match the reviewed release.
+- Keep private goal configuration and account reports out of this public status.
+  The Webmaster connection does not grant Metrika report access; published
+  instrumentation alone cannot establish traffic, enquiries or subscriptions.
 
 ## In progress: static catalog discovery and the current Vilenkin entry
 
