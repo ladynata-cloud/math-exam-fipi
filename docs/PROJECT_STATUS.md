@@ -401,7 +401,7 @@ Updated: 2026-10-26 (Asia/Novosibirsk)
   the preparation evidence; it is not the current publication status.
 - ChapterIV is the next scoped continuation; a real-pupil pilot is not claimed.
 
-## Reviewed candidate: Atanasyan 7–9 chapter IV
+## Published: Atanasyan 7–9 chapter IV
 
 - [Scope](tasks/ATANASYAN_7_9_CHAPTER_IV.md), HIGH review; branch
   `content/atanasyan-7-9-chapter4`, base
@@ -425,6 +425,27 @@ Updated: 2026-10-26 (Asia/Novosibirsk)
 - After successful exact-head CI, next three actions: obtain the owner's
   current-base release decision; perform the authorized merge/deployment;
   verify the published bundle and production regression gates.
+- Publication completed in PR #346 as `44eab4d11046d8613b50a73b00185755c814dba6`.
+  Pages40344875237 and post-merge cabinet/board40344877068 passed on that commit.
+  Public verification confirms 569 reviewed cards through number330; all16
+  checked URLs match the reviewed file sizes/hashes. The preparation wording
+  above is historical; the current published baseline includes chapterIV.
+
+## In progress: Atanasyan 7–9 chapter V
+
+- [Scope](tasks/ATANASYAN_7_9_CHAPTER_V.md), HIGH review; owner requested
+  continuation after the verified publication of chapterIV.
+- Base `44eab4d11046d8613b50a73b00185755c814dba6`; branch
+  `content/atanasyan-7-9-chapter5`.
+- Exact 2023 revised edition: printed91–115, all331–412, theory39–45 and
+  30 review questions; independent inventory confirms136 new cards and705
+  total. All materials are authored; independent reviews are in progress.
+- Initial local content/model, DOM/retained-work and all9 preservation tests
+  pass. New cards remain `in-review`; published569 remain reviewed.
+- Next: close independent content/model reviews; inspect actual mobile/desktop
+  images; complete exact-head CI and the review-bound candidate handoff.
+- Existing569 cards and runtime remain preserved. Advanced413–461 and later
+  chapters remain separate; no new content is claimed published at this stage.
 
 ## Published: Atanasyan 7–9 chapter II, triangles
 

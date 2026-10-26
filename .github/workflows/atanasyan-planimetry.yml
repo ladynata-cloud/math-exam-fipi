@@ -28,6 +28,7 @@ jobs:
           python3 tools/geometry/check_textbook_preparation.py
           python3 tools/geometry-textbook/build_course.py --check
           python3 tools/geometry-textbook/review_scope_test.py
+          python3 tools/geometry-textbook/chapter05-preservation.test.py
           python3 tools/geometry-textbook/check_models.py
           python3 tools/geometry-textbook/model_claims_test.py
           node tools/geometry-textbook/check_course.cjs
@@ -53,7 +54,7 @@ jobs:
       - name: All source-audited cards, every drawing, mobile and desktop, actual saved work
         env:
           GEOMETRY_TEXTBOOK_ARTIFACTS: artifacts/geometry-textbook
-          GEOMETRY_TEXTBOOK_CAPTURE_CHAPTERS: IV
+          GEOMETRY_TEXTBOOK_CAPTURE_CHAPTERS: V
           GEOMETRY_TEXTBOOK_HEAD: ${{ github.event.pull_request.head.sha }}
         run: node tools/geometry-textbook/browser_check.js
       - name: Preserve actual browser evidence even on failure
