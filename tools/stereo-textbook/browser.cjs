@@ -32,6 +32,16 @@ const screenshotCases=require('./browser-cases.cjs');
 // line may still break legitimately between operations or adjacent formulas.
 const explanation=stage=>'[data-step="'+stage+'"] > details > p';
 const mathLayoutCases=new Map([
+ // Actual294–298 paragraphs: complete radicals and stacked operands at both
+ // widths, including their retained appearance on the final solution page.
+ ['ex-main-0294|step-6',[{selector:explanation('step-6'),atoms:['√(S₀²−a⁴)','4√(S₀²−a⁴)']}]],
+ ['ex-main-0294|step-7',[{selector:explanation('step-6'),atoms:['√(S₀²−a⁴)']},{selector:explanation('step-7'),atoms:['4√(S₀²−a⁴)']}]],
+ ['ex-main-0296|step-4',[{selector:explanation('step-4'),fractions:[['h','l'],['h','sinφ']]}]],
+ ['ex-main-0296|step-6',[{selector:explanation('step-6'),fractions:[['(a√3)','2'],['(a√3)','4'],['(4h)','(√3·tgφ)']]}]],
+ ['ex-main-0296|step-8',[{selector:explanation('step-8'),fractions:[['(4h)','(√3·tgφ)'],['h','sinφ'],['(√3·h²)','(sinφ·tgφ)']]}]],
+ ['ex-main-0298|step-2',[{selector:explanation('step-2'),fractions:[['a²','2'],['a','√2']]}]],
+ ['ex-main-0298|step-4',[{selector:explanation('step-4'),atoms:['√(b² − a²/4)','a√(b² − a²/4)'],fractions:[['a²','4']]}]],
+ ['ex-main-0298|step-6',[{selector:explanation('step-4'),atoms:['√(b² − a²/4)']},{selector:explanation('step-6'),atoms:['a√(b² − a²/4)'],fractions:[['a²','4'],['a','√2']]}]],
  // Additional prism formulas: inspect the entire final paragraph and every
  // radical/fraction operand at both widths, including the fully revealed page.
  ['ex-main-0289|step-5',[{selector:explanation('step-5'),fractions:[['d²','3']]}]],
