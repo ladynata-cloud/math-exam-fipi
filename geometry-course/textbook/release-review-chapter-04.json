@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "authoredContentSha256": "d91cd2b399443c8581732596858ec01b8ca58e0cfa57230297154602c1d51bff",
+  "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
+  "source": "passed",
+  "mathematics": "passed",
+  "models": "passed",
+  "pedagogy": "passed",
+  "browser": "passed",
+  "reviewer": "Independent OpenAI source, mathematics, model, integration and image reviewers; primary coordinator evidence synthesis",
+  "at": "2026-10-26T13:11:08.016051+00:00",
+  "reviewKind": "Hash-bound chapter-IV content and implementation review; exact-head CI and owner release decision remain separate.",
+  "sourcePdfSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "scope": {
+    "chapter": "IV",
+    "mainNumbers": 103,
+    "mainParts": 135,
+    "theory": 8,
+    "selfchecks": 23,
+    "cards": 166,
+    "steps": 634,
+    "views": 864,
+    "coordinateClaims": 507,
+    "fullBookComplete": false
+  },
+  "evidence": [
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_A_REVIEW.md",
+      "sha256": "fd46986818ecadbe565e3543d88e8cbe47bec361f09a713cf9e78d53d9524864"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_A_VISUAL_REVIEW.json",
+      "sha256": "afce9e075f3d651c1481cb1ea23f3253d2dcc8089ca1399ffe833e339f83b5d5"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_B_REVIEW.md",
+      "sha256": "0a82ee1cd6fc4ecd9495cc0ec9506029063c95a8bd705c69da7c2709ab0ebef8"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_B_VISUAL_REVIEW.json",
+      "sha256": "dfa3d988fa28436d48dd010380660a972b16553aaeb2a5bfc573d5ef5b07a3bc"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_C_REVIEW.md",
+      "sha256": "f66e8ace322027a7f3d2e44ca3877b6b9e0ecc8b509a8996b47ff151120ee600"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_C_VISUAL_REVIEW.json",
+      "sha256": "a9690b805b8ff972ed5e430acc76c9c1b290533c9bdc7218b850a40a565c5e8b"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_THEORY_REVIEW.md",
+      "sha256": "2c1357c8091b9f49dbc30ead39e5efb9ada047b60cda7f26d643ae743a5c7121"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_THEORY_VISUAL_REVIEW.json",
+      "sha256": "22d1dd31e3a8c19acb2bf30e92185dac770b4f1730a9ff04194b9698541e2638"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_SOURCE_INVENTORY.md",
+      "sha256": "8f489e9dfc40661a5494034f6e6cfec6398bd821a9253ca3758718a3c905fc68"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter-04-source-map.json",
+      "sha256": "66bc5870902488e0a18fab436b5eaac0bcccb92acbae7766ffde4dd3666163ad"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_BROWSER_CAPTURE_REVIEW.md",
+      "sha256": "ee449d1c767549a2296f43e13fa1e0f9032d37bbb85eb6119eeea85337c51012"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_FINAL_REVIEW.json",
+      "sha256": "1ed7bfbf1c2473321e22e6c3b6e61073cff50225ea9d1fb14b075eac4df147b2"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_IMAGE_TRANSFER.json",
+      "sha256": "969b1a303f162abc34efc00aaab21fedc03c9967232c2af24fe49975e2337fe8"
+    }
+  ],
+  "browserEvidence": {
+    "runId": 40323700008,
+    "head": "29a65c6919b6898e15c21492ec39fff4aac41531",
+    "runUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008",
+    "artifactId": 12651610035,
+    "artifact": "atanasyan-planimetry-browser/browser-evidence.json",
+    "archiveSha256": "ff183e2d62280ca1f3a90faf7cff8b3a05c4ee540958d836c7b221ea246dfb8d",
+    "sha256": "4f936b120ed407ad0f58238e1db710694bae29f0d2240e45d44bc8ec014d766d",
+    "bundleSha256": "a5cc2e908baf766d66c0dcb9f50fb8a57e1ce98b84a89bb7d459742bd045af69",
+    "gateScriptSha256": "07b49df556ebb6ee97ddcabbd3a4e3d12d570c7d4816446555356e214fd12577",
+    "mode": "Explicit labelled engineering preview before chapter-IV publication review; unchanged authored content and runtime are bound by hashes.",
+    "widths": [
+      320,
+      1280
+    ],
+    "cards": 569,
+    "viewChecks": 5812,
+    "stepFlows": 1138,
+    "initialFinalScreenshots": 2276,
+    "chapterIVReviewScreenshots": 1728,
+    "interactions": [
+      "expansion-lesson-320-button-and-Escape",
+      "expansion-lesson-1280-button-and-Escape",
+      "notes-and-steps-reload",
+      "expansion-theory-1280-button-and-Escape",
+      "theory-return-retains-answer",
+      "manual-answer-honesty",
+      "two-tab-conflict-preserves-work",
+      "chapter-selfcheck-draft-isolation-and-reload",
+      "chapter-II-theory-return-and-saved-step",
+      "chapter-II-first-and-last-direct-entry",
+      "chapter-III-theory-return-and-saved-step",
+      "chapter-III-first-and-last-direct-entry",
+      "chapter-IV-theory-return-and-saved-step",
+      "chapter-IV-first-and-last-direct-entry"
+    ],
+    "pageErrors": 0,
+    "geometryIssues": 0,
+    "completed": true
+  },
+  "manualImageReview": {
+    "newChapterViewWidthPairs": 1728,
+    "byteIdenticalTransfers": 1465,
+    "freshlyInspectedChangedPngs": 263,
+    "resolvedGroupedFindings": 21,
+    "openFindings": 0,
+    "coverageAudit": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_FINAL_REVIEW.json",
+    "exactTransferManifest": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_IMAGE_TRANSFER.json",
+    "provenance": "Independent non-author reviewers inspected all initial capture representatives and all changed final PNGs, verified every unchanged image by exact SHA256, and explicitly closed every initial finding on fresh evidence. The initial failed run remains historical and is not called a pass."
+  },
+  "claude": "Confirmed same-course owner exception applies; no Claude consultation or external-provider verdict claimed.",
+  "mergeOrDeploymentAuthorization": false
+}

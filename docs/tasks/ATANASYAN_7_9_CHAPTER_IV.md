@@ -80,10 +80,21 @@ that omitted already introduced elements. The reviewed correction package
 changes35 new cards only: A1, B10, C21 and T3. All coordinates and1912
 geometric assertions are preserved; two step explanations now explicitly name
 their constructions. Local content, model, preservation and full DOM gates
-pass again. Fresh browser captures and review of the changed pixels remain
-pending; earlier image findings are not marked resolved by data edits alone.
+pass again. Clean run40323700008 on head
+`29a65c6919b6898e15c21492ec39fff4aac41531` then passed all5812 views,
+1138 step flows and14 interactions with no geometry issues or page errors.
+Independent reviewers freshly inspected all263 changed PNGs and verified
+1465 byte-identical transfers, covering all1728 pairs. All21 grouped findings
+are explicitly closed in the final reports; the failed initial run is retained
+as historical evidence. The final integration and per-image transfer records
+are `ATANASYAN_7_9_CHAPTER_IV_FINAL_REVIEW.json` and
+`ATANASYAN_7_9_CHAPTER_IV_IMAGE_TRANSFER.json` under `docs/reviews/`.
 
-The candidate deliberately has no chapterIV publication review manifest.
-Its166 cards remain `in-review`; the strict reviewed-content/board gate must
-not pass until review is completed. No new content is claimed published and
-no release action is authorized.
+`release-review-chapter-04.json` now binds those actual reviews to the final
+authored-content and unchanged runtime hashes. Final exact-head CI, including
+the strict reviewed-content and existing92a board gates, is a separate release
+requirement recorded in PR346. Concurrent main6c7339a (separate PR345 stereo
+increment) was inspected through a read-only clean virtual composition; both
+course trees are preserved. Its shared status document is a composed blob,
+not identical to either branch's status file. No branch repair was performed.
+No new content is claimed published and no release action is authorized.

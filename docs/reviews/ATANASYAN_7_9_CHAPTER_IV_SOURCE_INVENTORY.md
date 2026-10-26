@@ -111,4 +111,3 @@ same checks after all new fragments arrive.
 - No release review manifest, publication approval or completion of the whole
   grade-7 textbook is asserted. In this exact edition grade 7 also includes
   chapter V, exercises 331–412, and advanced exercises 413–461.
-

@@ -389,7 +389,7 @@ Updated: 2026-10-26 (Asia/Novosibirsk)
   the preparation evidence; it is not the current publication status.
 - ChapterIV is the next scoped continuation; a real-pupil pilot is not claimed.
 
-## In progress: Atanasyan 7–9 chapter IV
+## Reviewed candidate: Atanasyan 7–9 chapter IV
 
 - [Scope](tasks/ATANASYAN_7_9_CHAPTER_IV.md), HIGH review; branch
   `content/atanasyan-7-9-chapter4`, base
@@ -401,12 +401,18 @@ Updated: 2026-10-26 (Asia/Novosibirsk)
   the exact provided PDF and requires fresh review; no old test claim is reused.
 - Published403 cards, their runtime and learner identifiers remain the baseline.
   Whole-course board synchronization and cabinet changes are outside this scope.
-- The full166-card candidate is prepared:135 exercise parts,8 theory points,
-  23 selfchecks,569 cards combined. Local source/model/content, preservation,
-  retained-work and independent DOM checks pass. Actual browser/image review
-  and the chapterIV publication manifest remain pending.
-- Next three actions: run exact-head browser CI; inspect every new drawing at
-  both widths and resolve findings; complete the Draft PR for the release decision.
+- [Draft PR #346](https://github.com/ladynata-cloud/math-exam-fipi/pull/346)
+  contains166 new cards:135 exercise parts,8 theory points and23 selfchecks,
+  569 cards combined. Independent source, mathematics, models and actual
+  image review pass. All1728 new view/width pairs are covered and21 grouped
+  findings are closed. Clean browser run40323700008 checks5812 views,
+  1138 step flows and14 interactions with no geometry issues or page errors.
+- The chapterIV review manifest binds the final content/runtime and evidence;
+  production remains403 cards until a separately authorized release. Final
+  exact-head CI and current-main composition evidence are recorded in PR346.
+- After successful exact-head CI, next three actions: obtain the owner's
+  current-base release decision; perform the authorized merge/deployment;
+  verify the published bundle and production regression gates.
 
 ## Published: Atanasyan 7–9 chapter II, triangles
 
