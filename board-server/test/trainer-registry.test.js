@@ -409,8 +409,8 @@ test('runtime registry has exact parity with all twenty-six mirror authorization
     {
       trainerId: 'peterson6',
       file: 'trainers/peterson6.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
+      version: '2.0.0',
+      stateSchemaVersion: 2,
       bridgeProtocolVersion: 1,
       allowLegacyHtml: false
     },
@@ -529,7 +529,7 @@ test('required catalog and mirror fields are enforced', () => {
 
 test('trainer version and protocol versions are validated', () => {
   expectError(manifest => { mirrorEntry(manifest).version = 'latest'; }, 'REGISTRY_ENTRY_VERSION_INVALID');
-  expectError(manifest => { mirrorEntry(manifest).stateSchemaVersion = 2; }, 'REGISTRY_ENTRY_STATE_SCHEMA_UNSUPPORTED');
+  expectError(manifest => { mirrorEntry(manifest).stateSchemaVersion = 3; }, 'REGISTRY_ENTRY_STATE_SCHEMA_UNSUPPORTED');
   expectError(manifest => { mirrorEntry(manifest).bridgeProtocolVersion = 2; }, 'REGISTRY_ENTRY_PROTOCOL_UNSUPPORTED');
 });
 
@@ -687,4 +687,17 @@ test('trainer URLs map to canonical manifest files', () => {
   }
   assert.equal(trainerFileFromUrl('../negative-numbers-line.html'), null);
   assert.equal(registry.getByTrainerUrl('other-trainer.html'), null);
+});
+
+test('supported state schemas retain exact trainer metadata', () => {
+  const manifest = currentManifest();
+  const peterson = manifest.trainers.find(entry => entry.trainerId === 'peterson6');
+  assert.equal(peterson.stateSchemaVersion, 2);
+  assert.equal(validateTrainerManifest(manifest).ok, true);
+  peterson.stateSchemaVersion = 1;
+  assert.equal(validateTrainerManifest(manifest).ok, true);
+  for (const version of [0, 3, '2', null]) {
+    peterson.stateSchemaVersion = version;
+    assert.equal(validateTrainerManifest(manifest).error, 'REGISTRY_ENTRY_STATE_SCHEMA_UNSUPPORTED');
+  }
 });

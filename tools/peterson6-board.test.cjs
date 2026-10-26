@@ -49,7 +49,14 @@ function fixture(options = {}) {
         assert.equal(registration, undefined); registration = config;
         bridge = sdk.register(config); return bridge;
       } };
-    } else w.eval(readFileSync(resolve(ROOT, '.' + path), 'utf8'));
+    } else {
+      w.eval(readFileSync(resolve(ROOT, '.' + path), 'utf8'));
+      if(options.continuation && path.endsWith('/data.js')) {
+        const task={id:'p15-board-manual',kind:'manual',title:'Объясни равенство',prompt:'Обоснуй равенство отношений 3/4 и 6/8.',answer:'',steps:[{kind:'number',prompt:'Вычисли 3 · 2.',answer:'6'},{kind:'instruction',prompt:'Объясни свойство дроби.'}],skills:['fraction-multiply'],hint:'Сравни числитель и знаменатель.',finalLabel:'Запиши обоснование.',source:{type:'textbook',part:2,number:'1',page:3,reference:'№ 1'},figure:{type:'line',min:-2,max:2,points:[{name:'A',x:1}],caption:'Исходный чертёж'}};
+        w.PetersonCourse.lessons=w.PetersonCourse.lessons.slice(0,14).concat(w.JSON.parse(JSON.stringify({id:'p15',part:2,order:15,title:'Отношения',chapter:'Пропорции',page:3,sourceRange:'1–2',model:'continuation',theory:[{title:'Правило',text:'Умножь оба члена отношения на одно число.'}],skills:['fraction-multiply'],tasks:[task,{...task,id:'p15-board-second'}]})));
+        w.PetersonCourse.exerciseIndexByPart={1:w.PetersonCourse.exerciseIndex,2:{1:{page:3,lesson:'p15'},144:{page:37,missing:true,notice:'№ 144 не напечатан; № 143 указан дважды.'}},3:{}};
+      }
+    }
   }
   const api = w.__peterson6Board;
   const intoWindow = value => w.JSON.parse(JSON.stringify(value));
@@ -111,8 +118,8 @@ function fixture(options = {}) {
 test('only exact wrapper path and marker enable the isolated shared runtime', () => {
   const f = fixture();
   try {
-    assert(f.api); assert.equal(f.registration.id, 'peterson6'); assert.equal(f.registration.version, '1.0.0');
-    assert.equal(f.registration.stateSchemaVersion, 1); assert.equal(f.registration.parentOrigin, 'https://local.example');
+    assert(f.api); assert.equal(f.registration.id, 'peterson6'); assert.equal(f.registration.version, '2.0.0');
+    assert.equal(f.registration.stateSchemaVersion, 2); assert.equal(f.registration.parentOrigin, 'https://local.example');
     assert.match(f.d.querySelector('footer').textContent, /без зачёта в личный прогресс/);
     assert.equal(Object.keys(f.state().work.tasks).length, 0, 'home does not transmit all 224 untouched records');
     f.roundtrip('home');
@@ -124,19 +131,27 @@ test('only exact wrapper path and marker enable the isolated shared runtime', ()
   }
 });
 
-test('all 224 authored tasks and 60 practice screens export and restore valid shared views', async () => {
+test('all authored tasks and practice screens export and restore valid shared views', async () => {
   const f = fixture();
   try {
     let authored = 0, generated = 0;
-    for (const lesson of f.w.PetersonCourse.lessons) for (let index = 0; index < lesson.tasks.length; index++) {
+    const emptyRoom=f.state();
+    // Verify every screen in bounded lessons; full-course model history would intentionally hit the room size limit.
+    for (const lesson of f.w.PetersonCourse.lessons) {
+      f.apply(emptyRoom);
+      for (let index = 0; index < lesson.tasks.length; index++) {
       await f.navigate('#lesson/' + lesson.id + '/' + index);
       assert.equal(f.query('.prompt').textContent.length > 0, true);
       assert.equal(f.query('#model').textContent.length > 0, true);
+      assert.equal(f.query('[data-lesson-help="model"]').open,false,'model is optional help');
+      assert.equal(f.query('[data-lesson-help="theory"]').open,false,'theory is optional help');
       const snapshot = f.roundtrip(lesson.id + '/' + index);
       assert.equal(snapshot.view.model.lessonId, lesson.id);
-      assert.equal(snapshot.view.model.kind, lesson.model);
+      assert.equal(snapshot.view.model.kind, Number(lesson.id.slice(1))>14?'continuation':lesson.model);
       authored++;
+      }
     }
+    f.apply(emptyRoom);
     for (const skill of f.w.PetersonMath.skills) for (let level = 1; level <= 3; level++) {
       await f.navigate('#practice/' + skill.id + '/' + level);
       const snapshot = f.roundtrip(skill.id + '/' + level);
@@ -144,7 +159,7 @@ test('all 224 authored tasks and 60 practice screens export and restore valid sh
       assert(snapshot.work.tasks['practice:' + skill.id + ':' + level + ':1']);
       generated++;
     }
-    assert.equal(authored, 224); assert.equal(generated, 60);
+    assert.equal(f.w.PetersonCourse.lessons.slice(0,14).reduce((n,l)=>n+l.tasks.length,0),224,'old task subset retained'); assert.equal(authored,f.w.PetersonCourse.lessons.reduce((n,l)=>n+l.tasks.length,0)); assert.equal(generated,f.w.PetersonMath.skills.length*3);
     await f.navigate('#skills'); f.roundtrip('skills');
     await f.navigate('#progress'); f.roundtrip('shared summary');
     assert.equal(f.d.querySelector('#import-file'), null);
@@ -159,7 +174,7 @@ test('empty/wrong feedback, guided steps, notes and detour return survive applic
   try {
     await f.navigate('#lesson/p08/0');
     f.submit('#answer-form'); f.roundtrip('empty final answer');
-    assert.match(f.query('#answer-form').textContent, /Сначала введи результат/);
+    assert.match(f.query('#problem').textContent, /Сначала введи результат/);
     f.input('#final-answer', '999999'); f.submit('#answer-form'); f.roundtrip('wrong final answer');
     assert.equal(f.runtime().tasks['p08-t01'].attempts, 1);
     f.click('[data-action="guided"]'); f.submit('[data-step-form="0"]');
@@ -224,6 +239,7 @@ test('a fresh observer receives the source model and draft, then continues from 
   const source = fixture(), observer = fixture();
   try {
     await source.navigate('#lesson/p09/0');
+    source.click('[data-lesson-help="model"] > summary');
     const sliders = source.d.querySelectorAll('#model input[type="range"]');
     sliders[0].value = '17'; sliders[0].dispatchEvent(new source.w.Event('input', { bubbles: true }));
     sliders[1].value = '3.5'; sliders[1].dispatchEvent(new source.w.Event('input', { bubbles: true }));
@@ -248,9 +264,10 @@ test('the actual SDK publishes local interactions and deduplicates remote hydrat
   const source = fixture({ realSdk: true }), observer = fixture({ realSdk: true });
   async function changed(f, label, action) {
     const count = f.published().length;
-    await action(); await f.settle();
+    await action();
+    for(let attempt=0;attempt<8&&f.published().length===count;attempt++)await f.settle();
     const sent = f.published();
-    assert(sent.length > count, label + ': subscriber reaches the actual SDK');
+    assert(sent.length > count, label + ': subscriber reaches the actual SDK; '+JSON.stringify({route:f.w.location.hash,errors:f.errors,diagnostics:f.diagnostics,warning:f.query('#storage-warning').textContent}));
     assert(f.valid(sent.at(-1)), label + ': published snapshot is valid');
     assert.deepEqual(sent.at(-1), f.state(), label + ': publication matches visible current work');
   }
@@ -276,6 +293,7 @@ test('the actual SDK publishes local interactions and deduplicates remote hydrat
     await changed(source, 'new practice condition', () => source.click('[data-action="new"]'));
     await changed(source, 'return click', () => source.click('[data-action="return"]'));
     await changed(source, 'model route', () => source.navigate('#lesson/p09/0'));
+    await changed(source, 'open model help', () => source.click('[data-lesson-help="model"] > summary'));
     await changed(source, 'model input', () => source.input('#model input[type="range"]', '17'));
     await changed(source, 'shared note input', () => source.input('#notebook', 'Проверяем общее течение.'));
     await changed(source, 'shared notebook toggle', () => { source.query('#notebook').closest('details').open = true; });
@@ -307,7 +325,7 @@ test('source number lookup keeps the submitted result separately from a newly ty
     assert(f.d.querySelector('#number-result a[href="#lesson/p08/0"]'));
     f.input('#exercise-number', '178');
     const snapshot = f.roundtrip('new lookup draft retains previous submitted result');
-    assert.deepEqual(snapshot.view.number, { draft: '178', submitted: 177 });
+    assert.deepEqual(snapshot.view.number, { part: 1, draft: '178', submitted: 177 });
     assert.match(f.query('#number-result').textContent, /№ 177/);
     f.input('#exercise-number', '0'); f.submit('#number-form');
     assert.equal(f.roundtrip('invalid exercise number').view.number.submitted, 'invalid');
@@ -392,4 +410,36 @@ test('oversized new notes roll back atomically to the last valid shared work', a
     assert(rolledBack, 'capacity limit must be reached'); assert(completed.length > 1);
     f.roundtrip('valid work after overflow'); assert.deepEqual(f.accesses, { local: 0, session: 0 });
   } finally { f.close(); }
+});
+
+test('continuation manual work, instructions and task-local models survive SDK late join and detour return', async () => {
+ const source=fixture({realSdk:true,continuation:true}),observer=fixture({realSdk:true,continuation:true});
+ try{
+  for(const f of [source,observer]){f.receive('mathexam:hydrate',{mode:'empty'});f.receive('mathexam:request-trainer-state');await f.settle();}
+  await source.navigate('#lesson/p15/0');assert(source.query('#task-figure svg'));assert.equal(source.runtime().tasks['p15-board-manual'].assisted,false);
+  source.click('[data-lesson-help="model"] > summary');const select=source.query('#model select');select.value='10';select.dispatchEvent(new source.w.Event('change',{bubbles:true}));
+  source.input('#notebook','Доказательство записано в тетради.');source.click('[data-action="guided"]');source.input('[data-step-input="0"]','6');source.submit('[data-step-form="0"]');source.click('[data-action="instruction"]');source.click('[data-action="record-manual"]');await source.settle();
+  const initial=source.roundtrip('manual continuation');assert.equal(initial.work.tasks['p15-board-manual'][0],'recorded');assert.equal(initial.work.tasks['p15-board-manual'][2],2);assert.equal(source.runtime().tasks['p15-board-manual'].correct,false);
+  observer.receive('mathexam:apply-trainer-state',{state:initial});await observer.settle();assert.deepEqual(observer.state(),source.state());assert.equal(observer.query('#model select').value,'10');assert.deepEqual(observer.appearance(),source.appearance());
+  observer.click('[data-action="detour"]');await observer.settle();observer.click('[data-action="return"]');await observer.settle();assert.equal(observer.query('#model select').value,'10');assert.equal(observer.query('#notebook').value,'Доказательство записано в тетради.');
+  await observer.navigate('#lesson/p15/1');assert.equal(observer.query('#model select').value,'6');await observer.navigate('#lesson/p15/0');assert.equal(observer.query('#model select').value,'10');observer.roundtrip('after model detour');
+  assert.equal(observer.runtime().tasks['p15-board-manual'].independent,false);assert.deepEqual(observer.accesses,{local:0,session:0});assert.deepEqual(source.accesses,{local:0,session:0});
+ }finally{source.close();observer.close();}
+});
+
+test('fresh checks and diagnostic transfer through the actual SDK without help or personal credit',async()=>{
+ const source=fixture({realSdk:true}),observer=fixture({realSdk:true});
+ try{
+  for(const f of [source,observer]){f.receive('mathexam:hydrate',{mode:'empty'});f.receive('mathexam:request-trainer-state');await f.settle();}
+  await source.navigate('#practice/fraction-multiply/1');source.click('[data-action="hint"]');const old=source.runtime().tasks['practice:fraction-multiply:1:1'];source.click('[data-action="start-check"]');await source.settle();const snapshot=source.roundtrip('fresh check');
+  assert.equal(snapshot.route,'#check/fraction-multiply/1');assert.deepEqual(source.runtime().tasks['practice:fraction-multiply:1:1'],old);assert(!source.d.querySelector('[data-action="hint"]'));assert(!source.d.querySelector('[data-action="guided"]'));
+  observer.receive('mathexam:apply-trainer-state',{state:snapshot});await observer.settle();assert.deepEqual(observer.state(),source.state());
+  const seed=snapshot.work.practice['fraction-multiply:1'],task=observer.w.PetersonMath.generate('fraction-multiply',seed,1);observer.input('#final-answer',task.answer);observer.submit('#answer-form');await observer.settle();const solved=observer.roundtrip('shared check solution');assert.equal(observer.runtime().tasks['check:fraction-multiply:1:'+seed].correct,true);assert.equal(observer.runtime().tasks['check:fraction-multiply:1:'+seed].independent,false);
+  source.receive('mathexam:apply-trainer-state',{state:solved});await source.settle();assert.deepEqual(source.state(),observer.state());await source.navigate('#diagnostic');source.roundtrip('shared diagnostic');assert.deepEqual(source.accesses,{local:0,session:0});assert.deepEqual(observer.accesses,{local:0,session:0});
+ }finally{source.close();observer.close();}
+});
+
+test('part-aware lookup transfers selected part, source notice and typed draft separately',()=>{
+ const f=fixture({continuation:true});
+ try{const part=f.query('#book-part');part.value='2';part.dispatchEvent(new f.w.Event('change',{bubbles:true}));f.input('#exercise-number','144');f.submit('#number-form');assert.match(f.query('#number-result').textContent,/№ 144 не напечатан/);assert(!f.d.querySelector('#number-result a[href^="#lesson/"]'));f.input('#exercise-number','589');const value=f.roundtrip('part 2 source notice with new draft');assert.deepEqual(value.view.number,{part:2,draft:'589',submitted:144});const restoredPart=f.query('#book-part');restoredPart.value='3';restoredPart.dispatchEvent(new f.w.Event('change',{bubbles:true}));f.input('#exercise-number','778');f.submit('#number-form');assert.equal(f.roundtrip('part 3 last exercise').view.number.part,3);assert.equal(f.query('#exercise-number').max,'778');}finally{f.close();}
 });

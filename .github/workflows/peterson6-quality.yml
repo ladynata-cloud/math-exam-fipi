@@ -1,4 +1,4 @@
-name: Peterson 6 part 1 quality
+name: Peterson 6 complete course quality
 on:
   pull_request:
     paths:
@@ -10,6 +10,8 @@ on:
       - 'trainers/trainer-board.html'
       - 'trainers/board-bridge.js'
       - 'learning/**'
+      - 'board-server/trainer-registry.js'
+      - 'board-server/test/trainer-registry.test.js'
       - 'tools/peterson6-*'
       - 'tools/learning-peterson-plan.dom.cjs'
       - '.github/workflows/peterson6-quality.yml'
@@ -24,6 +26,8 @@ on:
       - 'trainers/trainer-board.html'
       - 'trainers/board-bridge.js'
       - 'learning/**'
+      - 'board-server/trainer-registry.js'
+      - 'board-server/test/trainer-registry.test.js'
       - 'tools/peterson6-*'
       - 'tools/learning-peterson-plan.dom.cjs'
       - '.github/workflows/peterson6-quality.yml'
@@ -42,17 +46,23 @@ jobs:
           node --check school/peterson6/app.js
           node --check school/peterson6/math.js
           node --check school/peterson6/models.js
+          node --check school/peterson6/continuation-models.js
+          node --check school/peterson6/board-session.js
           node school/peterson6/build.cjs --check
           node school/peterson6/test-content.cjs
+          node school/peterson6/test-continuation-content.cjs
       - name: Exact math, saved state and models
         run: |
           node school/peterson6/test-math.cjs
+          node school/peterson6/test-continuation-math.cjs
           node school/peterson6/test-state.cjs
           node school/peterson6/test-models.cjs
       - name: Install in-memory DOM for code tests
         run: npm install --prefix "$RUNNER_TEMP/peterson-qa" --no-audit --no-fund jsdom@26.1.0
       - name: Course DOM journeys (not visual browser QA)
-        run: NODE_PATH="$RUNNER_TEMP/peterson-qa/node_modules" node school/peterson6/test-ui.cjs
+        run: |
+          NODE_PATH="$RUNNER_TEMP/peterson-qa/node_modules" node school/peterson6/test-ui.cjs
+          NODE_PATH="$RUNNER_TEMP/peterson-qa/node_modules" node --test school/peterson6/test-continuation-ui.cjs
   board:
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -74,7 +84,7 @@ jobs:
       - name: Board, models, picker and cabinet contracts
         run: |
           node school/peterson6/test-models-board.cjs
-          node --test tools/peterson6-session.test.cjs tools/peterson6-board.test.cjs tools/peterson6-picker.test.cjs tools/learning-peterson-plan.dom.cjs tools/learning-focus-links.dom.cjs
+          node --test tools/peterson6-session.test.cjs tools/peterson6-session-v2.test.cjs tools/peterson6-board.test.cjs tools/peterson6-picker.test.cjs tools/learning-peterson-plan.dom.cjs tools/learning-focus-links.dom.cjs
           node --test board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js
       - name: Synthetic teacher and learner on the real board
         run: PETERSON6_BOARD_SHOTS="$RUNNER_TEMP/peterson-board-shots" node tools/peterson6-board.browser.cjs

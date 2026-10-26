@@ -1,0 +1,11 @@
+{
+  "base": "44eab4d11046d8613b50a73b00185755c814dba6",
+  "files": {
+    "logic.json": "79ce3b33a411f71236f72c5dc38a5a696764b8a1ba90a636107cb9aa7be63a5e",
+    "arithmetic.json": "a2a2e47a2adec16ab2b765e426215878a62fe438ae3c6912eff5761ce378a8e7",
+    "percent.json": "810eff38a577c573e3f28dc81d04ea92b9ae84b0ef2b1485f328df2505f2c62f",
+    "source-map.json": "c0707683984e81b32c24fbc9bb5838a9275cb82600fbfd3cd0ef1a52bf4f264f"
+  },
+  "legacyLessons": 14,
+  "legacyTasks": 224
+}

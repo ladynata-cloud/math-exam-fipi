@@ -12,8 +12,8 @@ const lessons = ['logic', 'arithmetic', 'percent'].flatMap(name => JSON.parse(re
 const session = adapter.create({ lessons, math, models: global.PetersonModels });
 const copy = value => JSON.parse(JSON.stringify(value));
 const fresh = () => ({ value: '', values: [], step: 0, guided: false, assisted: false, hint: false, stepHints: {}, reveals: {}, attempts: 0, correct: false, independent: false, note: '', feedback: '', signature: '', repeated: false, completion: null });
-const blank = () => ({ version: 1, tasks: {}, practice: {}, last: null, origin: null });
-const home = work => ({ route: '#home', work: work || session.pack(blank()), view: { model: null, details: [false], stepFeedback: '', number: { draft: '', submitted: null } } });
+const blank = () => ({ version: 1, tasks: {}, practice: {}, last: null, origin: null, models: {} });
+const home = work => ({ route: '#home', work: work || session.pack(blank()), view: { model: null, details: [false], stepFeedback: '', number: { part: 1, draft: '', submitted: null } } });
 const fracTask = lessons.find(l => l.id === 'p08').tasks[0];
 function entered(question) {
   if (question.kind === 'choice') return question.answer;
@@ -32,7 +32,8 @@ function complete(task) {
 const fractionModel = () => ({ lessonId: 'p08', kind: 'fractions', a: 2, b: 3 });
 function lessonSnapshot(state = blank()) {
   state.last = { hash: '#lesson/p08/0' };
-  return { route: '#lesson/p08/0', work: session.pack(state), view: { model: fractionModel(), details: [false, true, false], stepFeedback: '', number: { draft: '', submitted: null } } };
+  state.models[fracTask.id] = fractionModel();
+  return { route: '#lesson/p08/0', work: session.pack(state), view: { model: fractionModel(), details: [false, true, false, false], stepFeedback: '', number: { part: 1, draft: '', submitted: null } } };
 }
 
 test('fixed identity and all authored/practice routes are bounded by real course data', () => {
@@ -78,7 +79,7 @@ test('transport roundtrip preserves drafts, notes, accepted steps, disclosures a
     stepHints: { 0: false, 1: true }, reveals: { 1: true }, note: 'Сначала дробь в десятичную.\n0,36 + 0,5' };
   state.origin = { hash: '#lesson/p08/0', scroll: 321.5 };
   const value = lessonSnapshot(state);
-  value.view.details = [true, false, true]; value.view.stepFeedback = 'wrong';
+  value.view.details = [true, false, true, false]; value.view.stepFeedback = 'wrong';
   assert.equal(session.validateState(value), true);
   const restored = session.unpack(value.work);
   assert.equal(restored.tasks[fracTask.id].note, state.tasks[fracTask.id].note);
@@ -112,12 +113,12 @@ test('accepted work cannot spoof answer formats, completed steps, or independent
   assert.throws(() => session.pack(changed), /Invalid/);
 });
 
-test('all 60 generated skill/level cases reconstruct source signatures and exact accepted steps', () => {
+test('all generated skill/level cases reconstruct source signatures and exact accepted steps', () => {
   for (const skill of math.skills) for (const level of [1, 2, 3]) {
     const id = 'practice:' + skill.id + ':' + level + ':1', task = session.resolveTask(id), state = blank();
     state.tasks[id] = complete(task); state.practice[skill.id + ':' + level] = { seed: 1 };
     state.last = { hash: '#practice/' + skill.id + '/' + level };
-    const snapshot = { route: state.last.hash, work: session.pack(state), view: { model: null, details: [true], stepFeedback: '', number: { draft: '', submitted: null } } };
+    const snapshot = { route: state.last.hash, work: session.pack(state), view: { model: null, details: [true], stepFeedback: '', number: { part: 1, draft: '', submitted: null } } };
     assert.equal(session.validateState(snapshot), true, id);
     const restored = session.unpack(snapshot.work);
     assert.equal(restored.tasks[id].signature, task.prompt + '\u241f' + task.answer + '\u241f' + (task.answerFormat || ''));
@@ -163,12 +164,12 @@ test('practice routes require the precise seed record, and source/model state is
 });
 
 test('number lookup and detail states remain exact and page-local', () => {
-  const value = home(); value.view.number = { draft: '177', submitted: 177 };
+  const value = home(); value.view.number = { part: 1, draft: '177', submitted: 177 };
   assert.equal(session.validateState(value), true);
   value.view.number.submitted = 'invalid'; assert.equal(session.validateState(value), true);
   value.view.number.draft = '498'; assert.equal(session.validateState(value), true);
   value.view.number.submitted = 498; assert.equal(session.validateState(value), false);
-  value.view.number = { draft: '', submitted: null }; value.view.details.push(false);
+  value.view.number = { part: 1, draft: '', submitted: null }; value.view.details.push(false);
   assert.equal(session.validateState(value), false);
   value.view.details = []; value.route = '#skills'; assert.equal(session.validateState(value), true);
   value.view.number.draft = '1'; assert.equal(session.validateState(value), false);
