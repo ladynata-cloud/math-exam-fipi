@@ -6,9 +6,10 @@ const root=path.resolve(__dirname,'../..'),dir=path.join(root,'stereo-course/tex
 const practical=require('./practical-baseline.cjs');
 const manifest=require('./polyhedra-selfcheck-manifest.json');
 const additional=require('./additional288-baseline.cjs');
-const priorIndex=additional.previousIndex(require(root+'/stereo-course/textbook/source-index.json'));
+const currentIndex=require(root+'/stereo-course/textbook/source-index.json');
+const priorIndex=additional.previousIndex(currentIndex);
 const sourceIndex=practical.previousIndex(priorIndex);
-const production=practical.previousCourse(additional.previousCourse(require(root+'/stereo-course/textbook/data/course.json'),priorIndex),sourceIndex);
+const production=practical.previousCourse(additional.previousCourse(require(root+'/stereo-course/textbook/data/course.json'),currentIndex),sourceIndex);
 const registry=practical.previousRegistry(require('./content-review.json'));
 const API=require(root+'/stereo-course/textbook/assets/engine.js'),screenshots=practical.previousCases(require('./browser-cases.cjs'));
 const baseline=require('./selfcheck-baseline.cjs');
@@ -28,7 +29,7 @@ const cards=expectedIds.map(id=>JSON.parse(fs.readFileSync(path.join(dir,id+'.js
 // Freeze prior authored bytes as well as canonical records, reviews and source metadata.
 const old=production.lessons.filter(c=>!ids.has(c.id));assert.equal(old.length,456);
 assert.equal(sha([...old].sort((a,b)=>a.id.localeCompare(b.id))),'aee0f0d9f42ccecfc51db0494b0cc9393d1a002d0423bf357c0f9c36c8a9f7ca','prior456 integrated records, including review metadata');
-const rawOld=fs.readdirSync(dir).filter(n=>n.endsWith('.json')&&!ids.has(n.slice(0,-5))&&!practical.ids.has(n.slice(0,-5))&&!require('./additional288-baseline.cjs').ids.has(n.slice(0,-5))).sort().map(n=>[n,crypto.createHash('sha256').update(fs.readFileSync(path.join(dir,n))).digest('hex')]);
+const rawOld=fs.readdirSync(dir).filter(n=>n.endsWith('.json')&&!ids.has(n.slice(0,-5))&&!practical.ids.has(n.slice(0,-5))&&!require('./additional288-baseline.cjs').ids.has(n.slice(0,-5))&&!require('./additional294-baseline.cjs').ids.has(n.slice(0,-5))&&!require('./additional299-baseline.cjs').ids.has(n.slice(0,-5))).sort().map(n=>[n,crypto.createHash('sha256').update(fs.readFileSync(path.join(dir,n))).digest('hex')]);
 assert.equal(rawOld.length,456);assert.equal(sha(rawOld),'de53dc202836763d03d23133a6e48aff7ef675e1851bfced7c280a9f31b9335d','prior456 authored files stay byte-identical');
 const oldReviews=registry.cards.filter(c=>!ids.has(c.id));assert.equal(oldReviews.length,456);
 assert.equal(sha(oldReviews),'953c74851cc16d4385d070d607d4aaa06cc79fe67e9741c74d2622f43ba0c142','prior456 registered reviews');

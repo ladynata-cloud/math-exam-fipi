@@ -32,6 +32,16 @@ const screenshotCases=require('./browser-cases.cjs');
 // line may still break legitimately between operations or adjacent formulas.
 const explanation=stage=>'[data-step="'+stage+'"] > details > p';
 const mathLayoutCases=new Map([
+ // Actual294–298 paragraphs: complete radicals and stacked operands at both
+ // widths, including their retained appearance on the final solution page.
+ ['ex-main-0294|step-6',[{selector:explanation('step-6'),atoms:['√(S₀²−a⁴)','4√(S₀²−a⁴)']}]],
+ ['ex-main-0294|step-7',[{selector:explanation('step-6'),atoms:['√(S₀²−a⁴)']},{selector:explanation('step-7'),atoms:['4√(S₀²−a⁴)']}]],
+ ['ex-main-0296|step-4',[{selector:explanation('step-4'),fractions:[['h','l'],['h','sinφ']]}]],
+ ['ex-main-0296|step-6',[{selector:explanation('step-6'),fractions:[['(a√3)','2'],['(a√3)','4'],['(4h)','(√3·tgφ)']]}]],
+ ['ex-main-0296|step-8',[{selector:explanation('step-8'),fractions:[['(4h)','(√3·tgφ)'],['h','sinφ'],['(√3·h²)','(sinφ·tgφ)']]}]],
+ ['ex-main-0298|step-2',[{selector:explanation('step-2'),fractions:[['a²','2'],['a','√2']]}]],
+ ['ex-main-0298|step-4',[{selector:explanation('step-4'),atoms:['√(b² − a²/4)','a√(b² − a²/4)'],fractions:[['a²','4']]}]],
+ ['ex-main-0298|step-6',[{selector:explanation('step-4'),atoms:['√(b² − a²/4)']},{selector:explanation('step-6'),atoms:['a√(b² − a²/4)'],fractions:[['a²','4'],['a','√2']]}]],
  // Additional prism formulas: inspect the entire final paragraph and every
  // radical/fraction operand at both widths, including the fully revealed page.
  ['ex-main-0289|step-5',[{selector:explanation('step-5'),fractions:[['d²','3']]}]],
@@ -67,7 +77,17 @@ const mathLayoutCases=new Map([
  ['ex-main-0158|step-3',[{selector:explanation('step-3'),atoms:['√((25/2)²+(25√3/2)²)'],fractions:[['25','2'],['25√3','2']]}]],
  ['ex-main-0067|step-1',[{selector:explanation('step-1'),atoms:['√(724−720cos54°)','√(765−756cos72°)']}]],
  ['ex-main-0102|step-3',[{selector:explanation('step-3'),atoms:['√((10√3)² − 5²)','5√11','25√11']}]],
- ['ex-main-0212|condition',[{selector:'.textbook-goal',fractions:[['S','cosα']]},{selector:'label[for="final-answer"]',fractions:[['S','cosα']]}]]
+ ['ex-main-0212|condition',[{selector:'.textbook-goal',fractions:[['S','cosα']]},{selector:'label[for="final-answer"]',fractions:[['S','cosα']]}]],
+ // New pyramid formulas: complete numerators, denominators and mobile bounds.
+ ['ex-main-0299|step-5',[{selector:explanation('step-5'),fractions:[['m','2']]}]],
+ ['ex-main-0300|step-6',[{selector:explanation('step-6'),fractions:[['(a · b)','4'],['a','√3']]}]],
+ ['ex-main-0305|step-4',[{selector:explanation('step-4'),fractions:[['h²','(1 − t²)']]}]],
+ ['ex-main-0305|step-6',[{selector:explanation('step-6'),fractions:[['(4h²t)','(1 − t²)'],['2t','(1 − t²)']]},{selector:'[data-step="step-6"] > details > details > p',fractions:[['(2tan x)','(1 − tan²x)']]}]],
+ ['ex-main-0306|step-5',[{selector:explanation('step-5'),fractions:[['h','cos φ']]}]],
+ ['ex-main-0306|step-6',[{selector:explanation('step-6'),fractions:[['(4h² · tan φ)','(cos φ)']]}]],
+ ['ex-main-0306|step-7',[{selector:explanation('step-7'),fractions:[['(sin φ · (1 + sin φ))','(cos²φ)'],['(4h² · sin φ)','(1 − sin φ)']]}]],
+ ['ex-main-0307-a|step-6',[{selector:explanation('step-6'),fractions:[['(a · b · √2)','4']]}]],
+ ['ex-main-0309|step-8',[{selector:explanation('step-8'),fractions:[['(AB + EF)','2'],['80','3']]}]]
 ]);
 function immutableContent(lesson){const copy=structuredClone(lesson);delete copy.status;delete copy.review;return copy;}
 
@@ -174,7 +194,74 @@ async function checkLabels(id,width,stage,target=page,selector='[data-main-model
 }
 async function takeScreenshot(lesson,width,stage){
  const name=screenshotCases.get(lesson.id+'|'+stage);if(!name)return;
- const filename=name+'-'+width+'.png';await settle();await checkMathLayout(lesson,width,stage);if(stage==='nested-theory')await page.locator('dialog .textbook-model').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,filename),fullPage:stage!=='nested-theory'});evidence.screenshots.push({id:lesson.id,width,stage,file:filename});writeEvidence();
+ const filename=name+'-'+width+'.png';await settle();await checkMathLayout(lesson,width,stage);await checkSection294Projection(lesson,width,stage);await checkPyramidProjection(lesson,width,stage);if(stage==='nested-theory')await page.locator('dialog .textbook-model').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,filename),fullPage:stage!=='nested-theory'});evidence.screenshots.push({id:lesson.id,width,stage,file:filename});writeEvidence();
+}
+async function checkPyramidProjection(lesson,width,stage){
+ if(!['ex-main-0308','ex-main-0309'].includes(lesson.id)||!stage.startsWith('step-'))return;
+ const authoredStep=lesson.steps.find(step=>step.id===stage),authoredView=lesson.visualization.model.views[authoredStep.view||'neutral'];
+ const expectedPolygons=Array.isArray(authoredView.polygon)?1:0;
+ const svg=page.locator('[data-main-model] svg'),kept=await camera();
+ async function measure(orientation){
+  await settle();
+  const polygons=await svg.evaluate(node=>[...node.querySelectorAll('path.am-plane[data-highlight="plane"]')].map(path=>{
+   const numbers=path.getAttribute('d').match(/-?\d+(?:\.\d+)?/g)?.map(Number)||[],matrix=path.getScreenCTM(),points=[];
+   for(let i=0;i<numbers.length;i+=2){const p=new DOMPoint(numbers[i],numbers[i+1]).matrixTransform(matrix);points.push({x:p.x,y:p.y});}
+   let twiceArea=0,diameter=0;for(let i=0;i<points.length;i++){const p=points[i],q=points[(i+1)%points.length];twiceArea+=p.x*q.y-q.x*p.y;for(const other of points)diameter=Math.max(diameter,Math.hypot(p.x-other.x,p.y-other.y));}
+   return {vertices:points.length,area:Math.abs(twiceArea)/2,apparentAltitude:Math.abs(twiceArea)/diameter};
+  }));
+  assert.equal(polygons.length,expectedPolygons,lesson.id+' '+width+' '+stage+' '+orientation+' exactly the authored polygon count');
+  for(const polygon of polygons){const label=lesson.id+' '+width+' '+stage+' '+orientation;
+   assert(polygon.vertices>=3&&Number.isFinite(polygon.apparentAltitude),label+' finite polygon');
+   assert(polygon.apparentAltitude>=16,label+' highlighted polygon must have at least 16px apparent altitude, got '+polygon.apparentAltitude);
+  }
+  return polygons;
+ }
+ const row=evidence.labels.find(x=>x.ownerId===lesson.id&&x.id===lesson.id&&x.viewport===width&&x.stage===stage);
+ assert(row,'pyramid projection belongs to a checked label state');row.pyramidProjection={captured:await measure('captured')};
+ await page.locator('[data-main-model] button[aria-label="Вернуть исходный вид"]').click();
+ row.pyramidProjection.default=await measure('default');
+ await page.locator('[data-main-model] button[aria-label="Повернуть влево"]').click();await settle();
+ assert.deepEqual(await camera(),kept,lesson.id+' projection check restores exact camera');writeEvidence();
+}
+async function checkSection294Projection(lesson,width,stage){
+ // A mathematically correct plane can collapse to a line in the standard
+ // learner camera. Measure its actual filled SVG projection, not label boxes
+ // or model-space area. Both source section types must have visible thickness.
+ const expected={'step-2':'vertical','step-3':'vertical-sides','step-4':'oblique','step-6':'oblique'}[stage];
+ if(lesson.id!=='ex-main-0294'||!expected)return;
+ const svg=page.locator('[data-main-model] svg'),kept=await camera();
+ async function measure(orientation){
+  await settle();
+  const actual=await svg.evaluate(node=>{
+   const paths=node.querySelectorAll('path.am-plane[data-highlight="plane"]');
+   if(paths.length!==1)return {pathCount:paths.length};
+   const path=paths[0],d=path.getAttribute('d'),numbers=d.match(/-?\d+(?:\.\d+)?/g)?.map(Number)||[],matrix=path.getScreenCTM(),bounds=node.getBoundingClientRect();
+   const points=[];for(let i=0;i<numbers.length;i+=2){const p=new DOMPoint(numbers[i],numbers[i+1]).matrixTransform(matrix);points.push({x:p.x,y:p.y});}
+   let twiceArea=0,diameter=0;
+   for(let i=0;i<points.length;i++){const p=points[i],q=points[(i+1)%points.length];twiceArea+=p.x*q.y-q.x*p.y;for(const other of points)diameter=Math.max(diameter,Math.hypot(p.x-other.x,p.y-other.y));}
+   const area=Math.abs(twiceArea)/2,boxWidth=Math.max(...points.map(p=>p.x))-Math.min(...points.map(p=>p.x)),boxHeight=Math.max(...points.map(p=>p.y))-Math.min(...points.map(p=>p.y));
+   return {pathCount:paths.length,commands:d.replace(/[-\d.\s]/g,''),view:node.dataset.view,yaw:node.dataset.yaw,pitch:node.dataset.pitch,points,area,areaFraction:area/Math.min(bounds.width,bounds.height)**2,apparentThickness:area/diameter,boundingBoxFill:area/(boxWidth*boxHeight)};
+  });
+  const label=lesson.id+' '+width+' '+stage+' '+orientation+' section';
+  assert.equal(actual.pathCount,1,label+' exactly one highlighted polygon');assert.equal(actual.commands,'MLLLZ',label+' complete four-corner outline');assert.equal(actual.view,expected,label+' correct authored section');
+  for(const metric of ['area','areaFraction','apparentThickness','boundingBoxFill'])assert(Number.isFinite(actual[metric]),label+' finite '+metric);
+  assert(actual.areaFraction>=.04,label+' area fraction '+actual.areaFraction+' must be at least 0.04');
+  assert(actual.apparentThickness>=12,label+' apparent altitude '+actual.apparentThickness+' must be at least 12 screen pixels');
+  assert(actual.boundingBoxFill>=.10,label+' bounding-box fill '+actual.boundingBoxFill+' must be at least 0.10');
+  return actual;
+ }
+ const captured=await measure('captured'),row=evidence.labels.find(x=>x.ownerId===lesson.id&&x.id===lesson.id&&x.viewport===width&&x.stage===stage);
+ assert(row,'section projection belongs to a verified label state');row.sectionProjection={captured};
+ if(stage==='step-2'||stage==='step-4'){
+  // Check the actual reset orientation too, then restore the existing normal
+  // capture camera exactly. No screenshot, authored camera or saved end state
+  // is replaced by a test-selected attractive angle.
+  await page.locator('[data-main-model] button[aria-label="Вернуть исходный вид"]').click();
+  row.sectionProjection.default=await measure('default');
+  await page.locator('[data-main-model] button[aria-label="Повернуть влево"]').click();await settle();
+  assert.deepEqual(await camera(),kept,lesson.id+' section check restores original capture camera');
+ }
+ writeEvidence();
 }
 async function preserveCheck(lesson,keptCamera,draft){
  assert(await page.evaluate(()=>window.__textbookKept.svg===document.querySelector('[data-main-model] svg')&&window.__textbookKept.field===document.querySelector('#final-answer')),lesson.id+' original model/answer nodes retained');

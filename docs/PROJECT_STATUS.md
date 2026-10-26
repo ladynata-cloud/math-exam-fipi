@@ -22,6 +22,19 @@ Updated: 2026-10-26 (Asia/Novosibirsk)
   and separate owner merge authorization. This is not a production release.
 - Older entries below concern different tasks and are not re-certified here.
 
+
+## In progress: Atanasyan 10–11, additional pyramid exercises 299–309
+
+- [Scope](tasks/TEXTBOOK_ATANASYAN_PYRAMIDS_299_309.md), HIGH review; owner explicitly
+  requested continuation and publication on 2026-10-26.
+- Verified starting release: PR345 merged as `6c7339a730ba3591859bd4c8c0d8ce9be64efd7c`;
+  495 cards, 1,819 steps and 1,877 model states, main exercises1–298.
+- Preparing twelve source-specific cards for299–309 (307а/б), with independent
+  source/proof/model review and retained historical content/browser checks.
+- Next: finish independent review and actual responsive-image checks, publish
+  the scoped increment under the current authorization and verify live files.
+  This entry does not claim that the full book or this increment is published.
+
 ## In progress: lesson enquiries and channel subscriptions
 
 - [Scope](tasks/LESSON_CONTACTS_CHANNELS.md), SMALL static HTML/CSS task; base
@@ -379,7 +392,7 @@ Updated: 2026-10-26 (Asia/Novosibirsk)
   not performed. Course content, learner data and progress semantics were
   unchanged. Release gate: `PROFILE_FULL_COURSE_ENTRY_PUBLISHED_OK`.
 
-## In review: Atanasyan 7–9 chapter III, parallel lines
+## Published: Atanasyan 7–9 chapter III, parallel lines
 
 - [Scope](tasks/ATANASYAN_7_9_CHAPTER_III.md), HIGH review; branch
   `content/atanasyan-7-9-chapter3`, based on
@@ -401,9 +414,38 @@ Updated: 2026-10-26 (Asia/Novosibirsk)
 - Detailed evidence is recorded in `docs/reviews/ATANASYAN_7_9_CHAPTER_III_*`.
   Exact-head cloud CI and the committed identity belong to this task's Draft PR
   handoff; no publication result is inferred from a local review manifest.
-- This section describes a development candidate. Chapters I–II remain the
-  published baseline until a separate owner-authorized release of chapter III.
-  Later book chapters and a real-pupil pilot are outside this task.
+- Publication is now confirmed: PR #331 was squash-merged as
+  `91dd1e5a3f85e29709df922fa88859204aac100d`; exact-commit Pages40121467624
+  and post-merge board40121468027 passed. The current public bundle checked
+  on26 October contains403 reviewed cards through exercise227, with matching
+  reviews for all three chapters. The earlier candidate wording above records
+  the preparation evidence; it is not the current publication status.
+- ChapterIV is the next scoped continuation; a real-pupil pilot is not claimed.
+
+## Reviewed candidate: Atanasyan 7–9 chapter IV
+
+- [Scope](tasks/ATANASYAN_7_9_CHAPTER_IV.md), HIGH review; branch
+  `content/atanasyan-7-9-chapter4`, base
+  `9cf995d30c400a6e581a3168bb8ef8f5c76ed945`.
+- Exact source: 2023 revised edition, printed69–90; all228–330, theory31–38
+  and23 review questions. Grade7 also includes chapterV and advanced413–461.
+- Prior conversation reported a prepared chapterIV candidate, but its source
+  and evidence files could not be recovered. This continuation rebuilds from
+  the exact provided PDF and requires fresh review; no old test claim is reused.
+- Published403 cards, their runtime and learner identifiers remain the baseline.
+  Whole-course board synchronization and cabinet changes are outside this scope.
+- [Draft PR #346](https://github.com/ladynata-cloud/math-exam-fipi/pull/346)
+  contains166 new cards:135 exercise parts,8 theory points and23 selfchecks,
+  569 cards combined. Independent source, mathematics, models and actual
+  image review pass. All1728 new view/width pairs are covered and21 grouped
+  findings are closed. Clean browser run40323700008 checks5812 views,
+  1138 step flows and14 interactions with no geometry issues or page errors.
+- The chapterIV review manifest binds the final content/runtime and evidence;
+  production remains403 cards until a separately authorized release. Final
+  exact-head CI and current-main composition evidence are recorded in PR346.
+- After successful exact-head CI, next three actions: obtain the owner's
+  current-base release decision; perform the authorized merge/deployment;
+  verify the published bundle and production regression gates.
 
 ## Published: Atanasyan 7–9 chapter II, triangles
 
@@ -439,40 +481,37 @@ Updated: 2026-10-26 (Asia/Novosibirsk)
   and the legacy entry were checked. Gate:`ATANASYAN_7_9_CHAPTER_I_PUBLISHED_OK`.
   Later chapters and real-pupil validation remain pending.
 
-## In progress: Atanasyan additional exercises 288–293
+## In progress: Atanasyan remaining prism exercises 294–298
 
-- [Scope](tasks/TEXTBOOK_ATANASYAN_POLYHEDRA_288_293.md), HIGH review; owner
-  requested continuation on 2026-10-26. Branch `content/atanasyan-288-293`
-  is stacked on the unchanged reviewed PR330 head `d2d3c2a059879352002194598a44b055c1c62de3`.
-- Six new cards cover the real additional exercises on printed86 / PDF88:
-  prism element counts, cube surface, rectangular-box lateral areas from angles,
-  a common perpendicular and the angle between prism diagonals. The established
-  learner interaction, all prior479 cards and historical review evidence remain.
-- Source PDF identity and actual page pixels were checked. Exact independent
-  content/coordinate review, gates and cloud/mobile/desktop evidence are recorded
-  in this task's review and PR handoff as they complete. No new publication is
-  claimed. Additional exercises294 onward and later theory remain pending.
+- [Scope](tasks/TEXTBOOK_ATANASYAN_PRISMS_294_298.md), HIGH, branch
+  `content/atanasyan-294-298`, base `9cf995d30c400a6e581a3168bb8ef8f5c76ed945`.
+- Owner requested continuation after the verified publication below. Five
+  source numbers become ten cards, preserving the actual parts of295 and297.
+- Distinguish both diagonal-section cases in294 and the actual midline in296;
+  give each proof its own progressively revealed model and contextual theory.
+- Preserve all485 prior cards,24 review batches,1,033 capture cases and runtime.
+  Target495 cards and all main exercises1–298. Pyramids299 onward remain pending.
+- Next: source-specific authoring and independent review; exact-head cloud and
+  actual mobile/desktop inspection; separate concrete release decision.
 
-## Reviewed, unpublished: Atanasyan practical nets 271–275
+## Published: Atanasyan practical nets271–275 and additional exercises288–293
 
-- [Scope](tasks/TEXTBOOK_ATANASYAN_POLYHEDRA_PRACTICAL.md), HIGH review;
-  [PR330](https://github.com/ladynata-cloud/math-exam-fipi/pull/330) remains open Draft.
-  Head `d2d3c2a059879352002194598a44b055c1c62de3`; original base `631d2d644d87162d60585c3efb8365af8311a3f5`.
-- Five source-specific paper nets cover figures95–99, all45 seam pairs,
-  37guided steps and75modelstates. Candidate:479cards,1730steps,1784views;
-  all main exercises1–287,37theory points and40self-checks.
-- The completed Oct24 exact-head evidence in PR330 records four passing
-  workflows/eleven jobs,958browser journeys,160inspected new captures and
-  tencomplete instruction pages. This supersedes the old pending-checkpoint text.
-- At this Oct26 continuation, authoritative main was `038aa19ab4d87e52ac1765585fec148185dd5bc3`.
-  Its read-only composition with PR330 is clean, tree `24fd66867d160d1e44270c191893d4dccaec099a`.
-  The same24-path delta and stable patch ID `7e54a2aa7afacaeb246febef33c2915f6fb2e336`
-  are preserved. Only the status-document blob contains concurrent additions.
-  All course/runtime/browser inputs are identical to the reviewed head;
-  21fresh nonbrowser checks pass. Historical browser evidence is not labelled
-  a fresh Oct26 Chromium run. Neither dependency branch nor main was changed.
-- The live bundle was fetched again and still matches the published474-card
-  SHA256 below. Merge/deployment of PR330 requires a separate owner decision.
+- [PR330](https://github.com/ladynata-cloud/math-exam-fipi/pull/330) merged as
+  `18197a2ce67245766114be48cbb440706eebf696`; [PR344](https://github.com/ladynata-cloud/math-exam-fipi/pull/344)
+  as `9cf995d30c400a6e581a3168bb8ef8f5c76ed945`, after explicit owner publication.
+- Exact reviewed37-file union, both merge parents, affected blobs and stable
+  patch IDs verified; concurrent main additions preserved.
+- Live485 cards,1,763 steps,1,817 model states; all main exercises1–293,
+  theory points1–37 and40 self-check questions. Not the complete book.
+- Pages40296047583 passed for finalcommit;16 public files returnedHTTP200 and
+  matched merged bytes at2026-10-26T09:02:21Z. BundleSHA256:
+  `9ca4e58191b2073098745f0da2f76932f296cdb9d261e0ec59f578fb9a39a48c`.
+- Both increments passed independent source/math/pedagogy and actual responsive
+  inspection. Final exact-head CI:4 workflows/11 jobs;970 card journeys,
+  7,316 label states and2,070 images. The291 mobile power-wrap finding was fixed
+  and rereviewed. Post-push Profile40296049025 subsequently passed all3 jobs.
+- No pupil/physical-device trial or paid external-provider review is claimed.
+  Whole-course paid-review deferral remains recorded in the parent scope.
 
 ## Published: Atanasyan chapter III self-check questions
 

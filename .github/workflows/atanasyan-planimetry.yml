@@ -53,6 +53,7 @@ jobs:
       - name: All source-audited cards, every drawing, mobile and desktop, actual saved work
         env:
           GEOMETRY_TEXTBOOK_ARTIFACTS: artifacts/geometry-textbook
+          GEOMETRY_TEXTBOOK_CAPTURE_CHAPTERS: IV
           GEOMETRY_TEXTBOOK_HEAD: ${{ github.event.pull_request.head.sha }}
         run: node tools/geometry-textbook/browser_check.js
       - name: Preserve actual browser evidence even on failure

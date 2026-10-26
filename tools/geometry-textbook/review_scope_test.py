@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Release-boundary regressions; all forged review fixtures stay in temp copies."""
 import json
+import hashlib
 import shutil
 import tempfile
 import unittest
@@ -15,6 +16,7 @@ class ChapterReviewBoundary(unittest.TestCase):
         cls.original = compose()
         cls.baseline = read(ROOT / 'tools/geometry-textbook/published-chapter-01.json')
         cls.previous = read(ROOT / 'tools/geometry-textbook/published-chapters-01-02.json')
+        cls.published = read(ROOT / 'tools/geometry-textbook/published-chapters-01-03.json')
         cls.chapters = cls.original['build']['chapters']
 
     def setUp(self):
@@ -62,6 +64,32 @@ class ChapterReviewBoundary(unittest.TestCase):
                 self.assertEqual(digest(catalog), baseline['normalizedCatalogEntriesSha256'])
                 self.assertEqual(self.chapter(self.original, baseline['chapter'])['authoredContentSha256'],
                                  baseline['authoredContentSha256'])
+
+    def test_all_403_published_cards_catalog_and_review_manifests_are_unchanged(self):
+        # Frozen from the published base Git object, not regenerated from the
+        # candidate. Chapter III must receive the same preservation guarantee
+        # as I–II when chapter IV is appended.
+        labels = [chapter['label'] for chapter in self.published['chapters']]
+        self.assertEqual(labels, ['I', 'II', 'III'])
+        lessons = [lesson for lesson in self.original['lessons'] if lesson['source']['chapter'] in labels]
+        entries = [entry for entry in self.original['catalog']['entries'] if entry['source']['chapter'] in labels]
+        self.assertEqual(len(lessons), 403)
+        self.assertEqual(len(entries), self.published['cards'])
+        self.assertEqual(digest(lessons), self.published['normalizedLessonsSha256'])
+        self.assertEqual(digest(entries), self.published['normalizedCatalogEntriesSha256'])
+        self.assertEqual(self.original['build']['implementationSha256'], self.published['implementationSha256'])
+        for baseline in self.published['chapters']:
+            with self.subTest(chapter=baseline['chapter']):
+                actual = [lesson for lesson in lessons if lesson['source']['chapter'] == baseline['label']]
+                catalog = [entry for entry in entries if entry['source']['chapter'] == baseline['label']]
+                self.assertEqual(len(actual), baseline['cards'])
+                self.assertEqual(digest(actual), baseline['normalizedLessonsSha256'])
+                self.assertEqual(digest(catalog), baseline['normalizedCatalogEntriesSha256'])
+                chapter = self.chapter(self.original, baseline['chapter'])
+                self.assertTrue(chapter['publicationReviewMatches'])
+                self.assertEqual(chapter['authoredContentSha256'], baseline['authoredContentSha256'])
+                manifest = COURSE / self.review_name(baseline['chapter'])
+                self.assertEqual(hashlib.sha256(manifest.read_bytes()).hexdigest(), baseline['releaseReviewSha256'])
 
     def test_missing_new_review_does_not_revoke_old_review(self):
         for target in self.chapters[1:]:
