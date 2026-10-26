@@ -1,0 +1,190 @@
+{
+  "reviewer": "Codex source310 (independent of six lesson authors)",
+  "reviewedAt": "2026-10-26T15:01:23.180Z",
+  "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+  "authorBase": "44eab4d11046d8613b50a73b00185755c814dba6",
+  "authorReviewerSeparation": {
+    "reviewerAuthoredLessons": false,
+    "lessonAuthors": [
+      "prism_297_298:310",
+      "release_audit:311а/б,312,313,314"
+    ],
+    "reviewerAuthoredIndependentMathOracle": true
+  },
+  "scope": "Exactly six source-specific cards for main exercises310–314, including the two actual subparts311а/б. All conditions/goals,35 explanations and justifications,help/final prompts,theory references,and35 coordinate-model states were read. The supplied actual printed page88/PDF90 was freshly viewed directly. Published507-card content, especially299–309, is outside this review and remains unchanged.",
+  "sourceSHA256": "bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770",
+  "sourcePageVerification": {
+    "printedPages": [
+      88
+    ],
+    "pdfPages": [
+      90
+    ],
+    "renderedPageSHA256": "500ee24f03426fcf155cda335255130c99824c6b3e3c6a7bfd79649ca9f9dc41",
+    "method": "Direct visual reading of the supplied page image at original resolution; each object type,number,unit,part and requested quantity compared separately with the six current lesson files."
+  },
+  "canonicalization": "Remove only top-level status and review; recursively sort object keys, retain array order; JSON.stringify UTF-8; SHA256. Aggregate hashes the canonical six-card array in the listed card order.",
+  "aggregateSHA256": "cf2965ebfa5187fefbeb9fe8d3cf5fbf84ccaf8cf17943f619537b5292d0b5a5",
+  "cards": [
+    {
+      "id": "ex-main-0310",
+      "sha256": "53e554d3127f5ddc8ae754fa1b3fe35753228f8441f0c183afbd0050681015ee",
+      "steps": 5,
+      "modelStates": 6,
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "sourceGivens": {
+        "solid": "pyramid DABC",
+        "perpendicular": "DA to plane ABC",
+        "AB": 25,
+        "AC": 25,
+        "BC": 40,
+        "DA": 8,
+        "units": "cm",
+        "requested": "lateral area"
+      },
+      "answer": "540 cm²",
+      "verification": "Direct cross products give lateral areas100,100,340. The orthogonal projection of A on BC is the midpoint K; AK15 and DK17. DA is not used as an altitude of face DBC."
+    },
+    {
+      "id": "ex-main-0311-a",
+      "sha256": "5906eb74ede0d14a60aafb5dd3704e4a8bdfeeb6e3c23dfe13d2a6e8f227c80b",
+      "steps": 6,
+      "modelStates": 6,
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "sourceGivens": {
+        "solid": "pyramid DABC",
+        "AC": 13,
+        "AB": 15,
+        "CB": 14,
+        "DA": 9,
+        "perpendicular": "DA to base ABC",
+        "subpart": "а",
+        "units": "cm",
+        "requested": "full surface area"
+      },
+      "answer": "315 cm²",
+      "verification": "Independent Heron area84 and direct 3D face areas67.5,58.5,105 sum to315. Plane projection gives CH5,AH12,DH15, matching the two-Pythagoras written derivation."
+    },
+    {
+      "id": "ex-main-0311-b",
+      "sha256": "faaac94968d0cdde80de7e80911997b025ff844685377cdd39b0d1a688814d30",
+      "steps": 7,
+      "modelStates": 7,
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "sourceGivens": {
+        "solid": "pyramid DABC",
+        "AC": 13,
+        "AB": 15,
+        "CB": 14,
+        "DA": 9,
+        "perpendicular": "DA to base ABC",
+        "subpart": "б",
+        "units": "cm",
+        "requested": "prove the perpendicular foot from A to BDC lies on a face altitude; find the perpendicular length"
+      },
+      "answer": "AK=36/5 cm=7.2 cm; K is inside altitude DH of face BDC",
+      "verification": "A direct orthogonal projection onto plane BDC independently locates K on segment DH at parameter9/25 from D. AK is normal to both DH and KL, with L on DB and KL parallel BC. Distance36/5 agrees with two formulas for the area of ADH. The proof checks a second intersecting face direction, not only AK perpendicular DH."
+    },
+    {
+      "id": "ex-main-0312",
+      "sha256": "49e13091e5a43a6de3b19f730e06bdb0071bd27ebcc1d7d7a55462fe354637c3",
+      "steps": 6,
+      "modelStates": 6,
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "sourceGivens": {
+        "solid": "regular n-gonal pyramid",
+        "givenAngle": "each lateral face makes angle φ with the base plane",
+        "requested": "tangent of the angle between a lateral edge and the base plane"
+      },
+      "answer": "tan β=cos(180°/n)·tan φ; integer n≥3 and0°<φ<90°",
+      "verification": "For arbitrary n, the base central-angle bisector gives r/R=cos(π/n). The angle of the face is SMO, and that of the edge is SAO. Independent face-normal and line-normal computations verify the formula in132 non-special parameter cases, including n3 through31. The n5 illustration is explicitly labelled as only an example; the admissible-domain request supplements the source without changing its givens."
+    },
+    {
+      "id": "ex-main-0313",
+      "sha256": "f71fb4ad67e75bed5ccc2da799b374ba6f5c23938680d84f903371d215486c20",
+      "steps": 6,
+      "modelStates": 5,
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "sourceGivens": {
+        "solid": "regular triangular frustum",
+        "lowerBaseSide": 12,
+        "upperBaseSide": 6,
+        "height": 1,
+        "units": "dm",
+        "requested": "lateral area"
+      },
+      "answer": "54 dm²",
+      "verification": "Actual source-scale sides12 and6, height1, aligned homothetic bases and independently projected auxiliary points are exact. Inradii2√3 and√3 give normal-profile legs√3 and1, apothem2. Direct 3D trapezoid areas18 each give54; the base areas are excluded. The additional30-degree rigid Z rotation changes no dimensions or proof."
+    },
+    {
+      "id": "ex-main-0314",
+      "sha256": "6a33a04e0d0289c4c4f0fc5292ec9a4c562dcbc64fae3b327e03acc3fa6656c8",
+      "steps": 5,
+      "modelStates": 5,
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "sourceGivens": {
+        "solid": "regular quadrilateral frustum",
+        "height": 63,
+        "apothem": 65,
+        "baseSideRatio": "7:3",
+        "units": "cm",
+        "requested": "both base sides"
+      },
+      "answer": "56 cm and24 cm",
+      "verification": "Direct geometry gives a true side-face altitude65, not a lateral edge. Its projection is16 by65²−63²; the square inradius difference is half the side difference. Combined with7:3 this yields56 and24. All actual auxiliary coordinates satisfy the construction plane and right angle."
+    }
+  ],
+  "numericalChecks": {
+    "oracle": "tools/stereo-textbook/additional310-math.test.py",
+    "oracleSHA256": "190acb02b62e444f0d8a2bb092f3bfec5819a2d9a11f7f82642b310cf5aff7fc",
+    "independentSeed": 310314,
+    "actualCoordinateModels": 6,
+    "authoredPlanarConvexPolygons": 54,
+    "authoredNonzeroSegments": 106,
+    "theoryReferences": 33,
+    "generalPyramidCases": 132,
+    "generalFrustumCases": 54,
+    "rigidFrameCases": 72,
+    "rejectedCounterexamples": 13,
+    "method": "Direct 3D cross products,plane and line projections,regular polygon geometry,face-normal/line-normal angle calculations and independently generated non-special families. Counterexamples alter exact scale,apex placement,regularity,projection feet,face-line incidence,frustum height and base alignment; every altered model is rejected."
+  },
+  "openFindings": [],
+  "resolvedFindings": [
+    {
+      "card": "ex-main-0313",
+      "type": "source and geometry aspect of a visual correction",
+      "resolution": "All11 points received the previously reviewed additional30-degree rigid rotation about Z. Exact source dimensions and written content are unchanged. This review certifies the corrected geometry, not actual rendered readability."
+    }
+  ],
+  "pedagogicalAssessment": "Construction lines are introduced in named planes. Auxiliary points appear with corresponding reasoning. Prior steps and written work remain available. Source311б proves a whole-plane perpendicularity via two intersecting directions;312 separates a general n proof from its n5 illustration;313/314 distinguish pyramid height,face altitude and base inradius. All six final answers remain manually assessed.",
+  "provenance": {
+    "priorScopedReviewSHA256": "45c5d0d2adcd185714a11c4a93bc14144e668b911636d5c1f036f40978b29cf3",
+    "priorScopedCanonicalAggregate": "cf2965ebfa5187fefbeb9fe8d3cf5fbf84ccaf8cf17943f619537b5292d0b5a5",
+    "verification": "All six current canonical cards exactly match the prior six-card-only review. This is a new direct source/text/model check; it does not inherit or restore the withdrawn wider299–314 draft review."
+  },
+  "notRun": [
+    "Fresh exact-head cloud browser and actual pixel review, including corrected313; required separately.",
+    "Real-pupil efficacy trial.",
+    "Physical-device or screen-reader trial.",
+    "Paid external Claude review; course deferral is not provider approval."
+  ],
+  "visualStatus": "PENDING_SEPARATE_EXACT_HEAD_CLOUD_AND_PIXEL_REVIEW"
+}

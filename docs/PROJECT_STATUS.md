@@ -2,17 +2,27 @@
 
 Updated: 2026-10-26 (Asia/Novosibirsk)
 
-## In progress: Atanasyan 10–11, additional pyramid exercises 299–309
+## In progress: Atanasyan 10–11, remaining pyramid exercises 310–314
 
-- [Scope](tasks/TEXTBOOK_ATANASYAN_PYRAMIDS_299_309.md), HIGH review; owner explicitly
-  requested continuation and publication on 2026-10-26.
-- Verified starting release: PR345 merged as `6c7339a730ba3591859bd4c8c0d8ce9be64efd7c`;
-  495 cards, 1,819 steps and 1,877 model states, main exercises1–298.
-- Preparing twelve source-specific cards for299–309 (307а/б), with independent
-  source/proof/model review and retained historical content/browser checks.
-- Next: finish independent review and actual responsive-image checks, publish
-  the scoped increment under the current authorization and verify live files.
-  This entry does not claim that the full book or this increment is published.
+- [Scope](tasks/TEXTBOOK_ATANASYAN_PYRAMIDS_310_314.md), HIGH review; owner approved
+  transfer of only six cards onto the current published baseline on2026-10-26.
+- Branch `content/atanasyan-310-314`, base `44eab4d11046d8613b50a73b00185755c814dba6`.
+  Preserve published299–309 and all507 prior cards,26 batches,1188 captures,
+  existing course/runtime contracts and the Peterson5 increment in this base.
+- Target513 cards,1931 justified steps,2001 model states and main exercises1–314.
+  Fresh exact-head cloud and actual image checks precede a separate release decision.
+- Supersede blocked PR350; its withdrawn309 source review is not part of this transfer.
+  Exercises315 onward remain pending. The full textbook is not complete.
+
+## Published: Atanasyan 10–11, additional pyramid exercises 299–309
+
+- [PR348](https://github.com/ladynata-cloud/math-exam-fipi/pull/348) merged as
+  `72fb9861e2d333d92d4b55fb5d1c9f61c567f86a`;507 cards,1896 steps,1966 states,
+  all main exercises1–309,37 theory points and40 self-check questions.
+- Exact-merge Pages40335646555 and post-merge Profile40335646864 passed.
+  Twenty-two public assets matched expected bytes/SHA256 at2026-10-26T14:02:48Z.
+- Published bundle SHA256 `0aca5154f8f81edbc2df35d7bff112a0781c862b956d51fabc022ae2e00e6fa2`.
+  Exercise309 correctly has a rectangular base and answer80/3 square decimetres.
 
 ## In progress: lesson enquiries and channel subscriptions
 
@@ -460,18 +470,15 @@ Updated: 2026-10-26 (Asia/Novosibirsk)
   and the legacy entry were checked. Gate:`ATANASYAN_7_9_CHAPTER_I_PUBLISHED_OK`.
   Later chapters and real-pupil validation remain pending.
 
-## In progress: Atanasyan remaining prism exercises 294–298
+## Published: Atanasyan remaining prism exercises 294–298
 
-- [Scope](tasks/TEXTBOOK_ATANASYAN_PRISMS_294_298.md), HIGH, branch
-  `content/atanasyan-294-298`, base `9cf995d30c400a6e581a3168bb8ef8f5c76ed945`.
-- Owner requested continuation after the verified publication below. Five
-  source numbers become ten cards, preserving the actual parts of295 and297.
-- Distinguish both diagonal-section cases in294 and the actual midline in296;
-  give each proof its own progressively revealed model and contextual theory.
-- Preserve all485 prior cards,24 review batches,1,033 capture cases and runtime.
-  Target495 cards and all main exercises1–298. Pyramids299 onward remain pending.
-- Next: source-specific authoring and independent review; exact-head cloud and
-  actual mobile/desktop inspection; separate concrete release decision.
+- [PR345](https://github.com/ladynata-cloud/math-exam-fipi/pull/345) merged as
+  `6c7339a730ba3591859bd4c8c0d8ce9be64efd7c`, adding ten cards for294–298.
+- Published495 cards,1819 steps,1877 model states and main exercises1–298.
+  The actual parts of295 and297, both diagonal sections in294 and the midline
+  in296 were independently checked with their progressive models.
+- Exact-merge Pages40322565353 and post-merge Profile40322565854 passed.
+  Eighteen public files /36 requests matched the reviewed release bytes.
 
 ## Published: Atanasyan practical nets271–275 and additional exercises288–293
 
