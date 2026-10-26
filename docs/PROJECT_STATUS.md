@@ -359,7 +359,7 @@ Updated: 2026-10-25 (Asia/Novosibirsk)
   not performed. Course content, learner data and progress semantics were
   unchanged. Release gate: `PROFILE_FULL_COURSE_ENTRY_PUBLISHED_OK`.
 
-## In review: Atanasyan 7–9 chapter III, parallel lines
+## Published: Atanasyan 7–9 chapter III, parallel lines
 
 - [Scope](tasks/ATANASYAN_7_9_CHAPTER_III.md), HIGH review; branch
   `content/atanasyan-7-9-chapter3`, based on
@@ -381,9 +381,32 @@ Updated: 2026-10-25 (Asia/Novosibirsk)
 - Detailed evidence is recorded in `docs/reviews/ATANASYAN_7_9_CHAPTER_III_*`.
   Exact-head cloud CI and the committed identity belong to this task's Draft PR
   handoff; no publication result is inferred from a local review manifest.
-- This section describes a development candidate. Chapters I–II remain the
-  published baseline until a separate owner-authorized release of chapter III.
-  Later book chapters and a real-pupil pilot are outside this task.
+- Publication is now confirmed: PR #331 was squash-merged as
+  `91dd1e5a3f85e29709df922fa88859204aac100d`; exact-commit Pages40121467624
+  and post-merge board40121468027 passed. The current public bundle checked
+  on26 October contains403 reviewed cards through exercise227, with matching
+  reviews for all three chapters. The earlier candidate wording above records
+  the preparation evidence; it is not the current publication status.
+- ChapterIV is the next scoped continuation; a real-pupil pilot is not claimed.
+
+## In progress: Atanasyan 7–9 chapter IV
+
+- [Scope](tasks/ATANASYAN_7_9_CHAPTER_IV.md), HIGH review; branch
+  `content/atanasyan-7-9-chapter4`, base
+  `9cf995d30c400a6e581a3168bb8ef8f5c76ed945`.
+- Exact source: 2023 revised edition, printed69–90; all228–330, theory31–38
+  and23 review questions. Grade7 also includes chapterV and advanced413–461.
+- Prior conversation reported a prepared chapterIV candidate, but its source
+  and evidence files could not be recovered. This continuation rebuilds from
+  the exact provided PDF and requires fresh review; no old test claim is reused.
+- Published403 cards, their runtime and learner identifiers remain the baseline.
+  Whole-course board synchronization and cabinet changes are outside this scope.
+- The full166-card candidate is prepared:135 exercise parts,8 theory points,
+  23 selfchecks,569 cards combined. Local source/model/content, preservation,
+  retained-work and independent DOM checks pass. Actual browser/image review
+  and the chapterIV publication manifest remain pending.
+- Next three actions: run exact-head browser CI; inspect every new drawing at
+  both widths and resolve findings; complete the Draft PR for the release decision.
 
 ## Published: Atanasyan 7–9 chapter II, triangles
 
