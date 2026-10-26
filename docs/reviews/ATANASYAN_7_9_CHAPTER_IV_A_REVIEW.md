@@ -19,9 +19,9 @@ didactic step and authored scene definition was inspected.
 
 | File | SHA-256 |
 | --- | --- |
-| `tools/geometry-textbook/models_ch4_a.py` | `93041f422d116947bdd3740d2ecb15613bde526e438d9d2039f6fe6c84dadab2` |
+| `tools/geometry-textbook/models_ch4_a.py` | `a6b89164596335e71e90582ae4a6022ded2631dade9d52ed5c75e163baa5008b` |
 | `geometry-course/textbook/preparation/chapter-04-a.json` | `27c3bb48a30576e7070c8c5ea3f9732724950f2e4fe7e82ccd3680edaacedd2b` |
-| `geometry-course/textbook/models/chapter-04-a.json` | `60990dee3cd7609826212f0e6aa899aa71a6f9d810d981af1a817a37a46cb9cf` |
+| `geometry-course/textbook/models/chapter-04-a.json` | `f31f566850547741205b60dedfebf7994e7a6264a19ca14604b63594f2f7d8d8` |
 
 ## Exact source
 
@@ -118,3 +118,29 @@ There are no unresolved source, mathematical, didactic or authored-model
 findings at the recorded hashes. This review makes **no claim about rendered
 pixels, browser controls, saved board work, mobile layout, or publication**;
 those require the separate integration/browser review.
+
+## Narrow 252б display correction after the first browser run
+
+The reviewer inspected the actual 320 px PNG for `252-part-2`, `step-5`, from
+CI run `40318034439`, head `2f8b1217d651ff32bf90583642171dbe538f1e7e`.
+The artifact ZIP SHA-256 is
+`9311336e477c1ffde8409b1759ea902c7e476d687984ffb1f5df19038ba57ce1`.
+This run reached all 5,812 authored view/width inspections and reported a
+single problematic view: overlapping line/label placements at B, P, O and M
+in that final mobile scene. The run is failed, not visually approved.
+
+The final scene now shows A, B, C, O, M with triangle ABC and AM. It retains
+the proved BM = MC and right-angle marks, while removing P/Q and crossing
+segments BQ/CP that are no longer needed in this final conclusion. Earlier
+scenes preserve the full given configuration and both congruence arguments.
+The reviewer compared the old and regenerated JSON directly: only the
+`points` and `segments` of this one final view changed. Coordinates, checks,
+marks, every other view and every preparation byte are unchanged. The final
+picture still expresses the proved median/height conclusion with O on AM;
+no mathematical premise or proof step is lost.
+
+Generator reproduction and all 44 model validations passed again. The hash
+table above now identifies this corrected candidate. This is a **PASS for the
+data/didactic delta only**. Fresh browser execution and actual pixels for the
+corrected view are still required; the earlier failing PNG cannot establish
+that its replacement renders correctly.

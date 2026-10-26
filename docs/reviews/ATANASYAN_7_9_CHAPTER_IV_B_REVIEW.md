@@ -6,9 +6,9 @@ Reviewer: chapter-IV theory author (`author_ch4_theory`), independent of the aut
 
 | Reviewed file | SHA-256 |
 | --- | --- |
-| `tools/geometry-textbook/models_ch4_b.py` | `24fd0cc5f944b8d22e14591858afb3741a30fce0c38bd1d9cb3d447a24a2f669` |
-| `geometry-course/textbook/preparation/chapter-04-b.json` | `f8a676a6d1988ebbf233d06bdba64b18ffb75eb4f122cf9dc193c848a740352b` |
-| `geometry-course/textbook/models/chapter-04-b.json` | `efdb09d39c6f2ece52c8e286d204963a5c7e8c0605ef3cfab6f113fe822b82aa` |
+| `tools/geometry-textbook/models_ch4_b.py` | `cbd00fab2276f72bf04c43e9fc3d93c63a11109a11de10fa9ad5bf4de57d5f1c` |
+| `geometry-course/textbook/preparation/chapter-04-b.json` | `280634e5e55c283761fed8d6b0084fa678b38985cf08f5eaf734a12887704a9c` |
+| `geometry-course/textbook/models/chapter-04-b.json` | `114a278f8eda45c80d3dfa8167ae93e9177883d04205cd2eb2aeac77391b3a4d` |
 
 ## Source and completeness
 
@@ -63,6 +63,29 @@ All explanations use only theory available by point 37 or earlier explicitly pro
 ## Resolved finding
 
 Exercise 280 originally displayed auxiliary H and DH in the neutral scene although the first solution step introduces that perpendicular. The author changed the neutral scene to ABC, D and AD only. The reviewer inspected the final serialized views: step 1 introduces H, DH and its right-angle marker; step 3 adds the marker showing AD perpendicular to BC. The written proof and answer remain unchanged. No unresolved source, mathematical, didactic or authored-model finding remains at the recorded hashes.
+
+## Review of the subsequent visual and construction-timing delta
+
+After the separate actual-pixel review reported presentation and construction-timing issues, this reviewer independently compared the new authoring code and both JSON files with the reviewed baseline at local commit `9ea54f3`. The original model hash was `efdb09d39c6f2ece52c8e286d204963a5c7e8c0605ef3cfab6f113fe822b82aa`; the current exact hashes are in the table above.
+
+Exactly ten model cards changed: 266, 268, 270, 272, 275, 282, 288, 289, 290 and 291. The complete coordinate dictionaries, all 137 explicit coordinate claims, didactic references, step counts and answers remain identical. The 23 other cards remain identical.
+
+| Card | Independently checked delta |
+| --- | --- |
+| 266 | Only the obtuse-case apex label offset changes, directing it outside the triangle. |
+| 268 | The same correct 140° sector uses radius 3 instead of 7; its endpoints, vertex and mathematical value are unchanged. |
+| 270 | Only the F label offset changes. |
+| 272 | Only the second-triangle K₁ label offset changes. |
+| 275 | Step 1 shows the angle-bisector ray without prematurely naming its later perpendicular intersection H. Step 2 introduces H together with B, C and the perpendicular. |
+| 282 | Step 1 introduces only the two distance perpendiculars. Step 2 introduces median AD, matching its newly explicit instruction. |
+| 288 | Step 1 shows the candidate parallel line; step 2 restricts it to the required ray and names D; step 3 adds the illustrative perpendicular distance. D has no filled point marker, and the caption explicitly excludes it from the locus. |
+| 289 | Step 2 shows only the two equal point-to-line distances. The constructed middle parallel and AB/M appear at step 3. |
+| 290 | Step 1 introduces the parallel through M. The perpendicular distances appear at step 2, where they enter the argument. |
+| 291 | Step 1 shows only the first half-plane's parallel; the opposite parallel appears at step 2. The zero-distance scene remains the original line. |
+
+The only preparation-text delta is exercise 282, step 2: it now explicitly says to draw AD before applying the already established isosceles-median property. This improves construction timing without changing the argument or introducing a new assumption.
+
+The generator's in-memory outputs again equal both serialized JSON files. All 33 Python model checks and all 33 complete JavaScript lesson/viewer validations pass. This is **PASS for the revised content and model data**. It does not assert that the new label placements or images have passed actual-pixel review: the ten changed cards require fresh browser captures and the separate visual review record.
 
 ## Reproduced checks
 

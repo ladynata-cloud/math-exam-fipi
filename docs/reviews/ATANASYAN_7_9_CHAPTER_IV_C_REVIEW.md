@@ -6,9 +6,9 @@ Reviewer: chapter-IV exercises 259–291 author (`author_ch4_b`), independent of
 
 | Reviewed file | SHA-256 |
 | --- | --- |
-| `tools/geometry-textbook/models_ch4_c.py` | `d90282ca86e97b3709871e9ff90d359683641b6aab32e49ca93469d5efd78482` |
-| `geometry-course/textbook/preparation/chapter-04-c.json` | `fb4b26bf46abaa81af372902138b5a8c9f9db460b9efe2404f7023cfa2b5ce2f` |
-| `geometry-course/textbook/models/chapter-04-c.json` | `d85ace901fa9a754428d684c63234d8d6bc77966a940ff87e9f05cc943faf500` |
+| `tools/geometry-textbook/models_ch4_c.py` | `b794ce2b79ccdee464fb9bc262bf8b0b6996807ce56250fbb5743656fee81fac` |
+| `geometry-course/textbook/preparation/chapter-04-c.json` | `932b282663c84a09e68799629871ecf6881be1cf636c4e4ea4412c8fd0d29f44` |
+| `geometry-course/textbook/models/chapter-04-c.json` | `97d3bdd8de484f766aa3b75061d6c08fad9df0d4738c3beaa93d2a80c26b00cf` |
 
 ## Source and completeness
 
@@ -82,6 +82,14 @@ The reviewer evaluated the authoring generator up to its output-writing loop wit
 The Python `check_models.validate` function and the runtime JavaScript `PlanarViewer.validateModel` each return zero errors for all 58 models, including hidden later and alternative views. These cover the encoded equalities, angles, perpendicularities, parallelism, ratios, collinearity and marker consistency.
 
 The reviewer also performed independent numerical reconstruction of 942 configurations for the constructions in 322, 325, 328 and 329, using separately written calculations. These checked side/median restoration, both circle–parallel intersections and both half-planes, and feasible/infeasible ray intersections for angles from 15° through 165°. This corroborates the construction analysis; it does not replace the written geometric proofs. The exact K = C case in 325 was then separately reviewed in the amended proof and model.
+
+## Source and model delta after the first visual review
+
+The actual first browser capture was reviewed separately and produced changes requested, recorded in `ATANASYAN_7_9_CHAPTER_IV_C_VISUAL_REVIEW.json` and its desktop companion. It captured remote head `2f8b1217d651ff32bf90583642171dbe538f1e7e`, corresponding to local commit `9ea54f3`, with original generator/preparation/model hashes `d90282ca86e97b3709871e9ff90d359683641b6aab32e49ca93469d5efd78482`, `fb4b26bf46abaa81af372902138b5a8c9f9db460b9efe2404f7023cfa2b5ce2f` and `d85ace901fa9a754428d684c63234d8d6bc77966a940ff87e9f05cc943faf500`.
+
+The reviewer independently compared those exact files from local commit `9ea54f3` with the current hashes at the top of this report. Exactly 21 model cards changed: 299д, 301, 303, 305, 307, 308, 309а–б, 310а–б, 311, 318–322, 325, 327–330. The changes consist of 20 cards' boundary-label offsets and the required supporting opposite-side lines in 325 and 328. In 325 the added AH right-angle marker is consistent with the unchanged coordinates. The only preparation change is 327 step 2 explicitly introducing the three connecting segments already displayed in that step.
+
+All coordinates, all 179 coordinate claims, all didactic prompts/reasons/references, every condition, answer and mathematical argument are unchanged. The reviewer reran full generator-to-JSON equality, the Python validator and the runtime JavaScript validator: all 58 models pass. Counts remain 220 steps and 302 views. This establishes the content/model-data PASS at the new hashes; it does not close visual findings until fresh rendered images have been independently inspected.
 
 ## Verification boundary
 

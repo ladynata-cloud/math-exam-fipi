@@ -1,0 +1,6836 @@
+{
+  "schemaVersion": 1,
+  "verdict": "REQUEST_CHANGES",
+  "scope": "Independent actual-pixel visual review of exercises259–291: all33cards and154views at both320px and1280px. This report does not approve the global browser gate.",
+  "reviewer": {
+    "agent": "/root/author_ch4_c",
+    "independentOfAuthorB": true
+  },
+  "reviewedAt": "2026-10-26T12:20:23.260663+00:00",
+  "reviewedActualPixels": true,
+  "globalBrowserPass": false,
+  "limitations": [
+    "Global run40318034439 failed on unrelated exercise252б; no global browser PASS is asserted.",
+    "Findings must be fixed and affected rendered views independently reviewed before this report can become PASS."
+  ],
+  "capture": {
+    "provenance": {
+      "runId": 40318034439,
+      "artifactId": 12648567416,
+      "head": "2f8b1217d651ff32bf90583642171dbe538f1e7e",
+      "zipSha256": "9311336e477c1ffde8409b1759ea902c7e476d687984ffb1f5df19038ba57ce1",
+      "zipBytes": 116603318,
+      "evidenceSha256": "b636a12d07f0859f7d5f9f1c604043d024735b75b269d8b3a1217abec0bf64d9",
+      "browserCompleted": false,
+      "visualReviewPerformed": false
+    },
+    "rosterSha256": "ddfc3b82efc8a0b1fcab206188b2e17c6d62d8e3d3097b97cb2e35be7387374e",
+    "sourceManifestSha256": "7dc7256bb1ffa6b5f54a59485d89073e7724084f09d7cce65239c38cafacb933",
+    "bundleSha256": "9fb7cfc95c3c8ff8e8cd47f3ec7b2f1d036a4f108f5bc236a676de681ee90f6e",
+    "browserEvidenceSha256": "b636a12d07f0859f7d5f9f1c604043d024735b75b269d8b3a1217abec0bf64d9"
+  },
+  "authoredFilesSha256": {
+    "tools/geometry-textbook/models_ch4_b.py": "24fd0cc5f944b8d22e14591858afb3741a30fce0c38bd1d9cb3d447a24a2f669",
+    "geometry-course/textbook/preparation/chapter-04-b.json": "f8a676a6d1988ebbf233d06bdba64b18ffb75eb4f122cf9dc193c848a740352b",
+    "geometry-course/textbook/models/chapter-04-b.json": "efdb09d39c6f2ece52c8e286d204963a5c7e8c0605ef3cfab6f113fe822b82aa"
+  },
+  "coverage": {
+    "cards": 33,
+    "views": 154,
+    "widths": [
+      320,
+      1280
+    ],
+    "viewWidthPairs": 308,
+    "exactPngRepresentatives": 172,
+    "sheets": 44,
+    "missing": [],
+    "pngHashesVerified": true,
+    "method": "Viewed every cell of all44 readable2×2 sheets. Exact PNG SHA256 aliases inherit visual review of their identical pixels, not merely a guessed similarity. Read corresponding preparation steps to assess reveal timing. Opened the original266case1 mobile PNG to confirm its label placement."
+  },
+  "reviewedSheets": [
+    {
+      "file": "B-w0320-sheet-001.png",
+      "sha256": "983c68b519e1d162b372f78c834635c97fc13db35bad71df55021917734c66f4",
+      "width": 320,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w0320-sheet-002.png",
+      "sha256": "d2be7742a2f7c5dc6673446767b4d9ffc41096b05fbbee5303f5ba5e8c4ca65c",
+      "width": 320,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w0320-sheet-003.png",
+      "sha256": "c6a8bf22ffc76d11c66be40c69517d4a93e43361c15b844596bfaf35c6c178a4",
+      "width": 320,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w0320-sheet-004.png",
+      "sha256": "6682c25944e3286b28a83905d807eb69552c2b2f893460eb376a9324b61a0003",
+      "width": 320,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w0320-sheet-005.png",
+      "sha256": "d924a332d2a2701db65db9039dc109701d3dd5ac7bc60ce201321a6f68803acf",
+      "width": 320,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w0320-sheet-006.png",
+      "sha256": "ea11108f25b5cd96f46b085c0d7aea954ff87e7e805d20e3d605e51be3d7180b",
+      "width": 320,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w0320-sheet-007.png",
+      "sha256": "b9f094b1fc0da41885b4b6cd71a989309a90529a7f2f108a5fe33a0d01586082",
+      "width": 320,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w0320-sheet-008.png",
+      "sha256": "ec1066e021a8ab6d94f2d41dc19815b695d5527e4833b934c95dace1294168c6",
+      "width": 320,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w0320-sheet-009.png",
+      "sha256": "6b65ede387af1804550d0d82a723135bc6387522d8c47488934df1444b78117f",
+      "width": 320,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w0320-sheet-010.png",
+      "sha256": "df781b2ac51f2d6106b65139ac6dff1c340a3e089886e1f3a1a54ac7bf000337",
+      "width": 320,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w0320-sheet-011.png",
+      "sha256": "ceab646d55ecaca62859912a4b3c31f1b637dfc88a35aead1670b0448fcc0c7c",
+      "width": 320,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w0320-sheet-012.png",
+      "sha256": "f08ac73d284355c5c7721673d948a8fcbb32bfef01c6feaedc0e2dcfc63e82d4",
+      "width": 320,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w0320-sheet-013.png",
+      "sha256": "b8af68999c12c33bec9ff3b58af89638250adcb4029d7e535593711ea7147e6f",
+      "width": 320,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w0320-sheet-014.png",
+      "sha256": "7b8232f7c5d4e354627c6ba4c8d101edd789c8d11f7e3f3f985ccd5d967f55be",
+      "width": 320,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w0320-sheet-015.png",
+      "sha256": "0afe74b928c85755be7aabb6cf2600265544207a433f577ab5cb3736ea78dc92",
+      "width": 320,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w0320-sheet-016.png",
+      "sha256": "9a3bfb1778f85b3b51c607d90ee1cad26f1421cd189ee4e847e9bd9a98b4e04a",
+      "width": 320,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w0320-sheet-017.png",
+      "sha256": "aef85ef1a34e0a1e002e841e05f79b8d17c62a10fa8e384927c771d1512ff462",
+      "width": 320,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w0320-sheet-018.png",
+      "sha256": "99bfe49e7ab9d20c004fede30267f5d65723afe0c7994afb6642dd22a28e5f29",
+      "width": 320,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w0320-sheet-019.png",
+      "sha256": "418989f57c3350c96fe6c58ae8b8dfbf6232ebc9dc6cf65445d5f041154d2417",
+      "width": 320,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w0320-sheet-020.png",
+      "sha256": "49823c980710f5716864b5495a7fc47b9b5352c5a2d0b09ad7bc8fb94ee33e8c",
+      "width": 320,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w0320-sheet-021.png",
+      "sha256": "46edbf21a8af8e845a3a9808f3daff7578f5cd29d36d275f07fb68baaa9582d8",
+      "width": 320,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w0320-sheet-022.png",
+      "sha256": "6612024fb8d72b02debd29eeabf03d508bc8f9e01a606495f51a66c2408936ce",
+      "width": 320,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w0320-sheet-023.png",
+      "sha256": "742caf6f760f7b1e42aedff490f6cf749d2c3af4a628d73934aba77c9ef1652b",
+      "width": 320,
+      "cellCount": 2
+    },
+    {
+      "file": "B-w1280-sheet-001.png",
+      "sha256": "4d28a48eea6a5bd49e3c2f31cdd3277f01b204870ffeada2440ad2f03c02748e",
+      "width": 1280,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w1280-sheet-002.png",
+      "sha256": "75e3ac736a510dc2ffbe3374d076148cb79e6a17524b0197d16f683e2cd08c56",
+      "width": 1280,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w1280-sheet-003.png",
+      "sha256": "acb0e20f6e6183277bfc0430f425766fbda287bfe285f531d6debd483aa4dfff",
+      "width": 1280,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w1280-sheet-004.png",
+      "sha256": "f455afb4fd9d0d3aef5a2f654d9a9b31de31d0da581cca0476f46df6c5d35cd1",
+      "width": 1280,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w1280-sheet-005.png",
+      "sha256": "59dda2497d8e207c11be19dce10838dd515258ba825fb7af012bdd312e928ad4",
+      "width": 1280,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w1280-sheet-006.png",
+      "sha256": "42d00b41002a9cd4bca5f5ed7143a6aec9dadbe70542b7fd6a0d3704d7a2c030",
+      "width": 1280,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w1280-sheet-007.png",
+      "sha256": "c8c2f73b3059b57ba1be621131b5160b51016957be2da94752284f655a367733",
+      "width": 1280,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w1280-sheet-008.png",
+      "sha256": "05a45d898430a03f1ce5f4a38732cc6fbb35c3aad678d3543637d5c77f96e5c7",
+      "width": 1280,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w1280-sheet-009.png",
+      "sha256": "e575bd003d283728725aeb9cca1f34ada34e2e2a5a0df35757e6a8614e2cacf3",
+      "width": 1280,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w1280-sheet-010.png",
+      "sha256": "7d711ed754b4c2e686e9bfaa7586838b6348d45306a3b4f75fece443ecb03979",
+      "width": 1280,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w1280-sheet-011.png",
+      "sha256": "04a43d49eeb71f54144cc83fa6541cfcfd57eed1d506c276c3e0c4fdc04d7497",
+      "width": 1280,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w1280-sheet-012.png",
+      "sha256": "7a410c6772fa4fcf3fec8805809cb5281c69633c144e499fbb6b0a774f2cfc10",
+      "width": 1280,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w1280-sheet-013.png",
+      "sha256": "4413984c7772d858762b77ed1e4867c2f8578024fabcc918d223a2ba84699b3a",
+      "width": 1280,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w1280-sheet-014.png",
+      "sha256": "1aebf1b2a118ea9dec7c880437eda9010d378cebb5137b195b5979130baaf4da",
+      "width": 1280,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w1280-sheet-015.png",
+      "sha256": "c754e0de2edc2bf7da438e68af2f3ed5dd0501031b00dbec14c768b266817492",
+      "width": 1280,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w1280-sheet-016.png",
+      "sha256": "d14aa81c1135b6e0274234af71a75f833a098e46e1de6012cb514ba58f6de638",
+      "width": 1280,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w1280-sheet-017.png",
+      "sha256": "89e57ce3459efa5901a8449e12e91997b2d87b8e51bd5d14a25a2140b373b704",
+      "width": 1280,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w1280-sheet-018.png",
+      "sha256": "cd595dbadb5dea91138cf6abe1c5c9a11b2afb384a0576b602f11721a20cdbda",
+      "width": 1280,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w1280-sheet-019.png",
+      "sha256": "7929607dc16a40ef0418b23c4014a88bf6aba756b4efd264f41e95458e294714",
+      "width": 1280,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w1280-sheet-020.png",
+      "sha256": "51631cf1e28df52af6bb91d8b9e9df818bc49f6dea6c0e5dfbcadce03d5a32ba",
+      "width": 1280,
+      "cellCount": 4
+    },
+    {
+      "file": "B-w1280-sheet-021.png",
+      "sha256": "112720b54108395e7675becbf790eaadd61fe62f13b9f22adc16e8811544ce1c",
+      "width": 1280,
+      "cellCount": 2
+    }
+  ],
+  "reviewedOriginals": [
+    {
+      "file": "review-atanasyan-7-9-main-266-part-1-case-1-320.png",
+      "sha256": "34925d31d6dc9579d4fd00c47fd02d6491ef6727742c6f9f4f009f23c312a3cb"
+    }
+  ],
+  "reviewedViewWidthPairs": [
+    {
+      "id": "atanasyan-7-9-main-259-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-259-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "3759becaad632ec719ab5c9f0770ebfc5e33a729c60493ba2d1bad84f9f6f473",
+      "byteSize": 21232,
+      "pixelSize": [
+        274,
+        445
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-001.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 1
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-259-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-259-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "94b26b1351e180dd970047731ba6140388133990ceb3fa254fa339fa7b80b314",
+      "byteSize": 21222,
+      "pixelSize": [
+        274,
+        445
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-001.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 2
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-259-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-259-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "94b26b1351e180dd970047731ba6140388133990ceb3fa254fa339fa7b80b314",
+      "byteSize": 21222,
+      "pixelSize": [
+        274,
+        445
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-001.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 2
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-259-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-259-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "94b26b1351e180dd970047731ba6140388133990ceb3fa254fa339fa7b80b314",
+      "byteSize": 21222,
+      "pixelSize": [
+        274,
+        445
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-001.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 2
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-260-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-260-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "b8a5df18d67a5c1680deacc7d9a38cf12122a8610e288cb3d21e4f5a52a925a8",
+      "byteSize": 25261,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-001.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 3
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-260-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-260-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "2760dc83b2d6dcadeb064f72daaff61457e622367c728100de52d383ab7592de",
+      "byteSize": 25248,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-001.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 4
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-260-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-260-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "2760dc83b2d6dcadeb064f72daaff61457e622367c728100de52d383ab7592de",
+      "byteSize": 25248,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-001.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 4
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-260-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-260-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "2760dc83b2d6dcadeb064f72daaff61457e622367c728100de52d383ab7592de",
+      "byteSize": 25248,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-001.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 4
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-261-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-261-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "300280eaa848b0b3af186268a614aea153946148759d3898d1a44d1933873ccf",
+      "byteSize": 22502,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-002.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 5
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-261-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-261-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "bafe0ed0c25ae59899828d8d76b2b1c34e5aaccafae280fccacc7c3ea442794c",
+      "byteSize": 22492,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-002.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 6
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-261-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-261-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "bafe0ed0c25ae59899828d8d76b2b1c34e5aaccafae280fccacc7c3ea442794c",
+      "byteSize": 22492,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-002.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 6
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-261-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-261-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "bafe0ed0c25ae59899828d8d76b2b1c34e5aaccafae280fccacc7c3ea442794c",
+      "byteSize": 22492,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-002.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 6
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-262-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-262-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "9bb7911d09686777fc9ac2875cc3cd27fe5367dc801c46ef6df014cc64797eb3",
+      "byteSize": 23099,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-002.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 7
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-262-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-262-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "be67616fd41a57aa2c38120491a0aebe4086db3321ad9c47920eccd044188141",
+      "byteSize": 23091,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-002.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 8
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-262-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-262-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "a8c625b7aada3f6feb25e8ab0c938b76eb8095c43c72393ea8b5bd2d932d863e",
+      "byteSize": 23085,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-003.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 9
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-262-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-262-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "a8c625b7aada3f6feb25e8ab0c938b76eb8095c43c72393ea8b5bd2d932d863e",
+      "byteSize": 23085,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-003.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 9
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-263-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-263-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "d63638564b7a021c8f0267b9aa64c30e04a4979ab343751c55b48a521b85d6ef",
+      "byteSize": 25140,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-003.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 10
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-263-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-263-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "79da3b0432b14fceb980c4471de101ab6d4046a8c844d9291ec3cc645a3aec05",
+      "byteSize": 25129,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-003.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 11
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-263-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-263-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "79da3b0432b14fceb980c4471de101ab6d4046a8c844d9291ec3cc645a3aec05",
+      "byteSize": 25129,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-003.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 11
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-263-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-263-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "79da3b0432b14fceb980c4471de101ab6d4046a8c844d9291ec3cc645a3aec05",
+      "byteSize": 25129,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-003.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 11
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-264-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-264-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "8b73e695080016b0645eb246d4506c31b72654851c6ab28917bdf8d5b50e1363",
+      "byteSize": 24703,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-003.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 12
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-264-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-264-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "936f90550f44c52eb383fee37be179083a8936315aefd33f939d52a5ae4835c4",
+      "byteSize": 24696,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-004.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 13
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-264-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-264-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "936f90550f44c52eb383fee37be179083a8936315aefd33f939d52a5ae4835c4",
+      "byteSize": 24696,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-004.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 13
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-264-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-264-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "936f90550f44c52eb383fee37be179083a8936315aefd33f939d52a5ae4835c4",
+      "byteSize": 24696,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-004.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 13
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-265-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-265-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "1bb0544f080903ad95f237afe7abf38e510be35e7133d41be278ae8b6cc4bcd2",
+      "byteSize": 23648,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-004.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 14
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-265-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-265-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "ed7d8e6d0f5f356bf89feaba07d9b584cfb1a5b3b3a189503a3f9dc87d0f386e",
+      "byteSize": 23642,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-004.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 15
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-265-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-265-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "97b96e0d2e385fdd93a593901118167274bf9d87367d8dad4c38f1d9482c2092",
+      "byteSize": 23636,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-004.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 16
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-265-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-265-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "97b96e0d2e385fdd93a593901118167274bf9d87367d8dad4c38f1d9482c2092",
+      "byteSize": 23636,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-004.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 16
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-266-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-266-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "f4b9b07d1bab4649500540204669dd3f584dbcb7201e3d45d2f420ea2be11246",
+      "byteSize": 23569,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-005.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 17
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-266-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-266-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "fc526932a899917e8e5eb8652f28190eccb717e793966a694ed7195b802b491f",
+      "byteSize": 26295,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-005.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 18
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-266-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-266-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "fca849fbc4bb36d85ce2a4a292a564005f473693119b77fe94e8e6135a8c5048",
+      "byteSize": 25100,
+      "pixelSize": [
+        274,
+        511
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-005.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 19
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-266-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-266-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "cbfe5028ee0fca6357c11a8e0004667895cf1ffc81cea02bde64cffddd6f0e31",
+      "byteSize": 32290,
+      "pixelSize": [
+        274,
+        564
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-005.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 20
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-266-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-266-part-1-step-4-320.png",
+      "group": "B",
+      "sha256": "cbfe5028ee0fca6357c11a8e0004667895cf1ffc81cea02bde64cffddd6f0e31",
+      "byteSize": 32290,
+      "pixelSize": [
+        274,
+        564
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-005.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 20
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-266-part-1",
+      "chapter": "IV",
+      "view": "case-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-266-part-1-case-1-320.png",
+      "group": "B",
+      "sha256": "34925d31d6dc9579d4fd00c47fd02d6491ef6727742c6f9f4f009f23c312a3cb",
+      "byteSize": 30890,
+      "pixelSize": [
+        274,
+        564
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-006.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 21
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-266-part-1",
+      "chapter": "IV",
+      "view": "case-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-266-part-1-case-2-320.png",
+      "group": "B",
+      "sha256": "d5a9abbc6bf2c4f2e6c0b9b1a6c9d87e21dae1e13ec995c1545f76a8eb4297ce",
+      "byteSize": 25166,
+      "pixelSize": [
+        274,
+        511
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-006.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 22
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-267-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-267-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "9652ccc76718c2771c81420d09c8cf02a2a256340f8bb26b3d25e3a447921803",
+      "byteSize": 26406,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-006.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 23
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-267-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-267-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "806ea16f6ff3853cc79349c4e4f396c259bf8ccff180916e268fb63400ff4e43",
+      "byteSize": 26407,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-006.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 24
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-267-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-267-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "aae781579377c6a7ff9168518814f8eb5eb2c0405ac1ab851f2710e23bb6c034",
+      "byteSize": 26403,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-007.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 25
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-267-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-267-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "aae781579377c6a7ff9168518814f8eb5eb2c0405ac1ab851f2710e23bb6c034",
+      "byteSize": 26403,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-007.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 25
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-267-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-267-part-1-step-4-320.png",
+      "group": "B",
+      "sha256": "aae781579377c6a7ff9168518814f8eb5eb2c0405ac1ab851f2710e23bb6c034",
+      "byteSize": 26403,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-007.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 25
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-268-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-268-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "b58d9e3ccb5f66bbb5ebac5565bebd89855ef41154f17dd2b6fc3c95ca51fe80",
+      "byteSize": 26575,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-007.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 26
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-268-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-268-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "6cfb6241bb4ca74c3a68e6cc4c84c3d692906b5cd82ee738b9801b66c590865a",
+      "byteSize": 26570,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-007.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 27
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-268-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-268-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "6cfb6241bb4ca74c3a68e6cc4c84c3d692906b5cd82ee738b9801b66c590865a",
+      "byteSize": 26570,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-007.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 27
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-268-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-268-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "6cfb6241bb4ca74c3a68e6cc4c84c3d692906b5cd82ee738b9801b66c590865a",
+      "byteSize": 26570,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-007.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 27
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-269-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-269-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "cc791916a32e042e251614a204e0d4b0562d9dcd2650e70fb87bc4c54c030e75",
+      "byteSize": 27491,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-007.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 28
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-269-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-269-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "f917def53cc9313b0a7b4b24c5be0fd17508cbca1a6ed6608a17ba9bae105830",
+      "byteSize": 27481,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-008.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 29
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-269-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-269-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "f917def53cc9313b0a7b4b24c5be0fd17508cbca1a6ed6608a17ba9bae105830",
+      "byteSize": 27481,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-008.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 29
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-269-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-269-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "f917def53cc9313b0a7b4b24c5be0fd17508cbca1a6ed6608a17ba9bae105830",
+      "byteSize": 27481,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-008.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 29
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-270-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-270-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "e7a654ae31e4274407b0d46326c45bde42ffc659081e7b0fd7fa1b157719d4dd",
+      "byteSize": 26562,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-008.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 30
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-270-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-270-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "37fa2b25be144e08efd0f748facdb84bdb15244f913fb896167f03628c999c74",
+      "byteSize": 26558,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-008.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 31
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-270-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-270-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "37fa2b25be144e08efd0f748facdb84bdb15244f913fb896167f03628c999c74",
+      "byteSize": 26558,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-008.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 31
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-270-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-270-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "37fa2b25be144e08efd0f748facdb84bdb15244f913fb896167f03628c999c74",
+      "byteSize": 26558,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-008.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 31
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-270-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-270-part-1-step-4-320.png",
+      "group": "B",
+      "sha256": "37fa2b25be144e08efd0f748facdb84bdb15244f913fb896167f03628c999c74",
+      "byteSize": 26558,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-008.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 31
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-271-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-271-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "4ef8d5747e731aa15a1f74239901867ebf5900d8605128b7419d30153abac976",
+      "byteSize": 25513,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-008.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 32
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-271-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-271-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "8a8bedf647694b613f2d71405af48ead182788e82d83218397e58f84a42557b1",
+      "byteSize": 25505,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-009.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 33
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-271-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-271-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "8a8bedf647694b613f2d71405af48ead182788e82d83218397e58f84a42557b1",
+      "byteSize": 25505,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-009.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 33
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-271-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-271-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "8a8bedf647694b613f2d71405af48ead182788e82d83218397e58f84a42557b1",
+      "byteSize": 25505,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-009.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 33
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-272-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-272-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "041da8abdcfdc3b156f3f056c51e2fdc45b0f873ee0356d7e548331ca24b83cb",
+      "byteSize": 29352,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-009.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 34
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-272-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-272-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "aa908115af70642ef9a7ea0bd2bbd48182fe2eb87f390290d192c7c783abe4aa",
+      "byteSize": 29341,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-009.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 35
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-272-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-272-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "aa908115af70642ef9a7ea0bd2bbd48182fe2eb87f390290d192c7c783abe4aa",
+      "byteSize": 29341,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-009.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 35
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-272-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-272-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "aa908115af70642ef9a7ea0bd2bbd48182fe2eb87f390290d192c7c783abe4aa",
+      "byteSize": 29341,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-009.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 35
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-272-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-272-part-1-step-4-320.png",
+      "group": "B",
+      "sha256": "aa908115af70642ef9a7ea0bd2bbd48182fe2eb87f390290d192c7c783abe4aa",
+      "byteSize": 29341,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-009.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 35
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-273-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-273-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "461cfbdbc7893bffdc9a6655c476c7daa3fd234ee96ba1bc0c0c99ee087d090c",
+      "byteSize": 23883,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-009.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 36
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-273-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-273-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "b060463998b1f42c71370bb460c732df43c42db1fa934ae6d83601cd246c03cf",
+      "byteSize": 23872,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-010.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 37
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-273-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-273-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "b060463998b1f42c71370bb460c732df43c42db1fa934ae6d83601cd246c03cf",
+      "byteSize": 23872,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-010.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 37
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-273-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-273-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "b060463998b1f42c71370bb460c732df43c42db1fa934ae6d83601cd246c03cf",
+      "byteSize": 23872,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-010.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 37
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-274-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-274-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "7cd1bd5dd5fd246924f4604e7f6800a4b092b7bf0319142a126d41ed2a58296a",
+      "byteSize": 24593,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-010.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 38
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-274-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-274-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "7cd1bd5dd5fd246924f4604e7f6800a4b092b7bf0319142a126d41ed2a58296a",
+      "byteSize": 24593,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-010.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 38
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-274-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-274-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "5679829e1beef9a46138288e33daab0649dd7a6cac47d5ea50d1c901559228d9",
+      "byteSize": 23973,
+      "pixelSize": [
+        274,
+        511
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-010.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 39
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-274-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-274-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "7b6a23725b2d9b19e7f764cdc205cdf7ecc85bb0d2701574ce586de0315fe731",
+      "byteSize": 29069,
+      "pixelSize": [
+        274,
+        564
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-010.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 40
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-274-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-274-part-1-step-4-320.png",
+      "group": "B",
+      "sha256": "7b6a23725b2d9b19e7f764cdc205cdf7ecc85bb0d2701574ce586de0315fe731",
+      "byteSize": 29069,
+      "pixelSize": [
+        274,
+        564
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-010.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 40
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-274-part-1",
+      "chapter": "IV",
+      "view": "case-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-274-part-1-case-1-320.png",
+      "group": "B",
+      "sha256": "ccd27f13a16b02a869e02a7bdbb437f8f001961c95938d22b96da00ba0f08797",
+      "byteSize": 27198,
+      "pixelSize": [
+        274,
+        564
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-011.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 41
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-274-part-1",
+      "chapter": "IV",
+      "view": "case-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-274-part-1-case-2-320.png",
+      "group": "B",
+      "sha256": "5d6afea32ac80b8af661a290bd55cc46a8a65bf20eea063f1fd1461a594e45c0",
+      "byteSize": 24057,
+      "pixelSize": [
+        274,
+        511
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-011.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 42
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-275-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-275-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "590b2be0357043ac7441c79945f4f58efa6e855103cbbe1a34480e435972087c",
+      "byteSize": 22258,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-011.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 43
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-275-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-275-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "f4bfd76e8d78e125b43503e3ec3209bbae6e5fdd19a68d44a9e5f5b9fc7dc4b5",
+      "byteSize": 22700,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-011.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 44
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-275-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-275-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "487eb8146e7d06affb936b12ece61a19558a7570d1cd6c7e87ea120cbf89424d",
+      "byteSize": 23832,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-012.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 45
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-275-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-275-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "e9baedcf764bfb0bcacccdfd2a0805b5a72d031db99d00bb22b565e51b30afdc",
+      "byteSize": 24031,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-012.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 46
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-275-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-275-part-1-step-4-320.png",
+      "group": "B",
+      "sha256": "e9baedcf764bfb0bcacccdfd2a0805b5a72d031db99d00bb22b565e51b30afdc",
+      "byteSize": 24031,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-012.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 46
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-276-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-276-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "a21a6280af8bc89b2bdb34d8d6b669016aceabd5b0f735388ba5879ccb6625fd",
+      "byteSize": 24894,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-012.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 47
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-276-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-276-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "78f2665f8ea211531dedb12343091dbedc5fd5b1263ac19fa0a5bcb6a0124d5e",
+      "byteSize": 24884,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-012.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 48
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-276-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-276-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "3f37f1670585aa131171d4450a1ae4b35b17b3deffd8d36f4bc3c0497b3e31a3",
+      "byteSize": 26468,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-013.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 49
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-276-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-276-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "3f37f1670585aa131171d4450a1ae4b35b17b3deffd8d36f4bc3c0497b3e31a3",
+      "byteSize": 26468,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-013.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 49
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-276-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-276-part-1-step-4-320.png",
+      "group": "B",
+      "sha256": "3f37f1670585aa131171d4450a1ae4b35b17b3deffd8d36f4bc3c0497b3e31a3",
+      "byteSize": 26468,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-013.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 49
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-277-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-277-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "abaaf9fcbd642e3928de1b0d67d3a6aedcd1cca98d4c23d932d648cb2c3855f9",
+      "byteSize": 26326,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-013.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 50
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-277-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-277-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "b3661fb7f16b68b10d03b3da8d11819fe1ee95fba267dd784ba966584a0bd634",
+      "byteSize": 26994,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-013.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 51
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-277-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-277-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "b3661fb7f16b68b10d03b3da8d11819fe1ee95fba267dd784ba966584a0bd634",
+      "byteSize": 26994,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-013.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 51
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-277-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-277-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "b3661fb7f16b68b10d03b3da8d11819fe1ee95fba267dd784ba966584a0bd634",
+      "byteSize": 26994,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-013.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 51
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-277-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-277-part-1-step-4-320.png",
+      "group": "B",
+      "sha256": "b3661fb7f16b68b10d03b3da8d11819fe1ee95fba267dd784ba966584a0bd634",
+      "byteSize": 26994,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-013.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 51
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-278-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-278-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "a504713f8a7ca325fcbe0f97360ed7e775fa7b193d6e267f959e1dc5795e9a68",
+      "byteSize": 24463,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-013.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 52
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-278-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-278-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "28542f7d749da3d6e2fac335238e9bd8f6fc5ee188f538e862ddaa1d2b4d1abc",
+      "byteSize": 24451,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-014.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 53
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-278-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-278-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "28542f7d749da3d6e2fac335238e9bd8f6fc5ee188f538e862ddaa1d2b4d1abc",
+      "byteSize": 24451,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-014.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 53
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-278-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-278-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "28542f7d749da3d6e2fac335238e9bd8f6fc5ee188f538e862ddaa1d2b4d1abc",
+      "byteSize": 24451,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-014.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 53
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-278-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-278-part-1-step-4-320.png",
+      "group": "B",
+      "sha256": "28542f7d749da3d6e2fac335238e9bd8f6fc5ee188f538e862ddaa1d2b4d1abc",
+      "byteSize": 24451,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-014.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 53
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-279-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-279-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "8102f955fd6cd015c432628ab5cd55ceb3f58aa67b7bf98e0ee213b2cfef1d99",
+      "byteSize": 22297,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-014.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 54
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-279-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-279-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "51de17977ff40032988adda8a8c6050f790741e9655c8fab37bb995616d1beb1",
+      "byteSize": 22284,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-014.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 55
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-279-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-279-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "51de17977ff40032988adda8a8c6050f790741e9655c8fab37bb995616d1beb1",
+      "byteSize": 22284,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-014.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 55
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-279-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-279-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "51de17977ff40032988adda8a8c6050f790741e9655c8fab37bb995616d1beb1",
+      "byteSize": 22284,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-014.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 55
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-280-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-280-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "168dcf0543af6efa2eecae0be248dea20727ab8271a640dc1dba89dbc6bcecd9",
+      "byteSize": 23883,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-014.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 56
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-280-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-280-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "91ec5d00c6c3c789727ed9b4f1f04fd1fa324d112151c4bc23d3a402fe071267",
+      "byteSize": 25063,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-015.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 57
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-280-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-280-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "91ec5d00c6c3c789727ed9b4f1f04fd1fa324d112151c4bc23d3a402fe071267",
+      "byteSize": 25063,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-015.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 57
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-280-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-280-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "3023c0fbb0b32d7bc95092d5951abc0f7707b3768f42283d0d34b724435ba61b",
+      "byteSize": 25143,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-015.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 58
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-281-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-281-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "aff47c207bae7b87da1758de388f6bee81095e2725e2f66c2c2a1f900fb81bf1",
+      "byteSize": 23255,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-015.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 59
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-281-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-281-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "83b8ea0ef6cc9064ebc368f033ec7edef704919d85ff50776df321dcca77f691",
+      "byteSize": 23243,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-015.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 60
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-281-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-281-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "83b8ea0ef6cc9064ebc368f033ec7edef704919d85ff50776df321dcca77f691",
+      "byteSize": 23243,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-015.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 60
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-281-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-281-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "83b8ea0ef6cc9064ebc368f033ec7edef704919d85ff50776df321dcca77f691",
+      "byteSize": 23243,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-015.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 60
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-282-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-282-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "cd995cdc0a5cba2b25b8e8cdf8f165a49f82f09d7dfe708e314b30e3f3fd2956",
+      "byteSize": 24313,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-016.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 61
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-282-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-282-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "a144881fa9028b5d2af7ac132e78ffe15220d6bd6e1f55f0052653c37d3c3ee4",
+      "byteSize": 26820,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-016.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 62
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-282-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-282-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "a144881fa9028b5d2af7ac132e78ffe15220d6bd6e1f55f0052653c37d3c3ee4",
+      "byteSize": 26820,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-016.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 62
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-282-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-282-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "a144881fa9028b5d2af7ac132e78ffe15220d6bd6e1f55f0052653c37d3c3ee4",
+      "byteSize": 26820,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-016.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 62
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-283-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-283-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "e699ec3f6f3e99a139cfb268bc4a683869549a21a6ccbb9a977577ebd21066e9",
+      "byteSize": 27155,
+      "pixelSize": [
+        274,
+        445
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-016.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 63
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-283-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-283-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "d0c7d42abb60d429e213a9f262eabb085c0be297f27903c3b5e4cbbeb9e18cf7",
+      "byteSize": 27148,
+      "pixelSize": [
+        274,
+        445
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-016.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 64
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-283-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-283-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "d0c7d42abb60d429e213a9f262eabb085c0be297f27903c3b5e4cbbeb9e18cf7",
+      "byteSize": 27148,
+      "pixelSize": [
+        274,
+        445
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-016.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 64
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-283-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-283-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "d0c7d42abb60d429e213a9f262eabb085c0be297f27903c3b5e4cbbeb9e18cf7",
+      "byteSize": 27148,
+      "pixelSize": [
+        274,
+        445
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-016.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 64
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-283-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-283-part-1-step-4-320.png",
+      "group": "B",
+      "sha256": "f99b8a0b2ff3a0aec87e46f723c0113b1d0294ef8639f17455fcbf87edad797b",
+      "byteSize": 27204,
+      "pixelSize": [
+        274,
+        445
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-017.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 65
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-284-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-284-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "02418dad6b359883f97d90e3cdc331a2f56e757bd523401a88c42876358d0133",
+      "byteSize": 22318,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-017.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 66
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-284-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-284-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "ebd9b10c54d4d71ca70cb01064e7e17c34fba5297234c5c8735d10ace58fcdc2",
+      "byteSize": 33483,
+      "pixelSize": [
+        274,
+        632
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-017.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 67
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-284-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-284-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "1796202d7ff30a765fa02db97b86c3ecd17283bf678f5a3614e01467ea05919c",
+      "byteSize": 30593,
+      "pixelSize": [
+        274,
+        563
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-017.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 68
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-284-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-284-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "1796202d7ff30a765fa02db97b86c3ecd17283bf678f5a3614e01467ea05919c",
+      "byteSize": 30593,
+      "pixelSize": [
+        274,
+        563
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-017.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 68
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-284-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-284-part-1-step-4-320.png",
+      "group": "B",
+      "sha256": "a5fab07325da012849562eeb2051b1f1131c42a84c60ab4c923ef152c293737a",
+      "byteSize": 30582,
+      "pixelSize": [
+        274,
+        563
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-018.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 69
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-284-part-1",
+      "chapter": "IV",
+      "view": "case-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-284-part-1-case-1-320.png",
+      "group": "B",
+      "sha256": "22a6b5f488edf05bbc79407ddf4a3b9bf77eca22648b860b82266dda697f78cb",
+      "byteSize": 33624,
+      "pixelSize": [
+        274,
+        632
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-018.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 70
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-284-part-1",
+      "chapter": "IV",
+      "view": "case-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-284-part-1-case-2-320.png",
+      "group": "B",
+      "sha256": "93567137eaed9d5b50504026564a0ad23e3d6ab0697d08791665e31290758297",
+      "byteSize": 28790,
+      "pixelSize": [
+        274,
+        563
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-018.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 71
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-285-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-285-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "6007f6e33f5973f6c6aeac1af411a1974ebb4ecccb35a47e6ed3b374a1290ba0",
+      "byteSize": 30891,
+      "pixelSize": [
+        274,
+        633
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-018.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 72
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-285-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-285-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "bcf447efd9d1b070611d719e52a6a43a6790fab76f7fef83bb1e71719a75500a",
+      "byteSize": 30886,
+      "pixelSize": [
+        274,
+        633
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-019.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 73
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-285-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-285-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "bcf447efd9d1b070611d719e52a6a43a6790fab76f7fef83bb1e71719a75500a",
+      "byteSize": 30886,
+      "pixelSize": [
+        274,
+        633
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-019.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 73
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-285-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-285-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "3a5435832c0ea50e03ccfa7e1305581f8b9943fb93cba651fdc23f8b2754c02b",
+      "byteSize": 30657,
+      "pixelSize": [
+        274,
+        633
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-019.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 74
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-285-part-1",
+      "chapter": "IV",
+      "view": "case-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-285-part-1-case-1-320.png",
+      "group": "B",
+      "sha256": "ab06dd7c327e263aa8fa3cbf3a0773b0a01b6ccd670f4169f80c8253abedb358",
+      "byteSize": 30937,
+      "pixelSize": [
+        274,
+        633
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-019.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 75
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-285-part-1",
+      "chapter": "IV",
+      "view": "case-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-285-part-1-case-2-320.png",
+      "group": "B",
+      "sha256": "16475fb63017707ac465b10fac96083f2e85c741fc91d3ceeb44278f4ac2490b",
+      "byteSize": 30756,
+      "pixelSize": [
+        274,
+        633
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-019.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 76
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-286-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-286-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "b9deee671047aa881c1e08d59f1ff7be8d9365f5ac3ac41402d8d110a5a8811d",
+      "byteSize": 22685,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-020.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 77
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-286-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-286-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "0cba3d69d55a0d36317d316c5f4b7d347e4bf7725798c04d371e4c61de025f4c",
+      "byteSize": 23191,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-020.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 78
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-286-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-286-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "0cba3d69d55a0d36317d316c5f4b7d347e4bf7725798c04d371e4c61de025f4c",
+      "byteSize": 23191,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-020.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 78
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-286-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-286-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "0cba3d69d55a0d36317d316c5f4b7d347e4bf7725798c04d371e4c61de025f4c",
+      "byteSize": 23191,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-020.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 78
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-287-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-287-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "74741c43d5b156da6cd750ac055e2dcee9aafe7ac7e1b289acb62bd92568d4c9",
+      "byteSize": 21713,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-020.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 79
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-287-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-287-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "3d68e4c138a4248953c2700d24615cff2cea9cedf1656f7a3c08707d3200ac85",
+      "byteSize": 22017,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-020.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 80
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-287-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-287-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "3d68e4c138a4248953c2700d24615cff2cea9cedf1656f7a3c08707d3200ac85",
+      "byteSize": 22017,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-020.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 80
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-287-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-287-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "3d68e4c138a4248953c2700d24615cff2cea9cedf1656f7a3c08707d3200ac85",
+      "byteSize": 22017,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-020.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 80
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-287-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-287-part-1-step-4-320.png",
+      "group": "B",
+      "sha256": "3d68e4c138a4248953c2700d24615cff2cea9cedf1656f7a3c08707d3200ac85",
+      "byteSize": 22017,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-020.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 80
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-288-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-288-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "e3f52b8af3f2a294ba8a47a6f854c3e06292152e2998746532bea0782756821e",
+      "byteSize": 22338,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-021.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 81
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-288-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-288-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "3f2a81c547f643d0dc26077df009f08dabef1c3422a235e8233c7e33b58a8912",
+      "byteSize": 23744,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-021.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 82
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-288-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-288-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "3f2a81c547f643d0dc26077df009f08dabef1c3422a235e8233c7e33b58a8912",
+      "byteSize": 23744,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-021.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 82
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-288-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-288-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "3f2a81c547f643d0dc26077df009f08dabef1c3422a235e8233c7e33b58a8912",
+      "byteSize": 23744,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-021.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 82
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-289-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-289-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "979a8c19c4e00b134d52f4684df9a5a4aa3b29c27f7cd2165ccb482729725b6c",
+      "byteSize": 20049,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-021.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 83
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-289-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-289-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "df8be57f8f4e0127caf702737c4e10282a7bfad087c9cc1900a5b78b568ae8ce",
+      "byteSize": 20048,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-021.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 84
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-289-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-289-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "62c98a7ed5882f17d297dade591ad81ee766f3bc4ac078ef307b18faf9601ba5",
+      "byteSize": 23673,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-022.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 85
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-289-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-289-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "62c98a7ed5882f17d297dade591ad81ee766f3bc4ac078ef307b18faf9601ba5",
+      "byteSize": 23673,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-022.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 85
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-289-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-289-part-1-step-4-320.png",
+      "group": "B",
+      "sha256": "62c98a7ed5882f17d297dade591ad81ee766f3bc4ac078ef307b18faf9601ba5",
+      "byteSize": 23673,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-022.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 85
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-290-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-290-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "a81b694b9eef453a1fa6cc11eb1502ca3c23e4eeef9e746ae2bc6607bb5cd1c1",
+      "byteSize": 22522,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-022.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 86
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-290-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-290-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "349b8d1938d8b4f1da9a0da087546a335c723337bff5f1740236b45164a43649",
+      "byteSize": 23938,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-022.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 87
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-290-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-290-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "349b8d1938d8b4f1da9a0da087546a335c723337bff5f1740236b45164a43649",
+      "byteSize": 23938,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-022.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 87
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-290-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-290-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "349b8d1938d8b4f1da9a0da087546a335c723337bff5f1740236b45164a43649",
+      "byteSize": 23938,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-022.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 87
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-290-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-290-part-1-step-4-320.png",
+      "group": "B",
+      "sha256": "349b8d1938d8b4f1da9a0da087546a335c723337bff5f1740236b45164a43649",
+      "byteSize": 23938,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-022.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 87
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-291-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-291-part-1-neutral-320.png",
+      "group": "B",
+      "sha256": "b8955e046031f56e03c55ade951312f4466d19d4ffc5f7556b9ec75d813bc5e9",
+      "byteSize": 19669,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-022.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 88
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-291-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-291-part-1-step-1-320.png",
+      "group": "B",
+      "sha256": "9b0da807bf0e167a3432004fd35d727b45dfa2c56033ebde717e3bbe91c0bcab",
+      "byteSize": 21867,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-023.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 89
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-291-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-291-part-1-step-2-320.png",
+      "group": "B",
+      "sha256": "9b0da807bf0e167a3432004fd35d727b45dfa2c56033ebde717e3bbe91c0bcab",
+      "byteSize": 21867,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-023.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 89
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-291-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-291-part-1-step-3-320.png",
+      "group": "B",
+      "sha256": "014acc953311e39aebb83c1950a016ba88d754046ae99576ce1784c10efdc7b0",
+      "byteSize": 19660,
+      "pixelSize": [
+        274,
+        444
+      ],
+      "contactSheet": {
+        "sheet": "B-w0320-sheet-023.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 90
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-259-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-259-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "3129f81eae117eab50f3c7c549174c40fcd5bd045f530a726532fe60c95f79c7",
+      "byteSize": 28550,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-001.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 1
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-259-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-259-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "3129f81eae117eab50f3c7c549174c40fcd5bd045f530a726532fe60c95f79c7",
+      "byteSize": 28550,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-001.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 1
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-259-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-259-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "3129f81eae117eab50f3c7c549174c40fcd5bd045f530a726532fe60c95f79c7",
+      "byteSize": 28550,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-001.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 1
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-259-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-259-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "3129f81eae117eab50f3c7c549174c40fcd5bd045f530a726532fe60c95f79c7",
+      "byteSize": 28550,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-001.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 1
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-260-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-260-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "6a266008fe483a96651cc149627092bdf56fbe3bbf2ea6000516d026aa648dc0",
+      "byteSize": 42608,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-001.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 2
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-260-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-260-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "6a266008fe483a96651cc149627092bdf56fbe3bbf2ea6000516d026aa648dc0",
+      "byteSize": 42608,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-001.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 2
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-260-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-260-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "6a266008fe483a96651cc149627092bdf56fbe3bbf2ea6000516d026aa648dc0",
+      "byteSize": 42608,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-001.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 2
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-260-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-260-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "6a266008fe483a96651cc149627092bdf56fbe3bbf2ea6000516d026aa648dc0",
+      "byteSize": 42608,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-001.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 2
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-261-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-261-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "087f5e4d334cbf7b0540e4a1d22cbc8272b9d0d5955cec8829f021c025f4581e",
+      "byteSize": 33657,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-001.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 3
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-261-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-261-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "d438bd3ee6065b5a5fe7daa045940f13e6b72d554a51f5579002b5f80ab107f6",
+      "byteSize": 33667,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-001.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 4
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-261-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-261-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "d438bd3ee6065b5a5fe7daa045940f13e6b72d554a51f5579002b5f80ab107f6",
+      "byteSize": 33667,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-001.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 4
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-261-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-261-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "d438bd3ee6065b5a5fe7daa045940f13e6b72d554a51f5579002b5f80ab107f6",
+      "byteSize": 33667,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-001.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 4
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-262-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-262-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "773d7f866c142c7f225a577dc3d89fbd29820f3eec7af2ecd2d9a4c7ba274f7a",
+      "byteSize": 34899,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-002.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 5
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-262-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-262-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "773d7f866c142c7f225a577dc3d89fbd29820f3eec7af2ecd2d9a4c7ba274f7a",
+      "byteSize": 34899,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-002.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 5
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-262-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-262-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "773d7f866c142c7f225a577dc3d89fbd29820f3eec7af2ecd2d9a4c7ba274f7a",
+      "byteSize": 34899,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-002.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 5
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-262-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-262-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "773d7f866c142c7f225a577dc3d89fbd29820f3eec7af2ecd2d9a4c7ba274f7a",
+      "byteSize": 34899,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-002.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 5
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-263-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-263-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "e67283d1c198b0b5f88ba36e2f00085feea3067fe7fe93ceaf88a92e527ba48e",
+      "byteSize": 41585,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-002.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 6
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-263-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-263-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "9f9525091551d1005d15c5114683d84ca307ba8f58e65146d6502e8cb5012051",
+      "byteSize": 41595,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-002.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 7
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-263-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-263-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "9f9525091551d1005d15c5114683d84ca307ba8f58e65146d6502e8cb5012051",
+      "byteSize": 41595,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-002.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 7
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-263-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-263-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "9f9525091551d1005d15c5114683d84ca307ba8f58e65146d6502e8cb5012051",
+      "byteSize": 41595,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-002.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 7
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-264-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-264-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "e447b406ea75ab2290cbd649e61f920666afdcc8913e87948cfc55ea6c3e18a0",
+      "byteSize": 42568,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-002.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 8
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-264-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-264-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "e3e1d46a9ea92bf505070d2566f28a752248d5849dcb24336574a7c383bedbe8",
+      "byteSize": 42578,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-003.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 9
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-264-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-264-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "fe774c9e0d82bf6cd2453f00297de1701d4826d4bd65b6e4ffc4a35d29d5e1b9",
+      "byteSize": 42577,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-003.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 10
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-264-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-264-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "fe774c9e0d82bf6cd2453f00297de1701d4826d4bd65b6e4ffc4a35d29d5e1b9",
+      "byteSize": 42577,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-003.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 10
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-265-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-265-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "b5bd5f8f038558adab2f3958261de8f30534d15d21ec6a515ee811d855f655b1",
+      "byteSize": 37344,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-003.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 11
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-265-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-265-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "585cd7ca5eecd621cafba14eb5ac16e19230bc96d864a47d5155a02cd0f90de0",
+      "byteSize": 37354,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-003.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 12
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-265-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-265-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "f054aeb302e7001fbdd4a1617bd9b6051feb0615c783d316892f17142818b6f7",
+      "byteSize": 37355,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-004.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 13
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-265-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-265-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "f054aeb302e7001fbdd4a1617bd9b6051feb0615c783d316892f17142818b6f7",
+      "byteSize": 37355,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-004.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 13
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-266-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-266-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "670ea6de61082ad7ce857612f03d5e79c7b020e6c41c5b65c5cf67bd455f5c46",
+      "byteSize": 34306,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-004.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 14
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-266-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-266-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "dbc60a72b13daca21616a334e0ab382345f8e9d7694de250c40758d1e9b66b66",
+      "byteSize": 46198,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-004.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 15
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-266-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-266-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "7c64a210a4e74d6405bc5e28c8e6cdeda9a4ee68f2fb3e48861a514798d5b894",
+      "byteSize": 34147,
+      "pixelSize": [
+        749,
+        738
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-004.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 16
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-266-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-266-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "237277fc7d12215e1cdbef1dd3f51d4a50aa4ae06a13145733b5d54e41e94601",
+      "byteSize": 51651,
+      "pixelSize": [
+        749,
+        738
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-005.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 17
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-266-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-266-part-1-step-4-1280.png",
+      "group": "B",
+      "sha256": "fc249ef1b991dc8df4393fd780271b1d325bf2fbd1a86e51c292513b1dcc2da9",
+      "byteSize": 51657,
+      "pixelSize": [
+        749,
+        738
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-005.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 18
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-266-part-1",
+      "chapter": "IV",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-266-part-1-case-1-1280.png",
+      "group": "B",
+      "sha256": "4d2980303f3e9c33069b95b431ed866b0132c1224a05adb24d70f855ab9c376c",
+      "byteSize": 44968,
+      "pixelSize": [
+        749,
+        738
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-005.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 19
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-266-part-1",
+      "chapter": "IV",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-266-part-1-case-2-1280.png",
+      "group": "B",
+      "sha256": "b883f508cd4c782f822ec83761389c1599f956b26ecf0c892c76047c9ad3cd09",
+      "byteSize": 34224,
+      "pixelSize": [
+        749,
+        738
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-005.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 20
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-267-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-267-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "931a62274695313213cdd5b5812ad4b0d49ec1e880aba2c757eb772e18e69e93",
+      "byteSize": 42396,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-006.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 21
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-267-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-267-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "8a9773e8487a2dcaf4ad4cabba8c9036bf772ef72d0cd9b636af4e94c57f9f5b",
+      "byteSize": 42416,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-006.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 22
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-267-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-267-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "8a9773e8487a2dcaf4ad4cabba8c9036bf772ef72d0cd9b636af4e94c57f9f5b",
+      "byteSize": 42416,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-006.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 22
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-267-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-267-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "8a9773e8487a2dcaf4ad4cabba8c9036bf772ef72d0cd9b636af4e94c57f9f5b",
+      "byteSize": 42416,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-006.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 22
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-267-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-267-part-1-step-4-1280.png",
+      "group": "B",
+      "sha256": "8a9773e8487a2dcaf4ad4cabba8c9036bf772ef72d0cd9b636af4e94c57f9f5b",
+      "byteSize": 42416,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-006.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 22
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-268-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-268-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "f655822013b35df6ce54304a6e5293ed7518d63883da1a5fac6d4e3f52365526",
+      "byteSize": 44150,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-006.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 23
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-268-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-268-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "f655822013b35df6ce54304a6e5293ed7518d63883da1a5fac6d4e3f52365526",
+      "byteSize": 44150,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-006.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 23
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-268-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-268-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "f655822013b35df6ce54304a6e5293ed7518d63883da1a5fac6d4e3f52365526",
+      "byteSize": 44150,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-006.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 23
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-268-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-268-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "f655822013b35df6ce54304a6e5293ed7518d63883da1a5fac6d4e3f52365526",
+      "byteSize": 44150,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-006.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 23
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-269-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-269-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "ceb8c14810f28991de6ae5ef0b60776460924c4ccf5df55646724ff63fb24bd9",
+      "byteSize": 48823,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-006.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 24
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-269-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-269-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "ceb8c14810f28991de6ae5ef0b60776460924c4ccf5df55646724ff63fb24bd9",
+      "byteSize": 48823,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-006.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 24
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-269-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-269-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "ceb8c14810f28991de6ae5ef0b60776460924c4ccf5df55646724ff63fb24bd9",
+      "byteSize": 48823,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-006.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 24
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-269-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-269-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "ceb8c14810f28991de6ae5ef0b60776460924c4ccf5df55646724ff63fb24bd9",
+      "byteSize": 48823,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-006.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 24
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-270-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-270-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "e8bf81614c4cc3af74bda5ec23ef520dcdeddd602be09209beff39d3e5912ba7",
+      "byteSize": 47504,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-007.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 25
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-270-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-270-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "2ac17f906ff22cccc818fede5d6fa546175d20d50f2db40aac3c9b55c7d0871b",
+      "byteSize": 47523,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-007.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 26
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-270-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-270-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "2ac17f906ff22cccc818fede5d6fa546175d20d50f2db40aac3c9b55c7d0871b",
+      "byteSize": 47523,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-007.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 26
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-270-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-270-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "2ac17f906ff22cccc818fede5d6fa546175d20d50f2db40aac3c9b55c7d0871b",
+      "byteSize": 47523,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-007.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 26
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-270-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-270-part-1-step-4-1280.png",
+      "group": "B",
+      "sha256": "2ac17f906ff22cccc818fede5d6fa546175d20d50f2db40aac3c9b55c7d0871b",
+      "byteSize": 47523,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-007.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 26
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-271-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-271-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "b01c749f14842d4b0e73d579710a828b22eec1b5528d44757203318ac30530ac",
+      "byteSize": 43628,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-007.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 27
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-271-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-271-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "2e4dfa417352ce86386f39c14aa5b1b104b33750b080daa778bf626c392dc8dc",
+      "byteSize": 43676,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-007.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 28
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-271-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-271-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "2e4dfa417352ce86386f39c14aa5b1b104b33750b080daa778bf626c392dc8dc",
+      "byteSize": 43676,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-007.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 28
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-271-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-271-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "2e4dfa417352ce86386f39c14aa5b1b104b33750b080daa778bf626c392dc8dc",
+      "byteSize": 43676,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-007.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 28
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-272-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-272-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "fcee84fe4aed3fbaa7e0d19dc1992ffee36d0948ad421ed429b707c6f5f27555",
+      "byteSize": 48832,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-008.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 29
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-272-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-272-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "fcee84fe4aed3fbaa7e0d19dc1992ffee36d0948ad421ed429b707c6f5f27555",
+      "byteSize": 48832,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-008.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 29
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-272-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-272-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "fcee84fe4aed3fbaa7e0d19dc1992ffee36d0948ad421ed429b707c6f5f27555",
+      "byteSize": 48832,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-008.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 29
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-272-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-272-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "fcee84fe4aed3fbaa7e0d19dc1992ffee36d0948ad421ed429b707c6f5f27555",
+      "byteSize": 48832,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-008.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 29
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-272-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-272-part-1-step-4-1280.png",
+      "group": "B",
+      "sha256": "fcee84fe4aed3fbaa7e0d19dc1992ffee36d0948ad421ed429b707c6f5f27555",
+      "byteSize": 48832,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-008.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 29
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-273-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-273-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "73a345f6b5935bc4632d293307dfb3b6cdd8f68b57888c44914fdcd1c860699b",
+      "byteSize": 34019,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-008.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 30
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-273-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-273-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "73a345f6b5935bc4632d293307dfb3b6cdd8f68b57888c44914fdcd1c860699b",
+      "byteSize": 34019,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-008.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 30
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-273-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-273-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "73a345f6b5935bc4632d293307dfb3b6cdd8f68b57888c44914fdcd1c860699b",
+      "byteSize": 34019,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-008.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 30
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-273-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-273-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "73a345f6b5935bc4632d293307dfb3b6cdd8f68b57888c44914fdcd1c860699b",
+      "byteSize": 34019,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-008.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 30
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-274-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-274-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "4117e07c4947202728e65afa1b2efa3fbdec1aa29c782416859e645d60707327",
+      "byteSize": 34822,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-008.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 31
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-274-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-274-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "4117e07c4947202728e65afa1b2efa3fbdec1aa29c782416859e645d60707327",
+      "byteSize": 34822,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-008.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 31
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-274-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-274-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "9c9f02140d6a3f18bccef9f33f1444eb3be6c781a97d1098743d488992c4470c",
+      "byteSize": 32292,
+      "pixelSize": [
+        749,
+        738
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-008.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 32
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-274-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-274-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "02cce3d89b1a49a1fc76b363c93d45243773f6b645bc5bf8d29140f397b7947c",
+      "byteSize": 39875,
+      "pixelSize": [
+        749,
+        738
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-009.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 33
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-274-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-274-part-1-step-4-1280.png",
+      "group": "B",
+      "sha256": "926b91a53a3e6afa58385f4e54c315b02a5445d6ab7f32ace801fe2c54b613f8",
+      "byteSize": 39882,
+      "pixelSize": [
+        749,
+        738
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-009.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 34
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-274-part-1",
+      "chapter": "IV",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-274-part-1-case-1-1280.png",
+      "group": "B",
+      "sha256": "186cd1c666ea6c141e4ce163ab22cdca056d9fd91c9cef457ec01b5d0f9db649",
+      "byteSize": 38446,
+      "pixelSize": [
+        749,
+        738
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-009.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 35
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-274-part-1",
+      "chapter": "IV",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-274-part-1-case-2-1280.png",
+      "group": "B",
+      "sha256": "5bc3ebf4d815e2b0817e5fbec8fbc2a6f95e081892ebf062f611e0ef76796aff",
+      "byteSize": 32335,
+      "pixelSize": [
+        749,
+        738
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-009.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 36
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-275-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-275-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "274a512a48ffcac039b538ac62827d935b4ea3b3cb8502e2ef1081b0268c81a9",
+      "byteSize": 33408,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-010.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 37
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-275-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-275-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "df3fe8e5d1f5c7551d3215eb469ab5517035caf531cdd47339648aac7040eb8b",
+      "byteSize": 34083,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-010.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 38
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-275-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-275-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "2489b03f1ebc4e4e15e2760ab7fb8026b81a83dd8acfe5cbf1cba4bb70dc57c5",
+      "byteSize": 35930,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-010.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 39
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-275-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-275-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "9d1d73cbd8fd1e86356a1e6c487c82963f9f3e1701ba4d3dfdff006072a0171a",
+      "byteSize": 36721,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-010.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 40
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-275-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-275-part-1-step-4-1280.png",
+      "group": "B",
+      "sha256": "9d1d73cbd8fd1e86356a1e6c487c82963f9f3e1701ba4d3dfdff006072a0171a",
+      "byteSize": 36721,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-010.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 40
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-276-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-276-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "ab10e09a4acd8238228338dad722af0235543edf6c3b45630cbe011a0b7ac620",
+      "byteSize": 42053,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-011.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 41
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-276-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-276-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "ab10e09a4acd8238228338dad722af0235543edf6c3b45630cbe011a0b7ac620",
+      "byteSize": 42053,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-011.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 41
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-276-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-276-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "8bad487dd1e0e049ab4b39905bf978048e56738c0e11ba6116e97e3316b48d56",
+      "byteSize": 47916,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-011.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 42
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-276-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-276-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "8bad487dd1e0e049ab4b39905bf978048e56738c0e11ba6116e97e3316b48d56",
+      "byteSize": 47916,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-011.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 42
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-276-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-276-part-1-step-4-1280.png",
+      "group": "B",
+      "sha256": "8bad487dd1e0e049ab4b39905bf978048e56738c0e11ba6116e97e3316b48d56",
+      "byteSize": 47916,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-011.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 42
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-277-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-277-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "349a4c8c8756998db1e2a704ecc75431924aa766a2ec145209bed75e51d93d1b",
+      "byteSize": 45794,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-011.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 43
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-277-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-277-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "af3e93078675e4bdd4c5f5f8e10879e097842f6f85ced1b9769787fddc5aab4b",
+      "byteSize": 48471,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-011.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 44
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-277-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-277-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "af3e93078675e4bdd4c5f5f8e10879e097842f6f85ced1b9769787fddc5aab4b",
+      "byteSize": 48471,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-011.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 44
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-277-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-277-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "af3e93078675e4bdd4c5f5f8e10879e097842f6f85ced1b9769787fddc5aab4b",
+      "byteSize": 48471,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-011.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 44
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-277-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-277-part-1-step-4-1280.png",
+      "group": "B",
+      "sha256": "af3e93078675e4bdd4c5f5f8e10879e097842f6f85ced1b9769787fddc5aab4b",
+      "byteSize": 48471,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-011.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 44
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-278-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-278-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "68f86482c12dcf2407fc8b032b8054c4b7511392d1eb6010251aa35454a61fbb",
+      "byteSize": 38779,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-012.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 45
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-278-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-278-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "6274af21521ebb702409d1afac8437b65565daf8213e35d829f566fa38307522",
+      "byteSize": 38797,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-012.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 46
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-278-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-278-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "6274af21521ebb702409d1afac8437b65565daf8213e35d829f566fa38307522",
+      "byteSize": 38797,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-012.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 46
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-278-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-278-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "6274af21521ebb702409d1afac8437b65565daf8213e35d829f566fa38307522",
+      "byteSize": 38797,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-012.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 46
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-278-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-278-part-1-step-4-1280.png",
+      "group": "B",
+      "sha256": "6274af21521ebb702409d1afac8437b65565daf8213e35d829f566fa38307522",
+      "byteSize": 38797,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-012.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 46
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-279-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-279-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "2813f3e60329498ed76df2b8ea0d4b317ff5bcc7de7cd8be22bf89f9b81e9632",
+      "byteSize": 32978,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-012.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 47
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-279-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-279-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "b0ecc32776b59c0862c39566996c8997ed8fb9e6d4c32fcb92299a0b5cd4e43c",
+      "byteSize": 32987,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-012.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 48
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-279-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-279-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "b0ecc32776b59c0862c39566996c8997ed8fb9e6d4c32fcb92299a0b5cd4e43c",
+      "byteSize": 32987,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-012.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 48
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-279-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-279-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "b0ecc32776b59c0862c39566996c8997ed8fb9e6d4c32fcb92299a0b5cd4e43c",
+      "byteSize": 32987,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-012.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 48
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-280-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-280-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "40fa32022e48c6caa1b75faed9db534f5e44da25f665b61ab1520e15df306b52",
+      "byteSize": 39441,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-013.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 49
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-280-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-280-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "bffbd9c3c30be61a8a41be60bd6825c2ad750da3776befd2135cbd7aab1b87f7",
+      "byteSize": 42881,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-013.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 50
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-280-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-280-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "bffbd9c3c30be61a8a41be60bd6825c2ad750da3776befd2135cbd7aab1b87f7",
+      "byteSize": 42881,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-013.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 50
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-280-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-280-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "b891259b161f2219e6cb6acce0f5dad1ca49dde1aea7ccbd1736c2c319262445",
+      "byteSize": 43039,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-013.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 51
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-281-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-281-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "94527fd79f8f5909fbb8a80f17d8b48e0436fe80e8fb0c64ae61bd42065f6d8b",
+      "byteSize": 36341,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-013.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 52
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-281-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-281-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "8183922954965e5515845d04d376c183ed230f20a5189144b0f0c05699bd67fe",
+      "byteSize": 36348,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-014.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 53
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-281-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-281-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "8183922954965e5515845d04d376c183ed230f20a5189144b0f0c05699bd67fe",
+      "byteSize": 36348,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-014.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 53
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-281-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-281-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "8183922954965e5515845d04d376c183ed230f20a5189144b0f0c05699bd67fe",
+      "byteSize": 36348,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-014.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 53
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-282-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-282-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "10a798974a0c4d715491617cbb4ae45e626b0e52c043700b910a924c1aa1d0af",
+      "byteSize": 36735,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-014.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 54
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-282-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-282-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "0289260cc65d71ba8ac1ace1ad2fcdc4cbe143a3f5a52e861de08ed35593a9d5",
+      "byteSize": 43290,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-014.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 55
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-282-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-282-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "0289260cc65d71ba8ac1ace1ad2fcdc4cbe143a3f5a52e861de08ed35593a9d5",
+      "byteSize": 43290,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-014.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 55
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-282-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-282-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "0289260cc65d71ba8ac1ace1ad2fcdc4cbe143a3f5a52e861de08ed35593a9d5",
+      "byteSize": 43290,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-014.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 55
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-283-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-283-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "734045bac26723486a18501244200ce29b34ce932730b60841cb96ad3d3ff0f1",
+      "byteSize": 45725,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-014.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 56
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-283-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-283-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "734045bac26723486a18501244200ce29b34ce932730b60841cb96ad3d3ff0f1",
+      "byteSize": 45725,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-014.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 56
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-283-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-283-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "734045bac26723486a18501244200ce29b34ce932730b60841cb96ad3d3ff0f1",
+      "byteSize": 45725,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-014.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 56
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-283-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-283-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "734045bac26723486a18501244200ce29b34ce932730b60841cb96ad3d3ff0f1",
+      "byteSize": 45725,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-014.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 56
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-283-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-283-part-1-step-4-1280.png",
+      "group": "B",
+      "sha256": "5fe94d8ff55a50fa56c8c85da08a65d95a1380eaf5a4a566c5ce4849af368cb8",
+      "byteSize": 45037,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-015.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 57
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-284-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-284-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "831401b592462d8364b05765e4823e9944304afd985bd9e25d4dcbdd0cbadfbe",
+      "byteSize": 32483,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-015.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 58
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-284-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-284-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "56c2e606a0726dc438b70c1f3e7efdb5ce6dc1829390703444c671316531a1e1",
+      "byteSize": 41652,
+      "pixelSize": [
+        749,
+        791
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-015.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 59
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-284-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-284-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "613d46a00ac3450991b674fd5aace18554a1c799f4dc8a7df022c0a9d5c6572b",
+      "byteSize": 41913,
+      "pixelSize": [
+        749,
+        739
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-015.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 60
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-284-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-284-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "613d46a00ac3450991b674fd5aace18554a1c799f4dc8a7df022c0a9d5c6572b",
+      "byteSize": 41913,
+      "pixelSize": [
+        749,
+        739
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-015.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 60
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-284-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-284-part-1-step-4-1280.png",
+      "group": "B",
+      "sha256": "613d46a00ac3450991b674fd5aace18554a1c799f4dc8a7df022c0a9d5c6572b",
+      "byteSize": 41913,
+      "pixelSize": [
+        749,
+        739
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-015.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 60
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-284-part-1",
+      "chapter": "IV",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-284-part-1-case-1-1280.png",
+      "group": "B",
+      "sha256": "3438500e1041ee8ae4264d564ee0b3709f0d03a0d7e93d59e3d9131dba7c2180",
+      "byteSize": 43099,
+      "pixelSize": [
+        749,
+        791
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-016.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 61
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-284-part-1",
+      "chapter": "IV",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-284-part-1-case-2-1280.png",
+      "group": "B",
+      "sha256": "11a7323bbf68b91250ebd963d3f7860f7dbf7f3f30a7b158297c4bb5460ed5f5",
+      "byteSize": 37390,
+      "pixelSize": [
+        749,
+        739
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-016.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 62
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-285-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-285-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "98a861c7e553da9a4b6a07051e729afe376335f376d440397738b4581b9b4e4b",
+      "byteSize": 39155,
+      "pixelSize": [
+        749,
+        790
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-016.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 63
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-285-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-285-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "7b1a96ac11a8859a6ea91a2121b450826e5127987c2ac7c6b9f97efa7c6e52bb",
+      "byteSize": 39160,
+      "pixelSize": [
+        749,
+        790
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-016.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 64
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-285-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-285-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "7b1a96ac11a8859a6ea91a2121b450826e5127987c2ac7c6b9f97efa7c6e52bb",
+      "byteSize": 39160,
+      "pixelSize": [
+        749,
+        790
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-016.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 64
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-285-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-285-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "b98b820240c5bc924b9ec64a476690caeca9f1b428c1bc0f1c32080f534e807f",
+      "byteSize": 39282,
+      "pixelSize": [
+        749,
+        790
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-017.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 65
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-285-part-1",
+      "chapter": "IV",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-285-part-1-case-1-1280.png",
+      "group": "B",
+      "sha256": "8dcd22bb98a9c85ac18771e3ab438742be980264d95f7e60bc32c427db4515dd",
+      "byteSize": 40289,
+      "pixelSize": [
+        749,
+        790
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-017.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 66
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-285-part-1",
+      "chapter": "IV",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-285-part-1-case-2-1280.png",
+      "group": "B",
+      "sha256": "2dde76b13859a2d926d37d86ff918d49b478f84e1e6cb78121b0834309d006ff",
+      "byteSize": 40452,
+      "pixelSize": [
+        749,
+        790
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-017.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 67
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-286-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-286-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "a2c649c4648f8ae4e9129dc2fb7446fbe2cad17de6f0cc2359b83394cf5f3edc",
+      "byteSize": 33819,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-017.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 68
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-286-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-286-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "424aa7e1c1d067b788c28088aacc0b52213506d1d0ebbf0dd3a80e43a3ca04d2",
+      "byteSize": 34627,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-018.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 69
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-286-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-286-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "424aa7e1c1d067b788c28088aacc0b52213506d1d0ebbf0dd3a80e43a3ca04d2",
+      "byteSize": 34627,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-018.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 69
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-286-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-286-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "424aa7e1c1d067b788c28088aacc0b52213506d1d0ebbf0dd3a80e43a3ca04d2",
+      "byteSize": 34627,
+      "pixelSize": [
+        749,
+        669
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-018.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 69
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-287-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-287-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "9968a3c74281ce04b0887819195086cecc356cb2cd72437da7b8cdeb9e8598fc",
+      "byteSize": 29173,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-018.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 70
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-287-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-287-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "cff6cde916f5c33ae269acba70fb092e4c540e59e509fbd580276f1d3de6c4f0",
+      "byteSize": 29815,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-018.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 71
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-287-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-287-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "cff6cde916f5c33ae269acba70fb092e4c540e59e509fbd580276f1d3de6c4f0",
+      "byteSize": 29815,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-018.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 71
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-287-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-287-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "cff6cde916f5c33ae269acba70fb092e4c540e59e509fbd580276f1d3de6c4f0",
+      "byteSize": 29815,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-018.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 71
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-287-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-287-part-1-step-4-1280.png",
+      "group": "B",
+      "sha256": "cff6cde916f5c33ae269acba70fb092e4c540e59e509fbd580276f1d3de6c4f0",
+      "byteSize": 29815,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-018.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 71
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-288-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-288-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "1358d111cc00b60cde92dac6435d9dc03b90d0bd38eb392f1daebd6940f74c26",
+      "byteSize": 33399,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-018.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 72
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-288-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-288-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "55d508e34cffd9c995d6334e2ac2b46a0951b211acbaa04cf5f1fddf2a27ae7d",
+      "byteSize": 35643,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-019.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 73
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-288-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-288-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "c73fb67c9717e032b2ff689d199d4b342b1cc93bbd20127cbd7eb4e397f232e7",
+      "byteSize": 35642,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-019.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 74
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-288-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-288-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "c73fb67c9717e032b2ff689d199d4b342b1cc93bbd20127cbd7eb4e397f232e7",
+      "byteSize": 35642,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-019.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 74
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-289-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-289-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "6303abc24de20f7bfc8decf7759cbdac84aa817ab6aa0f4933ce55352c06e63c",
+      "byteSize": 25694,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-019.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 75
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-289-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-289-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "ea8f79b934147c8bd587a6900354542a798e6a9b8b2de86b79636943cf32fab9",
+      "byteSize": 25708,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-019.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 76
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-289-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-289-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "05930df57677ab604cedf4fce432c8dedb672d9812a96be791671562a97a9828",
+      "byteSize": 32245,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-020.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 77
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-289-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-289-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "05930df57677ab604cedf4fce432c8dedb672d9812a96be791671562a97a9828",
+      "byteSize": 32245,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-020.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 77
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-289-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-289-part-1-step-4-1280.png",
+      "group": "B",
+      "sha256": "05930df57677ab604cedf4fce432c8dedb672d9812a96be791671562a97a9828",
+      "byteSize": 32245,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-020.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 77
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-290-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-290-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "0b9105440cd4d02b003bf7a988aaa102155e217ce936325780c5ae699f534b9a",
+      "byteSize": 30881,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-020.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 78
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-290-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-290-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "5cee2f82a6feee01bf38a356bf0064f73ec14879836a9e67548e471b43afe764",
+      "byteSize": 33378,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-020.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 79
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-290-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-290-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "5cee2f82a6feee01bf38a356bf0064f73ec14879836a9e67548e471b43afe764",
+      "byteSize": 33378,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-020.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 79
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-290-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-290-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "5cee2f82a6feee01bf38a356bf0064f73ec14879836a9e67548e471b43afe764",
+      "byteSize": 33378,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-020.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 79
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-290-part-1",
+      "chapter": "IV",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-290-part-1-step-4-1280.png",
+      "group": "B",
+      "sha256": "5cee2f82a6feee01bf38a356bf0064f73ec14879836a9e67548e471b43afe764",
+      "byteSize": 33378,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-020.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 79
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-291-part-1",
+      "chapter": "IV",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-291-part-1-neutral-1280.png",
+      "group": "B",
+      "sha256": "561cfa73680040991aa6278d52fd31b202769cff00e12160181665248f9a110d",
+      "byteSize": 25128,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-020.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 80
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-291-part-1",
+      "chapter": "IV",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-291-part-1-step-1-1280.png",
+      "group": "B",
+      "sha256": "a7e69b9c760a5fd770c7efe25979dd111df4c9f5ad7968e70fe995fdb7735321",
+      "byteSize": 29051,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-021.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 81
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-291-part-1",
+      "chapter": "IV",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-291-part-1-step-2-1280.png",
+      "group": "B",
+      "sha256": "a7e69b9c760a5fd770c7efe25979dd111df4c9f5ad7968e70fe995fdb7735321",
+      "byteSize": 29051,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-021.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 81
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-291-part-1",
+      "chapter": "IV",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-291-part-1-step-3-1280.png",
+      "group": "B",
+      "sha256": "90850c93bf7de5e96c9792844338aeb14357086d5772e752b98b4d87eb8cb3e9",
+      "byteSize": 25147,
+      "pixelSize": [
+        749,
+        668
+      ],
+      "contactSheet": {
+        "sheet": "B-w1280-sheet-021.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 82
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "B-VIS-01",
+      "exercise": 266,
+      "kind": "label-placement",
+      "severity": "minor",
+      "status": "open",
+      "description": "A is below the obtuse vertex, inside triangle ABC, although the region above A between the extensions is available. Move label above the vertex.",
+      "evidence": [
+        {
+          "id": "atanasyan-7-9-main-266-part-1",
+          "view": "case-1",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-266-part-1-case-1-320.png",
+          "sha256": "34925d31d6dc9579d4fd00c47fd02d6491ef6727742c6f9f4f009f23c312a3cb",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-006.png",
+            "cell": 1,
+            "ordinalInGroupWidth": 21
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-266-part-1",
+          "view": "case-1",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-266-part-1-case-1-1280.png",
+          "sha256": "4d2980303f3e9c33069b95b431ed866b0132c1224a05adb24d70f855ab9c376c",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-005.png",
+            "cell": 3,
+            "ordinalInGroupWidth": 19
+          }
+        }
+      ]
+    },
+    {
+      "id": "B-VIS-02",
+      "exercise": 270,
+      "kind": "label-placement",
+      "severity": "minor",
+      "status": "open",
+      "description": "F is placed below BC inside ABC. Move it to the exterior side of BC.",
+      "evidence": [
+        {
+          "id": "atanasyan-7-9-main-270-part-1",
+          "view": "neutral",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-270-part-1-neutral-320.png",
+          "sha256": "e7a654ae31e4274407b0d46326c45bde42ffc659081e7b0fd7fa1b157719d4dd",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-008.png",
+            "cell": 2,
+            "ordinalInGroupWidth": 30
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-270-part-1",
+          "view": "step-1",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-270-part-1-step-1-320.png",
+          "sha256": "37fa2b25be144e08efd0f748facdb84bdb15244f913fb896167f03628c999c74",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-008.png",
+            "cell": 3,
+            "ordinalInGroupWidth": 31
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-270-part-1",
+          "view": "step-2",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-270-part-1-step-2-320.png",
+          "sha256": "37fa2b25be144e08efd0f748facdb84bdb15244f913fb896167f03628c999c74",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-008.png",
+            "cell": 3,
+            "ordinalInGroupWidth": 31
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-270-part-1",
+          "view": "step-3",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-270-part-1-step-3-320.png",
+          "sha256": "37fa2b25be144e08efd0f748facdb84bdb15244f913fb896167f03628c999c74",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-008.png",
+            "cell": 3,
+            "ordinalInGroupWidth": 31
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-270-part-1",
+          "view": "step-4",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-270-part-1-step-4-320.png",
+          "sha256": "37fa2b25be144e08efd0f748facdb84bdb15244f913fb896167f03628c999c74",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-008.png",
+            "cell": 3,
+            "ordinalInGroupWidth": 31
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-270-part-1",
+          "view": "neutral",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-270-part-1-neutral-1280.png",
+          "sha256": "e8bf81614c4cc3af74bda5ec23ef520dcdeddd602be09209beff39d3e5912ba7",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-007.png",
+            "cell": 1,
+            "ordinalInGroupWidth": 25
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-270-part-1",
+          "view": "step-1",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-270-part-1-step-1-1280.png",
+          "sha256": "2ac17f906ff22cccc818fede5d6fa546175d20d50f2db40aac3c9b55c7d0871b",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-007.png",
+            "cell": 2,
+            "ordinalInGroupWidth": 26
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-270-part-1",
+          "view": "step-2",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-270-part-1-step-2-1280.png",
+          "sha256": "2ac17f906ff22cccc818fede5d6fa546175d20d50f2db40aac3c9b55c7d0871b",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-007.png",
+            "cell": 2,
+            "ordinalInGroupWidth": 26
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-270-part-1",
+          "view": "step-3",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-270-part-1-step-3-1280.png",
+          "sha256": "2ac17f906ff22cccc818fede5d6fa546175d20d50f2db40aac3c9b55c7d0871b",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-007.png",
+            "cell": 2,
+            "ordinalInGroupWidth": 26
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-270-part-1",
+          "view": "step-4",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-270-part-1-step-4-1280.png",
+          "sha256": "2ac17f906ff22cccc818fede5d6fa546175d20d50f2db40aac3c9b55c7d0871b",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-007.png",
+            "cell": 2,
+            "ordinalInGroupWidth": 26
+          }
+        }
+      ]
+    },
+    {
+      "id": "B-VIS-03",
+      "exercise": 272,
+      "kind": "label-placement",
+      "severity": "minor",
+      "status": "open",
+      "description": "At 1280 px K₁ sits inside the second triangle while K is outside the first. Use a stable exterior offset left of A₁C₁.",
+      "evidence": [
+        {
+          "id": "atanasyan-7-9-main-272-part-1",
+          "view": "neutral",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-272-part-1-neutral-320.png",
+          "sha256": "041da8abdcfdc3b156f3f056c51e2fdc45b0f873ee0356d7e548331ca24b83cb",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-009.png",
+            "cell": 2,
+            "ordinalInGroupWidth": 34
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-272-part-1",
+          "view": "step-1",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-272-part-1-step-1-320.png",
+          "sha256": "aa908115af70642ef9a7ea0bd2bbd48182fe2eb87f390290d192c7c783abe4aa",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-009.png",
+            "cell": 3,
+            "ordinalInGroupWidth": 35
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-272-part-1",
+          "view": "step-2",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-272-part-1-step-2-320.png",
+          "sha256": "aa908115af70642ef9a7ea0bd2bbd48182fe2eb87f390290d192c7c783abe4aa",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-009.png",
+            "cell": 3,
+            "ordinalInGroupWidth": 35
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-272-part-1",
+          "view": "step-3",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-272-part-1-step-3-320.png",
+          "sha256": "aa908115af70642ef9a7ea0bd2bbd48182fe2eb87f390290d192c7c783abe4aa",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-009.png",
+            "cell": 3,
+            "ordinalInGroupWidth": 35
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-272-part-1",
+          "view": "step-4",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-272-part-1-step-4-320.png",
+          "sha256": "aa908115af70642ef9a7ea0bd2bbd48182fe2eb87f390290d192c7c783abe4aa",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-009.png",
+            "cell": 3,
+            "ordinalInGroupWidth": 35
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-272-part-1",
+          "view": "neutral",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-272-part-1-neutral-1280.png",
+          "sha256": "fcee84fe4aed3fbaa7e0d19dc1992ffee36d0948ad421ed429b707c6f5f27555",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-008.png",
+            "cell": 1,
+            "ordinalInGroupWidth": 29
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-272-part-1",
+          "view": "step-1",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-272-part-1-step-1-1280.png",
+          "sha256": "fcee84fe4aed3fbaa7e0d19dc1992ffee36d0948ad421ed429b707c6f5f27555",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-008.png",
+            "cell": 1,
+            "ordinalInGroupWidth": 29
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-272-part-1",
+          "view": "step-2",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-272-part-1-step-2-1280.png",
+          "sha256": "fcee84fe4aed3fbaa7e0d19dc1992ffee36d0948ad421ed429b707c6f5f27555",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-008.png",
+            "cell": 1,
+            "ordinalInGroupWidth": 29
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-272-part-1",
+          "view": "step-3",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-272-part-1-step-3-1280.png",
+          "sha256": "fcee84fe4aed3fbaa7e0d19dc1992ffee36d0948ad421ed429b707c6f5f27555",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-008.png",
+            "cell": 1,
+            "ordinalInGroupWidth": 29
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-272-part-1",
+          "view": "step-4",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-272-part-1-step-4-1280.png",
+          "sha256": "fcee84fe4aed3fbaa7e0d19dc1992ffee36d0948ad421ed429b707c6f5f27555",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-008.png",
+            "cell": 1,
+            "ordinalInGroupWidth": 29
+          }
+        }
+      ]
+    },
+    {
+      "id": "B-VIS-04",
+      "exercise": 268,
+      "kind": "angle-marker",
+      "severity": "moderate",
+      "status": "open",
+      "description": "The arc for angle BMC crosses BC twice and extends below the base. Reduce its radius so the angle marker stays between M and BC.",
+      "evidence": [
+        {
+          "id": "atanasyan-7-9-main-268-part-1",
+          "view": "neutral",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-268-part-1-neutral-320.png",
+          "sha256": "b58d9e3ccb5f66bbb5ebac5565bebd89855ef41154f17dd2b6fc3c95ca51fe80",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-007.png",
+            "cell": 2,
+            "ordinalInGroupWidth": 26
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-268-part-1",
+          "view": "step-1",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-268-part-1-step-1-320.png",
+          "sha256": "6cfb6241bb4ca74c3a68e6cc4c84c3d692906b5cd82ee738b9801b66c590865a",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-007.png",
+            "cell": 3,
+            "ordinalInGroupWidth": 27
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-268-part-1",
+          "view": "step-2",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-268-part-1-step-2-320.png",
+          "sha256": "6cfb6241bb4ca74c3a68e6cc4c84c3d692906b5cd82ee738b9801b66c590865a",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-007.png",
+            "cell": 3,
+            "ordinalInGroupWidth": 27
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-268-part-1",
+          "view": "step-3",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-268-part-1-step-3-320.png",
+          "sha256": "6cfb6241bb4ca74c3a68e6cc4c84c3d692906b5cd82ee738b9801b66c590865a",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-007.png",
+            "cell": 3,
+            "ordinalInGroupWidth": 27
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-268-part-1",
+          "view": "neutral",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-268-part-1-neutral-1280.png",
+          "sha256": "f655822013b35df6ce54304a6e5293ed7518d63883da1a5fac6d4e3f52365526",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-006.png",
+            "cell": 3,
+            "ordinalInGroupWidth": 23
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-268-part-1",
+          "view": "step-1",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-268-part-1-step-1-1280.png",
+          "sha256": "f655822013b35df6ce54304a6e5293ed7518d63883da1a5fac6d4e3f52365526",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-006.png",
+            "cell": 3,
+            "ordinalInGroupWidth": 23
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-268-part-1",
+          "view": "step-2",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-268-part-1-step-2-1280.png",
+          "sha256": "f655822013b35df6ce54304a6e5293ed7518d63883da1a5fac6d4e3f52365526",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-006.png",
+            "cell": 3,
+            "ordinalInGroupWidth": 23
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-268-part-1",
+          "view": "step-3",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-268-part-1-step-3-1280.png",
+          "sha256": "f655822013b35df6ce54304a6e5293ed7518d63883da1a5fac6d4e3f52365526",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-006.png",
+            "cell": 3,
+            "ordinalInGroupWidth": 23
+          }
+        }
+      ]
+    },
+    {
+      "id": "B-VIS-05",
+      "exercise": 275,
+      "kind": "progressive-construction",
+      "severity": "moderate",
+      "status": "open",
+      "description": "Step1 only constructs the angle bisector, but the view already names its future intersection H and draws the finite segment OH. Show an unlabeled bisector ray; introduce H at step2.",
+      "evidence": [
+        {
+          "id": "atanasyan-7-9-main-275-part-1",
+          "view": "step-1",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-275-part-1-step-1-320.png",
+          "sha256": "f4bfd76e8d78e125b43503e3ec3209bbae6e5fdd19a68d44a9e5f5b9fc7dc4b5",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-011.png",
+            "cell": 4,
+            "ordinalInGroupWidth": 44
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-275-part-1",
+          "view": "step-1",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-275-part-1-step-1-1280.png",
+          "sha256": "df3fe8e5d1f5c7551d3215eb469ab5517035caf531cdd47339648aac7040eb8b",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-010.png",
+            "cell": 2,
+            "ordinalInGroupWidth": 38
+          }
+        }
+      ]
+    },
+    {
+      "id": "B-VIS-06",
+      "exercise": 282,
+      "kind": "progressive-construction",
+      "severity": "moderate",
+      "status": "open",
+      "description": "Step1 introduces DE and DF but already displays AD. Delay AD to step2, or explicitly introduce AD in step1 text.",
+      "evidence": [
+        {
+          "id": "atanasyan-7-9-main-282-part-1",
+          "view": "step-1",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-282-part-1-step-1-320.png",
+          "sha256": "a144881fa9028b5d2af7ac132e78ffe15220d6bd6e1f55f0052653c37d3c3ee4",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-016.png",
+            "cell": 2,
+            "ordinalInGroupWidth": 62
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-282-part-1",
+          "view": "step-1",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-282-part-1-step-1-1280.png",
+          "sha256": "0289260cc65d71ba8ac1ace1ad2fcdc4cbe143a3f5a52e861de08ed35593a9d5",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-014.png",
+            "cell": 3,
+            "ordinalInGroupWidth": 55
+          }
+        }
+      ]
+    },
+    {
+      "id": "B-VIS-07",
+      "exercise": 288,
+      "kind": "progressive-construction-and-boundary",
+      "severity": "moderate",
+      "status": "open",
+      "description": "Step1 already shows the final ray starting at D, while text introduces D and restricts the parallel to the angle only at step2. Show the full parallel in step1, then the ray. Add a visible note that D is excluded; its filled boundary dot alone does not convey exclusion.",
+      "evidence": [
+        {
+          "id": "atanasyan-7-9-main-288-part-1",
+          "view": "step-1",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-288-part-1-step-1-320.png",
+          "sha256": "3f2a81c547f643d0dc26077df009f08dabef1c3422a235e8233c7e33b58a8912",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-021.png",
+            "cell": 2,
+            "ordinalInGroupWidth": 82
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-288-part-1",
+          "view": "step-2",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-288-part-1-step-2-320.png",
+          "sha256": "3f2a81c547f643d0dc26077df009f08dabef1c3422a235e8233c7e33b58a8912",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-021.png",
+            "cell": 2,
+            "ordinalInGroupWidth": 82
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-288-part-1",
+          "view": "step-3",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-288-part-1-step-3-320.png",
+          "sha256": "3f2a81c547f643d0dc26077df009f08dabef1c3422a235e8233c7e33b58a8912",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-021.png",
+            "cell": 2,
+            "ordinalInGroupWidth": 82
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-288-part-1",
+          "view": "step-1",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-288-part-1-step-1-1280.png",
+          "sha256": "55d508e34cffd9c995d6334e2ac2b46a0951b211acbaa04cf5f1fddf2a27ae7d",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-019.png",
+            "cell": 1,
+            "ordinalInGroupWidth": 73
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-288-part-1",
+          "view": "step-2",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-288-part-1-step-2-1280.png",
+          "sha256": "c73fb67c9717e032b2ff689d199d4b342b1cc93bbd20127cbd7eb4e397f232e7",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-019.png",
+            "cell": 2,
+            "ordinalInGroupWidth": 74
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-288-part-1",
+          "view": "step-3",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-288-part-1-step-3-1280.png",
+          "sha256": "c73fb67c9717e032b2ff689d199d4b342b1cc93bbd20127cbd7eb4e397f232e7",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-019.png",
+            "cell": 2,
+            "ordinalInGroupWidth": 74
+          }
+        }
+      ]
+    },
+    {
+      "id": "B-VIS-08",
+      "exercise": 289,
+      "kind": "progressive-construction",
+      "severity": "moderate",
+      "status": "open",
+      "description": "Step2 already shows M and the middle parallel m, which text constructs in step3. Keep step2 to distances/an interior point and disclose the constructed midpoint/middle parallel in step3.",
+      "evidence": [
+        {
+          "id": "atanasyan-7-9-main-289-part-1",
+          "view": "step-2",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-289-part-1-step-2-320.png",
+          "sha256": "62c98a7ed5882f17d297dade591ad81ee766f3bc4ac078ef307b18faf9601ba5",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-022.png",
+            "cell": 1,
+            "ordinalInGroupWidth": 85
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-289-part-1",
+          "view": "step-2",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-289-part-1-step-2-1280.png",
+          "sha256": "05930df57677ab604cedf4fce432c8dedb672d9812a96be791671562a97a9828",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-020.png",
+            "cell": 1,
+            "ordinalInGroupWidth": 77
+          }
+        }
+      ]
+    },
+    {
+      "id": "B-VIS-09",
+      "exercise": 290,
+      "kind": "progressive-construction",
+      "severity": "moderate",
+      "status": "open",
+      "description": "Step1 displays the perpendicular distances XH and YK, although this step only constructs m through M. Introduce perpendiculars with step2 distance comparison.",
+      "evidence": [
+        {
+          "id": "atanasyan-7-9-main-290-part-1",
+          "view": "step-1",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-290-part-1-step-1-320.png",
+          "sha256": "349b8d1938d8b4f1da9a0da087546a335c723337bff5f1740236b45164a43649",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-022.png",
+            "cell": 3,
+            "ordinalInGroupWidth": 87
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-290-part-1",
+          "view": "step-1",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-290-part-1-step-1-1280.png",
+          "sha256": "5cee2f82a6feee01bf38a356bf0064f73ec14879836a9e67548e471b43afe764",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-020.png",
+            "cell": 3,
+            "ordinalInGroupWidth": 79
+          }
+        }
+      ]
+    },
+    {
+      "id": "B-VIS-10",
+      "exercise": 291,
+      "kind": "progressive-construction",
+      "severity": "moderate",
+      "status": "open",
+      "description": "Step1 displays both parallel loci although its text handles one half-plane; the second parallel is introduced in step2. Disclose the second parallel in step2.",
+      "evidence": [
+        {
+          "id": "atanasyan-7-9-main-291-part-1",
+          "view": "step-1",
+          "width": 320,
+          "file": "review-atanasyan-7-9-main-291-part-1-step-1-320.png",
+          "sha256": "9b0da807bf0e167a3432004fd35d727b45dfa2c56033ebde717e3bbe91c0bcab",
+          "contactSheet": {
+            "sheet": "B-w0320-sheet-023.png",
+            "cell": 1,
+            "ordinalInGroupWidth": 89
+          }
+        },
+        {
+          "id": "atanasyan-7-9-main-291-part-1",
+          "view": "step-1",
+          "width": 1280,
+          "file": "review-atanasyan-7-9-main-291-part-1-step-1-1280.png",
+          "sha256": "a7e69b9c760a5fd770c7efe25979dd111df4c9f5ad7968e70fe995fdb7735321",
+          "contactSheet": {
+            "sheet": "B-w1280-sheet-021.png",
+            "cell": 1,
+            "ordinalInGroupWidth": 81
+          }
+        }
+      ]
+    }
+  ],
+  "positiveObservations": [
+    "No clipped labels, text/line collisions, missing captures or unreadable mathematical point labels found in the reviewed B scope.",
+    "Alternate acute/right/obtuse configurations and same/opposite-side distance cases remain distinct and readable.",
+    "True interior-point labels such as M in269 remain inside where that preserves association; outward placement requests concern feasible boundary labels only."
+  ]
+}

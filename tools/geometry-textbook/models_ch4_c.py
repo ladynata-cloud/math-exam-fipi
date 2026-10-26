@@ -260,7 +260,7 @@ p={'A':[0,0],'C':[6,0],'B':[2,5]};p['O']=incenter(p['A'],p['B'],p['C']);p['D']=i
 add(326,'single','Дан ABC. Постройте DE ∥ AC так, чтобы D лежала на AB, E — на BC и DE = AD + CE.','Проведём DE через пересечение биссектрис углов A и C параллельно AC.',[row('Как получить две нужные части DE?','Хотим найти O внутри DE с DO = AD и OE = CE. Для этого подходят равнобедренные треугольники ADO и CEO.','Анализ искомого равенства',[18]),row('Как построить O?','Построим биссектрисы углов A и C; их пересечение внутри ABC обозначим O.','Построение биссектрис',[23]),row('Как найти D и E?','Через O проведём прямую, параллельную AC. Её пересечения с AB и BC обозначим D и E.','Построение параллельной',[25,28]),row('Почему AD = DO?','∠DAO = ∠OAC как половины угла A. При DO ∥ AC имеем ∠AOD = ∠OAC. Значит, в ADO равны углы при A и O, поэтому AD = DO.','Углы при параллельных; равные углы и стороны',[29,33]),row('Как закончить проверку?','Так же ∠ECO = ∠COE, поэтому CE = EO. Точка O между D и E; значит, DE = DO + OE = AD + CE. Для любого невырожденного ABC построение возможно.','Равные углы и стороны; сложение отрезков',[33,7])],p,v0,[v0,v1,v2,vf,vf],checks=[col('A','D','B'),col('B','E','C'),col('D','O','E'),par('D','E','A','C'),equal(('A','D'),('D','O')),equal(('C','E'),('E','O'))])
 #327 three equal corner triangles by SAS.
 p={'A':[0,0],'B':[6,0],'C':[3,3*math.sqrt(3)]};t=.35;p['B1']=[(1-t)*p['A'][i]+t*p['C'][i] for i in (0,1)];p['C1']=[(1-t)*p['B'][i]+t*p['A'][i] for i in (0,1)];p['A1']=[(1-t)*p['C'][i]+t*p['B'][i] for i in (0,1)];v0=sc(['A','B','C','B1'],tri());v1=more(v0,['A1','C1'],equalSegments=[eq('A','B1'),eq('B','C1'),eq('C','A1')]);vf=more(v1,segs=tri('A1','B1','C1'));corners=sc(['A','B','C','A1','B1','C1'],tri()+tri('A1','B1','C1'),equalSegments=[eq('A','B1'),eq('B','C1'),eq('C','A1'),eq('A','C1',2),eq('B','A1',2),eq('C','B1',2)])
-add(327,'single','Дан равносторонний ABC и точка B₁ на AC. На BC и AB постройте A₁ и C₁ так, чтобы A₁B₁C₁ был равносторонним.','Отложим CA₁ = BC₁ = AB₁ и соединим A₁, B₁, C₁.',[row('Как использовать заданное положение B₁?','Обозначим AB₁ = s, сторону ABC — a. На BC от C отложим CA₁ = s, а на BA от B отложим BC₁ = s.','Откладывание равных отрезков',[23]),row('Какие оставшиеся отрезки равны?','AC₁ = BA₁ = CB₁ = a − s. Углы при A, B, C равны 60°.','Равносторонний треугольник',[18,31]),row('Какие три треугольника равны?','AB₁C₁, BC₁A₁ и CA₁B₁ имеют стороны s и a − s с углом 60° между ними. По первому признаку они равны.','Первый признак равенства',[15]),row('Почему внутренний треугольник равносторонний?','Их третьи стороны равны: A₁B₁ = B₁C₁ = C₁A₁. Построение возможно при любом внутреннем B₁. Если B₁ совпадает с A или C, берём соответствующие исходные вершины и получаем сам ABC.','Соответствующие стороны; граничные случаи',[14])],p,v0,[v1,corners,vf,vf],checks=[equal(('A','B'),('B','C'),('C','A')),equal(('A','B1'),('B','C1'),('C','A1')),equal(('A1','B1'),('B1','C1'),('C1','A1')),col('A','B1','C'),col('A','C1','B'),col('B','A1','C')])
+add(327,'single','Дан равносторонний ABC и точка B₁ на AC. На BC и AB постройте A₁ и C₁ так, чтобы A₁B₁C₁ был равносторонним.','Отложим CA₁ = BC₁ = AB₁ и соединим A₁, B₁, C₁.',[row('Как использовать заданное положение B₁?','Обозначим AB₁ = s, сторону ABC — a. На BC от C отложим CA₁ = s, а на BA от B отложим BC₁ = s.','Откладывание равных отрезков',[23]),row('Какие оставшиеся отрезки равны?','Соединим A₁, B₁ и C₁. Оставшиеся отрезки AC₁ = BA₁ = CB₁ = a − s. Углы при A, B, C равны 60°.','Равносторонний треугольник',[18,31]),row('Какие три треугольника равны?','AB₁C₁, BC₁A₁ и CA₁B₁ имеют стороны s и a − s с углом 60° между ними. По первому признаку они равны.','Первый признак равенства',[15]),row('Почему внутренний треугольник равносторонний?','Их третьи стороны равны: A₁B₁ = B₁C₁ = C₁A₁. Построение возможно при любом внутреннем B₁. Если B₁ совпадает с A или C, берём соответствующие исходные вершины и получаем сам ABC.','Соответствующие стороны; граничные случаи',[14])],p,v0,[v1,corners,vf,vf],checks=[equal(('A','B'),('B','C'),('C','A')),equal(('A','B1'),('B','C1'),('C','A1')),equal(('A1','B1'),('B1','C1'),('C1','A1')),col('A','B1','C'),col('A','C1','B'),col('B','A1','C')])
 #328 angle, altitude and bisector from the same vertex. Construct a right
 #triangle AHD, not a later-grade tangent theorem.
 p={'A':[0,0],'D':[0,5],'H':[2.4,3.2]};p['B']=inter(p['A'],polar(p['A'],60,1),p['D'],p['H']);p['C']=inter(p['A'],polar(p['A'],120,1),p['D'],p['H']);p['H1']=[-2.4,3.2];p['B1']=inter(p['A'],polar(p['A'],60,1),p['D'],p['H1']);p['C1']=inter(p['A'],polar(p['A'],120,1),p['D'],p['H1']);v0=sc(['A'],rays=[['A','B'],['A','C']],angleArcs=[arc('A','B','C')]);v1=more(v0,['D'],[['A','D']]);v2=more(v1,['H'],[['A','H'],['D','H']],rightAngles=[rt('A','H','D')]);vf=sc(['A','B','C','D','H'],tri()+[['A','D'],['A','H']],rightAngles=[rt('A','H','D')]);alt=sc(['A','B1','C1','D','H1'],tri('A','B1','C1')+[['A','D'],['A','H1']],rightAngles=[rt('A','H1','D')]);p.update(B2=polar(p['A'],60,5/math.sin(math.radians(60))),C2=polar(p['A'],120,5/math.sin(math.radians(60))));boundary=sc(['A','B2','C2','D'],tri('A','B2','C2')+[['A','D']],rightAngles=[rt('A','D','B2')],note='Граничный тип данных: высота равна биссектрисе; здесь H совпадает с D.')
@@ -271,6 +271,38 @@ add(329,'single','Постройте треугольник по стороне,
 #330 use the C-angle bisector, then congruent right triangles.
 p={'A':[0,0],'B':[6,0],'C':[0,4]};x=24/(4+math.sqrt(52));p['M']=[x,0];p['H']=foot(p['M'],p['B'],p['C']);v0=sc(['A','B','C'],tri(),rightAngles=[rt('B','A','C')]);v1=more(v0,['M'],[['C','M']],angleArcs=[arc('C','A','M',1),arc('C','M','B',1)]);vf=more(v1,['H'],[['M','H']],rightAngles=[rt('B','A','C'),rt('M','H','C')],equalSegments=[eq('A','M'),eq('M','H')])
 add(330,'single','Дан ABC с прямым углом A. На стороне AB постройте M так, чтобы расстояние от M до прямой BC равнялось AM.','M — точка пересечения AB с биссектрисой угла C.',[row('Почему AM уже является расстоянием?','MA ⟂ AC, поскольку угол A прямой и M лежит на AB. Значит, AM — расстояние от M до прямой AC.','Расстояние от точки до прямой',[37]),row('Как выбрать M?','Построим биссектрису угла ACB. Её пересечение со стороной AB обозначим M.','Построение биссектрисы',[23]),row('Как сравнить два расстояния?','Опустим MH ⟂ BC. В прямоугольных CMA и CMH гипотенуза CM общая, а острые углы ACM и MCH равны, так как CM — биссектриса.','Дано и определение биссектрисы',[17]),row('Что следует из равенства треугольников?','По гипотенузе и острому углу CMA = CMH. Поэтому MA = MH, то есть расстояние до BC равно AM.','Признак равенства прямоугольных треугольников',[36]),row('Почему точка подходит на стороне?','Биссектриса внутреннего угла невырожденного треугольника пересекает противоположную сторону во внутренней точке. Построенная M лежит между A и B.','Расположение биссектрисы',[17])],p,v0,[v0,v1,vf,vf,vf],checks=[perp('A','B','A','C'),col('A','M','B'),col('B','H','C'),perp('M','H','B','C'),equal(('A','M'),('M','H'))])
+
+# Explicit outward offsets from the independent mobile/desktop pixel review.
+# Offsets are in model units; positive y moves a label upward in the viewer.
+exterior_offsets={
+ (299,'д'):{'M':[0,-5]},
+ (301,'single'):{'H':[0,-5],'A1':[0,-5]},
+ (303,'single'):{'M':[0,-5]},
+ (305,'single'):{'B':[-5,0]},
+ (307,'single'):{'P':[-5,0]},
+ (308,'single'):{'H':[0,-5]},
+ (309,'а'):{'H':[0,-5]},(309,'б'):{'H':[0,-5]},
+ (310,'а'):{'H':[0,-5]},(310,'б'):{'M1':[0,-5]},
+ (311,'single'):{'M':[-4,-5]},
+ (318,'single'):{'D':[-4,-5],'H':[4,-5]},
+ (319,'single'):{'H':[0,-5],'H1':[0,-5]},
+ (320,'single'):{'R':[0,-5]},
+ (321,'single'):{'D':[0,-5]},
+ (322,'single'):{'M':[4,-5]},
+ (325,'single'):{'K':[0,-5]},
+ (327,'single'):{'C1':[0,-5]},
+ (329,'single'):{'M':[0,-5],'H1':[0,-5]},
+ (330,'single'):{'M':[0,-5]},
+}
+for entry in MODELS:
+ model=entry['model'];key=(entry['number'],entry['part'])
+ if key in exterior_offsets:model.setdefault('labelOffsets',{}).update(exterior_offsets[key])
+ if entry['number']==325:
+  for viewid in ['step-4','case-1']:
+   v=model['views'][viewid];v['lines']=[['B','C']];v.setdefault('rightAngles',[]).append(rt('A','H','B'))
+ if entry['number']==328:
+  for viewid in ['step-3','step-4','step-6']:model['views'][viewid]['lines']=[['B','C']]
+  model['views']['case-1']['lines']=[['B1','C1']]
 
 # Freeze output; independent reviewer can compare every source subpart separately.
 prep=dict(bookId='atanasyan-2023-7-9',edition='Атанасян и др. Геометрия 7–9. Базовый уровень. 14-е изд., перераб., Просвещение, 2023',chapter=4,title='Соотношения между сторонами и углами треугольника',status='draft-content-preparation',source=dict(fileName='1701411644_geometrija_-uchebnik_-7-9-kl_-atanasjan_compressed.pdf',sha256='3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72',printedPageRange=[86,90],pdfPageRange=[87,91],pageOffset=1),review=dict(independentSource='pending',independentMathematics='pending',interactiveModels='authored-coordinate-check-pending',claude='not-performed-owner-task-waiver'),coverage=dict(numberedExercises=len(EX),parts=len(MODELS),firstExercise=292,lastExercise=330,missingNumberedExercises=sorted(set(range(292,331))-set(EX))),exercises=[EX[n] for n in sorted(EX)],authorSourceCheck=dict(method='Visual reading of exact source page images; original explanations and analytic illustration coordinates',printedPages=[86,87,89,90],figures=[148,149,150,151,152],independentApproval=False))

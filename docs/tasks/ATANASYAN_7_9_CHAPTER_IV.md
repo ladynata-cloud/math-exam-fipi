@@ -66,9 +66,24 @@ The569-card DOM sweep covers1967 retained step checkpoints. Initial theory38
 label validation failed; hidden helper identifiers and labels were corrected
 without changing the runtime or weakening a gate, and the relevant checks pass.
 
-Actual browser and image review remain pending. This environment cannot launch
-Chromium because local sockets are unavailable; use exact-head GitHub Actions
-and inspect its real captured PNGs. The candidate deliberately has no chapterIV
-publication review manifest. Its166 cards remain `in-review`; the strict
-reviewed-content/board gate must not pass until review is completed.
-No new content is claimed published and no release action is authorized.
+Draft [PR #346](https://github.com/ladynata-cloud/math-exam-fipi/pull/346)
+contains the candidate. This environment cannot launch Chromium because local
+sockets are unavailable; exact-head GitHub Actions supplies real browser PNGs.
+Run40318034439 on head `2f8b1217d651ff32bf90583642171dbe538f1e7e`
+completed the full sweep of5812 views,1138 step flows and14 interactions with
+zero page errors, but its final gate failed on the last252b view at320px:
+auxiliary lines crossed labels. The failed result is retained explicitly.
+
+Independent reviewers inspected all1728 chapterIV view/width pairs. They also
+found a few construction-timing/placement issues and five named theory cases
+that omitted already introduced elements. The reviewed correction package
+changes35 new cards only: A1, B10, C21 and T3. All coordinates and1912
+geometric assertions are preserved; two step explanations now explicitly name
+their constructions. Local content, model, preservation and full DOM gates
+pass again. Fresh browser captures and review of the changed pixels remain
+pending; earlier image findings are not marked resolved by data edits alone.
+
+The candidate deliberately has no chapterIV publication review manifest.
+Its166 cards remain `in-review`; the strict reviewed-content/board gate must
+not pass until review is completed. No new content is claimed published and
+no release action is authorized.

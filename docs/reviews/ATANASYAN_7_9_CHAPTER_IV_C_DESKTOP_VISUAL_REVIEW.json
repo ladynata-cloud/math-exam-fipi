@@ -1,0 +1,4251 @@
+{
+  "schemaVersion": 1,
+  "status": "first-pass-complete-changes-requested",
+  "verdict": "CHANGES_REQUESTED",
+  "reviewedAt": "2026-10-26",
+  "reviewer": {
+    "agent": "author_ch4_b/c_desktop_visual",
+    "independentOfContentAuthor": true,
+    "role": "desktop visual reviewer only"
+  },
+  "scope": {
+    "chapter": "IV",
+    "collection": "main",
+    "exerciseRange": [
+      292,
+      330
+    ],
+    "width": 1280,
+    "cards": 58,
+    "numberedExercises": 39,
+    "viewWidthCaptures": 302,
+    "uniquePngRepresentatives": 232,
+    "contactSheetsInspected": 58,
+    "allAssignedSheetsActuallyViewed": true,
+    "sourceOriginalsInspectedSeparately": 4
+  },
+  "provenance": {
+    "runId": 40318034439,
+    "artifactId": 12648567416,
+    "capturedHead": "2f8b1217d651ff32bf90583642171dbe538f1e7e",
+    "artifactZipSha256": "9311336e477c1ffde8409b1759ea902c7e476d687984ffb1f5df19038ba57ce1",
+    "browserEvidenceSha256": "b636a12d07f0859f7d5f9f1c604043d024735b75b269d8b3a1217abec0bf64d9",
+    "gateScriptSha256": "07b49df556ebb6ee97ddcabbd3a4e3d12d570c7d4816446555356e214fd12577",
+    "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
+    "authoredContentSha256": "e7ed27fcc07bf0cd69f0ab59ee5f7be939f34241060c983f65f33ca7ed614a55",
+    "bundleSha256": "9fb7cfc95c3c8ff8e8cd47f3ec7b2f1d036a4f108f5bc236a676de681ee90f6e",
+    "rosterSha256": "ddfc3b82efc8a0b1fcab206188b2e17c6d62d8e3d3097b97cb2e35be7387374e",
+    "contactSheetDeduplication": "exact-PNG-SHA256-within-group-and-width",
+    "sourceImagesModified": false,
+    "allSourceAndSheetHashesIndependentlyVerified": true
+  },
+  "method": [
+    "Actually viewed every desktop C contact sheet 001 through 058 using the image-viewing tool.",
+    "Each sheet contains four readable representatives. Exact PNG-byte hashes map those 232 unique representatives to all 302 desktop views.",
+    "Inspected original unscaled PNGs for the dense 303 and 307 diagrams and to confirm the missing extensions in 325 and 328.",
+    "Checked label legibility, clipping, line/letter interference, markers, visible construction changes, alternative configurations and the owner preference for labels outside figures.",
+    "Did not edit content, models, runtime or source images."
+  ],
+  "observations": {
+    "labelClippingFound": false,
+    "labelOverlapFound": false,
+    "unreadableLetterFound": false,
+    "constructionExtensionFindings": 2,
+    "outsideLabelPreferenceFindingGroups": 1,
+    "uninspectedAssignedSheets": []
+  },
+  "findings": [
+    {
+      "id": "C-DESKTOP-325-EXTENSION",
+      "severity": "must-fix",
+      "status": "open",
+      "exercise": 325,
+      "views": [
+        "step-4",
+        "case-1"
+      ],
+      "description": "The altitude AH ends at H outside segment BC, but no extension BH or supporting line BC reaches H. The foot appears disconnected from its base line. Confirmed in the original step-4 PNG.",
+      "requestedChange": "Show supporting line BC or segment HB in both views and show the right angle between AH and the base line.",
+      "evidence": [
+        {
+          "file": "review-atanasyan-7-9-main-325-part-1-step-4-1280.png",
+          "sha256": "78934f536d76dd08c121d4ec050d6695bd53ee29731896c7bbf6d23ddb7659d7",
+          "view": "step-4"
+        },
+        {
+          "file": "review-atanasyan-7-9-main-325-part-1-case-1-1280.png",
+          "sha256": "71329928be37639543fe9b64644373eb79dcd271867870fb3c18ab4b550dec11",
+          "view": "case-1"
+        }
+      ]
+    },
+    {
+      "id": "C-DESKTOP-328-EXTENSION",
+      "severity": "must-fix",
+      "status": "open",
+      "exercise": 328,
+      "views": [
+        "step-3",
+        "step-4",
+        "step-6",
+        "case-1"
+      ],
+      "description": "The altitude foot H lies beyond B (and H1 beyond C1 in the reflected case), but BC/B1C1 stops at the triangle vertex. The right-angle marker spans a gap without the supporting side extension. Confirmed in the original step-3 PNG.",
+      "requestedChange": "Draw the supporting opposite-side line or missing BH/C1H1 extension in every affected view.",
+      "evidence": [
+        {
+          "file": "review-atanasyan-7-9-main-328-part-1-step-3-1280.png",
+          "sha256": "102220f28695c7652db890bd02fd7492bd85801fa25f6454401680490a3d0c1c",
+          "view": "step-3"
+        },
+        {
+          "file": "review-atanasyan-7-9-main-328-part-1-step-4-1280.png",
+          "sha256": "102220f28695c7652db890bd02fd7492bd85801fa25f6454401680490a3d0c1c",
+          "view": "step-4"
+        },
+        {
+          "file": "review-atanasyan-7-9-main-328-part-1-step-6-1280.png",
+          "sha256": "03b7304c7d990d8e54146061017b6aa2f565530c54608a6885ed75434a6e5993",
+          "view": "step-6"
+        },
+        {
+          "file": "review-atanasyan-7-9-main-328-part-1-case-1-1280.png",
+          "sha256": "d384c5e20585a0158fddaeecb5d37278b18e0b5ac41bc4eca965f777b2c80f0d",
+          "view": "case-1"
+        }
+      ]
+    },
+    {
+      "id": "C-DESKTOP-OUTSIDE-LABELS",
+      "severity": "scope-preference",
+      "status": "open",
+      "description": "The owner preference asks for letter labels outside the figure when practical. These boundary labels are readable but readily movable outside their triangle, generally below a horizontal base. True interior intersection points may remain inside.",
+      "requestedChange": "Apply outside offsets to the listed boundary labels and verify new renders.",
+      "instances": [
+        {
+          "exercise": 299,
+          "part": "д",
+          "point": "M",
+          "views": [
+            "step-3"
+          ],
+          "placement": "below BC"
+        },
+        {
+          "exercise": 303,
+          "part": "single",
+          "point": "M",
+          "views": [
+            "step-3",
+            "step-4"
+          ],
+          "placement": "below AB; construction-circle centre may remain within the circle"
+        },
+        {
+          "exercise": 305,
+          "part": "single",
+          "point": "B",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2"
+          ],
+          "placement": "left of side AD"
+        },
+        {
+          "exercise": 307,
+          "part": "single",
+          "point": "P",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-5",
+            "step-6",
+            "case-1",
+            "case-2"
+          ],
+          "placement": "left of side AC or left of the isolated triangle"
+        },
+        {
+          "exercise": 308,
+          "part": "single",
+          "point": "H",
+          "views": [
+            "step-2"
+          ],
+          "placement": "below BC"
+        },
+        {
+          "exercise": 310,
+          "part": "б",
+          "point": "M1",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3"
+          ],
+          "placement": "below the base line"
+        },
+        {
+          "exercise": 318,
+          "part": "single",
+          "point": "H",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4",
+            "step-5"
+          ],
+          "placement": "below BC"
+        },
+        {
+          "exercise": 319,
+          "part": "single",
+          "point": "H",
+          "views": [
+            "step-2",
+            "step-3"
+          ],
+          "placement": "below AB; desktop H1 is already below its triangle"
+        },
+        {
+          "exercise": 320,
+          "part": "single",
+          "point": "R",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2"
+          ],
+          "placement": "below BC; isolated ARC already places R outside"
+        },
+        {
+          "exercise": 321,
+          "part": "single",
+          "point": "D",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-4"
+          ],
+          "placement": "below BC"
+        },
+        {
+          "exercise": 322,
+          "part": "single",
+          "point": "M",
+          "views": [
+            "step-4",
+            "step-5"
+          ],
+          "placement": "below BC; the auxiliary quadrilateral intersection is a true interior point"
+        },
+        {
+          "exercise": 325,
+          "part": "single",
+          "point": "K",
+          "views": [
+            "step-4",
+            "case-1"
+          ],
+          "placement": "below BC"
+        },
+        {
+          "exercise": 327,
+          "part": "single",
+          "point": "C1",
+          "views": [
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4"
+          ],
+          "placement": "below AB"
+        },
+        {
+          "exercise": 329,
+          "part": "single",
+          "point": "M",
+          "views": [
+            "step-3",
+            "step-4",
+            "step-5",
+            "case-1",
+            "case-2"
+          ],
+          "placement": "below BC"
+        },
+        {
+          "exercise": 329,
+          "part": "single",
+          "point": "H1",
+          "views": [
+            "case-1"
+          ],
+          "placement": "below BC"
+        },
+        {
+          "exercise": 330,
+          "part": "single",
+          "point": "M",
+          "views": [
+            "step-2"
+          ],
+          "placement": "below AB; later views already place M below"
+        }
+      ]
+    }
+  ],
+  "browserRunBoundary": {
+    "globalCompleted": false,
+    "globalVerdict": "FAILED",
+    "globalRenderedViews": 5812,
+    "globalRecordedInteractions": 14,
+    "globalFailureCard": "atanasyan-7-9-main-252-part-2",
+    "globalFailureWidth": 320,
+    "globalFailureView": "step-5",
+    "scopedAutomatedGeometryIssueCount": 0,
+    "statement": "Complete C desktop capture coverage and zero scoped automated issues do not make the failed global browser run pass. The independent visual findings above still require correction and fresh rendered evidence."
+  },
+  "originalPngsInspected": [
+    {
+      "file": "review-atanasyan-7-9-main-303-part-1-step-2-1280.png",
+      "sha256": "fe39a60fa9e370d9fbcba519bd354a87d14b401a8d647675da328d55b701af29"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-307-part-1-neutral-1280.png",
+      "sha256": "7af98ad88d4c3ec9a116c76ed75dd951b803db185d33b17ce49394e424cb5fac"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-325-part-1-step-4-1280.png",
+      "sha256": "78934f536d76dd08c121d4ec050d6695bd53ee29731896c7bbf6d23ddb7659d7"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-328-part-1-step-3-1280.png",
+      "sha256": "102220f28695c7652db890bd02fd7492bd85801fa25f6454401680490a3d0c1c"
+    }
+  ],
+  "contactSheetsInspected": [
+    {
+      "file": "C-w1280-sheet-001.png",
+      "sha256": "52834795deecdd01d8325450d2f74f02b54de874b244bffa6d448a666c218169",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-002.png",
+      "sha256": "c62d498a9199bcb695965ec78fa5661deef0a36bfb39b5d672df7bd40ed5a827",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-003.png",
+      "sha256": "eaab20f27ac5f3a8b7826972239d54fc29393492b4cd2a79317d87b06ca5d850",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-004.png",
+      "sha256": "388b360b74df3a1bd69c853d570781678c65810186a04b8c951ddb5b714deb40",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-005.png",
+      "sha256": "45993cdef7aafd41dd4868d4c6e37b237c5a3a74b06fe3c9091e95b7a0583ff3",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-006.png",
+      "sha256": "59c2c97c21fd7035fb9a27a250f7cd2c4be111aa2f3a7e35fd9fff07e3ce8392",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-007.png",
+      "sha256": "04193f407dc4c0e1ed01675144ea6e08e69bedb9d8cf03d6074eb1fd800a5b70",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-008.png",
+      "sha256": "d1779b912a2898f385595cf1414909de9adcd79df89087877714b6732e5ddf39",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-009.png",
+      "sha256": "48496bc7f5b538a8cb6dc5776efe53b49786038da40e21e2e27a5fc9eecf9c6d",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-010.png",
+      "sha256": "31dbd75189e288a20ebc491d3b6afde4cc846ca97e303cd5e095a315266af8a0",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-011.png",
+      "sha256": "203a340e959a4813e3ababf7873af007a760689aaceb99f77617f98635caaaac",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-012.png",
+      "sha256": "30379443bc81223a87017675cd645df56ffb2da1f46802a50bd8342b0cdfdacc",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-013.png",
+      "sha256": "7596285c987aa4ca245570afcf12afd0468070bcdacc25c16e95152aeebce805",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-014.png",
+      "sha256": "c0f8a69a0c043c18d0dfb7608e201aedb77c8e9c6f4829b86d58f26f7137fdb2",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-015.png",
+      "sha256": "de12feba2bc42b327da5fadf990c1a67c8373ef92438d19e3c573c19448741b9",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-016.png",
+      "sha256": "d94d626a60756000b20f7f2f28a175ceed0d2ead37155739dda772f9375c3948",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-017.png",
+      "sha256": "dc346b2016532234d2cd3cfab5a931233ebda95b7d67d3ece2a65e33d9270176",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-018.png",
+      "sha256": "0b664dcf763961f8b68cbad4f05724fc54565d3e533ebf9dea145a7b7d6c428d",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-019.png",
+      "sha256": "408b2b32a507f6c52c4c1b417ca2feba225659b9a15d6bb96637ef8d9e353fea",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-020.png",
+      "sha256": "0f8f894e72f5e1656d44b0c5a9dc6bbe11480f048b709703554ced4bad75a30e",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-021.png",
+      "sha256": "54aa8c9e8078d01b177ff615e05c6f80d61b2f076387f88655c8e7987c03366c",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-022.png",
+      "sha256": "e91087c6f60771d9f5ecd05bf0e8acea651b0be15e4dcd5590e65d6c09915d47",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-023.png",
+      "sha256": "b59f7643bb908732b7ed2eea24ee65fcdf0ddbeb01deaf9d3ee571dcdb7041c1",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-024.png",
+      "sha256": "1792abab1284abfb05dc63ac85a2ddb7daed74156ee42ca2a684740a493d73dc",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-025.png",
+      "sha256": "2c7d303afb08cf4800eb5b355c0cedecb6deb336c311d0f84e4a72a0ab82c24b",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-026.png",
+      "sha256": "a4991ade2ad83d51e4cc351eaee3dde67c35c45cd8ee5015c42b20c2223eac98",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-027.png",
+      "sha256": "579863d47a0b045370fc5d96d383a06fd4568b0a040ea36af8d4ec04dce3197f",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-028.png",
+      "sha256": "6ebda9b620afc4c48f0b99fc74ab3ea2884ae56106e4f4755fdf0d0187f9ec01",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-029.png",
+      "sha256": "09b1ecee175a9e5efd8b22054378fde0a309cd4413cf136810c44a9a5ff8baea",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-030.png",
+      "sha256": "0309021c4c019387e26e5be1dc3ef44023ccc0f9040ad62078774fced1caa771",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-031.png",
+      "sha256": "bf3ea872ea12d94f84d0d329ec955802ce3a28c1e3c86ee576274c4a4e5a6ea3",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-032.png",
+      "sha256": "afb3308e4817ba83b1395c5c59e46a36aace875840902c9fd867bc886d1b02b3",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-033.png",
+      "sha256": "ffcd52213c7f0678d5eb547a10adb337358bb52a2cfcf5ce5681f928af1e0540",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-034.png",
+      "sha256": "f5809955f5a326f5fb0a1983622bfca06a2e27e5b058126272702c211ff9250a",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-035.png",
+      "sha256": "7b8b03400e5d92ed4b4cc8245d8adae702c436a34e21951e05346b70e7f37bf8",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-036.png",
+      "sha256": "d349113b5f4b0ef945607e085a692eaf5037dbad302ad091b8f795daab7f3fab",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-037.png",
+      "sha256": "ecad1d72c978c44e97e593e58dca9f5e10efb5b4b7edfa3fecb52385d93bf798",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-038.png",
+      "sha256": "46692a66421f48c91e5478af7772ed339481c20b3faa374aa9b1d9895da45ca2",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-039.png",
+      "sha256": "55ca1d95b09567743e168487af39415916976a92a791d72facbaaf00c2ba3731",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-040.png",
+      "sha256": "f2188c5fe8d377c85ee46335ac38a9d3694dbdc6b1a920de1925d974fa1af1ef",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-041.png",
+      "sha256": "2e5ec6fb61ec9dc2392f6ed98e32b62bcc0ea63a66f87da4c8bf2b9fbd87a3b0",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-042.png",
+      "sha256": "6f18ee23f0774b5d851f8d9811384c61983edd55755175de65a6c24ac9595524",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-043.png",
+      "sha256": "5523c6e88a4666f570c81bbe0f83df625bfee2a6e9a8a48ec80ca47f498204fe",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-044.png",
+      "sha256": "fa98115738643140af7dc74061b714b628654d4da691ccacc5fbdcd568cc28e6",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-045.png",
+      "sha256": "8d5b516fecb6fcc51a2b4d2203be02c893ca585c1dae21c5dfe6bbda441726cb",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-046.png",
+      "sha256": "8b92a964814acb75c87aa32eaaacc458df1a3df88df2679a9d2d63df80639f74",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-047.png",
+      "sha256": "cc77df771fc14e1bacb6d2c93e9497768af177ad3e090dd9b96eb50363c4669d",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-048.png",
+      "sha256": "2991411734e66ee65287004f25bda1234ef5795d3f969029c71703be63953e4b",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-049.png",
+      "sha256": "5bd38bffc9236f0be4f23ec1546c3072cf8968975f8c8d258af6b81b56bb8abc",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-050.png",
+      "sha256": "8a4bc5fb76c9eb414f0bbae29c72a06696d90e7918212f1151eb20dcc095decd",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-051.png",
+      "sha256": "de236a67c910302bedbf9e1ff750e62ba4a218957a0a49576e63b925f7d3b11a",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-052.png",
+      "sha256": "4a9c3aeaec16b612a38ebcf20f74532e86d35ec550f1c1440fd1895f9df9614d",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-053.png",
+      "sha256": "9667bc3686fe3744403459b0f557e2ac797669c72a43fdb35391a98946de4f02",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-054.png",
+      "sha256": "a4ddeb3d93e572311af8df85211d4690b3c7a9e906650c95cae503d404e98b3e",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-055.png",
+      "sha256": "f4582ad81bde7e270dcc78880e47bb78d85a9c16feae554a23153bd2814640c8",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-056.png",
+      "sha256": "8399fa5638c8a13795cb3d63ae254c4fe51c1c244f07802948b56e8f582cfeb0",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-057.png",
+      "sha256": "f7c3bcedc3e1a2b676f3faf402e8b9fa93517be14ec25f62f90d9c895712fa65",
+      "uniqueRepresentatives": 4
+    },
+    {
+      "file": "C-w1280-sheet-058.png",
+      "sha256": "566e313d059e6f3439205ba85224b758d85610503d551c964c3e2d2c98dddbaf",
+      "uniqueRepresentatives": 4
+    }
+  ],
+  "coverage": [
+    {
+      "id": "atanasyan-7-9-main-292-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-292-part-1-neutral-1280.png",
+      "sha256": "8da489716c987e317f38420d4b68237de191738190c8637c0c8039051b5105af",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-001.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 1
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-292-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-292-part-1-step-1-1280.png",
+      "sha256": "eaa9693b336d3c960fa02e6eb1ae7abb10d649652d926b94fc3ae02298e3ff46",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-001.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 2
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-292-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-292-part-1-step-2-1280.png",
+      "sha256": "7addc636011b48edb31a00119f9a9c19e11aedccfb7488eecff92cfe0c4a8915",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-001.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 3
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-292-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-292-part-1-step-3-1280.png",
+      "sha256": "7addc636011b48edb31a00119f9a9c19e11aedccfb7488eecff92cfe0c4a8915",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-001.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 3
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-292-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-292-part-1-step-4-1280.png",
+      "sha256": "e3485aacbdf8ce253a686acfc5c0e4c3b17a7898be036a3e08ee15dea3a6bb02",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-001.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 4
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-292-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-292-part-1-case-1-1280.png",
+      "sha256": "069476a835a1babbbb5d016832bab8aeb10d7f06453b08be6b994dbbb82b9f23",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-002.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 5
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-293-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-293-part-1-neutral-1280.png",
+      "sha256": "2652923ec559afd11f6bb730cd4f6bb68302dde0f6fc1bf289f35871638f4c33",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-002.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 6
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-293-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-293-part-1-step-1-1280.png",
+      "sha256": "6f33219e55a8a571b3fcb31b5c91484c2118307b485f63b076765624cbcccda0",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-002.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 7
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-293-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-293-part-1-step-2-1280.png",
+      "sha256": "2c5c89c15d8d589fbd40f35bca4aaf4e32882e7411d729d542653597048fb964",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-002.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 8
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-293-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-293-part-1-step-3-1280.png",
+      "sha256": "2c5c89c15d8d589fbd40f35bca4aaf4e32882e7411d729d542653597048fb964",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-002.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 8
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-293-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-293-part-1-step-4-1280.png",
+      "sha256": "e8ae1b2ae07c77a5d003b0f451a3742a3db2aa8cde75fe72a74ac9d3dc2ba083",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-003.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 9
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-293-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-293-part-1-case-1-1280.png",
+      "sha256": "a6b68640c85268efc4bb3127e8c070f32f9701ec898ce93e056d9797f676a9b7",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-003.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 10
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-294-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-294-part-1-neutral-1280.png",
+      "sha256": "087ab27197992da87009c6e6d09ff801614eafec756e965a54603af35a450478",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-003.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 11
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-294-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-294-part-1-step-1-1280.png",
+      "sha256": "81f0eaa3379cdd98ce202e573325805b9cb05c673182f8cebcc8026d82b6e627",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-003.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 12
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-294-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-294-part-1-step-2-1280.png",
+      "sha256": "06daf14c40f26c5312b61722892753ec9ba3f9492ad9350eba24383fcbc4a0f0",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-004.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 13
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-294-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-294-part-1-step-3-1280.png",
+      "sha256": "bd6747bda4685028f01cb064decfca21d5aff4f44f9556d522ca53147931b532",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-004.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 14
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-294-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-294-part-1-step-4-1280.png",
+      "sha256": "bd6747bda4685028f01cb064decfca21d5aff4f44f9556d522ca53147931b532",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-004.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 14
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-294-part-1",
+      "view": "step-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-294-part-1-step-5-1280.png",
+      "sha256": "bd6747bda4685028f01cb064decfca21d5aff4f44f9556d522ca53147931b532",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-004.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 14
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-295-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-295-part-1-neutral-1280.png",
+      "sha256": "0a79fc5c065bfb107ffe765a66495a100ab12280eb3852dbe640bda47623d182",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-004.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 15
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-295-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-295-part-1-step-1-1280.png",
+      "sha256": "da361cd247dba0346b0135466be28465dd567e8065c89bfd79deef1dfd34fffd",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-004.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 16
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-295-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-295-part-1-step-2-1280.png",
+      "sha256": "bf3f7448515920a61f82f17f3e4a5b4f9603452a7359ad5f56655c6c02d1b8f3",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-005.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 17
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-295-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-295-part-1-step-3-1280.png",
+      "sha256": "bf3f7448515920a61f82f17f3e4a5b4f9603452a7359ad5f56655c6c02d1b8f3",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-005.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 17
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-295-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-295-part-1-step-4-1280.png",
+      "sha256": "bf3f7448515920a61f82f17f3e4a5b4f9603452a7359ad5f56655c6c02d1b8f3",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-005.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 17
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-296-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-296-part-1-neutral-1280.png",
+      "sha256": "a44d686f8ae25af73681d341b1976ca109fc61c8e1222d39f0df921c4e3409c3",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-005.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 18
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-296-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-296-part-1-step-1-1280.png",
+      "sha256": "eb82195adcfd887b102d57425bb10e35f60f772b537a994dc54a22319ecdedc0",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-005.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 19
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-296-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-296-part-1-step-2-1280.png",
+      "sha256": "45476c566c9282e43e5c2940976986bc85680dd84f2b0585ba541634909594ed",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-005.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 20
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-296-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-296-part-1-step-3-1280.png",
+      "sha256": "a7b9acb98fe63e5dc9415c26f75fce6641a6c164c082f9fa2453000921cb6379",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-006.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 21
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-296-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-296-part-1-step-4-1280.png",
+      "sha256": "a7b9acb98fe63e5dc9415c26f75fce6641a6c164c082f9fa2453000921cb6379",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-006.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 21
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-296-part-2",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-296-part-2-neutral-1280.png",
+      "sha256": "3f5358451a1d983ba9d8a92a6bb1617c8c9c321f62f31a807c8a4a2c5da7707a",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-006.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 22
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-296-part-2",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-296-part-2-step-1-1280.png",
+      "sha256": "10253bf0265735d0aabe9958361eb58ccd18809c94698066a37ab7bfc5b1ee60",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-006.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 23
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-296-part-2",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-296-part-2-step-2-1280.png",
+      "sha256": "c7ef04689988ba9ecfcd38eb6bbf94ada817aef02db1b66c5d1195630f47c97a",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-006.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 24
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-296-part-2",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-296-part-2-step-3-1280.png",
+      "sha256": "0ac6ca519a7b282cc3df8711aa0f292749cfd77a48b5a18ce9c7cce9e33258e6",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-007.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 25
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-296-part-2",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-296-part-2-step-4-1280.png",
+      "sha256": "0ac6ca519a7b282cc3df8711aa0f292749cfd77a48b5a18ce9c7cce9e33258e6",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-007.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 25
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-297-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-297-part-1-neutral-1280.png",
+      "sha256": "b73cd9940b36975852b6be9fc40d8a681268f43dc8819eebc51c8a295fbdfab4",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-007.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 26
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-297-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-297-part-1-step-1-1280.png",
+      "sha256": "4825aae35fb02c690c7b1dd581a60b2ec4ecd8e85ffd09269c5c766883e52c3b",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-007.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 27
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-297-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-297-part-1-step-2-1280.png",
+      "sha256": "0b424ccc5be8eadf5803f5ab88da7638e989e3419064cd262f7d5b518883d2db",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-007.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 28
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-297-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-297-part-1-step-3-1280.png",
+      "sha256": "a183614595a2ab83573a3dc58a4bc28003f4a465fd60d1dda03472d986f369b1",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-008.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 29
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-297-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-297-part-1-step-4-1280.png",
+      "sha256": "a183614595a2ab83573a3dc58a4bc28003f4a465fd60d1dda03472d986f369b1",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-008.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 29
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-298-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-298-part-1-neutral-1280.png",
+      "sha256": "3778bbcd44373b3c3dc32c687258a36b8d1ef72285c35952786774f566762337",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-008.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 30
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-298-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-298-part-1-step-1-1280.png",
+      "sha256": "82124e1925c3098df34de61918d8dbf427eab787af0287f80378780a932fca61",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-008.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 31
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-298-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-298-part-1-step-2-1280.png",
+      "sha256": "1a1557b94c21a241285f7aebe3d2e19fbcce052dd4404e888b58d9a8ea066978",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-008.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 32
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-298-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-298-part-1-step-3-1280.png",
+      "sha256": "1a1557b94c21a241285f7aebe3d2e19fbcce052dd4404e888b58d9a8ea066978",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-008.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 32
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-298-part-2",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-298-part-2-neutral-1280.png",
+      "sha256": "035f293ee367c09fae438e96d74b83c4f0ae3b1a938ae4aa19204afaec308e23",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-009.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 33
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-298-part-2",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-298-part-2-step-1-1280.png",
+      "sha256": "f9a9d3f991ad7366de1aeacd36b312759eb0c922a40c68cade93a9165f8fbda7",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-009.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 34
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-298-part-2",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-298-part-2-step-2-1280.png",
+      "sha256": "fdd1e484bde79c2d48eff22280847096537634202ab3877e400a19806c695676",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-009.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 35
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-298-part-2",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-298-part-2-step-3-1280.png",
+      "sha256": "fdd1e484bde79c2d48eff22280847096537634202ab3877e400a19806c695676",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-009.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 35
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-299-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-299-part-1-neutral-1280.png",
+      "sha256": "c01fa4e0ca86755073ecccf8fc01b8b0c6f7f2de165188efcae581567bf82b13",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-009.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 36
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-299-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-299-part-1-step-1-1280.png",
+      "sha256": "3210d56ea709008f25d293bd488461e0e8a594cffe093d2a73bab1e78bfcc4b6",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-010.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 37
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-299-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-299-part-1-step-2-1280.png",
+      "sha256": "bb32819c00ec75ffb57342e1a771e45e2ce770d966e209a74f15d3c2c389fbf2",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-010.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 38
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-299-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-299-part-1-step-3-1280.png",
+      "sha256": "bb32819c00ec75ffb57342e1a771e45e2ce770d966e209a74f15d3c2c389fbf2",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-010.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 38
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-299-part-2",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-299-part-2-neutral-1280.png",
+      "sha256": "ec87777c1c8fe3ef49429ae57bf2d98181dd3edc88189a182a35c0ce38b0d3bc",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-010.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 39
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-299-part-2",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-299-part-2-step-1-1280.png",
+      "sha256": "ec87777c1c8fe3ef49429ae57bf2d98181dd3edc88189a182a35c0ce38b0d3bc",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-010.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 39
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-299-part-2",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-299-part-2-step-2-1280.png",
+      "sha256": "cee6eb0666f25e2f3ede612ce899f0de3f37a58961e570a307e12a4812b5b3b5",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-010.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 40
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-299-part-2",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-299-part-2-step-3-1280.png",
+      "sha256": "cee6eb0666f25e2f3ede612ce899f0de3f37a58961e570a307e12a4812b5b3b5",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-010.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 40
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-299-part-3",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-299-part-3-neutral-1280.png",
+      "sha256": "2ad57a649c10aa6467e9bfe1fba0df0e3b02c9f7fbdc9cfbf0c9b38a387027e1",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-011.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 41
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-299-part-3",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-299-part-3-step-1-1280.png",
+      "sha256": "ab668267992b3b95f76c6e5e4b2e14e9951ce400b11fae41b856a42f50922df4",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-011.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 42
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-299-part-3",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-299-part-3-step-2-1280.png",
+      "sha256": "20f3c85f30d679f56d186a73f07e12a8632ba804038dacb4bb899688002b70d3",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-011.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 43
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-299-part-3",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-299-part-3-step-3-1280.png",
+      "sha256": "20f3c85f30d679f56d186a73f07e12a8632ba804038dacb4bb899688002b70d3",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-011.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 43
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-299-part-4",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-299-part-4-neutral-1280.png",
+      "sha256": "568ea97df40a4b8343d6723b0b559f72e07c134cb411ca8573c2b04798048d09",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-011.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 44
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-299-part-4",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-299-part-4-step-1-1280.png",
+      "sha256": "568ea97df40a4b8343d6723b0b559f72e07c134cb411ca8573c2b04798048d09",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-011.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 44
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-299-part-4",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-299-part-4-step-2-1280.png",
+      "sha256": "b6dc20f0ca6c2adb435780776c7e50daa5d8d5c74601d3633dd336e07e308ce5",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-012.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 45
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-299-part-4",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-299-part-4-step-3-1280.png",
+      "sha256": "dd52977bff1d4bae6353f8fbdfbd23263e6cca19dca1811ae7928be5170b2e5c",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-012.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 46
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-299-part-5",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-299-part-5-neutral-1280.png",
+      "sha256": "61037a13069ed3727b381f732608f19c897bb5478b795d5d0f8cfe08b04d026e",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-012.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 47
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-299-part-5",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-299-part-5-step-1-1280.png",
+      "sha256": "f0c78164fafd5ba2e604a2cab104693e54adb59659f1de92e85133686328b686",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-012.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 48
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-299-part-5",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-299-part-5-step-2-1280.png",
+      "sha256": "8336d853bea1e49bd53fd71f2c9b0579207f8714c2cd888b57febef2567c9ae8",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-013.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 49
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-299-part-5",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-299-part-5-step-3-1280.png",
+      "sha256": "0c50c46f44e91b0fc4d3088cf606e45ceb831ba645781e527986e41d183d4afe",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-013.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 50
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-300-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-300-part-1-neutral-1280.png",
+      "sha256": "1cff173003eb6c4a87bca7f118c38be5127f1b9cf7c9560b4f2450459f4476b3",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-013.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 51
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-300-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-300-part-1-step-1-1280.png",
+      "sha256": "1cff173003eb6c4a87bca7f118c38be5127f1b9cf7c9560b4f2450459f4476b3",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-013.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 51
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-300-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-300-part-1-step-2-1280.png",
+      "sha256": "8aefe6afe854dc7e5052f628a8db153432d90c5166d48a2e196150a029bb4054",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-013.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 52
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-300-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-300-part-1-step-3-1280.png",
+      "sha256": "63d5047f37a55d348e51ce0baa663c9b3ad4b37d009b4a3ce6f3b66dd262e74e",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-014.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 53
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-300-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-300-part-1-step-4-1280.png",
+      "sha256": "63d5047f37a55d348e51ce0baa663c9b3ad4b37d009b4a3ce6f3b66dd262e74e",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-014.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 53
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-300-part-2",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-300-part-2-neutral-1280.png",
+      "sha256": "3e75a61072d5c9910e934c9a024ea1c46fa8cc563417af25af7ab52d131a8dd7",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-014.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 54
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-300-part-2",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-300-part-2-step-1-1280.png",
+      "sha256": "3e75a61072d5c9910e934c9a024ea1c46fa8cc563417af25af7ab52d131a8dd7",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-014.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 54
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-300-part-2",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-300-part-2-step-2-1280.png",
+      "sha256": "bc674ae14d774b698c2eefd50d3f5503d39229929cf463a57bfbb4e210918fb4",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-014.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 55
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-300-part-2",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-300-part-2-step-3-1280.png",
+      "sha256": "919e3afe48eb4c10ed82aa8d95a85d3aaa2c9f1224709914c3ee91b24fd065da",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-014.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 56
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-300-part-2",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-300-part-2-step-4-1280.png",
+      "sha256": "b028457ed8e1ccdda07537206fbf500d192db7654879679bdc1b93589b58c9cf",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-015.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 57
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-301-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-301-part-1-neutral-1280.png",
+      "sha256": "e7046f4e48fdd7141c27fb80768a49aa5da7a3c00a2292d975b95a796ed00581",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-015.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 58
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-301-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-301-part-1-step-1-1280.png",
+      "sha256": "b743eec6483170a60a543a1a9bf38a79374b6e8e3ccfe9b97d14db51f13a4272",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-015.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 59
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-301-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-301-part-1-step-2-1280.png",
+      "sha256": "ecf83d4aaa2dd9f982f53889e4c7c7440569a293a8dbfb0bbdf5c5047ccc3c93",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-015.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 60
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-301-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-301-part-1-step-3-1280.png",
+      "sha256": "95d689553dd02fb3624d30c7bccae028084e964f4f504d8d73547aea114203e2",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-016.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 61
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-301-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-301-part-1-step-4-1280.png",
+      "sha256": "f295d930c6e0874867b8ddd575ae63f4233e3d5d1f7461504f0771a572aad993",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-016.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 62
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-301-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-301-part-1-case-1-1280.png",
+      "sha256": "ecd880ffd5e5bd8d93e264db5494659d3b163d018d46e806cdd2d11988f4396c",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-016.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 63
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-302-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-302-part-1-neutral-1280.png",
+      "sha256": "58ee597f62385ca3003a49a5b64d7e7fae4d6857c0dc80d4db2cc87bc6ed50f1",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-016.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 64
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-302-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-302-part-1-step-1-1280.png",
+      "sha256": "2601c05da26dd42ab42be83de0d5ac39e3c39a2e5f11ff4bcd6a3eddc2df9c4b",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-017.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 65
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-302-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-302-part-1-step-2-1280.png",
+      "sha256": "4c6e805f91aae89179dc2770a2e06e2e8ae719d11d6f9ade464d62105f011628",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-017.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 66
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-302-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-302-part-1-step-3-1280.png",
+      "sha256": "a307e8d751be5ce857821d49b1e9c258b5a5066c44eb721619a4d9ec3eecee5e",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-017.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 67
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-302-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-302-part-1-step-4-1280.png",
+      "sha256": "a307e8d751be5ce857821d49b1e9c258b5a5066c44eb721619a4d9ec3eecee5e",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-017.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 67
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-302-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-302-part-1-case-1-1280.png",
+      "sha256": "a7ca23bc734c2991304b67f190a354273df75a5c8291379d246681e4a141811e",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-017.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 68
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-303-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-303-part-1-neutral-1280.png",
+      "sha256": "90b90a782a5b37e999239760aefd50ebdcefd02e0aca5ff3821fbe2af346abae",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-018.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 69
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-303-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-303-part-1-step-1-1280.png",
+      "sha256": "8f2aee97117d5c3123d306582becde5786b081a9e67255265e52ab0d9b2ea515",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-018.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 70
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-303-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-303-part-1-step-2-1280.png",
+      "sha256": "fe39a60fa9e370d9fbcba519bd354a87d14b401a8d647675da328d55b701af29",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-018.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 71
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-303-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-303-part-1-step-3-1280.png",
+      "sha256": "5687840272d431ad31321c9cb69ed0f247f440bad202803fa6efc14d65b41871",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-018.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 72
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-303-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-303-part-1-step-4-1280.png",
+      "sha256": "5687840272d431ad31321c9cb69ed0f247f440bad202803fa6efc14d65b41871",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-018.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 72
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-304-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-304-part-1-neutral-1280.png",
+      "sha256": "97b01caae65003a834ded1c136ccd3d7be6c771645bad08d13d4a26e7541517a",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-019.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 73
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-304-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-304-part-1-step-1-1280.png",
+      "sha256": "be6401af997b67371dafe3ad1390176429b183d8fb1f026c8219e0dd620a1792",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-019.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 74
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-304-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-304-part-1-step-2-1280.png",
+      "sha256": "be6401af997b67371dafe3ad1390176429b183d8fb1f026c8219e0dd620a1792",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-019.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 74
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-304-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-304-part-1-step-3-1280.png",
+      "sha256": "3a28761ea64c17edbab72181201cb5e8352dc34b8114bf92661c43cc9f0be2f0",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-019.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 75
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-305-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-305-part-1-neutral-1280.png",
+      "sha256": "4e9b1abb67a01a9a74968b2893f7132eaa6e10f7f79a20605c2ac12e5c838208",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-019.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 76
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-305-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-305-part-1-step-1-1280.png",
+      "sha256": "ed2ad9ec2f5c79dcfc19e486931173f9896ed03a25e98c4bcb211b4cd5bb8b14",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-020.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 77
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-305-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-305-part-1-step-2-1280.png",
+      "sha256": "ed2ad9ec2f5c79dcfc19e486931173f9896ed03a25e98c4bcb211b4cd5bb8b14",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-020.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 77
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-305-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-305-part-1-step-3-1280.png",
+      "sha256": "cb2c4fdee013c2b2f7dccbb9adbaf5d0d5bb806345eb367ee50462b1f2bd3275",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-020.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 78
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-305-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-305-part-1-step-4-1280.png",
+      "sha256": "cb2c4fdee013c2b2f7dccbb9adbaf5d0d5bb806345eb367ee50462b1f2bd3275",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-020.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 78
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-306-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-306-part-1-neutral-1280.png",
+      "sha256": "3468e6d4e9935c1aa5c6317ad939199eda3787e2935180c2149dd4ba87a26954",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-020.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 79
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-306-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-306-part-1-step-1-1280.png",
+      "sha256": "8de12c45b292c2eb7a2e65160c1a603d8f178c1b89b9a996c785f792249e12ff",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-020.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 80
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-306-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-306-part-1-step-2-1280.png",
+      "sha256": "dd24f3f9c2593f73661f2ba212b181c88ec1c670d69ecca126c7dd42c97fd967",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-021.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 81
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-306-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-306-part-1-step-3-1280.png",
+      "sha256": "dd24f3f9c2593f73661f2ba212b181c88ec1c670d69ecca126c7dd42c97fd967",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-021.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 81
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-306-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-306-part-1-step-4-1280.png",
+      "sha256": "3353ae2bbf88940d456d7f5093a5f3d2a305af0d32fef6ef4443419ff8c4f812",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-021.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 82
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-307-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-307-part-1-neutral-1280.png",
+      "sha256": "7af98ad88d4c3ec9a116c76ed75dd951b803db185d33b17ce49394e424cb5fac",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-021.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 83
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-307-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-307-part-1-step-1-1280.png",
+      "sha256": "6076946f29971806f46e35445e2b1e619b09d517d0335ba0f767b9e9b54d6a30",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-021.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 84
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-307-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-307-part-1-step-2-1280.png",
+      "sha256": "4f61c37735ab1e833ab18cf8f8a4d9bd33e6d85e2363a9c03de5489d68382910",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-022.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 85
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-307-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-307-part-1-step-3-1280.png",
+      "sha256": "39f5581f82384bfee6e8fe32d039d4aaea5362aa8461014cc24a8945d5dfbcaf",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-022.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 86
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-307-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-307-part-1-step-4-1280.png",
+      "sha256": "f158c8c5e17708e42b812f5729713b25be43cba513c144ca3eb0f779066ce5ce",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-022.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 87
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-307-part-1",
+      "view": "step-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-307-part-1-step-5-1280.png",
+      "sha256": "5fa945de125158c70aad899b68a36a1efd1778756f39a6236cfc0b8e9e8a4097",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-022.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 88
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-307-part-1",
+      "view": "step-6",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-307-part-1-step-6-1280.png",
+      "sha256": "5fa945de125158c70aad899b68a36a1efd1778756f39a6236cfc0b8e9e8a4097",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-022.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 88
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-307-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-307-part-1-case-1-1280.png",
+      "sha256": "7bf1fc5c9308dd4c84a46f8754ef8a59057270974109fbbe608073f0b160e064",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-023.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 89
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-307-part-1",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-307-part-1-case-2-1280.png",
+      "sha256": "7e3e4141c08b791cb80aa707367c191f3659f2ea835571f851fd24c76faa55eb",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-023.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 90
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-307-part-1",
+      "view": "case-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-307-part-1-case-3-1280.png",
+      "sha256": "ad22d7c0b391fee40867121df4255d5cc9114d07b12bcd13f7465e4f4f21f8bb",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-023.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 91
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-307-part-1",
+      "view": "case-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-307-part-1-case-4-1280.png",
+      "sha256": "26e529eac192118d2d3634c46dbbd06c596a5aab339495857007a460f1158e5b",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-023.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 92
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-308-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-308-part-1-neutral-1280.png",
+      "sha256": "5948239479a0eeff069aaca2e93db45b5115eff1605f64f2efa56963dd1ec6b6",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-024.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 93
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-308-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-308-part-1-step-1-1280.png",
+      "sha256": "5948239479a0eeff069aaca2e93db45b5115eff1605f64f2efa56963dd1ec6b6",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-024.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 93
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-308-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-308-part-1-step-2-1280.png",
+      "sha256": "1e5d26baf34c7e9e874cfe0559ece2d817a9b49827997c89dcbad15257c6062e",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-024.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 94
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-308-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-308-part-1-step-3-1280.png",
+      "sha256": "d51c4efb742b7e7dc0b0627e40a801acf6ecdc8143087b3251d2f24e471ca66f",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-024.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 95
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-308-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-308-part-1-step-4-1280.png",
+      "sha256": "ace6aecb8061ba9d226048952f7e5772c4e2d8b055f2c7cb1a169d6a37146ccf",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-024.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 96
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-308-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-308-part-1-case-1-1280.png",
+      "sha256": "0d129105e2e5527bd59e073d588190d7b26d84e8a3db592cb48d5c7bb358d7cd",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-025.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 97
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-308-part-1",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-308-part-1-case-2-1280.png",
+      "sha256": "2ac6dc1123ae3c86f920c91ab3ad745d0bc88c30ba5f56b846f04efc70f4da16",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-025.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 98
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-309-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-309-part-1-neutral-1280.png",
+      "sha256": "5cf47d251c0f715bb883d4d6aabb4ff3216019dfda445454cc2a499e9205652b",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-025.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 99
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-309-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-309-part-1-step-1-1280.png",
+      "sha256": "57bc077a55b9d7159a2ab9b9a01b868df1ad3cde93eb12921a0f7bbafc7de17e",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-025.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 100
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-309-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-309-part-1-step-2-1280.png",
+      "sha256": "57bc077a55b9d7159a2ab9b9a01b868df1ad3cde93eb12921a0f7bbafc7de17e",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-025.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 100
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-309-part-2",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-309-part-2-neutral-1280.png",
+      "sha256": "0e30466e93204a9e57d9bceff63c0bcab27b011fb0203c0249b06fb8ad1b0bdf",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-026.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 101
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-309-part-2",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-309-part-2-step-1-1280.png",
+      "sha256": "b13c29a646282e34ffabf338b78be096b1bf1f4c629c70ad56a7a49dfbe74a33",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-026.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 102
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-309-part-2",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-309-part-2-step-2-1280.png",
+      "sha256": "b13c29a646282e34ffabf338b78be096b1bf1f4c629c70ad56a7a49dfbe74a33",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-026.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 102
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-309-part-2",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-309-part-2-step-3-1280.png",
+      "sha256": "b13c29a646282e34ffabf338b78be096b1bf1f4c629c70ad56a7a49dfbe74a33",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-026.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 102
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-309-part-2",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-309-part-2-case-1-1280.png",
+      "sha256": "ea37f6e3109031f0b17facdff0d8d85ab31c2563ce4d75a9f55e40870c3a9688",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-026.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 103
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-310-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-310-part-1-neutral-1280.png",
+      "sha256": "84a4bd6a116b874e8fcfe0d591cd4f5581947ff91e8bd3b71eff1f8bf27c32b1",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-026.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 104
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-310-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-310-part-1-step-1-1280.png",
+      "sha256": "f15dbc626b78f30ba50403b6d50bf70a2121aa52605221b5d5c12456ff73f69a",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-027.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 105
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-310-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-310-part-1-step-2-1280.png",
+      "sha256": "1f0c8ada408c800cf3ec4c4657f2dffdcf0e8f5c2402f769d731cf6778cc6f98",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-027.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 106
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-310-part-2",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-310-part-2-neutral-1280.png",
+      "sha256": "a3a7bc20fde1ac82a6bb1639a40a52bebf05549755d6d195867edd000c0ac4da",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-027.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 107
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-310-part-2",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-310-part-2-step-1-1280.png",
+      "sha256": "a3a7bc20fde1ac82a6bb1639a40a52bebf05549755d6d195867edd000c0ac4da",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-027.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 107
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-310-part-2",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-310-part-2-step-2-1280.png",
+      "sha256": "a3a7bc20fde1ac82a6bb1639a40a52bebf05549755d6d195867edd000c0ac4da",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-027.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 107
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-310-part-2",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-310-part-2-step-3-1280.png",
+      "sha256": "a3a7bc20fde1ac82a6bb1639a40a52bebf05549755d6d195867edd000c0ac4da",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-027.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 107
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-311-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-311-part-1-neutral-1280.png",
+      "sha256": "1f80fbfad3f9a5511f22c4beb404a8250f605e634e5a380b4b106de51971bef9",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-027.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 108
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-311-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-311-part-1-step-1-1280.png",
+      "sha256": "97ea73755d0d07bee7b1255d2832961ee5a457d2ce3ec49164353a657bb5a6bc",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-028.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 109
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-311-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-311-part-1-step-2-1280.png",
+      "sha256": "c6aae8cc630abb33e5266b36c0279160c64098dfa38711bf2a56fc13f3e83e28",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-028.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 110
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-311-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-311-part-1-step-3-1280.png",
+      "sha256": "78d4b41802a440de70354cef71fd4ad5e15aa920b28afd1bc715826c59315435",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-028.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 111
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-311-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-311-part-1-step-4-1280.png",
+      "sha256": "78d4b41802a440de70354cef71fd4ad5e15aa920b28afd1bc715826c59315435",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-028.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 111
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-312-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-312-part-1-neutral-1280.png",
+      "sha256": "e5801696f4ff0171598f629fb22a8c7b0f4e67f189d6a567d7a1b9d675a88761",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-028.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 112
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-312-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-312-part-1-step-1-1280.png",
+      "sha256": "cfb59a46c5606af031399ae9d79051a0d6618f0ae6ce2cc230a7698c954d1e1c",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-029.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 113
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-312-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-312-part-1-step-2-1280.png",
+      "sha256": "cfb59a46c5606af031399ae9d79051a0d6618f0ae6ce2cc230a7698c954d1e1c",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-029.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 113
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-312-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-312-part-1-step-3-1280.png",
+      "sha256": "8f3957124c78ce901593ce9ec3e5c0760810e790aef1582bc1e1f692862ea94f",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-029.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 114
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-312-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-312-part-1-step-4-1280.png",
+      "sha256": "8f3957124c78ce901593ce9ec3e5c0760810e790aef1582bc1e1f692862ea94f",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-029.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 114
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-313-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-313-part-1-neutral-1280.png",
+      "sha256": "0a5e1b56cab7109e6c8d05e182913e2ef17ad987dae5ff3e799a0b625e512483",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-029.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 115
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-313-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-313-part-1-step-1-1280.png",
+      "sha256": "060c64b87978f21b662f5b7ac02c2ff6301b852fa1d01bed27b30a7fe5a34577",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-029.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 116
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-313-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-313-part-1-step-2-1280.png",
+      "sha256": "060c64b87978f21b662f5b7ac02c2ff6301b852fa1d01bed27b30a7fe5a34577",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-029.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 116
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-313-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-313-part-1-step-3-1280.png",
+      "sha256": "060c64b87978f21b662f5b7ac02c2ff6301b852fa1d01bed27b30a7fe5a34577",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-029.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 116
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-313-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-313-part-1-step-4-1280.png",
+      "sha256": "060c64b87978f21b662f5b7ac02c2ff6301b852fa1d01bed27b30a7fe5a34577",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-029.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 116
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-314-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-314-part-1-neutral-1280.png",
+      "sha256": "cfff7d14b9bd12aa9672c57f6ad12edf5b9d53b2f0b9a2777f042061a38fca82",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-030.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 117
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-314-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-314-part-1-step-1-1280.png",
+      "sha256": "5145985323fc261f63790d9fd9d121231efdea399fa0fd7ed33f0b94092e0ee8",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-030.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 118
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-314-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-314-part-1-step-2-1280.png",
+      "sha256": "5145985323fc261f63790d9fd9d121231efdea399fa0fd7ed33f0b94092e0ee8",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-030.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 118
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-314-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-314-part-1-step-3-1280.png",
+      "sha256": "92b976390a6f6a72d77ff372156e37e89016fe83a36079fad1d1570e991bd3f9",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-030.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 119
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-314-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-314-part-1-case-1-1280.png",
+      "sha256": "664f36810a5c316541e0e4e3ccf0497672af4b33d74db1fc33f362c72b6b2219",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-030.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 120
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-315-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-315-part-1-neutral-1280.png",
+      "sha256": "842ccf5b849f386d617fc7e765218c22c453470f6255ccf974d401543a533508",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-031.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 121
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-315-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-315-part-1-step-1-1280.png",
+      "sha256": "b6e43a52063e44a87064c543a5218a065129d70d8d74c4f4b13e922ca44374e9",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-031.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 122
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-315-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-315-part-1-step-2-1280.png",
+      "sha256": "b6e43a52063e44a87064c543a5218a065129d70d8d74c4f4b13e922ca44374e9",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-031.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 122
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-315-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-315-part-1-step-3-1280.png",
+      "sha256": "b6e43a52063e44a87064c543a5218a065129d70d8d74c4f4b13e922ca44374e9",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-031.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 122
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-316-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-316-part-1-neutral-1280.png",
+      "sha256": "47f453151a7b71f76fbc5397b7108be711183397848be60b76a9bced4b4b37d0",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-031.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 123
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-316-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-316-part-1-step-1-1280.png",
+      "sha256": "47f453151a7b71f76fbc5397b7108be711183397848be60b76a9bced4b4b37d0",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-031.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 123
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-316-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-316-part-1-step-2-1280.png",
+      "sha256": "93a40d19f3cba650747c3347230fd757c50a783acfec458b0c0dd62f3670aa4f",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-031.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 124
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-316-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-316-part-1-step-3-1280.png",
+      "sha256": "1187ba9d5f6a986bce44913c0426a486a5e05ed407d2fd93086b3b1c5e91f085",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-032.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 125
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-316-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-316-part-1-step-4-1280.png",
+      "sha256": "988b0275966f62fe58a8278756f1497ff19906a071adff9d82122439819f9df4",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-032.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 126
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-316-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-316-part-1-case-1-1280.png",
+      "sha256": "36bc9f6f00500aa70bdb10bdefb1f8fa176a61b7425d57a58f57ae9345b6d2ad",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-032.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 127
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-316-part-1",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-316-part-1-case-2-1280.png",
+      "sha256": "452a052c00a05235f84929052984ec3e2fd0a2f575dcf100c4e822391e138038",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-032.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 128
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-317-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-317-part-1-neutral-1280.png",
+      "sha256": "dcd5603812dd7caaa6d130f7848a79482c5cf798aade2c0868159fa990e4fbff",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-033.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 129
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-317-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-317-part-1-step-1-1280.png",
+      "sha256": "990bca25d807b9eee235d34a30db39de7394b73cf5bfbcf13532e0f5e7b60b8b",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-033.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 130
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-317-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-317-part-1-step-2-1280.png",
+      "sha256": "990bca25d807b9eee235d34a30db39de7394b73cf5bfbcf13532e0f5e7b60b8b",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-033.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 130
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-317-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-317-part-1-step-3-1280.png",
+      "sha256": "5a0c5785ad279294d9fe170d6efb9d1ad6a841e8d9f0dd1a3e7523527a5aa557",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-033.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 131
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-317-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-317-part-1-step-4-1280.png",
+      "sha256": "5a0c5785ad279294d9fe170d6efb9d1ad6a841e8d9f0dd1a3e7523527a5aa557",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-033.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 131
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-318-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-318-part-1-neutral-1280.png",
+      "sha256": "0fba30607bb3e9ce0b0bee694dfd601fe48e93568587837e4975646b083cc66f",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-033.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 132
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-318-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-318-part-1-step-1-1280.png",
+      "sha256": "0fba30607bb3e9ce0b0bee694dfd601fe48e93568587837e4975646b083cc66f",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-033.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 132
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-318-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-318-part-1-step-2-1280.png",
+      "sha256": "7e7db431381eacc0d8123430a198d783746d0d45398ce5381c74363eb038ec6b",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-034.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 133
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-318-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-318-part-1-step-3-1280.png",
+      "sha256": "7e7db431381eacc0d8123430a198d783746d0d45398ce5381c74363eb038ec6b",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-034.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 133
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-318-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-318-part-1-step-4-1280.png",
+      "sha256": "fa467716d5fac4449361e442cb052d67ae074adf12e84ef828591398140987ea",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-034.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 134
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-318-part-1",
+      "view": "step-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-318-part-1-step-5-1280.png",
+      "sha256": "fa467716d5fac4449361e442cb052d67ae074adf12e84ef828591398140987ea",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-034.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 134
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-318-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-318-part-1-case-1-1280.png",
+      "sha256": "4e869ac60bd7d0ef1fe7cd670fc7624a1c91ca52413cc8b70409bd9469af921e",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-034.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 135
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-319-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-319-part-1-neutral-1280.png",
+      "sha256": "21bfb0fed600304e8b9a6cc2527b6575c0d363ca6631dbcd561ba45babf228f0",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-034.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 136
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-319-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-319-part-1-step-1-1280.png",
+      "sha256": "6221f034c1c6ea2063b7c74dc95dbb9aa10bdead1ae53113602076af717270a0",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-035.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 137
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-319-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-319-part-1-step-2-1280.png",
+      "sha256": "52918ce81259d8dbde41183060f5c45317b9f106e10ae50a7067c898d5ef04ba",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-035.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 138
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-319-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-319-part-1-step-3-1280.png",
+      "sha256": "52918ce81259d8dbde41183060f5c45317b9f106e10ae50a7067c898d5ef04ba",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-035.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 138
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-320-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-320-part-1-neutral-1280.png",
+      "sha256": "599d3f1b4a9fa690ca69e5c7763766957fdc8ace9a3cfc7bfcba2343643918b4",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-035.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 139
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-320-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-320-part-1-step-1-1280.png",
+      "sha256": "a5a0b2c65e8a4e9767f7bb15a79711eacf24828759180d5fb149a220e22237f2",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-035.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 140
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-320-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-320-part-1-step-2-1280.png",
+      "sha256": "a5a0b2c65e8a4e9767f7bb15a79711eacf24828759180d5fb149a220e22237f2",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-035.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 140
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-320-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-320-part-1-step-3-1280.png",
+      "sha256": "2385d23697c8532c40a5dc128a8df9f73d9b6f9cbe5cceba10a3a34f7b6f7103",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-036.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 141
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-321-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-321-part-1-neutral-1280.png",
+      "sha256": "77148065f72dd9c5670c5ba00e678d4a5a4e78431ac5c9a243257b19224439d6",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-036.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 142
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-321-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-321-part-1-step-1-1280.png",
+      "sha256": "77148065f72dd9c5670c5ba00e678d4a5a4e78431ac5c9a243257b19224439d6",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-036.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 142
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-321-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-321-part-1-step-2-1280.png",
+      "sha256": "2471832e60fa92d2f99bd83e6799bb5d85befb1edc58b44ea9439d6e99c28874",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-036.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 143
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-321-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-321-part-1-step-3-1280.png",
+      "sha256": "52cfa2d5efa3a386a568347456c7e799ffa9091ac1483edcb8b9d345bb685ebb",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-036.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 144
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-321-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-321-part-1-step-4-1280.png",
+      "sha256": "aebcbfee0ba0f7465f5db8b607aeacac48e89f6717cd9d3a7739a9bd73409780",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-037.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 145
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-321-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-321-part-1-case-1-1280.png",
+      "sha256": "9889c8466e36dd6e66ba09167bc9fd1d5e9bbef7c6c055e81f7bbcd68cc81811",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-037.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 146
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-322-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-322-part-1-neutral-1280.png",
+      "sha256": "3bc38439e7b9c3f04a920c98ffb36b228a8dae0f6a32272094127ae8fe171a73",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-037.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 147
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-322-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-322-part-1-step-1-1280.png",
+      "sha256": "4b51bd16c6b648f783622f00dcb2a00139e3bf8a7b98309fed1c7268ff1c729e",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-037.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 148
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-322-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-322-part-1-step-2-1280.png",
+      "sha256": "25596cccbe23f2c7ceb1f25622138f1a77303a29439e497a544aba712722f5f0",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-038.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 149
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-322-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-322-part-1-step-3-1280.png",
+      "sha256": "3aaf7494aa2a7af5e8b83d7756348199738e2767d31c86abc27e129ba54d5549",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-038.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 150
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-322-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-322-part-1-step-4-1280.png",
+      "sha256": "7547ed63d94371558f6f89db3932ee166eadac4dc927704099a13f0352f076ee",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-038.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 151
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-322-part-1",
+      "view": "step-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-322-part-1-step-5-1280.png",
+      "sha256": "7547ed63d94371558f6f89db3932ee166eadac4dc927704099a13f0352f076ee",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-038.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 151
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-323-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-323-part-1-neutral-1280.png",
+      "sha256": "fab1247f1b9fa35e7fea39d392a845550d133cd85529ecef3d4ac29439b7744d",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-038.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 152
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-323-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-323-part-1-step-1-1280.png",
+      "sha256": "e76b260f46d3b4a73697252059e5b3e8f0a06c0bf91dc284f887dcde7487abd7",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-039.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 153
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-323-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-323-part-1-step-2-1280.png",
+      "sha256": "23c96e02330e8d65db2a91d6884e993a2f3c3ef5290f7171b0e007796a45e871",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-039.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 154
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-323-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-323-part-1-step-3-1280.png",
+      "sha256": "23c96e02330e8d65db2a91d6884e993a2f3c3ef5290f7171b0e007796a45e871",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-039.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 154
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-323-part-2",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-323-part-2-neutral-1280.png",
+      "sha256": "86c822257d28ea3a4bb6c0806bce092e483f33c17ecd2859f8e26c5f8def8ed0",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-039.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 155
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-323-part-2",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-323-part-2-step-1-1280.png",
+      "sha256": "86c822257d28ea3a4bb6c0806bce092e483f33c17ecd2859f8e26c5f8def8ed0",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-039.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 155
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-323-part-2",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-323-part-2-step-2-1280.png",
+      "sha256": "9e6b0013cdb5894bcbfcb64e1786709139bda2ef0c274283b5e4bdac9c3d416e",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-039.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 156
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-323-part-2",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-323-part-2-step-3-1280.png",
+      "sha256": "9e6b0013cdb5894bcbfcb64e1786709139bda2ef0c274283b5e4bdac9c3d416e",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-039.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 156
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-323-part-3",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-323-part-3-neutral-1280.png",
+      "sha256": "c7f3a0753bff2ae31721f9853fb8442b2b0be0e761e612aaf7bc88c37d1fca9b",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-040.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 157
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-323-part-3",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-323-part-3-step-1-1280.png",
+      "sha256": "503bda731e3b919727bfd550ff34f9ea076c8b371ba90f64856382499b0d82ee",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-040.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 158
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-323-part-3",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-323-part-3-step-2-1280.png",
+      "sha256": "0479d98d02b1afd58b5bf95e09d3fdc969b8e6b251b95d153bdb7312240fdc6c",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-040.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 159
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-323-part-3",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-323-part-3-step-3-1280.png",
+      "sha256": "4b5153bdb61835e7e736c5c1104349d044f7df82d54fb2b9c7bd6943b3835e96",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-040.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 160
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-1-neutral-1280.png",
+      "sha256": "a974358caa19916a88a7095cdcb9ef16c6604313bff532b3f40c075053c85219",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-041.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 161
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-1-step-1-1280.png",
+      "sha256": "10c908540571bbf46c1bebf5f9c3632fdff6ef524f31f9aec943bdfda128182a",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-041.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 162
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-1-step-2-1280.png",
+      "sha256": "8aaa3f3f986299701fd1ce54bbcba858ea22938fadb78083d9c288183e11aa17",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-041.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 163
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-1-step-3-1280.png",
+      "sha256": "8aaa3f3f986299701fd1ce54bbcba858ea22938fadb78083d9c288183e11aa17",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-041.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 163
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-2",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-2-neutral-1280.png",
+      "sha256": "525975221ce2f8d0b20b0c75fcf0578f99c5a0d86f94097221b82b313cf4755a",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-041.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 164
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-2",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-2-step-1-1280.png",
+      "sha256": "b87f879fe060a79ca6497d4995540fd0b5d6cda898b75e5283d746ad4de06399",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-042.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 165
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-2",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-2-step-2-1280.png",
+      "sha256": "28edc78900dac172f4d363d008839f22154ed27f2734b64dd1d9137c16915111",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-042.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 166
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-3",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-3-neutral-1280.png",
+      "sha256": "98bb63113e617d5a3430bb6292edc7ad3f3176c8eb4fdf7a6891ae07e73e94c9",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-042.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 167
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-3",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-3-step-1-1280.png",
+      "sha256": "bb10628252b2d42479b623ae1eea85eef70a82ef43a93eacd5312c5e675c34a5",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-042.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 168
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-3",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-3-step-2-1280.png",
+      "sha256": "610a2ae6cc9907f9254cbbaf0ee2fa7c3543dbc52e5df117711322b8e0839075",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-043.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 169
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-3",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-3-step-3-1280.png",
+      "sha256": "e836c1dfd23bbda6b234965c8b6a3e5e7ce7bc374a64de161996f2885dbeac48",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-043.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 170
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-3",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-3-step-4-1280.png",
+      "sha256": "e836c1dfd23bbda6b234965c8b6a3e5e7ce7bc374a64de161996f2885dbeac48",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-043.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 170
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-4",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-4-neutral-1280.png",
+      "sha256": "edc77551c0ec3b900d9e3c9e165f9fe7899041f804a75ba7cabab4eef0ef4102",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-043.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 171
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-4",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-4-step-1-1280.png",
+      "sha256": "2a8776484d1a28f62e9788985be14e5261ddfe1a52825ed1af4dbbcc3472ba0a",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-043.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 172
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-4",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-4-step-2-1280.png",
+      "sha256": "8cd7547ee326fa7614b48abdd0578e361306046f0e087138ecbc07fcfe692e2e",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-044.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 173
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-4",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-4-step-3-1280.png",
+      "sha256": "8cd7547ee326fa7614b48abdd0578e361306046f0e087138ecbc07fcfe692e2e",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-044.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 173
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-5",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-5-neutral-1280.png",
+      "sha256": "bd1576ca85753ebd25a54412510746cfca57168c4d83a39f73a0adf648f6f7fb",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-044.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 174
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-5",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-5-step-1-1280.png",
+      "sha256": "dab802697bd3868e99579350f7fc2832ac2226a3a5dcd96a1cdbc52c5a87bffa",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-044.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 175
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-5",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-5-step-2-1280.png",
+      "sha256": "44479d8723bc7d41c235f5accb8393c02bed3a083859c5833610323a82c0b117",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-044.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 176
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-5",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-5-step-3-1280.png",
+      "sha256": "00018a32bef9b7e43f16ce385420d853e22d7a6d5d39eac891c71bed948bc82f",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-045.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 177
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-5",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-5-step-4-1280.png",
+      "sha256": "00018a32bef9b7e43f16ce385420d853e22d7a6d5d39eac891c71bed948bc82f",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-045.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 177
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-6",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-6-neutral-1280.png",
+      "sha256": "0773ca3c3069270a3ae48ec90d59ac9bf74732523d88aacee284ba6ce61795c4",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-045.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 178
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-6",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-6-step-1-1280.png",
+      "sha256": "2e0475c78afd4b61529f2d6cc492662af949a190ad514b88aa782003646821f7",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-045.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 179
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-6",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-6-step-2-1280.png",
+      "sha256": "07c278b183180a933a7aa04a9a8dfcb2cc478e0a7e675565092f41ad6149ba92",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-045.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 180
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-6",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-6-step-3-1280.png",
+      "sha256": "b3e5315ea7421ae65fdb916cea06e0bcd51d045b7e7a95feea9a6b09feb53154",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-046.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 181
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-6",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-6-step-4-1280.png",
+      "sha256": "b3e5315ea7421ae65fdb916cea06e0bcd51d045b7e7a95feea9a6b09feb53154",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-046.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 181
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-7",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-7-neutral-1280.png",
+      "sha256": "b8ffc9494e788971f23bfab77e5b654ba6c929d245dfaedaec08aa6bc4a3d79e",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-046.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 182
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-7",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-7-step-1-1280.png",
+      "sha256": "07bcf96a12661c3aab7b4444c4d79129d81964734588e8503694a94b2363f1d7",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-046.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 183
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-7",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-7-step-2-1280.png",
+      "sha256": "d4712a4080066fea63035d42cbe5073f008a45644b5ac8c107aff6d2a2c9acad",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-046.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 184
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-7",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-7-step-3-1280.png",
+      "sha256": "fae3d88ec00ff44bf860785d1a0e62acbb3946f5242470bbbbb50ce1365f86fb",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-047.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 185
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-7",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-7-step-4-1280.png",
+      "sha256": "6b11dccc1fb80b13802f46b171f9c7b51aeb9d07c69d32c443a52aa19d6b1a83",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-047.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 186
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-7",
+      "view": "step-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-7-step-5-1280.png",
+      "sha256": "6b11dccc1fb80b13802f46b171f9c7b51aeb9d07c69d32c443a52aa19d6b1a83",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-047.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 186
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-8",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-8-neutral-1280.png",
+      "sha256": "660ea6e736525cd2006eac06f6d96c11a4fa83f5fc0014e456270b3420d84413",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-047.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 187
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-8",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-8-step-1-1280.png",
+      "sha256": "d693f25bd81623c627c1c5cda3bab94796bcfdd1b44e7d3daf2fe52672a54966",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-047.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 188
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-8",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-8-step-2-1280.png",
+      "sha256": "7eb1e4aa4a605af6e5feee8eb2e2149411f71a475e98a6160451e555dbfdf7f0",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-048.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 189
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-8",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-8-step-3-1280.png",
+      "sha256": "9344c48f863ff33dd5709ece1e5e3bc1a40f4b11f15682951c06ba94db260c3b",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-048.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 190
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-8",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-8-step-4-1280.png",
+      "sha256": "d7852b4f7d64efe474b0f406e246c2d60ce4f31169f1cb56d8797018c49adbbb",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-048.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 191
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-9",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-9-neutral-1280.png",
+      "sha256": "abc894053e0d699bbaeee85bf807ee9104b7207adba28d1ff1e83e798538cd0c",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-048.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 192
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-9",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-9-step-1-1280.png",
+      "sha256": "8d997279780b7541272dfef91e4f81f1d67e6bb4fe45e0f85a68776c69a71cc7",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-049.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 193
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-9",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-9-step-2-1280.png",
+      "sha256": "e081f0a1939cba8b01bb935e0be5ce0c884b3e2d3f19f9e2c3fbe995fdaf451c",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-049.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 194
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-9",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-9-step-3-1280.png",
+      "sha256": "32874faf5a501b59bcc1bce8c3ddd85be4ca94aca3922f7af7ce7d546930a8f9",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-049.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 195
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-9",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-9-step-4-1280.png",
+      "sha256": "dd3a3cf669426518da3c448107a7fe9c4628da977b4067eb35196277614cea5f",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-049.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 196
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-324-part-9",
+      "view": "step-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-324-part-9-step-5-1280.png",
+      "sha256": "dd3a3cf669426518da3c448107a7fe9c4628da977b4067eb35196277614cea5f",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-049.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 196
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-325-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-325-part-1-neutral-1280.png",
+      "sha256": "68cdbb6e72f01669c0b72b3a37b216b1eb5c4ccb4a9bb830d40fea5eb662a0be",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-050.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 197
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-325-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-325-part-1-step-1-1280.png",
+      "sha256": "68cdbb6e72f01669c0b72b3a37b216b1eb5c4ccb4a9bb830d40fea5eb662a0be",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-050.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 197
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-325-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-325-part-1-step-2-1280.png",
+      "sha256": "43ebc1b0c84813d96d2cf1e220d12f23c5a6902774747b12abec9194d63b5519",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-050.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 198
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-325-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-325-part-1-step-3-1280.png",
+      "sha256": "6683e2b2260e4b82bd3c7f3f1ecb1453e00761284d38e37a4ea4bd57c8b9c39e",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-050.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 199
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-325-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-325-part-1-step-4-1280.png",
+      "sha256": "78934f536d76dd08c121d4ec050d6695bd53ee29731896c7bbf6d23ddb7659d7",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-050.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 200
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-325-part-1",
+      "view": "step-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-325-part-1-step-5-1280.png",
+      "sha256": "c1d150219fd25e8b20e534f90faef136404330f42cc56b9b75211b97997f5704",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-051.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 201
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-325-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-325-part-1-case-1-1280.png",
+      "sha256": "71329928be37639543fe9b64644373eb79dcd271867870fb3c18ab4b550dec11",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-051.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 202
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-325-part-1",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-325-part-1-case-2-1280.png",
+      "sha256": "fb3174a1d1379add6430db3a7d8443e105280f76040a6e9c50f911dcf5662db9",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-051.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 203
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-325-part-1",
+      "view": "case-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-325-part-1-case-3-1280.png",
+      "sha256": "714e036ec11241af1020be71d7d3d3a0a3eeecf932cc0f92b1866cfb6a0cbcaf",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-051.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 204
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-325-part-1",
+      "view": "case-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-325-part-1-case-4-1280.png",
+      "sha256": "63225e0d04aea5b326a293ffc2e7104ab7a65b3ac7f8624e32f362fe28d97841",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-052.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 205
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-326-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-326-part-1-neutral-1280.png",
+      "sha256": "e2461cce48a19ad84cd6631e7423fbb54b0581480bc9192b505974ae202f3255",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-052.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 206
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-326-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-326-part-1-step-1-1280.png",
+      "sha256": "629dea6617c4e69e41d32782defc368d825573da43d37fcb88448645096a3d56",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-052.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 207
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-326-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-326-part-1-step-2-1280.png",
+      "sha256": "28edb55367eb52c8efc75b219ec1712b1aff725b14e75b43009ea3b9cfed5503",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-052.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 208
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-326-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-326-part-1-step-3-1280.png",
+      "sha256": "9eb2bba3f897df50f4911853a7a3b89de80a76002d996e060961cd56e4b6fd87",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-053.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 209
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-326-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-326-part-1-step-4-1280.png",
+      "sha256": "26df28f25b9395b218277ba8f7026491a9eae1f8c2c5c247789d31168991b0c5",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-053.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 210
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-326-part-1",
+      "view": "step-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-326-part-1-step-5-1280.png",
+      "sha256": "26df28f25b9395b218277ba8f7026491a9eae1f8c2c5c247789d31168991b0c5",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-053.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 210
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-327-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-327-part-1-neutral-1280.png",
+      "sha256": "c14f1d0847c7c1277408a55ce471ff60c65c6b0aa3b0c6ff42313d5041a21894",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-053.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 211
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-327-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-327-part-1-step-1-1280.png",
+      "sha256": "7c7bbaa6ec793d74db98e50fc5d55f66c2e8c7b52303f0c809bc235cc1d38235",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-053.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 212
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-327-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-327-part-1-step-2-1280.png",
+      "sha256": "0bcfccef338c059afb05322c2ded6e9d415c88e75ac328b8608637add7c755ba",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-054.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 213
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-327-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-327-part-1-step-3-1280.png",
+      "sha256": "0a33fe2866e3b05cc72ee820a5ae9e65eb07d88bad742c3b07c0646178ffc77a",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-054.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 214
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-327-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-327-part-1-step-4-1280.png",
+      "sha256": "0a33fe2866e3b05cc72ee820a5ae9e65eb07d88bad742c3b07c0646178ffc77a",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-054.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 214
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-328-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-328-part-1-neutral-1280.png",
+      "sha256": "1f8f4bae8a2d5648a3894a4a38abedf5094ca833e9aa518161a2be961e03aa64",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-054.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 215
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-328-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-328-part-1-step-1-1280.png",
+      "sha256": "3ad703c407fe57336ec72f0ce2859c76698a49cb2f746cfe2e57be62ffb46e7b",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-054.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 216
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-328-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-328-part-1-step-2-1280.png",
+      "sha256": "2f1f223eabb1a4324dd65b6456942ecabbfa34e41d9953c4cbdfa0efd0dbfca6",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-055.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 217
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-328-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-328-part-1-step-3-1280.png",
+      "sha256": "102220f28695c7652db890bd02fd7492bd85801fa25f6454401680490a3d0c1c",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-055.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 218
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-328-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-328-part-1-step-4-1280.png",
+      "sha256": "102220f28695c7652db890bd02fd7492bd85801fa25f6454401680490a3d0c1c",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-055.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 218
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-328-part-1",
+      "view": "step-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-328-part-1-step-5-1280.png",
+      "sha256": "3ab071b0b014818f3a6df220741eb71ebae5ed8b224d629ece593c0a423d2b55",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-055.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 219
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-328-part-1",
+      "view": "step-6",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-328-part-1-step-6-1280.png",
+      "sha256": "03b7304c7d990d8e54146061017b6aa2f565530c54608a6885ed75434a6e5993",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-055.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 220
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-328-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-328-part-1-case-1-1280.png",
+      "sha256": "d384c5e20585a0158fddaeecb5d37278b18e0b5ac41bc4eca965f777b2c80f0d",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-056.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 221
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-328-part-1",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-328-part-1-case-2-1280.png",
+      "sha256": "8301c804ed41ab9afbd6650ecb5f80c8037b26f6a0acb37da1bc4a538fdeba8c",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-056.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 222
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-329-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-329-part-1-neutral-1280.png",
+      "sha256": "4a2e9db4d854618b8fe3ddb8e2249196a45fac8714f4443ad7c7ba320511c82f",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-056.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 223
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-329-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-329-part-1-step-1-1280.png",
+      "sha256": "95e138bd13b03bc7868435892038bcb388fb024d43ec7d685fdd94ab77a5bf1d",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-056.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 224
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-329-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-329-part-1-step-2-1280.png",
+      "sha256": "da50e67fe26dad7ece8a5094a5c4c485317a245058930f8c7869871f0a17d4cd",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-057.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 225
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-329-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-329-part-1-step-3-1280.png",
+      "sha256": "b7f5f3b8bc46be25a3602d9c79e7750e044c14d6e0f034aed752bdea0033fb65",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-057.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 226
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-329-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-329-part-1-step-4-1280.png",
+      "sha256": "b7f5f3b8bc46be25a3602d9c79e7750e044c14d6e0f034aed752bdea0033fb65",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-057.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 226
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-329-part-1",
+      "view": "step-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-329-part-1-step-5-1280.png",
+      "sha256": "6d6357855b1372e01b3de99dd78d37bcef0357212cabcdfc42ebd7f55057078f",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-057.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 227
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-329-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-329-part-1-case-1-1280.png",
+      "sha256": "659a5ec9da2817a2b7c377cc41be3489d37a44465ad3b5cb3d4444edf8481b07",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-057.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 228
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-329-part-1",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-329-part-1-case-2-1280.png",
+      "sha256": "af27978433e67f6a9a860e81754b7d1f0cda8d16e33b540574a31fb438c7c029",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-058.png",
+        "cell": 1,
+        "ordinalInGroupWidth": 229
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-330-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-330-part-1-neutral-1280.png",
+      "sha256": "6e079d22bcf6fbfee8d22bdae7af13ee6519c1edc423d285b232b4bb9dbaa566",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-058.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 230
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-330-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-330-part-1-step-1-1280.png",
+      "sha256": "6e079d22bcf6fbfee8d22bdae7af13ee6519c1edc423d285b232b4bb9dbaa566",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-058.png",
+        "cell": 2,
+        "ordinalInGroupWidth": 230
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-330-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-330-part-1-step-2-1280.png",
+      "sha256": "c6039605813e4a65522d4d8228d487b0944ea4c4b6653a7be3ddabc88623aa2f",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-058.png",
+        "cell": 3,
+        "ordinalInGroupWidth": 231
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-330-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-330-part-1-step-3-1280.png",
+      "sha256": "c67c9ccbee66bf6123d86a9a19d6b252c2d8cab46d5a09df413148d0d1d9e65d",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-058.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 232
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-330-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-330-part-1-step-4-1280.png",
+      "sha256": "c67c9ccbee66bf6123d86a9a19d6b252c2d8cab46d5a09df413148d0d1d9e65d",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-058.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 232
+      }
+    },
+    {
+      "id": "atanasyan-7-9-main-330-part-1",
+      "view": "step-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-330-part-1-step-5-1280.png",
+      "sha256": "c67c9ccbee66bf6123d86a9a19d6b252c2d8cab46d5a09df413148d0d1d9e65d",
+      "contactSheet": {
+        "sheet": "C-w1280-sheet-058.png",
+        "cell": 4,
+        "ordinalInGroupWidth": 232
+      }
+    }
+  ],
+  "nextRequiredEvidence": "Author fixes, regenerated models and fresh browser captures; independently inspect changed pixels and verify exact-byte inheritance for unchanged captures before final scoped visual PASS."
+}

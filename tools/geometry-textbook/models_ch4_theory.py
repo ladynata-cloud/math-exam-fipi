@@ -63,7 +63,10 @@ def combine(*pieces):
         neutral=rename(p['initial'])
         if initial is None: initial=neutral
         if n:
-            cases.append(dict(neutral,label=p['title'],availableFromStep=len(rows)+1))
+            # A named case may need the construction already introduced at
+            # its unlock step, while the card's neutral scene stays earlier.
+            case_initial=rename(p.get('caseInitial',p['initial']))
+            cases.append(dict(case_initial,label=p['title'],availableFromStep=len(rows)+1))
         for view in p['views']: scenes.append(rename(view))
         for case in p['cases']:
             data=rename(case)
@@ -107,6 +110,7 @@ EXT=piece('Внешний угол',[
  s('Как выразить внешний угол через внутренний при C?','Смежные углы дают ∠BCD = 180° − ∠C.','Сумма смежных углов',[11]),
  s('Чему равна та же разность в треугольнике?','Из ∠A + ∠B + ∠C = 180° получаем ∠A + ∠B = 180° − ∠C. Следовательно, ∠BCD = ∠A + ∠B.','Теорема о сумме углов',[31]),
  s('Почему внешний угол больше каждого из этих двух?','Внутренние углы A и B положительны. Их сумма больше каждого слагаемого; поэтому ∠BCD > ∠A и ∠BCD > ∠B.','Сравнение положительных чисел',[31])],P,base,[ext,ext,ext,ext],[col('A','C','D')])
+EXT['caseInitial']=ext
 qp={'A':(18,18),'B':(26,54),'C':(76,50),'D':(84,18)}
 q0=v(list(qp),[['A','B'],['B','C'],['C','D'],['D','A']])
 q1=deepcopy(q0);q1['dashSegments']=[['A','C']]
@@ -211,6 +215,7 @@ MEDIAN=piece('Медиана к гипотенузе',[
  s('Как сравнить два других угла?','∠BAM = 90° − ∠CAM, а ∠ABM = ∠ABC = 90° − ∠ACB. Вычитаем равные углы: ∠BAM = ∠ABM.','Сумма острых углов',[35]),
  s('Какие ещё отрезки равны?','Из равенства углов в ABM получаем AM = BM. Вместе с AM = CM это даёт BM = CM, то есть M — середина BC.','Признак равнобедренного; середина',[6,33]),
  s('Что доказано о медиане?','Построенный AM — медиана. Он равен BM = CM = BC/2. Следовательно, медиана к гипотенузе равна половине гипотенузы.','Определение медианы',[17])],mp,m0,[m1,m2,m3,m3],[col('B','M','C'),equal(('A','M'),('B','M'),('C','M')),angle('B','A','C',90)])
+MEDIAN['caseInitial']=m1
 cr0=v(['A','B','C'],tri())
 RIGHT_CRIT=piece('Признак по сумме углов',[
  s('Какой третий угол, если два в сумме дают90°?','Третий угол равен 180° − 90° = 90°. Поэтому треугольник прямоугольный.','Теорема о сумме углов',[31])],rp,cr0,[r0],[angle('B','A','C',90)])
@@ -308,6 +313,9 @@ LOCUS=piece('Геометрическое место точек',[
   v(['H','P','Y','X','a','b'],[['H','P'],['Y','X']],lines=[['U','V'],['W','T']],equalSegments=[eq('H','P'),eq('Y','X')])],
  [par('U','V','W','T'),perp('H','P','U','V'),perp('X','Y','U','V'),equal(('H','P'),('Y','X'))],
  label_only=['a','b'])
+PAR_DIST['caseInitial']=p1
+DIST_PAR_DEF['caseInitial']=p1
+LOCUS['caseInitial']=LOCUS['views'][0]
 add('theory',37,'Расстояние от точки до прямой и между параллельными прямыми',[80,81,82,83],
     'Определим наклонную, её проекцию и расстояния. Докажем свойство параллельных прямых и опишем множество равноудалённых точек.',
     'Расстояние измеряют по перпендикуляру. Две параллельные прямые равноудалены. На выбранной стороне точки на расстоянии d > 0 образуют одну параллельную.',DIST_DEF,SHORTEST,PAR_DIST,DIST_PAR_DEF,LOCUS)

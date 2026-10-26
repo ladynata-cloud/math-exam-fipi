@@ -22,9 +22,9 @@ was inspected.
 
 | File | SHA-256 |
 | --- | --- |
-| `tools/geometry-textbook/models_ch4_theory.py` | `a74d01a887a238b1f250b0a9b943fb736237dd7ee7343b63a1f34faba814396e` |
+| `tools/geometry-textbook/models_ch4_theory.py` | `6ae1afd084a64a2da48fb4857fb5bc5be9827a13d38cba2bc82a0b5d0aa501bb` |
 | `geometry-course/textbook/preparation/chapter-04-theory.json` | `d2a7d2dbe4fedb3ba5e6b961679dffdecd3193d6c6ba24a7d2fbef62bdaed094` |
-| `geometry-course/textbook/models/chapter-04-theory.json` | `b7f01d4fdbfa1aaf93e69795dda405413aad9eaccf0d52ce2302ed972379f445` |
+| `geometry-course/textbook/models/chapter-04-theory.json` | `01f22365db641b2363fbcf03f88898f4aae004aecda0b302c3bb94b2eafad474` |
 
 ## Exact-source correspondence
 
@@ -134,6 +134,22 @@ Generator-to-JSON equality and all 31 Python model checks still pass. With the
 unchanged JavaScript `engine.validateLesson` and `PlanarViewer.validateModel`
 both returned zero errors for every lesson. This is validator evidence only,
 not a browser-rendering or interaction result.
+
+The later independent mobile/desktop image review identified five named case
+buttons that returned to a statement's bare initial diagram after its relevant
+construction was already unlocked. The author corrected only theory 31
+`case-1`, theory 35 `case-3`, and theory 37 `case-2`, `case-3`, `case-4`.
+They now respectively show the exterior angle, constructed median ray,
+perpendiculars for the two distance discussions, and the first locus
+construction. The reviewer independently compared the generated models with
+the previously reviewed `b7f01d4fdbfa1aaf93e69795dda405413aad9eaccf0d52ce2302ed972379f445`
+version and confirmed exactly those five view changes. Every other model
+field, coordinate, check, view, self-check and all preparation bytes are
+unchanged. Each corrected case equals the already reviewed construction at
+its existing unlock step; no future equality conclusion was introduced.
+Generator equality and all 31 model checks pass again. This resolves the
+authored case definitions; fresh rendered images are required to resolve the
+separate visual review.
 
 There are no unresolved source, mathematical, didactic or authored-model
 findings at the recorded hashes. **No rendered-browser, mobile-layout,
