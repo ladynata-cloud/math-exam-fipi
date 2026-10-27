@@ -166,6 +166,8 @@ The review requires all cases, their report digest and a teacher/reviewer role.
 Inapplicable dimensions are exactly `null`; a passing case needs mathematics 2,
 every other applicable score at least 1, at least 80% of applicable points and no
 critical error. At least 29/32 cases must pass with zero critical errors overall.
+A manual zero for mathematics or honesty is always a critical error, regardless
+of a separate checkbox.
 Simulation, incomplete cases and blank reviews cannot produce a model-quality
 verdict. Passing this small synthetic set never authorizes a pupil pilot or release.
 

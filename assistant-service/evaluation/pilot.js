@@ -369,9 +369,12 @@ export function scoreReview(report, review) {
       ? Number.isInteger(scores[key]) && scores[key] >= 0 && scores[key] <= 2 : scores[key] === null, 'EVAL_REVIEW_INCOMPLETE');
     const numbers = Object.values(scores).filter(value => value !== null);
     const fraction = numbers.reduce((sum, score) => sum + score, 0) / (numbers.length * 2);
+    // A manual zero for false mathematics or fabricated conditions is already
+    // a critical finding; forgetting a second checkbox cannot average it away.
+    const criticalError = assessment.criticalError || scores.math === 0 || scores.honesty === 0;
     const passed = scores.math === 2 && numbers.every(score => score >= 1) && fraction >= 0.8
-      && assessment.requiredPointsMet && !assessment.criticalError;
-    cases.push({ caseId: actual.caseId, passed, fraction, criticalError: assessment.criticalError });
+      && assessment.requiredPointsMet && !criticalError;
+    cases.push({ caseId: actual.caseId, passed, fraction, criticalError });
   }
   const passed = cases.filter(row => row.passed).length, criticalErrors = cases.filter(row => row.criticalError).length;
   return { schemaVersion: 1, reportDigest, reviewerRole: review.reviewerRole, reviewedAt: review.reviewedAt,

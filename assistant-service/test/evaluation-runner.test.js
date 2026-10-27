@@ -162,6 +162,12 @@ test('human rubric stays incomplete until all cases are reviewed; optional score
   paired.scores.feedback = 0; assert.equal(scoreReview(report, feedback).cases.find(row => row.caseId === paired.caseId).passed, false);
   const critical = structuredClone(good); critical.caseReviews[0].criticalError = true;
   assert.equal(scoreReview(report, critical).verdict, 'REVISE_BEFORE_FURTHER_PILOT');
+  for (const dimension of ['math', 'honesty']) {
+    const incorrect = structuredClone(good); incorrect.caseReviews[0].scores[dimension] = 0;
+    const result = scoreReview(report, incorrect);
+    assert.equal(result.criticalErrors, 1);
+    assert.equal(result.verdict, 'REVISE_BEFORE_FURTHER_PILOT');
+  }
   const missing = structuredClone(good); missing.caseReviews.pop(); assert.throws(() => scoreReview(report, missing));
   const changed = structuredClone(report); changed.results[0].answer.title = 'Altered'; assert.throws(() => scoreReview(changed, good), /EVAL_REPORT_CHANGED/);
 });
