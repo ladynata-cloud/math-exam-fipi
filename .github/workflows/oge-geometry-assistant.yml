@@ -1,0 +1,120 @@
+name: OGE geometry cabinet and assistant
+
+on:
+  pull_request:
+    paths:
+      - 'assistant-service/**'
+      - 'board-server/assistant-profile-catalog.json'
+      - 'board-server/learning-*.js'
+      - 'board-server/package*.json'
+      - 'board-server/test/learning-assistant.test.js'
+      - 'learning/app.js'
+      - 'learning/index.html'
+      - 'learning/assistant.*'
+      - 'learning/oge-geometry.*'
+      - 'learning/catalog.js'
+      - 'learning/preparation.js'
+      - 'trainers/oge-task1[5-8]*'
+      - 'trainers/oge-geometry-*'
+      - 'trainers/oge-course-geometry*'
+      - 'trainers/task19-*'
+      - 'trainers/board-bridge.js'
+      - 'trainers/board-compat.json'
+      - 'tools/learning-oge-geometry*'
+      - 'tools/oge-geometry-*'
+      - 'tools/oge-course-geometry*'
+      - 'tools/oge-task15-board.test.cjs'
+      - 'tools/oge-task17-answer-format.test.mjs'
+      - 'tools/task19-*.test.cjs'
+      - 'docs/tasks/OGE_GEOMETRY_ASSISTANT.md'
+      - '.github/workflows/oge-geometry-assistant.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'assistant-service/**'
+      - 'board-server/assistant-profile-catalog.json'
+      - 'board-server/learning-*.js'
+      - 'board-server/package*.json'
+      - 'board-server/test/learning-assistant.test.js'
+      - 'learning/app.js'
+      - 'learning/index.html'
+      - 'learning/assistant.*'
+      - 'learning/oge-geometry.*'
+      - 'learning/catalog.js'
+      - 'learning/preparation.js'
+      - 'trainers/oge-task1[5-8]*'
+      - 'trainers/oge-geometry-*'
+      - 'trainers/oge-course-geometry*'
+      - 'trainers/task19-*'
+      - 'trainers/board-bridge.js'
+      - 'trainers/board-compat.json'
+      - 'tools/learning-oge-geometry*'
+      - 'tools/oge-geometry-*'
+      - 'tools/oge-course-geometry*'
+      - 'tools/oge-task15-board.test.cjs'
+      - 'tools/oge-task17-answer-format.test.mjs'
+      - 'tools/task19-*.test.cjs'
+      - 'docs/tasks/OGE_GEOMETRY_ASSISTANT.md'
+      - '.github/workflows/oge-geometry-assistant.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: oge-geometry-assistant-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  cabinet-helper-and-native-actions:
+    # Keep the OS supported by the pinned Playwright 1.55 runtime.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Confirm the exact requested commit
+        env:
+          OGE_GEOMETRY_EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$OGE_GEOMETRY_EXPECTED_HEAD"
+          git rev-parse HEAD
+      - name: Install locked services and pinned DOM and browser tools
+        run: |
+          npm ci --prefix board-server --include=optional
+          npm ci --prefix assistant-service --ignore-scripts --offline
+          npm install --prefix "$RUNNER_TEMP/oge-geometry-assistant" --no-save --no-package-lock --ignore-scripts --no-audit --no-fund jsdom@26.1.0 playwright@1.55.0
+          echo "NODE_PATH=$RUNNER_TEMP/oge-geometry-assistant/node_modules:$GITHUB_WORKSPACE/board-server/node_modules" >> "$GITHUB_ENV"
+      - name: Full assistant service and cabinet gateway suites
+        run: |
+          npm --prefix assistant-service test
+          node --test --test-isolation=none board-server/test/learning-assistant.test.js
+      - name: Geometry routes, safe handoff, native event order and exact answer format
+        run: |
+          node --test --test-isolation=none tools/learning-oge-geometry.test.cjs tools/oge-geometry-helper.test.cjs tools/oge-geometry-event-order.test.cjs tools/oge-task17-answer-format.test.mjs
+          git diff --check
+      - name: Install Chromium and system dependencies
+        run: node "$RUNNER_TEMP/oge-geometry-assistant/node_modules/playwright/cli.js" install --with-deps chromium
+      - name: Real cabinet and offline geometry helper
+        env:
+          BROWSER_SCREENSHOT_DIR: ${{ runner.temp }}/oge-geometry-assistant-evidence/cabinet
+        run: node tools/learning-oge-geometry.browser.cjs
+      - name: Five public trainer handoffs on desktop and mobile
+        env:
+          GEOMETRY_HELPER_SCREENSHOTS: ${{ runner.temp }}/oge-geometry-assistant-evidence/public-trainers
+        run: node tools/oge-geometry-helper.browser.cjs
+      - name: Native board event order and peer restore
+        run: node tools/oge-geometry-event-order.browser.cjs
+      - name: Synthetic browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: oge-geometry-assistant-evidence
+          path: ${{ runner.temp }}/oge-geometry-assistant-evidence/
+          if-no-files-found: warn
+          retention-days: 7

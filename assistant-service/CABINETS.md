@@ -1,6 +1,6 @@
 # MaxExam 0.0 in selected MathExam cabinets
 
-Prepared implementation, 2026-10-27. This guide is not a deployment record.
+Prepared implementation, updated 2026-10-28. This guide is not a deployment record.
 The [task](../docs/tasks/MATHEXAM_ASSISTANT_CABINETS_V1.md) authorizes preparation
 for three privately selected pupils. Real accounts have not been bound and no
 external model has been called. Merge and deployment require separate decisions.
@@ -9,7 +9,7 @@ external model has been called. Merge and deployment require separate decisions.
 
 | Private profile | Reviewed material | Current calculation / reasoning boundary |
 | --- | --- | --- |
-| `oge-geometry` | Five topics: triangles, circles, quadrilaterals/areas, grid geometry and statements | Conditions, theorems and next-step guidance; does not read a drawing or certify an arbitrary proof |
+| `oge-geometry` | Five topics: triangles, circles, quadrilaterals/areas, grid geometry and statements | Exact bounded calculations and six statement explanations, plus next-step guidance; does not read a drawing or certify an arbitrary proof |
 | `peterson-decimals` | Eight topics: place value, comparison, rounding, addition/subtraction, multiplication, division, powers of ten and ordinary/decimal fractions | Exact rational arithmetic for supported signed finite-decimal inputs, exact fractional results and repeating-decimal output; division by zero is rejected |
 | `triangle-congruence` | Four topics: SAS, ASA, SSS and corresponding vertices / choice of criterion | Explicit premises and justification; rejects the idea that AAA or arbitrary SSA proves congruence |
 
@@ -64,8 +64,10 @@ Hosting access logs, backups and provider retention need their own operational
 review. Do not log request bodies, cookies or credentials at an ingress proxy.
 
 Visible conversation text stays in page memory. Account changes, relevant route
-changes and page exit dispose it and abort pending UI requests. No helper text
-is put in browser persistent storage. A response arriving after account,
+changes and page exit dispose it and abort pending UI requests. Questions and
+answers are not written to browser Web Storage. The explicit public-condition
+handoff below uses a URL fragment, which can remain in ordinary browser history;
+it never includes a pupil's answer or account data. A response arriving after account,
 permission or task revocation is withheld by the server as well.
 
 ## Task context and assistance
@@ -74,6 +76,56 @@ For a course opened in another tab, enter only the mathematical condition. The
 panel says it cannot see that tab. Public OGE and Peterson pages do not provide a
 universal current-task feed to the cabinet. Opening a link does not synchronize
 its screen, score or completion with this helper.
+
+### First-part OGE geometry collection and explicit handoff
+
+The owner withdrew the earlier supplied AGENTS.md instructions during this
+increment. Its preparation record therefore does not impose those former
+consultation/exception gates. The dependency service and gateway are still
+unreleased; live deployment and private activation are factual outstanding work.
+
+The [geometry increment](../docs/tasks/OGE_GEOMETRY_ASSISTANT.md), dependent on
+PR #360, adds `#geometry` and five topic entries to the existing cabinet. A saved
+plan that already references the canonical geometry trainers shows one collection
+entry and retains all its original trainer cards. This does not create or complete
+managed attempts and does not change any real pupil's plan or assistant settings.
+
+Each public trainer has a collapsed “Помощник MathExam” control. It can open the
+native current-task hint or explicitly transfer the current public condition into
+`#geometry-help`. The outgoing link carries only an allowlisted topic/source and
+at most 1,000 characters of mathematical text. It does not contain pupil work,
+account identifiers, hidden answers, a drawing or later edits from the source tab.
+Native assistance is marked before opening the new tab; closing help does not
+remove that mark. The source draft and drawing remain in the trainer. These
+controls are absent in embedded/shared-board and native assessment modes.
+
+The receiver validates the exact route and source/topic pair, keeps the current
+account, and pre-fills a form only for the already-authorized `oge-geometry`
+profile. Opening the link makes no question POST and does not enable the helper
+or a provider. The pupil must check the text, add data present only in the drawing,
+and submit deliberately. Ordinary sign-in can preserve this bounded handoff.
+
+`src/geometry-tutor.js` accepts only complete, narrowly specified question forms:
+triangle angle sums and Pythagoras; the two square/circle area configurations;
+explicit shared-arc angle relationships; trapezoid midlines and their diagonal-
+divided parts; relevant side/height or diagonal area formulas; grid distance with
+an explicit scale; and six exact geometric statements with proof/counterexample.
+Finite decimals use exact rational arithmetic; irrational lengths retain a square
+root. Hints give one step without the final result, including the maximum hint
+level. The full solution requires a separate request. Supported calculations stay
+offline even when external permission exists.
+
+This is not a general natural-language geometry solver. Extra or contradictory
+premises, missing drawing data, units not supported by the grammar, unsupported
+notation and arbitrary proofs receive an honest `needs-teacher` response.
+Mathematical input preserves superscripts/subscripts instead of compatibility-
+flattening them into different numbers; privacy detection still checks normalized
+forms. A saved or transferred task is not promised to match a supported solver.
+
+Task19 practice keeps assisted correct answers in its repeat queue. A subsequent
+unassisted answer to the same statement can clear that queue, but this is not
+proof of mastery on a fresh analogous problem. Historical local records made by
+the previous version are not migrated automatically.
 
 When the cabinet supplies an owned, published, non-archived attempt, help is
 marked before any response is delivered. The current structured projection is
@@ -134,9 +186,11 @@ overwrite another edit. Disabling/re-enabling, changing a profile, restarting or
 logging in again cannot renew the same day's allowance. The fourth pupil is
 blocked both in the interface and by direct API calls.
 
-Actual account binding was not possible in this task because no authenticated
-teacher browser connection was available. The preparation does not claim the
-three real cabinets already display the panel.
+During the earlier PR #360 preparation no authenticated teacher connection was
+available. The 2026-10-28 geometry task verified the intended existing cabinet
+read-only and found all five saved trainer links. No account was enabled or
+modified, and the prerequisite service/gateway changes remain unmerged. These
+observations do not claim that a real cabinet already displays the new panel.
 
 ## Cost and failure behavior
 
@@ -148,7 +202,7 @@ the remaining count; that GET does not repeat inference.
 
 Paid requests, if later enabled, use the assistant's existing durable reservation
 ledger with global daily/monthly money limits, per-day API counts, current price
-review and usage-contract circuit breaker. Supported exact decimal calculations
+review and usage-contract circuit breaker. Supported exact decimal and geometry calculations
 stay offline even when external permission exists. These limits do not cap
 hosting subscriptions, other applications or provider auto-top-ups.
 
@@ -193,6 +247,10 @@ npm --prefix assistant-service test
 npm --prefix board-server test
 node --test --test-isolation=none tools/learning-assistant-browser.test.cjs
 node tools/learning-assistant-e2e.browser.cjs
+node --test --test-isolation=none tools/learning-oge-geometry.test.cjs tools/oge-geometry-helper.test.cjs
+node tools/learning-oge-geometry.browser.cjs
+node tools/oge-geometry-helper.browser.cjs
+node tools/oge-geometry-event-order.browser.cjs
 git diff --check
 ```
 

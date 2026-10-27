@@ -38,10 +38,12 @@ function containsSensitive(value, checkNumbers = true) {
 }
 function mathText(value, maximum, empty = false) {
   requireValue(typeof value === 'string' && value.length <= maximum, 'LEARNING_ASSISTANT_INPUT_INVALID');
-  const text = value.normalize('NFKC').trim();
+  // Mathematical text must retain superscripts/subscripts across the bridge.
+  // Compatibility folding is only for the existing privacy rejection below.
+  const text = value.normalize('NFC').trim();
   requireValue((empty || text.length > 0) && text.length <= maximum
     && !/[\u0000-\u0008\u000b-\u001f\u007f\u202a-\u202e\u2066-\u2069]/u.test(text), 'LEARNING_ASSISTANT_INPUT_INVALID');
-  requireValue(!containsSensitive(text), 'LEARNING_ASSISTANT_PERSONAL_DATA');
+  requireValue(!containsSensitive(text.normalize('NFKC')), 'LEARNING_ASSISTANT_PERSONAL_DATA');
   return text;
 }
 function checkedAnswer(raw, topic, secret) {

@@ -1,0 +1,17 @@
+.oge-geometry-helper{box-sizing:border-box;max-width:100%;margin:18px 0;border:1px solid #bfd0c2;border-radius:10px;background:#f5f9f4;color:#233c2d;font:17px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif}
+.oge-geometry-helper>summary{display:list-item;cursor:pointer;min-height:44px;box-sizing:border-box;padding:12px 16px;font-weight:650;color:#216342}
+.oge-geometry-helper-body{padding:0 16px 16px;overflow-wrap:anywhere}
+.oge-geometry-helper-body>p{margin:12px 0}
+.oge-geometry-helper-actions{display:flex;flex-wrap:wrap;gap:10px}
+/* Scope the override to these controls: the triangle trainer's broad native
+   button:not(...) theme otherwise gives the secondary button green-on-green. */
+.oge-geometry-helper .oge-geometry-helper-actions>button{max-width:100%;min-height:44px;white-space:normal;border:1px solid #a9c0ad;border-color:#a9c0ad!important;border-radius:8px;padding:10px 14px;font:inherit;font-size:16px;background:#fff!important;color:#216342;cursor:pointer}
+.oge-geometry-helper .oge-geometry-helper-actions>button:last-child{background:#216342!important;border-color:#216342!important;color:#fff}
+.oge-geometry-helper .oge-geometry-helper-note{font-size:15px;line-height:1.6;color:#526456}
+.oge-geometry-helper .oge-geometry-helper-status{font-size:15px;margin-bottom:0}
+.oge-geometry-helper .oge-geometry-helper-status:empty{display:none}
+.oge-geometry-helper-hint{margin:14px 0;padding:10px 14px;border-left:3px solid #6e9a78;background:#fff}
+.oge-geometry-helper-hint p{margin:7px 0}
+.oge-geometry-helper [hidden]{display:none!important}
+.oge-geometry-helper button:focus-visible,.oge-geometry-helper summary:focus-visible{outline:3px solid #77a488;outline-offset:3px}
+@media(max-width:600px){.oge-geometry-helper{font-size:16px}.oge-geometry-helper-body{padding:0 12px 14px}.oge-geometry-helper>summary{padding:12px}.oge-geometry-helper-actions>button{flex:1 1 230px}}

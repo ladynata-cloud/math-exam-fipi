@@ -254,7 +254,7 @@ test('review metadata expires while replay tombstones and current allowance surv
   assert.equal((await f.request(renewed,'/assistant/ask',body)).body.error,'LEARNING_ASSISTANT_REQUEST_REPLAY');
 });
 
-test('real HTTP cabinet-to-assistant path uses separate offline service without provider traffic',async t=>{
+test('real HTTP cabinet-to-assistant path preserves math notation and uses separate offline service without provider traffic',async t=>{
   const {createAssistantServer}=await import(pathToFileURL(path.resolve(__dirname,'../../assistant-service/src/server.js')));
   const {loadConfig}=await import(pathToFileURL(path.resolve(__dirname,'../../assistant-service/src/config.js')));
   const directory=fs.mkdtempSync(path.join(os.tmpdir(),'mathexam-two-services-')),bridgeKey=key();let paid=0;
@@ -263,7 +263,8 @@ test('real HTTP cabinet-to-assistant path uses separate offline service without 
   app.server.listen(0,'127.0.0.1');await once(app.server,'listening');config.publicOrigin=`http://127.0.0.1:${app.server.address().port}`;
   t.after(async()=>{await app.close();fs.rmSync(directory,{recursive:true,force:true});});
   // Route through real HTTP while keeping fixture authentication synthetic.
-  const real=await fixture(t,{transport:(url,options)=>fetch(url,options)});real.config.origin=config.publicOrigin;real.config.key=bridgeKey;
+  const forwarded=[];
+  const real=await fixture(t,{transport:(url,options)=>{if(url.endsWith('/ask'))forwarded.push(JSON.parse(options.body));return fetch(url,options);}});real.config.origin=config.publicOrigin;real.config.key=bridgeKey;
   const configured=await real.configure();assert.equal(configured.status,200,JSON.stringify(configured.body));assert.equal(configured.body.mode,'offline');
   const answer=await real.request(real.learners[0],'/assistant/ask',real.ask({mode:'full'}));
   assert.equal(answer.status,200,JSON.stringify(answer.body));assert.equal(answer.body.answer.verification,'deterministic');assert.equal(paid,0);
@@ -272,6 +273,23 @@ test('real HTTP cabinet-to-assistant path uses separate offline service without 
   assert(multiply);
   const long=await real.request(real.learners[0],'/assistant/ask',real.ask({topic:multiply.id,question:'0,123456 * 0,123456',mode:'full'}));
   assert.equal(long.status,200,JSON.stringify(long.body));assert(JSON.stringify(long.body.answer).includes('0,015241383936'));assert.equal(paid,0);
+  assert.equal((await real.configure(1,{profileId:'oge-geometry'})).status,200);
+  for(const radius of ['2²','2₂','2⁺²','２']) {
+    const question=`Квадрат описан около окружности радиуса ${radius}. Найди площадь квадрата.`,attempt='r² + r₂';
+    const response=await real.request(real.learners[1],'/assistant/ask',real.ask({topic:'oge-circle',question,attempt,mode:'full'}));
+    assert.equal(response.status,200,JSON.stringify(response.body));
+    assert.equal(forwarded.at(-1).question,question);assert.equal(forwarded.at(-1).attempt,attempt);
+    assert.equal(response.body.answer.verification,'needs-teacher');assert.equal(response.body.answer.complete,false);
+    assert.doesNotMatch(JSON.stringify(response.body.answer),/Ответ:|1936/u);
+  }
+  const beforeSensitive=forwarded.length;
+  for(const sensitive of ['ｐｅｒｓｏｎ＠ｅｘａｍｐｌｅ．ｔｅｓｔ','ｈｔｔｐｓ：／／ｅｘａｍｐｌｅ．ｔｅｓｔ','ｐａｓｓｗｏｒｄ secret-value','＋７（９９９）１２３－４５－６７']) {
+    for(const field of ['question','attempt']) {
+      const response=await real.request(real.learners[1],'/assistant/ask',real.ask({topic:'oge-circle',question:'Квадрат описан около окружности радиуса 2. Найди площадь квадрата.',[field]:sensitive}));
+      assert.equal(response.body.error,'LEARNING_ASSISTANT_PERSONAL_DATA');
+    }
+  }
+  assert.equal(forwarded.length,beforeSensitive);assert.equal(paid,0);
   const feedback=await real.request(real.learners[0],'/assistant/feedback',{answerId:answer.body.answer.answerId,rating:'helpful'});assert.equal(feedback.status,200,JSON.stringify(feedback.body));
   const serialized=JSON.stringify(app.store.db.prepare('SELECT * FROM requests').all());assert(!serialized.includes(real.learners[0].account.id));assert(!serialized.includes('0,1 + 0,2'));
 });

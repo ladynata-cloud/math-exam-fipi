@@ -52,6 +52,7 @@ function ogeGeometryCardsMarkup({teacher=false,ids=ogeGeometryCards.map(card=>ca
   const shared='https://mathexam.space/trainers/trainer-board.html?trainer='+encodeURIComponent(pathname);
   cards.push(`<section class="panel prep-linked-course" data-plan-course="${id}"><p class="eyebrow">ТРЕНАЖЁР · ОГЭ №${number}</p><h2>${title}</h2><p>${description}</p><div class="actions"><a class="button primary" data-plan-course-open href="${href}" target="_blank" rel="noopener noreferrer">Потренироваться →</a>${teacher?`<a class="button" data-plan-course-board href="${shared}" target="_blank" rel="noopener noreferrer">Открыть на доске</a>`:''}</div></section>`);
  }
+ if(cards.length)cards.unshift('<section class="panel geometry-collection-entry" data-geometry-collection-entry><p class="eyebrow">ОГЭ · ПЕРВАЯ ЧАСТЬ</p><h2>Геометрия №15–19 вместе</h2><p>Все пять тем, повторение основ и помощь по шагам.</p><a class="button primary" href="#geometry">Открыть раздел геометрии →</a></section>');
  if(cards.length)cards.push(`<p class="small" data-oge-geometry-plan-note>Тренажёры открываются отдельно и не входят в прогресс кабинета. Совместная работа на доске не считается самостоятельным решением.${teacher?' Для общего урока создайте комнату на доске и передайте ученику ссылку подключения.':' Для общего урока открой ссылку доски от преподавателя.'}</p>`);
  return cards.join('');
 }

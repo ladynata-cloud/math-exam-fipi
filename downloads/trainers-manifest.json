@@ -1,6 +1,6 @@
 {
   "stage": "1",
-  "updated": "2026-10-25",
+  "updated": "2026-10-27",
   "notes": "Первый этап: скачивание, промпты и архивы для ключевых публичных тренажёров. Служебные, тестовые и персональные страницы не включены.",
   "trainers": [
     {
@@ -187,7 +187,9 @@
         "/trainers/task19-reference.js",
         "/trainers/task19-textbook-data.js",
         "/trainers/task19-textbook-reference.js",
-        "/trainers/task19-visual-app.js"
+        "/trainers/task19-visual-app.js",
+        "/trainers/oge-geometry-helper.css",
+        "/trainers/oge-geometry-helper.js"
       ],
       "interfaceRequirements": [
         "одно геометрическое утверждение на экране, крупный текст и свободные промежутки между строками;",

@@ -1,6 +1,46 @@
 # MathExam project status
 
-Updated: 2026-10-27 (Asia/Novosibirsk)
+Updated: 2026-10-28 (Asia/Novosibirsk)
+
+## Prepared: first-part OGE geometry collection and contextual help
+
+- [Task](tasks/OGE_GEOMETRY_ASSISTANT.md), HIGH; branch
+  `feat/oge-geometry-assistant-20261028`, exact base
+  `1fcc4fa36267f5667c42409861ef0b92f97b333c`, dependent on Draft PR #360.
+  Prerequisite PRs #358 → #359 → #360 remain unmerged; PR #361 is unrelated.
+- Read-only authenticated inspection of the intended existing cabinet confirmed
+  that all five canonical trainers were already in its saved plan. New collection
+  navigation, native contextual hints and explicit condition transfer are prepared
+  without changing any real profile, plan, credential or progress record.
+- Five checked offline topic examples, bounded exact geometry solvers and honest
+  unsupported-condition fallback. No external model was connected or called.
+- Demonstrated defects corrected: native first-event snapshot timing, concatenated
+  answer format in task17, assisted task19 review retention and mathematical
+  notation being flattened during request normalization. The task19 downloadable
+  HTML/ZIP is regenerated from the same source.
+- [Evidence and limitations](reports/OGE_GEOMETRY_ASSISTANT_20261028.md): actual
+  desktop/mobile synthetic browser journeys, mathematical and existing cabinet/
+  board regressions, with independent internal reviews. Exact final-head CI and
+  publication identity are recorded in the task's Draft PR.
+- Claude consultation/external review was not performed. The owner withdrew the
+  earlier supplied AGENTS.md instructions during this task; their prior review/
+  exception workflow is not imposed on this increment. The actual outstanding
+  work is prerequisite integration, helper-service deployment and private activation.
+
+## Production reconciliation for this task
+
+- Current remote main was observed at
+  `8723d6bfb19e64d43c474b1fc7116fe8630ec20a`. PR #335's five first-part geometry
+  trainers are published and their canonical links were verified in the selected
+  cabinet. Public practice remains browser-local, not managed cabinet progress.
+- PR [#362](https://github.com/ladynata-cloud/math-exam-fipi/pull/362) is merged at
+  that main SHA. Its release record documents the separate Peterson-six line,
+  passing deployment and five published asset identity checks. Its older
+  “Prepared” status was historical; this task makes no edits to that course.
+- Main has that later isolated course release while the assistant branch carries
+  its three prepared dependencies. The concurrent course commit does not touch
+  runtime files changed by this geometry increment; PROJECT_STATUS is shared.
+  This task does not merge/rebase either branch or adopt any earlier release waiver.
 
 ## Prepared: MaxExam 0.0 for three selected cabinets
 
@@ -16,9 +56,9 @@ Updated: 2026-10-27 (Asia/Novosibirsk)
   Full service and board suites passed 107 and 328 checks respectively. Remote
   exact-head CI and the separately reported local clipboard regression belong
   in the Draft PR handoff; no external review is claimed.
-- Public main and index/sitemap/robots remain at the preceding released state
-  below. No authenticated teacher connection was available for real account
-  verification/binding. No real pupil has been enabled by this preparation.
+- At the earlier PR #360 preparation, no authenticated teacher connection was
+  available for real account verification/binding. Current main and the later
+  read-only cabinet check are reconciled above. No real pupil has been enabled.
 - The owner prefers strong teaching quality and considers OpenAI, GigaChat and
   Qwen as complementary model candidates. Multi-model consultation requires a
   separate bounded adapter/evaluation change and actual provider access/terms.
