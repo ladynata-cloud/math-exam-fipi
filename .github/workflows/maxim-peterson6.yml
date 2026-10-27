@@ -1,0 +1,33 @@
+name: Maxim Peterson 6 learning line
+
+on:
+  pull_request:
+    paths:
+      - 'trainers/maxim-peterson6/**'
+      - 'tools/maxim-peterson6.test.cjs'
+      - '.github/workflows/maxim-peterson6.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'trainers/maxim-peterson6/**'
+      - 'tools/maxim-peterson6.test.cjs'
+      - '.github/workflows/maxim-peterson6.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  course-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Course mathematics, retained work, progress and portable assets
+        run: |
+          node tools/maxim-peterson6.test.cjs
+          git diff --check
