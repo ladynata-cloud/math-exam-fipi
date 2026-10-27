@@ -17,8 +17,8 @@
     try { path = decodeURIComponent(pathname).toLowerCase(); } catch (_) { return false; }
     if (!path.startsWith('/') || /[\\\u0000-\u001f\u007f]/.test(path)) return false;
     if (/(?:^|\/)(?:learning|assistant-service|board-server|video-worker|tools|tests?|fixtures?|docs|assets|sources?|src|private|archives?|archive-5-weeks|drafts|downloads?|exports?|admin|accounts?)(?:\/|$)/.test(path)) return false;
-    if (/(?:^|\/)(?:[^/]*[-_.])?(?:board|teacher|parent|student|login|invite|preview|offline|export|print|studio|testing-hub|404)(?:[-_.][^/]*)?(?:\.html)?$/.test(path)) return false;
-    if (/\/(?:yandex_[a-z0-9]+|google[a-z0-9]+)\.html$/.test(path) || boardShells.has(path)) return false;
+    if (/(?:^|\/)(?:[^/]*[-_.])?(?:board|teacher|parent|student|login|invite|preview|offline|export|print|testing-hub|404)(?:[-_.][^/]*)?(?:\.html)?$/.test(path)) return false;
+    if (/\/(?:yandex_[a-z0-9]+|google[a-z0-9]+)\.html$/.test(path) || boardShells.has(path) || path === '/video-lessons/studio.html') return false;
     return path !== '/courses/vilenkin-6-part-1/' && path !== '/courses/vilenkin-6-part-1/index.html';
   }
   function element(tag, text, attributes = {}) {

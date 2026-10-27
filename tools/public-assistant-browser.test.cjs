@@ -8,6 +8,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const os = require('node:os');
 const http = require('node:http');
+const vm = require('node:vm');
 let chromium;
 try { ({ chromium } = require('playwright')); }
 catch (_) { ({ chromium } = require(path.join(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES, 'playwright'))); }
@@ -18,8 +19,30 @@ const privatePaths = new Set([
   '/learning/', '/trainers/trainer-board.html', '/trainers/peterson6.html',
   '/downloads/trainers/example.html', '/tools/review.html',
   '/trainers/archive-5-weeks/example.html', '/teacher.html', '/offline.html',
-  '/exports/example.html', '/courses/vilenkin-6-part-1/index.html'
+  '/exports/example.html', '/courses/vilenkin-6-part-1/index.html', '/video-lessons/studio.html'
 ]);
+function verifyRuntimeCoverage() {
+  const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools/public-assistant-pages.json'), 'utf8'));
+  const source = fs.readFileSync(path.join(ROOT, 'assets/assistant/widget.js'), 'utf8');
+  const marker = '  function mount() {';
+  assert.equal(source.split(marker).length, 2, 'Find one actual runtime admission boundary');
+  // Test-only instrumentation of the actual function; no production test API
+  // and no mounting, browser context, URL query or storage involved.
+  const window = {};
+  vm.runInNewContext(source.replace(marker, '  root.admissionForFixture = permittedPath;\n' + marker), {
+    window, document: { readyState: 'loading', addEventListener() {} }
+  }, { timeout: 1000, filename: 'widget-runtime-admission-fixture.js' });
+  assert.ok(Array.isArray(manifest.pages) && manifest.pages.length > 0);
+  for (const file of manifest.pages) {
+    assert.equal(window.admissionForFixture('/' + file), true, 'Reviewed public page is admitted: ' + file);
+    if (file.endsWith('/index.html') || file === 'index.html') {
+      assert.equal(window.admissionForFixture('/' + file.replace(/index\.html$/, '')), true, 'Public directory URL is admitted: ' + file);
+    }
+  }
+  assert.equal(window.admissionForFixture('/trainers/dvi/math-18-20-video-studio.html'), true, 'Public DVI studio remains available');
+  for (const pathname of privatePaths) assert.equal(window.admissionForFixture(pathname), false, 'Private path stays suppressed: ' + pathname);
+  console.log('PUBLIC_ASSISTANT_RUNTIME_COVERAGE_OK: ' + manifest.pages.length + ' manifest files and their directory URL aliases.');
+}
 const scriptTags = data => '<script defer src="' + data + '"></script><script defer src="/assets/assistant/widget.js"></script>';
 function fixture(data = '/assets/assistant/data.js', frame = false) {
   return '<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
@@ -90,6 +113,7 @@ async function assertLayout(page) {
 
 (async () => {
   let browser;
+  verifyRuntimeCoverage();
   await new Promise((resolve, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', resolve); });
   const origin = 'http://127.0.0.1:' + server.address().port;
   try {
@@ -292,6 +316,13 @@ async function assertLayout(page) {
 
     await page.goto(origin + '/geometry-course/textbook/#atanasyan-7-9-main-92-part-1');
     await page.getByRole('button', { name: 'На весь экран', exact: true }).first().waitFor();
+    // This public shell is bound to an existing content-review hash. Its
+    // production inclusion is deferred; test future keyboard compatibility by
+    // explicitly injecting the checked local helper assets only in this page.
+    assert.equal(await page.locator('script[src*="assets/assistant/"]').count(), 0, 'Protected textbook has no helper script inclusion');
+    assert.equal(await page.locator(HOST).count(), 0, 'Protected textbook has no production helper');
+    await page.addScriptTag({ url: origin + '/assets/assistant/data.js?v=public-assistant-20261027' });
+    await page.addScriptTag({ url: origin + '/assets/assistant/widget.js?v=public-assistant-20261027' });
     // The viewer supports an overlay fallback where native fullscreen is not
     // available. Its document-capture Escape listener must not receive chat keys.
     await page.evaluate(() => { Element.prototype.requestFullscreen = undefined; });
@@ -304,7 +335,7 @@ async function assertLayout(page) {
     await page.locator('.planar-expanded .planar-viewport').focus();
     await page.locator('.planar-expanded .planar-viewport').press('Escape');
     assert.equal(await page.locator('.planar-expanded').count(), 0, 'Diagram Escape still works outside helper');
-    pass('real geometry textbook capture-phase Escape keeps diagram and helper keyboard independent');
+    pass('protected textbook stays deferred; synthetic helper injection preserves real diagram capture keyboard');
 
     if (process.env.PUBLIC_ASSISTANT_BROWSER_ARTIFACTS) {
       const dir = path.resolve(process.env.PUBLIC_ASSISTANT_BROWSER_ARTIFACTS);

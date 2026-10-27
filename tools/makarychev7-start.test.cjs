@@ -18,17 +18,44 @@ function same(actual, expected, label) {
   else assert.deepEqual(actual, expected, label);
 }
 
-// Load the published script order, without app.js or a DOM. This catches a
-// missing installer/script tag as well as checks on an isolated math module.
+// Load the published script order before DOM readiness, without app.js. The
+// later real-browser journeys exercise DOM-ready UI; this phase checks the
+// actual mathematics installers without silently dropping shared scripts.
+const domReady = [];
 const world = { console, URL, URLSearchParams, structuredClone };
 world.window = world;
+world.document = {
+  readyState: 'loading',
+  addEventListener(type, callback, options) {
+    assert.equal(type, 'DOMContentLoaded', 'Pre-DOM scripts may only register their normal ready callback');
+    assert.equal(typeof callback, 'function');
+    assert.equal(options?.once, true);
+    domReady.push(callback);
+  }
+};
 vm.createContext(world);
 const html = fs.readFileSync(path.join(root, 'school/index.html'), 'utf8');
+function scriptFilename(src) {
+  const url = new URL(src, 'https://mathexam.space/school/index.html');
+  const rawPath = src.split(/[?#]/)[0];
+  assert.ok(url.origin === 'https://mathexam.space' && !rawPath.includes('..') && !rawPath.includes('\\'),
+    'Only fixed local script paths are loaded');
+  const pathname = decodeURIComponent(url.pathname);
+  assert.ok(!pathname.includes('\0') && !pathname.includes('\\'), 'Script paths cannot contain separators or NUL');
+  const filename = path.resolve(root, '.' + pathname);
+  assert.ok(filename.startsWith(root + path.sep), 'Script file must stay inside the published site');
+  return filename;
+}
+assert.equal(scriptFilename('data.js?v=1'), path.join(root, 'school/data.js'));
+assert.equal(scriptFilename('/assets/assistant/data.js?v=public-assistant-20261027'), path.join(root, 'assets/assistant/data.js'));
+assert.throws(() => scriptFilename('//example.invalid/script.js'), /Only fixed local/);
+assert.throws(() => scriptFilename('https://example.invalid/script.js'), /Only fixed local/);
+assert.throws(() => scriptFilename('../assets/assistant/data.js'), /Only fixed local/);
+assert.throws(() => fs.readFileSync(scriptFilename('/assets/assistant/missing-url-regression.js'), 'utf8'), { code: 'ENOENT' });
 for (const match of html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*>/g)) {
-  const filename = match[1].split('?')[0];
-  if (filename === 'app.js') continue;
-  assert.ok(!filename.includes('..') && !filename.includes('://'), 'Only fixed local school scripts are loaded');
-  vm.runInContext(fs.readFileSync(path.join(root, 'school', filename), 'utf8'), world, { filename });
+  const filename = scriptFilename(match[1]);
+  if (filename === path.join(root, 'school/app.js')) continue;
+  vm.runInContext(fs.readFileSync(filename, 'utf8'), world, { filename: path.relative(root, filename) });
 }
 const C = world.WorkshopCurriculum, M = world.WorkshopMath, S = world.WorkshopState;
 assert.ok(C && M && S);

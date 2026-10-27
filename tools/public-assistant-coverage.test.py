@@ -51,14 +51,26 @@ class PublicAdmissionTests(unittest.TestCase):
             with self.subTest(path=path), self.assertRaises(ValueError):
                 coverage.local_file(path)
 
-    def test_inventory_contains_every_sitemap_document_and_no_empty_games(self):
+    def test_inventory_accounts_for_sitemap_and_protects_review_bound_shell(self):
         manifest, _ = coverage.inventory()
         self.assertGreaterEqual(len(manifest["pages"]), manifest["sitemap_pages"])
+        self.assertEqual(manifest["sitemap_covered_pages"] + len(manifest["deferred_pages"]), manifest["sitemap_pages"])
+        self.assertEqual(set(manifest["deferred_pages"]), {"geometry-course/textbook/index.html", "stereo-course/textbook/index.html"})
+        self.assertNotIn("geometry-course/textbook/index.html", manifest["pages"])
+        self.assertNotIn("stereo-course/textbook/index.html", manifest["pages"])
         self.assertIn("index.html", manifest["pages"])
         self.assertIn("trainers/multiplication-table/elevator-sprint.html", manifest["pages"])
         for name in ("index", "pythagoras", "times-9", "speed-test", "memory-fishing"):
             self.assertNotIn("trainers/multiplication-table/" + name + ".html", manifest["pages"])
         coverage.check(manifest)
+
+    def test_current_task_scope_does_not_authorize_server_or_model_changes(self):
+        import json
+        allowed = json.loads(coverage.SCOPE_MANIFEST.read_text())["allowed_non_html"]
+        coverage.validate_scope_paths(["assets/assistant/widget.js", "tools/public-assistant-scope.json"], allowed)
+        for path in ("board-server/index.js", "assistant-service/src/providers.js", "Dockerfile"):
+            with self.subTest(path=path), self.assertRaisesRegex(ValueError, "Out-of-task"):
+                coverage.validate_scope_paths([path], allowed)
 
 
 class StaticScriptBoundaryTests(unittest.TestCase):

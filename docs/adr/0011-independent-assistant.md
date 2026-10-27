@@ -265,3 +265,12 @@ knowledge editing require separate approved work. The original private-service
 security, retention and spending decisions remain in force. Public rollback
 removes the marked inclusion block without touching the independent data ledger.
 Required reviews and separate merge/deployment decisions still apply.
+
+Preparation records two explicit deferred textbook shells whose existing review
+or immutable-runtime bindings would be invalidated by even an added script.
+Their source files and existing approval evidence remain unchanged. The prepared
+public subset is not evidence that the owner's complete per-trainer rollout is
+finished; extending it requires a separately reviewed boundary change. Mechanical
+source-preservation fixtures may recognize the exact new public block while
+continuing to compare every original byte. Published review-hash inputs are not
+normalized or rebound by this task.

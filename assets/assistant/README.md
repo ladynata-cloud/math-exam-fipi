@@ -44,10 +44,23 @@ and cabinet gateway retain their separate permissions and spending controls.
 
 ## Coverage and maintenance
 
-`tools/public-assistant-pages.json` records 594 reviewed public documents:
-528 sitemap pages and 66 additional public course/trainer documents. Discovery
-uses the sitemap, course and learning catalogues, public download source entries,
-real HTML anchors and explicitly reviewed JavaScript-only entry points.
+`tools/public-assistant-pages.json` records 592 reviewed public documents:
+526 of the 528 sitemap pages and 66 additional public course/trainer documents.
+Discovery uses the sitemap, course and learning catalogues, public download
+source entries, real HTML anchors and explicitly reviewed JavaScript-only entry
+points. The requested site-wide rollout is not complete: two public textbook
+shells remain explicitly deferred and have no helper inclusion.
+
+| Deferred shell | Preserved boundary |
+| --- | --- |
+| `geometry-course/textbook/index.html` | Its exact implementation is bound to existing reviews for 569 cards. |
+| `stereo-course/textbook/index.html` | Its exact released runtime is frozen by the existing textbook baseline. |
+
+Both shells retain their original bytes and hashes. Existing review records and
+generated `course.json` files are unchanged; no review hash was refreshed to make
+this integration pass. Integrating these two shells requires a separately
+reviewed change to their respective boundaries. They remain normal destinations
+for navigation links even though the helper itself is not installed there.
 
 Private cabinets, board wrappers, teacher/source pages, archives, offline exports,
 redirects and empty placeholders are excluded. In particular, several existing
@@ -59,8 +72,9 @@ Each eligible HTML document gets one exact block with data.js before widget.js.
 The stylesheet loads inside the widget's Shadow DOM, so trainer styles are not
 replaced. The widget is suppressed in iframes and known private/board paths.
 The coverage gate rejects extra inclusions, malformed/duplicate blocks, missing
-sitemap pages and manifest drift. The initial integration also proves that all
-828 existing HTML files retain every original byte after the block is removed.
+nondeferred sitemap pages, unaccounted exclusions and manifest drift. The initial
+integration also proves that all 828 existing HTML files retain every original
+byte after the exact block is removed, including both unchanged deferred shells.
 
 ```sh
 node tools/public-assistant-data.test.cjs
@@ -80,13 +94,39 @@ For a future approved public page, review the discovery evidence first, then run
 `python3 tools/public-assistant-coverage.py --write` and inspect the manifest and
 HTML diff. This does not authorize publishing previously private or empty pages.
 Future generators must preserve or reapply the block; CI catches dropped wiring.
+The stereo atlas generator now emits the same exact block. The Pogorelov offline
+exporter removes only that exact optional block and rejects unexpected helper
+markup, preserving the standalone course's existing dependency boundary.
+
+## Verification status
+
+Existing CI exposed several integration assumptions: course-relative filesystem
+loaders did not resolve root-relative browser URLs; strict asset and parity
+fixtures needed the exact ordered helper pair; the completed Task 6 scope check
+needed to remain bound to PR #287's immutable release range; and hit-tests needed
+to descend into Shadow DOM. These fixtures retain their original mathematical,
+progress, ordering and invalid-resource assertions. The Soviet-math job now pins
+Ubuntu 24.04 for its locked Playwright runtime. These changes and the generator
+and exporter adjustments are recorded in the
+[preparation report](../../docs/reports/MATHEXAM_PUBLIC_ASSISTANT_20261027.md).
+
+Full CI for the final published head is still pending. The pre-existing 320px
+diagnostic overflow was repaired with a page-scoped wrapping rule in the existing
+stylesheet; all 39 practical browser scenarios pass in the CI browser version.
+The initial Task 24 t13 proof-chain failure was not reproduced with or without
+the helper in targeted comparisons on that browser. Its full 168-case gate is
+unchanged and restricted to cloud CI; the final-head result remains pending.
+Additional older progress diagnostics outside CI showed pre-existing
+canonical/anchor failures and were left unchanged. Earlier passing local suites
+do not establish that every final-head gate is green or that the requested
+rollout is complete.
 
 ## Release and rollback
 
-The branch is stacked on the unmerged cabinet preparation. Passing local checks
-or CI is not permission to merge or deploy. HIGH review, an exact-head external
-review (or explicit reasoned owner waiver), and separate release authorization
-remain required by repository policy.
+The branch was prepared on the cabinet-preparation base recorded in the task and
+Draft PR. Passing local checks or CI is not permission to merge or deploy. HIGH
+review, an exact-head external review (or explicit reasoned owner waiver), and
+separate release authorization remain required by repository policy.
 
 Removing the exact marked block from the manifest's documents removes the public
 launcher without a data migration or change to trainer state. Retain the rest of

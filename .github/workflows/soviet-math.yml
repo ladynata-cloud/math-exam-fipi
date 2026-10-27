@@ -10,7 +10,8 @@ permissions:
   contents: read
 jobs:
   soviet-math:
-    runs-on: ubuntu-latest
+    # The locked media/browser runtime uses Playwright 1.55 on supported Ubuntu 24.04.
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
       NODE_PATH: ${{ github.workspace }}/video-worker/node_modules

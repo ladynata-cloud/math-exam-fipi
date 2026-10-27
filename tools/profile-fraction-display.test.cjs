@@ -7,7 +7,27 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const { JSDOM } = require('jsdom');
+const root = path.resolve(__dirname, '..');
 const directory = path.resolve(__dirname, '../ege-profil/start');
+
+function scriptFile(src) {
+  const url = new URL(src, 'https://mathexam.space/ege-profil/start/index.html');
+  assert.equal(url.origin, 'https://mathexam.space', 'Only same-origin learner scripts are allowed');
+  const pathname = decodeURIComponent(url.pathname);
+  assert(!/[\\\0]/.test(pathname), 'Invalid local script path');
+  const file = path.resolve(root, '.' + pathname);
+  assert(file.startsWith(root + path.sep), 'Script must stay inside the published site');
+  return file;
+}
+
+test('learner fixture resolves shared scripts from the site root and never skips invalid resources', () => {
+  assert.equal(scriptFile('solutions.js?v=1'), path.join(directory, 'solutions.js'));
+  assert.equal(scriptFile('/assets/assistant/data.js?v=public-assistant-20261027'), path.join(root, 'assets/assistant/data.js'));
+  assert.throws(() => scriptFile('https://example.invalid/script.js'), /same-origin/);
+  assert.throws(() => scriptFile('//example.invalid/script.js'), /same-origin/);
+  assert.throws(() => scriptFile('/assets/%00script.js'), /Invalid/);
+  assert.throws(() => fs.readFileSync(scriptFile('/assets/assistant/missing-url-regression.js'), 'utf8'), { code: 'ENOENT' });
+});
 
 function fixture(html = '<main></main>') {
   const dom = new JSDOM(html, { runScripts: 'outside-only' });
@@ -121,7 +141,7 @@ function app(lesson, mode = 'independent', initialState = null) {
   w.scrollTo = () => {}; w.HTMLElement.prototype.scrollIntoView = () => {};
   let bankBefore;
   for (const script of w.document.querySelectorAll('script[src]')) {
-    const file = path.resolve(directory, script.getAttribute('src').split(/[?#]/)[0]);
+    const file = scriptFile(script.getAttribute('src'));
     if (path.basename(file) === 'app.js') bankBefore = JSON.stringify(w.ProfileLessons);
     w.eval(fs.readFileSync(file, 'utf8'));
   }

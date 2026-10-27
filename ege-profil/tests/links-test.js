@@ -25,12 +25,23 @@ const KEY = 'mathExamCourseProgress.v1';
    base — каталог ссылающейся страницы относительно корня курса
    ('' для index.html, 'exam' для exam/variant.html и т. д.). */
 const seen = new Map();
+function localTarget(href, base){
+  // URL paths beginning with / start at the site root, not the course folder.
+  // Keep targets course-relative so the existing exact-case checks apply to
+  // shared site assets just as they do to resources next to a course page.
+  const origin = 'https://mathexam.space';
+  const page = new URL(path.posix.join('/ege-profil', base || '', 'index.html'), origin);
+  const url = new URL(href, page);
+  if (url.origin !== origin) return null;
+  return path.posix.relative('/ege-profil', decodeURIComponent(url.pathname)) || '.';
+}
 function note(href, where, base){
   if (!href) return;
   if (/^(https?:|mailto:|tel:|javascript:|data:|#)/i.test(href)) return;
   const clean = href.split('#')[0].split('?')[0];
   if (!clean) return;
-  const target = path.posix.normalize(path.posix.join(base || '', clean));
+  const target = localTarget(clean, base);
+  if (target === null) return;
   if (!seen.has(target)) seen.set(target, new Set());
   seen.get(target).add(where);
 }
@@ -206,6 +217,16 @@ function existsExact(rel){
     try{ return fs.readdirSync(cur).includes('index.html'); }catch(e){ return false; }
   }
   return st.isFile();
+}
+{
+  ok(localTarget('registry.js', '') === 'registry.js', 'URL: ресурс рядом с корнем курса');
+  ok(localTarget('../registry.js?v=1#ignored', 'exam') === 'registry.js', 'URL: относительный ресурс страницы экзамена');
+  ok(localTarget('/assets/assistant/data.js?v=public-assistant-20261027', 'trainers/stereo') === '../assets/assistant/data.js',
+     'URL: абсолютный путь сайта не дописывается к каталогу курса');
+  ok(existsExact(localTarget('/assets/assistant/widget.js', 'exam')), 'общий ресурс сайта существует и проверен с точным регистром');
+  ok(!existsExact(localTarget('/assets/assistant/WIDGET.js', 'exam')), 'ошибочный регистр общего ресурса не проходит');
+  ok(!existsExact(localTarget('/assets/assistant/missing-url-regression.js', 'exam')), 'неизвестный общий ресурс не пропускается');
+  ok(localTarget('//example.invalid/script.js', 'exam') === null, 'сетевой URL не становится локальным путём');
 }
 {
   for (const [href, from] of seen){

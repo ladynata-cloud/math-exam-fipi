@@ -143,6 +143,28 @@ state. No data migration or external model configuration belongs to rollback.
 
 - Actual branch and base: as above.
 - Head, PR, final coverage counts and validation: final task report / Draft PR.
+- Draft PR: #361. Prepared coverage is 592 documents, comprising 526 of 528 sitemap
+  pages and 66 additional entries. The original request for a helper on every
+  public trainer is not fully completed: two textbook shells are explicitly
+  deferred in the manifest. This is a reported scope limit, not a review waiver.
+- `geometry-course/textbook/index.html` is bound to existing chapter reviews for
+  569 cards; `stereo-course/textbook/index.html` is part of an immutable released
+  runtime baseline. Both were restored to the exact base bytes. Original course
+  data, hashes and review records were never altered. Further inclusion needs a
+  separate reviewed change to these boundaries and an owner decision.
+- CI exposed existing assumptions about one inline script, course-relative URLs,
+  board/public script parity and light-DOM selectors. Narrow compatibility
+  changes preserve original mathematics, unknown-resource rejection and board
+  exclusions. The old Task6 scope remains checked against its original immutable
+  PR287 range; `tools/public-assistant-scope.json` checks this task's own file set.
+- The stereometry generator retains the exact public block. The Pogorelov offline
+  exporter removes only that exact block and produces byte-identical base output.
+  The Soviet-math runner is pinned to Ubuntu24.04 for its locked Playwright1.55.
+- A pre-existing 320px diagnostic mode-switch overflow was reproduced with exact
+  base HTML and both browser generations. A two-line, page-scoped rule in the
+  existing practical stylesheet allows wrapping; no HTML or mode logic changes.
+  This ancillary mobile repair is disclosed, with the original layout assertions
+  retained. Final evidence is recorded in the report and PR.
 - Production reconciliation: remote main remains
   `92d733a49692744ce043503c57f29b77bfb09a24`; prior read-only public index,
   sitemap and robots checks matched that source. Cabinet preparation is unmerged.

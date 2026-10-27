@@ -21,7 +21,18 @@
     "trainers/ege-profile-task3-stereometry-catalog.html": "ege-profil/start/stereo-data.js",
     "trainers/oge-basics/multiplication-division/arithmetic-foundations.html": "trainers/oge-basics/multiplication-division/division-diagnostic-core.js"
   },
+  "deferred_pages": {
+    "geometry-course/textbook/index.html": {
+      "reason": "The exact shell is bound to the existing implementation review for 569 cards; a new valid review is required before changing it.",
+      "evidence": "tools/geometry-textbook/build_course.py"
+    },
+    "stereo-course/textbook/index.html": {
+      "reason": "The released textbook records this exact runtime as immutable; integration requires a separately reviewed change to that boundary.",
+      "evidence": "tools/stereo-textbook/polyhedra-practical-content.test.cjs"
+    }
+  },
   "sitemap_pages": 528,
+  "sitemap_covered_pages": 526,
   "additional_pages": 66,
   "pages": [
     "articles/index.html",
@@ -171,7 +182,6 @@
     "geometry-course/atlas/vectors.html",
     "geometry-course/index.html",
     "geometry-course/legacy7.html",
-    "geometry-course/textbook/index.html",
     "geometry-course/trainers/ch1-p3-t2-fold-imprint.html",
     "geometry-course/trainers/ch1-p6-t1-adjacent-vertical.html",
     "geometry-course/trainers/ch1-p6-t2-angle-problems.html",
@@ -441,7 +451,6 @@
     "soviet-math/index.html",
     "stereo-course/index.html",
     "stereo-course/merzlyak-10-base/index.html",
-    "stereo-course/textbook/index.html",
     "topics/delenie-ugolkom/index.html",
     "topics/index.html",
     "topics/lineynye-uravneniya/index.html",

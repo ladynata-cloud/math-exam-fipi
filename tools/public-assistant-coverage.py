@@ -22,6 +22,7 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 ORIGIN = "https://mathexam.space"
 MANIFEST = ROOT / "tools/public-assistant-pages.json"
+SCOPE_MANIFEST = ROOT / "tools/public-assistant-scope.json"
 MARKER = b"MathExam public assistant"
 BLOCK = (
     b'\n<!-- MathExam public assistant -->\n'
@@ -39,6 +40,16 @@ EXCLUDED = {
     "trainers/trainer-board.html", "trainers/group-board.html",
     "video-lessons/studio.html", "trainers/testing-hub.html",
     "trainers/logic-trainer/404.html",
+}
+DEFERRED = {
+    "geometry-course/textbook/index.html": {
+        "reason": "The exact shell is bound to the existing implementation review for 569 cards; a new valid review is required before changing it.",
+        "evidence": "tools/geometry-textbook/build_course.py",
+    },
+    "stereo-course/textbook/index.html": {
+        "reason": "The released textbook records this exact runtime as immutable; integration requires a separately reviewed change to that boundary.",
+        "evidence": "tools/stereo-textbook/polyhedra-practical-content.test.cjs",
+    },
 }
 # Reviewed shells reached through JS-built links or retained public families.
 # Empty speed-test.html and memory-fishing.html are not functioning trainers.
@@ -87,6 +98,8 @@ def local_file(href, base=ORIGIN + "/"):
 
 
 def exclusion(path, raw, page):
+    if path in DEFERRED:
+        return "deferred pending implementation review"
     if (seo.excluded_path("/" + path)
             or any(p in Path(path).parts for p in ("src", "drafts", "assistant-service", "ggb"))
             or path in EXCLUDED
@@ -151,8 +164,8 @@ def inventory():
         accepted.add(path)
         pending.extend(urljoin(base, href) for href in page.links)
     sitemap = {local_file(u) for u in sitemap_urls}
-    if sitemap - accepted:
-        raise ValueError("Public sitemap pages excluded: " + ", ".join(sorted(sitemap - accepted)))
+    if sitemap - accepted != sitemap.intersection(DEFERRED):
+        raise ValueError("Unaccounted public sitemap pages excluded: " + ", ".join(sorted(sitemap - accepted - set(DEFERRED))))
     if set(EXTRA_ENTRIES) - accepted:
         raise ValueError("Reviewed JS entries were excluded")
     if missing:
@@ -163,7 +176,9 @@ def inventory():
         "sources": ["sitemap.xml", "courses/catalog.json", "downloads/trainers-manifest.json",
                     "learning/catalog.js", "same-origin HTML anchors", "reviewed JavaScript shells"],
         "reviewed_js_entries": EXTRA_ENTRIES,
+        "deferred_pages": DEFERRED,
         "sitemap_pages": len(sitemap),
+        "sitemap_covered_pages": len(accepted.intersection(sitemap)),
         "additional_pages": len(accepted - sitemap),
         "pages": sorted(accepted),
     }, dict(Counter(excluded.values()))
@@ -172,6 +187,13 @@ def inventory():
 def apply(manifest):
     # Validate all pages before the first write; do not repair unexpected blocks.
     updates = []
+    for path in DEFERRED:
+        f = ROOT / path
+        raw = f.read_bytes()
+        if BLOCK in raw:
+            if raw.count(BLOCK) != 1 or raw.count(MARKER) != 2:
+                raise ValueError("Unexpected block on deferred document: " + path)
+            updates.append((f, raw.replace(BLOCK, b"", 1)))
     for path in manifest["pages"]:
         f = ROOT / path
         raw = f.read_bytes()
@@ -236,6 +258,24 @@ def check_base(base):
     print("Base-byte preservation: " + str(len(blobs)) + " HTML files")
 
 
+def validate_scope_paths(changed, allowed):
+    unexpected = set(changed) - set(allowed)
+    if unexpected:
+        raise ValueError("Out-of-task changed files: " + ", ".join(sorted(unexpected)))
+
+
+def check_scope(base, manifest):
+    scope = json.loads(SCOPE_MANIFEST.read_text())
+    if scope.get("base_sha") != base or scope.get("task") != "MATHEXAM_PUBLIC_ASSISTANT_V1":
+        raise ValueError("Task scope base must match the explicitly recorded preparation base")
+    allowed = set(manifest["pages"]) | set(scope["allowed_non_html"])
+    changed = {p for p in git("diff", "--name-only", "-z", base).decode().split("\0") if p}
+    untracked = {p for p in git("ls-files", "--others", "--exclude-standard", "-z").decode().split("\0")
+                 if p and "__pycache__" not in Path(p).parts}
+    validate_scope_paths(changed | untracked, allowed)
+    print("Current task scope: " + str(len(changed | untracked)) + " changed files accounted for")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     mode = parser.add_mutually_exclusive_group(required=True)
@@ -246,12 +286,14 @@ def main():
     args = parser.parse_args()
     manifest, exclusions = inventory()
     if args.write:
-        print("New inclusions: " + str(apply(manifest)))
+        print("Updated inclusion blocks: " + str(apply(manifest)))
     if args.check or args.write:
         check(manifest)
     if args.base:
         check_base(args.base)
+        check_scope(args.base, manifest)
     print(json.dumps({"pages": len(manifest["pages"]), "sitemap": manifest["sitemap_pages"],
+                      "sitemap_covered": manifest["sitemap_covered_pages"], "deferred": len(DEFERRED),
                       "additional": manifest["additional_pages"], "excluded_reached": exclusions}, ensure_ascii=False))
 
 

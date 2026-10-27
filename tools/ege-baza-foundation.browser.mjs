@@ -48,7 +48,7 @@ try{
  await page.goto(url+'#checks');ok(await page.locator('[data-action="start-repeat"]').isDisabled(),'Repeat locked before checkpoint');
  await page.click('[data-action="start-checkpoint"]');
  const final=tasks.filter(t=>t.phase==='checkpoint');
- for(let i=0;i<final.length;i++){await page.fill('#answer',String(final[i].answer));await page.click('#answer-form button');if(i===0){await page.reload();ok(await page.locator('h2').innerText()==='Задание 2 из 12','Assessment resumes after reload');}}
+ for(let i=0;i<final.length;i++){await page.fill('#answer',String(final[i].answer));await page.click('#answer-form button');if(i===0){await page.reload();ok(await page.locator('#main .task-top > h2').innerText()==='Задание 2 из 12','Assessment resumes after reload');}}
  await page.waitForURL('**/#results-checkpoint');
  ok(await page.evaluate(()=>MathExamFoundation.SKILLS.every(s=>MathExamFoundation.skillState(s).level===3)),'Checkpoint confirms all six skills');
  await page.goto(url+'#checks');ok(await page.locator('[data-action="start-repeat"]').isDisabled(),'Repeat locked until 24 hours');

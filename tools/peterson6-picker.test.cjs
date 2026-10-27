@@ -7,6 +7,10 @@ const test = require('node:test');
 const vm = require('node:vm');
 const root = path.resolve(__dirname, '..');
 const sourcePath = '/school/peterson6/index.html';
+const publicAssistantScripts = [
+  '/assets/assistant/data.js?v=public-assistant-20261027',
+  '/assets/assistant/widget.js?v=public-assistant-20261027'
+];
 const wrapperPath = '/trainers/peterson6.html';
 
 function picker(origin = 'https://mathexam.space') {
@@ -100,11 +104,16 @@ test('the wrapper is a thin copy of the canonical shell and uses the exact commo
   const wrapper = fs.readFileSync(path.join(root, wrapperPath), 'utf8');
   const canonical = fs.readFileSync(path.join(root, sourcePath), 'utf8');
   const scripts = html => [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)].map(m => m[1]);
-  const canonicalScripts = scripts(canonical).map(src => '/school/peterson6/' + src);
+  const canonicalScripts = scripts(canonical);
   const wrapperScripts = scripts(wrapper);
+  assert.deepEqual(canonicalScripts.filter(src => src.startsWith('/assets/assistant/')), publicAssistantScripts,
+    'Only the exact public navigation scripts are included on the canonical page');
+  assert.deepEqual(wrapperScripts.filter(src => src.startsWith('/assets/assistant/')), [],
+    'Board wrappers must not include the public navigation helper');
   const pathname = src => new URL(src, 'https://mathexam.space').pathname;
   const bridge = '/trainers/board-bridge.js', adapter = '/school/peterson6/board-session.js';
-  assert.deepEqual(wrapperScripts.map(pathname).filter(src => src !== bridge && src !== adapter), canonicalScripts.map(pathname));
+  assert.deepEqual(wrapperScripts.map(pathname).filter(src => src !== bridge && src !== adapter),
+    canonicalScripts.filter(src => !publicAssistantScripts.includes(src)).map(src => '/school/peterson6/' + src).map(pathname));
   assert.deepEqual(wrapperScripts.map(pathname).slice(-3), [bridge, adapter, '/school/peterson6/app.js']);
   assert.match(wrapper, /<body data-peterson-board="part1">/);
   assert.match(wrapper, /Совместная работа на доске · без зачёта в личный прогресс/);

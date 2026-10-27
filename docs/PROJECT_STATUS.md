@@ -7,13 +7,18 @@ Updated: 2026-10-27 (Asia/Novosibirsk)
 - [Task](tasks/MATHEXAM_PUBLIC_ASSISTANT_V1.md), HIGH, branch
   `feat/public-assistant-20261027`, base
   `1fcc4fa36267f5667c42409861ef0b92f97b333c`, stacked on Draft #360.
-- Closed-by-default static navigator on 594 reviewed public documents, including
-  all 528 sitemap entries. Prepared rules find courses and trainers; repeated
+- Closed-by-default static navigator prepared for 592 public documents, including
+  526 of 528 sitemap entries. Two textbook shells are explicitly deferred because
+  their existing review/immutable-runtime bindings must be preserved; complete
+  requested rollout is pending that separate review decision. Prepared rules
+  find courses and trainers; repeated
   explicit difficulty can offer the existing tutor contact route once.
 - [Evidence](reports/MATHEXAM_PUBLIC_ASSISTANT_20261027.md) and
   [operator guide](../assets/assistant/README.md). The exact inclusion is separately
   checked against every base HTML blob. Private/board/archive/source/export
   pages and empty placeholders are excluded; trainer content is unchanged.
+  Existing active CI loader/parity/selector assumptions are adapted to the exact
+  public addition. Original textbook review hashes and course data are untouched.
 - No model request, conversation storage, account access or automatic weight
   training. Three teaching-model candidates remain a separate future integration.
   Exact-head CI and required review status are recorded in the Draft PR.

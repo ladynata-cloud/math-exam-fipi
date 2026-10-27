@@ -5,8 +5,23 @@ const vc=new VirtualConsole();vc.on('jsdomError',e=>errors.push(e.message));
 const dom=new JSDOM(fs.readFileSync(path.join(root,'school/index.html'),'utf8'),{url:'https://example.test/school/index.html#book/makarychev7-2024',runScripts:'outside-only',virtualConsole:vc});
 const w=dom.window,d=w.document;w.scrollTo=()=>{}; // jsdom has no layout/scrolling; this is not a visual browser check.
 w.localStorage.setItem('legacy-course-sentinel','keep');
+function scriptFile(src){
+ const url=new URL(src,w.location.href);
+ assert.equal(url.origin,w.location.origin,'Only same-origin school scripts are allowed');
+ const pathname=decodeURIComponent(url.pathname);
+ assert(!/[\\\0]/.test(pathname),'Invalid local script path');
+ const file=path.resolve(root,'.'+pathname);
+ assert(file.startsWith(root+path.sep),'Script must stay inside the published site');
+ return file;
+}
+assert.equal(scriptFile('math.js?v=1'),path.join(root,'school/math.js'));
+assert.equal(scriptFile('/assets/assistant/data.js?v=public-assistant-20261027'),path.join(root,'assets/assistant/data.js'));
+assert.throws(()=>scriptFile('https://example.invalid/script.js'),/same-origin/);
+assert.throws(()=>scriptFile('//example.invalid/script.js'),/same-origin/);
+assert.throws(()=>scriptFile('/assets/%00script.js'),/Invalid/);
+assert.throws(()=>fs.readFileSync(scriptFile('/assets/assistant/missing-url-regression.js'),'utf8'),{code:'ENOENT'});
 // Load the same ordered assets as the real page, including course navigation.
-for(const script of d.querySelectorAll('script[src]')){const file=script.getAttribute('src').split('?')[0];w.eval(fs.readFileSync(path.join(root,'school',file),'utf8'));}
+for(const script of d.querySelectorAll('script[src]'))w.eval(fs.readFileSync(scriptFile(script.getAttribute('src')),'utf8'));
 const tick=()=>new Promise(r=>setTimeout(r,5)),click=s=>{const el=d.querySelector(s);assert(el,s);el.click();},fmt=a=>Array.isArray(a)?a.map(fmt).join('; '):typeof a==='object'?w.WorkshopMath.fmt(a):String(a);
 const go=async hash=>{w.location.hash=hash;await tick();};
 const answer=value=>{d.querySelector('#answer').value=value;d.querySelector('#answer-form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));};

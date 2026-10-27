@@ -41,6 +41,8 @@ body.pm-minimal .wrap{max-width:1040px;padding-top:22px}
 .pm-minimal.pm-roads-schema #app>.grid{grid-template-columns:minmax(0,1fr)}
 .pm-minimal .pm-scenario-before{margin:20px 0}
 @media(max-width:600px){body.pm-minimal{font-size:16px}.pm-minimal .wrap{padding-left:14px;padding-right:14px}.pm-minimal.pm-map .grid{grid-template-columns:1fr}.pm-minimal .task-q,.pm-minimal .task-question,.pm-minimal .q,.pm-minimal .question,.pm-minimal .question-text{font-size:19px}.pm-minimal .answer-row>input,.pm-minimal .num-in>input{max-width:100%;min-width:0}.pm-minimal .topnav-inner{flex-wrap:wrap}.pm-minimal .pm-details>.pm-content{padding:0 12px 12px}.pm-minimal .plan-wrap{grid-template-columns:1fr}.pm-minimal .plan,.pm-minimal .paper{width:100%;max-width:100%;height:auto}.pm-minimal .task-card,.pm-minimal .card.task{padding:18px}.pm-minimal .titleblock{display:flex;flex-wrap:wrap;gap:12px}.pm-minimal .titleblock>div{border:0}.pm-minimal .match-grid{grid-template-columns:1fr}}
+/* Keep the diagnostic mode labels readable when one narrow row cannot fit them. */
+@media(max-width:520px){body[data-practical-page="entry-diagnostic-2026"] .mode-switch{flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){.pm-minimal *{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 
 .pm-minimal .wrap,.pm-minimal main,.pm-minimal .main,.pm-minimal .main-col,.pm-minimal .layout,.pm-minimal .cols,.pm-minimal .grid,.pm-minimal .panel,.pm-minimal .card,.pm-minimal .task,.pm-minimal .answer{min-width:0;box-sizing:border-box}
