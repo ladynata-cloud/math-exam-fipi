@@ -242,3 +242,26 @@ merge/deployment remain operational prerequisites. See the
 [cabinet operator guide](../../assistant-service/CABINETS.md) for limits and data
 retention details. The prior finite synthetic budget does not authorize pupil
 traffic or a different model.
+
+## Approved public navigation extension — 2026-10-27
+
+The owner's instruction to add a chat-style helper to the main site and public
+trainers, with occasional tutor advice, authorizes
+[MATHEXAM_PUBLIC_ASSISTANT_V1](../tasks/MATHEXAM_PUBLIC_ASSISTANT_V1.md).
+This narrow public surface uses static prepared navigation rules, checked links
+and transient browser memory. It does not expose the private mathematical
+service, cabinet gateway, model credentials or paid generation to anonymous users.
+
+An explicit manifest distinguishes actual public documents from private/board
+shells, teacher/source/archive/export pages and empty placeholders. Two shared
+deferred scripts create an isolated closed panel. The helper uses pathname-only
+context and never reads exercise state, learner storage or cabinet records.
+Its answers describe the navigation role and do not impersonate generated
+mathematical solutions. A contact link is optional and visitor-initiated.
+
+No infrastructure or model capacity is activated by serving these static files.
+Model-backed public mathematics, multi-provider consultation and automatic
+knowledge editing require separate approved work. The original private-service
+security, retention and spending decisions remain in force. Public rollback
+removes the marked inclusion block without touching the independent data ledger.
+Required reviews and separate merge/deployment decisions still apply.
