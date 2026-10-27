@@ -132,7 +132,44 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
   Paid inference, required external review and hosting validation remain pending.
 - No merge, paid activation, production account changes or publication occurred.
 
-## Published code: HTTPS canonicals and static trainer metadata
+## Prepared: guided division at the search entrypoint
+
+- [Scope](tasks/DIVISION_SEARCH_ENTRYPOINT_20261028.md), MEDIUM bounded public
+  entry integration; base `8723d6bfb19e64d43c474b1fc7116fe8630ec20a`.
+- The owner gave START for replacing the simplified short entry with the
+  existing guided notebook, retaining its learning sequence and shared local
+  attempt. Main public links, duplicate canonical and the downloadable copy
+  are aligned. Managed sources, accounts and the board stay unchanged.
+- [Local verification](reports/DIVISION_SEARCH_ENTRYPOINT_20261028.md) passed:
+  2,700 arithmetic plans, both complete browser suites on both URLs, exact
+  cross-entry resume, offline package and SEO/catalog/source-bank checks.
+  Independent internal review has no remaining material findings.
+- Gate: `DIVISION_SEARCH_ENTRYPOINT_OK`. One Draft PR; exact-head CI is
+  recorded in its handoff. Merge, deployment and recrawl require a separate
+  release decision. The public entry has not yet changed.
+
+## Published: separate grade-six Peterson learning line
+
+- [Scope](tasks/MAXIM_PETERSON6_LINE.md), MEDIUM isolated static addition;
+  base `92d733a49692744ce043503c57f29b77bfb09a24`, branch
+  `feat/maxim-peterson6-line`.
+- Owner requested the approved thirteen-topic line as its own page on the
+  main website, with four PDFs and browser-local progress. The new route is
+  `/trainers/maxim-peterson6/`; no cabinet, board or shared-course changes.
+- Prepared content retains all selected textbook entries, generated practice,
+  hints, independent/assisted accounting, CSV report and JSON transfer.
+- Baseline reconciliation: main is merged SEO PR #357; public `/index.html`
+  matches that base. The older SEO preparation entry below is historical.
+- Internal mathematics/state and integration reviews are complete. Claude
+  consultation is unavailable/not completed and is not claimed as a waiver.
+- Baseline reconciliation on 2026-10-28: PR #362 was squash-merged as
+  `8723d6bfb19e64d43c474b1fc7116fe8630ec20a` under its recorded owner release
+  authorization. Pages run 40571917932 and course run 40571919301 succeeded.
+  The course entry returns HTTP 200 and matches this main blob. This bounded
+  check does not claim a fresh audit of the other four downloadable assets.
+  Its review exception applies only to that release.
+
+## Published: HTTPS canonicals and static trainer metadata
 
 - [Scope](tasks/YANDEX_PUBLIC_INDEXING_20261027.md), SMALL metadata-only task,
   base `e50fcfb7ffe4a99447ee18e4d2ca2f937cd1dd68`.
@@ -143,10 +180,12 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
   established main route; the resulting sitemap contains 528 canonical URLs.
 - Runtime scripts, styles, indexing exclusions and learner content are retained.
   HTTP-to-HTTPS hosting enforcement remains an operational follow-up.
-- Reconciled on 2026-10-27: PR [#357](https://github.com/ladynata-cloud/math-exam-fipi/pull/357)
-  merged as `92d733a49692744ce043503c57f29b77bfb09a24`. Read-only production
-  checks of `index.html`, `sitemap.xml` and `robots.txt` returned HTTP 200 and
-  matched the base source byte-for-byte. Search-engine indexing remains separate.
+- Baseline reconciliation on 2026-10-28: PR #357 was squash-merged as
+  `92d733a49692744ce043503c57f29b77bfb09a24`; Pages run 40405639131 succeeded.
+  The current public home and both division entries match their main blobs.
+  Historical cancelled cloud-video checks and the separate pre-existing
+  state-timing issue remain documented in the release record; this is not a
+  new whole-site gate. Crawl acceptance and search indexing remain separate.
 
 ## Prepared: Pogorelov course accompanying numbered textbook exercises
 

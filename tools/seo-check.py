@@ -25,7 +25,7 @@ ENTRANCES = [
     "ege-profil/start/index.html", "geometry-course/index.html",
     "geometry-merzlyak/index.html", "geometry-pogorelov/index.html",
     "equations/index.html",
-    "trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html",
+    "trainers/long-division-stepwise.html",
     "trainers/oge-task6-fractions.html", "trainers/oge-task9-equations.html",
     "trainers/oge-basics/percentages/index.html",
     "trainers/oge-1-5-trainers/practice-1-5-map.html",
@@ -36,6 +36,10 @@ TOPICS = ["topics/index.html"] + [f"topics/{slug}/index.html" for slug in (
     "delenie-ugolkom", "obyknovennye-drobi", "procenty",
     "lineynye-uravneniya", "oge-geometriya",
 )]
+ALTERNATE_ENTRANCES = {
+    "trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html":
+        "trainers/long-division-stepwise.html",
+}
 
 
 class Page(HTMLParser):
@@ -168,6 +172,13 @@ def run(base=None):
     for url in sitemap_urls:
         page = Page(local_path(url).read_text(encoding="utf-8"))
         require(page.canonicals == [url], url + ": sitemap entry needs one exact HTTPS self-canonical")
+    for alternate, primary in ALTERNATE_ENTRANCES.items():
+        page = Page((ROOT / alternate).read_text(encoding="utf-8"))
+        target = public_url(primary)
+        require(page.canonicals == [target], alternate + ": exact primary canonical")
+        require(page.meta.get("og:url") == [target], alternate + ": exact primary og:url")
+        require(public_url(alternate) not in sitemap_urls, alternate + ": duplicate in sitemap")
+        require(target in sitemap_urls, primary + ": primary entry missing from sitemap")
     titles, descriptions = set(), set()
     checked_links = 0
     for relative in ENTRANCES + TOPICS:
