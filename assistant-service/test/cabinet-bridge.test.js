@@ -17,8 +17,9 @@ function question(extra = {}) {
   return { subject: SUBJECT_A, requestId: randomUUID(), profileId: profile.id, topic: topic.id,
     question: topic.example, attempt: '', mode: 'hint', hintLevel: 1, simpler: false, externalConsent: false, ...extra };
 }
-function courseQuestion(extra = {}) {
-  const resolved = resolveCourseContext({ courseId: 'atanasyan-first-steps', lessonId: 'atanasyan-7-9-main-153-part-1', stepIndex: 0 });
+function courseQuestion(extra = {}, course = 'atanasyan-first-steps') {
+  const resolved = resolveCourseContext({ courseId: course, lessonId: course === 'atanasyan-first-steps'
+    ? 'atanasyan-7-9-main-153-part-1' : 'ichenskaya-7-sr-01-v1-task-01', stepIndex: 0 });
   return { subject: SUBJECT_A, requestId: randomUUID(), profileId: 'atanasyan-first-steps', topic: resolved.topic,
     question: resolved.question, courseContext: resolved.courseContext, courseRevision: resolved.courseRevision,
     attempt: '', mode: 'hint', hintLevel: 1, simpler: false, externalConsent: false, ...extra };
@@ -143,6 +144,31 @@ test('source course works through the private bridge with zero model calls even 
   assert.equal(fx.app.store.summary().day.requests, count);
   assert.equal(calls, 0);
   assert.equal(fx.app.store.summary().day.api_requests, 0);
+});
+
+test('the companion shares the same private subject and source-only profile without enabling API calls or cross-course replay', async t => {
+  let calls = 0;
+  const fx = await start(t, { api: true, env: { ASSISTANT_CABINET_EXTERNAL_ENABLED: '1' },
+    fetchImpl: async () => { calls++; throw Error('Source courses cannot call a provider'); } });
+  const primary = courseQuestion(), companion = courseQuestion({}, 'ichenskaya-grade7-works');
+  for (const body of [primary, companion, courseQuestion()]) {
+    const answer = await fx.ask(body);
+    assert.equal(answer.status, 200); assert.equal(answer.data.mode, 'offline');
+    assert.deepEqual(answer.data.answer.courseContext, body.courseContext);
+    assert.equal(answer.data.answer.courseRevision, body.courseRevision);
+    assert.equal(answer.data.answer.topic, body.topic); assert.equal(answer.data.answer.verification, 'curated-guidance');
+  }
+  const count = fx.app.store.summary().day.requests;
+  for (const extra of [{ externalConsent: true }, { profileId: 'ichenskaya-grade7-works' },
+    { courseContext: { ...companion.courseContext, lessonId: primary.courseContext.lessonId } },
+    { courseRevision: primary.courseRevision }, { topic: primary.topic }, { question: primary.question }]) {
+    assert((await fx.ask(courseQuestion(extra, 'ichenskaya-grade7-works'))).status >= 400);
+  }
+  const replay = await fx.ask(courseQuestion({ requestId: primary.requestId }, 'ichenskaya-grade7-works'));
+  assert.equal(replay.status, 409); assert.equal(replay.data.error, 'REQUEST_ALREADY_USED');
+  assert.equal(fx.app.store.summary().day.requests, count);
+  assert.equal(fx.app.store.db.prepare('SELECT COUNT(*) AS n FROM sessions').get().n, 1);
+  assert.equal(fx.app.store.summary().day.api_requests, 0); assert.equal(calls, 0);
 });
 
 test('offline cabinet hints and feedback keep only bounded metadata and isolate subjects', async t => {

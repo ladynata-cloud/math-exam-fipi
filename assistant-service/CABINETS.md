@@ -12,7 +12,7 @@ external model has been called. Merge and deployment require separate decisions.
 | `oge-geometry` | Five topics: triangles, circles, quadrilaterals/areas, grid geometry and statements | Conditions, theorems and next-step guidance; does not read a drawing or certify an arbitrary proof |
 | `peterson-decimals` | Eight topics: place value, comparison, rounding, addition/subtraction, multiplication, division, powers of ten and ordinary/decimal fractions | Exact rational arithmetic for supported signed finite-decimal inputs, exact fractional results and repeating-decimal output; division by zero is rejected |
 | `triangle-congruence` | Four topics: SAS, ASA, SSS and corresponding vertices / choice of criterion | Explicit premises and justification; rejects the idea that AAA or arbitrary SSA proves congruence |
-| `atanasyan-first-steps` | Exact tasks 1–160, 232 exercise cards and 23 theory cards from the reviewed Atanasyan course | Source-based prompts, reasons and explanations for the selected step; an explicitly requested full solution remains subject to teacher review |
+| `atanasyan-first-steps` | Two separate sources: Atanasyan tasks 1–160 (232 exercise cards and 23 theory cards) and Ichenskaya grade-seven independent/test works (110 task cards) | Source-based prompts, reasons and explanations for the selected course/task/step; an explicitly requested full solution remains subject to teacher review |
 
 The fourth profile is an additive option for the
 [first-steps course task](../docs/tasks/ATANASYAN_FIRST_STEPS_CABINET.md).
@@ -20,6 +20,16 @@ The limit remains three enabled pupil accounts in total, not three per profile.
 This course profile always uses the local reviewed source, including when other
 profiles have external inference enabled. It cannot be configured for external
 transfer in this task.
+
+The [Ichenskaya companion](../docs/tasks/ICHENSKAYA_GRADE7_WORKS.md) extends this
+same saved profile rather than creating another pupil setting. Its display name
+is «7 класс · Атанасян и Иченская»; the historical profile ID remains stable.
+The pupil can use both courses without a profile switch. A single daily counter,
+request replay boundary and enrollment slot apply to both. The primary course
+and its prepared 255-card source remain byte-identical. The companion has its
+own 110-card inventory: 74 independent-work tasks and 36 test-work tasks. Its
+56 later-topic tasks do not widen the Atanasyan route; 54 tasks lie within the
+primary textbook boundary. The collection's 63 final-exam prompts are excluded.
 
 The panel is named **MaxExam 0.0**. This is the application's name, not a claim
 that separately trained neural-network weights exist. Offline mode explicitly
@@ -34,7 +44,7 @@ subsequent wording in the current one-hour assistant session; they do not certif
 or rewrite shared mathematics. A model answer is never automatically promoted to
 reviewed knowledge.
 
-The original 17 cabinet topics and the additional course entry are versioned,
+The original 17 cabinet topics and the two source-course entries are versioned,
 checked source cards in
 [`src/cabinet-topics.js`](src/cabinet-topics.js). Changes to these cards need
 mathematical review and a normal repository change. The standalone assistant's
@@ -91,15 +101,26 @@ and theory cards do not amount to structured support for every congruence task.
 Other owned attempts retain explicit manual entry. Whole attempt state is never
 forwarded. An unfinished exam or diagnostic blocks helper questions entirely.
 
-The new native first-steps course supplies only
-`courseContext={courseId:"atanasyan-first-steps",lessonId,stepIndex}`. The index is
-zero-based. The cabinet independently resolves the condition from its packaged
-public `learning/atanasyan-first-steps/course.json`; it does not accept a browser
+The two native source courses supply only
+`courseContext={courseId,lessonId,stepIndex}`. The index is zero-based. The only
+allowed course IDs are `atanasyan-first-steps` and `ichenskaya-grade7-works`.
+The cabinet independently resolves the condition from the selected packaged
+public course; it does not accept a browser
 condition, solution, topic or arbitrary source URL for this route. The separate
 helper resolves the same identifiers against its reviewed minimal source
 projection and checks the course digest and exact condition before answering.
 An unknown task, out-of-range index, mismatched revision or profile is rejected.
 This route does not expand or change the existing managed 92а attempt contract.
+
+Each course has its own validator and fixed path. The existing 255-card and
+1–160/1–23 source guards remain specific to Atanasyan. The Ichenskaya source is
+bound to an independently reviewed 110-entry manifest and exact PDF digest;
+both services verify the manifest's committed byte digest and source references.
+The helper image contains a copy of this public manifest, not the supplied PDF
+or scanned pages. A course ID cannot select another source's lesson, revision,
+topic or filesystem path. Each boundary validates its source before its own
+reservation. A later service or deployment mismatch still retains the already
+made cabinet reservation under the ordinary failure policy.
 
 The browser records assistance before asking and captures the selected task and
 step for the returned label. Hint levels explain that same step; they do not
@@ -107,8 +128,10 @@ advance it. Full explanations are shown only after the pupil explicitly asks.
 The current course progress is local to the pupil's browser, so the server can
 validate an in-range source step but cannot independently prove it was already
 revealed there. Source-based guidance does not certify the pupil's own proof or
-replace the teacher's review. The helper homepage links to the native course
+replace the teacher's review. The helper homepage links to both native courses
 instead of offering an unsupported manual-question form for this profile.
+The titles «самостоятельная» and «контрольная» identify source works for study;
+they do not bypass the existing server block during an active assessment.
 
 An arbitrary manually entered question cannot prove that unrelated work was
 independent. The helper does not award grades, forge course completion or infer
@@ -122,11 +145,13 @@ as `board-server/assistant-profile-catalog.json`; a test and service handshake
 require equality with the independent service. Deploy compatible versions.
 Changing these variables requires restarting the corresponding application.
 
-Regenerate the helper's minimal public source projection after a reviewed course
+Regenerate the helper's minimal public source projections after a reviewed course
 change with `node assistant-service/scripts/build-course-knowledge.cjs`; use
-`--check` to verify committed bytes. Both services ship their own authoritative
-copy and fail closed on a digest mismatch. The assistant image's existing
-`COPY knowledge ./knowledge` includes the projection. No model, credential or
+`--check` to verify both committed projections and the public companion manifest
+copy. Pin a changed manifest only after a completed source review; a generated
+card cannot declare its own trusted inventory. Both services ship their own
+authoritative copy and fail closed on a digest mismatch. The assistant image's
+existing `COPY knowledge ./knowledge` includes these files. No model, credential or
 pupil work is bundled into it.
 
 | Application | Variable | Meaning |

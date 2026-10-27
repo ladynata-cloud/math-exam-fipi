@@ -20,9 +20,39 @@
     if (route.length !== ids.size || new Set(route).size !== ids.size || route.some(id => !ids.has(id))) throw Error('INVALID_COURSE_ROUTE');
     return bundle;
   }
-  function mount(host, options = {}) {
+  // The original validator and default storage namespace remain sealed. A
+  // second reviewed source supplies a trusted code adapter, never URL options.
+  const defaultDefinition = Object.freeze({
+    id: COURSE, validateBundle, shortName, namespace: 'mathExamAtanasyanFirstSteps.v1', legacy: true,
+    bundleUrl: '/learning/atanasyan-first-steps/course.json',
+    sourceText: lesson => 'К учебнику Атанасяна · 7–9 классы · 2023 · стр. ' + lesson.source.printedPages.join(', ')
+      + (lesson.kind === 'theory' ? ' · пункт ' + lesson.source.point : ' · задача ' + lesson.source.exercise + partLabel(lesson)),
+    sourceLink: lesson => ({ href: 'https://mathexam.space/geometry-course/textbook/#' + lesson.id, title: 'Этот номер в общем курсе' }),
+    filters: [['all', 'Все материалы'], ['tasks', 'Задачи учебника'], ['theory', 'Теория'], ['work', 'Мои записи']],
+    matchesFilter: (lesson, filter) => filter !== 'tasks' && filter !== 'theory' || lesson.kind === (filter === 'tasks' ? 'exercise' : 'theory'),
+    matchesSearch(lesson, query, section, statement) {
+      const numbered = /^(\d+)\s*([а-яa-z])?$/.exec(query);
+      return numbered ? lesson.kind === 'exercise' && lesson.source.exercise === numbered[1]
+        && (!numbered[2] || partLabel(lesson).toLowerCase() === numbered[2])
+        : (section.title + ' ' + lesson.title + ' ' + statement).toLocaleLowerCase('ru').replace(/ё/g, 'е').includes(query);
+    },
+    labels: () => ({
+      eyebrow: 'КУРС К УЧЕБНИКУ · 7 КЛАСС', title: 'Геометрия: с начала до построений',
+      intro: 'От точек и прямых — к равенству треугольников, циркулю и линейке. Выбирай номер из учебника или проходи разделы по порядку.',
+      scope: '12 разделов · 160 номеров · 232 задания с подпунктами · теория 1–23',
+      searchPlaceholder: 'Например: 92, 159б, окружность', sourceSummary: 'Номер и издание учебника',
+      noResults: 'В этом курсе нет подходящих карточек. Здесь задачи №1–160 и теория 1–23.',
+      boundary: 'Этот номер не входит в курс до элементарных построений. Выбери задачу №1–160.',
+      end: 'Ты дошёл до конца курса: элементарные построения. Можно вернуться к нужному номеру.',
+      exportTitle: 'Курс к учебнику Атанасяна: начало — элементарные построения',
+      exportFormat: 'mathexam-atanasyan-first-steps-work', exportFilename: 'atanasyan-my-work',
+      companionLabel: 'Самостоятельные и контрольные · Иченская', companionHref: '/geometry-course/ichenskaya-7-works/'
+    })
+  });
+  function mountCourse(host, options, definition) {
     const doc = host.ownerDocument, win = doc.defaultView;
-    let alive = true, bundle, current = null, state = null, viewer = null, dialog = null, dialogViewer = null;
+    let alive = true, bundle, labels, current = null, state = null, viewer = null, dialog = null, dialogViewer = null;
+    const shortName = definition.shortName;
     let helperDispose = () => {}, currentSerial = 0, locked = false, rebuilding = false, store, lastSavePersisted = false;
     let routeSearch = '', routeFilter = 'all', pendingNotice = '', returnFocus = null;
     const readOnly = options.readOnly === true, lifetime = new AbortController();
@@ -56,10 +86,9 @@
       currentSerial++; helperDispose(); helperDispose = () => {};
       closeTheory(); viewer?.destroy(); viewer = null; current = null; state = null; locked = false;
     }
-    function displayStatement(lesson) { return bundle.displayOverrides[lesson.id]?.statementText || lesson.statement.text; }
+    function displayStatement(lesson) { return bundle.displayOverrides?.[lesson.id]?.statementText || lesson.statement.text; }
     function sourceText(lesson) {
-      return 'К учебнику Атанасяна · 7–9 классы · 2023 · стр. ' + lesson.source.printedPages.join(', ')
-        + (lesson.kind === 'theory' ? ' · пункт ' + lesson.source.point : ' · задача ' + lesson.source.exercise + partLabel(lesson));
+      return definition.sourceText(lesson, bundle);
     }
     function navigate(id) {
       if (options.onNavigate) options.onNavigate(id || null);
@@ -67,7 +96,7 @@
     }
     function sourceBox(lesson) {
       const details = node('details', undefined, { class: 'afs-source' });
-      details.append(node('summary', 'Номер и издание учебника'), node('p', sourceText(lesson)), node('p', bundle.book.edition));
+      details.append(node('summary', labels.sourceSummary), node('p', sourceText(lesson)), node('p', bundle.book.edition));
       return details;
     }
     function statusText(record, lesson) {
@@ -132,13 +161,13 @@
         const index = records.findIndex(record => record.lessonId === current.id);
         if (index >= 0) records[index] = clone(state); else if (state.draft || state.revealed) records.push(clone(state));
       }
-      download(JSON.stringify({ format: 'mathexam-atanasyan-first-steps-work', version: 1,
+      download(JSON.stringify({ format: labels.exportFormat, version: 1,
         exportedAt: new Date().toISOString(), sourceSha256: bundle.source.sha256,
-        note: 'Личные записи. Доказательства не проверены автоматически.', records }, null, 2), 'atanasyan-my-work.json', 'application/json');
+        note: 'Личные записи. Доказательства не проверены автоматически.', records }, null, 2), labels.exportFilename + '.json', 'application/json');
     }
     function exportText() {
       if (!bundle || readOnly) return;
-      const lines = ['Курс к учебнику Атанасяна: начало — элементарные построения', 'Личные записи; доказательства требуют проверки учителя.', ''];
+      const lines = [labels.exportTitle, 'Личные записи; доказательства требуют проверки учителя.', ''];
       for (const record of store.all(bundle.lessons)) {
         const lesson = byId.get(record.lessonId);
         lines.push(shortName(lesson) + ' · стр. ' + lesson.source.printedPages.join(', '), statusText(record, lesson));
@@ -146,7 +175,7 @@
         for (const step of lesson.steps) if (record.stepDrafts[step.id]) lines.push(step.title + ': ' + record.stepDrafts[step.id]);
         lines.push('');
       }
-      download(lines.join('\n'), 'atanasyan-my-work.txt', 'text/plain;charset=utf-8');
+      download(lines.join('\n'), labels.exportFilename + '.txt', 'text/plain;charset=utf-8');
     }
     function workTools() {
       if (readOnly) return node('p', 'Просмотр преподавателя: личные записи ученика на этом устройстве не открываются.', { class: 'afs-storage-note' });
@@ -161,36 +190,36 @@
       if (!valid() || !bundle) return;
       clearLesson(); body.replaceChildren(); navigate(null);
       const header = node('header', undefined, { class: 'afs-header' });
-      header.append(node('p', 'КУРС К УЧЕБНИКУ · 7 КЛАСС', { class: 'afs-eyebrow' }),
-        node('h1', 'Геометрия: с начала до построений'),
-        node('p', 'От точек и прямых — к равенству треугольников, циркулю и линейке. Выбирай номер из учебника или проходи разделы по порядку.'),
-        node('p', '12 разделов · 160 номеров · 232 задания с подпунктами · теория 1–23', { class: 'afs-scope' }));
+      header.append(node('p', labels.eyebrow, { class: 'afs-eyebrow' }), node('h1', labels.title),
+        node('p', labels.intro), node('p', labels.scope, { class: 'afs-scope' }));
+      if (labels.boundaryNote) header.append(node('p', labels.boundaryNote, { class: 'afs-scope', 'data-course-boundary': '' }));
       if (options.onExit) header.append(button('← В кабинет', options.onExit));
       const last = store.last(bundle.lessons), continueTo = last ? byId.get(last) : bundle.lessons[0];
       header.append(button(last ? 'Продолжить: ' + shortName(continueTo) : 'Начать с первой темы', () => openLesson(continueTo.id), { class: 'afs-primary', 'data-continue': '' }));
+      if (options.onCompanion) header.append(button(labels.companionLabel, options.onCompanion, { 'data-companion-course': '' }));
+      else if (labels.companionHref) {
+        const link = node('p'); link.append(node('a', labels.companionLabel + ' →', { href: labels.companionHref, 'data-companion-course': '' })); header.append(link);
+      }
       const progress = store.all(bundle.lessons), submitted = progress.filter(record => record.submitted).length;
       if (progress.length) header.append(node('p', 'Есть записи: ' + progress.length + '. Решений для обсуждения с учителем: ' + submitted + '.', { 'data-course-progress': '' }));
       body.append(header, workTools());
       const controls = node('div', undefined, { class: 'afs-filters' }), searchLabel = node('label', 'Найти задачу или тему');
-      const search = node('input', undefined, { type: 'search', placeholder: 'Например: 92, 159б, окружность', 'data-course-search': '' });
+      const search = node('input', undefined, { type: 'search', placeholder: labels.searchPlaceholder, 'data-course-search': '' });
       search.value = routeSearch; searchLabel.append(search); controls.append(searchLabel);
       const filterLabel = node('label', 'Показать'), filter = node('select', undefined, { 'data-course-filter': '' });
-      for (const [value, title] of [['all', 'Все материалы'], ['tasks', 'Задачи учебника'], ['theory', 'Теория'], ['work', 'Мои записи']]) filter.append(node('option', title, { value }));
+      for (const [value, title] of definition.filters) filter.append(node('option', title, { value }));
       filter.value = routeFilter; filterLabel.append(filter); controls.append(filterLabel);
       const route = node('div', undefined, { class: 'afs-route', 'aria-live': 'polite' }); body.append(controls, route);
       function drawRoute() {
         route.replaceChildren(); let found = 0;
         const query = routeSearch.trim().toLocaleLowerCase('ru').replace(/ё/g, 'е').replace(/^№\s*/, '');
-        const numbered = /^(\d+)\s*([а-яa-z])?$/.exec(query);
         for (const [sectionIndex, section] of bundle.sections.entries()) {
           const entries = section.lessonIds.map(id => byId.get(id)).filter(lesson => {
             const record = store.read(lesson);
-            if (routeFilter === 'tasks' && lesson.kind !== 'exercise' || routeFilter === 'theory' && lesson.kind !== 'theory'
+            if (!definition.matchesFilter(lesson, routeFilter)
               || routeFilter === 'work' && !record.updatedAt && !record.draft && !record.revealed) return false;
             if (!query) return true;
-            if (numbered) return lesson.kind === 'exercise' && lesson.source.exercise === numbered[1]
-              && (!numbered[2] || partLabel(lesson).toLowerCase() === numbered[2]);
-            return (section.title + ' ' + lesson.title + ' ' + displayStatement(lesson)).toLocaleLowerCase('ru').replace(/ё/g, 'е').includes(query);
+            return definition.matchesSearch(lesson, query, section, displayStatement(lesson));
           });
           if (!entries.length) continue;
           found += entries.length;
@@ -198,6 +227,7 @@
           sectionNode.open = !!query || routeFilter !== 'all' || sectionIndex === 0;
           const summary = node('summary'); summary.append(node('span', String(sectionIndex + 1).padStart(2, '0'), { class: 'afs-section-number' }), node('span', section.title));
           sectionNode.append(summary, node('p', 'Страницы ' + section.printedPages.join('–') + ' · ' + entries.length + ' карточек', { class: 'afs-section-meta' }));
+          if (definition.sectionNote) sectionNode.append(node('p', definition.sectionNote(section), { class: 'afs-section-meta', 'data-section-boundary': '' }));
           const cards = node('div', undefined, { class: 'afs-card-grid' });
           for (const lesson of entries) {
             const record = store.read(lesson), card = button('', () => openLesson(lesson.id), { class: 'afs-route-card', 'data-lesson-id': lesson.id });
@@ -206,7 +236,7 @@
           }
           sectionNode.append(cards); route.append(sectionNode);
         }
-        if (!found) route.append(node('p', 'В этом курсе нет подходящих карточек. Здесь задачи №1–160 и теория 1–23.'));
+        if (!found) route.append(node('p', labels.noResults));
       }
       search.addEventListener('input', () => { routeSearch = search.value; drawRoute(); });
       filter.addEventListener('change', () => { routeFilter = filter.value; drawRoute(); }); drawRoute();
@@ -236,7 +266,7 @@
     function openLesson(id) {
       if (!valid() || !bundle) return;
       const lesson = byId.get(id);
-      if (!lesson) { notice('Этот номер не входит в курс до элементарных построений. Выбери задачу №1–160.', 'boundary'); home(); return; }
+      if (!lesson) { notice(labels.boundary, 'boundary'); home(); return; }
       clearLesson(); current = lesson; state = store.read(lesson); const serial = currentSerial;
       let helperStep = Math.max(0, state.revealed - 1);
       body.replaceChildren(); store.remember(lesson); navigate(id);
@@ -244,6 +274,7 @@
       header.append(button('← Все разделы курса', home), node('p', sourceText(lesson), { class: 'afs-eyebrow' }),
         node('h1', lesson.kind === 'theory' ? lesson.title : 'Тренажёр к задаче ' + shortName(lesson)),
         node('p', statusText(state, lesson), { class: 'afs-work-status', 'data-work-status': '' }));
+      if (definition.lessonNote) header.append(node('p', definition.lessonNote(lesson), { class: 'afs-small', 'data-lesson-boundary': '' }));
       body.append(header);
       const layout = node('div', undefined, { class: 'afs-task-layout' }), task = node('section', undefined, { class: 'afs-task-card' }),
         side = node('section', undefined, { class: 'afs-work-card', 'aria-label': 'Мои записи и помощь' }), model = node('div', undefined, { class: 'afs-model', 'data-course-model': '' });
@@ -252,8 +283,8 @@
       if (lesson.statement.givens?.length) { const list = node('ul'); for (const given of lesson.statement.givens) list.append(node('li', given)); task.append(list); }
       if (lesson.statement.goal && !/Сначала предложи своё решение/.test(lesson.statement.goal)) task.append(node('p', lesson.statement.goal, { class: 'afs-goal' }));
       task.append(model, node('p', 'Чертёж помогает увидеть условие. Размеры на экране не заменяют данные и доказательство.', { class: 'afs-model-note' }), sourceBox(lesson));
-      const sourceURL = '../../geometry-course/textbook/#' + lesson.id;
-      task.append(node('a', 'Этот номер в общем курсе', { href: sourceURL, target: '_blank', rel: 'noopener noreferrer', class: 'afs-original-link' }));
+      const sourceLink = definition.sourceLink?.(lesson, bundle);
+      if (sourceLink) task.append(node('a', sourceLink.title, { href: sourceLink.href, target: '_blank', rel: 'noopener noreferrer', class: 'afs-original-link' }));
       layout.append(task, side); body.append(layout);
       const work = node('div', undefined, { class: 'afs-written-work' });
       if (lesson.kind === 'exercise') {
@@ -360,7 +391,7 @@
             api: options.api, role: 'student',
             isCurrent: () => valid() && serial === currentSerial && current?.id === id,
             canAsk: () => !locked && !readOnly && (!options.canAsk || options.canAsk()),
-            courseContext: () => ({ courseId: COURSE, lessonId: id, stepIndex: helperStep }),
+            courseContext: () => ({ courseId: definition.id, lessonId: id, stepIndex: helperStep }),
             courseTaskLabel: shortName(lesson), courseTaskPrompt: displayStatement(lesson),
             onBeforeAsk: () => !readOnly && markAssisted(), onAnswer: updateStatus
           });
@@ -371,7 +402,7 @@
           button('Разобрать текущую задачу по шагам', () => { if (!markAssisted()) return; help.open = true; if (!state.revealed) revealNext(); help.scrollIntoView?.({ block: 'nearest' }); }));
       }
       side.append(workTools());
-      if (!readOnly) {
+      if (!readOnly && definition.legacy) {
         const legacyBox = node('details', undefined, { class: 'afs-legacy' });
         legacyBox.append(node('summary', 'Раньше решал этот номер в общем курсе?'), node('p', 'По твоей команде можно перенести прежнюю запись из общего курса в этом браузере. Убедись, что это твоя работа. Исходная запись останется на месте.'));
         legacyBox.append(button('Перенести мою прежнюю запись', () => {
@@ -398,7 +429,7 @@
       if (index > 0) nav.append(button('← ' + shortName(bundle.lessons[index - 1]), () => openLesson(bundle.lessons[index - 1].id)));
       nav.append(button('Все разделы', home));
       if (index < bundle.lessons.length - 1) nav.append(button(shortName(bundle.lessons[index + 1]) + ' →', () => openLesson(bundle.lessons[index + 1].id)));
-      else nav.append(node('p', 'Ты дошёл до конца курса: элементарные построения. Можно вернуться к нужному номеру.'));
+      else nav.append(node('p', labels.end));
       body.append(nav);
       if (store.hasConflict(lesson)) lock();
       if (pendingNotice) { notice(pendingNotice); pendingNotice = ''; }
@@ -410,10 +441,11 @@
     }
     function start(data) {
       if (!valid()) return;
-      bundle = validateBundle(data); for (const lesson of bundle.lessons) byId.set(lesson.id, lesson);
+      bundle = definition.validateBundle(data); labels = definition.labels(bundle);
+      for (const lesson of bundle.lessons) byId.set(lesson.id, lesson);
       let storage = options.storage;
       if (storage === undefined && !readOnly) { try { storage = win.localStorage; } catch (_) { storage = null; } }
-      store = root.AtanasyanFirstStepsState.createStore({ storage, scope: options.storageScope || 'public', readOnly, onNotice: notice });
+      store = root.AtanasyanFirstStepsState.createStore({ storage, scope: options.storageScope || 'public', namespace: definition.namespace, readOnly, onNotice: notice });
       win.addEventListener('storage', storageEvent);
       if (options.initialLessonId) openLesson(options.initialLessonId); else home();
     }
@@ -421,7 +453,7 @@
     if (options.bundle) {
       try { start(options.bundle); } catch (_) { body.replaceChildren(node('p', 'Не удалось открыть материалы курса. Обнови страницу.')); }
     } else {
-      (options.fetch || win.fetch.bind(win))(options.bundleUrl || '/learning/atanasyan-first-steps/course.json',
+      (options.fetch || win.fetch.bind(win))(options.bundleUrl || definition.bundleUrl,
         { credentials: 'same-origin', cache: 'no-cache', signal: lifetime.signal })
         .then(response => { if (!response.ok) throw Error('COURSE_UNAVAILABLE'); return response.json(); })
         .then(start).catch(() => {
@@ -435,5 +467,13 @@
       host.replaceChildren(); host.classList.remove('atanasyan-first-steps');
     };
   }
+  function mount(host, options = {}) { return mountCourse(host, options, defaultDefinition); }
   root.AtanasyanFirstSteps = Object.freeze({ mount, validateBundle, shortName });
+  root.LearningGeometryCourseRuntime = Object.freeze({
+    createRenderer(definition) {
+      if (!definition || definition.id !== 'ichenskaya-grade7-works' || definition.namespace !== 'mathExamIchenskayaGrade7Works.v1'
+        || ['validateBundle', 'shortName', 'sourceText', 'matchesFilter', 'matchesSearch', 'labels'].some(key => typeof definition[key] !== 'function')) throw Error('INVALID_COURSE_ADAPTER');
+      return Object.freeze({ mount: (host, options = {}) => mountCourse(host, options, definition), validateBundle: definition.validateBundle, shortName: definition.shortName });
+    }
+  });
 })(typeof window === 'undefined' ? globalThis : window);

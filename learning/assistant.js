@@ -2,11 +2,16 @@
  * in this document. A closed view never displays a late response. */
 (function (root) {
   'use strict';
+  const sourceProfile = 'atanasyan-first-steps';
+  const sourceCourses = Object.freeze({
+    'atanasyan-first-steps': { title: 'Атанасян · задачи 1–160', route: '#atanasyan-course' },
+    'ichenskaya-grade7-works': { title: 'Иченская · самостоятельные и контрольные', route: '#ichenskaya-course' }
+  });
   const profileNames = {
     'oge-geometry': 'ОГЭ · Геометрия',
     'peterson-decimals': '6 класс · Петерсон · Десятичные дроби',
     'triangle-congruence': 'Атанасян · Признаки равенства треугольников',
-    'atanasyan-first-steps': 'Атанасян · От начала до элементарных построений'
+    'atanasyan-first-steps': '7 класс · Атанасян и Иченская'
   };
   const labels = {
     deterministic: 'Вычисление проверено программой',
@@ -63,7 +68,7 @@
     const courseSnapshot = () => {
       try {
         const value = typeof context.courseContext === 'function' ? context.courseContext() : context.courseContext;
-        if (!value || value.courseId !== 'atanasyan-first-steps' || typeof value.lessonId !== 'string'
+        if (!value || typeof value.courseId !== 'string' || !Object.hasOwn(sourceCourses, value.courseId) || typeof value.lessonId !== 'string'
           || !Number.isSafeInteger(value.stepIndex) || value.stepIndex < 0) return null;
         return { courseId: value.courseId, lessonId: value.lessonId, stepIndex: value.stepIndex };
       } catch (_) { return null; }
@@ -135,7 +140,7 @@
       const sourceNotice = node('p', 'В этом профиле помощник использует проверенные шаги курса. Внешняя модель не вызывается.', { class: 'cabinet-assistant-mode' });
       form.append(sourceNotice);
       function updateExternalChoice() {
-        const sourceOnly = select.value === 'atanasyan-first-steps';
+        const sourceOnly = select.value === sourceProfile;
         if (sourceOnly) external.checked = false;
         external.disabled = busy || sourceOnly || status.externalAvailable !== true;
         if (externalRow) externalRow.hidden = sourceOnly;
@@ -150,7 +155,7 @@
         if (!form.reportValidity()) return;
         busy = true; for (const control of [select, enabled, limit, external, save]) control.disabled = true; announce(message, 'Сохраняем настройки…');
         try {
-          const saved = await request(endpoint, { profileId: select.value, enabled: enabled.checked, dailyLimit: Number(limit.value), version: Number.isInteger(status.version) ? status.version : 0, externalAllowed: select.value !== 'atanasyan-first-steps' && external.checked });
+          const saved = await request(endpoint, { profileId: select.value, enabled: enabled.checked, dailyLimit: Number(limit.value), version: Number.isInteger(status.version) ? status.version : 0, externalAllowed: select.value !== sourceProfile && external.checked });
           status = saved.status || saved;
           announce(message, 'Настройки помощника сохранены.');
         } catch (error) {
@@ -162,9 +167,9 @@
     }
     function renderPupil() {
       if (!status.enabled || !validProfile(status.profile)) { host.hidden = true; host.replaceChildren(); return; }
-      if (courseMode && status.profile.id !== 'atanasyan-first-steps') {
-        const section = frame('Подсказки к курсу Атанасяна');
-        section.append(node('p', 'Для помощника к этому курсу преподаватель выбирает профиль «От начала до элементарных построений». Разборы самого курса уже доступны рядом с задачей.'));
+      if (courseMode && status.profile.id !== sourceProfile) {
+        const section = frame('Подсказки к курсам геометрии');
+        section.append(node('p', 'Для помощника к этим курсам преподаватель выбирает профиль «7 класс · Атанасян и Иченская». Разборы самого курса уже доступны рядом с задачей.'));
         return;
       }
       if (status.mode === 'unavailable' || status.examActive) {
@@ -174,10 +179,12 @@
         if (!status.examActive) appendLinks(section);
         return;
       }
-      if (status.profile.id === 'atanasyan-first-steps' && !courseMode) {
-        const section = frame('MaxExam 0.0 · помощник курса Атанасяна');
-        section.append(node('p', 'Открой задачу в курсе — помощник получит её условие и текущий шаг. Доступны подсказки из проверенного разбора; доказательство проверяет преподаватель.'));
-        section.append(node('a', 'Открыть курс и выбрать задачу', { href: '#atanasyan-course', class: 'button primary', 'data-assistant-open-course': '' }));
+      if (status.profile.id === sourceProfile && !courseMode) {
+        const section = frame('MaxExam 0.0 · помощник по геометрии');
+        section.append(node('p', 'Открой задачу в одном из курсов — помощник получит её условие и текущий шаг. Профиль переключать не нужно; дневной лимит общий. Доказательство проверяет преподаватель.'));
+        const links = node('div', null, { class: 'actions cabinet-assistant-links' });
+        for (const [id, course] of Object.entries(sourceCourses)) links.append(node('a', course.title, { href: course.route, class: 'button primary', 'data-assistant-open-course': id }));
+        section.append(links);
         return;
       }
       const profileId = status.profile.id;
@@ -240,7 +247,7 @@
         question.readOnly = busy; attempt.readOnly = busy; consent.disabled = busy;
         if (hintLevel >= (courseMode ? 3 : 8)) hint.disabled = true;
         reconnect.hidden = quotaKnown && available(); reconnect.disabled = busy;
-        const externalActive = status.externalEnabled === true && status.profile.id !== 'atanasyan-first-steps';
+        const externalActive = status.externalEnabled === true && status.profile.id !== sourceProfile;
         if (externalActive) form.insertBefore(consentRow, actions);
         else { consentRow.remove(); consent.checked = false; }
         section.querySelector('h2').textContent = externalActive ? 'MaxExam 0.0 · помощник' : 'MaxExam 0.0 · проверенные подсказки';
@@ -327,7 +334,7 @@
           } : {
             requestId: root.crypto.randomUUID(), topic: topics.value, question: text, attempt: attempt.value.trim(),
             mode, hintLevel: level, simpler: easier,
-            externalConsent: status.profile.id !== 'atanasyan-first-steps' && status.externalEnabled === true && consent.checked,
+            externalConsent: status.profile.id !== sourceProfile && status.externalEnabled === true && consent.checked,
             ...(context.attemptId ? { attemptId: context.attemptId } : {})
           });
           if (!result.answer || typeof result.answer.answerId !== 'string') throw Error('INVALID_RESPONSE');

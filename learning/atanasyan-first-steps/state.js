@@ -50,9 +50,10 @@
       : value.model.viewId === 'neutral' || (lesson.visualization.model.views[value.model.viewId].availableFromStep || 0) <= value.revealed);
     return clone(value);
   }
-  function createStore({ storage, scope = 'public', readOnly = false, onNotice = () => {} } = {}) {
+  function createStore({ storage, scope = 'public', namespace = 'mathExamAtanasyanFirstSteps.v1', readOnly = false, onNotice = () => {} } = {}) {
     assert(typeof scope === 'string' && scope.length > 0 && scope.length <= 240);
-    const prefix = 'mathExamAtanasyanFirstSteps.v1:' + encodeURIComponent(scope) + ':';
+    assert(['mathExamAtanasyanFirstSteps.v1', 'mathExamIchenskayaGrade7Works.v1'].includes(namespace));
+    const prefix = namespace + ':' + encodeURIComponent(scope) + ':';
     const records = new Map(); let unavailableReported = false;
     function notice(message, kind) { onNotice(message, kind); }
     function unavailable() {

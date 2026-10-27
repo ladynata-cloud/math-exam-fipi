@@ -106,11 +106,11 @@ const fixtureHTML = '<!doctype html><html lang="ru"><head><meta charset="utf-8">
       page.on('pageerror', error => pageErrors.push(error.message));
       return { context, page };
     }
-    async function mount(page, studentId, courseContext) {
+    async function mount(page, studentId, courseContext, courseTaskLabel = 'Задача 153') {
       await page.goto(origin + '/fixture');
       const statusPath = studentId ? '/teacher/students/' + studentId + '/assistant' : '/assistant';
       const loaded = page.waitForResponse(response => response.url() === origin + '/api/learning' + statusPath && response.request().method() === 'GET');
-      await page.evaluate(async ({ selectedStudent, courseContext }) => {
+      await page.evaluate(async ({ selectedStudent, courseContext, courseTaskLabel }) => {
         const response = await fetch('/api/learning/session', { credentials: 'same-origin' });
         if (!response.ok) throw Error('Synthetic session unavailable');
         const session = await response.json();
@@ -124,10 +124,10 @@ const fixtureHTML = '<!doctype html><html lang="ru"><head><meta charset="utf-8">
         window.courseAssisted = false;
         window.LearningAssistant.mount(document.querySelector('#assistant-host'), {
           api, role: session.account.role, ...(selectedStudent ? { studentId: selectedStudent } : {}), isCurrent: () => true,
-          ...(courseContext ? { courseContext, courseTaskLabel: 'Задача 153',
+          ...(courseContext ? { courseContext, courseTaskLabel,
             onBeforeAsk: () => { window.courseAssisted = true; return true; } } : {})
         });
-      }, { selectedStudent: studentId || null, courseContext: courseContext || null });
+      }, { selectedStudent: studentId || null, courseContext: courseContext || null, courseTaskLabel });
       const response = await loaded;
       assert.equal(response.status(), 200, 'The real cabinet must authorize the status request');
       return response.json();
@@ -232,12 +232,13 @@ const fixtureHTML = '<!doctype html><html lang="ru"><head><meta charset="utf-8">
     const prior = await mount(courseTeacher.page, students[2].account.id);
     assert.equal(prior.used, 3);
     await courseTeacher.page.locator('[name=assistant-profile]').selectOption('atanasyan-first-steps');
+    await courseTeacher.page.locator('[name=assistant-limit]').fill('9');
     const courseSaved = courseTeacher.page.waitForResponse(response => response.url().endsWith('/assistant') && response.request().method() === 'POST');
     await courseTeacher.page.getByRole('button', { name: 'Сохранить настройки помощника', exact: true }).click();
     const courseSettingResponse = await courseSaved;
     assert.equal(courseSettingResponse.status(), 200);
     const configuredCourse = await courseSettingResponse.json();
-    assert.equal(configuredCourse.used, 3); assert.equal(configuredCourse.remaining, 3);
+    assert.equal(configuredCourse.used, 3); assert.equal(configuredCourse.remaining, 6);
     await courseTeacher.context.close();
 
     const courseView = await open(students[2]), coursePage = courseView.page;
@@ -255,7 +256,7 @@ const fixtureHTML = '<!doctype html><html lang="ru"><head><meta charset="utf-8">
       assert.equal(response.status(), 200, JSON.stringify(result));
       assert.equal(result.contextMode, 'course-task'); assert.deepEqual(result.courseContext, courseContext);
       assert.equal(result.answer.verification, 'curated-guidance'); assert.equal(result.mode, 'offline');
-      assert.equal(result.remaining, 2 - index);
+      assert.equal(result.remaining, 5 - index);
       assert.equal(await coursePage.evaluate(() => window.courseAssisted), true);
       for (const field of ['question', 'topic', 'profileId', 'subject', 'courseRevision']) assert.equal(Object.hasOwn(request, field), false);
       if (index < 2) assert.deepEqual(result.answer.steps, [expectedSteps[index]]);
@@ -263,20 +264,57 @@ const fixtureHTML = '<!doctype html><html lang="ru"><head><meta charset="utf-8">
       await coursePage.waitForFunction(count => document.querySelectorAll('[data-assistant-answer]').length === count, index + 1);
       assert.equal(await coursePage.locator('.cabinet-assistant-question').last().textContent(), 'Задача 153 · шаг 2');
     }
-    await privateBrowserState(coursePage); await courseView.context.close();
+    await privateBrowserState(coursePage);
     checks.push('source course: exact construction hints through both real services, local assistance before request, no condition retyping, full proof only on request and preserved quota');
+
+    // Navigation changes only the source context. One saved pupil setting,
+    // pseudonym, daily counter and allowance span both independent courses.
+    const savedSetting = learning.store.row('SELECT * FROM learning_assistant_settings WHERE learner_id=?', students[2].account.id);
+    const companion = JSON.parse(fs.readFileSync(path.join(ROOT, 'learning/ichenskaya-grade7-works/course.json'), 'utf8'));
+    const lesson = companion.lessons.find(item => item.id === 'ichenskaya-7-sr-01-v1-task-01');
+    const companionContext = { courseId: 'ichenskaya-grade7-works', lessonId: lesson.id, stepIndex: 0 };
+    const companionStatus = await mount(coursePage, null, companionContext, lesson.title);
+    assert.equal(companionStatus.profile.id, 'atanasyan-first-steps');
+    assert.equal(companionStatus.used, 6); assert.equal(companionStatus.remaining, 3);
+    for (const [index, label] of ['Хочу подсказку', 'Показать весь разбор'].entries()) {
+      const received = coursePage.waitForResponse(response => response.url() === origin + '/api/learning/assistant/ask');
+      await coursePage.getByRole('button', { name: label, exact: true }).click();
+      const response = await received, result = await response.json(), sent = response.request().postDataJSON();
+      assert.equal(response.status(), 200, JSON.stringify(result));
+      assert.deepEqual(result.courseContext, companionContext); assert.equal(result.answer.topic, 'ichenskaya-course-step');
+      assert.equal(result.answer.verification, 'curated-guidance'); assert.equal(result.mode, 'offline');
+      assert.equal(result.remaining, 2 - index); assert.equal(result.answer.complete, index === 1);
+      assert.equal(await coursePage.evaluate(() => window.courseAssisted), true);
+      for (const field of ['question', 'topic', 'profileId', 'subject', 'courseRevision']) assert.equal(Object.hasOwn(sent, field), false);
+      if (index === 0) assert.deepEqual(result.answer.steps, [lesson.steps[0].prompt]);
+      else for (const step of lesson.steps) assert(result.answer.steps.join('\n').includes(step.explanation));
+      await coursePage.waitForFunction(count => document.querySelectorAll('[data-assistant-answer]').length === count, index + 1);
+      assert.equal(await coursePage.locator('.cabinet-assistant-question').last().textContent(), lesson.title + ' · шаг 1');
+    }
+    const back = await mount(coursePage, null, courseContext);
+    assert.equal(back.profile.id, 'atanasyan-first-steps'); assert.equal(back.remaining, 1);
+    const backReceived = coursePage.waitForResponse(response => response.url() === origin + '/api/learning/assistant/ask');
+    await coursePage.getByRole('button', { name: 'Хочу подсказку', exact: true }).click();
+    const backResponse = await backReceived, backAnswer = await backResponse.json();
+    assert.equal(backResponse.status(), 200); assert.equal(backAnswer.remaining, 0);
+    assert.deepEqual(backAnswer.courseContext, courseContext); assert.deepEqual(backAnswer.answer.steps, [expectedSteps[0]]);
+    assert.deepEqual(learning.store.row('SELECT * FROM learning_assistant_settings WHERE learner_id=?', students[2].account.id), savedSetting);
+    assert.equal(learning.store.row('SELECT COUNT(*) AS n FROM learning_assistant_usage WHERE learner_id=?', students[2].account.id).n, 1);
+    await privateBrowserState(coursePage); await courseView.context.close();
+    checks.push('one pupil moves primary → companion → primary with unchanged helper settings, subject and one shared declining daily quota');
 
     const serviceRows = JSON.stringify({ requests: assistant.store.db.prepare('SELECT * FROM requests').all(),
       answers: assistant.store.db.prepare('SELECT * FROM answers').all(), sessions: assistant.store.db.prepare('SELECT * FROM sessions').all() });
     for (const student of students) assert(!serviceRows.includes(student.account.id), 'Real account identifiers must stay in the cabinet');
     for (const scenario of cases) assert(!serviceRows.includes(scenario.question), 'The assistant must not retain question bodies');
-    assert.equal(assistant.store.db.prepare('SELECT COUNT(*) AS n FROM requests').get().n, 12);
-    assert.equal(learning.store.row("SELECT COUNT(*) AS n FROM learning_assistant_requests WHERE status='done'").n, 12);
+    assert(!serviceRows.includes(lesson.statement.text), 'Companion conditions are not stored as pupil dialogue');
+    assert.equal(assistant.store.db.prepare('SELECT COUNT(*) AS n FROM requests').get().n, 15);
+    assert.equal(learning.store.row("SELECT COUNT(*) AS n FROM learning_assistant_requests WHERE status='done'").n, 15);
     assert.equal(providerCalls, 0, 'This gate must never invoke a model provider');
     assert.deepEqual(unexpectedRequests, [], 'The browser must never request a production or other external origin');
     assert.deepEqual(pageErrors, [], 'No uncaught browser errors');
     checks.push('real feedback persists as categories; no provider calls, external browser requests or stored questions');
-    console.log(JSON.stringify({ checks, modelProviderCalls: providerCalls, completedRequests: 12 }));
+    console.log(JSON.stringify({ checks, modelProviderCalls: providerCalls, completedRequests: 15 }));
     console.log('MATHEXAM_ASSISTANT_CABINET_E2E_OK');
   } finally {
     if (browser) await browser.close();

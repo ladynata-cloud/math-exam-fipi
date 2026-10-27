@@ -2,6 +2,33 @@
 
 Updated: 2026-10-28 (Asia/Novosibirsk)
 
+## Prepared: Ichenskaya independent and test works alongside Atanasyan
+
+- [Task](tasks/ICHENSKAYA_GRADE7_WORKS.md), HIGH, branch
+  `feat/ichenskaya-grade7-works`, exact base
+  `11ee0d51a63e73b30dc4db94c4463fac894bf4bf` (Draft PR #363). The assistant and
+  primary-course dependency stack remains unmerged.
+- Supplied Ichenskaya grade-seven collection, 2018: 17 independent works and
+  six test works, 46 variants, all 110 numbered tasks and 360 explanation steps.
+  Every task has source pages, a reviewed condition, its own model and retained
+  writing. The separate final-examination tickets are inventoried but excluded.
+- The author's allocation places 54 tasks at primary-course points 1–23; 56
+  later tasks are labeled separately. Source/key discrepancies and the one
+  earlier work requiring a later theorem are explicitly explained. The original
+  Atanasyan 255-card snapshot and fixed92a contract remain unchanged.
+- Both courses appear for the same cabinet selection, with separate account
+  records and one source-only helper setting/quota. Teacher preview is read-only;
+  proofs receive manual review. There are no trained weights or provider calls.
+- [Evidence and limits](reports/ICHENSKAYA_GRADE7_WORKS_20261028.md): complete
+  independent source/proof review, reproducible inventories, 332 numerical and
+  coordinate checks, 470 model views and retained-work/source-boundary gates.
+  Final exact-head browser, service and CI evidence accompanies the Draft PR.
+- Read-only reconciliation: remote main remains
+  `8723d6bfb19e64d43c474b1fc7116fe8630ec20a`; the public textbook bundle, engine
+  and attached-course router returned 200 and matched it. The private scan and
+  pupil identity are not published. No real account mutation, merge or deployment
+  occurred. Required external HIGH review and Claude consultation remain pending.
+
 ## Prepared: Atanasyan beginning geometry through elementary constructions
 
 - [Task](tasks/ATANASYAN_FIRST_STEPS_CABINET.md), HIGH, branch

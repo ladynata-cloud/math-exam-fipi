@@ -65,7 +65,8 @@ async function fixture(t,{enabled=true,external=false,transport,day=Date.UTC(202
 test('profile catalogue is exactly the separate service public metadata; no private identities',async()=>{
   const {listCabinetProfiles}=await import(pathToFileURL(path.resolve(__dirname,'../../assistant-service/src/cabinet-topics.js')));
   assert.deepEqual(catalog,listCabinetProfiles());assert.equal(catalog.length,4);
-  assert.equal(catalog.flatMap(p=>p.topics).length,18);
+  assert.equal(catalog.flatMap(p=>p.topics).length,19);
+  assert.deepEqual(catalog.find(p => p.id === 'atanasyan-first-steps').topics.map(topic => topic.id), ['atanasyan-course-step', 'ichenskaya-course-step']);
 });
 
 test('configuration fails closed; loopback transport is allowed only in explicit local development',()=>{
@@ -228,6 +229,68 @@ test('course profile remains source-only and stale source/step responses cannot 
     assert.equal(result.status, 503); assert.equal(result.body.answer, undefined);
   }
   assert.equal(f.api.store.row('SELECT COUNT(*) AS n FROM learning_assistant_requests').n, 3);
+});
+
+test('one persisted source profile serves both courses with shared quota, replay and cross-course answer fences', async t => {
+  const { resolveCourseContext } = require('../assistant-course-context');
+  const contexts = [
+    { courseId: 'atanasyan-first-steps', lessonId: 'atanasyan-7-9-main-153-part-1', stepIndex: 0 },
+    { courseId: 'ichenskaya-grade7-works', lessonId: 'ichenskaya-7-sr-01-v1-task-01', stepIndex: 0 }
+  ];
+  const resolved = contexts.map(resolveCourseContext);
+  const f = await fixture(t, { external: true, transport: async (url, options, next) => {
+    if (!url.endsWith('/ask')) return next(url, options);
+    const body = JSON.parse(options.body); f.calls.push({ url, body });
+    const source = resolveCourseContext(body.courseContext);
+    assert.equal(body.profileId, 'atanasyan-first-steps'); assert.equal(body.externalConsent, false);
+    assert.equal(body.topic, source.topic); assert.equal(body.question, source.question); assert.equal(body.courseRevision, source.courseRevision);
+    return jsonResponse({ ok: true, answer: { ...sampleAnswer(body.topic), courseContext: source.courseContext, courseRevision: source.courseRevision } });
+  } });
+  assert.equal((await f.configure(0, { profileId: 'atanasyan-first-steps', dailyLimit: 3 })).status, 200);
+  const before = f.api.store.row('SELECT * FROM learning_assistant_settings WHERE learner_id=?', f.learners[0].account.id);
+  const body = (courseContext, requestId = uuid()) => ({ requestId, courseContext, mode: 'hint', hintLevel: 1, simpler: false, externalConsent: false });
+  for (const context of [{ ...contexts[0], courseId: contexts[1].courseId }, { ...contexts[1], courseId: contexts[0].courseId }]) {
+    assert.equal((await f.request(f.learners[0], '/assistant/ask', body(context))).body.error, 'LEARNING_ASSISTANT_COURSE_INVALID');
+  }
+  assert.equal(f.api.store.row('SELECT COUNT(*) AS n FROM learning_assistant_requests').n, 0);
+  const firstId = uuid();
+  for (const [index, context] of [contexts[0], contexts[1], contexts[0]].entries()) {
+    const result = await f.request(f.learners[0], '/assistant/ask', body(context, index === 0 ? firstId : uuid()));
+    assert.equal(result.status, 200); assert.equal(result.body.remaining, 2 - index);
+    assert.equal(result.body.answer.topic, resolved[index === 1 ? 1 : 0].topic);
+    assert.deepEqual(result.body.courseContext, context);
+    if (index === 0) {
+      assert.equal((await f.request(f.learners[0], '/assistant/ask', body(contexts[1], firstId))).body.error, 'LEARNING_ASSISTANT_REQUEST_REPLAY');
+      assert.equal((await f.request(f.learners[0], '/assistant')).body.remaining, 2);
+    }
+  }
+  assert.deepEqual(f.api.store.row('SELECT * FROM learning_assistant_settings WHERE learner_id=?', f.learners[0].account.id), before);
+  assert.equal(f.api.store.row('SELECT COUNT(*) AS n FROM learning_assistant_usage').n, 1);
+  assert.equal(f.api.store.row('SELECT requests FROM learning_assistant_usage').requests, 3);
+  assert.equal((await f.request(f.learners[0], '/assistant/ask', body(contexts[1]))).body.error, 'LEARNING_ASSISTANT_QUOTA');
+  assert.equal(f.calls.filter(call => call.url.endsWith('/ask')).length, 3);
+  const status = (await f.request(f.learners[0], '/assistant')).body;
+  assert.equal(status.profile.id, 'atanasyan-first-steps'); assert.equal(status.externalAvailable, false);
+});
+
+test('a companion answer carrying the primary course context or digest is withheld', async t => {
+  const { resolveCourseContext } = require('../assistant-course-context');
+  const courseContext = { courseId: 'ichenskaya-grade7-works', lessonId: 'ichenskaya-7-sr-01-v1-task-01', stepIndex: 0 };
+  const other = resolveCourseContext({ courseId: 'atanasyan-first-steps', lessonId: 'atanasyan-7-9-main-153-part-1', stepIndex: 0 });
+  let substitute = 'context';
+  const f = await fixture(t, { transport: async (url, options, next) => {
+    if (!url.endsWith('/ask')) return next(url, options);
+    const body = JSON.parse(options.body);
+    return jsonResponse({ ok: true, answer: { ...sampleAnswer(body.topic),
+      courseContext: substitute === 'context' ? other.courseContext : body.courseContext,
+      courseRevision: substitute === 'digest' ? other.courseRevision : body.courseRevision } });
+  } });
+  await f.configure(0, { profileId: 'atanasyan-first-steps' });
+  for (substitute of ['context', 'digest']) {
+    const result = await f.request(f.learners[0], '/assistant/ask', { requestId: uuid(), courseContext, mode: 'hint', hintLevel: 1, simpler: false });
+    assert.equal(result.status, 503); assert.equal(result.body.error, 'LEARNING_ASSISTANT_RESPONSE_INVALID');
+    assert.equal(result.body.answer, undefined);
+  }
 });
 
 test('source course remains subject to assessment and late permission revocation fences', async t => {

@@ -5,8 +5,8 @@
 const express = require('express');
 const crypto = require('node:crypto');
 const { LearningError, requireValue, exactKeys, tokenHash } = require('./learning-auth');
-const { COURSE_ID, resolveCourseContext } = require('./assistant-course-context');
-const PROFILE_IDS = ['oge-geometry', 'peterson-decimals', 'triangle-congruence', COURSE_ID];
+const { SOURCE_PROFILE_ID, resolveCourseContext } = require('./assistant-course-context');
+const PROFILE_IDS = ['oge-geometry', 'peterson-decimals', 'triangle-congruence', SOURCE_PROFILE_ID];
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const ID = /^[A-Za-z0-9_-]{12,80}$/;
 const DAY = 86400000, RETENTION = 30 * DAY, MAX_REQUESTS = 100000;
@@ -178,7 +178,7 @@ function createLearningAssistantRouter(learning, options = {}) {
     const remote = (teacher || initial?.enabled) ? await bridgeStatus() : null;
     recheck(req, id);
     const row = settings(id), count = used(id), profile = row ? profiles.get(row.profile_id) : null;
-    const externalAvailable = !!(config.enabled && config.external && remote?.externalEnabled && row?.profile_id !== COURSE_ID);
+    const externalAvailable = !!(config.enabled && config.external && remote?.externalEnabled && row?.profile_id !== SOURCE_PROFILE_ID);
     const enabled = !!(config.enabled && row?.enabled);
     return { ok: true, enabled, configuredEnabled: !!row?.enabled, available: !!config.enabled, profile: teacher || enabled ? clone(profile || null) : null,
       version: row?.version || 0, dailyLimit: row?.daily_limit || 10, used: count, remaining: Math.max(0,(row?.daily_limit || 10)-count),
@@ -202,7 +202,7 @@ function createLearningAssistantRouter(learning, options = {}) {
     requireValue(profiles.has(b.profileId) && typeof b.enabled === 'boolean' && Number.isInteger(b.dailyLimit) && b.dailyLimit >= 1 && b.dailyLimit <= 20
       && Number.isSafeInteger(b.version) && b.version >= 0 && (b.externalAllowed === undefined || typeof b.externalAllowed === 'boolean'), 'LEARNING_ASSISTANT_CONFIG_INVALID');
     const externalAllowed = b.externalAllowed === true;
-    requireValue(!externalAllowed || b.profileId !== COURSE_ID, 'LEARNING_ASSISTANT_COURSE_SOURCE_ONLY', 409);
+    requireValue(!externalAllowed || b.profileId !== SOURCE_PROFILE_ID, 'LEARNING_ASSISTANT_COURSE_SOURCE_ONLY', 409);
     if (externalAllowed) requireValue(config.external && (await bridgeStatus())?.externalEnabled, 'LEARNING_ASSISTANT_EXTERNAL_UNAVAILABLE', 409);
     recheck(req, req.params.id);
     store.transaction(() => {
@@ -242,14 +242,14 @@ function createLearningAssistantRouter(learning, options = {}) {
     const row = settings(id), profile = row && profiles.get(row.profile_id);
     requireValue(config.enabled && row?.enabled && profile, 'LEARNING_ASSISTANT_DISABLED', 403);
     requireValue(!examActive(id), 'LEARNING_RUN_ACTIVE', 409);
-    requireValue(fromCourse === (row.profile_id === COURSE_ID), 'LEARNING_ASSISTANT_TOPIC_INVALID');
+    requireValue(fromCourse === (row.profile_id === SOURCE_PROFILE_ID), 'LEARNING_ASSISTANT_TOPIC_INVALID');
     const course = fromCourse ? resolveCourseContext(b.courseContext) : null;
     const topic = course?.topic || b.topic;
     requireValue(profile.topics.some(t => t.id === topic), 'LEARNING_ASSISTANT_TOPIC_INVALID');
     const question = course?.question || mathText(b.question, 1000), attempt = mathText(b.attempt ?? '', 400, true);
     const context = fromCourse ? null : structuredContext(req.learningAuth, b.attemptId, row.profile_id);
     const externalConsent = b.externalConsent === true;
-    requireValue(!externalConsent || row.profile_id !== COURSE_ID, 'LEARNING_ASSISTANT_COURSE_SOURCE_ONLY', 409);
+    requireValue(!externalConsent || row.profile_id !== SOURCE_PROFILE_ID, 'LEARNING_ASSISTANT_COURSE_SOURCE_ONLY', 409);
     // Check synchronous config before any remote I/O or request reservation.
     requireValue(!externalConsent || (row.external_allowed && config.external), 'LEARNING_ASSISTANT_EXTERNAL_UNAVAILABLE', 409);
     cleanup();

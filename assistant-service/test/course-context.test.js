@@ -21,6 +21,9 @@ function request(context = contextFor(), extra = {}) {
 
 test('independent service packages the exact minimum projection of all 255 reviewed course cards', () => {
   const digest = createHash('sha256').update(raw).digest('hex');
+  assert.equal(digest, '551c433a5332dba52779e74f7e6f95289c3915bdc55da3f7c0ed71d0b7e651a3', 'Companion cannot widen or rewrite the primary course');
+  assert.equal(createHash('sha256').update(readFileSync(new URL('../knowledge/atanasyan-first-steps.json', import.meta.url))).digest('hex'),
+    '2b69a93b35d05dda1ae195cd5cf0ea2482dbd7064e82d7736750afcbdce024aa', 'Existing prepared source remains byte-identical');
   assert.equal(snapshot.courseSha256, digest);
   assert.deepEqual(snapshot, cabinet.projectCourse(course, digest));
   assert.equal(snapshot.lessons.filter(lesson => lesson.kind === 'exercise').length, 232);
@@ -28,6 +31,21 @@ test('independent service packages the exact minimum projection of all 255 revie
   assert.equal(new Set(snapshot.lessons.filter(lesson => lesson.kind === 'exercise').map(lesson => Number(lesson.source.exercise))).size, 160);
   assert.equal(Object.hasOwn(snapshot.lessons[0], 'visualization'), false);
   assert.equal(Object.hasOwn(snapshot.lessons[0], 'review'), false);
+});
+
+test('companion routing does not weaken the primary 255-card, namespace or review guards', () => {
+  const digest = createHash('sha256').update(raw).digest('hex');
+  for (const mutate of [
+    value => { value.lessons.pop(); },
+    value => { value.lessons = value.lessons.slice(0, 110); },
+    value => { value.lessons[0].id = 'ichenskaya-7-sr-01-v1-task-01'; },
+    value => { value.lessons[0].id = 'atanasyan-7-9-main-161-part-1'; },
+    value => { value.lessons[0].review.mathematics = 'pending'; },
+    value => { value.lessons[0].status = 'draft'; }
+  ]) {
+    const changed = structuredClone(course); mutate(changed);
+    assert.throws(() => cabinet.projectCourse(changed, digest));
+  }
 });
 
 test('both service boundaries resolve every valid step to the same authoritative condition and revision', () => {

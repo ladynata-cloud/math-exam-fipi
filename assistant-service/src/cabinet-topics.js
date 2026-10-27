@@ -1,6 +1,6 @@
 import { exactKeys, requireValue } from './errors.js';
 import { containsSensitiveText } from './privacy.js';
-import { COURSE_PROFILE, COURSE_TOPIC, prepareCourseQuestion, answerCourseOffline } from './course-context.js';
+import { COURSE_PROFILE, COURSE_TOPIC, ICHENSKAYA_TOPIC, prepareCourseQuestion, answerCourseOffline } from './course-context.js';
 
 // Original topic notes for three bounded cabinet profiles. No pupil identity,
 // account information, conversation history or textbook answer bank belongs here.
@@ -77,10 +77,14 @@ const rows = [
     ['Выпиши только то, что дано или уже доказано.', 'Составь пары соответствующих вершин по равным сторонам и углам.', 'Проверь, хватает ли данных для первого, второго или третьего признака.', 'Для первого признака нужен угол между двумя выбранными сторонами; для второго — углы при концах выбранной стороны.', 'Запиши равенство треугольников с согласованным порядком вершин и назови признак.'],
     'Поворот или отражение рисунка не меняет равенства фигур. Равенства трёх углов достаточно лишь для подобия, а не для равенства.']
 ];
-rows.push([COURSE_TOPIC, 'Подсказка к выбранной задаче курса', 'Как работать с подсказками к задачам курса?', '/geometry-course/first-steps/',
+rows.push([COURSE_TOPIC, 'Атанасян · подсказка к выбранной задаче', 'Как работать с подсказками к задачам курса?', '/geometry-course/first-steps/',
   'Открой курс от начала геометрии до элементарных построений, выбери номер и текущий шаг. Помощник возьмёт условие и пояснение из проверенной карточки курса.',
   ['Выбери номер задачи в своём курсе.', 'Прочитай условие целиком и рассмотри чертёж.', 'Попробуй выполнить текущий шаг.', 'Попроси подсказку к этому шагу; предыдущие записи сохранятся.', 'Полный разбор открывай отдельно. Твоё доказательство проверит преподаватель.'],
   'Открытие подсказки отмечается как помощь. Оно не подтверждает самостоятельное решение или правильность доказательства.']);
+rows.push([ICHENSKAYA_TOPIC, 'Иченская · подсказка к выбранной работе', 'Как разобрать задание самостоятельной или контрольной работы?', '/geometry-course/ichenskaya-7-works/',
+  'Выбери работу, вариант и номер задания. Помощник использует условие и проверенный разбор именно этой карточки.',
+  ['Проверь номер работы, вариант и задание.', 'Прочитай условие и найди данные на чертеже.', 'Попробуй обосновать текущий шаг.', 'Если нужно, попроси подсказку к этому шагу.', 'Полный разбор открывай отдельно. Рассуждение проверяет преподаватель.'],
+  'Это учебный разбор самостоятельных и контрольных работ. Открытая подсказка не означает независимое решение или выставленную оценку.']);
 const NOTES = new Map(rows.map(([id, title, example, url, explanation, steps, check]) => [id, {
   id, title, example, card: { id: `cabinet-${id}`, topic: id, title, explanation, steps, check,
     source: { label: 'Авторские объяснения MathExam по теме', url: SITE + url }, version: 1 }
@@ -96,8 +100,9 @@ const profiles = [
   { id: 'triangle-congruence', title: 'Атанасян · Признаки равенства треугольников', topicIds: rows.slice(13, 17).map(row => row[0]),
     links: [{ title: 'Курс к учебнику Атанасяна, 7–9 классы', url: CONGRUENCE },
       { title: 'Тренажёр по равенству треугольников', url: `${SITE}/trainers/atanasyan-7-9.html` }] },
-  { id: COURSE_PROFILE, title: 'Атанасян · От начала до элементарных построений', topicIds: [COURSE_TOPIC],
-    links: [{ title: 'Курс к учебнику · задачи 1–160', url: `${SITE}/geometry-course/first-steps/` }] }
+  { id: COURSE_PROFILE, title: '7 класс · Атанасян и Иченская', topicIds: [COURSE_TOPIC, ICHENSKAYA_TOPIC],
+    links: [{ title: 'Атанасян · задачи 1–160', url: `${SITE}/geometry-course/first-steps/` },
+      { title: 'Иченская · самостоятельные и контрольные', url: `${SITE}/geometry-course/ichenskaya-7-works/` }] }
 ];
 const PROFILE_MAP = new Map(profiles.map(profile => [profile.id, profile]));
 const clone = value => structuredClone(value);
@@ -363,7 +368,8 @@ const conceptTerms = {
   'congruence-asa': /треуголь|признак|сторон|угл/,
   'congruence-sss': /треуголь|признак|сторон|угл/,
   'congruence-match': /треуголь|признак|вершин|соответств|сторон|угл/,
-  'atanasyan-course-step': /курс|задач|подсказ|шаг/
+  'atanasyan-course-step': /курс|задач|подсказ|шаг/,
+  'ichenskaya-course-step': /работ|вариант|задан|курс|подсказ|шаг/
 };
 
 const shorterGeometry = {

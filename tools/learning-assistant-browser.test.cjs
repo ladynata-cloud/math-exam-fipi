@@ -60,7 +60,8 @@ const server = http.createServer(async (req, res) => {
           const value = makeAnswer(body.courseContext ? 'course-task' : currentTask ? 'current-task' : 'entered');
           if (body.courseContext) {
             value.courseContext = clone(body.courseContext);
-            value.answer.topic = 'atanasyan-course-step'; value.answer.title = 'Подсказка к выбранному шагу';
+            value.answer.topic = body.courseContext.courseId === 'ichenskaya-grade7-works' ? 'ichenskaya-course-step' : 'atanasyan-course-step';
+            value.answer.title = 'Подсказка к выбранному шагу';
           }
           return value;
         };
@@ -233,12 +234,14 @@ async function until(predicate, message) { for (let i = 0; i < 300; i++) { if (p
 
     fixtureStatus = { ...status(), profile: clone(courseProfile) };
     const beforeCourseHome = calls.filter(call => call.path === '/assistant/ask').length;
-    await mount(); await page.locator('[data-assistant-open-course]').waitFor();
-    assert.equal(await page.locator('[data-assistant-open-course]').getAttribute('href'), '#atanasyan-course');
+    await mount(); await page.locator('[data-assistant-open-course]').first().waitFor();
+    assert.equal(await page.locator('[data-assistant-open-course]').count(), 2);
+    assert.equal(await page.locator('[data-assistant-open-course="atanasyan-first-steps"]').getAttribute('href'), '#atanasyan-course');
+    assert.equal(await page.locator('[data-assistant-open-course="ichenskaya-grade7-works"]').getAttribute('href'), '#ichenskaya-course');
     assert.equal(await page.locator('[name=assistant-question]').count(), 0);
     assert.equal(await page.getByRole('button', { name: 'Хочу подсказку', exact: true }).count(), 0);
     assert.equal(calls.filter(call => call.path === '/assistant/ask').length, beforeCourseHome);
-    check.push('course-profile cabinet home opens the native course without offering an invalid manual-question form');
+    check.push('one source-profile cabinet home opens both native courses without a manual-question form or profile switch');
 
     fixtureStatus = { ...status(), profile: clone(courseProfile) };
     await mount('student', { courseContext, courseTaskLabel: 'Задача 153', courseTaskPrompt: 'На прямой даны точки A и B.' });
@@ -291,6 +294,33 @@ async function until(predicate, message) { for (let i = 0; i < 300; i++) { if (p
     assert.equal(await page.locator('[data-assistant-answer]').count(), 0, 'A reply cannot move to another course task');
     await page.evaluate(() => closeAssistant());
     check.push('source-course task identity fences reject a stale reply without moving it to the next exercise');
+
+    const companionContext = { courseId: 'ichenskaya-grade7-works', lessonId: 'ichenskaya-7-sr-01-v1-task-01', stepIndex: 0 };
+    fixtureStatus = { ...status(), profile: clone(courseProfile) };
+    const priorSettings = calls.filter(call => call.path.endsWith('/assistant') && call.method === 'POST').length;
+    await mount('student', { courseContext: companionContext, courseTaskLabel: 'С-1 · вариант 1 · задача 1' });
+    await page.locator('[data-assistant-course-task]').waitFor();
+    assert.equal(await page.locator('[name=assistant-question]').count(), 0);
+    assert.equal(await page.locator('[name=assistant-external-consent]').count(), 0);
+    await page.getByRole('button', { name: 'Хочу подсказку', exact: true }).click();
+    await page.locator('[data-assistant-answer]').waitFor();
+    assert.deepEqual(calls.filter(call => call.path === '/assistant/ask').at(-1).body.courseContext, companionContext);
+    assert.equal(await page.locator('.cabinet-assistant-question').textContent(), 'С-1 · вариант 1 · задача 1 · шаг 1');
+    assert.equal(calls.filter(call => call.path.endsWith('/assistant') && call.method === 'POST').length, priorSettings);
+    check.push('the companion uses the same saved source profile, task-specific label and no external or free-text form');
+
+    for (const [initial, next] of [[courseContext, companionContext], [companionContext, courseContext]]) {
+      fixtureStatus = { ...status(), profile: clone(courseProfile) }; delayNext = true;
+      await mount('student', { courseContext: initial, courseTaskLabel: 'Исходная задача' });
+      await page.getByRole('button', { name: 'Хочу подсказку', exact: true }).click();
+      await until(() => held, 'Delayed cross-course request did not start');
+      await page.evaluate(next => { window.fixtureCourse = next; }, next);
+      held(); held = null;
+      await page.waitForLoadState('networkidle');
+      assert.equal(await page.locator('[data-assistant-answer]').count(), 0, 'An older answer cannot cross either course boundary');
+      await page.evaluate(() => closeAssistant());
+    }
+    check.push('late responses cannot cross primary-to-companion or companion-to-primary navigation');
     await page.setViewportSize({ width: 1440, height: 1000 });
 
     fixtureStatus = status(); delayNext = true;

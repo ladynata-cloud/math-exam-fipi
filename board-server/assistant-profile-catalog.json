@@ -166,18 +166,27 @@
   },
   {
     "id": "atanasyan-first-steps",
-    "title": "Атанасян · От начала до элементарных построений",
+    "title": "7 класс · Атанасян и Иченская",
     "links": [
       {
-        "title": "Курс к учебнику · задачи 1–160",
+        "title": "Атанасян · задачи 1–160",
         "url": "https://mathexam.space/geometry-course/first-steps/"
+      },
+      {
+        "title": "Иченская · самостоятельные и контрольные",
+        "url": "https://mathexam.space/geometry-course/ichenskaya-7-works/"
       }
     ],
     "topics": [
       {
         "id": "atanasyan-course-step",
-        "title": "Подсказка к выбранной задаче курса",
+        "title": "Атанасян · подсказка к выбранной задаче",
         "example": "Как работать с подсказками к задачам курса?"
+      },
+      {
+        "id": "ichenskaya-course-step",
+        "title": "Иченская · подсказка к выбранной работе",
+        "example": "Как разобрать задание самостоятельной или контрольной работы?"
       }
     ]
   }

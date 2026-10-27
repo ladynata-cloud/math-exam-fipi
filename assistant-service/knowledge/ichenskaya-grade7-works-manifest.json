@@ -1,0 +1,4773 @@
+{
+  "schemaVersion": 1,
+  "courseId": "ichenskaya-grade7-works",
+  "book": {
+    "id": "ichenskaya-2018-geometry-7",
+    "title": "Геометрия. Самостоятельные и контрольные работы. 7 класс",
+    "author": "М. А. Иченская",
+    "authorFullName": "Мира Александровна Иченская",
+    "publisher": "Просвещение",
+    "place": "Москва",
+    "year": 2018,
+    "isbn": "978-5-09-037118-6",
+    "editionNumber": null,
+    "editionNote": "На видимых титульном листе и обороте номер издания не указан."
+  },
+  "source": {
+    "sha256": "f3124410a12eeb8cb79a7282d63b3dc0b106871dc74ded526788ddaee23d877e",
+    "bytes": 388335,
+    "pdfPageCount": 28,
+    "printedPageCount": 48,
+    "hasTextLayer": false,
+    "inventoryMethod": "Визуально проверены все 28 отсканированных страниц; номера работ, вариантов и задач сверены с авторской таблицей на печатной странице 45.",
+    "absentPrintedPages": [
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20,
+      22,
+      24,
+      26,
+      28,
+      30,
+      32,
+      34,
+      36,
+      38,
+      40,
+      42,
+      44
+    ],
+    "omissionNote": "В PDF отсутствуют чётные печатные страницы 4–44. Все 17 самостоятельных и 6 контрольных работ представлены с обоими вариантами и непрерывной нумерацией задач. Считать отсутствующие страницы пустыми по этому файлу нельзя.",
+    "pdfAssetPublished": false,
+    "allocationTable": {
+      "pdfPage": 25,
+      "printedPage": 45
+    },
+    "answerKey": {
+      "pdfPage": 26,
+      "printedPage": 46
+    }
+  },
+  "counts": {
+    "works": 23,
+    "independentWorks": 17,
+    "testWorks": 6,
+    "variants": 46,
+    "cards": 110,
+    "independentTasks": 74,
+    "testTasks": 36,
+    "withinPrimaryScope": 54,
+    "beyondPrimaryScope": 56,
+    "explicitLetterSubtasksIfSplit": 120,
+    "sourceDiagramTasks": 24
+  },
+  "boundaries": {
+    "mainCourseId": "atanasyan-first-steps",
+    "withinPrimaryScope": {
+      "independentWorks": [
+        1,
+        10
+      ],
+      "testWorks": [
+        1,
+        2
+      ],
+      "textbookPoints": [
+        1,
+        23
+      ],
+      "cards": 54,
+      "note": "Граница определяется авторской таблицей. В С-9, вариант 2, задача 1 отдельно отмечена дополнительная формула суммы углов треугольника из пункта 30."
+    },
+    "beyondPrimaryScope": {
+      "independentWorks": [
+        11,
+        17
+      ],
+      "testWorks": [
+        3,
+        6
+      ],
+      "textbookPoints": [
+        24,
+        38
+      ],
+      "cards": 56,
+      "note": "Самостоятельная 17 и контрольная 6 повторяют пункты 1–38 целиком."
+    },
+    "completeVisibleIndependentAndTestWorks": true,
+    "completePrintedBookScan": false
+  },
+  "finalExam": {
+    "included": false,
+    "reason": "Отдельный раздел «Итоговый зачёт» не входит в запрошенный курс самостоятельных и контрольных работ.",
+    "cards": 21,
+    "numberedPrompts": 63,
+    "theoryOrConstructionPrompts": 42,
+    "applicationTasks": 21,
+    "pdfPages": [
+      19,
+      20,
+      21,
+      22,
+      23,
+      24
+    ],
+    "printedPages": [
+      33,
+      35,
+      37,
+      39,
+      41,
+      43
+    ]
+  },
+  "works": [
+    {
+      "id": "ichenskaya-7-sr-01",
+      "collection": "sr",
+      "work": 1,
+      "title": "Точки, прямые, отрезки",
+      "textbookPointSpan": [
+        1,
+        2
+      ],
+      "withinPrimaryScope": true,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 2,
+        "2": 2
+      },
+      "pdfPages": [
+        4
+      ],
+      "printedPages": [
+        3
+      ],
+      "lessonIds": [
+        "ichenskaya-7-sr-01-v1-task-01",
+        "ichenskaya-7-sr-01-v1-task-02",
+        "ichenskaya-7-sr-01-v2-task-01",
+        "ichenskaya-7-sr-01-v2-task-02"
+      ]
+    },
+    {
+      "id": "ichenskaya-7-sr-02",
+      "collection": "sr",
+      "work": 2,
+      "title": "Луч и угол",
+      "textbookPointSpan": [
+        3,
+        4
+      ],
+      "withinPrimaryScope": true,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 2,
+        "2": 2
+      },
+      "pdfPages": [
+        4,
+        5
+      ],
+      "printedPages": [
+        3,
+        5
+      ],
+      "lessonIds": [
+        "ichenskaya-7-sr-02-v1-task-01",
+        "ichenskaya-7-sr-02-v1-task-02",
+        "ichenskaya-7-sr-02-v2-task-01",
+        "ichenskaya-7-sr-02-v2-task-02"
+      ]
+    },
+    {
+      "id": "ichenskaya-7-sr-03",
+      "collection": "sr",
+      "work": 3,
+      "title": "Сравнение отрезков и углов",
+      "textbookPointSpan": [
+        5,
+        6
+      ],
+      "withinPrimaryScope": true,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 2,
+        "2": 2
+      },
+      "pdfPages": [
+        5
+      ],
+      "printedPages": [
+        5
+      ],
+      "lessonIds": [
+        "ichenskaya-7-sr-03-v1-task-01",
+        "ichenskaya-7-sr-03-v1-task-02",
+        "ichenskaya-7-sr-03-v2-task-01",
+        "ichenskaya-7-sr-03-v2-task-02"
+      ]
+    },
+    {
+      "id": "ichenskaya-7-sr-04",
+      "collection": "sr",
+      "work": 4,
+      "title": "Измерение отрезков",
+      "textbookPointSpan": [
+        7,
+        8
+      ],
+      "withinPrimaryScope": true,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 3,
+        "2": 3
+      },
+      "pdfPages": [
+        6
+      ],
+      "printedPages": [
+        7
+      ],
+      "lessonIds": [
+        "ichenskaya-7-sr-04-v1-task-01",
+        "ichenskaya-7-sr-04-v1-task-02",
+        "ichenskaya-7-sr-04-v1-task-03",
+        "ichenskaya-7-sr-04-v2-task-01",
+        "ichenskaya-7-sr-04-v2-task-02",
+        "ichenskaya-7-sr-04-v2-task-03"
+      ]
+    },
+    {
+      "id": "ichenskaya-7-sr-05",
+      "collection": "sr",
+      "work": 5,
+      "title": "Измерение углов",
+      "textbookPointSpan": [
+        9,
+        10
+      ],
+      "withinPrimaryScope": true,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 2,
+        "2": 2
+      },
+      "pdfPages": [
+        6
+      ],
+      "printedPages": [
+        7
+      ],
+      "lessonIds": [
+        "ichenskaya-7-sr-05-v1-task-01",
+        "ichenskaya-7-sr-05-v1-task-02",
+        "ichenskaya-7-sr-05-v2-task-01",
+        "ichenskaya-7-sr-05-v2-task-02"
+      ]
+    },
+    {
+      "id": "ichenskaya-7-sr-06",
+      "collection": "sr",
+      "work": 6,
+      "title": "Перпендикулярные прямые. Смежные и вертикальные углы",
+      "textbookPointSpan": [
+        11,
+        13
+      ],
+      "withinPrimaryScope": true,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 2,
+        "2": 2
+      },
+      "pdfPages": [
+        7
+      ],
+      "printedPages": [
+        9
+      ],
+      "lessonIds": [
+        "ichenskaya-7-sr-06-v1-task-01",
+        "ichenskaya-7-sr-06-v1-task-02",
+        "ichenskaya-7-sr-06-v2-task-01",
+        "ichenskaya-7-sr-06-v2-task-02"
+      ]
+    },
+    {
+      "id": "ichenskaya-7-sr-07",
+      "collection": "sr",
+      "work": 7,
+      "title": "Первый признак равенства треугольников",
+      "textbookPointSpan": [
+        14,
+        15
+      ],
+      "withinPrimaryScope": true,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 2,
+        "2": 2
+      },
+      "pdfPages": [
+        7,
+        8
+      ],
+      "printedPages": [
+        9,
+        11
+      ],
+      "lessonIds": [
+        "ichenskaya-7-sr-07-v1-task-01",
+        "ichenskaya-7-sr-07-v1-task-02",
+        "ichenskaya-7-sr-07-v2-task-01",
+        "ichenskaya-7-sr-07-v2-task-02"
+      ]
+    },
+    {
+      "id": "ichenskaya-7-sr-08",
+      "collection": "sr",
+      "work": 8,
+      "title": "Медианы, биссектрисы и высоты треугольника",
+      "textbookPointSpan": [
+        16,
+        18
+      ],
+      "withinPrimaryScope": true,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 2,
+        "2": 2
+      },
+      "pdfPages": [
+        8,
+        9
+      ],
+      "printedPages": [
+        11,
+        13
+      ],
+      "lessonIds": [
+        "ichenskaya-7-sr-08-v1-task-01",
+        "ichenskaya-7-sr-08-v1-task-02",
+        "ichenskaya-7-sr-08-v2-task-01",
+        "ichenskaya-7-sr-08-v2-task-02"
+      ]
+    },
+    {
+      "id": "ichenskaya-7-sr-09",
+      "collection": "sr",
+      "work": 9,
+      "title": "Второй и третий признаки равенства треугольников",
+      "textbookPointSpan": [
+        19,
+        20
+      ],
+      "withinPrimaryScope": true,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 2,
+        "2": 2
+      },
+      "pdfPages": [
+        9
+      ],
+      "printedPages": [
+        13
+      ],
+      "lessonIds": [
+        "ichenskaya-7-sr-09-v1-task-01",
+        "ichenskaya-7-sr-09-v1-task-02",
+        "ichenskaya-7-sr-09-v2-task-01",
+        "ichenskaya-7-sr-09-v2-task-02"
+      ]
+    },
+    {
+      "id": "ichenskaya-7-sr-10",
+      "collection": "sr",
+      "work": 10,
+      "title": "Задачи на построение",
+      "textbookPointSpan": [
+        21,
+        23
+      ],
+      "withinPrimaryScope": true,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 2,
+        "2": 2
+      },
+      "pdfPages": [
+        10
+      ],
+      "printedPages": [
+        15
+      ],
+      "lessonIds": [
+        "ichenskaya-7-sr-10-v1-task-01",
+        "ichenskaya-7-sr-10-v1-task-02",
+        "ichenskaya-7-sr-10-v2-task-01",
+        "ichenskaya-7-sr-10-v2-task-02"
+      ]
+    },
+    {
+      "id": "ichenskaya-7-sr-11",
+      "collection": "sr",
+      "work": 11,
+      "title": "Признаки параллельности двух прямых",
+      "textbookPointSpan": [
+        24,
+        26
+      ],
+      "withinPrimaryScope": false,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 2,
+        "2": 2
+      },
+      "pdfPages": [
+        10,
+        11
+      ],
+      "printedPages": [
+        15,
+        17
+      ],
+      "lessonIds": [
+        "ichenskaya-7-sr-11-v1-task-01",
+        "ichenskaya-7-sr-11-v1-task-02",
+        "ichenskaya-7-sr-11-v2-task-01",
+        "ichenskaya-7-sr-11-v2-task-02"
+      ]
+    },
+    {
+      "id": "ichenskaya-7-sr-12",
+      "collection": "sr",
+      "work": 12,
+      "title": "Аксиома параллельных прямых",
+      "textbookPointSpan": [
+        27,
+        29
+      ],
+      "withinPrimaryScope": false,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 2,
+        "2": 2
+      },
+      "pdfPages": [
+        11,
+        12
+      ],
+      "printedPages": [
+        17,
+        19
+      ],
+      "lessonIds": [
+        "ichenskaya-7-sr-12-v1-task-01",
+        "ichenskaya-7-sr-12-v1-task-02",
+        "ichenskaya-7-sr-12-v2-task-01",
+        "ichenskaya-7-sr-12-v2-task-02"
+      ]
+    },
+    {
+      "id": "ichenskaya-7-sr-13",
+      "collection": "sr",
+      "work": 13,
+      "title": "Сумма углов треугольника",
+      "textbookPointSpan": [
+        30,
+        31
+      ],
+      "withinPrimaryScope": false,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 3,
+        "2": 3
+      },
+      "pdfPages": [
+        12
+      ],
+      "printedPages": [
+        19
+      ],
+      "lessonIds": [
+        "ichenskaya-7-sr-13-v1-task-01",
+        "ichenskaya-7-sr-13-v1-task-02",
+        "ichenskaya-7-sr-13-v1-task-03",
+        "ichenskaya-7-sr-13-v2-task-01",
+        "ichenskaya-7-sr-13-v2-task-02",
+        "ichenskaya-7-sr-13-v2-task-03"
+      ]
+    },
+    {
+      "id": "ichenskaya-7-sr-14",
+      "collection": "sr",
+      "work": 14,
+      "title": "Соотношения между сторонами и углами треугольника",
+      "textbookPointSpan": [
+        32,
+        33
+      ],
+      "withinPrimaryScope": false,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 2,
+        "2": 2
+      },
+      "pdfPages": [
+        12,
+        13
+      ],
+      "printedPages": [
+        19,
+        21
+      ],
+      "lessonIds": [
+        "ichenskaya-7-sr-14-v1-task-01",
+        "ichenskaya-7-sr-14-v1-task-02",
+        "ichenskaya-7-sr-14-v2-task-01",
+        "ichenskaya-7-sr-14-v2-task-02"
+      ]
+    },
+    {
+      "id": "ichenskaya-7-sr-15",
+      "collection": "sr",
+      "work": 15,
+      "title": "Прямоугольные треугольники",
+      "textbookPointSpan": [
+        34,
+        36
+      ],
+      "withinPrimaryScope": false,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 2,
+        "2": 2
+      },
+      "pdfPages": [
+        13
+      ],
+      "printedPages": [
+        21
+      ],
+      "lessonIds": [
+        "ichenskaya-7-sr-15-v1-task-01",
+        "ichenskaya-7-sr-15-v1-task-02",
+        "ichenskaya-7-sr-15-v2-task-01",
+        "ichenskaya-7-sr-15-v2-task-02"
+      ]
+    },
+    {
+      "id": "ichenskaya-7-sr-16",
+      "collection": "sr",
+      "work": 16,
+      "title": "Построение треугольника по трём элементам",
+      "textbookPointSpan": [
+        37,
+        38
+      ],
+      "withinPrimaryScope": false,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 2,
+        "2": 2
+      },
+      "pdfPages": [
+        13
+      ],
+      "printedPages": [
+        21
+      ],
+      "lessonIds": [
+        "ichenskaya-7-sr-16-v1-task-01",
+        "ichenskaya-7-sr-16-v1-task-02",
+        "ichenskaya-7-sr-16-v2-task-01",
+        "ichenskaya-7-sr-16-v2-task-02"
+      ]
+    },
+    {
+      "id": "ichenskaya-7-sr-17",
+      "collection": "sr",
+      "work": 17,
+      "title": "Решение задач",
+      "textbookPointSpan": [
+        1,
+        38
+      ],
+      "withinPrimaryScope": false,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 3,
+        "2": 3
+      },
+      "pdfPages": [
+        14
+      ],
+      "printedPages": [
+        23
+      ],
+      "lessonIds": [
+        "ichenskaya-7-sr-17-v1-task-01",
+        "ichenskaya-7-sr-17-v1-task-02",
+        "ichenskaya-7-sr-17-v1-task-03",
+        "ichenskaya-7-sr-17-v2-task-01",
+        "ichenskaya-7-sr-17-v2-task-02",
+        "ichenskaya-7-sr-17-v2-task-03"
+      ]
+    },
+    {
+      "id": "ichenskaya-7-kr-01",
+      "collection": "kr",
+      "work": 1,
+      "title": "Контрольная работа № 1",
+      "textbookPointSpan": [
+        1,
+        13
+      ],
+      "withinPrimaryScope": true,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 3,
+        "2": 3
+      },
+      "pdfPages": [
+        15
+      ],
+      "printedPages": [
+        25
+      ],
+      "lessonIds": [
+        "ichenskaya-7-kr-01-v1-task-01",
+        "ichenskaya-7-kr-01-v1-task-02",
+        "ichenskaya-7-kr-01-v1-task-03",
+        "ichenskaya-7-kr-01-v2-task-01",
+        "ichenskaya-7-kr-01-v2-task-02",
+        "ichenskaya-7-kr-01-v2-task-03"
+      ]
+    },
+    {
+      "id": "ichenskaya-7-kr-02",
+      "collection": "kr",
+      "work": 2,
+      "title": "Контрольная работа № 2",
+      "textbookPointSpan": [
+        14,
+        23
+      ],
+      "withinPrimaryScope": true,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 3,
+        "2": 3
+      },
+      "pdfPages": [
+        15,
+        16
+      ],
+      "printedPages": [
+        25,
+        27
+      ],
+      "lessonIds": [
+        "ichenskaya-7-kr-02-v1-task-01",
+        "ichenskaya-7-kr-02-v1-task-02",
+        "ichenskaya-7-kr-02-v1-task-03",
+        "ichenskaya-7-kr-02-v2-task-01",
+        "ichenskaya-7-kr-02-v2-task-02",
+        "ichenskaya-7-kr-02-v2-task-03"
+      ]
+    },
+    {
+      "id": "ichenskaya-7-kr-03",
+      "collection": "kr",
+      "work": 3,
+      "title": "Контрольная работа № 3",
+      "textbookPointSpan": [
+        24,
+        29
+      ],
+      "withinPrimaryScope": false,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 2,
+        "2": 2
+      },
+      "pdfPages": [
+        16
+      ],
+      "printedPages": [
+        27
+      ],
+      "lessonIds": [
+        "ichenskaya-7-kr-03-v1-task-01",
+        "ichenskaya-7-kr-03-v1-task-02",
+        "ichenskaya-7-kr-03-v2-task-01",
+        "ichenskaya-7-kr-03-v2-task-02"
+      ]
+    },
+    {
+      "id": "ichenskaya-7-kr-04",
+      "collection": "kr",
+      "work": 4,
+      "title": "Контрольная работа № 4",
+      "textbookPointSpan": [
+        30,
+        33
+      ],
+      "withinPrimaryScope": false,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 3,
+        "2": 3
+      },
+      "pdfPages": [
+        17
+      ],
+      "printedPages": [
+        29
+      ],
+      "lessonIds": [
+        "ichenskaya-7-kr-04-v1-task-01",
+        "ichenskaya-7-kr-04-v1-task-02",
+        "ichenskaya-7-kr-04-v1-task-03",
+        "ichenskaya-7-kr-04-v2-task-01",
+        "ichenskaya-7-kr-04-v2-task-02",
+        "ichenskaya-7-kr-04-v2-task-03"
+      ]
+    },
+    {
+      "id": "ichenskaya-7-kr-05",
+      "collection": "kr",
+      "work": 5,
+      "title": "Контрольная работа № 5",
+      "textbookPointSpan": [
+        34,
+        38
+      ],
+      "withinPrimaryScope": false,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 3,
+        "2": 3
+      },
+      "pdfPages": [
+        17,
+        18
+      ],
+      "printedPages": [
+        29,
+        31
+      ],
+      "lessonIds": [
+        "ichenskaya-7-kr-05-v1-task-01",
+        "ichenskaya-7-kr-05-v1-task-02",
+        "ichenskaya-7-kr-05-v1-task-03",
+        "ichenskaya-7-kr-05-v2-task-01",
+        "ichenskaya-7-kr-05-v2-task-02",
+        "ichenskaya-7-kr-05-v2-task-03"
+      ]
+    },
+    {
+      "id": "ichenskaya-7-kr-06",
+      "collection": "kr",
+      "work": 6,
+      "title": "Итоговая контрольная работа № 6",
+      "textbookPointSpan": [
+        1,
+        38
+      ],
+      "withinPrimaryScope": false,
+      "variants": [
+        1,
+        2
+      ],
+      "tasksPerVariant": {
+        "1": 4,
+        "2": 4
+      },
+      "pdfPages": [
+        18
+      ],
+      "printedPages": [
+        31
+      ],
+      "lessonIds": [
+        "ichenskaya-7-kr-06-v1-task-01",
+        "ichenskaya-7-kr-06-v1-task-02",
+        "ichenskaya-7-kr-06-v1-task-03",
+        "ichenskaya-7-kr-06-v1-task-04",
+        "ichenskaya-7-kr-06-v2-task-01",
+        "ichenskaya-7-kr-06-v2-task-02",
+        "ichenskaya-7-kr-06-v2-task-03",
+        "ichenskaya-7-kr-06-v2-task-04"
+      ]
+    }
+  ],
+  "entries": [
+    {
+      "id": "ichenskaya-7-sr-01-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 1,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          3
+        ],
+        "pdfPages": [
+          4
+        ]
+      },
+      "title": "С-1 · вариант 1 · задача 1",
+      "workTitle": "Точки, прямые, отрезки",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        1,
+        2
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-01-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 1,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          3
+        ],
+        "pdfPages": [
+          4
+        ]
+      },
+      "title": "С-1 · вариант 1 · задача 2",
+      "workTitle": "Точки, прямые, отрезки",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        1,
+        2
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-01-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 1,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          3
+        ],
+        "pdfPages": [
+          4
+        ]
+      },
+      "title": "С-1 · вариант 2 · задача 1",
+      "workTitle": "Точки, прямые, отрезки",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        1,
+        2
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-01-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 1,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          3
+        ],
+        "pdfPages": [
+          4
+        ]
+      },
+      "title": "С-1 · вариант 2 · задача 2",
+      "workTitle": "Точки, прямые, отрезки",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        1,
+        2
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-02-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 2,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          3
+        ],
+        "pdfPages": [
+          4
+        ]
+      },
+      "title": "С-2 · вариант 1 · задача 1",
+      "workTitle": "Луч и угол",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        3,
+        4
+      ],
+      "explicitLetterSubparts": [
+        "а",
+        "б"
+      ],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-sr-02-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 2,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          3
+        ],
+        "pdfPages": [
+          4
+        ]
+      },
+      "title": "С-2 · вариант 1 · задача 2",
+      "workTitle": "Луч и угол",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        3,
+        4
+      ],
+      "explicitLetterSubparts": [
+        "а",
+        "б"
+      ],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-sr-02-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 2,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          5
+        ],
+        "pdfPages": [
+          5
+        ]
+      },
+      "title": "С-2 · вариант 2 · задача 1",
+      "workTitle": "Луч и угол",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        3,
+        4
+      ],
+      "explicitLetterSubparts": [
+        "а",
+        "б"
+      ],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-sr-02-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 2,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          5
+        ],
+        "pdfPages": [
+          5
+        ]
+      },
+      "title": "С-2 · вариант 2 · задача 2",
+      "workTitle": "Луч и угол",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        3,
+        4
+      ],
+      "explicitLetterSubparts": [
+        "а",
+        "б"
+      ],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-sr-03-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 3,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          5
+        ],
+        "pdfPages": [
+          5
+        ]
+      },
+      "title": "С-3 · вариант 1 · задача 1",
+      "workTitle": "Сравнение отрезков и углов",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        5,
+        6
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-03-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 3,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          5
+        ],
+        "pdfPages": [
+          5
+        ]
+      },
+      "title": "С-3 · вариант 1 · задача 2",
+      "workTitle": "Сравнение отрезков и углов",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        5,
+        6
+      ],
+      "explicitLetterSubparts": [
+        "а",
+        "б"
+      ],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-03-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 3,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          5
+        ],
+        "pdfPages": [
+          5
+        ]
+      },
+      "title": "С-3 · вариант 2 · задача 1",
+      "workTitle": "Сравнение отрезков и углов",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        5,
+        6
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-03-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 3,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          5
+        ],
+        "pdfPages": [
+          5
+        ]
+      },
+      "title": "С-3 · вариант 2 · задача 2",
+      "workTitle": "Сравнение отрезков и углов",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        5,
+        6
+      ],
+      "explicitLetterSubparts": [
+        "а",
+        "б"
+      ],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-04-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 4,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          7
+        ],
+        "pdfPages": [
+          6
+        ]
+      },
+      "title": "С-4 · вариант 1 · задача 1",
+      "workTitle": "Измерение отрезков",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        7,
+        8
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-04-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 4,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          7
+        ],
+        "pdfPages": [
+          6
+        ]
+      },
+      "title": "С-4 · вариант 1 · задача 2",
+      "workTitle": "Измерение отрезков",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        7,
+        8
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-04-v1-task-03",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 4,
+        "variant": 1,
+        "exercise": "3",
+        "printedPages": [
+          7
+        ],
+        "pdfPages": [
+          6
+        ]
+      },
+      "title": "С-4 · вариант 1 · задача 3",
+      "workTitle": "Измерение отрезков",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        7,
+        8
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-04-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 4,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          7
+        ],
+        "pdfPages": [
+          6
+        ]
+      },
+      "title": "С-4 · вариант 2 · задача 1",
+      "workTitle": "Измерение отрезков",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        7,
+        8
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-04-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 4,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          7
+        ],
+        "pdfPages": [
+          6
+        ]
+      },
+      "title": "С-4 · вариант 2 · задача 2",
+      "workTitle": "Измерение отрезков",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        7,
+        8
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-04-v2-task-03",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 4,
+        "variant": 2,
+        "exercise": "3",
+        "printedPages": [
+          7
+        ],
+        "pdfPages": [
+          6
+        ]
+      },
+      "title": "С-4 · вариант 2 · задача 3",
+      "workTitle": "Измерение отрезков",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        7,
+        8
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-05-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 5,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          7
+        ],
+        "pdfPages": [
+          6
+        ]
+      },
+      "title": "С-5 · вариант 1 · задача 1",
+      "workTitle": "Измерение углов",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        9,
+        10
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-05-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 5,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          7
+        ],
+        "pdfPages": [
+          6
+        ]
+      },
+      "title": "С-5 · вариант 1 · задача 2",
+      "workTitle": "Измерение углов",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        9,
+        10
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-05-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 5,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          7
+        ],
+        "pdfPages": [
+          6
+        ]
+      },
+      "title": "С-5 · вариант 2 · задача 1",
+      "workTitle": "Измерение углов",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        9,
+        10
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-05-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 5,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          7
+        ],
+        "pdfPages": [
+          6
+        ]
+      },
+      "title": "С-5 · вариант 2 · задача 2",
+      "workTitle": "Измерение углов",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        9,
+        10
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-06-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 6,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          9
+        ],
+        "pdfPages": [
+          7
+        ]
+      },
+      "title": "С-6 · вариант 1 · задача 1",
+      "workTitle": "Перпендикулярные прямые. Смежные и вертикальные углы",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        11,
+        13
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-06-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 6,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          9
+        ],
+        "pdfPages": [
+          7
+        ]
+      },
+      "title": "С-6 · вариант 1 · задача 2",
+      "workTitle": "Перпендикулярные прямые. Смежные и вертикальные углы",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        11,
+        13
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-06-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 6,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          9
+        ],
+        "pdfPages": [
+          7
+        ]
+      },
+      "title": "С-6 · вариант 2 · задача 1",
+      "workTitle": "Перпендикулярные прямые. Смежные и вертикальные углы",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        11,
+        13
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-06-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 6,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          9
+        ],
+        "pdfPages": [
+          7
+        ]
+      },
+      "title": "С-6 · вариант 2 · задача 2",
+      "workTitle": "Перпендикулярные прямые. Смежные и вертикальные углы",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        11,
+        13
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-07-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 7,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          9
+        ],
+        "pdfPages": [
+          7
+        ]
+      },
+      "title": "С-7 · вариант 1 · задача 1",
+      "workTitle": "Первый признак равенства треугольников",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        14,
+        15
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-sr-07-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 7,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          9
+        ],
+        "pdfPages": [
+          7
+        ]
+      },
+      "title": "С-7 · вариант 1 · задача 2",
+      "workTitle": "Первый признак равенства треугольников",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        14,
+        15
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-sr-07-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 7,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          11
+        ],
+        "pdfPages": [
+          8
+        ]
+      },
+      "title": "С-7 · вариант 2 · задача 1",
+      "workTitle": "Первый признак равенства треугольников",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        14,
+        15
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-sr-07-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 7,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          11
+        ],
+        "pdfPages": [
+          8
+        ]
+      },
+      "title": "С-7 · вариант 2 · задача 2",
+      "workTitle": "Первый признак равенства треугольников",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        14,
+        15
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-sr-08-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 8,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          11
+        ],
+        "pdfPages": [
+          8
+        ]
+      },
+      "title": "С-8 · вариант 1 · задача 1",
+      "workTitle": "Медианы, биссектрисы и высоты треугольника",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        16,
+        18
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-08-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 8,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          11
+        ],
+        "pdfPages": [
+          8
+        ]
+      },
+      "title": "С-8 · вариант 1 · задача 2",
+      "workTitle": "Медианы, биссектрисы и высоты треугольника",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        16,
+        18
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-08-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 8,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          13
+        ],
+        "pdfPages": [
+          9
+        ]
+      },
+      "title": "С-8 · вариант 2 · задача 1",
+      "workTitle": "Медианы, биссектрисы и высоты треугольника",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        16,
+        18
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-08-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 8,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          13
+        ],
+        "pdfPages": [
+          9
+        ]
+      },
+      "title": "С-8 · вариант 2 · задача 2",
+      "workTitle": "Медианы, биссектрисы и высоты треугольника",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        16,
+        18
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-09-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 9,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          13
+        ],
+        "pdfPages": [
+          9
+        ]
+      },
+      "title": "С-9 · вариант 1 · задача 1",
+      "workTitle": "Второй и третий признаки равенства треугольников",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        19,
+        20
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-sr-09-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 9,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          13
+        ],
+        "pdfPages": [
+          9
+        ]
+      },
+      "title": "С-9 · вариант 1 · задача 2",
+      "workTitle": "Второй и третий признаки равенства треугольников",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        19,
+        20
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-sr-09-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 9,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          13
+        ],
+        "pdfPages": [
+          9
+        ]
+      },
+      "title": "С-9 · вариант 2 · задача 1",
+      "workTitle": "Второй и третий признаки равенства треугольников",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        19,
+        20
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-sr-09-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 9,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          13
+        ],
+        "pdfPages": [
+          9
+        ]
+      },
+      "title": "С-9 · вариант 2 · задача 2",
+      "workTitle": "Второй и третий признаки равенства треугольников",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        19,
+        20
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-sr-10-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 10,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          15
+        ],
+        "pdfPages": [
+          10
+        ]
+      },
+      "title": "С-10 · вариант 1 · задача 1",
+      "workTitle": "Задачи на построение",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        21,
+        23
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-10-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 10,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          15
+        ],
+        "pdfPages": [
+          10
+        ]
+      },
+      "title": "С-10 · вариант 1 · задача 2",
+      "workTitle": "Задачи на построение",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        21,
+        23
+      ],
+      "explicitLetterSubparts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-10-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 10,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          15
+        ],
+        "pdfPages": [
+          10
+        ]
+      },
+      "title": "С-10 · вариант 2 · задача 1",
+      "workTitle": "Задачи на построение",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        21,
+        23
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-10-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 10,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          15
+        ],
+        "pdfPages": [
+          10
+        ]
+      },
+      "title": "С-10 · вариант 2 · задача 2",
+      "workTitle": "Задачи на построение",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        21,
+        23
+      ],
+      "explicitLetterSubparts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-11-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 11,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          15
+        ],
+        "pdfPages": [
+          10
+        ]
+      },
+      "title": "С-11 · вариант 1 · задача 1",
+      "workTitle": "Признаки параллельности двух прямых",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        24,
+        26
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-sr-11-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 11,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          15
+        ],
+        "pdfPages": [
+          10
+        ]
+      },
+      "title": "С-11 · вариант 1 · задача 2",
+      "workTitle": "Признаки параллельности двух прямых",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        24,
+        26
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-sr-11-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 11,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          17
+        ],
+        "pdfPages": [
+          11
+        ]
+      },
+      "title": "С-11 · вариант 2 · задача 1",
+      "workTitle": "Признаки параллельности двух прямых",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        24,
+        26
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-sr-11-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 11,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          17
+        ],
+        "pdfPages": [
+          11
+        ]
+      },
+      "title": "С-11 · вариант 2 · задача 2",
+      "workTitle": "Признаки параллельности двух прямых",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        24,
+        26
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-sr-12-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 12,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          17
+        ],
+        "pdfPages": [
+          11
+        ]
+      },
+      "title": "С-12 · вариант 1 · задача 1",
+      "workTitle": "Аксиома параллельных прямых",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        27,
+        29
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-sr-12-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 12,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          17
+        ],
+        "pdfPages": [
+          11
+        ]
+      },
+      "title": "С-12 · вариант 1 · задача 2",
+      "workTitle": "Аксиома параллельных прямых",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        27,
+        29
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-12-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 12,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          19
+        ],
+        "pdfPages": [
+          12
+        ]
+      },
+      "title": "С-12 · вариант 2 · задача 1",
+      "workTitle": "Аксиома параллельных прямых",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        27,
+        29
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-sr-12-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 12,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          19
+        ],
+        "pdfPages": [
+          12
+        ]
+      },
+      "title": "С-12 · вариант 2 · задача 2",
+      "workTitle": "Аксиома параллельных прямых",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        27,
+        29
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-13-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 13,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          19
+        ],
+        "pdfPages": [
+          12
+        ]
+      },
+      "title": "С-13 · вариант 1 · задача 1",
+      "workTitle": "Сумма углов треугольника",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        30,
+        31
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-13-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 13,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          19
+        ],
+        "pdfPages": [
+          12
+        ]
+      },
+      "title": "С-13 · вариант 1 · задача 2",
+      "workTitle": "Сумма углов треугольника",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        30,
+        31
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-13-v1-task-03",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 13,
+        "variant": 1,
+        "exercise": "3",
+        "printedPages": [
+          19
+        ],
+        "pdfPages": [
+          12
+        ]
+      },
+      "title": "С-13 · вариант 1 · задача 3",
+      "workTitle": "Сумма углов треугольника",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        30,
+        31
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-13-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 13,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          19
+        ],
+        "pdfPages": [
+          12
+        ]
+      },
+      "title": "С-13 · вариант 2 · задача 1",
+      "workTitle": "Сумма углов треугольника",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        30,
+        31
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-13-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 13,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          19
+        ],
+        "pdfPages": [
+          12
+        ]
+      },
+      "title": "С-13 · вариант 2 · задача 2",
+      "workTitle": "Сумма углов треугольника",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        30,
+        31
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-13-v2-task-03",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 13,
+        "variant": 2,
+        "exercise": "3",
+        "printedPages": [
+          19
+        ],
+        "pdfPages": [
+          12
+        ]
+      },
+      "title": "С-13 · вариант 2 · задача 3",
+      "workTitle": "Сумма углов треугольника",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        30,
+        31
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-14-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 14,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          19
+        ],
+        "pdfPages": [
+          12
+        ]
+      },
+      "title": "С-14 · вариант 1 · задача 1",
+      "workTitle": "Соотношения между сторонами и углами треугольника",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        32,
+        33
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-14-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 14,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          19
+        ],
+        "pdfPages": [
+          12
+        ]
+      },
+      "title": "С-14 · вариант 1 · задача 2",
+      "workTitle": "Соотношения между сторонами и углами треугольника",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        32,
+        33
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-14-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 14,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          21
+        ],
+        "pdfPages": [
+          13
+        ]
+      },
+      "title": "С-14 · вариант 2 · задача 1",
+      "workTitle": "Соотношения между сторонами и углами треугольника",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        32,
+        33
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-14-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 14,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          21
+        ],
+        "pdfPages": [
+          13
+        ]
+      },
+      "title": "С-14 · вариант 2 · задача 2",
+      "workTitle": "Соотношения между сторонами и углами треугольника",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        32,
+        33
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-15-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 15,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          21
+        ],
+        "pdfPages": [
+          13
+        ]
+      },
+      "title": "С-15 · вариант 1 · задача 1",
+      "workTitle": "Прямоугольные треугольники",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        34,
+        36
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-15-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 15,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          21
+        ],
+        "pdfPages": [
+          13
+        ]
+      },
+      "title": "С-15 · вариант 1 · задача 2",
+      "workTitle": "Прямоугольные треугольники",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        34,
+        36
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-15-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 15,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          21
+        ],
+        "pdfPages": [
+          13
+        ]
+      },
+      "title": "С-15 · вариант 2 · задача 1",
+      "workTitle": "Прямоугольные треугольники",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        34,
+        36
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-15-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 15,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          21
+        ],
+        "pdfPages": [
+          13
+        ]
+      },
+      "title": "С-15 · вариант 2 · задача 2",
+      "workTitle": "Прямоугольные треугольники",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        34,
+        36
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-16-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 16,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          21
+        ],
+        "pdfPages": [
+          13
+        ]
+      },
+      "title": "С-16 · вариант 1 · задача 1",
+      "workTitle": "Построение треугольника по трём элементам",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        37,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-16-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 16,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          21
+        ],
+        "pdfPages": [
+          13
+        ]
+      },
+      "title": "С-16 · вариант 1 · задача 2",
+      "workTitle": "Построение треугольника по трём элементам",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        37,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-16-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 16,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          21
+        ],
+        "pdfPages": [
+          13
+        ]
+      },
+      "title": "С-16 · вариант 2 · задача 1",
+      "workTitle": "Построение треугольника по трём элементам",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        37,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-16-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 16,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          21
+        ],
+        "pdfPages": [
+          13
+        ]
+      },
+      "title": "С-16 · вариант 2 · задача 2",
+      "workTitle": "Построение треугольника по трём элементам",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        37,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-17-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 17,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          23
+        ],
+        "pdfPages": [
+          14
+        ]
+      },
+      "title": "С-17 · вариант 1 · задача 1",
+      "workTitle": "Решение задач",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        1,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-17-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 17,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          23
+        ],
+        "pdfPages": [
+          14
+        ]
+      },
+      "title": "С-17 · вариант 1 · задача 2",
+      "workTitle": "Решение задач",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        1,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-17-v1-task-03",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 17,
+        "variant": 1,
+        "exercise": "3",
+        "printedPages": [
+          23
+        ],
+        "pdfPages": [
+          14
+        ]
+      },
+      "title": "С-17 · вариант 1 · задача 3",
+      "workTitle": "Решение задач",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        1,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-17-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 17,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          23
+        ],
+        "pdfPages": [
+          14
+        ]
+      },
+      "title": "С-17 · вариант 2 · задача 1",
+      "workTitle": "Решение задач",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        1,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-17-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 17,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          23
+        ],
+        "pdfPages": [
+          14
+        ]
+      },
+      "title": "С-17 · вариант 2 · задача 2",
+      "workTitle": "Решение задач",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        1,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-sr-17-v2-task-03",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "sr",
+        "work": 17,
+        "variant": 2,
+        "exercise": "3",
+        "printedPages": [
+          23
+        ],
+        "pdfPages": [
+          14
+        ]
+      },
+      "title": "С-17 · вариант 2 · задача 3",
+      "workTitle": "Решение задач",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        1,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-01-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 1,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          25
+        ],
+        "pdfPages": [
+          15
+        ]
+      },
+      "title": "К-1 · вариант 1 · задача 1",
+      "workTitle": "Контрольная работа № 1",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        1,
+        13
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-01-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 1,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          25
+        ],
+        "pdfPages": [
+          15
+        ]
+      },
+      "title": "К-1 · вариант 1 · задача 2",
+      "workTitle": "Контрольная работа № 1",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        1,
+        13
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-01-v1-task-03",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 1,
+        "variant": 1,
+        "exercise": "3",
+        "printedPages": [
+          25
+        ],
+        "pdfPages": [
+          15
+        ]
+      },
+      "title": "К-1 · вариант 1 · задача 3",
+      "workTitle": "Контрольная работа № 1",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        1,
+        13
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-01-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 1,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          25
+        ],
+        "pdfPages": [
+          15
+        ]
+      },
+      "title": "К-1 · вариант 2 · задача 1",
+      "workTitle": "Контрольная работа № 1",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        1,
+        13
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-01-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 1,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          25
+        ],
+        "pdfPages": [
+          15
+        ]
+      },
+      "title": "К-1 · вариант 2 · задача 2",
+      "workTitle": "Контрольная работа № 1",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        1,
+        13
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-01-v2-task-03",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 1,
+        "variant": 2,
+        "exercise": "3",
+        "printedPages": [
+          25
+        ],
+        "pdfPages": [
+          15
+        ]
+      },
+      "title": "К-1 · вариант 2 · задача 3",
+      "workTitle": "Контрольная работа № 1",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        1,
+        13
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-02-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 2,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          25
+        ],
+        "pdfPages": [
+          15
+        ]
+      },
+      "title": "К-2 · вариант 1 · задача 1",
+      "workTitle": "Контрольная работа № 2",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        14,
+        23
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-kr-02-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 2,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          25
+        ],
+        "pdfPages": [
+          15
+        ]
+      },
+      "title": "К-2 · вариант 1 · задача 2",
+      "workTitle": "Контрольная работа № 2",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        14,
+        23
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-02-v1-task-03",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 2,
+        "variant": 1,
+        "exercise": "3",
+        "printedPages": [
+          25
+        ],
+        "pdfPages": [
+          15
+        ]
+      },
+      "title": "К-2 · вариант 1 · задача 3",
+      "workTitle": "Контрольная работа № 2",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        14,
+        23
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-02-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 2,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          27
+        ],
+        "pdfPages": [
+          16
+        ]
+      },
+      "title": "К-2 · вариант 2 · задача 1",
+      "workTitle": "Контрольная работа № 2",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        14,
+        23
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-kr-02-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 2,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          27
+        ],
+        "pdfPages": [
+          16
+        ]
+      },
+      "title": "К-2 · вариант 2 · задача 2",
+      "workTitle": "Контрольная работа № 2",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        14,
+        23
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-02-v2-task-03",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 2,
+        "variant": 2,
+        "exercise": "3",
+        "printedPages": [
+          27
+        ],
+        "pdfPages": [
+          16
+        ]
+      },
+      "title": "К-2 · вариант 2 · задача 3",
+      "workTitle": "Контрольная работа № 2",
+      "withinPrimaryScope": true,
+      "textbookPointSpan": [
+        14,
+        23
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-03-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 3,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          27
+        ],
+        "pdfPages": [
+          16
+        ]
+      },
+      "title": "К-3 · вариант 1 · задача 1",
+      "workTitle": "Контрольная работа № 3",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        24,
+        29
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-03-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 3,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          27
+        ],
+        "pdfPages": [
+          16
+        ]
+      },
+      "title": "К-3 · вариант 1 · задача 2",
+      "workTitle": "Контрольная работа № 3",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        24,
+        29
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-03-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 3,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          27
+        ],
+        "pdfPages": [
+          16
+        ]
+      },
+      "title": "К-3 · вариант 2 · задача 1",
+      "workTitle": "Контрольная работа № 3",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        24,
+        29
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-03-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 3,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          27
+        ],
+        "pdfPages": [
+          16
+        ]
+      },
+      "title": "К-3 · вариант 2 · задача 2",
+      "workTitle": "Контрольная работа № 3",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        24,
+        29
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-04-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 4,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          29
+        ],
+        "pdfPages": [
+          17
+        ]
+      },
+      "title": "К-4 · вариант 1 · задача 1",
+      "workTitle": "Контрольная работа № 4",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        30,
+        33
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-kr-04-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 4,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          29
+        ],
+        "pdfPages": [
+          17
+        ]
+      },
+      "title": "К-4 · вариант 1 · задача 2",
+      "workTitle": "Контрольная работа № 4",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        30,
+        33
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-04-v1-task-03",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 4,
+        "variant": 1,
+        "exercise": "3",
+        "printedPages": [
+          29
+        ],
+        "pdfPages": [
+          17
+        ]
+      },
+      "title": "К-4 · вариант 1 · задача 3",
+      "workTitle": "Контрольная работа № 4",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        30,
+        33
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-04-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 4,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          29
+        ],
+        "pdfPages": [
+          17
+        ]
+      },
+      "title": "К-4 · вариант 2 · задача 1",
+      "workTitle": "Контрольная работа № 4",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        30,
+        33
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-kr-04-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 4,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          29
+        ],
+        "pdfPages": [
+          17
+        ]
+      },
+      "title": "К-4 · вариант 2 · задача 2",
+      "workTitle": "Контрольная работа № 4",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        30,
+        33
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-04-v2-task-03",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 4,
+        "variant": 2,
+        "exercise": "3",
+        "printedPages": [
+          29
+        ],
+        "pdfPages": [
+          17
+        ]
+      },
+      "title": "К-4 · вариант 2 · задача 3",
+      "workTitle": "Контрольная работа № 4",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        30,
+        33
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-05-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 5,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          29
+        ],
+        "pdfPages": [
+          17
+        ]
+      },
+      "title": "К-5 · вариант 1 · задача 1",
+      "workTitle": "Контрольная работа № 5",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        34,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-05-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 5,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          29
+        ],
+        "pdfPages": [
+          17
+        ]
+      },
+      "title": "К-5 · вариант 1 · задача 2",
+      "workTitle": "Контрольная работа № 5",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        34,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-05-v1-task-03",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 5,
+        "variant": 1,
+        "exercise": "3",
+        "printedPages": [
+          29
+        ],
+        "pdfPages": [
+          17
+        ]
+      },
+      "title": "К-5 · вариант 1 · задача 3",
+      "workTitle": "Контрольная работа № 5",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        34,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-05-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 5,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          31
+        ],
+        "pdfPages": [
+          18
+        ]
+      },
+      "title": "К-5 · вариант 2 · задача 1",
+      "workTitle": "Контрольная работа № 5",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        34,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-05-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 5,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          31
+        ],
+        "pdfPages": [
+          18
+        ]
+      },
+      "title": "К-5 · вариант 2 · задача 2",
+      "workTitle": "Контрольная работа № 5",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        34,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-05-v2-task-03",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 5,
+        "variant": 2,
+        "exercise": "3",
+        "printedPages": [
+          31
+        ],
+        "pdfPages": [
+          18
+        ]
+      },
+      "title": "К-5 · вариант 2 · задача 3",
+      "workTitle": "Контрольная работа № 5",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        34,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-06-v1-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 6,
+        "variant": 1,
+        "exercise": "1",
+        "printedPages": [
+          31
+        ],
+        "pdfPages": [
+          18
+        ]
+      },
+      "title": "К-6 · вариант 1 · задача 1",
+      "workTitle": "Итоговая контрольная работа № 6",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        1,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-06-v1-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 6,
+        "variant": 1,
+        "exercise": "2",
+        "printedPages": [
+          31
+        ],
+        "pdfPages": [
+          18
+        ]
+      },
+      "title": "К-6 · вариант 1 · задача 2",
+      "workTitle": "Итоговая контрольная работа № 6",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        1,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-06-v1-task-03",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 6,
+        "variant": 1,
+        "exercise": "3",
+        "printedPages": [
+          31
+        ],
+        "pdfPages": [
+          18
+        ]
+      },
+      "title": "К-6 · вариант 1 · задача 3",
+      "workTitle": "Итоговая контрольная работа № 6",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        1,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-kr-06-v1-task-04",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 6,
+        "variant": 1,
+        "exercise": "4",
+        "printedPages": [
+          31
+        ],
+        "pdfPages": [
+          18
+        ]
+      },
+      "title": "К-6 · вариант 1 · задача 4",
+      "workTitle": "Итоговая контрольная работа № 6",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        1,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-06-v2-task-01",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 6,
+        "variant": 2,
+        "exercise": "1",
+        "printedPages": [
+          31
+        ],
+        "pdfPages": [
+          18
+        ]
+      },
+      "title": "К-6 · вариант 2 · задача 1",
+      "workTitle": "Итоговая контрольная работа № 6",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        1,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-06-v2-task-02",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 6,
+        "variant": 2,
+        "exercise": "2",
+        "printedPages": [
+          31
+        ],
+        "pdfPages": [
+          18
+        ]
+      },
+      "title": "К-6 · вариант 2 · задача 2",
+      "workTitle": "Итоговая контрольная работа № 6",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        1,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    },
+    {
+      "id": "ichenskaya-7-kr-06-v2-task-03",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 6,
+        "variant": 2,
+        "exercise": "3",
+        "printedPages": [
+          31
+        ],
+        "pdfPages": [
+          18
+        ]
+      },
+      "title": "К-6 · вариант 2 · задача 3",
+      "workTitle": "Итоговая контрольная работа № 6",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        1,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": true
+    },
+    {
+      "id": "ichenskaya-7-kr-06-v2-task-04",
+      "source": {
+        "bookId": "ichenskaya-2018-geometry-7",
+        "collection": "kr",
+        "work": 6,
+        "variant": 2,
+        "exercise": "4",
+        "printedPages": [
+          31
+        ],
+        "pdfPages": [
+          18
+        ]
+      },
+      "title": "К-6 · вариант 2 · задача 4",
+      "workTitle": "Итоговая контрольная работа № 6",
+      "withinPrimaryScope": false,
+      "textbookPointSpan": [
+        1,
+        38
+      ],
+      "explicitLetterSubparts": [],
+      "sourceDiagram": false
+    }
+  ],
+  "pages": [
+    {
+      "pdfPage": 1,
+      "printedPage": null,
+      "printedPageEvidence": "not-printed-on-cover",
+      "kind": "frontmatter",
+      "title": "Обложка",
+      "includedLessonIds": [],
+      "includedTaskCount": 0,
+      "visibleNumberedPromptCount": 0,
+      "contents": []
+    },
+    {
+      "pdfPage": 2,
+      "printedPage": 1,
+      "printedPageEvidence": "inferred-from-sequence-and-contents",
+      "kind": "frontmatter",
+      "title": "Титульный лист",
+      "includedLessonIds": [],
+      "includedTaskCount": 0,
+      "visibleNumberedPromptCount": 0,
+      "contents": []
+    },
+    {
+      "pdfPage": 3,
+      "printedPage": 2,
+      "printedPageEvidence": "inferred-from-sequence-and-contents",
+      "kind": "frontmatter",
+      "title": "Выходные сведения",
+      "includedLessonIds": [],
+      "includedTaskCount": 0,
+      "visibleNumberedPromptCount": 0,
+      "contents": []
+    },
+    {
+      "pdfPage": 4,
+      "printedPage": 3,
+      "printedPageEvidence": "visible-folio",
+      "kind": "tasks",
+      "title": "",
+      "includedLessonIds": [
+        "ichenskaya-7-sr-01-v1-task-01",
+        "ichenskaya-7-sr-01-v1-task-02",
+        "ichenskaya-7-sr-01-v2-task-01",
+        "ichenskaya-7-sr-01-v2-task-02",
+        "ichenskaya-7-sr-02-v1-task-01",
+        "ichenskaya-7-sr-02-v1-task-02"
+      ],
+      "includedTaskCount": 6,
+      "visibleNumberedPromptCount": 6,
+      "contents": [
+        {
+          "label": "S-1 В-1",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        },
+        {
+          "label": "S-1 В-2",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        },
+        {
+          "label": "S-2 В-1",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        }
+      ]
+    },
+    {
+      "pdfPage": 5,
+      "printedPage": 5,
+      "printedPageEvidence": "inferred-from-sequence-and-contents",
+      "kind": "tasks",
+      "title": "",
+      "includedLessonIds": [
+        "ichenskaya-7-sr-02-v2-task-01",
+        "ichenskaya-7-sr-02-v2-task-02",
+        "ichenskaya-7-sr-03-v1-task-01",
+        "ichenskaya-7-sr-03-v1-task-02",
+        "ichenskaya-7-sr-03-v2-task-01",
+        "ichenskaya-7-sr-03-v2-task-02"
+      ],
+      "includedTaskCount": 6,
+      "visibleNumberedPromptCount": 6,
+      "contents": [
+        {
+          "label": "S-2 В-2",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        },
+        {
+          "label": "S-3 В-1",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        },
+        {
+          "label": "S-3 В-2",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        }
+      ]
+    },
+    {
+      "pdfPage": 6,
+      "printedPage": 7,
+      "printedPageEvidence": "visible-folio",
+      "kind": "tasks",
+      "title": "",
+      "includedLessonIds": [
+        "ichenskaya-7-sr-04-v1-task-01",
+        "ichenskaya-7-sr-04-v1-task-02",
+        "ichenskaya-7-sr-04-v1-task-03",
+        "ichenskaya-7-sr-04-v2-task-01",
+        "ichenskaya-7-sr-04-v2-task-02",
+        "ichenskaya-7-sr-04-v2-task-03",
+        "ichenskaya-7-sr-05-v1-task-01",
+        "ichenskaya-7-sr-05-v1-task-02",
+        "ichenskaya-7-sr-05-v2-task-01",
+        "ichenskaya-7-sr-05-v2-task-02"
+      ],
+      "includedTaskCount": 10,
+      "visibleNumberedPromptCount": 10,
+      "contents": [
+        {
+          "label": "S-4 В-1",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": true
+        },
+        {
+          "label": "S-4 В-2",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": true
+        },
+        {
+          "label": "S-5 В-1",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        },
+        {
+          "label": "S-5 В-2",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        }
+      ]
+    },
+    {
+      "pdfPage": 7,
+      "printedPage": 9,
+      "printedPageEvidence": "inferred-from-sequence-and-contents",
+      "kind": "tasks",
+      "title": "",
+      "includedLessonIds": [
+        "ichenskaya-7-sr-06-v1-task-01",
+        "ichenskaya-7-sr-06-v1-task-02",
+        "ichenskaya-7-sr-06-v2-task-01",
+        "ichenskaya-7-sr-06-v2-task-02",
+        "ichenskaya-7-sr-07-v1-task-01",
+        "ichenskaya-7-sr-07-v1-task-02"
+      ],
+      "includedTaskCount": 6,
+      "visibleNumberedPromptCount": 6,
+      "contents": [
+        {
+          "label": "S-6 В-1",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        },
+        {
+          "label": "S-6 В-2",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        },
+        {
+          "label": "S-7 В-1",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        }
+      ]
+    },
+    {
+      "pdfPage": 8,
+      "printedPage": 11,
+      "printedPageEvidence": "inferred-from-sequence-and-contents",
+      "kind": "tasks",
+      "title": "",
+      "includedLessonIds": [
+        "ichenskaya-7-sr-07-v2-task-01",
+        "ichenskaya-7-sr-07-v2-task-02",
+        "ichenskaya-7-sr-08-v1-task-01",
+        "ichenskaya-7-sr-08-v1-task-02"
+      ],
+      "includedTaskCount": 4,
+      "visibleNumberedPromptCount": 4,
+      "contents": [
+        {
+          "label": "S-7 В-2",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        },
+        {
+          "label": "S-8 В-1",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        }
+      ]
+    },
+    {
+      "pdfPage": 9,
+      "printedPage": 13,
+      "printedPageEvidence": "visible-folio",
+      "kind": "tasks",
+      "title": "",
+      "includedLessonIds": [
+        "ichenskaya-7-sr-08-v2-task-01",
+        "ichenskaya-7-sr-08-v2-task-02",
+        "ichenskaya-7-sr-09-v1-task-01",
+        "ichenskaya-7-sr-09-v1-task-02",
+        "ichenskaya-7-sr-09-v2-task-01",
+        "ichenskaya-7-sr-09-v2-task-02"
+      ],
+      "includedTaskCount": 6,
+      "visibleNumberedPromptCount": 6,
+      "contents": [
+        {
+          "label": "S-8 В-2",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        },
+        {
+          "label": "S-9 В-1",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        },
+        {
+          "label": "S-9 В-2",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        }
+      ]
+    },
+    {
+      "pdfPage": 10,
+      "printedPage": 15,
+      "printedPageEvidence": "visible-folio",
+      "kind": "tasks",
+      "title": "",
+      "includedLessonIds": [
+        "ichenskaya-7-sr-10-v1-task-01",
+        "ichenskaya-7-sr-10-v1-task-02",
+        "ichenskaya-7-sr-10-v2-task-01",
+        "ichenskaya-7-sr-10-v2-task-02",
+        "ichenskaya-7-sr-11-v1-task-01",
+        "ichenskaya-7-sr-11-v1-task-02"
+      ],
+      "includedTaskCount": 6,
+      "visibleNumberedPromptCount": 6,
+      "contents": [
+        {
+          "label": "S-10 В-1",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        },
+        {
+          "label": "S-10 В-2",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        },
+        {
+          "label": "S-11 В-1",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        }
+      ]
+    },
+    {
+      "pdfPage": 11,
+      "printedPage": 17,
+      "printedPageEvidence": "visible-folio",
+      "kind": "tasks",
+      "title": "",
+      "includedLessonIds": [
+        "ichenskaya-7-sr-11-v2-task-01",
+        "ichenskaya-7-sr-11-v2-task-02",
+        "ichenskaya-7-sr-12-v1-task-01",
+        "ichenskaya-7-sr-12-v1-task-02"
+      ],
+      "includedTaskCount": 4,
+      "visibleNumberedPromptCount": 4,
+      "contents": [
+        {
+          "label": "S-11 В-2",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        },
+        {
+          "label": "S-12 В-1",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        }
+      ]
+    },
+    {
+      "pdfPage": 12,
+      "printedPage": 19,
+      "printedPageEvidence": "visible-folio",
+      "kind": "tasks",
+      "title": "",
+      "includedLessonIds": [
+        "ichenskaya-7-sr-12-v2-task-01",
+        "ichenskaya-7-sr-12-v2-task-02",
+        "ichenskaya-7-sr-13-v1-task-01",
+        "ichenskaya-7-sr-13-v1-task-02",
+        "ichenskaya-7-sr-13-v1-task-03",
+        "ichenskaya-7-sr-13-v2-task-01",
+        "ichenskaya-7-sr-13-v2-task-02",
+        "ichenskaya-7-sr-13-v2-task-03",
+        "ichenskaya-7-sr-14-v1-task-01",
+        "ichenskaya-7-sr-14-v1-task-02"
+      ],
+      "includedTaskCount": 10,
+      "visibleNumberedPromptCount": 10,
+      "contents": [
+        {
+          "label": "S-12 В-2",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        },
+        {
+          "label": "S-13 В-1",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": true
+        },
+        {
+          "label": "S-13 В-2",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": true
+        },
+        {
+          "label": "S-14 В-1",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        }
+      ]
+    },
+    {
+      "pdfPage": 13,
+      "printedPage": 21,
+      "printedPageEvidence": "inferred-from-sequence-and-contents",
+      "kind": "tasks",
+      "title": "",
+      "includedLessonIds": [
+        "ichenskaya-7-sr-14-v2-task-01",
+        "ichenskaya-7-sr-14-v2-task-02",
+        "ichenskaya-7-sr-15-v1-task-01",
+        "ichenskaya-7-sr-15-v1-task-02",
+        "ichenskaya-7-sr-15-v2-task-01",
+        "ichenskaya-7-sr-15-v2-task-02",
+        "ichenskaya-7-sr-16-v1-task-01",
+        "ichenskaya-7-sr-16-v1-task-02",
+        "ichenskaya-7-sr-16-v2-task-01",
+        "ichenskaya-7-sr-16-v2-task-02"
+      ],
+      "includedTaskCount": 10,
+      "visibleNumberedPromptCount": 10,
+      "contents": [
+        {
+          "label": "S-14 В-2",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        },
+        {
+          "label": "S-15 В-1",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        },
+        {
+          "label": "S-15 В-2",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        },
+        {
+          "label": "S-16 В-1",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        },
+        {
+          "label": "S-16 В-2",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        }
+      ]
+    },
+    {
+      "pdfPage": 14,
+      "printedPage": 23,
+      "printedPageEvidence": "visible-folio",
+      "kind": "tasks",
+      "title": "",
+      "includedLessonIds": [
+        "ichenskaya-7-sr-17-v1-task-01",
+        "ichenskaya-7-sr-17-v1-task-02",
+        "ichenskaya-7-sr-17-v1-task-03",
+        "ichenskaya-7-sr-17-v2-task-01",
+        "ichenskaya-7-sr-17-v2-task-02",
+        "ichenskaya-7-sr-17-v2-task-03"
+      ],
+      "includedTaskCount": 6,
+      "visibleNumberedPromptCount": 6,
+      "contents": [
+        {
+          "label": "S-17 В-1",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": true
+        },
+        {
+          "label": "S-17 В-2",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": true
+        }
+      ]
+    },
+    {
+      "pdfPage": 15,
+      "printedPage": 25,
+      "printedPageEvidence": "visible-folio",
+      "kind": "tasks",
+      "title": "",
+      "includedLessonIds": [
+        "ichenskaya-7-kr-01-v1-task-01",
+        "ichenskaya-7-kr-01-v1-task-02",
+        "ichenskaya-7-kr-01-v1-task-03",
+        "ichenskaya-7-kr-01-v2-task-01",
+        "ichenskaya-7-kr-01-v2-task-02",
+        "ichenskaya-7-kr-01-v2-task-03",
+        "ichenskaya-7-kr-02-v1-task-01",
+        "ichenskaya-7-kr-02-v1-task-02",
+        "ichenskaya-7-kr-02-v1-task-03"
+      ],
+      "includedTaskCount": 9,
+      "visibleNumberedPromptCount": 9,
+      "contents": [
+        {
+          "label": "K-1 В-1",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": true
+        },
+        {
+          "label": "K-1 В-2",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": true
+        },
+        {
+          "label": "K-2 В-1",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": true
+        }
+      ]
+    },
+    {
+      "pdfPage": 16,
+      "printedPage": 27,
+      "printedPageEvidence": "visible-folio",
+      "kind": "tasks",
+      "title": "",
+      "includedLessonIds": [
+        "ichenskaya-7-kr-02-v2-task-01",
+        "ichenskaya-7-kr-02-v2-task-02",
+        "ichenskaya-7-kr-02-v2-task-03",
+        "ichenskaya-7-kr-03-v1-task-01",
+        "ichenskaya-7-kr-03-v1-task-02",
+        "ichenskaya-7-kr-03-v2-task-01",
+        "ichenskaya-7-kr-03-v2-task-02"
+      ],
+      "includedTaskCount": 7,
+      "visibleNumberedPromptCount": 7,
+      "contents": [
+        {
+          "label": "K-2 В-2",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": true
+        },
+        {
+          "label": "K-3 В-1",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        },
+        {
+          "label": "K-3 В-2",
+          "taskNumbers": [
+            1,
+            2
+          ],
+          "included": true
+        }
+      ]
+    },
+    {
+      "pdfPage": 17,
+      "printedPage": 29,
+      "printedPageEvidence": "visible-folio",
+      "kind": "tasks",
+      "title": "",
+      "includedLessonIds": [
+        "ichenskaya-7-kr-04-v1-task-01",
+        "ichenskaya-7-kr-04-v1-task-02",
+        "ichenskaya-7-kr-04-v1-task-03",
+        "ichenskaya-7-kr-04-v2-task-01",
+        "ichenskaya-7-kr-04-v2-task-02",
+        "ichenskaya-7-kr-04-v2-task-03",
+        "ichenskaya-7-kr-05-v1-task-01",
+        "ichenskaya-7-kr-05-v1-task-02",
+        "ichenskaya-7-kr-05-v1-task-03"
+      ],
+      "includedTaskCount": 9,
+      "visibleNumberedPromptCount": 9,
+      "contents": [
+        {
+          "label": "K-4 В-1",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": true
+        },
+        {
+          "label": "K-4 В-2",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": true
+        },
+        {
+          "label": "K-5 В-1",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": true
+        }
+      ]
+    },
+    {
+      "pdfPage": 18,
+      "printedPage": 31,
+      "printedPageEvidence": "visible-folio",
+      "kind": "tasks",
+      "title": "",
+      "includedLessonIds": [
+        "ichenskaya-7-kr-05-v2-task-01",
+        "ichenskaya-7-kr-05-v2-task-02",
+        "ichenskaya-7-kr-05-v2-task-03",
+        "ichenskaya-7-kr-06-v1-task-01",
+        "ichenskaya-7-kr-06-v1-task-02",
+        "ichenskaya-7-kr-06-v1-task-03",
+        "ichenskaya-7-kr-06-v1-task-04",
+        "ichenskaya-7-kr-06-v2-task-01",
+        "ichenskaya-7-kr-06-v2-task-02",
+        "ichenskaya-7-kr-06-v2-task-03",
+        "ichenskaya-7-kr-06-v2-task-04"
+      ],
+      "includedTaskCount": 11,
+      "visibleNumberedPromptCount": 11,
+      "contents": [
+        {
+          "label": "K-5 В-2",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": true
+        },
+        {
+          "label": "K-6 В-1",
+          "taskNumbers": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "included": true
+        },
+        {
+          "label": "K-6 В-2",
+          "taskNumbers": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "included": true
+        }
+      ]
+    },
+    {
+      "pdfPage": 19,
+      "printedPage": 33,
+      "printedPageEvidence": "visible-folio",
+      "kind": "tasks",
+      "title": "",
+      "includedLessonIds": [],
+      "includedTaskCount": 0,
+      "visibleNumberedPromptCount": 12,
+      "contents": [
+        {
+          "label": "Z-1",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": false
+        },
+        {
+          "label": "Z-2",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": false
+        },
+        {
+          "label": "Z-3",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": false
+        },
+        {
+          "label": "Z-4",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": false
+        }
+      ]
+    },
+    {
+      "pdfPage": 20,
+      "printedPage": 35,
+      "printedPageEvidence": "visible-folio",
+      "kind": "tasks",
+      "title": "",
+      "includedLessonIds": [],
+      "includedTaskCount": 0,
+      "visibleNumberedPromptCount": 12,
+      "contents": [
+        {
+          "label": "Z-5",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": false
+        },
+        {
+          "label": "Z-6",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": false
+        },
+        {
+          "label": "Z-7",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": false
+        },
+        {
+          "label": "Z-8",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": false
+        }
+      ]
+    },
+    {
+      "pdfPage": 21,
+      "printedPage": 37,
+      "printedPageEvidence": "visible-folio",
+      "kind": "tasks",
+      "title": "",
+      "includedLessonIds": [],
+      "includedTaskCount": 0,
+      "visibleNumberedPromptCount": 9,
+      "contents": [
+        {
+          "label": "Z-9",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": false
+        },
+        {
+          "label": "Z-10",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": false
+        },
+        {
+          "label": "Z-11",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": false
+        }
+      ]
+    },
+    {
+      "pdfPage": 22,
+      "printedPage": 39,
+      "printedPageEvidence": "visible-folio",
+      "kind": "tasks",
+      "title": "",
+      "includedLessonIds": [],
+      "includedTaskCount": 0,
+      "visibleNumberedPromptCount": 9,
+      "contents": [
+        {
+          "label": "Z-12",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": false
+        },
+        {
+          "label": "Z-13",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": false
+        },
+        {
+          "label": "Z-14",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": false
+        }
+      ]
+    },
+    {
+      "pdfPage": 23,
+      "printedPage": 41,
+      "printedPageEvidence": "visible-folio",
+      "kind": "tasks",
+      "title": "",
+      "includedLessonIds": [],
+      "includedTaskCount": 0,
+      "visibleNumberedPromptCount": 9,
+      "contents": [
+        {
+          "label": "Z-15",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": false
+        },
+        {
+          "label": "Z-16",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": false
+        },
+        {
+          "label": "Z-17",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": false
+        }
+      ]
+    },
+    {
+      "pdfPage": 24,
+      "printedPage": 43,
+      "printedPageEvidence": "visible-folio",
+      "kind": "tasks",
+      "title": "",
+      "includedLessonIds": [],
+      "includedTaskCount": 0,
+      "visibleNumberedPromptCount": 12,
+      "contents": [
+        {
+          "label": "Z-18",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": false
+        },
+        {
+          "label": "Z-19",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": false
+        },
+        {
+          "label": "Z-20",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": false
+        },
+        {
+          "label": "Z-21",
+          "taskNumbers": [
+            1,
+            2,
+            3
+          ],
+          "included": false
+        }
+      ]
+    },
+    {
+      "pdfPage": 25,
+      "printedPage": 45,
+      "printedPageEvidence": "visible-folio",
+      "kind": "reference",
+      "title": "Распределение работ по пунктам учебника",
+      "includedLessonIds": [],
+      "includedTaskCount": 0,
+      "visibleNumberedPromptCount": 0,
+      "contents": []
+    },
+    {
+      "pdfPage": 26,
+      "printedPage": 46,
+      "printedPageEvidence": "visible-folio",
+      "kind": "reference",
+      "title": "Ответы к самостоятельным и контрольным работам",
+      "includedLessonIds": [],
+      "includedTaskCount": 0,
+      "visibleNumberedPromptCount": 0,
+      "contents": []
+    },
+    {
+      "pdfPage": 27,
+      "printedPage": 47,
+      "printedPageEvidence": "inferred-from-sequence-and-contents",
+      "kind": "reference",
+      "title": "Ответы к итоговому зачёту",
+      "includedLessonIds": [],
+      "includedTaskCount": 0,
+      "visibleNumberedPromptCount": 0,
+      "contents": []
+    },
+    {
+      "pdfPage": 28,
+      "printedPage": 48,
+      "printedPageEvidence": "inferred-from-sequence-and-contents",
+      "kind": "reference",
+      "title": "Содержание",
+      "includedLessonIds": [],
+      "includedTaskCount": 0,
+      "visibleNumberedPromptCount": 0,
+      "contents": []
+    }
+  ],
+  "sourceIssues": [
+    {
+      "id": "sr-10-v1-task-02-answer-key",
+      "lessonIds": [
+        "ichenskaya-7-sr-10-v1-task-02"
+      ],
+      "printedPages": [
+        15,
+        46
+      ],
+      "pdfPages": [
+        10,
+        26
+      ],
+      "kind": "condition-answer-conflict",
+      "detail": "В условии указан радиус 6 см и расстояния AB = 4, 6, 8 см. Ключ для б) называет AB диаметром, для в) отрицает решение. При буквальном радиусе 6 см все три расстояния меньше диаметра 12 см, поэтому в каждом случае существуют два центра. Исходные числа сохраняются; разбор должен явно объяснить расхождение с ключом."
+    },
+    {
+      "id": "sr-05-task-01-half-plane",
+      "lessonIds": [
+        "ichenskaya-7-sr-05-v1-task-01",
+        "ichenskaya-7-sr-05-v2-task-01"
+      ],
+      "printedPages": [
+        7,
+        46
+      ],
+      "pdfPages": [
+        6,
+        26
+      ],
+      "kind": "multiple-configurations",
+      "detail": "Условие не указывает, в одной ли полуплоскости откладываются два угла от исходного луча. В ключе записаны только 53° и 48°; в разных полуплоскостях получаются 103° и 112°. Разбор должен рассмотреть оба расположения и обозначить допущение ключа."
+    },
+    {
+      "id": "sr-04-v2-task-03-answer-key",
+      "lessonIds": [
+        "ichenskaya-7-sr-04-v2-task-03"
+      ],
+      "printedPages": [
+        7,
+        46
+      ],
+      "pdfPages": [
+        6,
+        26
+      ],
+      "kind": "condition-answer-conflict",
+      "detail": "В видимом условии AN = 13 см, NB = 12 см и AB = 8 см; в ключе указан ответ «Да». При этих длинах N не может лежать на отрезке AB: AN + NB = 25 см ≠ 8 см. Числа сохраняются, разбор даёт «Нет» и явно отмечает расхождение."
+    },
+    {
+      "id": "sr-09-v2-task-01-later-prerequisite",
+      "lessonIds": [
+        "ichenskaya-7-sr-09-v2-task-01"
+      ],
+      "printedPages": [
+        13,
+        45,
+        46
+      ],
+      "pdfPages": [
+        9,
+        25,
+        26
+      ],
+      "kind": "later-prerequisite",
+      "detail": "Авторская таблица относит С-9 к пунктам 19–20, но для третьего численного ответа 110° нужна сумма углов треугольника из пункта 30. Равенство треугольников доказывается по доступному второму признаку; дополнительная опора для вычисления последнего угла называется явно."
+    },
+    {
+      "id": "kr-04-task-02-interior-point",
+      "lessonIds": [
+        "ichenskaya-7-kr-04-v1-task-02",
+        "ichenskaya-7-kr-04-v2-task-02"
+      ],
+      "printedPages": [
+        29
+      ],
+      "pdfPages": [
+        17
+      ],
+      "kind": "domain-clarification",
+      "detail": "Строгие неравенства DE > DK и KP < MP требуют точки K внутри соответствующей стороны. Если разрешить K = E в варианте 1 или K = M в варианте 2, возникает равенство. Разбор должен объяснить это условие применимости, сохранив исходную фразу «на стороне»."
+    }
+  ]
+}

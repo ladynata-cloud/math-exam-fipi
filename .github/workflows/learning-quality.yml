@@ -233,12 +233,18 @@ jobs:
           const sharp = require("sharp");
           (async () => {
             for (const file of ["../geometry-course/textbook/assets/math-text.js", "../geometry-course/textbook/assets/planar-viewer.js",
-              ...["app.js", "state.js", "style.css", "course.json"].map(file => "../learning/atanasyan-first-steps/" + file)]) fs.accessSync(file, fs.constants.R_OK);
+              ...["app.js", "state.js", "style.css", "course.json"].map(file => "../learning/atanasyan-first-steps/" + file),
+              ...["app.js", "course.json", "source-manifest.json"].map(file => "../learning/ichenskaya-grade7-works/" + file)]) fs.accessSync(file, fs.constants.R_OK);
             const courseContext = { courseId: "atanasyan-first-steps", lessonId: "atanasyan-7-9-main-160-part-2", stepIndex: 0 };
             const resolvedCourse = resolveCourseContext(courseContext);
             assert.deepEqual(resolvedCourse.courseContext, courseContext);
             assert.match(resolvedCourse.question, /22°30′/);
             assert.ok(resolvedCourse.stepCount > 0);
+            const companionContext = { courseId: "ichenskaya-grade7-works", lessonId: "ichenskaya-7-kr-06-v2-task-04", stepIndex: 0 };
+            const companion = resolveCourseContext(companionContext);
+            assert.deepEqual(companion.courseContext, companionContext);
+            assert.equal(companion.topic, "ichenskaya-course-step");
+            assert.ok(companion.stepCount > 0);
             const store = new LearningStore({ filePath: "/tmp/learning-container.sqlite", contracts });
             assert.equal(store.available, true);
             initializeTeaching(store); initializeRuns(store);

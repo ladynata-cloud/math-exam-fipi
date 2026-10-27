@@ -32,7 +32,8 @@ test('four nonpersonal profiles expose original topic cards or the exact source-
   const profiles = listCabinetProfiles();
   assert.deepEqual(profiles.map(p => p.id), ['oge-geometry', 'peterson-decimals', 'triangle-congruence', 'atanasyan-first-steps']);
   const topics = profiles.flatMap(p => p.topics.map(t => t.id));
-  assert.equal(new Set(topics).size, 18);
+  assert.equal(new Set(topics).size, 19);
+  assert.deepEqual(profiles.find(profile => profile.id === 'atanasyan-first-steps').topics.map(topic => topic.id), ['atanasyan-course-step', 'ichenskaya-course-step']);
   const repository = fileURLToPath(new URL('../../', import.meta.url));
   for (const profile of profiles) {
     for (const topic of profile.topics) {
