@@ -48,7 +48,9 @@ Transfer permits exactly a canonical source/topic pair and bounded plain text.
 It cannot change the signed-in account, profile, task ownership, provider or
 permissions. It carries no pupil answer, hidden answer key, picture or history.
 The receiver states that drawing data and later edits are unavailable; the pupil
-must check the text and submit explicitly. The public condition appears in a URL
+must check the text and submit explicitly. If the helper has not been enabled,
+the page explains why the form is absent and points back to native hints; it does
+not imply that a working chat already exists. The public condition appears in a URL
 fragment and may remain in browser history. It is not an automatic model request.
 
 The existing MaxExam 0.0 panel now supports bounded exact geometry calculations:
@@ -86,7 +88,7 @@ that is not evidence of mastery on a fresh analogous task. Historical saved
 | Existing geometry mathematical contract | 1,873 checks passed |
 | Geometry text contract | 107 templates; 0 failures |
 | Geometry/state/transport/course/task19 combined suite | 151 passed; includes real Socket.IO and offline download parity |
-| Cabinet plan/route/helper and neighboring course DOM regressions | 54 passed |
+| Cabinet plan/route/helper and neighboring course DOM regressions | 55 passed |
 | Existing assistant browser UI | 10 scenario groups passed |
 | Real browser → authenticated cabinet → independent helper | 6 geometry groups passed, including preserved `2²`, retained hints, login handoff and 390 px layout |
 | Public-trainer handoff in Chromium | 10/10 journeys: five trainers at 1280 and 390 px |
@@ -162,7 +164,7 @@ PR: Draft publication and exact final head recorded in the PR handoff
 Base: 1fcc4fa36267f5667c42409861ef0b92f97b333c
 Head: see the immutable publication head in the Draft PR
 Gate: OGE_GEOMETRY_ASSISTANT_LOCAL_OK; final remote CI reported separately
-Tests: 122 service; 328 server; 1873 mathematics; 107 texts; 151 state; 54 DOM; browser journeys above
+Tests: 122 service; 328 server; 1873 mathematics; 107 texts; 151 state; 55 DOM; browser journeys above
 Failures: 0 unresolved local failures
 Not run: external review, provider calls, real pupil pilot, production activation/deployment
 Scope deviations: bounded gateway normalization correction necessary for demonstrated wrong answers

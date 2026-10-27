@@ -106,6 +106,20 @@ test('handoff prefills the existing panel, never submits automatically or enable
   assert.equal(host.querySelector('[name="assistant-question"]').value, condition);
 });
 
+test('a disabled geometry helper explains the missing form without enabling or submitting anything', async t => {
+  const { window } = fixture(t); window.eval(source('assistant.js'));
+  const host = window.document.querySelector('#helper'), calls = [];
+  const cleanup = window.LearningAssistant.mount(host, { role: 'student', geometryRoute: handoff(),
+    api: async (route, options) => { calls.push({ route, options }); return { enabled: false, available: false }; } });
+  t.after(cleanup); await flush();
+  assert.equal(host.hidden, false);
+  assert.equal(host.querySelector('form'), null);
+  assert.match(host.textContent, /Помощник пока не подключён/);
+  assert.match(host.textContent, /подсказку прямо в тренажёре/);
+  assert.deepEqual(calls.map(call => call.route), ['/assistant']);
+  assert(calls.every(call => call.options?.method !== 'POST'));
+});
+
 test('a geometry entry cannot retarget a different assistant profile', async t => {
   const { window } = fixture(t); window.eval(source('assistant.js'));
   const host = window.document.querySelector('#helper');

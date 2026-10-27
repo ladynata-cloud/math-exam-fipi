@@ -128,7 +128,14 @@
       });
     }
     function renderPupil() {
-      if (!status.enabled || !validProfile(status.profile)) { host.hidden = true; host.replaceChildren(); return; }
+      const geometryEntry = context.geometryRoute && root.LearningGeometry?.readRoute(context.geometryRoute);
+      if (!status.enabled || !validProfile(status.profile)) {
+        if (geometryEntry) {
+          const section = frame('Помощник пока не подключён');
+          section.append(node('p', 'Попроси преподавателя подключить помощника к твоему кабинету. Пока можно открыть подсказку прямо в тренажёре; условие осталось на этой странице.'));
+        } else { host.hidden = true; host.replaceChildren(); }
+        return;
+      }
       if (status.mode === 'unavailable' || status.examActive) {
         const section = frame('MaxExam 0.0 · временно недоступен');
         section.append(node('p', status.examActive ? 'Помощник будет доступен после завершения проверочной работы.' : 'Сервис подсказок пока не отвечает. Основные задания кабинета доступны.'));
@@ -137,7 +144,6 @@
         return;
       }
       const profileId = status.profile.id;
-      const geometryEntry = context.geometryRoute && root.LearningGeometry?.readRoute(context.geometryRoute);
       if (geometryEntry && profileId !== 'oge-geometry') {
         const section = frame('Помощник по геометрии');
         section.append(node('p', 'Для этого кабинета выбран другой профиль помощника. Попроси преподавателя подключить геометрию. Подсказки внутри тренажёров остаются доступны.'));
