@@ -74,3 +74,15 @@ test('a hint cannot silently become multiple steps or an explicit final answer',
     }) }), /PROVIDER_HINT_CONTRACT/);
   }
 });
+test('bounded model provenance is optional and never exposes a credential echoed upstream', async t => {
+  const { config } = fixture(t, { api: true }); const input = question(), cards = getBuiltinKnowledge();
+  const prepared = prepareRequest(config, input, cards, NOW);
+  for (const [model, expected] of [['DeepSeek-V4.1-Flash-1017', 'DeepSeek-V4.1-Flash-1017'],
+    [config.apiKey, null], ['https://invalid.example', null], ['x'.repeat(121), null], [undefined, null]]) {
+    const result = await callProvider({ config, prepared, input, cards, fetchImpl: async () => modelResponse({ model }) });
+    assert.equal(result.reportedModel, expected);
+  }
+  const content = JSON.stringify({ title: 'Один шаг', text: config.apiKey, steps: ['Сравни обе части.'], check: 'Проверь действие.' });
+  await assert.rejects(callProvider({ config, prepared, input, cards, fetchImpl: async () => modelResponse({
+    choices: [{ finish_reason: 'stop', message: { content } }] }) }), /PROVIDER_RESPONSE_INVALID/);
+});

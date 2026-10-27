@@ -9,8 +9,9 @@ been validated in this task.
 
 See the [task and permission boundary](../docs/tasks/MATHEXAM_ASSISTANT_V1.md),
 [research and dated prices](../docs/reports/MATHEXAM_ASSISTANT_RESEARCH_20261027.md)
-and [architecture proposal](../docs/adr/0011-independent-assistant.md). The ADR is
-**Proposed**; this prototype is not permission to merge, deploy or activate billing.
+and [accepted architecture](../docs/adr/0011-independent-assistant.md). The owner
+accepted ADR 0011 on 2026-10-27. That acceptance does not authorize merge,
+deployment or paid requests.
 
 ## Run the free local prototype
 
@@ -58,8 +59,9 @@ negative and ambiguous cases in the [evaluation corpus](evaluation/cases.json).
 Unsupported wording receives a bounded response requiring a separate check.
 Answer labels distinguish `deterministic`, `curated-guidance`, `needs-teacher`
 and `model-unverified`. A source card is context, not proof that a generated
-answer is correct. The original seed cards are reviewed with this prototype;
-owner acceptance and external release review remain outstanding.
+answer is correct. The original seed cards were checked within the prototype;
+teacher acceptance of their pupil-facing use and external release review remain
+outstanding. Architecture acceptance is recorded separately in ADR 0011.
 
 ## Validate changes
 
@@ -98,6 +100,74 @@ workflow is not evidence that its remote run or a production deployment passed.
 The local offline browser evidence is available in the
 [desktop](../docs/reports/assets/mathexam-assistant/desktop.png) and
 [mobile](../docs/reports/assets/mathexam-assistant/mobile.png) captures.
+
+## Prepare the finite synthetic model trial
+
+The owner has authorized preparation of the
+[synthetic trial](../docs/reports/MATHEXAM_ASSISTANT_EVAL_PLAN_20261027.md), not a
+paid run. Its [40 original cases](evaluation/pilot-cases.json) contain 32 model
+tasks and eight local input-rejection checks. Reference answers and scoring
+criteria never enter the provider prompt. The evaluator calls the same provider
+adapter directly; the normal assistant still solves supported arithmetic offline.
+
+These commands need no provider key and make zero external requests:
+
+```sh
+npm --prefix assistant-service run evaluation:plan
+npm --prefix assistant-service run evaluation:dry-run
+```
+
+Outputs are private, Git-ignored files under `assistant-service/artifacts/evaluation/`:
+
+- `plan.json`: exact source revision, corpus/payload digests and conservative cost.
+- `approval.pending.json`: an **unapproved** template, never an owner decision.
+- `review.md` and `review-template.json`: conditions, references and blank human scores.
+- `dry-run-report.json` and matching review files: simulated transport evidence
+  explicitly labelled `NOT_MEASURED`; no claim about a real model's quality.
+
+The proposed campaign is one sequence of at most 32 calls: 500 output tokens,
+15 seconds per call, ten minutes overall and a **USD 0.20 whole-campaign cap**.
+Its ledger at `assistant-service/data/evaluation/pilot.sqlite` is separate from
+pupil sessions. A duplicate, failed or interrupted campaign cannot be started
+again. Reservations are not refunded. There is no reset, resume, provider,
+corpus, ledger-path or budget override on the CLI. Preserve the designated
+checkout/volume: copies or manually deleted ledgers are separate environments,
+so provider-side spending controls remain necessary.
+
+Before a later paid run, the owner must separately approve the exact plan,
+provider conditions and budget; finish required review and prepare a scoped key
+outside Git. Require a clean committed checkout. A private approval JSON file
+must match the current plan digest, have `status: approved`, a real owner-decision
+reference, explicit data/payment review, and timestamps valid for no more than
+24 hours and before the seven-day price deadline. It contains no API key.
+
+The future command is:
+
+```sh
+npm --prefix assistant-service run evaluation:live -- --approval /absolute/private/approval.json
+```
+
+Only that command reads `ASSISTANT_API_KEY`. It also requires
+`ASSISTANT_EVAL_ALLOW_PAID=1`, `ASSISTANT_EXTERNAL_ENABLED=1` and
+`ASSISTANT_PROVIDER_DATA_REVIEWED=1`. Supply those through a protected process
+environment after authorization; their presence is not permission by itself.
+Other service ENV cannot select a different endpoint, model, ledger or budget
+for this finite evaluator. The evaluator is not copied into the application
+Docker image and exposes no HTTP route.
+
+Each live result remains pending human review. Save scores in a separate private
+JSON file; never replace the blank template. After all 32 responses exist:
+
+```sh
+npm --prefix assistant-service run evaluation:review -- --report /absolute/private/live-report.json --scores /absolute/private/reviewed-scores.json
+```
+
+The review requires all cases, their report digest and a teacher/reviewer role.
+Inapplicable dimensions are exactly `null`; a passing case needs mathematics 2,
+every other applicable score at least 1, at least 80% of applicable points and no
+critical error. At least 29/32 cases must pass with zero critical errors overall.
+Simulation, incomplete cases and blank reviews cannot produce a model-quality
+verdict. Passing this small synthetic set never authorizes a pupil pilot or release.
 
 ## Environment reference
 

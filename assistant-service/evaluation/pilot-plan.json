@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "mathexam-synthetic-pilot-v1",
+  "provider": "deepseek",
+  "model": "deepseek-flash",
+  "currency": "USD",
+  "inputPriceMicros": 300000,
+  "outputPriceMicros": 1200000,
+  "priceReviewedOn": "2026-10-27",
+  "priceSource": "https://api-docs.deepseek.com/quick_start/pricing/",
+  "maxRequests": 32,
+  "preflightCount": 8,
+  "totalBudgetMicros": 200000,
+  "maxInputTokens": 16000,
+  "maxOutputTokens": 500,
+  "timeoutMs": 15000,
+  "maxDurationMs": 600000,
+  "concurrency": 1,
+  "retries": 0
+}

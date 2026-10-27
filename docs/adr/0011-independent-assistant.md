@@ -1,6 +1,6 @@
 # Independent mathematics assistant with reviewed knowledge and bounded inference
 
-Status: Proposed
+Status: Accepted
 
 Date: 2026-10-27 (Asia/Novosibirsk)
 
@@ -9,11 +9,17 @@ Evidence: [model, hosting and cost research](../reports/MATHEXAM_ASSISTANT_RESEA
 Review level: `NEW_ARCHETYPE`, including authentication, persistence and spending
 boundaries that also require HIGH review depth.
 
-The owner has authorized an isolated, reviewable prototype and a Draft PR.
-This ADR does not record architectural acceptance, a live model benchmark,
-external review approval, merge authorization or deployment permission.
-Only a separately accepted decision has the authority defined by
-[AGENTS.md](../../AGENTS.md) and [REVIEW_POLICY.md](../REVIEW_POLICY.md).
+Accepted by the owner on 2026-10-27 (Asia/Novosibirsk), in the current task
+conversation: «Я утверждаю предложенную архитектуру. Подготовь ограниченное
+испытание модели на синтетических школьных заданиях».
+
+This records acceptance of the architectural decisions below and authorization
+to prepare the [limited synthetic evaluation](../tasks/MATHEXAM_ASSISTANT_EVAL_V1.md).
+It does not authorize paid model calls, infrastructure purchases, merge,
+deployment or a pupil pilot. No external-review approval or waiver is implied.
+Acceptance has the architectural authority defined by
+[AGENTS.md](../../AGENTS.md) and [REVIEW_POLICY.md](../REVIEW_POLICY.md);
+the independent release and spending permissions still apply.
 
 ## Context
 
@@ -36,7 +42,7 @@ models are available, but their weight-file sizes do not establish total RAM,
 latency or operating cost on the user's plan. The research therefore supports
 an application-owned knowledge layer with an optional paid API boundary first.
 
-## Proposed decision
+## Accepted decision
 
 ### 1. One isolated service and a zero-spend default
 
@@ -183,8 +189,8 @@ feedback behavior, candidate isolation, access controls, safe rendering, budget
 concurrency, restart/failure persistence, retention/deletion and desktop/mobile
 browser checks. All should run without a paid model call.
 
-Before rollout, obtain the owner's acceptance of this archetype and the reviews
-required by repository policy. A valid external verdict must identify provider,
+The owner has accepted this archetype; the reviews required by repository policy
+remain outstanding release conditions. A valid external verdict must identify provider,
 PR, base, head, verdict and a verifiable source/timestamp. Internal agent review
 is separate evidence. Resolve the actual Amvera configuration, persistent-volume
 permissions, ingress limits, backup restoration and provider processing/payment
@@ -193,7 +199,7 @@ mathematics examples and a small fixed spend cap before any pupil pilot.
 
 Merge/deployment each remain separate owner decisions. Apply the repository's
 authoritative-current-main base-drift guard immediately before any authorized
-merge. No test marker or this Proposed ADR changes that rule.
+merge. No test marker or this accepted ADR changes that rule.
 
 ## Rollback
 

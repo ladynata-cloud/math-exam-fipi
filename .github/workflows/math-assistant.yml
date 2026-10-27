@@ -5,6 +5,7 @@ on:
     paths:
       - 'assistant-service/**'
       - 'docs/tasks/MATHEXAM_ASSISTANT_V1.md'
+      - 'docs/tasks/MATHEXAM_ASSISTANT_EVAL_V1.md'
       - 'docs/adr/0011-independent-assistant.md'
       - 'docs/reports/MATHEXAM_ASSISTANT*'
       - '.github/workflows/math-assistant.yml'
@@ -60,3 +61,5 @@ jobs:
           node assistant-service/test/container-smoke.mjs
       - name: Prototype gate
         run: echo MATHEXAM_ASSISTANT_PROTOTYPE_OK
+      - name: Synthetic evaluation preparation gate
+        run: echo MATHEXAM_ASSISTANT_EVAL_PREPARED_OK

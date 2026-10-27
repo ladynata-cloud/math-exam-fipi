@@ -85,12 +85,17 @@ export async function callProvider({ config, prepared, input, cards, fetchImpl =
         requireValue(content.steps.length === 1 && !/(?:^|\s)(?:ответ\s*:|answer\s*:|итоговый\s+ответ|окончательный\s+ответ)/iu
           .test([content.title, content.text, ...content.steps, content.check].join('\n')), 'PROVIDER_HINT_CONTRACT', 502);
       }
-      requireValue(!containsSensitiveText([content.title, content.text, ...content.steps, content.check].join('\n')), 'PROVIDER_RESPONSE_INVALID', 502);
+      const answerText = [content.title, content.text, ...content.steps, content.check].join('\n');
+      requireValue(!containsSensitiveText(answerText) && (!config.apiKey || !answerText.includes(config.apiKey)), 'PROVIDER_RESPONSE_INVALID', 502);
       return {
         answer: { ...content,
           sources: cards.map(card => ({ id: card.id, title: card.title, url: card.source.url })),
           verification: 'model-unverified', topic: input.topic, complete: input.mode === 'explain' },
-        usage: { prompt_tokens: usage.prompt_tokens, completion_tokens: usage.completion_tokens }
+        usage: { prompt_tokens: usage.prompt_tokens, completion_tokens: usage.completion_tokens },
+        // A bounded provider label is useful for synthetic evaluation provenance;
+        // it is not a weight hash or a guarantee that an alias is immutable.
+        reportedModel: typeof data.model === 'string' && /^[A-Za-z0-9._:-]{1,120}$/.test(data.model)
+          && !containsSensitiveText(data.model) && (!config.apiKey || !data.model.includes(config.apiKey)) ? data.model : null
       };
     })();
     return await Promise.race([work, deadline]);

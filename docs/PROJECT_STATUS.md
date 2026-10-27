@@ -2,13 +2,37 @@
 
 Updated: 2026-10-27 (Asia/Novosibirsk)
 
+## Prepared: limited synthetic model trial; assistant architecture accepted
+
+- Owner accepted [ADR 0011](adr/0011-independent-assistant.md) on 2026-10-27 and
+  authorized preparation of [MATHEXAM_ASSISTANT_EVAL_V1](tasks/MATHEXAM_ASSISTANT_EVAL_V1.md),
+  HIGH review. Architecture acceptance does not activate paid requests or release.
+- Branch `feat/math-assistant-eval-20261027` is stacked on Draft PR
+  [#358](https://github.com/ladynata-cloud/math-exam-fipi/pull/358), dependency head
+  `5219320061bf92d63da389b45d30564425c51d11`. The parent remains unmerged.
+- [Plan](reports/MATHEXAM_ASSISTANT_EVAL_PLAN_20261027.md) and
+  [readable cases/references](reports/MATHEXAM_ASSISTANT_EVAL_CASES_20261027.md):
+  32 model cases plus eight local rejection cases; proposed USD 0.20 lifetime
+  campaign limit. Full-payload reservations currently total USD 0.070515.
+- Dedicated private ledger, one sequential attempt per case, source/approval
+  binding, no retries/reset/resume, pending human scores and inert review text.
+  Default planning/rehearsal is zero-network and cannot measure model quality.
+- Local checks: 82/82 service/evaluation groups passed; the 32-response simulated
+  rehearsal completed with zero live requests. Exact remote CI belongs in the
+  new task's Draft PR. No external review or live benchmark is claimed.
+- Read-only reconciliation: remote main still `92d733a49692744ce043503c57f29b77bfb09a24`;
+  public index/sitemap/robots again returned HTTP 200 and matched that source.
+- Next: review prepared corpus/limits, complete required review and separately
+  authorize the provider/budget if a live synthetic run is wanted. No model call,
+  infrastructure purchase, merge, deployment or pupil-data change occurred.
+
 ## Prepared: independent mathematics assistant prototype
 
 - [Scope](tasks/MATHEXAM_ASSISTANT_V1.md), `NEW_ARCHETYPE`, branch
   `feat/math-assistant-v1-20261027`, base
   `92d733a49692744ce043503c57f29b77bfb09a24`.
 - [Research](reports/MATHEXAM_ASSISTANT_RESEARCH_20261027.md),
-  [proposed ADR](adr/0011-independent-assistant.md), and
+  [ADR](adr/0011-independent-assistant.md), and
   [operator guide](../assistant-service/README.md). Separate Node 24 service,
   private pilot, SQLite, seven original knowledge topics and optional model API.
 - Default offline mode has exact arithmetic for five bounded task families,
@@ -19,9 +43,10 @@ Updated: 2026-10-27 (Asia/Novosibirsk)
   Actual provider charges/quality and Amvera account resources remain unverified.
 - Assistant, board and video are independent packages. Existing board and pupil
   cabinets still share one process; stopping it also stops cabinet APIs.
-- Next three actions: obtain exact-head CI and independent review evidence;
-  owner reviews the prototype/ADR and selects a bounded provider pilot; only
-  after separate authorization validate paid inference and hosting before rollout.
+- Reconciled: PR #358's head above passed 53 service groups, four browser groups,
+  the actual Docker restart/backup check and Public SEO. The owner has now accepted
+  its architecture; finite model-test preparation is the separate task above.
+  Paid inference, required external review and hosting validation remain pending.
 - No merge, paid activation, production account changes or publication occurred.
 
 ## Published code: HTTPS canonicals and static trainer metadata
