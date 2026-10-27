@@ -37,6 +37,12 @@ export function loadConfig(env = process.env, now = Date.now()) {
   const loopback = origin.protocol === 'http:' && ['127.0.0.1', 'localhost'].includes(origin.hostname);
   requireValue(origin.origin === publicOrigin && (origin.protocol === 'https:' || (!production && loopback)), 'CONFIG_ORIGIN_INVALID');
   const pilotKey = env.ASSISTANT_PILOT_KEY || '';
+  const cabinetBridgeKey = env.ASSISTANT_CABINET_BRIDGE_KEY || '';
+  requireValue(!cabinetBridgeKey || /^[A-Za-z0-9_-]{43,128}$/.test(cabinetBridgeKey), 'CONFIG_CABINET_KEY_INVALID');
+  requireValue(!cabinetBridgeKey || cabinetBridgeKey !== pilotKey, 'CONFIG_CABINET_KEY_REUSED');
+  requireValue([undefined, '', '0', '1'].includes(env.ASSISTANT_CABINET_EXTERNAL_ENABLED), 'CONFIG_CABINET_EXTERNAL_INVALID');
+  const cabinetExternalEnabled = env.ASSISTANT_CABINET_EXTERNAL_ENABLED === '1';
+  requireValue(!cabinetExternalEnabled || (cabinetBridgeKey && mode === 'api'), 'CONFIG_CABINET_EXTERNAL_INVALID');
   const localDemo = !production && mode === 'offline' && host === '127.0.0.1' && loopback && !pilotKey;
   requireValue(localDemo || /^[A-Za-z0-9_-]{43,128}$/.test(pilotKey), 'CONFIG_PILOT_KEY_REQUIRED');
   const dbPath = env.ASSISTANT_DB_PATH || path.join(ROOT, 'data', 'assistant.sqlite');
@@ -47,6 +53,7 @@ export function loadConfig(env = process.env, now = Date.now()) {
   }
   const config = {
     mode, production, host, port, publicOrigin, pilotKey, localDemo, dbPath,
+    cabinetBridgeKey, cabinetExternalEnabled,
     cookieSecure: origin.protocol === 'https:',
     sessionTtlMs: 3600000, feedbackRetentionMs: 30 * 86400000,
     maxSessionRequests: integer(env.ASSISTANT_SESSION_REQUESTS, 60, 1, 100),
@@ -70,6 +77,7 @@ export function loadConfig(env = process.env, now = Date.now()) {
     requireValue(settings.models.includes(model), 'CONFIG_MODEL_INVALID');
     const apiKey = env.ASSISTANT_API_KEY || '';
     requireValue(apiKey.length >= 16 && apiKey.length <= 2048 && /^[\x21-\x7e]+$/.test(apiKey), 'CONFIG_API_KEY_REQUIRED');
+    requireValue(!cabinetBridgeKey || cabinetBridgeKey !== apiKey, 'CONFIG_CABINET_KEY_REUSED');
     requireValue(env.ASSISTANT_CURRENCY === settings.currency, 'CONFIG_CURRENCY_INVALID');
     const inputPriceMicros = moneyMicros(env.ASSISTANT_INPUT_PER_MILLION);
     const outputPriceMicros = moneyMicros(env.ASSISTANT_OUTPUT_PER_MILLION);

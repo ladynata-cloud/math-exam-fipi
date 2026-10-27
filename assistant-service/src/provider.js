@@ -3,9 +3,12 @@ import { pricesFresh } from './config.js';
 import { buildMessages, validateModelAnswer } from './tutor.js';
 import { containsSensitiveText } from './privacy.js';
 
-export function prepareRequest(config, input, cards, now = Date.now()) {
+export function prepareRequest(config, input, cards, now = Date.now(), messageBuilder = buildMessages) {
   requireValue(config.mode === 'api' && pricesFresh(config, now), 'PROVIDER_DISABLED', 503);
-  const messages = buildMessages(input, cards);
+  // The alternate builder is selected by trusted application code for the
+  // cabinet's fixed profiles. No HTTP field can provide a builder or prompt.
+  requireValue(typeof messageBuilder === 'function', 'PROMPT_INVALID');
+  const messages = messageBuilder(input, cards);
   // For the allowlisted byte-based tokenizers: count every UTF-8 byte as a
   // token, plus a deliberately large framing margin. This is conservative,
   // not an invoice or a promise about arbitrary providers/tokenizers.
@@ -86,7 +89,8 @@ export async function callProvider({ config, prepared, input, cards, fetchImpl =
           .test([content.title, content.text, ...content.steps, content.check].join('\n')), 'PROVIDER_HINT_CONTRACT', 502);
       }
       const answerText = [content.title, content.text, ...content.steps, content.check].join('\n');
-      requireValue(!containsSensitiveText(answerText) && (!config.apiKey || !answerText.includes(config.apiKey)), 'PROVIDER_RESPONSE_INVALID', 502);
+      const credentials = [config.apiKey, config.cabinetBridgeKey, config.pilotKey].filter(value => typeof value === 'string' && value.length >= 16);
+      requireValue(!containsSensitiveText(answerText) && !credentials.some(value => answerText.includes(value)), 'PROVIDER_RESPONSE_INVALID', 502);
       return {
         answer: { ...content,
           sources: cards.map(card => ({ id: card.id, title: card.title, url: card.source.url })),
@@ -95,7 +99,7 @@ export async function callProvider({ config, prepared, input, cards, fetchImpl =
         // A bounded provider label is useful for synthetic evaluation provenance;
         // it is not a weight hash or a guarantee that an alias is immutable.
         reportedModel: typeof data.model === 'string' && /^[A-Za-z0-9._:-]{1,120}$/.test(data.model)
-          && !containsSensitiveText(data.model) && (!config.apiKey || !data.model.includes(config.apiKey)) ? data.model : null
+          && !containsSensitiveText(data.model) && !credentials.some(value => data.model.includes(value)) ? data.model : null
       };
     })();
     return await Promise.race([work, deadline]);

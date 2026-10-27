@@ -4,6 +4,7 @@ const express = require('express');
 const { LearningStore } = require('./learning-store');
 const { getRewards } = require('./learning-rewards');
 const { createFamilyRouter } = require('./learning-family');
+const { createLearningAssistantRouter } = require('./learning-assistant');
 const { LearningError, requireValue, exactKeys, safeName, normalizeLogin, tokenHash, hashPassword, verifyPassword, RateLimiter } = require('./learning-auth');
 
 function createLearningApi(options = {}) {
@@ -214,7 +215,10 @@ function createLearningApi(options = {}) {
   router.post('/lessons', authMiddleware, mutationMiddleware, handler((req, res) => res.status(201).json(store.createLesson(req.learningAuth, req.body))));
   router.get('/lessons/:id', authMiddleware, handler((req, res) => res.json(store.getLesson(req.learningAuth, req.params.id))));
   router.post('/lessons/:id/actions', authMiddleware, mutationMiddleware, handler((req, res) => res.json(store.lessonAction(req.learningAuth, req.params.id, req.body))));
-  return { router, store, handler, authMiddleware, mutationMiddleware, close: () => store.close() };
+  const learning = { router, store, handler, authMiddleware, mutationMiddleware, close: () => store.close() };
+  const assistant = createLearningAssistantRouter(learning, options.assistant || {});
+  router.use(assistant.router);
+  return { ...learning, assistant };
 }
 
 module.exports = { createLearningApi };

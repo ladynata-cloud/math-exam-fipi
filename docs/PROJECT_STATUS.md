@@ -2,6 +2,29 @@
 
 Updated: 2026-10-27 (Asia/Novosibirsk)
 
+## Prepared: MaxExam 0.0 for three selected cabinets
+
+- [Task](tasks/MATHEXAM_ASSISTANT_CABINETS_V1.md), HIGH, branch
+  `feat/math-assistant-cabinets-20261027`, base
+  `060a445d27e939a3d68a8e1885986ad56d5c89d5`, stacked on Draft PR #359 / #358.
+- Authenticated, default-disabled gateway to the independent assistant; private
+  teacher selection of at most three pupils, 17 original topic cards, exact
+  decimals, retained hints, simpler explanations and categorical feedback.
+- [Evidence and limits](reports/MATHEXAM_ASSISTANT_CABINETS_20261027.md) and
+  [operator guide](../assistant-service/CABINETS.md). The real local two-service
+  browser path completed 9 requests with synthetic accounts and zero model calls.
+  Full service and board suites passed 107 and 328 checks respectively. Remote
+  exact-head CI and the separately reported local clipboard regression belong
+  in the Draft PR handoff; no external review is claimed.
+- Public main and index/sitemap/robots remain at the preceding released state
+  below. No authenticated teacher connection was available for real account
+  verification/binding. No real pupil has been enabled by this preparation.
+- The owner prefers strong teaching quality and considers OpenAI, GigaChat and
+  Qwen as complementary model candidates. Multi-model consultation requires a
+  separate bounded adapter/evaluation change and actual provider access/terms.
+  This is not automatic training of a MathExam model's weights.
+- No key purchase, paid request, infrastructure activation, merge or deployment.
+
 ## Prepared: limited synthetic model trial; assistant architecture accepted
 
 - Owner accepted [ADR 0011](adr/0011-independent-assistant.md) on 2026-10-27 and
@@ -12,7 +35,7 @@ Updated: 2026-10-27 (Asia/Novosibirsk)
   `5219320061bf92d63da389b45d30564425c51d11`. The parent remains unmerged.
 - [Plan](reports/MATHEXAM_ASSISTANT_EVAL_PLAN_20261027.md) and
   [readable cases/references](reports/MATHEXAM_ASSISTANT_EVAL_CASES_20261027.md):
-  32 model cases plus eight local rejection cases; proposed USD 0.20 lifetime
+  32 model cases plus eight local rejection cases; owner-authorized USD 0.20 lifetime
   campaign limit. Full-payload reservations currently total USD 0.070515.
 - Dedicated private ledger, one sequential attempt per case, source/approval
   binding, no retries/reset/resume, pending human scores and inert review text.
@@ -22,9 +45,13 @@ Updated: 2026-10-27 (Asia/Novosibirsk)
   new task's Draft PR. No external review or live benchmark is claimed.
 - Read-only reconciliation: remote main still `92d733a49692744ce043503c57f29b77bfb09a24`;
   public index/sitemap/robots again returned HTTP 200 and matched that source.
-- Next: review prepared corpus/limits, complete required review and separately
-  authorize the provider/budget if a live synthetic run is wanted. No model call,
-  infrastructure purchase, merge, deployment or pupil-data change occurred.
+- Reconciled: the owner subsequently authorized at most 32 DeepSeek calls /
+  USD 0.20 for the exact prepared campaign at
+  `060a445d27e939a3d68a8e1885986ad56d5c89d5`; PR #359 records the decision.
+  API access is not configured and required review remains outstanding. Do not
+  ask for that same budget again or transfer it to pupils/another provider/head.
+  No model call, infrastructure purchase, merge, deployment or pupil-data change
+  occurred. The next step is to resolve actual access, review and the exact plan.
 
 ## Prepared: independent mathematics assistant prototype
 

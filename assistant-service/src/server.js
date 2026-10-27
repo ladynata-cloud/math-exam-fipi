@@ -8,7 +8,7 @@ import { AssistantError, requireValue, exactKeys } from './errors.js';
 import { AssistantStore, secretEqual, hash } from './store.js';
 import { parseQuestion } from './privacy.js';
 import { listTopics, getBuiltinKnowledge, answerOffline } from './tutor.js';
-import { prepareRequest, callProvider } from './provider.js';
+import { createCabinetBridge, executeAssistantAnswer } from './cabinet-bridge.js';
 
 const PUBLIC = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../public');
 const ASSETS = new Map([
@@ -45,6 +45,7 @@ export function createAssistantServer({ config = loadConfig(), clock = Date.now,
   const topics = listTopics();
   const store = new AssistantStore({ config, clock, builtinCards: getBuiltinKnowledge(), topics: topics.map(topic => topic.id) });
   const loginAttempts = new Map(), active = new Map(), ipSalt = randomBytes(32).toString('hex');
+  const cabinetBridge = createCabinetBridge({ config, store, clock, fetchImpl, active, readBody, send });
   let globalLoginWindow = { start: clock(), count: 0 };
   const cleanup = setInterval(() => { try { store.cleanup(); } catch { /* Storage failure closes requests, never silently resets it. */ }
     for (const [key, value] of loginAttempts) if (value.start < clock() - 600000) loginAttempts.delete(key);
@@ -58,6 +59,7 @@ export function createAssistantServer({ config = loadConfig(), clock = Date.now,
       requireValue(typeof req.url === 'string' && !req.url.includes('?') && !req.url.includes('#'), 'ROUTE_NOT_FOUND', 404);
       if (req.method === 'GET' && req.url === '/healthz') { send(res, 200, { ok: true, service: 'mathexam-assistant', mode: config.mode }); return; }
       requireValue(req.headers.host === new URL(config.publicOrigin).host, 'HOST_REJECTED', 403);
+      if (await cabinetBridge(req, res)) return;
       if (req.method === 'GET' && req.url === '/robots.txt') {
         res.writeHead(200, { ...COMMON_HEADERS, 'Content-Type': 'text/plain; charset=utf-8' }); res.end('User-agent: *\nDisallow: /\n'); return;
       }
@@ -110,39 +112,8 @@ export function createAssistantServer({ config = loadConfig(), clock = Date.now,
         const input = { ...parseQuestion(await readBody(req, config.maxBodyBytes), topics.map(topic => topic.id)), simpler: !!session.simpler };
         const cards = store.knowledge(input.topic);
         const offline = answerOffline(input, cards);
-        let answer = offline, notice, usage, reservation;
-        const eligible = config.mode === 'api' && input.externalConsent && offline.verification !== 'deterministic';
-        if (eligible) {
-          let prepared;
-          try {
-            prepared = prepareRequest(config, input, cards, clock());
-            reservation = store.reserve({ sessionHash: session.hash, requestId: input.requestId, kind: 'api',
-              reservedMicros: prepared.reservedMicros, inputBound: prepared.inputBound });
-          } catch (error) {
-            if (!['PROVIDER_DISABLED', 'BUDGET_EXHAUSTED', 'API_RATE_LIMIT', 'PROVIDER_BUSY', 'PROMPT_LIMIT'].includes(error.code)) throw error;
-            notice = 'Внешняя модель сейчас недоступна или достигнут лимит. Показываю материалы MathExam без платного запроса.';
-          }
-          if (reservation) {
-            const controller = new AbortController();
-            active.set(reservation.id, { controller, sessionHash: session.hash });
-            const disconnect = () => { if (!res.writableEnded) controller.abort(); };
-            res.once('close', disconnect);
-            try {
-              const result = await callProvider({ config, prepared, input, cards, fetchImpl, signal: controller.signal });
-              answer = result.answer; usage = result.usage;
-            } catch (error) {
-              if (error.code === 'PROVIDER_USAGE_CONTRACT') store.tripCircuit();
-              // Retain the entire reservation after unknown or failed billing;
-              // never retry, refund an unknown call or select another provider.
-              notice = 'Модель не дала проверяемый ответ. Показываю материалы MathExam; повторного платного запроса не было.';
-            } finally { active.delete(reservation.id); res.removeListener('close', disconnect); }
-          }
-        }
-        if (!reservation) reservation = store.reserve({ sessionHash: session.hash, requestId: input.requestId });
-        try {
-          const response = store.finish(reservation, session.hash, answer, usage);
-          send(res, 200, { ok: true, answer: response, ...(notice ? { notice } : {}) });
-        } catch (error) { store.fail(reservation); throw error; }
+        const result = await executeAssistantAnswer({ config, store, clock, fetchImpl, active, res, session, input, cards, offline });
+        send(res, 200, result);
         return;
       }
       throw new AssistantError('ROUTE_NOT_FOUND', 404);

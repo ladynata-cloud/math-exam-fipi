@@ -6,6 +6,7 @@ on:
       - 'assistant-service/**'
       - 'docs/tasks/MATHEXAM_ASSISTANT_V1.md'
       - 'docs/tasks/MATHEXAM_ASSISTANT_EVAL_V1.md'
+      - 'docs/tasks/MATHEXAM_ASSISTANT_CABINETS_V1.md'
       - 'docs/adr/0011-independent-assistant.md'
       - 'docs/reports/MATHEXAM_ASSISTANT*'
       - '.github/workflows/math-assistant.yml'

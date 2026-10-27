@@ -177,6 +177,8 @@ jobs:
           retention-days: 7
       - name: Real classroom, trainer, homework and exam scenarios
         run: |
+          node --test --test-isolation=none tools/learning-assistant-browser.test.cjs
+          node tools/learning-assistant-e2e.browser.cjs
           node tools/learning-path.browser.cjs
           node tools/motion-grade6.browser.cjs
           node tools/learning-remediation-smoke.cjs
@@ -204,6 +206,8 @@ jobs:
           node tools/grade7-geometry-core.browser.cjs
       - name: Final whitespace and patch check
         run: git diff --check
+      - name: Cabinet assistant preparation gate
+        run: echo MATHEXAM_ASSISTANT_CABINETS_PREPARED_OK
 
   container:
     runs-on: ubuntu-latest

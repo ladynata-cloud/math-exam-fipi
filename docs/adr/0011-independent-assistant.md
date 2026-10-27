@@ -210,3 +210,35 @@ budget ledger, and restore only a verified snapshot into an explicit recovery
 destination. Reverting code must not zero spending counters or silently expose
 unapproved knowledge. Actual container startup, backup/restore and provider
 turnoff remain operational release checks if not available in local validation.
+
+## Approved cabinet extension — 2026-10-27
+
+The owner's subsequent instruction to connect three selected pupil cabinets
+authorizes [MATHEXAM_ASSISTANT_CABINETS_V1](../tasks/MATHEXAM_ASSISTANT_CABINETS_V1.md).
+This extends the initial standalone-only interface boundary above with a narrow
+authenticated cabinet gateway. It does not move inference or the assistant's
+database into the board process. Original standalone rollout restrictions remain
+historical context; the new approved task defines this bounded extension.
+
+The cabinet stores private account/profile permissions and durable request
+counts. An independent service key protects mathematical requests to the
+assistant; a random pseudonym stays out of provider prompts. At most three
+accounts can be enabled. The browser never receives bridge/provider secrets.
+An owned structured attempt is marked assisted before help is delivered; linked
+public courses use explicit manual context. Active assessment blocks help.
+
+External cabinet inference has its own default-off switches, provider review,
+teacher permission and per-request acknowledgement. Existing monetary
+reservations and replay protection apply. Reviewed cabinet knowledge remains
+versioned source material; feedback changes session wording and editorial
+priorities, never weights or automatically approved facts. The name MaxExam 0.0
+is a product label, not evidence of a trained model.
+
+Disable the gateway or a private account setting to withdraw cabinet access,
+while preserving both ledgers. The helper and video retain separate resources;
+the existing board/cabinet process is still shared. Actual account binding,
+provider eligibility, required external review and separately authorized
+merge/deployment remain operational prerequisites. See the
+[cabinet operator guide](../../assistant-service/CABINETS.md) for limits and data
+retention details. The prior finite synthetic budget does not authorize pupil
+traffic or a different model.

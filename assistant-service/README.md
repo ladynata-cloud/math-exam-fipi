@@ -13,6 +13,11 @@ and [accepted architecture](../docs/adr/0011-independent-assistant.md). The owne
 accepted ADR 0011 on 2026-10-27. That acceptance does not authorize merge,
 deployment or paid requests.
 
+The separately approved [cabinet extension](CABINETS.md) prepares **MaxExam 0.0**
+for three privately selected pupils. It retains the independent service and
+default-off external inference. It is a prepared change, not a live connection
+to real pupil accounts.
+
 ## Run the free local prototype
 
 Use **Node.js >=24.15.0 and <25**. There are no runtime dependencies; SQLite comes
@@ -103,9 +108,12 @@ The local offline browser evidence is available in the
 
 ## Prepare the finite synthetic model trial
 
-The owner has authorized preparation of the
-[synthetic trial](../docs/reports/MATHEXAM_ASSISTANT_EVAL_PLAN_20261027.md), not a
-paid run. Its [40 original cases](evaluation/pilot-cases.json) contain 32 model
+The owner authorized preparation of the
+[synthetic trial](../docs/reports/MATHEXAM_ASSISTANT_EVAL_PLAN_20261027.md) and later
+authorized its bounded DeepSeek campaign: at most 32 calls / USD 0.20 at prepared
+head `060a445d27e939a3d68a8e1885986ad56d5c89d5`. No live call occurred: API access
+and required review remain unresolved. That authorization does not fund cabinet
+traffic or another provider/head. Its [40 original cases](evaluation/pilot-cases.json) contain 32 model
 tasks and eight local input-rejection checks. Reference answers and scoring
 criteria never enter the provider prompt. The evaluator calls the same provider
 adapter directly; the normal assistant still solves supported arithmetic offline.
@@ -134,8 +142,8 @@ corpus, ledger-path or budget override on the CLI. Preserve the designated
 checkout/volume: copies or manually deleted ledgers are separate environments,
 so provider-side spending controls remain necessary.
 
-Before a later paid run, the owner must separately approve the exact plan,
-provider conditions and budget; finish required review and prepare a scoped key
+Before a later paid run, verify the existing authorization against the exact
+plan, provider conditions and budget; finish required review and prepare a scoped key
 outside Git. Require a clean committed checkout. A private approval JSON file
 must match the current plan digest, have `status: approved`, a real owner-decision
 reference, explicit data/payment review, and timestamps valid for no more than

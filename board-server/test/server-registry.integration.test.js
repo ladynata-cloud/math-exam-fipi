@@ -280,7 +280,9 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
   const runtimeTrainerDir = path.join(directory, 'app', 'trainers');
   fs.mkdirSync(runtimeServerDir, { recursive: true });
   fs.mkdirSync(runtimeTrainerDir, { recursive: true });
-  for (const file of fs.readdirSync(serverDir).filter(name => name.endsWith('.js'))) {
+  // Docker copies runtime data files together with server code. In particular,
+  // the cabinet assistant catalogue is JSON and must be present in this layout.
+  for (const file of fs.readdirSync(serverDir).filter(name => /\.(?:js|json)$/.test(name))) {
     fs.copyFileSync(path.join(serverDir, file), path.join(runtimeServerDir, file));
   }
   fs.copyFileSync(manifestPath, path.join(runtimeTrainerDir, 'board-compat.json'));

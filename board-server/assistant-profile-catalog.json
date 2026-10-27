@@ -1,0 +1,167 @@
+[
+  {
+    "id": "oge-geometry",
+    "title": "ОГЭ · Геометрия",
+    "links": [
+      {
+        "title": "Треугольники",
+        "url": "https://mathexam.space/trainers/oge-task15-triangles.html"
+      },
+      {
+        "title": "Окружность",
+        "url": "https://mathexam.space/trainers/oge-task16-circle.html"
+      },
+      {
+        "title": "Четырёхугольники и площади",
+        "url": "https://mathexam.space/trainers/oge-task17-quadrilaterals.html"
+      },
+      {
+        "title": "Геометрия на клетках",
+        "url": "https://mathexam.space/trainers/oge-task18-grid.html"
+      },
+      {
+        "title": "Геометрические утверждения",
+        "url": "https://mathexam.space/trainers/task19-trainer.html"
+      }
+    ],
+    "topics": [
+      {
+        "id": "oge-triangles",
+        "title": "Треугольники",
+        "example": "Как выбрать правило для задачи о треугольнике?"
+      },
+      {
+        "id": "oge-circle",
+        "title": "Окружность",
+        "example": "Как отличить центральный угол от вписанного?"
+      },
+      {
+        "id": "oge-quadrilaterals",
+        "title": "Четырёхугольники и площади",
+        "example": "Как выбрать высоту в формуле площади параллелограмма?"
+      },
+      {
+        "id": "oge-grid",
+        "title": "Геометрия на клетках",
+        "example": "Как найти площадь треугольника на клетчатой бумаге?"
+      },
+      {
+        "id": "oge-statements",
+        "title": "Геометрические утверждения",
+        "example": "Как проверить, всегда ли верно геометрическое утверждение?"
+      }
+    ]
+  },
+  {
+    "id": "peterson-decimals",
+    "title": "Петерсон · 6 класс · Десятичные дроби",
+    "links": [
+      {
+        "title": "Курс к учебнику Петерсона, 6 класс",
+        "url": "https://mathexam.space/school/peterson6/"
+      },
+      {
+        "title": "Тренировать сложение",
+        "url": "https://mathexam.space/school/peterson6/#practice/decimal-add/1"
+      },
+      {
+        "title": "Тренировать вычитание",
+        "url": "https://mathexam.space/school/peterson6/#practice/decimal-subtract/1"
+      },
+      {
+        "title": "Тренировать умножение",
+        "url": "https://mathexam.space/school/peterson6/#practice/decimal-multiply/1"
+      },
+      {
+        "title": "Тренировать деление",
+        "url": "https://mathexam.space/school/peterson6/#practice/decimal-divide/1"
+      },
+      {
+        "title": "Переводить в обыкновенную дробь",
+        "url": "https://mathexam.space/school/peterson6/#practice/decimal-to-fraction/1"
+      },
+      {
+        "title": "Переводить в десятичную дробь",
+        "url": "https://mathexam.space/school/peterson6/#practice/fraction-to-decimal/1"
+      }
+    ],
+    "topics": [
+      {
+        "id": "decimal-place-value",
+        "title": "Разряды десятичной дроби",
+        "example": "Разряды числа 12,304"
+      },
+      {
+        "id": "decimal-compare",
+        "title": "Сравнение десятичных дробей",
+        "example": "Сравни 0,9 и 0,10"
+      },
+      {
+        "id": "decimal-rounding",
+        "title": "Округление десятичных дробей",
+        "example": "Округли 9,96 до десятых"
+      },
+      {
+        "id": "decimal-add-subtract",
+        "title": "Сложение и вычитание",
+        "example": "12,5 - 0,75"
+      },
+      {
+        "id": "decimal-multiply",
+        "title": "Умножение десятичных дробей",
+        "example": "0,24 * 0,5"
+      },
+      {
+        "id": "decimal-divide",
+        "title": "Деление десятичных дробей",
+        "example": "3,6 : 0,12"
+      },
+      {
+        "id": "decimal-powers-ten",
+        "title": "Умножение и деление на 10, 100, 1000",
+        "example": "0,047 * 100"
+      },
+      {
+        "id": "decimal-fractions",
+        "title": "Десятичные и обыкновенные дроби",
+        "example": "Переведи 0,125 в обыкновенную дробь"
+      }
+    ]
+  },
+  {
+    "id": "triangle-congruence",
+    "title": "Атанасян · Признаки равенства треугольников",
+    "links": [
+      {
+        "title": "Курс к учебнику Атанасяна, 7–9 классы",
+        "url": "https://mathexam.space/geometry-course/textbook/"
+      },
+      {
+        "title": "Тренажёр по равенству треугольников",
+        "url": "https://mathexam.space/trainers/atanasyan-7-9.html"
+      }
+    ],
+    "topics": [
+      {
+        "id": "congruence-sas",
+        "title": "Первый признак: две стороны и угол между ними",
+        "example": "Почему в первом признаке важен угол между сторонами?"
+      },
+      {
+        "id": "congruence-asa",
+        "title": "Второй признак: сторона и два прилежащих угла",
+        "example": "Какие углы нужны во втором признаке равенства треугольников?"
+      },
+      {
+        "id": "congruence-sss",
+        "title": "Третий признак: три стороны",
+        "example": "Как применить третий признак равенства треугольников?"
+      },
+      {
+        "id": "congruence-match",
+        "title": "Соответствие вершин и выбор признака",
+        "example": "Как записать соответствующие вершины равных треугольников?"
+      }
+    ]
+  }
+]

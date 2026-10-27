@@ -36,6 +36,7 @@ export class AssistantStore {
           created_at INTEGER NOT NULL, kind TEXT NOT NULL, reserved_micros INTEGER NOT NULL, input_bound INTEGER NOT NULL,
           output_bound INTEGER NOT NULL, status TEXT NOT NULL);
         CREATE INDEX IF NOT EXISTS requests_pending ON requests(kind,status,created_at);
+        CREATE TABLE IF NOT EXISTS cabinet_request_tombstones(id TEXT PRIMARY KEY, created_at INTEGER NOT NULL);
         CREATE TABLE IF NOT EXISTS answers(id TEXT PRIMARY KEY, session_hash TEXT NOT NULL REFERENCES sessions(hash) ON DELETE CASCADE,
           topic TEXT NOT NULL, created_at INTEGER NOT NULL, verification TEXT NOT NULL, rating TEXT);
         CREATE TABLE IF NOT EXISTS feedback_totals(day TEXT NOT NULL, topic TEXT NOT NULL, rating TEXT NOT NULL,
@@ -94,6 +95,22 @@ export class AssistantStore {
     return row;
   }
   verifyCsrf(session, csrf) { requireValue(typeof csrf === 'string' && secretEqual(session.csrf_hash, hash(csrf)), 'CSRF_REJECTED', 403); }
+  cabinetSession(subject, create = false) {
+    requireValue(typeof subject === 'string' && /^[a-f0-9]{64}$/.test(subject), 'CABINET_SUBJECT_INVALID');
+    // The bridge receives a keyed pseudonym, not a cabinet account ID. A
+    // domain-separated hash is never a usable browser session credential.
+    const sessionHash = hash(`cabinet-session:${subject}`), now = this.clock();
+    const find = () => this.db.prepare('SELECT * FROM sessions WHERE hash=? AND expires_at>?').get(sessionHash, now);
+    if (!create) { const row = find(); requireValue(row, 'SESSION_REQUIRED', 401); return row; }
+    return this.transaction(() => {
+      const row = find(); if (row) return row;
+      this.db.prepare('DELETE FROM sessions WHERE expires_at<=?').run(now);
+      requireValue(this.db.prepare('SELECT COUNT(*) AS n FROM sessions').get().n < 200, 'SESSION_CAPACITY', 429);
+      this.db.prepare('INSERT INTO sessions(hash,csrf_hash,created_at,expires_at) VALUES(?,?,?,?)')
+        .run(sessionHash, hash(randomBytes(32).toString('base64url')), now, now + this.config.sessionTtlMs);
+      return find();
+    });
+  }
   deleteSession(sessionHash) {
     this.transaction(() => {
       for (const row of this.db.prepare('SELECT topic,rating,created_at FROM answers WHERE session_hash=? AND rating IS NOT NULL').all(sessionHash)) {
@@ -108,11 +125,18 @@ export class AssistantStore {
   }
   total(period) { return this.db.prepare('SELECT * FROM usage_totals WHERE period=?').get(period)
     || { period, reserved_micros: 0, requests: 0, api_requests: 0, input_tokens: 0, output_tokens: 0 }; }
-  reserve({ sessionHash, requestId, kind = 'offline', reservedMicros = 0, inputBound = 0 }) {
+  reserve({ sessionHash, requestId, kind = 'offline', reservedMicros = 0, inputBound = 0, permanentRequestId = null }) {
     const now = this.clock(), id = hash(`${sessionHash}:${requestId}`), day = dayKey(now), month = monthKey(now);
     return this.transaction(() => {
       const session = this.db.prepare('SELECT * FROM sessions WHERE hash=? AND expires_at>?').get(sessionHash, now);
       requireValue(session, 'SESSION_REQUIRED', 401);
+      if (permanentRequestId !== null) {
+        requireValue(/^[a-f0-9]{64}$/.test(permanentRequestId), 'REQUEST_ID_INVALID');
+        requireValue(!this.db.prepare('SELECT id FROM cabinet_request_tombstones WHERE id=?').get(permanentRequestId), 'REQUEST_ALREADY_USED', 409);
+        // Tombstones contain no text, subject or answer. Do not expire them:
+        // deleting a short-lived session must never repeat a possibly paid call.
+        requireValue(this.db.prepare('SELECT COUNT(*) AS n FROM cabinet_request_tombstones').get().n < 100000, 'CABINET_CAPACITY', 503);
+      }
       requireValue(!this.db.prepare('SELECT id FROM requests WHERE id=?').get(id), 'REQUEST_ALREADY_USED', 409);
       requireValue(session.requests < this.config.maxSessionRequests, 'SESSION_RATE_LIMIT', 429);
       const recent = this.db.prepare('SELECT COUNT(*) AS n FROM requests WHERE session_hash=? AND created_at>?').get(sessionHash, now - 60000).n;
@@ -137,6 +161,7 @@ export class AssistantStore {
       }
       this.db.prepare('INSERT INTO requests VALUES(?,?,?,?,?,?,?,?)').run(id, sessionHash, now, kind, reservedMicros,
         inputBound, kind === 'api' ? this.config.maxOutputTokens : 0, 'pending');
+      if (permanentRequestId !== null) this.db.prepare('INSERT INTO cabinet_request_tombstones VALUES(?,?)').run(permanentRequestId, now);
       return { id, day, month };
     });
   }
