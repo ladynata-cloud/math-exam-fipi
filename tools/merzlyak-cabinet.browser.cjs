@@ -57,6 +57,10 @@ const widths = [1280,320];
         const responses={
           '/status':{available:true,durable:true,trainerOrigin:origin},
           '/session':{account:actor,csrfToken:'synthetic-read-only'},
+          // Match the real learner status DTO with the assistant disabled by default.
+          '/assistant':{ok:true,enabled:false,configuredEnabled:false,available:false,profile:null,
+            version:0,dailyLimit:10,used:0,remaining:10,externalAllowed:false,externalAvailable:false,
+            externalEnabled:false,mode:'unavailable',providerLabel:'',examActive:false},
           '/profile':{profile},'/attempts':{attempts:teacher||attached?[WORK]:[]},
           '/assignments':{assignments:[]},'/lessons':{lessons:[]},
           '/teacher/students':{students:[roster]},
