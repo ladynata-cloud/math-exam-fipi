@@ -152,8 +152,84 @@ test('assistance is sticky through hide/reload and textbook reading while old st
   const a = boot(t, { board: false }); a.$('#hintToggle').click(); a.$('#hintToggle').click();
   const b = boot(t, { board: false, storage: a.saved() }); b.$('#btnFalse').click();
   assert.match(b.$('#resultTitle').textContent, /С подсказкой/);
-  assert.deepEqual(b.saved().records['prev-056'], { attempts: 1, correct: 1, needsReview: false });
+  assert.deepEqual(b.saved().records['prev-056'], { attempts: 1, correct: 1, needsReview: true });
   const c = boot(t, { board: false }); c.$('#textbookHost details').open = true; c.$('#btnFalse').click();
   assert.equal(c.saved().current.helpUsed, true); assert.match(c.$('#resultTitle').textContent, /С подсказкой/);
+  assert.equal(c.saved().records['prev-056'].needsReview, true);
   await tick(); assert.deepEqual(a.errors.concat(b.errors, c.errors), []);
+});
+
+test('standalone wrong then assisted correct stays in review through reload until a fresh independent correct answer', async t => {
+  const a = boot(t, { board: false });
+  a.$('#btnTrue').click();
+  assert.deepEqual(a.saved().records['prev-056'], { attempts: 1, correct: 0, needsReview: true });
+  a.$('#reviewOnly').checked = true;
+  a.$('#reviewOnly').dispatchEvent(new a.w.Event('change', { bubbles: true }));
+  assert.equal(a.saved().current.answer, null);
+  a.$('#hintToggle').click(); a.$('#hintToggle').click(); a.$('#btnFalse').click();
+  assert.deepEqual(a.saved().records['prev-056'], { attempts: 2, correct: 1, needsReview: true });
+
+  const b = boot(t, { board: false, storage: a.saved() });
+  const assisted = b.saved().records['prev-056'];
+  b.$('#btnFalse').click(); b.$('#hintToggle').click(); b.$('#hintToggle').click();
+  assert.deepEqual(b.saved().records['prev-056'], assisted, 'reopening completed work does not count another attempt');
+  assert.match(b.$('#resultTitle').textContent, /С подсказкой/);
+  b.$('#reviewOnly').checked = true;
+  b.$('#reviewOnly').dispatchEvent(new b.w.Event('change', { bubbles: true }));
+  assert.equal(b.saved().current.id, 'prev-056');
+  assert.equal(b.saved().current.helpUsed, false, 'a new attempt starts without inherited assistance');
+  b.$('#btnFalse').click();
+  assert.deepEqual(b.saved().records['prev-056'], { attempts: 3, correct: 2, needsReview: false });
+  const c = boot(t, { board: false, storage: b.saved() });
+  assert.deepEqual(c.saved().records['prev-056'], b.saved().records['prev-056']);
+  assert.doesNotMatch(c.$('#resultTitle').textContent, /С подсказкой/);
+  b.$('#nextCard').click();
+  assert.equal(b.saved().current, null, 'only the independent correction clears the review queue');
+  await tick(); assert.deepEqual(a.errors.concat(b.errors, c.errors), []);
+});
+
+test('fresh independent true and false answers clear review without a retrospective penalty for reading help', t => {
+  for (const truth of [true, false]) {
+    const card = cards.find(value => value.truth === truth), a = boot(t, { board: false, card: card.id });
+    a.$(truth ? '#btnTrue' : '#btnFalse').click();
+    const expected = { attempts: 1, correct: 1, needsReview: false };
+    assert.deepEqual(a.saved().records[card.id], expected);
+    a.$('#hintToggle').click(); a.$('#hintToggle').click();
+    assert.deepEqual(a.saved().records[card.id], expected);
+    const b = boot(t, { board: false, card: card.id, storage: a.saved() });
+    assert.deepEqual(b.saved().records[card.id], expected);
+    assert.equal(b.saved().current.answerHelpUsed, false);
+    b.$(truth ? '#btnTrue' : '#btnFalse').click();
+    assert.deepEqual(b.saved().records[card.id], expected);
+  }
+});
+
+test('room assisted correction remains reviewable for both participants and cannot be hidden by an empty-review packet', async t => {
+  const a = boot(t), b = boot(t);
+  a.$('#btnTrue').click();
+  a.$('#reviewOnly').checked = true;
+  a.$('#reviewOnly').dispatchEvent(new a.w.Event('change', { bubbles: true }));
+  a.$('#hintToggle').click(); a.$('#hintToggle').click(); a.$('#btnFalse').click();
+  await tick();
+  const assisted = a.state();
+  assert.deepEqual(assisted.answers, [['prev-056', false, true]]);
+  assert.match(a.$('#progressText').textContent, /Повторить: 1/);
+  b.apply(assisted); await tick();
+  assert.deepEqual(b.state(), assisted);
+  assert.match(b.$('#progressText').textContent, /Повторить: 1/);
+  const invalid = copy(assisted); invalid.current = null; invalid.view.reference = []; invalid.view.textbook = false;
+  assert.throws(() => b.apply(invalid), /Invalid empty review/);
+  assert.deepEqual(b.state(), assisted, 'the invalid packet rejects atomically');
+  assert.equal(b.notifications(), 0, 'restoring assisted work emits no echo');
+
+  b.$('#nextCard').click();
+  assert.equal(b.state().current.id, 'prev-056');
+  assert.equal(b.state().current.answer, null); assert.equal(b.state().current.helpUsed, false);
+  b.$('#btnFalse').click(); b.$('#nextCard').click(); await tick();
+  assert.equal(b.state().current, null);
+  assert.deepEqual(b.state().answers, [['prev-056', false, false]]);
+  a.apply(b.state()); await tick();
+  assert.deepEqual(a.state(), b.state()); assert.match(a.$('#progressText').textContent, /Повторить: 0/);
+  assert.equal(a.accesses() + b.accesses(), 0);
+  assert.deepEqual(a.errors.concat(b.errors), []);
 });

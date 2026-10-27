@@ -155,7 +155,7 @@
     el('reviewOnly').checked = state.review;
     if (!state.current) {
       el('topicLabel').textContent = state.topic || 'Все темы';
-      el('statement').textContent = 'В выбранной теме нет ошибок для повторения.';
+      el('statement').textContent = 'В выбранной теме нет ошибок или ответов с подсказкой для повторения.';
       el('hintToggle').hidden = el('answerActions').hidden = true;
       el('nextCard').textContent = 'Продолжить обычную тренировку →';
     } else {
@@ -185,7 +185,9 @@
       : state.records[card.id] || { attempts: 0, correct: 0, needsReview: false };
     record.attempts++;
     if (value === card.truth) record.correct++;
-    record.needsReview = value !== card.truth;
+    // A supported correct answer is useful practice; a fresh independent
+    // correct attempt is what removes the statement from the review queue.
+    record.needsReview = value !== card.truth || state.current.helpUsed === true;
     state.records[card.id] = record;
     state.current.answer = value;
     state.current.answerHelpUsed = state.current.helpUsed === true;
@@ -238,7 +240,7 @@
     try {
       roomAnswers = incoming.answers;
       const records = {};
-      for (const [id, answer] of roomAnswers) records[id] = { attempts: 1, correct: Number(answer === byId.get(id).truth), needsReview: answer !== byId.get(id).truth };
+      for (const [id, answer, helpUsed] of roomAnswers) records[id] = { attempts: 1, correct: Number(answer === byId.get(id).truth), needsReview: answer !== byId.get(id).truth || helpUsed === true };
       state = { version: 1, topic: incoming.topic, review: incoming.review, records, current: incoming.current };
       view = incoming.view;
       render(false);

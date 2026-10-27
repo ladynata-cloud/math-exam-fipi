@@ -128,7 +128,14 @@
       });
     }
     function renderPupil() {
-      if (!status.enabled || !validProfile(status.profile)) { host.hidden = true; host.replaceChildren(); return; }
+      const geometryEntry = context.geometryRoute && root.LearningGeometry?.readRoute(context.geometryRoute);
+      if (!status.enabled || !validProfile(status.profile)) {
+        if (geometryEntry) {
+          const section = frame('Помощник пока не подключён');
+          section.append(node('p', 'Попроси преподавателя подключить помощника к твоему кабинету. Пока можно открыть подсказку прямо в тренажёре; условие осталось на этой странице.'));
+        } else { host.hidden = true; host.replaceChildren(); }
+        return;
+      }
       if (status.mode === 'unavailable' || status.examActive) {
         const section = frame('MaxExam 0.0 · временно недоступен');
         section.append(node('p', status.examActive ? 'Помощник будет доступен после завершения проверочной работы.' : 'Сервис подсказок пока не отвечает. Основные задания кабинета доступны.'));
@@ -137,17 +144,28 @@
         return;
       }
       const profileId = status.profile.id;
+      if (geometryEntry && profileId !== 'oge-geometry') {
+        const section = frame('Помощник по геометрии');
+        section.append(node('p', 'Для этого кабинета выбран другой профиль помощника. Попроси преподавателя подключить геометрию. Подсказки внутри тренажёров остаются доступны.'));
+        return;
+      }
       let quotaKnown = Number.isInteger(status.remaining);
       const section = frame(status.externalEnabled ? 'MaxExam 0.0 · помощник' : 'MaxExam 0.0 · проверенные подсказки');
       section.append(node('p', status.profile.title || profileNames[status.profile.id], { class: 'cabinet-assistant-profile' }));
       const modeNotice = node('p', '', { class: 'cabinet-assistant-mode', 'data-assistant-mode': status.mode || 'unavailable' });
       section.append(modeNotice);
-      section.append(node('p', context.attemptId ? 'Помощь относится к открытой работе. После подсказки результат учитывается как выполненный с помощью.' : 'Для задачи из курса, открытого в другой вкладке, впиши условие сюда. Помощник не видит ту вкладку.', { class: 'cabinet-assistant-context' }));
+      section.append(node('p', context.attemptId ? 'Помощь относится к открытой работе. После подсказки результат учитывается как выполненный с помощью.'
+        : geometryEntry?.kind === 'transfer' ? 'Передан текст условия. Помощник не видит чертёж и последующие изменения в тренажёре. Добавь недостающие данные с рисунка и проверь условие перед отправкой.'
+          : 'Для задачи из курса, открытого в другой вкладке, впиши условие сюда. Помощник не видит ту вкладку.', { class: 'cabinet-assistant-context' }));
       const form = node('form', null, { class: 'cabinet-assistant-form' });
       const topics = node('select', null, { name: 'assistant-topic' });
       for (const topic of status.profile.topics) topics.append(node('option', topic.title, { value: topic.id }));
       const question = node('textarea', null, { name: 'assistant-question', rows: 3, maxlength: 1000, required: '', autocomplete: 'off', spellcheck: 'false' });
       const attempt = node('input', null, { name: 'assistant-attempt', maxlength: 400, autocomplete: 'off', spellcheck: 'false' });
+      if (geometryEntry && status.profile.topics.some(topic => topic.id === geometryEntry.topic)) {
+        topics.value = geometryEntry.topic;
+        question.value = geometryEntry.question;
+      }
       const example = button('Попробовать пример темы', () => {
         if (busy) return;
         question.value = String(status.profile.topics.find(topic => topic.id === topics.value)?.example || '').slice(0, 1000);
@@ -174,7 +192,7 @@
       });
       const answers = node('div', null, { class: 'cabinet-assistant-answers', 'aria-label': 'Показанные шаги' });
       section.append(form, quota, message, reconnect, answers);
-      appendLinks(section);
+      if (!geometryEntry) appendLinks(section);
       const available = () => status.enabled === true && status.profile?.id === profileId && status.mode !== 'unavailable' && !status.examActive;
       const update = () => {
         const remaining = Number.isInteger(status.remaining) ? Math.max(0, status.remaining) : 0;

@@ -1,5 +1,6 @@
 import { exactKeys, requireValue } from './errors.js';
 import { containsSensitiveText } from './privacy.js';
+import { geometryExamples, solveGeometry } from './geometry-tutor.js';
 
 // Original topic notes for three bounded cabinet profiles. No pupil identity,
 // account information, conversation history or textbook answer bank belongs here.
@@ -7,23 +8,23 @@ const SITE = 'https://mathexam.space';
 const PETERSON = `${SITE}/school/peterson6/`;
 const CONGRUENCE = `${SITE}/geometry-course/textbook/`;
 const rows = [
-  ['oge-triangles', 'Треугольники', 'Как выбрать правило для задачи о треугольнике?', '/trainers/oge-task15-triangles.html',
+  ['oge-triangles', 'Треугольники', geometryExamples['oge-triangles'], '/trainers/oge-task15-triangles.html',
     'Начни с того, что дано, и того, что требуется найти. Сумма внутренних углов треугольника равна 180°. Теорема Пифагора применима только к прямоугольному треугольнику.',
     ['Назови треугольник и выпиши известные стороны и углы из условия.', 'Отдельно запиши, что нужно найти. Если есть прямой угол, укажи его вершину.', 'Выбери правило, для которого выполнены все условия. В прямоугольном треугольнике гипотенуза лежит напротив прямого угла.', 'Запиши равенство по выбранному правилу и только затем подставь известные числа.', 'Проверь, что найденная длина положительна, а внутренний угол больше 0° и меньше 180°.'],
     'Не считай угол прямым или стороны равными только по виду рисунка. Без условия нельзя вычислить конкретный ответ.'],
-  ['oge-circle', 'Окружность', 'Как отличить центральный угол от вписанного?', '/trainers/oge-task16-circle.html',
+  ['oge-circle', 'Окружность', geometryExamples['oge-circle'], '/trainers/oge-task16-circle.html',
     'У центрального угла вершина находится в центре окружности, у вписанного — на окружности, а стороны пересекают её. Вписанный угол равен половине градусной меры дуги, на которую он опирается и которая не содержит его вершину.',
     ['Назови вершину угла: она в центре, на окружности или вне её?', 'Отметь точки, в которых стороны угла пересекают окружность.', 'Укажи нужную дугу. Для вписанного угла она не должна содержать его вершину.', 'Если используешь касательную, сначала проверь, что её касание дано или доказано: радиус к точке касания перпендикулярен касательной.', 'После выбора правила запиши равенство и проверь, что не перепутаны разные дуги.'],
     'Два угла нельзя связывать одним правилом без проверки их вершин и нужной дуги. Рисунок сам по себе не доказывает касание.'],
-  ['oge-quadrilaterals', 'Четырёхугольники и площади', 'Как выбрать высоту в формуле площади параллелограмма?', '/trainers/oge-task17-quadrilaterals.html',
+  ['oge-quadrilaterals', 'Четырёхугольники и площади', geometryExamples['oge-quadrilaterals'], '/trainers/oge-task17-quadrilaterals.html',
     'Сначала установи вид четырёхугольника по условию или доказанным признакам. Площадь параллелограмма равна произведению основания и высоты к нему. Площадь трапеции равна полусумме её параллельных оснований, умноженной на высоту.',
     ['Выпиши, какой четырёхугольник дан и какие его свойства подтверждены.', 'Если ищешь площадь, выбери основание и высоту, перпендикулярную прямой этого основания.', 'Проверь, что высота относится именно к выбранному основанию; наклонная боковая сторона обычно не является высотой.', 'Запиши подходящую формулу и подставь величины в одинаковых единицах.', 'Площадь запиши в квадратных единицах. Если данных не хватает, найди, какое дополнительное построение или свойство нужно обосновать.'],
     'Не переноси свойства прямоугольника на любой параллелограмм. Внешний вид фигуры не заменяет условие.'],
-  ['oge-grid', 'Геометрия на клетках', 'Как найти площадь треугольника на клетчатой бумаге?', '/trainers/oge-task18-grid.html',
+  ['oge-grid', 'Геометрия на клетках', geometryExamples['oge-grid'], '/trainers/oge-task18-grid.html',
     'Узнай длину стороны клетки. Для треугольника можно выбрать основание и перпендикулярную ему высоту, затем разделить их произведение на 2. Ещё один способ — дополнить фигуру до прямоугольника и вычесть лишние части.',
     ['Уточни, чему равна сторона клетки, и назови фигуру.', 'Выбери основание вдоль линии сетки, если это удобно.', 'Считай высоту перпендикулярно основанию. Число наклонных клеток не является высотой.', 'Посчитай длины в клетках, переведи их в нужные единицы и примени формулу площади.', 'Если используешь дополнение до прямоугольника, перечисли каждую вычитаемую фигуру, чтобы ничего не вычесть дважды.'],
     'Без доступного чертежа или координат нельзя пересчитать клетки за ученика. Уточни положение вершин.'],
-  ['oge-statements', 'Геометрические утверждения', 'Как проверить, всегда ли верно геометрическое утверждение?', '/trainers/task19-trainer.html',
+  ['oge-statements', 'Геометрические утверждения', geometryExamples['oge-statements'], '/trainers/task19-trainer.html',
     'Различай утверждение обо всех фигурах и утверждение о конкретной фигуре. Чтобы опровергнуть фразу со словом «всегда», достаточно одного подходящего контрпримера. Чтобы доказать её, одного удачного рисунка недостаточно.',
     ['Прочитай утверждение целиком, включая слова «любой», «существует» и все условия.', 'Вспомни точное свойство или признак и проверь, не потеряно ли важное условие.', 'Если сомневаешься в утверждении обо всех фигурах, попробуй построить контрпример.', 'Проверь, что контрпример удовлетворяет всем исходным условиям.', 'Для верного утверждения назови правило и объясни, почему оно применимо.'],
     'Отсутствие найденного контрпримера ещё не является доказательством. Конкретную фразу нужно видеть целиком.'],
@@ -103,7 +104,9 @@ export function listCabinetProfiles() {
 
 function safeText(value, max, empty = false) {
   requireValue(typeof value === 'string' && value.length <= max, 'CABINET_TASK_INVALID');
-  const text = value.normalize('NFKC').trim();
+  // Preserve mathematical notation; containsSensitiveText separately applies
+  // NFKC for privacy detection (including fullwidth addresses and credentials).
+  const text = value.normalize('NFC').trim();
   requireValue((empty || text.length > 0) && text.length <= max
     && !/[\u0000-\u0008\u000b-\u001f\u007f\u202a-\u202e\u2066-\u2069]/u.test(text), 'CABINET_TASK_INVALID');
   requireValue(!containsSensitiveText(text), 'PERSONAL_DATA_REJECTED');
@@ -377,6 +380,18 @@ export function answerCabinetOffline(input, cards) {
   if (safe.topic === 'decimal-fractions') solved = conversion(safe.question);
   const sources = selected.map(row => ({ id: row.id, title: row.title, url: row.source.url }));
   const common = { topic: safe.topic, sources, sourceIds: selected.map(row => row.id) };
+  const geometry = solveGeometry(safe.topic, safe.question);
+  if (geometry) {
+    const complete = safe.mode === 'explain';
+    const hints = safe.simpler ? geometry.shorts : geometry.hints;
+    // The solver's final value and verification/counterexample are never sent
+    // in hint mode. Repeated hints cannot turn into an unrequested full answer.
+    return { ...common, title: geometry.title,
+      text: safe.simpler ? 'Сделаем одно небольшое действие.' : geometry.text,
+      steps: complete ? geometry.steps : [hints[Math.min(safe.hintLevel - 1, hints.length - 1)]],
+      check: complete ? geometry.check : 'Выполни этот шаг. Для полного разбора нужна отдельная просьба; предыдущие подсказки остаются перед глазами.',
+      verification: 'deterministic', complete };
+  }
   if (solved) {
     const complete = safe.mode === 'explain';
     let note = feedback(safe.attempt, solved.expected);

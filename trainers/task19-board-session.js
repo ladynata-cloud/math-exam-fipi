@@ -66,7 +66,7 @@
       const current = value.current;
       if (current === null) {
         if (!value.review || value.view.textbook || value.view.reference.length || value.answers.some(tuple =>
-          (!value.topic || byId.get(tuple[0]).theme === value.topic) && tuple[1] !== byId.get(tuple[0]).truth)) throw new TypeError('Invalid empty review');
+          (!value.topic || byId.get(tuple[0]).theme === value.topic) && (tuple[1] !== byId.get(tuple[0]).truth || tuple[2]))) throw new TypeError('Invalid empty review');
       } else {
         if (!fields(current, ['id', 'answer', 'hintOpen', 'helpUsed', 'modelState']) || !byId.has(current.id) ||
             (current.answer !== null && typeof current.answer !== 'boolean') || typeof current.hintOpen !== 'boolean' ||
