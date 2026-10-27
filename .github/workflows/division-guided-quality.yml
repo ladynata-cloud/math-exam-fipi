@@ -2,6 +2,12 @@ name: Guided division — arithmetic and browser
 on:
   pull_request:
     paths:
+      - 'trainers/long-division-stepwise.html'
+      - 'trainers/long-division-entry.js'
+      - 'downloads/trainers/long-division-stepwise/**'
+      - 'downloads/trainers-manifest.json'
+      - 'scripts/build-trainer-downloads.mjs'
+      - 'tools/division-search-entry*'
       - 'trainers/oge-basics/multiplication-division/division-guided*'
       - 'trainers/oge-basics/multiplication-division/decimal-shift*'
       - 'trainers/oge-basics/multiplication-division/multiplication-refresh*'
@@ -26,6 +32,7 @@ jobs:
           node-version: '24.21.0'
       - name: Exact arithmetic and unchanged classroom bank
         run: |
+          node --check trainers/long-division-entry.js
           node tools/division-guided.test.cjs
           node tools/learning-remediation-bank.cjs --check
           git diff --check
@@ -40,6 +47,9 @@ jobs:
         run: |
           node tools/division-guided.browser.cjs
           node tools/division-notebook.browser.cjs
+          DIVISION_ENTRY_PATH=/trainers/long-division-stepwise.html DIVISION_SCREENSHOTS=division-browser-results/search node tools/division-guided.browser.cjs
+          DIVISION_ENTRY_PATH=/trainers/long-division-stepwise.html DIVISION_SCREENSHOTS=division-browser-results/search node tools/division-notebook.browser.cjs
+          node tools/division-search-entry.browser.cjs
       - name: Notebook screenshots
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

@@ -125,18 +125,45 @@
     },
     {
       "slug": "long-division-stepwise",
-      "title": "Деление уголком",
+      "title": "Деление уголком (столбиком) — по шагам",
       "sourceHtml": "/trainers/long-division-stepwise.html",
       "subject": "математика",
       "level": "5–6 класс",
       "topic": "письменное деление",
-      "description": "Пошаговый тренажёр письменного деления.",
+      "description": "Настоящая запись деления уголком: выбор первого неполного делимого, число цифр частного, отдельные ответы при умножении, вычитании, проверке остатка и сносе. Все строки остаются видны; есть подсказки, нули в частном, остаток и десятичные дроби. Начатый пример сохраняется в этом браузере.",
       "mode": "single",
       "assets": [],
       "public": true,
       "downloadHtml": "/downloads/trainers/long-division-stepwise/long-division-stepwise.html",
       "prompt": "/downloads/trainers/long-division-stepwise/long-division-stepwise-deepseek-prompt.md",
-      "package": "/downloads/trainers/long-division-stepwise/long-division-stepwise-package.zip"
+      "package": "/downloads/trainers/long-division-stepwise/long-division-stepwise-package.zip",
+      "inlineAssets": [
+        "/trainers/oge-basics/multiplication-division/division-guided.css",
+        "/trainers/oge-basics/multiplication-division/decimal-shift.css",
+        "/trainers/oge-basics/multiplication-division/multiplication-refresh.css",
+        "/trainers/oge-basics/basics-help.css",
+        "/trainers/oge-basics/navigation-minimal.css",
+        "/trainers/oge-basics/multiplication-division/division-lab-core.js",
+        "/trainers/oge-basics/multiplication-division/division-guided-core.js",
+        "/trainers/oge-basics/arithmetic-route.js",
+        "/trainers/long-division-entry.js",
+        "/trainers/oge-basics/multiplication-division/decimal-shift.js",
+        "/trainers/oge-basics/multiplication-division/multiplication-refresh.js",
+        "/trainers/oge-basics/basics-help.js",
+        "/trainers/oge-basics/multiplication-division/division-guided.js",
+        "/trainers/oge-basics/navigation-minimal.js"
+      ],
+      "interfaceRequirements": [
+        "настоящая запись уголком с выравниванием цифр по разрядам, дугой первого блока и стрелкой сноса;",
+        "один текущий вопрос и одно основное действие; предыдущие строки решения остаются видны;",
+        "отдельный выбор первого неполного делимого и подсчёт мест для цифр частного;",
+        "самостоятельный ввод цифры частного, произведения, разности, сносимой цифры и нового неполного делимого;",
+        "проверка остатка и сохранение нуля в частном; пустое поле не считается нулём;",
+        "необязательная помощь к текущему шагу и раскрытие ответа только по запросу;",
+        "темы от простых натуральных чисел до остатка, нулей, двузначного делителя и десятичных дробей;",
+        "сохранение незавершённого примера и отдельный учёт подсказок, ошибок и повторов без завышения самостоятельных результатов;",
+        "доступные с клавиатуры кнопки и читаемая запись на узком экране."
+      ]
     },
     {
       "slug": "oge-1-5-trainers",
