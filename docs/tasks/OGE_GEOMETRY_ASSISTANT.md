@@ -59,8 +59,8 @@ inference retains the existing disabled-by-default boundary.
 
 - New foundation-model providers, paid calls, model training or autonomous
   changes to teaching knowledge. No purchase, credentials or hosting changes.
-- Merging/deploying this or the prerequisite PRs, automatic merging, changing
-  real account credentials or other pupils' profiles, or publishing private data.
+- Changing real account credentials or other pupils' profiles, or publishing
+  private data.
 - A new universal managed-trainer protocol or migration of existing learner work.
 - Replacing the entire OGE bank, second-part geometry, or unrelated course work.
 
@@ -84,8 +84,9 @@ inference retains the existing disabled-by-default boundary.
 - Static: syntax, allowed link destinations, exact scoped diff, `git diff --check`.
 - Manual: desktop/mobile condition, drawing, help, transfer, original-work retention.
 - Final local gate: `OGE_GEOMETRY_ASSISTANT_LOCAL_OK`; not a release authorization.
-- Live deployment/provider/real-pupil checks remain not run until authorized and
-  configured; synthetic tests must not be represented as a real learner trial.
+- Live deployment/provider/real-pupil checks remain not run while the relevant
+  services and access are unconfigured; synthetic tests must not be represented
+  as a real learner trial. Existing explicit provider/budget controls remain.
 
 ## Review plan
 

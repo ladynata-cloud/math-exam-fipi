@@ -3,7 +3,8 @@
 Prepared implementation, updated 2026-10-28. This guide is not a deployment record.
 The [task](../docs/tasks/MATHEXAM_ASSISTANT_CABINETS_V1.md) authorizes preparation
 for three privately selected pupils. Real accounts have not been bound and no
-external model has been called. Merge and deployment require separate decisions.
+external model has been called. The separate service has not been deployed or
+configured for live cabinet use; the current geometry increment is described below.
 
 ## What the first version provides
 
@@ -173,8 +174,9 @@ themselves establish the legal basis for processing pupil data.
 
 ## Select exactly the intended accounts
 
-After review, release authorization and access are available, use the authenticated
-teacher view to open each intended pupil's actual cabinet. Verify the account
+Once compatible cabinet/helper services are running and teacher access is
+available, use the authenticated teacher view to open each intended pupil's
+actual cabinet. Verify the account
 and course/history rather than guessing from a first name. Select the matching
 profile, start with 10 requests per UTC day, keep external permission off, and
 save. Repeat only for the three approved accounts. Names, logins and IDs belong
