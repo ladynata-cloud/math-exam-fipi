@@ -67,14 +67,14 @@ CI workflow may be added; status reconciliation belongs in this task.
 
 ## Acceptance criteria
 
-- [ ] Offline examples produce mathematically checked gradual explanations.
-- [ ] UI and API support feedback without collecting personal/free-text reports.
-- [ ] Candidate facts cannot enter answers until an explicit operator review.
-- [ ] Private access, exact-origin checks, safe rendering and minimized payloads pass.
-- [ ] Costs are reserved before calls; concurrency/restart/failure cannot reset caps.
-- [ ] Default startup makes no external call and requires no paid resource.
-- [ ] Board/video can remain stopped while the standalone assistant tests pass.
-- [ ] Limits, unverified account/provider details and release blockers are explicit.
+- [x] Offline examples produce mathematically checked gradual explanations.
+- [x] UI and API support feedback without collecting personal/free-text reports.
+- [x] Candidate facts cannot enter answers until an explicit operator review.
+- [x] Private access, exact-origin checks, safe rendering and minimized payloads pass.
+- [x] Costs are reserved before calls; concurrency/restart/failure cannot reset caps.
+- [x] Default startup makes no external call and requires no paid resource.
+- [x] Board/video can remain stopped while the standalone assistant tests pass.
+- [x] Limits, unverified account/provider details and release blockers are explicit.
 
 ## Checks and gates
 
@@ -119,8 +119,9 @@ CI workflow may be added; status reconciliation belongs in this task.
 
 - Actual branch: `feat/math-assistant-v1-20261027`
 - Actual base SHA: `92d733a49692744ce043503c57f29b77bfb09a24`
-- Actual head/PR/commits and exact gate evidence: final Draft PR and task report.
-- Scope deviations: none planned.
+- PR: [#358](https://github.com/ladynata-cloud/math-exam-fipi/pull/358) (Draft).
+- Actual head/commits and exact gate evidence: that Draft PR and task report.
+- Scope deviations: none.
 
 ## Required handoff
 

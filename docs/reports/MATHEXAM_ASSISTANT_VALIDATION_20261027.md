@@ -28,6 +28,12 @@ Neither the restriction nor assertions were weakened. The browser download's
 primary mirror returned an invalid archive; the official alternate mirror
 successfully supplied the pinned test browser.
 
+The first GitHub Actions attempt passed all 53 service groups and the independent
+public SEO gate, then stopped before browser tests: `ubuntu-latest` had advanced
+to Ubuntu 26.04, which the pinned Playwright 1.55 does not support. The workflow
+now explicitly selects supported Ubuntu 24.04. No test or assertion was removed;
+the final exact-head browser/container result is recorded in the Draft PR.
+
 The offline service's observed resident memory after the browser flow was about
 44 MiB in this development environment. This is an idle observation, **not** a
 production load, Amvera measurement, reserved-container requirement or LLM RAM
