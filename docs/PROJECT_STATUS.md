@@ -2,6 +2,24 @@
 
 Updated: 2026-10-26 (Asia/Novosibirsk)
 
+## Prepared: separate grade-six Peterson learning line
+
+- [Scope](tasks/MAXIM_PETERSON6_LINE.md), MEDIUM isolated static addition;
+  base `92d733a49692744ce043503c57f29b77bfb09a24`, branch
+  `feat/maxim-peterson6-line`.
+- Owner requested the approved thirteen-topic line as its own page on the
+  main website, with four PDFs and browser-local progress. The new route is
+  `/trainers/maxim-peterson6/`; no cabinet, board or shared-course changes.
+- Prepared content retains all selected textbook entries, generated practice,
+  hints, independent/assisted accounting, CSV report and JSON transfer.
+- Baseline reconciliation: main is merged SEO PR #357; public `/index.html`
+  matches that base. The older SEO preparation entry below is historical.
+- Internal mathematics/state and integration reviews are complete. Claude
+  consultation is unavailable/not completed and is not claimed as a waiver.
+- Next: finish exact-head Draft PR checks; resolve the current review/release
+  decision with the owner; publish and verify all five public course assets
+  only under valid exact-base/head authorization. Not yet a production release.
+
 ## Prepared: HTTPS canonicals and static trainer metadata
 
 - [Scope](tasks/YANDEX_PUBLIC_INDEXING_20261027.md), SMALL metadata-only task,
