@@ -1,4 +1,1989 @@
-<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Деление уголком — пошаговый тренажёр | MathExam</title>
-<meta name="description" content="Интерактивная отработка письменного деления уголком с проверкой каждого шага. Для 4–6 классов и всех, кому нужно закрыть пробел."><style>body{font-family:Verdana,Arial,sans-serif;background:#f3f6fb;color:#172033;margin:0}.page{max-width:1000px;margin:auto;padding:22px}.hero,.card{background:white;border-radius:24px;padding:22px;box-shadow:0 14px 34px #0002;margin-bottom:18px}.back a{color:#2563eb;font-weight:800;text-decoration:none}h1{font-size:38px;margin:0 0 8px}.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}button{border:0;border-radius:14px;padding:11px 15px;font-weight:800;cursor:pointer;background:#e7ebf3}button.active,.primary{background:#2563eb;color:white}.good{background:#15803d;color:white}.warn{background:#f59e0b}.danger{background:#fee4e2;color:#7a271a}.task{text-align:center;font-size:44px;font-weight:900;margin:20px}.work{background:#f8fafc;border:2px solid #e5e7eb;border-radius:20px;padding:18px}.digits{display:flex;justify-content:center;gap:4px}.d{width:42px;height:54px;border:2px solid #cbd5e1;border-radius:12px;display:grid;place-items:center;font-size:30px;font-family:monospace;background:white}.d.used{color:#94a3b8}.d.sel{background:#dbeafe;border-color:#2563eb}.step{background:#fff7ed;border:1px solid #fed7aa;border-radius:16px;padding:12px;margin:10px 0;font-size:19px}.answer,.row{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;margin:14px 0}input{width:100px;border:2px solid #cbd5e1;border-radius:14px;padding:12px;font-size:24px;text-align:center}.fb{border-radius:16px;padding:14px;background:#f8fafc;border:1px solid #e5e7eb;font-size:18px}.ok{background:#dcfce7}.err{background:#fee4e2}.tip{background:#fffbeb}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{background:#f8fafc;border:1px solid #e5e7eb;border-radius:16px;padding:12px;text-align:center}.stat b{font-size:28px;display:block}.box{background:#eef4ff;border:1px solid #bfdbfe;border-radius:20px;padding:16px;margin:14px 0}.hist{background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:9px;margin:8px 0}@media(max-width:850px){.grid{grid-template-columns:1fr}}</style>
-</head><body><main class="page"><section class="hero"><div class="back"><a href="../index.html">← На главную</a></div><h1>Деление уголком</h1><p>Выбираем старший блок, подбираем цифру частного, считаем произведение и остаток.</p></section><section class="grid"><div class="card"><div class="row"><b>Уровень:</b><button id="easy" class="active">1 шаг</button><button id="med">2 шага</button><button id="hard">3 шага</button><button id="hint" class="warn">Подсказка</button></div><div id="task" class="task"></div><div class="work"><div id="digits" class="digits"></div><div id="steps"></div></div><div class="answer"><label>Цифра частного:</label><input id="ans" type="number" min="0" max="9"><button id="check" class="primary">Проверить</button><button id="solution">Решение</button><button id="next" class="good">Следующий</button></div><div id="fb" class="fb">Введи цифру частного для выделенного блока.</div></div><aside class="card"><div class="stats"><div class="stat"><b id="total">0</b><span>решено</span></div><div class="stat"><b id="right">0</b><span>верно</span></div><div class="stat"><b id="streak">0</b><span>серия</span></div></div><div class="box"><b id="status">тема начата</b><p id="advice">Реши первые 10 примеров.</p><button id="reset" class="danger">Сбросить статистику</button></div><div class="box"><b>Идея</b><p>Цифра частного должна давать произведение не больше выделенного блока.</p><p>Остаток переносим к следующей цифре.</p></div><h2>История</h2><div id="history"></div></aside></section></main><script>var KEY='mathExamCourseProgress.v1',TOPIC='longDivisionStepwise',level='easy',t,pos=0,selEnd=0,rem=0,quot='',done=false,stats={total:0,right:0,streak:0,best:0,date:null,history:[]};function el(i){return document.getElementById(i)}function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a}function msg(s,c){el('fb').textContent=s;el('fb').className='fb '+(c||'')}function load(){try{var d=JSON.parse(localStorage.getItem(KEY)),s=d&&d.topics&&d.topics[TOPIC];if(s){stats=s;if(!stats.history)stats.history=[]}}catch(e){}}function save(){var d;try{d=JSON.parse(localStorage.getItem(KEY))||{topics:{}}}catch(e){d={topics:{}}}d.topics=d.topics||{};d.topics[TOPIC]=stats;localStorage.setItem(KEY,JSON.stringify(d))}function make(){var len=level==='easy'?1:level==='med'?2:3,div=rnd(2,9),q='';for(var i=0;i<len;i++)q+=rnd(1,9);return{divisor:div,quotient:q,dividend:String(div*Number(q))}}function findEnd(){var e=pos+1;while(e<=t.dividend.length){var n=Number((rem?String(rem):'')+t.dividend.slice(pos,e));if(n>=t.divisor||e===t.dividend.length)return e;e++}}function part(){return Number((rem?String(rem):'')+t.dividend.slice(pos,selEnd))}function qDigit(){return Math.floor(part()/t.divisor)}function renderDigits(){el('digits').innerHTML='';for(var i=0;i<t.dividend.length;i++){var d=document.createElement('div');d.className='d '+(i<pos?'used':(i>=pos&&i<selEnd?'sel':''));d.textContent=t.dividend[i];el('digits').appendChild(d)}}function next(){t=make();pos=0;rem=0;quot='';done=false;selEnd=findEnd();el('steps').innerHTML='';el('task').textContent=t.dividend+' : '+t.divisor;renderDigits();el('ans').value='';renderStats();msg('Введи цифру частного для выделенного блока.','')}function check(){if(done){msg('Этот пример уже решён. Нажми «Следующий».','tip');return}var u=Number(el('ans').value),pa=part(),q=qDigit(),p=q*t.divisor,nr=pa-p;if(el('ans').value===''){msg('Введите цифру частного.','err');return}if(u!==q){msg('Проверь: '+t.divisor+' · '+u+' = '+(t.divisor*u)+'. Нужно не больше блока '+pa+'.','err');return}quot+=q;var st=document.createElement('div');st.className='step';st.textContent=pa+' : '+t.divisor+' → '+q+'; '+q+' · '+t.divisor+' = '+p+'; остаток '+nr;el('steps').appendChild(st);rem=nr;pos=selEnd;if(pos>=t.dividend.length){done=true;stats.total++;stats.right++;stats.streak++;stats.best=Math.max(stats.best||0,stats.streak);stats.history.unshift({text:t.dividend+' : '+t.divisor+' = '+t.quotient});stats.history=stats.history.slice(0,10);save();renderStats();msg('Готово! Ответ: '+t.quotient+'.','ok');return}selEnd=findEnd();renderDigits();el('ans').value='';msg('Верно. Сносим следующую цифру и продолжаем.','ok')}function solution(){el('steps').innerHTML='';var old=t,p0=0,r=0,q='';while(p0<old.dividend.length){var e=p0+1;while(e<=old.dividend.length){var pa=Number((r?String(r):'')+old.dividend.slice(p0,e));if(pa>=old.divisor||e===old.dividend.length){var qd=Math.floor(pa/old.divisor),pr=qd*old.divisor,nr=pa-pr,s=document.createElement('div');s.className='step';s.textContent=pa+' : '+old.divisor+' → '+qd+'; '+qd+' · '+old.divisor+' = '+pr+'; остаток '+nr;el('steps').appendChild(s);q+=qd;r=nr;p0=e;break}e++}}el('ans').value=old.quotient;msg('Решение показано.','tip')}function renderStats(){el('total').textContent=stats.total||0;el('right').textContent=stats.right||0;el('streak').textContent=stats.streak||0;el('history').innerHTML=stats.history.length?stats.history.map(h=>'<div class="hist">'+h.text+'</div>').join(''):'<div class="hist">Пока история пуста.</div>'}function setLevel(l){level=l;['easy','med','hard'].forEach(id=>el(id).classList.remove('active'));el(l).classList.add('active');next()}el('easy').onclick=()=>setLevel('easy');el('med').onclick=()=>setLevel('med');el('hard').onclick=()=>setLevel('hard');el('check').onclick=check;el('next').onclick=next;el('solution').onclick=solution;el('hint').onclick=()=>msg('Подбери q так, чтобы '+t.divisor+' · q не превысило '+part()+'.','tip');el('reset').onclick=function(){stats={total:0,right:0,streak:0,best:0,date:null,history:[]};save();renderStats();msg('Статистика сброшена.','tip')};el('ans').onkeydown=e=>{if(e.key==='Enter')check()};load();next();</script>
-</body></html>
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Деление уголком (столбиком) — пошаговый тренажёр | MathExam</title>
+<meta name="description" content="Учимся делить уголком как в тетради: выбираем первое неполное делимое, находим цифру частного, умножаем, вычитаем и сносим цифру. Проверка каждого шага и подсказки.">
+<link rel="canonical" href="https://mathexam.space/trainers/long-division-stepwise.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Деление уголком (столбиком) — пошаговый тренажёр | MathExam">
+<meta property="og:description" content="Учимся делить уголком как в тетради: выбираем первое неполное делимое, находим цифру частного, умножаем, вычитаем и сносим цифру. Проверка каждого шага и подсказки.">
+<meta property="og:url" content="https://mathexam.space/trainers/long-division-stepwise.html">
+<meta property="og:site_name" content="MathExam">
+<meta property="og:locale" content="ru_RU">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Деление уголком (столбиком) — пошаговый тренажёр | MathExam">
+<meta name="twitter:description" content="Учимся делить уголком как в тетради: выбираем первое неполное делимое, находим цифру частного, умножаем, вычитаем и сносим цифру. Проверка каждого шага и подсказки.">
+<style data-inline-source="/trainers/oge-basics/multiplication-division/division-guided.css">
+:root {
+  color-scheme: light;
+  --ink: #263b39; --muted: #586964; --accent: #176b61; --accent-dark: #10564f;
+  --line: #d5ded8; --soft: #edf5f1; --paper: #fffefb; --success: #246044;
+  --cell: clamp(25px, 6vw, 36px); --row-height: 44px;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: #f3f3ed; color: var(--ink); font: 18px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+button, input, textarea { font: inherit; }
+button, a, input, summary { touch-action: manipulation; }
+button { min-height: 48px; padding: 12px 18px; border: 1px solid transparent; border-radius: 11px; background: var(--accent); color: #fff; font-weight: 650; cursor: pointer; }
+button:hover:not(:disabled) { background: var(--accent-dark); }
+button:disabled { cursor: default; opacity: .65; }
+a { color: var(--accent); text-underline-offset: 3px; }
+:focus-visible { outline: 3px solid #ab691c; outline-offset: 4px; }
+[hidden] { display: none !important; }
+.skip-link { position: absolute; z-index: 10; left: 12px; top: -100px; padding: 12px; background: white; }
+.skip-link:focus { top: 8px; }
+.page-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; max-width: 1168px; margin: auto; padding: 20px 24px 16px; }
+.brand { font-size: 20px; font-weight: 800; text-decoration: none; }
+.quiet { border-color: var(--line); background: var(--paper); color: var(--accent); font-size: 16px; font-weight: 600; }
+.quiet:hover:not(:disabled) { background: var(--soft); border-color: #9cb9ab; }
+.page { max-width: 1168px; margin: auto; padding: 0 24px 36px; }
+.intro { margin: 8px 0 22px; }
+.eyebrow { margin: 0 0 5px; color: var(--muted); font-size: 15px; }
+h1 { margin: 0 0 8px; font-size: clamp(28px, 5vw, 38px); line-height: 1.2; letter-spacing: -.025em; }
+.intro p:last-child { margin: 0; color: var(--muted); }
+.workspace { padding: 28px; border: 1px solid var(--line); border-radius: 22px; background: var(--paper); box-shadow: 0 6px 24px #263b3905; }
+.exercise-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px 18px; }
+.exercise-header h2 { margin: 0; font-size: 29px; font-variant-numeric: tabular-nums; }
+#step-counter { color: var(--muted); font-size: 14px; }
+#topic-progress { margin: 12px 0 26px; color: var(--muted); font-size: 14px; }
+.progress-track { height: 5px; margin: 8px 0 24px; overflow: hidden; border-radius: 8px; background: #e9ede7; }
+.progress-fill { display: block; height: 100%; border-radius: inherit; background: var(--accent); }
+.lesson-layout { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+.visual-pane { min-width: 0; padding-right: 28px; border-right: 1px solid var(--line); }
+.lesson-complete .visual-pane { grid-column: 1 / -1; padding-right: 0; border-right: 0; }
+.notebook-scroll { overflow-x: auto; margin: 0 0 10px; padding: 16px 10px 22px; border: 1px solid #e2e9e1; border-radius: 12px; background-color: #fffefa; background-image: linear-gradient(#d9e4df66 1px, transparent 1px), linear-gradient(90deg, #d9e4df66 1px, transparent 1px); background-size: var(--row-height) var(--row-height); scrollbar-width: thin; scrollbar-color: #b0c6bb transparent; }
+.notebook { position: relative; display: flex; align-items: flex-start; width: max-content; min-width: 190px; max-width: none; margin: 0 auto; padding-top: 24px; font-family: "DejaVu Sans Mono", Consolas, monospace; font-size: clamp(24px, 5vw, 30px); font-variant-numeric: tabular-nums; line-height: 1.15; }
+.working { padding-right: 14px; }
+.number-row { display: grid; grid-template-columns: var(--columns); min-height: var(--row-height); align-items: center; }
+.number-row > span, .number-row > button { grid-row: 1; display: flex; align-items: center; justify-content: center; min-width: 0; min-height: var(--row-height); padding: 0; text-align: center; }
+.number-row > button { width: var(--cell); border: 1px solid transparent; border-radius: 6px; background: transparent; color: var(--ink); font: inherit; }
+.number-row > button:hover:not(:disabled) { border-color: #84ad9f; background: #edf5f1; }
+.number-row > button:focus-visible { position: relative; z-index: 2; outline-offset: 1px; }
+.number-row > button[aria-pressed="true"], .prefix-digit[aria-pressed="true"] { border-color: #7fafa0; background: #dbeee6; color: #114e45; }
+.current { border-radius: 4px; background: #e1eee7; outline: 2px solid #4b8976; outline-offset: -2px; }
+.used { color: #60706a; }
+.pending-digit { border: 2px dashed #8ca79b; border-radius: 4px; background: #edf5f1; }
+.dividend-comma, .quotient-comma { color: var(--accent); font-weight: 700; }
+.subtraction { border-bottom: 2px solid var(--ink); }
+.minus { color: var(--ink); }
+.right-side { min-width: calc(var(--cell) * 2); padding-left: 10px; border-left: 2px solid var(--ink); }
+.divisor { min-height: var(--row-height); padding: 5px 6px 4px; border-bottom: 2px solid var(--ink); letter-spacing: .08em; }
+.quotient { min-height: var(--row-height); padding: 8px 6px 0; white-space: nowrap; }
+.slot { display: inline-block; min-width: .65em; color: #8d9a92; text-align: center; }
+.slot.next-slot { border-radius: 4px; background: #e1eee7; color: var(--accent); outline: 2px solid #82ae9c; outline-offset: 1px; }
+.notebook-marks { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; overflow: visible; color: var(--accent); pointer-events: none; }
+.notebook-marks .arch, .notebook-marks .first-arch, .notebook-marks .bring-arrow { fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.notebook-marks marker path { fill: currentColor; }
+.notebook-note { min-height: 24px; margin: 10px 0 0; color: var(--muted); font-size: 15px; }
+.carry-note { color: var(--accent); font-weight: 650; }
+.question { min-width: 0; padding-top: 2px; }
+.step-name { margin: 0 0 7px; color: var(--accent); font-size: 15px; font-weight: 700; }
+.question h2 { max-width: 620px; margin: 0; font-size: clamp(21px, 2.4vw, 26px); line-height: 1.4; letter-spacing: -.012em; }
+#answer-note { margin: 10px 0 18px; color: var(--muted); font-size: 16px; }
+label { display: block; margin-bottom: 6px; font-size: 16px; }
+.answer-line { display: flex; align-items: stretch; flex-wrap: wrap; gap: 10px; }
+input { flex: 0 1 145px; width: 145px; min-width: 0; padding: 10px 14px; border: 2px solid #80978b; border-radius: 10px; background: #fff; color: var(--ink); font-size: 25px; font-variant-numeric: tabular-nums; line-height: 1.3; }
+input[readonly] { border-color: #7da589; background: #f0f6ef; color: var(--success); }
+.answer-line button { flex: 1; min-width: 150px; max-width: 340px; }
+#feedback { min-height: 28px; margin: 12px 0 0; font-size: 17px; }
+#feedback.good { color: var(--success); }
+#feedback.error { color: #963a25; }
+#answer-options { display: flex; gap: 10px; margin-bottom: 12px; }
+#answer-options button { min-width: 80px; border: 2px solid var(--line); background: white; color: var(--ink); }
+#answer-options button[aria-pressed="true"] { border-color: var(--accent); background: var(--soft); }
+#answer-options button:hover:not(:disabled) { background: var(--soft); }
+.help-actions { display: grid; gap: 2px; justify-items: start; }
+.help-actions > #help-area { width: 100%; }
+#decimal-shift { margin-bottom: 14px; }
+#normalization-record { margin-bottom: 12px; color: var(--muted); font-size: 15px; }
+#normalization-record > summary { padding: 8px 0; }
+#normalization-record[open] > summary { margin-bottom: 5px; }
+.help-toggle { padding-left: 0; border-color: transparent; background: transparent; color: var(--accent); font-size: 16px; font-weight: 500; text-decoration: underline; text-underline-offset: 4px; }
+.help-toggle:hover:not(:disabled) { background: transparent; color: var(--accent-dark); }
+#help-content { margin-top: 4px; padding: 16px; border: 1px solid #d6e5da; border-radius: 12px; background: var(--soft); font-size: 16px; }
+#hint-text { margin: 0 0 12px; }
+#multiples { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 8px; margin: 8px 0 16px; font-size: 16px; font-variant-numeric: tabular-nums; }
+.table-note { grid-column: 1 / -1; margin: 0 0 5px; font-size: 14px; }
+#multiples span, #multiples button { min-width: 0; min-height: 40px; padding: 6px 8px; border: 1px solid #d6e2d9; border-radius: 7px; background: white; color: var(--ink); font-size: inherit; font-weight: 500; text-align: center; }
+#multiples button:hover:not(:disabled) { border-color: #84ad9f; background: #e1eee7; }
+#revealed { margin: 10px 0 0; font-weight: 650; }
+#revealed:empty { display: none; }
+#normalization { margin: 0 0 12px; padding: 16px; border: 1px solid #cedfd3; border-radius: 12px; background: var(--soft); font-size: 18px; }
+#normalization p { margin: 5px 0; }
+.normalization-pair { display: grid; gap: 18px; }
+.normalization-row { min-width: 0; }
+.normalization-label { display: block; margin-bottom: 4px; color: var(--muted); font-size: 14px; }
+.normalization-equation { display: grid; grid-template-columns: minmax(0, 1fr) 66px minmax(0, 1fr); align-items: center; gap: 8px; text-align: center; }
+.original-number, .changed-number { font-size: clamp(23px, 3vw, 29px); font-weight: 600; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.changed-number { padding: 6px 4px; border: 1px dashed #b8c9be; border-radius: 7px; }
+.changed-number.earned, .earned { color: var(--accent); }
+.changed-number.earned { border-style: solid; border-color: #a7c5b4; background: #fffefa; }
+.pending { color: #718478; }
+.transform-arrow { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; min-width: 0; color: var(--accent); }
+.transform-arrow small { font-size: 15px; line-height: 1.25; white-space: nowrap; }
+.transform-arrow svg { display: block; width: 60px; height: 16px; overflow: visible; }
+.transform-arrow path { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.decimal-cue, #decimal-note:not(:empty) { margin-top: 14px; padding: 12px 14px; border-left: 3px solid #80a999; border-radius: 0 8px 8px 0; background: var(--soft); font-size: 15px; }
+.decimal-cue p { margin: 0; }
+.decimal-equality { display: block; margin: 7px 0; color: var(--ink); font-size: 22px; font-weight: 650; font-variant-numeric: tabular-nums; }
+#completion { margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--line); }
+#completion h2 { margin: 0; font-size: 26px; }
+#completion-text { max-width: 650px; margin: 10px 0; }
+#completion .primary { display: block; width: 100%; max-width: 520px; margin: 18px 0 10px; }
+#completion .quiet { width: 100%; max-width: 520px; margin: 0 0 8px; }
+#next-topic { display: block; }
+.small { color: var(--muted); font-size: 15px; }
+#results { margin-top: 18px; padding: 14px 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); font-size: 16px; }
+summary { min-height: 30px; font-weight: 650; cursor: pointer; }
+textarea { display: block; width: 100%; margin-top: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); font-size: 16px; }
+footer { margin-top: 22px; color: var(--muted); font-size: 14px; }
+footer p { margin-bottom: 7px; }
+dialog { width: calc(100% - 28px); max-width: 700px; max-height: 85dvh; padding: 24px; border: 1px solid var(--line); border-radius: 18px; background: var(--paper); color: var(--ink); }
+dialog::backdrop { background: #1b302b80; }
+.dialog-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+.dialog-header h2 { margin: 0; font-size: 26px; }
+dialog > p { color: var(--muted); font-size: 16px; }
+#topics-list { display: grid; gap: 18px; }
+.topic-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+.topic-group h3 { grid-column: 1 / -1; margin: 2px 0 3px; color: var(--muted); font-size: 15px; font-weight: 650; }
+#topics-list button { min-width: 0; padding: 13px 15px; border: 1px solid var(--line); background: #fff; color: var(--ink); font-size: 17px; text-align: left; }
+#topics-list button:hover:not(:disabled) { border-color: #a1b8aa; background: #f4f8f2; }
+#topics-list button[aria-current="true"] { border: 2px solid var(--accent); padding: 12px 14px; background: var(--soft); }
+#topics-list small { display: block; margin-top: 3px; color: var(--muted); font-size: 14px; font-weight: 400; }
+#topics-list .topic-progress { margin-top: 8px; color: var(--accent); font-size: 13px; }
+.microproblem { padding: 14px 10px; font-size: 32px; }
+.storage-message, #storage-notice { margin: 12px 0; padding: 12px 15px; border: 1px solid #b99555; border-radius: 10px; background: #fff3d9; font-size: 16px; }
+
+@media (max-width: 960px) and (min-width: 761px) {
+  .workspace { padding: 22px; }
+  .lesson-layout { gap: 20px; }
+  .visual-pane { padding-right: 20px; }
+  .answer-line input { flex-basis: 112px; width: 112px; }
+  .answer-line button { min-width: 125px; padding-right: 12px; padding-left: 12px; }
+  .normalization-equation { grid-template-columns: minmax(0, 1fr) 46px minmax(0, 1fr); gap: 4px; }
+  .transform-arrow svg { width: 44px; }
+}
+@media (max-width: 760px) {
+  .page, .page-header { max-width: 650px; }
+  .lesson-layout { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .visual-pane { padding-right: 0; border-right: 0; }
+  .question { padding-top: 20px; border-top: 1px solid var(--line); }
+  .notebook-scroll { padding-top: 10px; padding-bottom: 16px; }
+  #topic-progress { margin-bottom: 20px; }
+}
+@media (max-width: 480px) {
+  :root { --row-height: 42px; }
+  .page { padding: 0 12px 28px; }
+  .page-header { padding: 12px; }
+  .brand { font-size: 18px; }
+  .page-header .quiet { padding: 10px 12px; font-size: 14px; }
+  .workspace { padding: 18px 12px; border-radius: 16px; }
+  .intro { margin-top: 5px; margin-bottom: 18px; }
+  .intro p:last-child { font-size: 16px; }
+  .exercise-header h2 { font-size: 26px; }
+  .answer-line { gap: 8px; }
+  .answer-line input { flex-basis: 112px; width: 112px; }
+  .answer-line button { min-width: 125px; padding: 12px 10px; font-size: 17px; }
+  .notebook-scroll { padding-right: 3px; padding-left: 3px; }
+  .working { padding-right: 10px; }
+  .right-side { padding-left: 7px; }
+  .dialog-header { gap: 10px; }
+  dialog { padding: 16px; }
+  .topic-group { grid-template-columns: minmax(0, 1fr); }
+  #multiples { gap: 5px 7px; font-size: 15px; }
+  #normalization { padding: 14px 10px; }
+  .normalization-equation { grid-template-columns: minmax(0, 1fr) 56px minmax(0, 1fr); }
+  .transform-arrow svg { width: 52px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  button, .current { transition: background-color .15s, border-color .15s; }
+  .notebook-marks .bring-arrow { animation: arrow-appear .6s ease-out both; }
+  .notebook-marks .bring-arrow[pathLength="1"] { stroke-dasharray: 1; animation: arrow-trace .7s ease-out both; }
+  @keyframes arrow-appear { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes arrow-trace { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+</style>
+<style data-inline-source="/trainers/oge-basics/multiplication-division/decimal-shift.css">
+.decimal-shift{--ds-cell:30px;border:1px solid #bbd5c8;border-radius:16px;padding:16px;background:#f3f9f5;color:#173c30;box-sizing:border-box;max-width:100%;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}.decimal-shift *{box-sizing:border-box}.decimal-shift p{margin:0 0 12px;line-height:1.5}.decimal-shift .ds-instruction{font-size:17px;font-weight:650}.ds-row{margin:14px 0 2px;min-width:0}.ds-row-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;font-size:14px}.ds-result{font-size:20px;color:#155d47;font-variant-numeric:tabular-nums}.ds-track{position:relative;height:75px;width:calc(var(--ds-digits)*var(--ds-cell) + 44px);max-width:100%;margin-top:6px}.ds-digits{display:flex;padding-left:22px;padding-top:10px;white-space:nowrap}.ds-digit{display:inline-flex;align-items:center;justify-content:center;flex:0 0 var(--ds-cell);height:34px;font:700 clamp(18px,3.5vw,26px)/1 ui-monospace,monospace;border-bottom:1px solid #cee1d4}.ds-digit[data-added=true]{color:#778c80;border-bottom:1px dashed #72917e}.ds-digit.ds-used-zero{color:#173c30;background:#dfeee2}.ds-origin{position:absolute;top:37px;font-size:24px;color:#819489;transform:translateX(-50%)}.decimal-shift button.ds-handle{position:absolute;top:28px;width:44px;min-width:44px;height:44px;min-height:44px;margin:0;padding:0;border:0;border-radius:12px;background:transparent;color:#075b40;font:700 36px/.8 Georgia,serif;display:grid;place-items:center;cursor:grab;touch-action:none;user-select:none;box-shadow:none;z-index:2;transition:none;transform:none}.decimal-shift button.ds-handle:hover{background:#e5f1e8}.decimal-shift button.ds-handle:focus-visible{outline:none;background:#d7ecdf}.decimal-shift button.ds-handle:focus-visible::after{content:"";position:absolute;left:10px;right:10px;bottom:3px;height:3px;border-radius:2px;background:#14795b}.decimal-shift.ds-dragging button.ds-handle{cursor:grabbing;background:#d7ecdf}.decimal-shift.ds-locked button.ds-handle{color:#32624b;background:transparent;cursor:default;box-shadow:none}.decimal-shift.ds-locked button.ds-handle::after{display:none}.ds-controls{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.decimal-shift .ds-controls button{flex:1 1 120px;min-height:44px;padding:10px 8px;border:1px solid #91b09d;border-radius:11px;background:white;color:#205c44;font:650 14px/1.3 system-ui,sans-serif;cursor:pointer}.decimal-shift .ds-controls button:disabled{opacity:.45;cursor:default}.decimal-shift .ds-controls button:focus-visible{outline:3px solid #db8b1b;outline-offset:2px}.decimal-shift .ds-status{font-size:15px;margin-bottom:8px}.decimal-shift .ds-equation{font-size:clamp(16px,3.5vw,22px);font-weight:700;overflow-wrap:anywhere}.decimal-shift .ds-note{font-size:13px;color:#4f6d5e;margin-bottom:0}.ds-locked .ds-controls{display:none}@media(max-width:420px){.decimal-shift{padding:12px}.decimal-shift .ds-instruction{font-size:16px}.ds-result{font-size:18px}.ds-row{margin-top:12px}}
+@media(forced-colors:active){.decimal-shift button.ds-handle:focus-visible{outline:2px solid Highlight;outline-offset:-5px}}
+
+</style>
+<style data-inline-source="/trainers/oge-basics/multiplication-division/multiplication-refresh.css">
+.multiplication-refresh{box-sizing:border-box;width:min(520px,calc(100% - 24px));max-width:520px;max-height:calc(100dvh - 24px);padding:0;border:1px solid #b8c9db;border-radius:22px;background:#fff;color:#172b42;box-shadow:0 24px 80px #122d454d;font-family:Arial,sans-serif;overflow:auto}
+.multiplication-refresh:not([open]){display:none}.multiplication-refresh::backdrop{background:#162b456b}.multiplication-refresh *{box-sizing:border-box}.multiplication-refresh .mr-content{padding:22px}.multiplication-refresh .mr-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.multiplication-refresh h2{font-size:24px;line-height:1.2;margin:0}.multiplication-refresh p{font-size:16px;line-height:1.5;margin:12px 0}.multiplication-refresh button,.multiplication-refresh select,.multiplication-refresh input{font:inherit;min-height:44px;border:1px solid #bbcad9;border-radius:12px;background:#f3f7fb;color:#17344f;padding:10px 13px}.multiplication-refresh button{font-weight:700;cursor:pointer;max-width:100%}.multiplication-refresh button:disabled{opacity:.5;cursor:default}.multiplication-refresh .mr-close{flex-shrink:0;font-size:26px;line-height:1;width:44px;padding:7px}.multiplication-refresh .mr-factor-label{display:block;font-size:16px;margin:18px 0 8px}.multiplication-refresh .mr-factor{width:100%;background:#fff}.multiplication-refresh .mr-question{display:block;text-align:center;font-size:34px;font-weight:700;margin:24px 0 14px}.multiplication-refresh .mr-answer-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.multiplication-refresh .mr-answer{width:100px;max-width:100%;font-size:24px;text-align:center;background:#fff}.multiplication-refresh .mr-check{background:#225ea8;color:#fff;border-color:#225ea8}.multiplication-refresh .mr-feedback{min-height:24px;color:#804c10}.multiplication-refresh .mr-correct{color:#216b3c}.multiplication-refresh .mr-help{width:100%;background:#edf4fc}.multiplication-refresh .mr-visual{padding:14px 10px;margin:12px 0;background:#f5f8fc;border-radius:14px}.multiplication-refresh .mr-dots{display:flex;flex-direction:column;align-items:center;gap:7px}.multiplication-refresh .mr-dot-row{display:flex;gap:7px}.multiplication-refresh .mr-dot{width:14px;height:14px;border-radius:50%;background:#2867ac;display:block}.multiplication-refresh .mr-dot-row:nth-child(even) .mr-dot{background:#5e89ba}.multiplication-refresh .mr-explanation{margin-bottom:0}.multiplication-refresh .mr-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.multiplication-refresh .mr-return{background:#e8f4ec;color:#1e6540;border-color:#b2d3be}.multiplication-refresh :focus-visible{outline:3px solid #e18b12;outline-offset:3px}.multiplication-refresh.mr-fallback{position:fixed;inset:12px;margin:auto;z-index:10000;box-shadow:0 0 0 100vmax #162b456b}.multiplication-refresh [hidden]{display:none!important}
+@media(max-width:380px){.multiplication-refresh .mr-content{padding:16px}.multiplication-refresh h2{font-size:21px}.multiplication-refresh .mr-actions button{width:100%}}
+.multiplication-refresh-link{margin:14px 0}.multiplication-refresh-link button{font:inherit;min-height:44px;max-width:100%;padding:10px 14px;border:1px solid #bbcad9;border-radius:12px;background:#edf4fc;color:#174b80;font-weight:700;cursor:pointer}.multiplication-refresh-link button:focus-visible{outline:3px solid #e18b12;outline-offset:3px}
+
+</style>
+
+
+
+
+
+
+
+
+<style data-inline-source="/trainers/oge-basics/basics-help.css">
+/* Shared optional help, isolated from existing trainer styles. */
+.bh-help{margin:16px 0;color:#203c2d;font:inherit;max-width:100%;min-width:0}
+.bh-help [hidden]{display:none!important}
+.bh-help button,.bh-help input{font:inherit;box-sizing:border-box}
+.bh-help button{cursor:pointer;border:1px solid #b8cabc;border-radius:10px;background:#fff;color:#28583e;padding:10px 14px;min-height:44px;line-height:1.35;max-width:100%;white-space:normal}
+.bh-help button:disabled{cursor:default;opacity:.55}
+.bh-help button:focus-visible,.bh-help input:focus-visible,.bh-frame:focus-visible{outline:3px solid #80b695;outline-offset:3px}
+.bh-help .bh-toggle{border-color:#8db69b;background:#f5faf6;font-weight:700}
+.bh-help .bh-check{color:#fff;background:#287148;border-color:#287148;font-weight:700}
+.bh-panel{border:1px solid #d0ded3;border-radius:14px;padding:18px;margin-top:14px;background:#fbfdfb;max-width:100%;min-width:0}
+.bh-panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.bh-help .bh-close{font-size:14px;background:transparent;border-color:transparent;padding:6px 8px}
+.bh-small{font-size:14px!important;color:#587260;line-height:1.65;margin:8px 0}
+.bh-navigation{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.bh-body,.bh-frame,.bh-current-hint{min-width:0;max-width:100%}
+.bh-frame h3{font-size:21px;line-height:1.4;margin:8px 0 14px;color:#203c2d}
+.bh-question{font-size:19px;line-height:1.7;margin:14px 0 20px}
+.bh-model{margin:18px 0;max-width:420px}
+.bh-svg{display:block;width:100%;max-width:360px;height:auto;margin:12px 0}
+.bh-svg text{fill:#203c2d;font:17px system-ui,sans-serif}
+.bh-help .bh-model-action{margin:5px 8px 5px 0;font-size:16px}
+.bh-model-caption{font-size:16px;line-height:1.6;margin:8px 0 14px}
+.bh-answer-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:18px 0 10px}
+.bh-help .bh-answer{border:2px solid #b9cfc0;border-radius:10px;padding:10px 12px;color:#203c2d;background:white;width:160px;min-height:46px;max-width:100%;font-size:22px}
+.bh-help .bh-answer[readonly]{background:#edf7ef}
+.bh-feedback{font-size:16px;line-height:1.75;margin:12px 0;min-height:0}
+.bh-feedback.bh-correct{border-left:3px solid #4f9467;padding:9px 12px;background:#edf7ef}
+.bh-prerequisites{margin:22px 0 4px;padding-top:12px;border-top:1px solid #dce6dd;display:flex;align-items:flex-start;flex-direction:column;gap:8px}
+.bh-prerequisites p{font-size:16px;line-height:1.6;margin:0 0 4px}
+.bh-help .bh-deeper{font-weight:650;text-align:left}
+.bh-fraction{display:inline-flex;vertical-align:middle;flex-direction:column;text-align:center;line-height:1.2;margin:0 .2em;font-size:1.15em;min-width:1.1em;color:#203c2d}
+.bh-fraction>span:first-child{border-bottom:1.5px solid currentColor;padding:0 .18em .12em}
+.bh-fraction>span:last-child{padding:.12em .18em 0}
+.bh-expression{font-size:32px;line-height:1.8;letter-spacing:.05em;overflow-wrap:anywhere}
+.bh-expression mark{background:#e4efdf;color:inherit;border-radius:4px;padding:3px 7px}
+.bh-selected-digit{color:#27623d;background:#e4efdf;border-radius:5px;padding:4px 6px}
+.bh-shift,.bh-unit-parts{display:flex;flex-wrap:wrap;gap:14px;font-size:23px;line-height:1.7}
+.bh-shift>span,.bh-unit-parts>span{padding:12px;border:1px solid #c5d7ca;border-radius:8px}
+.bh-trial{display:flex;flex-direction:column;gap:8px;font-size:22px;line-height:1.5}
+.bh-trial>span{font-size:16px}
+.bh-count{display:grid;grid-template-columns:repeat(4,minmax(0,48px));gap:12px;margin:12px 0}
+.bh-help .bh-dot{width:46px;height:46px;min-height:46px;padding:0;border-radius:50%;background:#26815d;border:3px solid #26815d}
+.bh-help .bh-dot[aria-pressed=true]{background:#e8c568;border-color:#b18b26}
+@media(max-width:420px){.bh-panel{padding:13px 10px}.bh-panel-head{gap:6px}.bh-frame h3{font-size:19px}.bh-question{font-size:18px}.bh-answer-row{gap:8px}.bh-help .bh-answer{width:130px}.bh-help button{padding:10px 11px}.bh-navigation{flex-direction:column;align-items:flex-start}.bh-small{font-size:13px!important}.bh-model{margin:14px 0}.bh-count{gap:9px}}
+
+</style>
+<!-- BEGIN OGE BASICS CONTEXTUAL SHELL -->
+<style data-inline-source="/trainers/oge-basics/navigation-minimal.css">
+/* Calm public navigation and the special practice shells. No task content is hidden. */
+body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543c;--accent-soft:#edf6f0;--green:#176447;--green-deep:#14543c;--blue:#176447;--blue-deep:#14543c;--line:#dce5df;--shadow:none;background:#fff;color:#23332b;line-height:1.65}
+.basics-navigation .wrap,.basics-navigation main{max-width:980px;margin:auto;padding:26px 20px 60px}
+.basics-navigation .topbar{position:static;background:#fff;backdrop-filter:none}
+.basics-navigation .mark,.basics-navigation .hero-art,.basics-navigation .route,.basics-navigation .eyebrow,.basics-navigation .topic-kicker,.basics-navigation .topic-icon,.basics-navigation .icon,.basics-navigation .symbol{display:none}
+.basics-navigation .hero,.basics-navigation .map-hero,.basics-navigation .percent-card{display:block;background:#fff;box-shadow:none;border:0;padding:0;margin:0 0 28px}
+.basics-navigation .hero-copy,.basics-navigation .section{padding:0}.basics-navigation .section{border:0;margin:32px 0}
+.basics-navigation h1{font-size:clamp(28px,4vw,38px);line-height:1.2;margin:0 0 14px;letter-spacing:-.025em}
+.basics-navigation h2{font-size:23px;line-height:1.35}.basics-navigation h3{font-size:19px;line-height:1.4}
+.basics-navigation .lead{font-size:18px}.basics-navigation .topic-grid,.basics-navigation .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.basics-navigation .topic-card,.basics-navigation .grid>.card{display:block;min-height:0;box-shadow:none;background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;transform:none}
+.basics-navigation .topic-card p,.basics-navigation .grid>.card p{min-height:0;font-size:16px;margin-top:7px;line-height:1.55}
+.basics-navigation .topic-foot a,.basics-navigation .meta{font-size:15px;color:#176447}
+.basics-navigation .card:not(a){box-shadow:none}.basics-navigation .card.flagship{background:#fff;border-color:var(--line)}
+.basics-navigation .section-head{display:block}.basics-navigation .section-head>p{margin-top:8px}
+.basics-navigation details,.basics-special details.basics-secondary{margin:18px 0;border:1px solid #dce5df;border-radius:12px;padding:14px 16px;background:#fff}
+.basics-navigation summary,.basics-special details.basics-secondary>summary{cursor:pointer;font-size:17px;font-weight:650;color:#176447;min-height:28px}
+.basics-navigation details>*:not(summary),.basics-special details.basics-secondary>*:not(summary){margin-top:14px}
+.basics-navigation .basics-nav-intro{font-size:18px;margin-bottom:20px;color:#52645a}
+.basics-navigation .nav-pills{margin:18px 0}.basics-navigation .nav-pills a{font-size:15px;background:#f4f8f5;color:#176447}
+.basics-navigation .division-course-heading>.lead{margin-top:16px}.basics-navigation .division-course-heading>p:not(.lead){font-size:16px}
+.basics-navigation .division-course,.basics-navigation .division-course-stages{max-width:100%}
+.basics-special main{max-width:980px}.basics-special h1{font-size:clamp(25px,4vw,34px);line-height:1.25}
+.basics-special .intro{padding:12px 0;margin:12px 0}.basics-special .intro h1{font-size:30px}.basics-special .intro .lead{font-size:17px}
+.basics-special #goal,.basics-special .note{font-size:16px}.basics-special #exercise{margin-top:18px}
+.basics-special .basics-help-host{margin:14px 0}.basics-special .basics-help-root{display:grid;gap:12px}
+.basics-special .basics-help-root button{justify-self:start;max-width:100%}
+.basics-special .estimate-page>header>p:not([role=status]){margin:6px 0}
+.basics-special .estimate-page>.estimate-card{margin-top:20px}
+.basics-special .estimate-actions{margin-top:18px}
+.basics-special .column{margin:24px auto}.basics-special h2#question{font-size:24px;line-height:1.5}
+.basics-foundations main>.eyebrow{display:none}.basics-foundations #exercise .in-mind:empty{display:none}
+.basics-lab .intro{padding:0;margin:0 0 18px}.basics-lab .intro h1{margin:0 0 18px}
+.basics-estimate #estimate-task{font-size:24px;line-height:1.45}.basics-estimate #estimate-prompt{font-size:21px;line-height:1.6}
+.basics-estimate #estimate-notice{margin:22px 0 12px}.basics-estimate .estimate-page>header h1{margin-bottom:18px}
+.basics-special button,.basics-navigation .btn,.basics-navigation .button{min-height:44px;font-size:16px;box-shadow:none}
+/* Keep each diagnostic's native large answer type; shared shells only set the hit area. */
+.basics-special input{min-height:48px}
+.basics-estimate input,.basics-lab input,.basics-foundations input{font-size:21px}
+.basics-special [hidden],.basics-navigation [hidden]{display:none!important}
+@media(max-width:600px){.basics-navigation .wrap,.basics-navigation main{padding:22px 14px 50px}.basics-navigation .topic-grid,.basics-navigation .grid{grid-template-columns:1fr}.basics-navigation .topic-card,.basics-navigation .grid>.card{padding:16px}.basics-navigation .topbar-in{padding:10px 14px;flex-wrap:wrap}.basics-special .estimate-page{padding:16px 12px}.basics-special .workspace{grid-template-columns:1fr}.basics-special .stage,.basics-special .paper{min-width:0}.basics-special .intro h1{font-size:26px}}
+@media(max-width:420px){.basics-estimate #estimate-task{font-size:22px}.basics-estimate #estimate-prompt{font-size:20px}.basics-estimate .estimate-card{padding:15px}.basics-foundations #exercise{padding:16px}.basics-foundations .column{margin:16px auto}}
+
+</style>
+
+<!-- END OGE BASICS CONTEXTUAL SHELL -->
+</head>
+<body>
+<a class="skip-link" href="#question">К текущему шагу</a>
+<div id="guided-division">
+<header class="page-header"><a class="brand" href="https://mathexam.space/trainers/oge-basics/multiplication-division/index.html" aria-label="MathExam — умножение и деление">MathExam</a><button id="topics-open" class="quiet" type="button" aria-haspopup="dialog">Выбрать тему</button></header>
+<main class="page" id="main">
+<div id="storage-notice" role="status" hidden></div>
+<nav id="course-navigation" aria-label="Маршрут ПредОГЭ" hidden><p class="small"><a id="course-return" href="https://mathexam.space/trainers/oge-basics/arithmetic-route.html">← К моему маршруту ПредОГЭ</a></p></nav>
+<div class="intro"><p id="topic-label" class="eyebrow"></p><h1>Деление уголком</h1><p id="intro-text">Решаем по одному действию. Спешить не нужно.</p></div>
+<section class="workspace" aria-label="Текущий пример">
+<div class="exercise-header"><h2 id="problem"></h2><span id="step-counter"></span></div>
+<div id="topic-progress" class="topic-progress" aria-live="off"></div>
+<div class="progress-track" role="progressbar" aria-label="Шаги текущего примера" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="step-progress" class="progress-fill"></span></div>
+<div class="lesson-layout">
+<div class="visual-pane">
+<div id="decimal-shift" hidden></div>
+<details id="normalization-record" hidden><summary>Запись преобразования</summary><div id="normalization" hidden></div></details>
+<div class="notebook-scroll" tabindex="0" role="region" aria-label="Запись решения уголком"><div id="notebook" class="notebook"></div></div>
+<p id="notebook-note" class="notebook-note"></p>
+<div id="decimal-note" class="decimal-cue" hidden></div>
+</div>
+<div class="question" id="question" tabindex="-1">
+<p class="step-name" id="step-name"></p><h2 id="prompt"></h2><p id="answer-note"></p>
+<form id="answer-form" novalidate>
+<label for="answer" id="answer-label">Твой ответ</label>
+<div id="answer-options" hidden></div>
+<div class="answer-line"><input id="answer" type="text" inputmode="decimal" autocomplete="off" maxlength="30" aria-describedby="answer-note feedback"><button id="primary" type="submit">Проверить</button></div>
+</form>
+<p id="feedback" role="status" aria-live="polite"></p>
+<div class="help-actions"><div id="help-area"><button id="help-toggle" class="help-toggle" type="button" aria-expanded="false" aria-controls="help-content">Помочь с этим шагом</button><div id="help-content" hidden><p id="hint-text"></p><div id="multiples" hidden></div><button id="reveal" class="quiet" type="button">Показать ответ к этому шагу</button><p id="revealed" role="status"></p></div></div><button id="multiplication-refresh" class="help-toggle" type="button" aria-haspopup="dialog">Повторить таблицу умножения</button></div>
+</div>
+</div>
+<div id="completion" hidden><h2>Пример закончен</h2><p id="completion-text"></p><button id="next-example" class="primary" type="button">Ещё один похожий пример</button><button id="next-topic" class="quiet" type="button" hidden></button><button id="repeat-example" class="quiet" type="button">Повторить этот пример</button><p class="small" id="save-note">Можно закончить на сегодня. Результат сохранится в этом браузере.</p><p><a id="course-return-completion" href="https://mathexam.space/trainers/oge-basics/arithmetic-route.html" hidden>Вернуться к маршруту ПредОГЭ</a></p></div>
+</section>
+<details id="results"><summary>Мои результаты</summary><p id="results-text"></p><button id="report-copy" class="quiet" type="button">Скопировать результат для учителя</button><p id="report-status" role="status"></p><textarea id="report-text" readonly rows="7" aria-label="Результат для учителя" hidden></textarea><p class="small">Отправь текст или снимок экрана учителю в MAX. Автоматической отправки здесь нет.</p></details>
+<section aria-labelledby="division-about-title">
+<h2 id="division-about-title">Пошаговый тренажёр деления уголком</h2>
+<p>Деление уголком, или столбиком, записывается как в школьной тетради. Выбери первое неполное делимое, наметь места для цифр частного, умножь, вычти и снеси следующую цифру. Каждый ответ проверяется отдельно, а строки решения остаются перед тобой.</p>
+<p>Начни с простого примера. Затем можно потренировать ноль в частном, деление с остатком, двузначный делитель и десятичные дроби. Если трудно, открой помощь к текущему шагу. Начатый пример сохраняется в этом браузере.</p>
+<p><a href="https://mathexam.space/topics/delenie-ugolkom/">Как делить столбиком: объяснение на примере</a></p>
+</section>
+<footer><p>Уголок остаётся на экране. Подсказками пользоваться можно.</p><a href="https://mathexam.space/trainers/arifmetika.html" id="arithmetic-link">Другие арифметические действия</a></footer>
+</main>
+<dialog id="topics-dialog" aria-labelledby="topics-title"><div class="dialog-header"><h2 id="topics-title">Что потренировать?</h2><button id="topics-close" class="quiet" type="button">Вернуться к примеру</button></div><p>Выбирай одну тему. Начатые примеры сохраняются.</p><div id="topics-list"></div><p class="small">Для первого знакомства — «Начать с простого».</p></dialog>
+</div>
+<noscript><p>Чтобы вводить ответы и получать подсказки, включите JavaScript в браузере.</p></noscript>
+<script data-inline-source="/trainers/oge-basics/multiplication-division/division-lab-core.js">
+(function(root){
+ 'use strict';
+ const KEY='mathExamBasics.longDivisionLab.v1';
+ const levels={
+  oneDigit:{title:'На одну цифру',idea:'Делим слева направо. На каждом шаге выбираем одну цифру частного, умножаем её на делитель и вычитаем произведение.',example:['735','5']},
+  zero:{title:'Ноль в частном',idea:'Если после сноса получилось число меньше делителя, записываем в частном ноль. Он сохраняет место разряда: 201 и 21 — разные числа.',example:['1005','5']},
+  remainder:{title:'С остатком',idea:'Когда цифры закончились, оставляем целый остаток. Он должен быть меньше делителя. Проверка: делитель × частное + остаток = делимое.',example:['739','5']},
+  twoDigit:{title:'На двузначное число',idea:'Прикидка помогает выбрать цифру. Затем проверяем произведение: оно не больше неполного делимого, а следующее кратное уже больше.',example:['864','36']},
+  decimalNatural:{title:'Десятичная дробь ÷ целое',idea:'На границе целой и дробной частей делимого ставим запятую в частном. Дальше делим десятые, сотые и следующие разряды тем же способом.',example:['12,6','3']},
+  appendZeros:{title:'Дописываем нули',idea:'Если цифры закончились, а остаток есть, можно продолжить деление после запятой. Приписанный справа ноль не меняет делимое. Здесь все десятичные ответы конечные.',example:['1','8']},
+  decimalDivisor:{title:'Десятичный делитель',idea:'Сначала умножаем оба числа на одну и ту же степень десяти. Делитель станет целым, а частное сохранится. Только после изменения обоих чисел начинаем уголок.',example:['8','2,5']}
+ };
+ function number(text){
+  const s=String(text).trim().replace('.',','),m=s.match(/^(\d{1,8})(?:,(\d{1,4}))?$/);
+  if(!m)throw Error('Нужно неотрицательное число, до четырёх знаков после запятой.');
+  return {units:Number(m[1]+(m[2]||'')),places:(m[2]||'').length};
+ }
+ function decimal(units,places){
+  if(places<0)return String(units*10**(-places));
+  let s=String(units).padStart(places+1,'0');if(places)s=s.slice(0,-places)+','+s.slice(-places);
+  return s.includes(',')?s.replace(/0+$/,'').replace(/,$/,''):s;
+ }
+ function equal(a,b){try{const x=number(a),y=number(b);return x.units*10**y.places===y.units*10**x.places;}catch(e){return false;}}
+ function normalizeTask(t){
+  if(!t||!Object.hasOwn(levels,t.level)||typeof t.dividend!=='string'||typeof t.divisor!=='string')throw Error('Неизвестное задание.');
+  const a=number(t.dividend),b=number(t.divisor);if(!b.units||a.units>100000000||b.units>1000000)throw Error('Числа вне диапазона тренажёра.');
+  if(t.level==='remainder'&&(a.places||b.places))throw Error('Остаток в этой ступени относится к целым числам.');
+  return {level:t.level,dividend:decimal(a.units,a.places),divisor:decimal(b.units,b.places)};
+ }
+ function plan(raw){
+  const task=normalizeTask(raw),a=number(task.dividend),b=number(task.divisor),shift=b.places;
+  const normalizedDividend=decimal(a.units,a.places-shift),normalizedDivisor=b.units;
+  const parts=normalizedDividend.split(','),digits=(parts[0]+(parts[1]||'')).split('').map(Number),intLen=parts[0].length,originalLength=digits.length;
+  const actions=[],cycles=[];let quotient='',remainder=0,comma=false;
+  function action(kind,prompt,answer,hint,extra){const i=actions.length;actions.push({kind,prompt,answer:String(answer),hint,...extra});return i;}
+  if(shift){
+   action('shift-count','На сколько разрядов вправо нужно перенести запятую, чтобы делитель '+task.divisor+' стал целым?',shift,'Посчитай цифры после запятой в делителе.');
+   action('shift-factor','На какое число нужно умножить и делимое, и делитель?',10**shift,'Каждый разряд вправо соответствует умножению на 10.');
+   action('shift-divisor','Запиши новый делитель: '+task.divisor+' × '+10**shift+'.',normalizedDivisor,'Перенеси запятую в делителе на выбранное число разрядов.');
+   action('shift-dividend','Теперь измени делимое тем же способом: '+task.dividend+' × '+10**shift+'.',normalizedDividend,'Менять только делитель нельзя: тогда частное изменится. Если цифр не хватает, допиши нули справа.');
+  }
+  const normalizationEnd=actions.length;
+  let index=0,partial=digits[0];while(partial<normalizedDivisor&&index<intLen-1){index++;partial=partial*10+digits[index];}
+  action('start','Какое первое неполное делимое возьмём слева?',partial,'Бери слева наименьший блок не меньше делителя. Если вся целая часть меньше делителя, начинай с неё и запиши ноль в частном.',{sourceIndex:index});
+  while(true){
+   if(cycles.length>20)throw Error('Это деление не даёт короткого конечного ответа.');
+   const q=Math.floor(partial/normalizedDivisor),product=q*normalizedDivisor,rem=partial-product,cycle={sourceIndex:index,partial,qd:q,product,remainder:rem};
+   cycle.digitAction=action('digit','Какая цифра частного подходит к '+partial+' : '+normalizedDivisor+'?',q,'Выбери наибольшую цифру от 0 до 9, произведение которой на делитель не больше неполного делимого.',{cycle:cycles.length});quotient+=q;
+   cycle.productAction=action('product','Вычисли произведение: '+normalizedDivisor+' × '+q+'.',product,'Умножь делитель на только что выбранную цифру. Для двузначного числа можно отдельно умножить десятки и единицы.',{cycle:cycles.length});
+   cycle.subtractAction=action('subtract','Вычти: '+partial+' − '+product+'.',rem,'Проверь разность сложением. Она должна быть меньше делителя.',{cycle:cycles.length});cycles.push(cycle);remainder=rem;
+   if(index===digits.length-1&&(task.level==='remainder'||rem===0))break;
+   const next=index+1;
+   if(next===intLen&&!comma){action('comma','Запиши полученную целую часть частного '+quotient+' и поставь после неё запятую.',quotient+',','Запятая появляется перед первой дробной цифрой. Если целая часть меньше единицы, ноль перед запятой сохраняется.');quotient+=',';comma=true;}
+   let appended=false;if(next===digits.length){digits.push(0);appended=true;if(digits.length-originalLength>6)throw Error('Нужна конечная десятичная дробь.');}
+   action('bring',appended?'Цифры закончились, но остаток есть. Какую цифру допишем после запятой и снесём?':'Какую следующую цифру делимого снесём к остатку?',digits[next],appended?'Справа от последнего десятичного разряда можно дописать ноль: значение числа сохранится.':'Сносим ровно одну следующую цифру, даже если это ноль.',{sourceIndex:next,appended});
+   partial=rem*10+digits[next];action('partial','Какое новое неполное делимое получится после сноса?',partial,'Остаток переходит в следующий разряд: умножь его на 10 и прибавь снесённую цифру.',{sourceIndex:next});index=next;
+  }
+  quotient=decimal(number(quotient).units,number(quotient).places);
+  action('answer','Запиши '+(task.level==='remainder'?'целое частное':'полное частное')+' по выполненному уголку.',quotient,'Прочитай все цифры частного подряд. Сохрани нули внутри записи и положение запятой.');
+  if(task.level==='remainder')action('final-remainder','Запиши окончательный остаток.',remainder,'Это последняя разность. Она неотрицательна и меньше делителя.');
+  action('verify','Проверь ответ: '+task.divisor+' × '+quotient+(task.level==='remainder'?' + '+remainder:'')+' = ?',task.dividend,'Обратное действие должно вернуть исходное делимое.');
+  return {task,actions,cycles,normalizedDividend,normalizedDivisor,normalizationEnd,digits,intLen,originalLength,quotient,remainder};
+ }
+ function rng(seed){let x=(seed>>>0)||1;return (lo,hi)=>{x=(Math.imul(1664525,x)+1013904223)>>>0;return lo+Math.floor(x/4294967296*(hi-lo+1));};}
+ function make(level,seed){
+  if(!Object.hasOwn(levels,level))throw Error('Неизвестная ступень.');
+  if(seed===0)return {level,dividend:levels[level].example[0],divisor:levels[level].example[1]};
+  const r=rng(seed),pick=a=>a[r(0,a.length-1)];let d,q,n,p;
+  if(level==='oneDigit'){d=r(2,9);q=r(12,299);n=d*q;}
+  if(level==='zero'){d=r(2,9);q=r(1,8)*100+r(1,9);n=d*q;}
+  if(level==='remainder'){d=r(2,12);q=r(12,199);n=d*q+r(1,d-1);}
+  if(level==='twoDigit'){d=r(12,49);q=r(12,99);n=d*q;}
+  if(level==='decimalNatural'){d=r(2,9);p=pick([1,2]);q=r(11,199);return {level,dividend:decimal(d*q,p),divisor:String(d)};}
+  if(level==='appendZeros'){d=pick([4,8,20,25,40]);n=r(1,99);if(n%d===0)n++;}
+  if(level==='decimalDivisor'){p=pick([1,2]);d=pick([12,15,16,25,32,45,75]);const qp=pick([0,1,2]);q=r(11,149);return {level,dividend:decimal(d*q,p+qp),divisor:decimal(d,p)};}
+  return {level,dividend:String(n),divisor:String(d)};
+ }
+ function check(value,action){const s=String(value).trim().replace('.',',');if(action.kind==='comma')return s===action.answer;if(['digit','bring'].includes(action.kind)&&!/^\d$/.test(s))return false;if(['shift-count','shift-factor'].includes(action.kind)&&!/^\d+$/.test(s))return false;return equal(s,action.answer);}
+ function fingerprint(t){return t.level+'|'+t.dividend+'|'+t.divisor;}
+ function blank(){return {schema:'mathexam-division-lab',version:1,sequence:1,seen:[],records:[],session:null};}
+ function integer(x,max){return Number.isInteger(x)&&x>=0&&x<=max;}
+ function sessionValid(s){
+  if(!s||!['learn','practice','check'].includes(s.mode)||!integer(s.step,150)||!integer(s.errors,100000)||!integer(s.hints,100000)||!integer(s.reveals,100000)||typeof s.repeated!=='boolean'||typeof s.input!=='string'||s.input.length>60)throw Error('Повреждено незавершённое решение.');
+  const p=plan(s.task);if(s.step>p.actions.length)throw Error('Некорректный номер шага.');
+  return {task:p.task,mode:s.mode,step:s.step,errors:s.errors,hints:s.hints,reveals:s.reveals,repeated:s.repeated,input:s.input};
+ }
+ function validate(x){
+  if(!x||x.schema!=='mathexam-division-lab'||x.version!==1||!integer(x.sequence,1000000)||!Array.isArray(x.seen)||x.seen.length>3000||x.seen.some(v=>typeof v!=='string'||v.length>100)||!Array.isArray(x.records)||x.records.length>1000)throw Error('Неверная резервная копия лаборатории.');
+  const records=x.records.map(r=>{const s=sessionValid(r);if(s.step!==plan(s.task).actions.length||!Number.isFinite(r.finishedAt)||r.finishedAt<0)throw Error('Некорректный результат.');return {...s,finishedAt:r.finishedAt,independent:s.mode==='check'&&!s.repeated&&!s.errors&&!s.hints&&!s.reveals};});
+  const session=x.session===null?null:sessionValid(x.session);if(records.length===1000&&session&&session.step<plan(session.task).actions.length)throw Error('В полной записи нет места для ещё одного результата.');
+  return {schema:x.schema,version:1,sequence:x.sequence,seen:[...new Set(x.seen)],records,session};
+ }
+ const api={KEY,levels,number,decimal,equal,plan,make,check,fingerprint,blank,validate};root.DivisionLab=api;if(typeof module!=='undefined')module.exports=api;
+})(typeof window==='undefined'?globalThis:window);
+
+</script>
+<script data-inline-source="/trainers/oge-basics/multiplication-division/division-guided-core.js">
+(function (root) {
+  'use strict';
+
+  const D = typeof module !== 'undefined' && module.exports
+    ? require('./division-lab-core.js') : root.DivisionLab;
+  if (!D) throw Error('Сначала подключите division-lab-core.js.');
+
+  const topics = [
+    { id: 'start', title: 'Начать с простого', description: 'Делим двузначное число на 2 или 3. Сначала без остатка на каждом шаге.', example: ['48', '2'] },
+    { id: 'oneDigit', title: 'Деление на одну цифру', description: 'Учимся вычитать и сносить следующую цифру.', example: ['72', '3'] },
+    { id: 'zero', title: 'Ноль в ответе', description: 'Сохраняем место для нуля в частном.', example: ['1005', '5'] },
+    { id: 'remainder', title: 'Деление с остатком', description: 'Останавливаемся, когда цифры закончились, и записываем остаток.', example: ['29', '6'] },
+    { id: 'twoDigit', title: 'Деление на две цифры', description: 'Подбираем цифру ответа по таблице кратных.', example: ['864', '36'] },
+    { id: 'decimalNatural', title: 'Дробь делим на целое число', description: 'Учимся ставить запятую в ответе.', example: ['12,6', '3'] },
+    { id: 'appendZeros', title: 'Продолжаем после запятой', description: 'Дописываем нули и продолжаем делить.', example: ['1', '8'] },
+    { id: 'decimalDivisor', title: 'Делим на десятичную дробь', description: 'Сначала одинаково меняем оба числа, затем делим уголком.', example: ['8', '2,5'] },
+    { id: 'quotientDigit', title: 'Потренировать подбор цифры', description: 'Один короткий шаг: сколько раз делитель помещается в числе?', example: ['12', '3'], optional: true }
+  ];
+  const topicMap = Object.fromEntries(topics.map(topic => [topic.id, topic]));
+  const presets = {
+    start: [['48', '2'], ['69', '3'], ['84', '2'], ['96', '3'], ['66', '2'], ['63', '3'], ['46', '2'], ['99', '3'], ['82', '2'], ['36', '3']],
+    oneDigit: [['72', '3'], ['84', '3'], ['735', '5'], ['126', '3'], ['152', '4'], ['328', '4']],
+    zero: [['1005', '5'], ['612', '3'], ['804', '4'], ['909', '3']],
+    remainder: [['29', '6'], ['47', '5'], ['73', '3'], ['95', '4']],
+    twoDigit: [['864', '36'], ['288', '12'], ['690', '15']],
+    decimalNatural: [['12,6', '3'], ['8,4', '2'], ['7,35', '5'], ['0,6', '3'], ['0,25', '5'], ['30,6', '3'], ['4,08', '4'], ['1,008', '4']],
+    appendZeros: [['1', '8'], ['3', '4'], ['7', '2'], ['6', '5'], ['9', '4'], ['1', '16'], ['3', '40'], ['7', '25']],
+    decimalDivisor: [['8', '2,5'], ['4,8', '1,2'], ['0,84', '0,4'], ['6,3', '0,7'], ['0,084', '0,4'], ['1', '0,25'], ['1', '0,025'], ['2,04', '0,02'], ['0,036', '0,12']],
+    quotientDigit: [['12', '3'], ['14', '3'], ['19', '4'], ['4', '7'], ['0', '5']]
+  };
+
+  function topicFor(id) {
+    if (typeof id !== 'string' || !Object.hasOwn(topicMap, id)) throw Error('Неизвестная тема.');
+    return topicMap[id];
+  }
+
+  function make(topicId, sequence = 0) {
+    topicFor(topicId);
+    if (!Number.isSafeInteger(sequence) || sequence < 0 || sequence > 1000000) throw Error('Неверный номер примера.');
+    const level = topicId === 'start' ? 'oneDigit' : topicId === 'quotientDigit' ? 'remainder' : topicId;
+    const preset = presets[topicId][sequence];
+    if (preset) return { topicId, level, dividend: preset[0], divisor: preset[1] };
+    if (topicId === 'start') {
+      // Every written digit is a multiple of the divisor: no carry, no zero in
+      // the answer, and no more than two dividend digits in this first topic.
+      const divisor = sequence % 2 === 0 ? 2 : 3;
+      const limit = Math.floor(9 / divisor);
+      const tens = 1 + Math.floor(sequence / 2) % limit;
+      const units = 1 + Math.floor(sequence / (2 * limit)) % limit;
+      return { topicId, level, dividend: String(divisor * (10 * tens + units)), divisor: String(divisor) };
+    }
+    if (topicId === 'quotientDigit') {
+      const divisor = 2 + sequence % 8;
+      const partial = (Math.imul(sequence, 17) >>> 0) % (10 * divisor);
+      return { topicId, level, dividend: String(partial), divisor: String(divisor) };
+    }
+    return { ...D.make(level, sequence), topicId };
+  }
+
+  function wording(action, p) {
+    const cycle = Number.isInteger(action.cycle) ? p.cycles[action.cycle] : null;
+    const divisor = p.normalizedDivisor;
+    switch (action.kind) {
+      case 'start':
+        return {
+          prompt: 'С какого числа начнём делить?',
+          hint: Number(action.answer) < divisor
+            ? 'Целая часть ' + p.normalizedDividend.split(',')[0] + ' меньше ' + divisor + '. Возьми её целиком. Первая цифра ответа будет 0.'
+            : 'Начни с первой цифры слева. Если число меньше ' + divisor + ', возьми ещё одну цифру справа. Как только полученного числа достаточно, остановись. Это первое неполное делимое.'
+        };
+      case 'digit':
+        return {
+          prompt: 'Сколько раз ' + divisor + ' помещается в ' + cycle.partial + '?',
+          hint: cycle.qd === 0
+            ? cycle.partial + ' меньше ' + divisor + '. Ни одного целого раза не получается. Запиши 0 в частном: пропускать это место нельзя.'
+            : 'В таблице умножения найди самый большой результат, который не больше ' + cycle.partial + '. Запиши одну цифру — сколько раз взяли ' + divisor + '.'
+        };
+      case 'product':
+        return {
+          prompt: 'Умножь: ' + divisor + ' × ' + cycle.qd + ' = ?',
+          hint: 'Умножь делитель на найденную цифру ответа. Результат запишем под числом ' + cycle.partial + ', последнюю цифру — под последней.'
+        };
+      case 'subtract':
+        return {
+          prompt: 'Вычти: ' + cycle.partial + ' − ' + cycle.product + ' = ?',
+          hint: 'Вычти нижнее число из верхнего. Узнаем, сколько осталось.'
+        };
+      case 'bring':
+        return {
+          prompt: action.appended ? 'Допиши и снеси ноль.' : 'Снеси следующую цифру.',
+          hint: action.appended
+            ? 'После запятой можно дописывать нули справа: число не изменится. Запиши одну цифру — 0.'
+            : 'Возьми одну следующую цифру делимого. Запиши только эту цифру, даже если это ноль.'
+        };
+      case 'partial': {
+        const nextCycle = p.cycles.findIndex(item => item.sourceIndex === action.sourceIndex);
+        const previous = p.cycles[nextCycle - 1];
+        return {
+          prompt: 'Какое число получилось после сноса?',
+          hint: 'К остатку ' + previous.remainder + ' справа приписали цифру ' + p.digits[action.sourceIndex] + '. ' + (previous.remainder === 0 ? 'Начальный ноль не пишем. ' : '') + 'Прочитай получившееся число — его будем делить дальше.'
+        };
+      }
+      case 'comma':
+        return {
+          prompt: 'Запиши целую часть ответа и поставь запятую.',
+          hint: 'Все цифры целой части делимого уже использованы. Дальше будем делить десятые, поэтому в частном нужна запятая. Перепиши найденную целую часть ' + action.answer.slice(0, -1) + ' и добавь запятую.' + (action.answer === '0,' ? ' Получится «0,». Ноль перед запятой сохраняем.' : '')
+        };
+      case 'answer':
+        return {
+          prompt: p.task.level === 'remainder' ? 'Запиши целое частное.' : 'Запиши ответ целиком.',
+          hint: 'Прочитай все цифры ответа справа под чертой. Сохрани нули внутри числа и запятую, если она есть.'
+        };
+      case 'final-remainder':
+        return { prompt: 'Какой остаток получился?', hint: 'Посмотри на самое нижнее число после вычитания.' };
+      case 'verify':
+        return {
+          prompt: 'Проверь: ' + p.task.divisor + ' × ' + p.quotient + (p.task.level === 'remainder' ? ' + ' + p.remainder : '') + ' = ?',
+          hint: 'Умножь ответ на делитель' + (p.task.level === 'remainder' ? ' и прибавь остаток' : '') + '. Должно получиться исходное делимое ' + p.task.dividend + '.'
+        };
+      case 'shift-count':
+        return { prompt: 'Сколько цифр после запятой в делителе ' + p.task.divisor + '?', hint: 'В уголке удобнее делить на натуральное число. Чтобы убрать запятую у делителя, перенесём её вправо. Посчитай, на сколько мест.' };
+      case 'shift-factor':
+        return { prompt: 'На какое число умножим и делимое, и делитель?', hint: 'На одно место вправо — умножить на 10. На два — на 100. Частное не изменится, если умножить оба числа на одно и то же число.' };
+      case 'shift-divisor':
+        return { prompt: 'Каким станет делитель ' + p.task.divisor + '?', hint: 'Перенеси запятую в делителе вправо на найденное число мест. Затем так же изменим делимое.' };
+      case 'shift-dividend':
+        return { prompt: 'Теперь так же измени делимое ' + p.task.dividend + '.', hint: 'Умножь делимое на то же число: перенеси запятую вправо на столько же мест. У целого числа запятую можно представить после последней цифры. Если цифр справа не хватает, допиши нули.' };
+      default:
+        return { prompt: action.prompt, hint: action.hint };
+    }
+  }
+
+  function plan(raw) {
+    if (!raw || typeof raw !== 'object') throw Error('Неизвестное задание.');
+    const topicId = raw.topicId || raw.level;
+    topicFor(topicId);
+    const expectedLevel = topicId === 'start' ? 'oneDigit' : topicId === 'quotientDigit' ? 'remainder' : topicId;
+    if (raw.level !== expectedLevel) throw Error('Тема и пример не совпадают.');
+    const p = D.plan(raw);
+    p.task = { ...p.task, topicId };
+    const baseActions = p.actions;
+    const actions = [];
+    const startIndex = baseActions.findIndex(action => action.kind === 'start');
+    const integerDigitCount = p.intLen - baseActions[startIndex].sourceIndex;
+    const hasDecimalPart = p.normalizedDividend.includes(',') || p.quotient.includes(',');
+    const smallWholePart = Number(baseActions[startIndex].answer) < p.normalizedDivisor;
+    const add = action => actions.push({ ...action, guidedStep: actions.length });
+
+    if (topicId === 'quotientDigit') {
+      const a = D.number(p.task.dividend), b = D.number(p.task.divisor);
+      if (a.places || b.places || b.units < 2 || b.units > 9 || a.units >= 10 * b.units || p.cycles.length !== 1) {
+        throw Error('Для подбора цифры нужны делитель от 2 до 9 и ответ от 0 до 9.');
+      }
+      const baseStep = p.cycles[0].digitAction;
+      const action = baseActions[baseStep];
+      add({ ...action, ...wording(action, p), baseStep, visibleBaseStep: baseStep });
+    } else {
+      baseActions.forEach((action, baseStep) => {
+        add({ ...action, ...wording(action, p), baseStep, visibleBaseStep: baseStep });
+        if (action.kind === 'start') {
+          add({
+            kind: 'count', answer: String(integerDigitCount),
+            prompt: hasDecimalPart ? 'Сколько цифр будет в целой части ответа?' : 'Сколько цифр будет в ответе?',
+            hint: smallWholePart
+              ? 'Целая часть делимого меньше делителя. ' + (hasDecimalPart ? 'Перед запятой будет' : 'В ответе будет') + ' одна цифра — 0.'
+              : 'Первое неполное делимое даёт одну цифру ответа. Каждая оставшаяся цифра ' + (hasDecimalPart ? 'до запятой' : 'делимого') + ' даёт ещё одну. Посчитай места, начиная с последней цифры выбранного числа.',
+            baseStep, visibleBaseStep: baseStep + 1,
+            sourceIndex: action.sourceIndex, integerDigitCount
+          });
+        }
+        if (action.kind === 'subtract') {
+          const cycle = p.cycles[action.cycle];
+          add({
+            kind: 'remainder-check', answer: 'да',
+            prompt: 'Остаток ' + cycle.remainder + ' меньше делителя ' + p.normalizedDivisor + '?',
+            hint: 'Остаток должен быть меньше делителя. Ноль тоже меньше любого положительного делителя.',
+            options: [{ value: 'да', label: 'Да' }, { value: 'нет', label: 'Нет' }],
+            baseStep, visibleBaseStep: baseStep + 1, cycle: action.cycle,
+            remainder: cycle.remainder, divisor: p.normalizedDivisor
+          });
+        }
+      });
+    }
+    return { ...p, actions, baseActions, topicId, integerDigitCount, micropractice: topicId === 'quotientDigit' };
+  }
+
+  function check(value, action) {
+    if (!action || typeof action !== 'object' || !['string', 'number'].includes(typeof value)) return false;
+    const text = String(value).trim();
+    if (!text) return false;
+    if (action.kind === 'remainder-check') return ['да', '<', 'меньше'].includes(text.toLocaleLowerCase('ru'));
+    if (action.kind === 'count') return /^[1-9]\d*$/.test(text) && text === action.answer;
+    return D.check(text, action);
+  }
+
+  const api = { topics, make, plan, check, number: D.number, decimal: D.decimal, equal: D.equal };
+  root.DivisionGuided = api;
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+})(typeof window === 'undefined' ? globalThis : window);
+
+</script>
+<script data-inline-source="/trainers/oge-basics/arithmetic-route.js">
+(function (root) {
+  'use strict';
+  const groups = [
+    {id:'division', title:'Деление уголком', example:'3848 : 37', lead:'Начинаем с маленьких действий и постепенно учимся решать весь пример.', easier:'multiply', checkpoint:'multiplication-division/long-division-mixed-checkpoint.html', levels:[
+      ['n3e','Уголком — по шагам'], ['n3d','Понимаем остаток'], ['n3f','Делим с остатком'], ['n4c','Не теряем ноль в ответе'], ['n4d','Делим на двузначное — с опорой'], ['n4e','Делим на двузначное — самостоятельно']]},
+    {id:'multiply', title:'Умножение и таблица', example:'6 × 7', lead:'Сначала видим равные группы, затем вспоминаем таблицу и считаем столбиком.', easier:'count', checkpoint:'multiplication-division.html', levels:[
+      ['t2a','Умножение на рисунке'], ['t2b','Одна таблица за раз'], ['t2c','Заполняем таблицу'], ['n2d','Вспоминаем без рисунка'], ['t2e','Находим неизвестный множитель'], ['n2e','Делим по таблице'], ['n3c','Умножаем столбиком на одну цифру'], ['n4b','Умножаем столбиком на две цифры']]},
+    {id:'count', title:'Сложение и вычитание', example:'402 − 185', lead:'Можно начать с маленьких чисел и постепенно дойти до счёта столбиком.', checkpoint:'order-of-operations.html', levels:[
+      ['n1a','Складываем до 10'], ['n1b','Вычитаем до 10'], ['c1a','Из каких чисел состоит число'], ['c1b','Переходим через десяток'], ['n1c','Считаем до 20'], ['n2a','Считаем до 100'], ['n2b','Складываем столбиком'], ['n2c','Вычитаем столбиком'], ['n3a','Складываем до 1000'], ['n3b','Вычитаем через ноль'], ['n4a','Считаем с большими числами']]},
+    {id:'decimals', title:'Десятичные дроби', example:'4,8 : 1,2', lead:'Складываем, умножаем и делим. Следим за запятой.', easier:'division', checkpoint:'decimal-add-subtract.html', levels:[
+      ['n5a','Складываем десятичные дроби'], ['n5b','Вычитаем десятичные дроби'], ['n5c','Умножаем десятичные дроби'], ['n5d','Дробь делим на натуральное число'], ['n5e','Продолжаем делить после запятой'], ['n5f','Делим на десятичную дробь']]},
+    {id:'fractions', title:'Обыкновенные дроби', example:'½ + ⅓', lead:'Разбираемся в частях целого, сокращаем и приводим к общему знаменателю.', easier:'multiples', checkpoint:'fraction-common-denominator.html', levels:[
+      ['f4a','Показываем дробь на рисунке'], ['f4b','Сравниваем простые дроби'], ['f4c','Считаем с одинаковыми знаменателями'], ['f6e','Сокращаем дробь'], ['f6a','Находим общий знаменатель'], ['f6b','Меняем знаменатель и числитель'], ['f6c','Сравниваем разные дроби'], ['f6d','Складываем и вычитаем разные дроби']]},
+    {id:'multiples', title:'Делимость и общий знаменатель', example:'12 и 18 → 36', lead:'Ищем общие кратные и раскладываем числа на множители.', easier:'multiply', checkpoint:'fraction-common-denominator.html', levels:[
+      ['k5a','Ищем общее кратное'], ['k6a','Простые и составные числа'], ['k6b','Раскладываем на простые множители'], ['k6c','Находим НОК по множителям']]}
+  ];
+  const levelMap = new Map(groups.flatMap(g => g.levels.map(([id,title]) => [id,{id,title,group:g.id}])));
+  const guidedMap = {start:'n3e', oneDigit:'n3e', quotientDigit:'n2e', remainder:'n3d', zero:'n4c', twoDigit:'n4d', decimalNatural:'n5d', appendZeros:'n5e', decimalDivisor:'n5f'};
+  const practiceMap = {n2e:'quotientDigit',n3e:'start',n3d:'remainder',n3f:'remainder',n4c:'zero',n4d:'twoDigit',n4e:'twoDigit',n5d:'decimalNatural',n5e:'appendZeros',n5f:'decimalDivisor'};
+  const prefix = 'mathExamBasics.arithmeticAttempts.v1.';
+  const guidedKey = 'mathExamBasics.guidedDivision.v1';
+  const base = '/trainers/oge-basics/';
+  const own = (o,k) => Object.prototype.hasOwnProperty.call(o,k);
+  const nonnegative = n => Number.isSafeInteger(n) && n >= 0 && n <= 1000000;
+  const guidedCore = typeof module !== 'undefined' && module.exports ? require('./multiplication-division/division-guided-core.js') : root.DivisionGuided;
+  function validRecord(r) {
+    return r && r.version === 1 && levelMap.has(r.level) && typeof r.fingerprint === 'string' && r.fingerprint.length > 0 && r.fingerprint.length <= 1000 && nonnegative(r.errors) && nonnegative(r.hints) && typeof r.revealed === 'boolean' && Number.isFinite(r.at) && r.at >= 0;
+  }
+  function createStore(storage) {
+    let warning = '';
+    function read() {
+      const records = [];
+      if (!storage) { warning = 'Браузер не разрешил сохранение. Можно тренироваться, но результаты не сохранятся.'; return records; }
+      try {
+        for (let i = 0; i < storage.length; i++) {
+          const key = storage.key(i);
+          if (!key || !key.startsWith(prefix)) continue;
+          try { const r = JSON.parse(storage.getItem(key)); if (!validRecord(r)) throw Error(); records.push(r); }
+          catch (_) { warning = 'Часть сохранённых результатов не удалось прочитать. Эти записи оставлены без изменений.'; }
+        }
+      } catch (_) { warning = 'Не удалось прочитать результаты в этом браузере.'; }
+      return records.sort((a,b) => a.at - b.at);
+    }
+    function recordAttempt(value) {
+      const r = {version:1, level:value.level, fingerprint:value.fingerprint, errors:value.errors, hints:value.hints, revealed:value.revealed, at:value.at ?? Date.now()};
+      if (!validRecord(r) || !storage) return false;
+      try {
+        // Each finished attempt has its own key: one tab never rewrites another.
+        // No migration, cleanup or deletion of either trainer's existing store.
+        if (read().length >= 10000) throw Error('limit');
+        const id = root.crypto?.randomUUID?.() || Date.now().toString(36) + '-' + Math.random().toString(36).slice(2) + '-' + Math.random().toString(36).slice(2);
+        storage.setItem(prefix + id, JSON.stringify(r));
+        return true;
+      } catch (_) { warning = 'Не удалось сохранить новый результат. Скопируй его или отправь учителю снимок экрана.'; return false; }
+    }
+    function guidedRecords() {
+      if (!storage) return [];
+      try {
+        const raw = storage.getItem(guidedKey);
+        if (!raw) return [];
+        const s = JSON.parse(raw);
+        if (s?.version !== 1 || !Array.isArray(s.records) || s.records.length > 10000) throw Error();
+        const ids = new Set();
+        return s.records.filter(r => {
+          try {
+            if (!r || !own(guidedMap,r.topic) || !nonnegative(r.id) || ids.has(r.id) || !Number.isFinite(r.at) || !['errors','hints','reveals'].every(k => nonnegative(r[k])) || typeof r.repeated !== 'boolean' || r.task?.topicId !== r.topic || !guidedCore) throw Error();
+            guidedCore.plan(r.task);
+            ids.add(r.id); return true;
+          } catch (_) { warning = 'Часть результатов подробного разбора повреждена и не включена в итог. Сохранённая работа оставлена без изменений.'; return false; }
+        });
+      } catch (_) { warning = 'Сохранённый подробный разбор не удалось прочитать. Открой его, чтобы проверить работу.'; return []; }
+    }
+    function summaries() {
+      const all = Object.fromEntries([...levelMap.keys()].map(id => [id,{solved:0,independent:0,viewed:0,guidedSolved:0,guidedIndependent:0}]));
+      const seen = new Set(), solved = new Set(), viewed = new Set();
+      for (const r of read()) {
+        const key = r.level + '\n' + r.fingerprint, s = all[r.level];
+        if (r.revealed) { if (!viewed.has(key)) s.viewed++; viewed.add(key); }
+        else {
+          if (!solved.has(key)) s.solved++;
+          solved.add(key);
+          if (!seen.has(key) && !r.errors && !r.hints) s.independent++;
+        }
+        seen.add(key);
+      }
+      const guidedSeen = new Set();
+      for (const r of guidedRecords()) {
+        const level = guidedMap[r.topic], key = level + ':' + r.task.dividend + ':' + r.task.divisor;
+        if (guidedSeen.has(key)) continue;
+        guidedSeen.add(key);
+        all[level].guidedSolved++;
+        if (!r.errors && !r.hints && !r.reveals && !r.repeated) all[level].guidedIndependent++;
+      }
+      return all;
+    }
+    return {recordAttempt, summaries, summaryForLevel:level => summaries()[level] || {solved:0,independent:0,viewed:0,guidedSolved:0,guidedIndependent:0}, notice:() => warning};
+  }
+  let storage; try { storage = root.localStorage; } catch (_) {}
+  const api = {
+    groups, levels:[...levelMap.values()], prefix, guidedKey, createStore,
+    levelForGuided:topic => own(guidedMap,topic) ? guidedMap[topic] : null,
+    practiceURL:level => '/trainers/arifmetika.html?course=preoge&level=' + (levelMap.has(level) ? level : 'n3e'),
+    routeURL:level => base + 'arithmetic-route.html' + (levelMap.has(level) ? '?skill=' + levelMap.get(level).group : ''),
+    guidedURL:level => own(practiceMap,level) ? base + 'multiplication-division/long-division-from-simple-to-decimals.html?course=preoge#' + practiceMap[level] : null,
+    ...createStore(storage)
+  };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  else root.PreOgeArithmetic = api;
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script data-inline-source="/trainers/long-division-entry.js">
+/* The public download reuses the same trainer; only its outgoing links differ. */
+(function () {
+  'use strict';
+  if (location.protocol !== 'file:' || !window.PreOgeArithmetic) return;
+  const route = window.PreOgeArithmetic;
+  for (const name of ['practiceURL', 'routeURL', 'guidedURL']) {
+    const original = route[name];
+    route[name] = function (level) {
+      const value = original(level);
+      return value ? new URL(value, 'https://mathexam.space/').href : value;
+    };
+  }
+})();
+
+</script>
+<script data-inline-source="/trainers/oge-basics/multiplication-division/decimal-shift.js">
+(function (root) {
+  'use strict';
+  function parse(raw) {
+    const text = String(raw).trim().replace('.', ',');
+    const match = /^(\d{1,12})(?:,(\d{1,6}))?$/.exec(text);
+    if (!match) throw Error('Нужно неотрицательное десятичное число.');
+    const integer = match[1].replace(/^0+(?=\d)/, ''), fraction = match[2] || '';
+    return {text:integer + (fraction ? ',' + fraction : ''), integer, fraction, digits:integer + fraction, point:integer.length};
+  }
+  function shifted(number, amount) {
+    if (!Number.isInteger(amount) || amount < 0 || amount > 7) throw Error('Неверный сдвиг.');
+    const point = number.point + amount;
+    const digits = number.digits.padEnd(point, '0');
+    const integer = digits.slice(0, point).replace(/^0+(?=\d)/, '') || '0';
+    const fraction = digits.slice(point).replace(/0+$/, '');
+    return integer + (fraction ? ',' + fraction : '');
+  }
+  function model(dividend, divisor) {
+    const a = parse(dividend), b = parse(divisor);
+    if (!/[1-9]/.test(b.digits)) throw Error('На ноль делить нельзя.');
+    const target = b.fraction.length, maxShift = target + 1;
+    return {dividend:a, divisor:b, target, maxShift,
+      at(k) {
+        if (!Number.isInteger(k) || k < 0 || k > maxShift) throw Error('Сдвиг вне диапазона.');
+        return {dividend:shifted(a,k), divisor:shifted(b,k), factor:'1' + '0'.repeat(k)};
+      }};
+  }
+  const word = k => k === 1 ? 'разряд' : k >= 2 && k <= 4 ? 'разряда' : 'разрядов';
+  function create(container, options) {
+    const m = model(options.dividend, options.divisor);
+    const doc = container.ownerDocument;
+    const clamp = k => Number.isFinite(k) ? Math.max(0, Math.min(m.maxShift, Math.round(k))) : 0;
+    let value = clamp(options.value || 0), locked = !!options.locked, drag = null, destroyed = false;
+    const listeners = [];
+    function listen(node, type, callback) { node.addEventListener(type, callback); listeners.push(() => node.removeEventListener(type, callback)); }
+    const box = doc.createElement('section'); box.className = 'decimal-shift'; box.setAttribute('aria-label','Переносим обе запятые вместе');
+    const introduction = doc.createElement('p'); introduction.className = 'ds-instruction'; box.append(introduction);
+    const rows = [], handles = [];
+    const columns = Math.max(...[m.dividend,m.divisor].map(n => Math.max(n.digits.length, n.point + m.maxShift)));
+    for (const [name,label,n] of [['dividend','Делимое',m.dividend],['divisor','Делитель',m.divisor]]) {
+      const row = doc.createElement('div'); row.className = 'ds-row'; row.dataset.number = name;
+      const heading = doc.createElement('div'); heading.className = 'ds-row-heading';
+      const caption = doc.createElement('span'); caption.textContent = label;
+      const result = doc.createElement('strong'); result.className = 'ds-result'; result.dataset.number = name;
+      heading.append(caption,result); row.append(heading);
+      const track = doc.createElement('div'); track.className = 'ds-track'; track.dataset.number = name;
+      const digits = n.digits.padEnd(Math.max(n.digits.length,n.point+m.maxShift),'0');
+      track.style.setProperty('--ds-digits',String(digits.length));
+      const cells = doc.createElement('div'); cells.className = 'ds-digits'; cells.setAttribute('aria-hidden','true');
+      [...digits].forEach((digit,i) => { const cell = doc.createElement('span'); cell.className = 'ds-digit'; cell.textContent = digit; cell.dataset.index = String(i); if(i>=n.digits.length)cell.dataset.added = 'true'; cells.append(cell); });
+      const origin = doc.createElement('span'); origin.className = 'ds-origin'; origin.setAttribute('aria-hidden','true'); origin.textContent = '·'; origin.style.left = 'calc(22px + ' + n.point + ' * var(--ds-cell))';
+      const handle = doc.createElement('button'); handle.type = 'button'; handle.className = 'ds-handle'; handle.dataset.number = name; handle.textContent = ',';
+      handle.setAttribute('role','slider'); handle.setAttribute('aria-label','Запятая в ' + (name==='dividend'?'делимом':'делителе') + ': передвинуть обе запятые'); handle.setAttribute('aria-valuemin','0'); handle.setAttribute('aria-valuemax',String(m.maxShift)); handle.setAttribute('aria-orientation','horizontal');
+      track.append(cells,origin,handle); row.append(track); box.append(row);
+      rows.push({name,n,result,track,origin,cells,handle}); handles.push(handle);
+    }
+    const controls = doc.createElement('div'); controls.className = 'ds-controls';
+    const back = doc.createElement('button'); back.type='button'; back.className='ds-back'; back.textContent='← На один разряд'; back.setAttribute('aria-label','Обе запятые на один разряд влево');
+    const forward = doc.createElement('button'); forward.type='button'; forward.className='ds-forward'; forward.textContent='На один разряд →'; forward.setAttribute('aria-label','Обе запятые на один разряд вправо');
+    controls.append(back,forward); box.append(controls);
+    const status = doc.createElement('p'); status.className='ds-status'; status.setAttribute('role','status'); box.append(status);
+    const equation = doc.createElement('p'); equation.className='ds-equation'; box.append(equation);
+    const note = doc.createElement('p'); note.className='ds-note'; note.textContent='Пунктирные нули можно дописать справа: число от этого не меняется. Когда справа от запятой только нули, её можно не писать.'; box.append(note);
+    container.replaceChildren(box);
+    function render(position = value) {
+      const values = m.at(value);
+      rows.forEach(r => {
+        r.handle.style.left = 'calc(' + (r.n.point + position) + ' * var(--ds-cell))';
+        r.handle.setAttribute('aria-valuenow',String(value));
+        r.handle.setAttribute('aria-valuetext','Обе запятые: на ' + value + ' ' + word(value) + ' вправо. ' + (r.name==='dividend'?'Делимое ':'Делитель ') + values[r.name]);
+        r.handle.setAttribute('aria-disabled',String(locked)); r.handle.tabIndex = locked ? -1 : 0;
+        r.result.textContent=values[r.name]; r.origin.hidden = position === 0;
+        [...r.cells.children].forEach(cell => cell.classList.toggle('ds-used-zero',cell.dataset.added === 'true' && Number(cell.dataset.index) < r.n.point + value));
+      });
+      back.disabled=locked||value===0; forward.disabled=locked||value===m.maxShift;
+      const divisorReady = !values.divisor.includes(',');
+      const goal = divisorReady
+        ? 'В делителе ' + values.divisor + ' запятой больше нет.'
+        : 'В делителе ' + values.divisor + ' ещё есть запятая.';
+      status.textContent = goal + (value ? ' Обе запятые сдвинули на ' + value + ' ' + word(value) + ' вправо: оба числа умножили на ' + values.factor + ', поэтому ответ не изменился.' : ' Переносим обе запятые вправо на одинаковое число разрядов.');
+      equation.textContent=m.dividend.text + ' : ' + m.divisor.text + (value ? ' = ' + values.dividend + ' : ' + values.divisor : '');
+      box.classList.toggle('ds-locked',locked);
+      introduction.textContent = value > m.target
+        ? 'Запятой в делителе уже нет. Для этого примера достаточно сдвига на ' + m.target + ' ' + word(m.target) + ': верни обе запятые на один разряд влево.'
+        : divisorReady
+          ? 'Цель достигнута: делитель без запятой. ' + (locked ? 'Запишем новые числа и будем делить уголком, как обычно.' : 'Проверь перенос. Затем запишем новые числа и будем делить уголком, как обычно.') + (values.dividend.includes(',') ? ' В делимом запятая может остаться.' : '')
+          : 'Наша цель — убрать запятую в делителе. Возьми любую запятую и потяни вправо: обе переместятся на одинаковое число разрядов.';
+    }
+    function commit(k) { value=clamp(k); render(); if(options.onChange) options.onChange(value); }
+    function cancel() {
+      if(!drag)return;
+      const old=drag; drag=null; value=old.value; box.classList.remove('ds-dragging');
+      try { if(old.handle.hasPointerCapture(old.id))old.handle.releasePointerCapture(old.id); } catch(_) {}
+      render();
+    }
+    handles.forEach(handle => {
+      listen(handle,'pointerdown',event => {
+        if(locked||drag||event.button!==0||event.isPrimary===false)return;
+        event.preventDefault(); handle.focus({preventScroll:true});
+        const cell=parseFloat(root.getComputedStyle(box).getPropertyValue('--ds-cell'));
+        drag={id:event.pointerId,x:event.clientX,value,cell:cell||28,handle};
+        handle.setPointerCapture(event.pointerId); box.classList.add('ds-dragging');
+      });
+      listen(handle,'pointermove',event => {
+        if(!drag||event.pointerId!==drag.id)return;
+        event.preventDefault(); const position=Math.max(0,Math.min(m.maxShift,drag.value+(event.clientX-drag.x)/drag.cell));
+        value=clamp(position);render(position);
+      });
+      listen(handle,'pointerup',event => {
+        if(!drag||event.pointerId!==drag.id)return;
+        const old=drag;drag=null;box.classList.remove('ds-dragging');
+        try{if(handle.hasPointerCapture(event.pointerId))handle.releasePointerCapture(event.pointerId);}catch(_){}
+        commit(old.value+(event.clientX-old.x)/old.cell);
+      });
+      listen(handle,'pointercancel',event => {if(drag?.id===event.pointerId)cancel();});
+      listen(handle,'lostpointercapture',event => {if(drag?.id===event.pointerId)cancel();});
+      listen(handle,'keydown',event => {
+        if(locked)return;let next;
+        if(['ArrowRight','ArrowUp'].includes(event.key))next=value+1;
+        if(['ArrowLeft','ArrowDown'].includes(event.key))next=value-1;
+        if(event.key==='Home')next=0;if(event.key==='End')next=m.maxShift;
+        if(next!==undefined){event.preventDefault();event.stopPropagation();commit(next);}
+      });
+    });
+    listen(back,'click',()=>{if(!locked)commit(value-1);});
+    listen(forward,'click',()=>{if(!locked)commit(value+1);});
+    function resize(){if(destroyed)return;const width=box.clientWidth||container.clientWidth||280;box.style.setProperty('--ds-cell',Math.max(14,Math.min(34,(width-48)/columns))+'px');render();}
+    const observer = root.ResizeObserver ? new root.ResizeObserver(resize) : null;
+    observer?.observe(box);resize();
+    return {getValue:()=>value,setValue(k){if(destroyed)return;cancel();value=clamp(k);render();},setLocked(v){if(destroyed)return;if(v)cancel();locked=!!v;render();},destroy(){if(destroyed)return;cancel();destroyed=true;observer?.disconnect();listeners.forEach(off=>off());box.remove();}};
+  }
+  const api={model,create};
+  if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.DecimalShift=api;
+})(typeof window!=='undefined'?window:globalThis);
+
+</script>
+<script data-inline-source="/trainers/oge-basics/multiplication-division/multiplication-refresh.js">
+(function (root) {
+  'use strict';
+  var count = 0;
+
+  function create(options) {
+    options = options || {};
+    var id = 'multiplication-refresh-' + (++count);
+    var dialog = document.createElement('dialog');
+    dialog.className = 'multiplication-refresh';
+    dialog.setAttribute('aria-labelledby', id + '-title');
+    dialog.setAttribute('aria-describedby', id + '-intro');
+    dialog.setAttribute('aria-modal', 'true');
+    dialog.innerHTML = '<div class="mr-content">' +
+      '<div class="mr-heading"><h2 id="' + id + '-title">Вспомним таблицу умножения</h2><button type="button" class="mr-close" aria-label="Закрыть и вернуться к делению">×</button></div>' +
+      '<p id="' + id + '-intro">После повторения вернёшься к тому же шагу деления.</p>' +
+      '<label class="mr-factor-label" for="' + id + '-factor">Какую таблицу повторим?</label>' +
+      '<select id="' + id + '-factor" class="mr-factor"><option value="0">Вперемешку</option></select>' +
+      '<form class="mr-form" novalidate><label class="mr-question" for="' + id + '-answer"></label>' +
+      '<div class="mr-answer-row"><input id="' + id + '-answer" class="mr-answer" type="text" inputmode="numeric" autocomplete="off"><button type="submit" class="mr-check">Проверить</button></div></form>' +
+      '<p class="mr-feedback" role="status" aria-live="polite"></p>' +
+      '<button type="button" class="mr-help">Покажи рядами точек</button>' +
+      '<div class="mr-visual" hidden><div class="mr-dots" aria-hidden="true"></div><p class="mr-explanation"></p></div>' +
+      '<div class="mr-actions"><button type="button" class="mr-next" disabled>Ещё пример</button><button type="button" class="mr-return">Вернуться к делению</button></div>' +
+      '</div>';
+    document.body.appendChild(dialog);
+    var factor = dialog.querySelector('.mr-factor');
+    var answer = dialog.querySelector('.mr-answer');
+    var checkButton = dialog.querySelector('.mr-check');
+    var nextButton = dialog.querySelector('.mr-next');
+    var feedback = dialog.querySelector('.mr-feedback');
+    var visual = dialog.querySelector('.mr-visual');
+    var a = 2, b = 2, solved = false, isOpen = false, destroyed = false;
+    var returnFocus = null, oldOverflow = '', inertSiblings = [];
+    for (var n = 2; n <= 9; n++) {
+      var option = document.createElement('option');
+      option.value = String(n); option.textContent = 'На ' + n;
+      factor.appendChild(option);
+    }
+    function setFeedback(text, correct) {
+      feedback.textContent = text;
+      feedback.className = 'mr-feedback' + (correct ? ' mr-correct' : '');
+    }
+    function next() {
+      var previous = a + ':' + b;
+      var chosen = Number(factor.value);
+      a = chosen || (2 + Math.floor(Math.random() * 8));
+      b = 1 + Math.floor(Math.random() * 10);
+      if (a + ':' + b === previous) b = b % 10 + 1;
+      solved = false;
+      dialog.querySelector('.mr-question').textContent = a + ' × ' + b + ' = ?';
+      answer.value = ''; answer.readOnly = false; checkButton.disabled = false;
+      nextButton.disabled = true; visual.hidden = true;
+      setFeedback('', false);
+      if (isOpen) answer.focus();
+    }
+    function check(event) {
+      if (event) event.preventDefault();
+      if (solved) return;
+      var text = answer.value.trim();
+      if (!/^\d+$/.test(text)) { setFeedback('Введи ответ числом.', false); answer.focus(); return; }
+      if (Number(text) !== a * b) {
+        setFeedback('Пока не получилось. Попробуй ещё раз или посмотри на точки.', false);
+        answer.select(); return;
+      }
+      solved = true;
+      setFeedback('Верно: ' + a + ' × ' + b + ' = ' + (a * b) + '.', true);
+      answer.readOnly = true; checkButton.disabled = true; nextButton.disabled = false;
+      nextButton.focus();
+    }
+    function showHelp() {
+      var dots = dialog.querySelector('.mr-dots'); dots.textContent = '';
+      var sums = [];
+      for (var row = 0; row < b; row++) {
+        var line = document.createElement('div'); line.className = 'mr-dot-row';
+        for (var col = 0; col < a; col++) { var dot = document.createElement('span'); dot.className = 'mr-dot'; line.appendChild(dot); }
+        dots.appendChild(line); sums.push(a * (row + 1));
+      }
+      dialog.querySelector('.mr-explanation').textContent = 'В каждом ряду ' + a + ' точек. Рядов: ' + b + '. Прибавляй каждый раз ' + a + ': ' + sums.join(', ') + '.';
+      visual.hidden = false;
+    }
+    function cleanup() {
+      if (!isOpen) return;
+      isOpen = false;
+      dialog.classList.remove('mr-fallback');
+      document.body.style.overflow = oldOverflow;
+      inertSiblings.forEach(function (item) { item.node.inert = item.value; }); inertSiblings = [];
+      if (returnFocus && returnFocus.isConnected && typeof returnFocus.focus === 'function') returnFocus.focus();
+    }
+    function close() {
+      if (!isOpen) return;
+      if (typeof dialog.close === 'function' && dialog.open) dialog.close();
+      else dialog.removeAttribute('open');
+      cleanup();
+    }
+    function open(preferredFactor) {
+      if (destroyed || isOpen) return;
+      returnFocus = document.activeElement;
+      var preferred = Number(preferredFactor);
+      factor.value = Number.isInteger(preferred) && preferred >= 2 && preferred <= 9 ? String(preferred) : '0';
+      next();
+      oldOverflow = document.body.style.overflow;
+      isOpen = true;
+      if (typeof dialog.showModal === 'function') dialog.showModal();
+      else {
+        dialog.setAttribute('open', ''); dialog.classList.add('mr-fallback');
+        Array.prototype.forEach.call(document.body.children, function (node) {
+          if (node !== dialog) { inertSiblings.push({ node: node, value: node.inert }); node.inert = true; }
+        });
+      }
+      document.body.style.overflow = 'hidden';
+      if (typeof options.onHelp === 'function') options.onHelp();
+      answer.focus();
+    }
+    dialog.querySelector('.mr-form').addEventListener('submit', check);
+    factor.addEventListener('change', next);
+    nextButton.addEventListener('click', next);
+    dialog.querySelector('.mr-help').addEventListener('click', showHelp);
+    dialog.querySelector('.mr-close').addEventListener('click', close);
+    dialog.querySelector('.mr-return').addEventListener('click', close);
+    dialog.addEventListener('cancel', function (event) { event.preventDefault(); close(); });
+    dialog.addEventListener('close', cleanup);
+    dialog.addEventListener('keydown', function (event) {
+      // The parent trainer also uses arrows and Enter. Practice never advances it.
+      event.stopPropagation();
+      if (event.key === 'Escape') { event.preventDefault(); close(); return; }
+      if (event.key === 'Tab') {
+        var focusable = Array.prototype.filter.call(dialog.querySelectorAll('button,select,input'), function (node) { return !node.disabled && !node.hidden; });
+        var first = focusable[0], last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      }
+    });
+    return { open: open, close: close, destroy: function () { close(); destroyed = true; dialog.remove(); } };
+  }
+  root.MultiplicationRefresh = { create: create };
+})(window);
+
+</script>
+<script data-inline-source="/trainers/oge-basics/basics-help.js">
+/* Optional prerequisite practice. Keeps parent work intact; never writes progress. */
+(function (root, factory) {
+  'use strict';
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else {
+    root.MathExamBasicsHelp = api;
+    root.dispatchEvent(new root.Event('mathexam-basics-help-ready'));
+  }
+})(typeof window === 'undefined' ? globalThis : window, function () {
+  'use strict';
+
+  const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]));
+  const fraction = (n, d) => '<span class="bh-fraction"><span>' + esc(n) + '</span><span>' + esc(d) + '</span></span>';
+  const curriculum = Object.freeze({
+    'percent-meaning': {title:'Что означает процент?', question:'Закрашено 25 клеток из 100. Сколько это процентов?', answer:25, model:'percent', hint:'Одна клетка из ста — один процент.', why:'25 клеток из ста — это 25%.', children:['fraction-parts']},
+    'percent-part': {title:'Найти часть от числа', question:'Найди 25% от 80. Это одна из четырёх равных частей.', answer:20, model:'quarter', hint:'Раздели 80 поровну на 4 части.', why:'80 : 4 = 20. Одна четверть — это 25%.', children:['divide']},
+    'percent-change': {title:'Прибавить найденную часть', question:'Цена 50 рублей выросла на 20%. На сколько рублей выросла цена?', answer:10, model:'fifths', hint:'20% — одна из пяти равных частей. Сначала найди саму прибавку.', why:'50 : 5 = 10 рублей — прибавка. Новая цена была бы 60 рублей.', children:['percent-part']},
+    proportion: {title:'От нескольких предметов к одному', question:'Три одинаковых билета стоят 240 рублей. Сколько стоит один?', answer:80, model:'tickets', hint:'Раздели общую стоимость поровну между тремя билетами.', why:'240 : 3 = 80 рублей.', children:['divide']},
+    'fraction-parts': {title:'Равные части', question:'Какая часть полоски закрашена? Запиши дробь.', answer:[3,4], model:'fraction', hint:'Всего 4 равные части. Закрашены 3 из них.', why:'Закрашены три четверти.', children:['divide']},
+    'fraction-equivalent': {title:'Сделать одинаковые части', question:'Половину полоски разделили на четверти. Сколько четвертей в половине?', answer:2, model:'equivalent', hint:'Сравни закрашенную длину двух одинаковых полосок.', why:'Одна половина занимает столько же места, сколько две четверти.', children:['fraction-parts']},
+    'fraction-add': {title:'Сложить одинаковые части', question:'Сложи одну четверть и две четверти. Запиши полученную дробь.', answer:[3,4], model:'fraction-add', hint:'Размер частей одинаковый. Считай, сколько таких частей взяли.', why:'Одна четверть и две четверти — три четверти.', children:['fraction-equivalent']},
+    decimal: {title:'Десять маленьких частей', question:'Вся полоска — 1. Закрашены 3 части из 10. Запиши десятичную дробь.', answer:0.3, model:'decimal', hint:'Одна такая часть — 0,1. Возьми её три раза.', why:'0,1 + 0,1 + 0,1 = 0,3.', children:['fraction-parts']},
+    'decimal-add': {title:'Складывать одинаковые маленькие части', question:'Вычисли 0,3 + 0,2.', answer:0.5, model:'decimal-add', hint:'Три части и ещё две части. Всего сколько частей по 0,1?', why:'Получилось 5 частей по 0,1, то есть 0,5.', children:['decimal']},
+    rounding: {title:'К какому целому ближе?', question:'Округли 2,7 до целого числа.', answer:3, model:'rounding', hint:'От 2,7 до 3 осталось 0,3. До 2 — 0,7.', why:'Точка 2,7 ближе к 3, чем к 2.', children:['decimal']},
+    'decimal-shift': {title:'Убрать запятую в делителе', question:'Делим 4,8 на 0,6. Умножили оба числа на 10. Каким стал делитель?', answer:6, model:'shift', hint:'Число, на которое делим, было 0,6. Увеличь его в 10 раз.', why:'Делитель стал 6, делимое — 48. Теперь делим 48 на 6.', children:['decimal']},
+    negative: {title:'Двигаться по числовой прямой', question:'Начни в точке −2 и сделай 3 шага вправо. Где окажешься?', answer:1, model:'number-line', hint:'Каждый шаг вправо увеличивает число на 1.', why:'−2 → −1 → 0 → 1.', children:['subtract']},
+    units: {title:'Из метров в сантиметры', question:'В одном метре 100 сантиметров. Сколько сантиметров в 3 метрах?', answer:300, model:'units', hint:'Возьми 100 сантиметров три раза.', why:'100 + 100 + 100 = 300 сантиметров.', children:['multiply']},
+    'area-units': {title:'Квадрат состоит из маленьких квадратов', question:'Квадрат разбили на 3 ряда по 3 клетки. Сколько всего клеток?', answer:9, model:'area', hint:'Посчитай три одинаковых ряда.', why:'3 · 3 = 9 клеток. При переводе площади меняются обе стороны.', children:['multiply']},
+    order: {title:'Выбрать первое действие', question:'Вычисли 3 + 4 · 2.', answer:11, model:'order', hint:'Сначала умножь 4 на 2. Затем прибавь 3.', why:'4 · 2 = 8; 3 + 8 = 11.', children:['multiply']},
+    'first-part': {title:'Сколько цифр взять сначала?', question:'Делим 42 на 6. Число 4 меньше 6. Сколько первых цифр нужно взять?', answer:2, model:'first-part', hint:'Одной цифры 4 не хватает. Возьми ещё следующую цифру.', why:'Берём две цифры: 42. Теперь можно делить на 6.', children:['compare']},
+    compare: {title:'Сравнить две группы', question:'На сколько 6 больше 4?', answer:2, model:'compare', hint:'Соедини четыре пары. Посчитай оставшиеся точки в большей группе.', why:'У шести осталось две лишние точки: 6 − 4 = 2.', children:['subtract']},
+    bring: {title:'Перенести следующую цифру', question:'После вычитания осталось 1. Переносим справа цифру 2. Какое число получилось?', answer:12, model:'bring', hint:'Оставшаяся 1 теперь даёт 10. Справа дописали ещё 2.', why:'10 + 2 = 12.', children:['add']},
+    divide: {title:'Разделить поровну', question:'Разложи 12 фишек поровну в 3 коробки. Сколько будет в каждой?', answer:4, model:'divide', hint:'Каждый раз клади по одной фишке в каждую коробку.', why:'В каждой коробке по 4 фишки. Всего 3 · 4 = 12.', children:['quotient']},
+    quotient: {title:'Подобрать одну цифру', question:'Сколько раз по 6 помещается в 29? Впиши одну цифру.', answer:4, model:'quotient', hint:'Пробуй цифру. Произведение должно быть не больше 29. Проверь и следующую цифру.', why:'4 · 6 = 24, а 5 · 6 = 30 — уже больше 29. Поэтому выбираем 4.', children:['multiply']},
+    'write-digit': {title:'Какую цифру написать справа?', question:'Получилось 26. Какую цифру напишем крайней справа?', answer:6, model:'write-digit', hint:'Посмотри на последнюю цифру числа 26. Её сразу и пишем.', why:'6 уже написали справа. Оставшуюся 2 держим в уме.', children:['add']},
+    'in-mind': {title:'Что оставить в уме?', question:'Получилось 26. Цифру 6 уже написали справа. Сколько оставим в уме?', answer:2, model:'in-mind', hint:'В числе 26 убери уже написанную цифру 6. Что осталось слева?', why:'6 пишем, 2 в уме. Эти 2 прибавим при следующем действии слева.', children:['write-digit']},
+    multiply: {title:'Взять одинаковые группы', question:'В четырёх коробках по 3 фишки. Сколько фишек всего?', answer:12, model:'multiply', hint:'Возьми 3 четыре раза: 3 + 3 + 3 + 3.', why:'3 + 3 + 3 + 3 = 12, значит 4 · 3 = 12.', children:['add']},
+    subtract: {title:'Убрать часть', question:'Было 12 фишек. Убрали 5. Сколько осталось?', answer:7, model:'subtract', hint:'Убирай по одной. Пять фишек должны стать пустыми.', why:'12 − 5 = 7. Можно проверить: 7 + 5 = 12.', children:['add']},
+    add: {title:'Прибавлять по одной', question:'Вычисли 7 + 5.', answer:12, model:'add', hint:'Добавь к семи ещё пять фишек. После десяти продолжай считать.', why:'7 + 3 = 10; осталось прибавить 2. Получилось 12.', children:['count']},
+    count: {title:'Посчитать предметы', question:'Сколько здесь точек? Каждую можно отметить один раз.', answer:8, model:'count', hint:'Отмечай точки по порядку, чтобы не пропустить и не посчитать дважды.', why:'Всего восемь точек.', children:[]}
+  });
+
+  function skillFor(contentId, context) {
+    const id = String(contentId || '').split(/[?#]/)[0].split('/').filter(Boolean).pop()?.replace(/\.html$/, '').toLowerCase() || '';
+    const kind = String(context?.kind || context?.question?.kind || '').toLowerCase();
+    // The same saved kind "digit" is used both for choosing a quotient digit
+    // and writing a column multiplication result. The concrete action wins.
+    const multiplication = context?.question?.multiplication || context?.multiplication;
+    if (multiplication) {
+      if (multiplication.event === 'write') return 'write-digit';
+      if (multiplication.event === 'carry') return 'in-mind';
+      if (multiplication.event === 'add-carry' || /^(add|sum)$/.test(multiplication.phase)) return 'add';
+      return 'multiply';
+    }
+    if (kind === 'digit' && /multipli|multiply|column/.test(id)) return 'write-digit';
+    const stepSkill = {start:'first-part',bring:'bring',partial:'bring',subtract:'subtract',add:'add',sum:'add',digit:'quotient',product:'multiply',multiply:'multiply','remainder-check':'compare','final-remainder':'subtract',comma:'decimal'}[kind];
+    if(stepSkill)return stepSkill;
+    if (/^shift(?:-|$)|^decimal-shift$/.test(kind)) return 'decimal-shift';
+    if (/percent-change/.test(id)) return 'percent-change';
+    if (/proportion/.test(id)) return 'proportion';
+    if (/percent-meaning/.test(id)) return 'percent-meaning';
+    if (/percent/.test(id)) return 'percent-part';
+    if (/fraction-common/.test(id)) return 'fraction-equivalent';
+    if (/fraction-add/.test(id)) return 'fraction-add';
+    if (/fraction/.test(id)) return 'fraction-parts';
+    if (/area/.test(id)) return 'area-units';
+    if (/units/.test(id)) return 'units';
+    if (/round/.test(id)) return 'rounding';
+    if (/negative/.test(id)) return 'negative';
+    if (/order/.test(id)) return 'order';
+    if (/decimal-add/.test(id)) return 'decimal-add';
+    if (/decimal-divisor|decimal-shift/.test(id)) return 'decimal-shift';
+    if (/first-part/.test(id) || kind === 'start') return 'first-part';
+    if (/bring-digit/.test(id) || kind === 'bring') return 'bring';
+    if (/subtract|remainder/.test(id) || kind === 'subtract') return 'subtract';
+    if (/digit-choice|quotient|estimate/.test(id) || kind === 'digit') return 'quotient';
+    if (/multipli|multiply|column/.test(id) || kind === 'product') return 'multiply';
+    if (/division|divide|course-/.test(id)) return 'divide';
+    if (/decimal/.test(id)) return 'decimal';
+    if (/foundations/.test(id)) return 'add';
+    return 'order';
+  }
+
+  function numeric(raw) {
+    const text = String(raw ?? '').trim().replace(/\s+/g, '').replace(/−/g, '-').replace(',', '.');
+    if (/^[+-]?\d+(?:\.\d+)?$/.test(text)) return Number(text);
+    const pair = text.match(/^([+-]?\d+)\/([+-]?\d+)$/);
+    return pair && Number(pair[2]) !== 0 ? Number(pair[1]) / Number(pair[2]) : null;
+  }
+  function accepts(id, raw) {
+    const node = curriculum[id], value = numeric(raw);
+    if (!node || value === null || !Number.isFinite(value)) return false;
+    const answer = Array.isArray(node.answer) ? node.answer[0] / node.answer[1] : node.answer;
+    return Math.abs(value - answer) < 1e-9;
+  }
+  function svg(body, label, width = 320, height = 120) {
+    return '<svg class="bh-svg" viewBox="0 0 ' + width + ' ' + height + '" role="img" aria-label="' + esc(label) + '">' + body + '</svg>';
+  }
+  function bar(parts, on, y, label, color = '#26815d') {
+    return '<text x="20" y="' + (y - 9) + '">' + esc(label) + '</text>' + Array.from({length:parts}, (_, i) => '<rect x="' + (20 + i * 280 / parts) + '" y="' + y + '" width="' + (280 / parts - 3) + '" height="32" rx="3" fill="' + (i < on ? color : '#edf2ee') + '" stroke="#829c8b"/>').join('');
+  }
+  function dots(count, cols = 6, fill = '#26815d') {
+    return Array.from({length:count}, (_, i) => '<circle cx="' + (27 + (i % cols) * 38) + '" cy="' + (28 + Math.floor(i / cols) * 38) + '" r="10" fill="' + fill + '"/>').join('');
+  }
+  function buildModel(doc, id, state, enabled) {
+    const node = curriculum[id], wrap = doc.createElement('div');
+    wrap.className = 'bh-model';
+    const picture = doc.createElement('div');
+    wrap.append(picture);
+    const addAction = (text, act, disabled) => {
+      const button = doc.createElement('button');button.type = 'button';button.className = 'bh-model-action';button.textContent = text;
+      button.onclick = () => { if (!enabled()) return;act();paint(); };
+      wrap.append(button);return {button, disabled};
+    };
+    let actions = [], paint;
+    const text = value => '<p class="bh-model-caption">' + esc(value) + '</p>';
+    switch (node.model) {
+      case 'percent':
+        paint = () => {picture.innerHTML = svg(Array.from({length:100}, (_, i) => '<rect x="' + (10 + i % 10 * 19) + '" y="' + (10 + Math.floor(i / 10) * 19) + '" width="16" height="16" rx="2" fill="' + (i < 25 ? '#26815d' : '#edf2ee') + '" stroke="#91aa9a"/>').join(''), '25 из 100 одинаковых клеток закрашены', 210, 210);};break;
+      case 'quarter': paint = () => {picture.innerHTML = svg(bar(4,1,40,'Вся полоска — 80'), 'Четыре равные части; одна закрашена') + text('25% = ')+ fraction(1,4);};break;
+      case 'fifths': paint = () => {picture.innerHTML = svg(bar(5,1,40,'Вся полоска — 50 рублей'), 'Одна из пяти равных частей закрашена');};break;
+      case 'tickets': paint = () => {picture.innerHTML = svg(bar(3,0,40,'Три билета вместе — 240 рублей'), 'Три одинаковых билета');};break;
+      case 'fraction': paint = () => {picture.innerHTML = svg(bar(4,3,40,'Вся полоска — 1'), 'Три из четырёх равных частей закрашены');};break;
+      case 'equivalent': paint = () => {picture.innerHTML = svg(bar(2,1,30,'Половина') + bar(4,2,105,'Та же длина в четвертях'), 'Одна половина равна двум четвертям',320,155);};break;
+      case 'fraction-add': paint = () => {picture.innerHTML = svg(bar(4,1,30,'Одна четверть') + bar(4,2,105,'Ещё две четверти','#d09d35'), 'Одна четверть и ещё две четверти',320,155);};break;
+      case 'decimal': paint = () => {picture.innerHTML = svg(bar(10,3,40,'Вся полоска — 1'), 'Три из десяти частей закрашены');};break;
+      case 'decimal-add': paint = () => {picture.innerHTML = svg(bar(10,3,30,'0,3')+bar(10,2,105,'0,2','#d09d35'), 'Три десятых и ещё две десятых',320,155);};break;
+      case 'rounding': paint = () => {picture.innerHTML = svg('<line x1="30" y1="60" x2="290" y2="60" stroke="#5d7064" stroke-width="2"/>'+Array.from({length:11}, (_,i)=>'<line x1="'+(30+i*26)+'" y1="55" x2="'+(30+i*26)+'" y2="65" stroke="#5d7064"/>').join('')+'<circle cx="212" cy="60" r="7" fill="#26815d"/><text x="25" y="90">2</text><text x="285" y="90">3</text><text x="196" y="38">2,7</text>', 'Точка 2,7 между 2 и 3, ближе к 3');};break;
+      case 'shift': paint = () => {picture.innerHTML = '<div class="bh-shift"><span>4,8 → 48</span><span>0,6 → ?</span></div>'+text('Оба числа увеличиваем в 10 раз.');};break;
+      case 'number-line':
+        state.moves ??= 0;
+        paint = () => {picture.innerHTML = svg('<line x1="30" y1="60" x2="290" y2="60" stroke="#5d7064" stroke-width="2"/>'+Array.from({length:7},(_,i)=>'<line x1="'+(40+i*40)+'" y1="54" x2="'+(40+i*40)+'" y2="66" stroke="#5d7064"/><text x="'+(i<3?31+i*40:36+i*40)+'" y="91">'+(i-3)+'</text>').join('')+'<circle cx="'+(80+state.moves*40)+'" cy="60" r="8" fill="#26815d"/>','Три шага вправо от минус двух');};
+        actions.push(addAction('Шаг вправо',()=>state.moves++,()=>state.moves>=3));break;
+      case 'units': paint = () => {picture.innerHTML = '<div class="bh-unit-parts">'+Array.from({length:3},()=>'<span>1 м<br>100 см</span>').join('')+'</div>';};break;
+      case 'area': paint = () => {picture.innerHTML = svg(Array.from({length:9},(_,i)=>'<rect x="'+(70+i%3*55)+'" y="'+(10+Math.floor(i/3)*55)+'" width="51" height="51" fill="#e1efe6" stroke="#26815d"/>').join(''),'Три ряда по три клетки',320,185);};break;
+      case 'order': paint = () => {picture.innerHTML = '<div class="bh-expression">3 + <mark>4 · 2</mark></div>'+text('Начни с выделенного действия.');};break;
+      case 'first-part': paint = () => {picture.innerHTML = '<div class="bh-expression"><span class="bh-selected-digit">4</span><span>2</span> : 6</div>'+text('4 < 6. Одной первой цифры не хватает.');};break;
+      case 'compare': paint = () => {picture.innerHTML = svg(dots(4)+ '<g transform="translate(0,55)">'+dots(6,6,'#c2922c')+'</g>','Четыре точки сверху и шесть снизу',320,135);};break;
+      case 'bring': paint = () => {picture.innerHTML = '<div class="bh-expression">1<span class="bh-selected-digit">2</span></div>'+text('Справа к оставшейся 1 приписали цифру 2.');};break;
+      case 'write-digit': paint = () => {picture.innerHTML = '<div class="bh-expression">26 → <span class="bh-selected-digit" data-bh-write-slot>·</span></div>'+text('Впиши цифру — она сразу появится на своём месте.');};break;
+      case 'in-mind': paint = () => {picture.innerHTML = '<div class="bh-expression">26 → <span class="bh-selected-digit">6</span></div>'+text('6 уже написали. Слева осталась 2.');};break;
+      case 'divide':
+        state.rows ??= 0;
+        paint = () => {picture.innerHTML = svg(Array.from({length:3},(_,i)=>'<rect x="'+(10+i*104)+'" y="18" width="93" height="116" rx="8" fill="#f4f7f4" stroke="#829c8b"/>'+Array.from({length:state.rows},(_,j)=>'<circle cx="'+(35+i*104+j%2*36)+'" cy="'+(50+Math.floor(j/2)*43)+'" r="11" fill="#26815d"/>').join('')).join(''),'Три коробки с одинаковым количеством фишек',320,145)+text('Осталось разложить: '+(12-state.rows*3));};
+        actions.push(addAction('Положить по одной',()=>state.rows++,()=>state.rows>=4));break;
+      case 'quotient':
+        state.digit ??= 0;
+        paint = () => {picture.innerHTML = '<div class="bh-trial"><strong>'+state.digit+' · 6 = '+state.digit*6+'</strong><span>Сравни с 29</span></div>'+svg('<rect x="12" y="20" width="290" height="25" rx="3" fill="#edf2ee" stroke="#829c8b"/><rect x="12" y="20" width="'+(state.digit*6*5)+'" height="25" rx="3" fill="#26815d"/><line x1="157" y1="12" x2="157" y2="55" stroke="#ae791b" stroke-width="3"/><text x="144" y="77">29</text>','Произведение выбранной цифры на 6; отметка 29',320,90);};
+        actions.push(addAction('Цифра меньше',()=>state.digit--,()=>state.digit<=0));
+        actions.push(addAction('Цифра больше',()=>state.digit++,()=>state.digit>=9));break;
+      case 'multiply':
+        state.groups ??= 1;
+        paint = () => {picture.innerHTML = svg(Array.from({length:4},(_,i)=>'<rect x="'+(9+i%2*155)+'" y="'+(9+Math.floor(i/2)*66)+'" width="145" height="55" rx="6" fill="#f4f7f4" stroke="#829c8b"/>'+(i<state.groups?Array.from({length:3},(_,j)=>'<circle cx="'+(35+i%2*155+j*35)+'" cy="'+(36+Math.floor(i/2)*66)+'" r="9" fill="#26815d"/>').join(''):'')).join(''),'Четыре коробки по три фишки',320,145)+text('Заполнено коробок: '+state.groups+' из 4');};
+        actions.push(addAction('Ещё одну коробку по 3',()=>state.groups++,()=>state.groups>=4));break;
+      case 'subtract':
+        state.removed ??= 0;
+        paint = () => {picture.innerHTML = svg(Array.from({length:12},(_,i)=>'<circle cx="'+(27+i%6*48)+'" cy="'+(30+Math.floor(i/6)*50)+'" r="12" fill="'+(i>=12-state.removed?'#fff':'#26815d')+'" stroke="#829c8b"/>').join(''),'Двенадцать фишек, часть убрана',320,115)+text('Убрано: '+state.removed+' из 5');};
+        actions.push(addAction('Убрать одну',()=>state.removed++,()=>state.removed>=5));break;
+      case 'add':
+        state.added ??= 0;
+        paint = () => {picture.innerHTML = svg(Array.from({length:20},(_,i)=>'<rect x="'+(10+i%10*30)+'" y="'+(14+Math.floor(i/10)*44)+'" width="26" height="34" rx="3" fill="'+(i<7?'#26815d':i<7+state.added?'#c2922c':'#f4f7f4')+'" stroke="#91aa9a"/>').join(''),'Семь фишек, к ним добавляют пять',320,110)+text('Прибавлено: '+state.added+' из 5');};
+        actions.push(addAction('Прибавить 1',()=>state.added++,()=>state.added>=5));break;
+      case 'count': {
+        state.marked ??= [];
+        const cells=doc.createElement('div');cells.className='bh-count';
+        const caption=doc.createElement('p');caption.className='bh-model-caption';
+        for(let i=0;i<8;i++){
+          const b=doc.createElement('button');b.type='button';b.className='bh-dot';b.setAttribute('aria-label','Отметить точку '+(i+1));
+          b.onclick=()=>{if(!enabled())return;state.marked=state.marked.includes(i)?state.marked.filter(x=>x!==i):state.marked.concat(i);paint();};cells.append(b);
+        }
+        picture.append(cells,caption);
+        paint=()=>{Array.from(cells.children).forEach((b,i)=>b.setAttribute('aria-pressed',String(state.marked.includes(i))));caption.textContent='Отмечено: '+state.marked.length;};break;
+      }
+      default: paint=()=>{};
+    }
+    const draw=paint;paint=()=>{draw();actions.forEach(({button,disabled})=>{button.disabled=disabled();});};
+    paint();return wrap;
+  }
+
+  let instanceNumber = 0;
+  function create() {
+    let options = {}, identity, root, toggle, panel, body, navigation, back, returnRoot, level, rootFrame;
+    let isOpen = false, destroyed = false, frames = new Map(), stack = ['root'], doc;
+    const savedDisabled = new WeakMap();
+    const instance = ++instanceNumber;
+    function button(label, className, fn) {const b=doc.createElement('button');b.type='button';b.className=className;b.textContent=label;b.onclick=fn;return b;}
+    function enabled() {return !destroyed && !options.disabled;}
+    function safeFocus(node) {if(node?.isConnected && !node.disabled)node.focus({preventScroll:true});}
+    function rootLinks(frame) {
+      frame.querySelector('.bh-prerequisites')?.remove();
+      const links=doc.createElement('div');links.className='bh-prerequisites';
+      const id=skillFor(options.contentId,options.context);
+      const lead=doc.createElement('p');lead.textContent='Нужно разобрать действие попроще?';links.append(lead);
+      links.append(skillButton(id));frame.append(links);
+    }
+    function skillButton(id) {
+      const b=button(curriculum[id].title,'bh-deeper',()=>enter(id));b.dataset.bhSkill=id;return b;
+    }
+    function makeFrame(id) {
+      const data=curriculum[id], frame=doc.createElement('section');frame.className='bh-frame';frame.dataset.bhNode=id;frame.tabIndex=-1;
+      const label=doc.createElement('p');label.className='bh-small';label.textContent='На более простом примере';
+      const heading=doc.createElement('h3');heading.textContent=data.title;
+      const q=doc.createElement('p');q.className='bh-question';q.textContent=data.question;
+      const model=buildModel(doc,id,{},enabled);
+      const answerRow=doc.createElement('div');answerRow.className='bh-answer-row';
+      const input=doc.createElement('input');input.className='bh-answer';input.type='text';input.inputMode=Array.isArray(data.answer)?'text':'decimal';input.autocomplete='off';input.maxLength=30;input.setAttribute('aria-label','Ответ в маленьком задании');
+      if(data.model==='write-digit')input.oninput=()=>{if(enabled())model.querySelector('[data-bh-write-slot]').textContent=/^\d$/.test(input.value)?input.value:'·';};
+      const feedback=doc.createElement('p');feedback.className='bh-feedback';feedback.setAttribute('role','status');
+      const check=button('Проверить','bh-check',()=>{
+        if(!enabled())return;
+        if(!input.value.trim()){feedback.textContent='Впиши ответ.';safeFocus(input);return;}
+        const correct=accepts(id,input.value);feedback.classList.toggle('bh-correct',correct);
+        feedback.textContent=correct?'Верно. '+data.why+' Теперь можно вернуться на шаг выше.':'Пока не совпало. '+data.hint;
+        if(correct){input.readOnly=true;check.disabled=true;frame.dataset.bhSolved='true';const slot=model.querySelector('[data-bh-write-slot]');if(slot)slot.textContent=String(data.answer);}
+      });
+      input.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();check.click();}};
+      answerRow.append(input,check);
+      frame.append(label,heading,q,model,answerRow,feedback);
+      if(Array.isArray(data.answer)){
+        const format=doc.createElement('p');format.className='bh-small';format.innerHTML='Дробь вводи через знак /. Например, для '+fraction(1,2)+' введи 1, затем /, затем 2.';frame.append(format);
+      }
+      if(data.children.length){const children=doc.createElement('div');children.className='bh-prerequisites';const lead=doc.createElement('p');lead.textContent='И это пока трудно?';children.append(lead);data.children.forEach(child=>children.append(skillButton(child)));frame.append(children);}
+      frames.set(id,frame);return frame;
+    }
+    function showFrame(focus = false) {
+      const id=stack[stack.length-1], frame=id==='root'?rootFrame:frames.get(id)||makeFrame(id);
+      if(frame.parentElement!==body)body.append(frame);
+      for(const node of body.children)node.hidden=node!==frame;
+      navigation.hidden=id==='root';back.disabled=!!options.disabled;returnRoot.disabled=!!options.disabled;
+      level.textContent=id==='root'?'Помощь к заданию':'Шаг помощи '+(stack.length-1);
+      panel.dataset.bhDepth=String(stack.length-1);
+      if(focus)safeFocus(frame);
+    }
+    function enter(id) {
+      if(!enabled()||!isOpen||!curriculum[id]||stack.includes(id))return false;
+      const current=stack[stack.length-1];
+      if(current==='root'){if(id!==skillFor(options.contentId,options.context))return false;}
+      else if(!curriculum[current].children.includes(id))return false;
+      stack.push(id);showFrame(true);return true;
+    }
+    function close(focus = true) {
+      if(!root)return;
+      isOpen=false;panel.hidden=true;toggle.setAttribute('aria-expanded','false');
+      if(focus)safeFocus(toggle);
+    }
+    function open() {
+      if(!root||!enabled()||isOpen)return false;
+      // Mark assistance before exposing any hints. Child checks never call this.
+      options.onUse?.({identity,contentId:options.contentId});
+      if(!enabled())return false;
+      isOpen=true;panel.hidden=false;toggle.setAttribute('aria-expanded','true');showFrame();return true;
+    }
+    function update(next) {
+      if(destroyed)throw Error('This help panel has been destroyed.');
+      if(!next?.host?.ownerDocument)throw Error('A help host is required.');
+      const newIdentity=String(next.identity??'');
+      if(root&&doc!==next.host.ownerDocument)throw Error('A help panel cannot move between documents.');
+      options={...next};doc=next.host.ownerDocument;
+      if(!root){
+        root=doc.createElement('div');root.className='bh-help';
+        toggle=button('Нужна помощь?','bh-toggle',()=>{if(!enabled())return;if(isOpen)close();else open();});
+        toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-controls','bh-panel-'+instance);
+        panel=doc.createElement('section');panel.className='bh-panel';panel.id='bh-panel-'+instance;panel.hidden=true;panel.setAttribute('aria-label','Помощь к заданию');
+        const head=doc.createElement('div');head.className='bh-panel-head';level=doc.createElement('span');level.className='bh-small';
+        head.append(level,button('Скрыть помощь','bh-close',()=>close()));
+        navigation=doc.createElement('nav');navigation.className='bh-navigation';navigation.setAttribute('aria-label','Вернуться из подсказки');
+        back=button('← Назад на шаг','bh-back',()=>{if(!enabled()||stack.length<2)return;stack.pop();showFrame(true);});
+        returnRoot=button('К исходной задаче','bh-root',()=>{if(!enabled())return;stack=['root'];showFrame(true);});
+        navigation.append(back,returnRoot);body=doc.createElement('div');body.className='bh-body';panel.append(head,navigation,body);root.append(toggle,panel);
+      }
+      if(identity!==newIdentity){
+        identity=newIdentity;isOpen=false;stack=['root'];frames=new Map();body.replaceChildren();
+        rootFrame=doc.createElement('div');rootFrame.className='bh-frame';rootFrame.dataset.bhNode='root';rootFrame.tabIndex=-1;
+        const content=doc.createElement('div');content.className='bh-current-hint';rootFrame.append(content);body.append(rootFrame);
+        toggle.setAttribute('aria-expanded','false');panel.hidden=true;
+      }
+      const content=rootFrame.querySelector('.bh-current-hint');
+      if(next.rootContent&&next.rootContent.nodeType===1&&next.rootContent!==content){
+        if(next.rootContent.contains(root))throw Error('Root hint content must not contain its own help panel.');
+        content.replaceChildren(next.rootContent);
+      }else if(!content.childNodes.length){content.textContent='Разберём нужное действие на маленьком примере, затем вернёмся к твоей задаче.';}
+      rootLinks(rootFrame);next.host.append(root);
+      toggle.disabled=!!options.disabled;
+      if(options.disabled)close(false);
+      for(const control of panel.querySelectorAll('button,input,select,textarea')){
+        if(options.disabled){if(!savedDisabled.has(control))savedDisabled.set(control,control.disabled);control.disabled=true;}
+        else if(savedDisabled.has(control)){control.disabled=savedDisabled.get(control);savedDisabled.delete(control);}
+      }
+      showFrame();return handle;
+    }
+    const handle={update,open,close,isOpen:()=>isOpen,getState:()=>({identity,isOpen,depth:stack.length-1,nodeId:stack[stack.length-1]}),destroy(){close(false);root?.remove();frames.clear();destroyed=true;}};
+    return handle;
+  }
+  return Object.freeze({create,skillFor,accepts,curriculum});
+});
+
+</script>
+<script data-inline-source="/trainers/oge-basics/multiplication-division/division-guided.js">
+(function () {
+  'use strict';
+  if (window.MathExamRemediationManaged) return;
+  const G = window.DivisionGuided;
+  const route = window.PreOgeArithmetic;
+  const inCourse = new URLSearchParams(location.search).get('course') === 'preoge';
+  const $ = id => document.getElementById(id);
+  const KEY = 'mathExamBasics.guidedDivision.v1';
+  const esc = text => String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const topicIds = new Set(G.topics.map(t => t.id));
+  const names = { start:'Первое неполное делимое', count:'Намечаем места для ответа', digit:'Находим цифру ответа', product:'Умножаем', subtract:'Вычитаем', 'remainder-check':'Проверяем остаток', bring:'Сносим одну цифру', partial:'Читаем новое неполное делимое', comma:'Ставим запятую', answer:'Читаем ответ', 'final-remainder':'Записываем остаток', verify:'Проверяем решение', 'shift-count':'Готовим делитель', 'shift-factor':'Меняем оба числа одинаково', 'shift-divisor':'Меняем делитель', 'shift-dividend':'Меняем делимое' };
+  let state = {version:1, active:'start', serial:0, next:{}, sessions:{}, records:[]};
+  let lastRaw = null, blocked = false, storageAvailable = true, helpOpen = false, revealOpen = false;
+  let feedback = '', feedbackKind = '';
+  let decimalShift = null, decimalShiftKey = '', normalizationKey = '';
+  let multiplicationRefresh = null;
+  let contextualHelp = null, contextualHost = null;
+  function updateContextualHelp(s,a){
+    if(!window.MathExamBasicsHelp)return;
+    if(s.done||s.accepted){contextualHelp?.close();if(contextualHost)contextualHost.hidden=true;return;}
+    contextualHelp=contextualHelp||window.MathExamBasicsHelp.create();
+    if(!contextualHost){contextualHost=document.createElement('div');contextualHost.className='basics-help-host';$('prompt').after(contextualHost);}
+    contextualHost.hidden=false;$('help-toggle').hidden=true;
+    const content=$('help-content');content.hidden=false;
+    if($('multiplication-refresh').parentElement!==content)content.append($('multiplication-refresh'));
+    contextualHelp.update({host:contextualHost,identity:s.id+':'+s.step,contentId:'multiplication-division/long-division-from-simple-to-decimals',context:{prompt:a.prompt,kind:a.kind},rootContent:content,onUse:()=>{s.hints=Math.min(1000000,s.hints+1);helpOpen=true;save();}});
+  }
+
+  function notice(text) { $('storage-notice').hidden = false; $('storage-notice').textContent = text; }
+  function whole(value, max = 1000000) { return Number.isSafeInteger(value) && value >= 0 && value <= max; }
+  function fingerprint(task) { return task.dividend + ':' + task.divisor; }
+  function validate(raw) {
+    if (!raw || raw.version !== 1 || !topicIds.has(raw.active) || !whole(raw.serial) || !raw.sessions || typeof raw.sessions !== 'object' || !raw.next || typeof raw.next !== 'object' || !Array.isArray(raw.records) || raw.records.length > 10000) throw Error('Неверная запись');
+    const out = {version:1, active:raw.active, serial:raw.serial, next:{}, sessions:{}, records:[]};
+    for (const [id, seq] of Object.entries(raw.next)) {
+      if (!topicIds.has(id) || !whole(seq)) throw Error('Неверная тема');
+      out.next[id] = seq;
+    }
+    for (const [id, s] of Object.entries(raw.sessions)) {
+      if (!topicIds.has(id) || !s || s.task?.topicId !== id || !whole(s.id) || !whole(s.step, 200) || !Array.isArray(s.answers) || typeof s.accepted !== 'boolean' || typeof s.done !== 'boolean' || typeof s.repeated !== 'boolean' || typeof s.draft !== 'string' || s.draft.length > 30 || !['errors','hints','reveals'].every(k => whole(s[k]))) throw Error('Неверный шаг');
+      const p = G.plan(s.task);
+      const count = s.step + (s.accepted ? 1 : 0);
+      if (s.step >= p.actions.length || count !== s.answers.length || s.done !== (count === p.actions.length) || !s.answers.every((v, i) => typeof v === 'string' && G.check(v, p.actions[i]))) throw Error('Ответы не совпали');
+      out.sessions[id] = {id:s.id, task:p.task, step:s.step, answers:[...s.answers], accepted:s.accepted, done:s.done, draft:s.draft, errors:s.errors, hints:s.hints, reveals:s.reveals, repeated:s.repeated};
+    }
+    const ids = new Set();
+    for (const r of raw.records) {
+      if (!r || !whole(r.id) || ids.has(r.id) || !topicIds.has(r.topic) || !Number.isFinite(r.at) || typeof r.repeated !== 'boolean' || !['errors','hints','reveals'].every(k => whole(r[k]))) throw Error('Неверный итог');
+      const p = G.plan(r.task);
+      if (p.topicId !== r.topic) throw Error('Неверный итог темы');
+      ids.add(r.id);
+      out.records.push({id:r.id, task:p.task, topic:r.topic, at:r.at, errors:r.errors, hints:r.hints, reveals:r.reveals, repeated:r.repeated});
+    }
+    for (const s of Object.values(out.sessions)) {
+      if (s.id > out.serial || (s.done && !ids.has(s.id))) throw Error('Незавершённый итог');
+    }
+    return out;
+  }
+  try {
+    lastRaw = localStorage.getItem(KEY);
+    if (lastRaw) state = validate(JSON.parse(lastRaw));
+  } catch (e) {
+    blocked = true;
+    notice('Не удалось открыть сохранённую работу. Прежняя запись сохранена без изменений. Сейчас можно потренироваться и отправить снимок экрана учителю.');
+  }
+  function save() {
+    if (blocked || !storageAvailable) return;
+    try {
+      if (localStorage.getItem(KEY) !== lastRaw) {
+        blocked = true;
+        notice('Работа изменилась в другой вкладке. Обнови эту страницу, чтобы продолжить с последнего сохранённого шага.');
+        return;
+      }
+      const raw = JSON.stringify(state);
+      localStorage.setItem(KEY, raw);
+      lastRaw = raw;
+    } catch (e) {
+      storageAvailable = false;
+      notice('Браузер не смог сохранить работу. Пока страницу не закрывай: реши пример и отправь учителю результат или снимок экрана.');
+    }
+  }
+  function current() { return state.sessions[state.active]; }
+  function newSession(id, repeat) {
+    const old = state.sessions[id];
+    const sequence = state.next[id] || 0;
+    const task = repeat && old ? old.task : G.make(id, sequence);
+    if (!repeat) state.next[id] = sequence + 1;
+    const repeated = state.records.some(r => fingerprint(r.task) === fingerprint(task));
+    state.serial++;
+    state.sessions[id] = {id:state.serial, task, step:0, answers:[], accepted:false, done:false, draft:'', errors:0, hints:0, reveals:0, repeated};
+    feedback = ''; helpOpen = false; revealOpen = false; save();
+  }
+  function independent(record) { return !record.errors && !record.hints && !record.reveals && !record.repeated; }
+
+  // Like arifmetika.html's renderCorner: every digit keeps its own column.
+  // Visual choices only fill the existing draft; checking remains deliberate.
+  function selectedPrefix(p, s) {
+    const a = p.actions[s.step];
+    if (a.kind === 'start' && s.accepted) return a.sourceIndex;
+    if (a.kind !== 'start') return p.actions.slice(0, s.step).some(b => b.kind === 'start') ? p.cycles[0].sourceIndex : -1;
+    const draft = s.draft.trim();
+    for (let i = 0; i < p.intLen; i++) if (p.digits.slice(0, i + 1).join('') === draft) return i;
+    return -1;
+  }
+  function drawNotebookMarks() {
+    const notebook = $('notebook'), svg = notebook.querySelector('.notebook-marks');
+    if (!svg || notebook.parentElement.hidden) return;
+    const box = notebook.getBoundingClientRect();
+    svg.setAttribute('viewBox', '0 0 ' + box.width + ' ' + box.height);
+    const archEnd = Number(notebook.dataset.selectedEnd);
+    let marks = '';
+    if (Number.isInteger(archEnd) && archEnd >= 0) {
+      const first = notebook.querySelector('[data-source-digit="0"]')?.getBoundingClientRect();
+      const last = notebook.querySelector('[data-source-digit="' + archEnd + '"]')?.getBoundingClientRect();
+      if (first && last) {
+        const x1 = first.left - box.left + 3, x2 = last.right - box.left - 3, y = first.top - box.top - 4;
+        marks += '<path class="first-arch" data-first-arch data-selected-end="' + archEnd + '" d="M ' + x1 + ' ' + y + ' Q ' + ((x1 + x2) / 2) + ' ' + (y - 22) + ' ' + x2 + ' ' + y + '"/>';
+      }
+    }
+    const target = notebook.querySelector('[data-bring-target]');
+    if (target) {
+      const index = target.dataset.bringTarget;
+      const source = notebook.querySelector('[data-source-digit="' + index + '"]');
+      if (source) {
+        const from = source.getBoundingClientRect(), to = target.getBoundingClientRect();
+        const x1 = from.left + from.width / 2 - box.left, y1 = from.bottom - box.top + 2;
+        const x2 = to.left + to.width / 2 - box.left, y2 = to.top - box.top - 3;
+        marks += '<defs><marker id="bring-arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z"/></marker></defs><path data-bring-arrow data-source-index="' + index + '" class="bring-arrow" pathLength="1" marker-end="url(#bring-arrowhead)" d="M ' + x1 + ' ' + y1 + ' L ' + x2 + ' ' + y2 + '"/>';
+      }
+    }
+    svg.innerHTML = marks;
+  }
+  function renderNotebook(p, s) {
+    const completed = s.step + (s.accepted ? 1 : 0);
+    const a = p.actions[s.step];
+    const visible = p.actions[completed]?.visibleBaseStep ?? p.baseActions.length;
+    if (p.micropractice) {
+      $('notebook').innerHTML = '<div class="microproblem">' + esc(p.task.dividend) + ' : ' + esc(p.task.divisor) + (s.done ? ' → ' + esc(p.actions[0].answer) : '') + '</div>';
+      $('notebook-note').textContent = 'Подбираем одну цифру. Полный уголок здесь не нужен.';
+      $('normalization').hidden = true;
+      $('decimal-note').hidden = true;
+      return;
+    }
+    const preparing = visible < p.normalizationEnd;
+    $('normalization').hidden = !p.normalizationEnd;
+    if (p.normalizationEnd) {
+      const shift = p.baseActions.findIndex(x => x.kind === 'shift-factor');
+      const factorDone = visible > shift;
+      const factor = factorDone ? p.baseActions[shift].answer : '?';
+      const divisorDone = visible > p.baseActions.findIndex(x => x.kind === 'shift-divisor');
+      const dividendDone = visible > p.baseActions.findIndex(x => x.kind === 'shift-dividend');
+      const pair = (id, label, original, result, earned) => '<div class="normalization-row" data-normalization="' + id + '" data-earned="' + earned + '"><span class="normalization-label">' + label + '</span><div class="normalization-equation"><span class="original-number" data-original>' + esc(original) + '</span><span class="transform-arrow"><small data-factor data-earned="' + factorDone + '">× ' + esc(factor) + '</small><svg viewBox="0 0 100 14" aria-hidden="true"><path d="M2 7H94M87 1L95 7L87 13"/></svg></span><strong class="changed-number ' + (earned ? 'earned' : 'pending') + '" data-normalized aria-label="' + (earned ? 'Получилось ' + esc(result) : 'Пока не вычислено') + '">' + (earned ? esc(result) : '?') + '</strong></div></div>';
+      $('normalization').innerHTML = '<p class="normalization-title">Умножаем оба числа на одно и то же число.</p><div class="normalization-pair">' + pair('dividend', 'Делимое', p.task.dividend, p.normalizedDividend, dividendDone) + pair('divisor', 'Делитель', p.task.divisor, p.normalizedDivisor, divisorDone) + '</div>';
+    }
+    $('notebook').parentElement.hidden = preparing;
+    if (preparing) {
+      $('notebook-note').textContent = 'Начнём уголок, когда одинаково изменим оба числа.';
+      $('decimal-note').hidden = true;
+      return;
+    }
+    let length = p.originalLength;
+    for (const b of p.baseActions.slice(0, visible)) if (b.kind === 'bring') length = Math.max(length, b.sourceIndex + 1);
+    const earnedLength = length;
+    const bringing = !s.done && ['bring', 'partial'].includes(a.kind);
+    if (bringing) length = Math.max(length, a.sourceIndex + 1);
+    const hasComma = length > p.intLen;
+    const columns = ['var(--cell)'];
+    const digitColumn = [];
+    for (let i = 0; i < length; i++) {
+      if (hasComma && i === p.intLen) columns.push('calc(var(--cell) * .35)');
+      digitColumn[i] = columns.length + 1;
+      columns.push('var(--cell)');
+    }
+    const template = columns.join(' ');
+    function row(text, end, cls, minus, targetIndex = -1, pendingIndex = -1) {
+      const start = end - String(text).length + 1;
+      let cells = '';
+      const minusColumn = hasComma && start === p.intLen ? digitColumn[start] - 2 : digitColumn[start] - 1;
+      if (minus) cells += '<span class="minus" style="grid-column:' + minusColumn + '">−</span>';
+      for (let j = 0; j < String(text).length; j++) cells += '<span class="' + cls + '" ' + (start + j === targetIndex ? 'data-bring-target="' + targetIndex + '" ' : '') + 'style="grid-column:' + digitColumn[start + j] + '">' + esc(String(text)[j]) + '</span>';
+      if (pendingIndex >= 0) cells += '<span class="pending-digit" data-bring-target="' + pendingIndex + '" aria-label="Место для снесённой цифры" style="grid-column:' + digitColumn[pendingIndex] + '"></span>';
+      if (cls.includes('subtraction') && hasComma && start < p.intLen && end >= p.intLen) cells += '<span class="subtraction" style="grid-column:' + (digitColumn[p.intLen] - 1) + '"></span>';
+      return '<div class="number-row" style="--columns:' + template + '">' + cells + '</div>';
+    }
+    const activeCycle = Number.isInteger(a.cycle) ? a.cycle : p.cycles.findIndex(c => c.sourceIndex === a.sourceIndex);
+    const activeIndex = a.sourceIndex ?? p.cycles[activeCycle]?.sourceIndex;
+    const firstEnd = p.cycles[0].sourceIndex;
+    const chosenEnd = selectedPrefix(p, s);
+    const choosing = !s.accepted && a.kind === 'start';
+    let top = '';
+    for (let i = 0; i < length; i++) {
+      const inFirst = ['start','count'].includes(a.kind) && i <= chosenEnd;
+      const bringSource = bringing && i === a.sourceIndex;
+      const firstActive = activeCycle === 0 && a.kind !== 'start' && i <= firstEnd;
+      const cls = !s.done && (inFirst || bringSource || firstActive) ? 'current' : '';
+      if (hasComma && i === p.intLen) top += '<span class="dividend-comma" data-dividend-comma style="grid-column:' + (digitColumn[i] - 1) + '">,</span>';
+      const attrs = ' data-source-digit="' + i + '"' + (i >= p.originalLength ? ' data-append-zero data-earned="' + (i < earnedLength) + '"' : '') + ' style="grid-column:' + digitColumn[i] + '"';
+      if (choosing && i < p.intLen) top += '<button type="button" class="prefix-digit ' + cls + '" data-prefix-end="' + i + '" aria-label="Начать с числа ' + p.digits.slice(0, i + 1).join('') + '" aria-pressed="' + (i <= chosenEnd) + '"' + attrs + '>' + p.digits[i] + '</button>';
+      else top += '<span class="' + cls + (i >= earnedLength ? ' pending-digit' : '') + '"' + attrs + '>' + (i < earnedLength ? p.digits[i] : '') + '</span>';
+    }
+    let rows = '<div class="number-row" style="--columns:' + template + '">' + top + '</div>';
+    for (let i = 0; i < p.cycles.length; i++) {
+      const c = p.cycles[i];
+      if (visible <= c.productAction) break;
+      rows += row(c.product, c.sourceIndex, 'subtraction', true);
+      if (visible <= c.subtractAction) break;
+      const next = p.cycles[i + 1];
+      const bringIndex = next ? p.baseActions.findIndex(b => b.kind === 'bring' && b.sourceIndex === next.sourceIndex) : -1;
+      const brought = next && visible > bringIndex;
+      const pending = next && bringing && a.kind === 'bring' && !s.accepted && a.sourceIndex === next.sourceIndex;
+      let value = String(c.remainder), end = c.sourceIndex;
+      if (brought) {
+        // Like the arithmetic suite, extend the remainder to the next partial
+        // dividend without padding it with unfamiliar leading zeros (05, 00).
+        value = String(next.partial); end = next.sourceIndex;
+      }
+      const isActive = !s.done && (brought ? activeIndex === next.sourceIndex || activeCycle === i + 1 : activeCycle === i);
+      rows += row(value, end, isActive ? 'current' : '', false, bringing && brought && a.sourceIndex === next?.sourceIndex ? next.sourceIndex : -1, pending ? next.sourceIndex : -1);
+    }
+    let quotient = '';
+    for (const b of p.baseActions.slice(0, visible)) {
+      if (b.kind === 'digit') quotient += b.answer;
+      if (b.kind === 'comma') quotient += ',';
+    }
+    const countDone = p.actions.slice(0, completed).some(b => b.kind === 'count');
+    const digitsDone = quotient.split(',')[0].length;
+    const slotCount = countDone ? Math.max(0, p.integerDigitCount - digitsDone) : 0;
+    let slots = Array.from({length:slotCount}, (_, i) => '<span class="slot' + (i === 0 && a.kind === 'digit' && !s.accepted ? ' next-slot' : '') + '" data-quotient-slot aria-label="Место для цифры ответа">·</span>').join('');
+    if (!slotCount && a.kind === 'digit' && !s.accepted && quotient.includes(',')) slots = '<span class="slot next-slot" data-quotient-slot aria-label="Место для следующей цифры ответа">·</span>';
+    if (!quotient && !slots) slots = '<span class="slot uncounted" aria-label="Здесь будет ответ">?</span>';
+    const writtenQuotient = esc(quotient).replace(',', '<span data-quotient-comma class="quotient-comma">,</span>');
+    $('notebook').dataset.selectedEnd = String(chosenEnd);
+    $('notebook').innerHTML = '<div class="working">' + rows + '</div><div class="right-side"><div class="divisor">' + p.normalizedDivisor + '</div><div class="quotient">' + writtenQuotient + slots + '</div></div><svg class="notebook-marks" aria-hidden="true"></svg>';
+    $('notebook-note').textContent = s.done ? 'Все строки решения остаются перед тобой.' : a.kind === 'start' ? s.accepted ? 'Первое неполное делимое выбрано. Можно продолжать.' : chosenEnd < 0 ? 'Нажми на последнюю цифру числа, с которого начнёшь делить.' : 'Дуга показывает твой выбор. Теперь проверь его.' : a.kind === 'shift-dividend' && s.accepted ? 'Числа подготовлены. Теперь начнём деление уголком.' : a.kind === 'bring' ? 'По стрелке сносим одну цифру к остатку.' : a.kind === 'digit' && !s.accepted ? 'Новую цифру ответа запишем справа, на отмеченном месте.' : countDone && !quotient ? 'Точки справа — места для цифр ответа.' : 'Выделено число, с которым сейчас работаем.';
+    const appended = earnedLength - p.originalLength;
+    const commaAction = a.kind === 'comma';
+    const appendAction = bringing && p.baseActions.some(b => b.kind === 'bring' && b.sourceIndex === a.sourceIndex && b.appended);
+    $('decimal-note').hidden = !(commaAction || appendAction || appended > 0);
+    let cue = commaAction ? '<p>Цифры целой части делимого закончились. Перед делением десятых поставим запятую в ответе.</p>' + (quotient.startsWith('0') ? '<p>Ноль перед запятой сохраняем.</p>' : '') : appendAction ? '<p>Справа после запятой можно дописать ноль. Число останется тем же.</p>' : '';
+    if (appended > 0) {
+      const original = p.normalizedDividend;
+      const extended = original + (original.includes(',') ? '' : ',');
+      cue += '<p class="decimal-equality" data-zero-equality>' + esc(original) + ' = ' + Array.from({length:appended}, (_, i) => esc(extended + '0'.repeat(i + 1))).join(' = ') + '</p>';
+    }
+    $('decimal-note').innerHTML = cue;
+    requestAnimationFrame(drawNotebookMarks);
+  }
+
+  function renderResults() {
+    const total = state.records.length;
+    const alone = state.records.filter(independent).length;
+    $('results-text').textContent = total ? 'Закончено примеров по шагам: ' + total + '. Новых, без ошибок и дополнительных подсказок: ' + alone + '. С помощью, исправлениями или повторно: ' + (total - alone) + '.' : 'Здесь появятся законченные примеры.';
+  }
+  function renderRouteLinks() {
+    const level = route?.levelForGuided(state.active);
+    const returnURL = level ? route.routeURL(level) : '../arithmetic-route.html';
+    $('course-navigation').hidden = !inCourse;
+    $('course-return').href = returnURL;
+    $('course-return-completion').href = returnURL;
+    $('course-return-completion').hidden = !inCourse;
+    if (level) {
+      $('arithmetic-link').href = route.practiceURL(level);
+      $('arithmetic-link').textContent = 'Потренироваться в арифметике: ' + G.topics.find(t => t.id === state.active).title.toLowerCase();
+    }
+  }
+  // The comma position is another way to enter the existing shift-count draft.
+  // Moving it never accepts an answer or skips one of the four preparation steps.
+  function renderDecimalShift(p, s) {
+    const a = p.actions[s.step];
+    const completed = s.step + Number(s.accepted);
+    const preparing = (p.actions[completed]?.visibleBaseStep ?? p.baseActions.length) < p.normalizationEnd;
+    const show = preparing && !!window.DecimalShift;
+    $('decimal-shift').hidden = !show;
+    $('normalization-record').hidden = !p.normalizationEnd;
+    const recordKey = s.id + ':' + String(show);
+    if (normalizationKey !== recordKey) {
+      $('normalization-record').open = !show;
+      normalizationKey = recordKey;
+    }
+    if (!show) {
+      decimalShift?.destroy(); decimalShift = null; decimalShiftKey = '';
+      return;
+    }
+    const countIndex = p.actions.findIndex(action => action.kind === 'shift-count');
+    const raw = a.kind === 'shift-count' ? s.draft.trim() : s.answers[countIndex];
+    const value = /^\d+$/.test(raw) && Number.isSafeInteger(Number(raw)) ? Number(raw) : 0;
+    const locked = a.kind !== 'shift-count' || s.accepted;
+    const key = s.id + ':' + fingerprint(s.task);
+    if (key !== decimalShiftKey) {
+      decimalShift?.destroy();
+      decimalShift = window.DecimalShift.create($('decimal-shift'), {
+        dividend:s.task.dividend, divisor:s.task.divisor, value, locked,
+        onChange(k) {
+          const active = current();
+          if (active.id !== s.id || active.accepted || active.done || G.plan(active.task).actions[active.step].kind !== 'shift-count') return;
+          active.draft = String(k);
+          $('answer').value = active.draft;
+          feedback = ''; feedbackKind = '';
+          $('feedback').textContent = ''; $('feedback').className = '';
+          save();
+        }
+      });
+      decimalShiftKey = key;
+    } else {
+      decimalShift.setValue(value);
+      decimalShift.setLocked(locked);
+    }
+  }
+  function render() {
+    const s = current(), p = G.plan(s.task), a = p.actions[s.step];
+    const topic = G.topics.find(t => t.id === state.active);
+    $('topic-label').textContent = topic.title;
+    $('problem').textContent = s.task.dividend + ' : ' + s.task.divisor;
+    $('step-counter').textContent = s.done ? 'Готово' : 'Шаг ' + (s.step + 1) + ' из ' + p.actions.length;
+    const percent = Math.round(100 * (s.step + Number(s.accepted)) / p.actions.length);
+    $('step-progress').style.width = percent + '%';
+    $('step-progress').parentElement.setAttribute('aria-valuenow', String(percent));
+    const topicFinished = state.records.filter(r => r.topic === state.active).length;
+    $('topic-progress').textContent = topicFinished ? 'В этой теме закончено примеров: ' + topicFinished : 'Первый пример в этой теме';
+    $('question').parentElement.classList.toggle('lesson-complete', s.done);
+    $('notebook').parentElement.hidden = false;
+    renderDecimalShift(p, s);
+    renderNotebook(p, s);
+    $('question').hidden = s.done;
+    $('completion').hidden = !s.done;
+    $('step-name').textContent = names[a.kind];
+    $('prompt').textContent = a.kind === 'shift-count' && decimalShift ? 'Цель — убрать запятую в делителе.' : a.kind === 'shift-factor' && decimalShift ? 'Во сколько раз увеличились оба числа?' : a.kind === 'shift-divisor' && decimalShift ? 'Запиши новый делитель.' : a.kind === 'shift-dividend' && decimalShift ? 'Запиши новое делимое.' : a.prompt;
+    $('answer-note').textContent = a.kind === 'shift-count' && decimalShift ? 'Для этого сдвигаем запятые в обоих числах вправо на одинаковое число разрядов. Когда делитель записан без запятой, нажми «Проверить». После подготовки чисел будем делить уголком, как обычно.' : a.kind === 'shift-divisor' && decimalShift ? 'Найди строку «Делитель» и перепиши новое число — теперь оно без запятой.' : a.kind === 'shift-dividend' && decimalShift ? 'Найди строку «Делимое» и перепиши новое число. В нём запятая может остаться: нам нужно было убрать её в делителе.' : a.kind === 'comma' ? 'Перепиши целую часть ответа. Сразу после неё поставь запятую.' : a.kind === 'remainder-check' ? 'Выбери ответ, затем нажми «Проверить».' : a.kind === 'start' ? (s.task.level === 'decimalDivisor' ? 'В делителе запятой нет. Теперь делим уголком, как обычно. ' : '') + 'Выбери цифры слева в уголке или впиши число здесь.' : a.kind === 'count' ? 'На каждую цифру ответа наметим одно место.' : ['digit','bring'].includes(a.kind) ? 'Впиши одну цифру.' : 'Впиши число и нажми «Проверить».';
+    $('answer-label').textContent = a.kind === 'shift-count' ? 'На сколько мест сдвинули запятые?' : 'Твой ответ';
+    $('answer').value = s.draft;
+    $('answer').readOnly = s.accepted;
+    $('answer').hidden = !!a.options;
+    $('answer-label').hidden = !!a.options;
+    $('answer-options').hidden = !a.options;
+    $('answer-options').innerHTML = a.options ? a.options.map(o => '<button type="button" data-option="' + esc(o.value) + '" aria-pressed="' + (s.draft === o.value) + '" ' + (s.accepted ? 'disabled' : '') + '>' + esc(o.label) + '</button>').join('') : '';
+    $('primary').textContent = s.accepted ? 'Дальше' : 'Проверить';
+    $('feedback').textContent = feedback || (s.accepted ? a.kind.startsWith('shift-') ? 'Верно. Оба числа изменяются одинаково.' : 'Верно. Посмотри, что записалось в уголке.' : '');
+    $('feedback').className = feedbackKind || (s.accepted ? 'good' : '');
+    $('help-area').hidden = s.accepted;
+    $('multiplication-refresh').hidden = !window.MultiplicationRefresh;
+    $('help-toggle').setAttribute('aria-expanded', String(helpOpen));
+    $('help-content').hidden = !helpOpen;
+    $('hint-text').textContent = a.hint;
+    $('multiples').hidden = a.kind !== 'digit' && a.kind !== 'product';
+    if (!$('multiples').hidden) $('multiples').innerHTML = '<p class="table-note">Нажми на строку, чтобы подставить ' + (a.kind === 'digit' ? 'цифру' : 'произведение') + '. Затем проверь ответ.</p>' + Array.from({length:10}, (_, q) => '<button type="button" data-multiple="' + (a.kind === 'digit' ? q : p.normalizedDivisor * q) + '">' + p.normalizedDivisor + ' × <b>' + q + '</b> = ' + p.normalizedDivisor * q + '</button>').join('');
+    $('revealed').textContent = revealOpen ? 'В этом шаге ответ: ' + a.answer + '. Впиши его и нажми «Проверить».' : '';
+    if (s.done) {
+      const answer = p.micropractice ? p.actions[0].answer : p.quotient + (s.task.level === 'remainder' ? ' (остаток ' + p.remainder + ')' : '');
+      $('completion-text').textContent = (p.micropractice ? 'Подходящая цифра: ' : 'Ответ: ') + answer + '. ' + (independent(s) ? 'Получилось без ошибок и подсказок.' : s.repeated && !s.hints && !s.reveals && !s.errors ? 'Знакомый пример повторён.' : 'Пример пройден с помощью или исправлениями.');
+    }
+    const nextTopic = followingTopic();
+    $('next-topic').hidden = !s.done || !nextTopic;
+    if (nextTopic) $('next-topic').textContent = (state.sessions[nextTopic.id] && !state.sessions[nextTopic.id].done ? 'Продолжить тему: ' : 'Следующая тема: ') + nextTopic.title;
+    $('save-note').textContent = blocked || !storageAvailable ? 'Можно закончить на сегодня. Отправь учителю результат или снимок экрана: сохранение сейчас недоступно.' : 'Можно закончить на сегодня. Результат сохранится в этом браузере.';
+    renderResults();
+    renderRouteLinks();
+    updateContextualHelp(s,a);
+  }
+  function moveFocus() {
+    const s = current(), a = G.plan(s.task).actions[s.step];
+    const target = s.done ? $('next-example') : a.options ? $('answer-options').querySelector('button') : $('answer');
+    target?.focus({preventScroll:true});
+    const box = $('question').getBoundingClientRect();
+    if (!s.done && (box.top < 0 || box.top > innerHeight - 220)) $('question').scrollIntoView({block:'start'});
+  }
+  function errorText(raw, p, a) {
+    if (!raw.trim()) return a.options ? 'Сначала выбери «Да» или «Нет».' : 'Сначала впиши ответ.';
+    if (a.kind === 'start') {
+      const end = selectedPrefix(p, {...current(), draft:raw});
+      if (end < 0) return 'Начинаем с первой цифры слева. Можно взять несколько цифр подряд: нажми на последнюю из них в уголке.';
+      if (end < a.sourceIndex) return raw + ' меньше делителя ' + p.normalizedDivisor + '. Возьми ещё одну цифру справа.';
+      return 'Здесь взято слишком много цифр. Попробуй взять меньше: нам нужно самое короткое число слева, с которого можно начать деление.';
+    }
+    if (a.kind === 'digit' && /^\d$/.test(raw)) {
+      const c = p.cycles[a.cycle], q = Number(raw), value = q * p.normalizedDivisor;
+      return value > c.partial ? q + ' — много: ' + p.normalizedDivisor + ' × ' + q + ' = ' + value + ', а у нас ' + c.partial + '. Попробуй меньшую цифру.' : q + ' — мало: после вычитания можно взять делитель ещё раз. Попробуй большую цифру.';
+    }
+    if (a.kind === 'remainder-check') return 'Осталось ' + a.remainder + ', а делитель — ' + a.divisor + '. ' + a.remainder + ' меньше ' + a.divisor + (a.remainder === 0 ? ': ноль тоже подходит.' : '. Значит, ещё целый делитель взять нельзя.');
+    if (a.kind === 'shift-dividend') {
+      const factor = p.baseActions.find(b => b.kind === 'shift-factor').answer;
+      return G.equal(raw, p.task.dividend) ? 'Это прежнее делимое. Оба числа умножаем на ' + factor + '. Прочитай новое делимое после переноса запятой.' : 'Оба числа меняем одинаково. Умножь ' + p.task.dividend + ' на ' + factor + ': перенеси запятую вправо на столько же мест, как у делителя.';
+    }
+    if (a.kind === 'shift-divisor') return 'Меняем именно делитель ' + p.task.divisor + '. Перенеси его запятую вправо на выбранное число мест: в новом делителе запятой не останется.';
+    if (a.kind === 'shift-count') {
+      const chosen = Number(raw);
+      if (!Number.isSafeInteger(chosen) || chosen < 0) return 'Укажи целое число мест. Можно передвинуть запятые мышью или кнопками.';
+      if (Number.isSafeInteger(chosen) && chosen > Number(a.answer)) return 'Так частное тоже не меняется, но достаточно меньшего сдвига: только до конца дробной части делителя. Верни обе запятые немного влево.';
+      return 'В делителе ' + p.task.divisor + ' ещё остаются цифры после запятой. Сдвинь обе запятые ещё вправо. Остановись сразу после последней цифры делителя.';
+    }
+    if (a.kind === 'shift-factor') return 'Вспомни перенос запятой: одно место вправо — умножить на 10, два — на 100, три — на 1000.';
+    if (a.kind === 'comma') {
+      const clean = raw.trim().replace('.', ',');
+      if (a.answer === '0,' && (clean === ',' || !clean.startsWith('0'))) return 'Ответ меньше единицы. Перед запятой нужен ноль. Запиши «0,» — без цифр после запятой.';
+      if (!clean.includes(',') && clean === a.answer.slice(0, -1)) return 'Целая часть записана. Добавь запятую сразу после её последней цифры: дальше будем делить десятые.';
+      return 'Сначала перепиши целую часть ' + a.answer.slice(0, -1) + '. Запятая должна стоять сразу после неё, в самом конце записи.';
+    }
+    if (a.kind === 'subtract') {
+      const c = p.cycles[a.cycle];
+      return 'Вычитаем ' + c.product + ' из ' + c.partial + '. Проверь свой результат: если прибавить к нему ' + c.product + ', должно получиться ' + c.partial + '.';
+    }
+    if (a.kind === 'final-remainder') return 'Остаток — самое нижнее число после вычитания. Посмотри на него в уголке. Число справа под чертой — это частное.';
+    if (a.kind === 'bring') return a.appended ? 'Дописываем именно ноль после запятой. Затем сносим эту одну цифру к остатку.' : 'Сносим только одну выделенную цифру из верхней строки. Остаток к ней пока не приписывай: это следующий шаг.';
+    if (a.kind === 'partial') return 'Прочитай нижнее выделенное число целиком: остаток и снесённую цифру справа. Если в начале получился ноль, его не пишем.';
+    if (a.kind === 'product') return 'Сейчас нужно произведение: ' + p.normalizedDivisor + ' × ' + p.cycles[a.cycle].qd + '. Найденная цифра ответа уже записана справа под чертой.';
+    if (a.kind === 'count') return 'Считай места от последней цифры выбранного числа до конца целой части делимого. Каждое место даст одну цифру ответа.';
+    if (a.kind === 'digit') return 'Для одного места в ответе нужна одна цифра: от 0 до 9.';
+    return 'Пока не совпало. Попробуй ещё раз или нажми «Помочь с этим шагом».';
+  }
+  $('answer-form').addEventListener('submit', event => {
+    event.preventDefault();
+    const s = current(); if (s.done) return;
+    if (s.accepted) {
+      s.step++; s.accepted = false; s.draft = ''; feedback = ''; feedbackKind = ''; helpOpen = false; revealOpen = false;
+      save(); render(); moveFocus(); return;
+    }
+    const p = G.plan(s.task), a = p.actions[s.step];
+    const raw = a.options ? s.draft : $('answer').value.trim();
+    s.draft = raw;
+    if (!G.check(raw, a)) {
+      if (raw) s.errors = Math.min(1000000, s.errors + 1);
+      feedback = errorText(raw, p, a); feedbackKind = 'error'; save(); render(); return;
+    }
+    s.answers.push(raw); s.accepted = true; feedback = ''; feedbackKind = '';
+    s.done = s.answers.length === p.actions.length;
+    if (s.done && !state.records.some(r => r.id === s.id)) state.records.push({id:s.id, task:s.task, topic:state.active, at:Date.now(), errors:s.errors, hints:s.hints, reveals:s.reveals, repeated:s.repeated});
+    save(); render();
+    if (s.done) moveFocus(); else $('primary').focus({preventScroll:true});
+  });
+  $('answer').addEventListener('input', () => {
+    const s = current(); s.draft = $('answer').value; save();
+    const p = G.plan(s.task);
+    if (p.actions[s.step].kind === 'start') renderNotebook(p, s);
+    if (p.actions[s.step].kind === 'shift-count') renderDecimalShift(p, s);
+  });
+  function fillDraft(value) {
+    const s = current(); if (s.accepted || s.done) return;
+    s.draft = String(value); feedback = ''; feedbackKind = ''; save(); render();
+  }
+  $('notebook').addEventListener('click', event => {
+    const digit = event.target.closest('[data-prefix-end]');
+    if (!digit) return;
+    const s = current(), p = G.plan(s.task);
+    if (p.actions[s.step].kind !== 'start' || s.accepted) return;
+    const index = Number(digit.dataset.prefixEnd);
+    fillDraft(p.digits.slice(0, index + 1).join(''));
+    $('notebook').querySelector('[data-prefix-end="' + index + '"]')?.focus({preventScroll:true});
+  });
+  $('multiples').addEventListener('click', event => {
+    const option = event.target.closest('[data-multiple]');
+    if (!option) return;
+    fillDraft(option.dataset.multiple);
+    $('answer').focus({preventScroll:true});
+  });
+  $('answer-options').addEventListener('click', event => {
+    const button = event.target.closest('button[data-option]');
+    if (!button || current().accepted) return;
+    current().draft = button.dataset.option; feedback = ''; feedbackKind = ''; save(); render();
+    $('primary').focus({preventScroll:true});
+  });
+  $('multiplication-refresh').onclick = () => {
+    if (!window.MultiplicationRefresh) return;
+    if (!multiplicationRefresh) multiplicationRefresh = window.MultiplicationRefresh.create({onHelp() {
+      const s = current();
+      if (!s || s.done) return;
+      s.hints = Math.min(1000000, s.hints + 1);
+      save();
+    }});
+    const p = G.plan(current().task);
+    multiplicationRefresh?.open(p.normalizedDivisor >= 2 && p.normalizedDivisor <= 9 ? p.normalizedDivisor : undefined);
+  };
+  $('help-toggle').onclick = () => {
+    if (!helpOpen) current().hints = Math.min(1000000, current().hints + 1);
+    helpOpen = !helpOpen; save(); render();
+  };
+  $('reveal').onclick = () => {
+    if (!revealOpen) current().reveals = Math.min(1000000, current().reveals + 1);
+    revealOpen = true; save(); render();
+  };
+  function followingTopic() {
+    const route = G.topics.filter(t => !t.optional), index = route.findIndex(t => t.id === state.active);
+    return index >= 0 ? route[index + 1] : null;
+  }
+  function showTopics() {
+    const groups = [{title:'Целые числа', ids:['start','oneDigit','zero','remainder','twoDigit']}, {title:'Десятичные дроби', ids:['decimalNatural','appendZeros','decimalDivisor']}, {title:'Короткая тренировка', ids:['quotientDigit']}];
+    $('topics-list').innerHTML = groups.map(group => '<section class="topic-group"><h3>' + group.title + '</h3>' + group.ids.map(id => {
+      const t = G.topics.find(item => item.id === id), session = state.sessions[id];
+      const finished = state.records.filter(r => r.topic === id).length;
+      const progress = (finished ? 'Закончено примеров: ' + finished + '.' : 'Ещё нет законченных примеров.') + (session && !session.done ? ' Начат пример — шаг ' + (session.step + 1) + ' из ' + G.plan(session.task).actions.length + '.' : '');
+      return '<button type="button" data-topic="' + t.id + '" aria-current="' + (state.active === t.id) + '">' + esc(t.title) + '<small>' + esc(t.description) + '</small><small class="topic-progress" data-topic-progress="' + t.id + '">' + progress + '</small></button>';
+    }).join('') + '</section>').join('');
+    $('topics-dialog').showModal();
+    $('topics-close').focus();
+  }
+  $('topics-open').onclick = showTopics;
+  $('topics-close').onclick = () => $('topics-dialog').close();
+  function activateTopic(id) {
+    state.active = id;
+    history.replaceState(null, '', location.pathname + location.search + '#' + state.active);
+    if (!current()) newSession(state.active, false);
+    helpOpen = false; revealOpen = false; feedback = ''; feedbackKind = '';
+    save(); render(); $('topics-dialog').close(); $('problem').scrollIntoView({block:'start'});
+  }
+  $('topics-list').onclick = event => {
+    const button = event.target.closest('button[data-topic]'); if (!button) return;
+    activateTopic(button.dataset.topic);
+  };
+  $('next-topic').onclick = () => { const next = followingTopic(); if (next) activateTopic(next.id); };
+  $('next-example').onclick = () => { newSession(state.active, false); render(); $('problem').scrollIntoView({block:'start'}); };
+  $('repeat-example').onclick = () => { newSession(state.active, true); render(); $('problem').scrollIntoView({block:'start'}); };
+  function report() {
+    const lines = ['Деление уголком · MathExam', $('results-text').textContent];
+    for (const r of state.records.slice(-12)) {
+      lines.push(r.task.dividend + ' : ' + r.task.divisor + ' — ' + (independent(r) ? 'пошагово без ошибок и дополнительных подсказок, новое условие' : r.repeated ? 'повтор знакомого примера' : 'с помощью или исправлениями'));
+    }
+    const s = current();
+    if (!s.done) lines.push('Начато: ' + s.task.dividend + ' : ' + s.task.divisor + ', шаг ' + (s.step + 1) + '.');
+    return lines.join('\n');
+  }
+  $('report-copy').onclick = async () => {
+    const text = report(); $('report-text').value = text; $('report-text').hidden = false;
+    try {
+      if (!navigator.clipboard?.writeText) throw Error('Нет буфера');
+      await navigator.clipboard.writeText(text);
+      $('report-status').textContent = 'Скопировано. Теперь вставь текст в сообщение учителю.';
+    } catch (e) {
+      $('report-status').textContent = 'Выдели текст ниже и скопируй его. Можно отправить снимок экрана.';
+      $('report-text').focus(); $('report-text').select();
+    }
+  };
+  window.addEventListener('storage', event => {
+    if (event.key === KEY || event.key === null) { blocked = true; notice('Работа изменилась в другой вкладке. Обнови страницу, прежде чем продолжить.'); }
+  });
+  window.addEventListener('resize', () => requestAnimationFrame(drawNotebookMarks));
+  window.addEventListener('hashchange', () => {
+    const id = location.hash.slice(1);
+    if (!topicIds.has(id) || id === state.active) return;
+    state.active = id;
+    if (!current()) newSession(id, false);
+    helpOpen = false; revealOpen = false; feedback = ''; feedbackKind = '';
+    save(); render();
+  });
+  const requested = location.hash.slice(1);
+  if (topicIds.has(requested)) state.active = requested;
+  if (!current()) newSession(state.active, false);
+  else save();
+  window.addEventListener('mathexam-basics-help-ready',()=>render());
+  render();
+  window.__divisionGuidedDebug = {KEY, state:() => structuredClone(state), plan:() => G.plan(current().task)};
+})();
+
+</script>
+<script data-inline-source="/trainers/oge-basics/navigation-minimal.js">
+(function(){
+  'use strict';
+  function fold(nodes,label,before){
+    nodes=nodes.filter(Boolean);if(!nodes.length)return null;
+    const details=document.createElement('details');details.className='basics-secondary';
+    const summary=document.createElement('summary');summary.textContent=label;details.append(summary);
+    const anchor=before||nodes[0];anchor.before(details);nodes.forEach(node=>details.append(node));return details;
+  }
+  function ready(){
+    if(window.MathExamRemediationManaged)return;
+    const path=location.pathname,hub=/\/oge-basics\/(?:index\.html)?$/.test(path)||/\/(percentages|multiplication-division)\/(?:index\.html)?$/.test(path),map=/\/(arithmetic-route|division-course)\.html$/.test(path);
+    document.body.classList.add(hub||map?'basics-navigation':'basics-special');
+    if(hub){
+      const title=document.querySelector('h1');
+      if(title&&!/percentages/.test(path)&&!path.includes('/multiplication-division/'))title.textContent='Базовая подготовка к ОГЭ';
+      const lead=document.querySelector('.hero-copy>.lead,.map-hero .lead,header.card>p');
+      if(lead)lead.textContent='Выбери тему и начни с задачи. Если трудно — нажми «Нужна помощь?». Можно разобрать любой непонятный шаг.';
+      fold([document.querySelector('.route-note')],'Как заниматься');
+      const percentSummary=document.querySelector('header.card>.summary');if(percentSummary)fold([percentSummary],'Мои результаты');
+      const how=[...document.querySelectorAll('section.card')].find(s=>s.querySelector('h2')?.textContent==='Как устроен каждый тренажёр');
+      if(how)fold([how],'Как заниматься');
+      const note=document.querySelector('main.wrap>.note');if(note){note.textContent='Начни с задачи. Если трудно, открой помощь к текущему шагу. Короткую проверку можно выбрать отдельно.';fold([note],'Как заниматься');}
+      const extra=[...document.querySelectorAll('main>.module')].find(s=>s.querySelector('a[href="/soviet-math/"]'));if(extra)fold([extra],'Ещё материалы');
+      const ordering=document.querySelector('#map')?.parentElement;
+      if(ordering){const h=ordering.querySelector('h2');if(h)h.textContent='Выбрать тему';const p=ordering.querySelector(':scope > p');if(p)fold([p],'С чего начать');}
+    }
+    if(/arithmetic-route\.html$/.test(path)){
+      const entry=document.getElementById('division-course-entry');if(entry)fold([entry],'Подробные линейки действий');
+    }
+    if(/division-course\.html$/.test(path)){
+      const header=document.querySelector('.division-course-heading');
+      if(header){const paragraphs=[...header.querySelectorAll(':scope > p:not(.eyebrow):not(.lead)')];fold(paragraphs,'О тренировке и сохранении');}
+    }
+    if(/arithmetic-foundations\.html$/.test(path)){
+      document.body.classList.add('basics-foundations');
+      const stages=fold([document.getElementById('stages')],'Выбрать шаг');
+      const note=fold([document.querySelector('main>.note')],'Где сохраняется работа');
+      document.getElementById('exercise')?.after(...[stages,note].filter(Boolean));
+    }
+    if(/quotient-estimate\.html$/.test(path)){
+      document.body.classList.add('basics-estimate');
+      const header=document.querySelector('.estimate-page>header'),heading=header?.querySelector('h1');
+      if(heading)heading.textContent='Прикидка при делении';
+      const explanation=fold(header?[...header.querySelectorAll(':scope > p:not([role="status"])')]:[],'Как решать');
+      const rounding=fold([document.querySelector('.rounding-preparation')],'Потренировать округление отдельно');
+      document.getElementById('view-practice')?.after(...[document.getElementById('estimate-notice'),explanation,rounding].filter(Boolean));
+    }
+    if(/division-lab\.html$/.test(path)){
+      document.body.classList.add('basics-lab');
+      const controls=fold([document.querySelector('.controls')],'Выбрать тему или режим');
+      const stats=document.getElementById('stats')?.closest('section');if(stats)fold([stats],'Мои результаты');
+      const intro=document.querySelector('.intro');let explanation=null;
+      if(intro){const h=intro.querySelector('h1');if(h)h.textContent='Деление уголком';explanation=fold([...intro.querySelectorAll('p')],'Как заниматься');}
+      document.getElementById('workspace')?.after(...[controls,explanation].filter(Boolean));
+    }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready,{once:true});else ready();
+})();
+
+</script>
+</body>
+</html>

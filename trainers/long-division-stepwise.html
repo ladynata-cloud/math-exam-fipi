@@ -1,8 +1,82 @@
-<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Деление уголком — пошаговый тренажёр | MathExam</title>
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Деление уголком (столбиком) — пошаговый тренажёр | MathExam</title>
+<meta name="description" content="Учимся делить уголком как в тетради: выбираем первое неполное делимое, находим цифру частного, умножаем, вычитаем и сносим цифру. Проверка каждого шага и подсказки.">
 <link rel="canonical" href="https://mathexam.space/trainers/long-division-stepwise.html">
-<meta name="description" content="Интерактивная отработка письменного деления уголком с проверкой каждого шага. Для 4–6 классов и всех, кому нужно закрыть пробел."><style>body{font-family:Verdana,Arial,sans-serif;background:#f3f6fb;color:#172033;margin:0}.page{max-width:1000px;margin:auto;padding:22px}.hero,.card{background:white;border-radius:24px;padding:22px;box-shadow:0 14px 34px #0002;margin-bottom:18px}.back a{color:#2563eb;font-weight:800;text-decoration:none}h1{font-size:38px;margin:0 0 8px}.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}button{border:0;border-radius:14px;padding:11px 15px;font-weight:800;cursor:pointer;background:#e7ebf3}button.active,.primary{background:#2563eb;color:white}.good{background:#15803d;color:white}.warn{background:#f59e0b}.danger{background:#fee4e2;color:#7a271a}.task{text-align:center;font-size:44px;font-weight:900;margin:20px}.work{background:#f8fafc;border:2px solid #e5e7eb;border-radius:20px;padding:18px}.digits{display:flex;justify-content:center;gap:4px}.d{width:42px;height:54px;border:2px solid #cbd5e1;border-radius:12px;display:grid;place-items:center;font-size:30px;font-family:monospace;background:white}.d.used{color:#94a3b8}.d.sel{background:#dbeafe;border-color:#2563eb}.step{background:#fff7ed;border:1px solid #fed7aa;border-radius:16px;padding:12px;margin:10px 0;font-size:19px}.answer,.row{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;margin:14px 0}input{width:100px;border:2px solid #cbd5e1;border-radius:14px;padding:12px;font-size:24px;text-align:center}.fb{border-radius:16px;padding:14px;background:#f8fafc;border:1px solid #e5e7eb;font-size:18px}.ok{background:#dcfce7}.err{background:#fee4e2}.tip{background:#fffbeb}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{background:#f8fafc;border:1px solid #e5e7eb;border-radius:16px;padding:12px;text-align:center}.stat b{font-size:28px;display:block}.box{background:#eef4ff;border:1px solid #bfdbfe;border-radius:20px;padding:16px;margin:14px 0}.hist{background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:9px;margin:8px 0}@media(max-width:850px){.grid{grid-template-columns:1fr}}</style>
-<link rel="stylesheet" href="/assets/download-panel.css">
-</head><body><main class="page"><section class="hero"><div class="back"><a href="../index.html">← На главную</a></div><h1>Деление уголком</h1><p>Выбираем старший блок, подбираем цифру частного, считаем произведение и остаток.</p><p><a href="oge-basics/multiplication-division/division-lab.html">Расширенная лаборатория: самостоятельно введи каждый шаг, включая снос, остаток и десятичные дроби →</a></p></section><section class="grid"><div class="card"><div class="row"><b>Уровень:</b><button id="easy" class="active">1 шаг</button><button id="med">2 шага</button><button id="hard">3 шага</button><button id="hint" class="warn">Подсказка</button></div><div id="task" class="task"></div><div class="work"><div id="digits" class="digits"></div><div id="steps"></div></div><div class="answer"><label>Цифра частного:</label><input id="ans" type="number" min="0" max="9"><button id="check" class="primary">Проверить</button><button id="solution">Решение</button><button id="next" class="good">Следующий</button></div><div id="fb" class="fb">Введи цифру частного для выделенного блока.</div></div><aside class="card"><div class="stats"><div class="stat"><b id="total">0</b><span>решено</span></div><div class="stat"><b id="right">0</b><span>верно</span></div><div class="stat"><b id="streak">0</b><span>серия</span></div></div><div class="box"><b id="status">тема начата</b><p id="advice">Реши первые 10 примеров.</p><button id="reset" class="danger">Сбросить статистику</button></div><div class="box"><b>Идея</b><p>Цифра частного должна давать произведение не больше выделенного блока.</p><p>Остаток переносим к следующей цифре.</p></div><h2>История</h2><div id="history"></div></aside></section></main><script>var KEY='mathExamCourseProgress.v1',TOPIC='longDivisionStepwise',level='easy',t,pos=0,selEnd=0,rem=0,quot='',done=false,stats={total:0,right:0,streak:0,best:0,date:null,history:[]};function el(i){return document.getElementById(i)}function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a}function msg(s,c){el('fb').textContent=s;el('fb').className='fb '+(c||'')}function load(){try{var d=JSON.parse(localStorage.getItem(KEY)),s=d&&d.topics&&d.topics[TOPIC];if(s){stats=s;if(!stats.history)stats.history=[]}}catch(e){}}function save(){var d;try{d=JSON.parse(localStorage.getItem(KEY))||{topics:{}}}catch(e){d={topics:{}}}d.topics=d.topics||{};d.topics[TOPIC]=stats;localStorage.setItem(KEY,JSON.stringify(d))}function make(){var len=level==='easy'?1:level==='med'?2:3,div=rnd(2,9),q='';for(var i=0;i<len;i++)q+=rnd(1,9);return{divisor:div,quotient:q,dividend:String(div*Number(q))}}function findEnd(){var e=pos+1;while(e<=t.dividend.length){var n=Number((rem?String(rem):'')+t.dividend.slice(pos,e));if(n>=t.divisor||e===t.dividend.length)return e;e++}}function part(){return Number((rem?String(rem):'')+t.dividend.slice(pos,selEnd))}function qDigit(){return Math.floor(part()/t.divisor)}function renderDigits(){el('digits').innerHTML='';for(var i=0;i<t.dividend.length;i++){var d=document.createElement('div');d.className='d '+(i<pos?'used':(i>=pos&&i<selEnd?'sel':''));d.textContent=t.dividend[i];el('digits').appendChild(d)}}function next(){t=make();pos=0;rem=0;quot='';done=false;selEnd=findEnd();el('steps').innerHTML='';el('task').textContent=t.dividend+' : '+t.divisor;renderDigits();el('ans').value='';renderStats();msg('Введи цифру частного для выделенного блока.','')}function check(){if(done){msg('Этот пример уже решён. Нажми «Следующий».','tip');return}var u=Number(el('ans').value),pa=part(),q=qDigit(),p=q*t.divisor,nr=pa-p;if(el('ans').value===''){msg('Введите цифру частного.','err');return}if(u!==q){msg('Проверь: '+t.divisor+' · '+u+' = '+(t.divisor*u)+'. Нужно не больше блока '+pa+'.','err');return}quot+=q;var st=document.createElement('div');st.className='step';st.textContent=pa+' : '+t.divisor+' → '+q+'; '+q+' · '+t.divisor+' = '+p+'; остаток '+nr;el('steps').appendChild(st);rem=nr;pos=selEnd;if(pos>=t.dividend.length){done=true;stats.total++;stats.right++;stats.streak++;stats.best=Math.max(stats.best||0,stats.streak);stats.history.unshift({text:t.dividend+' : '+t.divisor+' = '+t.quotient});stats.history=stats.history.slice(0,10);save();renderStats();msg('Готово! Ответ: '+t.quotient+'.','ok');return}selEnd=findEnd();renderDigits();el('ans').value='';msg('Верно. Сносим следующую цифру и продолжаем.','ok')}function solution(){el('steps').innerHTML='';var old=t,p0=0,r=0,q='';while(p0<old.dividend.length){var e=p0+1;while(e<=old.dividend.length){var pa=Number((r?String(r):'')+old.dividend.slice(p0,e));if(pa>=old.divisor||e===old.dividend.length){var qd=Math.floor(pa/old.divisor),pr=qd*old.divisor,nr=pa-pr,s=document.createElement('div');s.className='step';s.textContent=pa+' : '+old.divisor+' → '+qd+'; '+qd+' · '+old.divisor+' = '+pr+'; остаток '+nr;el('steps').appendChild(s);q+=qd;r=nr;p0=e;break}e++}}el('ans').value=old.quotient;msg('Решение показано.','tip')}function renderStats(){el('total').textContent=stats.total||0;el('right').textContent=stats.right||0;el('streak').textContent=stats.streak||0;el('history').innerHTML=stats.history.length?stats.history.map(h=>'<div class="hist">'+h.text+'</div>').join(''):'<div class="hist">Пока история пуста.</div>'}function setLevel(l){level=l;['easy','med','hard'].forEach(id=>el(id).classList.remove('active'));el(l).classList.add('active');next()}el('easy').onclick=()=>setLevel('easy');el('med').onclick=()=>setLevel('med');el('hard').onclick=()=>setLevel('hard');el('check').onclick=check;el('next').onclick=next;el('solution').onclick=solution;el('hint').onclick=()=>msg('Подбери q так, чтобы '+t.divisor+' · q не превысило '+part()+'.','tip');el('reset').onclick=function(){stats={total:0,right:0,streak:0,best:0,date:null,history:[]};save();renderStats();msg('Статистика сброшена.','tip')};el('ans').onkeydown=e=>{if(e.key==='Enter')check()};load();next();</script>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Деление уголком (столбиком) — пошаговый тренажёр | MathExam">
+<meta property="og:description" content="Учимся делить уголком как в тетради: выбираем первое неполное делимое, находим цифру частного, умножаем, вычитаем и сносим цифру. Проверка каждого шага и подсказки.">
+<meta property="og:url" content="https://mathexam.space/trainers/long-division-stepwise.html">
+<meta property="og:site_name" content="MathExam">
+<meta property="og:locale" content="ru_RU">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Деление уголком (столбиком) — пошаговый тренажёр | MathExam">
+<meta name="twitter:description" content="Учимся делить уголком как в тетради: выбираем первое неполное делимое, находим цифру частного, умножаем, вычитаем и сносим цифру. Проверка каждого шага и подсказки.">
+<link rel="stylesheet" href="/trainers/oge-basics/multiplication-division/division-guided.css?v=20261009-decimal-drag">
+<link rel="stylesheet" href="/trainers/oge-basics/multiplication-division/decimal-shift.css?v=20261009-decimal-goal">
+<link rel="stylesheet" href="/trainers/oge-basics/multiplication-division/multiplication-refresh.css?v=20261009">
+<script src="/trainers/oge-basics/multiplication-division/division-lab-core.js" defer></script>
+<script src="/trainers/oge-basics/multiplication-division/division-guided-core.js?v=20261007-notebook" defer></script>
+<script src="/trainers/oge-basics/arithmetic-route.js?v=20261008" defer></script>
+<script src="/trainers/long-division-entry.js?v=20261028" defer></script>
+<script src="/trainers/oge-basics/multiplication-division/decimal-shift.js?v=20261009-decimal-goal" defer></script>
+<script src="/trainers/oge-basics/multiplication-division/multiplication-refresh.js?v=20261009" defer></script>
+<script src="/trainers/oge-basics/basics-help.js?v=basics-context-20261020" defer></script>
+<script src="/trainers/oge-basics/multiplication-division/division-guided.js?v=20261009-decimal-goal" defer></script>
+<link rel="stylesheet" href="/trainers/oge-basics/basics-help.css?v=basics-context-20261020">
+<!-- BEGIN OGE BASICS CONTEXTUAL SHELL -->
+<link rel="stylesheet" href="/trainers/oge-basics/navigation-minimal.css?v=20261020">
+<script defer src="/trainers/oge-basics/navigation-minimal.js?v=20261020"></script>
+<!-- END OGE BASICS CONTEXTUAL SHELL --><link rel="stylesheet" href="/assets/download-panel.css">
+</head>
+<body>
+<a class="skip-link" href="#question">К текущему шагу</a>
+<div id="guided-division">
+<header class="page-header"><a class="brand" href="/trainers/oge-basics/multiplication-division/index.html" aria-label="MathExam — умножение и деление">MathExam</a><button id="topics-open" class="quiet" type="button" aria-haspopup="dialog">Выбрать тему</button></header>
+<main class="page" id="main">
+<div id="storage-notice" role="status" hidden></div>
+<nav id="course-navigation" aria-label="Маршрут ПредОГЭ" hidden><p class="small"><a id="course-return" href="/trainers/oge-basics/arithmetic-route.html">← К моему маршруту ПредОГЭ</a></p></nav>
+<div class="intro"><p id="topic-label" class="eyebrow"></p><h1>Деление уголком</h1><p id="intro-text">Решаем по одному действию. Спешить не нужно.</p></div>
+<section class="workspace" aria-label="Текущий пример">
+<div class="exercise-header"><h2 id="problem"></h2><span id="step-counter"></span></div>
+<div id="topic-progress" class="topic-progress" aria-live="off"></div>
+<div class="progress-track" role="progressbar" aria-label="Шаги текущего примера" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="step-progress" class="progress-fill"></span></div>
+<div class="lesson-layout">
+<div class="visual-pane">
+<div id="decimal-shift" hidden></div>
+<details id="normalization-record" hidden><summary>Запись преобразования</summary><div id="normalization" hidden></div></details>
+<div class="notebook-scroll" tabindex="0" role="region" aria-label="Запись решения уголком"><div id="notebook" class="notebook"></div></div>
+<p id="notebook-note" class="notebook-note"></p>
+<div id="decimal-note" class="decimal-cue" hidden></div>
+</div>
+<div class="question" id="question" tabindex="-1">
+<p class="step-name" id="step-name"></p><h2 id="prompt"></h2><p id="answer-note"></p>
+<form id="answer-form" novalidate>
+<label for="answer" id="answer-label">Твой ответ</label>
+<div id="answer-options" hidden></div>
+<div class="answer-line"><input id="answer" type="text" inputmode="decimal" autocomplete="off" maxlength="30" aria-describedby="answer-note feedback"><button id="primary" type="submit">Проверить</button></div>
+</form>
+<p id="feedback" role="status" aria-live="polite"></p>
+<div class="help-actions"><div id="help-area"><button id="help-toggle" class="help-toggle" type="button" aria-expanded="false" aria-controls="help-content">Помочь с этим шагом</button><div id="help-content" hidden><p id="hint-text"></p><div id="multiples" hidden></div><button id="reveal" class="quiet" type="button">Показать ответ к этому шагу</button><p id="revealed" role="status"></p></div></div><button id="multiplication-refresh" class="help-toggle" type="button" aria-haspopup="dialog">Повторить таблицу умножения</button></div>
+</div>
+</div>
+<div id="completion" hidden><h2>Пример закончен</h2><p id="completion-text"></p><button id="next-example" class="primary" type="button">Ещё один похожий пример</button><button id="next-topic" class="quiet" type="button" hidden></button><button id="repeat-example" class="quiet" type="button">Повторить этот пример</button><p class="small" id="save-note">Можно закончить на сегодня. Результат сохранится в этом браузере.</p><p><a id="course-return-completion" href="/trainers/oge-basics/arithmetic-route.html" hidden>Вернуться к маршруту ПредОГЭ</a></p></div>
+</section>
+<details id="results"><summary>Мои результаты</summary><p id="results-text"></p><button id="report-copy" class="quiet" type="button">Скопировать результат для учителя</button><p id="report-status" role="status"></p><textarea id="report-text" readonly rows="7" aria-label="Результат для учителя" hidden></textarea><p class="small">Отправь текст или снимок экрана учителю в MAX. Автоматической отправки здесь нет.</p></details>
+<section aria-labelledby="division-about-title">
+<h2 id="division-about-title">Пошаговый тренажёр деления уголком</h2>
+<p>Деление уголком, или столбиком, записывается как в школьной тетради. Выбери первое неполное делимое, наметь места для цифр частного, умножь, вычти и снеси следующую цифру. Каждый ответ проверяется отдельно, а строки решения остаются перед тобой.</p>
+<p>Начни с простого примера. Затем можно потренировать ноль в частном, деление с остатком, двузначный делитель и десятичные дроби. Если трудно, открой помощь к текущему шагу. Начатый пример сохраняется в этом браузере.</p>
+<p><a href="/topics/delenie-ugolkom/">Как делить столбиком: объяснение на примере</a></p>
+</section>
+<footer><p>Уголок остаётся на экране. Подсказками пользоваться можно.</p><a href="/trainers/arifmetika.html" id="arithmetic-link">Другие арифметические действия</a></footer>
+</main>
+<dialog id="topics-dialog" aria-labelledby="topics-title"><div class="dialog-header"><h2 id="topics-title">Что потренировать?</h2><button id="topics-close" class="quiet" type="button">Вернуться к примеру</button></div><p>Выбирай одну тему. Начатые примеры сохраняются.</p><div id="topics-list"></div><p class="small">Для первого знакомства — «Начать с простого».</p></dialog>
+</div>
+<noscript><p>Чтобы вводить ответы и получать подсказки, включите JavaScript в браузере.</p></noscript>
 <!-- download-panel:start:long-division-stepwise -->
 <section class="download-panel" id="download">
   <h2>Скачать и адаптировать</h2>
@@ -15,4 +89,5 @@
   <p class="download-note">Если в тренажёре есть дополнительные файлы, удобнее скачать архив. <a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/">Как скачать и адаптировать тренажёр</a>.</p>
 </section>
 <!-- download-panel:end:long-division-stepwise -->
-</body></html>
+</body>
+</html>

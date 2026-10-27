@@ -6,7 +6,7 @@ const path = require('node:path');
 const {chromium} = require('playwright');
 const root = path.resolve(__dirname, '..');
 const G = require('../trainers/oge-basics/multiplication-division/division-guided-core');
-const relative = '/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html';
+const relative = process.env.DIVISION_ENTRY_PATH || '/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html';
 const KEY = 'mathExamBasics.guidedDivision.v1';
 const types = {'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8'};
 const server = http.createServer((req, res) => {
