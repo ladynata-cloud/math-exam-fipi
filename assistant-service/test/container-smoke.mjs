@@ -48,7 +48,20 @@ execFileSync('docker', ['restart', name], { stdio: 'pipe' }); await ready();
 assert.equal((await request('/api/topics', 'GET', undefined, session)).status, 200, 'Session must survive a container restart.');
 assert.equal((await request('/api/ask', 'POST', body, session)).status, 409, 'Committed request IDs must survive restart.');
 const status = JSON.parse(execFileSync('docker', ['exec', name, 'node', 'src/operator.js', 'status'], { encoding: 'utf8' }));
-assert.equal(status.day.requests, 1); assert.equal(status.day.api_requests, 0); assert.equal(status.feedback[0].count, 1);
+// Read all persisted daily buckets: restart may cross UTC midnight. Monthly
+// aggregates duplicate the daily counts and must not be included in this sum.
+const persistedUsage = JSON.parse(execFileSync('docker', ['exec', name, 'node', '--input-type=module', '-e', `
+  import { DatabaseSync } from 'node:sqlite';
+  const db = new DatabaseSync(process.env.ASSISTANT_DB_PATH, { readOnly: true });
+  try {
+    console.log(JSON.stringify(db.prepare(
+      'SELECT COALESCE(SUM(requests), 0) AS requests, COALESCE(SUM(api_requests), 0) AS api_requests FROM usage_totals WHERE length(period)=10'
+    ).get()));
+  } finally { db.close(); }
+`], { encoding: 'utf8' }));
+assert.equal(persistedUsage.requests, 1, 'The committed daily request count must survive restart, including UTC midnight.');
+assert.equal(persistedUsage.api_requests, 0, 'The offline smoke test must never reserve a model API call.');
+assert.equal(status.feedback[0].count, 1);
 assert.equal((await request('/api/session', 'DELETE', undefined, session)).status, 200);
 assert.equal((await request('/api/topics', 'GET', undefined, session)).status, 401);
 console.log('ASSISTANT_CONTAINER_OK: nonroot, private API, exact math, durable restart, backup, deletion, zero model calls');
