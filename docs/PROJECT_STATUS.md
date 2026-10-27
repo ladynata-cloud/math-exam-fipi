@@ -1,8 +1,27 @@
 # MathExam project status
 
-Updated: 2026-10-26 (Asia/Novosibirsk)
+Updated: 2026-10-28 (Asia/Novosibirsk)
 
-## Prepared: separate grade-six Peterson learning line
+## Prepared: complete Peterson first volume and separate practice
+
+- [Scope](tasks/PETERSON6_COMPLETE_COURSE.md), HIGH; owner selected all
+  numbers 1–497 and all subparts of the supplied 2019 first volume, and
+  separately requested a practice line. Base is the published PR #362 merge.
+- Work covers complete source conditions/drawings, retained step solutions
+  and separately tracked new-example practice. Cabinet/AI integration is a
+  proposal; no pupil assignments or provider connection are authorized here.
+- Prepared content: all 497 numbers, 2167 instructional answer records,
+  431 exact expression trees and 37 practice skills. The published separate
+  thirteen-topic Maxim line retains its identity and progress.
+- [Implementation and validation report](reports/PETERSON6_COMPLETE_COURSE.md):
+  local gate `PETERSON6_COMPLETE_LOCAL_OK`; regression 15/15, DOM 7/7,
+  independent mathematics and legacy contract checks passed. The report
+  distinguishes authored coverage from independently sampled review.
+- Next: exact-head full-checkout CI, current external review or an owner
+  exception, and separate exact-base/head release authorization. This new
+  addition is prepared, not yet published.
+
+## Published: separate grade-six Peterson learning line
 
 - [Scope](tasks/MAXIM_PETERSON6_LINE.md), MEDIUM isolated static addition;
   base `92d733a49692744ce043503c57f29b77bfb09a24`, branch
@@ -10,15 +29,19 @@ Updated: 2026-10-26 (Asia/Novosibirsk)
 - Owner requested the approved thirteen-topic line as its own page on the
   main website, with four PDFs and browser-local progress. The new route is
   `/trainers/maxim-peterson6/`; no cabinet, board or shared-course changes.
-- Prepared content retains all selected textbook entries, generated practice,
+- Published content retains all selected textbook entries, generated practice,
   hints, independent/assisted accounting, CSV report and JSON transfer.
 - Baseline reconciliation: main is merged SEO PR #357; public `/index.html`
   matches that base. The older SEO preparation entry below is historical.
-- Internal mathematics/state and integration reviews are complete. Claude
-  consultation is unavailable/not completed and is not claimed as a waiver.
-- Next: finish exact-head Draft PR checks; resolve the current review/release
-  decision with the owner; publish and verify all five public course assets
-  only under valid exact-base/head authorization. Not yet a production release.
+- [PR #362](https://github.com/ladynata-cloud/math-exam-fipi/pull/362) was
+  squash-merged as `8723d6bfb19e64d43c474b1fc7116fe8630ec20a` under the owner's
+  exact-base/head authorization and task-specific Claude exception. Parent,
+  reviewed tree, ten-file delta and stable patch identity were verified.
+- Course and SEO PR checks, main course run `40571919301` and Pages run
+  `40571917932` passed. All five published course assets returned HTTP 200
+  and matched their reviewed bytes; browser release inspection passed.
+- Release gate: `MAXIM_PETERSON6_RELEASE_OK`. This exception applies only
+  to PR #362; new work follows its own review and release decisions.
 
 ## Prepared: HTTPS canonicals and static trainer metadata
 

@@ -1,0 +1,7940 @@
+{
+  "schema": 1,
+  "source": {
+    "authors": [
+      "Г. В. Дорофеев",
+      "Л. Г. Петерсон"
+    ],
+    "title": "Математика. 6 класс. Учебник в 3 частях. Часть 1",
+    "publisher": "БИНОМ. Лаборатория знаний",
+    "year": 2019,
+    "pdfPages": 112,
+    "printedPageEqualsPdfPage": true,
+    "availableParts": [
+      1
+    ],
+    "missingParts": [
+      2,
+      3
+    ],
+    "sha256": "852f8db30a68cb9f5d42fe7e02d28eb87a46fdff6aa4707902595e3761cf1d92"
+  },
+  "topics": [
+    {
+      "id": "negation",
+      "title": "Понятие отрицания",
+      "chapter": 1,
+      "section": 1,
+      "point": 1,
+      "startPage": 3,
+      "endPage": 9,
+      "firstExercise": 1,
+      "lastExercise": 25,
+      "kind": "topic"
+    },
+    {
+      "id": "general-negation",
+      "title": "Отрицания общих высказываний",
+      "chapter": 1,
+      "section": 1,
+      "point": 2,
+      "startPage": 10,
+      "endPage": 16,
+      "firstExercise": 26,
+      "lastExercise": 58,
+      "kind": "topic"
+    },
+    {
+      "id": "existence-negation",
+      "title": "Отрицания высказываний о существовании",
+      "chapter": 1,
+      "section": 1,
+      "point": 3,
+      "startPage": 17,
+      "endPage": 19,
+      "firstExercise": 59,
+      "lastExercise": 70,
+      "kind": "topic"
+    },
+    {
+      "id": "variables",
+      "title": "Понятие переменной. Выражения с переменными",
+      "chapter": 1,
+      "section": 2,
+      "point": 1,
+      "startPage": 20,
+      "endPage": 25,
+      "firstExercise": 71,
+      "lastExercise": 97,
+      "kind": "topic"
+    },
+    {
+      "id": "variable-propositions",
+      "title": "Предложения с переменными",
+      "chapter": 1,
+      "section": 2,
+      "point": 2,
+      "startPage": 26,
+      "endPage": 32,
+      "firstExercise": 98,
+      "lastExercise": 119,
+      "kind": "topic"
+    },
+    {
+      "id": "quantifiers",
+      "title": "Переменная и кванторы",
+      "chapter": 1,
+      "section": 2,
+      "point": 3,
+      "startPage": 33,
+      "endPage": 38,
+      "firstExercise": 120,
+      "lastExercise": 142,
+      "kind": "topic"
+    },
+    {
+      "id": "quantifier-negation",
+      "title": "Отрицание утверждений с кванторами",
+      "chapter": 1,
+      "section": 2,
+      "point": 4,
+      "startPage": 38,
+      "endPage": 42,
+      "firstExercise": 143,
+      "lastExercise": 166,
+      "kind": "topic"
+    },
+    {
+      "id": "logic-review",
+      "title": "Самопроверка: язык и логика",
+      "page": 43,
+      "firstExercise": 167,
+      "lastExercise": 175,
+      "kind": "review",
+      "startPage": 43,
+      "endPage": 43
+    },
+    {
+      "id": "mixed-fractions",
+      "title": "Совместные действия с обыкновенными и десятичными дробями",
+      "chapter": 2,
+      "section": 1,
+      "point": 1,
+      "startPage": 44,
+      "endPage": 55,
+      "firstExercise": 176,
+      "lastExercise": 220,
+      "kind": "topic"
+    },
+    {
+      "id": "river",
+      "title": "Задачи на движение по реке",
+      "chapter": 2,
+      "section": 1,
+      "point": 2,
+      "startPage": 56,
+      "endPage": 63,
+      "firstExercise": 221,
+      "lastExercise": 256,
+      "kind": "topic"
+    },
+    {
+      "id": "mean",
+      "title": "Среднее арифметическое",
+      "chapter": 2,
+      "section": 1,
+      "point": 3,
+      "startPage": 63,
+      "endPage": 72,
+      "firstExercise": 257,
+      "lastExercise": 296,
+      "kind": "topic"
+    },
+    {
+      "id": "arithmetic-review",
+      "title": "Самопроверка: числа и действия",
+      "page": 73,
+      "firstExercise": 297,
+      "lastExercise": 307,
+      "kind": "review",
+      "startPage": 73,
+      "endPage": 73
+    },
+    {
+      "id": "percent-concept",
+      "title": "Понятие о проценте",
+      "chapter": 2,
+      "section": 2,
+      "point": 1,
+      "startPage": 74,
+      "endPage": 82,
+      "firstExercise": 308,
+      "lastExercise": 350,
+      "kind": "topic"
+    },
+    {
+      "id": "percent-problems",
+      "title": "Задачи на проценты",
+      "chapter": 2,
+      "section": 2,
+      "point": 2,
+      "startPage": 83,
+      "endPage": 97,
+      "firstExercise": 351,
+      "lastExercise": 426,
+      "kind": "topic"
+    },
+    {
+      "id": "simple-growth",
+      "title": "Простой процентный рост",
+      "chapter": 2,
+      "section": 2,
+      "point": 3,
+      "startPage": 97,
+      "endPage": 105,
+      "firstExercise": 427,
+      "lastExercise": 461,
+      "kind": "topic"
+    },
+    {
+      "id": "compound-growth",
+      "title": "Сложный процентный рост",
+      "chapter": 2,
+      "section": 2,
+      "point": 4,
+      "startPage": 105,
+      "endPage": 109,
+      "firstExercise": 462,
+      "lastExercise": 487,
+      "kind": "topic"
+    },
+    {
+      "id": "percent-review",
+      "title": "Самопроверка: проценты",
+      "page": 110,
+      "firstExercise": 488,
+      "lastExercise": 497,
+      "kind": "review",
+      "startPage": 110,
+      "endPage": 110
+    }
+  ],
+  "exercises": [
+    {
+      "number": 1,
+      "topic": "negation",
+      "page": 6,
+      "regions": [
+        {
+          "page": 6,
+          "x": 66,
+          "y": 174.493,
+          "width": 484,
+          "height": 241.2
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "topic": "negation",
+      "page": 6,
+      "regions": [
+        {
+          "page": 6,
+          "x": 66,
+          "y": 415.193,
+          "width": 484,
+          "height": 140.55
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "topic": "negation",
+      "page": 6,
+      "regions": [
+        {
+          "page": 6,
+          "x": 66,
+          "y": 555.243,
+          "width": 484,
+          "height": 92.15
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "topic": "negation",
+      "page": 6,
+      "regions": [
+        {
+          "page": 6,
+          "x": 66,
+          "y": 646.893,
+          "width": 484,
+          "height": 52.01
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "topic": "negation",
+      "page": 7,
+      "regions": [
+        {
+          "page": 7,
+          "x": 36,
+          "y": 61.643,
+          "width": 484,
+          "height": 158.034
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "topic": "negation",
+      "page": 7,
+      "regions": [
+        {
+          "page": 7,
+          "x": 36,
+          "y": 219.193,
+          "width": 484,
+          "height": 90.8
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "topic": "negation",
+      "page": 7,
+      "regions": [
+        {
+          "page": 7,
+          "x": 36,
+          "y": 309.493,
+          "width": 484,
+          "height": 80.423
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "topic": "negation",
+      "page": 7,
+      "regions": [
+        {
+          "page": 7,
+          "x": 36,
+          "y": 389.416,
+          "width": 484,
+          "height": 86.277
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "topic": "negation",
+      "page": 7,
+      "regions": [
+        {
+          "page": 7,
+          "x": 36,
+          "y": 475.193,
+          "width": 484,
+          "height": 35.45
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "topic": "negation",
+      "page": 7,
+      "regions": [
+        {
+          "page": 7,
+          "x": 36,
+          "y": 510.143,
+          "width": 484,
+          "height": 49.3
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "topic": "negation",
+      "page": 7,
+      "regions": [
+        {
+          "page": 7,
+          "x": 36,
+          "y": 558.943,
+          "width": 484,
+          "height": 81.45
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "topic": "negation",
+      "page": 7,
+      "regions": [
+        {
+          "page": 7,
+          "x": 36,
+          "y": 639.893,
+          "width": 484,
+          "height": 59.458
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "topic": "negation",
+      "page": 8,
+      "regions": [
+        {
+          "page": 8,
+          "x": 66,
+          "y": 61.643,
+          "width": 484,
+          "height": 61.984
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "topic": "negation",
+      "page": 8,
+      "regions": [
+        {
+          "page": 8,
+          "x": 66,
+          "y": 127.693,
+          "width": 484,
+          "height": 242.384
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "topic": "negation",
+      "page": 8,
+      "regions": [
+        {
+          "page": 8,
+          "x": 66,
+          "y": 370.143,
+          "width": 484,
+          "height": 64.612
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "topic": "negation",
+      "page": 8,
+      "regions": [
+        {
+          "page": 8,
+          "x": 66,
+          "y": 436.693,
+          "width": 484,
+          "height": 56.588
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "topic": "negation",
+      "page": 8,
+      "regions": [
+        {
+          "page": 8,
+          "x": 66,
+          "y": 492.943,
+          "width": 484,
+          "height": 123.184
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "topic": "negation",
+      "page": 8,
+      "regions": [
+        {
+          "page": 8,
+          "x": 66,
+          "y": 616.193,
+          "width": 484,
+          "height": 79.984
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "topic": "negation",
+      "page": 9,
+      "regions": [
+        {
+          "page": 9,
+          "x": 36,
+          "y": 65.543,
+          "width": 484,
+          "height": 120.55
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "topic": "negation",
+      "page": 9,
+      "regions": [
+        {
+          "page": 9,
+          "x": 36,
+          "y": 185.593,
+          "width": 484,
+          "height": 104.25
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "topic": "negation",
+      "page": 9,
+      "regions": [
+        {
+          "page": 9,
+          "x": 36,
+          "y": 289.343,
+          "width": 484,
+          "height": 33.2
+        }
+      ]
+    },
+    {
+      "number": 22,
+      "topic": "negation",
+      "page": 9,
+      "regions": [
+        {
+          "page": 9,
+          "x": 36,
+          "y": 322.043,
+          "width": 484,
+          "height": 169.134
+        }
+      ]
+    },
+    {
+      "number": 23,
+      "topic": "negation",
+      "page": 9,
+      "regions": [
+        {
+          "page": 9,
+          "x": 36,
+          "y": 491.343,
+          "width": 484,
+          "height": 52.7
+        }
+      ]
+    },
+    {
+      "number": 24,
+      "topic": "negation",
+      "page": 9,
+      "regions": [
+        {
+          "page": 9,
+          "x": 36,
+          "y": 543.543,
+          "width": 484,
+          "height": 99.6
+        }
+      ]
+    },
+    {
+      "number": 25,
+      "topic": "negation",
+      "page": 9,
+      "regions": [
+        {
+          "page": 9,
+          "x": 36,
+          "y": 642.643,
+          "width": 484,
+          "height": 54.168
+        }
+      ]
+    },
+    {
+      "number": 26,
+      "topic": "general-negation",
+      "page": 12,
+      "regions": [
+        {
+          "page": 12,
+          "x": 66,
+          "y": 65.543,
+          "width": 484,
+          "height": 206.276
+        }
+      ]
+    },
+    {
+      "number": 27,
+      "topic": "general-negation",
+      "page": 12,
+      "regions": [
+        {
+          "page": 12,
+          "x": 66,
+          "y": 271.319,
+          "width": 484,
+          "height": 205.224
+        }
+      ]
+    },
+    {
+      "number": 28,
+      "topic": "general-negation",
+      "page": 12,
+      "regions": [
+        {
+          "page": 12,
+          "x": 66,
+          "y": 476.043,
+          "width": 484,
+          "height": 223.228
+        }
+      ]
+    },
+    {
+      "number": 29,
+      "topic": "general-negation",
+      "page": 13,
+      "regions": [
+        {
+          "page": 13,
+          "x": 36,
+          "y": 61.643,
+          "width": 484,
+          "height": 225.5
+        }
+      ]
+    },
+    {
+      "number": 30,
+      "topic": "general-negation",
+      "page": 13,
+      "regions": [
+        {
+          "page": 13,
+          "x": 36,
+          "y": 286.643,
+          "width": 484,
+          "height": 185.1
+        }
+      ]
+    },
+    {
+      "number": 31,
+      "topic": "general-negation",
+      "page": 13,
+      "regions": [
+        {
+          "page": 13,
+          "x": 36,
+          "y": 471.243,
+          "width": 484,
+          "height": 41.25
+        }
+      ]
+    },
+    {
+      "number": 32,
+      "topic": "general-negation",
+      "page": 13,
+      "regions": [
+        {
+          "page": 13,
+          "x": 36,
+          "y": 511.993,
+          "width": 484,
+          "height": 49.95
+        }
+      ]
+    },
+    {
+      "number": 33,
+      "topic": "general-negation",
+      "page": 13,
+      "regions": [
+        {
+          "page": 13,
+          "x": 36,
+          "y": 561.443,
+          "width": 484,
+          "height": 134.644
+        }
+      ]
+    },
+    {
+      "number": 34,
+      "topic": "general-negation",
+      "page": 14,
+      "regions": [
+        {
+          "page": 14,
+          "x": 66,
+          "y": 61.643,
+          "width": 484,
+          "height": 100.348
+        }
+      ]
+    },
+    {
+      "number": 35,
+      "topic": "general-negation",
+      "page": 14,
+      "regions": [
+        {
+          "page": 14,
+          "x": 66,
+          "y": 161.793,
+          "width": 484,
+          "height": 62.25
+        }
+      ]
+    },
+    {
+      "number": 36,
+      "topic": "general-negation",
+      "page": 14,
+      "regions": [
+        {
+          "page": 14,
+          "x": 66,
+          "y": 223.543,
+          "width": 484,
+          "height": 48.55
+        }
+      ]
+    },
+    {
+      "number": 37,
+      "topic": "general-negation",
+      "page": 14,
+      "regions": [
+        {
+          "page": 14,
+          "x": 66,
+          "y": 271.593,
+          "width": 484,
+          "height": 195.0
+        }
+      ]
+    },
+    {
+      "number": 38,
+      "topic": "general-negation",
+      "page": 14,
+      "regions": [
+        {
+          "page": 14,
+          "x": 66,
+          "y": 466.093,
+          "width": 484,
+          "height": 186.834
+        }
+      ]
+    },
+    {
+      "number": 39,
+      "topic": "general-negation",
+      "page": 14,
+      "regions": [
+        {
+          "page": 14,
+          "x": 66,
+          "y": 652.443,
+          "width": 484,
+          "height": 44.421
+        }
+      ]
+    },
+    {
+      "number": 40,
+      "topic": "general-negation",
+      "page": 15,
+      "regions": [
+        {
+          "page": 15,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 109.15
+        }
+      ]
+    },
+    {
+      "number": 41,
+      "topic": "general-negation",
+      "page": 15,
+      "regions": [
+        {
+          "page": 15,
+          "x": 36,
+          "y": 170.289,
+          "width": 484,
+          "height": 25.8
+        }
+      ]
+    },
+    {
+      "number": 42,
+      "topic": "general-negation",
+      "page": 15,
+      "regions": [
+        {
+          "page": 15,
+          "x": 36,
+          "y": 195.589,
+          "width": 484,
+          "height": 50.95
+        }
+      ]
+    },
+    {
+      "number": 43,
+      "topic": "general-negation",
+      "page": 15,
+      "regions": [
+        {
+          "page": 15,
+          "x": 36,
+          "y": 246.039,
+          "width": 484,
+          "height": 50.95
+        }
+      ]
+    },
+    {
+      "number": 44,
+      "topic": "general-negation",
+      "page": 15,
+      "regions": [
+        {
+          "page": 15,
+          "x": 36,
+          "y": 296.489,
+          "width": 484,
+          "height": 50.95
+        }
+      ]
+    },
+    {
+      "number": 45,
+      "topic": "general-negation",
+      "page": 15,
+      "regions": [
+        {
+          "page": 15,
+          "x": 36,
+          "y": 346.939,
+          "width": 484,
+          "height": 65.35
+        }
+      ]
+    },
+    {
+      "number": 46,
+      "topic": "general-negation",
+      "page": 15,
+      "regions": [
+        {
+          "page": 15,
+          "x": 36,
+          "y": 411.789,
+          "width": 484,
+          "height": 50.95
+        }
+      ]
+    },
+    {
+      "number": 47,
+      "topic": "general-negation",
+      "page": 15,
+      "regions": [
+        {
+          "page": 15,
+          "x": 36,
+          "y": 462.239,
+          "width": 484,
+          "height": 42.1
+        }
+      ]
+    },
+    {
+      "number": 48,
+      "topic": "general-negation",
+      "page": 15,
+      "regions": [
+        {
+          "page": 15,
+          "x": 36,
+          "y": 503.839,
+          "width": 484,
+          "height": 41.65
+        }
+      ]
+    },
+    {
+      "number": 49,
+      "topic": "general-negation",
+      "page": 15,
+      "regions": [
+        {
+          "page": 15,
+          "x": 36,
+          "y": 544.989,
+          "width": 484,
+          "height": 153.884
+        }
+      ]
+    },
+    {
+      "number": 50,
+      "topic": "general-negation",
+      "page": 16,
+      "regions": [
+        {
+          "page": 16,
+          "x": 66,
+          "y": 67.243,
+          "width": 484,
+          "height": 34.0
+        }
+      ]
+    },
+    {
+      "number": 51,
+      "topic": "general-negation",
+      "page": 16,
+      "regions": [
+        {
+          "page": 16,
+          "x": 66,
+          "y": 100.743,
+          "width": 484,
+          "height": 122.3
+        }
+      ]
+    },
+    {
+      "number": 52,
+      "topic": "general-negation",
+      "page": 16,
+      "regions": [
+        {
+          "page": 16,
+          "x": 66,
+          "y": 222.543,
+          "width": 484,
+          "height": 50.15
+        }
+      ]
+    },
+    {
+      "number": 53,
+      "topic": "general-negation",
+      "page": 16,
+      "regions": [
+        {
+          "page": 16,
+          "x": 66,
+          "y": 272.193,
+          "width": 484,
+          "height": 36.1
+        }
+      ]
+    },
+    {
+      "number": 54,
+      "topic": "general-negation",
+      "page": 16,
+      "regions": [
+        {
+          "page": 16,
+          "x": 66,
+          "y": 307.793,
+          "width": 484,
+          "height": 36.784
+        }
+      ]
+    },
+    {
+      "number": 55,
+      "topic": "general-negation",
+      "page": 16,
+      "regions": [
+        {
+          "page": 16,
+          "x": 66,
+          "y": 344.643,
+          "width": 484,
+          "height": 36.784
+        }
+      ]
+    },
+    {
+      "number": 56,
+      "topic": "general-negation",
+      "page": 16,
+      "regions": [
+        {
+          "page": 16,
+          "x": 66,
+          "y": 381.543,
+          "width": 484,
+          "height": 85.3
+        }
+      ]
+    },
+    {
+      "number": 57,
+      "topic": "general-negation",
+      "page": 16,
+      "regions": [
+        {
+          "page": 16,
+          "x": 66,
+          "y": 466.343,
+          "width": 484,
+          "height": 68.3
+        }
+      ]
+    },
+    {
+      "number": 58,
+      "topic": "general-negation",
+      "page": 16,
+      "regions": [
+        {
+          "page": 16,
+          "x": 66,
+          "y": 534.143,
+          "width": 484,
+          "height": 165.036
+        }
+      ]
+    },
+    {
+      "number": 59,
+      "topic": "existence-negation",
+      "page": 18,
+      "regions": [
+        {
+          "page": 18,
+          "x": 66,
+          "y": 65.543,
+          "width": 484,
+          "height": 222.45
+        }
+      ]
+    },
+    {
+      "number": 60,
+      "topic": "existence-negation",
+      "page": 18,
+      "regions": [
+        {
+          "page": 18,
+          "x": 66,
+          "y": 287.493,
+          "width": 484,
+          "height": 51.184
+        }
+      ]
+    },
+    {
+      "number": 61,
+      "topic": "existence-negation",
+      "page": 18,
+      "regions": [
+        {
+          "page": 18,
+          "x": 66,
+          "y": 339.693,
+          "width": 484,
+          "height": 168.9
+        }
+      ]
+    },
+    {
+      "number": 62,
+      "topic": "existence-negation",
+      "page": 18,
+      "regions": [
+        {
+          "page": 18,
+          "x": 66,
+          "y": 508.093,
+          "width": 484,
+          "height": 69.6
+        }
+      ]
+    },
+    {
+      "number": 63,
+      "topic": "existence-negation",
+      "page": 18,
+      "regions": [
+        {
+          "page": 18,
+          "x": 66,
+          "y": 577.193,
+          "width": 484,
+          "height": 122.448
+        }
+      ]
+    },
+    {
+      "number": 64,
+      "topic": "existence-negation",
+      "page": 19,
+      "regions": [
+        {
+          "page": 19,
+          "x": 36,
+          "y": 61.643,
+          "width": 484,
+          "height": 177.4
+        }
+      ]
+    },
+    {
+      "number": 65,
+      "topic": "existence-negation",
+      "page": 19,
+      "regions": [
+        {
+          "page": 19,
+          "x": 36,
+          "y": 238.543,
+          "width": 484,
+          "height": 61.85
+        }
+      ]
+    },
+    {
+      "number": 66,
+      "topic": "existence-negation",
+      "page": 19,
+      "regions": [
+        {
+          "page": 19,
+          "x": 36,
+          "y": 299.893,
+          "width": 484,
+          "height": 80.25
+        }
+      ]
+    },
+    {
+      "number": 67,
+      "topic": "existence-negation",
+      "page": 19,
+      "regions": [
+        {
+          "page": 19,
+          "x": 36,
+          "y": 379.643,
+          "width": 484,
+          "height": 146.9
+        }
+      ]
+    },
+    {
+      "number": 68,
+      "topic": "existence-negation",
+      "page": 19,
+      "regions": [
+        {
+          "page": 19,
+          "x": 36,
+          "y": 526.043,
+          "width": 484,
+          "height": 42.4
+        }
+      ]
+    },
+    {
+      "number": 69,
+      "topic": "existence-negation",
+      "page": 19,
+      "regions": [
+        {
+          "page": 19,
+          "x": 36,
+          "y": 567.943,
+          "width": 484,
+          "height": 80.15
+        }
+      ]
+    },
+    {
+      "number": 70,
+      "topic": "existence-negation",
+      "page": 19,
+      "regions": [
+        {
+          "page": 19,
+          "x": 36,
+          "y": 647.593,
+          "width": 484,
+          "height": 51.284
+        }
+      ]
+    },
+    {
+      "number": 71,
+      "topic": "variables",
+      "page": 22,
+      "regions": [
+        {
+          "page": 22,
+          "x": 66,
+          "y": 65.543,
+          "width": 484,
+          "height": 118.0
+        }
+      ]
+    },
+    {
+      "number": 72,
+      "topic": "variables",
+      "page": 22,
+      "regions": [
+        {
+          "page": 22,
+          "x": 66,
+          "y": 183.043,
+          "width": 484,
+          "height": 99.8
+        }
+      ]
+    },
+    {
+      "number": 73,
+      "topic": "variables",
+      "page": 22,
+      "regions": [
+        {
+          "page": 22,
+          "x": 66,
+          "y": 282.343,
+          "width": 484,
+          "height": 94.0
+        }
+      ]
+    },
+    {
+      "number": 74,
+      "topic": "variables",
+      "page": 22,
+      "regions": [
+        {
+          "page": 22,
+          "x": 66,
+          "y": 375.843,
+          "width": 484,
+          "height": 94.45
+        }
+      ]
+    },
+    {
+      "number": 75,
+      "topic": "variables",
+      "page": 22,
+      "regions": [
+        {
+          "page": 22,
+          "x": 66,
+          "y": 469.793,
+          "width": 484,
+          "height": 164.85
+        }
+      ]
+    },
+    {
+      "number": 76,
+      "topic": "variables",
+      "page": 22,
+      "regions": [
+        {
+          "page": 22,
+          "x": 66,
+          "y": 634.143,
+          "width": 484,
+          "height": 65.584
+        }
+      ]
+    },
+    {
+      "number": 77,
+      "topic": "variables",
+      "page": 23,
+      "regions": [
+        {
+          "page": 23,
+          "x": 36,
+          "y": 61.643,
+          "width": 484,
+          "height": 63.4
+        }
+      ]
+    },
+    {
+      "number": 78,
+      "topic": "variables",
+      "page": 23,
+      "regions": [
+        {
+          "page": 23,
+          "x": 36,
+          "y": 124.543,
+          "width": 484,
+          "height": 115.6
+        }
+      ]
+    },
+    {
+      "number": 79,
+      "topic": "variables",
+      "page": 23,
+      "regions": [
+        {
+          "page": 23,
+          "x": 36,
+          "y": 239.643,
+          "width": 484,
+          "height": 115.0
+        }
+      ]
+    },
+    {
+      "number": 80,
+      "topic": "variables",
+      "page": 23,
+      "regions": [
+        {
+          "page": 23,
+          "x": 36,
+          "y": 354.143,
+          "width": 484,
+          "height": 68.05
+        }
+      ]
+    },
+    {
+      "number": 81,
+      "topic": "variables",
+      "page": 23,
+      "regions": [
+        {
+          "page": 23,
+          "x": 36,
+          "y": 421.693,
+          "width": 484,
+          "height": 220.95
+        }
+      ]
+    },
+    {
+      "number": 82,
+      "topic": "variables",
+      "page": 23,
+      "regions": [
+        {
+          "page": 23,
+          "x": 36,
+          "y": 642.143,
+          "width": 484,
+          "height": 54.683
+        }
+      ]
+    },
+    {
+      "number": 83,
+      "topic": "variables",
+      "page": 24,
+      "regions": [
+        {
+          "page": 24,
+          "x": 66,
+          "y": 61.643,
+          "width": 484,
+          "height": 66.201
+        }
+      ]
+    },
+    {
+      "number": 84,
+      "topic": "variables",
+      "page": 24,
+      "regions": [
+        {
+          "page": 24,
+          "x": 66,
+          "y": 127.793,
+          "width": 484,
+          "height": 68.4
+        }
+      ]
+    },
+    {
+      "number": 85,
+      "topic": "variables",
+      "page": 24,
+      "regions": [
+        {
+          "page": 24,
+          "x": 66,
+          "y": 195.693,
+          "width": 484,
+          "height": 145.25
+        }
+      ]
+    },
+    {
+      "number": 86,
+      "topic": "variables",
+      "page": 24,
+      "regions": [
+        {
+          "page": 24,
+          "x": 66,
+          "y": 340.443,
+          "width": 484,
+          "height": 147.064
+        }
+      ]
+    },
+    {
+      "number": 87,
+      "topic": "variables",
+      "page": 24,
+      "regions": [
+        {
+          "page": 24,
+          "x": 66,
+          "y": 487.593,
+          "width": 484,
+          "height": 103.95
+        }
+      ]
+    },
+    {
+      "number": 88,
+      "topic": "variables",
+      "page": 24,
+      "regions": [
+        {
+          "page": 24,
+          "x": 66,
+          "y": 591.043,
+          "width": 484,
+          "height": 108.957
+        }
+      ]
+    },
+    {
+      "number": 89,
+      "topic": "variables",
+      "page": 25,
+      "regions": [
+        {
+          "page": 25,
+          "x": 36,
+          "y": 61.643,
+          "width": 484,
+          "height": 125.2
+        }
+      ]
+    },
+    {
+      "number": 90,
+      "topic": "variables",
+      "page": 25,
+      "regions": [
+        {
+          "page": 25,
+          "x": 36,
+          "y": 186.343,
+          "width": 484,
+          "height": 45.65
+        }
+      ]
+    },
+    {
+      "number": 91,
+      "topic": "variables",
+      "page": 25,
+      "regions": [
+        {
+          "page": 25,
+          "x": 36,
+          "y": 231.493,
+          "width": 484,
+          "height": 49.8
+        }
+      ]
+    },
+    {
+      "number": 92,
+      "topic": "variables",
+      "page": 25,
+      "regions": [
+        {
+          "page": 25,
+          "x": 36,
+          "y": 280.793,
+          "width": 484,
+          "height": 61.7
+        }
+      ]
+    },
+    {
+      "number": 93,
+      "topic": "variables",
+      "page": 25,
+      "regions": [
+        {
+          "page": 25,
+          "x": 36,
+          "y": 341.993,
+          "width": 484,
+          "height": 134.65
+        }
+      ]
+    },
+    {
+      "number": 94,
+      "topic": "variables",
+      "page": 25,
+      "regions": [
+        {
+          "page": 25,
+          "x": 36,
+          "y": 476.143,
+          "width": 484,
+          "height": 61.8
+        }
+      ]
+    },
+    {
+      "number": 95,
+      "topic": "variables",
+      "page": 25,
+      "regions": [
+        {
+          "page": 25,
+          "x": 36,
+          "y": 537.443,
+          "width": 484,
+          "height": 68.5
+        }
+      ]
+    },
+    {
+      "number": 96,
+      "topic": "variables",
+      "page": 25,
+      "regions": [
+        {
+          "page": 25,
+          "x": 36,
+          "y": 605.443,
+          "width": 484,
+          "height": 33.4
+        }
+      ]
+    },
+    {
+      "number": 97,
+      "topic": "variables",
+      "page": 25,
+      "regions": [
+        {
+          "page": 25,
+          "x": 36,
+          "y": 638.343,
+          "width": 484,
+          "height": 61.657
+        }
+      ]
+    },
+    {
+      "number": 98,
+      "topic": "variable-propositions",
+      "page": 28,
+      "regions": [
+        {
+          "page": 28,
+          "x": 66,
+          "y": 145.143,
+          "width": 484,
+          "height": 131.35
+        }
+      ]
+    },
+    {
+      "number": 99,
+      "topic": "variable-propositions",
+      "page": 28,
+      "regions": [
+        {
+          "page": 28,
+          "x": 66,
+          "y": 275.993,
+          "width": 484,
+          "height": 227.178
+        }
+      ]
+    },
+    {
+      "number": 100,
+      "topic": "variable-propositions",
+      "page": 28,
+      "regions": [
+        {
+          "page": 28,
+          "x": 66,
+          "y": 502.993,
+          "width": 484,
+          "height": 50.65
+        }
+      ]
+    },
+    {
+      "number": 101,
+      "topic": "variable-propositions",
+      "page": 28,
+      "regions": [
+        {
+          "page": 28,
+          "x": 66,
+          "y": 553.143,
+          "width": 484,
+          "height": 144.734
+        }
+      ]
+    },
+    {
+      "number": 102,
+      "topic": "variable-propositions",
+      "page": 29,
+      "regions": [
+        {
+          "page": 29,
+          "x": 36,
+          "y": 61.643,
+          "width": 484,
+          "height": 123.1
+        }
+      ]
+    },
+    {
+      "number": 103,
+      "topic": "variable-propositions",
+      "page": 29,
+      "regions": [
+        {
+          "page": 29,
+          "x": 36,
+          "y": 184.243,
+          "width": 484,
+          "height": 92.95
+        }
+      ]
+    },
+    {
+      "number": 104,
+      "topic": "variable-propositions",
+      "page": 29,
+      "regions": [
+        {
+          "page": 29,
+          "x": 36,
+          "y": 276.693,
+          "width": 484,
+          "height": 74.493
+        }
+      ]
+    },
+    {
+      "number": 105,
+      "topic": "variable-propositions",
+      "page": 29,
+      "regions": [
+        {
+          "page": 29,
+          "x": 36,
+          "y": 351.293,
+          "width": 484,
+          "height": 160.25
+        }
+      ]
+    },
+    {
+      "number": 106,
+      "topic": "variable-propositions",
+      "page": 29,
+      "regions": [
+        {
+          "page": 29,
+          "x": 36,
+          "y": 511.043,
+          "width": 484,
+          "height": 188.957
+        }
+      ]
+    },
+    {
+      "number": 107,
+      "topic": "variable-propositions",
+      "page": 30,
+      "regions": [
+        {
+          "page": 30,
+          "x": 66,
+          "y": 60.185,
+          "width": 484,
+          "height": 438.944
+        }
+      ]
+    },
+    {
+      "number": 108,
+      "topic": "variable-propositions",
+      "page": 30,
+      "regions": [
+        {
+          "page": 30,
+          "x": 66,
+          "y": 503.124,
+          "width": 484,
+          "height": 193.585
+        }
+      ]
+    },
+    {
+      "number": 109,
+      "topic": "variable-propositions",
+      "page": 31,
+      "regions": [
+        {
+          "page": 31,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 62.52
+        }
+      ]
+    },
+    {
+      "number": 110,
+      "topic": "variable-propositions",
+      "page": 31,
+      "regions": [
+        {
+          "page": 31,
+          "x": 36,
+          "y": 123.659,
+          "width": 484,
+          "height": 188.983
+        }
+      ]
+    },
+    {
+      "number": 111,
+      "topic": "variable-propositions",
+      "page": 31,
+      "regions": [
+        {
+          "page": 31,
+          "x": 36,
+          "y": 312.142,
+          "width": 484,
+          "height": 385.589
+        }
+      ]
+    },
+    {
+      "number": 112,
+      "topic": "variable-propositions",
+      "page": 32,
+      "regions": [
+        {
+          "page": 32,
+          "x": 66,
+          "y": 61.639,
+          "width": 484,
+          "height": 39.733
+        }
+      ]
+    },
+    {
+      "number": 113,
+      "topic": "variable-propositions",
+      "page": 32,
+      "regions": [
+        {
+          "page": 32,
+          "x": 66,
+          "y": 100.872,
+          "width": 484,
+          "height": 82.539
+        }
+      ]
+    },
+    {
+      "number": 114,
+      "topic": "variable-propositions",
+      "page": 32,
+      "regions": [
+        {
+          "page": 32,
+          "x": 66,
+          "y": 182.911,
+          "width": 484,
+          "height": 226.602
+        }
+      ]
+    },
+    {
+      "number": 115,
+      "topic": "variable-propositions",
+      "page": 32,
+      "regions": [
+        {
+          "page": 32,
+          "x": 66,
+          "y": 409.014,
+          "width": 484,
+          "height": 24.177
+        }
+      ]
+    },
+    {
+      "number": 116,
+      "topic": "variable-propositions",
+      "page": 32,
+      "regions": [
+        {
+          "page": 32,
+          "x": 66,
+          "y": 432.691,
+          "width": 484,
+          "height": 64.862
+        }
+      ]
+    },
+    {
+      "number": 117,
+      "topic": "variable-propositions",
+      "page": 32,
+      "regions": [
+        {
+          "page": 32,
+          "x": 66,
+          "y": 497.053,
+          "width": 484,
+          "height": 68.211
+        }
+      ]
+    },
+    {
+      "number": 118,
+      "topic": "variable-propositions",
+      "page": 32,
+      "regions": [
+        {
+          "page": 32,
+          "x": 66,
+          "y": 564.764,
+          "width": 484,
+          "height": 97.033
+        }
+      ]
+    },
+    {
+      "number": 119,
+      "topic": "variable-propositions",
+      "page": 32,
+      "regions": [
+        {
+          "page": 32,
+          "x": 66,
+          "y": 661.297,
+          "width": 484,
+          "height": 36.784
+        }
+      ]
+    },
+    {
+      "number": 120,
+      "topic": "quantifiers",
+      "page": 34,
+      "regions": [
+        {
+          "page": 34,
+          "x": 66,
+          "y": 395.977,
+          "width": 484,
+          "height": 163.679
+        }
+      ]
+    },
+    {
+      "number": 121,
+      "topic": "quantifiers",
+      "page": 34,
+      "regions": [
+        {
+          "page": 34,
+          "x": 66,
+          "y": 559.156,
+          "width": 484,
+          "height": 139.84
+        }
+      ]
+    },
+    {
+      "number": 122,
+      "topic": "quantifiers",
+      "page": 35,
+      "regions": [
+        {
+          "page": 35,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 49.623
+        }
+      ]
+    },
+    {
+      "number": 123,
+      "topic": "quantifiers",
+      "page": 35,
+      "regions": [
+        {
+          "page": 35,
+          "x": 36,
+          "y": 110.762,
+          "width": 484,
+          "height": 98.933
+        }
+      ]
+    },
+    {
+      "number": 124,
+      "topic": "quantifiers",
+      "page": 35,
+      "regions": [
+        {
+          "page": 35,
+          "x": 36,
+          "y": 209.195,
+          "width": 484,
+          "height": 142.563
+        }
+      ]
+    },
+    {
+      "number": 125,
+      "topic": "quantifiers",
+      "page": 35,
+      "regions": [
+        {
+          "page": 35,
+          "x": 36,
+          "y": 351.258,
+          "width": 484,
+          "height": 102.146
+        }
+      ]
+    },
+    {
+      "number": 126,
+      "topic": "quantifiers",
+      "page": 35,
+      "regions": [
+        {
+          "page": 35,
+          "x": 36,
+          "y": 452.904,
+          "width": 484,
+          "height": 95.581
+        }
+      ]
+    },
+    {
+      "number": 127,
+      "topic": "quantifiers",
+      "page": 35,
+      "regions": [
+        {
+          "page": 35,
+          "x": 36,
+          "y": 547.985,
+          "width": 484,
+          "height": 150.482
+        }
+      ]
+    },
+    {
+      "number": 128,
+      "topic": "quantifiers",
+      "page": 36,
+      "regions": [
+        {
+          "page": 36,
+          "x": 66,
+          "y": 61.639,
+          "width": 484,
+          "height": 200.253
+        }
+      ]
+    },
+    {
+      "number": 129,
+      "topic": "quantifiers",
+      "page": 36,
+      "regions": [
+        {
+          "page": 36,
+          "x": 66,
+          "y": 261.392,
+          "width": 484,
+          "height": 50.469
+        }
+      ]
+    },
+    {
+      "number": 130,
+      "topic": "quantifiers",
+      "page": 36,
+      "regions": [
+        {
+          "page": 36,
+          "x": 66,
+          "y": 311.36,
+          "width": 484,
+          "height": 279.35
+        }
+      ]
+    },
+    {
+      "number": 131,
+      "topic": "quantifiers",
+      "page": 36,
+      "regions": [
+        {
+          "page": 36,
+          "x": 66,
+          "y": 590.211,
+          "width": 484,
+          "height": 109.597
+        }
+      ]
+    },
+    {
+      "number": 132,
+      "topic": "quantifiers",
+      "page": 37,
+      "regions": [
+        {
+          "page": 37,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 158.631
+        }
+      ]
+    },
+    {
+      "number": 133,
+      "topic": "quantifiers",
+      "page": 37,
+      "regions": [
+        {
+          "page": 37,
+          "x": 36,
+          "y": 219.77,
+          "width": 484,
+          "height": 85.203
+        }
+      ]
+    },
+    {
+      "number": 134,
+      "topic": "quantifiers",
+      "page": 37,
+      "regions": [
+        {
+          "page": 37,
+          "x": 36,
+          "y": 304.473,
+          "width": 484,
+          "height": 111.907
+        }
+      ]
+    },
+    {
+      "number": 135,
+      "topic": "quantifiers",
+      "page": 37,
+      "regions": [
+        {
+          "page": 37,
+          "x": 36,
+          "y": 415.88,
+          "width": 484,
+          "height": 76.169
+        }
+      ]
+    },
+    {
+      "number": 136,
+      "topic": "quantifiers",
+      "page": 37,
+      "regions": [
+        {
+          "page": 37,
+          "x": 36,
+          "y": 491.549,
+          "width": 484,
+          "height": 64.516
+        }
+      ]
+    },
+    {
+      "number": 137,
+      "topic": "quantifiers",
+      "page": 37,
+      "regions": [
+        {
+          "page": 37,
+          "x": 36,
+          "y": 555.565,
+          "width": 484,
+          "height": 47.106
+        }
+      ]
+    },
+    {
+      "number": 138,
+      "topic": "quantifiers",
+      "page": 37,
+      "regions": [
+        {
+          "page": 37,
+          "x": 36,
+          "y": 602.171,
+          "width": 484,
+          "height": 54.016
+        }
+      ]
+    },
+    {
+      "number": 139,
+      "topic": "quantifiers",
+      "page": 37,
+      "regions": [
+        {
+          "page": 37,
+          "x": 36,
+          "y": 658.787,
+          "width": 484,
+          "height": 39.616
+        }
+      ]
+    },
+    {
+      "number": 140,
+      "topic": "quantifiers",
+      "page": 38,
+      "regions": [
+        {
+          "page": 38,
+          "x": 66,
+          "y": 61.639,
+          "width": 484,
+          "height": 186.861
+        }
+      ]
+    },
+    {
+      "number": 141,
+      "topic": "quantifiers",
+      "page": 38,
+      "regions": [
+        {
+          "page": 38,
+          "x": 66,
+          "y": 248.0,
+          "width": 484,
+          "height": 35.23
+        }
+      ]
+    },
+    {
+      "number": 142,
+      "topic": "quantifiers",
+      "page": 38,
+      "regions": [
+        {
+          "page": 38,
+          "x": 66,
+          "y": 282.73,
+          "width": 484,
+          "height": 50.945
+        }
+      ]
+    },
+    {
+      "number": 143,
+      "topic": "quantifier-negation",
+      "page": 39,
+      "regions": [
+        {
+          "page": 39,
+          "x": 36,
+          "y": 260.536,
+          "width": 484,
+          "height": 100.899
+        }
+      ]
+    },
+    {
+      "number": 144,
+      "topic": "quantifier-negation",
+      "page": 39,
+      "regions": [
+        {
+          "page": 39,
+          "x": 36,
+          "y": 360.935,
+          "width": 484,
+          "height": 117.342
+        }
+      ]
+    },
+    {
+      "number": 145,
+      "topic": "quantifier-negation",
+      "page": 39,
+      "regions": [
+        {
+          "page": 39,
+          "x": 36,
+          "y": 477.777,
+          "width": 484,
+          "height": 49.98
+        }
+      ]
+    },
+    {
+      "number": 146,
+      "topic": "quantifier-negation",
+      "page": 39,
+      "regions": [
+        {
+          "page": 39,
+          "x": 36,
+          "y": 527.258,
+          "width": 484,
+          "height": 169.219
+        }
+      ]
+    },
+    {
+      "number": 147,
+      "topic": "quantifier-negation",
+      "page": 40,
+      "regions": [
+        {
+          "page": 40,
+          "x": 66,
+          "y": 61.639,
+          "width": 484,
+          "height": 52.625
+        }
+      ]
+    },
+    {
+      "number": 148,
+      "topic": "quantifier-negation",
+      "page": 40,
+      "regions": [
+        {
+          "page": 40,
+          "x": 66,
+          "y": 113.764,
+          "width": 484,
+          "height": 155.546
+        }
+      ]
+    },
+    {
+      "number": 149,
+      "topic": "quantifier-negation",
+      "page": 40,
+      "regions": [
+        {
+          "page": 40,
+          "x": 66,
+          "y": 268.81,
+          "width": 484,
+          "height": 166.976
+        }
+      ]
+    },
+    {
+      "number": 150,
+      "topic": "quantifier-negation",
+      "page": 40,
+      "regions": [
+        {
+          "page": 40,
+          "x": 66,
+          "y": 435.802,
+          "width": 484,
+          "height": 154.576
+        }
+      ]
+    },
+    {
+      "number": 151,
+      "topic": "quantifier-negation",
+      "page": 40,
+      "regions": [
+        {
+          "page": 40,
+          "x": 66,
+          "y": 589.912,
+          "width": 484,
+          "height": 110.088
+        }
+      ]
+    },
+    {
+      "number": 152,
+      "topic": "quantifier-negation",
+      "page": 41,
+      "regions": [
+        {
+          "page": 41,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 85.216
+        }
+      ]
+    },
+    {
+      "number": 153,
+      "topic": "quantifier-negation",
+      "page": 41,
+      "regions": [
+        {
+          "page": 41,
+          "x": 36,
+          "y": 147.342,
+          "width": 484,
+          "height": 65.584
+        }
+      ]
+    },
+    {
+      "number": 154,
+      "topic": "quantifier-negation",
+      "page": 41,
+      "regions": [
+        {
+          "page": 41,
+          "x": 36,
+          "y": 216.474,
+          "width": 484,
+          "height": 36.784
+        }
+      ]
+    },
+    {
+      "number": 155,
+      "topic": "quantifier-negation",
+      "page": 41,
+      "regions": [
+        {
+          "page": 41,
+          "x": 36,
+          "y": 255.15,
+          "width": 484,
+          "height": 51.184
+        }
+      ]
+    },
+    {
+      "number": 156,
+      "topic": "quantifier-negation",
+      "page": 41,
+      "regions": [
+        {
+          "page": 41,
+          "x": 36,
+          "y": 310.821,
+          "width": 484,
+          "height": 207.886
+        }
+      ]
+    },
+    {
+      "number": 157,
+      "topic": "quantifier-negation",
+      "page": 41,
+      "regions": [
+        {
+          "page": 41,
+          "x": 36,
+          "y": 518.207,
+          "width": 484,
+          "height": 68.299
+        }
+      ]
+    },
+    {
+      "number": 158,
+      "topic": "quantifier-negation",
+      "page": 41,
+      "regions": [
+        {
+          "page": 41,
+          "x": 36,
+          "y": 590.281,
+          "width": 484,
+          "height": 105.712
+        }
+      ]
+    },
+    {
+      "number": 159,
+      "topic": "quantifier-negation",
+      "page": 42,
+      "regions": [
+        {
+          "page": 42,
+          "x": 66,
+          "y": 61.639,
+          "width": 484,
+          "height": 38.276
+        }
+      ]
+    },
+    {
+      "number": 160,
+      "topic": "quantifier-negation",
+      "page": 42,
+      "regions": [
+        {
+          "page": 42,
+          "x": 66,
+          "y": 99.415,
+          "width": 484,
+          "height": 62.862
+        }
+      ]
+    },
+    {
+      "number": 161,
+      "topic": "quantifier-negation",
+      "page": 42,
+      "regions": [
+        {
+          "page": 42,
+          "x": 66,
+          "y": 161.777,
+          "width": 484,
+          "height": 115.949
+        }
+      ]
+    },
+    {
+      "number": 162,
+      "topic": "quantifier-negation",
+      "page": 42,
+      "regions": [
+        {
+          "page": 42,
+          "x": 66,
+          "y": 277.226,
+          "width": 484,
+          "height": 66.799
+        }
+      ]
+    },
+    {
+      "number": 163,
+      "topic": "quantifier-negation",
+      "page": 42,
+      "regions": [
+        {
+          "page": 42,
+          "x": 66,
+          "y": 343.526,
+          "width": 484,
+          "height": 49.295
+        }
+      ]
+    },
+    {
+      "number": 164,
+      "topic": "quantifier-negation",
+      "page": 42,
+      "regions": [
+        {
+          "page": 42,
+          "x": 66,
+          "y": 392.321,
+          "width": 484,
+          "height": 168.935
+        }
+      ]
+    },
+    {
+      "number": 165,
+      "topic": "quantifier-negation",
+      "page": 42,
+      "regions": [
+        {
+          "page": 42,
+          "x": 66,
+          "y": 560.756,
+          "width": 484,
+          "height": 86.136
+        }
+      ]
+    },
+    {
+      "number": 166,
+      "topic": "quantifier-negation",
+      "page": 42,
+      "regions": [
+        {
+          "page": 42,
+          "x": 66,
+          "y": 646.393,
+          "width": 484,
+          "height": 51.184
+        }
+      ]
+    },
+    {
+      "number": 167,
+      "topic": "logic-review",
+      "page": 43,
+      "regions": [
+        {
+          "page": 43,
+          "x": 36,
+          "y": 90.746,
+          "width": 484,
+          "height": 104.988
+        }
+      ]
+    },
+    {
+      "number": 168,
+      "topic": "logic-review",
+      "page": 43,
+      "regions": [
+        {
+          "page": 43,
+          "x": 36,
+          "y": 195.234,
+          "width": 484,
+          "height": 71.87
+        }
+      ]
+    },
+    {
+      "number": 169,
+      "topic": "logic-review",
+      "page": 43,
+      "regions": [
+        {
+          "page": 43,
+          "x": 36,
+          "y": 266.604,
+          "width": 484,
+          "height": 64.345
+        }
+      ]
+    },
+    {
+      "number": 170,
+      "topic": "logic-review",
+      "page": 43,
+      "regions": [
+        {
+          "page": 43,
+          "x": 36,
+          "y": 330.449,
+          "width": 484,
+          "height": 47.332
+        }
+      ]
+    },
+    {
+      "number": 171,
+      "topic": "logic-review",
+      "page": 43,
+      "regions": [
+        {
+          "page": 43,
+          "x": 36,
+          "y": 377.281,
+          "width": 484,
+          "height": 91.61
+        }
+      ]
+    },
+    {
+      "number": 172,
+      "topic": "logic-review",
+      "page": 43,
+      "regions": [
+        {
+          "page": 43,
+          "x": 36,
+          "y": 468.392,
+          "width": 484,
+          "height": 45.783
+        }
+      ]
+    },
+    {
+      "number": 173,
+      "topic": "logic-review",
+      "page": 43,
+      "regions": [
+        {
+          "page": 43,
+          "x": 36,
+          "y": 513.675,
+          "width": 484,
+          "height": 57.075
+        }
+      ]
+    },
+    {
+      "number": 174,
+      "topic": "logic-review",
+      "page": 43,
+      "regions": [
+        {
+          "page": 43,
+          "x": 36,
+          "y": 570.25,
+          "width": 484,
+          "height": 60.295
+        }
+      ]
+    },
+    {
+      "number": 175,
+      "topic": "logic-review",
+      "page": 43,
+      "regions": [
+        {
+          "page": 43,
+          "x": 36,
+          "y": 630.045,
+          "width": 484,
+          "height": 68.428
+        }
+      ]
+    },
+    {
+      "number": 176,
+      "topic": "mixed-fractions",
+      "page": 46,
+      "regions": [
+        {
+          "page": 46,
+          "x": 66,
+          "y": 571.347,
+          "width": 484,
+          "height": 126.436
+        }
+      ]
+    },
+    {
+      "number": 177,
+      "topic": "mixed-fractions",
+      "page": 47,
+      "regions": [
+        {
+          "page": 47,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 52.44
+        }
+      ]
+    },
+    {
+      "number": 178,
+      "topic": "mixed-fractions",
+      "page": 47,
+      "regions": [
+        {
+          "page": 47,
+          "x": 36,
+          "y": 113.579,
+          "width": 484,
+          "height": 51.524
+        }
+      ]
+    },
+    {
+      "number": 179,
+      "topic": "mixed-fractions",
+      "page": 47,
+      "regions": [
+        {
+          "page": 47,
+          "x": 36,
+          "y": 164.602,
+          "width": 484,
+          "height": 104.127
+        }
+      ]
+    },
+    {
+      "number": 180,
+      "topic": "mixed-fractions",
+      "page": 47,
+      "regions": [
+        {
+          "page": 47,
+          "x": 36,
+          "y": 268.557,
+          "width": 484,
+          "height": 147.941
+        }
+      ]
+    },
+    {
+      "number": 181,
+      "topic": "mixed-fractions",
+      "page": 47,
+      "regions": [
+        {
+          "page": 47,
+          "x": 36,
+          "y": 415.998,
+          "width": 484,
+          "height": 157.407
+        }
+      ]
+    },
+    {
+      "number": 182,
+      "topic": "mixed-fractions",
+      "page": 47,
+      "regions": [
+        {
+          "page": 47,
+          "x": 36,
+          "y": 572.905,
+          "width": 484,
+          "height": 126.879
+        }
+      ]
+    },
+    {
+      "number": 183,
+      "topic": "mixed-fractions",
+      "page": 48,
+      "regions": [
+        {
+          "page": 48,
+          "x": 66,
+          "y": 61.706,
+          "width": 484,
+          "height": 123.847
+        }
+      ]
+    },
+    {
+      "number": 184,
+      "topic": "mixed-fractions",
+      "page": 48,
+      "regions": [
+        {
+          "page": 48,
+          "x": 66,
+          "y": 193.139,
+          "width": 484,
+          "height": 129.213
+        }
+      ]
+    },
+    {
+      "number": 185,
+      "topic": "mixed-fractions",
+      "page": 48,
+      "regions": [
+        {
+          "page": 48,
+          "x": 66,
+          "y": 322.234,
+          "width": 484,
+          "height": 157.018
+        }
+      ]
+    },
+    {
+      "number": 186,
+      "topic": "mixed-fractions",
+      "page": 48,
+      "regions": [
+        {
+          "page": 48,
+          "x": 66,
+          "y": 478.752,
+          "width": 484,
+          "height": 219.632
+        }
+      ]
+    },
+    {
+      "number": 187,
+      "topic": "mixed-fractions",
+      "page": 49,
+      "regions": [
+        {
+          "page": 49,
+          "x": 36,
+          "y": 65.539,
+          "width": 484,
+          "height": 193.495
+        }
+      ]
+    },
+    {
+      "number": 188,
+      "topic": "mixed-fractions",
+      "page": 49,
+      "regions": [
+        {
+          "page": 49,
+          "x": 36,
+          "y": 258.596,
+          "width": 484,
+          "height": 85.193
+        }
+      ]
+    },
+    {
+      "number": 189,
+      "topic": "mixed-fractions",
+      "page": 49,
+      "regions": [
+        {
+          "page": 49,
+          "x": 36,
+          "y": 343.289,
+          "width": 484,
+          "height": 104.965
+        }
+      ]
+    },
+    {
+      "number": 190,
+      "topic": "mixed-fractions",
+      "page": 49,
+      "regions": [
+        {
+          "page": 49,
+          "x": 36,
+          "y": 447.754,
+          "width": 484,
+          "height": 77.823
+        }
+      ]
+    },
+    {
+      "number": 191,
+      "topic": "mixed-fractions",
+      "page": 49,
+      "regions": [
+        {
+          "page": 49,
+          "x": 36,
+          "y": 525.077,
+          "width": 484,
+          "height": 174.923
+        }
+      ]
+    },
+    {
+      "number": 192,
+      "topic": "mixed-fractions",
+      "page": 50,
+      "regions": [
+        {
+          "page": 50,
+          "x": 66,
+          "y": 61.639,
+          "width": 484,
+          "height": 132.615
+        }
+      ]
+    },
+    {
+      "number": 193,
+      "topic": "mixed-fractions",
+      "page": 50,
+      "regions": [
+        {
+          "page": 50,
+          "x": 66,
+          "y": 193.754,
+          "width": 484,
+          "height": 130.287
+        }
+      ]
+    },
+    {
+      "number": 194,
+      "topic": "mixed-fractions",
+      "page": 50,
+      "regions": [
+        {
+          "page": 50,
+          "x": 66,
+          "y": 323.541,
+          "width": 484,
+          "height": 236.967
+        }
+      ]
+    },
+    {
+      "number": 195,
+      "topic": "mixed-fractions",
+      "page": 50,
+      "regions": [
+        {
+          "page": 50,
+          "x": 66,
+          "y": 561.7,
+          "width": 484,
+          "height": 136.048
+        }
+      ]
+    },
+    {
+      "number": 196,
+      "topic": "mixed-fractions",
+      "page": 51,
+      "regions": [
+        {
+          "page": 51,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 250.396
+        }
+      ]
+    },
+    {
+      "number": 197,
+      "topic": "mixed-fractions",
+      "page": 51,
+      "regions": [
+        {
+          "page": 51,
+          "x": 36,
+          "y": 313.077,
+          "width": 484,
+          "height": 205.422
+        }
+      ]
+    },
+    {
+      "number": 198,
+      "topic": "mixed-fractions",
+      "page": 51,
+      "regions": [
+        {
+          "page": 51,
+          "x": 36,
+          "y": 517.999,
+          "width": 484,
+          "height": 179.248
+        }
+      ]
+    },
+    {
+      "number": 199,
+      "topic": "mixed-fractions",
+      "page": 52,
+      "regions": [
+        {
+          "page": 52,
+          "x": 66,
+          "y": 61.639,
+          "width": 484,
+          "height": 136.048
+        }
+      ]
+    },
+    {
+      "number": 200,
+      "topic": "mixed-fractions",
+      "page": 52,
+      "regions": [
+        {
+          "page": 52,
+          "x": 66,
+          "y": 199.746,
+          "width": 484,
+          "height": 68.415
+        }
+      ]
+    },
+    {
+      "number": 201,
+      "topic": "mixed-fractions",
+      "page": 52,
+      "regions": [
+        {
+          "page": 52,
+          "x": 66,
+          "y": 267.938,
+          "width": 484,
+          "height": 282.656
+        }
+      ]
+    },
+    {
+      "number": 202,
+      "topic": "mixed-fractions",
+      "page": 52,
+      "regions": [
+        {
+          "page": 52,
+          "x": 66,
+          "y": 552.935,
+          "width": 484,
+          "height": 143.546
+        }
+      ]
+    },
+    {
+      "number": 203,
+      "topic": "mixed-fractions",
+      "page": 53,
+      "regions": [
+        {
+          "page": 53,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 174.302
+        }
+      ]
+    },
+    {
+      "number": 204,
+      "topic": "mixed-fractions",
+      "page": 53,
+      "regions": [
+        {
+          "page": 53,
+          "x": 36,
+          "y": 235.441,
+          "width": 484,
+          "height": 188.858
+        }
+      ]
+    },
+    {
+      "number": 205,
+      "topic": "mixed-fractions",
+      "page": 53,
+      "regions": [
+        {
+          "page": 53,
+          "x": 36,
+          "y": 425.481,
+          "width": 484,
+          "height": 82.173
+        }
+      ]
+    },
+    {
+      "number": 206,
+      "topic": "mixed-fractions",
+      "page": 53,
+      "regions": [
+        {
+          "page": 53,
+          "x": 36,
+          "y": 507.154,
+          "width": 484,
+          "height": 42.994
+        }
+      ]
+    },
+    {
+      "number": 207,
+      "topic": "mixed-fractions",
+      "page": 53,
+      "regions": [
+        {
+          "page": 53,
+          "x": 36,
+          "y": 549.648,
+          "width": 484,
+          "height": 148.426
+        }
+      ]
+    },
+    {
+      "number": 208,
+      "topic": "mixed-fractions",
+      "page": 54,
+      "regions": [
+        {
+          "page": 54,
+          "x": 66,
+          "y": 61.639,
+          "width": 484,
+          "height": 143.946
+        }
+      ]
+    },
+    {
+      "number": 209,
+      "topic": "mixed-fractions",
+      "page": 54,
+      "regions": [
+        {
+          "page": 54,
+          "x": 66,
+          "y": 205.085,
+          "width": 484,
+          "height": 76.366
+        }
+      ]
+    },
+    {
+      "number": 210,
+      "topic": "mixed-fractions",
+      "page": 54,
+      "regions": [
+        {
+          "page": 54,
+          "x": 66,
+          "y": 280.951,
+          "width": 484,
+          "height": 65.043
+        }
+      ]
+    },
+    {
+      "number": 211,
+      "topic": "mixed-fractions",
+      "page": 54,
+      "regions": [
+        {
+          "page": 54,
+          "x": 66,
+          "y": 345.494,
+          "width": 484,
+          "height": 82.248
+        }
+      ]
+    },
+    {
+      "number": 212,
+      "topic": "mixed-fractions",
+      "page": 54,
+      "regions": [
+        {
+          "page": 54,
+          "x": 66,
+          "y": 427.242,
+          "width": 484,
+          "height": 136.005
+        }
+      ]
+    },
+    {
+      "number": 213,
+      "topic": "mixed-fractions",
+      "page": 54,
+      "regions": [
+        {
+          "page": 54,
+          "x": 66,
+          "y": 562.747,
+          "width": 484,
+          "height": 57.138
+        }
+      ]
+    },
+    {
+      "number": 214,
+      "topic": "mixed-fractions",
+      "page": 54,
+      "regions": [
+        {
+          "page": 54,
+          "x": 66,
+          "y": 619.385,
+          "width": 484,
+          "height": 76.788
+        }
+      ]
+    },
+    {
+      "number": 215,
+      "topic": "mixed-fractions",
+      "page": 55,
+      "regions": [
+        {
+          "page": 55,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 180.874
+        }
+      ]
+    },
+    {
+      "number": 216,
+      "topic": "mixed-fractions",
+      "page": 55,
+      "regions": [
+        {
+          "page": 55,
+          "x": 36,
+          "y": 243.99,
+          "width": 484,
+          "height": 133.14
+        }
+      ]
+    },
+    {
+      "number": 217,
+      "topic": "mixed-fractions",
+      "page": 55,
+      "regions": [
+        {
+          "page": 55,
+          "x": 36,
+          "y": 376.63,
+          "width": 484,
+          "height": 75.679
+        }
+      ]
+    },
+    {
+      "number": 218,
+      "topic": "mixed-fractions",
+      "page": 55,
+      "regions": [
+        {
+          "page": 55,
+          "x": 36,
+          "y": 451.809,
+          "width": 484,
+          "height": 57.193
+        }
+      ]
+    },
+    {
+      "number": 219,
+      "topic": "mixed-fractions",
+      "page": 55,
+      "regions": [
+        {
+          "page": 55,
+          "x": 36,
+          "y": 508.502,
+          "width": 484,
+          "height": 66.894
+        }
+      ]
+    },
+    {
+      "number": 220,
+      "topic": "mixed-fractions",
+      "page": 55,
+      "regions": [
+        {
+          "page": 55,
+          "x": 36,
+          "y": 574.896,
+          "width": 484,
+          "height": 124.606
+        }
+      ]
+    },
+    {
+      "number": 221,
+      "topic": "river",
+      "page": 58,
+      "regions": [
+        {
+          "page": 58,
+          "x": 66,
+          "y": 65.539,
+          "width": 484,
+          "height": 121.148
+        }
+      ]
+    },
+    {
+      "number": 222,
+      "topic": "river",
+      "page": 58,
+      "regions": [
+        {
+          "page": 58,
+          "x": 66,
+          "y": 186.187,
+          "width": 484,
+          "height": 49.689
+        }
+      ]
+    },
+    {
+      "number": 223,
+      "topic": "river",
+      "page": 58,
+      "regions": [
+        {
+          "page": 58,
+          "x": 66,
+          "y": 235.376,
+          "width": 484,
+          "height": 91.642
+        }
+      ]
+    },
+    {
+      "number": 224,
+      "topic": "river",
+      "page": 58,
+      "regions": [
+        {
+          "page": 58,
+          "x": 66,
+          "y": 326.518,
+          "width": 484,
+          "height": 120.412
+        }
+      ]
+    },
+    {
+      "number": 225,
+      "topic": "river",
+      "page": 58,
+      "regions": [
+        {
+          "page": 58,
+          "x": 66,
+          "y": 447.242,
+          "width": 484,
+          "height": 105.531
+        }
+      ]
+    },
+    {
+      "number": 226,
+      "topic": "river",
+      "page": 58,
+      "regions": [
+        {
+          "page": 58,
+          "x": 66,
+          "y": 552.274,
+          "width": 484,
+          "height": 65.584
+        }
+      ]
+    },
+    {
+      "number": 227,
+      "topic": "river",
+      "page": 58,
+      "regions": [
+        {
+          "page": 58,
+          "x": 66,
+          "y": 618.053,
+          "width": 484,
+          "height": 78.259
+        }
+      ]
+    },
+    {
+      "number": 228,
+      "topic": "river",
+      "page": 59,
+      "regions": [
+        {
+          "page": 59,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 63.229
+        }
+      ]
+    },
+    {
+      "number": 229,
+      "topic": "river",
+      "page": 59,
+      "regions": [
+        {
+          "page": 59,
+          "x": 36,
+          "y": 124.368,
+          "width": 484,
+          "height": 78.209
+        }
+      ]
+    },
+    {
+      "number": 230,
+      "topic": "river",
+      "page": 59,
+      "regions": [
+        {
+          "page": 59,
+          "x": 36,
+          "y": 202.077,
+          "width": 484,
+          "height": 146.311
+        }
+      ]
+    },
+    {
+      "number": 231,
+      "topic": "river",
+      "page": 59,
+      "regions": [
+        {
+          "page": 59,
+          "x": 36,
+          "y": 347.888,
+          "width": 484,
+          "height": 106.531
+        }
+      ]
+    },
+    {
+      "number": 232,
+      "topic": "river",
+      "page": 59,
+      "regions": [
+        {
+          "page": 59,
+          "x": 36,
+          "y": 453.919,
+          "width": 484,
+          "height": 133.737
+        }
+      ]
+    },
+    {
+      "number": 233,
+      "topic": "river",
+      "page": 59,
+      "regions": [
+        {
+          "page": 59,
+          "x": 36,
+          "y": 587.156,
+          "width": 484,
+          "height": 109.636
+        }
+      ]
+    },
+    {
+      "number": 234,
+      "topic": "river",
+      "page": 60,
+      "regions": [
+        {
+          "page": 60,
+          "x": 66,
+          "y": 65.539,
+          "width": 484,
+          "height": 150.95
+        }
+      ]
+    },
+    {
+      "number": 235,
+      "topic": "river",
+      "page": 60,
+      "regions": [
+        {
+          "page": 60,
+          "x": 66,
+          "y": 218.116,
+          "width": 484,
+          "height": 134.14
+        }
+      ]
+    },
+    {
+      "number": 236,
+      "topic": "river",
+      "page": 60,
+      "regions": [
+        {
+          "page": 60,
+          "x": 66,
+          "y": 351.756,
+          "width": 484,
+          "height": 180.388
+        }
+      ]
+    },
+    {
+      "number": 237,
+      "topic": "river",
+      "page": 60,
+      "regions": [
+        {
+          "page": 60,
+          "x": 66,
+          "y": 531.644,
+          "width": 484,
+          "height": 104.217
+        }
+      ]
+    },
+    {
+      "number": 238,
+      "topic": "river",
+      "page": 60,
+      "regions": [
+        {
+          "page": 60,
+          "x": 66,
+          "y": 635.361,
+          "width": 484,
+          "height": 64.008
+        }
+      ]
+    },
+    {
+      "number": 239,
+      "topic": "river",
+      "page": 61,
+      "regions": [
+        {
+          "page": 61,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 146.443
+        }
+      ]
+    },
+    {
+      "number": 240,
+      "topic": "river",
+      "page": 61,
+      "regions": [
+        {
+          "page": 61,
+          "x": 36,
+          "y": 210.447,
+          "width": 484,
+          "height": 225.106
+        }
+      ]
+    },
+    {
+      "number": 241,
+      "topic": "river",
+      "page": 61,
+      "regions": [
+        {
+          "page": 61,
+          "x": 36,
+          "y": 435.053,
+          "width": 484,
+          "height": 181.586
+        }
+      ]
+    },
+    {
+      "number": 242,
+      "topic": "river",
+      "page": 61,
+      "regions": [
+        {
+          "page": 61,
+          "x": 36,
+          "y": 618.629,
+          "width": 484,
+          "height": 79.984
+        }
+      ]
+    },
+    {
+      "number": 243,
+      "topic": "river",
+      "page": 62,
+      "regions": [
+        {
+          "page": 62,
+          "x": 66,
+          "y": 61.639,
+          "width": 484,
+          "height": 64.965
+        }
+      ]
+    },
+    {
+      "number": 244,
+      "topic": "river",
+      "page": 62,
+      "regions": [
+        {
+          "page": 62,
+          "x": 66,
+          "y": 128.016,
+          "width": 484,
+          "height": 107.051
+        }
+      ]
+    },
+    {
+      "number": 245,
+      "topic": "river",
+      "page": 62,
+      "regions": [
+        {
+          "page": 62,
+          "x": 66,
+          "y": 234.567,
+          "width": 484,
+          "height": 51.008
+        }
+      ]
+    },
+    {
+      "number": 246,
+      "topic": "river",
+      "page": 62,
+      "regions": [
+        {
+          "page": 62,
+          "x": 66,
+          "y": 286.492,
+          "width": 484,
+          "height": 52.358
+        }
+      ]
+    },
+    {
+      "number": 247,
+      "topic": "river",
+      "page": 62,
+      "regions": [
+        {
+          "page": 62,
+          "x": 66,
+          "y": 338.35,
+          "width": 484,
+          "height": 94.447
+        }
+      ]
+    },
+    {
+      "number": 248,
+      "topic": "river",
+      "page": 62,
+      "regions": [
+        {
+          "page": 62,
+          "x": 66,
+          "y": 432.297,
+          "width": 484,
+          "height": 71.128
+        }
+      ]
+    },
+    {
+      "number": 249,
+      "topic": "river",
+      "page": 62,
+      "regions": [
+        {
+          "page": 62,
+          "x": 66,
+          "y": 503.998,
+          "width": 484,
+          "height": 71.253
+        }
+      ]
+    },
+    {
+      "number": 250,
+      "topic": "river",
+      "page": 62,
+      "regions": [
+        {
+          "page": 62,
+          "x": 66,
+          "y": 576.305,
+          "width": 484,
+          "height": 82.816
+        }
+      ]
+    },
+    {
+      "number": 251,
+      "topic": "river",
+      "page": 62,
+      "regions": [
+        {
+          "page": 62,
+          "x": 66,
+          "y": 662.431,
+          "width": 484,
+          "height": 36.784
+        }
+      ]
+    },
+    {
+      "number": 252,
+      "topic": "river",
+      "page": 63,
+      "regions": [
+        {
+          "page": 63,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 51.184
+        }
+      ]
+    },
+    {
+      "number": 253,
+      "topic": "river",
+      "page": 63,
+      "regions": [
+        {
+          "page": 63,
+          "x": 36,
+          "y": 113.596,
+          "width": 484,
+          "height": 101.613
+        }
+      ]
+    },
+    {
+      "number": 254,
+      "topic": "river",
+      "page": 63,
+      "regions": [
+        {
+          "page": 63,
+          "x": 36,
+          "y": 214.709,
+          "width": 484,
+          "height": 130.884
+        }
+      ]
+    },
+    {
+      "number": 255,
+      "topic": "river",
+      "page": 63,
+      "regions": [
+        {
+          "page": 63,
+          "x": 36,
+          "y": 345.092,
+          "width": 484,
+          "height": 52.303
+        }
+      ]
+    },
+    {
+      "number": 256,
+      "topic": "river",
+      "page": 63,
+      "regions": [
+        {
+          "page": 63,
+          "x": 36,
+          "y": 396.896,
+          "width": 484,
+          "height": 51.184
+        }
+      ]
+    },
+    {
+      "number": 257,
+      "topic": "mean",
+      "page": 66,
+      "regions": [
+        {
+          "page": 66,
+          "x": 66,
+          "y": 65.539,
+          "width": 484,
+          "height": 82.493
+        }
+      ]
+    },
+    {
+      "number": 258,
+      "topic": "mean",
+      "page": 66,
+      "regions": [
+        {
+          "page": 66,
+          "x": 66,
+          "y": 147.532,
+          "width": 484,
+          "height": 45.32
+        }
+      ]
+    },
+    {
+      "number": 259,
+      "topic": "mean",
+      "page": 66,
+      "regions": [
+        {
+          "page": 66,
+          "x": 66,
+          "y": 192.352,
+          "width": 484,
+          "height": 51.184
+        }
+      ]
+    },
+    {
+      "number": 260,
+      "topic": "mean",
+      "page": 66,
+      "regions": [
+        {
+          "page": 66,
+          "x": 66,
+          "y": 243.266,
+          "width": 484,
+          "height": 89.823
+        }
+      ]
+    },
+    {
+      "number": 261,
+      "topic": "mean",
+      "page": 66,
+      "regions": [
+        {
+          "page": 66,
+          "x": 66,
+          "y": 332.589,
+          "width": 484,
+          "height": 107.295
+        }
+      ]
+    },
+    {
+      "number": 262,
+      "topic": "mean",
+      "page": 66,
+      "regions": [
+        {
+          "page": 66,
+          "x": 66,
+          "y": 439.384,
+          "width": 484,
+          "height": 105.501
+        }
+      ]
+    },
+    {
+      "number": 263,
+      "topic": "mean",
+      "page": 66,
+      "regions": [
+        {
+          "page": 66,
+          "x": 66,
+          "y": 544.385,
+          "width": 484,
+          "height": 155.313
+        }
+      ]
+    },
+    {
+      "number": 264,
+      "topic": "mean",
+      "page": 67,
+      "regions": [
+        {
+          "page": 67,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 141.308
+        }
+      ]
+    },
+    {
+      "number": 265,
+      "topic": "mean",
+      "page": 67,
+      "regions": [
+        {
+          "page": 67,
+          "x": 36,
+          "y": 202.447,
+          "width": 484,
+          "height": 50.392
+        }
+      ]
+    },
+    {
+      "number": 266,
+      "topic": "mean",
+      "page": 67,
+      "regions": [
+        {
+          "page": 67,
+          "x": 36,
+          "y": 252.754,
+          "width": 484,
+          "height": 107.626
+        }
+      ]
+    },
+    {
+      "number": 267,
+      "topic": "mean",
+      "page": 67,
+      "regions": [
+        {
+          "page": 67,
+          "x": 36,
+          "y": 359.88,
+          "width": 484,
+          "height": 80.925
+        }
+      ]
+    },
+    {
+      "number": 268,
+      "topic": "mean",
+      "page": 67,
+      "regions": [
+        {
+          "page": 67,
+          "x": 36,
+          "y": 440.305,
+          "width": 484,
+          "height": 122.445
+        }
+      ]
+    },
+    {
+      "number": 269,
+      "topic": "mean",
+      "page": 67,
+      "regions": [
+        {
+          "page": 67,
+          "x": 36,
+          "y": 562.25,
+          "width": 484,
+          "height": 135.604
+        }
+      ]
+    },
+    {
+      "number": 270,
+      "topic": "mean",
+      "page": 68,
+      "regions": [
+        {
+          "page": 68,
+          "x": 66,
+          "y": 61.639,
+          "width": 484,
+          "height": 167.77
+        }
+      ]
+    },
+    {
+      "number": 271,
+      "topic": "mean",
+      "page": 68,
+      "regions": [
+        {
+          "page": 68,
+          "x": 66,
+          "y": 228.909,
+          "width": 484,
+          "height": 175.235
+        }
+      ]
+    },
+    {
+      "number": 272,
+      "topic": "mean",
+      "page": 68,
+      "regions": [
+        {
+          "page": 68,
+          "x": 66,
+          "y": 403.761,
+          "width": 484,
+          "height": 112.855
+        }
+      ]
+    },
+    {
+      "number": 273,
+      "topic": "mean",
+      "page": 68,
+      "regions": [
+        {
+          "page": 68,
+          "x": 66,
+          "y": 516.116,
+          "width": 484,
+          "height": 49.524
+        }
+      ]
+    },
+    {
+      "number": 274,
+      "topic": "mean",
+      "page": 68,
+      "regions": [
+        {
+          "page": 68,
+          "x": 66,
+          "y": 565.14,
+          "width": 484,
+          "height": 131.68
+        }
+      ]
+    },
+    {
+      "number": 275,
+      "topic": "mean",
+      "page": 69,
+      "regions": [
+        {
+          "page": 69,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 84.595
+        }
+      ]
+    },
+    {
+      "number": 276,
+      "topic": "mean",
+      "page": 69,
+      "regions": [
+        {
+          "page": 69,
+          "x": 36,
+          "y": 145.734,
+          "width": 484,
+          "height": 120.224
+        }
+      ]
+    },
+    {
+      "number": 277,
+      "topic": "mean",
+      "page": 69,
+      "regions": [
+        {
+          "page": 69,
+          "x": 36,
+          "y": 265.458,
+          "width": 484,
+          "height": 94.713
+        }
+      ]
+    },
+    {
+      "number": 278,
+      "topic": "mean",
+      "page": 69,
+      "regions": [
+        {
+          "page": 69,
+          "x": 36,
+          "y": 359.671,
+          "width": 484,
+          "height": 81.245
+        }
+      ]
+    },
+    {
+      "number": 279,
+      "topic": "mean",
+      "page": 69,
+      "regions": [
+        {
+          "page": 69,
+          "x": 36,
+          "y": 440.415,
+          "width": 484,
+          "height": 77.201
+        }
+      ]
+    },
+    {
+      "number": 280,
+      "topic": "mean",
+      "page": 69,
+      "regions": [
+        {
+          "page": 69,
+          "x": 36,
+          "y": 517.116,
+          "width": 484,
+          "height": 180.784
+        }
+      ]
+    },
+    {
+      "number": 281,
+      "topic": "mean",
+      "page": 70,
+      "regions": [
+        {
+          "page": 70,
+          "x": 66,
+          "y": 61.639,
+          "width": 484,
+          "height": 101.371
+        }
+      ]
+    },
+    {
+      "number": 282,
+      "topic": "mean",
+      "page": 70,
+      "regions": [
+        {
+          "page": 70,
+          "x": 66,
+          "y": 162.51,
+          "width": 484,
+          "height": 372.652
+        }
+      ]
+    },
+    {
+      "number": 283,
+      "topic": "mean",
+      "page": 70,
+      "regions": [
+        {
+          "page": 70,
+          "x": 66,
+          "y": 534.662,
+          "width": 484,
+          "height": 70.876
+        }
+      ]
+    },
+    {
+      "number": 284,
+      "topic": "mean",
+      "page": 70,
+      "regions": [
+        {
+          "page": 70,
+          "x": 66,
+          "y": 605.872,
+          "width": 484,
+          "height": 94.128
+        }
+      ]
+    },
+    {
+      "number": 285,
+      "topic": "mean",
+      "page": 71,
+      "regions": [
+        {
+          "page": 71,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 51.184
+        }
+      ]
+    },
+    {
+      "number": 286,
+      "topic": "mean",
+      "page": 71,
+      "regions": [
+        {
+          "page": 71,
+          "x": 36,
+          "y": 115.142,
+          "width": 484,
+          "height": 51.184
+        }
+      ]
+    },
+    {
+      "number": 287,
+      "topic": "mean",
+      "page": 71,
+      "regions": [
+        {
+          "page": 71,
+          "x": 36,
+          "y": 168.645,
+          "width": 484,
+          "height": 51.184
+        }
+      ]
+    },
+    {
+      "number": 288,
+      "topic": "mean",
+      "page": 71,
+      "regions": [
+        {
+          "page": 71,
+          "x": 36,
+          "y": 222.148,
+          "width": 484,
+          "height": 180.784
+        }
+      ]
+    },
+    {
+      "number": 289,
+      "topic": "mean",
+      "page": 71,
+      "regions": [
+        {
+          "page": 71,
+          "x": 36,
+          "y": 404.037,
+          "width": 484,
+          "height": 79.984
+        }
+      ]
+    },
+    {
+      "number": 290,
+      "topic": "mean",
+      "page": 71,
+      "regions": [
+        {
+          "page": 71,
+          "x": 36,
+          "y": 486.825,
+          "width": 484,
+          "height": 68.531
+        }
+      ]
+    },
+    {
+      "number": 291,
+      "topic": "mean",
+      "page": 71,
+      "regions": [
+        {
+          "page": 71,
+          "x": 36,
+          "y": 561.526,
+          "width": 484,
+          "height": 36.784
+        }
+      ]
+    },
+    {
+      "number": 292,
+      "topic": "mean",
+      "page": 71,
+      "regions": [
+        {
+          "page": 71,
+          "x": 36,
+          "y": 603.457,
+          "width": 484,
+          "height": 95.419
+        }
+      ]
+    },
+    {
+      "number": 293,
+      "topic": "mean",
+      "page": 72,
+      "regions": [
+        {
+          "page": 72,
+          "x": 66,
+          "y": 65.539,
+          "width": 484,
+          "height": 126.51
+        }
+      ]
+    },
+    {
+      "number": 294,
+      "topic": "mean",
+      "page": 72,
+      "regions": [
+        {
+          "page": 72,
+          "x": 66,
+          "y": 191.549,
+          "width": 484,
+          "height": 35.823
+        }
+      ]
+    },
+    {
+      "number": 295,
+      "topic": "mean",
+      "page": 72,
+      "regions": [
+        {
+          "page": 72,
+          "x": 66,
+          "y": 226.872,
+          "width": 484,
+          "height": 262.232
+        }
+      ]
+    },
+    {
+      "number": 296,
+      "topic": "mean",
+      "page": 72,
+      "regions": [
+        {
+          "page": 72,
+          "x": 66,
+          "y": 488.604,
+          "width": 484,
+          "height": 209.584
+        }
+      ]
+    },
+    {
+      "number": 297,
+      "topic": "arithmetic-review",
+      "page": 73,
+      "regions": [
+        {
+          "page": 73,
+          "x": 36,
+          "y": 90.0,
+          "width": 484,
+          "height": 45.79
+        }
+      ]
+    },
+    {
+      "number": 298,
+      "topic": "arithmetic-review",
+      "page": 73,
+      "regions": [
+        {
+          "page": 73,
+          "x": 36,
+          "y": 135.29,
+          "width": 484,
+          "height": 46.029
+        }
+      ]
+    },
+    {
+      "number": 299,
+      "topic": "arithmetic-review",
+      "page": 73,
+      "regions": [
+        {
+          "page": 73,
+          "x": 36,
+          "y": 182.933,
+          "width": 484,
+          "height": 32.192
+        }
+      ]
+    },
+    {
+      "number": 300,
+      "topic": "arithmetic-review",
+      "page": 73,
+      "regions": [
+        {
+          "page": 73,
+          "x": 36,
+          "y": 214.864,
+          "width": 484,
+          "height": 51.184
+        }
+      ]
+    },
+    {
+      "number": 301,
+      "topic": "arithmetic-review",
+      "page": 73,
+      "regions": [
+        {
+          "page": 73,
+          "x": 36,
+          "y": 265.722,
+          "width": 484,
+          "height": 65.584
+        }
+      ]
+    },
+    {
+      "number": 302,
+      "topic": "arithmetic-review",
+      "page": 73,
+      "regions": [
+        {
+          "page": 73,
+          "x": 36,
+          "y": 331.246,
+          "width": 484,
+          "height": 36.784
+        }
+      ]
+    },
+    {
+      "number": 303,
+      "topic": "arithmetic-review",
+      "page": 73,
+      "regions": [
+        {
+          "page": 73,
+          "x": 36,
+          "y": 368.589,
+          "width": 484,
+          "height": 65.584
+        }
+      ]
+    },
+    {
+      "number": 304,
+      "topic": "arithmetic-review",
+      "page": 73,
+      "regions": [
+        {
+          "page": 73,
+          "x": 36,
+          "y": 434.112,
+          "width": 484,
+          "height": 65.584
+        }
+      ]
+    },
+    {
+      "number": 305,
+      "topic": "arithmetic-review",
+      "page": 73,
+      "regions": [
+        {
+          "page": 73,
+          "x": 36,
+          "y": 499.636,
+          "width": 484,
+          "height": 65.584
+        }
+      ]
+    },
+    {
+      "number": 306,
+      "topic": "arithmetic-review",
+      "page": 73,
+      "regions": [
+        {
+          "page": 73,
+          "x": 36,
+          "y": 565.159,
+          "width": 484,
+          "height": 80.905
+        }
+      ]
+    },
+    {
+      "number": 307,
+      "topic": "arithmetic-review",
+      "page": 73,
+      "regions": [
+        {
+          "page": 73,
+          "x": 36,
+          "y": 645.565,
+          "width": 484,
+          "height": 52.916
+        }
+      ]
+    },
+    {
+      "number": 308,
+      "topic": "percent-concept",
+      "page": 75,
+      "regions": [
+        {
+          "page": 75,
+          "x": 36,
+          "y": 623.008,
+          "width": 484,
+          "height": 37.498
+        }
+      ]
+    },
+    {
+      "number": 309,
+      "topic": "percent-concept",
+      "page": 75,
+      "regions": [
+        {
+          "page": 75,
+          "x": 36,
+          "y": 660.006,
+          "width": 484,
+          "height": 38.475
+        }
+      ]
+    },
+    {
+      "number": 310,
+      "topic": "percent-concept",
+      "page": 76,
+      "regions": [
+        {
+          "page": 76,
+          "x": 66,
+          "y": 61.639,
+          "width": 484,
+          "height": 135.387
+        }
+      ]
+    },
+    {
+      "number": 311,
+      "topic": "percent-concept",
+      "page": 76,
+      "regions": [
+        {
+          "page": 76,
+          "x": 66,
+          "y": 196.526,
+          "width": 484,
+          "height": 106.713
+        }
+      ]
+    },
+    {
+      "number": 312,
+      "topic": "percent-concept",
+      "page": 76,
+      "regions": [
+        {
+          "page": 76,
+          "x": 66,
+          "y": 302.738,
+          "width": 484,
+          "height": 77.579
+        }
+      ]
+    },
+    {
+      "number": 313,
+      "topic": "percent-concept",
+      "page": 76,
+      "regions": [
+        {
+          "page": 76,
+          "x": 66,
+          "y": 379.817,
+          "width": 484,
+          "height": 125.272
+        }
+      ]
+    },
+    {
+      "number": 314,
+      "topic": "percent-concept",
+      "page": 76,
+      "regions": [
+        {
+          "page": 76,
+          "x": 66,
+          "y": 504.589,
+          "width": 484,
+          "height": 68.909
+        }
+      ]
+    },
+    {
+      "number": 315,
+      "topic": "percent-concept",
+      "page": 76,
+      "regions": [
+        {
+          "page": 76,
+          "x": 66,
+          "y": 572.998,
+          "width": 484,
+          "height": 68.414
+        }
+      ]
+    },
+    {
+      "number": 316,
+      "topic": "percent-concept",
+      "page": 76,
+      "regions": [
+        {
+          "page": 76,
+          "x": 66,
+          "y": 640.912,
+          "width": 484,
+          "height": 57.568
+        }
+      ]
+    },
+    {
+      "number": 317,
+      "topic": "percent-concept",
+      "page": 77,
+      "regions": [
+        {
+          "page": 77,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 48.513
+        }
+      ]
+    },
+    {
+      "number": 318,
+      "topic": "percent-concept",
+      "page": 77,
+      "regions": [
+        {
+          "page": 77,
+          "x": 36,
+          "y": 109.652,
+          "width": 484,
+          "height": 75.98
+        }
+      ]
+    },
+    {
+      "number": 319,
+      "topic": "percent-concept",
+      "page": 77,
+      "regions": [
+        {
+          "page": 77,
+          "x": 36,
+          "y": 185.132,
+          "width": 484,
+          "height": 214.713
+        }
+      ]
+    },
+    {
+      "number": 320,
+      "topic": "percent-concept",
+      "page": 77,
+      "regions": [
+        {
+          "page": 77,
+          "x": 36,
+          "y": 399.344,
+          "width": 484,
+          "height": 63.083
+        }
+      ]
+    },
+    {
+      "number": 321,
+      "topic": "percent-concept",
+      "page": 77,
+      "regions": [
+        {
+          "page": 77,
+          "x": 36,
+          "y": 461.927,
+          "width": 484,
+          "height": 169.973
+        }
+      ]
+    },
+    {
+      "number": 322,
+      "topic": "percent-concept",
+      "page": 77,
+      "regions": [
+        {
+          "page": 77,
+          "x": 36,
+          "y": 631.4,
+          "width": 484,
+          "height": 65.584
+        }
+      ]
+    },
+    {
+      "number": 323,
+      "topic": "percent-concept",
+      "page": 78,
+      "regions": [
+        {
+          "page": 78,
+          "x": 66,
+          "y": 61.639,
+          "width": 484,
+          "height": 93.364
+        }
+      ]
+    },
+    {
+      "number": 324,
+      "topic": "percent-concept",
+      "page": 78,
+      "regions": [
+        {
+          "page": 78,
+          "x": 66,
+          "y": 156.055,
+          "width": 484,
+          "height": 64.053
+        }
+      ]
+    },
+    {
+      "number": 325,
+      "topic": "percent-concept",
+      "page": 78,
+      "regions": [
+        {
+          "page": 78,
+          "x": 66,
+          "y": 219.609,
+          "width": 484,
+          "height": 50.98
+        }
+      ]
+    },
+    {
+      "number": 326,
+      "topic": "percent-concept",
+      "page": 78,
+      "regions": [
+        {
+          "page": 78,
+          "x": 66,
+          "y": 271.154,
+          "width": 484,
+          "height": 93.364
+        }
+      ]
+    },
+    {
+      "number": 327,
+      "topic": "percent-concept",
+      "page": 78,
+      "regions": [
+        {
+          "page": 78,
+          "x": 66,
+          "y": 364.571,
+          "width": 484,
+          "height": 64.053
+        }
+      ]
+    },
+    {
+      "number": 328,
+      "topic": "percent-concept",
+      "page": 78,
+      "regions": [
+        {
+          "page": 78,
+          "x": 66,
+          "y": 428.124,
+          "width": 484,
+          "height": 271.548
+        }
+      ]
+    },
+    {
+      "number": 329,
+      "topic": "percent-concept",
+      "page": 79,
+      "regions": [
+        {
+          "page": 79,
+          "x": 36,
+          "y": 65.539,
+          "width": 484,
+          "height": 66.999
+        }
+      ]
+    },
+    {
+      "number": 330,
+      "topic": "percent-concept",
+      "page": 79,
+      "regions": [
+        {
+          "page": 79,
+          "x": 36,
+          "y": 132.037,
+          "width": 484,
+          "height": 91.597
+        }
+      ]
+    },
+    {
+      "number": 331,
+      "topic": "percent-concept",
+      "page": 79,
+      "regions": [
+        {
+          "page": 79,
+          "x": 36,
+          "y": 223.134,
+          "width": 484,
+          "height": 78.049
+        }
+      ]
+    },
+    {
+      "number": 332,
+      "topic": "percent-concept",
+      "page": 79,
+      "regions": [
+        {
+          "page": 79,
+          "x": 36,
+          "y": 300.683,
+          "width": 484,
+          "height": 138.317
+        }
+      ]
+    },
+    {
+      "number": 333,
+      "topic": "percent-concept",
+      "page": 79,
+      "regions": [
+        {
+          "page": 79,
+          "x": 36,
+          "y": 438.5,
+          "width": 484,
+          "height": 64.64
+        }
+      ]
+    },
+    {
+      "number": 334,
+      "topic": "percent-concept",
+      "page": 79,
+      "regions": [
+        {
+          "page": 79,
+          "x": 36,
+          "y": 502.64,
+          "width": 484,
+          "height": 79.703
+        }
+      ]
+    },
+    {
+      "number": 335,
+      "topic": "percent-concept",
+      "page": 79,
+      "regions": [
+        {
+          "page": 79,
+          "x": 36,
+          "y": 581.843,
+          "width": 484,
+          "height": 35.837
+        }
+      ]
+    },
+    {
+      "number": 336,
+      "topic": "percent-concept",
+      "page": 79,
+      "regions": [
+        {
+          "page": 79,
+          "x": 36,
+          "y": 617.179,
+          "width": 484,
+          "height": 79.6
+        }
+      ]
+    },
+    {
+      "number": 337,
+      "topic": "percent-concept",
+      "page": 80,
+      "regions": [
+        {
+          "page": 80,
+          "x": 66,
+          "y": 61.639,
+          "width": 484,
+          "height": 169.282
+        }
+      ]
+    },
+    {
+      "number": 338,
+      "topic": "percent-concept",
+      "page": 80,
+      "regions": [
+        {
+          "page": 80,
+          "x": 66,
+          "y": 230.421,
+          "width": 484,
+          "height": 202.083
+        }
+      ]
+    },
+    {
+      "number": 339,
+      "topic": "percent-concept",
+      "page": 80,
+      "regions": [
+        {
+          "page": 80,
+          "x": 66,
+          "y": 434.077,
+          "width": 484,
+          "height": 265.479
+        }
+      ]
+    },
+    {
+      "number": 340,
+      "topic": "percent-concept",
+      "page": 81,
+      "regions": [
+        {
+          "page": 81,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 84.363
+        }
+      ]
+    },
+    {
+      "number": 341,
+      "topic": "percent-concept",
+      "page": 81,
+      "regions": [
+        {
+          "page": 81,
+          "x": 36,
+          "y": 145.502,
+          "width": 484,
+          "height": 201.74
+        }
+      ]
+    },
+    {
+      "number": 342,
+      "topic": "percent-concept",
+      "page": 81,
+      "regions": [
+        {
+          "page": 81,
+          "x": 36,
+          "y": 347.229,
+          "width": 484,
+          "height": 109.676
+        }
+      ]
+    },
+    {
+      "number": 343,
+      "topic": "percent-concept",
+      "page": 81,
+      "regions": [
+        {
+          "page": 81,
+          "x": 36,
+          "y": 456.405,
+          "width": 484,
+          "height": 57.193
+        }
+      ]
+    },
+    {
+      "number": 344,
+      "topic": "percent-concept",
+      "page": 81,
+      "regions": [
+        {
+          "page": 81,
+          "x": 36,
+          "y": 513.098,
+          "width": 484,
+          "height": 182.98
+        }
+      ]
+    },
+    {
+      "number": 345,
+      "topic": "percent-concept",
+      "page": 82,
+      "regions": [
+        {
+          "page": 82,
+          "x": 66,
+          "y": 61.639,
+          "width": 484,
+          "height": 50.182
+        }
+      ]
+    },
+    {
+      "number": 346,
+      "topic": "percent-concept",
+      "page": 82,
+      "regions": [
+        {
+          "page": 82,
+          "x": 66,
+          "y": 111.321,
+          "width": 484,
+          "height": 110.164
+        }
+      ]
+    },
+    {
+      "number": 347,
+      "topic": "percent-concept",
+      "page": 82,
+      "regions": [
+        {
+          "page": 82,
+          "x": 66,
+          "y": 220.985,
+          "width": 484,
+          "height": 246.222
+        }
+      ]
+    },
+    {
+      "number": 348,
+      "topic": "percent-concept",
+      "page": 82,
+      "regions": [
+        {
+          "page": 82,
+          "x": 66,
+          "y": 466.707,
+          "width": 484,
+          "height": 74.815
+        }
+      ]
+    },
+    {
+      "number": 349,
+      "topic": "percent-concept",
+      "page": 82,
+      "regions": [
+        {
+          "page": 82,
+          "x": 66,
+          "y": 541.022,
+          "width": 484,
+          "height": 48.935
+        }
+      ]
+    },
+    {
+      "number": 350,
+      "topic": "percent-concept",
+      "page": 82,
+      "regions": [
+        {
+          "page": 82,
+          "x": 66,
+          "y": 589.456,
+          "width": 484,
+          "height": 108.784
+        }
+      ]
+    },
+    {
+      "number": 351,
+      "topic": "percent-problems",
+      "page": 86,
+      "regions": [
+        {
+          "page": 86,
+          "x": 66,
+          "y": 65.539,
+          "width": 484,
+          "height": 78.554
+        }
+      ]
+    },
+    {
+      "number": 352,
+      "topic": "percent-problems",
+      "page": 86,
+      "regions": [
+        {
+          "page": 86,
+          "x": 66,
+          "y": 143.593,
+          "width": 484,
+          "height": 51.184
+        }
+      ]
+    },
+    {
+      "number": 353,
+      "topic": "percent-problems",
+      "page": 86,
+      "regions": [
+        {
+          "page": 86,
+          "x": 66,
+          "y": 194.755,
+          "width": 484,
+          "height": 92.875
+        }
+      ]
+    },
+    {
+      "number": 354,
+      "topic": "percent-problems",
+      "page": 86,
+      "regions": [
+        {
+          "page": 86,
+          "x": 66,
+          "y": 287.13,
+          "width": 484,
+          "height": 35.764
+        }
+      ]
+    },
+    {
+      "number": 355,
+      "topic": "percent-problems",
+      "page": 86,
+      "regions": [
+        {
+          "page": 86,
+          "x": 66,
+          "y": 322.394,
+          "width": 484,
+          "height": 80.339
+        }
+      ]
+    },
+    {
+      "number": 356,
+      "topic": "percent-problems",
+      "page": 86,
+      "regions": [
+        {
+          "page": 86,
+          "x": 66,
+          "y": 402.233,
+          "width": 484,
+          "height": 79.984
+        }
+      ]
+    },
+    {
+      "number": 357,
+      "topic": "percent-problems",
+      "page": 86,
+      "regions": [
+        {
+          "page": 86,
+          "x": 66,
+          "y": 482.072,
+          "width": 484,
+          "height": 120.386
+        }
+      ]
+    },
+    {
+      "number": 358,
+      "topic": "percent-problems",
+      "page": 86,
+      "regions": [
+        {
+          "page": 86,
+          "x": 66,
+          "y": 601.959,
+          "width": 484,
+          "height": 94.384
+        }
+      ]
+    },
+    {
+      "number": 359,
+      "topic": "percent-problems",
+      "page": 87,
+      "regions": [
+        {
+          "page": 87,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 64.311
+        }
+      ]
+    },
+    {
+      "number": 360,
+      "topic": "percent-problems",
+      "page": 87,
+      "regions": [
+        {
+          "page": 87,
+          "x": 36,
+          "y": 125.45,
+          "width": 484,
+          "height": 78.369
+        }
+      ]
+    },
+    {
+      "number": 361,
+      "topic": "percent-problems",
+      "page": 87,
+      "regions": [
+        {
+          "page": 87,
+          "x": 36,
+          "y": 203.32,
+          "width": 484,
+          "height": 78.37
+        }
+      ]
+    },
+    {
+      "number": 362,
+      "topic": "percent-problems",
+      "page": 87,
+      "regions": [
+        {
+          "page": 87,
+          "x": 36,
+          "y": 281.189,
+          "width": 484,
+          "height": 78.37
+        }
+      ]
+    },
+    {
+      "number": 363,
+      "topic": "percent-problems",
+      "page": 87,
+      "regions": [
+        {
+          "page": 87,
+          "x": 36,
+          "y": 359.059,
+          "width": 484,
+          "height": 78.369
+        }
+      ]
+    },
+    {
+      "number": 364,
+      "topic": "percent-problems",
+      "page": 87,
+      "regions": [
+        {
+          "page": 87,
+          "x": 36,
+          "y": 436.928,
+          "width": 484,
+          "height": 90.543
+        }
+      ]
+    },
+    {
+      "number": 365,
+      "topic": "percent-problems",
+      "page": 87,
+      "regions": [
+        {
+          "page": 87,
+          "x": 36,
+          "y": 526.971,
+          "width": 484,
+          "height": 104.716
+        }
+      ]
+    },
+    {
+      "number": 366,
+      "topic": "percent-problems",
+      "page": 87,
+      "regions": [
+        {
+          "page": 87,
+          "x": 36,
+          "y": 631.187,
+          "width": 484,
+          "height": 65.584
+        }
+      ]
+    },
+    {
+      "number": 367,
+      "topic": "percent-problems",
+      "page": 88,
+      "regions": [
+        {
+          "page": 88,
+          "x": 66,
+          "y": 61.639,
+          "width": 484,
+          "height": 71.19
+        }
+      ]
+    },
+    {
+      "number": 368,
+      "topic": "percent-problems",
+      "page": 88,
+      "regions": [
+        {
+          "page": 88,
+          "x": 66,
+          "y": 132.329,
+          "width": 484,
+          "height": 50.942
+        }
+      ]
+    },
+    {
+      "number": 369,
+      "topic": "percent-problems",
+      "page": 88,
+      "regions": [
+        {
+          "page": 88,
+          "x": 66,
+          "y": 182.771,
+          "width": 484,
+          "height": 93.517
+        }
+      ]
+    },
+    {
+      "number": 370,
+      "topic": "percent-problems",
+      "page": 88,
+      "regions": [
+        {
+          "page": 88,
+          "x": 66,
+          "y": 275.788,
+          "width": 484,
+          "height": 50.942
+        }
+      ]
+    },
+    {
+      "number": 371,
+      "topic": "percent-problems",
+      "page": 88,
+      "regions": [
+        {
+          "page": 88,
+          "x": 66,
+          "y": 326.23,
+          "width": 484,
+          "height": 51.184
+        }
+      ]
+    },
+    {
+      "number": 372,
+      "topic": "percent-problems",
+      "page": 88,
+      "regions": [
+        {
+          "page": 88,
+          "x": 66,
+          "y": 377.672,
+          "width": 484,
+          "height": 107.635
+        }
+      ]
+    },
+    {
+      "number": 373,
+      "topic": "percent-problems",
+      "page": 88,
+      "regions": [
+        {
+          "page": 88,
+          "x": 66,
+          "y": 484.807,
+          "width": 484,
+          "height": 82.123
+        }
+      ]
+    },
+    {
+      "number": 374,
+      "topic": "percent-problems",
+      "page": 88,
+      "regions": [
+        {
+          "page": 88,
+          "x": 66,
+          "y": 566.43,
+          "width": 484,
+          "height": 64.396
+        }
+      ]
+    },
+    {
+      "number": 375,
+      "topic": "percent-problems",
+      "page": 88,
+      "regions": [
+        {
+          "page": 88,
+          "x": 66,
+          "y": 633.644,
+          "width": 484,
+          "height": 64.396
+        }
+      ]
+    },
+    {
+      "number": 376,
+      "topic": "percent-problems",
+      "page": 89,
+      "regions": [
+        {
+          "page": 89,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 64.741
+        }
+      ]
+    },
+    {
+      "number": 377,
+      "topic": "percent-problems",
+      "page": 89,
+      "regions": [
+        {
+          "page": 89,
+          "x": 36,
+          "y": 125.88,
+          "width": 484,
+          "height": 79.984
+        }
+      ]
+    },
+    {
+      "number": 378,
+      "topic": "percent-problems",
+      "page": 89,
+      "regions": [
+        {
+          "page": 89,
+          "x": 36,
+          "y": 206.667,
+          "width": 484,
+          "height": 178.61
+        }
+      ]
+    },
+    {
+      "number": 379,
+      "topic": "percent-problems",
+      "page": 89,
+      "regions": [
+        {
+          "page": 89,
+          "x": 36,
+          "y": 384.777,
+          "width": 484,
+          "height": 161.327
+        }
+      ]
+    },
+    {
+      "number": 380,
+      "topic": "percent-problems",
+      "page": 89,
+      "regions": [
+        {
+          "page": 89,
+          "x": 36,
+          "y": 545.604,
+          "width": 484,
+          "height": 151.984
+        }
+      ]
+    },
+    {
+      "number": 381,
+      "topic": "percent-problems",
+      "page": 90,
+      "regions": [
+        {
+          "page": 90,
+          "x": 66,
+          "y": 61.639,
+          "width": 484,
+          "height": 79.054
+        }
+      ]
+    },
+    {
+      "number": 382,
+      "topic": "percent-problems",
+      "page": 90,
+      "regions": [
+        {
+          "page": 90,
+          "x": 66,
+          "y": 140.193,
+          "width": 484,
+          "height": 92.404
+        }
+      ]
+    },
+    {
+      "number": 383,
+      "topic": "percent-problems",
+      "page": 90,
+      "regions": [
+        {
+          "page": 90,
+          "x": 66,
+          "y": 232.211,
+          "width": 484,
+          "height": 78.4
+        }
+      ]
+    },
+    {
+      "number": 384,
+      "topic": "percent-problems",
+      "page": 90,
+      "regions": [
+        {
+          "page": 90,
+          "x": 66,
+          "y": 310.271,
+          "width": 484,
+          "height": 119.427
+        }
+      ]
+    },
+    {
+      "number": 385,
+      "topic": "percent-problems",
+      "page": 90,
+      "regions": [
+        {
+          "page": 90,
+          "x": 66,
+          "y": 429.198,
+          "width": 484,
+          "height": 92.404
+        }
+      ]
+    },
+    {
+      "number": 386,
+      "topic": "percent-problems",
+      "page": 90,
+      "regions": [
+        {
+          "page": 90,
+          "x": 66,
+          "y": 521.778,
+          "width": 484,
+          "height": 177.89
+        }
+      ]
+    },
+    {
+      "number": 387,
+      "topic": "percent-problems",
+      "page": 91,
+      "regions": [
+        {
+          "page": 91,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 50.392
+        }
+      ]
+    },
+    {
+      "number": 388,
+      "topic": "percent-problems",
+      "page": 91,
+      "regions": [
+        {
+          "page": 91,
+          "x": 36,
+          "y": 112.938,
+          "width": 484,
+          "height": 183.861
+        }
+      ]
+    },
+    {
+      "number": 389,
+      "topic": "percent-problems",
+      "page": 91,
+      "regions": [
+        {
+          "page": 91,
+          "x": 36,
+          "y": 296.3,
+          "width": 484,
+          "height": 63.603
+        }
+      ]
+    },
+    {
+      "number": 390,
+      "topic": "percent-problems",
+      "page": 91,
+      "regions": [
+        {
+          "page": 91,
+          "x": 36,
+          "y": 359.403,
+          "width": 484,
+          "height": 149.686
+        }
+      ]
+    },
+    {
+      "number": 391,
+      "topic": "percent-problems",
+      "page": 91,
+      "regions": [
+        {
+          "page": 91,
+          "x": 36,
+          "y": 508.589,
+          "width": 484,
+          "height": 107.713
+        }
+      ]
+    },
+    {
+      "number": 392,
+      "topic": "percent-problems",
+      "page": 91,
+      "regions": [
+        {
+          "page": 91,
+          "x": 36,
+          "y": 615.801,
+          "width": 484,
+          "height": 82.944
+        }
+      ]
+    },
+    {
+      "number": 393,
+      "topic": "percent-problems",
+      "page": 92,
+      "regions": [
+        {
+          "page": 92,
+          "x": 66,
+          "y": 61.639,
+          "width": 484,
+          "height": 277.914
+        }
+      ]
+    },
+    {
+      "number": 394,
+      "topic": "percent-problems",
+      "page": 92,
+      "regions": [
+        {
+          "page": 92,
+          "x": 66,
+          "y": 339.053,
+          "width": 484,
+          "height": 139.846
+        }
+      ]
+    },
+    {
+      "number": 395,
+      "topic": "percent-problems",
+      "page": 92,
+      "regions": [
+        {
+          "page": 92,
+          "x": 66,
+          "y": 478.4,
+          "width": 484,
+          "height": 135.908
+        }
+      ]
+    },
+    {
+      "number": 396,
+      "topic": "percent-problems",
+      "page": 92,
+      "regions": [
+        {
+          "page": 92,
+          "x": 66,
+          "y": 613.807,
+          "width": 484,
+          "height": 86.193
+        }
+      ]
+    },
+    {
+      "number": 397,
+      "topic": "percent-problems",
+      "page": 93,
+      "regions": [
+        {
+          "page": 93,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 89.776
+        }
+      ]
+    },
+    {
+      "number": 398,
+      "topic": "percent-problems",
+      "page": 93,
+      "regions": [
+        {
+          "page": 93,
+          "x": 36,
+          "y": 150.915,
+          "width": 484,
+          "height": 167.86
+        }
+      ]
+    },
+    {
+      "number": 399,
+      "topic": "percent-problems",
+      "page": 93,
+      "regions": [
+        {
+          "page": 93,
+          "x": 36,
+          "y": 319.14,
+          "width": 484,
+          "height": 94.484
+        }
+      ]
+    },
+    {
+      "number": 400,
+      "topic": "percent-problems",
+      "page": 93,
+      "regions": [
+        {
+          "page": 93,
+          "x": 36,
+          "y": 413.124,
+          "width": 484,
+          "height": 64.988
+        }
+      ]
+    },
+    {
+      "number": 401,
+      "topic": "percent-problems",
+      "page": 93,
+      "regions": [
+        {
+          "page": 93,
+          "x": 36,
+          "y": 477.612,
+          "width": 484,
+          "height": 111.886
+        }
+      ]
+    },
+    {
+      "number": 402,
+      "topic": "percent-problems",
+      "page": 93,
+      "regions": [
+        {
+          "page": 93,
+          "x": 36,
+          "y": 588.998,
+          "width": 484,
+          "height": 108.083
+        }
+      ]
+    },
+    {
+      "number": 403,
+      "topic": "percent-problems",
+      "page": 94,
+      "regions": [
+        {
+          "page": 94,
+          "x": 66,
+          "y": 61.639,
+          "width": 484,
+          "height": 104.437
+        }
+      ]
+    },
+    {
+      "number": 404,
+      "topic": "percent-problems",
+      "page": 94,
+      "regions": [
+        {
+          "page": 94,
+          "x": 66,
+          "y": 165.576,
+          "width": 484,
+          "height": 330.279
+        }
+      ]
+    },
+    {
+      "number": 405,
+      "topic": "percent-problems",
+      "page": 94,
+      "regions": [
+        {
+          "page": 94,
+          "x": 66,
+          "y": 495.355,
+          "width": 484,
+          "height": 40.332
+        }
+      ]
+    },
+    {
+      "number": 406,
+      "topic": "percent-problems",
+      "page": 94,
+      "regions": [
+        {
+          "page": 94,
+          "x": 66,
+          "y": 535.187,
+          "width": 484,
+          "height": 162.82
+        }
+      ]
+    },
+    {
+      "number": 407,
+      "topic": "percent-problems",
+      "page": 95,
+      "regions": [
+        {
+          "page": 95,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 51.184
+        }
+      ]
+    },
+    {
+      "number": 408,
+      "topic": "percent-problems",
+      "page": 95,
+      "regions": [
+        {
+          "page": 95,
+          "x": 36,
+          "y": 113.211,
+          "width": 484,
+          "height": 107.358
+        }
+      ]
+    },
+    {
+      "number": 409,
+      "topic": "percent-problems",
+      "page": 95,
+      "regions": [
+        {
+          "page": 95,
+          "x": 36,
+          "y": 220.069,
+          "width": 484,
+          "height": 42.448
+        }
+      ]
+    },
+    {
+      "number": 410,
+      "topic": "percent-problems",
+      "page": 95,
+      "regions": [
+        {
+          "page": 95,
+          "x": 36,
+          "y": 262.447,
+          "width": 484,
+          "height": 122.531
+        }
+      ]
+    },
+    {
+      "number": 411,
+      "topic": "percent-problems",
+      "page": 95,
+      "regions": [
+        {
+          "page": 95,
+          "x": 36,
+          "y": 384.478,
+          "width": 484,
+          "height": 77.76
+        }
+      ]
+    },
+    {
+      "number": 412,
+      "topic": "percent-problems",
+      "page": 95,
+      "regions": [
+        {
+          "page": 95,
+          "x": 36,
+          "y": 461.738,
+          "width": 484,
+          "height": 35.366
+        }
+      ]
+    },
+    {
+      "number": 413,
+      "topic": "percent-problems",
+      "page": 95,
+      "regions": [
+        {
+          "page": 95,
+          "x": 36,
+          "y": 496.604,
+          "width": 484,
+          "height": 65.547
+        }
+      ]
+    },
+    {
+      "number": 414,
+      "topic": "percent-problems",
+      "page": 95,
+      "regions": [
+        {
+          "page": 95,
+          "x": 36,
+          "y": 561.652,
+          "width": 484,
+          "height": 137.584
+        }
+      ]
+    },
+    {
+      "number": 415,
+      "topic": "percent-problems",
+      "page": 96,
+      "regions": [
+        {
+          "page": 96,
+          "x": 66,
+          "y": 61.639,
+          "width": 484,
+          "height": 63.686
+        }
+      ]
+    },
+    {
+      "number": 416,
+      "topic": "percent-problems",
+      "page": 96,
+      "regions": [
+        {
+          "page": 96,
+          "x": 66,
+          "y": 124.825,
+          "width": 484,
+          "height": 110.217
+        }
+      ]
+    },
+    {
+      "number": 417,
+      "topic": "percent-problems",
+      "page": 96,
+      "regions": [
+        {
+          "page": 96,
+          "x": 66,
+          "y": 234.541,
+          "width": 484,
+          "height": 57.02
+        }
+      ]
+    },
+    {
+      "number": 418,
+      "topic": "percent-problems",
+      "page": 96,
+      "regions": [
+        {
+          "page": 96,
+          "x": 66,
+          "y": 291.061,
+          "width": 484,
+          "height": 24.185
+        }
+      ]
+    },
+    {
+      "number": 419,
+      "topic": "percent-problems",
+      "page": 96,
+      "regions": [
+        {
+          "page": 96,
+          "x": 66,
+          "y": 314.746,
+          "width": 484,
+          "height": 78.87
+        }
+      ]
+    },
+    {
+      "number": 420,
+      "topic": "percent-problems",
+      "page": 96,
+      "regions": [
+        {
+          "page": 96,
+          "x": 66,
+          "y": 393.116,
+          "width": 484,
+          "height": 124.832
+        }
+      ]
+    },
+    {
+      "number": 421,
+      "topic": "percent-problems",
+      "page": 96,
+      "regions": [
+        {
+          "page": 96,
+          "x": 66,
+          "y": 521.337,
+          "width": 484,
+          "height": 104.865
+        }
+      ]
+    },
+    {
+      "number": 422,
+      "topic": "percent-problems",
+      "page": 96,
+      "regions": [
+        {
+          "page": 96,
+          "x": 66,
+          "y": 625.701,
+          "width": 484,
+          "height": 34.365
+        }
+      ]
+    },
+    {
+      "number": 423,
+      "topic": "percent-problems",
+      "page": 96,
+      "regions": [
+        {
+          "page": 96,
+          "x": 66,
+          "y": 659.566,
+          "width": 484,
+          "height": 36.784
+        }
+      ]
+    },
+    {
+      "number": 424,
+      "topic": "percent-problems",
+      "page": 97,
+      "regions": [
+        {
+          "page": 97,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 122.807
+        }
+      ]
+    },
+    {
+      "number": 425,
+      "topic": "percent-problems",
+      "page": 97,
+      "regions": [
+        {
+          "page": 97,
+          "x": 36,
+          "y": 183.946,
+          "width": 484,
+          "height": 49.161
+        }
+      ]
+    },
+    {
+      "number": 426,
+      "topic": "percent-problems",
+      "page": 97,
+      "regions": [
+        {
+          "page": 97,
+          "x": 36,
+          "y": 232.607,
+          "width": 484,
+          "height": 102.524
+        }
+      ]
+    },
+    {
+      "number": 427,
+      "topic": "simple-growth",
+      "page": 100,
+      "regions": [
+        {
+          "page": 100,
+          "x": 66,
+          "y": 65.539,
+          "width": 484,
+          "height": 47.951
+        }
+      ]
+    },
+    {
+      "number": 428,
+      "topic": "simple-growth",
+      "page": 100,
+      "regions": [
+        {
+          "page": 100,
+          "x": 66,
+          "y": 112.99,
+          "width": 484,
+          "height": 44.642
+        }
+      ]
+    },
+    {
+      "number": 429,
+      "topic": "simple-growth",
+      "page": 100,
+      "regions": [
+        {
+          "page": 100,
+          "x": 66,
+          "y": 157.132,
+          "width": 484,
+          "height": 45.232
+        }
+      ]
+    },
+    {
+      "number": 430,
+      "topic": "simple-growth",
+      "page": 100,
+      "regions": [
+        {
+          "page": 100,
+          "x": 66,
+          "y": 201.864,
+          "width": 484,
+          "height": 46.602
+        }
+      ]
+    },
+    {
+      "number": 431,
+      "topic": "simple-growth",
+      "page": 100,
+      "regions": [
+        {
+          "page": 100,
+          "x": 66,
+          "y": 247.966,
+          "width": 484,
+          "height": 33.185
+        }
+      ]
+    },
+    {
+      "number": 432,
+      "topic": "simple-growth",
+      "page": 100,
+      "regions": [
+        {
+          "page": 100,
+          "x": 66,
+          "y": 280.652,
+          "width": 484,
+          "height": 105.791
+        }
+      ]
+    },
+    {
+      "number": 433,
+      "topic": "simple-growth",
+      "page": 100,
+      "regions": [
+        {
+          "page": 100,
+          "x": 66,
+          "y": 385.943,
+          "width": 484,
+          "height": 75.925
+        }
+      ]
+    },
+    {
+      "number": 434,
+      "topic": "simple-growth",
+      "page": 100,
+      "regions": [
+        {
+          "page": 100,
+          "x": 66,
+          "y": 461.368,
+          "width": 484,
+          "height": 46.602
+        }
+      ]
+    },
+    {
+      "number": 435,
+      "topic": "simple-growth",
+      "page": 100,
+      "regions": [
+        {
+          "page": 100,
+          "x": 66,
+          "y": 507.47,
+          "width": 484,
+          "height": 189.617
+        }
+      ]
+    },
+    {
+      "number": 436,
+      "topic": "simple-growth",
+      "page": 101,
+      "regions": [
+        {
+          "page": 101,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 266.971
+        }
+      ]
+    },
+    {
+      "number": 437,
+      "topic": "simple-growth",
+      "page": 101,
+      "regions": [
+        {
+          "page": 101,
+          "x": 36,
+          "y": 328.699,
+          "width": 484,
+          "height": 105.397
+        }
+      ]
+    },
+    {
+      "number": 438,
+      "topic": "simple-growth",
+      "page": 101,
+      "regions": [
+        {
+          "page": 101,
+          "x": 36,
+          "y": 433.596,
+          "width": 484,
+          "height": 63.015
+        }
+      ]
+    },
+    {
+      "number": 439,
+      "topic": "simple-growth",
+      "page": 101,
+      "regions": [
+        {
+          "page": 101,
+          "x": 36,
+          "y": 496.111,
+          "width": 484,
+          "height": 48.133
+        }
+      ]
+    },
+    {
+      "number": 440,
+      "topic": "simple-growth",
+      "page": 101,
+      "regions": [
+        {
+          "page": 101,
+          "x": 36,
+          "y": 543.743,
+          "width": 484,
+          "height": 48.133
+        }
+      ]
+    },
+    {
+      "number": 441,
+      "topic": "simple-growth",
+      "page": 101,
+      "regions": [
+        {
+          "page": 101,
+          "x": 36,
+          "y": 591.376,
+          "width": 484,
+          "height": 106.408
+        }
+      ]
+    },
+    {
+      "number": 442,
+      "topic": "simple-growth",
+      "page": 102,
+      "regions": [
+        {
+          "page": 102,
+          "x": 66,
+          "y": 61.639,
+          "width": 484,
+          "height": 75.859
+        }
+      ]
+    },
+    {
+      "number": 443,
+      "topic": "simple-growth",
+      "page": 102,
+      "regions": [
+        {
+          "page": 102,
+          "x": 66,
+          "y": 136.998,
+          "width": 484,
+          "height": 218.943
+        }
+      ]
+    },
+    {
+      "number": 444,
+      "topic": "simple-growth",
+      "page": 102,
+      "regions": [
+        {
+          "page": 102,
+          "x": 66,
+          "y": 355.441,
+          "width": 484,
+          "height": 132.057
+        }
+      ]
+    },
+    {
+      "number": 445,
+      "topic": "simple-growth",
+      "page": 102,
+      "regions": [
+        {
+          "page": 102,
+          "x": 66,
+          "y": 486.998,
+          "width": 484,
+          "height": 117.666
+        }
+      ]
+    },
+    {
+      "number": 446,
+      "topic": "simple-growth",
+      "page": 102,
+      "regions": [
+        {
+          "page": 102,
+          "x": 66,
+          "y": 604.164,
+          "width": 484,
+          "height": 94.384
+        }
+      ]
+    },
+    {
+      "number": 447,
+      "topic": "simple-growth",
+      "page": 103,
+      "regions": [
+        {
+          "page": 103,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 49.474
+        }
+      ]
+    },
+    {
+      "number": 448,
+      "topic": "simple-growth",
+      "page": 103,
+      "regions": [
+        {
+          "page": 103,
+          "x": 36,
+          "y": 110.613,
+          "width": 484,
+          "height": 49.474
+        }
+      ]
+    },
+    {
+      "number": 449,
+      "topic": "simple-growth",
+      "page": 103,
+      "regions": [
+        {
+          "page": 103,
+          "x": 36,
+          "y": 159.588,
+          "width": 484,
+          "height": 62.95
+        }
+      ]
+    },
+    {
+      "number": 450,
+      "topic": "simple-growth",
+      "page": 103,
+      "regions": [
+        {
+          "page": 103,
+          "x": 36,
+          "y": 222.037,
+          "width": 484,
+          "height": 64.445
+        }
+      ]
+    },
+    {
+      "number": 451,
+      "topic": "simple-growth",
+      "page": 103,
+      "regions": [
+        {
+          "page": 103,
+          "x": 36,
+          "y": 285.982,
+          "width": 484,
+          "height": 106.799
+        }
+      ]
+    },
+    {
+      "number": 452,
+      "topic": "simple-growth",
+      "page": 103,
+      "regions": [
+        {
+          "page": 103,
+          "x": 36,
+          "y": 392.281,
+          "width": 484,
+          "height": 303.805
+        }
+      ]
+    },
+    {
+      "number": 453,
+      "topic": "simple-growth",
+      "page": 104,
+      "regions": [
+        {
+          "page": 104,
+          "x": 66,
+          "y": 65.539,
+          "width": 484,
+          "height": 51.117
+        }
+      ]
+    },
+    {
+      "number": 454,
+      "topic": "simple-growth",
+      "page": 104,
+      "regions": [
+        {
+          "page": 104,
+          "x": 66,
+          "y": 116.156,
+          "width": 484,
+          "height": 36.784
+        }
+      ]
+    },
+    {
+      "number": 455,
+      "topic": "simple-growth",
+      "page": 104,
+      "regions": [
+        {
+          "page": 104,
+          "x": 66,
+          "y": 153.171,
+          "width": 484,
+          "height": 79.87
+        }
+      ]
+    },
+    {
+      "number": 456,
+      "topic": "simple-growth",
+      "page": 104,
+      "regions": [
+        {
+          "page": 104,
+          "x": 66,
+          "y": 232.541,
+          "width": 484,
+          "height": 219.541
+        }
+      ]
+    },
+    {
+      "number": 457,
+      "topic": "simple-growth",
+      "page": 104,
+      "regions": [
+        {
+          "page": 104,
+          "x": 66,
+          "y": 451.699,
+          "width": 484,
+          "height": 63.815
+        }
+      ]
+    },
+    {
+      "number": 458,
+      "topic": "simple-growth",
+      "page": 104,
+      "regions": [
+        {
+          "page": 104,
+          "x": 66,
+          "y": 515.014,
+          "width": 484,
+          "height": 182.938
+        }
+      ]
+    },
+    {
+      "number": 459,
+      "topic": "simple-growth",
+      "page": 105,
+      "regions": [
+        {
+          "page": 105,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 116.995
+        }
+      ]
+    },
+    {
+      "number": 460,
+      "topic": "simple-growth",
+      "page": 105,
+      "regions": [
+        {
+          "page": 105,
+          "x": 36,
+          "y": 178.134,
+          "width": 484,
+          "height": 34.731
+        }
+      ]
+    },
+    {
+      "number": 461,
+      "topic": "simple-growth",
+      "page": 105,
+      "regions": [
+        {
+          "page": 105,
+          "x": 36,
+          "y": 212.365,
+          "width": 484,
+          "height": 121.204
+        }
+      ]
+    },
+    {
+      "number": 462,
+      "topic": "compound-growth",
+      "page": 107,
+      "regions": [
+        {
+          "page": 107,
+          "x": 36,
+          "y": 508.413,
+          "width": 484,
+          "height": 36.884
+        }
+      ]
+    },
+    {
+      "number": 463,
+      "topic": "compound-growth",
+      "page": 107,
+      "regions": [
+        {
+          "page": 107,
+          "x": 36,
+          "y": 545.644,
+          "width": 484,
+          "height": 50.98
+        }
+      ]
+    },
+    {
+      "number": 464,
+      "topic": "compound-growth",
+      "page": 107,
+      "regions": [
+        {
+          "page": 107,
+          "x": 36,
+          "y": 596.124,
+          "width": 484,
+          "height": 50.759
+        }
+      ]
+    },
+    {
+      "number": 465,
+      "topic": "compound-growth",
+      "page": 107,
+      "regions": [
+        {
+          "page": 107,
+          "x": 36,
+          "y": 646.383,
+          "width": 484,
+          "height": 51.184
+        }
+      ]
+    },
+    {
+      "number": 466,
+      "topic": "compound-growth",
+      "page": 108,
+      "regions": [
+        {
+          "page": 108,
+          "x": 66,
+          "y": 61.639,
+          "width": 484,
+          "height": 80.772
+        }
+      ]
+    },
+    {
+      "number": 467,
+      "topic": "compound-growth",
+      "page": 108,
+      "regions": [
+        {
+          "page": 108,
+          "x": 66,
+          "y": 141.911,
+          "width": 484,
+          "height": 50.524
+        }
+      ]
+    },
+    {
+      "number": 468,
+      "topic": "compound-growth",
+      "page": 108,
+      "regions": [
+        {
+          "page": 108,
+          "x": 66,
+          "y": 191.935,
+          "width": 484,
+          "height": 124.762
+        }
+      ]
+    },
+    {
+      "number": 469,
+      "topic": "compound-growth",
+      "page": 108,
+      "regions": [
+        {
+          "page": 108,
+          "x": 66,
+          "y": 316.197,
+          "width": 484,
+          "height": 67.167
+        }
+      ]
+    },
+    {
+      "number": 470,
+      "topic": "compound-growth",
+      "page": 108,
+      "regions": [
+        {
+          "page": 108,
+          "x": 66,
+          "y": 382.864,
+          "width": 484,
+          "height": 100.256
+        }
+      ]
+    },
+    {
+      "number": 471,
+      "topic": "compound-growth",
+      "page": 108,
+      "regions": [
+        {
+          "page": 108,
+          "x": 66,
+          "y": 482.62,
+          "width": 484,
+          "height": 53.862
+        }
+      ]
+    },
+    {
+      "number": 472,
+      "topic": "compound-growth",
+      "page": 108,
+      "regions": [
+        {
+          "page": 108,
+          "x": 66,
+          "y": 535.982,
+          "width": 484,
+          "height": 63.445
+        }
+      ]
+    },
+    {
+      "number": 473,
+      "topic": "compound-growth",
+      "page": 108,
+      "regions": [
+        {
+          "page": 108,
+          "x": 66,
+          "y": 598.927,
+          "width": 484,
+          "height": 49.146
+        }
+      ]
+    },
+    {
+      "number": 474,
+      "topic": "compound-growth",
+      "page": 108,
+      "regions": [
+        {
+          "page": 108,
+          "x": 66,
+          "y": 647.573,
+          "width": 484,
+          "height": 51.184
+        }
+      ]
+    },
+    {
+      "number": 475,
+      "topic": "compound-growth",
+      "page": 109,
+      "regions": [
+        {
+          "page": 109,
+          "x": 36,
+          "y": 61.639,
+          "width": 484,
+          "height": 49.166
+        }
+      ]
+    },
+    {
+      "number": 476,
+      "topic": "compound-growth",
+      "page": 109,
+      "regions": [
+        {
+          "page": 109,
+          "x": 36,
+          "y": 110.305,
+          "width": 484,
+          "height": 49.122
+        }
+      ]
+    },
+    {
+      "number": 477,
+      "topic": "compound-growth",
+      "page": 109,
+      "regions": [
+        {
+          "page": 109,
+          "x": 36,
+          "y": 158.927,
+          "width": 484,
+          "height": 34.728
+        }
+      ]
+    },
+    {
+      "number": 478,
+      "topic": "compound-growth",
+      "page": 109,
+      "regions": [
+        {
+          "page": 109,
+          "x": 36,
+          "y": 193.156,
+          "width": 484,
+          "height": 39.172
+        }
+      ]
+    },
+    {
+      "number": 479,
+      "topic": "compound-growth",
+      "page": 109,
+      "regions": [
+        {
+          "page": 109,
+          "x": 36,
+          "y": 231.827,
+          "width": 484,
+          "height": 63.645
+        }
+      ]
+    },
+    {
+      "number": 480,
+      "topic": "compound-growth",
+      "page": 109,
+      "regions": [
+        {
+          "page": 109,
+          "x": 36,
+          "y": 294.972,
+          "width": 484,
+          "height": 63.671
+        }
+      ]
+    },
+    {
+      "number": 481,
+      "topic": "compound-growth",
+      "page": 109,
+      "regions": [
+        {
+          "page": 109,
+          "x": 36,
+          "y": 358.142,
+          "width": 484,
+          "height": 50.387
+        }
+      ]
+    },
+    {
+      "number": 482,
+      "topic": "compound-growth",
+      "page": 109,
+      "regions": [
+        {
+          "page": 109,
+          "x": 36,
+          "y": 408.03,
+          "width": 484,
+          "height": 36.784
+        }
+      ]
+    },
+    {
+      "number": 483,
+      "topic": "compound-growth",
+      "page": 109,
+      "regions": [
+        {
+          "page": 109,
+          "x": 36,
+          "y": 444.688,
+          "width": 484,
+          "height": 36.784
+        }
+      ]
+    },
+    {
+      "number": 484,
+      "topic": "compound-growth",
+      "page": 109,
+      "regions": [
+        {
+          "page": 109,
+          "x": 36,
+          "y": 481.347,
+          "width": 484,
+          "height": 50.387
+        }
+      ]
+    },
+    {
+      "number": 485,
+      "topic": "compound-growth",
+      "page": 109,
+      "regions": [
+        {
+          "page": 109,
+          "x": 36,
+          "y": 531.234,
+          "width": 484,
+          "height": 104.627
+        }
+      ]
+    },
+    {
+      "number": 486,
+      "topic": "compound-growth",
+      "page": 109,
+      "regions": [
+        {
+          "page": 109,
+          "x": 36,
+          "y": 635.361,
+          "width": 484,
+          "height": 36.924
+        }
+      ]
+    },
+    {
+      "number": 487,
+      "topic": "compound-growth",
+      "page": 109,
+      "regions": [
+        {
+          "page": 109,
+          "x": 36,
+          "y": 671.786,
+          "width": 484,
+          "height": 25.984
+        }
+      ]
+    },
+    {
+      "number": 488,
+      "topic": "percent-review",
+      "page": 110,
+      "regions": [
+        {
+          "page": 110,
+          "x": 66,
+          "y": 90.919,
+          "width": 484,
+          "height": 101.665
+        }
+      ]
+    },
+    {
+      "number": 489,
+      "topic": "percent-review",
+      "page": 110,
+      "regions": [
+        {
+          "page": 110,
+          "x": 66,
+          "y": 192.084,
+          "width": 484,
+          "height": 49.35
+        }
+      ]
+    },
+    {
+      "number": 490,
+      "topic": "percent-review",
+      "page": 110,
+      "regions": [
+        {
+          "page": 110,
+          "x": 66,
+          "y": 240.934,
+          "width": 484,
+          "height": 89.759
+        }
+      ]
+    },
+    {
+      "number": 491,
+      "topic": "percent-review",
+      "page": 110,
+      "regions": [
+        {
+          "page": 110,
+          "x": 66,
+          "y": 330.193,
+          "width": 484,
+          "height": 49.35
+        }
+      ]
+    },
+    {
+      "number": 492,
+      "topic": "percent-review",
+      "page": 110,
+      "regions": [
+        {
+          "page": 110,
+          "x": 66,
+          "y": 379.043,
+          "width": 484,
+          "height": 61.413
+        }
+      ]
+    },
+    {
+      "number": 493,
+      "topic": "percent-review",
+      "page": 110,
+      "regions": [
+        {
+          "page": 110,
+          "x": 66,
+          "y": 439.956,
+          "width": 484,
+          "height": 34.004
+        }
+      ]
+    },
+    {
+      "number": 494,
+      "topic": "percent-review",
+      "page": 110,
+      "regions": [
+        {
+          "page": 110,
+          "x": 66,
+          "y": 473.46,
+          "width": 484,
+          "height": 49.35
+        }
+      ]
+    },
+    {
+      "number": 495,
+      "topic": "percent-review",
+      "page": 110,
+      "regions": [
+        {
+          "page": 110,
+          "x": 66,
+          "y": 522.31,
+          "width": 484,
+          "height": 34.003
+        }
+      ]
+    },
+    {
+      "number": 496,
+      "topic": "percent-review",
+      "page": 110,
+      "regions": [
+        {
+          "page": 110,
+          "x": 66,
+          "y": 555.813,
+          "width": 484,
+          "height": 77.363
+        }
+      ]
+    },
+    {
+      "number": 497,
+      "topic": "percent-review",
+      "page": 110,
+      "regions": [
+        {
+          "page": 110,
+          "x": 66,
+          "y": 632.676,
+          "width": 484,
+          "height": 67.324
+        }
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "page": 6,
+      "path": "pages/006.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "432406a12d846051a6af1238daa96dd8ba681db742ddae37c4560c89c9b0ca0a"
+    },
+    {
+      "page": 7,
+      "path": "pages/007.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "91ef4b78c80ac0a7047873c1c47fac42facf573255babb4fbca48cb0dd5f2cfa"
+    },
+    {
+      "page": 8,
+      "path": "pages/008.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "58e94e19364eea708c529f6cff5364ffc16618384ff88b1b082e9c506e308d4e"
+    },
+    {
+      "page": 9,
+      "path": "pages/009.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "3f72772e49f976562cda64fe3ac772b4480f239bff63282bfdffe8296d6422a2"
+    },
+    {
+      "page": 12,
+      "path": "pages/012.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "a9aa6efe649656141efc38b718606924a267ea9e6bb64dedbdbcef39560b3833"
+    },
+    {
+      "page": 13,
+      "path": "pages/013.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "02834441436ad2594e3db6a01c415da7a662091190979339e3f3fd7e2ecfbb1e"
+    },
+    {
+      "page": 14,
+      "path": "pages/014.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "c217b72a953119db71f0475d2ad7d145eaa12bcb4c5115e322e7690764a8f569"
+    },
+    {
+      "page": 15,
+      "path": "pages/015.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "45d97fba084a65daf108a4249574cd6afcb5fbbed1d529990eaaaf154712532b"
+    },
+    {
+      "page": 16,
+      "path": "pages/016.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "f398996fb5477dc96d867c88e643df3fe3e7f256e38ab087ac656ef686005e97"
+    },
+    {
+      "page": 18,
+      "path": "pages/018.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "7ebc24d01dfdcfbb76712552c719aec534e1512efc83f559b2fd889b2e11e573"
+    },
+    {
+      "page": 19,
+      "path": "pages/019.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "aab715b628fe468414b962913d8d5777b295d43b67f2ad03bac55f36d8c2b9dd"
+    },
+    {
+      "page": 22,
+      "path": "pages/022.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "06342b0ee6ffeea66457dc57f1ffa1399e00b4294065a93d95b8c049d35e679b"
+    },
+    {
+      "page": 23,
+      "path": "pages/023.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "84ade23e4040f25a66643bb2f40c11c5eaae3eaf6e8bc7e62670710a09408433"
+    },
+    {
+      "page": 24,
+      "path": "pages/024.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "55e875beba9260be1c1177f5fb02f756be04245593de14d4eb696e28afc6ad36"
+    },
+    {
+      "page": 25,
+      "path": "pages/025.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "ddf7f76209ca6147e38fa225763412dec1f2cbebff76c72dc36308f662eef9f6"
+    },
+    {
+      "page": 28,
+      "path": "pages/028.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "adc9ae08bdf0bd5d2f409cff0a8f8787097ac63ded53d45c929f25b640b4b3d4"
+    },
+    {
+      "page": 29,
+      "path": "pages/029.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "06f47d5067b2e5e40c13a1874573e064a360aabf47ac286645b4e5f25e123dd1"
+    },
+    {
+      "page": 30,
+      "path": "pages/030.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "f321b15647e5e2fa4d4a1a7ff55cdb4e1762f793f2f19316d5219f14d010c721"
+    },
+    {
+      "page": 31,
+      "path": "pages/031.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "80b9c2f5a25709347bbda7a7019fba5c9a2352c30e2729ec7245ef83f44338b3"
+    },
+    {
+      "page": 32,
+      "path": "pages/032.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "d1a54f20930364d9beafc3603e6a3c4859dae4078712026f7c5b6187cfe7d06d"
+    },
+    {
+      "page": 34,
+      "path": "pages/034.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "01efea4657c0a6e98bb9efb2a316cf06422a4258eeb213f1b927fdee40fe497c"
+    },
+    {
+      "page": 35,
+      "path": "pages/035.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "4dc459e7cb1b2520c50e2e73e63fdcc9c6e4ba718b37cc9eb8bf0bfd277ff3dc"
+    },
+    {
+      "page": 36,
+      "path": "pages/036.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "35ed642aff875618d96a3d0095addfe324b1ea803a5ea52f9e74ce506eb6ca2d"
+    },
+    {
+      "page": 37,
+      "path": "pages/037.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "41977e434759d80028d00f9ef3f995b93256d713008ec249eed125143d1552ee"
+    },
+    {
+      "page": 38,
+      "path": "pages/038.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "4204ad30ef9de44566ae641a1dbc0faf04d35919b9e60b95ee6b4be058ac1f9a"
+    },
+    {
+      "page": 39,
+      "path": "pages/039.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "702aee4904dfe4ae89cc768fc8dcf62b58bda69f2be7c471e62bf2470eddccf9"
+    },
+    {
+      "page": 40,
+      "path": "pages/040.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "74f0336696663adfcd8bb9cd3f984cd762ac2d29f8e416c483bd981c24ab561f"
+    },
+    {
+      "page": 41,
+      "path": "pages/041.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "e04a70f6e1240535c457cabfd5a54af39660d663942cb2b09efb384ea0d98868"
+    },
+    {
+      "page": 42,
+      "path": "pages/042.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "0d929464fe75ef25e049829a9925bef45e6ba2bff002d244031ad0dc4c0cfc84"
+    },
+    {
+      "page": 43,
+      "path": "pages/043.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "8a3474ed2168210e0a1d9dc99752379fc89d1f3f10d14823fc4412b5a19f4704"
+    },
+    {
+      "page": 46,
+      "path": "pages/046.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "60d27a0d7f01ba8074027b07470cdd6a2141ad5600562d48c90c1bbccfe3e5e5"
+    },
+    {
+      "page": 47,
+      "path": "pages/047.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "4c5e068e5ba7d430bf4938175bdcd8ea9c415e73f7683eaa5309cdf157f42517"
+    },
+    {
+      "page": 48,
+      "path": "pages/048.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "59a01e46ee70487fd453a2e4bcf3e0a385863be332b287de6d70eef743c99de2"
+    },
+    {
+      "page": 49,
+      "path": "pages/049.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "b80be5ac7fe001e0834ba04aa7ce0c028ee6a0cab17533d80333e82fd8ebbce1"
+    },
+    {
+      "page": 50,
+      "path": "pages/050.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "4431397c9ccd4fde07d6632beaf5ed7e9493d8bd156793684d1f066651eeb0c6"
+    },
+    {
+      "page": 51,
+      "path": "pages/051.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "60d68369c80237e5449e188da696b6465e0af96cca6f8a3b53311beb0e45827b"
+    },
+    {
+      "page": 52,
+      "path": "pages/052.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "83ea93961eeca669e7808c8740b2baed542f519e74aa374e93861a5b6a1b4d25"
+    },
+    {
+      "page": 53,
+      "path": "pages/053.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "0660c8ff18e0d1b070cd60694bf2e4d93c2c2050f9a38d3db6ca82e66637528f"
+    },
+    {
+      "page": 54,
+      "path": "pages/054.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "ca2683086c502e037f88b288b462647ae4c2a36a332763e7d391a5524ee2c754"
+    },
+    {
+      "page": 55,
+      "path": "pages/055.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "b3f322742a244b755ddd062c24c7247ae4560a7ff19ece4d01ba173727d17f48"
+    },
+    {
+      "page": 58,
+      "path": "pages/058.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "e79ae93a5289827512eb7bbd0e58fd8dae9285ecfd8a2395193cd60f05d4f7d9"
+    },
+    {
+      "page": 59,
+      "path": "pages/059.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "bf8b2f2acc2bbc22426eb51825dcba01ffbd47b1b157addba6c7f9783e9611a4"
+    },
+    {
+      "page": 60,
+      "path": "pages/060.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "6dfbba06345a5bd84f5df615d6586cc430550ce3af0434c8c0ba2280693f53f1"
+    },
+    {
+      "page": 61,
+      "path": "pages/061.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "92f2aa42658303d9c865665b4adce32343d8bd07cc5e25229e9094767aad149a"
+    },
+    {
+      "page": 62,
+      "path": "pages/062.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "1c7fc8cc0d822f6a925ccc3f6a84fab75cdbfc455441460b4e01851efd814dcf"
+    },
+    {
+      "page": 63,
+      "path": "pages/063.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "e1133b93da812c889cfd622be0efc94dfa6bbc39b7336b5f6a26eecc2b365da8"
+    },
+    {
+      "page": 66,
+      "path": "pages/066.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "a0a277cdddf261a1e01889f060e9e124232a5962eb344ece2ed69fdfc1a1b89e"
+    },
+    {
+      "page": 67,
+      "path": "pages/067.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "856f89abc774d2453608e1c0c076bed1f546ae2e5a71a0640849a172a739db97"
+    },
+    {
+      "page": 68,
+      "path": "pages/068.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "ad0bc35e8f927e42c019b120f2fca49c5f1f42a40bcf2df9b4052f3a178bd092"
+    },
+    {
+      "page": 69,
+      "path": "pages/069.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "a41260a9236612529796dd9425f79cbc3154f539fc321333fa60525f926eefeb"
+    },
+    {
+      "page": 70,
+      "path": "pages/070.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "addd235329b101990ebc76e55e171f7d8ac78979a0ef46e66288a2c8a9f05136"
+    },
+    {
+      "page": 71,
+      "path": "pages/071.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "1c50650dc3e1e54559f0102557c791213252bb639c7f53cf7239d27371aac792"
+    },
+    {
+      "page": 72,
+      "path": "pages/072.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "93f7aaa094413f745ba09b09e8dafa4dcf6726edd752e4558277969acb10002d"
+    },
+    {
+      "page": 73,
+      "path": "pages/073.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "7898593d0c9f9c4a6519cc025b6f53de25cb3a3dffe862ff7004d583782d19d9"
+    },
+    {
+      "page": 75,
+      "path": "pages/075.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "898fe8cbd65f36eae7afb2c2c81d9c551496bb35dfe1fb1724dd8e443bffd55b"
+    },
+    {
+      "page": 76,
+      "path": "pages/076.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "de1cc39d850e9ec2f49c86b64cf68791553416ea0318de1c645373a82890a595"
+    },
+    {
+      "page": 77,
+      "path": "pages/077.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "5d6e44313ccfec307ac6fad71be48e5247ec8278a0ecdeb8c78180c8dbd6c11c"
+    },
+    {
+      "page": 78,
+      "path": "pages/078.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "c3dd0fbf17b9e5711048ac41c68d99fa7c98ccc37dd1dc400eec3781593e16d1"
+    },
+    {
+      "page": 79,
+      "path": "pages/079.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "2865586891a92900d35fb0315fcd7c238ac1505d1b07c3d8fea18ddc711e7a70"
+    },
+    {
+      "page": 80,
+      "path": "pages/080.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "e43d7ca1677bb5ac12db710ead46aa6dbc8a6c2428f53e58d8afbe8d4f1f7dd1"
+    },
+    {
+      "page": 81,
+      "path": "pages/081.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "6215b29561a1146e65de712f03e2ef44b621bc640c2dd64734113e5d8a987385"
+    },
+    {
+      "page": 82,
+      "path": "pages/082.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "4ab2f21cd5d01843c848d62747fb148255e88cd47791b5c98e188b0f8e434a4d"
+    },
+    {
+      "page": 86,
+      "path": "pages/086.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "81eb25f9bf6c0bce737f67cf3ed3d7976013f685eeb1f55d6e1e88367a2462ff"
+    },
+    {
+      "page": 87,
+      "path": "pages/087.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "8529b2193c3fcb89ab28c9b33d40c1f9893c43ec92d147d30a32b446cc2a898f"
+    },
+    {
+      "page": 88,
+      "path": "pages/088.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "4c69e8a651edf4a7c35bfc7c5f3ded394fd3dc0091c79e25f3753531e038cf54"
+    },
+    {
+      "page": 89,
+      "path": "pages/089.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "0972a0eff68abcd817380faf925e3e4be5b9efe5d699319da099c9ffcb860d24"
+    },
+    {
+      "page": 90,
+      "path": "pages/090.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "9f0177d2136eb8163554a7c4d5083b2759115554ed3b2baab4b5bec99fc39fc5"
+    },
+    {
+      "page": 91,
+      "path": "pages/091.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "7452e7a4772d80669e8e1e100c856b89c6a77f2e68c1626b162f6046cbd91034"
+    },
+    {
+      "page": 92,
+      "path": "pages/092.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "7d71e4374890c4278fdbc5a1a94c738d7a2b34197f51a568a164d57af5c33e7e"
+    },
+    {
+      "page": 93,
+      "path": "pages/093.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "9d82164cf3afe57c3e44d6f751210579f66bdede71cecb332be5b13fb02fb0e3"
+    },
+    {
+      "page": 94,
+      "path": "pages/094.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "10877149028b4eba9499c5cffd34798096d5b62a518abef9f67b072855b18dfb"
+    },
+    {
+      "page": 95,
+      "path": "pages/095.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "dacbb64ba18437852811a2c1ca00c7df4dec57a7e49028872c32b5c750c23172"
+    },
+    {
+      "page": 96,
+      "path": "pages/096.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "26b1b0dc82fda3fe9f2e5073592bd821155157d0ccdb2160af8018cdacdae495"
+    },
+    {
+      "page": 97,
+      "path": "pages/097.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "bdd5a8fbb4a341f13d61eac786f589098ec719f025d97297e48cae8ec5a82723"
+    },
+    {
+      "page": 100,
+      "path": "pages/100.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "8a3be0d299995f3c619f18a784398a40f66fca36a7ce19328dedb47e6d76b8e2"
+    },
+    {
+      "page": 101,
+      "path": "pages/101.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "0524f62a02b7541c5063950f99599d6dd062d712c4f8394a525bec64482d997b"
+    },
+    {
+      "page": 102,
+      "path": "pages/102.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "1adaa738130a9a0e246a9b5b591f9225987b4aca19059541aabee358f417a360"
+    },
+    {
+      "page": 103,
+      "path": "pages/103.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "7badbec3bd6592097156c1291699bd7ceb4e04a9370c94ac936b11fa13cad674"
+    },
+    {
+      "page": 104,
+      "path": "pages/104.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "cc3b9448dca5aaf815c18dfca033c1e294c0784fb2d6a2d4ef09887f131d9d56"
+    },
+    {
+      "page": 105,
+      "path": "pages/105.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "1f063cc9d93de05dd5cfdf2b91fd9d445abb6e350d2393ddb8528e8fff63c324"
+    },
+    {
+      "page": 107,
+      "path": "pages/107.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "ef862ed469d86909fd30c4ca0da647ba07920863a160c6405f788a3b1d1c2a0d"
+    },
+    {
+      "page": 108,
+      "path": "pages/108.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "e796eae682e254850dd86995605052c7438b6a873088ce6290e2af73a97d3264"
+    },
+    {
+      "page": 109,
+      "path": "pages/109.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "f2e905b0cfb332b62482b5ae7309f2597c98538e90b7492a068dc42454ea264e"
+    },
+    {
+      "page": 110,
+      "path": "pages/110.webp",
+      "width": 581.102,
+      "height": 765.354,
+      "pixelWidth": 1453,
+      "pixelHeight": 1914,
+      "sha256": "63868c7cac403370548c902b73211156d2f93e400bebb2e5da2e3d47cb97ad05"
+    }
+  ]
+}

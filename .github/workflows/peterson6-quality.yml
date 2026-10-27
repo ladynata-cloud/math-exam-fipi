@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'school/peterson6/**'
+      - 'trainers/peterson6-workshop/**'
       - 'trainers/peterson6.html'
       - 'trainers/board-compat.json'
       - 'trainers/board-picker.js'
@@ -17,6 +18,7 @@ on:
     branches: [main]
     paths:
       - 'school/peterson6/**'
+      - 'trainers/peterson6-workshop/**'
       - 'trainers/peterson6.html'
       - 'trainers/board-compat.json'
       - 'trainers/board-picker.js'
@@ -44,15 +46,26 @@ jobs:
           node --check school/peterson6/models.js
           node school/peterson6/build.cjs --check
           node school/peterson6/test-content.cjs
+          node --check school/peterson6/textbook/engine.js
+          node --check school/peterson6/textbook/ui.js
+          node --check school/peterson6/textbook/app.js
+          node --check trainers/peterson6-workshop/generators.js
+          node --check trainers/peterson6-workshop/state.js
+          node --check trainers/peterson6-workshop/app.js
       - name: Exact math, saved state and models
         run: |
           node school/peterson6/test-math.cjs
           node school/peterson6/test-state.cjs
           node school/peterson6/test-models.cjs
+          node --test --test-isolation=none tools/peterson6-complete.test.cjs
+          python3 tools/peterson6-complete-math.py
+          python3 tools/peterson6-workshop-oracle.py
       - name: Install in-memory DOM for code tests
         run: npm install --prefix "$RUNNER_TEMP/peterson-qa" --no-audit --no-fund jsdom@26.1.0
       - name: Course DOM journeys (not visual browser QA)
-        run: NODE_PATH="$RUNNER_TEMP/peterson-qa/node_modules" node school/peterson6/test-ui.cjs
+        run: |
+          NODE_PATH="$RUNNER_TEMP/peterson-qa/node_modules" node school/peterson6/test-ui.cjs
+          NODE_PATH="$RUNNER_TEMP/peterson-qa/node_modules" node tools/peterson6-complete.dom.cjs
   board:
     runs-on: ubuntu-latest
     timeout-minutes: 15
