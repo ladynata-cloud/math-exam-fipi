@@ -1,5 +1,6 @@
 import { exactKeys, requireValue } from './errors.js';
 import { containsSensitiveText } from './privacy.js';
+import { COURSE_PROFILE, COURSE_TOPIC, prepareCourseQuestion, answerCourseOffline } from './course-context.js';
 
 // Original topic notes for three bounded cabinet profiles. No pupil identity,
 // account information, conversation history or textbook answer bank belongs here.
@@ -76,6 +77,10 @@ const rows = [
     ['Выпиши только то, что дано или уже доказано.', 'Составь пары соответствующих вершин по равным сторонам и углам.', 'Проверь, хватает ли данных для первого, второго или третьего признака.', 'Для первого признака нужен угол между двумя выбранными сторонами; для второго — углы при концах выбранной стороны.', 'Запиши равенство треугольников с согласованным порядком вершин и назови признак.'],
     'Поворот или отражение рисунка не меняет равенства фигур. Равенства трёх углов достаточно лишь для подобия, а не для равенства.']
 ];
+rows.push([COURSE_TOPIC, 'Подсказка к выбранной задаче курса', 'Как работать с подсказками к задачам курса?', '/geometry-course/first-steps/',
+  'Открой курс от начала геометрии до элементарных построений, выбери номер и текущий шаг. Помощник возьмёт условие и пояснение из проверенной карточки курса.',
+  ['Выбери номер задачи в своём курсе.', 'Прочитай условие целиком и рассмотри чертёж.', 'Попробуй выполнить текущий шаг.', 'Попроси подсказку к этому шагу; предыдущие записи сохранятся.', 'Полный разбор открывай отдельно. Твоё доказательство проверит преподаватель.'],
+  'Открытие подсказки отмечается как помощь. Оно не подтверждает самостоятельное решение или правильность доказательства.']);
 const NOTES = new Map(rows.map(([id, title, example, url, explanation, steps, check]) => [id, {
   id, title, example, card: { id: `cabinet-${id}`, topic: id, title, explanation, steps, check,
     source: { label: 'Авторские объяснения MathExam по теме', url: SITE + url }, version: 1 }
@@ -88,9 +93,11 @@ const profiles = [
       ...['decimal-add', 'decimal-subtract', 'decimal-multiply', 'decimal-divide', 'decimal-to-fraction', 'fraction-to-decimal'].map((id, i) => ({
         title: ['Тренировать сложение', 'Тренировать вычитание', 'Тренировать умножение', 'Тренировать деление', 'Переводить в обыкновенную дробь', 'Переводить в десятичную дробь'][i],
         url: `${PETERSON}#practice/${id}/1` }))] },
-  { id: 'triangle-congruence', title: 'Атанасян · Признаки равенства треугольников', topicIds: rows.slice(13).map(row => row[0]),
+  { id: 'triangle-congruence', title: 'Атанасян · Признаки равенства треугольников', topicIds: rows.slice(13, 17).map(row => row[0]),
     links: [{ title: 'Курс к учебнику Атанасяна, 7–9 классы', url: CONGRUENCE },
-      { title: 'Тренажёр по равенству треугольников', url: `${SITE}/trainers/atanasyan-7-9.html` }] }
+      { title: 'Тренажёр по равенству треугольников', url: `${SITE}/trainers/atanasyan-7-9.html` }] },
+  { id: COURSE_PROFILE, title: 'Атанасян · От начала до элементарных построений', topicIds: [COURSE_TOPIC],
+    links: [{ title: 'Курс к учебнику · задачи 1–160', url: `${SITE}/geometry-course/first-steps/` }] }
 ];
 const PROFILE_MAP = new Map(profiles.map(profile => [profile.id, profile]));
 const clone = value => structuredClone(value);
@@ -111,6 +118,8 @@ function safeText(value, max, empty = false) {
 }
 
 export function prepareCabinetQuestion(body) {
+  if (body && Object.hasOwn(body, 'courseContext')) return prepareCourseQuestion(body);
+  requireValue(body?.profileId !== COURSE_PROFILE, 'CABINET_COURSE_INVALID');
   requireValue(exactKeys(body, ['profileId', 'topic', 'question', 'attempt', 'mode', 'hintLevel', 'simpler', 'requestId']), 'CABINET_TASK_INVALID');
   const profile = PROFILE_MAP.get(body.profileId);
   requireValue(profile && profile.topicIds.includes(body.topic), 'CABINET_TOPIC_FORBIDDEN', 403);
@@ -353,7 +362,8 @@ const conceptTerms = {
   'congruence-sas': /треуголь|признак|сторон|угл/,
   'congruence-asa': /треуголь|признак|сторон|угл/,
   'congruence-sss': /треуголь|признак|сторон|угл/,
-  'congruence-match': /треуголь|признак|вершин|соответств|сторон|угл/
+  'congruence-match': /треуголь|признак|вершин|соответств|сторон|угл/,
+  'atanasyan-course-step': /курс|задач|подсказ|шаг/
 };
 
 const shorterGeometry = {
@@ -369,6 +379,7 @@ const shorterGeometry = {
 };
 
 export function answerCabinetOffline(input, cards) {
+  if (input && Object.hasOwn(input, 'courseContext')) return answerCourseOffline(input, cards);
   const safe = checked(input), selected = selectedCards(safe, cards), card = selected[0];
   let solved = arithmetic(safe.topic, safe.question);
   if (safe.topic === 'decimal-compare') solved = compare(safe.question);
@@ -402,6 +413,9 @@ export function answerCabinetOffline(input, cards) {
 }
 
 export function buildCabinetMessages(input, cards) {
+  // This new course profile is reviewed source guidance only in this release.
+  // It must never inherit API activation from another private helper profile.
+  requireValue(input?.profileId !== COURSE_PROFILE, 'CABINET_COURSE_SOURCE_ONLY');
   const safe = checked(input), selected = selectedCards(safe, cards);
   return [
     { role: 'system', content: [

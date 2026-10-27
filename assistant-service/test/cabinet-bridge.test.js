@@ -6,6 +6,7 @@ import { randomUUID } from 'node:crypto';
 import { createAssistantServer } from '../src/server.js';
 import { loadConfig } from '../src/config.js';
 import { listCabinetProfiles } from '../src/cabinet-topics.js';
+import { resolveCourseContext } from '../src/course-context.js';
 import { fixture, modelResponse, NOW } from './helpers.js';
 
 const BRIDGE_KEY = 'test-only-cabinet-bridge-key-bbbbbbbbbbbbbbbbbbbbbbb';
@@ -15,6 +16,12 @@ function question(extra = {}) {
   const topic = profile.topics[0];
   return { subject: SUBJECT_A, requestId: randomUUID(), profileId: profile.id, topic: topic.id,
     question: topic.example, attempt: '', mode: 'hint', hintLevel: 1, simpler: false, externalConsent: false, ...extra };
+}
+function courseQuestion(extra = {}) {
+  const resolved = resolveCourseContext({ courseId: 'atanasyan-first-steps', lessonId: 'atanasyan-7-9-main-153-part-1', stepIndex: 0 });
+  return { subject: SUBJECT_A, requestId: randomUUID(), profileId: 'atanasyan-first-steps', topic: resolved.topic,
+    question: resolved.question, courseContext: resolved.courseContext, courseRevision: resolved.courseRevision,
+    attempt: '', mode: 'hint', hintLevel: 1, simpler: false, externalConsent: false, ...extra };
 }
 
 async function start(t, options = {}) {
@@ -85,7 +92,7 @@ test('status reports actual external gates and model price/circuit state without
   const fx = await start(t, { api: true, clock: () => now,
     env: { ASSISTANT_CABINET_EXTERNAL_ENABLED: '1' }, fetchImpl: async () => { calls++; return modelResponse(); } });
   const ready = await fx.status(); assert.equal(ready.data.protocolVersion, 1); assert.equal(ready.data.externalEnabled, true);
-  assert.equal(ready.data.profiles.length, 3); assert.equal(ready.headers['set-cookie'], undefined);
+  assert.equal(ready.data.profiles.length, 4); assert.equal(ready.headers['set-cookie'], undefined);
   assert(!JSON.stringify(ready.data).includes(BRIDGE_KEY)); assert(!JSON.stringify(ready.data).includes(fx.config.apiKey));
   now += 8 * 86400000; assert.equal((await fx.status()).data.externalEnabled, false);
   now = NOW; fx.app.store.tripCircuit(); assert.equal((await fx.status()).data.externalEnabled, false);
@@ -110,6 +117,32 @@ test('malformed JSON, personal data, foreign profile/topic and unbounded input f
   assert.equal((await fx.status({ body: { subject: SUBJECT_A } })).status, 400);
   assert.equal(fx.app.store.summary().day.requests, 0);
   assert.equal(fx.app.store.db.prepare('SELECT COUNT(*) AS n FROM sessions').get().n, 0);
+});
+
+test('source course works through the private bridge with zero model calls even when other API profiles are enabled', async t => {
+  let calls = 0;
+  const fx = await start(t, { api: true, env: { ASSISTANT_CABINET_EXTERNAL_ENABLED: '1' },
+    fetchImpl: async () => { calls++; throw Error('No external request allowed for the source course'); } });
+  const body = courseQuestion();
+  const answer = await fx.ask(body);
+  assert.equal(answer.status, 200);
+  assert.equal(answer.data.mode, 'offline');
+  assert.equal(answer.data.answer.verification, 'curated-guidance');
+  assert.deepEqual(answer.data.answer.courseContext, body.courseContext);
+  assert.equal(answer.data.answer.courseRevision, body.courseRevision);
+  assert.deepEqual(answer.data.answer.steps, ['В каком направлении должна находиться C?']);
+  assert.match(answer.data.notice, /Внешняя модель не вызывается/);
+  const count = fx.app.store.summary().day.requests;
+  for (const extra of [{ externalConsent: true }, { question: 'Forged textbook condition' }, { courseRevision: '0'.repeat(64) },
+    { courseContext: { ...body.courseContext, stepIndex: 999 } }, { courseContext: { ...body.courseContext, lessonId: 'atanasyan-7-9-main-161-part-1' } }]) {
+    const rejected = await fx.ask(courseQuestion(extra));
+    assert(rejected.status >= 400);
+  }
+  const manual = courseQuestion(); delete manual.courseContext; delete manual.courseRevision;
+  assert.equal((await fx.ask(manual)).data.error, 'CABINET_COURSE_INVALID');
+  assert.equal(fx.app.store.summary().day.requests, count);
+  assert.equal(calls, 0);
+  assert.equal(fx.app.store.summary().day.api_requests, 0);
 });
 
 test('offline cabinet hints and feedback keep only bounded metadata and isolate subjects', async t => {

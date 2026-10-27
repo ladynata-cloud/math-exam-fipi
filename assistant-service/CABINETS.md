@@ -12,6 +12,14 @@ external model has been called. Merge and deployment require separate decisions.
 | `oge-geometry` | Five topics: triangles, circles, quadrilaterals/areas, grid geometry and statements | Conditions, theorems and next-step guidance; does not read a drawing or certify an arbitrary proof |
 | `peterson-decimals` | Eight topics: place value, comparison, rounding, addition/subtraction, multiplication, division, powers of ten and ordinary/decimal fractions | Exact rational arithmetic for supported signed finite-decimal inputs, exact fractional results and repeating-decimal output; division by zero is rejected |
 | `triangle-congruence` | Four topics: SAS, ASA, SSS and corresponding vertices / choice of criterion | Explicit premises and justification; rejects the idea that AAA or arbitrary SSA proves congruence |
+| `atanasyan-first-steps` | Exact tasks 1–160, 232 exercise cards and 23 theory cards from the reviewed Atanasyan course | Source-based prompts, reasons and explanations for the selected step; an explicitly requested full solution remains subject to teacher review |
+
+The fourth profile is an additive option for the
+[first-steps course task](../docs/tasks/ATANASYAN_FIRST_STEPS_CABINET.md).
+The limit remains three enabled pupil accounts in total, not three per profile.
+This course profile always uses the local reviewed source, including when other
+profiles have external inference enabled. It cannot be configured for external
+transfer in this task.
 
 The panel is named **MaxExam 0.0**. This is the application's name, not a claim
 that separately trained neural-network weights exist. Offline mode explicitly
@@ -26,7 +34,8 @@ subsequent wording in the current one-hour assistant session; they do not certif
 or rewrite shared mathematics. A model answer is never automatically promoted to
 reviewed knowledge.
 
-The 17 cabinet topics are versioned, checked source cards in
+The original 17 cabinet topics and the additional course entry are versioned,
+checked source cards in
 [`src/cabinet-topics.js`](src/cabinet-topics.js). Changes to these cards need
 mathematical review and a normal repository change. The standalone assistant's
 existing privileged candidate/approval workflow remains available for its own
@@ -82,6 +91,25 @@ and theory cards do not amount to structured support for every congruence task.
 Other owned attempts retain explicit manual entry. Whole attempt state is never
 forwarded. An unfinished exam or diagnostic blocks helper questions entirely.
 
+The new native first-steps course supplies only
+`courseContext={courseId:"atanasyan-first-steps",lessonId,stepIndex}`. The index is
+zero-based. The cabinet independently resolves the condition from its packaged
+public `learning/atanasyan-first-steps/course.json`; it does not accept a browser
+condition, solution, topic or arbitrary source URL for this route. The separate
+helper resolves the same identifiers against its reviewed minimal source
+projection and checks the course digest and exact condition before answering.
+An unknown task, out-of-range index, mismatched revision or profile is rejected.
+This route does not expand or change the existing managed 92а attempt contract.
+
+The browser records assistance before asking and captures the selected task and
+step for the returned label. Hint levels explain that same step; they do not
+advance it. Full explanations are shown only after the pupil explicitly asks.
+The current course progress is local to the pupil's browser, so the server can
+validate an in-range source step but cannot independently prove it was already
+revealed there. Source-based guidance does not certify the pupil's own proof or
+replace the teacher's review. The helper homepage links to the native course
+instead of offering an unsupported manual-question form for this profile.
+
 An arbitrary manually entered question cannot prove that unrelated work was
 independent. The helper does not award grades, forge course completion or infer
 which unseen textbook exercise a pupil is doing. Existing cabinet assistance
@@ -93,6 +121,13 @@ The integration defaults to disabled. The exact public catalogue is duplicated
 as `board-server/assistant-profile-catalog.json`; a test and service handshake
 require equality with the independent service. Deploy compatible versions.
 Changing these variables requires restarting the corresponding application.
+
+Regenerate the helper's minimal public source projection after a reviewed course
+change with `node assistant-service/scripts/build-course-knowledge.cjs`; use
+`--check` to verify committed bytes. Both services ship their own authoritative
+copy and fail closed on a digest mismatch. The assistant image's existing
+`COPY knowledge ./knowledge` includes the projection. No model, credential or
+pupil work is bundled into it.
 
 | Application | Variable | Meaning |
 | --- | --- | --- |
@@ -193,6 +228,7 @@ npm --prefix assistant-service test
 npm --prefix board-server test
 node --test --test-isolation=none tools/learning-assistant-browser.test.cjs
 node tools/learning-assistant-e2e.browser.cjs
+node assistant-service/scripts/build-course-knowledge.cjs --check
 git diff --check
 ```
 

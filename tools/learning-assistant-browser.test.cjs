@@ -56,10 +56,18 @@ const server = http.createServer(async (req, res) => {
       }
       if (route === '/assistant/ask') {
         const currentTask = fixtureAttempt && body.attemptId === fixtureAttempt.id;
+        const answer = () => {
+          const value = makeAnswer(body.courseContext ? 'course-task' : currentTask ? 'current-task' : 'entered');
+          if (body.courseContext) {
+            value.courseContext = clone(body.courseContext);
+            value.answer.topic = 'atanasyan-course-step'; value.answer.title = 'Подсказка к выбранному шагу';
+          }
+          return value;
+        };
         if (currentTask) { fixtureAttempt.version++; fixtureAttempt.outcome = 'hinted'; fixtureAttempt.assistance.hints++; }
         if (failNext) { failNext = false; fixtureStatus.remaining--; return send(res, 503, { ok: false, error: 'ASSISTANT_SERVICE_UNAVAILABLE' }); }
-        if (delayNext) { delayNext = false; held = () => send(res, 200, makeAnswer(currentTask ? 'current-task' : 'entered')); return; }
-        return send(res, 200, makeAnswer(currentTask ? 'current-task' : 'entered'));
+        if (delayNext) { delayNext = false; held = () => send(res, 200, answer()); return; }
+        return send(res, 200, answer());
       }
       if (route === '/assistant/feedback') return send(res, 200, { ok: true });
       return send(res, 404, { ok: false, error: 'LEARNING_NOT_FOUND' });
@@ -97,7 +105,11 @@ async function until(predicate, message) { for (let i = 0; i < 300; i++) { if (p
           const response = await fetch('/api/learning' + path, { ...opts, credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': 'fixture-csrf', 'X-Learning-Account': 'fixture-pupil-a' } });
           const value = await response.json(); if (!response.ok) throw Object.assign(Error(value.error), { code: value.error, status: response.status }); return value;
         };
-        const dispose = LearningAssistant.mount(document.querySelector('#host'), { api, role, studentId: role === 'teacher' ? 'fixture-pupil-a' : undefined, isCurrent: () => active, ...extra });
+        window.fixtureCourse = extra.courseContext || null; window.allowCourseAsk = true; window.courseAssisted = false;
+        const courseOptions = extra.courseContext ? { ...extra, courseContext: () => window.fixtureCourse,
+          onBeforeAsk: async () => { if (!window.allowCourseAsk) return false; window.courseAssisted = true; return true; } } : extra;
+        const dispose = LearningAssistant.mount(document.querySelector('#host'), { api, role, studentId: role === 'teacher' ? 'fixture-pupil-a' : undefined, isCurrent: () => active, ...courseOptions });
+        window.refreshAssistant = () => dispose.refresh?.();
         window.closeAssistant = () => { active = false; dispose(); };
       }, { role, extra });
     }
@@ -200,6 +212,86 @@ async function until(predicate, message) { for (let i = 0; i < 300; i++) { if (p
     assert.equal(config.path, '/teacher/students/fixture-pupil-a/assistant'); assert.equal(config.body.version, 4);
     assert.equal(config.body.profileId, 'triangle-congruence'); assert.equal(config.body.externalAllowed, false);
     check.push('teacher configuration stays scoped, uses current version and does not activate external access');
+
+    const courseContext = { courseId: 'atanasyan-first-steps', lessonId: 'atanasyan-7-9-main-153-part-1', stepIndex: 0 };
+    const courseProfile = require('../board-server/assistant-profile-catalog.json').find(row => row.id === courseContext.courseId);
+    fixtureStatus = { ...status(), mode: 'api', externalAvailable: true, externalAllowed: true, externalEnabled: true };
+    await mount('teacher');
+    await page.locator('[name=assistant-external]').waitFor();
+    assert.equal(await page.locator('[name=assistant-external]').isChecked(), true);
+    await page.locator('[name=assistant-profile]').selectOption(courseContext.courseId);
+    assert.equal(await page.locator('[name=assistant-external]').isChecked(), false);
+    assert.equal(await page.locator('[name=assistant-external]').isDisabled(), true);
+    assert.equal(await page.locator('[name=assistant-external]').isHidden(), true);
+    await page.getByRole('button', { name: 'Сохранить настройки помощника', exact: true }).click();
+    await page.getByText('Настройки помощника сохранены.', { exact: true }).waitFor();
+    const sourceConfig = calls.filter(call => call.path.endsWith('/assistant') && call.method === 'POST').at(-1).body;
+    assert.equal(sourceConfig.profileId, courseContext.courseId);
+    assert.equal(sourceConfig.externalAllowed, false);
+    assert.equal(await page.locator('[name=assistant-external]').isDisabled(), true);
+    check.push('selecting the source-only profile clears, hides and disables a previous external permission before saving');
+
+    fixtureStatus = { ...status(), profile: clone(courseProfile) };
+    const beforeCourseHome = calls.filter(call => call.path === '/assistant/ask').length;
+    await mount(); await page.locator('[data-assistant-open-course]').waitFor();
+    assert.equal(await page.locator('[data-assistant-open-course]').getAttribute('href'), '#atanasyan-course');
+    assert.equal(await page.locator('[name=assistant-question]').count(), 0);
+    assert.equal(await page.getByRole('button', { name: 'Хочу подсказку', exact: true }).count(), 0);
+    assert.equal(calls.filter(call => call.path === '/assistant/ask').length, beforeCourseHome);
+    check.push('course-profile cabinet home opens the native course without offering an invalid manual-question form');
+
+    fixtureStatus = { ...status(), profile: clone(courseProfile) };
+    await mount('student', { courseContext, courseTaskLabel: 'Задача 153', courseTaskPrompt: 'На прямой даны точки A и B.' });
+    await page.locator('[data-assistant-course-task]').waitFor();
+    assert.equal(await page.locator('[name=assistant-question]').count(), 0, 'Known course condition is not manually retyped');
+    assert.equal(await page.locator('[name=assistant-topic]').count(), 0, 'The selected source task determines the topic');
+    assert.equal(await page.locator('[name=assistant-attempt]').count(), 0, 'Source-only guidance does not offer an ignored free-text question');
+    const beforeCourse = calls.filter(call => call.path === '/assistant/ask').length;
+    await page.evaluate(() => { window.allowCourseAsk = false; });
+    await page.getByRole('button', { name: 'Хочу подсказку', exact: true }).click();
+    await page.getByText('Подсказка не запрошена.', { exact: false }).waitFor();
+    assert.equal(calls.filter(call => call.path === '/assistant/ask').length, beforeCourse);
+    await page.evaluate(() => { window.allowCourseAsk = true; });
+    delayNext = true;
+    await page.getByRole('button', { name: 'Хочу подсказку', exact: true }).click();
+    await until(() => held, 'Course fixture request did not start');
+    assert.equal(await page.evaluate(() => window.courseAssisted), true, 'Local assistance is recorded before the request completes');
+    const courseRequest = calls.filter(call => call.path === '/assistant/ask').at(-1).body;
+    assert.deepEqual(courseRequest.courseContext, courseContext);
+    for (const field of ['question', 'topic', 'solution', 'attemptId', 'profileId']) assert.equal(Object.hasOwn(courseRequest, field), false);
+    assert.equal(courseRequest.externalConsent, false);
+    await page.evaluate(() => { window.fixtureCourse.stepIndex = 1; refreshAssistant(); });
+    held(); held = null;
+    await page.locator('[data-assistant-answer]').waitFor();
+    assert.equal(await page.locator('.cabinet-assistant-question').textContent(), 'Задача 153 · шаг 1', 'A late reply keeps the captured step label');
+    assert.equal(await page.getByRole('button', { name: 'Хочу подсказку', exact: true }).isEnabled(), true, 'New step starts at hint one after an older reply');
+    await page.getByRole('button', { name: 'Хочу подсказку', exact: true }).click();
+    await page.waitForFunction(() => document.querySelectorAll('[data-assistant-answer]').length === 2);
+    assert.equal(calls.filter(call => call.path === '/assistant/ask').at(-1).body.hintLevel, 1);
+    assert.equal(calls.filter(call => call.path === '/assistant/ask').at(-1).body.courseContext.stepIndex, 1);
+    for (const count of [3, 4]) {
+      await page.getByRole('button', { name: 'Ещё подсказка к шагу', exact: true }).click();
+      await page.waitForFunction(count => document.querySelectorAll('[data-assistant-answer]').length === count, count);
+    }
+    assert.equal(await page.getByRole('button', { name: 'Ещё подсказка к шагу', exact: true }).isDisabled(), true);
+    await page.evaluate(() => { window.fixtureCourse.stepIndex = 2; refreshAssistant(); });
+    assert.equal(await page.getByRole('button', { name: 'Хочу подсказку', exact: true }).isEnabled(), true, 'Revealing a new step resets the exhausted hint ladder');
+    assert.equal(await page.locator('[data-assistant-answer]').count(), 4, 'Refreshing current step preserves earlier answers');
+    await page.setViewportSize({ width: 320, height: 780 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    check.push('course context needs no retyping; pre-ask permission/assistance, captured step label and 320px layout are retained');
+
+    fixtureStatus = { ...status(), profile: clone(courseProfile) }; delayNext = true;
+    await mount('student', { courseContext, courseTaskLabel: 'Задача 153' });
+    await page.getByRole('button', { name: 'Хочу подсказку', exact: true }).click();
+    await until(() => held, 'Delayed source-course request did not start');
+    await page.evaluate(() => { window.fixtureCourse.lessonId = 'atanasyan-7-9-main-154-part-1'; });
+    held(); held = null;
+    await page.waitForLoadState('networkidle');
+    assert.equal(await page.locator('[data-assistant-answer]').count(), 0, 'A reply cannot move to another course task');
+    await page.evaluate(() => closeAssistant());
+    check.push('source-course task identity fences reject a stale reply without moving it to the next exercise');
+    await page.setViewportSize({ width: 1440, height: 1000 });
 
     fixtureStatus = status(); delayNext = true;
     await mount(); await page.locator('[data-assistant-example]').click();

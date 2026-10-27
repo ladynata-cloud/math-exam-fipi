@@ -1,6 +1,35 @@
 # MathExam project status
 
-Updated: 2026-10-27 (Asia/Novosibirsk)
+Updated: 2026-10-28 (Asia/Novosibirsk)
+
+## Prepared: Atanasyan beginning geometry through elementary constructions
+
+- [Task](tasks/ATANASYAN_FIRST_STEPS_CABINET.md), HIGH, branch
+  `feat/atanasyan-first-steps-cabinet`, base
+  `1fcc4fa36267f5667c42409861ef0b92f97b333c` (Draft PR #360). The parent assistant
+  stack #358 / #359 / #360 remains unmerged; this task does not publish it.
+- Ordered native cabinet and public companion for exercises 1–160 and theory
+  points 1–23: 12 sections, 232 exercise/subpart cards, 23 theory cards and
+  682 exercise steps. The bounded source preserves the reviewed book cards,
+  diagrams and identifiers; the sealed engine and fixed 92a contract are intact.
+- Retained writing, diagrams, explicit help, related theory and account-scoped
+  browser records with export. Proofs remain for manual review. These records
+  are not a new server-saved attempt or whole-course board protocol.
+- New course helper resolves the exact task/step against matching reviewed
+  source snapshots. It uses source explanations only, with no provider calls or
+  trained model weights. Existing account, assessment and quota fences apply.
+- [Evidence and limits](reports/ATANASYAN_FIRST_STEPS_CABINET_20261028.md):
+  desktop/mobile public and native journeys, storage recovery, source identity,
+  assistant-service and cabinet checks. Internal independent review is complete;
+  required external HIGH review and Claude consultation are unavailable/pending.
+- Read-only reconciliation: authoritative remote main is
+  `8723d6bfb19e64d43c474b1fc7116fe8630ec20a` (PR #362). The published textbook
+  bundle, engine and attached-course router returned HTTP 200 and matched that
+  main source. Older entries below describe their own historical observations.
+  Concurrent main changes are not silently incorporated into this stacked task.
+- No real pupil configuration, inference, merge or deployment was performed.
+  After release, privately verify the intended existing account and current
+  profile version before selecting the course and enabling its helper.
 
 ## Prepared: MaxExam 0.0 for three selected cabinets
 

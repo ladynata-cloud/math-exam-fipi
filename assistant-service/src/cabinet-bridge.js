@@ -3,6 +3,7 @@ import { hash, secretEqual } from './store.js';
 import { prepareRequest, callProvider } from './provider.js';
 import { pricesFresh } from './config.js';
 import { prepareCabinetQuestion, answerCabinetOffline, buildCabinetMessages, listCabinetProfiles } from './cabinet-topics.js';
+import { COURSE_PROFILE } from './course-context.js';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const SUBJECT = /^[a-f0-9]{64}$/;
@@ -62,15 +63,18 @@ function authorize(req, config) {
 }
 
 function prepare(body, config) {
-  requireValue(exactKeys(body, ASK_KEYS) && ASK_KEYS.every(key => Object.hasOwn(body, key)), 'CABINET_REQUEST_INVALID');
+  requireValue(exactKeys(body, [...ASK_KEYS, 'courseContext', 'courseRevision']) && ASK_KEYS.every(key => Object.hasOwn(body, key)), 'CABINET_REQUEST_INVALID');
+  requireValue(Object.hasOwn(body, 'courseContext') === Object.hasOwn(body, 'courseRevision'), 'CABINET_REQUEST_INVALID');
   requireValue(typeof body.subject === 'string' && SUBJECT.test(body.subject), 'CABINET_SUBJECT_INVALID');
   requireValue(typeof body.requestId === 'string' && UUID.test(body.requestId), 'REQUEST_ID_INVALID');
   requireValue(typeof body.externalConsent === 'boolean' && typeof body.simpler === 'boolean', 'CABINET_REQUEST_INVALID');
+  requireValue(body.profileId !== COURSE_PROFILE || body.externalConsent === false, 'CABINET_COURSE_SOURCE_ONLY', 409);
   const credentials = [config.cabinetBridgeKey, config.apiKey, config.pilotKey].filter(value => typeof value === 'string' && value.length >= 16);
   requireValue(!credentials.some(value => [body.question, body.attempt].some(text => typeof text === 'string' && text.includes(value))), 'PERSONAL_DATA_REJECTED');
   const { input, cards } = prepareCabinetQuestion({
     profileId: body.profileId, topic: body.topic, question: body.question, attempt: body.attempt,
-    mode: body.mode, hintLevel: body.hintLevel, simpler: body.simpler, requestId: body.requestId
+    mode: body.mode, hintLevel: body.hintLevel, simpler: body.simpler, requestId: body.requestId,
+    ...(Object.hasOwn(body, 'courseContext') ? { courseContext: body.courseContext, courseRevision: body.courseRevision } : {})
   });
   // Neither subject nor the bridge's authentication material enters input,
   // source cards or a provider payload.
@@ -104,11 +108,14 @@ export function createCabinetBridge({ config, store, clock, fetchImpl, active, r
     input.simpler ||= !!session.simpler;
     const offline = answerCabinetOffline(input, cards);
     const result = await executeAssistantAnswer({ config, store, clock, fetchImpl, active, res,
-      session, input, cards, offline, externalConsent, externalAllowed: config.cabinetExternalEnabled === true,
+      session, input, cards, offline, externalConsent,
+      externalAllowed: config.cabinetExternalEnabled === true && input.profileId !== COURSE_PROFILE,
       // UUIDs are globally unique operations. Changing a profile, pseudonym or
       // bridge/session secret must not make the same operation spend again.
       permanentRequestId: hash(`cabinet-request:${input.requestId.toLowerCase()}`), messageBuilder: buildCabinetMessages });
-    if (result.answer.verification !== 'model-unverified' && !result.notice && !config.cabinetExternalEnabled) {
+    if (input.profileId === COURSE_PROFILE) {
+      result.notice = 'Подсказка взята из проверенного разбора курса. Внешняя модель не вызывается; доказательство проверяет преподаватель.';
+    } else if (result.answer.verification !== 'model-unverified' && !result.notice && !config.cabinetExternalEnabled) {
       result.notice = 'Внешняя модель для кабинетов не подключена. Это проверенные подсказки MathExam.';
     }
     result.answer.answerId = result.answer.id;

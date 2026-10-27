@@ -14,6 +14,7 @@ COPY trainers/motion-grade6/ /app/trainers/motion-grade6/
 COPY courses/vilenkin-6-part-1/math.js courses/vilenkin-6-part-1/learning-contracts.js /app/courses/vilenkin-6-part-1/
 COPY courses/vilenkin-6-part-1/data/ /app/courses/vilenkin-6-part-1/data/
 COPY geometry-course/textbook/learning-contracts.js /app/geometry-course/textbook/learning-contracts.js
+COPY geometry-course/textbook/assets/math-text.js geometry-course/textbook/assets/planar-viewer.js /app/geometry-course/textbook/assets/
 
 RUN mkdir -p /data
 

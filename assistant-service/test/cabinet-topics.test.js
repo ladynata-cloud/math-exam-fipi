@@ -28,14 +28,18 @@ const checked = (topic, question, expected) => {
   return answer;
 };
 
-test('three nonpersonal profiles expose bounded, valid original cards and existing course links', () => {
+test('four nonpersonal profiles expose original topic cards or the exact source-course route and existing links', () => {
   const profiles = listCabinetProfiles();
-  assert.deepEqual(profiles.map(p => p.id), ['oge-geometry', 'peterson-decimals', 'triangle-congruence']);
+  assert.deepEqual(profiles.map(p => p.id), ['oge-geometry', 'peterson-decimals', 'triangle-congruence', 'atanasyan-first-steps']);
   const topics = profiles.flatMap(p => p.topics.map(t => t.id));
-  assert.equal(new Set(topics).size, 17);
+  assert.equal(new Set(topics).size, 18);
   const repository = fileURLToPath(new URL('../../', import.meta.url));
   for (const profile of profiles) {
     for (const topic of profile.topics) {
+      if (profile.id === 'atanasyan-first-steps') {
+        assert.throws(() => bundle(topic.id, topic.example), error => error.code === 'CABINET_COURSE_INVALID');
+        continue; // All source task/step variants are covered in course-context.test.js.
+      }
       const prepared = bundle(topic.id, topic.example);
       assert.equal(prepared.input.profileId, profile.id);
       assert.equal(prepared.cards.length, 1);
@@ -162,6 +166,7 @@ test('place value preserves internal zeros and conversions retain exact repeatin
 
 test('hints retain exactly one action, do not disclose computed answers, and simpler feedback changes wording', () => {
   for (const profile of listCabinetProfiles()) for (const topic of profile.topics) {
+    if (profile.id === 'atanasyan-first-steps') continue; // Source-context hints have their own exhaustive task coverage.
     for (const hintLevel of [1, 5, 8]) {
       const answer = explain(topic.id, topic.example, { mode: 'hint', hintLevel });
       assert.equal(answer.steps.length, 1, topic.id);

@@ -5,7 +5,8 @@
   const profileNames = {
     'oge-geometry': 'ОГЭ · Геометрия',
     'peterson-decimals': '6 класс · Петерсон · Десятичные дроби',
-    'triangle-congruence': 'Атанасян · Признаки равенства треугольников'
+    'triangle-congruence': 'Атанасян · Признаки равенства треугольников',
+    'atanasyan-first-steps': 'Атанасян · От начала до элементарных построений'
   };
   const labels = {
     deterministic: 'Вычисление проверено программой',
@@ -55,16 +56,37 @@
 
   function mount(host, context) {
     let alive = true, revision = 0, status = null, busy = false, hintLevel = 0, fingerprint = '';
+    let refreshView = () => {};
     const controllers = new Set();
     const teacher = context.role === 'teacher';
+    const courseMode = !teacher && context.courseContext !== undefined;
+    const courseSnapshot = () => {
+      try {
+        const value = typeof context.courseContext === 'function' ? context.courseContext() : context.courseContext;
+        if (!value || value.courseId !== 'atanasyan-first-steps' || typeof value.lessonId !== 'string'
+          || !Number.isSafeInteger(value.stepIndex) || value.stepIndex < 0) return null;
+        return { courseId: value.courseId, lessonId: value.lessonId, stepIndex: value.stepIndex };
+      } catch (_) { return null; }
+    };
+    const initialCourse = courseMode ? courseSnapshot() : null;
+    const sameCourse = () => {
+      if (!courseMode) return true;
+      const value = courseSnapshot();
+      return value && initialCourse && value.courseId === initialCourse.courseId && value.lessonId === initialCourse.lessonId;
+    };
+    const displayValue = key => String(typeof context[key] === 'function' ? context[key]() : context[key] || '');
+    const taskLabel = () => displayValue('courseTaskLabel') || 'Выбранная задача курса';
     const endpoint = teacher ? '/teacher/students/' + encodeURIComponent(context.studentId) + '/assistant' : '/assistant';
-    const current = () => alive && host.isConnected && (!context.isCurrent || context.isCurrent());
+    const current = () => alive && host.isConnected && sameCourse() && (!context.isCurrent || context.isCurrent());
     host.hidden = true; host.replaceChildren();
     function destroy() {
       if (!alive) return; alive = false; revision++;
       for (const controller of controllers) controller.abort();
       controllers.clear(); host.replaceChildren(); host.hidden = true;
     }
+    // Native course navigation can reveal another step without discarding the
+    // answers already shown. This function never sends a network request.
+    destroy.refresh = () => { if (current()) refreshView(); };
     async function request(path, body) {
       if (!current()) throw Object.assign(Error('LEARNING_ACCOUNT_CHANGED'), { code: 'LEARNING_ACCOUNT_CHANGED' });
       const serial = revision, controller = new AbortController(); controllers.add(controller);
@@ -104,11 +126,22 @@
       const enableRow = node('label', null, { class: 'cabinet-assistant-check' }); enableRow.append(enabled, node('span', 'Включить помощника для этого ученика')); form.append(enableRow);
       const external = node('input', null, { type: 'checkbox', name: 'assistant-external' });
       external.checked = status.externalAvailable === true && status.externalAllowed === true;
+      let externalRow;
       if (status.externalAvailable === true) {
-        const externalRow = node('label', null, { class: 'cabinet-assistant-check' });
+        externalRow = node('label', null, { class: 'cabinet-assistant-check' });
         externalRow.append(external, node('span', 'Разрешить внешнюю модель для этого кабинета после проверки условий обработки данных и необходимых согласий.'));
         form.append(externalRow);
       } else form.append(node('p', 'Внешняя модель не подключена. ' + (status.available && status.mode !== 'unavailable' ? 'Доступны проверенные подсказки MathExam.' : 'Подсказки появятся после подключения сервиса помощника.'), { class: 'cabinet-assistant-mode' }));
+      const sourceNotice = node('p', 'В этом профиле помощник использует проверенные шаги курса. Внешняя модель не вызывается.', { class: 'cabinet-assistant-mode' });
+      form.append(sourceNotice);
+      function updateExternalChoice() {
+        const sourceOnly = select.value === 'atanasyan-first-steps';
+        if (sourceOnly) external.checked = false;
+        external.disabled = busy || sourceOnly || status.externalAvailable !== true;
+        if (externalRow) externalRow.hidden = sourceOnly;
+        sourceNotice.hidden = !sourceOnly;
+      }
+      select.addEventListener('change', updateExternalChoice); updateExternalChoice();
       const message = node('p', '', { role: 'status', 'aria-live': 'polite', class: 'cabinet-assistant-message' });
       const save = node('button', 'Сохранить настройки помощника', { type: 'submit', class: 'primary' });
       form.append(save, message); section.append(form);
@@ -117,23 +150,34 @@
         if (!form.reportValidity()) return;
         busy = true; for (const control of [select, enabled, limit, external, save]) control.disabled = true; announce(message, 'Сохраняем настройки…');
         try {
-          const saved = await request(endpoint, { profileId: select.value, enabled: enabled.checked, dailyLimit: Number(limit.value), version: Number.isInteger(status.version) ? status.version : 0, externalAllowed: external.checked });
+          const saved = await request(endpoint, { profileId: select.value, enabled: enabled.checked, dailyLimit: Number(limit.value), version: Number.isInteger(status.version) ? status.version : 0, externalAllowed: select.value !== 'atanasyan-first-steps' && external.checked });
           status = saved.status || saved;
           announce(message, 'Настройки помощника сохранены.');
         } catch (error) {
           if (!current()) return;
           if (error.code === 'LEARNING_ACCOUNT_CHANGED') { destroy(); return; }
           announce(message, messageFor(error), true);
-        } finally { if (current()) { busy = false; for (const control of [select, enabled, limit, external, save]) control.disabled = false; } }
+        } finally { if (current()) { busy = false; for (const control of [select, enabled, limit, external, save]) control.disabled = false; updateExternalChoice(); } }
       });
     }
     function renderPupil() {
       if (!status.enabled || !validProfile(status.profile)) { host.hidden = true; host.replaceChildren(); return; }
+      if (courseMode && status.profile.id !== 'atanasyan-first-steps') {
+        const section = frame('Подсказки к курсу Атанасяна');
+        section.append(node('p', 'Для помощника к этому курсу преподаватель выбирает профиль «От начала до элементарных построений». Разборы самого курса уже доступны рядом с задачей.'));
+        return;
+      }
       if (status.mode === 'unavailable' || status.examActive) {
         const section = frame('MaxExam 0.0 · временно недоступен');
         section.append(node('p', status.examActive ? 'Помощник будет доступен после завершения проверочной работы.' : 'Сервис подсказок пока не отвечает. Основные задания кабинета доступны.'));
         section.append(button('Проверить подключение', event => { event.currentTarget.disabled = true; revision++; load(); }));
         if (!status.examActive) appendLinks(section);
+        return;
+      }
+      if (status.profile.id === 'atanasyan-first-steps' && !courseMode) {
+        const section = frame('MaxExam 0.0 · помощник курса Атанасяна');
+        section.append(node('p', 'Открой задачу в курсе — помощник получит её условие и текущий шаг. Доступны подсказки из проверенного разбора; доказательство проверяет преподаватель.'));
+        section.append(node('a', 'Открыть курс и выбрать задачу', { href: '#atanasyan-course', class: 'button primary', 'data-assistant-open-course': '' }));
         return;
       }
       const profileId = status.profile.id;
@@ -142,7 +186,8 @@
       section.append(node('p', status.profile.title || profileNames[status.profile.id], { class: 'cabinet-assistant-profile' }));
       const modeNotice = node('p', '', { class: 'cabinet-assistant-mode', 'data-assistant-mode': status.mode || 'unavailable' });
       section.append(modeNotice);
-      section.append(node('p', context.attemptId ? 'Помощь относится к открытой работе. После подсказки результат учитывается как выполненный с помощью.' : 'Для задачи из курса, открытого в другой вкладке, впиши условие сюда. Помощник не видит ту вкладку.', { class: 'cabinet-assistant-context' }));
+      section.append(node('p', courseMode ? 'Помощник знает выбранную задачу и текущий шаг этого курса. Условие переписывать не нужно. Помощь отмечается в твоей работе; доказательство проверяет преподаватель.'
+        : context.attemptId ? 'Помощь относится к открытой работе. После подсказки результат учитывается как выполненный с помощью.' : 'Для задачи из курса, открытого в другой вкладке, впиши условие сюда. Помощник не видит ту вкладку.', { class: 'cabinet-assistant-context' }));
       const form = node('form', null, { class: 'cabinet-assistant-form' });
       const topics = node('select', null, { name: 'assistant-topic' });
       for (const topic of status.profile.topics) topics.append(node('option', topic.title, { value: topic.id }));
@@ -153,7 +198,13 @@
         question.value = String(status.profile.topics.find(topic => topic.id === topics.value)?.example || '').slice(0, 1000);
         attempt.value = ''; question.focus();
       }); example.dataset.assistantExample = '';
-      form.append(field('Тема', topics), field('Условие задачи или вопрос', question, 'Только математика: без имени, телефона, ссылок и личных сведений.'), example, field('Мой ответ или шаг, если уже пробовал', attempt));
+      if (courseMode) {
+        question.required = false;
+        question.value = displayValue('courseTaskPrompt');
+        const label = node('p', taskLabel(), { class: 'cabinet-assistant-course-task', 'data-assistant-course-task': '' });
+        form.append(label);
+        if (question.value) form.append(node('p', question.value, { class: 'cabinet-assistant-course-condition' }));
+      } else form.append(field('Тема', topics), field('Условие задачи или вопрос', question, 'Только математика: без имени, телефона, ссылок и личных сведений.'), example, field('Мой ответ или шаг, если уже пробовал', attempt));
       const consent = node('input', null, { type: 'checkbox', name: 'assistant-external-consent' });
       const consentRow = node('label', null, { class: 'cabinet-assistant-check' });
       consentRow.append(consent, node('span', 'Разрешаю отправить математическое условие и мой шаг внешней модели для этого объяснения.'));
@@ -176,15 +227,20 @@
       section.append(form, quota, message, reconnect, answers);
       appendLinks(section);
       const available = () => status.enabled === true && status.profile?.id === profileId && status.mode !== 'unavailable' && !status.examActive;
+      let observedCourse = courseMode ? JSON.stringify(courseSnapshot()) : '';
       const update = () => {
+        if (courseMode) {
+          const selected = JSON.stringify(courseSnapshot());
+          if (selected !== observedCourse) { observedCourse = selected; hintLevel = 0; fingerprint = ''; }
+        }
         const remaining = Number.isInteger(status.remaining) ? Math.max(0, status.remaining) : 0;
         quota.textContent = quotaKnown ? 'Осталось подсказок сегодня: ' + remaining + ' из ' + (Number.isInteger(status.dailyLimit) ? status.dailyLimit : 0) + '.' : 'Дневной лимит пока не удалось обновить. Проверь подключение перед следующей подсказкой.';
         for (const control of [hint, simpler, full, topics, example]) control.disabled = busy || !quotaKnown || remaining < 1 || !available();
-        hint.textContent = hintLevel ? 'Следующая подсказка' : 'Хочу подсказку';
+        hint.textContent = hintLevel ? (courseMode ? 'Ещё подсказка к шагу' : 'Следующая подсказка') : 'Хочу подсказку';
         question.readOnly = busy; attempt.readOnly = busy; consent.disabled = busy;
-        if (hintLevel >= 8) hint.disabled = true;
+        if (hintLevel >= (courseMode ? 3 : 8)) hint.disabled = true;
         reconnect.hidden = quotaKnown && available(); reconnect.disabled = busy;
-        const externalActive = status.externalEnabled === true;
+        const externalActive = status.externalEnabled === true && status.profile.id !== 'atanasyan-first-steps';
         if (externalActive) form.insertBefore(consentRow, actions);
         else { consentRow.remove(); consent.checked = false; }
         section.querySelector('h2').textContent = externalActive ? 'MaxExam 0.0 · помощник' : 'MaxExam 0.0 · проверенные подсказки';
@@ -192,7 +248,8 @@
         modeNotice.textContent = status.examActive ? 'Помощник будет доступен после завершения проверочной работы.'
           : !available() ? 'Подключение или настройки помощника изменились. Проверь подключение; условие и предыдущие шаги останутся на странице.'
             : externalActive ? 'Можно попросить внешнюю модель объяснить шаг. Её ответ может потребовать проверки преподавателем.'
-              : 'Внешняя модель не подключена. Проверенные подсказки MathExam помогают повторить правила и разобрать поддерживаемые примеры.';
+              : courseMode ? 'Это подсказки MathExam из проверенного разбора выбранной задачи. Внешняя модель не вызывается.'
+                : 'Внешняя модель не подключена. Проверенные подсказки MathExam помогают повторить правила и разобрать поддерживаемые примеры.';
       };
       async function refreshStatus() {
         try {
@@ -204,9 +261,11 @@
           quotaKnown = false; return false;
         }
       }
-      function showAnswer(answer, sourceQuestion, contextMode) {
+      function showAnswer(answer, sourceQuestion, contextMode, capturedCourse, capturedLabel) {
         const card = node('article', null, { class: 'cabinet-assistant-answer', 'data-assistant-answer': '' });
-        card.append(node('p', contextMode === 'current-task' ? 'Подсказка к текущему заданию кабинета' : 'Задача: ' + sourceQuestion, { class: 'cabinet-assistant-question' }));
+        card.append(node('p', contextMode === 'course-task' && capturedCourse
+          ? `${capturedLabel} · шаг ${capturedCourse.stepIndex + 1}`
+          : contextMode === 'current-task' ? 'Подсказка к текущему заданию кабинета' : 'Задача: ' + sourceQuestion, { class: 'cabinet-assistant-question' }));
         card.append(node('h3', answer.title || 'Следующий шаг'));
         card.append(node('p', labels[answer.verification] || 'Объяснение требует проверки', { class: 'cabinet-assistant-source' }));
         if (typeof answer.text === 'string' && answer.text) card.append(node('p', answer.text));
@@ -242,23 +301,42 @@
         if (busy || !current() || !quotaKnown || status.remaining < 1 || !available()) return;
         if (context.canAsk && !context.canAsk()) { announce(message, 'Сейчас работа открыта для просмотра. Вернись к текущему решению, чтобы получить подсказку.', true); return; }
         if (!form.reportValidity()) return;
+        const capturedCourse = courseMode ? courseSnapshot() : null;
+        if (courseMode && !capturedCourse) return;
+        const capturedLabel = courseMode ? taskLabel() : '';
         const text = question.value.trim();
-        if (!text) { question.focus(); return; }
-        const signature = JSON.stringify([topics.value, text, attempt.value.trim()]);
+        if (!courseMode && !text) { question.focus(); return; }
+        const signature = JSON.stringify([courseMode ? capturedCourse : topics.value, text, attempt.value.trim()]);
         const same = signature === fingerprint;
         const level = easier && same ? Math.max(1, hintLevel) : same ? Math.min(8, hintLevel + 1) : 1;
         if (!root.crypto?.randomUUID) { announce(message, 'Для помощника нужно защищённое соединение. Открой кабинет по HTTPS.', true); return; }
         busy = true; update(); announce(message, 'Готовим понятный шаг…');
+        let sent = false;
         try {
-          const result = await request('/assistant/ask', {
+          const allowed = context.onBeforeAsk ? await context.onBeforeAsk({ courseContext: capturedCourse, mode }) : true;
+          if (!current()) return;
+          if (allowed === false || (context.canAsk && !context.canAsk())) {
+            announce(message, 'Работа сейчас открыта для просмотра. Подсказка не запрошена.', true); return;
+          }
+          // A callback may await local persistence. Do not cross to a different
+          // task while it is pending; step changes remain labelled by capture.
+          sent = true;
+          const result = await request('/assistant/ask', courseMode ? {
+            requestId: root.crypto.randomUUID(), courseContext: capturedCourse, attempt: attempt.value.trim(),
+            mode, hintLevel: level, simpler: easier, externalConsent: false
+          } : {
             requestId: root.crypto.randomUUID(), topic: topics.value, question: text, attempt: attempt.value.trim(),
-            mode, hintLevel: level, simpler: easier, externalConsent: status.externalEnabled === true && consent.checked,
+            mode, hintLevel: level, simpler: easier,
+            externalConsent: status.profile.id !== 'atanasyan-first-steps' && status.externalEnabled === true && consent.checked,
             ...(context.attemptId ? { attemptId: context.attemptId } : {})
           });
           if (!result.answer || typeof result.answer.answerId !== 'string') throw Error('INVALID_RESPONSE');
+          if (courseMode && (result.contextMode !== 'course-task'
+            || JSON.stringify(result.courseContext) !== JSON.stringify(capturedCourse))) throw Error('INVALID_RESPONSE');
           status.remaining = Number.isInteger(result.remaining) ? result.remaining : Math.max(0, status.remaining - 1);
-          hintLevel = level; fingerprint = signature;
-          showAnswer(result.answer, text, result.contextMode); announce(message, result.notice || 'Подсказка добавлена. Предыдущие шаги остаются ниже.');
+          if (!courseMode || JSON.stringify(courseSnapshot()) === JSON.stringify(capturedCourse)) { hintLevel = level; fingerprint = signature; }
+          else { hintLevel = 0; fingerprint = ''; }
+          showAnswer(result.answer, text, result.contextMode, capturedCourse, capturedLabel); announce(message, result.notice || 'Подсказка добавлена. Предыдущие шаги остаются ниже.');
           context.onAnswer?.(result);
         } catch (error) {
           if (!current()) return;
@@ -266,12 +344,13 @@
           announce(message, messageFor(error), true);
           // An unsuccessful bridge call may still consume its reservation. Read
           // status once; never repeat the model request or discard this view.
-          await refreshStatus();
+          if (sent) await refreshStatus();
         } finally { if (current()) { busy = false; consent.checked = false; update(); } }
       }
       form.addEventListener('submit', event => { event.preventDefault(); ask('hint', false); });
       topics.addEventListener('change', () => { fingerprint = ''; hintLevel = 0; update(); });
       for (const input of [question, attempt]) input.addEventListener('input', () => { if (!busy) { hintLevel = 0; fingerprint = ''; update(); } });
+      refreshView = update;
       update();
     }
     async function load() {

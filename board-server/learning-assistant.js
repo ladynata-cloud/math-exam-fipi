@@ -5,7 +5,8 @@
 const express = require('express');
 const crypto = require('node:crypto');
 const { LearningError, requireValue, exactKeys, tokenHash } = require('./learning-auth');
-const PROFILE_IDS = ['oge-geometry', 'peterson-decimals', 'triangle-congruence'];
+const { COURSE_ID, resolveCourseContext } = require('./assistant-course-context');
+const PROFILE_IDS = ['oge-geometry', 'peterson-decimals', 'triangle-congruence', COURSE_ID];
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const ID = /^[A-Za-z0-9_-]{12,80}$/;
 const DAY = 86400000, RETENTION = 30 * DAY, MAX_REQUESTS = 100000;
@@ -120,7 +121,8 @@ function initializeAssistant(store) {
 function createLearningAssistantRouter(learning, options = {}) {
   const { store, handler, authMiddleware, mutationMiddleware } = learning;
   const catalog = options.catalog || require('./assistant-profile-catalog.json');
-  requireValue(Array.isArray(catalog) && catalog.length === 3 && catalog.every(p => PROFILE_IDS.includes(p.id)), 'LEARNING_ASSISTANT_CATALOG_INVALID', 503);
+  requireValue(Array.isArray(catalog) && catalog.length === PROFILE_IDS.length
+    && new Set(catalog.map(p => p.id)).size === PROFILE_IDS.length && catalog.every(p => PROFILE_IDS.includes(p.id)), 'LEARNING_ASSISTANT_CATALOG_INVALID', 503);
   let config, configError = false;
   try { config = options.config || loadAssistantConfig(options.env); }
   catch { configError = true; config = { enabled: false, external: false, origin: '', key: '', timeoutMs: 20000 }; }
@@ -176,7 +178,7 @@ function createLearningAssistantRouter(learning, options = {}) {
     const remote = (teacher || initial?.enabled) ? await bridgeStatus() : null;
     recheck(req, id);
     const row = settings(id), count = used(id), profile = row ? profiles.get(row.profile_id) : null;
-    const externalAvailable = !!(config.enabled && config.external && remote?.externalEnabled);
+    const externalAvailable = !!(config.enabled && config.external && remote?.externalEnabled && row?.profile_id !== COURSE_ID);
     const enabled = !!(config.enabled && row?.enabled);
     return { ok: true, enabled, configuredEnabled: !!row?.enabled, available: !!config.enabled, profile: teacher || enabled ? clone(profile || null) : null,
       version: row?.version || 0, dailyLimit: row?.daily_limit || 10, used: count, remaining: Math.max(0,(row?.daily_limit || 10)-count),
@@ -200,6 +202,7 @@ function createLearningAssistantRouter(learning, options = {}) {
     requireValue(profiles.has(b.profileId) && typeof b.enabled === 'boolean' && Number.isInteger(b.dailyLimit) && b.dailyLimit >= 1 && b.dailyLimit <= 20
       && Number.isSafeInteger(b.version) && b.version >= 0 && (b.externalAllowed === undefined || typeof b.externalAllowed === 'boolean'), 'LEARNING_ASSISTANT_CONFIG_INVALID');
     const externalAllowed = b.externalAllowed === true;
+    requireValue(!externalAllowed || b.profileId !== COURSE_ID, 'LEARNING_ASSISTANT_COURSE_SOURCE_ONLY', 409);
     if (externalAllowed) requireValue(config.external && (await bridgeStatus())?.externalEnabled, 'LEARNING_ASSISTANT_EXTERNAL_UNAVAILABLE', 409);
     recheck(req, req.params.id);
     store.transaction(() => {
@@ -228,7 +231,10 @@ function createLearningAssistantRouter(learning, options = {}) {
   }
   router.post('/assistant/ask', authMiddleware, mutationMiddleware, handler(async (req,res) => {
     requireValue(req.learningAuth.role === 'student', 'LEARNING_FORBIDDEN', 403); exactKeys(req.query, []);
-    exactKeys(req.body, ['requestId','topic','question','attempt','mode','hintLevel','simpler','attemptId','externalConsent'], ['requestId','topic','question','mode','hintLevel','simpler']);
+    const fromCourse = req.body !== null && typeof req.body === 'object' && Object.hasOwn(req.body, 'courseContext');
+    exactKeys(req.body, fromCourse ? ['requestId','courseContext','attempt','mode','hintLevel','simpler','externalConsent']
+      : ['requestId','topic','question','attempt','mode','hintLevel','simpler','attemptId','externalConsent'],
+    fromCourse ? ['requestId','courseContext','mode','hintLevel','simpler'] : ['requestId','topic','question','mode','hintLevel','simpler']);
     const b = req.body, id = req.learningAuth.id;
     requireValue(typeof b.requestId === 'string' && UUID.test(b.requestId) && ['hint','full'].includes(b.mode) && Number.isInteger(b.hintLevel) && b.hintLevel >= 1 && b.hintLevel <= 8
       && typeof b.simpler === 'boolean' && (b.externalConsent === undefined || typeof b.externalConsent === 'boolean'), 'LEARNING_ASSISTANT_INPUT_INVALID');
@@ -236,10 +242,14 @@ function createLearningAssistantRouter(learning, options = {}) {
     const row = settings(id), profile = row && profiles.get(row.profile_id);
     requireValue(config.enabled && row?.enabled && profile, 'LEARNING_ASSISTANT_DISABLED', 403);
     requireValue(!examActive(id), 'LEARNING_RUN_ACTIVE', 409);
-    requireValue(profile.topics.some(t => t.id === b.topic), 'LEARNING_ASSISTANT_TOPIC_INVALID');
-    const question = mathText(b.question, 1000), attempt = mathText(b.attempt ?? '', 400, true);
-    const context = structuredContext(req.learningAuth, b.attemptId, row.profile_id);
+    requireValue(fromCourse === (row.profile_id === COURSE_ID), 'LEARNING_ASSISTANT_TOPIC_INVALID');
+    const course = fromCourse ? resolveCourseContext(b.courseContext) : null;
+    const topic = course?.topic || b.topic;
+    requireValue(profile.topics.some(t => t.id === topic), 'LEARNING_ASSISTANT_TOPIC_INVALID');
+    const question = course?.question || mathText(b.question, 1000), attempt = mathText(b.attempt ?? '', 400, true);
+    const context = fromCourse ? null : structuredContext(req.learningAuth, b.attemptId, row.profile_id);
     const externalConsent = b.externalConsent === true;
+    requireValue(!externalConsent || row.profile_id !== COURSE_ID, 'LEARNING_ASSISTANT_COURSE_SOURCE_ONLY', 409);
     // Check synchronous config before any remote I/O or request reservation.
     requireValue(!externalConsent || (row.external_allowed && config.external), 'LEARNING_ASSISTANT_EXTERNAL_UNAVAILABLE', 409);
     cleanup();
@@ -251,7 +261,7 @@ function createLearningAssistantRouter(learning, options = {}) {
       store.limit('learning_assistant_requests', MAX_REQUESTS);
       store.run(`INSERT INTO learning_assistant_usage(learner_id,day,requests) VALUES(?,?,1)
         ON CONFLICT(learner_id,day) DO UPDATE SET requests=requests+1`,id,day());
-      store.run("INSERT INTO learning_assistant_requests(request_key,learner_id,profile_id,topic,status,created_at,updated_at) VALUES(?,?,?,?,'running',?,?)",requestKey,id,row.profile_id,b.topic,store.clock(),store.clock());
+      store.run("INSERT INTO learning_assistant_requests(request_key,learner_id,profile_id,topic,status,created_at,updated_at) VALUES(?,?,?,?,'running',?,?)",requestKey,id,row.profile_id,topic,store.clock(),store.clock());
     });
     const controller = new AbortController();
     const disconnected = () => { if (!res.writableEnded) controller.abort(); }; res.once('close',disconnected);
@@ -262,10 +272,14 @@ function createLearningAssistantRouter(learning, options = {}) {
         store.action(req.learningAuth, context.attempt.id, { opId: 'assistant-' + b.requestId,
           expectedVersion: context.attempt.version, type: 'hint', payload: { step: b.hintLevel-1 } });
       }
-      const payload = { subject: row.subject, requestId:b.requestId,profileId:row.profile_id,topic:b.topic,
-        question:context?.question || question,attempt,mode:b.mode,hintLevel:b.hintLevel,simpler:b.simpler,externalConsent };
+      const payload = { subject: row.subject, requestId:b.requestId,profileId:row.profile_id,topic,
+        question:context?.question || question,attempt,mode:b.mode,hintLevel:b.hintLevel,simpler:b.simpler,externalConsent,
+        ...(course ? { courseContext: course.courseContext, courseRevision: course.courseRevision } : {}) };
       const result = await bridgeCall(config, 'ask', payload, fetchImpl, controller.signal);
-      const answer = checkedAnswer(result.answer,b.topic,config.key);
+      const answer = checkedAnswer(result.answer,topic,config.key);
+      if (course) requireValue(answer.verification === 'curated-guidance'
+        && canonical(result.answer.courseContext) === canonical(course.courseContext)
+        && result.answer.courseRevision === course.courseRevision, 'LEARNING_ASSISTANT_RESPONSE_INVALID', 503);
       requireValue(answer.verification !== 'model-unverified' || externalConsent, 'LEARNING_ASSISTANT_RESPONSE_INVALID', 503);
       requireValue(result.notice===undefined || (typeof result.notice==='string' && !result.notice.includes(config.key)), 'LEARNING_ASSISTANT_RESPONSE_INVALID',503);
       const notice = result.notice === undefined ? undefined : mathText(result.notice, 800, true);
@@ -275,7 +289,8 @@ function createLearningAssistantRouter(learning, options = {}) {
       if(context)structuredContext(req.learningAuth,b.attemptId,current.profile_id);
       store.run("UPDATE learning_assistant_requests SET status='done',answer_id=?,verification=?,updated_at=? WHERE request_key=? AND status='running'",answer.answerId,answer.verification,store.clock(),requestKey);
       res.json({ok:true,answer,...(notice ? {notice}:{}),remaining:Math.max(0,row.daily_limit-used(id)),
-        contextMode:context?.question ? 'current-task' : 'entered',mode:answer.verification === 'model-unverified' ? 'api' : 'offline'});
+        contextMode:course ? 'course-task' : context?.question ? 'current-task' : 'entered',mode:answer.verification === 'model-unverified' ? 'api' : 'offline',
+        ...(course ? { courseContext: course.courseContext, courseTask: { title: course.title, stepCount: course.stepCount } } : {}) });
     } catch (error) {
       store.run("UPDATE learning_assistant_requests SET status='failed',updated_at=? WHERE request_key=? AND status='running'",store.clock(),requestKey);
       throw error;
