@@ -1,8 +1,30 @@
 # MathExam project status
 
-Updated: 2026-10-26 (Asia/Novosibirsk)
+Updated: 2026-10-27 (Asia/Novosibirsk)
 
-## Prepared: HTTPS canonicals and static trainer metadata
+## Prepared: independent mathematics assistant prototype
+
+- [Scope](tasks/MATHEXAM_ASSISTANT_V1.md), `NEW_ARCHETYPE`, branch
+  `feat/math-assistant-v1-20261027`, base
+  `92d733a49692744ce043503c57f29b77bfb09a24`.
+- [Research](reports/MATHEXAM_ASSISTANT_RESEARCH_20261027.md),
+  [proposed ADR](adr/0011-independent-assistant.md), and
+  [operator guide](../assistant-service/README.md). Separate Node 24 service,
+  private pilot, SQLite, seven original knowledge topics and optional model API.
+- Default offline mode has exact arithmetic for five bounded task families,
+  conceptual hints, learner feedback and human-reviewed knowledge revisions.
+  No model weights are trained; no conversations or cabinet profiles are stored.
+- Local mathematics/API/privacy/budget/restart tests and actual desktop/mobile
+  browser checks passed; final exact-head evidence belongs in the Draft PR.
+  Actual provider charges/quality and Amvera account resources remain unverified.
+- Assistant, board and video are independent packages. Existing board and pupil
+  cabinets still share one process; stopping it also stops cabinet APIs.
+- Next three actions: obtain exact-head CI and independent review evidence;
+  owner reviews the prototype/ADR and selects a bounded provider pilot; only
+  after separate authorization validate paid inference and hosting before rollout.
+- No merge, paid activation, production account changes or publication occurred.
+
+## Published code: HTTPS canonicals and static trainer metadata
 
 - [Scope](tasks/YANDEX_PUBLIC_INDEXING_20261027.md), SMALL metadata-only task,
   base `e50fcfb7ffe4a99447ee18e4d2ca2f937cd1dd68`.
@@ -13,8 +35,10 @@ Updated: 2026-10-26 (Asia/Novosibirsk)
   established main route; the resulting sitemap contains 528 canonical URLs.
 - Runtime scripts, styles, indexing exclusions and learner content are retained.
   HTTP-to-HTTPS hosting enforcement remains an operational follow-up.
-- Next: Draft PR checks and separate owner release authorization. These metadata
-  changes are not yet published; crawl acceptance and search indexing are separate.
+- Reconciled on 2026-10-27: PR [#357](https://github.com/ladynata-cloud/math-exam-fipi/pull/357)
+  merged as `92d733a49692744ce043503c57f29b77bfb09a24`. Read-only production
+  checks of `index.html`, `sitemap.xml` and `robots.txt` returned HTTP 200 and
+  matched the base source byte-for-byte. Search-engine indexing remains separate.
 
 ## Prepared: Pogorelov course accompanying numbered textbook exercises
 

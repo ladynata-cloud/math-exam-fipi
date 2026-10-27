@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Математика по шагам — MathExam</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Перейти к задаче</a>
+  <header class="page-header">
+    <a class="brand" href="/" aria-label="MathExam: начало закрытого теста"><span class="brand-mark" aria-hidden="true">m</span><span>MathExam<span class="brand-caption">Помощник по математике</span></span></a>
+    <span class="pilot-label">Закрытый тест</span>
+  </header>
+
+  <main id="main" class="page-main">
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Можно не спешить</p>
+        <h1 id="page-title">Разберём задачу.<br>По одному шагу.</h1>
+        <p class="intro-text">Начни с условия. Получи небольшую подсказку, попробуй сам и переходи дальше, когда будешь готов.</p>
+      </div>
+      <aside class="mode-card" aria-label="Текущий режим помощника">
+        <p id="mode-badge" class="mode-badge">Проверяем режим</p>
+        <p id="mode-description">Подготавливаем закрытый тест помощника.</p>
+        <p class="mode-footnote">Это прототип. Если объяснение вызывает сомнения, обсуди его с учителем.</p>
+      </aside>
+    </section>
+
+    <p id="page-message" class="page-message" role="status" aria-live="polite" aria-atomic="true"></p>
+
+    <section id="access-panel" class="access-panel" aria-labelledby="access-title">
+      <div>
+        <p class="eyebrow">Перед началом</p>
+        <h2 id="access-title">Вход в закрытый тест</h2>
+        <p id="access-description">Используй ключ доступа, который выдал учитель. Имя, телефон и данные кабинета не нужны.</p>
+      </div>
+      <form id="access-form" class="access-form">
+        <div id="pilot-key-field" class="field">
+          <label for="pilot-key">Ключ доступа</label>
+          <input id="pilot-key" name="pilotKey" type="password" autocomplete="off" maxlength="128" spellcheck="false" required aria-describedby="key-help">
+          <p id="key-help" class="field-help">Ключ используется для входа и сразу очищается из поля.</p>
+        </div>
+        <button id="access-button" class="button button-primary" type="submit" disabled>Открыть помощника</button>
+      </form>
+    </section>
+
+    <section id="workspace" class="workspace" hidden aria-label="Задача и подсказки">
+      <aside class="task-panel">
+        <div class="section-heading"><span class="section-number" aria-hidden="true">1</span><h2>Твоя задача</h2></div>
+        <form id="question-form">
+          <div class="field">
+            <label for="topic">Выбери тему</label>
+            <select id="topic" name="topic" required></select>
+          </div>
+          <button id="sample-button" class="button button-sample" type="button">Взять пример для проверки</button>
+          <div class="field">
+            <label for="question">Что нужно разобрать?</label>
+            <textarea id="question" name="question" rows="4" maxlength="1000" required placeholder="Например: 3x + 5 = 20" aria-describedby="question-help"></textarea>
+            <p id="question-help" class="field-help">Пиши только условие задачи: без имени, телефона, пароля и других личных данных.</p>
+          </div>
+          <div class="field">
+            <label for="attempt">Что уже получилось? <span class="optional">Необязательно</span></label>
+            <textarea id="attempt" name="attempt" rows="2" maxlength="300" placeholder="Можно написать свой первый шаг или ответ"></textarea>
+          </div>
+          <div id="external-choice" class="external-choice" hidden>
+            <label class="checkbox-label"><input id="external-consent" type="checkbox"><span id="external-consent-label">Разрешаю отправить условие задачи внешней модели для этой задачи.</span></label>
+            <p class="field-help">Провайдер получит математический текст и необходимые материалы. Проверка текста не гарантирует удаления всех личных данных. Без согласия доступны встроенные примеры.</p>
+          </div>
+          <button id="ask-button" class="button button-primary full-width" type="submit">Дай первый шаг</button>
+          <p class="task-note">У встроенных примеров полный разбор открывается только по твоей просьбе.</p>
+        </form>
+      </aside>
+
+      <section class="answer-panel" aria-labelledby="answer-title">
+        <div class="section-heading answer-heading"><span class="section-number" aria-hidden="true">2</span><h2 id="answer-title" tabindex="-1">Разбираемся вместе</h2></div>
+        <div id="empty-state" class="empty-state">
+          <span class="empty-symbol" aria-hidden="true">x + ?</span>
+          <h3>Начни с небольшого шага</h3>
+          <p>Выбери тему и возьми пример или введи своё условие. Здесь останутся все открытые подсказки — к ним можно возвращаться.</p>
+          <div class="empty-points"><span>Одна мысль за раз</span><span>Можно попросить проще</span><span>Предыдущие шаги остаются</span></div>
+        </div>
+        <div id="answer-list" class="answer-list" aria-label="Открытые подсказки"></div>
+        <div id="answer-actions" class="answer-actions" hidden>
+          <button id="next-button" class="button button-primary" type="button">Ещё одна подсказка</button>
+          <button id="explain-button" class="button button-secondary" type="button">Показать весь разбор</button>
+        </div>
+        <p id="answer-message" class="answer-message" role="status" aria-live="polite" aria-atomic="true"></p>
+      </section>
+    </section>
+
+    <section class="privacy-panel" aria-labelledby="privacy-title">
+      <div>
+        <h2 id="privacy-title">Ты управляешь своими данными</h2>
+        <p>Текст задач и ответы не сохраняются в базе помощника или хранилище браузера. Они остаются на экране этой вкладки. Сеанс действует до 1 часа, обезличенные оценки объяснений — до 30 дней.</p>
+        <p>Оценка «Непонятно» помогает сделать следующую подсказку проще. Новые знания попадают в базу только после проверки. Веса модели от твоих сообщений не обучаются.</p>
+      </div>
+      <button id="forget-button" class="button button-secondary" type="button" hidden>Удалить мой сеанс</button>
+    </section>
+    <noscript><p class="noscript">Для проверки помощника включи JavaScript в браузере.</p></noscript>
+  </main>
+  <footer class="page-footer"><span>MathExam</span><span>Задачи, которые становятся понятнее</span></footer>
+</body>
+</html>
