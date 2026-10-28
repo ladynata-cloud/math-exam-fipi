@@ -2,6 +2,21 @@
 
 Updated: 2026-10-28 (Asia/Novosibirsk)
 
+## In progress: Atanasyan 10–11 companion labels and chapter III completion
+
+- [Task](tasks/ATANASYAN_COMPANION_310_319.md), HIGH, resumed by the owner on
+  2026-10-28. Base `fa8d1b7ced31a5941ad52d8a21a48b63daaa84a8`.
+- Visible «К задаче», «К параграфу», «К главе» references are being applied to
+  the existing catalogue, lessons and contextual theory, using the supplied
+  2024 edition and preserving task identities and saved work.
+- Corrected paused PR352 content supplies eleven cards for 310–319, including
+  both parts of 311. Candidate: 518 cards, 1969 justified steps, 2050 model
+  states; main exercises 1–319 and chapter III complete. Later chapters remain
+  pending. All 507 published cards and concurrent course changes are preserved.
+- Source, mathematical, presentation and desktop/mobile checks belong to this
+  new composed version. Earlier reports do not certify its changed interface.
+  Publication and a final passing gate are not claimed by this status entry.
+
 ## Prepared: Ichenskaya independent and test works alongside Atanasyan
 
 - [Task](tasks/ICHENSKAYA_GRADE7_WORKS.md), HIGH, branch
