@@ -1,7 +1,28 @@
 # MathExam project status
 
+## Candidate prepared: Atanasyan chapter VI, quadrilaterals, 462–540
 
-## Prepared: Atanasyan source captions and advanced grade-seven problems 413–461
+- Owner continuation on 29 October 2026; [task](tasks/ATANASYAN_7_9_CHAPTER_VI.md),
+  HIGH, branch `content/atanasyan-chapter-vi-20261029`, base
+  `d3122b9f3905cd8f7715cee6a873d031cdb43de4`.
+- Complete authored candidate: 79 numbered exercises / 108 explicit parts,
+  all eight theory points 46–53 and 22 review questions. Total 138 new cards,
+  411 original steps and 585 views; combined preview 893 cards.
+- Source references include the three actual chapter paragraphs. Exercises
+  520–540 and chapter questions have chapter references without invented §.
+- All 755 published cards, their review provenance and 63 existing preparation,
+  model, runtime and review files remain byte-identical to the published base.
+  A separate explicit candidate build adds VI for review; the default build
+  remains the exact approved 755-card course. No old review is rewritten.
+- Source and mathematical author checks are complete; independent review is
+  pending. No chapter-VI publication manifest exists. Full browser/CI evidence
+  and its actual completion status belong in the PR and
+  [report](reports/ATANASYAN_7_9_CHAPTER_VI_20261029.md).
+- Do not publish this candidate as approved or advance to chapter VII while
+  presenting VI as reviewed. Merge requires a separate owner decision.
+
+
+## Published: Atanasyan source captions and advanced grade-seven problems 413–461
 
 - Owner task: [captions and grade-seven continuation](tasks/ATANASYAN_7_9_LABELS_ADVANCED7.md),
   HIGH, branch `content/atanasyan-labels-advanced-20261028`, base
@@ -21,7 +42,10 @@
   theory/state contract, server and real pupil records remain unchanged.
 - Final gate evidence, limitations and the exact cloud head belong in the
   [continuation report](reports/ATANASYAN_7_9_LABELS_ADVANCED7_20261028.md) and PR.
-  This is preparation, not a claim that the candidate has been deployed.
+  PR #371 was subsequently published as `d3122b9f3905cd8f7715cee6a873d031cdb43de4`.
+  Pages deployment 40742011342 and post-merge board CI 40742013220 succeeded;
+  production byte and browser verification passed. The published bundle has
+  755 reviewed cards, SHA256 `10d86375b924f2914d93ab82efb91ed01a85c0d4657fd7d66414d42edcee7466`.
 - Next numbered section: chapter VI, “Четырёхугольники”, 462–540 (grade eight).
   Research tasks, complex tasks and appendices remain separately inventoried;
   the full 1–1431 textbook is not complete.

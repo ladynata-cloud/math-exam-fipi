@@ -1,0 +1,8210 @@
+{
+  "chapter": 6,
+  "models": [
+    {
+      "chapter": 6,
+      "collection": "main",
+      "number": 520,
+      "part": "single",
+      "model": {
+        "points": {
+          "A": [
+            23.26373708,
+            66.0,
+            0
+          ],
+          "B": [
+            73.799917367,
+            66.0,
+            0
+          ],
+          "C": [
+            76.73626292,
+            32.437416758,
+            0
+          ],
+          "D": [
+            37.197095087,
+            14.0,
+            0
+          ]
+        },
+        "edges": [],
+        "planar": true,
+        "bounds": [
+          0,
+          0,
+          100,
+          82
+        ],
+        "views": {
+          "neutral": {
+            "label": "Условие",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ]
+            ],
+            "angleArcs": [
+              {
+                "vertex": "A",
+                "from": "D",
+                "to": "B",
+                "marks": 0,
+                "radius": 5
+              },
+              {
+                "vertex": "B",
+                "from": "A",
+                "to": "C",
+                "marks": 0,
+                "radius": 5
+              },
+              {
+                "vertex": "C",
+                "from": "B",
+                "to": "D",
+                "marks": 0,
+                "radius": 5
+              },
+              {
+                "vertex": "D",
+                "from": "C",
+                "to": "A",
+                "marks": 0,
+                "radius": 5
+              }
+            ]
+          },
+          "step-1": {
+            "label": "Шаг 1",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ]
+            ],
+            "angleArcs": [
+              {
+                "vertex": "A",
+                "from": "D",
+                "to": "B",
+                "marks": 0,
+                "radius": 5
+              },
+              {
+                "vertex": "B",
+                "from": "A",
+                "to": "C",
+                "marks": 0,
+                "radius": 5
+              },
+              {
+                "vertex": "C",
+                "from": "B",
+                "to": "D",
+                "marks": 0,
+                "radius": 5
+              },
+              {
+                "vertex": "D",
+                "from": "C",
+                "to": "A",
+                "marks": 0,
+                "radius": 5
+              }
+            ]
+          },
+          "step-2": {
+            "label": "Шаг 2",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ]
+            ],
+            "angleArcs": [
+              {
+                "vertex": "A",
+                "from": "D",
+                "to": "B",
+                "marks": 0,
+                "radius": 5
+              },
+              {
+                "vertex": "B",
+                "from": "A",
+                "to": "C",
+                "marks": 0,
+                "radius": 5
+              },
+              {
+                "vertex": "C",
+                "from": "B",
+                "to": "D",
+                "marks": 0,
+                "radius": 5
+              },
+              {
+                "vertex": "D",
+                "from": "C",
+                "to": "A",
+                "marks": 0,
+                "radius": 5
+              }
+            ]
+          },
+          "step-3": {
+            "label": "Шаг 3",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ]
+            ],
+            "angleArcs": [
+              {
+                "vertex": "A",
+                "from": "D",
+                "to": "B",
+                "marks": 0,
+                "radius": 5
+              },
+              {
+                "vertex": "B",
+                "from": "A",
+                "to": "C",
+                "marks": 0,
+                "radius": 5
+              },
+              {
+                "vertex": "C",
+                "from": "B",
+                "to": "D",
+                "marks": 0,
+                "radius": 5
+              },
+              {
+                "vertex": "D",
+                "from": "C",
+                "to": "A",
+                "marks": 0,
+                "radius": 5
+              }
+            ]
+          }
+        },
+        "checks": [
+          {
+            "type": "angle",
+            "points": [
+              "D",
+              "A",
+              "B"
+            ],
+            "degrees": 75
+          },
+          {
+            "type": "angle",
+            "points": [
+              "A",
+              "B",
+              "C"
+            ],
+            "degrees": 95
+          },
+          {
+            "type": "angle",
+            "points": [
+              "B",
+              "C",
+              "D"
+            ],
+            "degrees": 110
+          },
+          {
+            "type": "angle",
+            "points": [
+              "C",
+              "D",
+              "A"
+            ],
+            "degrees": 80
+          }
+        ],
+        "labels": {},
+        "labelOffsets": {},
+        "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
+      },
+      "didactics": {
+        "steps": [
+          {
+            "prompt": "Как предположить противное?",
+            "justification": "Определения острого, прямого и тупого угла.",
+            "theoryPoints": [
+              9
+            ]
+          },
+          {
+            "prompt": "Когда сумма может равняться 360°?",
+            "justification": "Сумма углов четырёхугольника.",
+            "theoryPoints": [
+              47
+            ]
+          },
+          {
+            "prompt": "В чём противоречие?",
+            "justification": "Доказательство от противного; выпуклый многоугольник.",
+            "theoryPoints": [
+              46
+            ]
+          }
+        ]
+      },
+      "statementGivens": []
+    },
+    {
+      "chapter": 6,
+      "collection": "main",
+      "number": 521,
+      "part": "single",
+      "model": {
+        "points": {
+          "A": [
+            14.044272108,
+            66.0,
+            0
+          ],
+          "B": [
+            46.537478408,
+            14.0,
+            0
+          ],
+          "C": [
+            85.955727892,
+            14.0,
+            0
+          ],
+          "D": [
+            53.462521592,
+            66.0,
+            0
+          ],
+          "K": [
+            74.351011356,
+            32.571428571,
+            0
+          ]
+        },
+        "edges": [],
+        "planar": true,
+        "bounds": [
+          0,
+          0,
+          100,
+          82
+        ],
+        "views": {
+          "neutral": {
+            "label": "Условие",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ]
+            ]
+          },
+          "step-1": {
+            "label": "Шаг 1",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ]
+            ]
+          },
+          "step-2": {
+            "label": "Шаг 2",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "K"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "K"
+              ]
+            ],
+            "angleArcs": [
+              {
+                "vertex": "A",
+                "from": "B",
+                "to": "K",
+                "marks": 1,
+                "radius": 5
+              },
+              {
+                "vertex": "A",
+                "from": "K",
+                "to": "D",
+                "marks": 1,
+                "radius": 5
+              }
+            ]
+          },
+          "step-3": {
+            "label": "Шаг 3",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "K"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "K"
+              ]
+            ],
+            "angleArcs": [
+              {
+                "vertex": "A",
+                "from": "B",
+                "to": "K",
+                "marks": 1,
+                "radius": 5
+              },
+              {
+                "vertex": "A",
+                "from": "K",
+                "to": "D",
+                "marks": 1,
+                "radius": 5
+              }
+            ]
+          },
+          "step-4": {
+            "label": "Шаг 4",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "K"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "K"
+              ]
+            ],
+            "angleArcs": [
+              {
+                "vertex": "A",
+                "from": "B",
+                "to": "K",
+                "marks": 1,
+                "radius": 5
+              },
+              {
+                "vertex": "A",
+                "from": "K",
+                "to": "D",
+                "marks": 1,
+                "radius": 5
+              }
+            ]
+          }
+        },
+        "checks": [
+          {
+            "type": "parallel",
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "D",
+                "C"
+              ]
+            ]
+          },
+          {
+            "type": "parallel",
+            "segments": [
+              [
+                "A",
+                "D"
+              ],
+              [
+                "B",
+                "C"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "C",
+                "D"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "A",
+                "D"
+              ],
+              [
+                "B",
+                "C"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "A",
+                "D"
+              ],
+              [
+                "D",
+                "K"
+              ]
+            ]
+          },
+          {
+            "type": "angle",
+            "points": [
+              "B",
+              "A",
+              "K"
+            ],
+            "degrees": 29
+          },
+          {
+            "type": "angle",
+            "points": [
+              "K",
+              "A",
+              "D"
+            ],
+            "degrees": 29
+          },
+          {
+            "type": "distanceRatio",
+            "segments": [
+              [
+                "K",
+                "C"
+              ],
+              [
+                "D",
+                "K"
+              ]
+            ],
+            "ratio": 0.5555555555555556
+          }
+        ],
+        "labels": {},
+        "labelOffsets": {},
+        "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
+      },
+      "didactics": {
+        "steps": [
+          {
+            "prompt": "Как найти вторую сторону?",
+            "justification": "Противоположные стороны и периметр.",
+            "theoryPoints": [
+              14,
+              48
+            ]
+          },
+          {
+            "prompt": "Может ли биссектриса встретить сторону BC?",
+            "justification": "Равные углы дают равные стороны; точка на отрезке.",
+            "theoryPoints": [
+              7,
+              29,
+              33
+            ]
+          },
+          {
+            "prompt": "Чему равен DK?",
+            "justification": "Параллельные прямые; признак равнобедренного треугольника.",
+            "theoryPoints": [
+              29,
+              33
+            ]
+          },
+          {
+            "prompt": "Чему равен остаток KC?",
+            "justification": "Вычитание длин отрезков.",
+            "theoryPoints": [
+              7
+            ]
+          }
+        ]
+      },
+      "statementGivens": []
+    },
+    {
+      "chapter": 6,
+      "collection": "main",
+      "number": 522,
+      "part": "single",
+      "model": {
+        "points": {
+          "A": [
+            13.0,
+            48.001813336,
+            0
+          ],
+          "B": [
+            23.39287668,
+            31.998186664,
+            0
+          ],
+          "C": [
+            87.0,
+            31.998186664,
+            0
+          ],
+          "D": [
+            76.60712332,
+            48.001813336,
+            0
+          ],
+          "K": [
+            42.475013676,
+            31.998186664,
+            0
+          ],
+          "L": [
+            67.917863004,
+            31.998186664,
+            0
+          ]
+        },
+        "edges": [],
+        "planar": true,
+        "bounds": [
+          0,
+          0,
+          100,
+          82
+        ],
+        "views": {
+          "neutral": {
+            "label": "Условие",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ]
+            ]
+          },
+          "step-1": {
+            "label": "Шаг 1",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "K",
+              "L"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "K"
+              ],
+              [
+                "D",
+                "L"
+              ]
+            ],
+            "angleArcs": [
+              {
+                "vertex": "A",
+                "from": "B",
+                "to": "K",
+                "marks": 1,
+                "radius": 5
+              },
+              {
+                "vertex": "A",
+                "from": "K",
+                "to": "D",
+                "marks": 1,
+                "radius": 5
+              },
+              {
+                "vertex": "D",
+                "from": "A",
+                "to": "L",
+                "marks": 2,
+                "radius": 5
+              },
+              {
+                "vertex": "D",
+                "from": "L",
+                "to": "C",
+                "marks": 2,
+                "radius": 5
+              }
+            ]
+          },
+          "step-2": {
+            "label": "Шаг 2",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "K",
+              "L"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "K"
+              ],
+              [
+                "D",
+                "L"
+              ]
+            ],
+            "angleArcs": [
+              {
+                "vertex": "A",
+                "from": "B",
+                "to": "K",
+                "marks": 1,
+                "radius": 5
+              },
+              {
+                "vertex": "A",
+                "from": "K",
+                "to": "D",
+                "marks": 1,
+                "radius": 5
+              },
+              {
+                "vertex": "D",
+                "from": "A",
+                "to": "L",
+                "marks": 2,
+                "radius": 5
+              },
+              {
+                "vertex": "D",
+                "from": "L",
+                "to": "C",
+                "marks": 2,
+                "radius": 5
+              }
+            ]
+          },
+          "step-3": {
+            "label": "Шаг 3",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "K",
+              "L"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "K"
+              ],
+              [
+                "D",
+                "L"
+              ]
+            ],
+            "angleArcs": [
+              {
+                "vertex": "A",
+                "from": "B",
+                "to": "K",
+                "marks": 1,
+                "radius": 5
+              },
+              {
+                "vertex": "A",
+                "from": "K",
+                "to": "D",
+                "marks": 1,
+                "radius": 5
+              },
+              {
+                "vertex": "D",
+                "from": "A",
+                "to": "L",
+                "marks": 2,
+                "radius": 5
+              },
+              {
+                "vertex": "D",
+                "from": "L",
+                "to": "C",
+                "marks": 2,
+                "radius": 5
+              }
+            ]
+          }
+        },
+        "checks": [
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "B",
+                "K"
+              ],
+              [
+                "A",
+                "B"
+              ],
+              [
+                "C",
+                "L"
+              ]
+            ]
+          },
+          {
+            "type": "distanceRatio",
+            "segments": [
+              [
+                "K",
+                "L"
+              ],
+              [
+                "A",
+                "B"
+              ]
+            ],
+            "ratio": 1.3333333333333333
+          }
+        ],
+        "labels": {},
+        "labelOffsets": {},
+        "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
+      },
+      "didactics": {
+        "steps": [
+          {
+            "prompt": "Как обозначить точки пересечения?",
+            "justification": "Условие задачи.",
+            "theoryPoints": [
+              17,
+              48
+            ]
+          },
+          {
+            "prompt": "Как найти крайние отрезки?",
+            "justification": "Признак равнобедренного треугольника.",
+            "theoryPoints": [
+              29,
+              33
+            ]
+          },
+          {
+            "prompt": "Как определить порядок и средний отрезок?",
+            "justification": "Порядок точек и сложение длин.",
+            "theoryPoints": [
+              7
+            ]
+          }
+        ]
+      },
+      "statementGivens": []
+    },
+    {
+      "chapter": 6,
+      "collection": "main",
+      "number": 523,
+      "part": "single",
+      "model": {
+        "points": {
+          "A": [
+            50.0,
+            16.875,
+            0
+          ],
+          "B": [
+            13.0,
+            63.125,
+            0
+          ],
+          "C": [
+            87.0,
+            63.125,
+            0
+          ],
+          "P": [
+            40.75,
+            63.125,
+            0
+          ],
+          "M": [
+            26.875,
+            45.78125,
+            0
+          ],
+          "N": [
+            63.875,
+            34.21875,
+            0
+          ]
+        },
+        "edges": [],
+        "planar": true,
+        "bounds": [
+          0,
+          0,
+          100,
+          82
+        ],
+        "views": {
+          "neutral": {
+            "label": "Условие",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "P",
+              "M",
+              "N"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ],
+              [
+                "P",
+                "M"
+              ],
+              [
+                "P",
+                "N"
+              ]
+            ]
+          },
+          "step-1": {
+            "label": "Шаг 1",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "P",
+              "M",
+              "N"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ],
+              [
+                "P",
+                "M"
+              ],
+              [
+                "P",
+                "N"
+              ]
+            ],
+            "highlightSegments": [
+              [
+                "A",
+                "M"
+              ],
+              [
+                "M",
+                "P"
+              ],
+              [
+                "P",
+                "N"
+              ],
+              [
+                "N",
+                "A"
+              ]
+            ]
+          },
+          "step-2": {
+            "label": "Шаг 2",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "P",
+              "M",
+              "N"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ],
+              [
+                "P",
+                "M"
+              ],
+              [
+                "P",
+                "N"
+              ]
+            ],
+            "highlightSegments": [
+              [
+                "A",
+                "M"
+              ],
+              [
+                "M",
+                "P"
+              ],
+              [
+                "P",
+                "N"
+              ],
+              [
+                "N",
+                "A"
+              ]
+            ]
+          },
+          "step-3": {
+            "label": "Шаг 3",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "P",
+              "M",
+              "N"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ],
+              [
+                "P",
+                "M"
+              ],
+              [
+                "P",
+                "N"
+              ]
+            ],
+            "highlightSegments": [
+              [
+                "A",
+                "M"
+              ],
+              [
+                "M",
+                "P"
+              ],
+              [
+                "P",
+                "N"
+              ],
+              [
+                "N",
+                "A"
+              ]
+            ]
+          },
+          "step-4": {
+            "label": "Шаг 4",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "P",
+              "M",
+              "N"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ],
+              [
+                "P",
+                "M"
+              ],
+              [
+                "P",
+                "N"
+              ]
+            ],
+            "highlightSegments": [
+              [
+                "A",
+                "M"
+              ],
+              [
+                "M",
+                "P"
+              ],
+              [
+                "P",
+                "N"
+              ],
+              [
+                "N",
+                "A"
+              ]
+            ]
+          }
+        },
+        "checks": [
+          {
+            "type": "parallel",
+            "segments": [
+              [
+                "P",
+                "M"
+              ],
+              [
+                "A",
+                "C"
+              ]
+            ]
+          },
+          {
+            "type": "parallel",
+            "segments": [
+              [
+                "P",
+                "N"
+              ],
+              [
+                "A",
+                "B"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "B",
+                "M"
+              ],
+              [
+                "M",
+                "P"
+              ],
+              [
+                "A",
+                "N"
+              ]
+            ]
+          }
+        ],
+        "labels": {},
+        "labelOffsets": {},
+        "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
+      },
+      "didactics": {
+        "steps": [
+          {
+            "prompt": "Какой четырёхугольник получен?",
+            "justification": "Две пары параллельных сторон.",
+            "theoryPoints": [
+              48
+            ]
+          },
+          {
+            "prompt": "Почему BM =MP?",
+            "justification": "Равнобедренный треугольник и параллельные прямые.",
+            "theoryPoints": [
+              18,
+              29,
+              33
+            ]
+          },
+          {
+            "prompt": "Как связать это с периметром?",
+            "justification": "Противоположные стороны параллелограмма.",
+            "theoryPoints": [
+              7,
+              14,
+              48
+            ]
+          },
+          {
+            "prompt": "Что происходит в концах основания?",
+            "justification": "Проверка невырожденности.",
+            "theoryPoints": [
+              47
+            ]
+          }
+        ]
+      },
+      "statementGivens": []
+    },
+    {
+      "chapter": 6,
+      "collection": "main",
+      "number": 524,
+      "part": "single",
+      "model": {
+        "points": {
+          "A": [
+            13.0,
+            54.24130664,
+            0
+          ],
+          "B": [
+            29.444444444,
+            25.75869336,
+            0
+          ],
+          "C": [
+            87.0,
+            25.75869336,
+            0
+          ],
+          "D": [
+            70.555555556,
+            54.24130664,
+            0
+          ],
+          "P": [
+            37.666666667,
+            40.0,
+            0
+          ],
+          "Q": [
+            43.833333333,
+            50.68097998,
+            0
+          ],
+          "R": [
+            62.333333333,
+            40.0,
+            0
+          ],
+          "S": [
+            56.166666667,
+            29.31902002,
+            0
+          ]
+        },
+        "edges": [],
+        "planar": true,
+        "bounds": [
+          0,
+          0,
+          100,
+          82
+        ],
+        "views": {
+          "neutral": {
+            "label": "Условие",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ]
+            ]
+          },
+          "step-1": {
+            "label": "Шаг 1",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "P",
+              "Q",
+              "R",
+              "S"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "P",
+                "Q"
+              ],
+              [
+                "Q",
+                "R"
+              ],
+              [
+                "R",
+                "S"
+              ],
+              [
+                "S",
+                "P"
+              ]
+            ],
+            "lines": [
+              [
+                "A",
+                "P"
+              ],
+              [
+                "B",
+                "P"
+              ],
+              [
+                "C",
+                "Q"
+              ],
+              [
+                "D",
+                "R"
+              ]
+            ]
+          },
+          "step-2": {
+            "label": "Шаг 2",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "P",
+              "Q",
+              "R",
+              "S"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "P",
+                "Q"
+              ],
+              [
+                "Q",
+                "R"
+              ],
+              [
+                "R",
+                "S"
+              ],
+              [
+                "S",
+                "P"
+              ]
+            ],
+            "lines": [
+              [
+                "A",
+                "P"
+              ],
+              [
+                "B",
+                "P"
+              ],
+              [
+                "C",
+                "Q"
+              ],
+              [
+                "D",
+                "R"
+              ]
+            ]
+          },
+          "step-3": {
+            "label": "Шаг 3",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "P",
+              "Q",
+              "R",
+              "S"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "P",
+                "Q"
+              ],
+              [
+                "Q",
+                "R"
+              ],
+              [
+                "R",
+                "S"
+              ],
+              [
+                "S",
+                "P"
+              ]
+            ],
+            "lines": [
+              [
+                "A",
+                "P"
+              ],
+              [
+                "B",
+                "P"
+              ],
+              [
+                "C",
+                "Q"
+              ],
+              [
+                "D",
+                "R"
+              ]
+            ]
+          },
+          "step-4": {
+            "label": "Шаг 4",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "P",
+              "Q",
+              "R",
+              "S"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "P",
+                "Q"
+              ],
+              [
+                "Q",
+                "R"
+              ],
+              [
+                "R",
+                "S"
+              ],
+              [
+                "S",
+                "P"
+              ]
+            ],
+            "lines": [
+              [
+                "A",
+                "P"
+              ],
+              [
+                "B",
+                "P"
+              ],
+              [
+                "C",
+                "Q"
+              ],
+              [
+                "D",
+                "R"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "S",
+                "vertex": "P",
+                "b": "Q",
+                "size": 2.3
+              },
+              {
+                "a": "P",
+                "vertex": "Q",
+                "b": "R",
+                "size": 2.3
+              },
+              {
+                "a": "Q",
+                "vertex": "R",
+                "b": "S",
+                "size": 2.3
+              },
+              {
+                "a": "R",
+                "vertex": "S",
+                "b": "P",
+                "size": 2.3
+              }
+            ]
+          }
+        },
+        "checks": [
+          {
+            "type": "perpendicular",
+            "segments": [
+              [
+                "P",
+                "Q"
+              ],
+              [
+                "Q",
+                "R"
+              ]
+            ]
+          },
+          {
+            "type": "perpendicular",
+            "segments": [
+              [
+                "Q",
+                "R"
+              ],
+              [
+                "R",
+                "S"
+              ]
+            ]
+          },
+          {
+            "type": "parallel",
+            "segments": [
+              [
+                "P",
+                "Q"
+              ],
+              [
+                "S",
+                "R"
+              ]
+            ]
+          },
+          {
+            "type": "parallel",
+            "segments": [
+              [
+                "P",
+                "S"
+              ],
+              [
+                "Q",
+                "R"
+              ]
+            ]
+          }
+        ],
+        "labels": {},
+        "labelOffsets": {},
+        "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
+      },
+      "didactics": {
+        "steps": [
+          {
+            "prompt": "Какой угол образуют соседние биссектрисы?",
+            "justification": "Сумма углов треугольника; углы параллелограмма.",
+            "theoryPoints": [
+              29,
+              31,
+              48
+            ]
+          },
+          {
+            "prompt": "Почему противоположные биссектрисы параллельны?",
+            "justification": "Перпендикулярные одной прямой прямые.",
+            "theoryPoints": [
+              12,
+              28
+            ]
+          },
+          {
+            "prompt": "Почему совпадение исключено?",
+            "justification": "Признак ромба и условие задачи.",
+            "theoryPoints": [
+              52
+            ]
+          },
+          {
+            "prompt": "Какая фигура ограничена этими прямыми?",
+            "justification": "Задача 503: четыре прямых угла.",
+            "theoryPoints": [
+              51
+            ]
+          }
+        ]
+      },
+      "statementGivens": []
+    },
+    {
+      "chapter": 6,
+      "collection": "main",
+      "number": 525,
+      "part": "single",
+      "model": {
+        "points": {
+          "A": [
+            13.0,
+            56.02146997,
+            0
+          ],
+          "B": [
+            31.5,
+            23.97853003,
+            0
+          ],
+          "C": [
+            87.0,
+            23.97853003,
+            0
+          ],
+          "D": [
+            68.5,
+            56.02146997,
+            0
+          ]
+        },
+        "edges": [],
+        "planar": true,
+        "bounds": [
+          0,
+          0,
+          100,
+          82
+        ],
+        "views": {
+          "neutral": {
+            "label": "Условие",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ]
+            ]
+          },
+          "step-1": {
+            "label": "Шаг 1",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ]
+            ]
+          },
+          "step-2": {
+            "label": "Шаг 2",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ]
+            ]
+          },
+          "step-3": {
+            "label": "Шаг 3",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ]
+            ]
+          }
+        },
+        "checks": [
+          {
+            "type": "parallel",
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "D",
+                "C"
+              ]
+            ]
+          },
+          {
+            "type": "parallel",
+            "segments": [
+              [
+                "A",
+                "D"
+              ],
+              [
+                "B",
+                "C"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "C",
+                "D"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "A",
+                "D"
+              ],
+              [
+                "B",
+                "C"
+              ]
+            ]
+          }
+        ],
+        "labels": {},
+        "labelOffsets": {},
+        "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
+      },
+      "didactics": {
+        "steps": [
+          {
+            "prompt": "Как обозначить два условия?",
+            "justification": "Углы, прилежащие к стороне.",
+            "theoryPoints": [
+              47
+            ]
+          },
+          {
+            "prompt": "Что даёт первое условие?",
+            "justification": "Признак параллельности.",
+            "theoryPoints": [
+              25
+            ]
+          },
+          {
+            "prompt": "Что даёт второе условие?",
+            "justification": "Признак параллельности и определение.",
+            "theoryPoints": [
+              25,
+              48
+            ]
+          }
+        ]
+      },
+      "statementGivens": []
+    },
+    {
+      "chapter": 6,
+      "collection": "main",
+      "number": 526,
+      "part": "single",
+      "model": {
+        "points": {
+          "A": [
+            13.0,
+            56.02146997,
+            0
+          ],
+          "B": [
+            31.5,
+            23.97853003,
+            0
+          ],
+          "C": [
+            87.0,
+            23.97853003,
+            0
+          ],
+          "D": [
+            68.5,
+            56.02146997,
+            0
+          ]
+        },
+        "edges": [],
+        "planar": true,
+        "bounds": [
+          0,
+          0,
+          100,
+          82
+        ],
+        "views": {
+          "neutral": {
+            "label": "Условие",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ]
+            ]
+          },
+          "step-1": {
+            "label": "Шаг 1",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ]
+            ]
+          },
+          "step-2": {
+            "label": "Шаг 2",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ]
+            ]
+          },
+          "step-3": {
+            "label": "Шаг 3",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ]
+            ]
+          }
+        },
+        "checks": [
+          {
+            "type": "parallel",
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "D",
+                "C"
+              ]
+            ]
+          },
+          {
+            "type": "parallel",
+            "segments": [
+              [
+                "A",
+                "D"
+              ],
+              [
+                "B",
+                "C"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "C",
+                "D"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "A",
+                "D"
+              ],
+              [
+                "B",
+                "C"
+              ]
+            ]
+          }
+        ],
+        "labels": {},
+        "labelOffsets": {},
+        "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
+      },
+      "didactics": {
+        "steps": [
+          {
+            "prompt": "Как использовать сумму всех углов?",
+            "justification": "Сумма углов четырёхугольника.",
+            "theoryPoints": [
+              47
+            ]
+          },
+          {
+            "prompt": "Как получить ещё одну нужную сумму?",
+            "justification": "Подстановка равных углов.",
+            "theoryPoints": [
+              47
+            ]
+          },
+          {
+            "prompt": "Как применить признаки параллельности?",
+            "justification": "Задача 525 и определение параллелограмма.",
+            "theoryPoints": [
+              25,
+              48
+            ]
+          }
+        ]
+      },
+      "statementGivens": []
+    },
+    {
+      "chapter": 6,
+      "collection": "main",
+      "number": 527,
+      "part": "single",
+      "model": {
+        "points": {
+          "A": [
+            45.888888889,
+            15.333333333,
+            0
+          ],
+          "B": [
+            13.0,
+            64.666666667,
+            0
+          ],
+          "C": [
+            87.0,
+            64.666666667,
+            0
+          ],
+          "M": [
+            50.0,
+            64.666666667,
+            0
+          ],
+          "K": [
+            47.944444444,
+            40.0,
+            0
+          ],
+          "D": [
+            59.592592593,
+            31.777777778,
+            0
+          ],
+          "E": [
+            73.296296296,
+            48.222222222,
+            0
+          ]
+        },
+        "edges": [],
+        "planar": true,
+        "bounds": [
+          0,
+          0,
+          100,
+          82
+        ],
+        "views": {
+          "neutral": {
+            "label": "Условие",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "M",
+              "K",
+              "D"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ],
+              [
+                "A",
+                "M"
+              ],
+              [
+                "B",
+                "D"
+              ]
+            ],
+            "equalSegments": [
+              {
+                "a": "B",
+                "b": "M",
+                "marks": 1
+              },
+              {
+                "a": "M",
+                "b": "C",
+                "marks": 1
+              },
+              {
+                "a": "A",
+                "b": "K",
+                "marks": 2
+              },
+              {
+                "a": "K",
+                "b": "M",
+                "marks": 2
+              }
+            ]
+          },
+          "step-1": {
+            "label": "Шаг 1",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "M",
+              "K",
+              "D",
+              "E"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ],
+              [
+                "A",
+                "M"
+              ],
+              [
+                "B",
+                "D"
+              ],
+              [
+                "M",
+                "E"
+              ]
+            ],
+            "equalSegments": [
+              {
+                "a": "B",
+                "b": "M",
+                "marks": 1
+              },
+              {
+                "a": "M",
+                "b": "C",
+                "marks": 1
+              },
+              {
+                "a": "A",
+                "b": "K",
+                "marks": 2
+              },
+              {
+                "a": "K",
+                "b": "M",
+                "marks": 2
+              }
+            ]
+          },
+          "step-2": {
+            "label": "Шаг 2",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "M",
+              "K",
+              "D",
+              "E"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ],
+              [
+                "A",
+                "M"
+              ],
+              [
+                "B",
+                "D"
+              ],
+              [
+                "M",
+                "E"
+              ]
+            ],
+            "equalSegments": [
+              {
+                "a": "B",
+                "b": "M",
+                "marks": 1
+              },
+              {
+                "a": "M",
+                "b": "C",
+                "marks": 1
+              },
+              {
+                "a": "A",
+                "b": "K",
+                "marks": 2
+              },
+              {
+                "a": "K",
+                "b": "M",
+                "marks": 2
+              },
+              {
+                "a": "A",
+                "b": "D",
+                "marks": 3
+              },
+              {
+                "a": "D",
+                "b": "E",
+                "marks": 3
+              },
+              {
+                "a": "E",
+                "b": "C",
+                "marks": 3
+              }
+            ]
+          },
+          "step-3": {
+            "label": "Шаг 3",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "M",
+              "K",
+              "D",
+              "E"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ],
+              [
+                "A",
+                "M"
+              ],
+              [
+                "B",
+                "D"
+              ],
+              [
+                "M",
+                "E"
+              ]
+            ],
+            "equalSegments": [
+              {
+                "a": "B",
+                "b": "M",
+                "marks": 1
+              },
+              {
+                "a": "M",
+                "b": "C",
+                "marks": 1
+              },
+              {
+                "a": "A",
+                "b": "K",
+                "marks": 2
+              },
+              {
+                "a": "K",
+                "b": "M",
+                "marks": 2
+              },
+              {
+                "a": "A",
+                "b": "D",
+                "marks": 3
+              },
+              {
+                "a": "D",
+                "b": "E",
+                "marks": 3
+              },
+              {
+                "a": "E",
+                "b": "C",
+                "marks": 3
+              }
+            ]
+          }
+        },
+        "checks": [
+          {
+            "type": "parallel",
+            "segments": [
+              [
+                "M",
+                "E"
+              ],
+              [
+                "B",
+                "D"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "A",
+                "D"
+              ],
+              [
+                "D",
+                "E"
+              ],
+              [
+                "E",
+                "C"
+              ]
+            ]
+          },
+          {
+            "type": "distanceRatio",
+            "segments": [
+              [
+                "A",
+                "D"
+              ],
+              [
+                "A",
+                "C"
+              ]
+            ],
+            "ratio": 0.3333333333333333
+          }
+        ],
+        "labels": {},
+        "labelOffsets": {},
+        "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
+      },
+      "didactics": {
+        "steps": [
+          {
+            "prompt": "Какую параллель провести?",
+            "justification": "Признак средней линии из задачи 485.",
+            "theoryPoints": [
+              19,
+              48
+            ]
+          },
+          {
+            "prompt": "Как использовать середину K?",
+            "justification": "Признак средней линии без подобия.",
+            "theoryPoints": [
+              19,
+              48
+            ]
+          },
+          {
+            "prompt": "Как получить треть AC?",
+            "justification": "Сложение трёх равных отрезков.",
+            "theoryPoints": [
+              7
+            ]
+          }
+        ]
+      },
+      "statementGivens": []
+    },
+    {
+      "chapter": 6,
+      "collection": "main",
+      "number": 528,
+      "part": "single",
+      "model": {
+        "points": {
+          "A": [
+            13.0,
+            58.5,
+            0
+          ],
+          "B": [
+            31.5,
+            21.5,
+            0
+          ],
+          "C": [
+            87.0,
+            21.5,
+            0
+          ],
+          "D": [
+            68.5,
+            58.5,
+            0
+          ],
+          "M": [
+            40.75,
+            58.5,
+            0
+          ],
+          "N": [
+            59.25,
+            21.5,
+            0
+          ],
+          "P": [
+            43.833333333,
+            33.833333333,
+            0
+          ],
+          "Q": [
+            56.166666667,
+            46.166666667,
+            0
+          ]
+        },
+        "edges": [],
+        "planar": true,
+        "bounds": [
+          0,
+          0,
+          100,
+          82
+        ],
+        "views": {
+          "neutral": {
+            "label": "Условие",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "M",
+              "N"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "N"
+              ],
+              [
+                "M",
+                "C"
+              ],
+              [
+                "B",
+                "D"
+              ]
+            ]
+          },
+          "step-1": {
+            "label": "Шаг 1",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "M",
+              "N",
+              "P",
+              "Q"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "N"
+              ],
+              [
+                "M",
+                "C"
+              ],
+              [
+                "B",
+                "D"
+              ]
+            ]
+          },
+          "step-2": {
+            "label": "Шаг 2",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "M",
+              "N",
+              "P",
+              "Q"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "N"
+              ],
+              [
+                "M",
+                "C"
+              ],
+              [
+                "B",
+                "D"
+              ]
+            ]
+          },
+          "step-3": {
+            "label": "Шаг 3",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "M",
+              "N",
+              "P",
+              "Q"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "N"
+              ],
+              [
+                "M",
+                "C"
+              ],
+              [
+                "B",
+                "D"
+              ]
+            ]
+          },
+          "step-4": {
+            "label": "Шаг 4",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "M",
+              "N",
+              "P",
+              "Q"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "N"
+              ],
+              [
+                "M",
+                "C"
+              ],
+              [
+                "B",
+                "D"
+              ]
+            ],
+            "equalSegments": [
+              {
+                "a": "B",
+                "b": "P",
+                "marks": 1
+              },
+              {
+                "a": "P",
+                "b": "Q",
+                "marks": 1
+              },
+              {
+                "a": "Q",
+                "b": "D",
+                "marks": 1
+              }
+            ]
+          }
+        },
+        "checks": [
+          {
+            "type": "parallel",
+            "segments": [
+              [
+                "A",
+                "N"
+              ],
+              [
+                "M",
+                "C"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "B",
+                "P"
+              ],
+              [
+                "P",
+                "Q"
+              ],
+              [
+                "Q",
+                "D"
+              ]
+            ]
+          },
+          {
+            "type": "distanceRatio",
+            "segments": [
+              [
+                "B",
+                "P"
+              ],
+              [
+                "B",
+                "D"
+              ]
+            ],
+            "ratio": 0.3333333333333333
+          }
+        ],
+        "labels": {},
+        "labelOffsets": {},
+        "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
+      },
+      "didactics": {
+        "steps": [
+          {
+            "prompt": "Почему AN ∥MC?",
+            "justification": "Признак по равным и параллельным сторонам.",
+            "theoryPoints": [
+              49
+            ]
+          },
+          {
+            "prompt": "Что даёт середина N?",
+            "justification": "Признак средней линии, задача 485.",
+            "theoryPoints": [
+              19,
+              48
+            ]
+          },
+          {
+            "prompt": "Что даёт середина M?",
+            "justification": "Тот же признак средней линии.",
+            "theoryPoints": [
+              19,
+              48
+            ]
+          },
+          {
+            "prompt": "Каков результат?",
+            "justification": "Равенство отрезков.",
+            "theoryPoints": [
+              7
+            ]
+          }
+        ]
+      },
+      "statementGivens": []
+    },
+    {
+      "chapter": 6,
+      "collection": "main",
+      "number": 529,
+      "part": "single",
+      "model": {
+        "points": {
+          "A": [
+            13.0,
+            61.36195996,
+            0
+          ],
+          "B": [
+            37.666666667,
+            18.63804004,
+            0
+          ],
+          "C": [
+            87.0,
+            18.63804004,
+            0
+          ],
+          "D": [
+            62.333333333,
+            61.36195996,
+            0
+          ],
+          "K": [
+            37.666666667,
+            61.36195996,
+            0
+          ],
+          "M": [
+            74.666666667,
+            40.0,
+            0
+          ],
+          "A__case1": [
+            39.992595334,
+            66.0,
+            0
+          ],
+          "B__case1": [
+            19.977786002,
+            31.333333333,
+            0
+          ],
+          "C__case1": [
+            60.007404666,
+            31.333333333,
+            0
+          ],
+          "D__case1": [
+            80.022213998,
+            66.0,
+            0
+          ],
+          "K__case1": [
+            19.977786002,
+            66.0,
+            0
+          ],
+          "M__case1": [
+            50.0,
+            14.0,
+            0
+          ]
+        },
+        "edges": [],
+        "planar": true,
+        "bounds": [
+          0,
+          0,
+          100,
+          82
+        ],
+        "views": {
+          "neutral": {
+            "label": "Условие",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "K",
+              "M"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "B",
+                "K"
+              ],
+              [
+                "B",
+                "M"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "B",
+                "vertex": "K",
+                "b": "D",
+                "size": 2.3
+              },
+              {
+                "a": "B",
+                "vertex": "M",
+                "b": "D",
+                "size": 2.3
+              }
+            ]
+          },
+          "step-1": {
+            "label": "Шаг 1",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "K",
+              "M"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "B",
+                "K"
+              ],
+              [
+                "B",
+                "M"
+              ],
+              [
+                "B",
+                "D"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "B",
+                "vertex": "K",
+                "b": "D",
+                "size": 2.3
+              },
+              {
+                "a": "B",
+                "vertex": "M",
+                "b": "D",
+                "size": 2.3
+              }
+            ]
+          },
+          "step-2": {
+            "label": "Шаг 2",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "K",
+              "M"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "B",
+                "K"
+              ],
+              [
+                "B",
+                "M"
+              ],
+              [
+                "B",
+                "D"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "B",
+                "vertex": "K",
+                "b": "D",
+                "size": 2.3
+              },
+              {
+                "a": "B",
+                "vertex": "M",
+                "b": "D",
+                "size": 2.3
+              }
+            ]
+          },
+          "step-3": {
+            "label": "Шаг 3",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "K",
+              "M"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "B",
+                "K"
+              ],
+              [
+                "B",
+                "M"
+              ],
+              [
+                "B",
+                "D"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "B",
+                "vertex": "K",
+                "b": "D",
+                "size": 2.3
+              },
+              {
+                "a": "B",
+                "vertex": "M",
+                "b": "D",
+                "size": 2.3
+              }
+            ]
+          },
+          "case-1": {
+            "label": "Перпендикуляры к продолжениям",
+            "points": [
+              "A__case1",
+              "B__case1",
+              "C__case1",
+              "D__case1",
+              "K__case1",
+              "M__case1"
+            ],
+            "segments": [
+              [
+                "A__case1",
+                "B__case1"
+              ],
+              [
+                "B__case1",
+                "C__case1"
+              ],
+              [
+                "C__case1",
+                "D__case1"
+              ],
+              [
+                "D__case1",
+                "A__case1"
+              ],
+              [
+                "B__case1",
+                "K__case1"
+              ],
+              [
+                "B__case1",
+                "M__case1"
+              ],
+              [
+                "B__case1",
+                "D__case1"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "B__case1",
+                "vertex": "K__case1",
+                "b": "D__case1",
+                "size": 2.3
+              },
+              {
+                "a": "B__case1",
+                "vertex": "M__case1",
+                "b": "D__case1",
+                "size": 2.3
+              }
+            ],
+            "dashSegments": [
+              [
+                "A__case1",
+                "K__case1"
+              ],
+              [
+                "C__case1",
+                "M__case1"
+              ]
+            ],
+            "availableFromStep": 2
+          }
+        },
+        "checks": [
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "B",
+                "K"
+              ],
+              [
+                "B",
+                "M"
+              ]
+            ]
+          },
+          {
+            "type": "perpendicular",
+            "segments": [
+              [
+                "B",
+                "K"
+              ],
+              [
+                "A",
+                "D"
+              ]
+            ]
+          },
+          {
+            "type": "perpendicular",
+            "segments": [
+              [
+                "B",
+                "M"
+              ],
+              [
+                "D",
+                "C"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "B__case1",
+                "K__case1"
+              ],
+              [
+                "B__case1",
+                "M__case1"
+              ]
+            ]
+          },
+          {
+            "type": "perpendicular",
+            "segments": [
+              [
+                "B__case1",
+                "K__case1"
+              ],
+              [
+                "A__case1",
+                "D__case1"
+              ]
+            ]
+          },
+          {
+            "type": "perpendicular",
+            "segments": [
+              [
+                "B__case1",
+                "M__case1"
+              ],
+              [
+                "D__case1",
+                "C__case1"
+              ]
+            ]
+          }
+        ],
+        "labels": {
+          "A__case1": "A",
+          "B__case1": "B",
+          "C__case1": "C",
+          "D__case1": "D",
+          "K__case1": "K",
+          "M__case1": "M"
+        },
+        "labelOffsets": {},
+        "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
+      },
+      "didactics": {
+        "steps": [
+          {
+            "prompt": "Как связаны расстояния BK и BM?",
+            "justification": "Свойство биссектрисы и диагонали ромба.",
+            "theoryPoints": [
+              39,
+              52
+            ]
+          },
+          {
+            "prompt": "Какие треугольники равны?",
+            "justification": "Равенство по гипотенузе и катету.",
+            "theoryPoints": [
+              36
+            ]
+          },
+          {
+            "prompt": "Почему луч именно внутри угла?",
+            "justification": "Определение биссектрисы; симметричное расположение сторон ромба относительно BD.",
+            "theoryPoints": [
+              17,
+              52
+            ]
+          }
+        ]
+      },
+      "statementGivens": []
+    },
+    {
+      "chapter": 6,
+      "collection": "main",
+      "number": 530,
+      "part": "single",
+      "model": {
+        "points": {
+          "A": [
+            13.0,
+            63.57159965,
+            0
+          ],
+          "B": [
+            34.983234863,
+            16.42840035,
+            0
+          ],
+          "C": [
+            87.0,
+            16.42840035,
+            0
+          ],
+          "D": [
+            65.016765137,
+            63.57159965,
+            0
+          ],
+          "O": [
+            50.0,
+            40.0,
+            0
+          ],
+          "H": [
+            28.636875684,
+            30.03821153,
+            0
+          ],
+          "K": [
+            50.0,
+            16.42840035,
+            0
+          ],
+          "L": [
+            71.363124316,
+            49.96178847,
+            0
+          ],
+          "M": [
+            50.0,
+            63.57159965,
+            0
+          ]
+        },
+        "edges": [],
+        "planar": true,
+        "bounds": [
+          0,
+          0,
+          100,
+          82
+        ],
+        "views": {
+          "neutral": {
+            "label": "Условие",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "O"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "B",
+                "D"
+              ]
+            ]
+          },
+          "step-1": {
+            "label": "Шаг 1",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "O",
+              "H",
+              "K",
+              "L",
+              "M"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "B",
+                "D"
+              ],
+              [
+                "O",
+                "H"
+              ],
+              [
+                "O",
+                "K"
+              ],
+              [
+                "O",
+                "L"
+              ],
+              [
+                "O",
+                "M"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "O",
+                "vertex": "H",
+                "b": "A",
+                "size": 2.3
+              },
+              {
+                "a": "O",
+                "vertex": "K",
+                "b": "B",
+                "size": 2.3
+              },
+              {
+                "a": "O",
+                "vertex": "L",
+                "b": "C",
+                "size": 2.3
+              },
+              {
+                "a": "O",
+                "vertex": "M",
+                "b": "D",
+                "size": 2.3
+              }
+            ]
+          },
+          "step-2": {
+            "label": "Шаг 2",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "O",
+              "H",
+              "K",
+              "L",
+              "M"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "B",
+                "D"
+              ],
+              [
+                "O",
+                "H"
+              ],
+              [
+                "O",
+                "K"
+              ],
+              [
+                "O",
+                "L"
+              ],
+              [
+                "O",
+                "M"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "O",
+                "vertex": "H",
+                "b": "A",
+                "size": 2.3
+              },
+              {
+                "a": "O",
+                "vertex": "K",
+                "b": "B",
+                "size": 2.3
+              },
+              {
+                "a": "O",
+                "vertex": "L",
+                "b": "C",
+                "size": 2.3
+              },
+              {
+                "a": "O",
+                "vertex": "M",
+                "b": "D",
+                "size": 2.3
+              }
+            ]
+          },
+          "step-3": {
+            "label": "Шаг 3",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "O",
+              "H",
+              "K",
+              "L",
+              "M"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "B",
+                "D"
+              ],
+              [
+                "O",
+                "H"
+              ],
+              [
+                "O",
+                "K"
+              ],
+              [
+                "O",
+                "L"
+              ],
+              [
+                "O",
+                "M"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "O",
+                "vertex": "H",
+                "b": "A",
+                "size": 2.3
+              },
+              {
+                "a": "O",
+                "vertex": "K",
+                "b": "B",
+                "size": 2.3
+              },
+              {
+                "a": "O",
+                "vertex": "L",
+                "b": "C",
+                "size": 2.3
+              },
+              {
+                "a": "O",
+                "vertex": "M",
+                "b": "D",
+                "size": 2.3
+              }
+            ]
+          }
+        },
+        "checks": [
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "O",
+                "H"
+              ],
+              [
+                "O",
+                "K"
+              ],
+              [
+                "O",
+                "L"
+              ],
+              [
+                "O",
+                "M"
+              ]
+            ]
+          },
+          {
+            "type": "perpendicular",
+            "segments": [
+              [
+                "O",
+                "H"
+              ],
+              [
+                "A",
+                "B"
+              ]
+            ]
+          },
+          {
+            "type": "perpendicular",
+            "segments": [
+              [
+                "O",
+                "K"
+              ],
+              [
+                "B",
+                "C"
+              ]
+            ]
+          },
+          {
+            "type": "perpendicular",
+            "segments": [
+              [
+                "O",
+                "L"
+              ],
+              [
+                "C",
+                "D"
+              ]
+            ]
+          },
+          {
+            "type": "perpendicular",
+            "segments": [
+              [
+                "O",
+                "M"
+              ],
+              [
+                "D",
+                "A"
+              ]
+            ]
+          }
+        ],
+        "labels": {},
+        "labelOffsets": {},
+        "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
+      },
+      "didactics": {
+        "steps": [
+          {
+            "prompt": "Что даёт диагональ AC?",
+            "justification": "Точка биссектрисы равноудалена от сторон угла.",
+            "theoryPoints": [
+              39,
+              52
+            ]
+          },
+          {
+            "prompt": "Как связать две пары расстояний?",
+            "justification": "То же свойство биссектрисы.",
+            "theoryPoints": [
+              39
+            ]
+          },
+          {
+            "prompt": "Как правильно измерять эти расстояния?",
+            "justification": "Определение расстояния от точки до прямой.",
+            "theoryPoints": [
+              37
+            ]
+          }
+        ]
+      },
+      "statementGivens": []
+    },
+    {
+      "chapter": 6,
+      "collection": "main",
+      "number": 531,
+      "part": "single",
+      "model": {
+        "points": {
+          "A": [
+            42.6,
+            21.5,
+            0
+          ],
+          "B": [
+            13.0,
+            58.5,
+            0
+          ],
+          "C": [
+            87.0,
+            58.5,
+            0
+          ],
+          "P": [
+            57.4,
+            58.5,
+            0
+          ],
+          "M": [
+            27.8,
+            40.0,
+            0
+          ],
+          "N": [
+            64.8,
+            40.0,
+            0
+          ],
+          "K": [
+            50.0,
+            40.0,
+            0
+          ],
+          "A__case1": [
+            42.6,
+            21.5,
+            0
+          ],
+          "B__case1": [
+            13.0,
+            58.5,
+            0
+          ],
+          "C__case1": [
+            87.0,
+            58.5,
+            0
+          ],
+          "M__case1": [
+            27.8,
+            40.0,
+            0
+          ],
+          "N__case1": [
+            64.8,
+            40.0,
+            0
+          ],
+          "A__case2": [
+            42.6,
+            21.5,
+            0
+          ],
+          "B__case2": [
+            13.0,
+            58.5,
+            0
+          ],
+          "C__case2": [
+            87.0,
+            58.5,
+            0
+          ],
+          "M__case2": [
+            27.8,
+            40.0,
+            0
+          ],
+          "N__case2": [
+            64.8,
+            40.0,
+            0
+          ]
+        },
+        "edges": [],
+        "planar": true,
+        "bounds": [
+          0,
+          0,
+          100,
+          82
+        ],
+        "views": {
+          "neutral": {
+            "label": "Условие",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "P",
+              "M",
+              "N",
+              "K"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ],
+              [
+                "A",
+                "P"
+              ],
+              [
+                "M",
+                "N"
+              ]
+            ]
+          },
+          "step-1": {
+            "label": "Шаг 1",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "P",
+              "M",
+              "N",
+              "K"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ],
+              [
+                "A",
+                "P"
+              ],
+              [
+                "M",
+                "N"
+              ]
+            ]
+          },
+          "step-2": {
+            "label": "Шаг 2",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "P",
+              "M",
+              "N",
+              "K"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ],
+              [
+                "A",
+                "P"
+              ],
+              [
+                "M",
+                "N"
+              ]
+            ],
+            "equalSegments": [
+              {
+                "a": "A",
+                "b": "K",
+                "marks": 1
+              },
+              {
+                "a": "K",
+                "b": "P",
+                "marks": 1
+              }
+            ]
+          },
+          "step-3": {
+            "label": "Шаг 3",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "P",
+              "M",
+              "N",
+              "K"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ],
+              [
+                "A",
+                "P"
+              ],
+              [
+                "M",
+                "N"
+              ]
+            ],
+            "equalSegments": [
+              {
+                "a": "A",
+                "b": "K",
+                "marks": 1
+              },
+              {
+                "a": "K",
+                "b": "P",
+                "marks": 1
+              }
+            ]
+          },
+          "step-4": {
+            "label": "Шаг 4",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "P",
+              "M",
+              "N",
+              "K"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ],
+              [
+                "A",
+                "P"
+              ],
+              [
+                "M",
+                "N"
+              ]
+            ],
+            "equalSegments": [
+              {
+                "a": "A",
+                "b": "K",
+                "marks": 1
+              },
+              {
+                "a": "K",
+                "b": "P",
+                "marks": 1
+              }
+            ]
+          },
+          "case-1": {
+            "label": "P =B, K =M",
+            "points": [
+              "A__case1",
+              "B__case1",
+              "C__case1",
+              "M__case1",
+              "N__case1"
+            ],
+            "segments": [
+              [
+                "A__case1",
+                "B__case1"
+              ],
+              [
+                "B__case1",
+                "C__case1"
+              ],
+              [
+                "C__case1",
+                "A__case1"
+              ],
+              [
+                "M__case1",
+                "N__case1"
+              ]
+            ],
+            "availableFromStep": 4
+          },
+          "case-2": {
+            "label": "P =C, K =N",
+            "points": [
+              "A__case2",
+              "B__case2",
+              "C__case2",
+              "M__case2",
+              "N__case2"
+            ],
+            "segments": [
+              [
+                "A__case2",
+                "B__case2"
+              ],
+              [
+                "B__case2",
+                "C__case2"
+              ],
+              [
+                "C__case2",
+                "A__case2"
+              ],
+              [
+                "M__case2",
+                "N__case2"
+              ]
+            ],
+            "availableFromStep": 4
+          }
+        },
+        "checks": [
+          {
+            "type": "collinear",
+            "points": [
+              "M",
+              "K",
+              "N"
+            ]
+          },
+          {
+            "type": "distanceRatio",
+            "segments": [
+              [
+                "M",
+                "K"
+              ],
+              [
+                "B",
+                "P"
+              ]
+            ],
+            "ratio": 0.5
+          },
+          {
+            "type": "distanceRatio",
+            "segments": [
+              [
+                "K",
+                "N"
+              ],
+              [
+                "P",
+                "C"
+              ]
+            ],
+            "ratio": 0.5
+          }
+        ],
+        "labels": {
+          "A__case1": "A",
+          "B__case1": "B =P",
+          "C__case1": "C",
+          "M__case1": "M =K",
+          "N__case1": "N",
+          "A__case2": "A",
+          "B__case2": "B",
+          "C__case2": "C =P",
+          "M__case2": "M",
+          "N__case2": "N =K"
+        },
+        "labelOffsets": {},
+        "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
+      },
+      "didactics": {
+        "steps": [
+          {
+            "prompt": "Как обозначить середины?",
+            "justification": "Середина отрезка.",
+            "theoryPoints": [
+              7
+            ]
+          },
+          {
+            "prompt": "Какие средние линии получаются?",
+            "justification": "Свойство средней линии; единственность параллельной.",
+            "theoryPoints": [
+              28,
+              48
+            ]
+          },
+          {
+            "prompt": "Почему K лежит именно на отрезке MN?",
+            "justification": "Сложение отрезков и порядок точек.",
+            "theoryPoints": [
+              7
+            ]
+          },
+          {
+            "prompt": "Что будет на концах BC?",
+            "justification": "Определение середины.",
+            "theoryPoints": [
+              7
+            ]
+          }
+        ]
+      },
+      "statementGivens": []
+    },
+    {
+      "chapter": 6,
+      "collection": "main",
+      "number": 532,
+      "part": "single",
+      "model": {
+        "points": {
+          "A": [
+            50.0,
+            40.0,
+            0
+          ],
+          "B": [
+            50.0,
+            14.0,
+            0
+          ],
+          "C": [
+            76.0,
+            14.0,
+            0
+          ],
+          "D": [
+            76.0,
+            40.0,
+            0
+          ],
+          "M": [
+            24.0,
+            14.0,
+            0
+          ],
+          "N": [
+            76.0,
+            66.0,
+            0
+          ]
+        },
+        "edges": [],
+        "planar": true,
+        "bounds": [
+          0,
+          0,
+          100,
+          82
+        ],
+        "views": {
+          "neutral": {
+            "label": "Условие",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "M",
+              "N"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "M",
+                "N"
+              ]
+            ],
+            "dashSegments": [
+              [
+                "B",
+                "M"
+              ],
+              [
+                "D",
+                "N"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "M",
+                "vertex": "A",
+                "b": "C",
+                "size": 2.3
+              }
+            ]
+          },
+          "step-1": {
+            "label": "Шаг 1",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "M",
+              "N"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "M",
+                "N"
+              ]
+            ],
+            "dashSegments": [
+              [
+                "B",
+                "M"
+              ],
+              [
+                "D",
+                "N"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "M",
+                "vertex": "A",
+                "b": "C",
+                "size": 2.3
+              }
+            ]
+          },
+          "step-2": {
+            "label": "Шаг 2",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "M",
+              "N"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "M",
+                "N"
+              ],
+              [
+                "B",
+                "D"
+              ]
+            ],
+            "dashSegments": [
+              [
+                "B",
+                "M"
+              ],
+              [
+                "D",
+                "N"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "M",
+                "vertex": "A",
+                "b": "C",
+                "size": 2.3
+              }
+            ]
+          },
+          "step-3": {
+            "label": "Шаг 3",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "M",
+              "N"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "M",
+                "N"
+              ],
+              [
+                "B",
+                "D"
+              ]
+            ],
+            "dashSegments": [
+              [
+                "B",
+                "M"
+              ],
+              [
+                "D",
+                "N"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "M",
+                "vertex": "A",
+                "b": "C",
+                "size": 2.3
+              }
+            ]
+          }
+        },
+        "checks": [
+          {
+            "type": "perpendicular",
+            "segments": [
+              [
+                "M",
+                "N"
+              ],
+              [
+                "A",
+                "C"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "B",
+                "M"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "D",
+                "N"
+              ],
+              [
+                "D",
+                "C"
+              ]
+            ]
+          },
+          {
+            "type": "distanceRatio",
+            "segments": [
+              [
+                "M",
+                "N"
+              ],
+              [
+                "A",
+                "C"
+              ]
+            ],
+            "ratio": 2
+          }
+        ],
+        "labels": {},
+        "labelOffsets": {},
+        "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
+      },
+      "didactics": {
+        "steps": [
+          {
+            "prompt": "Почему B и D — середины сторон треугольника CMN?",
+            "justification": "Свойства квадрата и равнобедренного прямоугольного треугольника.",
+            "theoryPoints": [
+              31,
+              33,
+              52
+            ]
+          },
+          {
+            "prompt": "Как связаны BD и MN?",
+            "justification": "Теорема о средней линии, задача 484.",
+            "theoryPoints": [
+              48,
+              49
+            ]
+          },
+          {
+            "prompt": "Как найти числовой ответ?",
+            "justification": "Свойство диагоналей прямоугольника.",
+            "theoryPoints": [
+              51
+            ]
+          }
+        ]
+      },
+      "statementGivens": []
+    },
+    {
+      "chapter": 6,
+      "collection": "main",
+      "number": 533,
+      "part": "single",
+      "model": {
+        "points": {
+          "A": [
+            24.0,
+            66.0,
+            0
+          ],
+          "B": [
+            24.0,
+            14.0,
+            0
+          ],
+          "C": [
+            76.0,
+            14.0,
+            0
+          ],
+          "D": [
+            76.0,
+            66.0,
+            0
+          ],
+          "M": [
+            60.769552622,
+            29.230447378,
+            0
+          ],
+          "H": [
+            45.539105243,
+            14.0,
+            0
+          ]
+        },
+        "edges": [],
+        "planar": true,
+        "bounds": [
+          0,
+          0,
+          100,
+          82
+        ],
+        "views": {
+          "neutral": {
+            "label": "Условие",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "M",
+              "H"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "M",
+                "H"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "A",
+                "vertex": "M",
+                "b": "H",
+                "size": 2.3
+              }
+            ],
+            "equalSegments": [
+              {
+                "a": "A",
+                "b": "M",
+                "marks": 1
+              },
+              {
+                "a": "A",
+                "b": "B",
+                "marks": 1
+              }
+            ]
+          },
+          "step-1": {
+            "label": "Шаг 1",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "M",
+              "H"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "M",
+                "H"
+              ],
+              [
+                "A",
+                "H"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "A",
+                "vertex": "M",
+                "b": "H",
+                "size": 2.3
+              }
+            ],
+            "equalSegments": [
+              {
+                "a": "A",
+                "b": "M",
+                "marks": 1
+              },
+              {
+                "a": "A",
+                "b": "B",
+                "marks": 1
+              }
+            ]
+          },
+          "step-2": {
+            "label": "Шаг 2",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "M",
+              "H"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "M",
+                "H"
+              ],
+              [
+                "A",
+                "H"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "A",
+                "vertex": "M",
+                "b": "H",
+                "size": 2.3
+              }
+            ],
+            "equalSegments": [
+              {
+                "a": "A",
+                "b": "M",
+                "marks": 1
+              },
+              {
+                "a": "A",
+                "b": "B",
+                "marks": 1
+              }
+            ]
+          },
+          "step-3": {
+            "label": "Шаг 3",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "M",
+              "H"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "M",
+                "H"
+              ],
+              [
+                "A",
+                "H"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "A",
+                "vertex": "M",
+                "b": "H",
+                "size": 2.3
+              }
+            ],
+            "equalSegments": [
+              {
+                "a": "A",
+                "b": "M",
+                "marks": 1
+              },
+              {
+                "a": "A",
+                "b": "B",
+                "marks": 1
+              }
+            ]
+          }
+        },
+        "checks": [
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "A",
+                "M"
+              ],
+              [
+                "A",
+                "B"
+              ]
+            ]
+          },
+          {
+            "type": "perpendicular",
+            "segments": [
+              [
+                "M",
+                "H"
+              ],
+              [
+                "A",
+                "C"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "B",
+                "H"
+              ],
+              [
+                "H",
+                "M"
+              ],
+              [
+                "M",
+                "C"
+              ]
+            ]
+          }
+        ],
+        "labels": {},
+        "labelOffsets": {},
+        "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
+      },
+      "didactics": {
+        "steps": [
+          {
+            "prompt": "Какую линию добавить?",
+            "justification": "Условие и прямые углы.",
+            "theoryPoints": [
+              51,
+              52
+            ]
+          },
+          {
+            "prompt": "Что даёт равенство треугольников?",
+            "justification": "Признак равенства прямоугольных треугольников.",
+            "theoryPoints": [
+              36
+            ]
+          },
+          {
+            "prompt": "Почему MH =MC?",
+            "justification": "Сумма углов и признак равнобедренного треугольника.",
+            "theoryPoints": [
+              31,
+              33,
+              52
+            ]
+          }
+        ]
+      },
+      "statementGivens": []
+    },
+    {
+      "chapter": 6,
+      "collection": "main",
+      "number": 534,
+      "part": "single",
+      "model": {
+        "points": {
+          "A": [
+            13.0,
+            56.02146997,
+            0
+          ],
+          "B": [
+            31.5,
+            23.97853003,
+            0
+          ],
+          "C": [
+            68.5,
+            23.97853003,
+            0
+          ],
+          "D": [
+            87.0,
+            56.02146997,
+            0
+          ],
+          "J": [
+            50.0,
+            56.02146997,
+            0
+          ]
+        },
+        "edges": [],
+        "planar": true,
+        "bounds": [
+          0,
+          0,
+          100,
+          82
+        ],
+        "views": {
+          "neutral": {
+            "label": "Условие",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "A",
+                "vertex": "C",
+                "b": "D",
+                "size": 2.3
+              }
+            ],
+            "angleArcs": [
+              {
+                "vertex": "A",
+                "from": "B",
+                "to": "C",
+                "marks": 1,
+                "radius": 5
+              },
+              {
+                "vertex": "A",
+                "from": "C",
+                "to": "D",
+                "marks": 1,
+                "radius": 5
+              },
+              {
+                "vertex": "D",
+                "from": "C",
+                "to": "A",
+                "marks": 0,
+                "radius": 5
+              }
+            ]
+          },
+          "step-1": {
+            "label": "Шаг 1",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "A",
+                "vertex": "C",
+                "b": "D",
+                "size": 2.3
+              }
+            ],
+            "angleArcs": [
+              {
+                "vertex": "A",
+                "from": "B",
+                "to": "C",
+                "marks": 1,
+                "radius": 5
+              },
+              {
+                "vertex": "A",
+                "from": "C",
+                "to": "D",
+                "marks": 1,
+                "radius": 5
+              },
+              {
+                "vertex": "D",
+                "from": "C",
+                "to": "A",
+                "marks": 0,
+                "radius": 5
+              }
+            ]
+          },
+          "step-2": {
+            "label": "Шаг 2",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "J"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "C",
+                "J"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "A",
+                "vertex": "C",
+                "b": "D",
+                "size": 2.3
+              }
+            ],
+            "angleArcs": [
+              {
+                "vertex": "A",
+                "from": "B",
+                "to": "C",
+                "marks": 1,
+                "radius": 5
+              },
+              {
+                "vertex": "A",
+                "from": "C",
+                "to": "D",
+                "marks": 1,
+                "radius": 5
+              },
+              {
+                "vertex": "D",
+                "from": "C",
+                "to": "A",
+                "marks": 0,
+                "radius": 5
+              }
+            ]
+          },
+          "step-3": {
+            "label": "Шаг 3",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "J"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "C",
+                "J"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "A",
+                "vertex": "C",
+                "b": "D",
+                "size": 2.3
+              }
+            ],
+            "angleArcs": [
+              {
+                "vertex": "A",
+                "from": "B",
+                "to": "C",
+                "marks": 1,
+                "radius": 5
+              },
+              {
+                "vertex": "A",
+                "from": "C",
+                "to": "D",
+                "marks": 1,
+                "radius": 5
+              },
+              {
+                "vertex": "D",
+                "from": "C",
+                "to": "A",
+                "marks": 0,
+                "radius": 5
+              }
+            ]
+          },
+          "step-4": {
+            "label": "Шаг 4",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "J"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "C",
+                "J"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "A",
+                "vertex": "C",
+                "b": "D",
+                "size": 2.3
+              }
+            ],
+            "angleArcs": [
+              {
+                "vertex": "A",
+                "from": "B",
+                "to": "C",
+                "marks": 1,
+                "radius": 5
+              },
+              {
+                "vertex": "A",
+                "from": "C",
+                "to": "D",
+                "marks": 1,
+                "radius": 5
+              },
+              {
+                "vertex": "D",
+                "from": "C",
+                "to": "A",
+                "marks": 0,
+                "radius": 5
+              }
+            ]
+          }
+        },
+        "checks": [
+          {
+            "type": "perpendicular",
+            "segments": [
+              [
+                "A",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ]
+            ]
+          },
+          {
+            "type": "angle",
+            "points": [
+              "C",
+              "D",
+              "A"
+            ],
+            "degrees": 60
+          },
+          {
+            "type": "angle",
+            "points": [
+              "B",
+              "A",
+              "C"
+            ],
+            "degrees": 30
+          },
+          {
+            "type": "angle",
+            "points": [
+              "C",
+              "A",
+              "D"
+            ],
+            "degrees": 30
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ]
+            ]
+          },
+          {
+            "type": "distanceRatio",
+            "segments": [
+              [
+                "A",
+                "D"
+              ],
+              [
+                "C",
+                "D"
+              ]
+            ],
+            "ratio": 2
+          }
+        ],
+        "labels": {},
+        "labelOffsets": {},
+        "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
+      },
+      "didactics": {
+        "steps": [
+          {
+            "prompt": "Как найти угол A?",
+            "justification": "Сумма углов треугольника и биссектриса.",
+            "theoryPoints": [
+              17,
+              31
+            ]
+          },
+          {
+            "prompt": "Почему боковые стороны равны?",
+            "justification": "Признак равнобедренной трапеции.",
+            "theoryPoints": [
+              33,
+              48,
+              50
+            ]
+          },
+          {
+            "prompt": "Почему BC имеет ту же длину?",
+            "justification": "Накрест лежащие углы и равные стороны против равных углов.",
+            "theoryPoints": [
+              29,
+              33
+            ]
+          },
+          {
+            "prompt": "Как использовать периметр?",
+            "justification": "Катет против 30° и периметр.",
+            "theoryPoints": [
+              14,
+              35
+            ]
+          }
+        ]
+      },
+      "statementGivens": []
+    },
+    {
+      "chapter": 6,
+      "collection": "main",
+      "number": 535,
+      "part": "single",
+      "model": {
+        "points": {
+          "A": [
+            13.0,
+            40.0,
+            0
+          ],
+          "B": [
+            53.363636364,
+            16.69604368,
+            0
+          ],
+          "C": [
+            73.545454545,
+            16.69604368,
+            0
+          ],
+          "D": [
+            87.0,
+            40.0,
+            0
+          ],
+          "E": [
+            33.181818182,
+            40.0,
+            0
+          ],
+          "K": [
+            60.090909091,
+            40.0,
+            0
+          ],
+          "M": [
+            50.0,
+            40.0,
+            0
+          ],
+          "N": [
+            63.454545455,
+            16.69604368,
+            0
+          ],
+          "R": [
+            46.636363636,
+            63.30395632,
+            0
+          ]
+        },
+        "edges": [],
+        "planar": true,
+        "bounds": [
+          0,
+          0,
+          100,
+          82
+        ],
+        "views": {
+          "neutral": {
+            "label": "Условие",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "M",
+              "N"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "M",
+                "N"
+              ]
+            ],
+            "angleArcs": [
+              {
+                "vertex": "A",
+                "from": "D",
+                "to": "B",
+                "marks": 0,
+                "radius": 5
+              },
+              {
+                "vertex": "D",
+                "from": "C",
+                "to": "A",
+                "marks": 0,
+                "radius": 5
+              }
+            ]
+          },
+          "step-1": {
+            "label": "Шаг 1",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "M",
+              "N",
+              "E"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "M",
+                "N"
+              ],
+              [
+                "C",
+                "E"
+              ]
+            ],
+            "angleArcs": [
+              {
+                "vertex": "A",
+                "from": "D",
+                "to": "B",
+                "marks": 0,
+                "radius": 5
+              },
+              {
+                "vertex": "D",
+                "from": "C",
+                "to": "A",
+                "marks": 0,
+                "radius": 5
+              }
+            ],
+            "rightAngles": [
+              {
+                "a": "E",
+                "vertex": "C",
+                "b": "D",
+                "size": 2.3
+              }
+            ]
+          },
+          "step-2": {
+            "label": "Шаг 2",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "M",
+              "N",
+              "E",
+              "K",
+              "R"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "M",
+                "N"
+              ],
+              [
+                "C",
+                "E"
+              ],
+              [
+                "C",
+                "K"
+              ],
+              [
+                "N",
+                "C"
+              ],
+              [
+                "K",
+                "M"
+              ],
+              [
+                "C",
+                "R"
+              ],
+              [
+                "E",
+                "R"
+              ],
+              [
+                "D",
+                "R"
+              ]
+            ],
+            "angleArcs": [
+              {
+                "vertex": "A",
+                "from": "D",
+                "to": "B",
+                "marks": 0,
+                "radius": 5
+              },
+              {
+                "vertex": "D",
+                "from": "C",
+                "to": "A",
+                "marks": 0,
+                "radius": 5
+              }
+            ],
+            "rightAngles": [
+              {
+                "a": "E",
+                "vertex": "C",
+                "b": "D",
+                "size": 2.3
+              }
+            ]
+          },
+          "step-3": {
+            "label": "Шаг 3",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "M",
+              "N",
+              "E",
+              "K"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "M",
+                "N"
+              ],
+              [
+                "C",
+                "E"
+              ],
+              [
+                "C",
+                "K"
+              ],
+              [
+                "N",
+                "C"
+              ],
+              [
+                "K",
+                "M"
+              ]
+            ],
+            "angleArcs": [
+              {
+                "vertex": "A",
+                "from": "D",
+                "to": "B",
+                "marks": 0,
+                "radius": 5
+              },
+              {
+                "vertex": "D",
+                "from": "C",
+                "to": "A",
+                "marks": 0,
+                "radius": 5
+              }
+            ],
+            "rightAngles": [
+              {
+                "a": "E",
+                "vertex": "C",
+                "b": "D",
+                "size": 2.3
+              }
+            ]
+          },
+          "step-4": {
+            "label": "Шаг 4",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "M",
+              "N",
+              "E",
+              "K"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "M",
+                "N"
+              ],
+              [
+                "C",
+                "E"
+              ],
+              [
+                "C",
+                "K"
+              ],
+              [
+                "N",
+                "C"
+              ],
+              [
+                "K",
+                "M"
+              ]
+            ],
+            "angleArcs": [
+              {
+                "vertex": "A",
+                "from": "D",
+                "to": "B",
+                "marks": 0,
+                "radius": 5
+              },
+              {
+                "vertex": "D",
+                "from": "C",
+                "to": "A",
+                "marks": 0,
+                "radius": 5
+              }
+            ],
+            "rightAngles": [
+              {
+                "a": "E",
+                "vertex": "C",
+                "b": "D",
+                "size": 2.3
+              }
+            ]
+          }
+        },
+        "checks": [
+          {
+            "type": "parallel",
+            "segments": [
+              [
+                "C",
+                "E"
+              ],
+              [
+                "A",
+                "B"
+              ]
+            ]
+          },
+          {
+            "type": "perpendicular",
+            "segments": [
+              [
+                "C",
+                "E"
+              ],
+              [
+                "C",
+                "D"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "N",
+                "C"
+              ],
+              [
+                "M",
+                "K"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "M",
+                "N"
+              ],
+              [
+                "C",
+                "K"
+              ]
+            ]
+          },
+          {
+            "type": "distanceRatio",
+            "segments": [
+              [
+                "M",
+                "N"
+              ],
+              [
+                "E",
+                "D"
+              ]
+            ],
+            "ratio": 0.5
+          }
+        ],
+        "labels": {},
+        "labelOffsets": {
+          "M": [
+            0,
+            5
+          ],
+          "K": [
+            0,
+            5
+          ],
+          "E": [
+            0,
+            5
+          ]
+        },
+        "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
+      },
+      "didactics": {
+        "steps": [
+          {
+            "prompt": "Как получить прямоугольный треугольник?",
+            "justification": "Параллельность и сумма углов треугольника.",
+            "theoryPoints": [
+              29,
+              31,
+              48
+            ]
+          },
+          {
+            "prompt": "Чему равна медиана к гипотенузе?",
+            "justification": "Признаки параллелограмма и прямоугольника; равные диагонали.",
+            "theoryPoints": [
+              49,
+              51
+            ]
+          },
+          {
+            "prompt": "Как связать CK и MN?",
+            "justification": "Сложение длин; признак параллелограмма.",
+            "theoryPoints": [
+              7,
+              49
+            ]
+          },
+          {
+            "prompt": "Как выразить ответ через основания?",
+            "justification": "Подстановка AE =BC.",
+            "theoryPoints": [
+              7
+            ]
+          }
+        ]
+      },
+      "statementGivens": []
+    },
+    {
+      "chapter": 6,
+      "collection": "main",
+      "number": 536,
+      "part": "single",
+      "model": {
+        "points": {
+          "A": [
+            54.649357299,
+            42.166132728,
+            0
+          ],
+          "B": [
+            78.483224571,
+            42.166132728,
+            0
+          ],
+          "C": [
+            49.682908157,
+            14.0,
+            0
+          ],
+          "P": [
+            54.649357299,
+            66.0,
+            0
+          ],
+          "Q": [
+            26.483224571,
+            47.13258187,
+            0
+          ],
+          "_u": [
+            78.483224571,
+            66.0,
+            0
+          ],
+          "_v": [
+            21.516775429,
+            18.966449142,
+            0
+          ],
+          "M": [
+            64.083066364,
+            28.083066364,
+            0
+          ],
+          "D": [
+            73.516775429,
+            14.0,
+            0
+          ]
+        },
+        "edges": [],
+        "planar": true,
+        "bounds": [
+          0,
+          0,
+          100,
+          82
+        ],
+        "views": {
+          "neutral": {
+            "label": "Условие",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "P",
+              "Q",
+              "M"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ],
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "_u"
+              ],
+              [
+                "_u",
+                "P"
+              ],
+              [
+                "P",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "C",
+                "_v"
+              ],
+              [
+                "_v",
+                "Q"
+              ],
+              [
+                "Q",
+                "A"
+              ],
+              [
+                "P",
+                "Q"
+              ],
+              [
+                "A",
+                "M"
+              ]
+            ],
+            "equalSegments": [
+              {
+                "a": "B",
+                "b": "M",
+                "marks": 1
+              },
+              {
+                "a": "M",
+                "b": "C",
+                "marks": 1
+              }
+            ]
+          },
+          "step-1": {
+            "label": "Шаг 1",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "P",
+              "Q",
+              "M"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ],
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "_u"
+              ],
+              [
+                "_u",
+                "P"
+              ],
+              [
+                "P",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "C",
+                "_v"
+              ],
+              [
+                "_v",
+                "Q"
+              ],
+              [
+                "Q",
+                "A"
+              ],
+              [
+                "P",
+                "Q"
+              ],
+              [
+                "A",
+                "M"
+              ]
+            ],
+            "equalSegments": [
+              {
+                "a": "B",
+                "b": "M",
+                "marks": 1
+              },
+              {
+                "a": "M",
+                "b": "C",
+                "marks": 1
+              }
+            ]
+          },
+          "step-2": {
+            "label": "Шаг 2",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "P",
+              "Q",
+              "M",
+              "D"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ],
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "_u"
+              ],
+              [
+                "_u",
+                "P"
+              ],
+              [
+                "P",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "C",
+                "_v"
+              ],
+              [
+                "_v",
+                "Q"
+              ],
+              [
+                "Q",
+                "A"
+              ],
+              [
+                "P",
+                "Q"
+              ],
+              [
+                "A",
+                "M"
+              ],
+              [
+                "M",
+                "D"
+              ],
+              [
+                "B",
+                "D"
+              ],
+              [
+                "C",
+                "D"
+              ]
+            ],
+            "equalSegments": [
+              {
+                "a": "B",
+                "b": "M",
+                "marks": 1
+              },
+              {
+                "a": "M",
+                "b": "C",
+                "marks": 1
+              }
+            ]
+          },
+          "step-3": {
+            "label": "Шаг 3",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "P",
+              "Q",
+              "M",
+              "D"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ],
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "_u"
+              ],
+              [
+                "_u",
+                "P"
+              ],
+              [
+                "P",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "C",
+                "_v"
+              ],
+              [
+                "_v",
+                "Q"
+              ],
+              [
+                "Q",
+                "A"
+              ],
+              [
+                "P",
+                "Q"
+              ],
+              [
+                "A",
+                "M"
+              ],
+              [
+                "M",
+                "D"
+              ],
+              [
+                "B",
+                "D"
+              ],
+              [
+                "C",
+                "D"
+              ]
+            ],
+            "equalSegments": [
+              {
+                "a": "B",
+                "b": "M",
+                "marks": 1
+              },
+              {
+                "a": "M",
+                "b": "C",
+                "marks": 1
+              }
+            ]
+          },
+          "step-4": {
+            "label": "Шаг 4",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "P",
+              "Q",
+              "M",
+              "D"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ],
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "_u"
+              ],
+              [
+                "_u",
+                "P"
+              ],
+              [
+                "P",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "C",
+                "_v"
+              ],
+              [
+                "_v",
+                "Q"
+              ],
+              [
+                "Q",
+                "A"
+              ],
+              [
+                "P",
+                "Q"
+              ],
+              [
+                "A",
+                "M"
+              ],
+              [
+                "M",
+                "D"
+              ],
+              [
+                "B",
+                "D"
+              ],
+              [
+                "C",
+                "D"
+              ]
+            ],
+            "equalSegments": [
+              {
+                "a": "B",
+                "b": "M",
+                "marks": 1
+              },
+              {
+                "a": "M",
+                "b": "C",
+                "marks": 1
+              }
+            ]
+          }
+        },
+        "checks": [
+          {
+            "type": "perpendicular",
+            "segments": [
+              [
+                "A",
+                "P"
+              ],
+              [
+                "A",
+                "B"
+              ]
+            ]
+          },
+          {
+            "type": "perpendicular",
+            "segments": [
+              [
+                "A",
+                "Q"
+              ],
+              [
+                "A",
+                "C"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "A",
+                "P"
+              ],
+              [
+                "A",
+                "B"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "A",
+                "Q"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "B",
+                "D"
+              ]
+            ]
+          },
+          {
+            "type": "distanceRatio",
+            "segments": [
+              [
+                "P",
+                "Q"
+              ],
+              [
+                "A",
+                "M"
+              ]
+            ],
+            "ratio": 2
+          }
+        ],
+        "labels": {},
+        "labelOffsets": {},
+        "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
+      },
+      "didactics": {
+        "steps": [
+          {
+            "prompt": "Как обозначить фигуру?",
+            "justification": "Свойства квадратов.",
+            "theoryPoints": [
+              52
+            ]
+          },
+          {
+            "prompt": "Как удвоить медиану?",
+            "justification": "Признак по диагоналям.",
+            "theoryPoints": [
+              49
+            ]
+          },
+          {
+            "prompt": "Какие треугольники равны?",
+            "justification": "Внешнее расположение квадратов, перпендикулярные стороны, первый признак равенства.",
+            "theoryPoints": [
+              15,
+              29,
+              30,
+              52
+            ]
+          },
+          {
+            "prompt": "Что следует для PQ?",
+            "justification": "Соответственные стороны равных треугольников.",
+            "theoryPoints": [
+              14
+            ]
+          }
+        ]
+      },
+      "statementGivens": []
+    },
+    {
+      "chapter": 6,
+      "collection": "main",
+      "number": 537,
+      "part": "single",
+      "model": {
+        "points": {
+          "A": [
+            13.0,
+            63.57159965,
+            0
+          ],
+          "B": [
+            34.983234863,
+            16.42840035,
+            0
+          ],
+          "C": [
+            87.0,
+            16.42840035,
+            0
+          ],
+          "D": [
+            65.016765137,
+            63.57159965,
+            0
+          ],
+          "O": [
+            50.0,
+            40.0,
+            0
+          ]
+        },
+        "edges": [],
+        "planar": true,
+        "bounds": [
+          0,
+          0,
+          100,
+          82
+        ],
+        "views": {
+          "neutral": {
+            "label": "Условие",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "O"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "B",
+                "D"
+              ]
+            ]
+          },
+          "step-1": {
+            "label": "Шаг 1",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "O"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "B",
+                "D"
+              ]
+            ],
+            "lines": [
+              [
+                "A",
+                "C"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "A",
+                "vertex": "O",
+                "b": "B",
+                "size": 2.3
+              }
+            ]
+          },
+          "step-2": {
+            "label": "Шаг 2",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "O"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "B",
+                "D"
+              ]
+            ],
+            "lines": [
+              [
+                "A",
+                "C"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "A",
+                "vertex": "O",
+                "b": "B",
+                "size": 2.3
+              }
+            ]
+          },
+          "step-3": {
+            "label": "Шаг 3",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "O"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "B",
+                "D"
+              ]
+            ],
+            "lines": [
+              [
+                "B",
+                "D"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "A",
+                "vertex": "O",
+                "b": "B",
+                "size": 2.3
+              }
+            ]
+          }
+        },
+        "checks": [
+          {
+            "type": "perpendicular",
+            "segments": [
+              [
+                "A",
+                "C"
+              ],
+              [
+                "B",
+                "D"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "A",
+                "O"
+              ],
+              [
+                "O",
+                "C"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "B",
+                "O"
+              ],
+              [
+                "O",
+                "D"
+              ]
+            ]
+          }
+        ],
+        "labels": {},
+        "labelOffsets": {},
+        "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
+      },
+      "didactics": {
+        "steps": [
+          {
+            "prompt": "Как отражаются вершины относительно AC?",
+            "justification": "Свойства ромба и определение осевой симметрии.",
+            "theoryPoints": [
+              44,
+              48,
+              52
+            ]
+          },
+          {
+            "prompt": "Почему сохраняется весь ромб?",
+            "justification": "Отражение отрезков и фигуры.",
+            "theoryPoints": [
+              45
+            ]
+          },
+          {
+            "prompt": "Что происходит с другой диагональю?",
+            "justification": "То же рассуждение для другой диагонали.",
+            "theoryPoints": [
+              44,
+              45,
+              52
+            ]
+          }
+        ]
+      },
+      "statementGivens": []
+    },
+    {
+      "chapter": 6,
+      "collection": "main",
+      "number": 538,
+      "part": "single",
+      "model": {
+        "points": {
+          "A": [
+            13.0,
+            56.02146997,
+            0
+          ],
+          "B": [
+            31.5,
+            23.97853003,
+            0
+          ],
+          "C": [
+            87.0,
+            23.97853003,
+            0
+          ],
+          "D": [
+            68.5,
+            56.02146997,
+            0
+          ],
+          "O": [
+            50.0,
+            40.0,
+            0
+          ],
+          "X": [
+            18.55,
+            46.408587988,
+            0
+          ],
+          "Y": [
+            81.45,
+            33.591412012,
+            0
+          ]
+        },
+        "edges": [],
+        "planar": true,
+        "bounds": [
+          0,
+          0,
+          100,
+          82
+        ],
+        "views": {
+          "neutral": {
+            "label": "Условие",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "O"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "B",
+                "D"
+              ]
+            ]
+          },
+          "step-1": {
+            "label": "Шаг 1",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "O"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "B",
+                "D"
+              ]
+            ]
+          },
+          "step-2": {
+            "label": "Шаг 2",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "O",
+              "X",
+              "Y"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "B",
+                "D"
+              ],
+              [
+                "X",
+                "Y"
+              ]
+            ]
+          },
+          "step-3": {
+            "label": "Шаг 3",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "O",
+              "X",
+              "Y"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "B",
+                "D"
+              ],
+              [
+                "X",
+                "Y"
+              ]
+            ]
+          }
+        },
+        "checks": [
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "A",
+                "O"
+              ],
+              [
+                "O",
+                "C"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "B",
+                "O"
+              ],
+              [
+                "O",
+                "D"
+              ]
+            ]
+          },
+          {
+            "type": "collinear",
+            "points": [
+              "X",
+              "O",
+              "Y"
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "X",
+                "O"
+              ],
+              [
+                "O",
+                "Y"
+              ]
+            ]
+          }
+        ],
+        "labels": {},
+        "labelOffsets": {},
+        "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
+      },
+      "didactics": {
+        "steps": [
+          {
+            "prompt": "Как отражаются вершины?",
+            "justification": "Диагонали параллелограмма; определение центральной симметрии.",
+            "theoryPoints": [
+              48,
+              53
+            ]
+          },
+          {
+            "prompt": "Что происходит со сторонами?",
+            "justification": "Сохранение отрезка при пол-обороте.",
+            "theoryPoints": [
+              53
+            ]
+          },
+          {
+            "prompt": "Почему этого достаточно для всей фигуры?",
+            "justification": "Определение центра симметрии фигуры.",
+            "theoryPoints": [
+              53
+            ]
+          }
+        ]
+      },
+      "statementGivens": []
+    },
+    {
+      "chapter": 6,
+      "collection": "main",
+      "number": 539,
+      "part": "single",
+      "model": {
+        "points": {
+          "A": [
+            13.0,
+            21.5,
+            0
+          ],
+          "B": [
+            87.0,
+            21.5,
+            0
+          ],
+          "C": [
+            13.0,
+            58.5,
+            0
+          ],
+          "D": [
+            87.0,
+            58.5,
+            0
+          ],
+          "O": [
+            50.0,
+            40.0,
+            0
+          ],
+          "M": [
+            13.0,
+            40.0,
+            0
+          ],
+          "N": [
+            87.0,
+            40.0,
+            0
+          ],
+          "X": [
+            59.25,
+            21.5,
+            0
+          ],
+          "Y": [
+            40.75,
+            58.5,
+            0
+          ],
+          "A__case1": [
+            13.0,
+            21.5,
+            0
+          ],
+          "B__case1": [
+            87.0,
+            21.5,
+            0
+          ],
+          "C__case1": [
+            13.0,
+            58.5,
+            0
+          ],
+          "D__case1": [
+            87.0,
+            58.5,
+            0
+          ],
+          "O__case1": [
+            59.25,
+            40.0,
+            0
+          ],
+          "M__case1": [
+            13.0,
+            40.0,
+            0
+          ],
+          "N__case1": [
+            87.0,
+            40.0,
+            0
+          ],
+          "X__case1": [
+            59.25,
+            21.5,
+            0
+          ],
+          "Y__case1": [
+            59.25,
+            58.5,
+            0
+          ]
+        },
+        "edges": [],
+        "planar": true,
+        "bounds": [
+          0,
+          0,
+          100,
+          82
+        ],
+        "views": {
+          "neutral": {
+            "label": "Условие",
+            "points": [
+              "O"
+            ],
+            "segments": [],
+            "lines": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "C",
+                "D"
+              ]
+            ]
+          },
+          "step-1": {
+            "label": "Шаг 1",
+            "points": [
+              "O",
+              "M",
+              "N"
+            ],
+            "segments": [],
+            "lines": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "M",
+                "N"
+              ]
+            ]
+          },
+          "step-2": {
+            "label": "Шаг 2",
+            "points": [
+              "O",
+              "M",
+              "N",
+              "X",
+              "Y"
+            ],
+            "segments": [
+              [
+                "X",
+                "Y"
+              ]
+            ],
+            "lines": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "M",
+                "N"
+              ]
+            ]
+          },
+          "step-3": {
+            "label": "Шаг 3",
+            "points": [
+              "O",
+              "M",
+              "N",
+              "X",
+              "Y"
+            ],
+            "segments": [
+              [
+                "X",
+                "Y"
+              ]
+            ],
+            "lines": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "M",
+                "N"
+              ]
+            ]
+          },
+          "step-4": {
+            "label": "Шаг 4",
+            "points": [
+              "O",
+              "M",
+              "N",
+              "X",
+              "Y"
+            ],
+            "segments": [
+              [
+                "X",
+                "Y"
+              ]
+            ],
+            "lines": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "M",
+                "N"
+              ]
+            ]
+          },
+          "case-1": {
+            "label": "Другой центр на средней прямой",
+            "points": [
+              "O__case1",
+              "X__case1",
+              "Y__case1"
+            ],
+            "segments": [
+              [
+                "X__case1",
+                "Y__case1"
+              ]
+            ],
+            "lines": [
+              [
+                "A__case1",
+                "B__case1"
+              ],
+              [
+                "C__case1",
+                "D__case1"
+              ],
+              [
+                "M__case1",
+                "N__case1"
+              ]
+            ],
+            "availableFromStep": 4
+          }
+        },
+        "checks": [
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "X",
+                "O"
+              ],
+              [
+                "O",
+                "Y"
+              ]
+            ]
+          },
+          {
+            "type": "collinear",
+            "points": [
+              "X",
+              "O",
+              "Y"
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "X__case1",
+                "O__case1"
+              ],
+              [
+                "O__case1",
+                "Y__case1"
+              ]
+            ]
+          }
+        ],
+        "labels": {
+          "A__case1": "A",
+          "B__case1": "B",
+          "C__case1": "C",
+          "D__case1": "D",
+          "O__case1": "O",
+          "M__case1": "M",
+          "N__case1": "N",
+          "X__case1": "X",
+          "Y__case1": "Y"
+        },
+        "labelOffsets": {},
+        "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
+      },
+      "didactics": {
+        "steps": [
+          {
+            "prompt": "Где искать центры?",
+            "justification": "Середина перпендикулярного отрезка между параллельными.",
+            "theoryPoints": [
+              23,
+              37
+            ]
+          },
+          {
+            "prompt": "Почему любая такая точка подходит?",
+            "justification": "Свойства центральной симметрии и расстояние до прямой.",
+            "theoryPoints": [
+              37,
+              53
+            ]
+          },
+          {
+            "prompt": "Почему других центров нет?",
+            "justification": "Образ прямой при центральной симметрии.",
+            "theoryPoints": [
+              53
+            ]
+          },
+          {
+            "prompt": "Сколько таких точек?",
+            "justification": "Найдено полное множество центров.",
+            "theoryPoints": [
+              1,
+              53
+            ]
+          }
+        ]
+      },
+      "statementGivens": []
+    },
+    {
+      "chapter": 6,
+      "collection": "main",
+      "number": 540,
+      "part": "single",
+      "model": {
+        "points": {
+          "O": [
+            50.0,
+            40.0,
+            0
+          ],
+          "P": [
+            69.5,
+            27.0,
+            0
+          ],
+          "Q": [
+            30.5,
+            27.0,
+            0
+          ],
+          "R": [
+            30.5,
+            53.0,
+            0
+          ],
+          "S": [
+            69.5,
+            53.0,
+            0
+          ],
+          "X": [
+            17.5,
+            40.0,
+            0
+          ],
+          "Y": [
+            82.5,
+            40.0,
+            0
+          ],
+          "U": [
+            50.0,
+            66.0,
+            0
+          ],
+          "V": [
+            50.0,
+            14.0,
+            0
+          ],
+          "O__case1": [
+            50.0,
+            40.0,
+            0
+          ],
+          "P__case1": [
+            69.5,
+            40.0,
+            0
+          ],
+          "Q__case1": [
+            30.5,
+            40.0,
+            0
+          ],
+          "R__case1": [
+            30.5,
+            40.0,
+            0
+          ],
+          "S__case1": [
+            69.5,
+            53.0,
+            0
+          ],
+          "X__case1": [
+            17.5,
+            40.0,
+            0
+          ],
+          "Y__case1": [
+            82.5,
+            40.0,
+            0
+          ],
+          "U__case1": [
+            50.0,
+            66.0,
+            0
+          ],
+          "V__case1": [
+            50.0,
+            14.0,
+            0
+          ]
+        },
+        "edges": [],
+        "planar": true,
+        "bounds": [
+          0,
+          0,
+          100,
+          82
+        ],
+        "views": {
+          "neutral": {
+            "label": "Условие",
+            "points": [
+              "O",
+              "P"
+            ],
+            "segments": [],
+            "lines": [
+              [
+                "X",
+                "Y"
+              ],
+              [
+                "U",
+                "V"
+              ]
+            ]
+          },
+          "step-1": {
+            "label": "Шаг 1",
+            "points": [
+              "O",
+              "P",
+              "Q"
+            ],
+            "segments": [
+              [
+                "P",
+                "Q"
+              ]
+            ],
+            "lines": [
+              [
+                "X",
+                "Y"
+              ],
+              [
+                "U",
+                "V"
+              ]
+            ]
+          },
+          "step-2": {
+            "label": "Шаг 2",
+            "points": [
+              "O",
+              "P",
+              "Q",
+              "R"
+            ],
+            "segments": [
+              [
+                "P",
+                "Q"
+              ],
+              [
+                "Q",
+                "R"
+              ],
+              [
+                "P",
+                "R"
+              ]
+            ],
+            "lines": [
+              [
+                "X",
+                "Y"
+              ],
+              [
+                "U",
+                "V"
+              ]
+            ],
+            "dashSegments": [
+              [
+                "R",
+                "S"
+              ],
+              [
+                "S",
+                "P"
+              ]
+            ]
+          },
+          "step-3": {
+            "label": "Шаг 3",
+            "points": [
+              "O",
+              "P",
+              "Q",
+              "R"
+            ],
+            "segments": [
+              [
+                "P",
+                "Q"
+              ],
+              [
+                "Q",
+                "R"
+              ],
+              [
+                "P",
+                "R"
+              ]
+            ],
+            "lines": [
+              [
+                "X",
+                "Y"
+              ],
+              [
+                "U",
+                "V"
+              ]
+            ],
+            "dashSegments": [
+              [
+                "R",
+                "S"
+              ],
+              [
+                "S",
+                "P"
+              ]
+            ]
+          },
+          "step-4": {
+            "label": "Шаг 4",
+            "points": [
+              "O",
+              "P",
+              "Q",
+              "R"
+            ],
+            "segments": [
+              [
+                "P",
+                "Q"
+              ],
+              [
+                "Q",
+                "R"
+              ],
+              [
+                "P",
+                "R"
+              ]
+            ],
+            "lines": [
+              [
+                "X",
+                "Y"
+              ],
+              [
+                "U",
+                "V"
+              ]
+            ],
+            "dashSegments": [
+              [
+                "R",
+                "S"
+              ],
+              [
+                "S",
+                "P"
+              ]
+            ]
+          },
+          "case-1": {
+            "label": "Точка на оси",
+            "points": [
+              "O__case1",
+              "P__case1",
+              "Q__case1"
+            ],
+            "segments": [
+              [
+                "P__case1",
+                "Q__case1"
+              ]
+            ],
+            "lines": [
+              [
+                "X__case1",
+                "Y__case1"
+              ],
+              [
+                "U__case1",
+                "V__case1"
+              ]
+            ],
+            "availableFromStep": 3
+          }
+        },
+        "checks": [
+          {
+            "type": "collinear",
+            "points": [
+              "P",
+              "O",
+              "R"
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "P",
+                "O"
+              ],
+              [
+                "O",
+                "R"
+              ]
+            ]
+          },
+          {
+            "type": "perpendicular",
+            "segments": [
+              [
+                "P",
+                "Q"
+              ],
+              [
+                "Q",
+                "R"
+              ]
+            ]
+          }
+        ],
+        "labels": {
+          "O__case1": "O",
+          "P__case1": "P",
+          "Q__case1": "Q =R",
+          "R__case1": "R",
+          "S__case1": "S",
+          "X__case1": "X",
+          "Y__case1": "Y",
+          "U__case1": "U",
+          "V__case1": "V"
+        },
+        "labelOffsets": {},
+        "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
+      },
+      "didactics": {
+        "steps": [
+          {
+            "prompt": "Как использовать обе оси для одной точки?",
+            "justification": "Определение осевой симметрии фигуры.",
+            "theoryPoints": [
+              45
+            ]
+          },
+          {
+            "prompt": "Почему O — середина PR?",
+            "justification": "Серединные перпендикуляры; диагонали прямоугольника делятся пополам.",
+            "theoryPoints": [
+              44,
+              48,
+              51
+            ]
+          },
+          {
+            "prompt": "Как проверить точки на осях?",
+            "justification": "Определение отражения и фиксированная точка.",
+            "theoryPoints": [
+              44,
+              53
+            ]
+          },
+          {
+            "prompt": "Почему вывод относится ко всей фигуре?",
+            "justification": "Определение центра симметрии.",
+            "theoryPoints": [
+              53
+            ]
+          }
+        ]
+      },
+      "statementGivens": []
+    }
+  ]
+}
