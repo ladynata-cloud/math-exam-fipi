@@ -3,7 +3,7 @@
 
 These are author-run regression tests, not independent mathematical review.
 """
-import contextlib,hashlib,io,json,math,shutil,tempfile,unittest
+import contextlib,hashlib,io,itertools,json,math,shutil,tempfile,unittest
 from copy import deepcopy
 from pathlib import Path
 from build_course import ROOT,COURSE,compose,digest,read
@@ -34,6 +34,11 @@ def source_coverage(bundle):
     assert item['id']==f'atanasyan-7-9-{namespace}-{x["number"]}-part-{i}'
     assert item['status']=='in-review' and all(item['review'][k]=='pending' for k in ['source','mathematics','pedagogy'])
     assert not validate(item['visualization']['model']),item['id']
+    model=item['visualization']['model']
+    for view in model['views'].values():
+     visible=[p for p in view.get('points',[]) if not p.startswith('_')]
+     for a,b in itertools.combinations(visible,2):
+      assert math.dist(model['points'][a],model['points'][b])>1e-6, (item['id'],a,b,'merge coincident labels explicitly')
     expected.append(item['id'])
   assert [x['id'] for x in selected]==expected
  assert [x['number'] for x in source['exercises']]==list(range(462,541))
