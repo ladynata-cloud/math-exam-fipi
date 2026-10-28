@@ -33,6 +33,7 @@ jobs:
           python3 tools/stereo-textbook/additional288-math.test.py
           python3 tools/stereo-textbook/additional294-math.test.py
           python3 tools/stereo-textbook/additional299-math.test.py
+          python3 tools/stereo-textbook/additional310-math.test.py
       - name: Retained work, nested theory and publication boundaries
         run: node tools/stereo-textbook/runtime.test.cjs
       - name: Exact partitions, collector failures and browser-free preflight
@@ -133,6 +134,29 @@ jobs:
         with:
           name: atanasyan-299-309-shard-${{ matrix.shard }}
           path: artifacts/additional-299-309/
+          retention-days: 7
+          if-no-files-found: ignore
+      - name: Collect focused chapter III final images
+        if: always()
+        run: |
+          python3 - <<'PYCODE'
+          import shutil
+          from pathlib import Path
+          source = Path('artifacts/textbook')
+          output = Path('artifacts/additional-310-319')
+          output.mkdir(parents=True, exist_ok=True)
+          for image in source.glob('chapter3-final-*.png'):
+              shutil.copy2(image, output / image.name)
+          evidence = source / 'browser-evidence.json'
+          if evidence.is_file():
+              shutil.copy2(evidence, output / evidence.name)
+          PYCODE
+      - name: Preserve focused chapter III final evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: atanasyan-310-319-shard-${{ matrix.shard }}
+          path: artifacts/additional-310-319/
           retention-days: 7
           if-no-files-found: ignore
       - name: Preserve each shard including failure evidence

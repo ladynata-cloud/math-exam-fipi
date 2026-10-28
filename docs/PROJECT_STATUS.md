@@ -208,17 +208,30 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
 - Older entries below concern different tasks and are not re-certified here.
 
 
-## In progress: Atanasyan 10–11, additional pyramid exercises 299–309
+## In progress: Atanasyan 10–11, chapter III final exercises 310–319
 
-- [Scope](tasks/TEXTBOOK_ATANASYAN_PYRAMIDS_299_309.md), HIGH review; owner explicitly
-  requested continuation and publication on 2026-10-26.
-- Verified starting release: PR345 merged as `6c7339a730ba3591859bd4c8c0d8ce9be64efd7c`;
-  495 cards, 1,819 steps and 1,877 model states, main exercises1–298.
-- Preparing twelve source-specific cards for299–309 (307а/б), with independent
-  source/proof/model review and retained historical content/browser checks.
-- Next: finish independent review and actual responsive-image checks, publish
-  the scoped increment under the current authorization and verify live files.
-  This entry does not claim that the full book or this increment is published.
+- [Scope](tasks/TEXTBOOK_ATANASYAN_CHAPTER_III_FINAL_310_319.md), HIGH review;
+  current continuation preserves the owner's existing publication authorization.
+- Base: `72fb9861e2d333d92d4b55fb5d1c9f61c567f86a`, published PR348.
+- Eleven source-specific cards for 310–319 (311а/б) are prepared: 518 total
+  cards, 1,969 steps and 2,050 model states; main 1–319 without gaps.
+  Chapter III has zero pending catalogue rows.
+- Independent source/math/written-pedagogy and integration reviews passed;
+  local source/content/runtime/geometry/math/partition/SEO gates passed.
+  Exact-head cloud browser and actual-image checks precede publication; no
+  final release gate for this increment is claimed at this checkpoint.
+
+## Published: Atanasyan 10–11, additional pyramid exercises 299–309
+
+- [PR348](https://github.com/ladynata-cloud/math-exam-fipi/pull/348) merged as
+  `72fb9861e2d333d92d4b55fb5d1c9f61c567f86a`; 507 cards, 1,896 steps and
+  1,966 model states, covering main exercises 1–309, theory 1–37 and 40 self-checks.
+- All eleven exact-head jobs passed. Independent actual-image review covered
+  all 178 new screenshots; all prior 495 cards and runtime contracts were retained.
+- Exact-merge Pages 40335646555 and Profile 40335646864 passed. All 22 checked
+  public assets matched HTTP/size/SHA256; bundle SHA256 is
+  `0aca5154f8f81edbc2df35d7bff112a0781c862b956d51fabc022ae2e00e6fa2`.
+- Full release evidence is in PR348. The whole textbook remains unfinished.
 
 ## Published: lesson enquiries and channel subscriptions
 

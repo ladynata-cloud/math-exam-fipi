@@ -87,7 +87,28 @@ const mathLayoutCases=new Map([
  ['ex-main-0306|step-6',[{selector:explanation('step-6'),fractions:[['(4h² · tan φ)','(cos φ)']]}]],
  ['ex-main-0306|step-7',[{selector:explanation('step-7'),fractions:[['(sin φ · (1 + sin φ))','(cos²φ)'],['(4h² · sin φ)','(1 − sin φ)']]}]],
  ['ex-main-0307-a|step-6',[{selector:explanation('step-6'),fractions:[['(a · b · √2)','4']]}]],
- ['ex-main-0309|step-8',[{selector:explanation('step-8'),fractions:[['(AB + EF)','2'],['80','3']]}]]
+ ['ex-main-0309|step-8',[{selector:explanation('step-8'),fractions:[['(AB + EF)','2'],['80','3']]}]],
+ // Chapter III completion: actual calculation and proof operands on narrow pages.
+ ['ex-main-0310|step-1',[{selector:explanation('step-1'),fractions:[['(DA · AB)','2'],['(8 · 25)','2']]}]],
+ ['ex-main-0310|step-6',[{selector:explanation('step-6'),fractions:[['(BC · DE)','2'],['(40 · 17)','2']]}]],
+ ['ex-main-0311-a|step-1',[{selector:explanation('step-1'),fractions:[['(15 + 13 + 14)','2']]}]],
+ ['ex-main-0311-a|step-2',[{selector:explanation('step-2'),fractions:[['(9 · 15)','2'],['135','2'],['(135 + 117)','2']]}]],
+ ['ex-main-0311-a|step-3',[{selector:explanation('step-3'),fractions:[['(2 · 84)','14']]}]],
+ ['ex-main-0311-b|step-6',[{selector:explanation('step-6'),fractions:[['(DA · AE)','DE'],['(9 · 12)','15'],['36','5']]}]],
+ ['ex-main-0312|step-2',[{selector:explanation('step-2'),fractions:[['MO','OA'],['h','R']]}]],
+ ['ex-main-0312|step-3',[{selector:explanation('step-3'),fractions:[['MO','OK'],['h','r']]}]],
+ ['ex-main-0312|step-4',[{selector:explanation('step-4'),fractions:[['360°','n'],['180°','n']]}]],
+ ['ex-main-0312|step-6',[{selector:explanation('step-6'),fractions:[['(r · tan φ)','R'],['r','R'],['180°','n']]}]],
+ ['ex-main-0313|step-2',[{selector:explanation('step-2'),fractions:[['(a√3)','2'],['(a√3)','6'],['(12√3)','6'],['(6√3)','6']]}]],
+ ['ex-main-0313|step-7',[{selector:explanation('step-7'),fractions:[['((36 + 18) · 2)','2']]}]],
+ ['ex-main-0314|step-3',[{selector:explanation('step-3'),fractions:[['(a − b)','2']]}]],
+ ['ex-main-0314|step-6',[{selector:explanation('step-6'),fractions:[['(56 − 24)','2']]}]],
+ ['ex-main-0315|step-7',[{selector:explanation('step-7'),fractions:[['(2MN)','3'],['(a√2)','3'],['ST','3']]}]],
+ ['ex-main-0315|step-8',[{selector:explanation('step-7'),fractions:[['(a√2)','3']]}]],
+ ['ex-main-0316|step-3',[{selector:explanation('step-3'),fractions:[['CD','3'],['a','3']]}]],
+ ['ex-main-0316|step-7',[{selector:explanation('step-7'),fractions:[['a','3']]}]],
+ ['ex-main-0317|step-5',[{selector:explanation('step-5'),fractions:[['(a²)','2'],['(a · √2)','2']]}]],
+ ['ex-main-0317|step-7',[{selector:explanation('step-5'),fractions:[['(a · √2)','2']]}]]
 ]);
 function immutableContent(lesson){const copy=structuredClone(lesson);delete copy.status;delete copy.review;return copy;}
 
@@ -197,7 +218,7 @@ async function takeScreenshot(lesson,width,stage){
  const filename=name+'-'+width+'.png';await settle();await checkMathLayout(lesson,width,stage);await checkSection294Projection(lesson,width,stage);await checkPyramidProjection(lesson,width,stage);if(stage==='nested-theory')await page.locator('dialog .textbook-model').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,filename),fullPage:stage!=='nested-theory'});evidence.screenshots.push({id:lesson.id,width,stage,file:filename});writeEvidence();
 }
 async function checkPyramidProjection(lesson,width,stage){
- if(!['ex-main-0308','ex-main-0309'].includes(lesson.id)||!stage.startsWith('step-'))return;
+ if(!['ex-main-0308','ex-main-0309','ex-main-0310','ex-main-0311-a','ex-main-0311-b','ex-main-0312','ex-main-0313','ex-main-0314','ex-main-0315','ex-main-0316','ex-main-0317','ex-main-0318','ex-main-0319'].includes(lesson.id)||!stage.startsWith('step-'))return;
  const authoredStep=lesson.steps.find(step=>step.id===stage),authoredView=lesson.visualization.model.views[authoredStep.view||'neutral'];
  const expectedPolygons=Array.isArray(authoredView.polygon)?1:0;
  const svg=page.locator('[data-main-model] svg'),kept=await camera();
