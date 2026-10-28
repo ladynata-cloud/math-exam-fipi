@@ -1,4 +1,4 @@
-# Peterson course and practice line: cabinet entry and on-demand help
+# Pupil cabinets: course placement, on-demand help and geometry object names
 
 ## Identity
 
@@ -14,6 +14,13 @@ in the pupil's cabinet, with an assistant in the bottom-right corner that helps
 only when asked. The existing public materials are `/school/peterson6/` and
 `/trainers/maxim-peterson6/`. This task does not include the separate unpublished
 complete-textbook expansion.
+
+During this same task the owner extended the request to the geometry cabinet:
+finish its bottom-right assistant, connect current-step help in the saved
+methodology trainer, and audit the assigned geometry courses for explicit
+object names. Both cabinets are delivered together in PR #369 on this branch.
+The detailed geometry acceptance criteria, audit and source-provenance evidence
+are recorded in [the geometry appendix](MATVEY_GEOMETRY_HELPER_CLARITY.md).
 
 - Recognize the two canonical course URLs in the existing teacher focus field
   and present two primary course cards, following the attached-course pattern.
@@ -108,15 +115,15 @@ not been authorized separately and remain unperformed.
 
 ```text
 EXECUTIVE STATUS
-Task: Peterson cabinet pair and on-demand source helper
-PR: See current task branch pull request
+Task: Both pupil cabinets, current-task helpers and geometry object labels
+PR: https://github.com/ladynata-cloud/math-exam-fipi/pull/369
 Base: fa8d1b7ced31a5941ad52d8a21a48b63daaa84a8
 Head: Exact commit recorded in the PR
-Gate: PETERSON_CABINET_HELPER_PASS (local checks)
-Tests: Source, DOM, mathematics, browser, cabinet frames and shared board passed
+Gate: PETERSON_CABINET_HELPER_PASS and GEOMETRY_HELPER_CLARITY_PASS (local)
+Tests: Source, DOM, mathematics, browser, cabinet frames and shared board passed; see geometry appendix
 Failures: No remaining failing local checks
 Not run: Production release and authenticated pupil activation
-Scope deviations: None; helper uses existing task sources, no external model
-Recommendation: Review the PR, authorize release, then verify real account setup
+Scope deviations: Geometry extension requested by owner; narrow source-provenance correction, no teaching-content change
+Recommendation: Review PR, authorize coordinated cabinet/assistant-service release, verify real account setup
 Next user decision: Separate merge/deployment authorization and teacher sign-in
 ```

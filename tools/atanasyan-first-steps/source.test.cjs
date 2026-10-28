@@ -18,8 +18,18 @@ const course = JSON.parse(courseBytes);
 
 assert.equal(course.schemaVersion, 1);
 assert.equal(course.id, 'atanasyan-first-steps');
-assert.equal(hash(sourceBytes), 'afd4228a2e1444c8fca719fcc2dc0145ca5419354980a33dcadbf637b560325d');
+assert.equal(hash(sourceBytes), 'bcd2aba64872aabcfd763448d9e3223ae90bb40a780091dd5922059c14583d81');
 assert.equal(course.source.sha256, hash(sourceBytes));
+// Chapter V extends only the surrounding source bundle. Retain the original
+// selected-content fingerprint and independently restore the old provenance
+// field to verify the exact sealed route bytes, including every card/model.
+assert.equal(course.source.selectionSha256, '175e92c3dc4476da7148b4e8c2d2e305d7cd322c55d6d5db1290cc98a1004318');
+const serialized = courseBytes.toString('utf8');
+assert.equal(serialized.split(course.source.sha256).length, 2);
+const previousProvenance = serialized.replace(course.source.sha256,
+  'afd4228a2e1444c8fca719fcc2dc0145ca5419354980a33dcadbf637b560325d');
+assert.equal(hash(Buffer.from(previousProvenance)), '551c433a5332dba52779e74f7e6f95289c3915bdc55da3f7c0ed71d0b7e651a3',
+  'Rebinding bundle provenance must not change any reviewed route content');
 assert.equal(course.source.bookSha256, source.sourceInventory.book.sourceSha256);
 assert.deepEqual(course.book, source.catalog.book);
 assert.deepEqual(course.boundaries.exerciseNumbers, [1, 160]);

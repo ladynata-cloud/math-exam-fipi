@@ -62,7 +62,7 @@ function svg(task,selected=null){
 }
 function visual(task){return `${svg(task)}<p class="muted">${E(task.model.diagram.description)}${task.model.diagram.angles.some(a=>!a.marks)?' Пунктирная дуга обозначает целый угол.':''} Числа берём из условия, а не измеряем по экрану.</p>`;}
 function mount(host,task,options={}){
- const session=root.PathModels.session(host,'grade7-geometry',options),state=session.value,elements=task.model.elements;
+ const session=root.PathModels.session(host,'grade7-geometry',options),state=session.value,elements=root.GeometryObjectLabels?.elements(task)||task.model.elements;
  state.selected=elements.some(x=>x.id===state.selected)?state.selected:null;
  state.revealed=Number.isInteger(state.revealed)?Math.max(0,Math.min(task.steps.length,state.revealed)):0;
  let readOnly=!!options.readOnly;

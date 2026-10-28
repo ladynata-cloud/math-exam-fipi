@@ -19,6 +19,7 @@
     'needs-teacher': 'Нужна проверка преподавателя',
     'model-unverified': 'Ответ модели · математическая проверка не завершена'
   };
+  let panelSequence = 0;
   function node(tag, text, attrs = {}) {
     const item = document.createElement(tag);
     if (text !== undefined && text !== null) item.textContent = String(text);
@@ -64,6 +65,9 @@
     let refreshView = () => {};
     const controllers = new Set();
     const teacher = context.role === 'teacher';
+    const floating = !teacher && context.floating !== false;
+    let panelOpen = false, panel = null, launcher = null, closePanel = null, loadOnOpen = null;
+    const panelId = 'cabinet-assistant-panel-' + (++panelSequence);
     const courseMode = !teacher && context.courseContext !== undefined;
     const courseSnapshot = () => {
       try {
@@ -83,15 +87,30 @@
     const taskLabel = () => displayValue('courseTaskLabel') || 'Выбранная задача курса';
     const endpoint = teacher ? '/teacher/students/' + encodeURIComponent(context.studentId) + '/assistant' : '/assistant';
     const current = () => alive && host.isConnected && sameCourse() && (!context.isCurrent || context.isCurrent());
-    host.hidden = true; host.replaceChildren();
+    host.hidden = true; host.replaceChildren();host.classList.toggle('cabinet-assistant-dock',floating);
+    function setPanelOpen(open, focus = true) {
+      if (!current()) return;
+      panelOpen = open;
+      if (panel) panel.hidden = !open;
+      launcher?.setAttribute('aria-expanded', String(open));
+      if (focus) (open ? closePanel : launcher)?.focus({ preventScroll: true });
+      if(open&&loadOnOpen){const start=loadOnOpen;loadOnOpen=null;start();}
+    }
+    const escapePanel = event => {
+      if(event.target?.closest?.('dialog[open]')&&!host.contains(event.target))return;
+      if (floating && panelOpen && event.key === 'Escape' && current()) {event.preventDefault();setPanelOpen(false);}
+    };
+    if(floating)host.ownerDocument.addEventListener('keydown',escapePanel);
     function destroy() {
       if (!alive) return; alive = false; revision++;
       for (const controller of controllers) controller.abort();
-      controllers.clear(); host.replaceChildren(); host.hidden = true;
+      controllers.clear();host.ownerDocument.removeEventListener('keydown',escapePanel);host.classList.remove('cabinet-assistant-dock');host.replaceChildren(); host.hidden = true;
     }
     // Native course navigation can reveal another step without discarding the
     // answers already shown. This function never sends a network request.
     destroy.refresh = () => { if (current()) refreshView(); };
+    destroy.open = () => setPanelOpen(true);
+    destroy.close = () => setPanelOpen(false);
     async function request(path, body) {
       if (!current()) throw Object.assign(Error('LEARNING_ACCOUNT_CHANGED'), { code: 'LEARNING_ACCOUNT_CHANGED' });
       const serial = revision, controller = new AbortController(); controllers.add(controller);
@@ -105,10 +124,21 @@
       area.textContent = text; area.classList.toggle('is-error', error);
     }
     function frame(title) {
+      const restoreFocus=panelOpen&&host.contains(host.ownerDocument.activeElement);
       host.replaceChildren(); host.hidden = false;
       const section = node('section', null, { class: 'panel cabinet-assistant', 'aria-label': 'Помощник MaxExam 0.0 по математике' });
-      section.append(node('p', 'МАТЕМАТИКА ПО ШАГАМ', { class: 'eyebrow' }), node('h2', title));
-      host.append(section); return section;
+      if(floating){
+        panel=section;section.id=panelId;section.hidden=!panelOpen;section.setAttribute('role','dialog');section.setAttribute('aria-modal','false');section.setAttribute('aria-labelledby',panelId+'-title');
+        const header=node('div',null,{class:'cabinet-assistant-dock-header'});
+        closePanel=button('Свернуть',()=>setPanelOpen(false));closePanel.setAttribute('aria-label','Закрыть помощника');closePanel.dataset.assistantClose='';
+        header.append(node('h2',title,{id:panelId+'-title'}),closePanel);section.append(header);
+        launcher=button('Помощник',()=>setPanelOpen(!panelOpen));launcher.className='cabinet-assistant-launcher';launcher.dataset.assistantLauncher='';launcher.setAttribute('aria-controls',panelId);launcher.setAttribute('aria-expanded',String(panelOpen));launcher.setAttribute('aria-label','Помощник MaxExam 0.0');
+        host.append(section,launcher);
+        if(restoreFocus)closePanel.focus({preventScroll:true});
+      }else{
+        section.append(node('p', 'МАТЕМАТИКА ПО ШАГАМ', { class: 'eyebrow' }), node('h2', title));host.append(section);
+      }
+      return section;
     }
     function appendLinks(section) {
       const links = node('div', null, { class: 'actions cabinet-assistant-links' });
@@ -165,6 +195,64 @@
         } finally { if (current()) { busy = false; for (const control of [select, enabled, limit, external, save]) control.disabled = false; updateExternalChoice(); } }
       });
     }
+    function renderLocalTask() {
+      const profileId=status.profile.id,section=frame('MaxExam 0.0 · рядом с задачей');
+      section.append(node('p','Подсказки из текущего тренажёра. Они помогают разобрать условие и шаги решения; помощь отмечается в работе.',{class:'cabinet-assistant-mode'}));
+      const title=node('h3',''),question=node('p','',{class:'cabinet-assistant-course-condition'}),stepLabel=node('p','',{class:'cabinet-assistant-course-task'}),objects=node('div');
+      const actions=node('div',null,{class:'actions cabinet-assistant-actions'}),message=node('p','',{role:'status','aria-live':'polite',class:'cabinet-assistant-message'}),answers=node('div',null,{class:'cabinet-assistant-answers','aria-label':'Показанные шаги'});
+      const buttons=[['hint','Хочу подсказку'],['simpler','Объясни проще'],['full','Показать весь разбор'],['object','Что выделено на чертеже?']].map(([mode,label])=>{const control=button(label,()=>askLocal(mode),mode==='hint');control.dataset.assistantLocal=mode;actions.append(control);return control;});
+      section.append(title,question,stepLabel,objects,actions,message,answers);
+      const snapshot=()=>{
+        try{
+          const value=typeof context.localTask==='function'?context.localTask():null;
+          if(!value||typeof value.id!=='string'||!value.id||typeof value.title!=='string'||typeof value.question!=='string'||!Number.isInteger(value.stepIndex)||!Array.isArray(value.steps)||value.steps.length<1||value.steps.length>40||value.stepIndex<0||value.stepIndex>=value.steps.length)return null;
+          if(!value.steps.every(step=>step&&typeof step.prompt==='string'&&typeof step.explanation==='string'))return null;
+          return{id:value.id,title:value.title,question:value.question,stepIndex:value.stepIndex,steps:value.steps.map(step=>({prompt:step.prompt,explanation:step.explanation,answer:step.answer==null?'':String(step.answer)})),selectedObjects:Array.isArray(value.selectedObjects)?value.selectedObjects.filter(item=>item&&typeof item.label==='string'&&typeof item.description==='string').slice(0,12).map(item=>({label:item.label,description:item.description})):[]};
+        }catch(_){return null;}
+      };
+      const permitted=()=>status.enabled===true&&status.profile?.id===profileId&&!status.examActive&&status.mode!=='unavailable';
+      let visibleTaskId=null;
+      const sameTask=(captured,objects=false)=>{const next=snapshot();return next&&captured&&next.id===captured.id&&next.stepIndex===captured.stepIndex&&next.question===captured.question&&JSON.stringify(next.steps)===JSON.stringify(captured.steps)&&(!objects||JSON.stringify(next.selectedObjects)===JSON.stringify(captured.selectedObjects));};
+      function updateLocal(){
+        const task=snapshot();
+        if(!task||task.id!==visibleTaskId||(context.canAsk&&!context.canAsk())){answers.replaceChildren();visibleTaskId=task?.id||null;}
+        title.textContent=task?.title||'Открой текущую работу';question.textContent=task?.question||String(context.localTaskUnavailable||'Открой тренажёр задания. Здесь появятся подсказки к его текущему шагу.');
+        stepLabel.textContent=task?'Шаг '+(task.stepIndex+1)+' из '+task.steps.length+'. '+task.steps[task.stepIndex].prompt:'';
+        objects.replaceChildren();
+        if(task?.selectedObjects.length){const box=node('div',null,{class:'cabinet-assistant-local-object'});box.append(node('strong','Сейчас на чертеже: '+task.selectedObjects.map(item=>item.label).join(', ')));objects.append(box);}
+        for(const control of buttons)control.disabled=busy||!task||!permitted()||(context.canAsk&&!context.canAsk());
+        buttons[3].hidden=!task?.selectedObjects.length;
+      }
+      async function askLocal(mode){
+        if(busy||!current()||!permitted()||(context.canAsk&&!context.canAsk()))return;
+        const captured=snapshot();if(!captured||(mode==='object'&&!captured.selectedObjects.length))return;
+        busy=true;updateLocal();announce(message,'Проверяем текущую работу…');
+        try{
+          status=await request(endpoint);
+          if(!current())return;
+          if(!permitted()||(context.canAsk&&!context.canAsk())||!sameTask(captured,mode==='object')){announce(message,status.examActive?'Помощник будет доступен после завершения проверочной работы.':'Работа или настройки изменились. Вернись к текущему решению.',true);return;}
+          const allowed=typeof context.onBeforeLocalAsk==='function'&&await context.onBeforeLocalAsk({mode,stepIndex:captured.stepIndex,taskId:captured.id});
+          if(!current())return;
+          if(allowed!==true||!sameTask(captured,mode==='object')||(context.canAsk&&!context.canAsk())){announce(message,'Не удалось сохранить отметку о помощи. Подсказка пока не показана.',true);return;}
+          status=await request(endpoint);
+          if(!current())return;
+          if(!permitted()||!sameTask(captured,mode==='object')||(context.canAsk&&!context.canAsk())){announce(message,'Настройки или доступ к работе изменились. Подсказка не показана.',true);return;}
+          const entry=node('article',null,{class:'cabinet-assistant-answer','data-assistant-answer':'','data-assistant-local-answer':''});
+          entry.append(node('p',captured.title+' · шаг '+(captured.stepIndex+1),{class:'cabinet-assistant-question'}),node('h3',mode==='full'?'Разбор по шагам':mode==='object'?'Объект на чертеже':'Следующий шаг'),node('p','Материалы текущего тренажёра',{class:'cabinet-assistant-source'}));
+          if(mode==='object'){
+            for(const item of captured.selectedObjects)entry.append(node('p',item.label+': '+item.description));
+          }else{
+            const steps=mode==='full'?captured.steps:[captured.steps[captured.stepIndex]],list=node('ol',null,{class:'cabinet-assistant-steps'});
+            if(mode!=='full')list.start=captured.stepIndex+1;
+            for(const step of steps){const item=node('li');item.append(node('p',step.prompt),node('p',step.explanation));if(mode==='full'&&step.answer)item.append(node('p','Ответ шага: '+step.answer));list.append(item);}
+            entry.append(list);
+          }
+          answers.append(entry);announce(message,'Подсказка добавлена. Помощь сохранена в истории этой работы.');if(floating&&panelOpen&&panel)panel.scrollTop=panel.scrollHeight;context.onAnswer?.({contextMode:'local-task'});
+        }catch(error){if(current())announce(message,messageFor(error),true);}
+        finally{if(current()){busy=false;updateLocal();}}
+      }
+      refreshView=updateLocal;updateLocal();
+    }
     function renderPupil() {
       if (!status.enabled || !validProfile(status.profile)) { host.hidden = true; host.replaceChildren(); return; }
       if (courseMode && status.profile.id !== sourceProfile) {
@@ -179,6 +267,7 @@
         if (!status.examActive) appendLinks(section);
         return;
       }
+      if(typeof context.localTask==='function'){renderLocalTask();return;}
       if (status.profile.id === sourceProfile && !courseMode) {
         const section = frame('MaxExam 0.0 · помощник по геометрии');
         section.append(node('p', 'Открой задачу в одном из курсов — помощник получит её условие и текущий шаг. Профиль переключать не нужно; дневной лимит общий. Доказательство проверяет преподаватель.'));
@@ -193,7 +282,7 @@
       section.append(node('p', status.profile.title || profileNames[status.profile.id], { class: 'cabinet-assistant-profile' }));
       const modeNotice = node('p', '', { class: 'cabinet-assistant-mode', 'data-assistant-mode': status.mode || 'unavailable' });
       section.append(modeNotice);
-      section.append(node('p', courseMode ? 'Помощник знает выбранную задачу и текущий шаг этого курса. Условие переписывать не нужно. Помощь отмечается в твоей работе; доказательство проверяет преподаватель.'
+      section.append(node('p', courseMode ? (floating?'Условие уже выбрано. Помощь отмечается в работе; доказательство проверяет преподаватель.':'Помощник знает выбранную задачу и текущий шаг этого курса. Условие переписывать не нужно. Помощь отмечается в твоей работе; доказательство проверяет преподаватель.')
         : context.attemptId ? 'Помощь относится к открытой работе. После подсказки результат учитывается как выполненный с помощью.' : 'Для задачи из курса, открытого в другой вкладке, впиши условие сюда. Помощник не видит ту вкладку.', { class: 'cabinet-assistant-context' }));
       const form = node('form', null, { class: 'cabinet-assistant-form' });
       const topics = node('select', null, { name: 'assistant-topic' });
@@ -255,7 +344,7 @@
         modeNotice.textContent = status.examActive ? 'Помощник будет доступен после завершения проверочной работы.'
           : !available() ? 'Подключение или настройки помощника изменились. Проверь подключение; условие и предыдущие шаги останутся на странице.'
             : externalActive ? 'Можно попросить внешнюю модель объяснить шаг. Её ответ может потребовать проверки преподавателем.'
-              : courseMode ? 'Это подсказки MathExam из проверенного разбора выбранной задачи. Внешняя модель не вызывается.'
+              : courseMode ? (floating?'Подсказки из разбора этой задачи.':'Это подсказки MathExam из проверенного разбора выбранной задачи. Внешняя модель не вызывается.')
                 : 'Внешняя модель не подключена. Проверенные подсказки MathExam помогают повторить правила и разобрать поддерживаемые примеры.';
       };
       async function refreshStatus() {
@@ -302,7 +391,7 @@
             } finally { pendingFeedback = false; }
           }); feedback.append(vote);
         }
-        card.append(feedback, feedbackMessage); answers.append(card);
+        card.append(feedback, feedbackMessage); answers.append(card);if(floating&&panelOpen&&panel)panel.scrollTop=panel.scrollHeight;
       }
       async function ask(mode, easier) {
         if (busy || !current() || !quotaKnown || status.remaining < 1 || !available()) return;
@@ -373,7 +462,8 @@
         section.append(button('Проверить подключение', () => { revision++; host.hidden = true; load(); }));
       }
     }
-    load();
+    if(floating&&context.lazy===true){frame('MaxExam 0.0 · помощник').append(node('p','Подсказки к текущей задаче появятся после открытия помощника.'));loadOnOpen=load;}
+    else load();
     return destroy;
   }
   root.LearningAssistant = Object.freeze({ mount });

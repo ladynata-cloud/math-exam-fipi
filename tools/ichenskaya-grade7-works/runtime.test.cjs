@@ -122,10 +122,11 @@ test('collection and curriculum filters expose the 54/56 boundary and all work v
   } finally { f.close(); }
 });
 
-test('native helper receives only the companion task context and opens lazily', async () => {
+test('native helper makes the launcher available with lazy companion task context', async () => {
   const f = setup({ api: async () => { throw Error('No real request in this fixture'); } });
   try {
-    assert.equal(f.helperMounts.length, 0);
+    assert.equal(f.helperMounts.length, 1);
+    assert.equal(f.helperMounts[0].lazy,true);
     f.click('[data-course-assistant] > summary'); await f.tick();
     assert.equal(f.helperMounts.length, 1);
     assert.deepEqual(JSON.parse(JSON.stringify(f.helperMounts[0].courseContext())), { courseId: 'ichenskaya-grade7-works', lessonId: first, stepIndex: 0 });

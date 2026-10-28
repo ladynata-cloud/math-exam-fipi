@@ -62,6 +62,10 @@ const server = http.createServer(async (req, res) => {
             value.courseContext = clone(body.courseContext);
             value.answer.topic = body.courseContext.courseId === 'ichenskaya-grade7-works' ? 'ichenskaya-course-step' : 'atanasyan-course-step';
             value.answer.title = 'Подсказка к выбранному шагу';
+            const courseId=body.courseContext.courseId==='ichenskaya-grade7-works'?'ichenskaya-grade7-works':'atanasyan-first-steps';
+            const course=JSON.parse(fs.readFileSync(path.join(ROOT,'learning',courseId,'course.json'),'utf8'));
+            const sourceStep=course.lessons.find(lesson=>lesson.id===body.courseContext.lessonId)?.steps[body.courseContext.stepIndex];
+            if(sourceStep)value.answer.steps=[sourceStep.prompt,sourceStep.explanation];
           }
           return value;
         };
@@ -113,8 +117,19 @@ async function until(predicate, message) { for (let i = 0; i < 300; i++) { if (p
         window.refreshAssistant = () => dispose.refresh?.();
         window.closeAssistant = () => { active = false; dispose(); };
       }, { role, extra });
+      if(role!=='teacher'&&!extra.startClosed)await page.locator('[data-assistant-launcher]').click();
     }
-    await mount();
+    await mount('student',{startClosed:true});
+    await page.locator('[data-assistant-launcher]').waitFor();
+    assert.equal(await page.locator('.cabinet-assistant[role=dialog]').isHidden(),true);
+    assert.equal(calls.filter(call=>call.path==='/assistant/ask').length,0,'Opening a cabinet never requests an answer');
+    await page.locator('[data-assistant-launcher]').click();
+    assert.equal(await page.locator('[data-assistant-launcher]').getAttribute('aria-expanded'),'true');
+    await page.keyboard.press('Escape');
+    assert.equal(await page.locator('.cabinet-assistant[role=dialog]').isHidden(),true);
+    assert.equal(await page.locator('[data-assistant-launcher]').evaluate(el=>el===document.activeElement),true);
+    await page.locator('[data-assistant-launcher]').click();
+    check.push('floating helper starts closed; opening and Escape never request an answer and restore launcher focus');
     await page.getByRole('heading', { name: 'MaxExam 0.0 · проверенные подсказки' }).waitFor();
     assert.equal(await page.getByText('Внешняя модель не подключена.', { exact: false }).count(), 1);
     assert.equal(await page.locator('[name=assistant-external-consent]').count(), 0);
@@ -127,6 +142,11 @@ async function until(predicate, message) { for (let i = 0; i < 300; i++) { if (p
     assert.equal(await page.evaluate(() => window.injected || false), false);
     assert.equal(calls.filter(call => call.path === '/assistant/ask')[0].body.externalConsent, false);
     assert.equal(calls.filter(call => call.path === '/assistant/ask')[0].body.hintLevel, 1);
+    await page.locator('[data-assistant-close]').click();
+    assert.equal(await page.locator('[data-assistant-answer]').count(),1);
+    assert.equal(await page.locator('.cabinet-assistant[role=dialog]').isHidden(),true);
+    await page.locator('[data-assistant-launcher]').click();
+    assert.equal(await page.locator('[data-assistant-answer]').count(),1,'Closing retains source answers');
     await page.getByRole('button', { name: 'Следующая подсказка', exact: true }).click();
     await page.waitForFunction(() => document.querySelectorAll('[data-assistant-answer]').length === 2);
     assert.equal(calls.filter(call => call.path === '/assistant/ask').at(-1).body.hintLevel, 2);
@@ -340,6 +360,7 @@ async function until(predicate, message) { for (let i = 0; i < 300; i++) { if (p
       controller: 'student', version: 0, trainerVersion: 0, outcome: 'started', assistance: { hints: 0 },
       createdAt: '2026-01-01T00:00:00.000Z', updatedAt: '2026-01-01T00:00:00.000Z' };
     await page.goto(origin + '/learning/#attempt=fixture-current-attempt');
+    await page.locator('[data-assistant-launcher]').click();
     await page.getByRole('heading', { name: 'MaxExam 0.0 · проверенные подсказки' }).waitFor();
     await page.locator('[data-assistant-example]').click();
     await page.getByRole('button', { name: 'Хочу подсказку', exact: true }).click();
@@ -365,8 +386,10 @@ async function until(predicate, message) { for (let i = 0; i < 300; i++) { if (p
     // Exercise actual app.js mounting and same-browser account replacement.
     fixtureStatus = status(); actor = clone(pupil);
     await page.goto(origin + '/learning/#home');
-    await page.getByRole('heading', { name: 'MaxExam 0.0 · проверенные подсказки' }).waitFor();
+    await page.locator('[data-assistant-launcher]').waitFor();
     const welcome = page.locator('[data-mw-close]'); if (await welcome.isVisible()) await welcome.click();
+    await page.locator('[data-assistant-launcher]').click();
+    await page.getByRole('heading', { name: 'MaxExam 0.0 · проверенные подсказки' }).waitFor();
     await page.locator('[data-assistant-example]').click(); delayNext = true;
     await page.getByRole('button', { name: 'Хочу подсказку', exact: true }).click();
     await until(() => held, 'Actual cabinet request did not start');
@@ -378,6 +401,7 @@ async function until(predicate, message) { for (let i = 0; i < 300; i++) { if (p
     assert.equal(await page.locator('[data-assistant-answer]').count(), 0);
     assert.equal(await page.locator('body').textContent().then(text => text.includes('Следующий шаг <img')), false);
     actor = clone(pupil); await page.evaluate(() => LearningApp.synchronizeAccount({ shield: true }));
+    await page.locator('[data-assistant-launcher]').click();
     await page.getByRole('heading', { name: 'MaxExam 0.0 · проверенные подсказки' }).waitFor();
     await page.evaluate(() => LearningApp.navigate('security'));
     await page.waitForFunction(() => document.querySelector('#cabinet-assistant-host').hidden);
@@ -389,6 +413,7 @@ async function until(predicate, message) { for (let i = 0; i < 300; i++) { if (p
     // A hash-only goto keeps the security test's parked document; reload the
     // synthetic pupil session before testing the independent run-route case.
     await page.reload();
+    await page.locator('[data-assistant-launcher]').click();
     await page.getByRole('heading', { name: 'MaxExam 0.0 · проверенные подсказки' }).waitFor();
     const beforeRunReads = calls.filter(call => call.path === '/assistant' && call.method === 'GET').length;
     await page.evaluate(() => LearningApp.navigate('route&run=fixture-exam'));
@@ -397,6 +422,35 @@ async function until(predicate, message) { for (let i = 0; i < 300; i++) { if (p
     assert.equal(await page.locator('#cabinet-assistant-host').isHidden(), true);
     assert.equal(calls.filter(call => call.path === '/assistant' && call.method === 'GET').length, beforeRunReads);
     check.push('exam run parameter suppresses the helper regardless of hash-key order');
+
+    // Real native course renderer: launcher is visible throughout a lesson,
+    // while its status and source answer are still requested only on demand.
+    actor = clone(pupil); actor.profile.focus = 'https://mathexam.space/geometry-course/first-steps/';
+    fixtureStatus = { ...status(), profile: clone(courseProfile) }; unsafeTitle = false;
+    for(const [width,courseRoute] of [[1440,'atanasyan-lesson=atanasyan-7-9-main-1-part-1'],[390,'ichenskaya-lesson=ichenskaya-7-sr-01-v1-task-01']]){
+      await page.setViewportSize({width,height:width===1440?1000:844});
+      const reads=calls.filter(call=>call.path==='/assistant').length,asks=calls.filter(call=>call.path==='/assistant/ask').length;
+      await page.goto(origin+'/learning/?role=student#'+courseRoute);
+      await page.locator('[data-assistant-launcher]').waitFor();
+      assert.equal(await page.locator('.cabinet-assistant[role=dialog]').isHidden(),true);
+      assert.equal(calls.filter(call=>call.path==='/assistant').length,reads,'Native launcher does not read status until opened');
+      const launchBox=await page.locator('[data-assistant-launcher]').boundingBox();
+      assert(width-launchBox.x-launchBox.width<30);assert((width===1440?1000:844)-launchBox.y-launchBox.height<30);
+      await page.locator('[data-assistant-launcher]').click();
+      await page.getByRole('button',{name:'Хочу подсказку',exact:true}).waitFor();
+      assert.equal(calls.filter(call=>call.path==='/assistant/ask').length,asks,'Opening the panel does not request a source answer');
+      await page.getByRole('button',{name:'Хочу подсказку',exact:true}).click();
+      await page.locator('[data-assistant-answer]').waitFor();
+      await page.waitForFunction(()=>!document.querySelector('.cabinet-assistant-actions button[type=submit]')?.disabled);
+      assert.match(await page.locator('[data-assistance-status]').innerText(),/использована помощь/);
+      assert.equal(calls.filter(call=>call.path==='/assistant/ask').at(-1).body.courseContext.courseId,courseRoute.startsWith('atanasyan')?'atanasyan-first-steps':'ichenskaya-grade7-works');
+      const panelBox=await page.locator('.cabinet-assistant[role=dialog]').boundingBox();assert(panelBox.x>=0&&panelBox.y>=0&&panelBox.x+panelBox.width<=width+1);
+      if(process.env.LEARNING_ASSISTANT_BROWSER_ARTIFACTS){const dir=path.resolve(process.env.LEARNING_ASSISTANT_BROWSER_ARTIFACTS);fs.mkdirSync(dir,{recursive:true});await page.screenshot({path:path.join(dir,'native-assistant-'+width+'.png')});}
+      await page.locator('[data-assistant-close]').click();assert.equal(await page.locator('[data-assistant-answer]').count(),1);
+      await page.getByRole('button',{name:'← Все разделы курса',exact:true}).click();await page.getByRole('button',{name:'← В кабинет',exact:true}).click();await page.locator('[data-attached-course]').first().waitFor();
+      assert.equal(await page.locator('[data-assistant-answer]').count(),0);
+    }
+    check.push('actual native Atanasyan and Ichenskaya renderers keep a lazy lower-right helper on desktop/mobile, record help before the answer, and clear context on exit');
 
     assert.deepEqual(errors, []);
     assert.deepEqual(blocked, []);

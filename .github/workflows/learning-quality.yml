@@ -7,6 +7,9 @@ on:
       - 'learning/**'
       - 'geometry-course/textbook/assets/math-text.js'
       - 'geometry-course/textbook/assets/planar-viewer.js'
+      - 'geometry-course/assets/lab.js'
+      - 'geometry-course/data/course.json'
+      - 'geometry-course/atlas/**'
       - 'foundations/**'
       - 'grade7/geometry-rebuild/**'
       - 'ege-baza/path/**'
@@ -26,6 +29,8 @@ on:
       - 'tools/rounding-stepwise.dom.cjs'
       - 'tools/rounding-stepwise.browser.cjs'
       - 'tools/grade7-*'
+      - 'tools/geometry-object-labels.*'
+      - 'tools/geometry/object-labels.*'
       - 'tools/photo-proof-*'
       - 'tools/pre7-*'
       - 'Dockerfile'
@@ -127,6 +132,12 @@ jobs:
           node tools/learning-multiplication-support.dom.cjs
           node tools/learning-assignment-geometry.dom.cjs
           node tools/photo-proof-clear.dom.cjs
+      - name: Source helper boundaries and complete geometry object naming audit
+        run: |
+          node --test tools/learning-assistant-local.test.cjs
+          node --test tools/learning-legacy-geometry-helper.dom.cjs
+          node --test tools/geometry-object-labels.test.cjs
+          node --test tools/geometry/object-labels.test.cjs
       - name: Division diagnostic mobile and saved-state regression
         env:
           DIVISION_DIAGNOSTIC_OUTPUT_DIR: ${{ runner.temp }}/division-diagnostic-evidence
@@ -159,11 +170,14 @@ jobs:
       - name: Geometry rebuild classroom and narrow-screen scenarios
         env:
           GEOMETRY_REBUILD_OUTPUT_DIR: ${{ runner.temp }}/geometry-rebuild-evidence
+          GEOMETRY_OBJECT_LABEL_ARTIFACTS: ${{ runner.temp }}/geometry-rebuild-evidence/object-names
         run: |
           node tools/grade7-geometry-rebuild.browser.cjs
           node tools/grade7-active-practice.browser.cjs
           node tools/grade7-geometry-journey.browser.cjs
           node tools/photo-proof-clear.browser.cjs
+          node tools/geometry-object-labels.browser.cjs
+          node tools/geometry/object-labels.browser.cjs
       - name: All geometry construction font layouts
         if: ${{ !cancelled() && steps.browser_tools.outcome == 'success' }}
         env:
@@ -178,6 +192,8 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
       - name: Real classroom, trainer, homework and exam scenarios
+        env:
+          LEARNING_ASSISTANT_BROWSER_ARTIFACTS: ${{ runner.temp }}/geometry-helper-evidence
         run: |
           node --test --test-isolation=none tools/learning-assistant-browser.test.cjs
           node tools/learning-assistant-e2e.browser.cjs
@@ -206,6 +222,14 @@ jobs:
           node tools/profile-exam-first.browser.cjs
           node tools/pre7-foundations.browser.cjs
           node tools/grade7-geometry-core.browser.cjs
+      - name: Geometry helper desktop and mobile evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: geometry-helper-evidence
+          path: ${{ runner.temp }}/geometry-helper-evidence/
+          if-no-files-found: warn
+          retention-days: 7
       - name: Final whitespace and patch check
         run: git diff --check
       - name: Cabinet assistant preparation gate

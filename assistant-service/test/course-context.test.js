@@ -21,9 +21,14 @@ function request(context = contextFor(), extra = {}) {
 
 test('independent service packages the exact minimum projection of all 255 reviewed course cards', () => {
   const digest = createHash('sha256').update(raw).digest('hex');
-  assert.equal(digest, '551c433a5332dba52779e74f7e6f95289c3915bdc55da3f7c0ed71d0b7e651a3', 'Companion cannot widen or rewrite the primary course');
+  assert.equal(digest, 'b7023d8b851143695e998445a420a09df0119c8e297a7314766e38ace40930ad', 'Companion cannot widen or rewrite the primary course');
   assert.equal(createHash('sha256').update(readFileSync(new URL('../knowledge/atanasyan-first-steps.json', import.meta.url))).digest('hex'),
-    '2b69a93b35d05dda1ae195cd5cf0ea2482dbd7064e82d7736750afcbdce024aa', 'Existing prepared source remains byte-identical');
+    '2df5fd26028b6c940fc4a1720891adf77a4a95a630d18dd8ec76f99d2eb3dc60', 'Prepared source matches the audited provenance rebind');
+  // Only the two provenance fingerprints changed after the canonical book
+  // gained chapter V. Preserve the earlier teaching projection exactly.
+  const previousProvenance = { ...snapshot, courseSha256: '551c433a5332dba52779e74f7e6f95289c3915bdc55da3f7c0ed71d0b7e651a3', sourceSha256: 'afd4228a2e1444c8fca719fcc2dc0145ca5419354980a33dcadbf637b560325d' };
+  assert.equal(createHash('sha256').update(JSON.stringify(previousProvenance, null, 2) + '\n').digest('hex'),
+    '2b69a93b35d05dda1ae195cd5cf0ea2482dbd7064e82d7736750afcbdce024aa', 'No reviewed teaching text may change during a provenance rebind');
   assert.equal(snapshot.courseSha256, digest);
   assert.deepEqual(snapshot, cabinet.projectCourse(course, digest));
   assert.equal(snapshot.lessons.filter(lesson => lesson.kind === 'exercise').length, 232);
