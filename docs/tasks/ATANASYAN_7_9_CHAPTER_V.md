@@ -1,8 +1,11 @@
 # Атанасян 7–9: глава V, №331–412
 
-**Paused by owner, 26 October 2026.** Preparation is saved in Draft PR #354.
-Resume from [the checkpoint](ATANASYAN_7_9_CHAPTER_V_PAUSE.md); no release
-readiness or publication authorization is implied by this pause.
+**Resumed by owner, 28 October 2026.** Continue the existing PR #354 from
+[the saved checkpoint](ATANASYAN_7_9_CHAPTER_V_PAUSE.md). The current request
+is to check and continue the 7–9 course; the owner also explicitly authorized
+the necessary completion actions without repeated permission requests in this
+conversation. This authorization does not replace content, visual, preservation,
+exact-head or production checks.
 
 ## Identity and approved scope
 
@@ -63,11 +66,11 @@ and its four prerequisites.
 - [x] Reproducible preparation/build, geometry assertions and scope checks pass.
 - [x] Preserve all previous cards, reviews, runtime and learner identifiers.
 - [x] Retained-work and complete DOM progression checks pass.
-- [ ] Actual browser checks cover 320 px and 1280 px and preserve image evidence.
-- [ ] Independently inspect every new view/width pair; close findings on fresh evidence.
-- [ ] Bind chapter-V review to exact authored/runtime hashes; do not promote drafts early.
+- [x] Actual browser checks cover 320 px and 1280 px and preserve image evidence.
+- [x] Independently inspect every new view/width pair; close findings on fresh evidence.
+- [x] Bind chapter-V review to exact authored/runtime hashes; do not promote drafts early.
 - [ ] Exact-head source/browser and existing cabinet/board CI pass.
-- [ ] Inspect complete diff/privacy/links and run full-patch whitespace checks.
+- [x] Inspect complete diff/privacy/links and run full-patch whitespace checks.
 
 Target gate: `ATANASYAN_7_9_CHAPTER_V_READY`. Publication is a separate verified
 state. New cards remain `in-review` until their own valid review manifest exists;
@@ -103,3 +106,33 @@ The new worktree starts at the verified published base. Chapter-IV publication
 is reconciled in the project status within this task. Three disjoint exercise
 authoring fragments (331–357, 358–384, 385–412), theory/questions, independent
 source inventory and preservation review are assigned separately.
+
+### Resumption, 28 October 2026
+
+- Retrieved saved head `814e13caba3a3fc50277bd73e35d2ec013f2f177` and current
+  main `c5bcbe1e2b127bffb26e9330ae77307fdc664d4d`.
+- Recovered browser run40357407861 and verified its artifact SHA256
+  `ab1a63172faf98c10486329cde02c627afdb1e039679134ccba54e7f9a72d05b`.
+  It completed 7568 view checks, 1410 step flows and 16 interactions, but
+  failed on 77 view/width pairs with label collisions. It is not a pass.
+- Resume scope is to repair those authored models, independently inspect
+  current images, rerun the complete course and board gates, and verify
+  integration with current main before release. The 569-card baseline,
+  shared runtime and source/solution text remain protected.
+- All four visual fragments were repaired within their existing generators;
+  every preparation file, condition, answer and didactic step is unchanged.
+  Independent reviewers checked both the geometric changes and every current
+  image at 320/1280. Focused and actual-page reviews are recorded separately;
+  visually different captures were not transferred by similarity.
+- The full local browser gate passed all 705 cards, 7568 view checks, 1410
+  step flows and 16 interaction scenarios, with no page or layout errors.
+  After that snapshot, two notes in 408 were corrected from AB to A₁B₁;
+  the complete bundle comparison contains only those notes and their derived
+  content hashes. All 16 actual-page 408 view/width pairs were checked again,
+  and the four changed images were independently reviewed.
+- Published-course preservation 9, review-boundary 8, claim-probe 6,
+  coordinate 2581, retained-work 19, DOM 2547 and parent geometry/SEO checks passed.
+  The real cabinet/shared-board browser gate passed fixed 92a, saved drafts,
+  grant/revoke, observer/controller reload, late join and 320px layout.
+- Final exact-head cloud checks and production evidence are tracked in PR #354;
+  local technical review alone is not a deployment claim.

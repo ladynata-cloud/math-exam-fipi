@@ -431,7 +431,7 @@ Updated: 2026-10-26 (Asia/Novosibirsk)
   checked URLs match the reviewed file sizes/hashes. The preparation wording
   above is historical; the current published baseline includes chapterIV.
 
-## Paused by owner: Atanasyan 7–9 chapter V
+## Reviewed: Atanasyan 7–9 chapter V, resumed 28 October
 
 - [Scope](tasks/ATANASYAN_7_9_CHAPTER_V.md), HIGH review; owner requested
   continuation after the verified publication of chapterIV.
@@ -441,15 +441,20 @@ Updated: 2026-10-26 (Asia/Novosibirsk)
   30 review questions; independent inventory confirms136 new cards and705
   total. All materials are authored; independent source, mathematics, didactic
   and authored-model reviews passed for all four fragments.
-- Initial local content/model, DOM/retained-work and all9 preservation tests
-  pass. New cards remain `in-review`; published569 remain reviewed.
-- Draft PR #354; paused by owner on 26 October 2026. Actual mobile/desktop
-  captures and image review are pending. Resume from the
-  [pause checkpoint](tasks/ATANASYAN_7_9_CHAPTER_V_PAUSE.md).
-- Next: inspect every new image and close visual findings; complete exact-head
-  and composed-base gates; prepare the review-bound publication decision.
-- Existing569 cards and runtime remain preserved. Advanced413–461 and later
-  chapters remain separate; no new content is claimed published at this stage.
+- The owner resumed PR #354 on 28 October. The earlier 77 layout failures are
+  closed through authored-model fixes; source/solution text and the runtime
+  are unchanged. Independent actual-page review covers 1756 new view/width
+  pairs, with the four corrected 408 caption images checked afresh.
+- Full local browser gate: 705 cards, 7568 view checks, 1410 step flows and 16
+  interactions PASS. Preservation 9, coordinate 2581, retained-work 19,
+  complete DOM 2547 and actual cabinet/shared-board browser checks also PASS.
+- Chapter V has its own hash-bound review manifest. Release evidence, exact
+  head/current-main checks and deployment are tracked in
+  [PR354](https://github.com/ladynata-cloud/math-exam-fipi/pull/354).
+  The [pause checkpoint](tasks/ATANASYAN_7_9_CHAPTER_V_PAUSE.md) is historical.
+- Existing 569 cards and runtime remain preserved. The resulting course has
+  705 cards, all 1–412, 45 theory points and 117 review questions. Advanced 413–461
+  and the 8–9-grade chapters remain unfinished; this is not the whole textbook.
 
 ## Published: Atanasyan 7–9 chapter II, triangles
 

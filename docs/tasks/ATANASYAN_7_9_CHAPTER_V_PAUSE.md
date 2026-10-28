@@ -1,5 +1,10 @@
 # Chapter V — owner-requested pause and resume checkpoint
 
+Historical checkpoint: the owner resumed this task on 28 October 2026.
+Current execution and checks are recorded in
+[ATANASYAN_7_9_CHAPTER_V.md](ATANASYAN_7_9_CHAPTER_V.md). The unfinished
+checks and paused authorization below describe the 26 October snapshot.
+
 The owner requested a pause on 26 October 2026 so this same conversation can
 resume later. Authoring, reviews, polling and manual QA have stopped. This
 checkpoint saves completed work; it is not a release-ready verdict.

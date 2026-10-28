@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "at": "2026-10-28T07:58:59.326079+00:00",
+  "scope": {
+    "cards": 136,
+    "viewWidthPairs": 1756,
+    "widths": [
+      320,
+      1280
+    ]
+  },
+  "independentActualPageReviews": [
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_A_FULL_CONTEXT_VISUAL_REVIEW.json",
+      "sha256": "954369b74c66b1dfdc5b6291962a69a6a69a7523fb4d0d45d8f8d1bc753d5d6f",
+      "viewWidthPairs": 298
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_B_FULL_CONTEXT_VISUAL_REVIEW.json",
+      "sha256": "feeb89cc84f5e31319d7c1d9c0fd8cb6dbe3c59f4b7995597ce46eb22898e496",
+      "viewWidthPairs": 404
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_C_FULL_CONTEXT_VISUAL_REVIEW.json",
+      "sha256": "8eb8b8f89e21ec9697b3cdf438127c2602ae98dd92198c5b051829cfdbd6abab",
+      "viewWidthPairs": 388
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_THEORY_FULL_CONTEXT_REVIEW.json",
+      "sha256": "2400feb1c421c9cbc583a83e11cf6667c177eed7b2806e221cbcc0447f0828ad",
+      "viewWidthPairs": 666
+    }
+  ],
+  "completeRosterVerified": true,
+  "allCurrentImageHashesVerified": true,
+  "openFindings": 0,
+  "fullBrowserGate": {
+    "completed": true,
+    "cards": 705,
+    "viewChecks": 7568,
+    "stepFlows": 1410,
+    "interactions": 16,
+    "errors": 0,
+    "evidenceSha256": "7f7912ad4fa88aabbd5efd8c0e1abd2271ee45979d3dcc6ed3031a833688fd66",
+    "bundleSha256": "58cec7c15c71b92c87c896427d9a550023a8c0a44ac139705394907ff4f9dee7",
+    "gateScriptSha256": "07b49df556ebb6ee97ddcabbd3a4e3d12d570c7d4816446555356e214fd12577"
+  },
+  "captionCorrection": {
+    "lessonId": "atanasyan-7-9-main-408-part-1",
+    "viewWidthPairs": 16,
+    "freshReviewedImages": 4,
+    "evidenceSha256": "f1a13b654f7130a5712907e46e74a9ccacb55da83b0d970dd0c21d1c1a905b26",
+    "deltaReview": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_CAPTION_DELTA.json"
+  },
+  "environment": "Local cloud workspace; Playwright1.55.0; Chromium headless_shell revision1187. Final exact-head GitHub CI uses the pinned repository workflow separately.",
+  "publicationClaim": false,
+  "releaseChecksPending": "Exact-head cloud checks, current-main composition and production deployment verification are recorded in PR354.",
+  "publicModeInteractions": {
+    "completed": true,
+    "scenarios": 14,
+    "evidenceSha256": "2dcaed25069d4d3c80d5d0d43a3046998f5644968e5f638e6c9babca54c574c4",
+    "description": "Reviewed public catalogue and direct chapter entry, notes, theory return, reload and honest manual assessment after approval of all705 cards. Full-course expansion scenarios are in the separate full-run evidence."
+  },
+  "strictCourseAndPreservation": "PASS after adding the exact chapter-V manifest; all705 reviewed and569 prior records unchanged."
+}
