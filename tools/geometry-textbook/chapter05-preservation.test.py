@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Protect the published I–IV course while the exact-edition chapter V is added.
+"""Protect the published I–IV course, chapter V and explicit supplement boundaries.
 
 The oracle was frozen from published commit 44eab4d1, not from a candidate build.
-Default mode also requires the complete independently inventoried V integration.
+Default mode requires complete independently inventoried V integration and any
+explicitly scoped grade-seven supplement. A hash-bound caption-only amendment
+may change presentation files; it may not change published lesson payloads.
 --preservation-only is an explicitly limited early-authoring check, not a V gate.
 All corruption probes and missing-review experiments stay in memory or temp dirs.
 """
@@ -19,6 +21,8 @@ import tempfile
 import unittest
 
 from build_course import compose
+from published_preservation import (assert_runtime_preserved, assert_source_inventory_preserved,
+                                    assert_file_preserved)
 
 ROOT = Path(__file__).resolve().parents[2]
 COURSE = ROOT / 'geometry-course/textbook'
@@ -54,7 +58,7 @@ def require(condition, message):
 
 
 def assert_file_bytes(name, raw, expected):
-    require(sha(raw) == expected, 'Published file changed: ' + name)
+    assert_file_preserved(name, raw, expected)
 
 
 def validate_published(bundle, frozen):
@@ -86,11 +90,9 @@ def validate_published(bundle, frozen):
         actual = next((c for c in bundle['build']['chapters'] if c['chapter'] == chapter['chapter']), None)
         require(actual == chapter['publishedBuildRecord'],
                 'Published chapter review/build binding changed: ' + chapter['label'])
-    require(bundle['build']['implementationSha256'] == frozen['implementationSha256'],
-            'Shared runtime hash changed')
+    assert_runtime_preserved(bundle['build']['implementationSha256'], frozen['implementationSha256'])
     require(normalized(bundle['catalog']['book']) == frozen['catalogBookSha256'], 'Catalog edition changed')
-    require(normalized(bundle['sourceInventory']) == frozen['normalizedSourceInventorySha256'],
-            'Exact full-book source inventory changed')
+    assert_source_inventory_preserved(bundle['sourceInventory'], frozen['normalizedSourceInventorySha256'])
     require(bundle['catalog']['inventoryComplete'] is False, 'Complete exercise inventory falsely claimed')
     require(bundle['build']['fullTextbookComplete'] is False, 'Complete textbook falsely claimed')
 
@@ -130,6 +132,29 @@ def expected_v_rows(source_map):
     return expected
 
 
+def expected_supplement_rows(scope):
+    """A separately inventoried grade section must never be counted as chapter V."""
+    supplements = scope.get('supplements', [])
+    require(len(supplements) <= 1, 'Unexpected extra supplement')
+    if not supplements:
+        return {}
+    supplement = supplements[0]
+    require(supplement['key'] == '7-advanced' and supplement['exerciseNumbers'] == [413, 461]
+            and supplement['label'] == '7 класс · повышенная трудность', 'Wrong advanced section scope')
+    source = read(ROOT/'tools/geometry-textbook/grade-07-advanced-source-map.json')
+    require(source['bookId'] == BOOK_ID and source['source']['sha256'] == SOURCE_SHA256,
+            'Wrong advanced source edition')
+    require([e['number'] for e in source['exercises']] == list(range(413, 462)),
+            'Incomplete independent advanced inventory')
+    rows = {}
+    for exercise in source['exercises']:
+        for i, part in enumerate(exercise['parts'], 1):
+            rows[f"atanasyan-7-9-main-{exercise['number']}-part-{i}"] = part
+    require(len(rows) == supplement['mainParts'] == supplement['cards'] == source['counts']['cards'],
+            'Advanced card count differs from independent source')
+    return rows
+
+
 def validate_chapter_v(bundle, frozen, source_map, scope):
     validate_published(bundle, frozen)
     require(scope.get('schemaVersion') == 1 and scope.get('bookId') == BOOK_ID,
@@ -137,13 +162,14 @@ def validate_chapter_v(bundle, frozen, source_map, scope):
     require(scope.get('fullTextbookComplete') is False,
             'Release scope falsely claims the full textbook is complete')
     expected = expected_v_rows(source_map)
-    allowed = set(frozen['publishedLessonIds']) | set(expected)
+    supplementary = expected_supplement_rows(scope)
+    allowed = set(frozen['publishedLessonIds']) | set(expected) | set(supplementary)
     require({x['id'] for x in bundle['lessons']} == allowed, 'Missing or out-of-scope lesson identity')
     require({x['id'] for x in bundle['catalog']['entries']} == allowed, 'Missing or out-of-scope catalog identity')
     require([x['chapter'] for x in scope['chapters']] == [1, 2, 3, 4, 5], 'Release includes a later chapter')
     require(scope['chapters'][:4] == frozen['publishedReleaseScope']['chapters'],
             'Prior release scopes changed')
-    expected_count = 569 + len(expected)
+    expected_count = 569 + len(expected) + len(supplementary)
     require(scope['totalCards'] == len(bundle['lessons']) == len(bundle['catalog']['entries'])
             == bundle['build']['authoredCards'] == expected_count, 'Integrated V card count mismatch')
     target = scope['chapters'][-1]
@@ -156,7 +182,8 @@ def validate_chapter_v(bundle, frozen, source_map, scope):
     require(built['numberedExercises'] == 82 and built['theoryPoints'] == 7
             and built['selfcheckQuestions'] == 30 and built['authoredCards'] == len(expected),
             'Wrong built V source counts')
-    require(bundle['build']['numberedExercises'] == 412, 'Wrong integrated exercise endpoint')
+    extra_numbers = sum(last-first+1 for first,last in [s['exerciseNumbers'] for s in scope.get('supplements', [])])
+    require(bundle['build']['numberedExercises'] == 412 + extra_numbers, 'Wrong integrated exercise endpoint')
     entries = {x['id']: x for x in bundle['catalog']['entries']}
     for lesson in (row for row in bundle['lessons'] if row['id'] in expected):
         ident = lesson['id']
@@ -196,7 +223,7 @@ class PublishedPreservation(unittest.TestCase):
     def test_all569_full_records_catalog_ids_and_reviews_are_unchanged(self):
         validate_published(self.bundle, self.frozen)
 
-    def test_old_preparations_models_reviews_runtime_and_history_are_byte_identical(self):
+    def test_published_files_match_exact_bytes_or_the_scoped_caption_amendment(self):
         for name, expected in self.frozen['immutableFiles'].items():
             with self.subTest(file=name):
                 assert_file_bytes(name, (ROOT/name).read_bytes(), expected)
@@ -286,7 +313,8 @@ class ChapterVIntegration(unittest.TestCase):
             script = """const fs=require('node:fs'),assert=require('node:assert/strict');
 const API=require(process.argv[1]),bundle=JSON.parse(fs.readFileSync(process.argv[2]));
 const actual=API.inspectBundle(bundle.catalog,bundle.lessons),preview=API.inspectBundle(bundle.catalog,bundle.lessons,{allowInReview:true});
-assert.equal(actual.available.size,569);assert.deepEqual(actual.issues,[]);
+assert.equal(actual.available.size,bundle.lessons.filter(l=>l.status==='reviewed').length);assert.deepEqual(actual.issues,[]);
+assert.equal([...actual.available.values()].filter(row=>['I','II','III','IV'].includes(row.source.chapter)).length,569);
 assert(![...actual.available.values()].some(row=>row.source.chapter==='V'));
 assert.equal(preview.available.size,bundle.lessons.length);assert.deepEqual(preview.issues,[]);
 console.log('CHAPTER_V_PENDING_PUBLICATION_BOUNDARY_OK');"""

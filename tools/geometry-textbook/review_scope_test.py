@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Release-boundary regressions; all forged review fixtures stay in temp copies."""
 import json
-import hashlib
 import shutil
 import tempfile
 import unittest
 from pathlib import Path
 
 from build_course import COURSE, ROOT, compose, digest, read
+from published_preservation import assert_runtime_preserved, assert_file_preserved, assert_all_705_preserved
 
 
 class ChapterReviewBoundary(unittest.TestCase):
@@ -18,6 +18,7 @@ class ChapterReviewBoundary(unittest.TestCase):
         cls.previous = read(ROOT / 'tools/geometry-textbook/published-chapters-01-02.json')
         cls.published = read(ROOT / 'tools/geometry-textbook/published-chapters-01-03.json')
         cls.chapters = cls.original['build']['chapters']
+        cls.supplements = cls.original['build'].get('supplements', [])
 
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -29,14 +30,20 @@ class ChapterReviewBoundary(unittest.TestCase):
         (self.course / name).write_text(json.dumps(value, ensure_ascii=False))
 
     def chapter(self, bundle, chapter):
+        if isinstance(chapter, str):
+            return next(item for item in bundle['build'].get('supplements', []) if item['key'] == chapter)
         return next(item for item in bundle['build']['chapters'] if item['chapter'] == chapter)
 
     def review_name(self, chapter):
+        if isinstance(chapter, str):
+            return self.chapter(self.original, chapter)['reviewFile']
         return 'release-review.json' if chapter == 1 else f'release-review-chapter-{chapter:02d}.json'
 
     def approve_fixture_chapters(self):
         for chapter in self.chapters:
             self.synthetic_review(chapter['chapter'])
+        for supplement in self.supplements:
+            self.synthetic_review(supplement['key'])
 
     def test_published_chapter_is_unchanged(self):
         lessons = [lesson for lesson in self.original['lessons'] if lesson['source']['chapter'] == 'I']
@@ -45,7 +52,7 @@ class ChapterReviewBoundary(unittest.TestCase):
         self.assertEqual(digest(lessons), self.baseline['normalizedLessonsSha256'])
         self.assertEqual(digest(entries), self.baseline['normalizedCatalogEntriesSha256'])
         self.assertEqual(self.chapter(self.original, 1)['authoredContentSha256'], self.baseline['authoredContentSha256'])
-        self.assertEqual(self.original['build']['implementationSha256'], self.baseline['implementationSha256'])
+        assert_runtime_preserved(self.original['build']['implementationSha256'], self.baseline['implementationSha256'])
 
     def test_all_336_published_cards_and_their_review_provenance_are_unchanged(self):
         labels = [chapter['label'] for chapter in self.previous['chapters']]
@@ -54,7 +61,7 @@ class ChapterReviewBoundary(unittest.TestCase):
         self.assertEqual(len(lessons), self.previous['cards'])
         self.assertEqual(digest(lessons), self.previous['normalizedLessonsSha256'])
         self.assertEqual(digest(entries), self.previous['normalizedCatalogEntriesSha256'])
-        self.assertEqual(self.original['build']['implementationSha256'], self.previous['implementationSha256'])
+        assert_runtime_preserved(self.original['build']['implementationSha256'], self.previous['implementationSha256'])
         for baseline in self.previous['chapters']:
             with self.subTest(chapter=baseline['chapter']):
                 actual = [lesson for lesson in lessons if lesson['source']['chapter'] == baseline['label']]
@@ -65,7 +72,7 @@ class ChapterReviewBoundary(unittest.TestCase):
                 self.assertEqual(self.chapter(self.original, baseline['chapter'])['authoredContentSha256'],
                                  baseline['authoredContentSha256'])
 
-    def test_all_403_published_cards_catalog_and_review_manifests_are_unchanged(self):
+    def test_all_403_published_cards_catalog_and_content_review_provenance_are_unchanged(self):
         # Frozen from the published base Git object, not regenerated from the
         # candidate. Chapter III must receive the same preservation guarantee
         # as I–II when chapter IV is appended.
@@ -77,7 +84,7 @@ class ChapterReviewBoundary(unittest.TestCase):
         self.assertEqual(len(entries), self.published['cards'])
         self.assertEqual(digest(lessons), self.published['normalizedLessonsSha256'])
         self.assertEqual(digest(entries), self.published['normalizedCatalogEntriesSha256'])
-        self.assertEqual(self.original['build']['implementationSha256'], self.published['implementationSha256'])
+        assert_runtime_preserved(self.original['build']['implementationSha256'], self.published['implementationSha256'])
         for baseline in self.published['chapters']:
             with self.subTest(chapter=baseline['chapter']):
                 actual = [lesson for lesson in lessons if lesson['source']['chapter'] == baseline['label']]
@@ -89,7 +96,10 @@ class ChapterReviewBoundary(unittest.TestCase):
                 self.assertTrue(chapter['publicationReviewMatches'])
                 self.assertEqual(chapter['authoredContentSha256'], baseline['authoredContentSha256'])
                 manifest = COURSE / self.review_name(baseline['chapter'])
-                self.assertEqual(hashlib.sha256(manifest.read_bytes()).hexdigest(), baseline['releaseReviewSha256'])
+                assert_file_preserved(str(manifest.relative_to(ROOT)), manifest.read_bytes(), baseline['releaseReviewSha256'])
+
+    def test_all_705_published_cards_and_historical_evidence_survive_caption_changes(self):
+        assert_all_705_preserved(self.original)
 
     def test_missing_new_review_does_not_revoke_old_review(self):
         for target in self.chapters[1:]:
@@ -125,7 +135,7 @@ class ChapterReviewBoundary(unittest.TestCase):
                       implementationSha256=self.original['build']['implementationSha256'],
                       source='passed', mathematics='passed', models='passed',
                       pedagogy='passed', browser='passed', reviewer='TEST FIXTURE ONLY',
-                      at='2026-01-01T00:00:00Z', scope={'chapter': chapter['chapterLabel']})
+                      at='2026-01-01T00:00:00Z', scope=({'key': number} if isinstance(number, str) else {'chapter': chapter['chapterLabel']}))
         self.write(self.review_name(number), review)
 
     def test_changed_new_content_invalidates_only_its_review(self):
@@ -145,10 +155,65 @@ class ChapterReviewBoundary(unittest.TestCase):
 
     def test_runtime_change_requires_every_chapter_to_be_reviewed_again(self):
         self.approve_fixture_chapters()
-        path = self.course / 'assets/engine.js'
-        path.write_text(path.read_text() + '\n// Changed after review.\n')
+        for name in ['assets/engine.js', 'assets/board-adapter.js']:
+            with self.subTest(runtime=name):
+                path = self.course / name
+                original = path.read_bytes()
+                path.write_bytes(original + b'\n// Changed after review.\n')
+                bundle = compose(self.course)
+                self.assertTrue(all(not item['publicationReviewMatches'] for item in bundle['build']['chapters'] + bundle['build'].get('supplements', [])))
+                path.write_bytes(original)
+
+
+    def test_changed_paragraph_reference_invalidates_every_runtime_review(self):
+        self.approve_fixture_chapters()
+        inventory = read(self.course / 'source-inventory.json')
+        inventory['paragraphs'][0]['number'] += 100
+        self.write('source-inventory.json', inventory)
         bundle = compose(self.course)
-        self.assertTrue(all(not item['publicationReviewMatches'] for item in bundle['build']['chapters']))
+        self.assertTrue(all(not item['publicationReviewMatches'] for item in bundle['build']['chapters'] + bundle['build'].get('supplements', [])))
+
+    def test_advanced_review_is_separate_and_cannot_be_borrowed_from_chapter_v(self):
+        for supplement in self.supplements:
+            name = supplement['reviewFile']
+            self.approve_fixture_chapters()
+            (self.course/name).unlink(missing_ok=True)
+            bundle = compose(self.course)
+            self.assertTrue(all(c['publicationReviewMatches'] for c in bundle['build']['chapters']))
+            self.assertFalse(self.chapter(bundle, supplement['key'])['publicationReviewMatches'])
+            self.assertTrue(all(l['status'] == 'in-review' for l in bundle['lessons']
+                                if l['source']['chapter'] == supplement['label']))
+            self.write(name, read(self.course/'release-review-chapter-05.json'))
+            self.assertFalse(self.chapter(compose(self.course), supplement['key'])['publicationReviewMatches'])
+
+    def test_advanced_model_edit_invalidates_only_its_own_review(self):
+        for supplement in self.supplements:
+            self.approve_fixture_chapters()
+            self.assertTrue(compose(self.course)['build']['publicationReviewMatches'])
+            name = 'models/grade-07-advanced-a.json'
+            models = read(self.course/name)
+            models['models'][0]['model']['description'] += ' Changed after review.'
+            self.write(name, models)
+            bundle = compose(self.course)
+            self.assertTrue(all(c['publicationReviewMatches'] for c in bundle['build']['chapters']))
+            self.assertFalse(self.chapter(bundle, supplement['key'])['publicationReviewMatches'])
+            shutil.copy2(COURSE/name, self.course/name)
+
+    def test_advanced_number_and_model_omissions_fail_build(self):
+        for supplement in self.supplements:
+            name = 'preparation/grade-07-advanced-a.json'
+            prepared = read(self.course/name)
+            prepared['exercises'].pop()
+            self.write(name, prepared)
+            with self.assertRaisesRegex(ValueError, 'every exercise'):
+                compose(self.course)
+            shutil.copy2(COURSE/name, self.course/name)
+            name = 'models/grade-07-advanced-a.json'
+            models = read(self.course/name)
+            models['models'].pop()
+            self.write(name, models)
+            with self.assertRaisesRegex(ValueError, 'Missing authored model'):
+                compose(self.course)
 
     def test_source_number_and_model_omissions_fail_build(self):
         for target in self.chapters[1:]:

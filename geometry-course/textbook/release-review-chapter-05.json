@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "status": "passed",
   "authoredContentSha256": "b1690b854231ef758b34123a1545ded507800e73b8704833af08d2978cc7276f",
-  "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
+  "implementationSha256": "f358f65b5955ad8ae2443bc8916aadda8f502a07e6274e90b9b21d727979813c",
   "source": "passed",
   "mathematics": "passed",
   "models": "passed",
@@ -166,5 +166,9 @@
   },
   "claude": "Documented same-course owner exception applies; no Claude or external-provider verdict is claimed.",
   "mergeOrDeploymentAuthorization": false,
-  "authorizationNote": "This technical manifest does not itself grant publication authority; the current owner conversation governs release."
+  "authorizationNote": "This technical manifest does not itself grant publication authority; the current owner conversation governs release.",
+  "runtimeLabelReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_LABELS_RUNTIME_REVIEW.json",
+    "sha256": "0ade5dd181b4467a1af642d0bfa13e5192f64e3093e73035bf0835a10b1faf00"
+  }
 }

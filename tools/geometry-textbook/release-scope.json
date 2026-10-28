@@ -8,6 +8,9 @@
     {"chapter": 4, "label": "IV", "exerciseNumbers": [228, 330], "mainParts": 135, "theoryPoints": [31, 38], "selfcheckQuestions": 23, "cards": 166},
     {"chapter": 5, "label": "V", "exerciseNumbers": [331, 412], "mainParts": 99, "theoryPoints": [39, 45], "selfcheckQuestions": 30, "cards": 136}
   ],
-  "totalCards": 705,
+  "supplements": [
+    {"key": "7-advanced", "label": "7 класс · повышенная трудность", "exerciseNumbers": [413, 461], "mainParts": 50, "cards": 50}
+  ],
+  "totalCards": 755,
   "fullTextbookComplete": false
 }

@@ -1,5 +1,31 @@
 # MathExam project status
 
+
+## Prepared: Atanasyan source captions and advanced grade-seven problems 413–461
+
+- Owner task: [captions and grade-seven continuation](tasks/ATANASYAN_7_9_LABELS_ADVANCED7.md),
+  HIGH, branch `content/atanasyan-labels-advanced-20261028`, base
+  `fa8d1b7ced31a5941ad52d8a21a48b63daaa84a8`.
+- Read-only production reconciliation returned the exact base bundle bytes:
+  705 reviewed cards, all numbered exercises 1–412. Public bundle SHA256
+  `bcd2aba64872aabcfd763448d9e3223ae90bb40a780091dd5922059c14583d81`.
+- The candidate adds every advanced grade-seven exercise 413–461: 49 numbers,
+  50 parts, 213 original steps and 317 source-specific views. Total: 755 cards,
+  593 exercise parts, 45 theory points and 117 chapter review questions.
+- Captions explicitly refer to tasks, points, paragraphs and chapters. The 19
+  paragraph ranges of chapters I–V are independently checked. Grade-level
+  advanced exercises retain their source chapter groups and are not chapter VI.
+- All 705 prior lesson/catalog payloads and learner keys are protected by an
+  immutable published-base oracle. The displayed source index and the existing
+  92a caption adapter are now explicit runtime review inputs. The 92a protocol,
+  theory/state contract, server and real pupil records remain unchanged.
+- Final gate evidence, limitations and the exact cloud head belong in the
+  [continuation report](reports/ATANASYAN_7_9_LABELS_ADVANCED7_20261028.md) and PR.
+  This is preparation, not a claim that the candidate has been deployed.
+- Next numbered section: chapter VI, “Четырёхугольники”, 462–540 (grade eight).
+  Research tasks, complex tasks and appendices remain separately inventoried;
+  the full 1–1431 textbook is not complete.
+
 Updated: 2026-10-28 (Asia/Novosibirsk)
 
 ## Prepared: Ichenskaya independent and test works alongside Atanasyan
