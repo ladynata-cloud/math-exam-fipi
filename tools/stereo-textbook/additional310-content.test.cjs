@@ -9,10 +9,12 @@ const root = path.resolve(__dirname, '../..');
 const dir = path.join(root, 'stereo-course/textbook/lessons');
 const baseline = require('./additional310-baseline.cjs');
 const {sha, published, ids} = baseline;
-const sourceIndex = require(root + '/stereo-course/textbook/source-index.json');
-const production = require(root + '/stereo-course/textbook/data/course.json');
-const registry = require('./content-review.json');
-const screenshots = require('./browser-cases.cjs');
+const later = require('./cylinder-baseline.cjs');
+const currentIndex = require(root + '/stereo-course/textbook/source-index.json');
+const sourceIndex = later.previousIndex(currentIndex);
+const production = later.previousCourse(require(root + '/stereo-course/textbook/data/course.json'), currentIndex);
+const registry = later.previousRegistry(require('./content-review.json'));
+const screenshots = later.previousCases(require('./browser-cases.cjs'));
 const API = require(root + '/stereo-course/textbook/assets/engine.js');
 const reportPath = 'docs/reviews/ATANASYAN_CHAPTER_III_FINAL_310_319_CONTENT.json';
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
@@ -57,7 +59,7 @@ const corruptCases = new Map(screenshots);
 corruptCases.set([...corruptCases.keys()][0], 'changed-historical-case');
 assert.throws(() => baseline.previousCases(corruptCases), /all 1188 prior browser cases/);
 const rawPrevious = fs.readdirSync(dir)
-  .filter(name => name.endsWith('.json') && !ids.has(name.slice(0, -5)))
+  .filter(name => name.endsWith('.json') && !ids.has(name.slice(0, -5)) && !later.ids.has(name.slice(0, -5)))
   .sort().map(name => [name, hash(fs.readFileSync(path.join(dir, name)))]);
 assert.equal(rawPrevious.length, 507);
 assert.equal(sha(rawPrevious), published.rawLessonManifestSHA256, 'all 507 prior authored files byte-identical');

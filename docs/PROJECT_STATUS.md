@@ -2,20 +2,42 @@
 
 Updated: 2026-10-28 (Asia/Novosibirsk)
 
-## In progress: Atanasyan 10–11 companion labels and chapter III completion
+## Prepared: Atanasyan 10–11, complete cylinder paragraph
 
-- [Task](tasks/ATANASYAN_COMPANION_310_319.md), HIGH, resumed by the owner on
-  2026-10-28. Base `fa8d1b7ced31a5941ad52d8a21a48b63daaa84a8`.
-- Visible «К задаче», «К параграфу», «К главе» references are being applied to
-  the existing catalogue, lessons and contextual theory, using the supplied
-  2024 edition and preserving task identities and saved work.
-- Corrected paused PR352 content supplies eleven cards for 310–319, including
-  both parts of 311. Candidate: 518 cards, 1969 justified steps, 2050 model
-  states; main exercises 1–319 and chapter III complete. Later chapters remain
-  pending. All 507 published cards and concurrent course changes are preserved.
-- Source, mathematical, presentation and desktop/mobile checks belong to this
-  new composed version. Earlier reports do not certify its changed interface.
-  Publication and a final passing gate are not claimed by this status entry.
+- [Task](tasks/ATANASYAN_CYLINDER_320_345.md), HIGH, explicitly continued by the
+  owner on 2026-10-29. Base `0ad2680f9039a27cd1188eccc55cfcd932d4bf64`.
+- Complete chapter IV §1: theory 38–39 and exercises 320–345 with every printed
+  subpart, using the existing companion labels, models and retained-work UI.
+- Candidate: 554 cards, 2134 justified steps and 2228 model states; main
+  exercises 1–345 and theory points 1–39. The 36 added cards complete this
+  paragraph; all 518 prior lesson files remain byte-identical.
+- Independent source/math/pedagogy review and its six resolved findings are
+  recorded in [content evidence](reviews/ATANASYAN_CYLINDER_CONTENT.json).
+  [Integration evidence](reviews/ATANASYAN_CYLINDER_INTEGRATION.json) and
+  [visual evidence](reviews/ATANASYAN_CYLINDER_VISUAL.json) distinguish local
+  checks from exact-commit CI. Final CI and release status belong in the PR.
+- Next numbered paragraph: chapter IV §2 «Конус», beginning with exercise 346.
+  This entry does not claim completion of chapter IV or publication; release
+  requires the owner's decision and a fresh authoritative main check.
+
+## Published: Atanasyan companion labels and chapter III completion
+
+- [PR370](https://github.com/ladynata-cloud/math-exam-fipi/pull/370) was explicitly
+  authorized and squashed as `0ad2680f9039a27cd1188eccc55cfcd932d4bf64`, sole parent
+  `ac67b61ee0a8e10d203b7f6c7249d0e4a865ba9a`. Actual tree, exact 47 changed paths,
+  stable patch and preservation of every other path were independently checked.
+- Course: 518 cards, 1969 justified steps, 2050 model states; main exercises
+  1–319 and chapter III complete. Visible task/chapter/paragraph labels and all
+  27 paragraph choices are published. Later content remains pending.
+- Exact-head five-workflow CI, 168 actual new-card images, complete 1036-journey
+  browser evidence and post-merge Profile CI passed. Pages deployment
+  [40723355111](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40723355111)
+  succeeded on the exact production commit. All 19 canonical live files returned
+  HTTP200 and matched production SHA256; actual live 320/1280px source/filter/
+  theory/draft-retention checks passed. Release evidence and resolved environment
+  issues are preserved in PR370. No rollback was necessary.
+- This new task starts from that exact clean production base; the preceding
+  status entry is reconciled here without a separate status-only PR.
 
 ## Prepared: Ichenskaya independent and test works alongside Atanasyan
 
