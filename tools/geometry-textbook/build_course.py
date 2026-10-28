@@ -27,6 +27,34 @@ def digest(value):
 
 CHAPTER_LABELS = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII',
                   'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV']
+ADVANCED_LABEL = '7 класс · повышенная трудность'
+
+
+def source_label(chapter):
+    return ADVANCED_LABEL if chapter == '7-advanced' else CHAPTER_LABELS[chapter]
+
+
+def advanced_preparation(course, inventory):
+    """Grade-level advanced exercises are a separate source section, not VI."""
+    paths = sorted((course / 'preparation').glob('grade-07-advanced-[a-z].json'))
+    if not paths:
+        return None
+    exercises = []
+    for path in paths:
+        data = read(path)
+        if data.get('chapter') != '7-advanced' or data.get('bookId') != inventory['book']['id']:
+            raise ValueError(f'Advanced preparation belongs to another source: {path.name}')
+        exercises.extend(data['exercises'])
+    exercises.sort(key=lambda item: int(item['number']))
+    source = next(item for item in inventory['advanced'] if item['grade'] == 7)
+    first, last = source['exerciseNumbers']
+    if [int(item['number']) for item in exercises] != list(range(first, last + 1)):
+        raise ValueError(f'Advanced grade 7 must contain every exercise {first}–{last} exactly once')
+    for exercise in exercises:
+        parts = [item['part'] for item in exercise['parts']]
+        if not parts or len(parts) != len(set(parts)):
+            raise ValueError(f'Empty/duplicate advanced parts: {exercise["number"]}')
+    return dict(exercises=exercises, theory=[], selfchecks=[])
 
 
 def key(chapter, collection, number, part='single'):
@@ -86,12 +114,18 @@ def preparations(course, inventory):
 def compose(course=COURSE):
     inventory = read(course / 'source-inventory.json')
     chapters = preparations(course, inventory)
+    advanced = advanced_preparation(course, inventory)
     models = {}
-    for path in sorted((course / 'models').glob('chapter-*.json')):
+    model_paths = sorted((course / 'models').glob('chapter-*.json'))
+    model_paths += sorted((course / 'models').glob('grade-07-advanced-[a-z].json'))
+    for path in model_paths:
         match = re.fullmatch(r'chapter-(\d{2})-[a-z]+\.json', path.name)
-        if not match:
+        if match:
+            chapter = int(match[1])
+        elif re.fullmatch(r'grade-07-advanced-[a-z]\.json', path.name):
+            chapter = '7-advanced'
+        else:
             raise ValueError(f'Unexpected model filename: {path.name}')
-        chapter = int(match[1])
         data = read(path)
         if data.get('chapter', chapter) != chapter:
             raise ValueError(f'Model chapter disagrees with filename: {path.name}')
@@ -133,8 +167,11 @@ def compose(course=COURSE):
     def card(chapter, collection, number, index, part, item, pages):
         identity = key(chapter, collection, number, part)
         ident = identifier(collection, number, index, chapter)
-        source = dict(bookId=book['id'], collection=collection, chapter=CHAPTER_LABELS[chapter],
+        source = dict(bookId=book['id'], collection=collection, chapter=source_label(chapter),
                       printedPages=pages, pdfPages=[p + 1 for p in pages])
+        if chapter == '7-advanced':
+            source['advancedGrade'] = 7
+            source['relatedChapters'] = [1, 2] if int(number) <= 423 else [3, 4] if int(number) <= 446 else [5]
         source['point' if collection == 'theory' else 'exercise'] = str(number)
         if part != 'single':
             source['subpart'] = part
@@ -202,12 +239,17 @@ def compose(course=COURSE):
         for collection, items in [('theory', prep['theory']), ('selfcheck', prep['selfchecks'])]:
             for item in items:
                 card(chapter, collection, item['number'], 1, 'single', item, item['printedPages'])
+    if advanced:
+        for exercise in advanced['exercises']:
+            for i, part in enumerate(exercise['parts'], 1):
+                card('7-advanced', 'main', exercise['number'], i, part['part'], part, exercise['printedPages'])
     if set(models) - used:
         raise ValueError(f'Models without matching source: {set(models) - used}')
     if set(corrections) - used:
         raise ValueError(f'Corrections without matching source: {set(corrections) - used}')
     content_hash = digest(lessons)
-    implementation_files = ['index.html', 'assets/engine.js', 'assets/planar-viewer.js', 'assets/style.css', 'assets/math-text.js']
+    # The displayed paragraph index is a runtime input and must invalidate review.
+    implementation_files = ['index.html', 'assets/engine.js', 'assets/planar-viewer.js', 'assets/style.css', 'assets/math-text.js', 'source-inventory.json', 'assets/board-adapter.js']
     implementation_hashes = {name: hashlib.sha256((course / name).read_bytes()).hexdigest()
                              for name in implementation_files if (course / name).exists()}
     implementation_hash = digest(implementation_hashes)
@@ -237,6 +279,31 @@ def compose(course=COURSE):
                                 pedagogy='passed' if approved else 'pending',
                                 reviewer=review.get('reviewer', '') if approved else '',
                                 at=review.get('at', '') if approved else '')
+    supplement_builds = []
+    if advanced:
+        advanced_lessons = [lesson for lesson in lessons if lesson['source'].get('advancedGrade') == 7]
+        advanced_hash = digest(advanced_lessons)
+        review_file = 'release-review-advanced-07.json'
+        review_path = course / review_file
+        review = read(review_path) if review_path.exists() else {}
+        approved = (review.get('status') == 'passed' and review.get('authoredContentSha256') == advanced_hash
+                    and review.get('implementationSha256') == implementation_hash
+                    and review.get('scope', {}).get('key') == '7-advanced'
+                    and all(review.get(k) == 'passed' for k in ('source', 'mathematics', 'models', 'pedagogy', 'browser'))
+                    and bool(review.get('reviewer')) and bool(review.get('at')))
+        supplement_builds.append(dict(key='7-advanced', label=ADVANCED_LABEL,
+                                     authoredContentSha256=advanced_hash,
+                                     publicationReviewMatches=approved, reviewFile=review_file,
+                                     authoredCards=len(advanced_lessons),
+                                     numberedExercises=len(advanced['exercises']),
+                                     theoryPoints=0, selfcheckQuestions=0))
+        for lesson in advanced_lessons:
+            lesson['status'] = 'reviewed' if approved else 'in-review'
+            lesson['review'] = dict(source='passed' if approved else 'pending',
+                                   mathematics='passed' if approved else 'pending',
+                                   pedagogy='passed' if approved else 'pending',
+                                   reviewer=review.get('reviewer', '') if approved else '',
+                                   at=review.get('at', '') if approved else '')
     by_id = {lesson['id']: lesson for lesson in lessons}
     for entry in entries:
         if entry['id'] in by_id:
@@ -244,10 +311,11 @@ def compose(course=COURSE):
     return dict(catalog=dict(schemaVersion=1, book=book, inventoryComplete=False, entries=entries),
                 lessons=lessons, sourceInventory=inventory,
                 build=dict(authoredContentSha256=content_hash,
-                           publicationReviewMatches=all(item['publicationReviewMatches'] for item in chapter_builds),
+                           publicationReviewMatches=all(item['publicationReviewMatches'] for item in chapter_builds + supplement_builds),
                            implementationSha256=implementation_hash, implementationFiles=implementation_hashes,
-                           authoredCards=len(lessons), numberedExercises=sum(len(prep['exercises']) for prep in chapters.values()),
+                           authoredCards=len(lessons), numberedExercises=sum(len(prep['exercises']) for prep in chapters.values()) + (len(advanced['exercises']) if advanced else 0),
                            chapters=chapter_builds,
+                           supplements=supplement_builds,
                            fullTextbookComplete=False))
 
 

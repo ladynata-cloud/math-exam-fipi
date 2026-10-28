@@ -1,0 +1,3890 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "independent reviewer /root/labels; did not author the advanced-A source/solutions/models",
+  "status": "pass-with-minor-layout-observation",
+  "scope": {
+    "exerciseRange": [
+      413,
+      429
+    ],
+    "cards": 18,
+    "viewsPerWidth": 95,
+    "viewportWidths": [
+      320,
+      1280
+    ],
+    "expectedViewWidthPairs": 190
+  },
+  "method": [
+    "Manually read every contact sheet a-001.jpg through a-033.jpg, all 130 representative PNGs, and all 8 listed full-page context PNGs.",
+    "Verified SHA-256 of all 190 model screenshot files against the manifest; a duplicate carries visual evidence only because its bytes are identical.",
+    "Checked label/point correspondence, sector placement, line and angle markings, clipping, introductions of construction points, alternate cases, and disclosure state.",
+    "Source/proof/coordinate review is separately recorded in ATANASYAN_7_9_ADVANCED_A_REVIEW.md.",
+    "After the final candidate capture completed, reused 141 previously inspected image states only by exact SHA-256 equality, and manually inspected all 29 fresh representatives for the 49 changed states in delta-001.jpg through delta-008.jpg. Rechecked all final file hashes and bound them to the completed browser evidence and immutable bundle snapshot."
+  ],
+  "snapshot": {
+    "directory": "advanced-visual",
+    "manifest": "contacts/a-manifest.json",
+    "manifestSha256": "d36c49702eee54bd450662e9a95bdaaa36259367a11dbae456c01f19c09ef81f",
+    "uniqueRepresentatives": 130,
+    "viewWidthPairs": 190,
+    "contactSheets": [
+      {
+        "file": "a-001.jpg",
+        "sha256": "eb3a78647e4b096523e1d28db085dc77a2e7d7a8de1a720d10e56ce085c77b18",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-002.jpg",
+        "sha256": "5f9a783639fb6e3716932662285571342eaabdcd61c3d8a2f8485d49ade04bfc",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-003.jpg",
+        "sha256": "9ac8f7ea944e1a1501771aea8cd54a6e5331e9f9a6fe39222ddb9491ae0c1cc1",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-004.jpg",
+        "sha256": "d74a77a328467ef8c34f210a85bffae2247586c0f8bdb67fabb7b15619ece3a3",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-005.jpg",
+        "sha256": "b28084dbeadee3df46472ae32f53f5d3e7efb6ae7c78e5035f186dc9a1e7798e",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-006.jpg",
+        "sha256": "c11338de51744fcaa99cd228d05e10cf04ad5c3bd42ef568c5a8323a00b1cb0d",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-007.jpg",
+        "sha256": "d8fc69bd4f4795de2bae8591342334c89c39fcbda6ad3c78121e980719e5b533",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-008.jpg",
+        "sha256": "6e04a43f955e7b49445ac182c68aa292af75b19701d974c2da268fc2994c2569",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-009.jpg",
+        "sha256": "8d2a579355e26539bd33336dd1c0f249ccd1d1ee01cd4a042749ff0d68d7a2b3",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-010.jpg",
+        "sha256": "aab1ab728ee2e084f8db8518dc768ff29c966be3af58f9c9cfc592878e4b8eb2",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-011.jpg",
+        "sha256": "2e4a3ac3fa1107901b9b32554cc2a72bc69ab08f8268b49f149de6849ab5c37e",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-012.jpg",
+        "sha256": "862a0d3580f4ed7ba829ea468c7693181e49017bb802aa4836a5c1852df61b46",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-013.jpg",
+        "sha256": "cb1ba9e7b8f806eff5b0b84b33f1a1ac5f7ef93c748a9c76352e3ccab0fd05c2",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-014.jpg",
+        "sha256": "1779f6d99bfb0a989bb5e73899add3c0b06f0cf564f13c0fe7771dcc4704501e",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-015.jpg",
+        "sha256": "d57e76d177113f3745c51cfc3f4de6496394f8a0048a9b980a386020f2df317b",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-016.jpg",
+        "sha256": "2b606573a189ee12fbe8cf185bb5c93a2fa7ad095e60368d10444d2ab0ace31e",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-017.jpg",
+        "sha256": "480034503d4165d409022ca81839ce2209ac71638e7abe1a516a43952d5c8397",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-018.jpg",
+        "sha256": "f78906fba3e387026b47d2b063e6129ee35ad05f1d720017f0c3b480c404de7b",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-019.jpg",
+        "sha256": "abb6baa27a654f6810b9c122ca14576c874bd901b13164a0733f13aca920b27b",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-020.jpg",
+        "sha256": "8b26956ae2746f404aaba8fe98db3ef050f49ded8ccc8ce8a919a89ce5a090d8",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-021.jpg",
+        "sha256": "0d5a243c1401278f8f8f67775b9b223c52ed24ab42e3f547475f51f599f0279f",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-022.jpg",
+        "sha256": "52bf62d21c4cb7d45bfc8ecd2d0a21b5e60f404db3f4a8d327f406b66b7b5c9a",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-023.jpg",
+        "sha256": "76acb9a4f9aca431c8f0b5c713d7343526701fe18d29075bc4ddf889ba5a9e84",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-024.jpg",
+        "sha256": "f5d97fa05ad55e2620bf227f824e96d7396d8405b6df323a231971b1fd25e16f",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-025.jpg",
+        "sha256": "974ad04db6b389938b2a41e154711a48872ae9f8585ce35ce183587c940903bc",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-026.jpg",
+        "sha256": "011a88a6e7d1744f5eb2a909580011c40f8f8fdbee0559c575a4469748e5dfd1",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-027.jpg",
+        "sha256": "646bea07b048bf0e3980f8112a27c99161a6516c5749ebd24d234d5b4224673b",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-028.jpg",
+        "sha256": "36d2903a3863326d8023bb7064ffe7aa07fcc12a667b71a43ffae39fe3911fb2",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-029.jpg",
+        "sha256": "c6436eb4f3876697560b7875f034e75cf0669eadd69f479d906844cf7b56789d",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-030.jpg",
+        "sha256": "820db53564310eb864727054da4c7284b07f9d5502c517ed6cdcfa68ca78f425",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-031.jpg",
+        "sha256": "01ce04ca21f2afa9238525b73866efcc6bd9124dc4e04d01cf57f0a789748866",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-032.jpg",
+        "sha256": "373afe003bf008e1b8e7e242e5090f326cc0be051ea34d4c1eaa9f963f5ddc94",
+        "visuallyInspected": true
+      },
+      {
+        "file": "a-033.jpg",
+        "sha256": "0955d711de44103aeb1f0b6841d09349ffc95a816c53b1ca58f7d276f1cb0404",
+        "visuallyInspected": true
+      }
+    ],
+    "modelHashAtCapture": null,
+    "modelHashNote": "The snapshot predates the acute-triangle correction to 426. Current model bytes are not inferred from image filenames."
+  },
+  "findings": [
+    {
+      "id": "A-VIS-416",
+      "severity": "blocking",
+      "status": "closed",
+      "description": "On the 320 px actual lesson screenshots, sector label 2 was placed below the horizontal ray next to O, outside its intended 0–25 degree sector. The collision checker alone did not detect this semantic error.",
+      "affectedNumbers": [
+        416
+      ],
+      "requiredFollowup": null,
+      "resolution": "All 8 final 416 view/width pairs inspected through 6 fresh unique PNGs; every number is in its intended sector, including the transferred upper 3/4. No clipping or overlap observed."
+    },
+    {
+      "id": "A-MATH-426",
+      "severity": "blocking",
+      "status": "closed",
+      "description": "This snapshot still shows the obsolete obtuse A=(0,3.4) triangle for both 426 cards, contrary to the acute source conditions. These screenshots are rejected, even where labels are readable.",
+      "affectedNumbers": [
+        426
+      ],
+      "requiredFollowup": null,
+      "resolution": "All 16 final 426a/426b view/width pairs inspected through 4 fresh unique PNGs. Both now show the reviewed acute triangle with legible A/B/C and angle arcs."
+    },
+    {
+      "id": "A-VIS-428",
+      "severity": "minor",
+      "status": "accepted-minor-layout-observation",
+      "description": "The final neutral and final-answer views place M inside ABC beside its point. In construction steps 2–4, automatic avoidance of AN places M beyond AB. The interior point remains visible and uniquely identifiable; no labels intersect, clip or disappear.",
+      "affectedNumbers": [
+        428
+      ],
+      "requiredFollowup": null,
+      "resolution": "Nonblocking after manual inspection at both widths. The frozen candidate is accepted with this explicit layout observation; no further change is required for this review."
+    }
+  ],
+  "observations": [
+    "413–415 and 419–424: units, fractions, angle/length marks, and construction labels are legible at both widths.",
+    "417/418: conditional configurations are explicitly identified, line labels are associated with their lines, and R is visible at its introduction.",
+    "425: all three exterior cases remain legible at 320 px; figures are small because of common bounds, but labels do not overlap or misidentify vertices.",
+    "427: median/half-base marks and acute/right/obtuse cases agree with the explanations.",
+    "428/429: introduced auxiliary edges are separated by steps, and no answer is printed into the neutral figure.",
+    "The eight initial full pages have readable source captions, full statements and controls, with no visible horizontal clipping."
+  ],
+  "reviewedModelImages": [
+    {
+      "number": 413,
+      "sha256": "f0fedbc1b661416ccec747a22c2178f487e2911533326783d4ad7f808de1a2b2",
+      "file": "review-atanasyan-7-9-main-413-part-1-neutral-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-413-part-1-neutral-1280.png",
+        "review-atanasyan-7-9-main-413-part-1-step-1-1280.png"
+      ],
+      "sheet": "a-001.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 413,
+      "sha256": "0242f4ea3a65079b1dcfe4ab9f279af49e73d68b5dc07343112dae8869f5661e",
+      "file": "review-atanasyan-7-9-main-413-part-1-neutral-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-413-part-1-neutral-320.png",
+        "review-atanasyan-7-9-main-413-part-1-step-1-320.png"
+      ],
+      "sheet": "a-001.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 413,
+      "sha256": "5bb981949fc2dc0a3e1ec27fa5eebb201adf07a3a032a691f1fb13622123194d",
+      "file": "review-atanasyan-7-9-main-413-part-1-step-2-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-413-part-1-step-2-1280.png",
+        "review-atanasyan-7-9-main-413-part-1-step-3-1280.png"
+      ],
+      "sheet": "a-001.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 413,
+      "sha256": "fa29537d10118e1d96d07cad62ecc6617a48d87e107056da03f3197974695c98",
+      "file": "review-atanasyan-7-9-main-413-part-1-step-2-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-413-part-1-step-2-320.png",
+        "review-atanasyan-7-9-main-413-part-1-step-3-320.png"
+      ],
+      "sheet": "a-001.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 414,
+      "sha256": "885418df822834397b4efa097de6fbff262779d151974195f0c8aa352ec0b49c",
+      "file": "review-atanasyan-7-9-main-414-part-1-neutral-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-414-part-1-neutral-1280.png",
+        "review-atanasyan-7-9-main-414-part-1-step-1-1280.png",
+        "review-atanasyan-7-9-main-414-part-1-step-2-1280.png",
+        "review-atanasyan-7-9-main-414-part-1-step-3-1280.png"
+      ],
+      "sheet": "a-002.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 414,
+      "sha256": "189284e3c3affadeaeba8bd1264dcfaa270e0248054e9bd982df96bcb04e5724",
+      "file": "review-atanasyan-7-9-main-414-part-1-neutral-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-414-part-1-neutral-320.png"
+      ],
+      "sheet": "a-002.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 414,
+      "sha256": "b8b3d988566b81d5946c3283ce6d141c4f788e9544fe02549ae386916e07704d",
+      "file": "review-atanasyan-7-9-main-414-part-1-step-1-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-414-part-1-step-1-320.png",
+        "review-atanasyan-7-9-main-414-part-1-step-2-320.png",
+        "review-atanasyan-7-9-main-414-part-1-step-3-320.png"
+      ],
+      "sheet": "a-002.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 415,
+      "sha256": "c63964c1fbba9ba06f1dd30a7f24cdadb4cccd4ac5adc6db684ccba07751e27d",
+      "file": "review-atanasyan-7-9-main-415-part-1-neutral-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-415-part-1-neutral-1280.png",
+        "review-atanasyan-7-9-main-415-part-1-step-1-1280.png",
+        "review-atanasyan-7-9-main-415-part-1-step-2-1280.png",
+        "review-atanasyan-7-9-main-415-part-1-step-3-1280.png"
+      ],
+      "sheet": "a-002.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 415,
+      "sha256": "d6fa6a7cc47dc81af507d1201895d69b487d5bfd881039851fbdbe492e331dd5",
+      "file": "review-atanasyan-7-9-main-415-part-1-neutral-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-415-part-1-neutral-320.png"
+      ],
+      "sheet": "a-003.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 415,
+      "sha256": "939d996bc9c6513e440b1d1407d14a95016b255657fd10e3b396de5b09a1a8c7",
+      "file": "review-atanasyan-7-9-main-415-part-1-step-1-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-415-part-1-step-1-320.png",
+        "review-atanasyan-7-9-main-415-part-1-step-2-320.png",
+        "review-atanasyan-7-9-main-415-part-1-step-3-320.png"
+      ],
+      "sheet": "a-003.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 416,
+      "sha256": "4559b952228ed1d1c6487be6bf6baff53501ae721e5996c1930005c34f2a56d5",
+      "file": "review-atanasyan-7-9-main-416-part-1-neutral-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-416-part-1-neutral-1280.png"
+      ],
+      "sheet": "a-003.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "superseded-awaiting-fresh-review",
+      "findingId": "A-VIS-416"
+    },
+    {
+      "number": 416,
+      "sha256": "bb9360c906ff1b27aaba69dda5bc3c26b49e32f05135c4c0d1b8d5760a4acf41",
+      "file": "review-atanasyan-7-9-main-416-part-1-neutral-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-416-part-1-neutral-320.png"
+      ],
+      "sheet": "a-003.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "superseded-awaiting-fresh-review",
+      "findingId": "A-VIS-416"
+    },
+    {
+      "number": 416,
+      "sha256": "58e30293372636de512ca20512bfc7d63c2586774ade1369b6d5d9fccaebf9dc",
+      "file": "review-atanasyan-7-9-main-416-part-1-step-1-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-416-part-1-step-1-1280.png"
+      ],
+      "sheet": "a-004.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "superseded-awaiting-fresh-review",
+      "findingId": "A-VIS-416"
+    },
+    {
+      "number": 416,
+      "sha256": "fbf1e5502f16c5e6eafa5c617d9d92563434f4c5692aef4525b3d5003b40966b",
+      "file": "review-atanasyan-7-9-main-416-part-1-step-1-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-416-part-1-step-1-320.png"
+      ],
+      "sheet": "a-004.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "superseded-awaiting-fresh-review",
+      "findingId": "A-VIS-416"
+    },
+    {
+      "number": 416,
+      "sha256": "7c4828a6499dd8449958517c5579be02dc471e464d14aa6761909f2f0c91b004",
+      "file": "review-atanasyan-7-9-main-416-part-1-step-2-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-416-part-1-step-2-1280.png",
+        "review-atanasyan-7-9-main-416-part-1-step-3-1280.png"
+      ],
+      "sheet": "a-004.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "superseded-awaiting-fresh-review",
+      "findingId": "A-VIS-416"
+    },
+    {
+      "number": 416,
+      "sha256": "43b1097dfda432f8bc59de91cbaf36891d016964d05b64595b1cd161eb02d2b2",
+      "file": "review-atanasyan-7-9-main-416-part-1-step-2-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-416-part-1-step-2-320.png",
+        "review-atanasyan-7-9-main-416-part-1-step-3-320.png"
+      ],
+      "sheet": "a-004.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "superseded-awaiting-fresh-review",
+      "findingId": "A-VIS-416"
+    },
+    {
+      "number": 417,
+      "sha256": "3817df055f4cf62070e5671a2a192452093016463ca374f80a929a220c45f391",
+      "file": "review-atanasyan-7-9-main-417-part-1-case-1-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-417-part-1-case-1-1280.png"
+      ],
+      "sheet": "a-005.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 417,
+      "sha256": "f2c8e9f59369b5bf8d3c22b569ae19ec88e4776c06f6fa8e89fa0f8a920d2480",
+      "file": "review-atanasyan-7-9-main-417-part-1-case-1-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-417-part-1-case-1-320.png"
+      ],
+      "sheet": "a-005.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 417,
+      "sha256": "9c324b42f64af5309e95774a75f7277bcf8d594117360ad1200d6e6b8e3b4a26",
+      "file": "review-atanasyan-7-9-main-417-part-1-neutral-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-417-part-1-neutral-1280.png"
+      ],
+      "sheet": "a-005.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 417,
+      "sha256": "1091f76be0529e9f6110418bdc9c8ad753e4b322cb2f47fd6bd93dd1d7a75864",
+      "file": "review-atanasyan-7-9-main-417-part-1-neutral-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-417-part-1-neutral-320.png",
+        "review-atanasyan-7-9-main-417-part-1-step-1-320.png"
+      ],
+      "sheet": "a-005.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 417,
+      "sha256": "991a4759788ddd71e546487e3835cdcd7e0da129954c8cb63d12e8cdd19cdcdd",
+      "file": "review-atanasyan-7-9-main-417-part-1-step-1-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-417-part-1-step-1-1280.png",
+        "review-atanasyan-7-9-main-417-part-1-step-2-1280.png"
+      ],
+      "sheet": "a-006.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 417,
+      "sha256": "1f5e40f6860aa8683d8845116cade4a2af897d4069a06d522caedd675559fa6c",
+      "file": "review-atanasyan-7-9-main-417-part-1-step-2-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-417-part-1-step-2-320.png"
+      ],
+      "sheet": "a-006.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 417,
+      "sha256": "4110fae023ad415ec9978ddbd241044a6eab5c0a10d84274d73fff8d859413b5",
+      "file": "review-atanasyan-7-9-main-417-part-1-step-3-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-417-part-1-step-3-1280.png"
+      ],
+      "sheet": "a-006.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 417,
+      "sha256": "165451e14ae63d901d85af3c8586af9e3c8fe7dcde3d3f847322732b047dd901",
+      "file": "review-atanasyan-7-9-main-417-part-1-step-3-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-417-part-1-step-3-320.png"
+      ],
+      "sheet": "a-006.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 417,
+      "sha256": "b02f1f07669eddd69a11e56c295b5d0be663a1d5b40bfc6865a38fea3c183afc",
+      "file": "review-atanasyan-7-9-main-417-part-1-step-4-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-417-part-1-step-4-1280.png"
+      ],
+      "sheet": "a-007.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 417,
+      "sha256": "7d73932385f6f178d2771f12e4e3f0d70b84d07b5afd5926a085c7bd00817266",
+      "file": "review-atanasyan-7-9-main-417-part-1-step-4-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-417-part-1-step-4-320.png"
+      ],
+      "sheet": "a-007.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 417,
+      "sha256": "189293ab95c5bb9d8f47822f890dc49a126ed66f3c82773399f9c5ae155c6429",
+      "file": "review-atanasyan-7-9-main-417-part-1-step-5-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-417-part-1-step-5-1280.png"
+      ],
+      "sheet": "a-007.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 417,
+      "sha256": "710e3ad4da4e3ac08fb03e77f7f2b981217012294677a15c446705abbdca0f38",
+      "file": "review-atanasyan-7-9-main-417-part-1-step-5-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-417-part-1-step-5-320.png"
+      ],
+      "sheet": "a-007.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 418,
+      "sha256": "fdcc2d2405d30d396fdf6e5ad10c38ea69afc7c5d30f983ad360c71a4d31a9a7",
+      "file": "review-atanasyan-7-9-main-418-part-1-case-1-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-418-part-1-case-1-1280.png"
+      ],
+      "sheet": "a-008.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 418,
+      "sha256": "134fcfcd9916c70ee9e449069aec024da8c6f6628672d77ec20b61a16898de3c",
+      "file": "review-atanasyan-7-9-main-418-part-1-case-1-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-418-part-1-case-1-320.png"
+      ],
+      "sheet": "a-008.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 418,
+      "sha256": "b29321ad0b912c809f4e8615a2ac52cd9868aaf3ef0097af8b9e71c381587e36",
+      "file": "review-atanasyan-7-9-main-418-part-1-neutral-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-418-part-1-neutral-1280.png"
+      ],
+      "sheet": "a-008.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 418,
+      "sha256": "a78d2206061f930c94b5f696c237c0193771246be2b50d3565131e958a3b48f6",
+      "file": "review-atanasyan-7-9-main-418-part-1-neutral-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-418-part-1-neutral-320.png"
+      ],
+      "sheet": "a-008.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 418,
+      "sha256": "c394a9585fe8bc3725f861040785dc6a0383710053d44f4499ef3e078c40f1ca",
+      "file": "review-atanasyan-7-9-main-418-part-1-step-1-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-418-part-1-step-1-1280.png"
+      ],
+      "sheet": "a-009.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 418,
+      "sha256": "baed26c58b98a792230a5d0b2706da389ee1d51a96cd3766d34b4855458cbd30",
+      "file": "review-atanasyan-7-9-main-418-part-1-step-1-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-418-part-1-step-1-320.png",
+        "review-atanasyan-7-9-main-418-part-1-step-2-320.png"
+      ],
+      "sheet": "a-009.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 418,
+      "sha256": "b77698f87013af811e35513e6a84590c0b1da10d9fe587402228423143f498ef",
+      "file": "review-atanasyan-7-9-main-418-part-1-step-2-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-418-part-1-step-2-1280.png"
+      ],
+      "sheet": "a-009.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 418,
+      "sha256": "0bda8d5f10a6dbeb32948e4fa022a6d152e12647a2fc5d61da483fbf67a58706",
+      "file": "review-atanasyan-7-9-main-418-part-1-step-3-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-418-part-1-step-3-1280.png"
+      ],
+      "sheet": "a-009.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 418,
+      "sha256": "6e41b3ad6de547c2bc754cde32850feaea4bb243207c1d6b879c89becf805e24",
+      "file": "review-atanasyan-7-9-main-418-part-1-step-3-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-418-part-1-step-3-320.png"
+      ],
+      "sheet": "a-010.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 418,
+      "sha256": "f6d226d33155c95db2004a2f74e8309754b7f67b6c0af8e72e07c868d4092c5c",
+      "file": "review-atanasyan-7-9-main-418-part-1-step-4-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-418-part-1-step-4-1280.png"
+      ],
+      "sheet": "a-010.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 418,
+      "sha256": "07469f2e6b2e8506351c34467cf84b7cd2120378889eecf1b0391e6fd5a218f3",
+      "file": "review-atanasyan-7-9-main-418-part-1-step-4-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-418-part-1-step-4-320.png"
+      ],
+      "sheet": "a-010.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 418,
+      "sha256": "2721f4e6e72acbe178c368edffd78690c59538adbf2d04f33ea5bea274a45dbe",
+      "file": "review-atanasyan-7-9-main-418-part-1-step-5-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-418-part-1-step-5-1280.png"
+      ],
+      "sheet": "a-010.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 418,
+      "sha256": "883e8adb46429a36e707e67fdad81d9b4aa267825e5f387ec184c536062fae12",
+      "file": "review-atanasyan-7-9-main-418-part-1-step-5-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-418-part-1-step-5-320.png"
+      ],
+      "sheet": "a-011.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 419,
+      "sha256": "13d8e587431c7ea49befea31430a7892a58257c40bde9080f7704a54213c10c3",
+      "file": "review-atanasyan-7-9-main-419-part-1-neutral-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-419-part-1-neutral-1280.png"
+      ],
+      "sheet": "a-011.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 419,
+      "sha256": "b6e09aa0dbb0af83114c6482d1f95a4c1395382fa6d032a645903d8cac431606",
+      "file": "review-atanasyan-7-9-main-419-part-1-neutral-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-419-part-1-neutral-320.png"
+      ],
+      "sheet": "a-011.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 419,
+      "sha256": "0a77fecea14c597c89d2bbd0b38570456b6fbedda84af8a582361272523e17f7",
+      "file": "review-atanasyan-7-9-main-419-part-1-step-1-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-419-part-1-step-1-1280.png"
+      ],
+      "sheet": "a-011.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 419,
+      "sha256": "5a0f16be2cdd3a104b2c70f6c2caea74c20892e0674c63d52279e3a59da1fa2a",
+      "file": "review-atanasyan-7-9-main-419-part-1-step-1-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-419-part-1-step-1-320.png"
+      ],
+      "sheet": "a-012.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 419,
+      "sha256": "c4cdc2175cbddf4fc57ba63ea8436f167ee4f1bf85a4753415ec728feec5de87",
+      "file": "review-atanasyan-7-9-main-419-part-1-step-2-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-419-part-1-step-2-1280.png"
+      ],
+      "sheet": "a-012.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 419,
+      "sha256": "59374d9d679401716f9fc32f7b2768d772e2cdbbd76454e595cb3aa758b3122e",
+      "file": "review-atanasyan-7-9-main-419-part-1-step-2-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-419-part-1-step-2-320.png"
+      ],
+      "sheet": "a-012.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 419,
+      "sha256": "bec2024a1ff4043a7c449508dcced6d9f3cf4e2a4eef894d9e832357c9c658eb",
+      "file": "review-atanasyan-7-9-main-419-part-1-step-3-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-419-part-1-step-3-1280.png",
+        "review-atanasyan-7-9-main-419-part-1-step-4-1280.png"
+      ],
+      "sheet": "a-012.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 419,
+      "sha256": "2e444e8bb7e3b2b4c7bc57eba5bceeb767e41b836b0eca558eed509a189269d9",
+      "file": "review-atanasyan-7-9-main-419-part-1-step-3-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-419-part-1-step-3-320.png",
+        "review-atanasyan-7-9-main-419-part-1-step-4-320.png"
+      ],
+      "sheet": "a-013.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 420,
+      "sha256": "0df85514c0e7da3671b9778e20e00dfcd946e3c31b4eaec26603849750783087",
+      "file": "review-atanasyan-7-9-main-420-part-1-neutral-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-420-part-1-neutral-1280.png",
+        "review-atanasyan-7-9-main-420-part-1-step-1-1280.png",
+        "review-atanasyan-7-9-main-420-part-1-step-5-1280.png"
+      ],
+      "sheet": "a-013.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 420,
+      "sha256": "37803bb46b0e539d89feaee9e53a5eae4256f4f2f7b7370cc6d4b50701d0ee84",
+      "file": "review-atanasyan-7-9-main-420-part-1-neutral-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-420-part-1-neutral-320.png"
+      ],
+      "sheet": "a-013.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 420,
+      "sha256": "19abb47081c48f4139b16308cc10fe5407ba96cb53504b44c69ee500116a0e35",
+      "file": "review-atanasyan-7-9-main-420-part-1-step-1-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-420-part-1-step-1-320.png",
+        "review-atanasyan-7-9-main-420-part-1-step-5-320.png"
+      ],
+      "sheet": "a-013.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 420,
+      "sha256": "d0f86d34648d1b02bc185bef79731d5be2a324463b54e3d63cdb219ed9eb9e19",
+      "file": "review-atanasyan-7-9-main-420-part-1-step-2-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-420-part-1-step-2-1280.png",
+        "review-atanasyan-7-9-main-420-part-1-step-3-1280.png",
+        "review-atanasyan-7-9-main-420-part-1-step-4-1280.png"
+      ],
+      "sheet": "a-014.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 420,
+      "sha256": "a05c4bfd605ac12e554a441b150dfedc36f791c4f18d54ec085639a69abbd9ae",
+      "file": "review-atanasyan-7-9-main-420-part-1-step-2-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-420-part-1-step-2-320.png",
+        "review-atanasyan-7-9-main-420-part-1-step-3-320.png",
+        "review-atanasyan-7-9-main-420-part-1-step-4-320.png"
+      ],
+      "sheet": "a-014.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 421,
+      "sha256": "e8ebf25b67812e739d18093f7341b80fac6340ee6d915f9bf924560353b67f69",
+      "file": "review-atanasyan-7-9-main-421-part-1-neutral-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-421-part-1-neutral-1280.png",
+        "review-atanasyan-7-9-main-421-part-1-step-1-1280.png"
+      ],
+      "sheet": "a-014.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 421,
+      "sha256": "d2a4bdf6c9a335415214a485d485ad6b3bc146f9d5b2882befa06f7bfd17c6b4",
+      "file": "review-atanasyan-7-9-main-421-part-1-neutral-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-421-part-1-neutral-320.png"
+      ],
+      "sheet": "a-014.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 421,
+      "sha256": "96373672ebd56bccdc32266865a3a3d1b524ac2924855e87b5b77c247f3c2029",
+      "file": "review-atanasyan-7-9-main-421-part-1-step-1-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-421-part-1-step-1-320.png"
+      ],
+      "sheet": "a-015.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 421,
+      "sha256": "068cc1becf6f04c2c0514aa6c8b03f9211d0a6c408727a77d16b316547492c68",
+      "file": "review-atanasyan-7-9-main-421-part-1-step-2-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-421-part-1-step-2-1280.png",
+        "review-atanasyan-7-9-main-421-part-1-step-3-1280.png"
+      ],
+      "sheet": "a-015.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 421,
+      "sha256": "49e7113256b588892888bf28f0bf295a9874a2bf395dec079fadbebd7e49f034",
+      "file": "review-atanasyan-7-9-main-421-part-1-step-2-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-421-part-1-step-2-320.png",
+        "review-atanasyan-7-9-main-421-part-1-step-3-320.png"
+      ],
+      "sheet": "a-015.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 422,
+      "sha256": "2d33af3ebb9bc715cd634ad8d3207295489565dab55edd38af5a8acfc2aea9df",
+      "file": "review-atanasyan-7-9-main-422-part-1-case-1-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-422-part-1-case-1-1280.png"
+      ],
+      "sheet": "a-015.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 422,
+      "sha256": "5cb61cca067ba9bf107a604f89519303f9f7690cb9ae82d37175af4ec3416521",
+      "file": "review-atanasyan-7-9-main-422-part-1-case-1-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-422-part-1-case-1-320.png"
+      ],
+      "sheet": "a-016.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 422,
+      "sha256": "615e7e6a3d6b6b19397fab8e31014580a4e3566af2d9fa8e7d0e921b6ddcebe0",
+      "file": "review-atanasyan-7-9-main-422-part-1-neutral-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-422-part-1-neutral-1280.png"
+      ],
+      "sheet": "a-016.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 422,
+      "sha256": "3de4c3be49601137892103d834c13560873407a82db0e19d63747e548f1bbb75",
+      "file": "review-atanasyan-7-9-main-422-part-1-neutral-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-422-part-1-neutral-320.png"
+      ],
+      "sheet": "a-016.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 422,
+      "sha256": "305e167219803445869a9a6d7395aa4a1c84f68f77863fa67b8824aef9891872",
+      "file": "review-atanasyan-7-9-main-422-part-1-step-1-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-422-part-1-step-1-1280.png"
+      ],
+      "sheet": "a-016.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 422,
+      "sha256": "33cafa7503b66bf25f1f804fc31c673bc80cfad2dfad3213aad6cde716c29649",
+      "file": "review-atanasyan-7-9-main-422-part-1-step-1-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-422-part-1-step-1-320.png"
+      ],
+      "sheet": "a-017.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 422,
+      "sha256": "60a49e609ec3f6540ced25ca4fd8cdf5db36efb6fcb40849896ee0ec674db520",
+      "file": "review-atanasyan-7-9-main-422-part-1-step-2-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-422-part-1-step-2-1280.png",
+        "review-atanasyan-7-9-main-422-part-1-step-3-1280.png"
+      ],
+      "sheet": "a-017.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 422,
+      "sha256": "33b186d950739e999470ee69b930df7dddbf9e9a032db55ee942946a85aae097",
+      "file": "review-atanasyan-7-9-main-422-part-1-step-2-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-422-part-1-step-2-320.png",
+        "review-atanasyan-7-9-main-422-part-1-step-3-320.png"
+      ],
+      "sheet": "a-017.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 422,
+      "sha256": "56d703ef5724202dc6311aa4ae60eb160d891b3eb6b3e410df877d98bee8c75e",
+      "file": "review-atanasyan-7-9-main-422-part-1-step-4-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-422-part-1-step-4-1280.png"
+      ],
+      "sheet": "a-017.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 422,
+      "sha256": "f8a5d1ddb2a2c533960ca6e8c896de07bff397ccf574fb8d1164f4a863a75f09",
+      "file": "review-atanasyan-7-9-main-422-part-1-step-4-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-422-part-1-step-4-320.png"
+      ],
+      "sheet": "a-018.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 423,
+      "sha256": "057b96c539e9c4b4329f4f4850743b0d35ddd99a9116db129083279fb013f9fe",
+      "file": "review-atanasyan-7-9-main-423-part-1-neutral-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-423-part-1-neutral-1280.png"
+      ],
+      "sheet": "a-018.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 423,
+      "sha256": "17f9d8815dc4536c96cd0e8e74dc37cd685dba2ab1f65e70302335a0bafd308f",
+      "file": "review-atanasyan-7-9-main-423-part-1-neutral-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-423-part-1-neutral-320.png"
+      ],
+      "sheet": "a-018.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 423,
+      "sha256": "d25dde2dd9c6509478ccb5b559e24ff0c401eef9310ef49fe65df902551855a7",
+      "file": "review-atanasyan-7-9-main-423-part-1-step-1-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-423-part-1-step-1-1280.png",
+        "review-atanasyan-7-9-main-423-part-1-step-2-1280.png",
+        "review-atanasyan-7-9-main-423-part-1-step-3-1280.png",
+        "review-atanasyan-7-9-main-423-part-1-step-4-1280.png"
+      ],
+      "sheet": "a-018.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 423,
+      "sha256": "55fbf1350670b93f829865d427bad7d3a448c01409653d71a7b33c7237ae341b",
+      "file": "review-atanasyan-7-9-main-423-part-1-step-1-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-423-part-1-step-1-320.png",
+        "review-atanasyan-7-9-main-423-part-1-step-2-320.png",
+        "review-atanasyan-7-9-main-423-part-1-step-3-320.png",
+        "review-atanasyan-7-9-main-423-part-1-step-4-320.png"
+      ],
+      "sheet": "a-019.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 424,
+      "sha256": "4800794332da58ef2b59e2c9051a264ce234d897eace578117ab928b09b1775e",
+      "file": "review-atanasyan-7-9-main-424-part-1-neutral-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-424-part-1-neutral-1280.png"
+      ],
+      "sheet": "a-019.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 424,
+      "sha256": "17f0e2e7af6fb37b3a47bfc4fbdac2fff069a93d94cc215a788852b7f10405e2",
+      "file": "review-atanasyan-7-9-main-424-part-1-neutral-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-424-part-1-neutral-320.png"
+      ],
+      "sheet": "a-019.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 424,
+      "sha256": "fd7abbc1cc8b8fd78c33f0ef65dabea9a339669a68d5c7556a49ba02c54fb6fd",
+      "file": "review-atanasyan-7-9-main-424-part-1-step-1-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-424-part-1-step-1-1280.png",
+        "review-atanasyan-7-9-main-424-part-1-step-3-1280.png"
+      ],
+      "sheet": "a-019.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 424,
+      "sha256": "087e08d3e3e414d9333ab1cf185836e565895dc1e0fa238476b19259aa580779",
+      "file": "review-atanasyan-7-9-main-424-part-1-step-1-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-424-part-1-step-1-320.png",
+        "review-atanasyan-7-9-main-424-part-1-step-3-320.png"
+      ],
+      "sheet": "a-020.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 424,
+      "sha256": "f73dd20fc11529c907b4d1f551d94198dfb54d1f9420b367edaf2c867d476d42",
+      "file": "review-atanasyan-7-9-main-424-part-1-step-2-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-424-part-1-step-2-1280.png"
+      ],
+      "sheet": "a-020.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 424,
+      "sha256": "0a3e660fecbec858572068a22daa8b7376c89b4a7a7a6c1905f7455bc9eedb02",
+      "file": "review-atanasyan-7-9-main-424-part-1-step-2-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-424-part-1-step-2-320.png"
+      ],
+      "sheet": "a-020.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 425,
+      "sha256": "742a6e855f4d85fd7e8d98848402d99311e9716101e4d373a5a0006927f95632",
+      "file": "review-atanasyan-7-9-main-425-part-1-case-1-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-425-part-1-case-1-1280.png"
+      ],
+      "sheet": "a-020.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 425,
+      "sha256": "906cda52f4010d4eb6d3ab4c0fefeb63bb0445b0966c0e525ae05b75df87faf5",
+      "file": "review-atanasyan-7-9-main-425-part-1-case-1-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-425-part-1-case-1-320.png"
+      ],
+      "sheet": "a-021.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 425,
+      "sha256": "67dd231be0bd6597ea75b35436cd196567f9d7abc7f449752a333739283fc7ad",
+      "file": "review-atanasyan-7-9-main-425-part-1-case-2-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-425-part-1-case-2-1280.png"
+      ],
+      "sheet": "a-021.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 425,
+      "sha256": "9079818666f0fb28dda037dbcbcc4859be18a45fcfe5356c1cae3d5f3908e1ad",
+      "file": "review-atanasyan-7-9-main-425-part-1-case-2-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-425-part-1-case-2-320.png"
+      ],
+      "sheet": "a-021.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 425,
+      "sha256": "e2a209748de3421e52c82b4d08fbb1b8a9836c4d4547b449d34bf62d8620a315",
+      "file": "review-atanasyan-7-9-main-425-part-1-case-3-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-425-part-1-case-3-1280.png"
+      ],
+      "sheet": "a-021.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 425,
+      "sha256": "f4ed52eae4a267a52ab681f80839f0c7e29fb689d93fc532aa101e41418e407c",
+      "file": "review-atanasyan-7-9-main-425-part-1-case-3-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-425-part-1-case-3-320.png"
+      ],
+      "sheet": "a-022.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 425,
+      "sha256": "6ea362a3e6c6866b15667f37938808e985df3eadf7e9927d19175fa1aedca298",
+      "file": "review-atanasyan-7-9-main-425-part-1-neutral-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-425-part-1-neutral-1280.png"
+      ],
+      "sheet": "a-022.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 425,
+      "sha256": "48e1a610426e82090d02d4f68326698570104943b0d430417c4196b47feea1c5",
+      "file": "review-atanasyan-7-9-main-425-part-1-neutral-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-425-part-1-neutral-320.png"
+      ],
+      "sheet": "a-022.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 425,
+      "sha256": "a49b67988482a78c13e12345749f0973cbc6756bbf912e67835cb6bb7de7a472",
+      "file": "review-atanasyan-7-9-main-425-part-1-step-1-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-425-part-1-step-1-1280.png"
+      ],
+      "sheet": "a-022.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 425,
+      "sha256": "3960c0a02fcd28b5692a30714fa6253ce8d2bd8feaf09a23db70c57e35d2a8f8",
+      "file": "review-atanasyan-7-9-main-425-part-1-step-1-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-425-part-1-step-1-320.png"
+      ],
+      "sheet": "a-023.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 425,
+      "sha256": "330ea7cd13ed3df836f19ed04cdb3036bf49be0ad8e3c0b1f5f081b9db8194b2",
+      "file": "review-atanasyan-7-9-main-425-part-1-step-2-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-425-part-1-step-2-1280.png"
+      ],
+      "sheet": "a-023.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 425,
+      "sha256": "853924a6f0b3a24760b5ca630e9a2873bfc67bdf263d9cc37ca4196ec1364fdc",
+      "file": "review-atanasyan-7-9-main-425-part-1-step-2-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-425-part-1-step-2-320.png"
+      ],
+      "sheet": "a-023.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 425,
+      "sha256": "a7cb223cfe72f0044306bd63cd04a3955741b573c1cffd3901c1acffaa530c9f",
+      "file": "review-atanasyan-7-9-main-425-part-1-step-3-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-425-part-1-step-3-1280.png"
+      ],
+      "sheet": "a-023.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 425,
+      "sha256": "5a3ab7ae7a111964c5bc75d3cf693c688e797077be5c5c4abef89cae3ee9c735",
+      "file": "review-atanasyan-7-9-main-425-part-1-step-3-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-425-part-1-step-3-320.png"
+      ],
+      "sheet": "a-024.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 425,
+      "sha256": "5fae6cc53950568c271d184d3e920eaa0a516bbf667957aa1225140b33548dac",
+      "file": "review-atanasyan-7-9-main-425-part-1-step-4-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-425-part-1-step-4-1280.png"
+      ],
+      "sheet": "a-024.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 425,
+      "sha256": "1a05b57692109515c04080e50d260da71c4047971f05b5b39c305b4aef892777",
+      "file": "review-atanasyan-7-9-main-425-part-1-step-4-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-425-part-1-step-4-320.png"
+      ],
+      "sheet": "a-024.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 426,
+      "sha256": "abf458dcd4dbed7950c8590494e18403cb4e21545a1ed0cd963bdfebe39cc772",
+      "file": "review-atanasyan-7-9-main-426-part-1-neutral-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-426-part-1-neutral-1280.png",
+        "review-atanasyan-7-9-main-426-part-1-step-1-1280.png",
+        "review-atanasyan-7-9-main-426-part-1-step-2-1280.png",
+        "review-atanasyan-7-9-main-426-part-1-step-3-1280.png"
+      ],
+      "sheet": "a-024.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "reject",
+      "findingId": "A-MATH-426"
+    },
+    {
+      "number": 426,
+      "sha256": "42466e51dab1778329515716fd703ccfb13b21f6aa59194d56a3dbc95e86fb3d",
+      "file": "review-atanasyan-7-9-main-426-part-1-neutral-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-426-part-1-neutral-320.png",
+        "review-atanasyan-7-9-main-426-part-2-neutral-320.png"
+      ],
+      "sheet": "a-025.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "reject",
+      "findingId": "A-MATH-426"
+    },
+    {
+      "number": 426,
+      "sha256": "e2d0b386df6bc3b2b21adf5f1074efd29a407b1246ec963dc2a63335effdebd3",
+      "file": "review-atanasyan-7-9-main-426-part-1-step-1-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-426-part-1-step-1-320.png",
+        "review-atanasyan-7-9-main-426-part-1-step-2-320.png",
+        "review-atanasyan-7-9-main-426-part-1-step-3-320.png",
+        "review-atanasyan-7-9-main-426-part-2-step-1-320.png",
+        "review-atanasyan-7-9-main-426-part-2-step-3-320.png"
+      ],
+      "sheet": "a-025.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "reject",
+      "findingId": "A-MATH-426"
+    },
+    {
+      "number": 426,
+      "sha256": "c9a34cd6730d9cff5ffa6cc34edece49ee851e1332188f592930f14956556846",
+      "file": "review-atanasyan-7-9-main-426-part-2-neutral-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-426-part-2-neutral-1280.png",
+        "review-atanasyan-7-9-main-426-part-2-step-1-1280.png",
+        "review-atanasyan-7-9-main-426-part-2-step-2-1280.png",
+        "review-atanasyan-7-9-main-426-part-2-step-3-1280.png"
+      ],
+      "sheet": "a-025.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "reject",
+      "findingId": "A-MATH-426"
+    },
+    {
+      "number": 426,
+      "sha256": "64595105edd67336066a4f4efdd386f80d0421cd3fec6b7d006bdbe863a5afe7",
+      "file": "review-atanasyan-7-9-main-426-part-2-step-2-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-426-part-2-step-2-320.png"
+      ],
+      "sheet": "a-025.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "reject",
+      "findingId": "A-MATH-426"
+    },
+    {
+      "number": 427,
+      "sha256": "f4c0cf8487b558c09c91923bf2d15e06cb8ada52c53fde3e15238f28aef0bafa",
+      "file": "review-atanasyan-7-9-main-427-part-1-case-1-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-427-part-1-case-1-1280.png"
+      ],
+      "sheet": "a-026.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 427,
+      "sha256": "9e5b8e054aee5c17f4c30c2e97d11de269c27beb23c965d33b5c9b7a722171a5",
+      "file": "review-atanasyan-7-9-main-427-part-1-case-1-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-427-part-1-case-1-320.png"
+      ],
+      "sheet": "a-026.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 427,
+      "sha256": "a4853e294a28544fe042df8447916be70ebc7a07765e2447857c8e3252763e8a",
+      "file": "review-atanasyan-7-9-main-427-part-1-case-2-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-427-part-1-case-2-1280.png"
+      ],
+      "sheet": "a-026.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 427,
+      "sha256": "ad8fb71debf473dbeb6d89573fa279283fd64a0d941020547642b5137d823446",
+      "file": "review-atanasyan-7-9-main-427-part-1-case-2-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-427-part-1-case-2-320.png"
+      ],
+      "sheet": "a-026.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 427,
+      "sha256": "93b6672eb51cbd73b6df3e75fe06bd6a864ab0f7371357501e0a5a1353433057",
+      "file": "review-atanasyan-7-9-main-427-part-1-case-3-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-427-part-1-case-3-1280.png"
+      ],
+      "sheet": "a-027.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 427,
+      "sha256": "b4245a5899aa1101d6dc601a1337bbdbca9aa29dfd2476487c46bb500ece87e2",
+      "file": "review-atanasyan-7-9-main-427-part-1-case-3-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-427-part-1-case-3-320.png"
+      ],
+      "sheet": "a-027.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 427,
+      "sha256": "054916a610c407c79a6400927a2dc07afaac612a81bddba00e0f4e098a799cd5",
+      "file": "review-atanasyan-7-9-main-427-part-1-neutral-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-427-part-1-neutral-1280.png"
+      ],
+      "sheet": "a-027.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 427,
+      "sha256": "89a09d9da4466caae8a4b50c18f9c622dca6e70cf433f4084713d8dee884ad2c",
+      "file": "review-atanasyan-7-9-main-427-part-1-neutral-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-427-part-1-neutral-320.png"
+      ],
+      "sheet": "a-027.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 427,
+      "sha256": "e148fd6183b02d876ee78d08b066b2062abac5f9ea21cd97a3f0c8af3c67dcfc",
+      "file": "review-atanasyan-7-9-main-427-part-1-step-1-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-427-part-1-step-1-1280.png"
+      ],
+      "sheet": "a-028.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 427,
+      "sha256": "2cb5d195ddcda21c3683cd6a55959d4176a8c854dd55cb2eb21be4fb415fc825",
+      "file": "review-atanasyan-7-9-main-427-part-1-step-1-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-427-part-1-step-1-320.png"
+      ],
+      "sheet": "a-028.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 427,
+      "sha256": "fd80c601c2ddc23dc90f56848aa1cdb561682cacdf06e75038c555dc4c44bbcc",
+      "file": "review-atanasyan-7-9-main-427-part-1-step-2-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-427-part-1-step-2-1280.png"
+      ],
+      "sheet": "a-028.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 427,
+      "sha256": "65c816a9daa811f99ec6b626102d644838c573d3205dbf90cab44319e2da599a",
+      "file": "review-atanasyan-7-9-main-427-part-1-step-2-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-427-part-1-step-2-320.png"
+      ],
+      "sheet": "a-028.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 427,
+      "sha256": "e139c8eeb41c78f505ad154a65efc4fad7a5d748ed7a989ba3b400b4c775aa09",
+      "file": "review-atanasyan-7-9-main-427-part-1-step-3-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-427-part-1-step-3-1280.png"
+      ],
+      "sheet": "a-029.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 427,
+      "sha256": "4a6cf72ef1b88db1319654b4fe807814a0efb50e03d1169356e3bb1e878f4b88",
+      "file": "review-atanasyan-7-9-main-427-part-1-step-3-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-427-part-1-step-3-320.png"
+      ],
+      "sheet": "a-029.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 427,
+      "sha256": "a8d641c721c4e1a9791a79168ab35def252fdc96eed71325046e861591b57847",
+      "file": "review-atanasyan-7-9-main-427-part-1-step-4-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-427-part-1-step-4-1280.png"
+      ],
+      "sheet": "a-029.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 427,
+      "sha256": "0b62a1271c497d79da33f10d37d471216e12b8c9d8f923ceae26456bea1dfdb8",
+      "file": "review-atanasyan-7-9-main-427-part-1-step-4-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-427-part-1-step-4-320.png"
+      ],
+      "sheet": "a-029.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 428,
+      "sha256": "79769100df8200911cd42b5db0124cc456e6d1af74e6c3e9806560bf2c1722a4",
+      "file": "review-atanasyan-7-9-main-428-part-1-neutral-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-428-part-1-neutral-1280.png",
+        "review-atanasyan-7-9-main-428-part-1-step-1-1280.png"
+      ],
+      "sheet": "a-030.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "superseded-awaiting-fresh-review",
+      "findingId": "A-VIS-428"
+    },
+    {
+      "number": 428,
+      "sha256": "0344cf0240de35274b8ac8e24e7cf0967e8ab71397302612457e947ccfae5b17",
+      "file": "review-atanasyan-7-9-main-428-part-1-neutral-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-428-part-1-neutral-320.png",
+        "review-atanasyan-7-9-main-428-part-1-step-1-320.png"
+      ],
+      "sheet": "a-030.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "superseded-awaiting-fresh-review",
+      "findingId": "A-VIS-428"
+    },
+    {
+      "number": 428,
+      "sha256": "ad8de8fabbcdd7ad534424e2f555da8783a35a2e076ec8bcc51cf6191a218333",
+      "file": "review-atanasyan-7-9-main-428-part-1-step-2-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-428-part-1-step-2-1280.png"
+      ],
+      "sheet": "a-030.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "superseded-awaiting-fresh-review",
+      "findingId": "A-VIS-428"
+    },
+    {
+      "number": 428,
+      "sha256": "830ae7be68cab501f0b39a65af9ff7808893391f10b3ee7d914d8ff0ba8168a2",
+      "file": "review-atanasyan-7-9-main-428-part-1-step-2-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-428-part-1-step-2-320.png"
+      ],
+      "sheet": "a-030.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "superseded-awaiting-fresh-review",
+      "findingId": "A-VIS-428"
+    },
+    {
+      "number": 428,
+      "sha256": "2a65c6bfae99d728f98f3fe7d4fb3b3085f777b5e92334f17590e48a951e6b9e",
+      "file": "review-atanasyan-7-9-main-428-part-1-step-3-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-428-part-1-step-3-1280.png",
+        "review-atanasyan-7-9-main-428-part-1-step-4-1280.png"
+      ],
+      "sheet": "a-031.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "superseded-awaiting-fresh-review",
+      "findingId": "A-VIS-428"
+    },
+    {
+      "number": 428,
+      "sha256": "c8aec303a558dcdd00c9c147937129150f4ec0bf839f640ce1431bf06a6043ae",
+      "file": "review-atanasyan-7-9-main-428-part-1-step-3-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-428-part-1-step-3-320.png",
+        "review-atanasyan-7-9-main-428-part-1-step-4-320.png"
+      ],
+      "sheet": "a-031.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "superseded-awaiting-fresh-review",
+      "findingId": "A-VIS-428"
+    },
+    {
+      "number": 428,
+      "sha256": "b2061a6dfa14f8135bff23fc5d236baed1487045cc0eb3ab6cb7c65e7fe33eee",
+      "file": "review-atanasyan-7-9-main-428-part-1-step-5-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-428-part-1-step-5-1280.png"
+      ],
+      "sheet": "a-031.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "superseded-awaiting-fresh-review",
+      "findingId": "A-VIS-428"
+    },
+    {
+      "number": 428,
+      "sha256": "2adc5dd67b770e0ff87e7aa18f99e9e1dce039a13ca5486ea453c8b158c315d0",
+      "file": "review-atanasyan-7-9-main-428-part-1-step-5-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-428-part-1-step-5-320.png"
+      ],
+      "sheet": "a-031.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "superseded-awaiting-fresh-review",
+      "findingId": "A-VIS-428"
+    },
+    {
+      "number": 429,
+      "sha256": "3f58c2a68731a7d07596b2cf96230af8395e1d6435bb3fe3547473c4d43bd690",
+      "file": "review-atanasyan-7-9-main-429-part-1-neutral-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-429-part-1-neutral-1280.png"
+      ],
+      "sheet": "a-032.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 429,
+      "sha256": "bf1ca974218024f263bd84efe939c398c6829e501e2c3814341a75f6be1761ac",
+      "file": "review-atanasyan-7-9-main-429-part-1-neutral-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-429-part-1-neutral-320.png",
+        "review-atanasyan-7-9-main-429-part-1-step-1-320.png"
+      ],
+      "sheet": "a-032.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 429,
+      "sha256": "7902b58014c6ad0973e69ca7483c857f77b1656d5288d66cb82b38182abadb30",
+      "file": "review-atanasyan-7-9-main-429-part-1-step-1-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-429-part-1-step-1-1280.png",
+        "review-atanasyan-7-9-main-429-part-1-step-2-1280.png"
+      ],
+      "sheet": "a-032.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 429,
+      "sha256": "104d9ffeaeb92c4984e98665a15fd23724eee66c8b385f2d011b46282353c0d4",
+      "file": "review-atanasyan-7-9-main-429-part-1-step-2-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-429-part-1-step-2-320.png"
+      ],
+      "sheet": "a-032.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 429,
+      "sha256": "3b669239322ad373598ee7fe9c23a2c5dc478a9eac113071a4737d2f3415549a",
+      "file": "review-atanasyan-7-9-main-429-part-1-step-3-1280.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-429-part-1-step-3-1280.png",
+        "review-atanasyan-7-9-main-429-part-1-step-4-1280.png"
+      ],
+      "sheet": "a-033.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    },
+    {
+      "number": 429,
+      "sha256": "6aa97cfdd0b7618d0fa027f6c324128c3f01e7a8ebf6cf142390a4f123cfb73e",
+      "file": "review-atanasyan-7-9-main-429-part-1-step-3-320.png",
+      "duplicates": [
+        "review-atanasyan-7-9-main-429-part-1-step-3-320.png",
+        "review-atanasyan-7-9-main-429-part-1-step-4-320.png"
+      ],
+      "sheet": "a-033.jpg",
+      "visuallyInspected": true,
+      "inspectionMethod": "Viewed contact sheet containing this representative; byte-identical duplicates were checked with SHA-256.",
+      "verdict": "pass"
+    }
+  ],
+  "reviewedFullPageContext": [
+    {
+      "file": "413-initial-1280.png",
+      "sha256": "92ed3621e46e39a2ff3cc27a22a366709caae55ae8ced42275794f252539ee91",
+      "visuallyInspected": true,
+      "verdict": "pass",
+      "scope": "Entire initial lesson page: statement, source headings, neutral figure, hint collapsed, answer field; no step views in this capture."
+    },
+    {
+      "file": "413-initial-320.png",
+      "sha256": "efc383cc9b3ff614b03a5a3f57ff5d7e844b48732c353fb0ceb50f5880c112e5",
+      "visuallyInspected": true,
+      "verdict": "pass",
+      "scope": "Entire initial lesson page: statement, source headings, neutral figure, hint collapsed, answer field; no step views in this capture."
+    },
+    {
+      "file": "417-initial-1280.png",
+      "sha256": "7990e76b142d8c0e838358896b7f00cb08451b2a2c9d44c9a357293567900622",
+      "visuallyInspected": true,
+      "verdict": "pass",
+      "scope": "Entire initial lesson page: statement, source headings, neutral figure, hint collapsed, answer field; no step views in this capture."
+    },
+    {
+      "file": "417-initial-320.png",
+      "sha256": "8ce01f0f6fbbb783a41b8362ccc0f4d32ae4ca73980287c85b1c2d13523617ec",
+      "visuallyInspected": true,
+      "verdict": "pass",
+      "scope": "Entire initial lesson page: statement, source headings, neutral figure, hint collapsed, answer field; no step views in this capture."
+    },
+    {
+      "file": "425-initial-1280.png",
+      "sha256": "971ac2639d95b0aac189442e91eb6b9f1c9e463f152cf749fa4e110840b2621d",
+      "visuallyInspected": true,
+      "verdict": "pass",
+      "scope": "Entire initial lesson page: statement, source headings, neutral figure, hint collapsed, answer field; no step views in this capture."
+    },
+    {
+      "file": "425-initial-320.png",
+      "sha256": "910fb1cbfde92715e8a1efba8cf1c431e98569daa8fc363db5c514fa02577504",
+      "visuallyInspected": true,
+      "verdict": "pass",
+      "scope": "Entire initial lesson page: statement, source headings, neutral figure, hint collapsed, answer field; no step views in this capture."
+    },
+    {
+      "file": "428-initial-1280.png",
+      "sha256": "d2a902aec8928f8740739bb4532df68d4c7b2d3111da429eec0432e2197ccaf8",
+      "visuallyInspected": true,
+      "verdict": "pass",
+      "scope": "Entire initial lesson page: statement, source headings, neutral figure, hint collapsed, answer field; no step views in this capture."
+    },
+    {
+      "file": "428-initial-320.png",
+      "sha256": "65be00889e9bad58af86d7fcd0b5effabda558d138ddde98ba4178f7a78a4931",
+      "visuallyInspected": true,
+      "verdict": "pass",
+      "scope": "Entire initial lesson page: statement, source headings, neutral figure, hint collapsed, answer field; no step views in this capture."
+    }
+  ],
+  "limitations": [
+    "This is independent visual approval for advanced-A model views on the exact bound candidate, not publication authorization or a substitute for the complete course interaction/browser gate.",
+    "The eight full-page context captures were read on the earlier snapshot and cover initial layout only. Final model states were separately covered through exact-byte reuse or fresh inspection.",
+    "No claim of pupil testing, assistive-technology testing, or physical-device testing.",
+    "Later changes to reviewed model/runtime bytes require focused fresh evidence; these hashes do not approve unspecified future content."
+  ],
+  "blockingFindings": 0,
+  "finalCandidate": {
+    "directory": "advanced-final",
+    "completed": true,
+    "viewWidthPairs": 190,
+    "reviewedViewWidthPairs": 190,
+    "exactOldByteReuse": 141,
+    "changedViewWidthPairs": 49,
+    "freshUniqueRepresentatives": 29,
+    "finalUniquePngHashes": 121,
+    "bundleSnapshot": "bundle-snapshot.json",
+    "bundleSha256": "72f479d9476032497ac481910aab37fadbb02e78e6884250d50c7b54b77313db",
+    "browserEvidence": "browser-evidence.json",
+    "browserEvidenceSha256": "02a9bcc165a11c0e23ed7e7a717e9d5119568c4f35a7f245595caf56807c2fc7",
+    "gateScriptSha256": "edf2531242b07a73dd0b6302a0f99594128acb44bded288ebbafc73e2c2e9b11",
+    "implementationSha256": "78104fd5f8898d64c29e67013496fb5eb44efea93ad39eae12873bdd75cadf59",
+    "authoredContentSha256": "6de92f7f2a91f94b806ea917b262b20a66733afa6f4078460d58fb3f2be9a1b8",
+    "implementationFiles": {
+      "index.html": "098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804",
+      "assets/engine.js": "85d395dbfb66f8a1409f1d2f930fbb6f742c0085239d34d18ec2a901f3bd6492",
+      "assets/planar-viewer.js": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061",
+      "assets/style.css": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b",
+      "assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+      "source-inventory.json": "e01036d2efaea5591e874b0669f8cbfba0ab8c9a67170042f78bb73efc9c10b6",
+      "assets/board-adapter.js": "daf1233b9def1227cc58d77e7da6ffe93e9bf08105b3cd2bedc92e2d7840dd74"
+    },
+    "advancedSectionAuthoredContentSha256": "3c73fd47306c858e31c92201d92760a8477a3197295b4d8812c887c43db4078a",
+    "reviewedAuthoredFiles": {
+      "geometry-course/textbook/preparation/grade-07-advanced-a.json": "f619243eb1e55e5d1887c0c6dd2646fdae4639035ac28ef2019590b3d7c9108b",
+      "geometry-course/textbook/models/grade-07-advanced-a.json": "3b08db94f508b636b93d5069b4259afcf9aeeec0cb534b379aeee48d606e55da",
+      "tools/geometry-textbook/models_advanced7_a.py": "be1f181f910360c4e8b7cce3fe8f4699b0aaa7f88c2d52e222f76c34ef5c6beb"
+    },
+    "all18SnapshotModelsMatchReviewedModelFile": true,
+    "postCaptureExcludedRuntimeDelta": {
+      "file": "assets/board-adapter.js",
+      "captureSha256": "daf1233b9def1227cc58d77e7da6ffe93e9bf08105b3cd2bedc92e2d7840dd74",
+      "currentSha256": "e1c366fd77f2cc822894be7e21139ce99b9e7b3c568392b122f2a3b386b7545b",
+      "assessment": "The main textbook index does not load this board adapter. All main-page implementation files retain exact capture hashes, so this later board-only change does not invalidate these model screenshots. Board interactions require their separate gate."
+    },
+    "freshContactSheets": [
+      {
+        "file": "delta-001.jpg",
+        "sha256": "9f1e094a8cdb7c9ed386737aba78e9d65bdac369e1e3677b589981687a7f45d9",
+        "visuallyInspected": true
+      },
+      {
+        "file": "delta-002.jpg",
+        "sha256": "bfcc6ddd8bdac6232acb2b791b001a0a4d54fb0005ab14ce3a141e78b92e89e4",
+        "visuallyInspected": true
+      },
+      {
+        "file": "delta-003.jpg",
+        "sha256": "5c0202546618485b25ecf22c0ebe21ec2b0acc8bd136432fbd10aba7c00d8044",
+        "visuallyInspected": true
+      },
+      {
+        "file": "delta-004.jpg",
+        "sha256": "3c821c018698d6bddb370f28c0c558cdac261ffa907185bad63c845b87c2cded",
+        "visuallyInspected": true
+      },
+      {
+        "file": "delta-005.jpg",
+        "sha256": "2083389da141f1231ac0e5e757205c9cc5088988cd0f9143abcf25cece06b9c7",
+        "visuallyInspected": true
+      },
+      {
+        "file": "delta-006.jpg",
+        "sha256": "e77f8f0589a40f6081adc9170eebf8dd378515362ff7b745cd0932da3fcc665a",
+        "visuallyInspected": true
+      },
+      {
+        "file": "delta-007.jpg",
+        "sha256": "8fa6b1a3c1f7322775c77b7cda10def8f05a060c0bdef290e48e65165aea6a9b",
+        "visuallyInspected": true
+      },
+      {
+        "file": "delta-008.jpg",
+        "sha256": "ca6957cab3df919ec5ee15969ee0276ae7caf848ac9d5c59308506f70492ff62",
+        "visuallyInspected": true
+      }
+    ],
+    "images": [
+      {
+        "number": 413,
+        "file": "review-atanasyan-7-9-main-413-part-1-neutral-1280.png",
+        "sha256": "f0fedbc1b661416ccec747a22c2178f487e2911533326783d4ad7f808de1a2b2",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-413-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-001.jpg",
+        "previousSha256": "f0fedbc1b661416ccec747a22c2178f487e2911533326783d4ad7f808de1a2b2"
+      },
+      {
+        "number": 413,
+        "file": "review-atanasyan-7-9-main-413-part-1-step-1-1280.png",
+        "sha256": "f0fedbc1b661416ccec747a22c2178f487e2911533326783d4ad7f808de1a2b2",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-413-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-001.jpg",
+        "previousSha256": "f0fedbc1b661416ccec747a22c2178f487e2911533326783d4ad7f808de1a2b2"
+      },
+      {
+        "number": 413,
+        "file": "review-atanasyan-7-9-main-413-part-1-neutral-320.png",
+        "sha256": "0242f4ea3a65079b1dcfe4ab9f279af49e73d68b5dc07343112dae8869f5661e",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-413-part-1-neutral-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-001.jpg",
+        "previousSha256": "0242f4ea3a65079b1dcfe4ab9f279af49e73d68b5dc07343112dae8869f5661e"
+      },
+      {
+        "number": 413,
+        "file": "review-atanasyan-7-9-main-413-part-1-step-1-320.png",
+        "sha256": "0242f4ea3a65079b1dcfe4ab9f279af49e73d68b5dc07343112dae8869f5661e",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-413-part-1-neutral-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-001.jpg",
+        "previousSha256": "0242f4ea3a65079b1dcfe4ab9f279af49e73d68b5dc07343112dae8869f5661e"
+      },
+      {
+        "number": 413,
+        "file": "review-atanasyan-7-9-main-413-part-1-step-2-1280.png",
+        "sha256": "5bb981949fc2dc0a3e1ec27fa5eebb201adf07a3a032a691f1fb13622123194d",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-413-part-1-step-2-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-001.jpg",
+        "previousSha256": "5bb981949fc2dc0a3e1ec27fa5eebb201adf07a3a032a691f1fb13622123194d"
+      },
+      {
+        "number": 413,
+        "file": "review-atanasyan-7-9-main-413-part-1-step-3-1280.png",
+        "sha256": "5bb981949fc2dc0a3e1ec27fa5eebb201adf07a3a032a691f1fb13622123194d",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-413-part-1-step-2-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-001.jpg",
+        "previousSha256": "5bb981949fc2dc0a3e1ec27fa5eebb201adf07a3a032a691f1fb13622123194d"
+      },
+      {
+        "number": 413,
+        "file": "review-atanasyan-7-9-main-413-part-1-step-2-320.png",
+        "sha256": "fa29537d10118e1d96d07cad62ecc6617a48d87e107056da03f3197974695c98",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-413-part-1-step-2-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-001.jpg",
+        "previousSha256": "fa29537d10118e1d96d07cad62ecc6617a48d87e107056da03f3197974695c98"
+      },
+      {
+        "number": 413,
+        "file": "review-atanasyan-7-9-main-413-part-1-step-3-320.png",
+        "sha256": "fa29537d10118e1d96d07cad62ecc6617a48d87e107056da03f3197974695c98",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-413-part-1-step-2-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-001.jpg",
+        "previousSha256": "fa29537d10118e1d96d07cad62ecc6617a48d87e107056da03f3197974695c98"
+      },
+      {
+        "number": 414,
+        "file": "review-atanasyan-7-9-main-414-part-1-neutral-1280.png",
+        "sha256": "885418df822834397b4efa097de6fbff262779d151974195f0c8aa352ec0b49c",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-414-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-002.jpg",
+        "previousSha256": "885418df822834397b4efa097de6fbff262779d151974195f0c8aa352ec0b49c"
+      },
+      {
+        "number": 414,
+        "file": "review-atanasyan-7-9-main-414-part-1-step-1-1280.png",
+        "sha256": "885418df822834397b4efa097de6fbff262779d151974195f0c8aa352ec0b49c",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-414-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-002.jpg",
+        "previousSha256": "885418df822834397b4efa097de6fbff262779d151974195f0c8aa352ec0b49c"
+      },
+      {
+        "number": 414,
+        "file": "review-atanasyan-7-9-main-414-part-1-step-2-1280.png",
+        "sha256": "885418df822834397b4efa097de6fbff262779d151974195f0c8aa352ec0b49c",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-414-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-002.jpg",
+        "previousSha256": "885418df822834397b4efa097de6fbff262779d151974195f0c8aa352ec0b49c"
+      },
+      {
+        "number": 414,
+        "file": "review-atanasyan-7-9-main-414-part-1-step-3-1280.png",
+        "sha256": "885418df822834397b4efa097de6fbff262779d151974195f0c8aa352ec0b49c",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-414-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-002.jpg",
+        "previousSha256": "885418df822834397b4efa097de6fbff262779d151974195f0c8aa352ec0b49c"
+      },
+      {
+        "number": 414,
+        "file": "review-atanasyan-7-9-main-414-part-1-neutral-320.png",
+        "sha256": "189284e3c3affadeaeba8bd1264dcfaa270e0248054e9bd982df96bcb04e5724",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-414-part-1-neutral-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-002.jpg",
+        "previousSha256": "189284e3c3affadeaeba8bd1264dcfaa270e0248054e9bd982df96bcb04e5724"
+      },
+      {
+        "number": 414,
+        "file": "review-atanasyan-7-9-main-414-part-1-step-1-320.png",
+        "sha256": "b8b3d988566b81d5946c3283ce6d141c4f788e9544fe02549ae386916e07704d",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-414-part-1-step-1-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-002.jpg",
+        "previousSha256": "b8b3d988566b81d5946c3283ce6d141c4f788e9544fe02549ae386916e07704d"
+      },
+      {
+        "number": 414,
+        "file": "review-atanasyan-7-9-main-414-part-1-step-2-320.png",
+        "sha256": "b8b3d988566b81d5946c3283ce6d141c4f788e9544fe02549ae386916e07704d",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-414-part-1-step-1-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-002.jpg",
+        "previousSha256": "b8b3d988566b81d5946c3283ce6d141c4f788e9544fe02549ae386916e07704d"
+      },
+      {
+        "number": 414,
+        "file": "review-atanasyan-7-9-main-414-part-1-step-3-320.png",
+        "sha256": "b8b3d988566b81d5946c3283ce6d141c4f788e9544fe02549ae386916e07704d",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-414-part-1-step-1-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-002.jpg",
+        "previousSha256": "b8b3d988566b81d5946c3283ce6d141c4f788e9544fe02549ae386916e07704d"
+      },
+      {
+        "number": 415,
+        "file": "review-atanasyan-7-9-main-415-part-1-neutral-1280.png",
+        "sha256": "c63964c1fbba9ba06f1dd30a7f24cdadb4cccd4ac5adc6db684ccba07751e27d",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-415-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-002.jpg",
+        "previousSha256": "c63964c1fbba9ba06f1dd30a7f24cdadb4cccd4ac5adc6db684ccba07751e27d"
+      },
+      {
+        "number": 415,
+        "file": "review-atanasyan-7-9-main-415-part-1-step-1-1280.png",
+        "sha256": "c63964c1fbba9ba06f1dd30a7f24cdadb4cccd4ac5adc6db684ccba07751e27d",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-415-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-002.jpg",
+        "previousSha256": "c63964c1fbba9ba06f1dd30a7f24cdadb4cccd4ac5adc6db684ccba07751e27d"
+      },
+      {
+        "number": 415,
+        "file": "review-atanasyan-7-9-main-415-part-1-step-2-1280.png",
+        "sha256": "c63964c1fbba9ba06f1dd30a7f24cdadb4cccd4ac5adc6db684ccba07751e27d",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-415-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-002.jpg",
+        "previousSha256": "c63964c1fbba9ba06f1dd30a7f24cdadb4cccd4ac5adc6db684ccba07751e27d"
+      },
+      {
+        "number": 415,
+        "file": "review-atanasyan-7-9-main-415-part-1-step-3-1280.png",
+        "sha256": "c63964c1fbba9ba06f1dd30a7f24cdadb4cccd4ac5adc6db684ccba07751e27d",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-415-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-002.jpg",
+        "previousSha256": "c63964c1fbba9ba06f1dd30a7f24cdadb4cccd4ac5adc6db684ccba07751e27d"
+      },
+      {
+        "number": 415,
+        "file": "review-atanasyan-7-9-main-415-part-1-neutral-320.png",
+        "sha256": "d6fa6a7cc47dc81af507d1201895d69b487d5bfd881039851fbdbe492e331dd5",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-415-part-1-neutral-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-003.jpg",
+        "previousSha256": "d6fa6a7cc47dc81af507d1201895d69b487d5bfd881039851fbdbe492e331dd5"
+      },
+      {
+        "number": 415,
+        "file": "review-atanasyan-7-9-main-415-part-1-step-1-320.png",
+        "sha256": "939d996bc9c6513e440b1d1407d14a95016b255657fd10e3b396de5b09a1a8c7",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-415-part-1-step-1-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-003.jpg",
+        "previousSha256": "939d996bc9c6513e440b1d1407d14a95016b255657fd10e3b396de5b09a1a8c7"
+      },
+      {
+        "number": 415,
+        "file": "review-atanasyan-7-9-main-415-part-1-step-2-320.png",
+        "sha256": "939d996bc9c6513e440b1d1407d14a95016b255657fd10e3b396de5b09a1a8c7",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-415-part-1-step-1-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-003.jpg",
+        "previousSha256": "939d996bc9c6513e440b1d1407d14a95016b255657fd10e3b396de5b09a1a8c7"
+      },
+      {
+        "number": 415,
+        "file": "review-atanasyan-7-9-main-415-part-1-step-3-320.png",
+        "sha256": "939d996bc9c6513e440b1d1407d14a95016b255657fd10e3b396de5b09a1a8c7",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-415-part-1-step-1-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-003.jpg",
+        "previousSha256": "939d996bc9c6513e440b1d1407d14a95016b255657fd10e3b396de5b09a1a8c7"
+      },
+      {
+        "number": 416,
+        "file": "review-atanasyan-7-9-main-416-part-1-neutral-1280.png",
+        "sha256": "ae6f7a996ee09147909d90e08c176200f49523c1911afd2c9a32f7dc02e8b3ce",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-416-part-1-neutral-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-001.jpg"
+      },
+      {
+        "number": 416,
+        "file": "review-atanasyan-7-9-main-416-part-1-neutral-320.png",
+        "sha256": "ebf34b35a9e2205d069ad92f4a3e304f4987097045fec5fe62f30e3f2727dcec",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-416-part-1-neutral-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-001.jpg"
+      },
+      {
+        "number": 416,
+        "file": "review-atanasyan-7-9-main-416-part-1-step-1-1280.png",
+        "sha256": "22289b10a92dce413d84b6344b96950e3350ff7256d5e9a0d6f644bceeb3387b",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-416-part-1-step-1-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-001.jpg"
+      },
+      {
+        "number": 416,
+        "file": "review-atanasyan-7-9-main-416-part-1-step-1-320.png",
+        "sha256": "7fb731b014aa9eb6240d7b9501e5adae9b0300c72bf9a3544c5742b99038d7e7",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-416-part-1-step-1-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-001.jpg"
+      },
+      {
+        "number": 416,
+        "file": "review-atanasyan-7-9-main-416-part-1-step-2-1280.png",
+        "sha256": "0900032d89f19907abbdcb9e178c656909f70c5409a32282017e03c710302c7c",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-416-part-1-step-2-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-002.jpg"
+      },
+      {
+        "number": 416,
+        "file": "review-atanasyan-7-9-main-416-part-1-step-3-1280.png",
+        "sha256": "0900032d89f19907abbdcb9e178c656909f70c5409a32282017e03c710302c7c",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-416-part-1-step-2-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-002.jpg"
+      },
+      {
+        "number": 416,
+        "file": "review-atanasyan-7-9-main-416-part-1-step-2-320.png",
+        "sha256": "732633fef0ef3dce1839ca41c97901dd89754f9240611b7655999d07edc1497a",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-416-part-1-step-2-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-002.jpg"
+      },
+      {
+        "number": 416,
+        "file": "review-atanasyan-7-9-main-416-part-1-step-3-320.png",
+        "sha256": "732633fef0ef3dce1839ca41c97901dd89754f9240611b7655999d07edc1497a",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-416-part-1-step-2-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-002.jpg"
+      },
+      {
+        "number": 417,
+        "file": "review-atanasyan-7-9-main-417-part-1-case-1-1280.png",
+        "sha256": "3817df055f4cf62070e5671a2a192452093016463ca374f80a929a220c45f391",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-417-part-1-case-1-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-005.jpg",
+        "previousSha256": "3817df055f4cf62070e5671a2a192452093016463ca374f80a929a220c45f391"
+      },
+      {
+        "number": 417,
+        "file": "review-atanasyan-7-9-main-417-part-1-case-1-320.png",
+        "sha256": "f2c8e9f59369b5bf8d3c22b569ae19ec88e4776c06f6fa8e89fa0f8a920d2480",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-417-part-1-case-1-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-005.jpg",
+        "previousSha256": "f2c8e9f59369b5bf8d3c22b569ae19ec88e4776c06f6fa8e89fa0f8a920d2480"
+      },
+      {
+        "number": 417,
+        "file": "review-atanasyan-7-9-main-417-part-1-neutral-1280.png",
+        "sha256": "9c324b42f64af5309e95774a75f7277bcf8d594117360ad1200d6e6b8e3b4a26",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-417-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-005.jpg",
+        "previousSha256": "9c324b42f64af5309e95774a75f7277bcf8d594117360ad1200d6e6b8e3b4a26"
+      },
+      {
+        "number": 417,
+        "file": "review-atanasyan-7-9-main-417-part-1-neutral-320.png",
+        "sha256": "1091f76be0529e9f6110418bdc9c8ad753e4b322cb2f47fd6bd93dd1d7a75864",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-417-part-1-neutral-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-005.jpg",
+        "previousSha256": "1091f76be0529e9f6110418bdc9c8ad753e4b322cb2f47fd6bd93dd1d7a75864"
+      },
+      {
+        "number": 417,
+        "file": "review-atanasyan-7-9-main-417-part-1-step-1-320.png",
+        "sha256": "1091f76be0529e9f6110418bdc9c8ad753e4b322cb2f47fd6bd93dd1d7a75864",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-417-part-1-neutral-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-005.jpg",
+        "previousSha256": "1091f76be0529e9f6110418bdc9c8ad753e4b322cb2f47fd6bd93dd1d7a75864"
+      },
+      {
+        "number": 417,
+        "file": "review-atanasyan-7-9-main-417-part-1-step-1-1280.png",
+        "sha256": "991a4759788ddd71e546487e3835cdcd7e0da129954c8cb63d12e8cdd19cdcdd",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-417-part-1-step-1-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-006.jpg",
+        "previousSha256": "991a4759788ddd71e546487e3835cdcd7e0da129954c8cb63d12e8cdd19cdcdd"
+      },
+      {
+        "number": 417,
+        "file": "review-atanasyan-7-9-main-417-part-1-step-2-1280.png",
+        "sha256": "991a4759788ddd71e546487e3835cdcd7e0da129954c8cb63d12e8cdd19cdcdd",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-417-part-1-step-1-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-006.jpg",
+        "previousSha256": "991a4759788ddd71e546487e3835cdcd7e0da129954c8cb63d12e8cdd19cdcdd"
+      },
+      {
+        "number": 417,
+        "file": "review-atanasyan-7-9-main-417-part-1-step-2-320.png",
+        "sha256": "677713b4efa8e1fb7481ffd3ba14651f6b2241f678882672db13f0c9b5ef0e20",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-417-part-1-step-2-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-002.jpg"
+      },
+      {
+        "number": 417,
+        "file": "review-atanasyan-7-9-main-417-part-1-step-3-1280.png",
+        "sha256": "4110fae023ad415ec9978ddbd241044a6eab5c0a10d84274d73fff8d859413b5",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-417-part-1-step-3-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-006.jpg",
+        "previousSha256": "4110fae023ad415ec9978ddbd241044a6eab5c0a10d84274d73fff8d859413b5"
+      },
+      {
+        "number": 417,
+        "file": "review-atanasyan-7-9-main-417-part-1-step-3-320.png",
+        "sha256": "165451e14ae63d901d85af3c8586af9e3c8fe7dcde3d3f847322732b047dd901",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-417-part-1-step-3-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-006.jpg",
+        "previousSha256": "165451e14ae63d901d85af3c8586af9e3c8fe7dcde3d3f847322732b047dd901"
+      },
+      {
+        "number": 417,
+        "file": "review-atanasyan-7-9-main-417-part-1-step-4-1280.png",
+        "sha256": "b02f1f07669eddd69a11e56c295b5d0be663a1d5b40bfc6865a38fea3c183afc",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-417-part-1-step-4-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-007.jpg",
+        "previousSha256": "b02f1f07669eddd69a11e56c295b5d0be663a1d5b40bfc6865a38fea3c183afc"
+      },
+      {
+        "number": 417,
+        "file": "review-atanasyan-7-9-main-417-part-1-step-4-320.png",
+        "sha256": "7d73932385f6f178d2771f12e4e3f0d70b84d07b5afd5926a085c7bd00817266",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-417-part-1-step-4-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-007.jpg",
+        "previousSha256": "7d73932385f6f178d2771f12e4e3f0d70b84d07b5afd5926a085c7bd00817266"
+      },
+      {
+        "number": 417,
+        "file": "review-atanasyan-7-9-main-417-part-1-step-5-1280.png",
+        "sha256": "189293ab95c5bb9d8f47822f890dc49a126ed66f3c82773399f9c5ae155c6429",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-417-part-1-step-5-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-007.jpg",
+        "previousSha256": "189293ab95c5bb9d8f47822f890dc49a126ed66f3c82773399f9c5ae155c6429"
+      },
+      {
+        "number": 417,
+        "file": "review-atanasyan-7-9-main-417-part-1-step-5-320.png",
+        "sha256": "710e3ad4da4e3ac08fb03e77f7f2b981217012294677a15c446705abbdca0f38",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-417-part-1-step-5-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-007.jpg",
+        "previousSha256": "710e3ad4da4e3ac08fb03e77f7f2b981217012294677a15c446705abbdca0f38"
+      },
+      {
+        "number": 418,
+        "file": "review-atanasyan-7-9-main-418-part-1-case-1-1280.png",
+        "sha256": "fdcc2d2405d30d396fdf6e5ad10c38ea69afc7c5d30f983ad360c71a4d31a9a7",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-418-part-1-case-1-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-008.jpg",
+        "previousSha256": "fdcc2d2405d30d396fdf6e5ad10c38ea69afc7c5d30f983ad360c71a4d31a9a7"
+      },
+      {
+        "number": 418,
+        "file": "review-atanasyan-7-9-main-418-part-1-case-1-320.png",
+        "sha256": "134fcfcd9916c70ee9e449069aec024da8c6f6628672d77ec20b61a16898de3c",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-418-part-1-case-1-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-008.jpg",
+        "previousSha256": "134fcfcd9916c70ee9e449069aec024da8c6f6628672d77ec20b61a16898de3c"
+      },
+      {
+        "number": 418,
+        "file": "review-atanasyan-7-9-main-418-part-1-neutral-1280.png",
+        "sha256": "b29321ad0b912c809f4e8615a2ac52cd9868aaf3ef0097af8b9e71c381587e36",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-418-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-008.jpg",
+        "previousSha256": "b29321ad0b912c809f4e8615a2ac52cd9868aaf3ef0097af8b9e71c381587e36"
+      },
+      {
+        "number": 418,
+        "file": "review-atanasyan-7-9-main-418-part-1-neutral-320.png",
+        "sha256": "a78d2206061f930c94b5f696c237c0193771246be2b50d3565131e958a3b48f6",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-418-part-1-neutral-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-008.jpg",
+        "previousSha256": "a78d2206061f930c94b5f696c237c0193771246be2b50d3565131e958a3b48f6"
+      },
+      {
+        "number": 418,
+        "file": "review-atanasyan-7-9-main-418-part-1-step-1-1280.png",
+        "sha256": "c394a9585fe8bc3725f861040785dc6a0383710053d44f4499ef3e078c40f1ca",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-418-part-1-step-1-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-009.jpg",
+        "previousSha256": "c394a9585fe8bc3725f861040785dc6a0383710053d44f4499ef3e078c40f1ca"
+      },
+      {
+        "number": 418,
+        "file": "review-atanasyan-7-9-main-418-part-1-step-1-320.png",
+        "sha256": "a78d2206061f930c94b5f696c237c0193771246be2b50d3565131e958a3b48f6",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-418-part-1-step-1-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-002.jpg"
+      },
+      {
+        "number": 418,
+        "file": "review-atanasyan-7-9-main-418-part-1-step-2-320.png",
+        "sha256": "baed26c58b98a792230a5d0b2706da389ee1d51a96cd3766d34b4855458cbd30",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-418-part-1-step-1-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-009.jpg",
+        "previousSha256": "baed26c58b98a792230a5d0b2706da389ee1d51a96cd3766d34b4855458cbd30"
+      },
+      {
+        "number": 418,
+        "file": "review-atanasyan-7-9-main-418-part-1-step-2-1280.png",
+        "sha256": "c394a9585fe8bc3725f861040785dc6a0383710053d44f4499ef3e078c40f1ca",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-418-part-1-step-2-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-003.jpg"
+      },
+      {
+        "number": 418,
+        "file": "review-atanasyan-7-9-main-418-part-1-step-3-1280.png",
+        "sha256": "0bda8d5f10a6dbeb32948e4fa022a6d152e12647a2fc5d61da483fbf67a58706",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-418-part-1-step-3-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-009.jpg",
+        "previousSha256": "0bda8d5f10a6dbeb32948e4fa022a6d152e12647a2fc5d61da483fbf67a58706"
+      },
+      {
+        "number": 418,
+        "file": "review-atanasyan-7-9-main-418-part-1-step-3-320.png",
+        "sha256": "6e41b3ad6de547c2bc754cde32850feaea4bb243207c1d6b879c89becf805e24",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-418-part-1-step-3-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-010.jpg",
+        "previousSha256": "6e41b3ad6de547c2bc754cde32850feaea4bb243207c1d6b879c89becf805e24"
+      },
+      {
+        "number": 418,
+        "file": "review-atanasyan-7-9-main-418-part-1-step-4-1280.png",
+        "sha256": "f6d226d33155c95db2004a2f74e8309754b7f67b6c0af8e72e07c868d4092c5c",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-418-part-1-step-4-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-010.jpg",
+        "previousSha256": "f6d226d33155c95db2004a2f74e8309754b7f67b6c0af8e72e07c868d4092c5c"
+      },
+      {
+        "number": 418,
+        "file": "review-atanasyan-7-9-main-418-part-1-step-4-320.png",
+        "sha256": "07469f2e6b2e8506351c34467cf84b7cd2120378889eecf1b0391e6fd5a218f3",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-418-part-1-step-4-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-010.jpg",
+        "previousSha256": "07469f2e6b2e8506351c34467cf84b7cd2120378889eecf1b0391e6fd5a218f3"
+      },
+      {
+        "number": 418,
+        "file": "review-atanasyan-7-9-main-418-part-1-step-5-1280.png",
+        "sha256": "2721f4e6e72acbe178c368edffd78690c59538adbf2d04f33ea5bea274a45dbe",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-418-part-1-step-5-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-010.jpg",
+        "previousSha256": "2721f4e6e72acbe178c368edffd78690c59538adbf2d04f33ea5bea274a45dbe"
+      },
+      {
+        "number": 418,
+        "file": "review-atanasyan-7-9-main-418-part-1-step-5-320.png",
+        "sha256": "883e8adb46429a36e707e67fdad81d9b4aa267825e5f387ec184c536062fae12",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-418-part-1-step-5-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-011.jpg",
+        "previousSha256": "883e8adb46429a36e707e67fdad81d9b4aa267825e5f387ec184c536062fae12"
+      },
+      {
+        "number": 419,
+        "file": "review-atanasyan-7-9-main-419-part-1-neutral-1280.png",
+        "sha256": "13d8e587431c7ea49befea31430a7892a58257c40bde9080f7704a54213c10c3",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-419-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-011.jpg",
+        "previousSha256": "13d8e587431c7ea49befea31430a7892a58257c40bde9080f7704a54213c10c3"
+      },
+      {
+        "number": 419,
+        "file": "review-atanasyan-7-9-main-419-part-1-neutral-320.png",
+        "sha256": "b6e09aa0dbb0af83114c6482d1f95a4c1395382fa6d032a645903d8cac431606",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-419-part-1-neutral-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-011.jpg",
+        "previousSha256": "b6e09aa0dbb0af83114c6482d1f95a4c1395382fa6d032a645903d8cac431606"
+      },
+      {
+        "number": 419,
+        "file": "review-atanasyan-7-9-main-419-part-1-step-1-1280.png",
+        "sha256": "bec2024a1ff4043a7c449508dcced6d9f3cf4e2a4eef894d9e832357c9c658eb",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-419-part-1-step-1-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-003.jpg"
+      },
+      {
+        "number": 419,
+        "file": "review-atanasyan-7-9-main-419-part-1-step-1-320.png",
+        "sha256": "2e444e8bb7e3b2b4c7bc57eba5bceeb767e41b836b0eca558eed509a189269d9",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-419-part-1-step-1-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-003.jpg"
+      },
+      {
+        "number": 419,
+        "file": "review-atanasyan-7-9-main-419-part-1-step-2-1280.png",
+        "sha256": "bec2024a1ff4043a7c449508dcced6d9f3cf4e2a4eef894d9e832357c9c658eb",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-419-part-1-step-1-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-003.jpg"
+      },
+      {
+        "number": 419,
+        "file": "review-atanasyan-7-9-main-419-part-1-step-2-320.png",
+        "sha256": "2e444e8bb7e3b2b4c7bc57eba5bceeb767e41b836b0eca558eed509a189269d9",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-419-part-1-step-1-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-003.jpg"
+      },
+      {
+        "number": 419,
+        "file": "review-atanasyan-7-9-main-419-part-1-step-3-1280.png",
+        "sha256": "bec2024a1ff4043a7c449508dcced6d9f3cf4e2a4eef894d9e832357c9c658eb",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-419-part-1-step-3-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-012.jpg",
+        "previousSha256": "bec2024a1ff4043a7c449508dcced6d9f3cf4e2a4eef894d9e832357c9c658eb"
+      },
+      {
+        "number": 419,
+        "file": "review-atanasyan-7-9-main-419-part-1-step-4-1280.png",
+        "sha256": "bec2024a1ff4043a7c449508dcced6d9f3cf4e2a4eef894d9e832357c9c658eb",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-419-part-1-step-3-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-012.jpg",
+        "previousSha256": "bec2024a1ff4043a7c449508dcced6d9f3cf4e2a4eef894d9e832357c9c658eb"
+      },
+      {
+        "number": 419,
+        "file": "review-atanasyan-7-9-main-419-part-1-step-3-320.png",
+        "sha256": "2e444e8bb7e3b2b4c7bc57eba5bceeb767e41b836b0eca558eed509a189269d9",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-419-part-1-step-3-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-013.jpg",
+        "previousSha256": "2e444e8bb7e3b2b4c7bc57eba5bceeb767e41b836b0eca558eed509a189269d9"
+      },
+      {
+        "number": 419,
+        "file": "review-atanasyan-7-9-main-419-part-1-step-4-320.png",
+        "sha256": "2e444e8bb7e3b2b4c7bc57eba5bceeb767e41b836b0eca558eed509a189269d9",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-419-part-1-step-3-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-013.jpg",
+        "previousSha256": "2e444e8bb7e3b2b4c7bc57eba5bceeb767e41b836b0eca558eed509a189269d9"
+      },
+      {
+        "number": 420,
+        "file": "review-atanasyan-7-9-main-420-part-1-neutral-1280.png",
+        "sha256": "0df85514c0e7da3671b9778e20e00dfcd946e3c31b4eaec26603849750783087",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-420-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-013.jpg",
+        "previousSha256": "0df85514c0e7da3671b9778e20e00dfcd946e3c31b4eaec26603849750783087"
+      },
+      {
+        "number": 420,
+        "file": "review-atanasyan-7-9-main-420-part-1-step-1-1280.png",
+        "sha256": "0df85514c0e7da3671b9778e20e00dfcd946e3c31b4eaec26603849750783087",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-420-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-013.jpg",
+        "previousSha256": "0df85514c0e7da3671b9778e20e00dfcd946e3c31b4eaec26603849750783087"
+      },
+      {
+        "number": 420,
+        "file": "review-atanasyan-7-9-main-420-part-1-step-5-1280.png",
+        "sha256": "0df85514c0e7da3671b9778e20e00dfcd946e3c31b4eaec26603849750783087",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-420-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-013.jpg",
+        "previousSha256": "0df85514c0e7da3671b9778e20e00dfcd946e3c31b4eaec26603849750783087"
+      },
+      {
+        "number": 420,
+        "file": "review-atanasyan-7-9-main-420-part-1-neutral-320.png",
+        "sha256": "37803bb46b0e539d89feaee9e53a5eae4256f4f2f7b7370cc6d4b50701d0ee84",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-420-part-1-neutral-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-013.jpg",
+        "previousSha256": "37803bb46b0e539d89feaee9e53a5eae4256f4f2f7b7370cc6d4b50701d0ee84"
+      },
+      {
+        "number": 420,
+        "file": "review-atanasyan-7-9-main-420-part-1-step-1-320.png",
+        "sha256": "19abb47081c48f4139b16308cc10fe5407ba96cb53504b44c69ee500116a0e35",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-420-part-1-step-1-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-013.jpg",
+        "previousSha256": "19abb47081c48f4139b16308cc10fe5407ba96cb53504b44c69ee500116a0e35"
+      },
+      {
+        "number": 420,
+        "file": "review-atanasyan-7-9-main-420-part-1-step-5-320.png",
+        "sha256": "19abb47081c48f4139b16308cc10fe5407ba96cb53504b44c69ee500116a0e35",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-420-part-1-step-1-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-013.jpg",
+        "previousSha256": "19abb47081c48f4139b16308cc10fe5407ba96cb53504b44c69ee500116a0e35"
+      },
+      {
+        "number": 420,
+        "file": "review-atanasyan-7-9-main-420-part-1-step-2-1280.png",
+        "sha256": "d0f86d34648d1b02bc185bef79731d5be2a324463b54e3d63cdb219ed9eb9e19",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-420-part-1-step-2-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-014.jpg",
+        "previousSha256": "d0f86d34648d1b02bc185bef79731d5be2a324463b54e3d63cdb219ed9eb9e19"
+      },
+      {
+        "number": 420,
+        "file": "review-atanasyan-7-9-main-420-part-1-step-3-1280.png",
+        "sha256": "d0f86d34648d1b02bc185bef79731d5be2a324463b54e3d63cdb219ed9eb9e19",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-420-part-1-step-2-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-014.jpg",
+        "previousSha256": "d0f86d34648d1b02bc185bef79731d5be2a324463b54e3d63cdb219ed9eb9e19"
+      },
+      {
+        "number": 420,
+        "file": "review-atanasyan-7-9-main-420-part-1-step-4-1280.png",
+        "sha256": "d0f86d34648d1b02bc185bef79731d5be2a324463b54e3d63cdb219ed9eb9e19",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-420-part-1-step-2-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-014.jpg",
+        "previousSha256": "d0f86d34648d1b02bc185bef79731d5be2a324463b54e3d63cdb219ed9eb9e19"
+      },
+      {
+        "number": 420,
+        "file": "review-atanasyan-7-9-main-420-part-1-step-2-320.png",
+        "sha256": "a05c4bfd605ac12e554a441b150dfedc36f791c4f18d54ec085639a69abbd9ae",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-420-part-1-step-2-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-014.jpg",
+        "previousSha256": "a05c4bfd605ac12e554a441b150dfedc36f791c4f18d54ec085639a69abbd9ae"
+      },
+      {
+        "number": 420,
+        "file": "review-atanasyan-7-9-main-420-part-1-step-3-320.png",
+        "sha256": "a05c4bfd605ac12e554a441b150dfedc36f791c4f18d54ec085639a69abbd9ae",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-420-part-1-step-2-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-014.jpg",
+        "previousSha256": "a05c4bfd605ac12e554a441b150dfedc36f791c4f18d54ec085639a69abbd9ae"
+      },
+      {
+        "number": 420,
+        "file": "review-atanasyan-7-9-main-420-part-1-step-4-320.png",
+        "sha256": "a05c4bfd605ac12e554a441b150dfedc36f791c4f18d54ec085639a69abbd9ae",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-420-part-1-step-2-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-014.jpg",
+        "previousSha256": "a05c4bfd605ac12e554a441b150dfedc36f791c4f18d54ec085639a69abbd9ae"
+      },
+      {
+        "number": 421,
+        "file": "review-atanasyan-7-9-main-421-part-1-neutral-1280.png",
+        "sha256": "e8ebf25b67812e739d18093f7341b80fac6340ee6d915f9bf924560353b67f69",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-421-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-014.jpg",
+        "previousSha256": "e8ebf25b67812e739d18093f7341b80fac6340ee6d915f9bf924560353b67f69"
+      },
+      {
+        "number": 421,
+        "file": "review-atanasyan-7-9-main-421-part-1-step-1-1280.png",
+        "sha256": "e8ebf25b67812e739d18093f7341b80fac6340ee6d915f9bf924560353b67f69",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-421-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-014.jpg",
+        "previousSha256": "e8ebf25b67812e739d18093f7341b80fac6340ee6d915f9bf924560353b67f69"
+      },
+      {
+        "number": 421,
+        "file": "review-atanasyan-7-9-main-421-part-1-neutral-320.png",
+        "sha256": "d2a4bdf6c9a335415214a485d485ad6b3bc146f9d5b2882befa06f7bfd17c6b4",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-421-part-1-neutral-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-014.jpg",
+        "previousSha256": "d2a4bdf6c9a335415214a485d485ad6b3bc146f9d5b2882befa06f7bfd17c6b4"
+      },
+      {
+        "number": 421,
+        "file": "review-atanasyan-7-9-main-421-part-1-step-1-320.png",
+        "sha256": "96373672ebd56bccdc32266865a3a3d1b524ac2924855e87b5b77c247f3c2029",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-421-part-1-step-1-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-015.jpg",
+        "previousSha256": "96373672ebd56bccdc32266865a3a3d1b524ac2924855e87b5b77c247f3c2029"
+      },
+      {
+        "number": 421,
+        "file": "review-atanasyan-7-9-main-421-part-1-step-2-1280.png",
+        "sha256": "068cc1becf6f04c2c0514aa6c8b03f9211d0a6c408727a77d16b316547492c68",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-421-part-1-step-2-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-015.jpg",
+        "previousSha256": "068cc1becf6f04c2c0514aa6c8b03f9211d0a6c408727a77d16b316547492c68"
+      },
+      {
+        "number": 421,
+        "file": "review-atanasyan-7-9-main-421-part-1-step-3-1280.png",
+        "sha256": "068cc1becf6f04c2c0514aa6c8b03f9211d0a6c408727a77d16b316547492c68",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-421-part-1-step-2-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-015.jpg",
+        "previousSha256": "068cc1becf6f04c2c0514aa6c8b03f9211d0a6c408727a77d16b316547492c68"
+      },
+      {
+        "number": 421,
+        "file": "review-atanasyan-7-9-main-421-part-1-step-2-320.png",
+        "sha256": "49e7113256b588892888bf28f0bf295a9874a2bf395dec079fadbebd7e49f034",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-421-part-1-step-2-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-015.jpg",
+        "previousSha256": "49e7113256b588892888bf28f0bf295a9874a2bf395dec079fadbebd7e49f034"
+      },
+      {
+        "number": 421,
+        "file": "review-atanasyan-7-9-main-421-part-1-step-3-320.png",
+        "sha256": "49e7113256b588892888bf28f0bf295a9874a2bf395dec079fadbebd7e49f034",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-421-part-1-step-2-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-015.jpg",
+        "previousSha256": "49e7113256b588892888bf28f0bf295a9874a2bf395dec079fadbebd7e49f034"
+      },
+      {
+        "number": 422,
+        "file": "review-atanasyan-7-9-main-422-part-1-case-1-1280.png",
+        "sha256": "2d33af3ebb9bc715cd634ad8d3207295489565dab55edd38af5a8acfc2aea9df",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-422-part-1-case-1-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-015.jpg",
+        "previousSha256": "2d33af3ebb9bc715cd634ad8d3207295489565dab55edd38af5a8acfc2aea9df"
+      },
+      {
+        "number": 422,
+        "file": "review-atanasyan-7-9-main-422-part-1-case-1-320.png",
+        "sha256": "5cb61cca067ba9bf107a604f89519303f9f7690cb9ae82d37175af4ec3416521",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-422-part-1-case-1-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-016.jpg",
+        "previousSha256": "5cb61cca067ba9bf107a604f89519303f9f7690cb9ae82d37175af4ec3416521"
+      },
+      {
+        "number": 422,
+        "file": "review-atanasyan-7-9-main-422-part-1-neutral-1280.png",
+        "sha256": "615e7e6a3d6b6b19397fab8e31014580a4e3566af2d9fa8e7d0e921b6ddcebe0",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-422-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-016.jpg",
+        "previousSha256": "615e7e6a3d6b6b19397fab8e31014580a4e3566af2d9fa8e7d0e921b6ddcebe0"
+      },
+      {
+        "number": 422,
+        "file": "review-atanasyan-7-9-main-422-part-1-neutral-320.png",
+        "sha256": "3de4c3be49601137892103d834c13560873407a82db0e19d63747e548f1bbb75",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-422-part-1-neutral-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-016.jpg",
+        "previousSha256": "3de4c3be49601137892103d834c13560873407a82db0e19d63747e548f1bbb75"
+      },
+      {
+        "number": 422,
+        "file": "review-atanasyan-7-9-main-422-part-1-step-1-1280.png",
+        "sha256": "305e167219803445869a9a6d7395aa4a1c84f68f77863fa67b8824aef9891872",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-422-part-1-step-1-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-016.jpg",
+        "previousSha256": "305e167219803445869a9a6d7395aa4a1c84f68f77863fa67b8824aef9891872"
+      },
+      {
+        "number": 422,
+        "file": "review-atanasyan-7-9-main-422-part-1-step-1-320.png",
+        "sha256": "3de4c3be49601137892103d834c13560873407a82db0e19d63747e548f1bbb75",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-422-part-1-step-1-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-003.jpg"
+      },
+      {
+        "number": 422,
+        "file": "review-atanasyan-7-9-main-422-part-1-step-2-1280.png",
+        "sha256": "60a49e609ec3f6540ced25ca4fd8cdf5db36efb6fcb40849896ee0ec674db520",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-422-part-1-step-2-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-017.jpg",
+        "previousSha256": "60a49e609ec3f6540ced25ca4fd8cdf5db36efb6fcb40849896ee0ec674db520"
+      },
+      {
+        "number": 422,
+        "file": "review-atanasyan-7-9-main-422-part-1-step-3-1280.png",
+        "sha256": "60a49e609ec3f6540ced25ca4fd8cdf5db36efb6fcb40849896ee0ec674db520",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-422-part-1-step-2-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-017.jpg",
+        "previousSha256": "60a49e609ec3f6540ced25ca4fd8cdf5db36efb6fcb40849896ee0ec674db520"
+      },
+      {
+        "number": 422,
+        "file": "review-atanasyan-7-9-main-422-part-1-step-2-320.png",
+        "sha256": "33b186d950739e999470ee69b930df7dddbf9e9a032db55ee942946a85aae097",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-422-part-1-step-2-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-017.jpg",
+        "previousSha256": "33b186d950739e999470ee69b930df7dddbf9e9a032db55ee942946a85aae097"
+      },
+      {
+        "number": 422,
+        "file": "review-atanasyan-7-9-main-422-part-1-step-3-320.png",
+        "sha256": "33b186d950739e999470ee69b930df7dddbf9e9a032db55ee942946a85aae097",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-422-part-1-step-2-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-017.jpg",
+        "previousSha256": "33b186d950739e999470ee69b930df7dddbf9e9a032db55ee942946a85aae097"
+      },
+      {
+        "number": 422,
+        "file": "review-atanasyan-7-9-main-422-part-1-step-4-1280.png",
+        "sha256": "56d703ef5724202dc6311aa4ae60eb160d891b3eb6b3e410df877d98bee8c75e",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-422-part-1-step-4-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-017.jpg",
+        "previousSha256": "56d703ef5724202dc6311aa4ae60eb160d891b3eb6b3e410df877d98bee8c75e"
+      },
+      {
+        "number": 422,
+        "file": "review-atanasyan-7-9-main-422-part-1-step-4-320.png",
+        "sha256": "f8a5d1ddb2a2c533960ca6e8c896de07bff397ccf574fb8d1164f4a863a75f09",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-422-part-1-step-4-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-018.jpg",
+        "previousSha256": "f8a5d1ddb2a2c533960ca6e8c896de07bff397ccf574fb8d1164f4a863a75f09"
+      },
+      {
+        "number": 423,
+        "file": "review-atanasyan-7-9-main-423-part-1-neutral-1280.png",
+        "sha256": "057b96c539e9c4b4329f4f4850743b0d35ddd99a9116db129083279fb013f9fe",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-423-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-018.jpg",
+        "previousSha256": "057b96c539e9c4b4329f4f4850743b0d35ddd99a9116db129083279fb013f9fe"
+      },
+      {
+        "number": 423,
+        "file": "review-atanasyan-7-9-main-423-part-1-neutral-320.png",
+        "sha256": "17f9d8815dc4536c96cd0e8e74dc37cd685dba2ab1f65e70302335a0bafd308f",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-423-part-1-neutral-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-018.jpg",
+        "previousSha256": "17f9d8815dc4536c96cd0e8e74dc37cd685dba2ab1f65e70302335a0bafd308f"
+      },
+      {
+        "number": 423,
+        "file": "review-atanasyan-7-9-main-423-part-1-step-1-1280.png",
+        "sha256": "d25dde2dd9c6509478ccb5b559e24ff0c401eef9310ef49fe65df902551855a7",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-423-part-1-step-1-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-018.jpg",
+        "previousSha256": "d25dde2dd9c6509478ccb5b559e24ff0c401eef9310ef49fe65df902551855a7"
+      },
+      {
+        "number": 423,
+        "file": "review-atanasyan-7-9-main-423-part-1-step-2-1280.png",
+        "sha256": "d25dde2dd9c6509478ccb5b559e24ff0c401eef9310ef49fe65df902551855a7",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-423-part-1-step-1-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-018.jpg",
+        "previousSha256": "d25dde2dd9c6509478ccb5b559e24ff0c401eef9310ef49fe65df902551855a7"
+      },
+      {
+        "number": 423,
+        "file": "review-atanasyan-7-9-main-423-part-1-step-3-1280.png",
+        "sha256": "d25dde2dd9c6509478ccb5b559e24ff0c401eef9310ef49fe65df902551855a7",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-423-part-1-step-1-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-018.jpg",
+        "previousSha256": "d25dde2dd9c6509478ccb5b559e24ff0c401eef9310ef49fe65df902551855a7"
+      },
+      {
+        "number": 423,
+        "file": "review-atanasyan-7-9-main-423-part-1-step-4-1280.png",
+        "sha256": "d25dde2dd9c6509478ccb5b559e24ff0c401eef9310ef49fe65df902551855a7",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-423-part-1-step-1-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-018.jpg",
+        "previousSha256": "d25dde2dd9c6509478ccb5b559e24ff0c401eef9310ef49fe65df902551855a7"
+      },
+      {
+        "number": 423,
+        "file": "review-atanasyan-7-9-main-423-part-1-step-1-320.png",
+        "sha256": "88061f9f71f1aad1b8ff9ee14a8d8d8dbca066b9632511f51cb9a3129b174485",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-423-part-1-step-1-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-004.jpg"
+      },
+      {
+        "number": 423,
+        "file": "review-atanasyan-7-9-main-423-part-1-step-2-320.png",
+        "sha256": "55fbf1350670b93f829865d427bad7d3a448c01409653d71a7b33c7237ae341b",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-423-part-1-step-1-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-019.jpg",
+        "previousSha256": "55fbf1350670b93f829865d427bad7d3a448c01409653d71a7b33c7237ae341b"
+      },
+      {
+        "number": 423,
+        "file": "review-atanasyan-7-9-main-423-part-1-step-3-320.png",
+        "sha256": "55fbf1350670b93f829865d427bad7d3a448c01409653d71a7b33c7237ae341b",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-423-part-1-step-1-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-019.jpg",
+        "previousSha256": "55fbf1350670b93f829865d427bad7d3a448c01409653d71a7b33c7237ae341b"
+      },
+      {
+        "number": 423,
+        "file": "review-atanasyan-7-9-main-423-part-1-step-4-320.png",
+        "sha256": "55fbf1350670b93f829865d427bad7d3a448c01409653d71a7b33c7237ae341b",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-423-part-1-step-1-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-019.jpg",
+        "previousSha256": "55fbf1350670b93f829865d427bad7d3a448c01409653d71a7b33c7237ae341b"
+      },
+      {
+        "number": 424,
+        "file": "review-atanasyan-7-9-main-424-part-1-neutral-1280.png",
+        "sha256": "4800794332da58ef2b59e2c9051a264ce234d897eace578117ab928b09b1775e",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-424-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-019.jpg",
+        "previousSha256": "4800794332da58ef2b59e2c9051a264ce234d897eace578117ab928b09b1775e"
+      },
+      {
+        "number": 424,
+        "file": "review-atanasyan-7-9-main-424-part-1-neutral-320.png",
+        "sha256": "17f0e2e7af6fb37b3a47bfc4fbdac2fff069a93d94cc215a788852b7f10405e2",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-424-part-1-neutral-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-019.jpg",
+        "previousSha256": "17f0e2e7af6fb37b3a47bfc4fbdac2fff069a93d94cc215a788852b7f10405e2"
+      },
+      {
+        "number": 424,
+        "file": "review-atanasyan-7-9-main-424-part-1-step-1-1280.png",
+        "sha256": "4800794332da58ef2b59e2c9051a264ce234d897eace578117ab928b09b1775e",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-424-part-1-step-1-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-004.jpg"
+      },
+      {
+        "number": 424,
+        "file": "review-atanasyan-7-9-main-424-part-1-step-3-1280.png",
+        "sha256": "fd7abbc1cc8b8fd78c33f0ef65dabea9a339669a68d5c7556a49ba02c54fb6fd",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-424-part-1-step-1-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-019.jpg",
+        "previousSha256": "fd7abbc1cc8b8fd78c33f0ef65dabea9a339669a68d5c7556a49ba02c54fb6fd"
+      },
+      {
+        "number": 424,
+        "file": "review-atanasyan-7-9-main-424-part-1-step-1-320.png",
+        "sha256": "087e08d3e3e414d9333ab1cf185836e565895dc1e0fa238476b19259aa580779",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-424-part-1-step-1-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-020.jpg",
+        "previousSha256": "087e08d3e3e414d9333ab1cf185836e565895dc1e0fa238476b19259aa580779"
+      },
+      {
+        "number": 424,
+        "file": "review-atanasyan-7-9-main-424-part-1-step-3-320.png",
+        "sha256": "087e08d3e3e414d9333ab1cf185836e565895dc1e0fa238476b19259aa580779",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-424-part-1-step-1-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-020.jpg",
+        "previousSha256": "087e08d3e3e414d9333ab1cf185836e565895dc1e0fa238476b19259aa580779"
+      },
+      {
+        "number": 424,
+        "file": "review-atanasyan-7-9-main-424-part-1-step-2-1280.png",
+        "sha256": "fd7abbc1cc8b8fd78c33f0ef65dabea9a339669a68d5c7556a49ba02c54fb6fd",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-424-part-1-step-2-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-004.jpg"
+      },
+      {
+        "number": 424,
+        "file": "review-atanasyan-7-9-main-424-part-1-step-2-320.png",
+        "sha256": "087e08d3e3e414d9333ab1cf185836e565895dc1e0fa238476b19259aa580779",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-424-part-1-step-2-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-004.jpg"
+      },
+      {
+        "number": 425,
+        "file": "review-atanasyan-7-9-main-425-part-1-case-1-1280.png",
+        "sha256": "742a6e855f4d85fd7e8d98848402d99311e9716101e4d373a5a0006927f95632",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-425-part-1-case-1-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-020.jpg",
+        "previousSha256": "742a6e855f4d85fd7e8d98848402d99311e9716101e4d373a5a0006927f95632"
+      },
+      {
+        "number": 425,
+        "file": "review-atanasyan-7-9-main-425-part-1-case-1-320.png",
+        "sha256": "906cda52f4010d4eb6d3ab4c0fefeb63bb0445b0966c0e525ae05b75df87faf5",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-425-part-1-case-1-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-021.jpg",
+        "previousSha256": "906cda52f4010d4eb6d3ab4c0fefeb63bb0445b0966c0e525ae05b75df87faf5"
+      },
+      {
+        "number": 425,
+        "file": "review-atanasyan-7-9-main-425-part-1-case-2-1280.png",
+        "sha256": "67dd231be0bd6597ea75b35436cd196567f9d7abc7f449752a333739283fc7ad",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-425-part-1-case-2-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-021.jpg",
+        "previousSha256": "67dd231be0bd6597ea75b35436cd196567f9d7abc7f449752a333739283fc7ad"
+      },
+      {
+        "number": 425,
+        "file": "review-atanasyan-7-9-main-425-part-1-case-2-320.png",
+        "sha256": "9079818666f0fb28dda037dbcbcc4859be18a45fcfe5356c1cae3d5f3908e1ad",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-425-part-1-case-2-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-021.jpg",
+        "previousSha256": "9079818666f0fb28dda037dbcbcc4859be18a45fcfe5356c1cae3d5f3908e1ad"
+      },
+      {
+        "number": 425,
+        "file": "review-atanasyan-7-9-main-425-part-1-case-3-1280.png",
+        "sha256": "e2a209748de3421e52c82b4d08fbb1b8a9836c4d4547b449d34bf62d8620a315",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-425-part-1-case-3-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-021.jpg",
+        "previousSha256": "e2a209748de3421e52c82b4d08fbb1b8a9836c4d4547b449d34bf62d8620a315"
+      },
+      {
+        "number": 425,
+        "file": "review-atanasyan-7-9-main-425-part-1-case-3-320.png",
+        "sha256": "f4ed52eae4a267a52ab681f80839f0c7e29fb689d93fc532aa101e41418e407c",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-425-part-1-case-3-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-022.jpg",
+        "previousSha256": "f4ed52eae4a267a52ab681f80839f0c7e29fb689d93fc532aa101e41418e407c"
+      },
+      {
+        "number": 425,
+        "file": "review-atanasyan-7-9-main-425-part-1-neutral-1280.png",
+        "sha256": "6ea362a3e6c6866b15667f37938808e985df3eadf7e9927d19175fa1aedca298",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-425-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-022.jpg",
+        "previousSha256": "6ea362a3e6c6866b15667f37938808e985df3eadf7e9927d19175fa1aedca298"
+      },
+      {
+        "number": 425,
+        "file": "review-atanasyan-7-9-main-425-part-1-neutral-320.png",
+        "sha256": "48e1a610426e82090d02d4f68326698570104943b0d430417c4196b47feea1c5",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-425-part-1-neutral-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-022.jpg",
+        "previousSha256": "48e1a610426e82090d02d4f68326698570104943b0d430417c4196b47feea1c5"
+      },
+      {
+        "number": 425,
+        "file": "review-atanasyan-7-9-main-425-part-1-step-1-1280.png",
+        "sha256": "a49b67988482a78c13e12345749f0973cbc6756bbf912e67835cb6bb7de7a472",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-425-part-1-step-1-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-022.jpg",
+        "previousSha256": "a49b67988482a78c13e12345749f0973cbc6756bbf912e67835cb6bb7de7a472"
+      },
+      {
+        "number": 425,
+        "file": "review-atanasyan-7-9-main-425-part-1-step-1-320.png",
+        "sha256": "3960c0a02fcd28b5692a30714fa6253ce8d2bd8feaf09a23db70c57e35d2a8f8",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-425-part-1-step-1-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-023.jpg",
+        "previousSha256": "3960c0a02fcd28b5692a30714fa6253ce8d2bd8feaf09a23db70c57e35d2a8f8"
+      },
+      {
+        "number": 425,
+        "file": "review-atanasyan-7-9-main-425-part-1-step-2-1280.png",
+        "sha256": "330ea7cd13ed3df836f19ed04cdb3036bf49be0ad8e3c0b1f5f081b9db8194b2",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-425-part-1-step-2-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-023.jpg",
+        "previousSha256": "330ea7cd13ed3df836f19ed04cdb3036bf49be0ad8e3c0b1f5f081b9db8194b2"
+      },
+      {
+        "number": 425,
+        "file": "review-atanasyan-7-9-main-425-part-1-step-2-320.png",
+        "sha256": "853924a6f0b3a24760b5ca630e9a2873bfc67bdf263d9cc37ca4196ec1364fdc",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-425-part-1-step-2-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-023.jpg",
+        "previousSha256": "853924a6f0b3a24760b5ca630e9a2873bfc67bdf263d9cc37ca4196ec1364fdc"
+      },
+      {
+        "number": 425,
+        "file": "review-atanasyan-7-9-main-425-part-1-step-3-1280.png",
+        "sha256": "a7cb223cfe72f0044306bd63cd04a3955741b573c1cffd3901c1acffaa530c9f",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-425-part-1-step-3-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-023.jpg",
+        "previousSha256": "a7cb223cfe72f0044306bd63cd04a3955741b573c1cffd3901c1acffaa530c9f"
+      },
+      {
+        "number": 425,
+        "file": "review-atanasyan-7-9-main-425-part-1-step-3-320.png",
+        "sha256": "5a3ab7ae7a111964c5bc75d3cf693c688e797077be5c5c4abef89cae3ee9c735",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-425-part-1-step-3-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-024.jpg",
+        "previousSha256": "5a3ab7ae7a111964c5bc75d3cf693c688e797077be5c5c4abef89cae3ee9c735"
+      },
+      {
+        "number": 425,
+        "file": "review-atanasyan-7-9-main-425-part-1-step-4-1280.png",
+        "sha256": "5fae6cc53950568c271d184d3e920eaa0a516bbf667957aa1225140b33548dac",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-425-part-1-step-4-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-024.jpg",
+        "previousSha256": "5fae6cc53950568c271d184d3e920eaa0a516bbf667957aa1225140b33548dac"
+      },
+      {
+        "number": 425,
+        "file": "review-atanasyan-7-9-main-425-part-1-step-4-320.png",
+        "sha256": "1a05b57692109515c04080e50d260da71c4047971f05b5b39c305b4aef892777",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-425-part-1-step-4-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-024.jpg",
+        "previousSha256": "1a05b57692109515c04080e50d260da71c4047971f05b5b39c305b4aef892777"
+      },
+      {
+        "number": 426,
+        "file": "review-atanasyan-7-9-main-426-part-1-neutral-1280.png",
+        "sha256": "9b7b248ab7e145afa305430107de73da947f901ccb3270d2cc3553f99371d8b0",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-426-part-1-neutral-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-005.jpg"
+      },
+      {
+        "number": 426,
+        "file": "review-atanasyan-7-9-main-426-part-1-step-1-1280.png",
+        "sha256": "9b7b248ab7e145afa305430107de73da947f901ccb3270d2cc3553f99371d8b0",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-426-part-1-neutral-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-005.jpg"
+      },
+      {
+        "number": 426,
+        "file": "review-atanasyan-7-9-main-426-part-1-step-2-1280.png",
+        "sha256": "9b7b248ab7e145afa305430107de73da947f901ccb3270d2cc3553f99371d8b0",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-426-part-1-neutral-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-005.jpg"
+      },
+      {
+        "number": 426,
+        "file": "review-atanasyan-7-9-main-426-part-1-step-3-1280.png",
+        "sha256": "9b7b248ab7e145afa305430107de73da947f901ccb3270d2cc3553f99371d8b0",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-426-part-1-neutral-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-005.jpg"
+      },
+      {
+        "number": 426,
+        "file": "review-atanasyan-7-9-main-426-part-1-neutral-320.png",
+        "sha256": "516c4083068e19ac466efbf7eedf6356a359920b5fe8c863a3206d4520700640",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-426-part-1-neutral-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-005.jpg"
+      },
+      {
+        "number": 426,
+        "file": "review-atanasyan-7-9-main-426-part-2-neutral-320.png",
+        "sha256": "516c4083068e19ac466efbf7eedf6356a359920b5fe8c863a3206d4520700640",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-426-part-1-neutral-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-005.jpg"
+      },
+      {
+        "number": 426,
+        "file": "review-atanasyan-7-9-main-426-part-1-step-1-320.png",
+        "sha256": "516c4083068e19ac466efbf7eedf6356a359920b5fe8c863a3206d4520700640",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-426-part-1-neutral-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-005.jpg"
+      },
+      {
+        "number": 426,
+        "file": "review-atanasyan-7-9-main-426-part-1-step-2-320.png",
+        "sha256": "4353a1ce710b7ef8f19a04929c18ae5ea883906642e41744efe7fefb13ae88b1",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-426-part-1-step-2-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-005.jpg"
+      },
+      {
+        "number": 426,
+        "file": "review-atanasyan-7-9-main-426-part-1-step-3-320.png",
+        "sha256": "4353a1ce710b7ef8f19a04929c18ae5ea883906642e41744efe7fefb13ae88b1",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-426-part-1-step-2-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-005.jpg"
+      },
+      {
+        "number": 426,
+        "file": "review-atanasyan-7-9-main-426-part-2-step-1-320.png",
+        "sha256": "4353a1ce710b7ef8f19a04929c18ae5ea883906642e41744efe7fefb13ae88b1",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-426-part-1-step-2-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-005.jpg"
+      },
+      {
+        "number": 426,
+        "file": "review-atanasyan-7-9-main-426-part-2-step-3-320.png",
+        "sha256": "4353a1ce710b7ef8f19a04929c18ae5ea883906642e41744efe7fefb13ae88b1",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-426-part-1-step-2-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-005.jpg"
+      },
+      {
+        "number": 426,
+        "file": "review-atanasyan-7-9-main-426-part-2-neutral-1280.png",
+        "sha256": "6ef41c5467a49b0c25cf764be8156b03368e0ab5dfcee13389f0cc0bbb1d0b5b",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-426-part-2-neutral-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-005.jpg"
+      },
+      {
+        "number": 426,
+        "file": "review-atanasyan-7-9-main-426-part-2-step-1-1280.png",
+        "sha256": "6ef41c5467a49b0c25cf764be8156b03368e0ab5dfcee13389f0cc0bbb1d0b5b",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-426-part-2-neutral-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-005.jpg"
+      },
+      {
+        "number": 426,
+        "file": "review-atanasyan-7-9-main-426-part-2-step-2-1280.png",
+        "sha256": "6ef41c5467a49b0c25cf764be8156b03368e0ab5dfcee13389f0cc0bbb1d0b5b",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-426-part-2-neutral-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-005.jpg"
+      },
+      {
+        "number": 426,
+        "file": "review-atanasyan-7-9-main-426-part-2-step-3-1280.png",
+        "sha256": "6ef41c5467a49b0c25cf764be8156b03368e0ab5dfcee13389f0cc0bbb1d0b5b",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-426-part-2-neutral-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-005.jpg"
+      },
+      {
+        "number": 426,
+        "file": "review-atanasyan-7-9-main-426-part-2-step-2-320.png",
+        "sha256": "4353a1ce710b7ef8f19a04929c18ae5ea883906642e41744efe7fefb13ae88b1",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-426-part-1-step-2-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-005.jpg"
+      },
+      {
+        "number": 427,
+        "file": "review-atanasyan-7-9-main-427-part-1-case-1-1280.png",
+        "sha256": "f4c0cf8487b558c09c91923bf2d15e06cb8ada52c53fde3e15238f28aef0bafa",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-427-part-1-case-1-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-026.jpg",
+        "previousSha256": "f4c0cf8487b558c09c91923bf2d15e06cb8ada52c53fde3e15238f28aef0bafa"
+      },
+      {
+        "number": 427,
+        "file": "review-atanasyan-7-9-main-427-part-1-case-1-320.png",
+        "sha256": "9e5b8e054aee5c17f4c30c2e97d11de269c27beb23c965d33b5c9b7a722171a5",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-427-part-1-case-1-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-026.jpg",
+        "previousSha256": "9e5b8e054aee5c17f4c30c2e97d11de269c27beb23c965d33b5c9b7a722171a5"
+      },
+      {
+        "number": 427,
+        "file": "review-atanasyan-7-9-main-427-part-1-case-2-1280.png",
+        "sha256": "a4853e294a28544fe042df8447916be70ebc7a07765e2447857c8e3252763e8a",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-427-part-1-case-2-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-026.jpg",
+        "previousSha256": "a4853e294a28544fe042df8447916be70ebc7a07765e2447857c8e3252763e8a"
+      },
+      {
+        "number": 427,
+        "file": "review-atanasyan-7-9-main-427-part-1-case-2-320.png",
+        "sha256": "ad8fb71debf473dbeb6d89573fa279283fd64a0d941020547642b5137d823446",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-427-part-1-case-2-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-026.jpg",
+        "previousSha256": "ad8fb71debf473dbeb6d89573fa279283fd64a0d941020547642b5137d823446"
+      },
+      {
+        "number": 427,
+        "file": "review-atanasyan-7-9-main-427-part-1-case-3-1280.png",
+        "sha256": "93b6672eb51cbd73b6df3e75fe06bd6a864ab0f7371357501e0a5a1353433057",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-427-part-1-case-3-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-027.jpg",
+        "previousSha256": "93b6672eb51cbd73b6df3e75fe06bd6a864ab0f7371357501e0a5a1353433057"
+      },
+      {
+        "number": 427,
+        "file": "review-atanasyan-7-9-main-427-part-1-case-3-320.png",
+        "sha256": "b4245a5899aa1101d6dc601a1337bbdbca9aa29dfd2476487c46bb500ece87e2",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-427-part-1-case-3-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-027.jpg",
+        "previousSha256": "b4245a5899aa1101d6dc601a1337bbdbca9aa29dfd2476487c46bb500ece87e2"
+      },
+      {
+        "number": 427,
+        "file": "review-atanasyan-7-9-main-427-part-1-neutral-1280.png",
+        "sha256": "054916a610c407c79a6400927a2dc07afaac612a81bddba00e0f4e098a799cd5",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-427-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-027.jpg",
+        "previousSha256": "054916a610c407c79a6400927a2dc07afaac612a81bddba00e0f4e098a799cd5"
+      },
+      {
+        "number": 427,
+        "file": "review-atanasyan-7-9-main-427-part-1-neutral-320.png",
+        "sha256": "89a09d9da4466caae8a4b50c18f9c622dca6e70cf433f4084713d8dee884ad2c",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-427-part-1-neutral-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-027.jpg",
+        "previousSha256": "89a09d9da4466caae8a4b50c18f9c622dca6e70cf433f4084713d8dee884ad2c"
+      },
+      {
+        "number": 427,
+        "file": "review-atanasyan-7-9-main-427-part-1-step-1-1280.png",
+        "sha256": "e148fd6183b02d876ee78d08b066b2062abac5f9ea21cd97a3f0c8af3c67dcfc",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-427-part-1-step-1-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-028.jpg",
+        "previousSha256": "e148fd6183b02d876ee78d08b066b2062abac5f9ea21cd97a3f0c8af3c67dcfc"
+      },
+      {
+        "number": 427,
+        "file": "review-atanasyan-7-9-main-427-part-1-step-1-320.png",
+        "sha256": "89a09d9da4466caae8a4b50c18f9c622dca6e70cf433f4084713d8dee884ad2c",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-427-part-1-step-1-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-006.jpg"
+      },
+      {
+        "number": 427,
+        "file": "review-atanasyan-7-9-main-427-part-1-step-2-1280.png",
+        "sha256": "fd80c601c2ddc23dc90f56848aa1cdb561682cacdf06e75038c555dc4c44bbcc",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-427-part-1-step-2-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-028.jpg",
+        "previousSha256": "fd80c601c2ddc23dc90f56848aa1cdb561682cacdf06e75038c555dc4c44bbcc"
+      },
+      {
+        "number": 427,
+        "file": "review-atanasyan-7-9-main-427-part-1-step-2-320.png",
+        "sha256": "65c816a9daa811f99ec6b626102d644838c573d3205dbf90cab44319e2da599a",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-427-part-1-step-2-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-028.jpg",
+        "previousSha256": "65c816a9daa811f99ec6b626102d644838c573d3205dbf90cab44319e2da599a"
+      },
+      {
+        "number": 427,
+        "file": "review-atanasyan-7-9-main-427-part-1-step-3-1280.png",
+        "sha256": "e139c8eeb41c78f505ad154a65efc4fad7a5d748ed7a989ba3b400b4c775aa09",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-427-part-1-step-3-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-029.jpg",
+        "previousSha256": "e139c8eeb41c78f505ad154a65efc4fad7a5d748ed7a989ba3b400b4c775aa09"
+      },
+      {
+        "number": 427,
+        "file": "review-atanasyan-7-9-main-427-part-1-step-3-320.png",
+        "sha256": "4a6cf72ef1b88db1319654b4fe807814a0efb50e03d1169356e3bb1e878f4b88",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-427-part-1-step-3-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-029.jpg",
+        "previousSha256": "4a6cf72ef1b88db1319654b4fe807814a0efb50e03d1169356e3bb1e878f4b88"
+      },
+      {
+        "number": 427,
+        "file": "review-atanasyan-7-9-main-427-part-1-step-4-1280.png",
+        "sha256": "a8d641c721c4e1a9791a79168ab35def252fdc96eed71325046e861591b57847",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-427-part-1-step-4-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-029.jpg",
+        "previousSha256": "a8d641c721c4e1a9791a79168ab35def252fdc96eed71325046e861591b57847"
+      },
+      {
+        "number": 427,
+        "file": "review-atanasyan-7-9-main-427-part-1-step-4-320.png",
+        "sha256": "0b62a1271c497d79da33f10d37d471216e12b8c9d8f923ceae26456bea1dfdb8",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-427-part-1-step-4-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-029.jpg",
+        "previousSha256": "0b62a1271c497d79da33f10d37d471216e12b8c9d8f923ceae26456bea1dfdb8"
+      },
+      {
+        "number": 428,
+        "file": "review-atanasyan-7-9-main-428-part-1-neutral-1280.png",
+        "sha256": "10711db92a6384d45d036c16c1faeef90eb9d88877fd710f8af512a050b2177d",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-428-part-1-neutral-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-006.jpg"
+      },
+      {
+        "number": 428,
+        "file": "review-atanasyan-7-9-main-428-part-1-step-1-1280.png",
+        "sha256": "10711db92a6384d45d036c16c1faeef90eb9d88877fd710f8af512a050b2177d",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-428-part-1-neutral-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-006.jpg"
+      },
+      {
+        "number": 428,
+        "file": "review-atanasyan-7-9-main-428-part-1-neutral-320.png",
+        "sha256": "e0b2ee182114097eb4181031e04e169a94c756d12c6cca6d7633601336abebe3",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-428-part-1-neutral-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-006.jpg"
+      },
+      {
+        "number": 428,
+        "file": "review-atanasyan-7-9-main-428-part-1-step-1-320.png",
+        "sha256": "e0b2ee182114097eb4181031e04e169a94c756d12c6cca6d7633601336abebe3",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-428-part-1-neutral-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-006.jpg"
+      },
+      {
+        "number": 428,
+        "file": "review-atanasyan-7-9-main-428-part-1-step-2-1280.png",
+        "sha256": "255ae16e4ea0d90aabbff4a08608d79364a9a67e692a4f732cc59fdbcabcf931",
+        "verdict": "pass-with-minor-layout-observation",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-428-part-1-step-2-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-006.jpg",
+        "findingId": "A-VIS-428"
+      },
+      {
+        "number": 428,
+        "file": "review-atanasyan-7-9-main-428-part-1-step-2-320.png",
+        "sha256": "600476a4952d756945458d326b4a7a95669867033280875233f3a16ab507da62",
+        "verdict": "pass-with-minor-layout-observation",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-428-part-1-step-2-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-007.jpg",
+        "findingId": "A-VIS-428"
+      },
+      {
+        "number": 428,
+        "file": "review-atanasyan-7-9-main-428-part-1-step-3-1280.png",
+        "sha256": "88a79b05d29560df2d02a47885d70b8cfc8d96e54acec27e2c19071d53edaa46",
+        "verdict": "pass-with-minor-layout-observation",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-428-part-1-step-3-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-007.jpg",
+        "findingId": "A-VIS-428"
+      },
+      {
+        "number": 428,
+        "file": "review-atanasyan-7-9-main-428-part-1-step-4-1280.png",
+        "sha256": "88a79b05d29560df2d02a47885d70b8cfc8d96e54acec27e2c19071d53edaa46",
+        "verdict": "pass-with-minor-layout-observation",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-428-part-1-step-3-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-007.jpg",
+        "findingId": "A-VIS-428"
+      },
+      {
+        "number": 428,
+        "file": "review-atanasyan-7-9-main-428-part-1-step-3-320.png",
+        "sha256": "569ed399e5fe752d5910ba76808ebbe2300889de9cd938343d6068977d826bfb",
+        "verdict": "pass-with-minor-layout-observation",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-428-part-1-step-3-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-007.jpg",
+        "findingId": "A-VIS-428"
+      },
+      {
+        "number": 428,
+        "file": "review-atanasyan-7-9-main-428-part-1-step-4-320.png",
+        "sha256": "569ed399e5fe752d5910ba76808ebbe2300889de9cd938343d6068977d826bfb",
+        "verdict": "pass-with-minor-layout-observation",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-428-part-1-step-3-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-007.jpg",
+        "findingId": "A-VIS-428"
+      },
+      {
+        "number": 428,
+        "file": "review-atanasyan-7-9-main-428-part-1-step-5-1280.png",
+        "sha256": "8119366561c3215929c291b2697a1f4f9f70f0bb07cfb1a42127c5766e9035c9",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-428-part-1-step-5-1280.png",
+        "viewedContactSheet": "a-final-contacts/delta-007.jpg"
+      },
+      {
+        "number": 428,
+        "file": "review-atanasyan-7-9-main-428-part-1-step-5-320.png",
+        "sha256": "4315b0e36d9539387926eab431ab265f2a0f7ece0277890ceff653bf378e0220",
+        "verdict": "pass",
+        "reviewMethod": "fresh-contact-sheet-inspection",
+        "viewedRepresentative": "review-atanasyan-7-9-main-428-part-1-step-5-320.png",
+        "viewedContactSheet": "a-final-contacts/delta-008.jpg"
+      },
+      {
+        "number": 429,
+        "file": "review-atanasyan-7-9-main-429-part-1-neutral-1280.png",
+        "sha256": "3f58c2a68731a7d07596b2cf96230af8395e1d6435bb3fe3547473c4d43bd690",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-429-part-1-neutral-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-032.jpg",
+        "previousSha256": "3f58c2a68731a7d07596b2cf96230af8395e1d6435bb3fe3547473c4d43bd690"
+      },
+      {
+        "number": 429,
+        "file": "review-atanasyan-7-9-main-429-part-1-neutral-320.png",
+        "sha256": "bf1ca974218024f263bd84efe939c398c6829e501e2c3814341a75f6be1761ac",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-429-part-1-neutral-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-032.jpg",
+        "previousSha256": "bf1ca974218024f263bd84efe939c398c6829e501e2c3814341a75f6be1761ac"
+      },
+      {
+        "number": 429,
+        "file": "review-atanasyan-7-9-main-429-part-1-step-1-320.png",
+        "sha256": "bf1ca974218024f263bd84efe939c398c6829e501e2c3814341a75f6be1761ac",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-429-part-1-neutral-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-032.jpg",
+        "previousSha256": "bf1ca974218024f263bd84efe939c398c6829e501e2c3814341a75f6be1761ac"
+      },
+      {
+        "number": 429,
+        "file": "review-atanasyan-7-9-main-429-part-1-step-1-1280.png",
+        "sha256": "7902b58014c6ad0973e69ca7483c857f77b1656d5288d66cb82b38182abadb30",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-429-part-1-step-1-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-032.jpg",
+        "previousSha256": "7902b58014c6ad0973e69ca7483c857f77b1656d5288d66cb82b38182abadb30"
+      },
+      {
+        "number": 429,
+        "file": "review-atanasyan-7-9-main-429-part-1-step-2-1280.png",
+        "sha256": "7902b58014c6ad0973e69ca7483c857f77b1656d5288d66cb82b38182abadb30",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-429-part-1-step-1-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-032.jpg",
+        "previousSha256": "7902b58014c6ad0973e69ca7483c857f77b1656d5288d66cb82b38182abadb30"
+      },
+      {
+        "number": 429,
+        "file": "review-atanasyan-7-9-main-429-part-1-step-2-320.png",
+        "sha256": "104d9ffeaeb92c4984e98665a15fd23724eee66c8b385f2d011b46282353c0d4",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-429-part-1-step-2-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-032.jpg",
+        "previousSha256": "104d9ffeaeb92c4984e98665a15fd23724eee66c8b385f2d011b46282353c0d4"
+      },
+      {
+        "number": 429,
+        "file": "review-atanasyan-7-9-main-429-part-1-step-3-1280.png",
+        "sha256": "3b669239322ad373598ee7fe9c23a2c5dc478a9eac113071a4737d2f3415549a",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-429-part-1-step-3-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-033.jpg",
+        "previousSha256": "3b669239322ad373598ee7fe9c23a2c5dc478a9eac113071a4737d2f3415549a"
+      },
+      {
+        "number": 429,
+        "file": "review-atanasyan-7-9-main-429-part-1-step-4-1280.png",
+        "sha256": "3b669239322ad373598ee7fe9c23a2c5dc478a9eac113071a4737d2f3415549a",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-429-part-1-step-3-1280.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-033.jpg",
+        "previousSha256": "3b669239322ad373598ee7fe9c23a2c5dc478a9eac113071a4737d2f3415549a"
+      },
+      {
+        "number": 429,
+        "file": "review-atanasyan-7-9-main-429-part-1-step-3-320.png",
+        "sha256": "6aa97cfdd0b7618d0fa027f6c324128c3f01e7a8ebf6cf142390a4f123cfb73e",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-429-part-1-step-3-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-033.jpg",
+        "previousSha256": "6aa97cfdd0b7618d0fa027f6c324128c3f01e7a8ebf6cf142390a4f123cfb73e"
+      },
+      {
+        "number": 429,
+        "file": "review-atanasyan-7-9-main-429-part-1-step-4-320.png",
+        "sha256": "6aa97cfdd0b7618d0fa027f6c324128c3f01e7a8ebf6cf142390a4f123cfb73e",
+        "verdict": "pass",
+        "reviewMethod": "exact-SHA-256-reuse",
+        "viewedRepresentative": "review-atanasyan-7-9-main-429-part-1-step-3-320.png",
+        "viewedContactSheet": "advanced-visual/contacts/a-033.jpg",
+        "previousSha256": "6aa97cfdd0b7618d0fa027f6c324128c3f01e7a8ebf6cf142390a4f123cfb73e"
+      }
+    ]
+  }
+}

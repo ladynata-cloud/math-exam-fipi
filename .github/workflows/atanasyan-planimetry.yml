@@ -31,7 +31,9 @@ jobs:
           python3 tools/geometry-textbook/chapter05-preservation.test.py
           python3 tools/geometry-textbook/check_models.py
           python3 tools/geometry-textbook/model_claims_test.py
+          python3 tools/geometry-textbook/advanced7-c-math.test.py
           node tools/geometry-textbook/check_course.cjs
+          node tools/geometry-textbook/captions.test.cjs
           node tools/geometry-textbook/runtime_check.cjs
           node tools/geometry-textbook/reviewer_runtime_check.cjs
           node tools/geometry/check.js
@@ -54,7 +56,7 @@ jobs:
       - name: All source-audited cards, every drawing, mobile and desktop, actual saved work
         env:
           GEOMETRY_TEXTBOOK_ARTIFACTS: artifacts/geometry-textbook
-          GEOMETRY_TEXTBOOK_CAPTURE_CHAPTERS: V
+          GEOMETRY_TEXTBOOK_CAPTURE_CHAPTERS: '7 класс · повышенная трудность'
           GEOMETRY_TEXTBOOK_HEAD: ${{ github.event.pull_request.head.sha }}
         run: node tools/geometry-textbook/browser_check.js
       - name: Preserve actual browser evidence even on failure

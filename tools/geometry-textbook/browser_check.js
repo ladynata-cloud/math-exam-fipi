@@ -3,20 +3,27 @@
 // This gate inspects authored views without changing review flags or bundle files.
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),os=require('node:os'),crypto=require('node:crypto');
 const {chromium}=require('playwright');
+const {expectedTitle}=require('./caption_expectations.cjs');
 const root=path.resolve(process.env.GEOMETRY_TEXTBOOK_ROOT||path.join(__dirname,'../..'));
 const bundleFile=path.join(root,'geometry-course/textbook/data/course.json');
 const bundle=JSON.parse(fs.readFileSync(bundleFile,'utf8'));
 const releaseScope=JSON.parse(fs.readFileSync(path.join(root,'tools/geometry-textbook/release-scope.json'),'utf8'));
 assert.equal(bundle.lessons.length,releaseScope.totalCards,'Complete release candidate must contain every source-audited card');
-for(const chapter of releaseScope.chapters)assert.equal(bundle.lessons.filter(l=>l.source.chapter===chapter.label).length,chapter.cards,'Complete chapter '+chapter.chapter);
+for(const chapter of [...releaseScope.chapters,...(releaseScope.supplements||[])])assert.equal(bundle.lessons.filter(l=>l.source.chapter===chapter.label).length,chapter.cards,'Complete source section '+(chapter.chapter||chapter.key));
 const out=path.resolve(process.env.GEOMETRY_TEXTBOOK_ARTIFACTS||path.join(os.tmpdir(),'atanasyan-planar-browser'));
 fs.mkdirSync(out,{recursive:true});
 const interactionsOnly=process.env.GEOMETRY_TEXTBOOK_INTERACTIONS_ONLY==='1',viewsOnly=process.env.GEOMETRY_TEXTBOOK_VIEWS_ONLY==='1';
 assert(!(interactionsOnly&&viewsOnly),'Select at most one focused browser mode');
+const focusSection=process.env.GEOMETRY_TEXTBOOK_FOCUS_SECTION||'';
+assert(!focusSection||focusSection==='7-advanced','Unknown focused diagnostic section');
+assert(!focusSection||viewsOnly,'Focused section is only a drawing diagnostic, never a full-course gate');
+const inspectedLessons=focusSection?bundle.lessons.filter(l=>l.source.advancedGrade===7):bundle.lessons;
+if(focusSection)assert.equal(inspectedLessons.length,releaseScope.supplements.find(s=>s.key===focusSection).cards,'Every focused card must be inspected');
 // Optional full scene captures supplement, never replace, the existing gate.
 const captureChapters=new Set((process.env.GEOMETRY_TEXTBOOK_CAPTURE_CHAPTERS||'').split(',').map(s=>s.trim()).filter(Boolean));
-for(const chapter of captureChapters)assert(releaseScope.chapters.some(c=>c.label===chapter),'Unknown capture chapter '+chapter);
+for(const chapter of captureChapters)assert([...releaseScope.chapters,...(releaseScope.supplements||[])].some(c=>c.label===chapter),'Unknown capture section '+chapter);
 const evidence={schemaVersion:1,gateScriptSha256:crypto.createHash('sha256').update(fs.readFileSync(__filename)).digest('hex'),scope:interactionsOnly?'interactions-only':viewsOnly?'views-only':'full-course',head:process.env.GEOMETRY_TEXTBOOK_HEAD||process.env.GITHUB_SHA||null,implementationSha256:bundle.build?.implementationSha256||null,authoredContentSha256:bundle.build?.authoredContentSha256||null,bundleSha256:crypto.createHash('sha256').update(fs.readFileSync(bundleFile)).digest('hex'),widths:[320,1280],lessons:bundle.lessons.length,views:[],stepFlows:[],screenshots:[],reviewScreenshots:[],interactions:[],errors:[],completed:false};
+if(focusSection){evidence.scope='focused-advanced-drawing-diagnostic';evidence.focusSection=focusSection;evidence.inspectedLessons=inspectedLessons.length;}
 let server,browser,context,page,base;
 const write=()=>fs.writeFileSync(path.join(out,'browser-evidence.json'),JSON.stringify(evidence,null,2));
 function serve(){return new Promise(resolve=>{server=http.createServer((request,response)=>{try{const url=new URL(request.url,'http://127.0.0.1'),pathname=decodeURIComponent(url.pathname),file=path.resolve(root,'.'+pathname+(pathname.endsWith('/')?'index.html':''));if(!file.startsWith(root+path.sep))return response.writeHead(403).end();const mime={'.html':'text/html; charset=utf-8','.js':'application/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8'};response.writeHead(200,{'Content-Type':mime[path.extname(file)]||'application/octet-stream','Cache-Control':'no-store'});fs.createReadStream(file).on('error',()=>response.end()).pipe(response);}catch{response.writeHead(404).end();}});server.listen(0,'127.0.0.1',()=>resolve('http://127.0.0.1:'+server.address().port+'/geometry-course/textbook/'));});}
@@ -113,12 +120,12 @@ async function chapterInteractions(){
   assert(exercise,'An exercise links to chapter-'+chapter+' theory');
   const theoryId=exercise.help.flatMap(h=>h.theoryIds||[]).find(id=>bundle.lessons.find(t=>t.id===id)?.source.chapter===chapter),theory=bundle.lessons.find(l=>l.id===theoryId),draft='Доказательство по главе '+chapter;
   await page.evaluate(id=>window.textbookApp.open(id),exercise.id);await page.locator('#final-answer').fill(draft);
-  await page.locator('[data-main-help] > summary').click();const help=page.locator('[data-main-help] [data-help="recall-theory"]');await help.locator(':scope > summary').click();await help.getByRole('button',{name:'Почему? '+theory.title,exact:true}).click();
+  await page.locator('[data-main-help] > summary').click();const help=page.locator('[data-main-help] [data-help="recall-theory"]');await help.locator(':scope > summary').click();await help.getByRole('button',{name:'Почему? '+expectedTitle(theory),exact:true}).click();
   assert.equal(await page.locator('dialog').getAttribute('data-theory'),theoryId);await page.getByRole('button',{name:'Вернуться к задаче',exact:true}).click();assert.equal(await page.locator('#final-answer').inputValue(),draft);
   await page.getByRole('button',{name:'Разобрать по шагам',exact:true}).click();await startPreview();await page.evaluate(id=>window.textbookApp.open(id),exercise.id);assert.equal(await page.locator('#final-answer').inputValue(),draft);assert.equal(await page.locator('[data-step]').count(),1);evidence.interactions.push('chapter-'+chapter+'-theory-return-and-saved-step');
   const exercises=bundle.lessons.filter(lesson=>lesson.source.chapter===chapter&&lesson.source.collection==='main');
   for(const lesson of [exercises[0],exercises.at(-1)]){
-   await startPreview(lesson.id);assert.equal(await page.locator('.lesson-permalink').getAttribute('href'),'#'+lesson.id);assert.equal(await page.locator('main h1').innerText(),lesson.title);assert.equal(await page.locator('[data-main-model] svg').count(),1);
+   await startPreview(lesson.id);assert.equal(await page.locator('.lesson-permalink').getAttribute('href'),'#'+lesson.id);assert.equal(await page.locator('main h1').innerText(),expectedTitle(lesson));assert.equal(await page.locator('[data-main-model] svg').count(),1);
   }
   evidence.interactions.push('chapter-'+chapter+'-first-and-last-direct-entry');
  }
@@ -127,7 +134,7 @@ async function chapterInteractions(){
  try{
   base=await serve();browser=await chromium.launch({headless:true,executablePath:process.env.GEOMETRY_CHROMIUM||chromium.executablePath(),args:['--no-sandbox']});context=await browser.newContext();page=await context.newPage();page.on('pageerror',error=>evidence.errors.push(error.message));
   for(const width of interactionsOnly?[]:evidence.widths){await page.setViewportSize({width,height:900});await startPreview();let screenshotCount=0;
-   for(const lesson of bundle.lessons){assert(await page.evaluate(({id,key})=>{localStorage.removeItem(key);return window.textbookApp.open(id);},{id:lesson.id,key:'mathExamTextbook.v1:'+lesson.source.bookId+':'+lesson.id+':r'+lesson.revision}),'Available in explicit preview '+lesson.id);
+   for(const lesson of inspectedLessons){assert(await page.evaluate(({id,key})=>{localStorage.removeItem(key);return window.textbookApp.open(id);},{id:lesson.id,key:'mathExamTextbook.v1:'+lesson.source.bookId+':'+lesson.id+':r'+lesson.revision}),'Available in explicit preview '+lesson.id);
     if(!viewsOnly){await settle();const initialFile=lesson.id+'-initial-'+width+'.png';await page.locator('[data-main-model]').screenshot({path:path.join(out,initialFile)});evidence.screenshots.push({id:lesson.id,width,stage:'initial',file:initialFile});
     const initialCases=await page.locator('[data-main-model] [data-case]').evaluateAll(nodes=>nodes.map(n=>n.dataset.case).sort()),expectedInitialCases=Object.entries(lesson.visualization.model.views).filter(([id,v])=>/^case-/.test(id)&&!(v.availableFromStep>0)).map(([id])=>id).sort();assert.deepEqual(initialCases,expectedInitialCases,'Initial cases reveal only given configurations '+lesson.id);
     await page.locator('[data-main-help] > summary').click();for(let step=0;step<lesson.steps.length;step++)await page.getByRole('button',{name:step?'Следующий шаг':'Разобрать по шагам',exact:true}).click();assert.equal(await page.locator('[data-step]').count(),lesson.steps.length,'Every authored step remains visible '+lesson.id);

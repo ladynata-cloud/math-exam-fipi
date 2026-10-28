@@ -1,6 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {JSDOM}=require('jsdom');
+const {expectedTitle}=require('./caption_expectations.cjs');
 const root=path.resolve(__dirname,'../..'),dir=path.join(root,'geometry-course/textbook');
 const bundle=JSON.parse(fs.readFileSync(path.join(dir,'data/course.json'),'utf8'));
 function setup(){
@@ -74,7 +75,7 @@ let checks=0;
   assert(exercise,'Chapter '+chapter+' exercises link to its theory');app.open(exercise.id);
   const draft='Рассуждение по главе '+chapter,input=d.getElementById('final-answer');input.value=draft;input.dispatchEvent(new w.Event('input',{bubbles:true}));
   const theoryId=exercise.help.flatMap(h=>h.theoryIds||[]).find(id=>bundle.lessons.find(t=>t.id===id)?.source.chapter===chapter),theory=bundle.lessons.find(l=>l.id===theoryId);
-  const button=[...d.querySelectorAll('button')].find(b=>b.textContent==='Почему? '+theory.title);assert(button);button.click();
+  const button=[...d.querySelectorAll('button')].find(b=>b.textContent==='Почему? '+expectedTitle(theory));assert(button);button.click();
   assert.equal(d.querySelector('dialog').dataset.theory,theoryId);d.querySelector('dialog>button').click();
   assert.equal(d.querySelector('dialog'),null);assert.equal(d.getElementById('final-answer').value,draft);
   checks+=2;
