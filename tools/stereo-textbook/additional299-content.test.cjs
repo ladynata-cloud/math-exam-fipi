@@ -4,9 +4,10 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const root=path.resolve(__dirname,'../..'),dir=path.join(root,'stereo-course/textbook/lessons');
 const baseline=require('./additional299-baseline.cjs'),{sha,published,ids}=baseline;
-const sourceIndex=require(root+'/stereo-course/textbook/source-index.json');
-const production=require(root+'/stereo-course/textbook/data/course.json');
-const registry=require('./content-review.json'),screenshots=require('./browser-cases.cjs');
+const later=require('./additional310-baseline.cjs'),currentIndex=require(root+'/stereo-course/textbook/source-index.json');
+const sourceIndex=later.previousIndex(currentIndex);
+const production=later.previousCourse(require(root+'/stereo-course/textbook/data/course.json'),currentIndex);
+const registry=later.previousRegistry(require('./content-review.json')),screenshots=later.previousCases(require('./browser-cases.cjs'));
 const report=require(root+'/docs/reviews/ATANASYAN_PYRAMIDS_299_309_CONTENT.json');
 const API=require(root+'/stereo-course/textbook/assets/engine.js');
 const hash=raw=>crypto.createHash('sha256').update(raw).digest('hex');
@@ -23,7 +24,7 @@ const corruptCases=new Map(screenshots);corruptCases.set([...corruptCases.keys()
 // The exact additive capture hash is fixed after every new state is authored.
 const CAPTURE_SHA='0ed4a23ada493c744a9514ba5166d669549c51ce03d642d0796085fa3734f9cf';
 assert.equal(sha([...screenshots].filter(([key])=>ids.has(key.split('|')[0]))),CAPTURE_SHA,'exact additive screenshot inventory');
-const rawPrevious=fs.readdirSync(dir).filter(name=>name.endsWith('.json')&&!ids.has(name.slice(0,-5))).sort().map(name=>[name,hash(fs.readFileSync(path.join(dir,name)))]);
+const rawPrevious=fs.readdirSync(dir).filter(name=>name.endsWith('.json')&&!ids.has(name.slice(0,-5))&&!later.ids.has(name.slice(0,-5))).sort().map(name=>[name,hash(fs.readFileSync(path.join(dir,name)))]);
 assert.equal(rawPrevious.length,495);assert.equal(sha(rawPrevious),published.rawLessonManifestSHA256,'all 495 prior authored files byte-identical');
 for(const[file,value]of Object.entries(published.immutableFiles))assert.equal(hash(fs.readFileSync(path.join(root,file))),value,'immutable runtime/schema/builder '+file);
 assert.equal(previous.lessons.length,495);assert.equal(previous.catalog.entries.length,1373);

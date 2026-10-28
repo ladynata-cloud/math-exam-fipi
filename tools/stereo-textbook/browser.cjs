@@ -32,6 +32,13 @@ const screenshotCases=require('./browser-cases.cjs');
 // line may still break legitimately between operations or adjacent formulas.
 const explanation=stage=>'[data-step="'+stage+'"] > details > p';
 const mathLayoutCases=new Map([
+ // Additional 310–314: retain whole operands on complete mobile/desktop proofs.
+ ['ex-main-0310|step-5',[{selector:explanation('step-2'),atoms:['√(25² − 20²)']},{selector:explanation('step-4'),atoms:['√(8² + 15²)']}]],
+ ['ex-main-0311-a|step-6',[{selector:explanation('step-2'),fractions:[['(14·12)','2']]},{selector:explanation('step-3'),fractions:[['(9·15)','2']]},{selector:explanation('step-4'),fractions:[['(9·13)','2']]},{selector:explanation('step-6'),fractions:[['(14·15)','2']]}]],
+ ['ex-main-0311-b|step-7',[{selector:explanation('step-7'),fractions:[['(9·12)','2'],['(15·AK)','2'],['108','15'],['36','5']]}]],
+ ['ex-main-0312|step-6',[{selector:explanation('step-4'),fractions:[['360°','n'],['180°','n'],['r','R']]},{selector:explanation('step-5'),fractions:[['h','r'],['h','R'],['r','R'],['180°','n']]},{selector:explanation('step-6'),fractions:[['180°','n']]}]],
+ ['ex-main-0313|step-6',[{selector:explanation('step-2'),fractions:[['(a√3)','2'],['(a√3)','6']]},{selector:explanation('step-5'),fractions:[['((12 + 6)·2)','2']]},{selector:explanation('step-6'),fractions:[['((36 + 18)·2)','2']]}]],
+ ['ex-main-0314|step-5',[{selector:explanation('step-4'),fractions:[['a','2'],['b','2'],['(a − b)','2']]},{selector:explanation('step-5'),atoms:['√(63² + 16²)']}]],
  // Actual294–298 paragraphs: complete radicals and stacked operands at both
  // widths, including their retained appearance on the final solution page.
  ['ex-main-0294|step-6',[{selector:explanation('step-6'),atoms:['√(S₀²−a⁴)','4√(S₀²−a⁴)']}]],
@@ -194,7 +201,7 @@ async function checkLabels(id,width,stage,target=page,selector='[data-main-model
 }
 async function takeScreenshot(lesson,width,stage){
  const name=screenshotCases.get(lesson.id+'|'+stage);if(!name)return;
- const filename=name+'-'+width+'.png';await settle();await checkMathLayout(lesson,width,stage);await checkSection294Projection(lesson,width,stage);await checkPyramidProjection(lesson,width,stage);if(stage==='nested-theory')await page.locator('dialog .textbook-model').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,filename),fullPage:stage!=='nested-theory'});evidence.screenshots.push({id:lesson.id,width,stage,file:filename});writeEvidence();
+ const filename=name+'-'+width+'.png';await settle();await checkMathLayout(lesson,width,stage);await checkSection294Projection(lesson,width,stage);await checkPyramidProjection(lesson,width,stage);await checkPyramid310Projection(lesson,width,stage);if(stage==='nested-theory')await page.locator('dialog .textbook-model').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,filename),fullPage:stage!=='nested-theory'});evidence.screenshots.push({id:lesson.id,width,stage,file:filename});writeEvidence();
 }
 async function checkPyramidProjection(lesson,width,stage){
  if(!['ex-main-0308','ex-main-0309'].includes(lesson.id)||!stage.startsWith('step-'))return;
@@ -222,6 +229,49 @@ async function checkPyramidProjection(lesson,width,stage){
  row.pyramidProjection.default=await measure('default');
  await page.locator('[data-main-model] button[aria-label="Повернуть влево"]').click();await settle();
  assert.deepEqual(await camera(),kept,lesson.id+' projection check restores exact camera');writeEvidence();
+}
+async function checkPyramid310Projection(lesson,width,stage){
+ if(!["ex-main-0310","ex-main-0311-a","ex-main-0311-b","ex-main-0312","ex-main-0313","ex-main-0314"].includes(lesson.id))return;
+ const svg=page.locator('[data-main-model] svg'),view=await svg.getAttribute('data-view'),model=lesson.visualization.model,polygon=model.views[view]?.polygon;
+ if(!polygon)return;
+ const points=polygon.map(key=>model.points[key]),cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+ const areaVector=points.reduce((sum,p,i)=>cross(p,points[(i+1)%points.length]).map((x,j)=>x+sum[j]),[0,0,0]);
+ const area3D=Math.hypot(...areaVector)/2,radius=require(root+'/stereo-course/assets/task-scene-viewer.js').prepare(model).radius,kept=await camera();
+ assert(area3D>0&&radius>0,lesson.id+' nondegenerate source polygon');
+ async function measure(orientation){
+  await settle();
+  const actual=await svg.evaluate((node,{area3D,radius})=>{
+   const paths=node.querySelectorAll('path.am-plane[data-highlight="plane"]');if(paths.length!==1)return {pathCount:paths.length};
+   const path=paths[0],d=path.getAttribute('d'),numbers=d.match(/-?\d+(?:\.\d+)?/g)?.map(Number)||[],matrix=path.getScreenCTM(),points=[];
+   for(let i=0;i<numbers.length;i+=2){const p=new DOMPoint(numbers[i],numbers[i+1]).matrixTransform(matrix);points.push({x:p.x,y:p.y});}
+   let twiceArea=0,diameter=0;for(let i=0;i<points.length;i++){const p=points[i],q=points[(i+1)%points.length];twiceArea+=p.x*q.y-q.x*p.y;for(const other of points)diameter=Math.max(diameter,Math.hypot(p.x-other.x,p.y-other.y));}
+   const area=Math.abs(twiceArea)/2,viewBox=node.viewBox.baseVal,svgScale=.36*Math.min(viewBox.width,viewBox.height)/radius,screenAreaScale=Math.abs(matrix.a*matrix.d-matrix.b*matrix.c);
+   // The renderer is orthographic. Divide the measured screen area by the
+   // face-on area using its exact model scale and the SVG-to-screen Jacobian.
+   // This ratio is |cos(normal, viewing direction)|, independent of triangle
+   // size. A small source triangle therefore is not mistaken for an edge-on one.
+   return {pathCount:paths.length,commands:d.replace(/[-\d.\s]/g,''),view:node.dataset.view,yaw:node.dataset.yaw,pitch:node.dataset.pitch,points,area,area3D,radius,svgScale,screenAreaScale,normalProjection:area/(area3D*svgScale**2*screenAreaScale),areaOverDiameter:area/diameter,minimumTriangleAltitude:points.length===3?2*area/diameter:null};
+  },{area3D,radius});
+  const label=lesson.id+' '+width+' '+stage+' '+orientation+' pyramid polygon';
+  assert.equal(actual.pathCount,1,label+' exactly one highlighted polygon');assert.equal(actual.commands,'M'+'L'.repeat(polygon.length-1)+'Z',label+' complete authored outline');assert.equal(actual.view,view,label+' exact view');
+  for(const key of ['area','normalProjection','areaOverDiameter'])assert(Number.isFinite(actual[key]),label+' finite '+key);
+  assert(actual.normalProjection<=1.001,label+' projected area cannot exceed the face-on area');
+  assert(actual.normalProjection>=.10,label+' projected area ratio '+actual.normalProjection+' must be at least 0.10 of its face-on area');
+  // area/diameter equals HALF the minimum altitude for a triangle, not its
+  // literal thickness. Keep the general floor; the 313 normal triangle needs
+  // an 8px minimum altitude so its two short legs remain visually distinct.
+  assert(actual.areaOverDiameter>=2.5,label+' area/diameter '+actual.areaOverDiameter+' must be at least 2.5 screen pixels');
+  if(lesson.id==='ex-main-0313'&&view==='projection'){
+   assert.equal(actual.points.length,3,label+' the source normal section is triangular');
+   assert(actual.areaOverDiameter>=4,label+' area/diameter '+actual.areaOverDiameter+' must be at least 4 screen pixels (8px minimum triangle altitude)');
+  }
+  return actual;
+ }
+ const row=evidence.labels.find(x=>x.ownerId===lesson.id&&x.id===lesson.id&&x.viewport===width&&x.stage===stage);assert(row,lesson.id+' projection belongs to verified label state');
+ row.pyramid310Projection={captured:await measure('captured')};
+ await page.locator('[data-main-model] button[aria-label="Вернуть исходный вид"]').click();row.pyramid310Projection.default=await measure('default');
+ await page.locator('[data-main-model] button[aria-label="Повернуть влево"]').click();await settle();
+ assert.deepEqual(await camera(),kept,lesson.id+' pyramid check restores the exact capture camera');writeEvidence();
 }
 async function checkSection294Projection(lesson,width,stage){
  // A mathematically correct plane can collapse to a line in the standard
