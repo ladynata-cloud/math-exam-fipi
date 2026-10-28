@@ -5,6 +5,8 @@ on:
     paths:
       - 'board-server/**'
       - 'learning/**'
+      - 'geometry-course/textbook/assets/math-text.js'
+      - 'geometry-course/textbook/assets/planar-viewer.js'
       - 'foundations/**'
       - 'grade7/geometry-rebuild/**'
       - 'ege-baza/path/**'
@@ -177,6 +179,8 @@ jobs:
           retention-days: 7
       - name: Real classroom, trainer, homework and exam scenarios
         run: |
+          node --test --test-isolation=none tools/learning-assistant-browser.test.cjs
+          node tools/learning-assistant-e2e.browser.cjs
           node tools/learning-path.browser.cjs
           node tools/motion-grade6.browser.cjs
           node tools/learning-remediation-smoke.cjs
@@ -204,6 +208,8 @@ jobs:
           node tools/grade7-geometry-core.browser.cjs
       - name: Final whitespace and patch check
         run: git diff --check
+      - name: Cabinet assistant preparation gate
+        run: echo MATHEXAM_ASSISTANT_CABINETS_PREPARED_OK
 
   container:
     runs-on: ubuntu-latest
@@ -218,12 +224,27 @@ jobs:
         run: |
           docker run --rm --entrypoint node mathexam-learning-qa:ci -e '
           const assert = require("node:assert/strict");
+          const fs = require("node:fs");
           const { LearningStore } = require("./learning-store");
           const contracts = require("./learning-contracts");
+          const { resolveCourseContext } = require("./assistant-course-context");
           const { initializeTeaching, inspectPhoto } = require("./learning-teaching");
           const { initializeRuns } = require("./learning-runs");
           const sharp = require("sharp");
           (async () => {
+            for (const file of ["../geometry-course/textbook/assets/math-text.js", "../geometry-course/textbook/assets/planar-viewer.js",
+              ...["app.js", "state.js", "style.css", "course.json"].map(file => "../learning/atanasyan-first-steps/" + file),
+              ...["app.js", "course.json", "source-manifest.json"].map(file => "../learning/ichenskaya-grade7-works/" + file)]) fs.accessSync(file, fs.constants.R_OK);
+            const courseContext = { courseId: "atanasyan-first-steps", lessonId: "atanasyan-7-9-main-160-part-2", stepIndex: 0 };
+            const resolvedCourse = resolveCourseContext(courseContext);
+            assert.deepEqual(resolvedCourse.courseContext, courseContext);
+            assert.match(resolvedCourse.question, /22°30′/);
+            assert.ok(resolvedCourse.stepCount > 0);
+            const companionContext = { courseId: "ichenskaya-grade7-works", lessonId: "ichenskaya-7-kr-06-v2-task-04", stepIndex: 0 };
+            const companion = resolveCourseContext(companionContext);
+            assert.deepEqual(companion.courseContext, companionContext);
+            assert.equal(companion.topic, "ichenskaya-course-step");
+            assert.ok(companion.stepCount > 0);
             const store = new LearningStore({ filePath: "/tmp/learning-container.sqlite", contracts });
             assert.equal(store.available, true);
             initializeTeaching(store); initializeRuns(store);

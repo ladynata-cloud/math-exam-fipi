@@ -2,6 +2,136 @@
 
 Updated: 2026-10-28 (Asia/Novosibirsk)
 
+## Prepared: Ichenskaya independent and test works alongside Atanasyan
+
+- [Task](tasks/ICHENSKAYA_GRADE7_WORKS.md), HIGH, branch
+  `feat/ichenskaya-grade7-works`, exact base
+  `11ee0d51a63e73b30dc4db94c4463fac894bf4bf` (Draft PR #363). The assistant and
+  primary-course dependency stack remains unmerged.
+- Supplied Ichenskaya grade-seven collection, 2018: 17 independent works and
+  six test works, 46 variants, all 110 numbered tasks and 360 explanation steps.
+  Every task has source pages, a reviewed condition, its own model and retained
+  writing. The separate final-examination tickets are inventoried but excluded.
+- The author's allocation places 54 tasks at primary-course points 1–23; 56
+  later tasks are labeled separately. Source/key discrepancies and the one
+  earlier work requiring a later theorem are explicitly explained. The original
+  Atanasyan 255-card snapshot and fixed92a contract remain unchanged.
+- Both courses appear for the same cabinet selection, with separate account
+  records and one source-only helper setting/quota. Teacher preview is read-only;
+  proofs receive manual review. There are no trained weights or provider calls.
+- [Evidence and limits](reports/ICHENSKAYA_GRADE7_WORKS_20261028.md): complete
+  independent source/proof review, reproducible inventories, 332 numerical and
+  coordinate checks, 470 model views and retained-work/source-boundary gates.
+  Final exact-head browser, service and CI evidence accompanies the Draft PR.
+- Read-only reconciliation: remote main remains
+  `8723d6bfb19e64d43c474b1fc7116fe8630ec20a`; the public textbook bundle, engine
+  and attached-course router returned 200 and matched it. The private scan and
+  pupil identity are not published. No real account mutation, merge or deployment
+  occurred. Required external HIGH review and Claude consultation remain pending.
+
+## Prepared: Atanasyan beginning geometry through elementary constructions
+
+- [Task](tasks/ATANASYAN_FIRST_STEPS_CABINET.md), HIGH, branch
+  `feat/atanasyan-first-steps-cabinet`, base
+  `1fcc4fa36267f5667c42409861ef0b92f97b333c` (Draft PR #360). The parent assistant
+  stack #358 / #359 / #360 remains unmerged; this task does not publish it.
+- Ordered native cabinet and public companion for exercises 1–160 and theory
+  points 1–23: 12 sections, 232 exercise/subpart cards, 23 theory cards and
+  682 exercise steps. The bounded source preserves the reviewed book cards,
+  diagrams and identifiers; the sealed engine and fixed 92a contract are intact.
+- Retained writing, diagrams, explicit help, related theory and account-scoped
+  browser records with export. Proofs remain for manual review. These records
+  are not a new server-saved attempt or whole-course board protocol.
+- New course helper resolves the exact task/step against matching reviewed
+  source snapshots. It uses source explanations only, with no provider calls or
+  trained model weights. Existing account, assessment and quota fences apply.
+- [Evidence and limits](reports/ATANASYAN_FIRST_STEPS_CABINET_20261028.md):
+  desktop/mobile public and native journeys, storage recovery, source identity,
+  assistant-service and cabinet checks. Internal independent review is complete;
+  required external HIGH review and Claude consultation are unavailable/pending.
+- Read-only reconciliation: authoritative remote main is
+  `8723d6bfb19e64d43c474b1fc7116fe8630ec20a` (PR #362). The published textbook
+  bundle, engine and attached-course router returned HTTP 200 and matched that
+  main source. Older entries below describe their own historical observations.
+  Concurrent main changes are not silently incorporated into this stacked task.
+- No real pupil configuration, inference, merge or deployment was performed.
+  After release, privately verify the intended existing account and current
+  profile version before selecting the course and enabling its helper.
+
+## Prepared: MaxExam 0.0 for three selected cabinets
+
+- [Task](tasks/MATHEXAM_ASSISTANT_CABINETS_V1.md), HIGH, branch
+  `feat/math-assistant-cabinets-20261027`, base
+  `060a445d27e939a3d68a8e1885986ad56d5c89d5`, stacked on Draft PR #359 / #358.
+- Authenticated, default-disabled gateway to the independent assistant; private
+  teacher selection of at most three pupils, 17 original topic cards, exact
+  decimals, retained hints, simpler explanations and categorical feedback.
+- [Evidence and limits](reports/MATHEXAM_ASSISTANT_CABINETS_20261027.md) and
+  [operator guide](../assistant-service/CABINETS.md). The real local two-service
+  browser path completed 9 requests with synthetic accounts and zero model calls.
+  Full service and board suites passed 107 and 328 checks respectively. Remote
+  exact-head CI and the separately reported local clipboard regression belong
+  in the Draft PR handoff; no external review is claimed.
+- Public main and index/sitemap/robots remain at the preceding released state
+  below. No authenticated teacher connection was available for real account
+  verification/binding. No real pupil has been enabled by this preparation.
+- The owner prefers strong teaching quality and considers OpenAI, GigaChat and
+  Qwen as complementary model candidates. Multi-model consultation requires a
+  separate bounded adapter/evaluation change and actual provider access/terms.
+  This is not automatic training of a MathExam model's weights.
+- No key purchase, paid request, infrastructure activation, merge or deployment.
+
+## Prepared: limited synthetic model trial; assistant architecture accepted
+
+- Owner accepted [ADR 0011](adr/0011-independent-assistant.md) on 2026-10-27 and
+  authorized preparation of [MATHEXAM_ASSISTANT_EVAL_V1](tasks/MATHEXAM_ASSISTANT_EVAL_V1.md),
+  HIGH review. Architecture acceptance does not activate paid requests or release.
+- Branch `feat/math-assistant-eval-20261027` is stacked on Draft PR
+  [#358](https://github.com/ladynata-cloud/math-exam-fipi/pull/358), dependency head
+  `5219320061bf92d63da389b45d30564425c51d11`. The parent remains unmerged.
+- [Plan](reports/MATHEXAM_ASSISTANT_EVAL_PLAN_20261027.md) and
+  [readable cases/references](reports/MATHEXAM_ASSISTANT_EVAL_CASES_20261027.md):
+  32 model cases plus eight local rejection cases; owner-authorized USD 0.20 lifetime
+  campaign limit. Full-payload reservations currently total USD 0.070515.
+- Dedicated private ledger, one sequential attempt per case, source/approval
+  binding, no retries/reset/resume, pending human scores and inert review text.
+  Default planning/rehearsal is zero-network and cannot measure model quality.
+- Local checks: 82/82 service/evaluation groups passed; the 32-response simulated
+  rehearsal completed with zero live requests. Exact remote CI belongs in the
+  new task's Draft PR. No external review or live benchmark is claimed.
+- Read-only reconciliation: remote main still `92d733a49692744ce043503c57f29b77bfb09a24`;
+  public index/sitemap/robots again returned HTTP 200 and matched that source.
+- Reconciled: the owner subsequently authorized at most 32 DeepSeek calls /
+  USD 0.20 for the exact prepared campaign at
+  `060a445d27e939a3d68a8e1885986ad56d5c89d5`; PR #359 records the decision.
+  API access is not configured and required review remains outstanding. Do not
+  ask for that same budget again or transfer it to pupils/another provider/head.
+  No model call, infrastructure purchase, merge, deployment or pupil-data change
+  occurred. The next step is to resolve actual access, review and the exact plan.
+
+## Prepared: independent mathematics assistant prototype
+
+- [Scope](tasks/MATHEXAM_ASSISTANT_V1.md), `NEW_ARCHETYPE`, branch
+  `feat/math-assistant-v1-20261027`, base
+  `92d733a49692744ce043503c57f29b77bfb09a24`.
+- [Research](reports/MATHEXAM_ASSISTANT_RESEARCH_20261027.md),
+  [ADR](adr/0011-independent-assistant.md), and
+  [operator guide](../assistant-service/README.md). Separate Node 24 service,
+  private pilot, SQLite, seven original knowledge topics and optional model API.
+- Default offline mode has exact arithmetic for five bounded task families,
+  conceptual hints, learner feedback and human-reviewed knowledge revisions.
+  No model weights are trained; no conversations or cabinet profiles are stored.
+- Local mathematics/API/privacy/budget/restart tests and actual desktop/mobile
+  browser checks passed; final exact-head evidence belongs in the Draft PR.
+  Actual provider charges/quality and Amvera account resources remain unverified.
+- Assistant, board and video are independent packages. Existing board and pupil
+  cabinets still share one process; stopping it also stops cabinet APIs.
+- Reconciled: PR #358's head above passed 53 service groups, four browser groups,
+  the actual Docker restart/backup check and Public SEO. The owner has now accepted
+  its architecture; finite model-test preparation is the separate task above.
+  Paid inference, required external review and hosting validation remain pending.
+- No merge, paid activation, production account changes or publication occurred.
+
 ## Prepared: guided division at the search entrypoint
 
 - [Scope](tasks/DIVISION_SEARCH_ENTRYPOINT_20261028.md), MEDIUM bounded public

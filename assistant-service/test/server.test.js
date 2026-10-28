@@ -1,0 +1,127 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import http from 'node:http';
+import { createAssistantServer } from '../src/server.js';
+import { fixture, question, modelResponse, NOW } from './helpers.js';
+
+async function start(t, options = {}) {
+  const fx = fixture(t, options); const app = createAssistantServer({ config: fx.config, clock: fx.clock, fetchImpl: options.fetchImpl || (() => { throw new Error('UNEXPECTED_NETWORK'); }) });
+  await new Promise(resolve => app.server.listen(0, '127.0.0.1', resolve));
+  t.after(() => app.close());
+  const base = `http://127.0.0.1:${app.server.address().port}`, origin = fx.config.publicOrigin;
+  const client = async (url, { method = 'GET', body, token, csrf, headers = {} } = {}) => {
+    // Raw local HTTP deliberately exercises Host validation; Fetch controls its
+    // own Host header and cannot emulate the configured reverse-proxy origin.
+    const payload = body === undefined ? undefined : JSON.stringify(body);
+    return new Promise((resolve, reject) => {
+    const request = http.request(base + url, { method, headers: { Host: new URL(origin).host, Origin: origin,
+      ...(body === undefined ? {} : { 'Content-Type': 'application/json' }), ...(token ? { Cookie: `mathexam_assistant=${token}` } : {}),
+      ...(csrf ? { 'X-Assistant-CSRF': csrf } : {}), ...(payload ? { 'Content-Length': Buffer.byteLength(payload) } : {}), ...headers } }, incoming => {
+      const chunks = []; incoming.on('data', chunk => chunks.push(chunk)); incoming.on('end', () => {
+        try {
+          const response = { status: incoming.statusCode, headers: new Headers(Object.entries(incoming.headers).map(([key, value]) => [key, Array.isArray(value) ? value.join(', ') : value])) };
+          const text = Buffer.concat(chunks).toString('utf8');
+          resolve({ response, data: response.headers.get('content-type')?.includes('application/json') ? JSON.parse(text) : text });
+        } catch (error) { reject(error); }
+      });
+    });
+    request.on('error', reject); request.end(payload);
+    });
+  };
+  const login = async () => {
+    const { response, data } = await client('/api/session', { method: 'POST', body: { pilotKey: fx.config.pilotKey } });
+    assert.equal(response.status, 201); const cookie = response.headers.get('set-cookie'); assert(cookie.includes('HttpOnly')); assert(cookie.includes('SameSite=Strict'));
+    return { token: /^mathexam_assistant=([^;]+)/.exec(cookie)[1], csrf: data.csrf };
+  };
+  return { ...fx, app, client, login };
+}
+
+test('private API denies unauthenticated access; static assets carry CSP and noindex without secrets', async t => {
+  const fx = await start(t);
+  assert.equal((await fx.client('/api/topics')).response.status, 401);
+  const page = await fx.client('/'); assert.equal(page.response.status, 200); assert.match(page.response.headers.get('content-security-policy'), /script-src 'self'/);
+  assert.match(page.response.headers.get('x-robots-tag'), /noindex/); assert.equal(page.response.headers.get('access-control-allow-origin'), null);
+  for (const url of ['/src/config.js', '/knowledge/core.json', '/data/assistant.sqlite', '/.env', '/?key=secret']) assert.equal((await fx.client(url)).response.status, 404);
+  assert.equal((await fx.client('/api/status', { headers: { Host: 'evil.example' } })).response.status, 403);
+});
+test('origin and CSRF reject cross-site writes and guessed keys before any work', async t => {
+  const fx = await start(t, { api: true });
+  const bad = await fx.client('/api/session', { method: 'POST', body: { pilotKey: 'wrong' } }); assert.equal(bad.response.status, 401);
+  const session = await fx.login();
+  for (const options of [{ headers: { Origin: 'https://evil.example' } }, { csrf: 'wrong' }, { headers: { 'Sec-Fetch-Site': 'cross-site' } }]) {
+    const result = await fx.client('/api/ask', { method: 'POST', body: question(), ...session, ...options }); assert.equal(result.response.status, 403);
+  }
+  assert.equal(fx.app.store.summary().day.requests, 0);
+});
+test('offline end-to-end hints, explicit explanation and feedback never call a model', async t => {
+  let calls = 0; const fx = await start(t, { fetchImpl: async () => { calls++; throw new Error('UNEXPECTED'); } }); const session = await fx.login();
+  const topics = await fx.client('/api/topics', session); assert.equal(topics.data.topics.length, 7);
+  const first = await fx.client('/api/ask', { method: 'POST', body: question(), ...session }); assert.equal(first.response.status, 200);
+  assert.equal(first.data.answer.steps.length, 1); assert.equal(first.data.answer.complete, false); assert.equal(first.data.answer.verification, 'deterministic');
+  const feedback = await fx.client('/api/feedback', { method: 'POST', body: { answerId: first.data.answer.id, rating: 'unclear' }, ...session }); assert.equal(feedback.response.status, 200);
+  const simple = await fx.client('/api/ask', { method: 'POST', body: question(), ...session }); assert.notDeepEqual(simple.data.answer.steps, first.data.answer.steps);
+  const full = await fx.client('/api/ask', { method: 'POST', body: question({ mode: 'explain' }), ...session }); assert.equal(full.data.answer.complete, true); assert.match(full.data.answer.steps.join(' '), /x = 5/);
+  assert.equal(calls, 0);
+});
+test('personal data, oversized input and arbitrary extra fields fail before storage/provider', async t => {
+  let calls = 0; const fx = await start(t, { api: true, fetchImpl: async () => { calls++; return modelResponse(); } }); const session = await fx.login();
+  for (const data of [question({ question: 'Мой телефон +7 999 123 45 67' }), question({ question: 'name@example.test' }),
+    question({ question: 'Меня зовут Test, реши задачу' }), question({ question: 'https://example.test/task' }),
+    question({ pupilId: 'do-not-accept' }), question({ question: 'x'.repeat(1001) }), question({ hintLevel: 6 }), question({ externalConsent: 'yes' }),
+    question({ question: 'x\u0000y' }), question({ question: 'x'.repeat(9000) })]) {
+    const result = await fx.client('/api/ask', { method: 'POST', body: data, ...session }); assert([400, 413].includes(result.response.status));
+  }
+  assert.equal(calls, 0); assert.equal(fx.app.store.summary().day.requests, 0);
+  const bytes = fs.readFileSync(fx.config.dbPath); assert(!bytes.includes(Buffer.from('name@example.test')));
+});
+test('feedback from another session and unknown routes cannot modify state', async t => {
+  const fx = await start(t); const a = await fx.login(), b = await fx.login();
+  const answer = await fx.client('/api/ask', { method: 'POST', body: question(), ...a });
+  assert.equal((await fx.client('/api/feedback', { method: 'POST', body: { answerId: answer.data.answer.id, rating: 'incorrect' }, ...b })).response.status, 404);
+  assert.equal((await fx.client('/api/knowledge/approve', { method: 'POST', body: {}, ...a })).response.status, 404);
+});
+test('external consent is required and exact arithmetic remains free even with consent', async t => {
+  let calls = 0; const fx = await start(t, { api: true, fetchImpl: async () => { calls++; return modelResponse(); } }); const session = await fx.login();
+  const general = question({ question: 'Что означает решить уравнение?' });
+  await fx.client('/api/ask', { method: 'POST', body: general, ...session }); assert.equal(calls, 0);
+  await fx.client('/api/ask', { method: 'POST', body: question({ externalConsent: true }), ...session }); assert.equal(calls, 0);
+  const external = await fx.client('/api/ask', { method: 'POST', body: question({ question: general.question, externalConsent: true }), ...session });
+  assert.equal(calls, 1); assert.equal(external.data.answer.verification, 'model-unverified'); assert(fx.app.store.summary().day.reserved_micros > 0);
+});
+test('request deduplication, budget exhaustion and failure fallback cannot issue a retry', async t => {
+  let calls = 0; const fx = await start(t, { api: true, env: { ASSISTANT_DAILY_API_REQUESTS: '1' }, fetchImpl: async () => { calls++; throw new Error('secret-provider-body'); } });
+  const session = await fx.login(), body = question({ question: 'Что означает решить уравнение?', externalConsent: true });
+  const first = await fx.client('/api/ask', { method: 'POST', body, ...session }); assert.equal(first.response.status, 200); assert(first.data.notice);
+  assert.equal(JSON.stringify(first.data).includes('secret-provider-body'), false); assert.equal(calls, 1);
+  const duplicate = await fx.client('/api/ask', { method: 'POST', body, ...session }); assert.equal(duplicate.response.status, 409); assert.equal(calls, 1);
+  const second = await fx.client('/api/ask', { method: 'POST', body: question({ question: body.question, externalConsent: true }), ...session });
+  assert.equal(second.response.status, 200); assert(second.data.notice); assert.equal(calls, 1); assert.equal(fx.app.store.summary().day.api_requests, 1);
+});
+test('understated budget prevents the first network call', async t => {
+  let calls = 0; const fx = await start(t, { api: true, env: { ASSISTANT_DAILY_BUDGET: '0.000001' }, fetchImpl: async () => { calls++; return modelResponse(); } });
+  const session = await fx.login();
+  const result = await fx.client('/api/ask', { method: 'POST', body: question({ question: 'Как решить уравнение?', externalConsent: true }), ...session });
+  assert.equal(result.response.status, 200); assert(result.data.notice); assert.equal(calls, 0);
+});
+test('unexpected provider token accounting durably disables further paid requests', async t => {
+  let calls = 0; const fx = await start(t, { api: true, fetchImpl: async () => { calls++; return modelResponse({ usage: { prompt_tokens: 1000000, completion_tokens: 1000000 } }); } });
+  const session = await fx.login();
+  for (let i = 0; i < 2; i++) { const result = await fx.client('/api/ask', { method: 'POST', body: question({ question: 'Как решить уравнение?', externalConsent: true }), ...session }); assert(result.data.notice); }
+  assert.equal(calls, 1); assert.equal(fx.app.store.summary().providerCircuit, 'PROVIDER_CONTRACT_CHANGED');
+  assert.equal((await fx.client('/api/status')).data.externalEnabled, false);
+});
+test('forgetting deletes private session/answers/feedback and does not reset aggregate limits', async t => {
+  const fx = await start(t); const session = await fx.login();
+  const first = await fx.client('/api/ask', { method: 'POST', body: question(), ...session });
+  await fx.client('/api/feedback', { method: 'POST', body: { answerId: first.data.answer.id, rating: 'unclear' }, ...session });
+  const result = await fx.client('/api/session', { method: 'DELETE', ...session }); assert.equal(result.response.status, 200);
+  assert.match(result.response.headers.get('set-cookie'), /Max-Age=0/); assert.equal(fx.app.store.summary().feedback.length, 0);
+  assert.equal((await fx.client('/api/topics', session)).response.status, 401); assert.equal(fx.app.store.summary().day.requests, 1);
+});
+test('API price expiry while server runs falls back without external call', async t => {
+  let now = NOW, calls = 0; const fx = await start(t, { api: true, clock: () => now, fetchImpl: async () => { calls++; return modelResponse(); } });
+  now += 8 * 86400000; const session = await fx.login();
+  const result = await fx.client('/api/ask', { method: 'POST', body: question({ question: 'Что означает решить уравнение?', externalConsent: true }), ...session });
+  assert.equal(result.response.status, 200); assert(result.data.notice); assert.equal(calls, 0);
+});

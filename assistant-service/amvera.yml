@@ -1,0 +1,10 @@
+# Future separate application only. Do not replace the repository-root config.
+meta:
+  environment: docker
+  toolchain:
+    name: docker
+build:
+  dockerfile: assistant-service/Dockerfile
+run:
+  containerPort: 3000
+  persistenceMount: /data

@@ -217,6 +217,13 @@ test('valid registry endpoint, health, CORS, and room API are compatible', async
   for (const forbidden of ['teacherToken', 'studentToken', 'roomId', 'stack', manifestPath]) {
     assert.equal(serializedRegistry.includes(forbidden), false);
   }
+  // These siblings exist in a full checkout (the Render layout). Their 404s
+  // prove the cabinet's shared renderer routes remain an explicit allowlist.
+  for (const file of ['engine.js', 'board-adapter.js', 'style.css']) {
+    const asset = '/geometry-course/textbook/assets/' + file;
+    fs.accessSync(path.join(serverDir, '..', asset));
+    assert.equal((await fetch(server.baseUrl + asset)).status, 404, asset);
+  }
   assert.equal(server.output.stderr.includes('Trainer registry parity check failed'), false);
 });
 
@@ -265,6 +272,8 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
   assert.match(dockerfile, /COPY courses\/vilenkin-6-part-1\/data\/ \/app\/courses\/vilenkin-6-part-1\/data\//);
   const textbookContract = 'geometry-course/textbook/learning-contracts.js';
   assert.ok(dockerfile.includes(`COPY ${textbookContract} /app/${textbookContract}`));
+  const textbookAssets = ['math-text.js', 'planar-viewer.js'].map(file => 'geometry-course/textbook/assets/' + file);
+  assert.ok(dockerfile.includes(`COPY ${textbookAssets.join(' ')} /app/geometry-course/textbook/assets/`));
   assert.match(dockerfile, /ENV PROGRESS_STORE_PATH=\/data\/progress\.json/);
   assert.match(dockerfile, /VOLUME \["\/data"\]/);
 
@@ -280,7 +289,9 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
   const runtimeTrainerDir = path.join(directory, 'app', 'trainers');
   fs.mkdirSync(runtimeServerDir, { recursive: true });
   fs.mkdirSync(runtimeTrainerDir, { recursive: true });
-  for (const file of fs.readdirSync(serverDir).filter(name => name.endsWith('.js'))) {
+  // Docker copies runtime data files together with server code. In particular,
+  // the cabinet assistant catalogue is JSON and must be present in this layout.
+  for (const file of fs.readdirSync(serverDir).filter(name => /\.(?:js|json)$/.test(name))) {
     fs.copyFileSync(path.join(serverDir, file), path.join(runtimeServerDir, file));
   }
   fs.copyFileSync(manifestPath, path.join(runtimeTrainerDir, 'board-compat.json'));
@@ -291,6 +302,8 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
   fs.cpSync(path.join(rootDir, coursePath, 'data'), path.join(directory, 'app', coursePath, 'data'), { recursive: true });
   fs.mkdirSync(path.dirname(path.join(directory, 'app', textbookContract)), { recursive: true });
   fs.copyFileSync(path.join(rootDir, textbookContract), path.join(directory, 'app', textbookContract));
+  fs.mkdirSync(path.join(directory, 'app', 'geometry-course/textbook/assets'), { recursive: true });
+  for (const file of textbookAssets) fs.copyFileSync(path.join(rootDir, file), path.join(directory, 'app', file));
 
   const server = await startServer(undefined, runtimeServerDir);
   try {
@@ -308,6 +321,10 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
     const assets = [...cabinetHtml.matchAll(/<(?:script\b[^>]*\bsrc|link\b[^>]*\bhref)="([^"]+)"/g)]
       .map(match => new URL(match[1], server.baseUrl + '/learning/'));
     assert.ok(assets.some(url => url.pathname.endsWith('/grade7-geometry-core-models.js')));
+    for (const file of [...textbookAssets, ...['state.js', 'app.js', 'style.css'].map(file => 'learning/atanasyan-first-steps/' + file),
+      'learning/ichenskaya-grade7-works/app.js']) {
+      assert.ok(assets.some(url => url.pathname === '/' + file), file + ' must be loaded by the cabinet');
+    }
     for (const url of assets) {
       assert.equal(url.origin, server.baseUrl);
       const response = await fetch(url);
@@ -320,8 +337,45 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
       const expected = fs.readFileSync(path.join(directory, 'app', url.pathname));
       assert.deepEqual(Buffer.from(await response.arrayBuffer()), expected, url.pathname);
     }
+    const coursePath = '/learning/atanasyan-first-steps/course.json';
+    const courseResponse = await fetch(server.baseUrl + coursePath);
+    assert.equal(courseResponse.status, 200, coursePath);
+    assert.match(courseResponse.headers.get('content-type') || '', /application\/json/);
+    assert.match(courseResponse.headers.get('cache-control') || '', /no-store/);
+    assert.equal(courseResponse.headers.get('x-content-type-options'), 'nosniff');
+    assert.equal(courseResponse.headers.get('cross-origin-resource-policy'), 'same-origin');
+    const courseBytes = Buffer.from(await courseResponse.arrayBuffer());
+    assert.deepEqual(courseBytes, fs.readFileSync(path.join(rootDir, coursePath)));
+    const course = JSON.parse(courseBytes);
+    assert.equal(course.id, 'atanasyan-first-steps');
+    assert.equal(course.lessons.length, 255);
+    assert.ok(course.lessons.some(lesson => lesson.id === 'atanasyan-7-9-main-160-part-2'));
+    for (const file of ['course.json', 'source-manifest.json']) {
+      const asset = '/learning/ichenskaya-grade7-works/' + file;
+      const response = await fetch(server.baseUrl + asset);
+      assert.equal(response.status, 200, asset);
+      assert.match(response.headers.get('content-type') || '', /application\/json/);
+      assert.match(response.headers.get('cache-control') || '', /no-store/);
+      assert.equal(response.headers.get('x-content-type-options'), 'nosniff');
+      assert.equal(response.headers.get('cross-origin-resource-policy'), 'same-origin');
+      const bytes = Buffer.from(await response.arrayBuffer());
+      assert.deepEqual(bytes, fs.readFileSync(path.join(rootDir, asset)));
+      const data = JSON.parse(bytes);
+      if (file === 'course.json') {
+        assert.equal(data.id, 'ichenskaya-grade7-works'); assert.equal(data.lessons.length, 110);
+        assert.ok(data.lessons.every(lesson => lesson.status === 'reviewed'));
+      } else { assert.equal(data.courseId, 'ichenskaya-grade7-works'); assert.equal(data.entries.length, 110); }
+    }
+    // Resolve in the copied image layout, not via repository-relative files.
+    const copiedResolver = require(path.join(runtimeServerDir, 'assistant-course-context'));
+    const companionContext = { courseId: 'ichenskaya-grade7-works', lessonId: 'ichenskaya-7-kr-06-v2-task-04', stepIndex: 0 };
+    const companion = copiedResolver.resolveCourseContext(companionContext);
+    assert.deepEqual(companion.courseContext, companionContext);
+    assert.equal(companion.topic, 'ichenskaya-course-step'); assert(companion.stepCount > 0);
     // Keep the path allowlist: unrelated files and server sources stay private.
-    for (const blocked of ['/ege-baza/path/managed-state.js', '/board-server/index.js']) {
+    for (const blocked of ['/ege-baza/path/managed-state.js', '/board-server/index.js',
+      '/geometry-course/textbook/learning-contracts.js',
+      ...['engine.js', 'board-adapter.js', 'style.css'].map(file => '/geometry-course/textbook/assets/' + file)]) {
       assert.equal((await fetch(server.baseUrl + blocked)).status, 404, blocked);
     }
     for (const asset of ['/learning/catalog.js', '/learning/references.js', '/ege-baza/path/practice-view.js', ...['base', 'foundations', 'triangles', 'relations'].map(name => '/ege-baza/path/grade7-geometry-rebuild-' + name + '.js')]) assert.equal((await fetch(server.baseUrl + asset)).status, 200);

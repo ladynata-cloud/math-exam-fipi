@@ -19,6 +19,12 @@
     url: 'https://mathexam.space/trainers/college-functions/',
     boardURL: 'https://mathexam.space/trainers/trainer-board.html?trainer=' + encodeURIComponent('/trainers/college-functions/index.html')
   });
+  const atanasyanFirstSteps = Object.freeze({
+    id: 'atanasyan-first-steps',
+    kind: 'native-course',
+    title: 'Атанасян · От начала до построений',
+    url: 'https://mathexam.space/geometry-course/first-steps/'
+  });
   const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]));
   // An explicit presentation choice in the existing versioned focus note.
   // URLs or a pupil's identity never opt a profile into this mode.
@@ -59,12 +65,24 @@
     if (urls.has(course.url)) return course;
     if (urls.has(collegeFunctions.url)) return collegeFunctions;
     if (profile.course === 'ege' && egeBaseLessons.every(lesson => urls.has(egeBaseURL(lesson.id)))) return egeBase;
+    if (urls.has(atanasyanFirstSteps.url)) return atanasyanFirstSteps;
     return null;
   }
-  function markup(profile, {heading = 'h1', teacher = false} = {}) {
+  function markup(profile, {heading = 'h1', teacher = false, previewStudentId = ''} = {}) {
     const active = selected(profile);
     if (!active) return '';
     const tag = heading === 'h1' ? 'h1' : 'h2';
+    if (active === atanasyanFirstSteps) {
+      const preview = typeof previewStudentId === 'string' && /^[a-zA-Z0-9_-]{1,160}$/.test(previewStudentId) ? previewStudentId : '';
+      const href = preview ? '#atanasyan-course&preview=' + encodeURIComponent(preview) : teacher ? atanasyanFirstSteps.url : '#atanasyan-course';
+      const external = teacher && !preview ? ' target="_blank" rel="noopener noreferrer"' : '';
+      const primaryMarkup = `<section class="panel attached-course" data-attached-course="${atanasyanFirstSteps.id}"><p class="eyebrow">КУРС К УЧЕБНИКУ · 7 КЛАСС</p><${tag}>${atanasyanFirstSteps.title}</${tag}><p>Теория 1–23 и все задачи №1–160 с подпунктами: условие, отдельный чертёж и разбор небольшими шагами. Три признака равенства треугольников и элементарные построения.</p><div class="actions"><a class="button primary" data-attached-course-open href="${escape(href)}"${external}>${teacher || preview ? 'Посмотреть курс' : 'Открыть мой курс'} →</a></div><p class="form-hint" data-attached-course-storage>Записи этого курса сохраняются в браузере для текущего пользователя. Их можно скачать для передачи преподавателю. Эти записи не входят в серверную историю работ кабинета.</p><p class="form-hint" data-atanasyan-assistant>Помощник MaxExam 0.0 доступен внутри задачи после подключения к этому кабинету. Рассуждения и доказательства проверяет преподаватель.</p></section>`;
+      const companionHref = preview ? '#ichenskaya-course&preview=' + encodeURIComponent(preview) : teacher
+        ? 'https://mathexam.space/geometry-course/ichenskaya-7-works/' : '#ichenskaya-course';
+      const companionTag = tag === 'h1' ? 'h2' : 'h3';
+      const companionMarkup = `<section class="panel attached-course" data-attached-course="ichenskaya-grade7-works" data-attached-companion="atanasyan-first-steps"><p class="eyebrow">САМОСТОЯТЕЛЬНЫЕ И КОНТРОЛЬНЫЕ · 7 КЛАСС</p><${companionTag}>Работы Иченской · задачи по вариантам</${companionTag}><p>17 самостоятельных и 6 контрольных работ, по два варианта: 110 задач с чертежами, своими записями и разбором по шагам.</p><p>С-1–С-10 и К-1–К-2 подходят к основному курсу до построений. Остальные работы посвящены следующим темам 7 класса и отмечены отдельно.</p><div class="actions"><a class="button" data-attached-course-open data-companion-course-open href="${escape(companionHref)}"${external}>${teacher || preview ? 'Посмотреть сборник' : 'Открыть самостоятельные и контрольные'} →</a></div><p class="form-hint" data-attached-course-storage>Записи этого сборника сохраняются отдельно для текущего пользователя в этом браузере. Их можно скачать для преподавателя; в серверную историю кабинета они не входят. Решения и доказательства проверяет преподаватель.</p></section>`;
+      return primaryMarkup + companionMarkup;
+    }
     if (active === collegeFunctions) {
       return `<section class="panel attached-course" data-attached-course="${collegeFunctions.id}"><p class="eyebrow">МОЙ КУРС · КОЛЛЕДЖ</p><${tag}>${collegeFunctions.title}</${tag}><p>40 задач по графикам: корни, параболы, показательные и логарифмические функции, функции по частям. Стройте по точкам и исследуйте свойства шаг за шагом.</p><div class="actions"><a class="button primary" data-attached-course-open href="${collegeFunctions.url}" target="_blank" rel="noopener noreferrer">Открыть тренажёр →</a>${teacher ? `<a class="button" data-attached-course-board href="${collegeFunctions.boardURL}" target="_blank" rel="noopener noreferrer">Открыть на общей доске →</a>` : ''}</div><p class="form-hint" data-college-functions-room>${teacher ? 'Для совместного занятия откройте тренажёр на доске и передайте ученику ссылку этой комнаты.' : 'Для совместного занятия открой ссылку комнаты, которую пришлёт преподаватель.'}</p><p class="form-hint" data-attached-course-storage>Личные решения курса сохраняются в браузере. Работа на общей доске не записывается как самостоятельное решение в кабинете.</p></section>`;
     }
