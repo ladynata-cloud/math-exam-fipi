@@ -25,6 +25,14 @@
     title: 'Атанасян · От начала до построений',
     url: 'https://mathexam.space/geometry-course/first-steps/'
   });
+  const petersonPair = Object.freeze({id:'peterson6-pair', kind:'public-course-pair', title:'Петерсон · 6 класс · курс и линейка'});
+  const petersonCourses = Object.freeze({
+    'peterson-course': Object.freeze({id:'peterson6', title:'Петерсон · 6 класс · часть 1', path:'/school/peterson6/', url:'https://mathexam.space/school/peterson6/',
+      description:'14 тем: условия задач, модели и разборы по шагам. Для трудных вычислений есть отдельные тренировки.'}),
+    'peterson-line': Object.freeze({id:'maxim-peterson6', title:'Линейка Максима · Петерсон', path:'/trainers/maxim-peterson6/', url:'https://mathexam.space/trainers/maxim-peterson6/',
+      description:'13 тренажёров по движению, процентам, совместной работе и вычислениям. Шпаргалки, домашняя работа и отчёт о тренировке.'})
+  });
+  const publicCourse = route => typeof route === 'string' && Object.hasOwn(petersonCourses, route) ? petersonCourses[route] : null;
   const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]));
   // An explicit presentation choice in the existing versioned focus note.
   // URLs or a pupil's identity never opt a profile into this mode.
@@ -66,12 +74,26 @@
     if (urls.has(collegeFunctions.url)) return collegeFunctions;
     if (profile.course === 'ege' && egeBaseLessons.every(lesson => urls.has(egeBaseURL(lesson.id)))) return egeBase;
     if (urls.has(atanasyanFirstSteps.url)) return atanasyanFirstSteps;
+    // Only an explicit paired selection changes the primary cabinet route.
+    // A Peterson link in an older mixed plan remains a supplementary link.
+    if (Object.values(petersonCourses).every(item => urls.has(item.url))) return petersonPair;
     return null;
   }
   function markup(profile, {heading = 'h1', teacher = false, previewStudentId = ''} = {}) {
     const active = selected(profile);
     if (!active) return '';
     const tag = heading === 'h1' ? 'h1' : 'h2';
+    if (active === petersonPair) {
+      const preview = teacher || !!previewStudentId;
+      const cardTag = tag === 'h1' ? 'h2' : 'h3';
+      const cards = Object.entries(petersonCourses).map(([route, item]) => {
+        const href = preview ? item.url : '#' + route;
+        const external = preview ? ' target="_blank" rel="noopener noreferrer"' : '';
+        const board = item.id === 'peterson6' && teacher ? `<a class="button" data-attached-course-board href="https://mathexam.space/trainers/trainer-board.html?trainer=%2Fschool%2Fpeterson6%2F" target="_blank" rel="noopener noreferrer">Открыть на доске</a>` : '';
+        return `<article class="card" data-peterson-course="${item.id}"><${cardTag}>${item.title}</${cardTag}><p>${item.description}</p><div class="actions"><a class="button primary" data-attached-course-open href="${href}"${external}>${preview ? 'Посмотреть материалы' : 'Открыть в кабинете'} →</a>${preview ? '' : `<a class="button" href="${item.url}" target="_blank" rel="noopener noreferrer">В отдельной вкладке</a>`}${board}</div></article>`;
+      }).join('');
+      return `<section data-attached-course="${petersonPair.id}"><div class="page-heading"><div><p class="eyebrow">МОИ МАТЕРИАЛЫ · 6 КЛАСС</p><${tag}>${petersonPair.title}</${tag}><p>Выбери курс или отдельную тренировку. Помощник справа внизу подсказывает по текущему заданию, когда ты его открываешь.</p></div></div><div class="cards">${cards}</div><p class="form-hint" data-attached-course-storage>Решения и подсказки этих материалов сохраняются в этом браузере, отдельно от истории кабинета. На общем устройстве записи курса могут быть общими; для преподавателя можно скачать отчёт из курса.</p>${preview ? '<p class="form-hint" data-peterson-preview>Здесь показаны ссылки на общедоступные материалы. Они открываются отдельно; личные решения ученика в этом просмотре не загружаются.</p>' : ''}</section>`;
+    }
     if (active === atanasyanFirstSteps) {
       const preview = typeof previewStudentId === 'string' && /^[a-zA-Z0-9_-]{1,160}$/.test(previewStudentId) ? previewStudentId : '';
       const href = preview ? '#atanasyan-course&preview=' + encodeURIComponent(preview) : teacher ? atanasyanFirstSteps.url : '#atanasyan-course';
@@ -104,5 +126,5 @@
     const comment = focusComment(profile?.focus);
     return comment ? `<section class="panel"><h2>От преподавателя</h2><p class="prep-focus">${escape(comment)}</p></section>` : '';
   }
-  return Object.freeze({selected, markup, note, numberTheoryOnly, focusComment, withNumberTheoryOnly});
+  return Object.freeze({selected, markup, note, publicCourse, numberTheoryOnly, focusComment, withNumberTheoryOnly});
 });
