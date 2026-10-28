@@ -240,6 +240,11 @@
       }
       search.addEventListener('input', () => { routeSearch = search.value; drawRoute(); });
       filter.addEventListener('change', () => { routeFilter = filter.value; drawRoute(); }); drawRoute();
+      if(options.api&&options.role==='student'&&root.LearningAssistant&&!readOnly){
+        const helperHost=node('div',undefined,{'data-course-assistant-host':''});body.append(helperHost);
+        const serial=currentSerial;
+        helperDispose=root.LearningAssistant.mount(helperHost,{api:options.api,role:'student',lazy:true,isCurrent:()=>valid()&&serial===currentSerial&&!current,canAsk:()=>false});
+      }
     }
     function closeTheory() {
       dialogViewer?.destroy(); dialogViewer = null;
@@ -380,23 +385,23 @@
         side.append(rules);
       }
       const helper = node('details', undefined, { class: 'afs-helper', 'data-course-assistant': '' });
-      helper.append(node('summary', 'Помощник MaxExam 0.0'));
-      const helperHost = node('div', undefined, { 'data-course-assistant-host': '' }); helper.append(helperHost); side.append(helper);
+      const helperSummary=node('summary', 'Помощник MaxExam 0.0');helper.append(helperSummary);
+      const helperHost = node('div', undefined, { 'data-course-assistant-host': '' }); side.append(helper);
       if (options.api && options.role === 'student' && root.LearningAssistant && !readOnly) {
-        let connected = false;
-        helper.addEventListener('toggle', () => {
-          if (!helper.open || connected || !valid() || locked) return;
-          connected = true;
-          helperDispose = root.LearningAssistant.mount(helperHost, {
-            api: options.api, role: 'student',
+        // The floating launcher is outside the collapsed details element, so
+        // it stays reachable while the pupil works anywhere in the trainer.
+        side.append(helperHost);
+        helperSummary.addEventListener('click',event=>{event.preventDefault();if(valid()&&!locked)helperDispose.open?.();});
+        helperDispose = root.LearningAssistant.mount(helperHost, {
+            api: options.api, role: 'student', lazy:true,
             isCurrent: () => valid() && serial === currentSerial && current?.id === id,
             canAsk: () => !locked && !readOnly && (!options.canAsk || options.canAsk()),
             courseContext: () => ({ courseId: definition.id, lessonId: id, stepIndex: helperStep }),
             courseTaskLabel: shortName(lesson), courseTaskPrompt: displayStatement(lesson),
             onBeforeAsk: () => !readOnly && markAssisted(), onAnswer: updateStatus
           });
-        });
       } else {
+        helper.append(helperHost);
         helperHost.append(node('p', readOnly ? 'Это просмотр преподавателя. Личные обращения к помощнику здесь не отправляются.'
           : 'Здесь работают подсказки из проверенного разбора. Помощник кабинета видит текущий номер и шаг, когда курс открыт внутри твоего кабинета.'),
           button('Разобрать текущую задачу по шагам', () => { if (!markAssisted()) return; help.open = true; if (!state.revealed) revealNext(); help.scrollIntoView?.({ block: 'nearest' }); }));

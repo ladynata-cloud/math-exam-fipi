@@ -16,9 +16,11 @@ const root = args.length ? path.resolve(args[1]) : path.resolve(__dirname, '..')
 const courseDir = path.join(root, 'trainers', 'maxim-peterson6');
 const html = fs.readFileSync(path.join(courseDir, 'index.html'), 'utf8');
 const scripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)];
-assert.equal(scripts.length, 1, 'Course must contain one self-contained script');
-assert.ok(!/\bsrc\s*=/i.test(scripts[0][1]), 'Course script must be inline');
-const source = scripts[0][2];
+const inline = scripts.filter(script => !/\bsrc\s*=/i.test(script[1]));
+assert.equal(inline.length, 1, 'Course engine remains one self-contained inline script');
+assert.equal(scripts.length, 2, 'Only the explicit optional local helper is added');
+assert.match(scripts.find(script => /\bsrc\s*=/i.test(script[1]))[1], /^\s+src="\.\.\/peterson-assistant\.js\?v=20261028"$/);
+const source = inline[0][2];
 const context = {window: {}};
 vm.runInNewContext(source, context, {filename: 'maxim-peterson6/index.html', timeout: 1500});
 const C = context.window.TrainerCore;
@@ -106,7 +108,11 @@ test('separate local storage and no network or cabinet bridge dependencies', () 
   assert.equal(C.storageKey, 'mathexam-maxim-peterson6-route-v1');
   assert.match(source, /localStorage\.getItem\(STORAGE_KEY\)/);
   assert.match(source, /localStorage\.setItem\(STORAGE_KEY,/);
-  assert.doesNotMatch(html, /<script\b[^>]*\bsrc\s*=|<link\b[^>]*\brel=["']stylesheet["']/i);
+  const linkedAssets = [...html.matchAll(/<(?:script|link)\b[^>]*(?:\bsrc|\bhref)="([^"]+)"[^>]*>/gi)]
+    .map(match => match[1]).filter(url => !url.startsWith('https://'));
+  assert.deepEqual(linkedAssets, ['../peterson-assistant.css?v=20261028', '../peterson-assistant.js?v=20261028']);
+  const helper = fs.readFileSync(path.join(root, 'trainers', 'peterson-assistant.js'), 'utf8');
+  assert.doesNotMatch(helper, /\b(?:fetch|XMLHttpRequest|WebSocket|EventSource)\s*\(|\.\s*(?:sendBeacon|postMessage)\s*\(|localStorage|sessionStorage/);
   assert.doesNotMatch(source, /\b(?:fetch|XMLHttpRequest|WebSocket|EventSource)\s*\(/);
   assert.doesNotMatch(source, /\.\s*(?:sendBeacon|postMessage)\s*\(|\bimport\s*\(/);
   assert.doesNotMatch(source, /serviceWorker\s*\.\s*register\s*\(/);

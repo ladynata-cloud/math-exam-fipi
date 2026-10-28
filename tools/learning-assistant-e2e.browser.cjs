@@ -130,7 +130,11 @@ const fixtureHTML = '<!doctype html><html lang="ru"><head><meta charset="utf-8">
       }, { selectedStudent: studentId || null, courseContext: courseContext || null, courseTaskLabel });
       const response = await loaded;
       assert.equal(response.status(), 200, 'The real cabinet must authorize the status request');
-      return response.json();
+      const status = await response.json();
+      if (!studentId && status.enabled) {
+        await page.locator('[data-assistant-launcher]').click();
+      }
+      return status;
     }
     async function privateBrowserState(page) {
       const state = await page.evaluate(() => ({ cookie: document.cookie, url: location.href,
