@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "authoredContentSha256": "b1690b854231ef758b34123a1545ded507800e73b8704833af08d2978cc7276f",
+  "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
+  "source": "passed",
+  "mathematics": "passed",
+  "models": "passed",
+  "pedagogy": "passed",
+  "browser": "passed",
+  "reviewer": "Independent non-author OpenAI reviewers for source, mathematics, semantic geometry changes and every actual-page image; primary coordinator verifies the complete hash-bound coverage",
+  "at": "2026-10-28T08:43:32.127571+00:00",
+  "reviewKind": "Hash-bound chapter-V content and runtime review; exact-head CI and deployment remain separate release gates.",
+  "sourcePdfSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "scope": {
+    "chapter": "V",
+    "mainNumbers": 82,
+    "mainParts": 99,
+    "theory": 7,
+    "selfchecks": 30,
+    "cards": 136,
+    "steps": 580,
+    "views": 878,
+    "coordinateClaims": 669,
+    "fullBookComplete": false
+  },
+  "evidence": [
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_A_REVIEW.md",
+      "sha256": "4b96159fba2c3e5783379460a20b520eb4cc8270079059f699d633d1ed924114"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_B_REVIEW.md",
+      "sha256": "fb37f6d012641e5866230fd35d10744e186a77e65d00edd8f0b1a4dce1913a12"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_C_REVIEW.md",
+      "sha256": "f348e0e452fe0b4783272fad2f325c4a6dde5d9a84398811d0bc25a278f5e559"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_INTEGRATION_REVIEW.md",
+      "sha256": "9bc48db0d5e3699281f3fe35b318cd856587f67c23f52b385a7134d8528f0fd6"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_SOURCE_INVENTORY.md",
+      "sha256": "48f6e8c8e6f6f895a89c0cc008dfd80f6a1f1d8ae9a606d83ebd6a8066d29134"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_THEORY_REVIEW.md",
+      "sha256": "401fb9ad452edfdd2b9d1805d1e141261a0e1e744cf095584a5b536f2208d03a"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_A_FULL_CONTEXT_VISUAL_REVIEW.json",
+      "sha256": "954369b74c66b1dfdc5b6291962a69a6a69a7523fb4d0d45d8f8d1bc753d5d6f"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_A_VISUAL_REVIEW.json",
+      "sha256": "66c8c70658fc3e8ab1c358c69795cf017ca1fac618d313c2465aa4ff0696a9d8"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_B_FULL_CONTEXT_VISUAL_REVIEW.json",
+      "sha256": "feeb89cc84f5e31319d7c1d9c0fd8cb6dbe3c59f4b7995597ce46eb22898e496"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_B_VISUAL_REVIEW.json",
+      "sha256": "75fe2e9322c25fc0dc1fc95308905f7efe7253ac2ee18541ef0846375e012b6d"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_CAPTION_DELTA.json",
+      "sha256": "9d780d16c63f4d83a0bb6b7b6349841138e294e827827aa2d008af3d0da52383"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_C_FULL_CONTEXT_VISUAL_REVIEW.json",
+      "sha256": "8eb8b8f89e21ec9697b3cdf438127c2602ae98dd92198c5b051829cfdbd6abab"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_C_VISUAL_REVIEW.json",
+      "sha256": "9a600b2c26b83ac4e0808293c7dbae872c6f66721c0886f6f24e47fb9b816698"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_THEORY_FULL_CONTEXT_LATE_REVIEW.json",
+      "sha256": "b50de3185e9c12ede9991fb35268845e5c449e2ec1b211e35aa8d085fe7cd515"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_THEORY_FULL_CONTEXT_PRIMARY_REVIEW.json",
+      "sha256": "ed8a8f2afbb3694583df9a519872e3c1490d468e8b84b3848e0034ea87e525d0"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_THEORY_FULL_CONTEXT_REVIEW.json",
+      "sha256": "2400feb1c421c9cbc583a83e11cf6667c177eed7b2806e221cbcc0447f0828ad"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_THEORY_VISUAL_REVIEW.json",
+      "sha256": "ba2acabeeecc5d099f9f76d9905f87679914291522148dd7ad4c95f5c5bd211d"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_VISUAL_DELTA_REVIEW.json",
+      "sha256": "cbc4685443bb39dbc273b80403bc41c5494c0c36028649e583ff84c70904f0ac"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter-05-source-map.json",
+      "sha256": "ba1b0a530640df2c03a452bd014b66ad0e8e5b18a9faaedadac09b97b1e8d7d8"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_FINAL_REVIEW.json",
+      "sha256": "ecc075d79ca2a77e881cc7a4845cf2ee25258108eaaa869fd60743a08a756c93"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_CLOUD_B_REVIEW.json",
+      "sha256": "9233f4c406c683dc1b391f3452b32b79de48a0bbc5ac7cf3690ba727264b0f10"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_CLOUD_THEORY_REVIEW.json",
+      "sha256": "8e49ce6b5e5b8fa141bf523a39cdda430aa78f387fe8d01058d334fbf99ef4fa"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_CLOUD_LABEL_DELTA_REVIEW.json",
+      "sha256": "9acb887a437d7f9d615296d5888986576974094f1aaec43b220aab1f83b8e724"
+    }
+  ],
+  "browserEvidence": {
+    "completed": true,
+    "cards": 705,
+    "viewChecks": 7568,
+    "stepFlows": 1410,
+    "interactions": 16,
+    "errors": 0,
+    "evidenceSha256": "7f7912ad4fa88aabbd5efd8c0e1abd2271ee45979d3dcc6ed3031a833688fd66",
+    "bundleSha256": "58cec7c15c71b92c87c896427d9a550023a8c0a44ac139705394907ff4f9dee7",
+    "gateScriptSha256": "07b49df556ebb6ee97ddcabbd3a4e3d12d570c7d4816446555356e214fd12577"
+  },
+  "captionCorrection": {
+    "lessonId": "atanasyan-7-9-main-408-part-1",
+    "viewWidthPairs": 16,
+    "freshReviewedImages": 4,
+    "evidenceSha256": "f1a13b654f7130a5712907e46e74a9ccacb55da83b0d970dd0c21d1c1a905b26",
+    "deltaReview": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_CAPTION_DELTA.json"
+  },
+  "manualImageReview": {
+    "newChapterViewWidthPairs": 1756,
+    "openFindings": 0,
+    "actualPageReviews": [
+      {
+        "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_A_FULL_CONTEXT_VISUAL_REVIEW.json",
+        "sha256": "954369b74c66b1dfdc5b6291962a69a6a69a7523fb4d0d45d8f8d1bc753d5d6f",
+        "viewWidthPairs": 298
+      },
+      {
+        "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_B_FULL_CONTEXT_VISUAL_REVIEW.json",
+        "sha256": "feeb89cc84f5e31319d7c1d9c0fd8cb6dbe3c59f4b7995597ce46eb22898e496",
+        "viewWidthPairs": 404
+      },
+      {
+        "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_C_FULL_CONTEXT_VISUAL_REVIEW.json",
+        "sha256": "8eb8b8f89e21ec9697b3cdf438127c2602ae98dd92198c5b051829cfdbd6abab",
+        "viewWidthPairs": 388
+      },
+      {
+        "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_THEORY_FULL_CONTEXT_REVIEW.json",
+        "sha256": "2400feb1c421c9cbc583a83e11cf6667c177eed7b2806e221cbcc0447f0828ad",
+        "viewWidthPairs": 666
+      }
+    ],
+    "focusedToFullApproximateTransferUsed": false,
+    "exactWholePngDuplicateGroupingOnly": true
+  },
+  "claude": "Documented same-course owner exception applies; no Claude or external-provider verdict is claimed.",
+  "mergeOrDeploymentAuthorization": false,
+  "authorizationNote": "This technical manifest does not itself grant publication authority; the current owner conversation governs release."
+}

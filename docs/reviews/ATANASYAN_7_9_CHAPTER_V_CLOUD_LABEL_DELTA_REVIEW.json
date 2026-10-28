@@ -1,0 +1,1400 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "at": "2026-10-28T08:43:32.127571+00:00",
+  "scope": "Three authored H label offsets only; no source, geometry, proof, interaction or gate changes.",
+  "baselineHead": "2ee67a47c108142b3caa0dd570fbe4fbfc1d216e",
+  "baselineChapterHash": "45aa332673548772c19372db17583f43236c7432b955a369cbbbc4e605c18acb",
+  "currentChapterHash": "b1690b854231ef758b34123a1545ded507800e73b8704833af08d2978cc7276f",
+  "candidateBundleSha256": "0072ac07cb9bcd4372865aaa7eae311330d74c23906a330d4b91808e610cdaf6",
+  "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
+  "changedCardIds": [
+    "atanasyan-7-9-main-384-part-2",
+    "atanasyan-7-9-theory-42-part-1",
+    "atanasyan-7-9-selfcheck-chapter-5-13-part-1"
+  ],
+  "exactSerializedModelDelta": [
+    {
+      "path": "geometry-course/textbook/models/chapter-05-b.json/models/35/model/labelOffsets/H/0",
+      "before": 0.4,
+      "after": -1.23
+    },
+    {
+      "path": "geometry-course/textbook/models/chapter-05-b.json/models/35/model/labelOffsets/H/1",
+      "before": 6.2,
+      "after": 9
+    },
+    {
+      "path": "geometry-course/textbook/models/chapter-05-theory.json/models/3/model/labelOffsets/p4_H/0",
+      "before": 2,
+      "after": 0
+    },
+    {
+      "path": "geometry-course/textbook/models/chapter-05-theory.json/models/3/model/labelOffsets/p4_H/1",
+      "before": -4,
+      "after": 5.1
+    },
+    {
+      "path": "geometry-course/textbook/models/chapter-05-theory.json/models/19/model/labelOffsets/p0_H/0",
+      "before": 2,
+      "after": 0
+    },
+    {
+      "path": "geometry-course/textbook/models/chapter-05-theory.json/models/19/model/labelOffsets/p0_H/1",
+      "before": -4,
+      "after": 5.1
+    }
+  ],
+  "allTeachingAndGeometryContentUnchanged": true,
+  "previous569CardsPreserved": true,
+  "cloudFailure": {
+    "run": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40654531212",
+    "artifactId": 12802175487,
+    "artifactSha256": "b434eda5921cc5f92d585ab5ddaf5a54a7990852d9e82a6346eca1899f106c85",
+    "viewChecks": 7568,
+    "stepFlows": 1410,
+    "interactions": 16,
+    "issueViews": 5,
+    "description": "Five unresolved H label placements at 320 px. All other view checks and interactions completed. This run is a failure, not a release pass.",
+    "reproducedLocally": "The unchanged old bundle and original checks reproduce exactly those five failures using Liberation Sans 2.1.5 from Ubuntu fonts-liberation 2.1.5-3build1."
+  },
+  "environment": "Playwright 1.62.1 with Chromium headless_shell revision 1187; separate Liberation Sans and Nimbus Sans font configurations. Final pinned cloud Chromium check remains required.",
+  "targetedGate": "Scratch copy of the unchanged repository browser gate, with only the lesson loop filtered to these three IDs and explicit targeted scope; the complete 705-card bundle and actual page are served.",
+  "targetedCaptures": [
+    {
+      "font": "liberation",
+      "evidenceSha256": "768246cf4f148cfa93657a55c69485cfb14128e23c95ea928ccc2b5e3883b86c",
+      "scope": "targeted-cloud-label-three-cards",
+      "views": 72,
+      "stepFlows": 6,
+      "interactions": 14,
+      "errors": 0
+    },
+    {
+      "font": "nimbus",
+      "evidenceSha256": "28dab260654daa08e8227d4a98a68c131ee8ee504f94943252789d4528cabc8f",
+      "scope": "targeted-cloud-label-three-cards",
+      "views": 72,
+      "stepFlows": 6,
+      "interactions": 14,
+      "errors": 0
+    }
+  ],
+  "independentReviews": [
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_CLOUD_B_REVIEW.json",
+      "sha256": "9233f4c406c683dc1b391f3452b32b79de48a0bbc5ac7cf3690ba727264b0f10"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_CLOUD_THEORY_REVIEW.json",
+      "sha256": "8e49ce6b5e5b8fa141bf523a39cdda430aa78f387fe8d01058d334fbf99ef4fa"
+    }
+  ],
+  "imageCoverage": {
+    "baseCompleteRoster": 1756,
+    "replacedCardPairs": 72,
+    "unchangedBasePairs": 1684,
+    "primaryFont": "liberation",
+    "additionalNimbusPairs": 72,
+    "completeCurrentRoster": 1756
+  },
+  "replacementImages": [
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "chapter": "V",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-384-part-2-neutral-320.png",
+      "font": "liberation",
+      "sha256": "f7af78d6a8b6e9f75a476a20271332a239d0aee32638d77b4bb9c4c9e0fea764"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "chapter": "V",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-384-part-2-step-1-320.png",
+      "font": "liberation",
+      "sha256": "e474c77f903eecb7c5592b9f13894964413104d16db5ba01a22424e7d67f2cd1"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "chapter": "V",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-384-part-2-step-2-320.png",
+      "font": "liberation",
+      "sha256": "5a77ec635d1934b93858d8113d8686abb7b565ee1fcbe81ecd8cff742d5055a3"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "chapter": "V",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-384-part-2-step-3-320.png",
+      "font": "liberation",
+      "sha256": "5a77ec635d1934b93858d8113d8686abb7b565ee1fcbe81ecd8cff742d5055a3"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-neutral-320.png",
+      "font": "liberation",
+      "sha256": "34b483f6d23567286b24b0cc9daacb767149bec83ba5eeaf2c0134109233f142"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-1-320.png",
+      "font": "liberation",
+      "sha256": "ebb2cbd42b273b0ce2927d7a851ddd22f0391477597d38f98ae440fce451e95e"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-2-320.png",
+      "font": "liberation",
+      "sha256": "4d6dbc28b40e814ff582233f0530ae86a50a60ac606c4eb1622257d9c16a0429"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-3-320.png",
+      "font": "liberation",
+      "sha256": "2075b57c0ea047cbc7b2e771712f055e2bbd6ae9dee080a4758eb8285de2b763"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-4-320.png",
+      "font": "liberation",
+      "sha256": "6d29fe39e9e4d4e0a6bb821380e6626ef0695df44e01129574ce722f1e8f01cd"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-5",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-5-320.png",
+      "font": "liberation",
+      "sha256": "57a3ddb509fe3b0171058cec825ef2e1afe2d7a60ffca0b764c6ecc3649a2745"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-6",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-6-320.png",
+      "font": "liberation",
+      "sha256": "fb8a877d47f02e49a40b3a316a47dce1566e76e12ae002998480d4697c24831a"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-7",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-7-320.png",
+      "font": "liberation",
+      "sha256": "55f9bc701b3e144466734848cfd03be2637726ab65fe458d5190cca59805cc3e"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-8",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-8-320.png",
+      "font": "liberation",
+      "sha256": "2fcf9713a0457799d32bf80e684916289e7e705f93fb4d8fc963005cae61b91a"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-9",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-9-320.png",
+      "font": "liberation",
+      "sha256": "fa4759f14bd867d4d7a119cbf1cab3c1859d3ec3aec3b86ca0bbeeada5bdd317"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-10",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-10-320.png",
+      "font": "liberation",
+      "sha256": "e5154d6619c07b49ecf4a64414e90f69c1fff52b15f2a7afca72a750d04c2f90"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-11",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-11-320.png",
+      "font": "liberation",
+      "sha256": "91c47b9f48ac0d2df4a6467f3d2b312ff007e513b6001d50109c11868bffedca"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-12",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-12-320.png",
+      "font": "liberation",
+      "sha256": "8659661e0d229760c234424a5d43423540ca1ec643cb6fe0d83763774273be3a"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-13",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-13-320.png",
+      "font": "liberation",
+      "sha256": "31615df203532118ebd3e94b4ccfd7d74905fb740e1ff1a7a55021585b067432"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-14",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-14-320.png",
+      "font": "liberation",
+      "sha256": "b4143b27d52c13401d110d49bb3990de3c9498bae99f4be44ef91494360c8271"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-15",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-15-320.png",
+      "font": "liberation",
+      "sha256": "b25cc9952af598e226a456f597849a9df11d5d06be14cf9e9bc1840ab3a64e3c"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-16",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-16-320.png",
+      "font": "liberation",
+      "sha256": "744803823a6621bc26b4d182c8d2d4ee4932e4351f7222bd399615bd63a33389"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-17",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-17-320.png",
+      "font": "liberation",
+      "sha256": "0aa3017fd1b0aaea8e91ae887c6ac4bc56bb950d5cb3e27992d653423aad86d9"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-18",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-18-320.png",
+      "font": "liberation",
+      "sha256": "dfa47eec63cfdaffc7d84f4281814d553685d2a069c18a2f23d781f6b5fd34e1"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-19",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-19-320.png",
+      "font": "liberation",
+      "sha256": "8e21cf06bf33b1e82e3937da6a2a44f68cdb6a3eed0ca6693ede93a5ddaea320"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-1-320.png",
+      "font": "liberation",
+      "sha256": "add580462cbc0c47fa648c6780866dabc691242689206b1427612cfaaef8adf8"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-2-320.png",
+      "font": "liberation",
+      "sha256": "c138c5636cd51dc19fcab6c32bef99d6b0c4f4d494569e5ae50b0362d187db63"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-3-320.png",
+      "font": "liberation",
+      "sha256": "12f6aeaf859d8cee72045cfc48e7c7b45344ba02d2a3590289c5676400a94bde"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-4-320.png",
+      "font": "liberation",
+      "sha256": "a39a449cbf1c76386aafc93655baa4de14fefe2ee15807ac23c59a4ae4a73f4e"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-5",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-5-320.png",
+      "font": "liberation",
+      "sha256": "90624094a9dc25659e266c438651797acf747fc857a41aaa554314357a06724a"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-6",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-6-320.png",
+      "font": "liberation",
+      "sha256": "1a574370f87925426e43e6e9fadacb98ffff0b05dce2bff9815e7009a56c70b9"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-7",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-7-320.png",
+      "font": "liberation",
+      "sha256": "1dfc8a9cd0f9543009024b6bc435a88b5425f89d8e170b55ef128c9b096bbd00"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-5-13-part-1",
+      "chapter": "V",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-selfcheck-chapter-5-13-part-1-neutral-320.png",
+      "font": "liberation",
+      "sha256": "9b386b51b45b3d40d9f4f32b18fb6b78784a0249a8306f74da6bef85115e092b"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-5-13-part-1",
+      "chapter": "V",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-selfcheck-chapter-5-13-part-1-step-1-320.png",
+      "font": "liberation",
+      "sha256": "54195932b5d6221ebe1163cd3a275cae2b7d50cf54b426a6fb880327d8e96322"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-5-13-part-1",
+      "chapter": "V",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-selfcheck-chapter-5-13-part-1-step-2-320.png",
+      "font": "liberation",
+      "sha256": "60cef98ec750154a04828c598f617a1512e23d882fe9637cb5054edb1e69ee5e"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-5-13-part-1",
+      "chapter": "V",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-selfcheck-chapter-5-13-part-1-step-3-320.png",
+      "font": "liberation",
+      "sha256": "b4c5e3bf86f400b51b8b604939f5cff888d7790f1f200c7c8fd7ca4ac7152a85"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-5-13-part-1",
+      "chapter": "V",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-selfcheck-chapter-5-13-part-1-step-4-320.png",
+      "font": "liberation",
+      "sha256": "0d393c2a773fa9a961b66223bfd703aa6df494556191164bf4f46f89f0a93a69"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "chapter": "V",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-384-part-2-neutral-1280.png",
+      "font": "liberation",
+      "sha256": "9cf65b0f324af4b88f3f8c89acb56a6153c00be40ea9064db62e073834e52c95"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "chapter": "V",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-384-part-2-step-1-1280.png",
+      "font": "liberation",
+      "sha256": "3f50c4cef5d701a68da0ee3d801bb17d08cebd6f7c09c4b5dadcdc6be4959282"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "chapter": "V",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-384-part-2-step-2-1280.png",
+      "font": "liberation",
+      "sha256": "86a7d329240bb7fd0708365f2c0d76bae463b9a052504d2780cdba2f349c88b2"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "chapter": "V",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-384-part-2-step-3-1280.png",
+      "font": "liberation",
+      "sha256": "86a7d329240bb7fd0708365f2c0d76bae463b9a052504d2780cdba2f349c88b2"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-neutral-1280.png",
+      "font": "liberation",
+      "sha256": "4eb460b750cd3e204dcec73e60451048801db4dea6f743ee7043383ef1298038"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-1-1280.png",
+      "font": "liberation",
+      "sha256": "f99f7f355cd8034641e82ea30e0405a57d7aa619fe7bd23e613bd1a4fa3f08aa"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-2-1280.png",
+      "font": "liberation",
+      "sha256": "cb34843ed51abc507c36c52f3cd1ec354cb7d6353021dcdb0ecca2e9207d5821"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-3-1280.png",
+      "font": "liberation",
+      "sha256": "2e827654409d069b0c1c99790dc07f8813d1a25817de2748151fbc3d162c8ca9"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-4-1280.png",
+      "font": "liberation",
+      "sha256": "98f6bec2d8d43290de28b2383b44230aef40d8305265b374792ba3d6829cc852"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-5-1280.png",
+      "font": "liberation",
+      "sha256": "7db2df099dba06e6cee090f5c87e6ef60c67db030cbddbe5b820ebd28bb928aa"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-6",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-6-1280.png",
+      "font": "liberation",
+      "sha256": "168a1ee55514d99a22c94a867be710966e1c32c1fabbd0275967b7c38bbdd648"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-7",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-7-1280.png",
+      "font": "liberation",
+      "sha256": "22ad93ec72850748028e2ca7d80a0e7b95bbdecb46ccb5bec5f26cdcfb40f234"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-8",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-8-1280.png",
+      "font": "liberation",
+      "sha256": "6c1d58c8419e3e524487d7d9671cb85b7963d5ee69000e6ebfb2078eccbc46d6"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-9",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-9-1280.png",
+      "font": "liberation",
+      "sha256": "8a332c7d8897f1f3a8ae1b6e63015815b61d5ac0b776f1e05b9a80c9dea150de"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-10",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-10-1280.png",
+      "font": "liberation",
+      "sha256": "6d3da21c2fbd0a780ef480b23a848025f20ad986f9e7417e39070a6f71424fbc"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-11",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-11-1280.png",
+      "font": "liberation",
+      "sha256": "80c98707c27164f6812be70e40e03f06da50579a5ca324697dce630bc0b94c22"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-12",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-12-1280.png",
+      "font": "liberation",
+      "sha256": "c74db7c24e133a7e888b711654de94afe1358760c13b582223aa6b410cb3d6e5"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-13",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-13-1280.png",
+      "font": "liberation",
+      "sha256": "6018b4947702b4df3bccb029ddd865280f28b466e2f15f9e584e618a3f92752c"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-14",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-14-1280.png",
+      "font": "liberation",
+      "sha256": "465c004dbdb17e49964d06c8f5ba79a66d1a21dcf1cb23b0f371e5c9712ad8f1"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-15",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-15-1280.png",
+      "font": "liberation",
+      "sha256": "89aaca4c633a4fccb87db59af7448504b10eaf6b50d7292c8534f32831cc9ecf"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-16",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-16-1280.png",
+      "font": "liberation",
+      "sha256": "89aaca4c633a4fccb87db59af7448504b10eaf6b50d7292c8534f32831cc9ecf"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-17",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-17-1280.png",
+      "font": "liberation",
+      "sha256": "21ab1d83f96e080a601080cf5ddcb783537388acb39ad2cbd5f9a2f65f770999"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-18",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-18-1280.png",
+      "font": "liberation",
+      "sha256": "b565f289e637b420d7c857452b30ffd2ba7d035764237c3c43cdc9da044bc39b"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-19",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-19-1280.png",
+      "font": "liberation",
+      "sha256": "31ec9b039c28b98ee09e6f6d4f01813b0008a00a86fa400afdf7095eaab14897"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-1-1280.png",
+      "font": "liberation",
+      "sha256": "1c99ba21752a47b7952ed08f3f72f54f6f9241b172be6d520cc224466dc516c0"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-2-1280.png",
+      "font": "liberation",
+      "sha256": "766dcd35341bffbcaa213e7fa4f09060929729884733e75ca2836df4a514af6c"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-3-1280.png",
+      "font": "liberation",
+      "sha256": "2f58085b81aed327605746b849426b39caac8efa4261939516a633f985c116cf"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-4-1280.png",
+      "font": "liberation",
+      "sha256": "2d2d7f0ac491b8e85d1441a028bb009955de3cb8a401f01041159c53b9ba2002"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-5-1280.png",
+      "font": "liberation",
+      "sha256": "6259781016ab987daed41ed51cdb5199eb7b34e966298b0294db269c535f75a3"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-6",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-6-1280.png",
+      "font": "liberation",
+      "sha256": "79f1637bb815c43069b7bb220755433353646ad2a24319db404f4e98afeecdc8"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-7",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-7-1280.png",
+      "font": "liberation",
+      "sha256": "ac7ce829bd3531705948a77a328f2c960022a97a4dc7699ae08cba97ff2816d7"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-5-13-part-1",
+      "chapter": "V",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-selfcheck-chapter-5-13-part-1-neutral-1280.png",
+      "font": "liberation",
+      "sha256": "564af242ad2e95d853f0911e54631e6bb49bc6f3623fc2db49aceea9f77cee81"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-5-13-part-1",
+      "chapter": "V",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-selfcheck-chapter-5-13-part-1-step-1-1280.png",
+      "font": "liberation",
+      "sha256": "97f9a749e0aa3eb5cfc5040d220b8668dbdce14d7b1ea4f2d4c126b3356d37d2"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-5-13-part-1",
+      "chapter": "V",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-selfcheck-chapter-5-13-part-1-step-2-1280.png",
+      "font": "liberation",
+      "sha256": "c58c1d4f34e5a08eafa79228c51a9baf1ac9d502ad230460d7ceba85bf8f9e74"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-5-13-part-1",
+      "chapter": "V",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-selfcheck-chapter-5-13-part-1-step-3-1280.png",
+      "font": "liberation",
+      "sha256": "68af615ab877976ba2541a7cae3d31375bfb0b900f1f7a1e60e802559ac1acaa"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-5-13-part-1",
+      "chapter": "V",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-selfcheck-chapter-5-13-part-1-step-4-1280.png",
+      "font": "liberation",
+      "sha256": "9206e59770bad69bb4123266a75d1e051c36bc87c0ffedb55a0624ae24aaea84"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "chapter": "V",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-384-part-2-neutral-320.png",
+      "font": "nimbus",
+      "sha256": "ea55fa8873f6502079299634aff53169e1c2aff3dddd66f9563a1f2b84aa999e"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "chapter": "V",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-384-part-2-step-1-320.png",
+      "font": "nimbus",
+      "sha256": "631dcf8c3426a206b811f0e630e9de187592b8943a56ab02d7ddb901c981d439"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "chapter": "V",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-384-part-2-step-2-320.png",
+      "font": "nimbus",
+      "sha256": "5db528ec960a8742d3c20a33de137f370779a138b2f6b4a9fae3906a6c3e7245"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "chapter": "V",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-384-part-2-step-3-320.png",
+      "font": "nimbus",
+      "sha256": "5db528ec960a8742d3c20a33de137f370779a138b2f6b4a9fae3906a6c3e7245"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-neutral-320.png",
+      "font": "nimbus",
+      "sha256": "6d11d2449f0b6b3a4b7ff7040990b71a95512e85a62bbeea495b99016e9bf4cd"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-1-320.png",
+      "font": "nimbus",
+      "sha256": "e317f977faf99ec24da39e7bf23295baa36d5c7d9506aeee4d922cb454732a37"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-2-320.png",
+      "font": "nimbus",
+      "sha256": "473db01959fa9d76760244062ebe68e5a8cdf6d7cc3b4817f360f7a9f532d650"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-3-320.png",
+      "font": "nimbus",
+      "sha256": "8ae278293097b8201982a32bdd6397a6687ec097a053bdbadb3143615b1853c1"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-4-320.png",
+      "font": "nimbus",
+      "sha256": "7dc4e176e802a951cfd3c3ad964893681a292ffbfc6a1cf4fccc21a12638d990"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-5",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-5-320.png",
+      "font": "nimbus",
+      "sha256": "1077d4c9a16d89f19f1367168aa4bdd4146135ea3b116a4fa72fb370c786c3bc"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-6",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-6-320.png",
+      "font": "nimbus",
+      "sha256": "ecdf58e20f466262355ffa777412604b221a58651bc43326880a246f7938a8a4"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-7",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-7-320.png",
+      "font": "nimbus",
+      "sha256": "5544aa249b0ac1e03d0e42d09512736dfe3fe61ee6e33bd0b6ab266a78578e0f"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-8",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-8-320.png",
+      "font": "nimbus",
+      "sha256": "8fa1b9b5dafa9fcf0f6f011eef2c0eddaf8d0179bd7d5c2e2a67ba5b69254471"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-9",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-9-320.png",
+      "font": "nimbus",
+      "sha256": "e228917d394d62b04e545bfffd52d16ae332b95a73ace9c1474cf6b0c6c44ddf"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-10",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-10-320.png",
+      "font": "nimbus",
+      "sha256": "bdfe404c864a88a021d83085103808c7aa6c8d28fdf08acede94485f5cef4c53"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-11",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-11-320.png",
+      "font": "nimbus",
+      "sha256": "de67328a74c79f54bc74705b2bc7722fff1262c35781cc5930b7d26a52e17f41"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-12",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-12-320.png",
+      "font": "nimbus",
+      "sha256": "e6060cd43ccb3b09a28124b5a3474f44f5dc2379708195ca3e5427b7b5fb4712"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-13",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-13-320.png",
+      "font": "nimbus",
+      "sha256": "803e491067a8a913f07ae506af0bce4c983e64d20296f32e7f530f26f3bd5ea7"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-14",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-14-320.png",
+      "font": "nimbus",
+      "sha256": "3f63a9f3f78aae9846fae2553845a9ff4a63fb73abf7d58f4b21fe100d3284a8"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-15",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-15-320.png",
+      "font": "nimbus",
+      "sha256": "b03ef02a374c7e2a1b358d63c02891c5b1b78cbce8a56a14926ae7c89f1628bf"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-16",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-16-320.png",
+      "font": "nimbus",
+      "sha256": "74f78819dd966c3f42ee68c963901e887327304bd3ba26f2ad3a1f0ed002822f"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-17",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-17-320.png",
+      "font": "nimbus",
+      "sha256": "260bb6c1855b255898064fbc871c879a0c08463d2533ed45e9e109646028b258"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-18",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-18-320.png",
+      "font": "nimbus",
+      "sha256": "ae38f525ea2882a1b67c3b044484dc414d4ce7061fa1c90c2c1d4e360ad30a8b"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-19",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-19-320.png",
+      "font": "nimbus",
+      "sha256": "11ed2516c9482c5aeff28f4e5231e343ab2b40186dfa8e3d976070f4b376c500"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-1-320.png",
+      "font": "nimbus",
+      "sha256": "04ed06edf9b1e81c4ce73cb8c6b16054e381462bf675092d68441d848eb87c0e"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-2-320.png",
+      "font": "nimbus",
+      "sha256": "a0474a234157d79540e2103dc6c8bfe74015ca0b8621976c9ea11093f9d420b0"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-3-320.png",
+      "font": "nimbus",
+      "sha256": "3c6197f12e20038765ae7e54f7158be5d9aa1f8d76b8e08909a92244f0a0cd02"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-4-320.png",
+      "font": "nimbus",
+      "sha256": "da2e02315914e6df8ef31751b5e07ee0fd85382720715f89122d274ce78542ff"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-5",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-5-320.png",
+      "font": "nimbus",
+      "sha256": "044e8d6e15bc6b582fe46b9bd8f23a19340e4328d27888b619f9efadc57c5e9e"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-6",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-6-320.png",
+      "font": "nimbus",
+      "sha256": "8a715aec27a60000780a884392ec147a8750af5fa1d41d45d0a368c14b6e2bbe"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-7",
+      "width": 320,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-7-320.png",
+      "font": "nimbus",
+      "sha256": "cea274fe2d4e8c91c620bdc8272d3753f8b71665fc7fbb800a7cc235d59bf58e"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-5-13-part-1",
+      "chapter": "V",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-selfcheck-chapter-5-13-part-1-neutral-320.png",
+      "font": "nimbus",
+      "sha256": "0392567210d0fcda761d027ae9c483db0f22ffa83a731d027b3b55b16c1d70c9"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-5-13-part-1",
+      "chapter": "V",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-selfcheck-chapter-5-13-part-1-step-1-320.png",
+      "font": "nimbus",
+      "sha256": "da9f557b5dd42b106e25a18d18aad776b63dc0fdfaf4122b749a2e35e2b41e14"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-5-13-part-1",
+      "chapter": "V",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-selfcheck-chapter-5-13-part-1-step-2-320.png",
+      "font": "nimbus",
+      "sha256": "a0e6375f1ee30368d038b2bdc48a186ee10da6b797dec43c93b0edb6972659ee"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-5-13-part-1",
+      "chapter": "V",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-selfcheck-chapter-5-13-part-1-step-3-320.png",
+      "font": "nimbus",
+      "sha256": "24d4f1f26a61c8cc3cee897a803374c0988a290974533468b43d65f2ba1a5788"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-5-13-part-1",
+      "chapter": "V",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-selfcheck-chapter-5-13-part-1-step-4-320.png",
+      "font": "nimbus",
+      "sha256": "08d54d511c3522050dfc29ae38832bb5960b077f5e012c32c6d23a04955f6b5c"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "chapter": "V",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-384-part-2-neutral-1280.png",
+      "font": "nimbus",
+      "sha256": "c0212f5f0bfcd57eeee55db145a653241ea22052fe48d14d6958a3edbab83bd8"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "chapter": "V",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-384-part-2-step-1-1280.png",
+      "font": "nimbus",
+      "sha256": "c53b7c0aa871bf69864dc53bdb2f06db5c8f918b6eec0dd5f32a1a79b00c80e2"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "chapter": "V",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-384-part-2-step-2-1280.png",
+      "font": "nimbus",
+      "sha256": "153650c660d02e21a12ba5102e7d8756320f7fbd6641cb456f72e7101dc064c7"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "chapter": "V",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-384-part-2-step-3-1280.png",
+      "font": "nimbus",
+      "sha256": "153650c660d02e21a12ba5102e7d8756320f7fbd6641cb456f72e7101dc064c7"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-neutral-1280.png",
+      "font": "nimbus",
+      "sha256": "65036be15d083717f960c78301c14ee85d8466b930dd3de45db96fcff188bda0"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-1-1280.png",
+      "font": "nimbus",
+      "sha256": "08deace3eb32ccf4d4c8c227d83b287302fc83f5e9de1c51da485ddbfb5fcdfe"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-2-1280.png",
+      "font": "nimbus",
+      "sha256": "bf4013f9b911caa7bd6d6e0103364ca64673894d93ed1ecbc37d1396c050e2a7"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-3-1280.png",
+      "font": "nimbus",
+      "sha256": "736f74934b57c0a310a88a505b42c57bf975d334593a3f040de46df85a6111cc"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-4-1280.png",
+      "font": "nimbus",
+      "sha256": "0f0617165eaeb2f516b05f2004c0548821427c19a8b4f58fe394b3a6052a6fd3"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-5-1280.png",
+      "font": "nimbus",
+      "sha256": "3182abb233306a4c2e0265991ee89496c3cb1e73a3446046fac7b4106ee652dc"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-6",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-6-1280.png",
+      "font": "nimbus",
+      "sha256": "ac7ae83d3fec7a9ddd3d2b3b40245bb9831453b6b5cc2be06acab5dd53058537"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-7",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-7-1280.png",
+      "font": "nimbus",
+      "sha256": "9830a4aed785d54d2462c12d0f7d89a941d2878117248205872d47ac45504fb8"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-8",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-8-1280.png",
+      "font": "nimbus",
+      "sha256": "22fc42d08f77be70b3bf091e13cef1b9491a17ff025fadd9303cc0c5f8976456"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-9",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-9-1280.png",
+      "font": "nimbus",
+      "sha256": "e949ffb51510313b9e24a2d9c59a8da8c00eada187503c2d7ab927fc6a234011"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-10",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-10-1280.png",
+      "font": "nimbus",
+      "sha256": "cf1267b4b03313e1e2bba1d7de9f9a02432a7aeca0b4274d91aa0902f3f098d0"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-11",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-11-1280.png",
+      "font": "nimbus",
+      "sha256": "3ebcfb217528790352458a0141556852c4f0968650b2e8a14a8cbab4bcec15cc"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-12",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-12-1280.png",
+      "font": "nimbus",
+      "sha256": "3a27866829632f561d51fa51ca758e1f86a6767012c8d79d8df56a5de1f58b50"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-13",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-13-1280.png",
+      "font": "nimbus",
+      "sha256": "131c75145c671a398f04efab30b688510cb55f7f770028455dc4eecfbeea1a49"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-14",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-14-1280.png",
+      "font": "nimbus",
+      "sha256": "f41ee535e2b92063865f90d2fa8dc14d4e280d6bc7aee8eeb56901881c522c6b"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-15",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-15-1280.png",
+      "font": "nimbus",
+      "sha256": "551c529d63af1f54c6c23b8a129a31df533b55ac005b90f60ac4bcae2a78bb5b"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-16",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-16-1280.png",
+      "font": "nimbus",
+      "sha256": "551c529d63af1f54c6c23b8a129a31df533b55ac005b90f60ac4bcae2a78bb5b"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-17",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-17-1280.png",
+      "font": "nimbus",
+      "sha256": "7c375be358a36fe85ad4c0d090c8c2294391d5a309dd3f561cbce3c19406e65f"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-18",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-18-1280.png",
+      "font": "nimbus",
+      "sha256": "d5491662ace11abd01480632ee1f3410cf62ed7488dcbf4029f993e088e2abb6"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "step-19",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-step-19-1280.png",
+      "font": "nimbus",
+      "sha256": "45510fcc77f226dc9cb798bf8d93c94f3c06a8cf0b463ec3e95ba8f966a9da72"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-1-1280.png",
+      "font": "nimbus",
+      "sha256": "08e500517e99bbd036b7e43f2ab35f80f19e639249ddeca3763d548baaa79450"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-2-1280.png",
+      "font": "nimbus",
+      "sha256": "65870defdf383058c33620231378ae0eeb0e11d403bc3c982a38e22ffb6e684b"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-3-1280.png",
+      "font": "nimbus",
+      "sha256": "3179b22b424915fd30019fb91b841cc15b52f5dca88b23f7f996ff576b73d515"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-4-1280.png",
+      "font": "nimbus",
+      "sha256": "94e4ef0769abcb65208dbb7e9c983d2395b559043e5defc6128fdecb6dc3f049"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-5-1280.png",
+      "font": "nimbus",
+      "sha256": "c8d2ff9fe1efc3acb821afdac39647d792806efa26a141bdcd87532d12df405b"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-6",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-6-1280.png",
+      "font": "nimbus",
+      "sha256": "c540e523badd2cb4148aa595e7015682c1df8defae350c6ef5f2099326247348"
+    },
+    {
+      "id": "atanasyan-7-9-theory-42-part-1",
+      "chapter": "V",
+      "view": "case-7",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-theory-42-part-1-case-7-1280.png",
+      "font": "nimbus",
+      "sha256": "15a355e370ac30178a3a518c388e62ace38b4c9066e81e5c9dd55029e9e04eea"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-5-13-part-1",
+      "chapter": "V",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-selfcheck-chapter-5-13-part-1-neutral-1280.png",
+      "font": "nimbus",
+      "sha256": "078584096a9d17b392c316239b4284d600cf6b8c3c5bdba7ab477a0df0cde7ef"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-5-13-part-1",
+      "chapter": "V",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-selfcheck-chapter-5-13-part-1-step-1-1280.png",
+      "font": "nimbus",
+      "sha256": "9a9358589e45f49aca43982317985ab7945d8bdbbca07fb9ba7104205bc521e1"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-5-13-part-1",
+      "chapter": "V",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-selfcheck-chapter-5-13-part-1-step-2-1280.png",
+      "font": "nimbus",
+      "sha256": "a1c1a791f613c0ecf6038b7f859d5e603ddead3fd39e6c505c4f485d529b1515"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-5-13-part-1",
+      "chapter": "V",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-selfcheck-chapter-5-13-part-1-step-3-1280.png",
+      "font": "nimbus",
+      "sha256": "d64f5dfe8bc9b656b9f98a22c46b97c1cf075e529246d2136a794e1b2be010fe"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-5-13-part-1",
+      "chapter": "V",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-selfcheck-chapter-5-13-part-1-step-4-1280.png",
+      "font": "nimbus",
+      "sha256": "241276cef7cf14592a7ff33187c9eb6acba1b6490c2065ce0c452850f19e8b8e"
+    }
+  ],
+  "releaseClaim": false
+}

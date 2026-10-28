@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "at": "2026-10-28T08:43:32.127571+00:00",
+  "scope": {
+    "cards": 136,
+    "viewWidthPairs": 1756,
+    "widths": [
+      320,
+      1280
+    ]
+  },
+  "independentActualPageReviews": [
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_A_FULL_CONTEXT_VISUAL_REVIEW.json",
+      "sha256": "954369b74c66b1dfdc5b6291962a69a6a69a7523fb4d0d45d8f8d1bc753d5d6f",
+      "viewWidthPairs": 298
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_B_FULL_CONTEXT_VISUAL_REVIEW.json",
+      "sha256": "feeb89cc84f5e31319d7c1d9c0fd8cb6dbe3c59f4b7995597ce46eb22898e496",
+      "viewWidthPairs": 404
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_C_FULL_CONTEXT_VISUAL_REVIEW.json",
+      "sha256": "8eb8b8f89e21ec9697b3cdf438127c2602ae98dd92198c5b051829cfdbd6abab",
+      "viewWidthPairs": 388
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_THEORY_FULL_CONTEXT_REVIEW.json",
+      "sha256": "2400feb1c421c9cbc583a83e11cf6667c177eed7b2806e221cbcc0447f0828ad",
+      "viewWidthPairs": 666
+    }
+  ],
+  "completeRosterVerified": true,
+  "allCurrentImageHashesVerified": true,
+  "openFindings": 0,
+  "fullBrowserGate": {
+    "completed": true,
+    "cards": 705,
+    "viewChecks": 7568,
+    "stepFlows": 1410,
+    "interactions": 16,
+    "errors": 0,
+    "evidenceSha256": "7f7912ad4fa88aabbd5efd8c0e1abd2271ee45979d3dcc6ed3031a833688fd66",
+    "bundleSha256": "58cec7c15c71b92c87c896427d9a550023a8c0a44ac139705394907ff4f9dee7",
+    "gateScriptSha256": "07b49df556ebb6ee97ddcabbd3a4e3d12d570c7d4816446555356e214fd12577"
+  },
+  "captionCorrection": {
+    "lessonId": "atanasyan-7-9-main-408-part-1",
+    "viewWidthPairs": 16,
+    "freshReviewedImages": 4,
+    "evidenceSha256": "f1a13b654f7130a5712907e46e74a9ccacb55da83b0d970dd0c21d1c1a905b26",
+    "deltaReview": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_CAPTION_DELTA.json"
+  },
+  "environment": "Local cloud workspace; Playwright1.55.0; Chromium headless_shell revision1187. Final exact-head GitHub CI uses the pinned repository workflow separately.",
+  "publicationClaim": false,
+  "releaseChecksPending": "Repeat exact-head cloud source/browser and cabinet/board checks after this narrow label correction; then verify composition, merge and production in PR #354.",
+  "publicModeInteractions": {
+    "completed": true,
+    "scenarios": 14,
+    "evidenceSha256": "69e1b1a25fd190ab44c44b507e4f728770bed89e72df0895dbf2531adee4d38d",
+    "bundleSha256": "bcd2aba64872aabcfd763448d9e3223ae90bb40a780091dd5922059c14583d81",
+    "description": "Final approved 705-card bundle with the three cloud-label corrections, checked using Liberation Sans. Reviewed public catalogue, direct chapter entry, retained notes, related theory, reload and honest manual assessment."
+  },
+  "strictCourseAndPreservation": "PASS after adding the exact chapter-V manifest; all705 reviewed and569 prior records unchanged.",
+  "incrementalCloudLabelCorrection": {
+    "review": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_CLOUD_LABEL_DELTA_REVIEW.json",
+    "sha256": "9acb887a437d7f9d615296d5888986576974094f1aaec43b220aab1f83b8e724",
+    "supersededCardIds": [
+      "atanasyan-7-9-main-384-part-2",
+      "atanasyan-7-9-theory-42-part-1",
+      "atanasyan-7-9-selfcheck-chapter-5-13-part-1"
+    ],
+    "replacementPrimaryPairs": 72,
+    "additionalFontPairs": 72,
+    "description": "Original actual-page reviews remain the baseline for 1684 unchanged pairs. Fresh independent reviews replace all 72 pairs of the three changed cards, in both fonts. The earlier full-browser result remains historical and exact-bound to its original bundle."
+  }
+}

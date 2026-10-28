@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "status": "passed-for-listed-hashes",
+  "reviewer": "visual_theory; independent non-author of fragments A, B and C",
+  "date": "2026-10-28",
+  "baseHead": "814e13caba3a3fc50277bd73e35d2ec013f2f177",
+  "scope": "Mathematical and pedagogical review of the resumed visual/model delta in chapter-V exercises331–412; no new source-edition review or pixel-review verdict claimed.",
+  "files": {
+    "tools/geometry-textbook/models_ch5_a.py": "be160b9702f258ffcd1b0aac74048c88ffc5f303949c65d5dc39c374cc2c91fd",
+    "geometry-course/textbook/models/chapter-05-a.json": "869e3b74171061e0078d08d964ccf9d4f5e845010f5486053d768604f6f473e7",
+    "geometry-course/textbook/preparation/chapter-05-a.json": "8798875fe0ec80bbc5c3013a6bf03882d6c974c3513dfffb969f0a89b60b8a1c",
+    "tools/geometry-textbook/models_ch5_b.py": "d7f9832612469045e086eb02004337ae628e4e0cdd4b284bfe8c76f14c94a48b",
+    "geometry-course/textbook/models/chapter-05-b.json": "a9870ce8916e19d5d63b183c444906a0d2eafabb3a7f5d1b6947251f0759dc36",
+    "geometry-course/textbook/preparation/chapter-05-b.json": "fc4b0476a16bf2f433f17c514bd45165945fc0c3bbb4e783e0b0d9b4d1d892bc",
+    "tools/geometry-textbook/models_ch5_c.py": "c3b2b12eb9efb7517155961aad6293fa50128c54e78a7d18923deb8d6d8f283c",
+    "geometry-course/textbook/models/chapter-05-c.json": "431d8b0a402f13faf9f40a24efae092999623fbe1823a1f8bee262481a8a1090",
+    "geometry-course/textbook/preparation/chapter-05-c.json": "31f8b5b78af98e80fb5a32ac1f63276dab9d3f88f54d22b4e7ebc1df2a1368c8"
+  },
+  "coverage": [
+    {
+      "group": "a",
+      "cards": 30,
+      "views": 149,
+      "claims": 140,
+      "changed": [
+        "334-single",
+        "348-single",
+        "353-single"
+      ]
+    },
+    {
+      "group": "b",
+      "cards": 36,
+      "views": 202,
+      "claims": 191,
+      "changed": [
+        "364-single",
+        "365-single",
+        "373-single",
+        "384-а",
+        "384-б"
+      ]
+    },
+    {
+      "group": "c",
+      "cards": 33,
+      "views": 194,
+      "claims": 145,
+      "changed": [
+        "395-single",
+        "400-single",
+        "401-single",
+        "408-single",
+        "410-а",
+        "410-б",
+        "411-а",
+        "411-б",
+        "412-single"
+      ]
+    }
+  ],
+  "unchanged": {
+    "preparationFilesByteIdentical": true,
+    "conditionsAnswersAndSolutionTextUnchanged": true,
+    "all476CoordinateClaimsUnchanged": true,
+    "didacticStepsUnchanged": true,
+    "caseUnlockStepsUnchanged": true
+  },
+  "review": [
+    {
+      "group": "A",
+      "findings": "No unresolved finding.",
+      "details": [
+        "334: extending the vertical segment endpoints preserves the same midpoint/perpendicular-bisector line. Parallel-case N has equal distances to both endpoints and both angle-side lines; coincident-case M still lies on both the perpendicular bisector and an angle bisector. Hiding labels of U,V supporting the unnamed rays does not remove the rays or any mathematical condition.",
+        "348: the new60° angle and two distinct centres on its bisector still yield two circles tangent to both sides. Equal tangent differences give AB=CD in both centre orders. Circle intersection/disjointness is not part of the task hypothesis and not used by the proof.",
+        "353: the90° rotation is rigid; midpoint M, OA=2OB and both tangent right angles are preserved. Offsets carry no mathematical information."
+      ]
+    },
+    {
+      "group": "B",
+      "findings": "No unresolved finding.",
+      "details": [
+        "364/365: each independent triangle configuration is uniformly fitted with its complete circle, without cross-case comparisons of drawn size. Maximum angles recompute to99.27092685°,90°,67.38013505°, preserving obtuse/right/acute cases. All circumcentre/incircle claims remain valid.",
+        "373: the acute and obtuse variants remain of those types; the equilateral variant still has O=E. Replacing a crowded O=E label with O plus an explicit coincidence note preserves the statement.",
+        "384: all seven visible grid-relative points have one common positive uniform scale and translation relative to exact supplied coordinates. The change does not alter answers M/C or perpendicular reflection geometry."
+      ]
+    },
+    {
+      "group": "C",
+      "findings": "No unresolved finding at final listed hashes.",
+      "details": [
+        "395: X moves within the same permitted minor arc; the symmetric initial configuration remains accompanied by a distinct asymmetric X1 case. Neither the proof nor checks assumes symmetry of the new initial example.",
+        "400: independently fitted acute/obtuse isosceles triangles preserve both centre definitions; the incircle centre has equal distances to all three sides and the circumcentre equal distances to all three vertices. The acute/obtuse distinction and exterior circumcentre case remain correct.",
+        "408: X moves from distance1 to2 from O inside a circle of radius3. Both non-diameter chords still meet at X and are exact reflected segments in line OX. Their endpoints remain on the circle and chord lengths equal. The X=O counterexample geometry remains unchanged; its new explicit note preserves the meaning previously crowded into the point label.",
+        "Uniform enlargement/taller bounds and label offsets in395,401,408,410,411,412 preserve all incidences, angles and lengths. Segments, rays and full lines retain their semantic type; no hidden later construction is promoted to an earlier view.",
+        "Final400 obtuse height2.8 with half-base4 yields apex angle≈110.016°, circumcentre outside and incircle centre inside; both centre definitions independently rechecked. Final408 counterexample caption names axis A₁B₁ to match the displayed endpoint labels, correcting the earlier AB caption without altering its mathematics."
+      ]
+    }
+  ],
+  "validation": {
+    "result": "All99 models,545 authored views and476 unchanged coordinate claims pass the existing full model validator. Additional independent formulas check the changed configurations and grid geometry.",
+    "scriptSha256": "d0679a286011c57a760f4c1a662ada670fe6ac4c24826c34d70c011a3dde4087",
+    "resultSha256": "0b728d09b1df99058569fc827f0ae53d021467eeadb5cda042798de9617cbc18"
+  },
+  "limitations": [
+    "This is independent review of A–C model deltas, not the reviewer’s own theory edits.",
+    "Original source review remains bound to unchanged preparation files and recorded historical review; source PDF was not re-read here.",
+    "Actual PNG coverage and full integrated/browser/board checks are separate reviewer/coordinator gates.",
+    "No pupil-pilot effectiveness or external-provider review is claimed."
+  ],
+  "revalidation": "After final C400 h2.8 and C408 caption edit, reran complete read-only preservation/model/independent configuration checks; all passed. View rosters and every availableFromStep were also compared exactly with814e13c."
+}

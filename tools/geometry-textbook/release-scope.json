@@ -5,8 +5,9 @@
     {"chapter": 1, "label": "I", "exerciseNumbers": [1, 91], "mainParts": 134, "theoryPoints": [1, 13], "selfcheckQuestions": 26, "cards": 173},
     {"chapter": 2, "label": "II", "exerciseNumbers": [92, 190], "mainParts": 132, "theoryPoints": [14, 23], "selfcheckQuestions": 21, "cards": 163},
     {"chapter": 3, "label": "III", "exerciseNumbers": [191, 227], "mainParts": 43, "theoryPoints": [24, 30], "selfcheckQuestions": 17, "cards": 67},
-    {"chapter": 4, "label": "IV", "exerciseNumbers": [228, 330], "mainParts": 135, "theoryPoints": [31, 38], "selfcheckQuestions": 23, "cards": 166}
+    {"chapter": 4, "label": "IV", "exerciseNumbers": [228, 330], "mainParts": 135, "theoryPoints": [31, 38], "selfcheckQuestions": 23, "cards": 166},
+    {"chapter": 5, "label": "V", "exerciseNumbers": [331, 412], "mainParts": 99, "theoryPoints": [39, 45], "selfcheckQuestions": 30, "cards": 136}
   ],
-  "totalCards": 569,
+  "totalCards": 705,
   "fullTextbookComplete": false
 }

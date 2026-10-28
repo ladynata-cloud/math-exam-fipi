@@ -607,7 +607,7 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
   the preparation evidence; it is not the current publication status.
 - ChapterIV is the next scoped continuation; a real-pupil pilot is not claimed.
 
-## Reviewed candidate: Atanasyan 7–9 chapter IV
+## Published: Atanasyan 7–9 chapter IV
 
 - [Scope](tasks/ATANASYAN_7_9_CHAPTER_IV.md), HIGH review; branch
   `content/atanasyan-7-9-chapter4`, base
@@ -631,6 +631,40 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
 - After successful exact-head CI, next three actions: obtain the owner's
   current-base release decision; perform the authorized merge/deployment;
   verify the published bundle and production regression gates.
+- Publication completed in PR #346 as `44eab4d11046d8613b50a73b00185755c814dba6`.
+  Pages40344875237 and post-merge cabinet/board40344877068 passed on that commit.
+  Public verification confirms 569 reviewed cards through number330; all16
+  checked URLs match the reviewed file sizes/hashes. The preparation wording
+  above is historical; the current published baseline includes chapterIV.
+
+## Reviewed: Atanasyan 7–9 chapter V, resumed 28 October
+
+- [Scope](tasks/ATANASYAN_7_9_CHAPTER_V.md), HIGH review; owner requested
+  continuation after the verified publication of chapterIV.
+- Base `44eab4d11046d8613b50a73b00185755c814dba6`; branch
+  `content/atanasyan-7-9-chapter5`.
+- Exact 2023 revised edition: printed91–115, all331–412, theory39–45 and
+  30 review questions; independent inventory confirms136 new cards and705
+  total. All materials are authored; independent source, mathematics, didactic
+  and authored-model reviews passed for all four fragments.
+- The owner resumed PR #354 on 28 October. The earlier 77 layout failures are
+  closed through authored-model fixes; source/solution text and the runtime
+  are unchanged. Independent actual-page review covers 1756 new view/width
+  pairs, with the four corrected 408 caption images checked afresh.
+- Full local browser gate: 705 cards, 7568 view checks, 1410 step flows and 16
+  interactions PASS. Preservation 9, coordinate 2581, retained-work 19,
+  complete DOM 2547 and actual cabinet/shared-board browser checks also PASS.
+- Chapter V has its own hash-bound review manifest. Release evidence, exact
+  head/current-main checks and deployment are tracked in
+  [PR354](https://github.com/ladynata-cloud/math-exam-fipi/pull/354).
+  The [pause checkpoint](tasks/ATANASYAN_7_9_CHAPTER_V_PAUSE.md) is historical.
+- The first final cloud run exposed five further mobile label placements under
+  Liberation Sans. Three H offsets were corrected after exact local reproduction;
+  all 72 affected actual-page view/width pairs pass in Liberation and Nimbus,
+  with independent review. Repeat exact-head cloud results are tracked in the PR.
+- Existing 569 cards and runtime remain preserved. The resulting course has
+  705 cards, all 1–412, 45 theory points and 117 review questions. Advanced 413–461
+  and the 8–9-grade chapters remain unfinished; this is not the whole textbook.
 
 ## Published: Atanasyan 7–9 chapter II, triangles
 
