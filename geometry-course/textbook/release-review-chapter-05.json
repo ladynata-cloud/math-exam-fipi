@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "status": "passed",
-  "authoredContentSha256": "45aa332673548772c19372db17583f43236c7432b955a369cbbbc4e605c18acb",
+  "authoredContentSha256": "b1690b854231ef758b34123a1545ded507800e73b8704833af08d2978cc7276f",
   "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
   "source": "passed",
   "mathematics": "passed",
@@ -9,7 +9,7 @@
   "pedagogy": "passed",
   "browser": "passed",
   "reviewer": "Independent non-author OpenAI reviewers for source, mathematics, semantic geometry changes and every actual-page image; primary coordinator verifies the complete hash-bound coverage",
-  "at": "2026-10-28T07:58:59.326079+00:00",
+  "at": "2026-10-28T08:43:32.127571+00:00",
   "reviewKind": "Hash-bound chapter-V content and runtime review; exact-head CI and deployment remain separate release gates.",
   "sourcePdfSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
   "scope": {
@@ -103,7 +103,19 @@
     },
     {
       "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_FINAL_REVIEW.json",
-      "sha256": "0b461d259804376a12c2f555c64e21d88d14c42b5728326257964dfe89ae90fb"
+      "sha256": "ecc075d79ca2a77e881cc7a4845cf2ee25258108eaaa869fd60743a08a756c93"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_CLOUD_B_REVIEW.json",
+      "sha256": "9233f4c406c683dc1b391f3452b32b79de48a0bbc5ac7cf3690ba727264b0f10"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_CLOUD_THEORY_REVIEW.json",
+      "sha256": "8e49ce6b5e5b8fa141bf523a39cdda430aa78f387fe8d01058d334fbf99ef4fa"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_CLOUD_LABEL_DELTA_REVIEW.json",
+      "sha256": "9acb887a437d7f9d615296d5888986576974094f1aaec43b220aab1f83b8e724"
     }
   ],
   "browserEvidence": {

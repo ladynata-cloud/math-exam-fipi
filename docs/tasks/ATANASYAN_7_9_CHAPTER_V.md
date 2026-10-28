@@ -136,3 +136,11 @@ source inventory and preservation review are assigned separately.
   grant/revoke, observer/controller reload, late join and 320px layout.
 - Final exact-head cloud checks and production evidence are tracked in PR #354;
   local technical review alone is not a deployment claim.
+- Cloud run 40654531212 completed all views but found five mobile H-label
+  placements in exercise 384б, theory 42 and review question 13. The exact five
+  failures were reproduced locally with the CI Liberation Sans font; the
+  earlier local environment used Nimbus Sans. Only those three authored label
+  offsets were corrected. All 72 affected view/width pairs pass on the complete
+  course page in both fonts, with fresh independent visual review. Source,
+  geometry, proofs, runtime and the unchanged gate are preserved. The cloud
+  failure remains recorded as a failure; a new exact-head run is required.

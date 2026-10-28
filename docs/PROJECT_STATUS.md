@@ -452,6 +452,10 @@ Updated: 2026-10-26 (Asia/Novosibirsk)
   head/current-main checks and deployment are tracked in
   [PR354](https://github.com/ladynata-cloud/math-exam-fipi/pull/354).
   The [pause checkpoint](tasks/ATANASYAN_7_9_CHAPTER_V_PAUSE.md) is historical.
+- The first final cloud run exposed five further mobile label placements under
+  Liberation Sans. Three H offsets were corrected after exact local reproduction;
+  all 72 affected actual-page view/width pairs pass in Liberation and Nimbus,
+  with independent review. Repeat exact-head cloud results are tracked in the PR.
 - Existing 569 cards and runtime remain preserved. The resulting course has
   705 cards, all 1–412, 45 theory points and 117 review questions. Advanced 413–461
   and the 8–9-grade chapters remain unfinished; this is not the whole textbook.

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "status": "passed",
-  "at": "2026-10-28T07:58:59.326079+00:00",
+  "at": "2026-10-28T08:43:32.127571+00:00",
   "scope": {
     "cards": 136,
     "viewWidthPairs": 1756,
@@ -55,12 +55,25 @@
   },
   "environment": "Local cloud workspace; Playwright1.55.0; Chromium headless_shell revision1187. Final exact-head GitHub CI uses the pinned repository workflow separately.",
   "publicationClaim": false,
-  "releaseChecksPending": "Exact-head cloud checks, current-main composition and production deployment verification are recorded in PR354.",
+  "releaseChecksPending": "Repeat exact-head cloud source/browser and cabinet/board checks after this narrow label correction; then verify composition, merge and production in PR #354.",
   "publicModeInteractions": {
     "completed": true,
     "scenarios": 14,
-    "evidenceSha256": "2dcaed25069d4d3c80d5d0d43a3046998f5644968e5f638e6c9babca54c574c4",
-    "description": "Reviewed public catalogue and direct chapter entry, notes, theory return, reload and honest manual assessment after approval of all705 cards. Full-course expansion scenarios are in the separate full-run evidence."
+    "evidenceSha256": "69e1b1a25fd190ab44c44b507e4f728770bed89e72df0895dbf2531adee4d38d",
+    "bundleSha256": "bcd2aba64872aabcfd763448d9e3223ae90bb40a780091dd5922059c14583d81",
+    "description": "Final approved 705-card bundle with the three cloud-label corrections, checked using Liberation Sans. Reviewed public catalogue, direct chapter entry, retained notes, related theory, reload and honest manual assessment."
   },
-  "strictCourseAndPreservation": "PASS after adding the exact chapter-V manifest; all705 reviewed and569 prior records unchanged."
+  "strictCourseAndPreservation": "PASS after adding the exact chapter-V manifest; all705 reviewed and569 prior records unchanged.",
+  "incrementalCloudLabelCorrection": {
+    "review": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_CLOUD_LABEL_DELTA_REVIEW.json",
+    "sha256": "9acb887a437d7f9d615296d5888986576974094f1aaec43b220aab1f83b8e724",
+    "supersededCardIds": [
+      "atanasyan-7-9-main-384-part-2",
+      "atanasyan-7-9-theory-42-part-1",
+      "atanasyan-7-9-selfcheck-chapter-5-13-part-1"
+    ],
+    "replacementPrimaryPairs": 72,
+    "additionalFontPairs": 72,
+    "description": "Original actual-page reviews remain the baseline for 1684 unchanged pairs. Fresh independent reviews replace all 72 pairs of the three changed cards, in both fonts. The earlier full-browser result remains historical and exact-bound to its original bundle."
+  }
 }
