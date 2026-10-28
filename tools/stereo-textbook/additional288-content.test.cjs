@@ -23,9 +23,9 @@ const corruptRegistry=structuredClone(registry);corruptRegistry.cards[0].sha256=
 const corruptIndex=structuredClone(sourceIndex);corruptIndex.entries[0].source.printedPages=[999];assert.throws(()=>baseline.previousIndex(corruptIndex),/exact source index/);
 const corruptCases=new Map(screenshots);corruptCases.set([...corruptCases.keys()][0],'changed-historical-case');assert.throws(()=>baseline.previousCases(corruptCases),/all 997 prior browser cases/);
 assert.equal(sha([...screenshots].filter(([key])=>ids.has(key.split('|')[0]))),'7db73270fc1e9ec1dfe6db8fc69f2f530f0d08d467dca8ae7ff4fa1b62a98395','exact additive screenshot inventory');
-const rawPrevious=fs.readdirSync(dir).filter(name=>name.endsWith('.json')&&!ids.has(name.slice(0,-5))&&!later.ids.has(name.slice(0,-5))&&!require('./additional299-baseline.cjs').ids.has(name.slice(0,-5))).sort().map(name=>[name,hash(fs.readFileSync(path.join(dir,name)))]);
+const rawPrevious=fs.readdirSync(dir).filter(name=>name.endsWith('.json')&&!ids.has(name.slice(0,-5))&&!later.ids.has(name.slice(0,-5))&&!require('./additional299-baseline.cjs').ids.has(name.slice(0,-5))&&!require('./additional310-baseline.cjs').ids.has(name.slice(0,-5))).sort().map(name=>[name,hash(fs.readFileSync(path.join(dir,name)))]);
 assert.equal(rawPrevious.length,479);assert.equal(sha(rawPrevious),published.rawLessonManifestSHA256,'all 479 prior authored files byte-identical');
-for(const[file,value]of Object.entries(published.immutableFiles))assert.equal(hash(fs.readFileSync(path.join(root,file))),value,'immutable runtime/schema/builder '+file);
+for(const[file,value]of Object.entries(published.immutableFiles))require('./companion-migration.cjs').assertHistoricalFile(file,value);
 assert.equal(previous.lessons.length,479);assert.equal(previous.catalog.entries.length,1368);
 assert.equal(registry.cards.length,485);assert.equal(registry.batches.length,24);
 exact(registry.batches.at(-1).cardIds,expected,'one exact independent review batch');

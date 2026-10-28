@@ -1,0 +1,224 @@
+{
+  "task": "ATANASYAN_COMPANION_310_319",
+  "reviewer": "Codex review_companion, independent of labels and integration authors",
+  "reviewedAt": "2026-10-28T15:27:43.978602+00:00",
+  "verdict": "PASS_INDEPENDENT_CODE_AND_SOURCE_REFERENCE_REVIEW",
+  "base": "fa8d1b7ced31a5941ad52d8a21a48b63daaa84a8",
+  "binding": "Exact reviewed file hashes below; not an external-provider verdict or a publication authorization.",
+  "files": {
+    "stereo-course/textbook/assets/engine.js": "9da6fb10924d50793521740ea779d81ef78fe3dfee5dbd71ab138b7d345dba74",
+    "stereo-course/textbook/assets/style.css": "56b3ec43f680dde578320a9ea1c5969a9a15d2d0344bfa1eda903f5bd3e09f51",
+    "stereo-course/textbook/index.html": "af453fa854b9995f3a41bbf1a476564116a8efff43cee2234716e2c5489b5e55",
+    "tools/stereo-textbook/companion-labels.test.cjs": "5725f3930e136bf5d436e5cf6f48b608444fd7539e0af0e3f7fe63d07cf8f9bd",
+    "tools/stereo-textbook/companion-migration.cjs": "1e3231e616c5caebcc1dd6c636db8e77f65bef99e812f7cad4f166c9be65910b",
+    "tools/stereo-textbook/companion-migration.json": "404c2ecd31926a815b6fed23bae7c0885e3ca6e66ba817822cec6c41dc248fba",
+    "tools/stereo-textbook/companion-migration.test.cjs": "7e5d985c12ca15f47671b4c5a5d847cfaaa2d432ca18d7ac9b94079a9eadab06",
+    "tools/stereo-textbook/additional288-content.test.cjs": "e04f8a33931675570757b27b6a77ed5e74657252002491761ae5f7abcd809727",
+    "tools/stereo-textbook/additional294-content.test.cjs": "e958a47088671255a61e483483f5cbfd3b30d6bc5f70c14cc0694270648429c4",
+    "tools/stereo-textbook/additional299-content.test.cjs": "c054b3b5442b9020598de8f1b0c1849f3d400a7ccc51b7fd79a9295f46b35a9b",
+    "tools/stereo-textbook/additional310-content.test.cjs": "8c8cc47c4bf2ecc2598843ab0ee959e0ceafaeb1215ca23fc85dc7250f248ff8",
+    "tools/stereo-textbook/polyhedra-practical-content.test.cjs": "9f0c997fd5ea2c5259bce7f97f85f0935daedf63a297e97c4141b21499f619ee",
+    "tools/stereo-textbook/fixtures/companion-before/engine.js": "3b2f3c3fae68a9c8e6f532d32a19df1fb1c5749b60253c75d9241ff639066ad4",
+    "tools/stereo-textbook/fixtures/companion-before/style.css": "268af771d4e1fe44d69fddb966f5a4bf2e5d6febc2102425675b0ba8aca92740",
+    "tools/stereo-textbook/fixtures/companion-before/index.html": "daee3fb225e5b7a0d5129af24d2cdf5961eb5b74d195a863e22317313d1e1825"
+  },
+  "source": {
+    "edition": "Atanasyan et al., Geometry 10–11, 12th edition, 2024",
+    "pdfSHA256": "bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770",
+    "contentsPrintedPagesRead": [
+      282,
+      283,
+      284,
+      285,
+      286,
+      287
+    ],
+    "contentsPrintedPagesActuallyViewed": [
+      282,
+      283,
+      284,
+      285,
+      286
+    ],
+    "boundaryPrintedPagesActuallyViewed": [
+      15,
+      50,
+      60,
+      214,
+      219
+    ],
+    "paragraphsVerified": 27,
+    "theoryPointsMapped": 96,
+    "exerciseBoundaryMethod": "Independently located every catalogued main exercise start within the supplied PDF body and compared its page and text position with each paragraph heading and the following paragraph/chapter-question heading. All 27 candidate number intervals matched with zero omitted or extra numbers. Shared-page boundaries were also visually inspected.",
+    "paragraphTaskRanges": {
+      "I": [
+        [
+          16,
+          33
+        ],
+        [
+          34,
+          47
+        ],
+        [
+          48,
+          65
+        ],
+        [
+          66,
+          87
+        ]
+      ],
+      "II": [
+        [
+          116,
+          137
+        ],
+        [
+          138,
+          165
+        ],
+        [
+          166,
+          196
+        ]
+      ],
+      "III": [
+        [
+          218,
+          238
+        ],
+        [
+          239,
+          270
+        ],
+        [
+          271,
+          287
+        ]
+      ],
+      "IV": [
+        [
+          320,
+          345
+        ],
+        [
+          346,
+          371
+        ],
+        [
+          372,
+          395
+        ]
+      ],
+      "V": [
+        [
+          440,
+          451
+        ],
+        [
+          452,
+          465
+        ],
+        [
+          466,
+          502
+        ],
+        [
+          503,
+          517
+        ]
+      ],
+      "VI": [
+        [
+          557,
+          563
+        ],
+        [
+          564,
+          591
+        ],
+        [
+          592,
+          612
+        ]
+      ],
+      "VII": [
+        [
+          637,
+          681
+        ],
+        [
+          682,
+          718
+        ],
+        [
+          719,
+          730
+        ]
+      ],
+      "VIII": [
+        [
+          816,
+          835
+        ],
+        [
+          836,
+          850
+        ],
+        [
+          851,
+          862
+        ],
+        [
+          863,
+          870
+        ]
+      ]
+    }
+  },
+  "findings": [
+    {
+      "status": "RESOLVED",
+      "severity": "blocking",
+      "finding": "Page-only exercise mapping assigned or omitted tasks when they shared a page with a later heading.",
+      "resolution": "Main exercises now use independently verified exact number intervals. Regression coverage includes 32/33,164/165,192–196,848–850 and857–862. Theory still uses point identity."
+    },
+    {
+      "status": "RESOLVED",
+      "severity": "review binding",
+      "finding": "An intermediate engine change made the migration after hash stale.",
+      "resolution": "Migration rejected the mismatch as intended. Final engine9da6fb10924d50793521740ea779d81ef78fe3dfee5dbd71ab138b7d345dba74 is rebound and the negative suite passes."
+    }
+  ],
+  "checks": {
+    "allSourceReferences": {
+      "catalogue": 1375,
+      "justifications": 1022,
+      "total": 2397,
+      "undefinedNullCaptions": 0
+    },
+    "companionLabels": "PASS: 518 available cards,857 pending groups,27 paragraphs,1022 justification captions,chapter filtering,pending-state boundaries,contextual theory and retained draft.",
+    "runtime": "PASS: publication boundaries,source identities,exact models,help/camera/drafts,proof honesty,revision and stale recovery.",
+    "historicalMigration": "PASS: three original UI files remain archived and hashed against the unmodified historical baselines; exact reviewed replacements are pinned; six other frozen files retain direct byte checks;16 negative controls reject altered current/archive/unlisted bytes.",
+    "codeReview": "Presentation/source-reference/filtering delta only. Persistence keys,revision handling,answer/help state,scene lifecycle,storage conflict handling and authored lesson metadata are unchanged. Existing theory-button accessible names are retained."
+  },
+  "limitations": [
+    "Full desktop/mobile browser journeys and final screenshot union are separate evidence, not certified by this source/code report.",
+    "No external paid-provider review,physical-device test,real-pupil efficacy study or deployment is claimed.",
+    "This review concerns the caption and gate migration. Independent continuation mathematics is reported separately."
+  ],
+  "targetedActualVisualReview": {
+    "engineSHA256": "9da6fb10924d50793521740ea779d81ef78fe3dfee5dbd71ab138b7d345dba74",
+    "scope": "Actually viewed final filtered chapterIII/paragraph2 catalogue and theory33 at320/1280 CSS px; four screenshots, separate from full course gate.",
+    "verdict": "PASS_WITH_NONBLOCKING_NATIVE_SELECT_TRUNCATION",
+    "finding": "Native select fields shorten long selected values at narrow widths; complete chapter/paragraph captions are immediately repeated as visible wrapping result headings and in card source captions. No page horizontal overflow, source-caption clipping or unreadable wrapping observed.",
+    "files": {
+      "filtered-320.png": "b9def90c0cd3c1f1e93ea4925c97da601975ccb7f85fb0fe33fd74d016a3dbed",
+      "theory033-320.png": "23ed7e3f9e5e3e405fb05fd807491292bff4a546af3ab03fe71e70ed6d9cee7a",
+      "filtered-1280.png": "c28ff76c9bc2ad6f5e803dbcdae710d011df16fab3d21433135622807dab9bbf",
+      "theory033-1280.png": "dd96b1a38cbd9b8a0cc897b380eb2d40a4b04808ecd733a4a8e079a952f53cc4"
+    },
+    "documentHorizontalOverflow": false
+  }
+}

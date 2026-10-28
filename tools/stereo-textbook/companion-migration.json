@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "base": "fa8d1b7ced31a5941ad52d8a21a48b63daaa84a8",
+  "purpose": "Visible companion source labels only; all lesson data and persistence contracts are preserved. Historical gates retain their original hashes for archived originals; the current exact three-file migration is independently pinned.",
+  "files": {
+    "stereo-course/textbook/assets/engine.js": {
+      "beforeSHA256": "3b2f3c3fae68a9c8e6f532d32a19df1fb1c5749b60253c75d9241ff639066ad4",
+      "afterSHA256": "9da6fb10924d50793521740ea779d81ef78fe3dfee5dbd71ab138b7d345dba74",
+      "beforeFixture": "tools/stereo-textbook/fixtures/companion-before/engine.js"
+    },
+    "stereo-course/textbook/assets/style.css": {
+      "beforeSHA256": "268af771d4e1fe44d69fddb966f5a4bf2e5d6febc2102425675b0ba8aca92740",
+      "afterSHA256": "56b3ec43f680dde578320a9ea1c5969a9a15d2d0344bfa1eda903f5bd3e09f51",
+      "beforeFixture": "tools/stereo-textbook/fixtures/companion-before/style.css"
+    },
+    "stereo-course/textbook/index.html": {
+      "beforeSHA256": "daee3fb225e5b7a0d5129af24d2cdf5961eb5b74d195a863e22317313d1e1825",
+      "afterSHA256": "af453fa854b9995f3a41bbf1a476564116a8efff43cee2234716e2c5489b5e55",
+      "beforeFixture": "tools/stereo-textbook/fixtures/companion-before/index.html"
+    }
+  }
+}

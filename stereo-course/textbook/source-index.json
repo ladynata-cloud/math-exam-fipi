@@ -7051,7 +7051,10 @@
           90
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0311",
@@ -7072,6 +7075,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -7090,7 +7097,10 @@
           90
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0313",
@@ -7108,7 +7118,10 @@
           90
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0314",
@@ -7126,7 +7139,10 @@
           90
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0315",
@@ -7144,7 +7160,10 @@
           90
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0316",
@@ -7162,7 +7181,10 @@
           90
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0317",
@@ -7180,7 +7202,10 @@
           90
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0318",
@@ -7198,7 +7223,10 @@
           90
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0319",
@@ -7216,7 +7244,10 @@
           90
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0320",
