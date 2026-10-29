@@ -9,7 +9,7 @@
   "reviewer": "Independent reviewers: labels (A), source_audit (B), regression (C and integration); independent visual reviewers for A/B/C; coordinator records evidence",
   "at": "2026-10-28T16:29:28.995076+00:00",
   "authoredContentSha256": "3c73fd47306c858e31c92201d92760a8477a3197295b4d8812c887c43db4078a",
-  "implementationSha256": "f358f65b5955ad8ae2443bc8916aadda8f502a07e6274e90b9b21d727979813c",
+  "implementationSha256": "04e5a58da99bf68421e8f7aa9baccd8c3b2054766dab4141f912a46eba7690ec",
   "scope": {
     "key": "7-advanced",
     "grade": 7,
@@ -116,5 +116,9 @@
     "No external Claude review; owner exception applies to this course",
     "Chapters VI and later remain incomplete",
     "Prepared for review; not deployed; separate owner merge authorization required"
-  ]
+  ],
+  "runtimeExtensionReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_RUNTIME_EXTENSION_REVIEW.json",
+    "sha256": "76c2cb88441a834286dcf8fe6bb7ce0048a50542ec9d2bac315e8a263889487e"
+  }
 }

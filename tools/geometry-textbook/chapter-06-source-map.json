@@ -1,0 +1,1524 @@
+{
+  "bookId": "atanasyan-2023-7-9",
+  "chapter": 6,
+  "sourceSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "printedPageRange": [
+    121,
+    138
+  ],
+  "exercises": [
+    {
+      "number": 462,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        123
+      ],
+      "pdfPages": [
+        124
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 463,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        123
+      ],
+      "pdfPages": [
+        124
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 464,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        123
+      ],
+      "pdfPages": [
+        124
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 465,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "printedPages": [
+        123
+      ],
+      "pdfPages": [
+        124
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 466,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        123
+      ],
+      "pdfPages": [
+        124
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 467,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        123
+      ],
+      "pdfPages": [
+        124
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 468,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        123
+      ],
+      "pdfPages": [
+        124
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 469,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        123
+      ],
+      "pdfPages": [
+        124
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 470,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        123
+      ],
+      "pdfPages": [
+        124
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 471,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        126
+      ],
+      "pdfPages": [
+        127
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 472,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        126
+      ],
+      "pdfPages": [
+        127
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 473,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        127
+      ],
+      "pdfPages": [
+        128
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 474,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        127
+      ],
+      "pdfPages": [
+        128
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 475,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        127
+      ],
+      "pdfPages": [
+        128
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 476,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д"
+      ],
+      "printedPages": [
+        127
+      ],
+      "pdfPages": [
+        128
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 477,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        127
+      ],
+      "pdfPages": [
+        128
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 478,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        127
+      ],
+      "pdfPages": [
+        128
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 479,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        127
+      ],
+      "pdfPages": [
+        128
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 480,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        127
+      ],
+      "pdfPages": [
+        128
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 481,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        127
+      ],
+      "pdfPages": [
+        128
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 482,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        128
+      ],
+      "pdfPages": [
+        129
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 483,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        128
+      ],
+      "pdfPages": [
+        129
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 484,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        128
+      ],
+      "pdfPages": [
+        129
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 485,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        128
+      ],
+      "pdfPages": [
+        129
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 486,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        128
+      ],
+      "pdfPages": [
+        129
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 487,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        128
+      ],
+      "pdfPages": [
+        129
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 488,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        128,
+        129
+      ],
+      "pdfPages": [
+        129,
+        130
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 489,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        129
+      ],
+      "pdfPages": [
+        130
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 490,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        129
+      ],
+      "pdfPages": [
+        130
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 491,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        129
+      ],
+      "pdfPages": [
+        130
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 492,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        129
+      ],
+      "pdfPages": [
+        130
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 493,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        129
+      ],
+      "pdfPages": [
+        130
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 494,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        129
+      ],
+      "pdfPages": [
+        130
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 495,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        129,
+        130
+      ],
+      "pdfPages": [
+        130,
+        131
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 496,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        130,
+        131
+      ],
+      "pdfPages": [
+        131,
+        132
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 497,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        131
+      ],
+      "pdfPages": [
+        132
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 498,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        131
+      ],
+      "pdfPages": [
+        132
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 499,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        131
+      ],
+      "pdfPages": [
+        132
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 500,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        131
+      ],
+      "pdfPages": [
+        132
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 501,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        131
+      ],
+      "pdfPages": [
+        132
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 502,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        134
+      ],
+      "pdfPages": [
+        135
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 503,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        134
+      ],
+      "pdfPages": [
+        135
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 504,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        134
+      ],
+      "pdfPages": [
+        135
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 505,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        134
+      ],
+      "pdfPages": [
+        135
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 506,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        134
+      ],
+      "pdfPages": [
+        135
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 507,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 508,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 509,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 510,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 511,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 512,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 513,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 514,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 515,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 516,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 517,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 518,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 519,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 520,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 521,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 522,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 523,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 524,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 525,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 526,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 527,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 528,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 529,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 530,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 531,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 532,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 533,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        138
+      ],
+      "pdfPages": [
+        139
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 534,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        138
+      ],
+      "pdfPages": [
+        139
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 535,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        138
+      ],
+      "pdfPages": [
+        139
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 536,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        138
+      ],
+      "pdfPages": [
+        139
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 537,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        138
+      ],
+      "pdfPages": [
+        139
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 538,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        138
+      ],
+      "pdfPages": [
+        139
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 539,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        138
+      ],
+      "pdfPages": [
+        139
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    },
+    {
+      "number": 540,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        138
+      ],
+      "pdfPages": [
+        139
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "author-visually-checked",
+      "independentReview": "pending"
+    }
+  ],
+  "theory": [
+    {
+      "number": 46,
+      "printedPages": [
+        121,
+        122
+      ]
+    },
+    {
+      "number": 47,
+      "printedPages": [
+        122,
+        123
+      ]
+    },
+    {
+      "number": 48,
+      "printedPages": [
+        124,
+        125
+      ]
+    },
+    {
+      "number": 49,
+      "printedPages": [
+        125,
+        126
+      ]
+    },
+    {
+      "number": 50,
+      "printedPages": [
+        126
+      ]
+    },
+    {
+      "number": 51,
+      "printedPages": [
+        131,
+        132
+      ]
+    },
+    {
+      "number": 52,
+      "printedPages": [
+        132,
+        133
+      ]
+    },
+    {
+      "number": 53,
+      "printedPages": [
+        133,
+        134
+      ]
+    }
+  ],
+  "selfchecks": [
+    {
+      "number": 1,
+      "printedPages": [
+        135
+      ]
+    },
+    {
+      "number": 2,
+      "printedPages": [
+        135
+      ]
+    },
+    {
+      "number": 3,
+      "printedPages": [
+        136
+      ]
+    },
+    {
+      "number": 4,
+      "printedPages": [
+        136
+      ]
+    },
+    {
+      "number": 5,
+      "printedPages": [
+        136
+      ]
+    },
+    {
+      "number": 6,
+      "printedPages": [
+        136
+      ]
+    },
+    {
+      "number": 7,
+      "printedPages": [
+        136
+      ]
+    },
+    {
+      "number": 8,
+      "printedPages": [
+        136
+      ]
+    },
+    {
+      "number": 9,
+      "printedPages": [
+        136
+      ]
+    },
+    {
+      "number": 10,
+      "printedPages": [
+        136
+      ]
+    },
+    {
+      "number": 11,
+      "printedPages": [
+        136
+      ]
+    },
+    {
+      "number": 12,
+      "printedPages": [
+        136
+      ]
+    },
+    {
+      "number": 13,
+      "printedPages": [
+        136
+      ]
+    },
+    {
+      "number": 14,
+      "printedPages": [
+        136
+      ]
+    },
+    {
+      "number": 15,
+      "printedPages": [
+        136
+      ]
+    },
+    {
+      "number": 16,
+      "printedPages": [
+        136
+      ]
+    },
+    {
+      "number": 17,
+      "printedPages": [
+        136
+      ]
+    },
+    {
+      "number": 18,
+      "printedPages": [
+        136
+      ]
+    },
+    {
+      "number": 19,
+      "printedPages": [
+        136
+      ]
+    },
+    {
+      "number": 20,
+      "printedPages": [
+        136
+      ]
+    },
+    {
+      "number": 21,
+      "printedPages": [
+        136
+      ]
+    },
+    {
+      "number": 22,
+      "printedPages": [
+        136
+      ]
+    }
+  ],
+  "notes": [
+    "№481: рисунок задаёт неперекрещенную ветвь механизма; одних равенств длин без этого ограничения недостаточно.",
+    "№462: два исходных многоугольника в одной задаче, отдельные виды.",
+    "Вопрос22 включает а/б/в в одной карточке вопроса."
+  ],
+  "source": {
+    "sha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+    "printedPageRange": [
+      121,
+      138
+    ],
+    "pdfPageRange": [
+      122,
+      139
+    ]
+  },
+  "counts": {
+    "mainNumbers": 79,
+    "mainParts": 108,
+    "theoryPoints": 8,
+    "selfcheckQuestions": 22,
+    "cards": 138
+  }
+}

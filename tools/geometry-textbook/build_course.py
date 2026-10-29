@@ -68,7 +68,7 @@ def identifier(collection, number, index, chapter=1):
     return f'atanasyan-7-9-{namespace}-{number}-part-{index}'
 
 
-def preparations(course, inventory):
+def preparations(course, inventory, excluded_chapters=()):
     """Read one complete preparation or explicitly split authoring fragments."""
     files = {}
     for path in sorted((course / 'preparation').glob('chapter-*.json')):
@@ -78,6 +78,8 @@ def preparations(course, inventory):
     known = {item['chapter']: item for item in inventory['chapters']}
     chapters = {}
     for chapter, paths in sorted(files.items()):
+        if chapter in excluded_chapters:
+            continue
         if chapter not in known:
             raise ValueError(f'Unknown source chapter {chapter}')
         if len(paths) > 1 and any(path.name == f'chapter-{chapter:02d}.json' for path in paths):
@@ -111,9 +113,32 @@ def preparations(course, inventory):
     return chapters
 
 
-def compose(course=COURSE):
+def extension_matches(course, review_file):
+    # An amendment to old approval metadata must retain every historical byte
+    # except the independently reviewed implementation binding.
+    from chapter06_extension import restore_manifest
+    try:
+        restore_manifest('geometry-course/textbook/'+review_file,
+                         (course/review_file).read_bytes(), ROOT, course)
+        return True
+    except (AssertionError, OSError, KeyError, ValueError):
+        return False
+
+
+def compose(course=COURSE, include_candidates=()):
     inventory = read(course / 'source-inventory.json')
-    chapters = preparations(course, inventory)
+    registry_path = course / 'candidate-chapters.json'
+    registry = read(registry_path) if registry_path.exists() else {'schemaVersion': 1, 'chapters': []}
+    if registry.get('schemaVersion') != 1:
+        raise ValueError('Unknown candidate registry schema')
+    candidates = [item['chapter'] for item in registry['chapters']]
+    published = {item['chapter'] for item in read(ROOT / 'tools/geometry-textbook/release-scope.json')['chapters']}
+    if len(candidates) != len(set(candidates)) or set(candidates) & published:
+        raise ValueError('Candidate registry cannot hide or duplicate a published chapter')
+    if not set(include_candidates).issubset(candidates):
+        raise ValueError('An explicit candidate must be registered before inclusion')
+    excluded = set(candidates) - set(include_candidates)
+    chapters = preparations(course, inventory, excluded)
     advanced = advanced_preparation(course, inventory)
     models = {}
     model_paths = sorted((course / 'models').glob('chapter-*.json'))
@@ -122,6 +147,8 @@ def compose(course=COURSE):
         match = re.fullmatch(r'chapter-(\d{2})-[a-z]+\.json', path.name)
         if match:
             chapter = int(match[1])
+            if chapter in excluded:
+                continue
         elif re.fullmatch(r'grade-07-advanced-[a-z]\.json', path.name):
             chapter = '7-advanced'
         else:
@@ -267,6 +294,8 @@ def compose(course=COURSE):
                     and review.get('scope', {}).get('chapter') == CHAPTER_LABELS[chapter]
                     and all(review.get(k) == 'passed' for k in ('source', 'mathematics', 'models', 'pedagogy', 'browser'))
                     and bool(review.get('reviewer')) and bool(review.get('at')))
+        if approved and chapter <= 5 and any(p['chapter'] == 6 for p in inventory.get('paragraphs', [])):
+            approved = extension_matches(course, review_file)
         chapter_builds.append(dict(chapter=chapter, chapterLabel=CHAPTER_LABELS[chapter],
                                   authoredContentSha256=chapter_hash, publicationReviewMatches=approved,
                                   reviewFile=review_file, authoredCards=len(chapter_lessons),
@@ -291,6 +320,8 @@ def compose(course=COURSE):
                     and review.get('scope', {}).get('key') == '7-advanced'
                     and all(review.get(k) == 'passed' for k in ('source', 'mathematics', 'models', 'pedagogy', 'browser'))
                     and bool(review.get('reviewer')) and bool(review.get('at')))
+        if approved and any(p['chapter'] == 6 for p in inventory.get('paragraphs', [])):
+            approved = extension_matches(course, review_file)
         supplement_builds.append(dict(key='7-advanced', label=ADVANCED_LABEL,
                                      authoredContentSha256=advanced_hash,
                                      publicationReviewMatches=approved, reviewFile=review_file,
