@@ -889,7 +889,11 @@
     "tools/stereo-three-visibility.browser.cjs": "fec4f2476a78984400764e9844810c5e457edb95c7d9735eb574fed28425cd01",
     "tools/stereo-three-framing.test.cjs": "f163e6b4bf2f7561ea66a9c2b24cfb1f209ca113763787e6a1810f0695ec137e",
     "tools/stereo-three-dash-projection.test.cjs": "8665cb2e551612c7b3b51d8e3f89dd568b3f7cdd50b719a47d26d0eabba52554",
-    "tools/atanasyan-profile15.browser.cjs": "cc3c2b72f3a68f47816c38392a69364bff259e2cdb52b69cca1e9d11b5b8a85f"
+    "tools/atanasyan-profile15.browser.cjs": "cc3c2b72f3a68f47816c38392a69364bff259e2cdb52b69cca1e9d11b5b8a85f",
+    "stereo-course/assets/app.js": "76fd35a45dcc756451a07d07963d3ac3af911ff6d83aa27bfaaa16c14f135156",
+    "stereo-course/index.html": "20fbf7769c91590253f9875f41fe4192ed7e317d548f115c83929328c91b3a7a",
+    "tools/stereo/task-first.test.cjs": "ee08f8a31627a95fe213beffddc272d1e824eca005cbafebfb0234471936eaaf",
+    "tools/stereo/task-first.browser.cjs": "f725bf9e2054d3f4ba83a6a7ccedf6763018b4e1bedb76f8c271e0bdefdf8b45"
   },
   "samplerCorrection": {
     "parentHead": "83bedb7fcd71a0dbb6ac52e095f4cbd9d5251163",
@@ -1020,5 +1024,163 @@
     "priorHeadVirtualMergeTree": "9e267ec903678a760c90849d659b976e2c6ace15",
     "branchRepairPerformed": false,
     "nextVerification": "New test-only head CI must use current884d main synthetic merge; separate current-base/head owner merge authorization still required."
+  },
+  "workshopHomeHero": {
+    "parentHead": "aa786dbcbec484a053a560173ff8433a2c0afcfc",
+    "authorReportSHA256": "ec4cef537bec701dd8b7372fe993f14fbd64078f0d832050866981a25e758a08",
+    "authorReview": {
+      "author": "/root/visual_base",
+      "timestamp": "2026-10-29T21:53:42.497386+00:00",
+      "scope": "Static spatial cover illustration within already authorized all-stereometry-course correction; no runtime geometry, mathematics data, storage or learning interaction changes.",
+      "status": "LOCAL_SOURCE_AND_DOM_PASS; exact-head actual browser images pending",
+      "sourceHashes": {
+        "stereo-course/assets/app.js": "76fd35a45dcc756451a07d07963d3ac3af911ff6d83aa27bfaaa16c14f135156",
+        "stereo-course/index.html": "20fbf7769c91590253f9875f41fe4192ed7e317d548f115c83929328c91b3a7a",
+        "tools/stereo/task-first.test.cjs": "ee08f8a31627a95fe213beffddc272d1e824eca005cbafebfb0234471936eaaf",
+        "tools/stereo/task-first.browser.cjs": "f725bf9e2054d3f4ba83a6a7ccedf6763018b4e1bedb76f8c271e0bdefdf8b45"
+      },
+      "boundedInventory": [
+        {
+          "entry": "stereo-course/index.html",
+          "source": "stereo-course/assets/app.js",
+          "finding": "Recognizable parallelepiped and plane-section cover; originally all12 bodyedges and4sectionedges solid. Corrected3rearbodyedges and2rearsectionedges to dashed."
+        },
+        {
+          "entry": "stereo-course/textbook/index.html; stereo-course/merzlyak-10-base/index.html; stereo-course/shestakov-yaschenko-10-11/index.html",
+          "finding": "No inlineSVG,img or backgroundimage cover in entries ortheir engine.js. Taskfigures use already reviewed sharedrenderer."
+        },
+        {
+          "entry": "geometry-merzlyak/index.html; geometry-pogorelov/index.html",
+          "finding": "No coverSVG/img/backgroundimage in entry orcatalog.js; textcards only. Atlas spatialmodels already use reviewedcanvasrenderer."
+        },
+        {
+          "entry": "geometry-pogorelov/textbook/index.html",
+          "finding": "Text-only cataloghome; no spatialcover in app.js homefunction. Taskfigurecode is distinct from thisboundedcoveraudit."
+        },
+        {
+          "entry": "ege-profil/atanasyan-10-11/index.html",
+          "finding": "Static pyramidcover repaired separately byparent; not editedagain here."
+        },
+        {
+          "entry": "ege-profil/trainers/stereo/index.html; trainers/ege-profile-stereometry-3d/index.html",
+          "finding": "48px topicnavigation pictograms and abstractalltopics plus-circlelogo. Kept existingiconstyle by explicit parent scopejudgment; not full teaching/taskdiagrams. Their11/10 iconSVGs were inspected in source."
+        },
+        {
+          "entry": "ege-profil/start/index.html; trainers/ege-profile-stereometry.html",
+          "finding": "Profilehome art is a planar unitcircle/trigonometry triangle; boardwrapper has no separate3Dcover."
+        },
+        {
+          "entry": "ege-baza/path/index.html; ege-baza/labs/index.html; trainers/ege-profile-task3-stereometry-catalog.html",
+          "finding": "No static3Dcover in theseentries. Basiccourse andlab actualmodels already reviewed; referencecatalog text/downloads only."
+        }
+      ],
+      "correction": {
+        "rearBodyEdges": [
+          "A-D",
+          "C-D",
+          "D-D1"
+        ],
+        "frontBodyEdgeCount": 9,
+        "rearSectionEdges": [
+          "M-Q",
+          "Q-P"
+        ],
+        "frontSectionEdges": [
+          "M-N",
+          "N-P"
+        ],
+        "preservation": "All16 segment endpoints and three sectionpoint markers retain originalcoordinates. Sectionfill retained, separated from strokes and paintedbefore edges. SVGsemanticvisibility only; surrounding app and generatedHTML byte-identical after substituting the singleheroblock.",
+        "coordinates": {
+          "A": [
+            65,
+            240
+          ],
+          "B": [
+            235,
+            290
+          ],
+          "C": [
+            345,
+            210
+          ],
+          "D": [
+            180,
+            165
+          ],
+          "A1": [
+            65,
+            85
+          ],
+          "B1": [
+            235,
+            135
+          ],
+          "C1": [
+            345,
+            70
+          ],
+          "D1": [
+            180,
+            20
+          ],
+          "M": [
+            65,
+            160
+          ],
+          "N": [
+            235,
+            220
+          ],
+          "P": [
+            345,
+            130
+          ],
+          "Q": [
+            180,
+            95
+          ]
+        }
+      },
+      "checks": [
+        {
+          "command": "NODE_PATH=<existing dependencies> node tools/stereo/task-first.test.cjs",
+          "result": "PASS all39 retained learner-flow units plus16coveredges classification and2negativecontrols (solidrearstroke andsectionfilloverpaint)"
+        },
+        {
+          "command": "python tools/stereo/build_site.py",
+          "result": "PASS reproduciblebyteidentity aftersecondbuild;39units19argumentchains"
+        },
+        {
+          "command": "node --check stereo-course/assets/app.js; node --check tools/stereo/task-first.browser.cjs; git diff --check",
+          "result": "PASS"
+        },
+        {
+          "method": "Compare HEAD andworkspaceapp/generatedindex after replacingonlyworkshopherosvg withsameplaceholder",
+          "result": "PASS no changesoutsidethe SVGblock"
+        }
+      ],
+      "browserGate": {
+        "file": "tools/stereo/task-first.browser.cjs",
+        "existingWorkflow": ".github/workflows/stereo-task-first.yml",
+        "addition": "Computedhidden/visiblestrokes at320and1280, realPNG ofhero-art, nohorizontaloverflow, rejecttemporarysolidrearCSS override thenrestore. Existing39lesson/state/two-tab/browserchecks retained.",
+        "newArtifacts": [
+          "home-hero-320.png",
+          "home-hero-1280.png",
+          "home-hero-visibility-evidence.json"
+        ],
+        "localStatus": "NOT_RUN: localChromiumunavailable; pending actualCI andvisualinspection"
+      },
+      "historicalHashHandling": "STEREO_VISIBILITY_INTEGRATION.json retains its historicalstandalonehash4dde2007; thisfollowup binds the newindex20fbf776 separately. No runtimefreeze assertions or archivedreview hashes weakened."
+    },
+    "independentRootReview": {
+      "result": "SOURCE_AND_DOM_PASS; new actual screenshot pending",
+      "method": "Root independently read old/new SVG and mapped all16body/sectionedges; rearAD/CD/DD1 andMQ/QP dashed, front9body+2section solid. Fill has explicitno-stroke. Compared nonhero source bytes forappandgeneratedindex exactly withparent.",
+      "checks": [
+        "All39unit DOM/state/draft tests PASS including2negativehero controls",
+        "Standalone39scene/24proof integration PASS",
+        "git diff --check PASS"
+      ],
+      "scope": "Large mathematical course cover; small decorative48pxnavigationpictograms explicitlyoutside task-diagram correction."
+    }
   }
 }
