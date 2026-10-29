@@ -1,5 +1,17 @@
 # MathExam project status
 
+## Prepared: grade 6 assistant follow-up questions
+
+- [Task](tasks/MATHEXAM_ASSISTANT_GRADE6_DIALOGUE_V1.md), HIGH;
+  Vilenkin NOD/NOK profile and bounded contextual questions beside existing
+  Peterson decimal support. [Validation report](reports/MATHEXAM_ASSISTANT_GRADE6_DIALOGUE_20261030.md).
+- Context is bound to the learner's login and original task; expires 15 minutes
+  after the first answer, is memory-only and never becomes a training dataset.
+- This is a tested candidate, not a live provider activation or deployment.
+  Existing pupils' settings and production data were not modified. External
+  exact-head review, provider eligibility/evaluation and owner release decisions
+  remain separate requirements.
+
 ## Reviewed preparation: Atanasyan chapter VI, quadrilaterals, 462–540
 
 - [Task](tasks/ATANASYAN_7_9_CHAPTER_VI.md), HIGH; PR373, branch
