@@ -165,12 +165,15 @@ function png(bytes) {
       pixels[i] = (packed[y * (stride + 1) + x + 1] + prediction) & 255;
     }
   }
-  return { width, height, at(x, y) { const i = (Math.max(0, Math.min(height - 1, Math.round(y))) * width + Math.max(0, Math.min(width - 1, Math.round(x)))) * channels; return [...pixels.subarray(i, i + 3)]; } };
+  return { width, height, at(x, y) { const i = (Math.max(0, Math.min(height - 1, Math.floor(y))) * width + Math.max(0, Math.min(width - 1, Math.floor(x)))) * channels; return [...pixels.subarray(i, i + 3)]; } };
 }
 
 async function reversedDashPixels(c, width) {
   // The real first lesson has base B-D and reversed highlighted D-B, plus the
   // same polygon boundary. Inspect their actual pixel gaps in the browser.
+  // Use viewport pixels at deviceScaleFactor1. Element screenshots round their
+  // crop rectangle; treating that rounding as a rescale displaces line samples.
+  await page.locator('[data-main-model] svg').scrollIntoViewIfNeeded(); await settle();
   const info = await page.locator('[data-main-model] svg').evaluate(svg => {
     const paths = [...svg.querySelectorAll('path')];
     const base = paths.find(p => p.dataset.edge === 'B-D' && p.dataset.hidden === 'true');
@@ -181,28 +184,61 @@ async function reversedDashPixels(c, width) {
     const style = document.createElement('style'); style.id = 'visibility-pixel-isolation';
     style.textContent = '[data-main-model] svg path:not([data-phase-test]),[data-main-model] svg text,[data-main-model] svg circle,[data-main-model] svg line{visibility:hidden!important}[data-phase-test="overlay"]{visibility:hidden!important}';
     document.head.append(style);
-    return { p: [p.x - b.x, p.y - b.y], q: [q.x - b.x, q.y - b.y], box: { width: b.width, height: b.height }, overlays: over.length };
+    return { p: [p.x, p.y], q: [q.x, q.y], background: [b.x + 8, b.y + 8], pathLength: base.getTotalLength(),
+      rect: { x: b.x, y: b.y, right: b.right, bottom: b.bottom }, matrix: [matrix.a, matrix.b, matrix.c, matrix.d, matrix.e, matrix.f],
+      offset: Number(base.getAttribute('stroke-dashoffset')), dash: getComputedStyle(base).strokeDasharray, overlays: over.length };
   });
   try {
+    const capture = async stage => {
+      const filename = 'reversed-dash-' + stage + '-' + width + '.png', bytes = await page.screenshot({ path: path.join(out, filename) });
+      return { filename, sha256: hash(bytes), pixels: png(bytes) };
+    };
     await settle();
-    const baseBytes = await page.locator('[data-main-model] svg').screenshot(), basePixels = png(baseBytes);
+    const baseCapture = await capture('base'), basePixels = baseCapture.pixels;
     await page.locator('#visibility-pixel-isolation').evaluate(node => { node.textContent = node.textContent.replace('[data-phase-test="overlay"]{visibility:hidden!important}', ''); });
     await settle();
-    const compositeBytes = await page.locator('[data-main-model] svg').screenshot(), composite = png(compositeBytes);
+    const compositeCapture = await capture('composite'), composite = compositeCapture.pixels;
+    const phaseEvidence = { id: c.id, width, completed: false, geometry: info,
+      captures: [baseCapture, compositeCapture].map(({ filename, sha256 }) => ({ filename, sha256 })), controls: [] };
+    evidence.phases.push(phaseEvidence); save();
     assert.equal(basePixels.width, composite.width); assert.equal(basePixels.height, composite.height);
-    const scale = basePixels.width / info.box.width, a = info.p.map(x => x * scale), b = info.q.map(x => x * scale), length = Math.hypot(b[0] - a[0], b[1] - a[1]), u = [(b[0] - a[0]) / length, (b[1] - a[1]) / length];
-    const background = basePixels.at(8, 8), colorDistance = (rgb, bg) => Math.hypot(...rgb.map((x, i) => x - bg[i]));
-    const at = s => [a[0] + u[0] * s, a[1] + u[1] * s];
+    assert.equal(basePixels.width, width, 'Viewport PNG uses one pixel per CSS pixel');
+    assert(info.rect.x >= 0 && info.rect.y >= 0 && info.rect.right <= basePixels.width && info.rect.bottom <= basePixels.height, 'Entire SVG is inside captured viewport');
+    assert.match(info.dash, /^5(?:px)?,?\s+5(?:px)?$/);
+    for (const point of [info.p, info.q, info.background]) assert(point[0] >= 0 && point[0] < basePixels.width && point[1] >= 0 && point[1] < basePixels.height, 'Measured points inside captured viewport');
+    const background = basePixels.at(...info.background), colorDistance = (rgb, bg) => Math.hypot(...rgb.map((x, i) => x - bg[i]));
+    const at = s => info.p.map((x, i) => x + (info.q[i] - x) * s / info.pathLength);
     const blank = (image, s) => colorDistance(image.at(...at(s)), background) < 20;
-    const candidates = [];
-    for (let s = 10; s < length - 10; s += .5) if ([-1.5, -.75, 0, .75, 1.5].every(d => blank(basePixels, s + d))) candidates.push(s);
-    assert(candidates.length >= 2, 'Actual base dash has measurable interior gaps at ' + width);
+    const centers = phase => {
+      const positions = [];
+      for (let s = ((phase - info.offset) % 10 + 10) % 10; s < info.pathLength - 10; s += 10) if (s > 10) positions.push(s);
+      return positions;
+    };
+    const candidates = centers(7.5), inkCenters = centers(2.5);
+    phaseEvidence.samples = candidates.map(s => ({ distance: s, pixel: at(s).map(Math.floor), base: basePixels.at(...at(s)), composite: composite.at(...at(s)) }));
+    phaseEvidence.background = background; save();
+    assert(candidates.length >= 2, 'At least two interior dash-gap centers at ' + width);
+    assert(candidates.every(s => blank(basePixels, s)), 'Base dash-gap centers are clear in actual PNG');
+    assert(inkCenters.some(s => !blank(basePixels, s)), 'Actual base stroke is present between its gaps');
     const gapsFilled = candidates.filter(s => !blank(composite, s));
     assert.equal(gapsFilled.length, 0, 'Reversed highlighted strokes must preserve base dash gaps: ' + JSON.stringify(gapsFilled));
-    const filename = 'reversed-dash-pixels-' + width + '.png'; fs.writeFileSync(path.join(out, filename), compositeBytes);
-    evidence.phases.push({ id: c.id, width, overlays: info.overlays, measuredGapSamples: candidates.length, gapsFilled: gapsFilled.length, filename, sha256: hash(compositeBytes) });
+    for (const control of ['solid', 'shifted']) {
+      await page.locator('[data-phase-test="overlay"]').evaluateAll((nodes, control) => nodes.forEach(node => {
+        node.style.removeProperty('stroke-dasharray'); node.style.removeProperty('stroke-dashoffset');
+        if (control === 'solid') node.style.setProperty('stroke-dasharray', 'none', 'important');
+        else node.style.setProperty('stroke-dashoffset', String(Number(node.getAttribute('stroke-dashoffset')) + 5), 'important');
+      }), control);
+      await settle();
+      const captured = await capture(control), filled = candidates.filter(s => !blank(captured.pixels, s));
+      phaseEvidence.controls.push({ control, gapsFilled: filled.length, filename: captured.filename, sha256: captured.sha256,
+        samples: candidates.map(s => ({ distance: s, color: captured.pixels.at(...at(s)) })) }); save();
+      assert(filled.length > 0, 'Pixel negative control detects ' + control + ' overlay filling real gaps');
+    }
+    Object.assign(phaseEvidence, { completed: true, overlays: info.overlays, measuredGapSamples: candidates.length, gapsFilled: gapsFilled.length }); save();
   } finally {
-    await page.evaluate(() => { document.getElementById('visibility-pixel-isolation')?.remove(); document.querySelectorAll('[data-phase-test]').forEach(node => node.removeAttribute('data-phase-test')); });
+    await page.evaluate(() => { document.getElementById('visibility-pixel-isolation')?.remove(); document.querySelectorAll('[data-phase-test]').forEach(node => {
+      node.style.removeProperty('stroke-dasharray'); node.style.removeProperty('stroke-dashoffset'); node.removeAttribute('data-phase-test');
+    }); });
     await settle();
   }
 }
@@ -217,7 +253,7 @@ async function main() {
   const { chromium } = require('playwright');
   browser = await chromium.launch({ headless: true, executablePath: process.env.VISIBILITY_CHROMIUM || undefined, args: ['--no-sandbox'] });
   evidence.browserVersion = browser.version();
-  context = await browser.newContext({ viewport: { width: 1280, height: 1000 }, reducedMotion: 'reduce' });
+  context = await browser.newContext({ viewport: { width: 1280, height: 1000 }, deviceScaleFactor: 1, reducedMotion: 'reduce' });
   page = await context.newPage(); page.setDefaultTimeout(20000);
   page.on('pageerror', e => evidence.errors.push(e.message));
   for (const course of Object.keys(courses)) {
