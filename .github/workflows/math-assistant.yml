@@ -1,0 +1,92 @@
+name: MathExam assistant — private prototype
+
+on:
+  pull_request:
+    paths:
+      - 'assistant-service/**'
+      - 'board-server/assistant-course-context.js'
+      - 'learning/atanasyan-first-steps/course.json'
+      - 'learning/ichenskaya-grade7-works/course.json'
+      - 'learning/ichenskaya-grade7-works/source-manifest.json'
+      - 'docs/tasks/MATHEXAM_ASSISTANT_V1.md'
+      - 'docs/tasks/MATHEXAM_ASSISTANT_EVAL_V1.md'
+      - 'docs/tasks/MATHEXAM_ASSISTANT_CABINETS_V1.md'
+      - 'docs/adr/0011-independent-assistant.md'
+      - 'docs/reports/MATHEXAM_ASSISTANT*'
+      - '.github/workflows/math-assistant.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: math-assistant-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  assistant:
+    # Playwright 1.55 supports Ubuntu 24.04; the moving latest image now uses 26.04.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install empty locked runtime and check contracts
+        run: |
+          npm --prefix assistant-service ci --ignore-scripts --offline
+          node assistant-service/scripts/build-course-knowledge.cjs --check
+          npm --prefix assistant-service test
+          git diff --check
+      - name: Install pinned browser test runtime
+        run: |
+          npm install --prefix "$RUNNER_TEMP/assistant-browser" --no-audit --no-fund --ignore-scripts playwright@1.55.0
+          node "$RUNNER_TEMP/assistant-browser/node_modules/playwright/cli.js" install --with-deps chromium
+      - name: Real offline desktop and mobile flow
+        env:
+          NODE_PATH: ${{ runner.temp }}/assistant-browser/node_modules
+          LIVE_ASSISTANT_URL: http://127.0.0.1:43127
+          BROWSER_SCREENSHOT_DIR: ${{ runner.temp }}/assistant-screenshots
+        run: |
+          PORT=43127 ASSISTANT_PUBLIC_ORIGIN=http://127.0.0.1:43127 ASSISTANT_DB_PATH="$RUNNER_TEMP/assistant-browser.sqlite" node assistant-service/src/server.js &
+          assistant_pid=$!
+          trap 'kill "$assistant_pid" 2>/dev/null || true' EXIT
+          node --input-type=module -e 'for(let i=0;i<30;i++){try{if((await fetch("http://127.0.0.1:43127/healthz")).ok)process.exit(0);}catch{} await new Promise(r=>setTimeout(r,200));}process.exit(1);'
+          node --test --test-isolation=none assistant-service/test/browser.test.cjs
+      - name: Build isolated nonroot production image and verify durable restart
+        run: |
+          docker build -f assistant-service/Dockerfile -t mathexam-assistant:test .
+          mkdir -p "$RUNNER_TEMP/assistant-container-data"
+          chmod 777 "$RUNNER_TEMP/assistant-container-data"
+          export ASSISTANT_CONTAINER_TEST_KEY="$(node -e 'console.log(require("node:crypto").randomBytes(32).toString("base64url"))')"
+          docker run -d --name mathexam-assistant-test -p 127.0.0.1:43128:3000 -v "$RUNNER_TEMP/assistant-container-data:/data" -e ASSISTANT_PERSISTENCE_CONFIRMED=1 -e ASSISTANT_PUBLIC_ORIGIN=https://assistant.example.test -e "ASSISTANT_PILOT_KEY=$ASSISTANT_CONTAINER_TEST_KEY" mathexam-assistant:test
+          trap 'docker rm -f mathexam-assistant-test >/dev/null 2>&1 || true' EXIT
+          node assistant-service/test/container-smoke.mjs
+      - name: Verify both source courses inside the isolated helper image
+        run: |
+          docker run --rm --network none --entrypoint node mathexam-assistant:test --input-type=module -e '
+          import assert from "node:assert/strict";
+          import { COURSE_PROFILE, resolveCourseContext, prepareCourseQuestion, answerCourseOffline } from "./src/course-context.js";
+          import { buildCabinetMessages } from "./src/cabinet-topics.js";
+          for (const context of [
+            { courseId: "atanasyan-first-steps", lessonId: "atanasyan-7-9-main-160-part-2", stepIndex: 0 },
+            { courseId: "ichenskaya-grade7-works", lessonId: "ichenskaya-7-kr-06-v2-task-04", stepIndex: 0 }
+          ]) {
+            const resolved = resolveCourseContext(context);
+            const prepared = prepareCourseQuestion({ profileId: COURSE_PROFILE, topic: resolved.topic, question: resolved.question,
+              courseContext: context, courseRevision: resolved.courseRevision, attempt: "", mode: "hint", hintLevel: 1, simpler: false });
+            const answer = answerCourseOffline(prepared.input, prepared.cards);
+            assert.deepEqual(answer.courseContext, context);
+            assert.equal(answer.verification, "curated-guidance");
+            assert.equal(answer.courseRevision, resolved.courseRevision);
+            assert.equal(answer.complete, false);
+            assert.throws(() => buildCabinetMessages(prepared.input, prepared.cards), error => error.code === "CABINET_COURSE_SOURCE_ONLY");
+          }
+          console.log("SOURCE_COURSES_HELPER_IMAGE_OK");'
+      - name: Prototype gate
+        run: echo MATHEXAM_ASSISTANT_PROTOTYPE_OK
+      - name: Synthetic evaluation preparation gate
+        run: echo MATHEXAM_ASSISTANT_EVAL_PREPARED_OK

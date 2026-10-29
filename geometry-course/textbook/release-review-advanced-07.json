@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "source": "passed",
+  "mathematics": "passed",
+  "models": "passed",
+  "pedagogy": "passed",
+  "browser": "passed",
+  "reviewer": "Independent reviewers: labels (A), source_audit (B), regression (C and integration); independent visual reviewers for A/B/C; coordinator records evidence",
+  "at": "2026-10-28T16:29:28.995076+00:00",
+  "authoredContentSha256": "3c73fd47306c858e31c92201d92760a8477a3197295b4d8812c887c43db4078a",
+  "implementationSha256": "06f892e4142242b6e1f22331479c884924d5e6690f18ca0fb3d6202bac0c319c",
+  "scope": {
+    "key": "7-advanced",
+    "grade": 7,
+    "numberedExercises": 49,
+    "exerciseRange": [
+      413,
+      461
+    ],
+    "authoredCards": 50,
+    "solutionSteps": 213,
+    "views": 317,
+    "geometricClaims": 216,
+    "fullTextbookComplete": false
+  },
+  "sourceEdition": {
+    "year": 2023,
+    "edition": "14-е, переработанное",
+    "printedPages": [
+      115,
+      116,
+      117,
+      118,
+      119,
+      120
+    ]
+  },
+  "reviews": [
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_ADVANCED_A_REVIEW.md",
+      "sha256": "5d0d0d4c13f1a17670e15da3f32235724d51e7e0948ea685d9301ba2e8814bae"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_ADVANCED_A_VISUAL_REVIEW.json",
+      "sha256": "0a44ce86742b24008c7a876be8ee82845167a0ac2b699da4b1cbcdc41d4b3ff6"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_ADVANCED_B_REVIEW.md",
+      "sha256": "253d718793908b4c0898f7eb8044c05e10d8c1fbffc1148ffdc1f1b21ba4cfac"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_ADVANCED_B_VISUAL_REVIEW.json",
+      "sha256": "caf2d62927c56d2c47dba3d2d14da12457c9cc7d50824fc8527a22785de1cdec"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_ADVANCED_C_REVIEW.md",
+      "sha256": "6a7564a0ce10ba67da2426d6bbf576ecbab1029a8a47328fabd3102f953bb068"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_ADVANCED_C_VISUAL_REVIEW.json",
+      "sha256": "7b9ee6c4a20a796e7bf74f21b6665e14b54ae46c8dac4687675734c8ea2bbf04"
+    }
+  ],
+  "sourceMap": {
+    "path": "tools/geometry-textbook/grade-07-advanced-source-map.json",
+    "sha256": "cb28ba072c98544f00c36b15d08887a493998d961f44d7419ca625f31d53a5bd"
+  },
+  "integrationReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_INTEGRATION_REVIEW.md",
+    "sha256": "44f034b18e862f0dfd3bd7f1a76dd2a2bb6802adef3903400df9879bd4f6d3ec"
+  },
+  "runtimeLabelReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_LABELS_RUNTIME_REVIEW.json",
+    "sha256": "0ade5dd181b4467a1af642d0bfa13e5192f64e3093e73035bf0835a10b1faf00"
+  },
+  "fullCourseBrowser": {
+    "artifact": "course-final/browser-evidence.json",
+    "sha256": "3ee26d0f1c7e6c3ac8a5dbef2c1cf650ca22135adbedd26050cf8b16f9cac6ce",
+    "scope": "full-course",
+    "bundleSha256": "72f479d9476032497ac481910aab37fadbb02e78e6884250d50c7b54b77313db",
+    "implementationSha256": "78104fd5f8898d64c29e67013496fb5eb44efea93ad39eae12873bdd75cadf59",
+    "authoredContentSha256": "6de92f7f2a91f94b806ea917b262b20a66733afa6f4078460d58fb3f2be9a1b8",
+    "lessons": 755,
+    "completed": true,
+    "views": 8202,
+    "stepFlows": 1510,
+    "screenshots": 3020,
+    "interactions": 16,
+    "errors": 0
+  },
+  "focusedDrawingDiagnostic": {
+    "artifact": "advanced-final/browser-evidence.json",
+    "sha256": "02a9bcc165a11c0e23ed7e7a717e9d5119568c4f35a7f245595caf56807c2fc7",
+    "scope": "focused-advanced-drawing-diagnostic",
+    "bundleSha256": "72f479d9476032497ac481910aab37fadbb02e78e6884250d50c7b54b77313db",
+    "implementationSha256": "78104fd5f8898d64c29e67013496fb5eb44efea93ad39eae12873bdd75cadf59",
+    "authoredContentSha256": "6de92f7f2a91f94b806ea917b262b20a66733afa6f4078460d58fb3f2be9a1b8",
+    "lessons": 755,
+    "completed": true,
+    "views": 634,
+    "stepFlows": 0,
+    "screenshots": 0,
+    "interactions": 0,
+    "errors": 0
+  },
+  "scopeNote": "Supplement to chapters I–V, not chapter VI. Exact final artwork has 634 independently inspected view-width pairs. Printed references follow the source, including the construction subgroup.",
+  "browserSnapshotBoundary": {
+    "changedSinceBrowserSnapshot": [
+      "assets/board-adapter.js"
+    ],
+    "explanation": "Only the board wrapper note changed after the main-course snapshot: both modes now show К задаче №92а. The primary index does not load board-adapter.js; all six primary-page inputs and the authored content match the completed full-course run. Exact current adapter independently passed nine tests. CI repeats the full-course gate on the final seven-input binding."
+  },
+  "limitations": [
+    "No real-pupil pilot",
+    "No external Claude review; owner exception applies to this course",
+    "Chapters VI and later remain incomplete",
+    "Prepared for review; not deployed; separate owner merge authorization required"
+  ],
+  "runtimeExtensionReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_RUNTIME_EXTENSION_REVIEW.json",
+    "sha256": "76c2cb88441a834286dcf8fe6bb7ce0048a50542ec9d2bac315e8a263889487e"
+  },
+  "runtimeChapterVIIReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_RUNTIME_EXTENSION_REVIEW.json",
+    "sha256": "9bb1b9a34a45f26e21484ae90ec7f42dc1094ad9e06beca9851939243d80b4cc"
+  }
+}

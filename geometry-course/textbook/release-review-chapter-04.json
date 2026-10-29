@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "status": "passed",
   "authoredContentSha256": "d91cd2b399443c8581732596858ec01b8ca58e0cfa57230297154602c1d51bff",
-  "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
+  "implementationSha256": "06f892e4142242b6e1f22331479c884924d5e6690f18ca0fb3d6202bac0c319c",
   "source": "passed",
   "mathematics": "passed",
   "models": "passed",
@@ -129,5 +129,17 @@
     "provenance": "Independent non-author reviewers inspected all initial capture representatives and all changed final PNGs, verified every unchanged image by exact SHA256, and explicitly closed every initial finding on fresh evidence. The initial failed run remains historical and is not called a pass."
   },
   "claude": "Confirmed same-course owner exception applies; no Claude consultation or external-provider verdict claimed.",
-  "mergeOrDeploymentAuthorization": false
+  "mergeOrDeploymentAuthorization": false,
+  "runtimeLabelReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_LABELS_RUNTIME_REVIEW.json",
+    "sha256": "0ade5dd181b4467a1af642d0bfa13e5192f64e3093e73035bf0835a10b1faf00"
+  },
+  "runtimeExtensionReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_RUNTIME_EXTENSION_REVIEW.json",
+    "sha256": "76c2cb88441a834286dcf8fe6bb7ce0048a50542ec9d2bac315e8a263889487e"
+  },
+  "runtimeChapterVIIReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_RUNTIME_EXTENSION_REVIEW.json",
+    "sha256": "9bb1b9a34a45f26e21484ae90ec7f42dc1094ad9e06beca9851939243d80b4cc"
+  }
 }

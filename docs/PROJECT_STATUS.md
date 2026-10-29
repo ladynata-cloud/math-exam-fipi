@@ -1,7 +1,5 @@
 # MathExam project status
 
-Updated: 2026-10-28 (Asia/Novosibirsk)
-
 ## Prepared: public search entry corrections
 
 - [Scope](tasks/SEO_PUBLIC_ENTRYPOINTS_20261028.md), MEDIUM bounded navigation
@@ -11,16 +9,305 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
   OGE-13 entry and distinguish useful rounding/tire lessons from their main
   practice entries. Existing exercise engines and learner work are retained.
 - [Local verification](reports/SEO_PUBLIC_ENTRYPOINTS_20261028.md) passes:
-  SEO/catalog gates, 529 sitemap addresses, unchanged managed bank, affected
+  SEO/catalog gates, 531 sitemap addresses after current-main integration, unchanged managed bank, affected
   trainer checks, responsive browser navigation and scoped download packages.
   Independent internal review has no remaining material findings. Gate:
   `SEO_PUBLIC_ENTRYPOINTS_OK`.
-- Current next actions: publish one Draft PR and inspect exact-head CI;
-  obtain a separate release decision; verify publication and the separately
-  administered HTTP-to-HTTPS redirect. The code change is not yet published.
+- PR #368 continuation on 2026-10-30 integrates current main
+  `51f7fa550bae29f0110a0f06608a3e35bb1f65fd`, preserving all published course,
+  assistant and hidden-line changes. The status conflict is resolved; product
+  changes retain their original patch identity. Fresh local regression passes
+  and a public-navigation browser CI step are recorded in the report.
+- Current next actions: require final exact-head CI, obtain the exact-base/head
+  release decision, then publish and verify live transitions. The separately
+  administered HTTP-to-HTTPS setting remains outside this code task.
 - HTTP-to-HTTPS hosting enforcement remains an operational follow-up. No
   hosting mutation, search-account write, merge or deployment is part of this
   prepared code change. Private search metrics are not in this repository.
+
+
+## Prepared and reviewed: Atanasyan chapter VII, area, 541–639
+
+- [Task](tasks/ATANASYAN_7_9_CHAPTER_VII.md), HIGH; owner continued on
+  2026-10-30 (Asia/Novosibirsk), branch `content/atanasyan-chapter-vii-20261030`.
+- Base is published PR373, `6fb959fc0130a0bb8842601d19297e305ac91ac0`.
+- All 99 numbered exercises 541–639 / 169 parts, 9 theory points and 12
+  selfchecks are implemented from printed pages 139–162 of the supplied
+  2023 edition: 190 cards, 633 steps and 865 drawing views.
+- Independent source, mathematics and pedagogy reviews are complete. Source
+  inconsistencies in 560в and 570 are explained explicitly. Grid orientation
+  and omitted construction extensions found during review were corrected.
+- Final browser verification passed 11110 view/width checks, 2166 step flows
+  and 20 interaction scenarios. Independent actual image inspection covers all
+  2490 new-chapter PNGs at 320/1280 px, including initial/final states. The
+  earlier missing-font failure remains recorded separately; the final run uses
+  the documented browser font dependency without changing application code or
+  weakening the gate. See the [browser review](reviews/ATANASYAN_7_9_CHAPTER_VII_BROWSER_REVIEW.json).
+- The local release now contains 1083 `reviewed` cards: exercises 1–639 /
+  870 parts, 62 theory points and 151 selfchecks. All 893 prior records and
+  their review/storage identities are preserved. New source references use
+  the actual three paragraph ranges of chapter VII.
+- Prepared release bundle SHA256:
+  `9730c6446a1503b460f40e6951458714730a7a731298fa22ff09fd49d03ec01c`.
+- The verified live release remains PR373 / chapter VI with 893 cards.
+  Exact-head CI, merge and deployment of chapter VII are still pending;
+  local review and release preparation do not claim publication.
+- Next source chapter: VIII «Подобные треугольники», exercises 640–736.
+  The complete 1–1431 textbook, research tasks and appendices remain unfinished.
+
+## Published: Atanasyan chapter VI, quadrilaterals, 462–540
+
+- [Task](tasks/ATANASYAN_7_9_CHAPTER_VI.md), HIGH; PR373, branch
+  `content/atanasyan-chapter-vi-20261029`, original base
+  `d3122b9f3905cd8f7715cee6a873d031cdb43de4`.
+- All79 exercise numbers /108 parts,8 theory points and22 selfchecks:
+  138 new cards,413 steps,589 model views; total893 cards.
+- Independent source, mathematics, pedagogy, visual and technical review
+  completed against exact content/runtime hashes. Final exact-head CI and
+  all composed gates passed. Owner separately authorized publication.
+- PR373 was squashed as `6fb959fc0130a0bb8842601d19297e305ac91ac0`, sole parent
+  `6b25302788f36d92723e487e92afa7044ced3ad3`. An independent release verifier
+  checked the exact authorized tree,63 paths, affected blobs and stable patch.
+- Pages40930045230 and post-merge board40930045316 passed on that exact commit.
+  All18 checked live files matched production Git. Actual320/1280 browser
+  checks passed source links,138-card catalogue/search, saved steps/drafts and
+  native cross-tab recovery with zero page errors. Final evidence and the
+  transparently corrected test-environment attempts are recorded in
+  [PR373](https://github.com/ladynata-cloud/math-exam-fipi/pull/373).
+- Published bundle SHA256:
+  `d15bb793245f20b9f1b8d4bac726637192c816922effd45d209618a0c244f3fc`.
+- Every full record and storage key of the previously published755 cards is
+  preserved. Only three source paragraph rows and separately hash-bound
+  runtime amendments to six historical manifests extend their review scope;
+  all historical content evidence and fixtures remain intact.
+- No rollback was needed. The next numbered chapter is VII «Площадь».
+
+## Published: Atanasyan source captions and advanced grade-seven problems 413–461
+
+- Owner task: [captions and grade-seven continuation](tasks/ATANASYAN_7_9_LABELS_ADVANCED7.md),
+  HIGH, branch `content/atanasyan-labels-advanced-20261028`, base
+  `fa8d1b7ced31a5941ad52d8a21a48b63daaa84a8`.
+- Read-only production reconciliation returned the exact base bundle bytes:
+  705 reviewed cards, all numbered exercises 1–412. Public bundle SHA256
+  `bcd2aba64872aabcfd763448d9e3223ae90bb40a780091dd5922059c14583d81`.
+- The candidate adds every advanced grade-seven exercise 413–461: 49 numbers,
+  50 parts, 213 original steps and 317 source-specific views. Total: 755 cards,
+  593 exercise parts, 45 theory points and 117 chapter review questions.
+- Captions explicitly refer to tasks, points, paragraphs and chapters. The 19
+  paragraph ranges of chapters I–V are independently checked. Grade-level
+  advanced exercises retain their source chapter groups and are not chapter VI.
+- All 705 prior lesson/catalog payloads and learner keys are protected by an
+  immutable published-base oracle. The displayed source index and the existing
+  92a caption adapter are now explicit runtime review inputs. The 92a protocol,
+  theory/state contract, server and real pupil records remain unchanged.
+- Final gate evidence, limitations and the exact cloud head belong in the
+  [continuation report](reports/ATANASYAN_7_9_LABELS_ADVANCED7_20261028.md) and PR.
+  PR #371 was subsequently published as `d3122b9f3905cd8f7715cee6a873d031cdb43de4`.
+  Pages deployment 40742011342 and post-merge board CI 40742013220 succeeded;
+  production byte and browser verification passed. The published bundle has
+  755 reviewed cards, SHA256 `10d86375b924f2914d93ab82efb91ed01a85c0d4657fd7d66414d42edcee7466`.
+- Next numbered section: chapter VI, “Четырёхугольники”, 462–540 (grade eight).
+  Research tasks, complex tasks and appendices remain separately inventoried;
+  the full 1–1431 textbook is not complete.
+
+Updated: 2026-10-28 (Asia/Novosibirsk)
+
+## In preparation: hidden lines across the stereometry courses
+
+- [Owner-requested correction](tasks/STEREO_HIDDEN_LINES.md), HIGH, base
+  `6fb959fc0130a0bb8842601d19297e305ac91ac0`, branch
+  `fix/atanasyan-hidden-lines-20261030`.
+- Covers every published card in Atanasyan 10–11 (554), Merzlyak 10 base (989)
+  and Shestakov–Yashchenko (543), plus the spatial workshop and both spatial
+  atlases. Prepared cone PR374 is a separate compatibility check and remains
+  unpublished pending the visibility correction and its own release decision.
+- Coverage audit additionally found active independent Atanasyan-EGE,
+  profile-EGE SVG/task14, two Three.js banks and basic-EGE spatial renderers.
+  These also fall under the owner's all-courses request. Their source and
+  geometry reviews and the additional-renderer CI pass. Actual image review
+  found two further perspective issues: clipped legacy figures and thick
+  foreshortened dashes whose end caps filled the gaps. The bounded corrections
+  and the old Atanasyan catalog's rear-edge fix require fresh exact-head browser
+  evidence; this work is not yet published.
+- Visible and hidden intervals must be computed for body edges, auxiliary
+  constructions, highlighted section boundaries, vectors and learner lines.
+  Exact-model surface amendments correct missing faces without changing source
+  lesson bytes or learner identities. Spheres use analytic depth geometry.
+- Independent geometry, topology, actual browser, regression and exact-head CI
+  evidence must be completed before recommending publication. This entry does
+  not claim that the correction has been released.
+- Production reconciliation: cylinder PR372 was published as
+  `6b25302788f36d92723e487e92afa7044ced3ad3`; the later main commit is the
+  separate grade 7–9 chapter VI release. The published stereometry course still
+  has 554 cards. Cone PR374 head `065c2a294faf0f3b505eb53a2c8ac4f55621e313`
+  contains 594 candidate cards and is not merged.
+
+## Prepared: Atanasyan 10–11, complete cylinder paragraph
+
+- [Task](tasks/ATANASYAN_CYLINDER_320_345.md), HIGH, explicitly continued by the
+  owner on 2026-10-29. Base `0ad2680f9039a27cd1188eccc55cfcd932d4bf64`.
+- Complete chapter IV §1: theory 38–39 and exercises 320–345 with every printed
+  subpart, using the existing companion labels, models and retained-work UI.
+- Candidate: 554 cards, 2134 justified steps and 2228 model states; main
+  exercises 1–345 and theory points 1–39. The 36 added cards complete this
+  paragraph; all 518 prior lesson files remain byte-identical.
+- Independent source/math/pedagogy review and its six resolved findings are
+  recorded in [content evidence](reviews/ATANASYAN_CYLINDER_CONTENT.json).
+  [Integration evidence](reviews/ATANASYAN_CYLINDER_INTEGRATION.json) and
+  [visual evidence](reviews/ATANASYAN_CYLINDER_VISUAL.json) distinguish local
+  checks from exact-commit CI. Final CI and release status belong in the PR.
+- Next numbered paragraph: chapter IV §2 «Конус», beginning with exercise 346.
+  This entry does not claim completion of chapter IV or publication; release
+  requires the owner's decision and a fresh authoritative main check.
+
+## Published: Atanasyan companion labels and chapter III completion
+
+- [PR370](https://github.com/ladynata-cloud/math-exam-fipi/pull/370) was explicitly
+  authorized and squashed as `0ad2680f9039a27cd1188eccc55cfcd932d4bf64`, sole parent
+  `ac67b61ee0a8e10d203b7f6c7249d0e4a865ba9a`. Actual tree, exact 47 changed paths,
+  stable patch and preservation of every other path were independently checked.
+- Course: 518 cards, 1969 justified steps, 2050 model states; main exercises
+  1–319 and chapter III complete. Visible task/chapter/paragraph labels and all
+  27 paragraph choices are published. Later content remains pending.
+- Exact-head five-workflow CI, 168 actual new-card images, complete 1036-journey
+  browser evidence and post-merge Profile CI passed. Pages deployment
+  [40723355111](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40723355111)
+  succeeded on the exact production commit. All 19 canonical live files returned
+  HTTP200 and matched production SHA256; actual live 320/1280px source/filter/
+  theory/draft-retention checks passed. Release evidence and resolved environment
+  issues are preserved in PR370. No rollback was necessary.
+- This new task starts from that exact clean production base; the preceding
+  status entry is reconciled here without a separate status-only PR.
+
+## Prepared: Ichenskaya independent and test works alongside Atanasyan
+
+- [Task](tasks/ICHENSKAYA_GRADE7_WORKS.md), HIGH, branch
+  `feat/ichenskaya-grade7-works`, exact base
+  `11ee0d51a63e73b30dc4db94c4463fac894bf4bf` (Draft PR #363). The assistant and
+  primary-course dependency stack remains unmerged.
+- Supplied Ichenskaya grade-seven collection, 2018: 17 independent works and
+  six test works, 46 variants, all 110 numbered tasks and 360 explanation steps.
+  Every task has source pages, a reviewed condition, its own model and retained
+  writing. The separate final-examination tickets are inventoried but excluded.
+- The author's allocation places 54 tasks at primary-course points 1–23; 56
+  later tasks are labeled separately. Source/key discrepancies and the one
+  earlier work requiring a later theorem are explicitly explained. The original
+  Atanasyan 255-card snapshot and fixed92a contract remain unchanged.
+- Both courses appear for the same cabinet selection, with separate account
+  records and one source-only helper setting/quota. Teacher preview is read-only;
+  proofs receive manual review. There are no trained weights or provider calls.
+- [Evidence and limits](reports/ICHENSKAYA_GRADE7_WORKS_20261028.md): complete
+  independent source/proof review, reproducible inventories, 332 numerical and
+  coordinate checks, 470 model views and retained-work/source-boundary gates.
+  Final exact-head browser, service and CI evidence accompanies the Draft PR.
+- Read-only reconciliation: remote main remains
+  `8723d6bfb19e64d43c474b1fc7116fe8630ec20a`; the public textbook bundle, engine
+  and attached-course router returned 200 and matched it. The private scan and
+  pupil identity are not published. No real account mutation, merge or deployment
+  occurred. Required external HIGH review and Claude consultation remain pending.
+
+## Prepared: Atanasyan beginning geometry through elementary constructions
+
+- [Task](tasks/ATANASYAN_FIRST_STEPS_CABINET.md), HIGH, branch
+  `feat/atanasyan-first-steps-cabinet`, base
+  `1fcc4fa36267f5667c42409861ef0b92f97b333c` (Draft PR #360). The parent assistant
+  stack #358 / #359 / #360 remains unmerged; this task does not publish it.
+- Ordered native cabinet and public companion for exercises 1–160 and theory
+  points 1–23: 12 sections, 232 exercise/subpart cards, 23 theory cards and
+  682 exercise steps. The bounded source preserves the reviewed book cards,
+  diagrams and identifiers; the sealed engine and fixed 92a contract are intact.
+- Retained writing, diagrams, explicit help, related theory and account-scoped
+  browser records with export. Proofs remain for manual review. These records
+  are not a new server-saved attempt or whole-course board protocol.
+- New course helper resolves the exact task/step against matching reviewed
+  source snapshots. It uses source explanations only, with no provider calls or
+  trained model weights. Existing account, assessment and quota fences apply.
+- [Evidence and limits](reports/ATANASYAN_FIRST_STEPS_CABINET_20261028.md):
+  desktop/mobile public and native journeys, storage recovery, source identity,
+  assistant-service and cabinet checks. Internal independent review is complete;
+  required external HIGH review and Claude consultation are unavailable/pending.
+- Read-only reconciliation: authoritative remote main is
+  `8723d6bfb19e64d43c474b1fc7116fe8630ec20a` (PR #362). The published textbook
+  bundle, engine and attached-course router returned HTTP 200 and matched that
+  main source. Older entries below describe their own historical observations.
+  Concurrent main changes are not silently incorporated into this stacked task.
+- No real pupil configuration, inference, merge or deployment was performed.
+  After release, privately verify the intended existing account and current
+  profile version before selecting the course and enabling its helper.
+
+## Prepared: MaxExam 0.0 for three selected cabinets
+
+- [Task](tasks/MATHEXAM_ASSISTANT_CABINETS_V1.md), HIGH, branch
+  `feat/math-assistant-cabinets-20261027`, base
+  `060a445d27e939a3d68a8e1885986ad56d5c89d5`, stacked on Draft PR #359 / #358.
+- Authenticated, default-disabled gateway to the independent assistant; private
+  teacher selection of at most three pupils, 17 original topic cards, exact
+  decimals, retained hints, simpler explanations and categorical feedback.
+- [Evidence and limits](reports/MATHEXAM_ASSISTANT_CABINETS_20261027.md) and
+  [operator guide](../assistant-service/CABINETS.md). The real local two-service
+  browser path completed 9 requests with synthetic accounts and zero model calls.
+  Full service and board suites passed 107 and 328 checks respectively. Remote
+  exact-head CI and the separately reported local clipboard regression belong
+  in the Draft PR handoff; no external review is claimed.
+- Public main and index/sitemap/robots remain at the preceding released state
+  below. No authenticated teacher connection was available for real account
+  verification/binding. No real pupil has been enabled by this preparation.
+- The owner prefers strong teaching quality and considers OpenAI, GigaChat and
+  Qwen as complementary model candidates. Multi-model consultation requires a
+  separate bounded adapter/evaluation change and actual provider access/terms.
+  This is not automatic training of a MathExam model's weights.
+- No key purchase, paid request, infrastructure activation, merge or deployment.
+
+## Prepared: limited synthetic model trial; assistant architecture accepted
+
+- Owner accepted [ADR 0011](adr/0011-independent-assistant.md) on 2026-10-27 and
+  authorized preparation of [MATHEXAM_ASSISTANT_EVAL_V1](tasks/MATHEXAM_ASSISTANT_EVAL_V1.md),
+  HIGH review. Architecture acceptance does not activate paid requests or release.
+- Branch `feat/math-assistant-eval-20261027` is stacked on Draft PR
+  [#358](https://github.com/ladynata-cloud/math-exam-fipi/pull/358), dependency head
+  `5219320061bf92d63da389b45d30564425c51d11`. The parent remains unmerged.
+- [Plan](reports/MATHEXAM_ASSISTANT_EVAL_PLAN_20261027.md) and
+  [readable cases/references](reports/MATHEXAM_ASSISTANT_EVAL_CASES_20261027.md):
+  32 model cases plus eight local rejection cases; owner-authorized USD 0.20 lifetime
+  campaign limit. Full-payload reservations currently total USD 0.070515.
+- Dedicated private ledger, one sequential attempt per case, source/approval
+  binding, no retries/reset/resume, pending human scores and inert review text.
+  Default planning/rehearsal is zero-network and cannot measure model quality.
+- Local checks: 82/82 service/evaluation groups passed; the 32-response simulated
+  rehearsal completed with zero live requests. Exact remote CI belongs in the
+  new task's Draft PR. No external review or live benchmark is claimed.
+- Read-only reconciliation: remote main still `92d733a49692744ce043503c57f29b77bfb09a24`;
+  public index/sitemap/robots again returned HTTP 200 and matched that source.
+- Reconciled: the owner subsequently authorized at most 32 DeepSeek calls /
+  USD 0.20 for the exact prepared campaign at
+  `060a445d27e939a3d68a8e1885986ad56d5c89d5`; PR #359 records the decision.
+  API access is not configured and required review remains outstanding. Do not
+  ask for that same budget again or transfer it to pupils/another provider/head.
+  No model call, infrastructure purchase, merge, deployment or pupil-data change
+  occurred. The next step is to resolve actual access, review and the exact plan.
+
+## Prepared: independent mathematics assistant prototype
+
+- [Scope](tasks/MATHEXAM_ASSISTANT_V1.md), `NEW_ARCHETYPE`, branch
+  `feat/math-assistant-v1-20261027`, base
+  `92d733a49692744ce043503c57f29b77bfb09a24`.
+- [Research](reports/MATHEXAM_ASSISTANT_RESEARCH_20261027.md),
+  [ADR](adr/0011-independent-assistant.md), and
+  [operator guide](../assistant-service/README.md). Separate Node 24 service,
+  private pilot, SQLite, seven original knowledge topics and optional model API.
+- Default offline mode has exact arithmetic for five bounded task families,
+  conceptual hints, learner feedback and human-reviewed knowledge revisions.
+  No model weights are trained; no conversations or cabinet profiles are stored.
+- Local mathematics/API/privacy/budget/restart tests and actual desktop/mobile
+  browser checks passed; final exact-head evidence belongs in the Draft PR.
+  Actual provider charges/quality and Amvera account resources remain unverified.
+- Assistant, board and video are independent packages. Existing board and pupil
+  cabinets still share one process; stopping it also stops cabinet APIs.
+- Reconciled: PR #358's head above passed 53 service groups, four browser groups,
+  the actual Docker restart/backup check and Public SEO. The owner has now accepted
+  its architecture; finite model-test preparation is the separate task above.
+  Paid inference, required external review and hosting validation remain pending.
+- No merge, paid activation, production account changes or publication occurred.
 
 ## Published: guided division at the search entrypoint
 
@@ -501,7 +788,7 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
   the preparation evidence; it is not the current publication status.
 - ChapterIV is the next scoped continuation; a real-pupil pilot is not claimed.
 
-## Reviewed candidate: Atanasyan 7–9 chapter IV
+## Published: Atanasyan 7–9 chapter IV
 
 - [Scope](tasks/ATANASYAN_7_9_CHAPTER_IV.md), HIGH review; branch
   `content/atanasyan-7-9-chapter4`, base
@@ -525,6 +812,40 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
 - After successful exact-head CI, next three actions: obtain the owner's
   current-base release decision; perform the authorized merge/deployment;
   verify the published bundle and production regression gates.
+- Publication completed in PR #346 as `44eab4d11046d8613b50a73b00185755c814dba6`.
+  Pages40344875237 and post-merge cabinet/board40344877068 passed on that commit.
+  Public verification confirms 569 reviewed cards through number330; all16
+  checked URLs match the reviewed file sizes/hashes. The preparation wording
+  above is historical; the current published baseline includes chapterIV.
+
+## Reviewed: Atanasyan 7–9 chapter V, resumed 28 October
+
+- [Scope](tasks/ATANASYAN_7_9_CHAPTER_V.md), HIGH review; owner requested
+  continuation after the verified publication of chapterIV.
+- Base `44eab4d11046d8613b50a73b00185755c814dba6`; branch
+  `content/atanasyan-7-9-chapter5`.
+- Exact 2023 revised edition: printed91–115, all331–412, theory39–45 and
+  30 review questions; independent inventory confirms136 new cards and705
+  total. All materials are authored; independent source, mathematics, didactic
+  and authored-model reviews passed for all four fragments.
+- The owner resumed PR #354 on 28 October. The earlier 77 layout failures are
+  closed through authored-model fixes; source/solution text and the runtime
+  are unchanged. Independent actual-page review covers 1756 new view/width
+  pairs, with the four corrected 408 caption images checked afresh.
+- Full local browser gate: 705 cards, 7568 view checks, 1410 step flows and 16
+  interactions PASS. Preservation 9, coordinate 2581, retained-work 19,
+  complete DOM 2547 and actual cabinet/shared-board browser checks also PASS.
+- Chapter V has its own hash-bound review manifest. Release evidence, exact
+  head/current-main checks and deployment are tracked in
+  [PR354](https://github.com/ladynata-cloud/math-exam-fipi/pull/354).
+  The [pause checkpoint](tasks/ATANASYAN_7_9_CHAPTER_V_PAUSE.md) is historical.
+- The first final cloud run exposed five further mobile label placements under
+  Liberation Sans. Three H offsets were corrected after exact local reproduction;
+  all 72 affected actual-page view/width pairs pass in Liberation and Nimbus,
+  with independent review. Repeat exact-head cloud results are tracked in the PR.
+- Existing 569 cards and runtime remain preserved. The resulting course has
+  705 cards, all 1–412, 45 theory points and 117 review questions. Advanced 413–461
+  and the 8–9-grade chapters remain unfinished; this is not the whole textbook.
 
 ## Published: Atanasyan 7–9 chapter II, triangles
 

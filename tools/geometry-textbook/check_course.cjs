@@ -54,7 +54,7 @@ for(const lesson of bundle.lessons){
  }
 }
 assert.deepEqual(bundle.build.chapters.map(c=>c.chapter),scope.chapters.map(c=>c.chapter),'Explicit release scope');
-assert.equal(scope.totalCards,scope.chapters.reduce((total,c)=>total+c.cards,0));
+assert.equal(scope.totalCards,[...scope.chapters,...(scope.supplements||[])].reduce((total,c)=>total+c.cards,0));
 for(const chapter of scope.chapters){
  const source=bundle.sourceInventory.chapters.find(c=>c.chapter===chapter.chapter),prefix='preparation/chapter-'+String(chapter.chapter).padStart(2,'0');
  const independentSource=chapterSources.get(chapter.chapter);
@@ -95,15 +95,53 @@ for(const chapter of scope.chapters){
  assert.equal(build.theoryPoints,points.length);assert.equal(build.selfcheckQuestions,questions.length);
  assert(actual.every(l=>l.status===(build.publicationReviewMatches?'reviewed':'in-review')),'Only its own manifest can approve a chapter');
 }
+
+const supplements=scope.supplements||[];
+assert.deepEqual((bundle.build.supplements||[]).map(s=>s.key),supplements.map(s=>s.key),'Explicit supplementary scope');
+assert(supplements.length<=1,'No adjacent book sections are implicitly authorized');
+for(const supplement of supplements){
+ assert.equal(supplement.key,'7-advanced');assert.equal(supplement.label,'7 класс · повышенная трудность');
+ assert.deepEqual(supplement.exerciseNumbers,[413,461]);
+ const source=JSON.parse(fs.readFileSync(path.join(__dirname,'grade-07-advanced-source-map.json'),'utf8'));
+ assert.equal(source.bookId,'atanasyan-2023-7-9');
+ assert.equal(source.source.sha256,'3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72');
+ assert.deepEqual(source.exercises.map(e=>e.number),sequence(supplement.exerciseNumbers),'All advanced source numbers');
+ const files=fs.readdirSync(path.join(course,'preparation')).filter(name=>/^grade-07-advanced(?:-[a-z])?\.json$/.test(name));
+ const exercises=files.flatMap(name=>read('preparation/'+name).exercises).sort((a,b)=>a.number-b.number);
+ assert.deepEqual(exercises.map(e=>e.number),sequence(supplement.exerciseNumbers),'No duplicated/missing advanced preparation');
+ const actual=bundle.lessons.filter(l=>l.source.chapter===supplement.label);
+ assert(actual.every(l=>l.source.collection==='main'),'Advanced section is not fabricated theory or another chapter');
+ assert.equal(actual.length,supplement.mainParts);assert.equal(actual.length,supplement.cards);
+ assert.equal(actual.length,source.counts.cards);assert.equal(source.counts.mainNumbers,49);
+ assert.equal(source.counts.mainParts,actual.length);
+ for(const exercise of exercises){
+  const checked=source.exercises.find(e=>e.number===exercise.number);
+  assert.deepEqual(exercise.parts.map(p=>p.part),checked.parts,'Advanced exact source parts '+exercise.number);
+  assert.deepEqual(exercise.printedPages,checked.printedPages,'Advanced exact pages '+exercise.number);
+  const cards=actual.filter(l=>l.source.exercise===String(exercise.number));
+  assert.deepEqual(cards.map(l=>l.id),checked.parts.map((_,i)=>'atanasyan-7-9-main-'+exercise.number+'-part-'+(i+1)));
+  assert.deepEqual(cards.map(l=>l.source.subpart||'single'),checked.parts);
+  for(const card of cards){
+   assert.deepEqual(card.source.printedPages,checked.printedPages);assert.deepEqual(card.source.pdfPages,checked.printedPages.map(p=>p+1));
+   assert.equal(card.source.advancedGrade,7);assert.deepEqual(card.source.relatedChapters,checked.relatedChapters,'Exact related chapter group '+exercise.number);
+   assert.equal(card.revision,1,'Stable new advanced work namespace');
+  }
+ }
+ const build=bundle.build.supplements.find(s=>s.key===supplement.key);
+ assert.equal(build.authoredCards,supplement.cards);assert.equal(build.numberedExercises,49);
+ assert.equal(build.theoryPoints,0);assert.equal(build.selfcheckQuestions,0);
+ assert(actual.every(l=>l.status===(build.publicationReviewMatches?'reviewed':'in-review')),'Advanced cards require their own matching review');
+}
+
 assert.equal(new Set(bundle.lessons.map(l=>l.id)).size,scope.totalCards);
 assert.equal(bundle.build.authoredCards,scope.totalCards);
-assert.equal(bundle.build.numberedExercises,scope.chapters.reduce((n,c)=>n+sequence(c.exerciseNumbers).length,0));
+assert.equal(bundle.build.numberedExercises,[...scope.chapters,...supplements].reduce((n,c)=>n+sequence(c.exerciseNumbers).length,0));
 const review=engine.inspectBundle(bundle.catalog,bundle.lessons,{allowInReview:true});
 assert.equal(review.available.size,scope.totalCards);assert.deepEqual(review.issues,[]);
 const published=engine.inspectBundle(bundle.catalog,bundle.lessons);
 const approvedIds=bundle.lessons.filter(l=>l.status==='reviewed').map(l=>l.id).sort();
 assert.deepEqual([...published.available.keys()].sort(),approvedIds,'Pending content leaked into public catalog or reviewed chapter disappeared');
-assert.equal(bundle.build.publicationReviewMatches,bundle.build.chapters.every(c=>c.publicationReviewMatches));
+assert.equal(bundle.build.publicationReviewMatches,[...bundle.build.chapters,...(bundle.build.supplements||[])].every(c=>c.publicationReviewMatches));
 if(process.argv.includes('--require-reviewed'))assert.equal(bundle.build.publicationReviewMatches,true,'No current publication review for every included chapter');
 // Reject the other edition's page mapping and stale/partial content.
 const wrongPage=structuredClone(bundle.lessons[0]);wrongPage.source.pdfPages=wrongPage.source.printedPages.map(p=>p+2);

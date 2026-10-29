@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "authoredContentSha256": "a3c589e661f6cc024516ea5e797c172f0f11cedd6127bb0b5bcd360967a50f64",
+  "implementationSha256": "06f892e4142242b6e1f22331479c884924d5e6690f18ca0fb3d6202bac0c319c",
+  "source": "passed",
+  "mathematics": "passed",
+  "models": "passed",
+  "pedagogy": "passed",
+  "browser": "passed",
+  "reviewer": "Independent non-author OpenAI reviewers vi_math_a_final, vi_math_b_final, vi_theory_final and vi_runtime_final; coordinator verifies exact content and image bindings",
+  "at": "2026-10-29T13:57:38.759996+00:00",
+  "reviewKind": "Exact content/runtime/image hash-bound review; final head CI, virtual merge and publication authorization are separate.",
+  "sourcePdfSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "scope": {
+    "chapter": "VI",
+    "mainNumbers": 79,
+    "mainParts": 108,
+    "theory": 8,
+    "selfchecks": 22,
+    "cards": 138,
+    "steps": 413,
+    "views": 589,
+    "coordinateClaims": 486,
+    "fullBookComplete": false
+  },
+  "evidence": [
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_A_FULL_VISUAL_REVIEW.json",
+      "sha256": "8dc383edb0e1b6c75b17a663f59382f0ed40860ccd1e2d2df00afd564751fbf0"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_A_REVIEW.md",
+      "sha256": "2b671d0ad5b3b608bcd5728ecb88479230d59e86f99f87c399c905e4b7357a85"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_A_VISUAL_REVIEW.json",
+      "sha256": "32e8737997ade16239ddc14d6e8ac1988ee61a43d4eceb9a20f834e3ce216013"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_B_FULL_VISUAL_REVIEW.json",
+      "sha256": "a7009fd18b333a9de72a58c5c76877565c323a7d3ef78e5caf5fd2ed047b7038"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_B_REVIEW.md",
+      "sha256": "c2d08f87399867e9a8fbe2d29dce8533c759ea51190f8072feffdae15deb0876"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_B_VISUAL_REVIEW.json",
+      "sha256": "65998cc1a62850430e41be705a0d52485225fc563c11aa6d302afdff4487b065"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_FULL_BROWSER_REVIEW.json",
+      "sha256": "ed91b63797750f1f8d4fbccc7e8ea0dedd4fd5fee50bdcbe58dfa7144d7bb32b"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_RELEASE_PROBES.json",
+      "sha256": "b9894ff546f50d874b19f9d44a56bbb81b107d47f0aa00e0d097a2643bbf4443"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_RELEASE_TECHNICAL_REVIEW.md",
+      "sha256": "83ebb1af2d82eeb256aa10f7d0a19b56c5812f2bd8e24f65a18335a9001d865c"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_RUNTIME_BROWSER.json",
+      "sha256": "25897311ee48c734a13755334df4865c3f727f50da62b3f2bae98f8124b25eec"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_RUNTIME_EXTENSION_REVIEW.json",
+      "sha256": "76c2cb88441a834286dcf8fe6bb7ce0048a50542ec9d2bac315e8a263889487e"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_RUNTIME_REVIEW.md",
+      "sha256": "e3254f0837d89c54af0356315992a0e8e7a1c8326334bf17fc6075a0f5281f62"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_SOURCE_REVIEW.json",
+      "sha256": "9c32a1ea1389f6c09f92fac00b00d8638b4972372233b13f65ed8dd012b3758d"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_THEORY_FULL_VISUAL_REVIEW.json",
+      "sha256": "d887166ee52ed7440458781d8c1e553eac200bbd902bb8cbcd56cd63ce5f5b32"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_THEORY_NUMERIC_REVIEW.json",
+      "sha256": "b4794c4ba55d6133100292f86f2d13a7a70277aa1343c2cc6cafb6a66a504b89"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_THEORY_REVIEW.md",
+      "sha256": "b11cf2b8ea3e7ea0e8fb52160eba44f21424f3cc88616e5a9e554d76130b4d53"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_THEORY_VISUAL_REVIEW.json",
+      "sha256": "6718bff1734fbe2e8a942804516741b914031f467215869be374f685f8caa914"
+    }
+  ],
+  "browserEvidence": {
+    "schemaVersion": 1,
+    "scope": "full-course",
+    "head": null,
+    "gateScriptSha256": "d5d1e5af7e377d5921c86e84c36e81489c150b78db6442a2b71f1c0aba817be7",
+    "implementationSha256": "04e5a58da99bf68421e8f7aa9baccd8c3b2054766dab4141f912a46eba7690ec",
+    "authoredContentSha256": "eac1eb2b73cf13a6bd31c4524d4327be75d044f4a174bb7b7d9ff910d5c744e1",
+    "bundleSha256": "e893fef3f7dd2b6e69c5c7bd96651458485ab20fdb85152ef180d38ac3f34786",
+    "widths": [
+      320,
+      1280
+    ],
+    "lessons": 893,
+    "completed": true,
+    "errors": [],
+    "evidenceSha256": "6941ec11e110024bcc5453cfa9c7c82062e5679a88920fa060a61dbd2b2822df",
+    "viewWidthChecks": 9380,
+    "stepFlows": 1786,
+    "initialFinalCaptures": 3572,
+    "chapterVIViewCaptures": 1178,
+    "interactions": [
+      "expansion-lesson-320-button-and-Escape",
+      "expansion-lesson-1280-button-and-Escape",
+      "notes-and-steps-reload",
+      "expansion-theory-1280-button-and-Escape",
+      "theory-return-retains-answer",
+      "manual-answer-honesty",
+      "two-tab-conflict-preserves-work",
+      "chapter-selfcheck-draft-isolation-and-reload",
+      "chapter-II-theory-return-and-saved-step",
+      "chapter-II-first-and-last-direct-entry",
+      "chapter-III-theory-return-and-saved-step",
+      "chapter-III-first-and-last-direct-entry",
+      "chapter-IV-theory-return-and-saved-step",
+      "chapter-IV-first-and-last-direct-entry",
+      "chapter-V-theory-return-and-saved-step",
+      "chapter-V-first-and-last-direct-entry",
+      "chapter-VI-theory-return-and-saved-step",
+      "chapter-VI-first-and-last-direct-entry"
+    ],
+    "artifact": "chapter06-final-browser",
+    "binding": "Full pre-manifest working-tree run; final committed CI and public-approved smoke are separate gates."
+  },
+  "manualImageReview": {
+    "viewWidthPairs": 1178,
+    "widths": [
+      320,
+      1280
+    ],
+    "openFindings": 0,
+    "exactWholePngDuplicateGroupingOnly": true,
+    "focusedToFullApproximateTransferUsed": false
+  },
+  "claude": "Same-course owner exception applies; no external Claude/provider verdict is claimed.",
+  "mergeOrDeploymentAuthorization": false,
+  "runtimeChapterVIIReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_RUNTIME_EXTENSION_REVIEW.json",
+    "sha256": "9bb1b9a34a45f26e21484ae90ec7f42dc1094ad9e06beca9851939243d80b4cc"
+  }
+}

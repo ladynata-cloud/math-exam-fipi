@@ -814,5 +814,432 @@
     "The full course must also inventory theoretical worked examples and appendix content; no exhaustive subpart/example count is claimed.",
     "Raw OCR files are uncorrected and cannot be used as authoritative mathematics or source statements.",
     "All printed-page ranges are inclusive; PDF page numbers are printed page + 1."
+  ],
+  "paragraphs": [
+    {
+      "chapter": 1,
+      "number": 1,
+      "title": "Прямая и отрезок",
+      "pointNumbers": [
+        1,
+        2
+      ],
+      "exerciseNumbers": [
+        1,
+        10
+      ],
+      "printedPages": [
+        5,
+        9
+      ]
+    },
+    {
+      "chapter": 1,
+      "number": 2,
+      "title": "Луч и угол",
+      "pointNumbers": [
+        3,
+        4
+      ],
+      "exerciseNumbers": [
+        11,
+        20
+      ],
+      "printedPages": [
+        9,
+        11
+      ]
+    },
+    {
+      "chapter": 1,
+      "number": 3,
+      "title": "Сравнение отрезков и углов",
+      "pointNumbers": [
+        5,
+        6
+      ],
+      "exerciseNumbers": [
+        21,
+        26
+      ],
+      "printedPages": [
+        11,
+        14
+      ]
+    },
+    {
+      "chapter": 1,
+      "number": 4,
+      "title": "Измерение отрезков",
+      "pointNumbers": [
+        7,
+        8
+      ],
+      "exerciseNumbers": [
+        27,
+        44
+      ],
+      "printedPages": [
+        14,
+        19
+      ]
+    },
+    {
+      "chapter": 1,
+      "number": 5,
+      "title": "Измерение углов",
+      "pointNumbers": [
+        9,
+        10
+      ],
+      "exerciseNumbers": [
+        45,
+        57
+      ],
+      "printedPages": [
+        19,
+        22
+      ]
+    },
+    {
+      "chapter": 1,
+      "number": 6,
+      "title": "Перпендикулярные прямые",
+      "pointNumbers": [
+        11,
+        13
+      ],
+      "exerciseNumbers": [
+        58,
+        74
+      ],
+      "printedPages": [
+        22,
+        26
+      ]
+    },
+    {
+      "chapter": 2,
+      "number": 1,
+      "title": "Первый признак равенства треугольников",
+      "pointNumbers": [
+        14,
+        15
+      ],
+      "exerciseNumbers": [
+        92,
+        104
+      ],
+      "printedPages": [
+        29,
+        32
+      ]
+    },
+    {
+      "chapter": 2,
+      "number": 2,
+      "title": "Медианы, биссектрисы и высоты треугольника",
+      "pointNumbers": [
+        16,
+        18
+      ],
+      "exerciseNumbers": [
+        105,
+        125
+      ],
+      "printedPages": [
+        33,
+        38
+      ]
+    },
+    {
+      "chapter": 2,
+      "number": 3,
+      "title": "Второй и третий признаки равенства треугольников",
+      "pointNumbers": [
+        19,
+        20
+      ],
+      "exerciseNumbers": [
+        126,
+        147
+      ],
+      "printedPages": [
+        38,
+        43
+      ]
+    },
+    {
+      "chapter": 2,
+      "number": 4,
+      "title": "Задачи на построение",
+      "pointNumbers": [
+        21,
+        23
+      ],
+      "exerciseNumbers": [
+        148,
+        160
+      ],
+      "printedPages": [
+        43,
+        49
+      ]
+    },
+    {
+      "chapter": 3,
+      "number": 1,
+      "title": "Признаки параллельности двух прямых",
+      "pointNumbers": [
+        24,
+        26
+      ],
+      "exerciseNumbers": [
+        191,
+        200
+      ],
+      "printedPages": [
+        53,
+        57
+      ]
+    },
+    {
+      "chapter": 3,
+      "number": 2,
+      "title": "Аксиома параллельных прямых",
+      "pointNumbers": [
+        27,
+        30
+      ],
+      "exerciseNumbers": [
+        201,
+        217
+      ],
+      "printedPages": [
+        58,
+        67
+      ]
+    },
+    {
+      "chapter": 4,
+      "number": 1,
+      "title": "Сумма углов треугольника",
+      "pointNumbers": [
+        31,
+        32
+      ],
+      "exerciseNumbers": [
+        228,
+        240
+      ],
+      "printedPages": [
+        69,
+        71
+      ]
+    },
+    {
+      "chapter": 4,
+      "number": 2,
+      "title": "Соотношения между сторонами и углами треугольника",
+      "pointNumbers": [
+        33,
+        34
+      ],
+      "exerciseNumbers": [
+        241,
+        258
+      ],
+      "printedPages": [
+        72,
+        75
+      ]
+    },
+    {
+      "chapter": 4,
+      "number": 3,
+      "title": "Прямоугольные треугольники",
+      "pointNumbers": [
+        35,
+        36
+      ],
+      "exerciseNumbers": [
+        259,
+        278
+      ],
+      "printedPages": [
+        75,
+        80
+      ]
+    },
+    {
+      "chapter": 4,
+      "number": 4,
+      "title": "Построение треугольника по трём элементам",
+      "pointNumbers": [
+        37,
+        38
+      ],
+      "exerciseNumbers": [
+        279,
+        303
+      ],
+      "printedPages": [
+        80,
+        87
+      ]
+    },
+    {
+      "chapter": 5,
+      "number": 1,
+      "title": "Геометрические места точек",
+      "pointNumbers": [
+        39,
+        40
+      ],
+      "exerciseNumbers": [
+        331,
+        335
+      ],
+      "printedPages": [
+        91,
+        95
+      ]
+    },
+    {
+      "chapter": 5,
+      "number": 2,
+      "title": "Окружность. Касательная к окружности",
+      "pointNumbers": [
+        41,
+        43
+      ],
+      "exerciseNumbers": [
+        336,
+        373
+      ],
+      "printedPages": [
+        95,
+        106
+      ]
+    },
+    {
+      "chapter": 5,
+      "number": 3,
+      "title": "Симметричные фигуры",
+      "pointNumbers": [
+        44,
+        45
+      ],
+      "exerciseNumbers": [
+        374,
+        393
+      ],
+      "printedPages": [
+        106,
+        112
+      ]
+    },
+    {
+      "chapter": 6,
+      "number": 1,
+      "title": "Многоугольники",
+      "pointNumbers": [
+        46,
+        47
+      ],
+      "exerciseNumbers": [
+        462,
+        470
+      ],
+      "printedPages": [
+        121,
+        123
+      ]
+    },
+    {
+      "chapter": 6,
+      "number": 2,
+      "title": "Параллелограмм и трапеция",
+      "pointNumbers": [
+        48,
+        50
+      ],
+      "exerciseNumbers": [
+        471,
+        501
+      ],
+      "printedPages": [
+        124,
+        131
+      ]
+    },
+    {
+      "chapter": 6,
+      "number": 3,
+      "title": "Прямоугольник, ромб, квадрат",
+      "pointNumbers": [
+        51,
+        53
+      ],
+      "exerciseNumbers": [
+        502,
+        519
+      ],
+      "printedPages": [
+        131,
+        135
+      ]
+    },
+    {
+      "chapter": 7,
+      "number": 1,
+      "title": "Площадь многоугольника",
+      "pointNumbers": [
+        54,
+        56
+      ],
+      "exerciseNumbers": [
+        541,
+        554
+      ],
+      "printedPages": [
+        139,
+        145
+      ]
+    },
+    {
+      "chapter": 7,
+      "number": 2,
+      "title": "Площади параллелограмма, треугольника и трапеции",
+      "pointNumbers": [
+        57,
+        59
+      ],
+      "exerciseNumbers": [
+        555,
+        580
+      ],
+      "printedPages": [
+        146,
+        152
+      ]
+    },
+    {
+      "chapter": 7,
+      "number": 3,
+      "title": "Теорема Пифагора",
+      "pointNumbers": [
+        60,
+        62
+      ],
+      "exerciseNumbers": [
+        581,
+        604
+      ],
+      "printedPages": [
+        152,
+        158
+      ]
+    }
   ]
 }

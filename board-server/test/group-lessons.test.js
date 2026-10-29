@@ -241,6 +241,15 @@ test('concurrent handwriting preserves separate authors, immutable IDs, own-only
 });
 
 test('restart restores credentials, history, cloned assignments and dedup without token leaks in history', t => {
+  // A legitimate opaque ID may contain the short seat name "s2". Force that
+  // case while retaining random unique IDs, so the isolation check below must
+  // inspect whole JSON keys/values rather than unrelated identifier substrings.
+  const randomBytes = crypto.randomBytes;
+  t.mock.method(crypto, 'randomBytes', size => {
+    const bytes = randomBytes(size);
+    if (size === 18) { bytes[0] = 0xb3; bytes[1] = (bytes[1] & 0x0f) | 0x60; }
+    return bytes;
+  });
   const f = fixture(t);
   f.act(f.teacher, 'assign', undefined, { targets: ['s1', 's2'], trainerId: 'negative-numbers-line', initialState: negative() });
   f.act(() => f.student(1), 'help', 's1', { active: true });
@@ -261,9 +270,15 @@ test('restart restores credentials, history, cloned assignments and dedup withou
   assert.equal(page1.events.length, 2); assert.equal(page1.hasMore, true);
   const page2 = restarted.history(learner.entry, learner.auth, { target: 's1', after: page1.nextAfter, limit: 2 });
   assert.equal(page2.events.length, 1); assert.equal(page2.hasMore, false);
-  assert.equal(JSON.stringify(page1).includes('s2'), false);
-  assert.equal(JSON.stringify(page1).includes('studentToken'), false);
-  assert.deepEqual(replay({ ...page1, events: [...page1.events, ...page2.events] }).work, learner.entry.lesson.students[0].workspace);
+  const history = { ...page1, events: [...page1.events, ...page2.events] }, serialized = JSON.stringify(history);
+  assert.equal(serialized.includes('s2'), true, 'The synthetic opaque ID exercises the former substring false positive');
+  for (const forbidden of ['s2', 's3', 's4', 's5', 's6', 's7', 's8', 'studentToken', 'teacherToken', 'invites']) {
+    assert.equal(serialized.includes(JSON.stringify(forbidden)), false, 'History must contain no foreign seat or credential fields');
+  }
+  for (const secret of [f.initial.teacherToken, ...f.initial.invites.map(invite => invite.studentToken)]) {
+    assert.equal(serialized.includes(secret), false, 'History must not contain any actual invitation credential');
+  }
+  assert.deepEqual(replay(history).work, learner.entry.lesson.students[0].workspace);
   assert.equal(fs.statSync(path.join(f.directory, `${f.initial.id}.jsonl`)).mode & 0o777, 0o600);
 });
 

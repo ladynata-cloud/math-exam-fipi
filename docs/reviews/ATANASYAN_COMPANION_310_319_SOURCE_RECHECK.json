@@ -1,0 +1,117 @@
+{
+  "reviewer": "Codex review_source, independent of lesson and interface authors",
+  "reviewedAt": "2026-10-28T15:16:50.468632+00:00",
+  "verdict": "PASS_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY_RECHECK",
+  "scope": "Existing eleven source-specific cards310–319 carried from paused PR352; all73 step explanations, justifications and prompts, help text, source conditions, answer contracts, model coordinates/captions/notes inspected. No lesson or interface authored by this reviewer.",
+  "canonicalContentIdentity": {
+    "referenceHead": "fa4ca44e2f199ab47a1609c3180a4cbbb42684f7",
+    "referenceReport": "docs/reviews/ATANASYAN_CHAPTER_III_FINAL_310_319_CONTENT.json",
+    "referenceReviewedAt": "2026-10-26T15:53:31.463Z",
+    "aggregateSHA256": "053ed1c1b166b306e7d21592e09bcf75ab4ea15632ee56f2bff586824e7a534c",
+    "allElevenCanonicalHashesRecomputedAndMatched": true,
+    "canonicalization": "Remove top-level status and review; recursively sort object keys while preserving arrays; SHA256 of UTF-8 JSON.stringify serialization. Aggregate uses the ordered array of the eleven canonical card objects."
+  },
+  "sourceVerification": {
+    "book": "Atanasyan et al., Geometry10–11,12th edition2024",
+    "sourceSHA256": "bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770",
+    "printedPage": 88,
+    "pdfPage": 90,
+    "method": "Fresh local Poppler rendering at150 dpi, actual whole-page image viewed and every numbered condition compared with current cards; source has no diagram on this page. Earlier text-only extraction was not treated as pixel inspection.",
+    "renderedPageSHA256": "6cd0f543b2869f3f60e0a0dc2982401c49b04021b5dcfcbfef7b756be40f98e7",
+    "sourceSubparts": {
+      "311": [
+        "а",
+        "б"
+      ]
+    },
+    "sourceMatchesAllCurrentConditions": true
+  },
+  "cards": [
+    {
+      "id": "ex-main-0310",
+      "sha256": "f69b70024294087bed31ec844311457b8d19a87d6c87475fde808aa5c1e65310",
+      "finding": "Independent vector-product face areas 100,100,340; lateral area540 cm². Source dimensions25,25,40,8 retained. Auxiliary E is the midpoint and DE17 is the correct face altitude.",
+      "verdict": "PASS"
+    },
+    {
+      "id": "ex-main-0311-a",
+      "sha256": "a556504701ab9aa81da5f7193bf9082df596e21fb984734e5b05aa9ae61c788d",
+      "finding": "Heron area84 cm²; perpendicular-side faces67.5 and58.5; third face105; total315 cm². Height AE12 and foot inside BC independently checked.",
+      "verdict": "PASS"
+    },
+    {
+      "id": "ex-main-0311-b",
+      "sha256": "d7961e31f90f19a177c691699c98851f6cd5a7db261b71f169fc0214a81ade66",
+      "finding": "Independent projection of A onto BDC equals model H, is on segment DE and gives distance7.2 cm. HJ is in BDC and parallel BC; two intersecting directions establish normality.",
+      "verdict": "PASS"
+    },
+    {
+      "id": "ex-main-0312",
+      "sha256": "74a9927fe86186621f8758f9060cd689b2fd00041e4caba182edf35009343f4f",
+      "finding": "Reviewed derivation distinguishes edge angle and face angle, circumradius and inradius. 200 additional numerical(n,h) cases with n3–52 verify tan(alpha)=cos(pi/n)tan(phi). General proof/domain is independent of the explicitly illustrative hexagonal model.",
+      "verdict": "PASS"
+    },
+    {
+      "id": "ex-main-0313",
+      "sha256": "749ca4ae6227782d14abb7ec71c9b375803e7db1629e0c1a81ff13279591a729",
+      "finding": "Actual rigid model retains side lengths12 and6 dm, normal height1 dm, apothem2 dm and lateral area54 dm². Triangle EHF is right within the larger axial trapezoid; terminology is consistent.",
+      "verdict": "PASS"
+    },
+    {
+      "id": "ex-main-0314",
+      "sha256": "4c5b8a074d172235a338893f406f5eeec3be0f65632fd4ba45b7ece97183be3b",
+      "finding": "Source h63 cm/apothem65 cm/ratio7:3 gives difference32 cm and sides56/24 cm. Model matches all four lengths. Title/caption distinguishes axial plane from inner triangle.",
+      "verdict": "PASS"
+    },
+    {
+      "id": "ex-main-0315",
+      "sha256": "998c893ac8d4528c1e225b0c84cfb0a07b9f10077ea54116bcfa6f0a458e027f",
+      "finding": "All eight displayed points are arithmetic means of the corresponding face vertices. Their pairwise distances have the cube multiplicities12 edges,12 face diagonals,4 body diagonals. Written homothety proof constructs two parallel squares and perpendicular joining edges of matching length.",
+      "verdict": "PASS"
+    },
+    {
+      "id": "ex-main-0316",
+      "sha256": "c9e41d086c7ee0227e0eecef4a86a322ba2fb54a8995ff75822f987f8182459a",
+      "finding": "All four centers equal their face barycenters. Six intercenter distances are a/3; determinant is nonzero. Written parallel-plane argument independently proves noncoplanarity before declaring a tetrahedron.",
+      "verdict": "PASS"
+    },
+    {
+      "id": "ex-main-0317",
+      "sha256": "e5baeeb69deac7a30ceb1bee3d3fac617a275c9dab4383a2edd311792515f581",
+      "finding": "The six face centers form three perpendicular opposite pairs; metric yields12 equal edges and3 opposite diagonals. Written supporting-plane and completeness arguments account for exactly8 external triangular faces.",
+      "verdict": "PASS"
+    },
+    {
+      "id": "ex-main-0318",
+      "sha256": "9b44ade9b851040070b57686c735d5894b91f39662ab980e7c63e06e7c90874b",
+      "finding": "Actual section rays yield interior angles70.52877936549936 and109.47122063450064 degrees, summing180. Midpoint construction, convex central octahedron and opposite rays KA/KH justify supplementary interior angles rather than acute plane angles.",
+      "verdict": "PASS"
+    },
+    {
+      "id": "ex-main-0319",
+      "sha256": "4700d2c3c77f3208fda02f4fa4d220c880d9573e6caf4ccacd5faa52ecffff3d",
+      "finding": "Independent reflection through all6 edge-bisector planes permutes the tetrahedron; exactly3 contain A. Written involution/permutation proof establishes completeness. Automatic answer is explicitly only the number, with proof requested separately.",
+      "verdict": "PASS"
+    }
+  ],
+  "pedagogy": {
+    "stepCount": 73,
+    "modelStates": 84,
+    "finalAnswerLeakage": "No numeric final answer in initial condition, neutral model caption/note or wrong-answer guidance. Auxiliary constructions introduced with steps. Source tasks315–318 naturally name what must be proved, which is not a leak.",
+    "proofAssessment": "Seven manual responses remain manual; four exact numeric responses have explicit formats. In319 only the count is automatically checked.",
+    "pendingBrowserReview": true
+  },
+  "additionalNumericEvidence": {
+    "method": "Fresh reviewer calculations using vector products, orthogonal plane projection, barycenters, pairwise metric and plane reflections; did not invoke the prior mathematical oracle.",
+    "modelsChecked": 11,
+    "regularPolygonParameterCases": 200,
+    "allChecksPassed": true
+  },
+  "openFindings": [],
+  "limitations": [
+    "This is an independent content/source/model recheck, not a release verdict.",
+    "New companion-label interface and responsive screenshots require their own review.",
+    "No physical-device, real-pupil learning-efficacy or screen-reader trial.",
+    "No external-provider verdict; paid review remains deferred under the existing whole-course scope."
+  ]
+}

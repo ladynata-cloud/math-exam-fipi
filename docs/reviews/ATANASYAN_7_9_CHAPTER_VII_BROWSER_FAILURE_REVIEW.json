@@ -1,0 +1,377 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "Independent browser verification agent (non-author of chapter VII content and browser gate)",
+  "verifiedAtUtc": "2026-10-29T20:20:10.697363+00:00",
+  "verdict": "FAIL",
+  "gate": "ATANASYAN_PLANAR_BROWSER_OK was not reached; final assertion found14 problem views",
+  "exitCode": 1,
+  "baseCommit": "6fb959fc0130a0bb8842601d19297e305ac91ac0",
+  "testedHead": null,
+  "scope": "Complete pre-manifest 1083-card engineering preview; no overall content or publication approval",
+  "environment": {
+    "browser": "Chromium153.0.8010.0",
+    "playwright": "1.62.1",
+    "headless": true,
+    "FONTCONFIG_PATH": "/etc/fonts",
+    "FONTCONFIG_FILE": null,
+    "actualFontFromCDP": {
+      "familyName": "DejaVu Serif",
+      "postScriptName": "DejaVuSerif"
+    },
+    "requestedCssFontFamily": "Georgia, \"Times New Roman\", serif",
+    "requestedCssFontStyle": "italic",
+    "tlsVerificationDisabled": false
+  },
+  "browserEvidence": {
+    "schemaVersion": 1,
+    "scope": "full-course",
+    "head": null,
+    "gateScriptSha256": "d5d1e5af7e377d5921c86e84c36e81489c150b78db6442a2b71f1c0aba817be7",
+    "implementationSha256": "06f892e4142242b6e1f22331479c884924d5e6690f18ca0fb3d6202bac0c319c",
+    "authoredContentSha256": "d68d1165bcbd9edc2901d78c46301da041c44ed7bba75da7d2a66d86961f3430",
+    "bundleSha256": "42d3cfaa4fc4fc23484c6fd59bc744f7e3a55e58341320c654796f4f63e59109",
+    "widths": [
+      320,
+      1280
+    ],
+    "lessons": 1083,
+    "completed": false,
+    "errors": [],
+    "evidenceSha256": "bce5c9c1011fe9e5d275d2158a4ad6f977e4cdf8f74dd58b810453969cd58156",
+    "viewWidthChecks": 11110,
+    "stepFlows": 2166,
+    "initialFinalCaptures": 4332,
+    "chapterVIIViewCaptures": 1730,
+    "interactions": [
+      "expansion-lesson-320-button-and-Escape",
+      "expansion-lesson-1280-button-and-Escape",
+      "notes-and-steps-reload",
+      "expansion-theory-1280-button-and-Escape",
+      "theory-return-retains-answer",
+      "manual-answer-honesty",
+      "two-tab-conflict-preserves-work",
+      "chapter-selfcheck-draft-isolation-and-reload",
+      "chapter-II-theory-return-and-saved-step",
+      "chapter-II-first-and-last-direct-entry",
+      "chapter-III-theory-return-and-saved-step",
+      "chapter-III-first-and-last-direct-entry",
+      "chapter-IV-theory-return-and-saved-step",
+      "chapter-IV-first-and-last-direct-entry",
+      "chapter-V-theory-return-and-saved-step",
+      "chapter-V-first-and-last-direct-entry",
+      "chapter-VI-theory-return-and-saved-step",
+      "chapter-VI-first-and-last-direct-entry",
+      "chapter-VII-theory-return-and-saved-step",
+      "chapter-VII-first-and-last-direct-entry"
+    ],
+    "artifact": "vii-full-6",
+    "binding": "Full pre-manifest working-tree run; FAIL14 historical mobile views; not an exact committed-head or public release gate."
+  },
+  "fullCoverageAudit": {
+    "exactViewWidthSet": true,
+    "exactCompleteStepFlowSet": true,
+    "exactInitialFinalSet": true,
+    "exactChapterVIICaptureSet": true,
+    "allCaptureFilesExist": true,
+    "allStepExplanationsExpandedWithoutOverflow": true,
+    "screenshotHashManifest": "vii-full-6/screenshots.sha256",
+    "screenshotHashManifestSha256": "febe0d0dafe652bd36862894fb9ddea30ff59e4ed5b9ee639ac15a264073d2f8"
+  },
+  "problems": [
+    {
+      "id": "atanasyan-7-9-main-494-part-1",
+      "width": 320,
+      "view": "case-1",
+      "issues": [
+        "unresolved label placement A__case1",
+        "unresolved label placement B__case1",
+        "unresolved label placement C__case1",
+        "unresolved label placement D__case1",
+        "unresolved label placement E__case1",
+        "unresolved label placement F__case1",
+        "line through label A__case1",
+        "line through label B__case1",
+        "line through label C__case1",
+        "line through label D__case1",
+        "line through label E__case1",
+        "line through label F__case1"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-536-part-1",
+      "width": 320,
+      "view": "step-2",
+      "issues": [
+        "unresolved label placement A",
+        "unresolved label placement C",
+        "unresolved label placement P",
+        "unresolved label placement Q",
+        "unresolved label placement M",
+        "line through label A",
+        "line through label C",
+        "line through label P",
+        "line through label Q",
+        "line through label M"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-536-part-1",
+      "width": 320,
+      "view": "step-3",
+      "issues": [
+        "unresolved label placement A",
+        "unresolved label placement C",
+        "unresolved label placement P",
+        "unresolved label placement Q",
+        "unresolved label placement M",
+        "line through label A",
+        "line through label C",
+        "line through label P",
+        "line through label Q",
+        "line through label M"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-536-part-1",
+      "width": 320,
+      "view": "step-4",
+      "issues": [
+        "unresolved label placement A",
+        "unresolved label placement C",
+        "unresolved label placement P",
+        "unresolved label placement Q",
+        "unresolved label placement M",
+        "line through label A",
+        "line through label C",
+        "line through label P",
+        "line through label Q",
+        "line through label M"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-450-part-1",
+      "width": 320,
+      "view": "step-1",
+      "issues": [
+        "unresolved label placement O"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-450-part-1",
+      "width": 320,
+      "view": "step-2",
+      "issues": [
+        "unresolved label placement O"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-450-part-1",
+      "width": 320,
+      "view": "step-3",
+      "issues": [
+        "unresolved label placement O"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-450-part-1",
+      "width": 320,
+      "view": "step-4",
+      "issues": [
+        "unresolved label placement O"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-450-part-1",
+      "width": 320,
+      "view": "case-1",
+      "issues": [
+        "unresolved label placement O0",
+        "unresolved label placement C0",
+        "line through label O0",
+        "line through label C0",
+        "circle through label C0"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-450-part-1",
+      "width": 320,
+      "view": "case-2",
+      "issues": [
+        "unresolved label placement O1",
+        "unresolved label placement C1",
+        "unresolved label placement P11",
+        "overlapping labels C1/P11",
+        "line through label O1",
+        "line through label P11",
+        "circle through label C1",
+        "circle through label P11"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-450-part-1",
+      "width": 320,
+      "view": "case-3",
+      "issues": [
+        "unresolved label placement O2",
+        "unresolved label placement C2",
+        "unresolved label placement P12",
+        "unresolved label placement P22",
+        "line through label O2",
+        "line through label C2",
+        "line through label P12",
+        "line through label P22"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-450-part-1",
+      "width": 320,
+      "view": "case-4",
+      "issues": [
+        "unresolved label placement O3",
+        "unresolved label placement C3",
+        "unresolved label placement P23",
+        "unresolved label placement P33",
+        "line through label O3",
+        "line through label C3",
+        "line through label P23",
+        "circle through label P23",
+        "circle through label P33"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-452-part-1",
+      "width": 320,
+      "view": "step-4",
+      "issues": [
+        "unresolved label placement A",
+        "unresolved label placement N",
+        "unresolved label placement C",
+        "line through label A",
+        "line through label N",
+        "line through label C",
+        "circle through label N"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-454-part-1",
+      "width": 320,
+      "view": "case-4",
+      "issues": [
+        "unresolved label placement O1n",
+        "unresolved label placement O2n",
+        "circle through label O1n",
+        "circle through label O2n"
+      ]
+    }
+  ],
+  "chapterVIIOnly": {
+    "cards": 190,
+    "steps": 633,
+    "modelViews": 865,
+    "viewWidthChecks": 1730,
+    "problemViews": 0,
+    "completeStepFlows": 380,
+    "manualImageReview": "Separate independent image-review reports; automated geometry checks alone do not certify visual or mathematical correctness.",
+    "overallGateApproval": false
+  },
+  "readOnlyHistoricalReproduction": {
+    "artifact": "vii-historical-diagnostic",
+    "diagnosticSha256": "369a57d2f36ec56d3e6ec6d967818d801d62f799ae7acb9070fa9e3a3e504e02",
+    "scriptSha256": "19310f566af9fb224462db96bc5290bbe7dcfd908f4f961e1e60fb998d63e126",
+    "scope": "Five representative historical views cold-rendered at320px in the same Chromium and font environment on both byte-exact public893 bundle and candidate1083; reused unmodified gate inspect() function.",
+    "publicBundleByteExactGitBase": true,
+    "publicBundleSha256": "d15bb793245f20b9f1b8d4bac726637192c816922effd45d209618a0c244f3fc",
+    "publicCards": 893,
+    "matchingIssueListsInBothBundles": true,
+    "unchangedModels": [
+      {
+        "id": "atanasyan-7-9-main-450-part-1",
+        "canonicalModelSha256": "4e0a162f6ae1c795bf69ff6f406af180c3c2f690ed9f9587848375cbf82565c3",
+        "baseEqualsCandidate": true
+      },
+      {
+        "id": "atanasyan-7-9-main-452-part-1",
+        "canonicalModelSha256": "2ad9558a76638a41bc3b204d38fd775fe7de5c33c0f721f12016522bbddf36d2",
+        "baseEqualsCandidate": true
+      },
+      {
+        "id": "atanasyan-7-9-main-454-part-1",
+        "canonicalModelSha256": "e7ad3b92fee0f17ddf0164f8d31ae299a5f16a302acafc36a13d506c2337a5a0",
+        "baseEqualsCandidate": true
+      },
+      {
+        "id": "atanasyan-7-9-main-494-part-1",
+        "canonicalModelSha256": "ce820c58f5a21a69e222709c70a91e0a3f85e4710db68f9e1bbc8b18d2037c68",
+        "baseEqualsCandidate": true
+      },
+      {
+        "id": "atanasyan-7-9-main-536-part-1",
+        "canonicalModelSha256": "82d76e863cf8ff928f6c9b9cadb6aeb48e376ea21209c135a18ac4f5e07c3d4e",
+        "baseEqualsCandidate": true
+      }
+    ],
+    "unchangedEntrypointAndRendererAssets": [
+      {
+        "file": "geometry-course/textbook/assets/board-adapter.js",
+        "sha256": "e1c366fd77f2cc822894be7e21139ce99b9e7b3c568392b122f2a3b386b7545b",
+        "baseEqualsPublicEqualsPreview": true
+      },
+      {
+        "file": "geometry-course/textbook/assets/engine.js",
+        "sha256": "85d395dbfb66f8a1409f1d2f930fbb6f742c0085239d34d18ec2a901f3bd6492",
+        "baseEqualsPublicEqualsPreview": true
+      },
+      {
+        "file": "geometry-course/textbook/assets/math-text.js",
+        "sha256": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+        "baseEqualsPublicEqualsPreview": true
+      },
+      {
+        "file": "geometry-course/textbook/assets/planar-viewer.js",
+        "sha256": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061",
+        "baseEqualsPublicEqualsPreview": true
+      },
+      {
+        "file": "geometry-course/textbook/assets/style.css",
+        "sha256": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b",
+        "baseEqualsPublicEqualsPreview": true
+      },
+      {
+        "file": "geometry-course/textbook/index.html",
+        "sha256": "098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804",
+        "baseEqualsPublicEqualsPreview": true
+      }
+    ],
+    "actualNativePngsViewed": [
+      {
+        "file": "public-494-case-1-320.png",
+        "sha256": "1d185d16cc98e6a92dc1e478392e35e3e936649ea1e1cf1a72207ff2283309c8"
+      },
+      {
+        "file": "public-536-step-2-320.png",
+        "sha256": "f9515d86575bd7fb9222d21927804943ced9ec6e2be65f007158ec4ed77033d3"
+      },
+      {
+        "file": "public-450-step-1-320.png",
+        "sha256": "1189a94052c545b8e7c29369ccdbb6dbf5f94ff249a07963311c6e0337ee43d0"
+      },
+      {
+        "file": "public-452-step-4-320.png",
+        "sha256": "56150840c9e348cfb2465a8653b1e51144fb43bcf51de95db40f037534121522"
+      },
+      {
+        "file": "public-454-case-4-320.png",
+        "sha256": "d4f4da5c79386ed53d6632961d630d6e915cba1a111b5d008663d6190a025a99"
+      }
+    ],
+    "result": "All five representative failures reproduce identically without chapter VII. Actual label collisions are visible; no font/runtime/content edits were made."
+  },
+  "conclusions": [
+    "The full-course browser gate failed and must not be recorded as PASS.",
+    "Chapter VII has no automated geometry findings in either tested width; its scoped visual and mathematical reviews remain separate.",
+    "The historical failures reproduce on unchanged previously published data and rendering assets in the current environment.",
+    "The actual fallback font is established by CDP. Font causality relative to prior CI is not yet proved; no claim is made that changing fonts would be an acceptable fix."
+  ],
+  "contentApprovalGranted": false,
+  "publicationApprovalGranted": false
+}

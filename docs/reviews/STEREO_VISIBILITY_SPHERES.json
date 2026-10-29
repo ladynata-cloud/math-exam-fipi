@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "task": "Whole-course stereometry hidden-line correction",
+  "reviewedAt": "2026-10-29T18:45:10.908Z",
+  "reviewer": "/root/visibility_merzlyak",
+  "scope": "Sphere interval mathematics, generated sphere helpers, conic face normals and rendered smooth-surface generators.",
+  "sphere": {
+    "reviewer": "/root/visibility_merzlyak",
+    "authoredReviewedSphereLogic": false,
+    "authoredCylinderCapFix": true,
+    "verdict": "PASS_INDEPENDENT_SPHERE_REVIEW",
+    "models": 96,
+    "checks": 922709,
+    "arcs": 15296,
+    "arcEndpoints": 30592,
+    "randomSegments": 4000,
+    "negativeControls": 5,
+    "nearTangentSamples": 25,
+    "resolvedFindings": [
+      {
+        "finding": "Exact projection tangency on sphere-equation seed6 axis O-z, yaw pi / pitch -0.3 previously created a 1.63e-8 parameter hidden sliver.",
+        "resolution": "Scale-aware discriminant and radial comparison; exact reported configuration now entirely visible.",
+        "regression": "PASS"
+      }
+    ],
+    "files": {
+      "stereo-course/assets/task-scene-viewer.js": "91ef00cd15e0e831fa835c089116e5150813ce0bd6554280d3e9f76a5c547f64",
+      "stereo-course/assets/task-scenes.js": "20241c175a0db6ba2bd05ab0e91f95871e5ad5c8a7bda59880ac6e7a847c9db0",
+      "stereo-course/assets/task-proof-scenes.js": "4de11c85ed423435219ff9d60b324c78a888c5db80785c2f33b86b33b3dc6f33",
+      "tools/stereo-textbook/visibility-profiles/merzlyak.json": "10184ec658e1fec8e574c89cc898a58e118d99205ebdf367d324a64780639605"
+    },
+    "limitations": [
+      "Checks inspect the actual runtime sphere interval classifier and generated source models, not browser pixels.",
+      "Existing circle drawings are polylines; explicitly declared surfaceEdges receive front/back sphere-surface visibility.",
+      "Numerically ambiguous projected-tangency samples excluded from the broad ray oracle; the exact reported tangent case has a separate passing regression."
+    ]
+  },
+  "conic": {
+    "reviewer": "/root/visibility_merzlyak",
+    "verdict": "PASS_CONIC_NORMALS_AND_RENDERED_SILHOUETTES",
+    "authoredNormalComponentFix": false,
+    "authoredCylinderCapFix": true,
+    "models": 60,
+    "normalChecks": 5280,
+    "generatorChecks": 26400,
+    "domMounts": 60,
+    "drawnGenerators": 196,
+    "cameras": [
+      [
+        -0.62,
+        0.43
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        1.5707963267948966,
+        0
+      ],
+      [
+        3.141592653589793,
+        -0.3
+      ],
+      [
+        2.3,
+        1.2
+      ]
+    ],
+    "actualCylinderCapPreservationCases": 4,
+    "files": {
+      "stereo-course/assets/task-scene-viewer.js": "91ef00cd15e0e831fa835c089116e5150813ce0bd6554280d3e9f76a5c547f64",
+      "stereo-course/assets/task-scenes.js": "20241c175a0db6ba2bd05ab0e91f95871e5ad5c8a7bda59880ac6e7a847c9db0"
+    },
+    "limitations": [
+      "DOM line-presence checks are not browser screenshots.",
+      "Cylinder cap removal was authored by this reviewer and requires separate independent review."
+    ]
+  },
+  "regressionGates": [
+    {
+      "command": "node tools/stereo/task-scenes-math.test.cjs",
+      "status": "PASS",
+      "models": 4560,
+      "independentChecks": 486594
+    },
+    {
+      "command": "node tools/stereo/task-scenes.dom.test.cjs",
+      "status": "PASS",
+      "mounts": 86
+    },
+    {
+      "command": "node tools/stereo/task-proof-scenes.test.cjs",
+      "status": "PASS",
+      "proofs": 19,
+      "geometricChecks": 1535
+    },
+    {
+      "command": "node tools/stereo/task-proof-scenes.dom.test.cjs",
+      "status": "PASS",
+      "proofs": 19,
+      "stepViews": 60
+    }
+  ],
+  "remainingReview": "The reviewer authored only the narrow infinite-cylinder cap removal; independent review of that change is recorded separately. No browser pixel review is claimed by this report."
+}

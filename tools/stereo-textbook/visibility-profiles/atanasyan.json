@@ -1,0 +1,3210 @@
+{
+  "course": "atanasyan",
+  "audit": {
+    "sourceCommit": "065c2a294faf0f3b505eb53a2c8ac4f55621e313",
+    "totalCourseCards": 594,
+    "profileCount": 68,
+    "coveredLessonIds": [
+      "ex-main-0017",
+      "theory-012",
+      "ex-main-0101",
+      "ex-main-0102",
+      "ex-main-0103",
+      "ex-main-0104",
+      "ex-main-0105",
+      "ex-main-0106",
+      "ex-main-0107",
+      "ex-main-0108",
+      "ex-main-0084",
+      "ex-main-0085",
+      "ex-main-0086",
+      "ex-main-0087-a",
+      "ex-main-0087-b",
+      "ex-main-0109",
+      "ex-main-0110",
+      "ex-main-0111",
+      "ex-main-0112",
+      "ex-main-0113",
+      "ex-main-0114",
+      "ex-main-0115",
+      "ex-main-0229-a",
+      "ex-main-0229-b",
+      "ex-main-0229-c",
+      "ex-main-0229-d",
+      "ex-main-0230",
+      "ex-main-0231",
+      "ex-main-0232",
+      "ex-main-0233",
+      "ex-main-0234",
+      "ex-main-0235",
+      "ex-main-0236",
+      "ex-main-0237",
+      "ex-main-0238",
+      "ex-main-0290",
+      "ex-main-0291",
+      "ex-main-0292",
+      "ex-main-0293",
+      "ex-main-0294",
+      "ex-main-0295-a",
+      "ex-main-0295-b",
+      "ex-main-0295-c",
+      "ex-main-0295-d",
+      "ex-main-0296",
+      "ex-main-0297-a",
+      "ex-main-0297-b",
+      "ex-main-0297-c",
+      "ex-main-0298",
+      "ex-main-0299",
+      "ex-main-0300",
+      "ex-main-0301",
+      "ex-main-0302",
+      "ex-main-0303",
+      "ex-main-0304",
+      "ex-main-0305",
+      "ex-main-0306",
+      "ex-main-0307-a",
+      "ex-main-0307-b",
+      "ex-main-0308",
+      "ex-main-0309",
+      "ex-main-0310",
+      "ex-main-0311-a",
+      "ex-main-0311-b",
+      "ex-main-0312",
+      "theory-014",
+      "ex-selfcheck-iii-14",
+      "ex-main-0284"
+    ],
+    "shells": 76,
+    "facesChecked": 404,
+    "dispositions": [
+      {
+        "lessonIds": [
+          "ex-main-0034",
+          "ex-main-0089",
+          "ex-main-0201"
+        ],
+        "classification": "no inferred solid",
+        "reason": "The task describes points, triangles, or skew lines rather than an opaque solid. Keep authored faces only; a complete spatial graph is not permission to add a hull."
+      },
+      {
+        "lessonIds": [
+          "ex-main-0340",
+          "ex-main-0371"
+        ],
+        "classification": "intentionally open surfaces",
+        "reason": "340 is an open tube;371 is an open bucket. Keep only authored wall/bottom faces. Never synthesize missing caps."
+      },
+      {
+        "lessonIds": [
+          "ex-main-0345-a",
+          "ex-main-0345-b",
+          "ex-selfcheck-i-16",
+          "ex-selfcheck-ii-10"
+        ],
+        "classification": "multiple distinct bodies",
+        "reason": "Keep separate authored bodies; global convexity failure is not a reason to remove visibility tests."
+      },
+      {
+        "lessonIds": [
+          "theory-027-convex",
+          "ex-selfcheck-iii-10-nonconvex"
+        ],
+        "classification": "nonconvex bodies",
+        "reason": "Use authored concave surfaces, including concave polygon interiors. Do not replace with convex hulls."
+      }
+    ]
+  },
+  "profiles": [
+    {
+      "key": "155255a2:584",
+      "signature": "[{\"A\":[0,-3,0],\"B\":[-7,3,0],\"C\":[7,3,0],\"D\":[8,-3,8.94427190999916],\"M\":[0.5,0,4.47213595499958],\"N\":[7.5,0,4.47213595499958],\"P\":[-3.5,0,0],\"Q\":[3.5,0,0],\"_dAD\":[4,-3,4.47213595499958],\"_dBC\":[0,3,0],\"_dMN\":[4,0,4.47213595499958],\"_dNQ\":[5.5,0,2.23606797749979]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"A\",\"D\"],[\"B\",\"D\"],[\"C\",\"D\"],[\"M\",\"N\"],[\"N\",\"Q\"],[\"Q\",\"P\"],[\"P\",\"M\"]],[],[[\"neutral\",[],[]],[\"dbc\",[[\"M\",\"N\"]],[\"D\",\"B\",\"C\"]],[\"abc\",[[\"P\",\"Q\"]],[\"A\",\"B\",\"C\"]],[\"dba\",[[\"M\",\"P\"]],[\"D\",\"B\",\"A\"]],[\"dac\",[[\"N\",\"Q\"]],[\"D\",\"A\",\"C\"]],[\"sum\",[[\"M\",\"N\"],[\"N\",\"Q\"],[\"Q\",\"P\"],[\"P\",\"M\"]],[]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A",
+          "B",
+          "D"
+        ],
+        [
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "C",
+          "A",
+          "D"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0017"
+      ],
+      "reason": "The statement explicitly describes tetrahedron ABCD. Supply its four boundary faces; auxiliary points are not body vertices.",
+      "sourceGeometrySHA256": "2f9052910d2ee88fce01db6ee8e272d8c27f4b1ce1945df28be69c933a3ca5db"
+    },
+    {
+      "key": "7a08e251:552",
+      "signature": "[{\"A\":[0,0,0],\"B\":[6,0,0],\"C\":[1,5,0],\"D\":[1,1,6]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"D\",\"A\"],[\"D\",\"B\"],[\"D\",\"C\"]],[],[[\"neutral\",[],[]],[\"boundary\",[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"]],[]],[\"region\",[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"]],[\"A\",\"B\",\"C\"]],[\"face-dab\",[[\"D\",\"A\"],[\"A\",\"B\"],[\"B\",\"D\"]],[\"D\",\"A\",\"B\"]],[\"face-dbc\",[[\"D\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"]],[\"D\",\"B\",\"C\"]],[\"face-dca\",[[\"D\",\"C\"],[\"C\",\"A\"],[\"A\",\"D\"]],[\"D\",\"C\",\"A\"]],[\"opposite-one\",[[\"A\",\"D\"],[\"B\",\"C\"]],[]],[\"opposite-two\",[[\"B\",\"D\"],[\"A\",\"C\"]],[]],[\"opposite-three\",[[\"C\",\"D\"],[\"A\",\"B\"]],[]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A",
+          "B",
+          "D"
+        ],
+        [
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "C",
+          "A",
+          "D"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "theory-012"
+      ],
+      "reason": "The statement explicitly describes tetrahedron ABCD. Supply its four boundary faces; auxiliary points are not body vertices.",
+      "sourceGeometrySHA256": "65728123971428c092b0228b05f3b396ad479f133f4e9c8dd954616f0a3671af"
+    },
+    {
+      "key": "ae568c68:427",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[1,3,0],\"D\":[0.5,1,4],\"E\":[2,0,0],\"F\":[2.5,1.5,0],\"G\":[0.75,2,2],\"H\":[0.25,0.5,2],\"I\":[0.5,1.5,0],\"J\":[2.25,0.5,2],\"O\":[1.375,1,1]},[[\"A\",\"B\"],[\"A\",\"C\"],[\"A\",\"D\"],[\"B\",\"C\"],[\"B\",\"D\"],[\"C\",\"D\"],[\"E\",\"G\"],[\"F\",\"H\"],[\"I\",\"J\"]],[],[[\"neutral\",[],[]],[\"first\",[[\"E\",\"G\"],[\"F\",\"H\"]],[\"E\",\"F\",\"G\",\"H\"]],[\"second\",[[\"E\",\"G\"],[\"I\",\"J\"]],[\"E\",\"I\",\"G\",\"J\"]],[\"all\",[[\"E\",\"G\"],[\"F\",\"H\"],[\"I\",\"J\"]],[]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A",
+          "B",
+          "D"
+        ],
+        [
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "C",
+          "A",
+          "D"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0101"
+      ],
+      "reason": "The statement explicitly describes tetrahedron ABCD. Supply its four boundary faces; auxiliary points are not body vertices.",
+      "sourceGeometrySHA256": "3550a57ded8ceae17b19e684100bf9e4ffc41bc63683bda2108a6b9902ebe3a0"
+    },
+    {
+      "key": "71ee0be:349",
+      "signature": "[{\"A\":[0,0,0],\"B\":[20,0,0],\"C\":[10,17.32050807568877,0],\"D\":[10,5.773502691896257,16.32993161855452],\"M\":[10,0,0],\"N\":[5,8.660254037844386,0],\"H\":[7.5,4.330127018922193,0]},[[\"A\",\"B\"],[\"A\",\"C\"],[\"A\",\"D\"],[\"B\",\"C\"],[\"B\",\"D\"],[\"C\",\"D\"]],[],[[\"neutral\",[],[]],[\"section\",[],[\"D\",\"M\",\"N\"]],[\"height\",[[\"D\",\"M\"],[\"D\",\"N\"],[\"M\",\"N\"],[\"D\",\"H\"]],[]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A",
+          "B",
+          "D"
+        ],
+        [
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "C",
+          "A",
+          "D"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0102"
+      ],
+      "reason": "The statement explicitly describes tetrahedron ABCD. Supply its four boundary faces; auxiliary points are not body vertices.",
+      "sourceGeometrySHA256": "d8bc8d44b93ac723a48e301d2bdb229894ef49356042dc244f5d213d753d9bb8"
+    },
+    {
+      "key": "652f21e:379",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[1,5,0],\"D\":[0.5,1.6666666666666667,4],\"M\":[0.16666666666666669,0.5555555555555557,1.3333333333333335],\"N\":[2.833333333333333,0.5555555555555557,1.3333333333333335],\"P\":[0.8333333333333333,3.8888888888888893,1.3333333333333335]},[[\"A\",\"B\"],[\"A\",\"C\"],[\"A\",\"D\"],[\"B\",\"C\"],[\"B\",\"D\"],[\"C\",\"D\"]],[],[[\"neutral\",[],[]],[\"section\",[],[\"M\",\"N\",\"P\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A",
+          "B",
+          "D"
+        ],
+        [
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "C",
+          "A",
+          "D"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0103"
+      ],
+      "reason": "The statement explicitly describes tetrahedron ABCD. Supply its four boundary faces; auxiliary points are not body vertices.",
+      "sourceGeometrySHA256": "df1ff2c5acc9cc82742abafbc0cf0553abf48590d1c8ca219174f2b686734e34"
+    },
+    {
+      "key": "5d027dac:308",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[1,3,0],\"D\":[0.5,1,4],\"M\":[1.6,0,0],\"N\":[2.2,1.7999999999999998,0],\"P\":[0.8,2.1999999999999997,1.6],\"Q\":[0.2,0.4,1.6]},[[\"A\",\"B\"],[\"A\",\"C\"],[\"A\",\"D\"],[\"B\",\"C\"],[\"B\",\"D\"],[\"C\",\"D\"]],[],[[\"neutral\",[],[]],[\"first\",[[\"M\",\"N\"],[\"M\",\"Q\"]],[]],[\"section\",[],[\"M\",\"N\",\"P\",\"Q\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A",
+          "B",
+          "D"
+        ],
+        [
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "C",
+          "A",
+          "D"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0104"
+      ],
+      "reason": "The statement explicitly describes tetrahedron ABCD. Supply its four boundary faces; auxiliary points are not body vertices.",
+      "sourceGeometrySHA256": "37ddcd972e24c86e88d5c42ce7a25b8199ec8ae2c783661047068174fe08724f"
+    },
+    {
+      "key": "30c1267c:373",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[1,3,0],\"D\":[0.5,1,4],\"M\":[2.25,0.5,2],\"N\":[0.875,2.5,1],\"K\":[1.6666666666666667,1,4.440892098500626e-16],\"P\":[2.2857142857142856,0,0],\"Q\":[0.8,2.4000000000000004,0],\"X\":[-0.5,4.5,0]},[[\"A\",\"B\"],[\"A\",\"C\"],[\"A\",\"D\"],[\"B\",\"C\"],[\"B\",\"D\"],[\"C\",\"D\"]],[],[[\"neutral\",[],[]],[\"trace\",[[\"M\",\"X\"],[\"X\",\"P\"]],[]],[\"section\",[],[\"M\",\"N\",\"Q\",\"P\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A",
+          "B",
+          "D"
+        ],
+        [
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "C",
+          "A",
+          "D"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0105"
+      ],
+      "reason": "The statement explicitly describes tetrahedron ABCD. Supply its four boundary faces; auxiliary points are not body vertices.",
+      "sourceGeometrySHA256": "bf589ffc8aa59de354bcf858df89777d1d9dc0ea5757e44752ca2474b1a02f5a"
+    },
+    {
+      "key": "a66274bd:397",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[1,3,0],\"D\":[0.5,1,4],\"K\":[0.75,2,2],\"N\":[0.35,0.9000000000000001,1.2],\"M\":[1.25,0.75,0],\"P\":[0.5,0,0],\"Q\":[2.25,1.75,0],\"R\":[0.08333333333333333,0.16666666666666666,0.6666666666666666],\"E\":[-0.25,-0.75,0]},[[\"A\",\"B\"],[\"A\",\"C\"],[\"A\",\"D\"],[\"B\",\"C\"],[\"B\",\"D\"],[\"C\",\"D\"]],[],[[\"neutral\",[],[]],[\"traces\",[[\"K\",\"E\"],[\"E\",\"Q\"]],[]],[\"section\",[],[\"P\",\"Q\",\"K\",\"R\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A",
+          "B",
+          "D"
+        ],
+        [
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "C",
+          "A",
+          "D"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0106"
+      ],
+      "reason": "The statement explicitly describes tetrahedron ABCD. Supply its four boundary faces; auxiliary points are not body vertices.",
+      "sourceGeometrySHA256": "aa2f37b01be1e3c1349f92b642ce44cc999f5c506f423349efa52d5a5c496116"
+    },
+    {
+      "key": "f15ef8f9:236",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[1,3,0],\"D\":[0.5,1,4],\"M\":[1.6,0,0],\"N\":[0.4,1.2000000000000002,0],\"P\":[0.2,0.4,1.6]},[[\"A\",\"B\"],[\"A\",\"C\"],[\"A\",\"D\"],[\"B\",\"C\"],[\"B\",\"D\"],[\"C\",\"D\"]],[],[[\"neutral\",[],[]],[\"section\",[],[\"M\",\"N\",\"P\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A",
+          "B",
+          "D"
+        ],
+        [
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "C",
+          "A",
+          "D"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0107"
+      ],
+      "reason": "The statement explicitly describes tetrahedron ABCD. Supply its four boundary faces; auxiliary points are not body vertices.",
+      "sourceGeometrySHA256": "e54304afb2759c187fb8e07ec814af5f878f0e82b83e14cb9a7051ce7b98b56e"
+    },
+    {
+      "key": "e9534516:396",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[1,3,0],\"D\":[0.5,1,4],\"A1\":[2.362490369793976,1.6375096302060241,0],\"B1\":[0.47996789718855604,1.439903691565668,0],\"C1\":[1.7374895659359686,0,0],\"O\":[1.4845368116648208,1.0289749141743525,0]},[[\"A\",\"B\"],[\"A\",\"C\"],[\"A\",\"D\"],[\"B\",\"C\"],[\"B\",\"D\"],[\"C\",\"D\"],[\"D\",\"A1\"],[\"D\",\"B1\"],[\"D\",\"C1\"]],[],[[\"neutral\",[],[]],[\"cevians\",[[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"]],[]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A",
+          "B",
+          "D"
+        ],
+        [
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "C",
+          "A",
+          "D"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0108"
+      ],
+      "reason": "The statement explicitly describes tetrahedron ABCD. Supply its four boundary faces; auxiliary points are not body vertices.",
+      "sourceGeometrySHA256": "ffac48682d99f20656a01b5ed7a95564b980324c14ae3350ce3991e4486e24b5"
+    },
+    {
+      "key": "ad1a87f:379",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[5,3,0],\"D\":[1,3,0],\"A1\":[0.5,0.7,3],\"B1\":[4.5,0.7,3],\"C1\":[5.5,3.7,3],\"D1\":[1.5,3.7,3],\"K\":[3,3,0],\"L\":[4.5,1.5,0]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"D1\"],[\"D1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"],[\"D\",\"D1\"]],[],[[\"neutral\",[],[]],[\"base\",[[\"B\",\"D\"],[\"K\",\"L\"]],[]],[\"section\",[],[\"B1\",\"D1\",\"K\",\"L\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0084"
+      ],
+      "reason": "The statement explicitly describes parallelepiped ABCDA1B1C1D1. Supply its six boundary faces; displayed diagonal sections are not replacement body boundaries.",
+      "sourceGeometrySHA256": "bc8df891424764fc298456755be494f23400fa2ad54bddd8809400b5181fdf49"
+    },
+    {
+      "key": "373978b0:416",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[5,3,0],\"D\":[1,3,0],\"A1\":[0.5,0.7,3],\"B1\":[4.5,0.7,3],\"C1\":[5.5,3.7,3],\"D1\":[1.5,3.7,3],\"K\":[0.25,0.35,1.5],\"L\":[5.25,3.35,1.5],\"O\":[2.75,1.85,1.5]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"D1\"],[\"D1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"],[\"D\",\"D1\"]],[],[[\"neutral\",[],[]],[\"section\",[],[\"K\",\"B\",\"L\",\"D1\"]],[\"diagonals\",[[\"K\",\"L\"],[\"B\",\"D1\"]],[]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0085"
+      ],
+      "reason": "The statement explicitly describes parallelepiped ABCDA1B1C1D1. Supply its six boundary faces; displayed diagonal sections are not replacement body boundaries.",
+      "sourceGeometrySHA256": "9c768fcbc8888813b4b259a6cb425a56e7296ebc0c4569d9b64cee9a5525575b"
+    },
+    {
+      "key": "2ee87ad1:504",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[6,3.4641016151377544,0],\"D\":[2,3.4641016151377544,0],\"A1\":[0,0,3],\"B1\":[4,0,3],\"C1\":[6,3.4641016151377544,3],\"D1\":[2,3.4641016151377544,3],\"O\":[3,1.7320508075688772,0],\"K\":[2,3.4641016151377544,1.5]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"D1\"],[\"D1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"],[\"D\",\"D1\"],[\"A\",\"C\"],[\"B\",\"D1\"]],[],[[\"neutral\",[],[]],[\"construct\",[[\"A\",\"C\"],[\"B\",\"D\"],[\"B\",\"D1\"],[\"O\",\"K\"]],[]],[\"section\",[],[\"A\",\"C\",\"K\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0086"
+      ],
+      "reason": "The statement explicitly describes parallelepiped ABCDA1B1C1D1. Supply its six boundary faces; displayed diagonal sections are not replacement body boundaries.",
+      "sourceGeometrySHA256": "ac8ab51e2e689944e09531d4189d49f1647d22cb0eeb44b49a21cd85164cb704"
+    },
+    {
+      "key": "cdc6412b:488",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[5,3,0],\"D\":[1,3,0],\"A1\":[0.5,0.7,3],\"B1\":[4.5,0.7,3],\"C1\":[5.5,3.7,3],\"D1\":[1.5,3.7,3],\"M\":[4.375,0.5249999999999999,2.25],\"N\":[0.125,0.175,0.75],\"K\":[0.5,1.5,0],\"R\":[5.125,3.175,0.75],\"Q\":[3,3,0],\"X\":[-2,0,0]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"D1\"],[\"D1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"],[\"D\",\"D1\"]],[],[[\"neutral\",[],[]],[\"traces\",[[\"M\",\"X\"],[\"X\",\"Q\"],[\"N\",\"K\"]],[]],[\"section\",[],[\"N\",\"M\",\"R\",\"Q\",\"K\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0087-a"
+      ],
+      "reason": "The statement explicitly describes parallelepiped ABCDA1B1C1D1. Supply its six boundary faces; displayed diagonal sections are not replacement body boundaries.",
+      "sourceGeometrySHA256": "4363b5e4fa2e09398ca7063b898340aa8ac65b79906c696314376ba91d3c20d0"
+    },
+    {
+      "key": "bb39895d:479",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[5,3,0],\"D\":[1,3,0],\"A1\":[0.5,0.7,3],\"B1\":[4.5,0.7,3],\"C1\":[5.5,3.7,3],\"D1\":[1.5,3.7,3],\"M\":[5.375,3.525,2.25],\"N\":[0.5,1.5,0],\"K\":[4.125,0.175,0.75],\"P\":[2,0,0],\"R\":[1.125,3.175,0.75],\"X\":[3.5,-1.5,0]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"D1\"],[\"D1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"],[\"D\",\"D1\"]],[],[[\"neutral\",[],[]],[\"traces\",[[\"M\",\"X\"],[\"N\",\"X\"],[\"N\",\"R\"]],[]],[\"section\",[],[\"N\",\"P\",\"K\",\"M\",\"R\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0087-b"
+      ],
+      "reason": "The statement explicitly describes parallelepiped ABCDA1B1C1D1. Supply its six boundary faces; displayed diagonal sections are not replacement body boundaries.",
+      "sourceGeometrySHA256": "51268413415ae7b74e414791d4200f586022b768429f48edfd971104dae7580e"
+    },
+    {
+      "key": "893be83c:476",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[5,3,0],\"D\":[1,3,0],\"A1\":[0.5,0.7,3],\"B1\":[4.5,0.7,3],\"C1\":[5.5,3.7,3],\"D1\":[1.5,3.7,3],\"O\":[2.5,1.5,0],\"O1\":[3,2.2,3],\"S\":[2.75,1.85,1.5]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"D1\"],[\"D1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"],[\"D\",\"D1\"],[\"A\",\"C\"],[\"A1\",\"C1\"],[\"B\",\"D\"],[\"B1\",\"D1\"]],[],[[\"neutral\",[],[]],[\"line\",[[\"O\",\"O1\"]],[]],[\"diagonals\",[[\"O\",\"O1\"],[\"A\",\"C1\"],[\"C\",\"A1\"],[\"B\",\"D1\"],[\"D\",\"B1\"]],[]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0109"
+      ],
+      "reason": "The statement explicitly describes parallelepiped ABCDA1B1C1D1. Supply its six boundary faces; displayed diagonal sections are not replacement body boundaries.",
+      "sourceGeometrySHA256": "22b0f446af9564a76ea794a1e85b3dd3b2bd273c5c16b72e9485c01958740e21"
+    },
+    {
+      "key": "cb56b558:531",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[5,3,0],\"D\":[1,3,0],\"A1\":[0.5,0.7,3],\"B1\":[4.5,0.7,3],\"C1\":[5.5,3.7,3],\"D1\":[1.5,3.7,3]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"D1\"],[\"D1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"],[\"D\",\"D1\"],[\"A1\",\"D\"],[\"D\",\"B\"],[\"B\",\"A1\"],[\"D1\",\"C\"],[\"C\",\"B1\"],[\"B1\",\"D1\"]],[[\"A1\",\"D\",\"B\"],[\"D1\",\"C\",\"B1\"]],[[\"neutral\",[],[]],[\"pairs\",[[\"A1\",\"D\"],[\"B1\",\"C\"],[\"A1\",\"B\"],[\"D1\",\"C\"]],[]],[\"planes\",[[\"A1\",\"D\"],[\"D\",\"B\"],[\"B\",\"A1\"],[\"D1\",\"C\"],[\"C\",\"B1\"],[\"B1\",\"D1\"]],[\"A1\",\"D\",\"B\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0110"
+      ],
+      "reason": "The statement explicitly describes parallelepiped ABCDA1B1C1D1. Supply its six boundary faces; displayed diagonal sections are not replacement body boundaries.",
+      "sourceGeometrySHA256": "332c0885b04a0ca66cd9dfd421334972b3530ae14bf43e4b8c19c4c5bd1d98e5"
+    },
+    {
+      "key": "d051f3ab:317",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[5,3,0],\"D\":[1,3,0],\"A1\":[0.5,0.7,3],\"B1\":[4.5,0.7,3],\"C1\":[5.5,3.7,3],\"D1\":[1.5,3.7,3]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"D1\"],[\"D1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"],[\"D\",\"D1\"]],[],[[\"neutral\",[],[]],[\"path\",[[\"A\",\"C1\"],[\"A\",\"C\"]],[]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0111"
+      ],
+      "reason": "The statement explicitly describes parallelepiped ABCDA1B1C1D1. Supply its six boundary faces; displayed diagonal sections are not replacement body boundaries.",
+      "sourceGeometrySHA256": "2e1bd994711704461cdc9b8b89031197a7a591fe420dea8871ff46c1708fb4f1"
+    },
+    {
+      "key": "99be55ec:440",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[5,3,0],\"D\":[1,3,0],\"A1\":[0.5,0.7,3],\"B1\":[4.5,0.7,3],\"C1\":[5.5,3.7,3],\"D1\":[1.5,3.7,3]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"D1\"],[\"D1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"],[\"D\",\"D1\"]],[],[[\"neutral\",[],[]],[\"first\",[[\"A\",\"C1\"],[\"C\",\"A1\"]],[\"A\",\"C\",\"C1\",\"A1\"]],[\"second\",[[\"B\",\"D1\"],[\"D\",\"B1\"]],[\"B\",\"D\",\"D1\",\"B1\"]],[\"base\",[[\"A\",\"C\"],[\"B\",\"D\"]],[\"A\",\"B\",\"C\",\"D\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0112"
+      ],
+      "reason": "The statement explicitly describes parallelepiped ABCDA1B1C1D1. Supply its six boundary faces; displayed diagonal sections are not replacement body boundaries.",
+      "sourceGeometrySHA256": "3e1d967b996c81e1ee699ff1ea8de3785b32b99243bc5b8091a25041760926dc"
+    },
+    {
+      "key": "55b8bae2:452",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[5,3,0],\"D\":[1,3,0],\"A1\":[0.5,0.7,3],\"B1\":[4.5,0.7,3],\"C1\":[5.5,3.7,3],\"D1\":[1.5,3.7,3]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"D1\"],[\"D1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"],[\"D\",\"D1\"],[\"A1\",\"B\"],[\"C\",\"D1\"],[\"B\",\"D\"],[\"D1\",\"B1\"]],[[\"A1\",\"B\",\"C\",\"D1\"],[\"B\",\"D\",\"D1\",\"B1\"]],[[\"neutral\",[],[]],[\"sections\",[[\"A1\",\"B\"],[\"C\",\"D1\"],[\"B\",\"D\"],[\"D1\",\"B1\"]],[]],[\"line\",[[\"B\",\"D1\"]],[]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0113"
+      ],
+      "reason": "The statement explicitly describes parallelepiped ABCDA1B1C1D1. Supply its six boundary faces; displayed diagonal sections are not replacement body boundaries.",
+      "sourceGeometrySHA256": "6793eeb102521854c37b9b20c654defc9a3eaf909d52aa5c59fb566b45d7bc7f"
+    },
+    {
+      "key": "f52e7e7b:417",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[5,3,0],\"D\":[1,3,0],\"A1\":[0.5,0.7,3],\"B1\":[4.5,0.7,3],\"C1\":[5.5,3.7,3],\"D1\":[1.5,3.7,3],\"M\":[1.6,0,0],\"N\":[4.6,1.7999999999999998,0],\"M1\":[2.1,0.7,3],\"N1\":[5.1,2.5,3]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"D1\"],[\"D1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"],[\"D\",\"D1\"],[\"A\",\"C\"],[\"A\",\"C1\"]],[],[[\"neutral\",[],[]],[\"section\",[],[\"M\",\"N\",\"N1\",\"M1\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0114"
+      ],
+      "reason": "The statement explicitly describes parallelepiped ABCDA1B1C1D1. Supply its six boundary faces; displayed diagonal sections are not replacement body boundaries.",
+      "sourceGeometrySHA256": "058306a37f61434796ce28e3ba70a241a00d896ca64830d51e5269385d5f494f"
+    },
+    {
+      "key": "778eab0b:422",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[5,3,0],\"D\":[1,3,0],\"A1\":[0.5,0.7,3],\"B1\":[4.5,0.7,3],\"C1\":[5.5,3.7,3],\"D1\":[1.5,3.7,3],\"M\":[4.4,1.2000000000000002,0],\"N\":[2.6,3,0],\"P\":[5.3,3.42,1.7999999999999998]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"D1\"],[\"D1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"],[\"D\",\"D1\"],[\"B\",\"D\"],[\"B\",\"C1\"],[\"D\",\"C1\"]],[],[[\"neutral\",[],[]],[\"section\",[],[\"M\",\"N\",\"P\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0115"
+      ],
+      "reason": "The statement explicitly describes parallelepiped ABCDA1B1C1D1. Supply its six boundary faces; displayed diagonal sections are not replacement body boundaries.",
+      "sourceGeometrySHA256": "acbc822ed9bd4cf22a6c8c030f024b66aca91be60d1682ae6c901f77ec170db3"
+    },
+    {
+      "key": "5873610e:550",
+      "signature": "[{\"A\":[5.773502691896258,0,0],\"B\":[-2.8867513459481278,5.000000000000001,0],\"C\":[-2.8867513459481318,-4.999999999999999,0],\"A1\":[5.773502691896258,0,15],\"B1\":[-2.8867513459481278,5.000000000000001,15],\"C1\":[-2.8867513459481318,-4.999999999999999,15],\"M\":[1.4433756729740652,2.5000000000000004,0]},[[\"A\",\"B\"],[\"A1\",\"B1\"],[\"A\",\"A1\"],[\"B\",\"C\"],[\"B1\",\"C1\"],[\"B\",\"B1\"],[\"C\",\"A\"],[\"C1\",\"A1\"],[\"C\",\"C1\"]],[[\"A\",\"B\",\"C\"],[\"A1\",\"B1\",\"C1\"]],[[\"neutral\",[],[]],[\"side\",[],[\"A\",\"B\",\"B1\",\"A1\"]],[\"base\",[],[\"A\",\"B\",\"C\"]],[\"area\",[[\"C\",\"M\"]],[\"A\",\"B\",\"C\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "A",
+          "A1",
+          "C1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0229-a"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "1921a508219a9307ae825f575bc25c9592a6c75fdecbdb9eab3f8e26fd6860d7"
+    },
+    {
+      "key": "5e3b8fb0:649",
+      "signature": "[{\"A\":[8.485281374238571,0,0],\"B\":[5.19573633741296e-16,8.485281374238571,0],\"C\":[-8.485281374238571,1.039147267482592e-15,0],\"D\":[-1.558720901223888e-15,-8.485281374238571,0],\"A1\":[8.485281374238571,0,8],\"B1\":[5.19573633741296e-16,8.485281374238571,8],\"C1\":[-8.485281374238571,1.039147267482592e-15,8],\"D1\":[-1.558720901223888e-15,-8.485281374238571,8]},[[\"A\",\"B\"],[\"A1\",\"B1\"],[\"A\",\"A1\"],[\"B\",\"C\"],[\"B1\",\"C1\"],[\"B\",\"B1\"],[\"C\",\"D\"],[\"C1\",\"D1\"],[\"C\",\"C1\"],[\"D\",\"A\"],[\"D1\",\"A1\"],[\"D\",\"D1\"]],[[\"A\",\"B\",\"C\",\"D\"],[\"A1\",\"B1\",\"C1\",\"D1\"]],[[\"neutral\",[],[]],[\"side\",[],[\"A\",\"B\",\"B1\",\"A1\"]],[\"base\",[],[\"A\",\"B\",\"C\",\"D\"]],[\"area\",[],[\"A\",\"B\",\"C\",\"D\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0229-b"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "8ae531804ed4ec22854c50725589979d319a29448a540b391488f550506677cb"
+    },
+    {
+      "key": "c003cc7b:960",
+      "signature": "[{\"A\":[23.000000000000004,0,0],\"B\":[11.500000000000004,19.91858428704209,0],\"C\":[-11.499999999999996,19.918584287042094,0],\"D\":[-23.000000000000004,2.8166876380389127e-15,0],\"E\":[-11.500000000000012,-19.918584287042087,0],\"F\":[11.500000000000004,-19.91858428704209,0],\"A1\":[23.000000000000004,0,50],\"B1\":[11.500000000000004,19.91858428704209,50],\"C1\":[-11.499999999999996,19.918584287042094,50],\"D1\":[-23.000000000000004,2.8166876380389127e-15,50],\"E1\":[-11.500000000000012,-19.918584287042087,50],\"F1\":[11.500000000000004,-19.91858428704209,50],\"O\":[0,0,0]},[[\"A\",\"B\"],[\"A1\",\"B1\"],[\"A\",\"A1\"],[\"B\",\"C\"],[\"B1\",\"C1\"],[\"B\",\"B1\"],[\"C\",\"D\"],[\"C1\",\"D1\"],[\"C\",\"C1\"],[\"D\",\"E\"],[\"D1\",\"E1\"],[\"D\",\"D1\"],[\"E\",\"F\"],[\"E1\",\"F1\"],[\"E\",\"E1\"],[\"F\",\"A\"],[\"F1\",\"A1\"],[\"F\",\"F1\"]],[[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\"],[\"A1\",\"B1\",\"C1\",\"D1\",\"E1\",\"F1\"]],[[\"neutral\",[],[]],[\"side\",[],[\"A\",\"B\",\"B1\",\"A1\"]],[\"base\",[],[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\"]],[\"area\",[[\"O\",\"A\"],[\"O\",\"B\"]],[\"O\",\"A\",\"B\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1",
+          "E1",
+          "F1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "E",
+          "E1",
+          "D1"
+        ],
+        [
+          "E",
+          "F",
+          "F1",
+          "E1"
+        ],
+        [
+          "F",
+          "A",
+          "A1",
+          "F1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0229-c"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "67a8c970d82a0f69d8da55316d887bfd73273b759947822e8e41146a4da1b065"
+    },
+    {
+      "key": "f5b0b41:859",
+      "signature": "[{\"A\":[3.4026032334081595,0,0],\"B\":[1.0514622242382672,3.2360679774997894,0],\"C\":[-2.7527638409423467,2.0000000000000004,0],\"D\":[-2.752763840942347,-1.9999999999999996,0],\"E\":[1.0514622242382665,-3.23606797749979,0],\"A1\":[3.4026032334081595,0,1],\"B1\":[1.0514622242382672,3.2360679774997894,1],\"C1\":[-2.7527638409423467,2.0000000000000004,1],\"D1\":[-2.752763840942347,-1.9999999999999996,1],\"E1\":[1.0514622242382665,-3.23606797749979,1],\"O\":[0,0,0],\"M\":[2.2270327288232132,1.6180339887498947,0]},[[\"A\",\"B\"],[\"A1\",\"B1\"],[\"A\",\"A1\"],[\"B\",\"C\"],[\"B1\",\"C1\"],[\"B\",\"B1\"],[\"C\",\"D\"],[\"C1\",\"D1\"],[\"C\",\"C1\"],[\"D\",\"E\"],[\"D1\",\"E1\"],[\"D\",\"D1\"],[\"E\",\"A\"],[\"E1\",\"A1\"],[\"E\",\"E1\"]],[[\"A\",\"B\",\"C\",\"D\",\"E\"],[\"A1\",\"B1\",\"C1\",\"D1\",\"E1\"]],[[\"neutral\",[],[]],[\"side\",[],[\"A\",\"B\",\"B1\",\"A1\"]],[\"base\",[],[\"A\",\"B\",\"C\",\"D\",\"E\"]],[\"area\",[[\"O\",\"A\"],[\"O\",\"B\"],[\"O\",\"M\"]],[\"O\",\"A\",\"B\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1",
+          "E1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "E",
+          "E1",
+          "D1"
+        ],
+        [
+          "E",
+          "A",
+          "A1",
+          "E1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0229-d"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "3d2ecbfb4665b8ccce4bedf5bb35bd7adeb8cc017285233107ebec93f789abe9"
+    },
+    {
+      "key": "f28874c4:337",
+      "signature": "[{\"A\":[0,0,0],\"B\":[5,0,0],\"C\":[-1.5,2.598076211353316,0],\"A1\":[0,0,5],\"B1\":[5,0,5],\"C1\":[-1.5,2.598076211353316,5]},[[\"A\",\"B\"],[\"A1\",\"B1\"],[\"A\",\"A1\"],[\"B\",\"C\"],[\"B1\",\"C1\"],[\"B\",\"B1\"],[\"C\",\"A\"],[\"C1\",\"A1\"],[\"C\",\"C1\"]],[[\"A\",\"B\",\"C\"],[\"A1\",\"B1\",\"C1\"]],[[\"neutral\",[],[]],[\"base\",[],[\"A\",\"B\",\"C\"]],[\"largest\",[],[\"B\",\"C\",\"C1\",\"B1\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "A",
+          "A1",
+          "C1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0230"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "6aa00e01181de6451a093c6494e18a165ee178531fe15234f79661cf1fd4273e"
+    },
+    {
+      "key": "d6a007b7:502",
+      "signature": "[{\"A\":[0,0,0],\"B\":[15,0,0],\"C\":[19,6.928203230275509,0],\"D\":[4,6.928203230275509,0],\"A1\":[0,0,10],\"B1\":[15,0,10],\"C1\":[19,6.928203230275509,10],\"D1\":[4,6.928203230275509,10]},[[\"A\",\"B\"],[\"A1\",\"B1\"],[\"A\",\"A1\"],[\"B\",\"C\"],[\"B1\",\"C1\"],[\"B\",\"B1\"],[\"C\",\"D\"],[\"C1\",\"D1\"],[\"C\",\"C1\"],[\"D\",\"A\"],[\"D1\",\"A1\"],[\"D\",\"D1\"]],[[\"A\",\"B\",\"C\",\"D\"],[\"A1\",\"B1\",\"C1\",\"D1\"]],[[\"neutral\",[],[]],[\"diagonal\",[[\"B\",\"D\"]],[\"A\",\"B\",\"D\"]],[\"section\",[[\"B\",\"D\"],[\"B1\",\"D1\"]],[\"B\",\"D\",\"D1\",\"B1\"]],[\"base\",[],[\"A\",\"B\",\"C\",\"D\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0231"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "f10f411befb7050a698f2011349a40992bb6cc0ecada7b09258c9987b2d47dc0"
+    },
+    {
+      "key": "cef05be9:422",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[4,3,0],\"D\":[0,3,0],\"A1\":[0,0,5],\"B1\":[4,0,5],\"C1\":[4,3,5],\"D1\":[0,3,5]},[[\"A\",\"B\"],[\"A1\",\"B1\"],[\"A\",\"A1\"],[\"B\",\"C\"],[\"B1\",\"C1\"],[\"B\",\"B1\"],[\"C\",\"D\"],[\"C1\",\"D1\"],[\"C\",\"C1\"],[\"D\",\"A\"],[\"D1\",\"A1\"],[\"D\",\"D1\"],[\"A\",\"C1\"]],[[\"A\",\"B\",\"C\",\"D\"],[\"A1\",\"B1\",\"C1\",\"D1\"]],[[\"neutral\",[],[]],[\"height\",[[\"A\",\"C\"]],[\"A\",\"C\",\"C1\"]],[\"side\",[[\"A\",\"B1\"]],[\"A\",\"B1\",\"C1\"]],[\"base\",[],[\"A\",\"B\",\"C\",\"D\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0232"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "67b014e1e2b74e282fe6e9949a8d26e5edae7c095ecc5979d88a6560a3d71417"
+    },
+    {
+      "key": "e61b59d2:395",
+      "signature": "[{\"A\":[0,0,0],\"B\":[27,18,0],\"C\":[39,0,0],\"A1\":[0,0,10],\"B1\":[27,18,10],\"C1\":[39,0,10],\"D\":[27,0,0],\"D1\":[27,0,10]},[[\"A\",\"B\"],[\"A1\",\"B1\"],[\"A\",\"A1\"],[\"B\",\"C\"],[\"B1\",\"C1\"],[\"B\",\"B1\"],[\"C\",\"A\"],[\"C1\",\"A1\"],[\"C\",\"C1\"],[\"B\",\"D\"],[\"B1\",\"D1\"],[\"D\",\"D1\"]],[[\"A\",\"B\",\"C\"],[\"A1\",\"B1\",\"C1\"]],[[\"neutral\",[],[\"B\",\"B1\",\"D1\",\"D\"]],[\"base\",[[\"B\",\"D\"]],[\"A\",\"B\",\"C\"]],[\"section\",[],[\"B\",\"B1\",\"D1\",\"D\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "A",
+          "A1",
+          "C1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0233"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "e78a9bb9af9166bbf7afdf13819d19f4bf30c91125778fb04ce425f207e7fb09"
+    },
+    {
+      "key": "51503cf7:453",
+      "signature": "[{\"A\":[20,0,0],\"B\":[0,0,0],\"C\":[0,21,0],\"A1\":[20,0,42],\"B1\":[0,0,42],\"C1\":[0,21,42],\"M\":[10,10.5,0],\"N\":[0,0.9761904761904762,0],\"M1\":[10,10.5,42],\"N1\":[0,0.9761904761904762,42]},[[\"A\",\"B\"],[\"A1\",\"B1\"],[\"A\",\"A1\"],[\"B\",\"C\"],[\"B1\",\"C1\"],[\"B\",\"B1\"],[\"C\",\"A\"],[\"C1\",\"A1\"],[\"C\",\"C1\"]],[[\"A\",\"B\",\"C\"],[\"A1\",\"B1\",\"C1\"]],[[\"neutral\",[],[]],[\"trace\",[[\"M\",\"N\"]],[\"C\",\"M\",\"N\"]],[\"section\",[[\"M\",\"N\"],[\"M\",\"M1\"],[\"M1\",\"N1\"],[\"N\",\"N1\"]],[\"M\",\"N\",\"N1\",\"M1\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "A",
+          "A1",
+          "C1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0234"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "a2169293b0f757c0337ec8803b31d8ebf70f116cf1fb71b656b776a3ca20e1aa"
+    },
+    {
+      "key": "76f24fbf:356",
+      "signature": "[{\"A\":[4,0,0],\"B\":[0,0,0],\"C\":[0,3,0],\"A1\":[4,0,4],\"B1\":[0,0,4],\"C1\":[0,3,4]},[[\"A\",\"B\"],[\"A1\",\"B1\"],[\"A\",\"A1\"],[\"B\",\"C\"],[\"B1\",\"C1\"],[\"B\",\"B1\"],[\"C\",\"A\"],[\"C1\",\"A1\"],[\"C\",\"C1\"],[\"B\",\"A1\"],[\"C\",\"A1\"]],[[\"A\",\"B\",\"C\"],[\"A1\",\"B1\",\"C1\"]],[[\"neutral\",[],[\"B\",\"C\",\"A1\"]],[\"angle\",[],[\"A\",\"B\",\"A1\"]],[\"section\",[],[\"B\",\"C\",\"A1\"]],[\"base\",[],[\"A\",\"B\",\"C\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "A",
+          "A1",
+          "C1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0235"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "26ca7cba91283b8eeb79aeea2d2f18e17341b188be69eec035bba79736075464"
+    },
+    {
+      "key": "1a23ab73:585",
+      "signature": "[{\"A\":[0,0,0],\"B\":[5,0,0],\"C\":[4,3,0],\"D\":[-1,3,0],\"A1\":[2,1,5],\"B1\":[7,1,5],\"C1\":[6,4,5],\"D1\":[1,4,5],\"K\":[1.3333333333333333,0.6666666666666666,3.333333333333333],\"L\":[5.666666666666667,0.3333333333333333,1.6666666666666665],\"M\":[4.6,3.3,1.5],\"N\":[0.2666666666666666,3.6333333333333333,3.1666666666666665]},[[\"A\",\"B\"],[\"A1\",\"B1\"],[\"A\",\"A1\"],[\"B\",\"C\"],[\"B1\",\"C1\"],[\"B\",\"B1\"],[\"C\",\"D\"],[\"C1\",\"D1\"],[\"C\",\"C1\"],[\"D\",\"A\"],[\"D1\",\"A1\"],[\"D\",\"D1\"]],[[\"A\",\"B\",\"C\",\"D\"],[\"A1\",\"B1\",\"C1\",\"D1\"]],[[\"neutral\",[],[]],[\"section\",[],[\"K\",\"L\",\"M\",\"N\"]],[\"face\",[[\"K\",\"L\"]],[\"A\",\"B\",\"B1\",\"A1\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0236"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "dcb3c1fd0eb7557407fd326ac0ea22c23c158a6ed47f9e605d7d75603d36499d"
+    },
+    {
+      "key": "abd037be:887",
+      "signature": "[{\"A\":[1.7999999999999996,-3.117691453623978,0],\"B\":[-2.530127018922193,-5.617691453623978,0],\"C\":[-7.40151991520966,-2.180191453623979,0],\"D\":[-3.0713928962874673,0.31980854637602096,0],\"A1\":[-1.8,3.117691453623979,9.600000000000001],\"B1\":[-6.130127018922193,0.617691453623979,9.600000000000001],\"C1\":[-11.00151991520966,4.055191453623979,9.600000000000001],\"D1\":[-6.671392896287467,6.555191453623979,9.600000000000001],\"K\":[0,0,4.8],\"L\":[-4.330127018922193,-2.5,4.8],\"M\":[-8.227241335952167,-0.7500000000000004,2.201923788646684],\"N\":[-3.8971143170299736,1.7499999999999996,2.201923788646684]},[[\"A\",\"B\"],[\"A1\",\"B1\"],[\"A\",\"A1\"],[\"B\",\"C\"],[\"B1\",\"C1\"],[\"B\",\"B1\"],[\"C\",\"D\"],[\"C1\",\"D1\"],[\"C\",\"C1\"],[\"D\",\"A\"],[\"D1\",\"A1\"],[\"D\",\"D1\"]],[[\"A\",\"B\",\"C\",\"D\"],[\"A1\",\"B1\",\"C1\",\"D1\"]],[[\"neutral\",[],[\"K\",\"L\",\"M\",\"N\"]],[\"section\",[],[\"K\",\"L\",\"M\",\"N\"]],[\"face\",[[\"K\",\"L\"]],[\"A\",\"B\",\"B1\",\"A1\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0237"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "6b274a9debf39720be93d24c41fa227bd307758b72ddceb2fec93f11cf18f5d8"
+    },
+    {
+      "key": "1e5bd99d:449",
+      "signature": "[{\"A\":[0,-9,0],\"B\":[0,6,0],\"C\":[-35,-9,0],\"A1\":[0,5.399999999999999,19.200000000000003],\"B1\":[0,20.4,19.200000000000003],\"C1\":[-35,5.399999999999999,19.200000000000003],\"K\":[0,0,12],\"L\":[0,9.6,4.8],\"M\":[-35,0,12]},[[\"A\",\"B\"],[\"A1\",\"B1\"],[\"A\",\"A1\"],[\"B\",\"C\"],[\"B1\",\"C1\"],[\"B\",\"B1\"],[\"C\",\"A\"],[\"C1\",\"A1\"],[\"C\",\"C1\"]],[[\"A\",\"B\",\"C\"],[\"A1\",\"B1\",\"C1\"]],[[\"neutral\",[],[]],[\"section\",[],[\"K\",\"L\",\"M\"]],[\"right\",[[\"K\",\"L\"],[\"K\",\"M\"]],[\"K\",\"L\",\"M\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "A",
+          "A1",
+          "C1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0238"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "e6281c9fc8497aab3ddf9092390415c5d7f11ca5a77c232e9fac5ba24d4d5dfb"
+    },
+    {
+      "key": "ee06c476:569",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[4,3,0],\"D\":[0,3,0],\"A1\":[0,0,6],\"B1\":[4,0,6],\"C1\":[4,3,6],\"D1\":[0,3,6]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"D1\"],[\"D1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"],[\"D\",\"D1\"]],[[\"A\",\"B\",\"C\",\"D\"],[\"A1\",\"D1\",\"C1\",\"B1\"]],[[\"neutral\",[[\"A\",\"C\"],[\"A\",\"C1\"]],[]],[\"base\",[[\"A\",\"B\"],[\"B\",\"C\"],[\"A\",\"C\"]],[\"A\",\"B\",\"C\"]],[\"side-angle\",[[\"A\",\"B\"],[\"A\",\"C1\"],[\"B\",\"C1\"]],[\"A\",\"B\",\"C1\"]],[\"height\",[[\"A\",\"C\"],[\"C\",\"C1\"],[\"A\",\"C1\"]],[\"A\",\"C\",\"C1\"]],[\"lateral\",[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"C1\"]],[\"A\",\"B\",\"B1\",\"A1\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0290"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "dab43e5de26acde58e3ecab7a9f91cf5e85bed024018aaac25782849fff5a40e"
+    },
+    {
+      "key": "68f862aa:559",
+      "signature": "[{\"A\":[0,0,0],\"B\":[5,0,0],\"C\":[5,4,0],\"D\":[0,4,0],\"A1\":[0,0,3],\"B1\":[5,0,3],\"C1\":[5,4,3],\"D1\":[0,4,3]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"D1\"],[\"D1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"],[\"D\",\"D1\"]],[[\"A\",\"B\",\"C\",\"D\"],[\"A1\",\"D1\",\"C1\",\"B1\"]],[[\"neutral\",[[\"A\",\"C1\"]],[]],[\"base\",[[\"A\",\"B\"],[\"B\",\"C\"],[\"A\",\"C\"]],[\"A\",\"B\",\"C\"]],[\"side-angle\",[[\"A\",\"B\"],[\"A\",\"C1\"],[\"B\",\"C1\"]],[\"A\",\"B\",\"C1\"]],[\"height\",[[\"A\",\"C\"],[\"C\",\"C1\"],[\"A\",\"C1\"]],[\"A\",\"C\",\"C1\"]],[\"lateral\",[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"C1\"]],[\"A\",\"B\",\"B1\",\"A1\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0291"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "c60b3bc899fb2d0825faccbfc7ec2e8b254811c2e427706da27d02c4beb4d2e4"
+    },
+    {
+      "key": "7d3fa82f:724",
+      "signature": "[{\"A\":[0,0,0],\"B\":[6,0,0],\"C\":[6,6,0],\"D\":[0,6,0],\"A1\":[0,0,8],\"B1\":[6,0,8],\"C1\":[6,6,8],\"D1\":[0,6,8],\"H\":[0,3.84,2.88],\"N\":[2.16,3.84,2.88],\"P\":[2.16,0,0]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"D1\"],[\"D1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"],[\"D\",\"D1\"]],[[\"A\",\"B\",\"C\",\"D\"],[\"A1\",\"B1\",\"C1\",\"D1\"]],[[\"neutral\",[[\"A\",\"B\"],[\"D\",\"B1\"]],[]],[\"parallel-plane\",[[\"A\",\"B\"],[\"D\",\"B1\"]],[\"A1\",\"B1\",\"C\",\"D\"]],[\"side-height\",[[\"A\",\"H\"],[\"D\",\"A1\"]],[\"A\",\"A1\",\"D\"]],[\"transfer\",[[\"A1\",\"D\"],[\"D\",\"B1\"],[\"H\",\"N\"],[\"N\",\"P\"],[\"A\",\"H\"]],[\"A\",\"H\",\"N\",\"P\"]],[\"common-perpendicular\",[[\"A\",\"B\"],[\"D\",\"B1\"],[\"P\",\"N\"]],[]],[\"right-triangle\",[[\"D\",\"A1\"]],[\"A\",\"A1\",\"D\"]],[\"area\",[[\"A\",\"H\"]],[\"A\",\"A1\",\"D\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0292"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "8280acda2f7f40266379b9e9ed8dc1f2d12011262b70e82a971d0b8954c09027"
+    },
+    {
+      "key": "f972dce1:728",
+      "signature": "[{\"A\":[0,0,0],\"B\":[3,0,0],\"C\":[3,3,0],\"D\":[0,3,0],\"A1\":[0,0,4.242640687119286],\"B1\":[3,0,4.242640687119286],\"C1\":[3,3,4.242640687119286],\"D1\":[0,3,4.242640687119286],\"O\":[1.5,1.5,2.121320343559643]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"D1\"],[\"D1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"],[\"D\",\"D1\"]],[[\"A\",\"B\",\"C\",\"D\"],[\"A1\",\"B1\",\"C1\",\"D1\"]],[[\"neutral\",[[\"D\",\"B1\"],[\"B\",\"D1\"]],[]],[\"diagonal-section\",[[\"D\",\"B1\"],[\"B\",\"D1\"]],[\"B\",\"D\",\"D1\",\"B1\"]],[\"base-diagonal\",[[\"B\",\"D\"],[\"B\",\"B1\"]],[\"A\",\"B\",\"D\"]],[\"body-diagonal\",[[\"A1\",\"C\"],[\"A\",\"C\"]],[\"A\",\"A1\",\"C\"]],[\"half-diagonals\",[[\"A1\",\"C\"],[\"D\",\"B1\"]],[]],[\"equilateral\",[],[\"A1\",\"O\",\"B1\"]],[\"angle\",[[\"A1\",\"C\"],[\"D\",\"B1\"],[\"A1\",\"B1\"]],[]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0293"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "309d41fa7c2eaacf3cd44275a410ebd66825e8baea8dd217191abe29e72464e9"
+    },
+    {
+      "key": "d0287692:561",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[4,4,0],\"D\":[0,4,0],\"A1\":[0,0,6],\"B1\":[4,0,6],\"C1\":[4,4,6],\"D1\":[0,4,6]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"D1\"],[\"D1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"],[\"D\",\"D1\"]],[[\"A\",\"B\",\"C\",\"D\"],[\"A1\",\"B1\",\"C1\",\"D1\"]],[[\"neutral\",[],[]],[\"lateral\",[],[\"A\",\"B\",\"B1\",\"A1\"]],[\"vertical\",[[\"A\",\"C1\"],[\"C\",\"A1\"]],[\"A\",\"C\",\"C1\",\"A1\"]],[\"vertical-sides\",[[\"A\",\"C\"],[\"A\",\"A1\"]],[\"A\",\"C\",\"C1\",\"A1\"]],[\"oblique\",[[\"A\",\"C1\"],[\"B\",\"D1\"]],[\"A\",\"B\",\"C1\",\"D1\"]],[\"face-diagonal\",[[\"A\",\"D1\"]],[\"A\",\"D\",\"D1\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0294"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "f544eabfe5b951926a88d6eac43c18078c7ae4b58eb61457935446340f1bbb15"
+    },
+    {
+      "key": "2bbdb3f9:618",
+      "signature": "[{\"A\":[-3,0,0],\"B\":[0,2,0],\"C\":[3,0,0],\"D\":[0,-2,0],\"A1\":[-4,0,3],\"B1\":[-1,2,3],\"C1\":[2,0,3],\"D1\":[-1,-2,3],\"O\":[0,0,0],\"O1\":[-1,0,3]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"D1\"],[\"D1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"],[\"D\",\"D1\"]],[[\"A\",\"B\",\"C\",\"D\"],[\"A1\",\"B1\",\"C1\",\"D1\"]],[[\"neutral\",[],[]],[\"compare\",[[\"C1\",\"B\"],[\"C1\",\"D\"],[\"C\",\"B\"],[\"C\",\"D\"],[\"C\",\"C1\"]],[]],[\"base\",[[\"A\",\"C\"],[\"B\",\"D\"]],[\"A\",\"B\",\"C\",\"D\"]],[\"isosceles\",[[\"C1\",\"O\"]],[\"B\",\"C1\",\"D\"]],[\"plane\",[[\"B\",\"D\"],[\"C\",\"O\"],[\"C1\",\"O\"]],[\"C\",\"C1\",\"O\"]],[\"parallel\",[[\"B\",\"D\"],[\"O\",\"O1\"],[\"C\",\"C1\"]],[\"C\",\"C1\",\"O\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0295-a"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "9a316cf380639a28c632efc61236aa60fb22a82e96edd70f5274b80ec7d54def"
+    },
+    {
+      "key": "733a869:599",
+      "signature": "[{\"A\":[-3,0,0],\"B\":[0,2,0],\"C\":[3,0,0],\"D\":[0,-2,0],\"A1\":[-4,0,3],\"B1\":[-1,2,3],\"C1\":[2,0,3],\"D1\":[-1,-2,3],\"O\":[0,0,0]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"D1\"],[\"D1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"],[\"D\",\"D1\"]],[[\"A\",\"B\",\"C\",\"D\"],[\"A1\",\"B1\",\"C1\",\"D1\"]],[[\"neutral\",[],[]],[\"compare\",[[\"C1\",\"B\"],[\"C1\",\"D\"],[\"C\",\"B\"],[\"C\",\"D\"],[\"C\",\"C1\"]],[]],[\"base\",[[\"A\",\"C\"],[\"B\",\"D\"]],[\"A\",\"B\",\"C\",\"D\"]],[\"isosceles\",[[\"C1\",\"O\"]],[\"B\",\"C1\",\"D\"]],[\"plane\",[[\"B\",\"D\"],[\"C\",\"O\"],[\"C1\",\"O\"]],[\"C\",\"C1\",\"O\"]],[\"rectangle\",[[\"B\",\"D\"],[\"B\",\"B1\"]],[\"B\",\"B1\",\"D1\",\"D\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0295-b"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "cb1863720a8b983a1cd58130b6ce6743ca8d2425cf689b9fac48f0d4a71b6950"
+    },
+    {
+      "key": "5f3ada1a:599",
+      "signature": "[{\"A\":[-3,0,0],\"B\":[0,2,0],\"C\":[3,0,0],\"D\":[0,-2,0],\"A1\":[-4,0,3],\"B1\":[-1,2,3],\"C1\":[2,0,3],\"D1\":[-1,-2,3],\"O\":[0,0,0]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"D1\"],[\"D1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"],[\"D\",\"D1\"]],[[\"A\",\"B\",\"C\",\"D\"],[\"A1\",\"B1\",\"C1\",\"D1\"]],[[\"neutral\",[],[]],[\"compare\",[[\"C1\",\"B\"],[\"C1\",\"D\"],[\"C\",\"B\"],[\"C\",\"D\"],[\"C\",\"C1\"]],[]],[\"base\",[[\"A\",\"C\"],[\"B\",\"D\"]],[\"A\",\"B\",\"C\",\"D\"]],[\"isosceles\",[[\"C1\",\"O\"]],[\"B\",\"C1\",\"D\"]],[\"diagonal-plane\",[[\"B\",\"D\"],[\"C\",\"O\"],[\"C1\",\"O\"]],[\"A\",\"A1\",\"C1\",\"C\"]],[\"normal\",[[\"B\",\"D\"]],[\"A\",\"A1\",\"C1\",\"C\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0295-c"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "d32700fe994fd7c3a9f07f2a0e4ded7908a25f6df730be29ed02a6d2eabed3b5"
+    },
+    {
+      "key": "a1ae8657:692",
+      "signature": "[{\"A\":[-3,0,0],\"B\":[0,2,0],\"C\":[3,0,0],\"D\":[0,-2,0],\"A1\":[-4,0,3],\"B1\":[-1,2,3],\"C1\":[2,0,3],\"D1\":[-1,-2,3],\"O\":[0,0,0]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"D1\"],[\"D1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"],[\"D\",\"D1\"]],[[\"A\",\"B\",\"C\",\"D\"],[\"A1\",\"B1\",\"C1\",\"D1\"]],[[\"neutral\",[],[]],[\"compare\",[[\"C1\",\"B\"],[\"C1\",\"D\"],[\"C\",\"B\"],[\"C\",\"D\"],[\"C\",\"C1\"]],[]],[\"base\",[[\"A\",\"C\"],[\"B\",\"D\"]],[\"A\",\"B\",\"C\",\"D\"]],[\"isosceles\",[[\"C1\",\"O\"]],[\"B\",\"C1\",\"D\"]],[\"diagonal-plane\",[[\"B\",\"D\"],[\"C\",\"O\"],[\"C1\",\"O\"]],[\"A\",\"A1\",\"C1\",\"C\"]],[\"normal\",[[\"B\",\"D\"]],[\"A\",\"A1\",\"C1\",\"C\"]],[\"second-plane\",[[\"A\",\"C\"],[\"A\",\"A1\"],[\"A1\",\"C1\"],[\"C\",\"C1\"],[\"B\",\"D\"]],[\"B\",\"B1\",\"D1\",\"D\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0295-d"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "7f6965afe5b87040ec60eb2011c6ebd20bc1c77a91203b1e60d7b65483926e6e"
+    },
+    {
+      "key": "e06ac6ea:650",
+      "signature": "[{\"A\":[0,5.196152422706632,0],\"B\":[-3,0,0],\"C\":[3,0,0],\"A1\":[0,5.196152422706632,4],\"B1\":[-3,0,4],\"C1\":[3,0,4],\"M\":[-1.5,2.598076211353316,0],\"N\":[1.5,2.598076211353316,0],\"D\":[0,0,0],\"D1\":[0,0,4],\"P\":[0,2.598076211353316,0]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"]],[[\"A\",\"B\",\"C\"],[\"A1\",\"B1\",\"C1\"]],[[\"neutral\",[[\"M\",\"N\"],[\"B1\",\"C1\"]],[]],[\"section\",[],[\"M\",\"N\",\"C1\",\"B1\"]],[\"profile\",[[\"A\",\"D\"],[\"D\",\"D1\"]],[\"A\",\"D\",\"D1\"]],[\"angle\",[[\"P\",\"D\"],[\"P\",\"D1\"]],[\"P\",\"D\",\"D1\"]],[\"height\",[[\"P\",\"D1\"],[\"D\",\"D1\"]],[\"M\",\"N\",\"C1\",\"B1\"]],[\"base\",[[\"A\",\"D\"],[\"M\",\"N\"],[\"P\",\"D\"]],[\"A\",\"B\",\"C\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "A",
+          "A1",
+          "C1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0296"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "4667d18cabeea347b46bafb7f32811ae263272415cc469bec39529224e0ebce6"
+    },
+    {
+      "key": "daaaa923:613",
+      "signature": "[{\"A\":[-2,0,0],\"B\":[0,3.4641016151377544,0],\"C\":[2,0,0],\"A1\":[0,1.1547005383792515,3],\"B1\":[2,4.618802153517006,3],\"C1\":[4,1.1547005383792515,3],\"D\":[0,0,0],\"O\":[0,1.1547005383792515,0],\"M\":[1,1.7320508075688772,0]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"]],[[\"A\",\"B\",\"C\"],[\"A1\",\"B1\",\"C1\"]],[[\"neutral\",[[\"B\",\"D\"],[\"A1\",\"O\"]],[]],[\"base-altitude\",[[\"B\",\"D\"]],[\"A\",\"B\",\"C\"]],[\"inclined\",[[\"A1\",\"O\"],[\"O\",\"D\"],[\"A1\",\"D\"]],[\"A1\",\"B\",\"D\"]],[\"normal\",[[\"A\",\"C\"],[\"D\",\"A1\"],[\"D\",\"B\"]],[\"A1\",\"B\",\"D\"]],[\"face\",[[\"A1\",\"D\"],[\"B\",\"D\"]],[\"A\",\"C\",\"C1\",\"A1\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "A",
+          "A1",
+          "C1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0297-a"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "7826c790988eeef6c280470942435649ea165baa3e8cd3db7385a3c0182caa58"
+    },
+    {
+      "key": "332b482a:596",
+      "signature": "[{\"A\":[-2,0,0],\"B\":[0,3.4641016151377544,0],\"C\":[2,0,0],\"A1\":[0,1.1547005383792515,3],\"B1\":[2,4.618802153517006,3],\"C1\":[4,1.1547005383792515,3],\"D\":[0,0,0],\"O\":[0,1.1547005383792515,0],\"M\":[1,1.7320508075688772,0]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"]],[[\"A\",\"B\",\"C\"],[\"A1\",\"B1\",\"C1\"]],[[\"neutral\",[[\"A1\",\"O\"]],[]],[\"median\",[[\"A\",\"M\"]],[\"A\",\"B\",\"C\"]],[\"inclined\",[[\"A1\",\"O\"],[\"A1\",\"M\"],[\"O\",\"M\"]],[\"A\",\"M\",\"A1\"]],[\"normal\",[[\"B\",\"C\"],[\"A\",\"M\"],[\"A1\",\"M\"]],[\"A\",\"M\",\"A1\"]],[\"face\",[[\"A\",\"M\"],[\"A1\",\"O\"]],[\"B\",\"C\",\"C1\",\"B1\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "A",
+          "A1",
+          "C1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0297-b"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "dd40833eb7c9fd489608661c8780b206835b481cc971b9d9472d38d6da0780a7"
+    },
+    {
+      "key": "8dd5de7e:647",
+      "signature": "[{\"A\":[-2,0,0],\"B\":[0,3.4641016151377544,0],\"C\":[2,0,0],\"A1\":[0,1.1547005383792515,3],\"B1\":[2,4.618802153517006,3],\"C1\":[4,1.1547005383792515,3],\"D\":[0,0,0],\"O\":[0,1.1547005383792515,0],\"M\":[1,1.7320508075688772,0]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"]],[[\"A\",\"B\",\"C\"],[\"A1\",\"B1\",\"C1\"]],[[\"neutral\",[[\"A1\",\"O\"]],[]],[\"median\",[[\"A\",\"M\"]],[\"A\",\"B\",\"C\"]],[\"inclined\",[[\"A1\",\"O\"],[\"A1\",\"M\"],[\"O\",\"M\"]],[\"A\",\"M\",\"A1\"]],[\"normal\",[[\"B\",\"C\"],[\"A\",\"A1\"]],[\"A\",\"M\",\"A1\"]],[\"parallel-edges\",[[\"A\",\"A1\"],[\"B\",\"B1\"],[\"B\",\"C\"]],[]],[\"rectangle\",[[\"B\",\"B1\"],[\"B\",\"C\"]],[\"B\",\"C\",\"C1\",\"B1\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "A",
+          "A1",
+          "C1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0297-c"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "fe25312559afb4beb895d4477dd68611fd18f33e2dd0ae4a4c97eddb3725c4c4"
+    },
+    {
+      "key": "9a7adb7c:696",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[4,4,0],\"D\":[0,4,0],\"A1\":[2,2,3],\"B1\":[6,2,3],\"C1\":[6,6,3],\"D1\":[2,6,3],\"O\":[2,2,0],\"K\":[2,0,0],\"L\":[0,2,0]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"D1\"],[\"D1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"],[\"D\",\"D1\"]],[[\"A\",\"B\",\"C\",\"D\"],[\"A1\",\"B1\",\"C1\",\"D1\"]],[[\"neutral\",[],[]],[\"projection\",[[\"A1\",\"O\"],[\"O\",\"A\"],[\"O\",\"B\"],[\"O\",\"C\"],[\"O\",\"D\"]],[]],[\"height\",[[\"A\",\"C\"],[\"A1\",\"O\"]],[\"A\",\"O\",\"A1\"]],[\"foot\",[[\"O\",\"K\"],[\"A1\",\"O\"],[\"A1\",\"K\"]],[\"A\",\"B\",\"B1\",\"A1\"]],[\"altitude\",[[\"A\",\"K\"],[\"A1\",\"K\"]],[\"A\",\"K\",\"A1\"]],[\"adjacent\",[[\"O\",\"L\"],[\"A1\",\"L\"],[\"A1\",\"O\"]],[\"A\",\"D\",\"D1\",\"A1\"]],[\"surface\",[[\"A1\",\"K\"],[\"A1\",\"L\"]],[\"A\",\"B\",\"C\",\"D\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1",
+          "D1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "D",
+          "D1",
+          "C1"
+        ],
+        [
+          "D",
+          "A",
+          "A1",
+          "D1"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0298"
+      ],
+      "reason": "The stated prism has two authored base cycles and corresponding vertices with suffix1. Supply the lateral quadrilateral for each consecutive base pair.",
+      "sourceGeometrySHA256": "4726c2ad205049fbe68dc9d4c6fd2124500b27dccce4ef4c053a4521acd53d5d"
+    },
+    {
+      "key": "d581c6c2:463",
+      "signature": "[{\"A\":[0,3.4641016151377544,0],\"B\":[-3,-1.7320508075688772,0],\"C\":[3,-1.7320508075688772,0],\"D\":[0,0,3],\"O\":[0,0,0],\"E\":[0,-1.7320508075688772,0]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"D\",\"A\"],[\"D\",\"B\"],[\"D\",\"C\"]],[[\"A\",\"B\",\"C\"]],[[\"neutral\",[],[]],[\"apothem\",[[\"D\",\"E\"]],[\"D\",\"B\",\"C\"]],[\"areas\",[[\"D\",\"E\"]],[\"A\",\"B\",\"C\"]],[\"center\",[[\"A\",\"E\"],[\"D\",\"O\"]],[]],[\"right\",[[\"D\",\"O\"],[\"O\",\"E\"],[\"D\",\"E\"]],[\"D\",\"O\",\"E\"]],[\"height\",[[\"D\",\"O\"],[\"O\",\"E\"],[\"D\",\"E\"]],[]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "D",
+          "A",
+          "B"
+        ],
+        [
+          "D",
+          "B",
+          "C"
+        ],
+        [
+          "D",
+          "C",
+          "A"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0299"
+      ],
+      "reason": "The statement names a pyramid with the authored base cycle and apex D. Supply exactly one lateral triangle per base side; height, feet, and section points are not body vertices.",
+      "sourceGeometrySHA256": "be9db4fe9847c44841d8b5c5c6da01f2a79f397d3a9fe0efaed0793dc03fe76f"
+    },
+    {
+      "key": "6a7636f0:777",
+      "signature": "[{\"A\":[0,3.4641016151377544,0],\"B\":[-3,-1.7320508075688772,0],\"C\":[3,-1.7320508075688772,0],\"D\":[0,0,3.605551275463989],\"E\":[0,-1.7320508075688772,0],\"F\":[-1.5,0.8660254037844386,0],\"P\":[0,1.7320508075688772,1.8027756377319946],\"Q\":[1.5,-0.8660254037844386,1.8027756377319946],\"M\":[1.5,0.8660254037844386,0]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"D\",\"A\"],[\"D\",\"B\"],[\"D\",\"C\"]],[[\"A\",\"B\",\"C\"]],[[\"neutral\",[],[]],[\"base\",[[\"E\",\"F\"]],[\"A\",\"B\",\"C\"]],[\"face\",[[\"E\",\"F\"],[\"F\",\"P\"]],[\"A\",\"B\",\"D\"]],[\"fourth\",[[\"E\",\"F\"],[\"F\",\"P\"],[\"P\",\"Q\"]],[\"A\",\"C\",\"D\"]],[\"section\",[[\"E\",\"F\"],[\"F\",\"P\"],[\"P\",\"Q\"],[\"Q\",\"E\"]],[\"E\",\"F\",\"P\",\"Q\"]],[\"right\",[[\"B\",\"M\"],[\"D\",\"M\"],[\"E\",\"F\"],[\"F\",\"P\"],[\"P\",\"Q\"],[\"Q\",\"E\"]],[\"B\",\"D\",\"M\"]],[\"area\",[[\"E\",\"F\"],[\"F\",\"P\"],[\"P\",\"Q\"],[\"Q\",\"E\"]],[\"E\",\"F\",\"P\",\"Q\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "D",
+          "A",
+          "B"
+        ],
+        [
+          "D",
+          "B",
+          "C"
+        ],
+        [
+          "D",
+          "C",
+          "A"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0300"
+      ],
+      "reason": "The statement names a pyramid with the authored base cycle and apex D. Supply exactly one lateral triangle per base side; height, feet, and section points are not body vertices.",
+      "sourceGeometrySHA256": "07d846108ed55e19910f3109db66e3a484c2293bfbb43306eed350e8642358bf"
+    },
+    {
+      "key": "280882a:602",
+      "signature": "[{\"A\":[16,0,0],\"B\":[-8,13.856406460551018,0],\"C\":[-8,-13.856406460551018,0],\"D\":[0,0,5.656854249492381],\"H\":[-5.333333333333333,0,7.542472332656508],\"E\":[-8,0,0]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"D\",\"A\"],[\"D\",\"B\"],[\"D\",\"C\"]],[[\"A\",\"B\",\"C\"]],[[\"neutral\",[],[]],[\"normal\",[[\"D\",\"H\"],[\"B\",\"H\"],[\"C\",\"H\"]],[\"B\",\"H\",\"C\"]],[\"base\",[[\"D\",\"H\"],[\"B\",\"H\"],[\"C\",\"H\"],[\"H\",\"E\"]],[\"B\",\"H\",\"C\"]],[\"projection\",[[\"D\",\"H\"],[\"A\",\"H\"],[\"B\",\"H\"]],[\"A\",\"B\",\"H\"]],[\"edge\",[[\"D\",\"H\"],[\"B\",\"H\"]],[\"D\",\"B\",\"H\"]],[\"position\",[[\"D\",\"H\"],[\"H\",\"E\"]],[\"A\",\"D\",\"E\"]],[\"apothem\",[[\"D\",\"E\"],[\"H\",\"E\"],[\"D\",\"H\"]],[\"D\",\"H\",\"E\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "D",
+          "A",
+          "B"
+        ],
+        [
+          "D",
+          "B",
+          "C"
+        ],
+        [
+          "D",
+          "C",
+          "A"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0301"
+      ],
+      "reason": "The statement names a pyramid with the authored base cycle and apex D. Supply exactly one lateral triangle per base side; height, feet, and section points are not body vertices.",
+      "sourceGeometrySHA256": "a78df3b8e96552d2adeea95893e4f727c344f6d05806307a438f510c618e7e56"
+    },
+    {
+      "key": "60b7b5c3:543",
+      "signature": "[{\"A\":[3,0,0],\"B\":[3.3333333333333335,2.9814239699997196,0],\"C\":[-3,0,0],\"D\":[-3.3333333333333335,-2.9814239699997196,0],\"S\":[0,0,4],\"O\":[0,0,0]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"S\",\"A\"],[\"S\",\"B\"],[\"S\",\"C\"],[\"S\",\"D\"],[\"S\",\"O\"]],[[\"A\",\"B\",\"C\",\"D\"]],[[\"neutral\",[],[]],[\"diagonals\",[[\"A\",\"C\"],[\"B\",\"D\"]],[\"A\",\"B\",\"C\",\"D\"]],[\"halves\",[[\"A\",\"C\"],[\"B\",\"D\"]],[]],[\"first\",[[\"A\",\"O\"],[\"C\",\"O\"],[\"S\",\"O\"]],[\"S\",\"A\",\"C\"]],[\"second\",[[\"B\",\"O\"],[\"D\",\"O\"],[\"S\",\"O\"]],[\"S\",\"B\",\"D\"]],[\"answer\",[[\"S\",\"A\"],[\"S\",\"C\"],[\"S\",\"B\"],[\"S\",\"D\"]],[]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "S",
+          "A",
+          "B"
+        ],
+        [
+          "S",
+          "B",
+          "C"
+        ],
+        [
+          "S",
+          "C",
+          "D"
+        ],
+        [
+          "S",
+          "D",
+          "A"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0302"
+      ],
+      "reason": "The statement names a pyramid with the authored base cycle and apex S. Supply exactly one lateral triangle per base side; height, feet, and section points are not body vertices.",
+      "sourceGeometrySHA256": "ded3a179dbfe659e38e8cf959e848c712b76e4a9c03e5b9d8062e3fbf547e0df"
+    },
+    {
+      "key": "3d013859:701",
+      "signature": "[{\"A\":[0,0,0],\"B\":[24,0,0],\"C\":[12,20.784609690826528,0],\"D\":[-12,20.784609690826528,0],\"S\":[0,0,12],\"K\":[18,10.392304845413264,0],\"L\":[0,20.784609690826528,0]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"S\",\"A\"],[\"S\",\"B\"],[\"S\",\"C\"],[\"S\",\"D\"]],[[\"A\",\"B\",\"C\",\"D\"]],[[\"neutral\",[],[]],[\"vertical\",[[\"S\",\"A\"],[\"A\",\"D\"]],[\"S\",\"A\",\"B\"]],[\"baseangle\",[[\"A\",\"B\"],[\"A\",\"D\"]],[\"A\",\"B\",\"C\",\"D\"]],[\"normal\",[[\"A\",\"K\"],[\"S\",\"K\"],[\"S\",\"A\"]],[\"S\",\"A\",\"K\"]],[\"side\",[[\"A\",\"K\"]],[\"A\",\"B\",\"K\"]],[\"basearea\",[[\"A\",\"K\"]],[\"A\",\"B\",\"C\",\"D\"]],[\"rightfaces\",[[\"S\",\"A\"]],[\"S\",\"A\",\"B\"]],[\"slantfaces\",[[\"S\",\"K\"],[\"S\",\"L\"],[\"A\",\"K\"],[\"A\",\"L\"]],[\"S\",\"B\",\"C\"]],[\"surface\",[[\"S\",\"A\"],[\"S\",\"K\"],[\"S\",\"L\"]],[\"A\",\"B\",\"C\",\"D\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "S",
+          "A",
+          "B"
+        ],
+        [
+          "S",
+          "B",
+          "C"
+        ],
+        [
+          "S",
+          "C",
+          "D"
+        ],
+        [
+          "S",
+          "D",
+          "A"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0303"
+      ],
+      "reason": "The statement names a pyramid with the authored base cycle and apex S. Supply exactly one lateral triangle per base side; height, feet, and section points are not body vertices.",
+      "sourceGeometrySHA256": "e53418732cf620512ab138a241552e055ba1230f65424f4157f87371e79b565d"
+    },
+    {
+      "key": "34dce1cd:677",
+      "signature": "[{\"A\":[-2,-2,0],\"B\":[2,-2,0],\"C\":[2,2,0],\"D\":[-2,2,0],\"S\":[0,0,2.8284271247461903],\"O\":[0,0,0],\"K\":[0,-2,0],\"H\":[-1,-1,1.4142135623730951]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"S\",\"A\"],[\"S\",\"B\"],[\"S\",\"C\"],[\"S\",\"D\"]],[[\"A\",\"B\",\"C\",\"D\"]],[[\"neutral\",[],[]],[\"equilateral\",[],[\"S\",\"A\",\"B\"]],[\"height\",[[\"S\",\"O\"],[\"A\",\"C\"]],[\"S\",\"A\",\"O\"]],[\"baseangle\",[[\"S\",\"K\"],[\"O\",\"K\"],[\"S\",\"O\"]],[\"S\",\"O\",\"K\"]],[\"lateralangle\",[[\"B\",\"H\"],[\"D\",\"H\"]],[\"B\",\"H\",\"D\"]],[\"bisector\",[[\"H\",\"O\"],[\"B\",\"D\"]],[\"B\",\"H\",\"D\"]],[\"lengths\",[[\"H\",\"O\"],[\"S\",\"O\"]],[\"S\",\"O\",\"A\"]],[\"compare\",[[\"B\",\"H\"],[\"B\",\"O\"],[\"H\",\"O\"]],[\"S\",\"O\",\"K\"]],[\"conclusion\",[[\"H\",\"O\"],[\"S\",\"K\"],[\"K\",\"O\"]],[\"B\",\"H\",\"D\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "S",
+          "A",
+          "B"
+        ],
+        [
+          "S",
+          "B",
+          "C"
+        ],
+        [
+          "S",
+          "C",
+          "D"
+        ],
+        [
+          "S",
+          "D",
+          "A"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0304"
+      ],
+      "reason": "The statement names a pyramid with the authored base cycle and apex S. Supply exactly one lateral triangle per base side; height, feet, and section points are not body vertices.",
+      "sourceGeometrySHA256": "fb99dc1993d9d3854cc78c677f7b64330d8d50d467a761129e06598c6f8454e0"
+    },
+    {
+      "key": "4ba32fd6:573",
+      "signature": "[{\"A\":[-2,-2,0],\"B\":[2,-2,0],\"C\":[2,2,0],\"D\":[-2,2,0],\"S\":[0,0,3],\"O\":[0,0,0],\"K\":[0,-2,0]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"S\",\"A\"],[\"S\",\"B\"],[\"S\",\"C\"],[\"S\",\"D\"]],[[\"A\",\"B\",\"C\",\"D\"]],[[\"neutral\",[],[]],[\"section\",[[\"S\",\"O\"],[\"O\",\"K\"],[\"S\",\"K\"]],[\"S\",\"O\",\"K\"]],[\"halfangle\",[[\"A\",\"K\"],[\"S\",\"K\"]],[\"S\",\"A\",\"K\"]],[\"height\",[[\"S\",\"O\"],[\"O\",\"K\"],[\"S\",\"K\"]],[\"S\",\"O\",\"K\"]],[\"apothem\",[[\"S\",\"K\"],[\"O\",\"K\"]],[\"S\",\"O\",\"K\"]],[\"area\",[[\"S\",\"K\"]],[\"S\",\"A\",\"B\"]],[\"formula\",[[\"S\",\"K\"],[\"S\",\"O\"]],[\"S\",\"A\",\"B\"]],[\"domain\",[[\"S\",\"K\"],[\"O\",\"K\"],[\"S\",\"O\"]],[\"S\",\"O\",\"K\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "S",
+          "A",
+          "B"
+        ],
+        [
+          "S",
+          "B",
+          "C"
+        ],
+        [
+          "S",
+          "C",
+          "D"
+        ],
+        [
+          "S",
+          "D",
+          "A"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0305"
+      ],
+      "reason": "The statement names a pyramid with the authored base cycle and apex S. Supply exactly one lateral triangle per base side; height, feet, and section points are not body vertices.",
+      "sourceGeometrySHA256": "d0e1848e916c357aa6d01a443f035b2a8d80ecf678d86611faee9afd44257f1d"
+    },
+    {
+      "key": "38f780af:616",
+      "signature": "[{\"A\":[-2,-2,0],\"B\":[2,-2,0],\"C\":[2,2,0],\"D\":[-2,2,0],\"S\":[0,0,3],\"O\":[0,0,0],\"K\":[0,-2,0],\"T\":[0,-1.3846153846153846,0.9230769230769231]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"S\",\"A\"],[\"S\",\"B\"],[\"S\",\"C\"],[\"S\",\"D\"]],[[\"A\",\"B\",\"C\",\"D\"]],[[\"neutral\",[],[]],[\"section\",[[\"S\",\"O\"],[\"O\",\"K\"],[\"S\",\"K\"]],[\"S\",\"O\",\"K\"]],[\"projection\",[[\"O\",\"T\"],[\"S\",\"T\"]],[\"S\",\"O\",\"K\"]],[\"angle\",[[\"S\",\"O\"],[\"S\",\"K\"]],[\"S\",\"O\",\"K\"]],[\"side\",[[\"S\",\"O\"],[\"O\",\"K\"]],[\"S\",\"O\",\"K\"]],[\"apothem\",[[\"S\",\"K\"],[\"S\",\"O\"]],[\"S\",\"A\",\"B\"]],[\"surface\",[[\"S\",\"K\"]],[\"A\",\"B\",\"C\",\"D\"]],[\"simplify\",[[\"S\",\"K\"],[\"S\",\"O\"],[\"O\",\"K\"]],[\"S\",\"O\",\"K\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "S",
+          "A",
+          "B"
+        ],
+        [
+          "S",
+          "B",
+          "C"
+        ],
+        [
+          "S",
+          "C",
+          "D"
+        ],
+        [
+          "S",
+          "D",
+          "A"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0306"
+      ],
+      "reason": "The statement names a pyramid with the authored base cycle and apex S. Supply exactly one lateral triangle per base side; height, feet, and section points are not body vertices.",
+      "sourceGeometrySHA256": "427bad3ae827e06d6b41980325896d29772db5170fb68fe55fd5a20da36a8e2d"
+    },
+    {
+      "key": "e40229f6:558",
+      "signature": "[{\"A\":[-3,0,0],\"B\":[0,-3,0],\"C\":[3,0,0],\"D\":[0,3,0],\"M\":[0,0,4],\"O\":[0,0,0],\"K\":[1.5,0,2],\"U\":[1.92,0,2.56],\"V\":[1.08,0,1.44]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"M\",\"A\"],[\"M\",\"B\"],[\"M\",\"C\"],[\"M\",\"D\"]],[[\"A\",\"B\",\"C\",\"D\"]],[[\"neutral\",[],[]],[\"center\",[[\"A\",\"C\"],[\"B\",\"D\"],[\"M\",\"O\"]],[]],[\"midline\",[[\"B\",\"D\"],[\"O\",\"K\"]],[\"M\",\"A\",\"C\"]],[\"section\",[[\"B\",\"D\"],[\"B\",\"K\"],[\"D\",\"K\"]],[\"B\",\"K\",\"D\"]],[\"altitude\",[[\"B\",\"D\"],[\"O\",\"K\"],[\"M\",\"O\"],[\"A\",\"C\"]],[\"B\",\"K\",\"D\"]],[\"length\",[[\"O\",\"K\"]],[\"M\",\"A\",\"C\"]],[\"area\",[[\"B\",\"D\"],[\"O\",\"K\"]],[\"B\",\"K\",\"D\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "M",
+          "A",
+          "B"
+        ],
+        [
+          "M",
+          "B",
+          "C"
+        ],
+        [
+          "M",
+          "C",
+          "D"
+        ],
+        [
+          "M",
+          "D",
+          "A"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0307-a"
+      ],
+      "reason": "The statement names a pyramid with the authored base cycle and apex M. Supply exactly one lateral triangle per base side; height, feet, and section points are not body vertices.",
+      "sourceGeometrySHA256": "7e2e64c500ecebd2c436470ba150fea402c4d7d263aaf1d46d5536680c550108"
+    },
+    {
+      "key": "d6ee941d:532",
+      "signature": "[{\"A\":[-3,0,0],\"B\":[0,-3,0],\"C\":[3,0,0],\"D\":[0,3,0],\"M\":[0,0,4],\"O\":[0,0,0],\"K\":[1.5,0,2],\"U\":[1.92,0,2.56],\"V\":[1.08,0,1.44]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"M\",\"A\"],[\"M\",\"B\"],[\"M\",\"C\"],[\"M\",\"D\"]],[[\"A\",\"B\",\"C\",\"D\"]],[[\"neutral\",[],[]],[\"center\",[[\"A\",\"C\"],[\"B\",\"D\"]],[]],[\"midpoint\",[[\"B\",\"D\"],[\"O\",\"K\"]],[\"M\",\"A\",\"C\"]],[\"section\",[[\"M\",\"C\"],[\"O\",\"K\"]],[\"B\",\"K\",\"D\"]],[\"feet\",[[\"M\",\"U\"],[\"C\",\"V\"],[\"O\",\"K\"],[\"M\",\"O\"],[\"A\",\"C\"]],[\"B\",\"K\",\"D\"]],[\"symmetry\",[[\"M\",\"C\"],[\"M\",\"U\"],[\"C\",\"V\"],[\"U\",\"V\"]],[\"B\",\"K\",\"D\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "M",
+          "A",
+          "B"
+        ],
+        [
+          "M",
+          "B",
+          "C"
+        ],
+        [
+          "M",
+          "C",
+          "D"
+        ],
+        [
+          "M",
+          "D",
+          "A"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0307-b"
+      ],
+      "reason": "The statement names a pyramid with the authored base cycle and apex M. Supply exactly one lateral triangle per base side; height, feet, and section points are not body vertices.",
+      "sourceGeometrySHA256": "01b154c5938ac5184eb4469f3050c01e44dc15c22ed9fe2e4c579f0a57efa379"
+    },
+    {
+      "key": "e64c329d:754",
+      "signature": "[{\"A\":[-3.46410161513775,2,0],\"B\":[-1.5,-2.59807621135332,0],\"C\":[3.46410161513775,-2,0],\"D\":[1.5,2.59807621135332,0],\"M\":[0,0,3.2],\"O\":[0,0,0],\"K\":[-2.20707658144959,-0.94276877526612,0],\"L\":[0.28707658144959,-2.38276877526612,0],\"N\":[2.20707658144959,0.94276877526612,0],\"T\":[-0.28707658144959,2.38276877526612,0]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"M\",\"A\"],[\"M\",\"B\"],[\"M\",\"C\"],[\"M\",\"D\"]],[[\"A\",\"B\",\"C\",\"D\"]],[[\"neutral\",[],[]],[\"diagonals\",[[\"A\",\"C\"],[\"B\",\"D\"],[\"M\",\"O\"]],[]],[\"base\",[[\"A\",\"C\"],[\"B\",\"D\"]],[\"A\",\"B\",\"C\",\"D\"]],[\"distance\",[[\"O\",\"K\"]],[\"A\",\"O\",\"B\"]],[\"face\",[[\"M\",\"K\"],[\"M\",\"O\"],[\"O\",\"K\"]],[\"M\",\"A\",\"B\"]],[\"triangle\",[[\"M\",\"K\"],[\"M\",\"O\"],[\"O\",\"K\"]],[\"M\",\"O\",\"K\"]],[\"allfaces\",[[\"M\",\"K\"],[\"M\",\"L\"],[\"M\",\"N\"],[\"M\",\"T\"]],[]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "M",
+          "A",
+          "B"
+        ],
+        [
+          "M",
+          "B",
+          "C"
+        ],
+        [
+          "M",
+          "C",
+          "D"
+        ],
+        [
+          "M",
+          "D",
+          "A"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0308"
+      ],
+      "reason": "The statement names a pyramid with the authored base cycle and apex M. Supply exactly one lateral triangle per base side; height, feet, and section points are not body vertices.",
+      "sourceGeometrySHA256": "fb9676cda36edc3e1d27793f5b7d710052977a339030fb76e1e0e44155f0d8fd"
+    },
+    {
+      "key": "bee5f143:1059",
+      "signature": "[{\"A\":[2.6399611232846,4.24624602060996,0],\"B\":[-3.33720706526586,3.72331156412401,0],\"C\":[-2.6399611232846,-4.24624602060996,0],\"D\":[3.33720706526586,-3.72331156412401,0],\"M\":[0,0,6],\"O\":[0,0,0],\"H\":[0,0,3],\"N\":[-0.34862297099063,3.98477879236698,0],\"Q\":[0.34862297099063,-3.98477879236698,0],\"P\":[0.11620765699688,-1.32825959745566,4],\"R\":[0.11620765699688,-1.32825959745566,0],\"E\":[-0.87998704109486,-1.41541534020332,4],\"F\":[1.11240235508862,-1.24110385470801,4]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"M\",\"A\"],[\"M\",\"B\"],[\"M\",\"C\"],[\"M\",\"D\"]],[[\"A\",\"B\",\"C\",\"D\"]],[[\"neutral\",[],[]],[\"projection\",[[\"M\",\"O\"],[\"A\",\"C\"],[\"B\",\"D\"]],[]],[\"normal\",[[\"M\",\"O\"],[\"N\",\"Q\"],[\"N\",\"H\"]],[\"M\",\"N\",\"Q\"]],[\"trace\",[[\"N\",\"P\"],[\"P\",\"R\"],[\"M\",\"O\"]],[\"M\",\"N\",\"Q\"]],[\"height\",[[\"N\",\"P\"],[\"M\",\"O\"],[\"P\",\"Q\"],[\"P\",\"R\"]],[\"N\",\"R\",\"P\"]],[\"section\",[[\"A\",\"F\"],[\"B\",\"E\"],[\"E\",\"F\"],[\"N\",\"P\"]],[\"A\",\"B\",\"E\",\"F\"]],[\"parallel\",[[\"E\",\"F\"],[\"M\",\"P\"],[\"P\",\"Q\"]],[\"M\",\"C\",\"D\"]],[\"altitude\",[[\"N\",\"P\"],[\"N\",\"R\"],[\"P\",\"R\"]],[\"A\",\"B\",\"E\",\"F\"]],[\"area\",[[\"N\",\"P\"]],[\"A\",\"B\",\"E\",\"F\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "M",
+          "A",
+          "B"
+        ],
+        [
+          "M",
+          "B",
+          "C"
+        ],
+        [
+          "M",
+          "C",
+          "D"
+        ],
+        [
+          "M",
+          "D",
+          "A"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0309"
+      ],
+      "reason": "The statement names a pyramid with the authored base cycle and apex M. Supply exactly one lateral triangle per base side; height, feet, and section points are not body vertices.",
+      "sourceGeometrySHA256": "6f90bbdb36612325347fa6ded60b93acbfa2b7bcda30fbf6a6d29c43e63e0d99"
+    },
+    {
+      "key": "f3b2cd03:627",
+      "signature": "[{\"A\":[0,0,0],\"B\":[1.36508554694612,-24.96270300767765,0],\"C\":[-24.34641884051545,5.67907471708147,0],\"D\":[0,0,8],\"E\":[-11.49066664678467,-9.64181414529809,0]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"D\",\"A\"],[\"D\",\"B\"],[\"D\",\"C\"]],[[\"A\",\"B\",\"C\"]],[[\"neutral\",[],[]],[\"rightfaces\",[[\"D\",\"A\"],[\"A\",\"B\"],[\"A\",\"C\"]],[\"D\",\"A\",\"B\"]],[\"baseheight\",[[\"A\",\"E\"],[\"B\",\"E\"],[\"E\",\"C\"]],[\"A\",\"B\",\"C\"]],[\"heightlength\",[[\"A\",\"B\"],[\"A\",\"E\"],[\"E\",\"B\"]],[\"A\",\"E\",\"B\"]],[\"sideheight\",[[\"D\",\"E\"],[\"D\",\"A\"],[\"A\",\"E\"]],[\"D\",\"B\",\"C\"]],[\"rightsection\",[[\"D\",\"A\"],[\"A\",\"E\"],[\"D\",\"E\"]],[\"D\",\"A\",\"E\"]],[\"sum\",[[\"D\",\"A\"],[\"D\",\"E\"],[\"B\",\"C\"]],[\"D\",\"B\",\"C\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "D",
+          "A",
+          "B"
+        ],
+        [
+          "D",
+          "B",
+          "C"
+        ],
+        [
+          "D",
+          "C",
+          "A"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0310"
+      ],
+      "reason": "The statement names a pyramid with the authored base cycle and apex D. Supply exactly one lateral triangle per base side; height, feet, and section points are not body vertices.",
+      "sourceGeometrySHA256": "490b3e08b2cf654ea180169b3155878a1867739676a9c39e3361b44921d2d593"
+    },
+    {
+      "key": "c7cbe271:662",
+      "signature": "[{\"A\":[-6.88291723621255,-9.8298245314679,0],\"B\":[7.37236839860093,-5.16218792715941,0],\"C\":[-4.09576022144496,2.86788218175523,0],\"D\":[-6.88291723621255,-9.8298245314679,9],\"E\":[0,0,0]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"D\",\"A\"],[\"D\",\"B\"],[\"D\",\"C\"]],[[\"A\",\"B\",\"C\"]],[[\"neutral\",[],[]],[\"basearea\",[],[\"A\",\"B\",\"C\"]],[\"rightfaces\",[[\"D\",\"A\"],[\"A\",\"B\"],[\"A\",\"C\"]],[\"D\",\"A\",\"B\"]],[\"baseheight\",[[\"A\",\"E\"],[\"B\",\"E\"],[\"E\",\"C\"]],[\"A\",\"B\",\"C\"]],[\"sideheight\",[[\"D\",\"E\"],[\"A\",\"E\"],[\"D\",\"A\"]],[\"D\",\"B\",\"C\"]],[\"heightlength\",[[\"D\",\"A\"],[\"A\",\"E\"],[\"D\",\"E\"]],[\"D\",\"A\",\"E\"]],[\"lastface\",[[\"B\",\"C\"],[\"D\",\"E\"]],[\"D\",\"B\",\"C\"]],[\"total\",[[\"D\",\"A\"],[\"D\",\"E\"]],[\"A\",\"B\",\"C\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "D",
+          "A",
+          "B"
+        ],
+        [
+          "D",
+          "B",
+          "C"
+        ],
+        [
+          "D",
+          "C",
+          "A"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0311-a"
+      ],
+      "reason": "The statement names a pyramid with the authored base cycle and apex D. Supply exactly one lateral triangle per base side; height, feet, and section points are not body vertices.",
+      "sourceGeometrySHA256": "0e67540a401d3e44153de7d28c679ed40e6fe0c2ce54455b66a0729c6517e881"
+    },
+    {
+      "key": "c6aa1346:753",
+      "signature": "[{\"A\":[11.2763114494309,4.10424171990803,0],\"B\":[-3.07818128993102,8.45723358707317,0],\"C\":[1.71010071662834,-4.69846310392954,0],\"D\":[11.2763114494309,4.10424171990803,9],\"E\":[0,0,0],\"H\":[7.21683932763578,2.62671470074114,5.76],\"T\":[0,0,5],\"J\":[6.19077889765877,5.44579256309886,5.76]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"D\",\"A\"],[\"D\",\"B\"],[\"D\",\"C\"]],[[\"A\",\"B\",\"C\"]],[[\"neutral\",[],[]],[\"baseheight\",[[\"A\",\"E\"],[\"B\",\"E\"],[\"E\",\"C\"]],[\"A\",\"B\",\"C\"]],[\"perpplane\",[[\"A\",\"E\"],[\"E\",\"T\"],[\"D\",\"A\"],[\"B\",\"C\"]],[\"D\",\"A\",\"E\"]],[\"sideheight\",[[\"D\",\"E\"],[\"A\",\"E\"]],[\"D\",\"B\",\"C\"]],[\"normal\",[[\"A\",\"H\"],[\"D\",\"E\"]],[\"D\",\"A\",\"E\"]],[\"proof\",[[\"A\",\"H\"],[\"D\",\"E\"],[\"B\",\"C\"],[\"H\",\"J\"]],[\"D\",\"B\",\"C\"]],[\"length\",[[\"D\",\"A\"],[\"A\",\"E\"],[\"D\",\"E\"],[\"A\",\"H\"]],[\"D\",\"A\",\"E\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "D",
+          "A",
+          "B"
+        ],
+        [
+          "D",
+          "B",
+          "C"
+        ],
+        [
+          "D",
+          "C",
+          "A"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0311-b"
+      ],
+      "reason": "The statement names a pyramid with the authored base cycle and apex D. Supply exactly one lateral triangle per base side; height, feet, and section points are not body vertices.",
+      "sourceGeometrySHA256": "fc9f7f00175e85bb442364abfc46d4b81e6aefb9f445aa10ea7ce6d3ce5887e9"
+    },
+    {
+      "key": "693fe831:848",
+      "signature": "[{\"A\":[4,0,0],\"B\":[2.0000000000000004,3.4641016151377544,0],\"C\":[-1.9999999999999991,3.464101615137755,0],\"D\":[-4,4.898587196589413e-16,0],\"E\":[-2.0000000000000018,-3.4641016151377535,0],\"F\":[2.0000000000000004,-3.4641016151377544,0],\"M\":[0,0,3],\"O\":[0,0,0],\"K\":[3,1.7320508075688772,0]},[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"E\"],[\"E\",\"F\"],[\"F\",\"A\"],[\"M\",\"A\"],[\"M\",\"B\"],[\"M\",\"C\"],[\"M\",\"D\"],[\"M\",\"E\"],[\"M\",\"F\"]],[[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\"]],[[\"neutral\",[],[]],[\"radii\",[[\"O\",\"A\"],[\"O\",\"B\"],[\"O\",\"K\"],[\"M\",\"O\"]],[\"O\",\"A\",\"B\"]],[\"edgeangle\",[[\"M\",\"A\"],[\"A\",\"O\"],[\"M\",\"O\"]],[\"M\",\"A\",\"O\"]],[\"faceangle\",[[\"M\",\"K\"],[\"K\",\"O\"],[\"M\",\"O\"]],[\"M\",\"K\",\"O\"]],[\"central\",[[\"O\",\"A\"],[\"O\",\"B\"],[\"O\",\"K\"]],[\"O\",\"A\",\"B\"]],[\"radiusratio\",[[\"O\",\"A\"],[\"O\",\"K\"],[\"A\",\"K\"]],[\"O\",\"A\",\"K\"]],[\"combine\",[[\"M\",\"O\"],[\"M\",\"A\"],[\"M\",\"K\"],[\"O\",\"A\"],[\"O\",\"K\"]],[\"M\",\"A\",\"O\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F"
+        ],
+        [
+          "M",
+          "A",
+          "B"
+        ],
+        [
+          "M",
+          "B",
+          "C"
+        ],
+        [
+          "M",
+          "C",
+          "D"
+        ],
+        [
+          "M",
+          "D",
+          "E"
+        ],
+        [
+          "M",
+          "E",
+          "F"
+        ],
+        [
+          "M",
+          "F",
+          "A"
+        ]
+      ],
+      "views": {},
+      "lessonIds": [
+        "ex-main-0312"
+      ],
+      "reason": "The statement names a pyramid with the authored base cycle and apex M. Supply exactly one lateral triangle per base side; height, feet, and section points are not body vertices.",
+      "sourceGeometrySHA256": "4f0635bda5dab48b1522719093c858618ae8162e7fbf93a3db49e55cf73ecdcd"
+    },
+    {
+      "key": "9fff1516:2657",
+      "signature": "[{\"_v000\":[0,0,0],\"_v001\":[0.8,0.6,5],\"_v010\":[1,4,0],\"_v011\":[1.8,4.6,5],\"_v100\":[6,0,0],\"_v101\":[6.8,0.6,5],\"_v110\":[7,4,0],\"_v111\":[7.8,4.6,5],\"_alpha0\":[-1,-0.5,2.5],\"_alpha1\":[7.3999999999999995,-0.5,2.5],\"_alpha2\":[8.799999999999999,5.1,2.5],\"_alpha3\":[0.3999999999999998,5.1,2.5],\"A3\":[0.36000000000000004,0.27,2.25],\"B3\":[3.5,0.6,5],\"C3\":[1.25,2.4,5],\"K\":[0.4,0.3,2.5],\"L\":[1.4,4.3,2.5],\"M\":[7.4,4.3,2.5],\"N\":[6.4,0.3,2.5],\"A5\":[0.24,0.18,1.5],\"B5\":[1.56,4.42,3.5],\"C5\":[7.24,4.18,1.5],\"D5\":[6.25,1,0],\"E5\":[4.5,0,0],\"A6\":[0.4,0.3,2.5],\"B6\":[1.3,2.6,5],\"C6\":[4.8,4.6,5],\"D6\":[7.4,4.3,2.5],\"E6\":[6.5,2,0],\"F6\":[3,0,0],\"_tA\":[0,0,0],\"_tB\":[6,0,0],\"_tC\":[1,4,0],\"_tD\":[1,1,5],\"T1\":[0.5,0.5,2.5],\"T2\":[3.5,0.5,2.5],\"T3\":[1,2.5,2.5],\"U1\":[3,0,0],\"U2\":[3.5,2,0],\"U3\":[1,2.5,2.5],\"U4\":[0.5,0.5,2.5]},[],[],[[\"neutral\",[[\"_v000\",\"_v001\"],[\"_v010\",\"_v011\"],[\"_v100\",\"_v101\"],[\"_v110\",\"_v111\"],[\"_v000\",\"_v010\"],[\"_v001\",\"_v011\"],[\"_v100\",\"_v110\"],[\"_v101\",\"_v111\"],[\"_v000\",\"_v100\"],[\"_v001\",\"_v101\"],[\"_v010\",\"_v110\"],[\"_v011\",\"_v111\"]],[\"_alpha0\",\"_alpha1\",\"_alpha2\",\"_alpha3\"]],[\"box3\",[[\"_v000\",\"_v001\"],[\"_v010\",\"_v011\"],[\"_v100\",\"_v101\"],[\"_v110\",\"_v111\"],[\"_v000\",\"_v010\"],[\"_v001\",\"_v011\"],[\"_v100\",\"_v110\"],[\"_v101\",\"_v111\"],[\"_v000\",\"_v100\"],[\"_v001\",\"_v101\"],[\"_v010\",\"_v110\"],[\"_v011\",\"_v111\"]],[\"A3\",\"B3\",\"C3\"]],[\"box4\",[[\"_v000\",\"_v001\"],[\"_v010\",\"_v011\"],[\"_v100\",\"_v101\"],[\"_v110\",\"_v111\"],[\"_v000\",\"_v010\"],[\"_v001\",\"_v011\"],[\"_v100\",\"_v110\"],[\"_v101\",\"_v111\"],[\"_v000\",\"_v100\"],[\"_v001\",\"_v101\"],[\"_v010\",\"_v110\"],[\"_v011\",\"_v111\"]],[\"K\",\"L\",\"M\",\"N\"]],[\"box5\",[[\"_v000\",\"_v001\"],[\"_v010\",\"_v011\"],[\"_v100\",\"_v101\"],[\"_v110\",\"_v111\"],[\"_v000\",\"_v010\"],[\"_v001\",\"_v011\"],[\"_v100\",\"_v110\"],[\"_v101\",\"_v111\"],[\"_v000\",\"_v100\"],[\"_v001\",\"_v101\"],[\"_v010\",\"_v110\"],[\"_v011\",\"_v111\"]],[\"A5\",\"B5\",\"C5\",\"D5\",\"E5\"]],[\"box6\",[[\"_v000\",\"_v001\"],[\"_v010\",\"_v011\"],[\"_v100\",\"_v101\"],[\"_v110\",\"_v111\"],[\"_v000\",\"_v010\"],[\"_v001\",\"_v011\"],[\"_v100\",\"_v110\"],[\"_v101\",\"_v111\"],[\"_v000\",\"_v100\"],[\"_v001\",\"_v101\"],[\"_v010\",\"_v110\"],[\"_v011\",\"_v111\"]],[\"A6\",\"B6\",\"C6\",\"D6\",\"E6\",\"F6\"]],[\"tetra3\",[[\"_tA\",\"_tB\"],[\"_tB\",\"_tC\"],[\"_tC\",\"_tA\"],[\"_tD\",\"_tA\"],[\"_tD\",\"_tB\"],[\"_tD\",\"_tC\"]],[\"T1\",\"T2\",\"T3\"]],[\"tetra4\",[[\"_tA\",\"_tB\"],[\"_tB\",\"_tC\"],[\"_tC\",\"_tA\"],[\"_tD\",\"_tA\"],[\"_tD\",\"_tB\"],[\"_tD\",\"_tC\"]],[\"U1\",\"U2\",\"U3\",\"U4\"]],[\"parallel\",[[\"_v000\",\"_v001\"],[\"_v010\",\"_v011\"],[\"_v100\",\"_v101\"],[\"_v110\",\"_v111\"],[\"_v000\",\"_v010\"],[\"_v001\",\"_v011\"],[\"_v100\",\"_v110\"],[\"_v101\",\"_v111\"],[\"_v000\",\"_v100\"],[\"_v001\",\"_v101\"],[\"_v010\",\"_v110\"],[\"_v011\",\"_v111\"],[\"A6\",\"B6\"],[\"E6\",\"D6\"],[\"A6\",\"F6\"],[\"C6\",\"D6\"],[\"B6\",\"C6\"],[\"E6\",\"F6\"]],[\"A6\",\"B6\",\"C6\",\"D6\",\"E6\",\"F6\"]]],false]",
+      "faces": [
+        [
+          "_v000",
+          "_v100",
+          "_v110",
+          "_v010"
+        ],
+        [
+          "_v001",
+          "_v101",
+          "_v111",
+          "_v011"
+        ],
+        [
+          "_v000",
+          "_v100",
+          "_v101",
+          "_v001"
+        ],
+        [
+          "_v100",
+          "_v110",
+          "_v111",
+          "_v101"
+        ],
+        [
+          "_v110",
+          "_v010",
+          "_v011",
+          "_v111"
+        ],
+        [
+          "_v010",
+          "_v000",
+          "_v001",
+          "_v011"
+        ]
+      ],
+      "views": {
+        "tetra3": [
+          [
+            "_tA",
+            "_tB",
+            "_tC"
+          ],
+          [
+            "_tA",
+            "_tB",
+            "_tD"
+          ],
+          [
+            "_tB",
+            "_tC",
+            "_tD"
+          ],
+          [
+            "_tC",
+            "_tA",
+            "_tD"
+          ]
+        ],
+        "tetra4": [
+          [
+            "_tA",
+            "_tB",
+            "_tC"
+          ],
+          [
+            "_tA",
+            "_tB",
+            "_tD"
+          ],
+          [
+            "_tB",
+            "_tC",
+            "_tD"
+          ],
+          [
+            "_tC",
+            "_tA",
+            "_tD"
+          ]
+        ]
+      },
+      "lessonIds": [
+        "theory-014"
+      ],
+      "reason": "Views neutral/box3/box4/box5/box6/parallel show the authored parallelepiped; tetra3/tetra4 show a distinct tetrahedron. Occluders follow the active example, not the union of both bodies.",
+      "sourceGeometrySHA256": "d4d20ce462f0d543c2af0197312e795d43250544c9042255bbd847fedba6fe85"
+    },
+    {
+      "key": "69343c4d:702",
+      "signature": "[{\"A\":[0,0,0],\"B\":[4,0,0],\"C\":[1,3,0],\"A1\":[0.7,0.5,3],\"B1\":[4.7,0.5,3],\"C1\":[1.7,3.5,3]},[],[],[[\"neutral\",[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"]],[]],[\"section\",[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"A1\",\"B1\"],[\"B1\",\"C1\"],[\"C1\",\"A1\"],[\"A\",\"A1\"],[\"B\",\"B1\"],[\"C\",\"C1\"]],[\"A1\",\"B\",\"C\"]],[\"tetrahedron\",[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"A1\",\"A\"],[\"A1\",\"B\"],[\"A1\",\"C\"]],[\"A1\",\"B\",\"C\"]],[\"quadrangular\",[[\"B\",\"C\"],[\"C\",\"C1\"],[\"C1\",\"B1\"],[\"B1\",\"B\"],[\"A1\",\"B\"],[\"A1\",\"C\"],[\"A1\",\"C1\"],[\"A1\",\"B1\"]],[\"A1\",\"B\",\"C\"]],[\"quadrangular-base\",[[\"B\",\"C\"],[\"C\",\"C1\"],[\"C1\",\"B1\"],[\"B1\",\"B\"],[\"A1\",\"B\"],[\"A1\",\"C\"],[\"A1\",\"C1\"],[\"A1\",\"B1\"]],[\"B\",\"C\",\"C1\",\"B1\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A1",
+          "B1",
+          "C1"
+        ],
+        [
+          "A",
+          "B",
+          "B1",
+          "A1"
+        ],
+        [
+          "B",
+          "C",
+          "C1",
+          "B1"
+        ],
+        [
+          "C",
+          "A",
+          "A1",
+          "C1"
+        ]
+      ],
+      "views": {
+        "tetrahedron": [
+          [
+            "A",
+            "B",
+            "C"
+          ],
+          [
+            "A",
+            "B",
+            "A1"
+          ],
+          [
+            "B",
+            "C",
+            "A1"
+          ],
+          [
+            "C",
+            "A",
+            "A1"
+          ]
+        ],
+        "quadrangular": [
+          [
+            "B",
+            "C",
+            "C1",
+            "B1"
+          ],
+          [
+            "A1",
+            "B",
+            "C"
+          ],
+          [
+            "A1",
+            "C",
+            "C1"
+          ],
+          [
+            "A1",
+            "C1",
+            "B1"
+          ],
+          [
+            "A1",
+            "B1",
+            "B"
+          ]
+        ],
+        "quadrangular-base": [
+          [
+            "B",
+            "C",
+            "C1",
+            "B1"
+          ],
+          [
+            "A1",
+            "B",
+            "C"
+          ],
+          [
+            "A1",
+            "C",
+            "C1"
+          ],
+          [
+            "A1",
+            "C1",
+            "B1"
+          ],
+          [
+            "A1",
+            "B1",
+            "B"
+          ]
+        ]
+      },
+      "lessonIds": [
+        "ex-selfcheck-iii-14"
+      ],
+      "reason": "The same view coordinates show first the whole triangular prism and then each cut piece separately. Tetrahedron and quadrangular-pyramid views use their own boundary surfaces.",
+      "sourceGeometrySHA256": "6725d445420f95be02ec9f27fc65c30849d72a4b2dfbc9a6ab2af8046064159b"
+    },
+    {
+      "key": "dfd06458:867",
+      "signature": "[{\"A\":[0,0,0],\"B\":[2,0,0],\"C\":[1,1.7320508075688772,0],\"D\":[1,0.5773502691896257,1.6329931618554518],\"M\":[1,0,0],\"N\":[0.5,0.8660254037844386,0],\"P\":[0.5,0.28867513459481287,0.8164965809277259],\"Q\":[1.5,0.8660254037844386,0],\"R\":[1.5,0.28867513459481287,0.8164965809277259],\"T\":[1,1.1547005383792515,0.8164965809277259]},[[\"A\",\"B\"],[\"A\",\"C\"],[\"A\",\"D\"],[\"B\",\"C\"],[\"B\",\"D\"],[\"C\",\"D\"]],[],[[\"neutral\",[],[]],[\"corner\",[],[\"M\",\"N\",\"P\"]],[\"oldface\",[[\"M\",\"N\"],[\"M\",\"P\"],[\"M\",\"Q\"],[\"M\",\"R\"],[\"N\",\"P\"],[\"N\",\"Q\"],[\"N\",\"T\"],[\"P\",\"R\"],[\"P\",\"T\"],[\"Q\",\"R\"],[\"Q\",\"T\"],[\"R\",\"T\"]],[\"M\",\"Q\",\"N\"]],[\"all\",[[\"M\",\"N\"],[\"M\",\"P\"],[\"M\",\"Q\"],[\"M\",\"R\"],[\"N\",\"P\"],[\"N\",\"Q\"],[\"N\",\"T\"],[\"P\",\"R\"],[\"P\",\"T\"],[\"Q\",\"R\"],[\"Q\",\"T\"],[\"R\",\"T\"]],[]],[\"result\",[[\"M\",\"N\"],[\"M\",\"P\"],[\"M\",\"Q\"],[\"M\",\"R\"],[\"N\",\"P\"],[\"N\",\"Q\"],[\"N\",\"T\"],[\"P\",\"R\"],[\"P\",\"T\"],[\"Q\",\"R\"],[\"Q\",\"T\"],[\"R\",\"T\"]],[\"P\",\"R\",\"T\"]]],false]",
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A",
+          "B",
+          "D"
+        ],
+        [
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "C",
+          "A",
+          "D"
+        ]
+      ],
+      "views": {
+        "oldface": [
+          [
+            "M",
+            "N",
+            "P"
+          ],
+          [
+            "M",
+            "Q",
+            "R"
+          ],
+          [
+            "N",
+            "Q",
+            "T"
+          ],
+          [
+            "P",
+            "R",
+            "T"
+          ],
+          [
+            "M",
+            "N",
+            "Q"
+          ],
+          [
+            "M",
+            "P",
+            "R"
+          ],
+          [
+            "N",
+            "P",
+            "T"
+          ],
+          [
+            "Q",
+            "R",
+            "T"
+          ]
+        ],
+        "all": [
+          [
+            "M",
+            "N",
+            "P"
+          ],
+          [
+            "M",
+            "Q",
+            "R"
+          ],
+          [
+            "N",
+            "Q",
+            "T"
+          ],
+          [
+            "P",
+            "R",
+            "T"
+          ],
+          [
+            "M",
+            "N",
+            "Q"
+          ],
+          [
+            "M",
+            "P",
+            "R"
+          ],
+          [
+            "N",
+            "P",
+            "T"
+          ],
+          [
+            "Q",
+            "R",
+            "T"
+          ]
+        ],
+        "result": [
+          [
+            "M",
+            "N",
+            "P"
+          ],
+          [
+            "M",
+            "Q",
+            "R"
+          ],
+          [
+            "N",
+            "Q",
+            "T"
+          ],
+          [
+            "P",
+            "R",
+            "T"
+          ],
+          [
+            "M",
+            "N",
+            "Q"
+          ],
+          [
+            "M",
+            "P",
+            "R"
+          ],
+          [
+            "N",
+            "P",
+            "T"
+          ],
+          [
+            "Q",
+            "R",
+            "T"
+          ]
+        ]
+      },
+      "lessonIds": [
+        "ex-main-0284"
+      ],
+      "reason": "The neutral/corner views describe the original tetrahedron and the first cut. The oldface/all/result views describe the remaining octahedron whose six vertices are the six edge midpoints. Removed corner material must not occlude the result.",
+      "sourceGeometrySHA256": "2523da82a7d2f31fe12ab6f81c515cbb5dfe7e512971a6e2f8f5bae4aa7a029d"
+    }
+  ]
+}

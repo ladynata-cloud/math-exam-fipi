@@ -1,0 +1,148 @@
+{
+  "reviewer": "Codex integrate_continuation (integration and historical-preservation author; not independent review of own helper)",
+  "reviewedAt": "2026-10-28T15:28:00.157580+00:00",
+  "task": "ATANASYAN_COMPANION_310_319",
+  "base": "fa8d1b7ced31a5941ad52d8a21a48b63daaa84a8",
+  "sourceContinuation": {
+    "pr": 352,
+    "head": "fa4ca44e2f199ab47a1609c3180a4cbbb42684f7",
+    "authorBase": "1aa517ed819d09ff18649b0855319ecccaee5bc0",
+    "transferredPaths": 32,
+    "excludedPath": "docs/PROJECT_STATUS.md",
+    "comparison": "Every transferred path matched the prior base at the current base; scoped patch applied cleanly, without repository merge, rebase, reset or replacement of concurrent course work."
+  },
+  "content": {
+    "cards": 518,
+    "steps": 1969,
+    "modelStates": 2050,
+    "catalogEntries": 1375,
+    "previousCardsPreserved": 507,
+    "newCards": 11,
+    "mainExerciseRange": "1–319",
+    "chapterIIIAvailable": 203,
+    "chapterIIIPending": 0,
+    "laterCatalogRowsPending": 857,
+    "bundleBytes": 4194224,
+    "bundleSHA256": "6450ea80dc28439e3e1836a3396f2465f0b305368f8a2ca594579c993f8fe28a",
+    "preservation": "All 507 prior authored files are byte-identical to current base; every prior lesson field is unchanged. The complete 518-card bundle is byte-identical to paused PR352."
+  },
+  "explicitUIMigration": {
+    "manifest": "tools/stereo-textbook/companion-migration.json",
+    "manifestSHA256": "404c2ecd31926a815b6fed23bae7c0885e3ca6e66ba817822cec6c41dc248fba",
+    "files": {
+      "stereo-course/textbook/assets/engine.js": {
+        "beforeSHA256": "3b2f3c3fae68a9c8e6f532d32a19df1fb1c5749b60253c75d9241ff639066ad4",
+        "afterSHA256": "9da6fb10924d50793521740ea779d81ef78fe3dfee5dbd71ab138b7d345dba74",
+        "beforeFixture": "tools/stereo-textbook/fixtures/companion-before/engine.js"
+      },
+      "stereo-course/textbook/assets/style.css": {
+        "beforeSHA256": "268af771d4e1fe44d69fddb966f5a4bf2e5d6febc2102425675b0ba8aca92740",
+        "afterSHA256": "56b3ec43f680dde578320a9ea1c5969a9a15d2d0344bfa1eda903f5bd3e09f51",
+        "beforeFixture": "tools/stereo-textbook/fixtures/companion-before/style.css"
+      },
+      "stereo-course/textbook/index.html": {
+        "beforeSHA256": "daee3fb225e5b7a0d5129af24d2cdf5961eb5b74d195a863e22317313d1e1825",
+        "afterSHA256": "af453fa854b9995f3a41bbf1a476564116a8efff43cee2234716e2c5489b5e55",
+        "beforeFixture": "tools/stereo-textbook/fixtures/companion-before/index.html"
+      }
+    },
+    "historicalAssertions": "Original baseline hashes are unchanged. Exactly three approved UI paths check archived original bytes and exact current after hashes. Six other immutable paths continue direct unchanged-byte assertions.",
+    "negativeControls": 16,
+    "mappingCorrection": "Approved source-label correction: main-exercise paragraph mapping uses all 27 exact source-number ranges, independently verified against the supplied textbook. Page-based inference was rejected because previous-paragraph tasks and the next paragraph heading can share a page. Lesson data and mathematical content are unchanged."
+  },
+  "checks": [
+    {
+      "command": "python3 tools/stereo-textbook/build_textbook.py",
+      "result": "PASS; output byte-identical to prepared bundle"
+    },
+    {
+      "command": "python3 tools/stereo-textbook/catalog.test.py",
+      "result": "PASS; 7 tests"
+    },
+    {
+      "command": "node tools/stereo-textbook/schema.test.cjs",
+      "result": "PASS; 1375 catalog entries, 518 cards"
+    },
+    {
+      "command": "node tools/stereo-textbook/model-geometry.test.cjs",
+      "result": "PASS; 2513 planar simple polygons, 7509 nonzero segments"
+    },
+    {
+      "command": "node tools/stereo-textbook/parallel-content.test.cjs",
+      "result": "PASS; 24 cards, 15 groups"
+    },
+    {
+      "command": "node tools/stereo-textbook/runtime.test.cjs",
+      "result": "PASS independently rerun by review_companion on final corrected engine 9da6fb10924d50793521740ea779d81ef78fe3dfee5dbd71ab138b7d345dba74; retained work, publication/source/model/revision/stale recovery"
+    },
+    {
+      "command": "node tools/stereo-textbook/companion-labels.test.cjs",
+      "result": "PASS independently rerun by review_companion on final corrected engine; 518 available cards, 857 pending rows, 27 exact paragraph ranges, 1022 justification references"
+    },
+    {
+      "command": "node tools/stereo-textbook/companion-migration.test.cjs",
+      "result": "PASS on final engine; 16 negative controls"
+    },
+    {
+      "command": "node tools/stereo-textbook/content.test.cjs",
+      "result": "PASS on final corrected engine 9da6fb10924d50793521740ea779d81ef78fe3dfee5dbd71ab138b7d345dba74; all historical suites and 518 cards, 1969 steps, 2050 views"
+    },
+    {
+      "command": "node tools/stereo-textbook/browser-shards.test.cjs",
+      "result": "PASS; 56 positive/negative checks"
+    },
+    {
+      "command": "TEXTBOOK_CHECK_ONLY=1 node tools/stereo-textbook/browser.cjs",
+      "result": "PASS; full plan plus each of four shard plans; 1036 card-width journeys, 2544 ordinary capture cases"
+    },
+    {
+      "command": "python3 tools/stereo-textbook/additional310-math.test.py",
+      "result": "PASS; 1320 parameter families and 11 actual models, 84 states, 103 polygons, 343 segments"
+    },
+    {
+      "command": "python3 tools/stereo-textbook/additional299-math.test.py",
+      "result": "PASS; 1320 families and all 12 models"
+    },
+    {
+      "command": "python3 tools/stereo-textbook/additional294-math.test.py",
+      "result": "PASS; 400 families and 10 models"
+    },
+    {
+      "command": "python3 tools/stereo-textbook/additional288-math.test.py",
+      "result": "PASS; 400 boxes and six models"
+    },
+    {
+      "command": "python3 tools/stereo-textbook/regular-polyhedra-math.test.py",
+      "result": "PASS"
+    },
+    {
+      "command": "python3 tools/stereo-textbook/polyhedra-symmetry-math.test.py",
+      "result": "PASS"
+    },
+    {
+      "command": "python3 tools/stereo-textbook/polyhedra-selfcheck-math.test.py",
+      "result": "PASS"
+    },
+    {
+      "command": "python3 tools/stereo-textbook/polyhedra-practical-math.test.py",
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "limits": [
+    "This report is integration evidence, not independent review of its own migration helper. Independent review is recorded separately.",
+    "Actual browser pixel validation is handled separately and is not claimed by this report.",
+    "No real-pupil, physical-device or paid external-provider trial.",
+    "Full textbook remains unfinished after chapter III.",
+    "No merge or deployment performed."
+  ],
+  "verdict": "PASS_INTEGRATION_AND_HISTORICAL_PRESERVATION",
+  "resolvedIssues": [
+    "Initial schema/DOM attempts lacked jsdom and ajv. Required pinned dependencies were installed in scratch, then tests rerun successfully.",
+    "Content tests correctly rejected an in-progress UI edit before the reviewed after hashes were bound. The explicit migration was rebound only after final UI review.",
+    "An initially passing source-label test did not cover shared-page paragraph boundaries. Independent source review found this gap; mapping changed to exact exercise-number ranges and boundary tests were added before final review."
+  ]
+}

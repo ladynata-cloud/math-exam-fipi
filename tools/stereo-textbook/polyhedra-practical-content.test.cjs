@@ -67,13 +67,13 @@ assert.equal(previous.catalog.entries.length, 1368);
 assert.equal(previousRegistry.cards.length, 474);
 assert.equal(previousRegistry.batches.length, 22);
 assert.equal(previousCases.size, 917);
-const authoredFiles = fs.readdirSync(lessonsDir).filter(name => name.endsWith('.json') && !additional.ids.has(name.slice(0, -5)) && !require('./additional294-baseline.cjs').ids.has(name.slice(0, -5)) && !require('./additional299-baseline.cjs').ids.has(name.slice(0, -5))).sort();
+const authoredFiles = fs.readdirSync(lessonsDir).filter(name => name.endsWith('.json') && !require('./cylinder-baseline.cjs').ids.has(name.slice(0, -5)) && !additional.ids.has(name.slice(0, -5)) && !require('./additional294-baseline.cjs').ids.has(name.slice(0, -5)) && !require('./additional299-baseline.cjs').ids.has(name.slice(0, -5)) && !require('./additional310-baseline.cjs').ids.has(name.slice(0, -5))).sort();
 const rawOld = authoredFiles.filter(name => !ids.has(name.slice(0, -5)))
   .map(name => [name, rawSha(fs.readFileSync(path.join(lessonsDir, name)))]);
 assert.equal(rawOld.length, 474);
 assert.equal(sha(rawOld), published.rawLessonManifestSHA256, 'all 474 prior authored files stay byte-identical');
 for (const [file, hash] of Object.entries(published.immutableFiles)) {
-  assert.equal(rawSha(fs.readFileSync(path.join(root, file))), hash, 'unchanged runtime/schema/builder: ' + file);
+  require('./companion-migration.cjs').assertHistoricalFile(file, hash);
 }
 
 const cards = expectedIds.map(id => JSON.parse(fs.readFileSync(path.join(lessonsDir, id + '.json'), 'utf8')));

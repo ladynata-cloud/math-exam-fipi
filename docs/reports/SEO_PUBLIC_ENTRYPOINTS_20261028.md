@@ -154,3 +154,42 @@ division recrawl had an unknown write result and must not be blindly repeated.
 
 Rollback is a separately authorized revert. This task requires no conversion
 or deletion of learner work.
+
+## Integration revalidation — 2026-10-30
+
+- Current main: `51f7fa550bae29f0110a0f06608a3e35bb1f65fd`.
+- The previously saved proposal was retrieved and compared. Its only conflict
+  with new main remains `docs/PROJECT_STATUS.md`. Resolution retains all new
+  status entries, the original SEO block and the reviewed division publication
+  reconciliation. Original main status is recoverable exactly by removing the
+  SEO block and undoing that bounded division reconciliation.
+- The eight main commits since `c5bcbe1e` are owner-authored, GitHub-committed,
+  verified release commits for #354, #369, #370, #371, #372, #373, #379 and #376.
+  They include the latest courses, assistants and hidden-line corrections.
+- Before updating task records/CI, the changed-file set was exactly the original
+  33 paths; all 32 non-status stable patch IDs matched the original PR. Existing
+  exercise script blocks match current main. All other main paths, including
+  courses, cabinet/server/assistant code and mathematical engines, are retained.
+- Fresh local checks passed: 12 sitemap tests, exact 531 canonical URLs, SEO
+  entrance/canonical checks, 58 catalog cards and 71 nonempty destinations,
+  unchanged 35-source/396075-byte teaching bank, 15 basics checks, 10 rounding
+  DOM and 8 rounding-route checks, 668 algebra checks and 315 targeted regression
+  tests spanning number theory/cabinets, OGE 11/13/19, practical tasks and helpers.
+- Existing offline regressions passed. Rounding HTML equals the source after
+  the builder's download-panel removal; rounding/task19 archive HTML matches
+  downloadable HTML; the practical archive tire HTML matches its source.
+- Initial environment attempts: jsdom was absent, then the pinned dependency
+  was installed and affected checks passed unchanged. Local Chromium could not
+  open its Unix socket; escalation was rejected by the environment policy.
+  Local browser execution is not reported as a pass. Existing number-theory and
+  learning CI contain the real board/cabinet/rounding browser suites.
+- A direct raw source/download comparison initially failed because download
+  panels are deliberately removed (and task19 assets inlined). The corrected
+  check uses the existing builder contract; no package or product was changed.
+- Added `tools/seo-entrypoints.browser.cjs` and one step in the existing SEO
+  workflow: 6 legacy-route cases with/without JavaScript, 30 actual catalog
+  clicks at 320/390/1280 px, public and real-iframe NOK/NOD checks, isolated
+  browser storage, local files only and no real account/external AI traffic.
+- Exact-head CI results and release status are recorded in PR #368; they are
+  pending when this integration record is committed. No production publication
+  or post-release success is claimed by this preparation record.

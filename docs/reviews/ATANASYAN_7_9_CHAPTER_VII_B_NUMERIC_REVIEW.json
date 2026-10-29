@@ -1,0 +1,5967 @@
+{
+  "schemaVersion": 1,
+  "scope": "Independent non-author review of chapter VII B, 566–604; source/text/didactics/math/models and all declared markers. Visual PNG inspection is separate and pending.",
+  "reviewer": "/root/vii_a, author of disjoint block A only",
+  "authorAssertionsUsedAsOracle": false,
+  "method": "Independently written determinant, norm, dot/cross, point-line-distance and angle calculations; source given dimensions calibrate one model length; all remaining lengths, areas, radii and displayed marker claims recomputed. No imports of author generators or model-checker.",
+  "toleranceRelative": 1e-07,
+  "files": {
+    "geometry-course/textbook/preparation/chapter-07-b.json": "b88edfacda577c584b2612c7e151cab81494288391b7c61b362549c3e9b651c5",
+    "geometry-course/textbook/models/chapter-07-b.json": "c4920455920861cb1ff9af1feb4c4aee6b47274caf21146e5216499b19a34797",
+    "tools/geometry-textbook/models_ch7_b.py": "c1e3ee9bb00ab232931da394c503cb379846b6fabe5bceb9283af53a37fa01d8"
+  },
+  "oracleSha256": "1f5110c8c07a723431d222fca5d4e9ae3ff9398e4a622b45d0bd7f0c3e23761a",
+  "sourceSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "cards": 72,
+  "views": 297,
+  "declaredClaims": 215,
+  "independentChecks": 910,
+  "failedChecks": 0,
+  "results": [
+    {
+      "id": "566:single",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 2.122052229567968e-11,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 2.3437500000165223,
+          "expected": 2.34375,
+          "pass_": true
+        },
+        {
+          "label": "neutral right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right K",
+          "actual": 89.99999999848427,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right K",
+          "actual": 89.99999999848427,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length AC",
+          "actual": 3.1999999999774413,
+          "expected": 3.2,
+          "pass_": true
+        },
+        {
+          "label": "length CH",
+          "actual": 2.4,
+          "expected": 2.4,
+          "pass_": true
+        },
+        {
+          "label": "length BK",
+          "actual": 5.625000000065617,
+          "expected": 5.625,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 9.000000000000004,
+          "expected": 9,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "567:а",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.3636363636538462,
+          "expected": 0.36363636363636365,
+          "pass_": true
+        },
+        {
+          "label": "neutral right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 10.999999999471152,
+          "expected": 11,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 11.704699910222617,
+          "expected": 11.704699910719626,
+          "pass_": true
+        },
+        {
+          "label": "angle ACB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 21.999999998942304,
+          "expected": 22.0,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "567:б",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.39999999999999997,
+          "expected": 0.39999999999999997,
+          "pass_": true
+        },
+        {
+          "label": "neutral right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 3.0,
+          "expected": 3,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 3.2310988842807027,
+          "expected": 3.2310988842807022,
+          "pass_": true
+        },
+        {
+          "label": "angle ACB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 1.800000000000001,
+          "expected": 1.7999999999999998,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "568:single",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.5833333333461539,
+          "expected": 0.5833333333333334,
+          "pass_": true
+        },
+        {
+          "label": "neutral right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 23.99999999947253,
+          "expected": 24,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 27.78488797844399,
+          "expected": 27.784887978899608,
+          "pass_": true
+        },
+        {
+          "label": "angle ACB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 167.99999999630765,
+          "expected": 168.0,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "569:а",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": -8.302803042102185e-12,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 0.9999999999999998,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 0.9999999999999998,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right P",
+          "actual": 90.0000000029732,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right P",
+          "actual": 90.0000000029732,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right P",
+          "actual": 90.0000000029732,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 84.00000000176432,
+          "expected": 84,
+          "pass_": true
+        },
+        {
+          "label": "length OP",
+          "actual": 2.9999999999851736,
+          "expected": 3,
+          "pass_": true
+        },
+        {
+          "label": "tangent point on side P",
+          "actual": 1.74356711390345e-10,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "inradius distance P",
+          "actual": 1.0000000000581188,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "radius to contact P",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "tangent point on side Q",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "inradius distance Q",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "radius to contact Q",
+          "actual": 0.9999999999999998,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "tangent point on side R",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "inradius distance R",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "radius to contact R",
+          "actual": 0.9999999999999998,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "569:б",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 251.99999997269848,
+          "expected": 252,
+          "pass_": true
+        },
+        {
+          "label": "inradius from determinant/perimeter",
+          "actual": 3.4999999996208118,
+          "expected": 3.5,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "569:в",
+      "checks": [
+        {
+          "label": "declared equalLength",
+          "actual": 0.9999999999999984,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 0.9999999999999989,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.46666666666666673,
+          "expected": 0.4666666666666667,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right P",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right Q",
+          "actual": 90.00000000000003,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right R",
+          "actual": 90.00000000000006,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right P",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right Q",
+          "actual": 90.00000000000003,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right R",
+          "actual": 90.00000000000006,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right P",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right Q",
+          "actual": 90.00000000000003,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right R",
+          "actual": 90.00000000000006,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length AC",
+          "actual": 15.0,
+          "expected": 15,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 7.0,
+          "expected": 7,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 42.000000000000014,
+          "expected": 42,
+          "pass_": true
+        },
+        {
+          "label": "length OP",
+          "actual": 2.0000000000000013,
+          "expected": 2,
+          "pass_": true
+        },
+        {
+          "label": "tangent point on side P",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "inradius distance P",
+          "actual": 0.9999999999999999,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "radius to contact P",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "tangent point on side Q",
+          "actual": 2.3726774020998856e-15,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "inradius distance Q",
+          "actual": 1.0000000000000009,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "radius to contact Q",
+          "actual": 0.9999999999999984,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "tangent point on side R",
+          "actual": 2.7681236357832e-16,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "inradius distance R",
+          "actual": 1.0000000000000002,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "radius to contact R",
+          "actual": 0.9999999999999989,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "570:single",
+      "checks": [
+        {
+          "label": "declared equalLength",
+          "actual": 0.9999999999907543,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 0.9999999999907545,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 0.9999999999902935,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 0.999999999990294,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right P",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right Q",
+          "actual": 90.0000000012056,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right R",
+          "actual": 89.99999999912814,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right P",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right Q",
+          "actual": 90.0000000012056,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right R",
+          "actual": 89.99999999912814,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-4 right P",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-4 right Q",
+          "actual": 90.0000000012056,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-4 right R",
+          "actual": 89.99999999912814,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BQ",
+          "actual": 4.999999999953772,
+          "expected": 5,
+          "pass_": true
+        },
+        {
+          "label": "length CR",
+          "actual": 6.0000000000959215,
+          "expected": 6,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 48.98979485594253,
+          "expected": 48.98979485566356,
+          "pass_": true
+        },
+        {
+          "label": "length OP",
+          "actual": 3.061862178496407,
+          "expected": 3.0618621784789726,
+          "pass_": true
+        },
+        {
+          "label": "source r3 impossible",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "tangent point on side P",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "inradius distance P",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "radius to contact P",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "tangent point on side Q",
+          "actual": 1.5887292199153365e-11,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "inradius distance Q",
+          "actual": 1.0000000000051887,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "radius to contact Q",
+          "actual": 0.9999999999902935,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "tangent point on side R",
+          "actual": 1.5886191412128618e-11,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "inradius distance R",
+          "actual": 1.0000000000051885,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "radius to contact R",
+          "actual": 0.999999999990294,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "571:single",
+      "checks": [
+        {
+          "label": "declared parallel",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right K",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right K",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right K",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "equal triangle areas",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "572:single",
+      "checks": [
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared collinear",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "neutral equal-group 1",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "step-1 equal-group 1",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 equal-group 1",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 equal-group 1",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "median equal areas",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "573:single",
+      "checks": [
+        {
+          "label": "declared equalLength",
+          "actual": 0.9999999999594593,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared collinear",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared collinear",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "step-2 equal-group 1",
+          "actual": 0.9999999999594593,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "step-2 equal-group 1",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "step-3 equal-group 1",
+          "actual": 0.9999999999594593,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "step-3 equal-group 1",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "third area ABM",
+          "actual": 0.3333333333378378,
+          "expected": 0.3333333333333333,
+          "pass_": true
+        },
+        {
+          "label": "third area AMN",
+          "actual": 0.33333333332432424,
+          "expected": 0.3333333333333333,
+          "pass_": true
+        },
+        {
+          "label": "third area ANC",
+          "actual": 0.33333333333783777,
+          "expected": 0.3333333333333333,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "574:а",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 2.2857142857142856,
+          "expected": 2.2857142857142856,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right O",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right O",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right O",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BD",
+          "actual": 14.0,
+          "expected": 14,
+          "pass_": true
+        },
+        {
+          "label": "area ABCD",
+          "actual": 224.0,
+          "expected": 224.0,
+          "pass_": true
+        },
+        {
+          "label": "angle AOB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "rhombus side BC",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "rhombus side CD",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "rhombus side DA",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "574:б",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": -0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0000000000000004,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.22999999999999998,
+          "expected": 0.22999999999999998,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right O",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right O",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right O",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BD",
+          "actual": 20.0,
+          "expected": 20,
+          "pass_": true
+        },
+        {
+          "label": "area ABCD",
+          "actual": 45.99999999999999,
+          "expected": 46.0,
+          "pass_": true
+        },
+        {
+          "label": "angle AOB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "rhombus side BC",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "rhombus side CD",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "rhombus side DA",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "575:single",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 1.4999999999797295,
+          "expected": 1.5,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right O",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right O",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BD",
+          "actual": 6.000000000081082,
+          "expected": 6,
+          "pass_": true
+        },
+        {
+          "label": "area ABCD",
+          "actual": 27.00000000036487,
+          "expected": 27.0,
+          "pass_": true
+        },
+        {
+          "label": "angle AOB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "rhombus side BC",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "rhombus side CD",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "rhombus side DA",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "576:single",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared collinear",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared collinear",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right O",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right O",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right O",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BD",
+          "actual": 52.0,
+          "expected": 52.0,
+          "pass_": true
+        },
+        {
+          "label": "area ABCD",
+          "actual": 1802.6666666840001,
+          "expected": 1802.6666666840001,
+          "pass_": true
+        },
+        {
+          "label": "angle AOB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "non-bisecting illustrative diagonals",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "577:а",
+      "checks": [
+        {
+          "label": "declared collinear",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared collinear",
+          "actual": -2.8667750619628818e-11,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.6,
+          "expected": 0.6,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.3333333333304843,
+          "expected": 0.3333333333333333,
+          "pass_": true
+        },
+        {
+          "label": "length AC",
+          "actual": 6.0000000000003135,
+          "expected": 6,
+          "pass_": true
+        },
+        {
+          "label": "length AD",
+          "actual": 3.0,
+          "expected": 3,
+          "pass_": true
+        },
+        {
+          "label": "length AE",
+          "actual": 1.9999999999830105,
+          "expected": 2,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 10.0,
+          "expected": 10,
+          "pass_": true
+        },
+        {
+          "label": "area ADE",
+          "actual": 1.9999999999615388,
+          "expected": 2,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "577:б",
+      "checks": [
+        {
+          "label": "declared collinear",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared collinear",
+          "actual": 1.493997848065299e-11,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.30000000000000004,
+          "expected": 0.3,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.6666666666766767,
+          "expected": 0.6666666666666666,
+          "pass_": true
+        },
+        {
+          "label": "length AC",
+          "actual": 2.9999999999764713,
+          "expected": 3,
+          "pass_": true
+        },
+        {
+          "label": "length AD",
+          "actual": 2.4000000000000004,
+          "expected": 2.4,
+          "pass_": true
+        },
+        {
+          "label": "length AE",
+          "actual": 2.0000000000143445,
+          "expected": 2,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 10.0,
+          "expected": 10,
+          "pass_": true
+        },
+        {
+          "label": "area ADE",
+          "actual": 2.0000000000432436,
+          "expected": 2,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "578:а",
+      "checks": [
+        {
+          "label": "declared parallel",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 1.2352941176367718,
+          "expected": 1.2352941176470589,
+          "pass_": true
+        },
+        {
+          "label": "neutral right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length CD",
+          "actual": 17.000000000141572,
+          "expected": 17,
+          "pass_": true
+        },
+        {
+          "label": "height",
+          "actual": 7.0000000001982,
+          "expected": 7,
+          "pass_": true
+        },
+        {
+          "label": "area ABCD",
+          "actual": 133.00000000426124,
+          "expected": 133,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "578:б",
+      "checks": [
+        {
+          "label": "declared parallel",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared angle",
+          "actual": 30.00000000001876,
+          "expected": 30,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 1.999999999998866,
+          "expected": 2,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length CD",
+          "actual": 10.000000000000002,
+          "expected": 10,
+          "pass_": true
+        },
+        {
+          "label": "height",
+          "actual": 4.000000000000001,
+          "expected": 4,
+          "pass_": true
+        },
+        {
+          "label": "area ABCD",
+          "actual": 23.999999999999996,
+          "expected": 24,
+          "pass_": true
+        },
+        {
+          "label": "length DA",
+          "actual": 7.999999999995465,
+          "expected": 8,
+          "pass_": true
+        },
+        {
+          "label": "angle ADC",
+          "actual": 30.00000000001876,
+          "expected": 30,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "578:в",
+      "checks": [
+        {
+          "label": "declared parallel",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.38461538462162165,
+          "expected": 0.38461538461538464,
+          "pass_": true
+        },
+        {
+          "label": "neutral right B",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right B",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right B",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right B",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length CD",
+          "actual": 12.999999999789189,
+          "expected": 13,
+          "pass_": true
+        },
+        {
+          "label": "height",
+          "actual": 7.999999999789191,
+          "expected": 8,
+          "pass_": true
+        },
+        {
+          "label": "area ABCD",
+          "actual": 71.99999999725945,
+          "expected": 72,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "579:single",
+      "checks": [
+        {
+          "label": "declared parallel",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared angle",
+          "actual": 135.0,
+          "expected": 135,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "neutral right A",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right A",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right A",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right A",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length CD",
+          "actual": 12.0,
+          "expected": 12,
+          "pass_": true
+        },
+        {
+          "label": "height",
+          "actual": 6.0,
+          "expected": 6,
+          "pass_": true
+        },
+        {
+          "label": "area ABCD",
+          "actual": 54.0,
+          "expected": 54,
+          "pass_": true
+        },
+        {
+          "label": "angle ABC",
+          "actual": 135.0,
+          "expected": 135,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "580:single",
+      "checks": [
+        {
+          "label": "declared parallel",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared angle",
+          "actual": 134.99999999867268,
+          "expected": 135,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.41176470587337505,
+          "expected": 0.4117647058823529,
+          "pass_": true
+        },
+        {
+          "label": "neutral right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 2.000000000043243,
+          "expected": 2,
+          "pass_": true
+        },
+        {
+          "label": "height",
+          "actual": 1.4000000000432433,
+          "expected": 1.4,
+          "pass_": true
+        },
+        {
+          "label": "area ABCD",
+          "actual": 4.760000000177299,
+          "expected": 4.76,
+          "pass_": true
+        },
+        {
+          "label": "length AH",
+          "actual": 1.399999999978378,
+          "expected": 1.4,
+          "pass_": true
+        },
+        {
+          "label": "length HD",
+          "actual": 3.4000000000216213,
+          "expected": 3.4,
+          "pass_": true
+        },
+        {
+          "label": "angle ABC",
+          "actual": 134.99999999867268,
+          "expected": 135,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "581:а",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.75,
+          "expected": 0.75,
+          "pass_": true
+        },
+        {
+          "label": "neutral right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 8.0,
+          "expected": 8,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 10.0,
+          "expected": 10.0,
+          "pass_": true
+        },
+        {
+          "label": "angle ACB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 24.0,
+          "expected": 24.0,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "581:б",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.8333333333461539,
+          "expected": 0.8333333333333334,
+          "pass_": true
+        },
+        {
+          "label": "neutral right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 5.999999999907692,
+          "expected": 6,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 7.810249675835741,
+          "expected": 7.810249675906654,
+          "pass_": true
+        },
+        {
+          "label": "angle ACB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 14.999999999769226,
+          "expected": 15.0,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "581:в",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.75,
+          "expected": 0.75,
+          "pass_": true
+        },
+        {
+          "label": "neutral right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 0.5714285714285714,
+          "expected": 0.5714285714285714,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 0.7142857142857143,
+          "expected": 0.7142857142857142,
+          "pass_": true
+        },
+        {
+          "label": "angle ACB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 0.12244897959183673,
+          "expected": 0.12244897959183672,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "581:г",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.5773502691923078,
+          "expected": 0.5773502691896258,
+          "pass_": true
+        },
+        {
+          "label": "neutral right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 13.85640646048665,
+          "expected": 13.856406460551018,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 15.999999999944254,
+          "expected": 15.999999999999998,
+          "pass_": true
+        },
+        {
+          "label": "angle ACB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 55.425625841946584,
+          "expected": 55.42562584220407,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "582:а",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 2.399999999948108,
+          "expected": 2.4,
+          "pass_": true
+        },
+        {
+          "label": "neutral right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 5.000000000108108,
+          "expected": 5,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 13.00000000004158,
+          "expected": 13.0,
+          "pass_": true
+        },
+        {
+          "label": "angle ACB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 30.000000000648658,
+          "expected": 30.0,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "582:б",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 1.237436867076923,
+          "expected": 1.2374368670764582,
+          "pass_": true
+        },
+        {
+          "label": "neutral right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 5.656854249490255,
+          "expected": 5.656854249492381,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 8.999999999998664,
+          "expected": 9.0,
+          "pass_": true
+        },
+        {
+          "label": "angle ACB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 19.798989873215895,
+          "expected": 19.79898987322333,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "582:в",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 1.732050807570187,
+          "expected": 1.7320508075688774,
+          "pass_": true
+        },
+        {
+          "label": "neutral right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 6.92820323027027,
+          "expected": 6.928203230275509,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 13.856406460548397,
+          "expected": 13.856406460551018,
+          "pass_": true
+        },
+        {
+          "label": "angle ACB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 41.56921938162162,
+          "expected": 41.569219381653056,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "582:г",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 1.732050807570187,
+          "expected": 1.7320508075688772,
+          "pass_": true
+        },
+        {
+          "label": "neutral right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 1.9999999999984877,
+          "expected": 2,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 3.9999999999992437,
+          "expected": 3.9999999999999996,
+          "pass_": true
+        },
+        {
+          "label": "angle ACB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 3.464101615135135,
+          "expected": 3.4641016151377544,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "582:д",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 3.0000000000810814,
+          "expected": 3.0,
+          "pass_": true
+        },
+        {
+          "label": "neutral right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 1.9999999999459457,
+          "expected": 2,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 6.324555320319665,
+          "expected": 6.324555320336759,
+          "pass_": true
+        },
+        {
+          "label": "angle ACB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 5.999999999837836,
+          "expected": 6.0,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "583:single",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared angle",
+          "actual": 59.99999999988474,
+          "expected": 60,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.8660254037834328,
+          "expected": 0.8660254037844386,
+          "pass_": true
+        },
+        {
+          "label": "neutral right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 1.7320508075608312,
+          "expected": 1.7320508075688772,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 1.9999999999930318,
+          "expected": 1.9999999999999998,
+          "pass_": true
+        },
+        {
+          "label": "angle ACB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 0.8660254037804154,
+          "expected": 0.8660254037844386,
+          "pass_": true
+        },
+        {
+          "label": "angle CAB",
+          "actual": 59.99999999988474,
+          "expected": 60,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "584:а",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "neutral right B",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right B",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right B",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right B",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 11.99999999974054,
+          "expected": 12,
+          "pass_": true
+        },
+        {
+          "label": "length AC",
+          "actual": 12.9999999997605,
+          "expected": 13,
+          "pass_": true
+        },
+        {
+          "label": "angle ABC",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "584:б",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "neutral right B",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right B",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right B",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right B",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 2.000000000019231,
+          "expected": 2,
+          "pass_": true
+        },
+        {
+          "label": "length AC",
+          "actual": 2.500000000015385,
+          "expected": 2.5,
+          "pass_": true
+        },
+        {
+          "label": "angle ABC",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "584:в",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "neutral right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 15.00000000025338,
+          "expected": 15,
+          "pass_": true
+        },
+        {
+          "label": "length AC",
+          "actual": 17.000000000223572,
+          "expected": 17,
+          "pass_": true
+        },
+        {
+          "label": "angle ABC",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "585:single",
+      "checks": [
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0000000000000002,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 17.000000000159076,
+          "expected": 17,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 17.000000000159076,
+          "expected": 17,
+          "pass_": true
+        },
+        {
+          "label": "length BH",
+          "actual": 15.000000000180286,
+          "expected": 15,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 120.00000000144227,
+          "expected": 120,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "586:а",
+      "checks": [
+        {
+          "label": "declared equalLength",
+          "actual": 0.9999999999999999,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0000000000034839,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 5.999999999979097,
+          "expected": 6,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 5.999999999979097,
+          "expected": 6,
+          "pass_": true
+        },
+        {
+          "label": "length BH",
+          "actual": 5.196152422682495,
+          "expected": 5.196152422706632,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 15.588457268047488,
+          "expected": 15.588457268119896,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "586:б",
+      "checks": [
+        {
+          "label": "declared equalLength",
+          "actual": 0.9999999999999999,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0000000000034839,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "neutral right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 4.618802153500915,
+          "expected": 4.618802153517006,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 4.618802153500915,
+          "expected": 4.618802153517006,
+          "pass_": true
+        },
+        {
+          "label": "length BH",
+          "actual": 3.9999999999814193,
+          "expected": 3.9999999999999996,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 9.237604306991102,
+          "expected": 9.23760430703401,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "587:а",
+      "checks": [
+        {
+          "label": "declared equalLength",
+          "actual": 0.9999999999999999,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0000000000034839,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 4.999999999982581,
+          "expected": 5,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 4.99999999998258,
+          "expected": 5,
+          "pass_": true
+        },
+        {
+          "label": "length BH",
+          "actual": 4.330127018902079,
+          "expected": 4.330127018922193,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 10.825317547255198,
+          "expected": 10.825317547305483,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "587:б",
+      "checks": [
+        {
+          "label": "declared equalLength",
+          "actual": 0.9999999999999999,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0000000000034839,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 1.1999999999958195,
+          "expected": 1.2,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 1.1999999999958193,
+          "expected": 1.2,
+          "pass_": true
+        },
+        {
+          "label": "length BH",
+          "actual": 1.039230484536499,
+          "expected": 1.0392304845413263,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 0.6235382907218995,
+          "expected": 0.6235382907247957,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "587:в",
+      "checks": [
+        {
+          "label": "declared equalLength",
+          "actual": 0.9999999999999999,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0000000000034839,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 2.8284271247363364,
+          "expected": 2.8284271247461903,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 2.828427124736336,
+          "expected": 2.8284271247461903,
+          "pass_": true
+        },
+        {
+          "label": "length BH",
+          "actual": 2.4494897427718,
+          "expected": 2.4494897427831783,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 3.4641016151216637,
+          "expected": 3.4641016151377553,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "588:а",
+      "checks": [
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "neutral right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 10.000000000086487,
+          "expected": 10,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 10.000000000086487,
+          "expected": 10,
+          "pass_": true
+        },
+        {
+          "label": "length BH",
+          "actual": 8.000000000108107,
+          "expected": 8,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 48.000000000648654,
+          "expected": 48,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "588:б",
+      "checks": [
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared angle",
+          "actual": 120.00000000003752,
+          "expected": 120,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 10.3923048454113,
+          "expected": 10.392304845413264,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 10.3923048454113,
+          "expected": 10.392304845413264,
+          "pass_": true
+        },
+        {
+          "label": "length BH",
+          "actual": 5.196152422702703,
+          "expected": 5.196152422706632,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 46.76537180432434,
+          "expected": 46.76537180435968,
+          "pass_": true
+        },
+        {
+          "label": "angle ABC",
+          "actual": 120.00000000003752,
+          "expected": 120,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "588:в",
+      "checks": [
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "neutral right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "neutral right B",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right B",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right B",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right B",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 9.899494936611665,
+          "expected": 9.899494936611665,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 9.899494936611665,
+          "expected": 9.899494936611665,
+          "pass_": true
+        },
+        {
+          "label": "length BH",
+          "actual": 7.0,
+          "expected": 7,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 49.0,
+          "expected": 49,
+          "pass_": true
+        },
+        {
+          "label": "angle ABC",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "589:а",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 7.077964250454642e-12,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "neutral right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.00000000022037,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.00000000022037,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 12.000000000369232,
+          "expected": 12,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 13.00000000034083,
+          "expected": 13.0,
+          "pass_": true
+        },
+        {
+          "label": "angle ACB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 30.000000000923077,
+          "expected": 30.0,
+          "pass_": true
+        },
+        {
+          "label": "length CH",
+          "actual": 4.615384615384615,
+          "expected": 4.615384615384615,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "589:б",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": -5.605859848205919e-17,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "neutral right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.00000000000001,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.00000000000001,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 16.0,
+          "expected": 16,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 20.0,
+          "expected": 20.0,
+          "pass_": true
+        },
+        {
+          "label": "angle ACB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 96.0,
+          "expected": 96.0,
+          "pass_": true
+        },
+        {
+          "label": "length CH",
+          "actual": 9.6,
+          "expected": 9.6,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "590:single",
+      "checks": [
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": -6.486502593820137e-12,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 6.486502593820137e-12,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right K",
+          "actual": 90.00000000132732,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right L",
+          "actual": 90.00000000132732,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 10.000000000086487,
+          "expected": 10,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 10.000000000086487,
+          "expected": 10,
+          "pass_": true
+        },
+        {
+          "label": "length BH",
+          "actual": 8.000000000108107,
+          "expected": 8,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 48.000000000648654,
+          "expected": 48,
+          "pass_": true
+        },
+        {
+          "label": "length AK",
+          "actual": 9.6,
+          "expected": 9.6,
+          "pass_": true
+        },
+        {
+          "label": "length CL",
+          "actual": 9.6,
+          "expected": 9.6,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "591:single",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right O",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right O",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right O",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BD",
+          "actual": 10.000000000216216,
+          "expected": 10,
+          "pass_": true
+        },
+        {
+          "label": "area ABCD",
+          "actual": 120.0000000025946,
+          "expected": 120.0,
+          "pass_": true
+        },
+        {
+          "label": "angle AOB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "rhombus side BC",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "rhombus side CD",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "rhombus side DA",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 13.00000000004158,
+          "expected": 13,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "592:single",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.8333333333384616,
+          "expected": 0.8333333333333334,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right O",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right O",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right O",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BD",
+          "actual": 11.999999999884615,
+          "expected": 12,
+          "pass_": true
+        },
+        {
+          "label": "area ABCD",
+          "actual": 95.99999999907689,
+          "expected": 96.0,
+          "pass_": true
+        },
+        {
+          "label": "angle AOB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "rhombus side BC",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "rhombus side CD",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "rhombus side DA",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 9.999999999965384,
+          "expected": 10,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "593:а",
+      "checks": [
+        {
+          "label": "declared parallel",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right K",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right K",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right K",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-4 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-4 right K",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length CD",
+          "actual": 20.0,
+          "expected": 20,
+          "pass_": true
+        },
+        {
+          "label": "height",
+          "actual": 12.000000000000002,
+          "expected": 12,
+          "pass_": true
+        },
+        {
+          "label": "area ABCD",
+          "actual": 179.99999999999997,
+          "expected": 180,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 13.000000000000002,
+          "expected": 13,
+          "pass_": true
+        },
+        {
+          "label": "length DA",
+          "actual": 13.000000000000002,
+          "expected": 13,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "593:б",
+      "checks": [
+        {
+          "label": "declared parallel",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right K",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right K",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right K",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-4 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-4 right K",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length CD",
+          "actual": 16.0,
+          "expected": 16,
+          "pass_": true
+        },
+        {
+          "label": "height",
+          "actual": 6.928203230270269,
+          "expected": 6.928203230275509,
+          "pass_": true
+        },
+        {
+          "label": "area ABCD",
+          "actual": 83.13843876324323,
+          "expected": 83.13843876330611,
+          "pass_": true
+        },
+        {
+          "label": "angle BCD",
+          "actual": 59.99999999998123,
+          "expected": 60,
+          "pass_": true
+        },
+        {
+          "label": "angle CDA",
+          "actual": 59.99999999998123,
+          "expected": 60,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 7.999999999995461,
+          "expected": 8,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "593:в",
+      "checks": [
+        {
+          "label": "declared parallel",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right K",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right K",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right K",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-4 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-4 right K",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length CD",
+          "actual": 24.0,
+          "expected": 24,
+          "pass_": true
+        },
+        {
+          "label": "height",
+          "actual": 9.0,
+          "expected": 9,
+          "pass_": true
+        },
+        {
+          "label": "area ABCD",
+          "actual": 135.0,
+          "expected": 135,
+          "pass_": true
+        },
+        {
+          "label": "angle BCD",
+          "actual": 45.0,
+          "expected": 45,
+          "pass_": true
+        },
+        {
+          "label": "angle CDA",
+          "actual": 45.0,
+          "expected": 45,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 12.727922061357853,
+          "expected": 12.727922061357857,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "594:single",
+      "checks": [
+        {
+          "label": "declared equalLength",
+          "actual": 1.000000000009568,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared collinear",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "neutral right D",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "neutral equal-group 1",
+          "actual": 1.000000000009568,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right D",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 equal-group 1",
+          "actual": 1.000000000009568,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right D",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 equal-group 1",
+          "actual": 1.000000000009568,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right D",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 equal-group 1",
+          "actual": 1.000000000009568,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "length CD",
+          "actual": 1.7320508075675676,
+          "expected": 1.7320508075688772,
+          "pass_": true
+        },
+        {
+          "label": "length AD",
+          "actual": 1.9999999999864864,
+          "expected": 2,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 2.000000000005622,
+          "expected": 2,
+          "pass_": true
+        },
+        {
+          "label": "length AC",
+          "actual": 2.645751311053518,
+          "expected": 2.6457513110645907,
+          "pass_": true
+        },
+        {
+          "label": "D inside AB",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "595:single",
+      "checks": [
+        {
+          "label": "declared parallel",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared parallel",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.9230769230724637,
+          "expected": 0.9230769230769231,
+          "pass_": true
+        },
+        {
+          "label": "neutral right A",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right A",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right A",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right A",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 11.999999999969855,
+          "expected": 12,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 13.000000000030145,
+          "expected": 13,
+          "pass_": true
+        },
+        {
+          "label": "length AC",
+          "actual": 5.000000000150728,
+          "expected": 5,
+          "pass_": true
+        },
+        {
+          "label": "angle BAC",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "596:а",
+      "checks": [
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.75,
+          "expected": 0.75,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 1.6666666666666667,
+          "expected": 1.6666666666666667,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": -8.650386361822501e-17,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.00000000000001,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "sorted side 0",
+          "actual": 5.999999999999999,
+          "expected": 6,
+          "pass_": true
+        },
+        {
+          "label": "sorted side 1",
+          "actual": 7.999999999999999,
+          "expected": 8,
+          "pass_": true
+        },
+        {
+          "label": "sorted side 2",
+          "actual": 10.0,
+          "expected": 10,
+          "pass_": true
+        },
+        {
+          "label": "triangle exists",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "right marker delayed",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "Pythagoras yes/no classification",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "596:б",
+      "checks": [
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.8333333333344977,
+          "expected": 0.8333333333333334,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 1.399999999991878,
+          "expected": 1.4,
+          "pass_": true
+        },
+        {
+          "label": "sorted side 0",
+          "actual": 5.000000000029007,
+          "expected": 5,
+          "pass_": true
+        },
+        {
+          "label": "sorted side 1",
+          "actual": 6.000000000026425,
+          "expected": 6,
+          "pass_": true
+        },
+        {
+          "label": "sorted side 2",
+          "actual": 7.0,
+          "expected": 7,
+          "pass_": true
+        },
+        {
+          "label": "triangle exists",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "right marker delayed",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "Pythagoras yes/no classification",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "596:в",
+      "checks": [
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.75,
+          "expected": 0.75,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 1.6666666666666667,
+          "expected": 1.6666666666666667,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": -8.650386361822501e-17,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.00000000000001,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "sorted side 0",
+          "actual": 9.0,
+          "expected": 9,
+          "pass_": true
+        },
+        {
+          "label": "sorted side 1",
+          "actual": 11.999999999999998,
+          "expected": 12,
+          "pass_": true
+        },
+        {
+          "label": "sorted side 2",
+          "actual": 15.0,
+          "expected": 15,
+          "pass_": true
+        },
+        {
+          "label": "triangle exists",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "right marker delayed",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "Pythagoras yes/no classification",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "596:г",
+      "checks": [
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.41666666667511265,
+          "expected": 0.4166666666666667,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 2.5999999999297296,
+          "expected": 2.6,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 2.747739969072009e-11,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 89.99999999842566,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "sorted side 0",
+          "actual": 10.000000000270271,
+          "expected": 10,
+          "pass_": true
+        },
+        {
+          "label": "sorted side 1",
+          "actual": 24.00000000016216,
+          "expected": 24,
+          "pass_": true
+        },
+        {
+          "label": "sorted side 2",
+          "actual": 26.0,
+          "expected": 26,
+          "pass_": true
+        },
+        {
+          "label": "triangle exists",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "right marker delayed",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "Pythagoras yes/no classification",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "596:д",
+      "checks": [
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.7500000000137544,
+          "expected": 0.75,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 1.99999999997794,
+          "expected": 2.0,
+          "pass_": true
+        },
+        {
+          "label": "sorted side 0",
+          "actual": 3.0000000000330895,
+          "expected": 3,
+          "pass_": true
+        },
+        {
+          "label": "sorted side 1",
+          "actual": 3.9999999999707625,
+          "expected": 4,
+          "pass_": true
+        },
+        {
+          "label": "sorted side 2",
+          "actual": 6.0,
+          "expected": 6,
+          "pass_": true
+        },
+        {
+          "label": "triangle exists",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "right marker delayed",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "Pythagoras yes/no classification",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "596:е",
+      "checks": [
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.8181818181800729,
+          "expected": 0.8181818181818182,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 1.4444444444293656,
+          "expected": 1.4444444444444444,
+          "pass_": true
+        },
+        {
+          "label": "sorted side 0",
+          "actual": 9.000000000093952,
+          "expected": 9,
+          "pass_": true
+        },
+        {
+          "label": "sorted side 1",
+          "actual": 11.000000000138295,
+          "expected": 11,
+          "pass_": true
+        },
+        {
+          "label": "sorted side 2",
+          "actual": 13.0,
+          "expected": 13,
+          "pass_": true
+        },
+        {
+          "label": "triangle exists",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "right marker delayed",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "Pythagoras yes/no classification",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "596:ж",
+      "checks": [
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.75,
+          "expected": 0.75,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 1.6666666666666667,
+          "expected": 1.6666666666666667,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": -8.650386361822501e-17,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.00000000000001,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "sorted side 0",
+          "actual": 15.0,
+          "expected": 15,
+          "pass_": true
+        },
+        {
+          "label": "sorted side 1",
+          "actual": 20.0,
+          "expected": 20,
+          "pass_": true
+        },
+        {
+          "label": "sorted side 2",
+          "actual": 25.0,
+          "expected": 25,
+          "pass_": true
+        },
+        {
+          "label": "triangle exists",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "right marker delayed",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "Pythagoras yes/no classification",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "597:а",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 1.181541874769146e-11,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 89.9999999913652,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 24.00000000105495,
+          "expected": 24,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 25.00000000101275,
+          "expected": 25.0,
+          "pass_": true
+        },
+        {
+          "label": "angle ACB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 84.00000000369232,
+          "expected": 84.0,
+          "pass_": true
+        },
+        {
+          "label": "length CH",
+          "actual": 6.720000000295384,
+          "expected": 6.72,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "597:б",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": -2.440422617415993e-11,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.00000000289229,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 14.999999999639426,
+          "expected": 15,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 16.999999999681847,
+          "expected": 17.0,
+          "pass_": true
+        },
+        {
+          "label": "angle ACB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 59.999999998557705,
+          "expected": 60.0,
+          "pass_": true
+        },
+        {
+          "label": "length CH",
+          "actual": 7.058823529276021,
+          "expected": 7.0588235294117645,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "598:single",
+      "checks": [
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 0.9999999999786982,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right P",
+          "actual": 89.99999999949145,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right Q",
+          "actual": 90.00000000264444,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right R",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right P",
+          "actual": 89.99999999949145,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right Q",
+          "actual": 90.00000000264444,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right R",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right P",
+          "actual": 89.99999999949145,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right Q",
+          "actual": 90.00000000264444,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right R",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 12.999999999829583,
+          "expected": 13,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 12.999999999829583,
+          "expected": 13,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 59.99999999907689,
+          "expected": 60,
+          "pass_": true
+        },
+        {
+          "label": "length OP",
+          "actual": 3.3333333332504926,
+          "expected": 3.3333333333333335,
+          "pass_": true
+        },
+        {
+          "label": "tangent point on side P",
+          "actual": 1.1470228317249433e-10,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "inradius distance P",
+          "actual": 1.0000000000344107,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "radius to contact P",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "tangent point on side Q",
+          "actual": 1.1470251603128802e-10,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "inradius distance Q",
+          "actual": 1.0000000000344107,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "radius to contact Q",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "tangent point on side R",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "inradius distance R",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "radius to contact R",
+          "actual": 0.9999999999786982,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "599:а",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0000000000810814,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0000000000810814,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 0.999999999983368,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.000000000006237,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right Q",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right R",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right Q",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right R",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right Q",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right R",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length OP",
+          "actual": 3.99999999985415,
+          "expected": 4,
+          "pass_": true
+        },
+        {
+          "label": "perimeter",
+          "actual": 60.00000000010747,
+          "expected": 60,
+          "pass_": true
+        },
+        {
+          "label": "tangent point on side P",
+          "actual": 1.2857833783949475e-10,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "inradius distance P",
+          "actual": 1.0000000000321447,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "radius to contact P",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "tangent point on side Q",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "inradius distance Q",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "radius to contact Q",
+          "actual": 1.0000000000873182,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "tangent point on side R",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "inradius distance R",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "radius to contact R",
+          "actual": 1.0000000000062368,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "599:б",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.41666666665855195,
+          "expected": 0.4166666666666667,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 0.9999999999999998,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 0.9999999999999998,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right Q",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right R",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right Q",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right R",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right Q",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right R",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-4 right Q",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-4 right R",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BP",
+          "actual": 12.000000000233705,
+          "expected": 12,
+          "pass_": true
+        },
+        {
+          "label": "length OP",
+          "actual": 2.9999999999451514,
+          "expected": 3,
+          "pass_": true
+        },
+        {
+          "label": "perimeter",
+          "actual": 40.0000000005008,
+          "expected": 40,
+          "pass_": true
+        },
+        {
+          "label": "tangent point on side P",
+          "actual": 2.3146113565798383e-11,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "inradius distance P",
+          "actual": 1.0000000000077152,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "radius to contact P",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "tangent point on side Q",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "inradius distance Q",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "radius to contact Q",
+          "actual": 1.0000000000357707,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "tangent point on side R",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "inradius distance R",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "radius to contact R",
+          "actual": 1.000000000035771,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "600:а",
+      "checks": [
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "neutral right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 6.000000000000002,
+          "expected": 6,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 10.000000000000002,
+          "expected": 10.0,
+          "pass_": true
+        },
+        {
+          "label": "angle ACB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 24.000000000000007,
+          "expected": 24.0,
+          "pass_": true
+        },
+        {
+          "label": "length OA",
+          "actual": 5.000000000000001,
+          "expected": 5.0,
+          "pass_": true
+        },
+        {
+          "label": "circumcircle B",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "circumcircle C",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "600:б",
+      "checks": [
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "neutral right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right C",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 31.17691453569231,
+          "expected": 31.17691453623979,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 35.99999999952586,
+          "expected": 36.0,
+          "pass_": true
+        },
+        {
+          "label": "angle ACB",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "area ABC",
+          "actual": 280.59223082123077,
+          "expected": 280.5922308261581,
+          "pass_": true
+        },
+        {
+          "label": "length OA",
+          "actual": 17.99999999976293,
+          "expected": 18.0,
+          "pass_": true
+        },
+        {
+          "label": "circumcircle B",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "circumcircle C",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "601:single",
+      "checks": [
+        {
+          "label": "declared equalLength",
+          "actual": 0.9999999999868295,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 0.9999999999868295,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 0.9999999999868294,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 0.9999999999999997,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-4 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length AB",
+          "actual": 17.320508075612732,
+          "expected": 17.32050807568877,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 17.320508075384613,
+          "expected": 17.32050807568877,
+          "pass_": true
+        },
+        {
+          "label": "length CA",
+          "actual": 17.320508075612732,
+          "expected": 17.32050807568877,
+          "pass_": true
+        },
+        {
+          "label": "length OH",
+          "actual": 5.0,
+          "expected": 5,
+          "pass_": true
+        },
+        {
+          "label": "angle OBH",
+          "actual": 30.000000000435676,
+          "expected": 30,
+          "pass_": true
+        },
+        {
+          "label": "circumcircle B",
+          "actual": 0.9999999999868295,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "circumcircle C",
+          "actual": 0.9999999999868294,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "602:single",
+      "checks": [
+        {
+          "label": "declared equalLength",
+          "actual": 0.9999999999999999,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared angle",
+          "actual": 119.99999999912865,
+          "expected": 120,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 0.9999999999999999,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0000000000131704,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "step-1 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-2 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-3 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "step-4 right H",
+          "actual": 90.0,
+          "expected": 90,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 7.999999999999999,
+          "expected": 8,
+          "pass_": true
+        },
+        {
+          "label": "angle ACB",
+          "actual": 119.99999999912865,
+          "expected": 120,
+          "pass_": true
+        },
+        {
+          "label": "length CH",
+          "actual": 4.000000000052681,
+          "expected": 4,
+          "pass_": true
+        },
+        {
+          "label": "length OH",
+          "actual": 4.000000000052681,
+          "expected": 4,
+          "pass_": true
+        },
+        {
+          "label": "length OA",
+          "actual": 8.0,
+          "expected": 8,
+          "pass_": true
+        },
+        {
+          "label": "length OB",
+          "actual": 7.999999999999999,
+          "expected": 8,
+          "pass_": true
+        },
+        {
+          "label": "length OC",
+          "actual": 8.000000000105363,
+          "expected": 8,
+          "pass_": true
+        },
+        {
+          "label": "circumcircle B",
+          "actual": 0.9999999999999999,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "circumcircle C",
+          "actual": 1.0000000000131704,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "603:single",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared equalLength",
+          "actual": 1.0,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "declared collinear",
+          "actual": 4.177650563008989e-14,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared collinear",
+          "actual": 4.177650563008989e-14,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 1.3333333333260637,
+          "expected": 1.3333333333333333,
+          "pass_": true
+        },
+        {
+          "label": "length BC",
+          "actual": 600.0,
+          "expected": 600,
+          "pass_": true
+        },
+        {
+          "label": "length AC",
+          "actual": 848.528137423857,
+          "expected": 848.5281374238571,
+          "pass_": true
+        },
+        {
+          "label": "length PQ",
+          "actual": 799.9999999956383,
+          "expected": 800,
+          "pass_": true
+        },
+        {
+          "label": "trace inside window",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "source long side preserved",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "604:single",
+      "checks": [
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 1.7777777777939014,
+          "expected": 1.7777777777777777,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 1.0812162162003134,
+          "expected": 1.0812162162162162,
+          "pass_": true
+        },
+        {
+          "label": "declared parallel",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared perpendicular",
+          "actual": 0.0,
+          "expected": 0,
+          "pass_": true
+        },
+        {
+          "label": "declared distanceRatio",
+          "actual": 0.7142857142857143,
+          "expected": 0.7142857142857143,
+          "pass_": true
+        },
+        {
+          "label": "length EH",
+          "actual": 69.73475872446153,
+          "expected": 69.7347587253352,
+          "pass_": true
+        },
+        {
+          "label": "length EF",
+          "actual": 39.225801782153844,
+          "expected": 39.225801783001046,
+          "pass_": true
+        },
+        {
+          "label": "length EG",
+          "actual": 80.00999999882319,
+          "expected": 80.01,
+          "pass_": true
+        },
+        {
+          "label": "screen width fits",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "screen height fits",
+          "actual": 1,
+          "expected": 1,
+          "pass_": true
+        },
+        {
+          "label": "length E__case1F__case1",
+          "actual": 25.0,
+          "expected": 25,
+          "pass_": true
+        }
+      ],
+      "verdict": "PASS"
+    }
+  ],
+  "verdict": "PASS",
+  "visualVerdict": "PASS",
+  "actuallyViewedSourcePages": [
+    {
+      "pdfPage": 152,
+      "printedPage": 151,
+      "path": "vii-source/review-b-152.png",
+      "sha256": "190503e46e16b6e973603ec01cfbe10e355f82e042153d0ab64ca591c369028f"
+    },
+    {
+      "pdfPage": 153,
+      "printedPage": 152,
+      "path": "vii-source/review-b-153.png",
+      "sha256": "fe89ff678d750605917d0a4fb9cb988d8b89df80d45697e5b5a7da3f9ef51c70"
+    },
+    {
+      "pdfPage": 154,
+      "printedPage": 153,
+      "path": "vii-source/review-b-154.png",
+      "sha256": "d3cdb52bc619f3ae34602fdd23bcb46ec4a1ace3d1dfec7ff1e18686c6c597b7"
+    },
+    {
+      "pdfPage": 155,
+      "printedPage": 154,
+      "path": "vii-source/review-b-155.png",
+      "sha256": "3587f51c466227b0b88a8635033b64cea4cb44e9fe5d8df8d45a637ebfff1dff"
+    },
+    {
+      "pdfPage": 156,
+      "printedPage": 155,
+      "path": "vii-source/review-b-156.png",
+      "sha256": "114ee05a826dd8b0df17b16d0a07305076a5c47577034cc0680ab05da2ed14b5"
+    },
+    {
+      "pdfPage": 157,
+      "printedPage": 156,
+      "path": "vii-source/review-b-157.png",
+      "sha256": "07ce3625978d37aa686431614d9d887b4ae6b0f3651b334d5098fb0f7b35edcf"
+    },
+    {
+      "pdfPage": 158,
+      "printedPage": 157,
+      "path": "vii-source/review-b-158.png",
+      "sha256": "a1913c4dc15134848634658bb8c046c1425be3b35b915bc3ec1875fd281ad0a3"
+    },
+    {
+      "pdfPage": 159,
+      "printedPage": 158,
+      "path": "vii-source/review-b-159.png",
+      "sha256": "c9aeaf2a40ec7247ebd44b80ccd79e16584cbf4b7e2ed7860bd4c3c43eb1bbf8"
+    }
+  ],
+  "visualEvidence": "ATANASYAN_7_9_CHAPTER_VII_B_VISUAL_REVIEW.json"
+}

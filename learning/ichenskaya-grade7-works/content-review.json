@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "courseId": "ichenskaya-grade7-works",
+  "authoredSha256": "7ecb1900f9ca6c35b14412c407608f6c71dfcc0ef568135752d45ce5c0f57d74",
+  "manifestSha256": "7076005f4811effc4011d716b405aa20793a7882f5b69fa79cf003d583edc4d5",
+  "source": "passed",
+  "mathematics": "passed",
+  "pedagogy": "passed",
+  "reviewedAt": "2026-10-27T21:20:31.264526+00:00",
+  "reviewKind": "internal-independent-source-and-proof-review",
+  "externalReleaseApproval": false,
+  "groups": [
+    {
+      "cards": 54,
+      "scope": "sr-01..10; kr-01..02",
+      "reviewerRole": "primary agent independently reviewed content authored by source agent",
+      "evidence": "All 54 conditions, explanations and answers checked against PDF pages 4–10 and 15–16. Source letter D in S-3, variant 2, task 2 corrected and rechecked. Source/key conflicts retained explicitly."
+    },
+    {
+      "cards": 56,
+      "scope": "sr-11..17; kr-03..06",
+      "reviewerRole": "independent source/mathematics agent reviewed content authored by primary agent",
+      "evidence": "All 56 conditions checked against PDF pages 10–14 and 16–18; numerical answers checked against printed page 46; proofs, endpoint qualifications, altitude and construction existence cases independently reviewed without blocking findings."
+    }
+  ],
+  "automatedEvidence": {
+    "cards": 110,
+    "arithmeticAndCoordinateChecks": 332,
+    "result": "passed"
+  },
+  "limitations": [
+    "No external exact-head approval is claimed.",
+    "No real-pupil learning-outcome trial or automated grading of proofs.",
+    "Source scans have 28 PDF pages; missing even printed folios are recorded, not assumed blank."
+  ]
+}

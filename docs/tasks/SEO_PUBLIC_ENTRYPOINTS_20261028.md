@@ -152,3 +152,20 @@ available help. Preserve learner work and the synchronized board.
 Use `EXECUTIVE STATUS`; report passed, failed and not-run checks separately.
 Stop before merge and publication. Keep HTTP-to-HTTPS hosting enforcement as
 an explicit operational follow-up rather than claiming an HTML canonical fixes it.
+
+## Owner-requested continuation — 2026-10-30
+
+The owner explicitly requested continuing PR #368, comparing with current main,
+reviewing and applying the previous conflict proposal, preserving published
+courses/assistants/trainers and learner results, rerunning final GitHub Actions,
+and publishing after successful checks and necessary release approvals.
+This supersedes the original implementation-only scope for integration and
+release preparation. Final merge follows the exact-base/head release decision.
+
+- Integration base: `51f7fa550bae29f0110a0f06608a3e35bb1f65fd`.
+- Previous proposal: `2a68f0c6255bef3a341b855662ad4fd0044464f1`.
+- Resolve only the status-document overlap; retain all current-main content.
+- Existing product patch remains unchanged. Add a public-navigation browser
+  gate to the existing SEO workflow so actual catalog clicks, legacy URL
+  handling with/without JavaScript and embedded NOK/NOD run on final CI.
+- No mathematical engine, account, persistence or assistant changes.
