@@ -71,5 +71,5 @@ async function browserNegativeControls(){
   evidence.cases.push(row);save();await context.close();
  }
  assert.deepEqual(evidence.errors,[]);assert.deepEqual(sources(),evidence.sourceHashes,'source bytes frozen during browser evidence');evidence.completed=true;save();
- console.log('EGE_BASE_STEREO_VISIBILITY_BROWSER_OK:28 actual-page journeys,52 PNG,rotated bodies,computed dashes,old state and drafts retained');
+ console.log('EGE_BASE_STEREO_VISIBILITY_BROWSER_OK:28 actual-page journeys,60 PNG,rotated bodies,computed dashes,old state and drafts retained');
 })().catch(async error=>{evidence.errors.push(error.stack||String(error));if(fs.existsSync(out)){if(page&&!page.isClosed())try{await page.screenshot({path:path.join(out,'failure.png'),fullPage:true});}catch{}save();}console.error(error);process.exitCode=1;}).finally(async()=>{await browser?.close();if(server.listening)await new Promise(r=>server.close(r));});

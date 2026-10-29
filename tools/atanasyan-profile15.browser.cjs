@@ -91,6 +91,33 @@ const server = http.createServer((request, response) => {
     }
   }
 
+  async function catalogLineStyles() {
+    return page.locator('.hero-diagram svg').evaluate(svg => {
+      const vertices = { S: [190, 22], A: [64, 232], B: [210, 295], C: [335, 203], D: [188, 150] };
+      // Inspect every painted path, so a dashed rear edge cannot pass while
+      // another polygon outline silently paints the same edge solid.
+      const strokes = [...svg.querySelectorAll('path')].filter(node => {
+        const style = getComputedStyle(node);
+        return style.stroke !== 'none' && Number.parseFloat(style.strokeWidth) > 0;
+      }).map(node => {
+        const length = node.getTotalLength(), count = Math.ceil(length / .25);
+        return { dash: getComputedStyle(node).strokeDasharray,
+          points: Array.from({ length: count + 1 }, (_, i) => {
+            const point = node.getPointAtLength(length * i / count);
+            return [point.x, point.y];
+          }) };
+      });
+      return ['AD', 'DC', 'SD', 'SA', 'AB', 'BC', 'CS', 'SB'].map(edge => {
+        const [a, b] = [...edge].map(name => vertices[name]);
+        const covering = strokes.filter(stroke => [.2, .5, .8].every(t => {
+          const x = a[0] + (b[0] - a[0]) * t, y = a[1] + (b[1] - a[1]) * t;
+          return stroke.points.some(point => Math.hypot(point[0] - x, point[1] - y) < .25);
+        }));
+        return { edge, styles: covering.map(stroke => stroke.dash) };
+      });
+    });
+  }
+
   try {
     await page.goto(origin + prefix + 'index.html');
     await page.waitForSelector('#modules .module');
@@ -98,6 +125,12 @@ const server = http.createServer((request, response) => {
     assert.equal(await page.locator('#examples a').count(), 12);
     assert.deepEqual(await page.locator('#examples a').evaluateAll(nodes => nodes.map(node => new URL(node.href).searchParams.get('lesson'))), lessons.map(lesson => lesson.id));
     await layout('catalog');
+    const catalogEdges = await catalogLineStyles();
+    for (const { edge, styles } of catalogEdges) {
+      assert(styles.length > 0, 'catalog hero includes edge ' + edge);
+      if (['AD', 'DC', 'SD'].includes(edge)) assert(styles.every(style => style !== 'none'), 'catalog rear edge ' + edge + ' has no solid overpaint');
+      else assert(styles.some(style => style === 'none'), 'catalog visible edge ' + edge + ' remains solid');
+    }
     if (process.env.ATANASYAN_PREVIEW_DIR) await page.screenshot({ path: path.join(process.env.ATANASYAN_PREVIEW_DIR, 'atanasyan-course-preview-catalog.png'), fullPage: true });
 
     for (const lesson of lessons) {

@@ -1761,5 +1761,6 @@
     "afterSHA256": "8ecd00f14c206ec202efb499c31899fe75d2ece011a47c4ec10595bfe4423a40",
     "change": "Removed one trailing ASCII space; every non-whitespace byte is identical. No production file or test assertion changed.",
     "reviewer": "root"
-  }
+  },
+  "followup": "STEREO_VISIBILITY_RENDER_FOLLOWUP.json records successful b3 CI, actual-image findings and source-bound follow-up reviews. This document preserves the earlier implementation snapshot."
 }

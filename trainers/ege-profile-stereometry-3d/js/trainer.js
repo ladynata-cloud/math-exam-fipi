@@ -72,9 +72,32 @@ function initThree() {
   setCam();
   T.setCam = setCam;
 
+  /* вид «домой» (стартовый и кнопка ⌂): прежний ракурс, а расстояние такое,
+     чтобы сцена целиком — тела и подписи — была в кадре при любом аспекте
+     холста. Сфера радиуса R вокруг центра обзора (0,0,0) (T.sceneR —
+     buildScene) видна вся, если r ≥ R / sin(половины меньшего из углов
+     обзора: вертикального fov и горизонтального по аспекту). Не ближе
+     прежних 12: на широком экране вид прежний, отодвигается только то,
+     что не помещалось. */
+  const HOME = { r: 12, th: -0.65, ph: 1.18 };
+  const fitDistance = R => {
+    const v = camera.fov * Math.PI / 360;
+    const h = Math.atan(Math.tan(v) * camera.aspect);
+    const fit = R > 0 ? R / Math.sin(Math.min(v, h)) : 0;
+    return isFinite(fit) ? Math.max(HOME.r, fit) : HOME.r;
+  };
+  T.goHome = () => {
+    sph.r = T.homeR = fitDistance(T.sceneR || 0); sph.th = HOME.th; sph.ph = HOME.ph;
+    T.atHome = true;   /* пока ученик не повернул и не приблизил — при смене размера холста вид подстраивается */
+    setCam();
+  };
+  const zoomTo = r => { sph.r = Math.min(Math.max(32, T.homeR || 0), Math.max(4, r)); T.atHome = false; setCam(); };
+
   const resize = () => {
     const w = mount.clientWidth, h = mount.clientHeight;
+    if (!(w > 0 && h > 0)) return;
     renderer.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix();
+    if (T.atHome) T.goHome();
   };
   resize();
   new ResizeObserver(resize).observe(mount);
@@ -90,12 +113,13 @@ function initThree() {
     lx = e.clientX; ly = e.clientY;
     sph.th -= dx * 0.0065;
     sph.ph = Math.min(Math.PI - 0.15, Math.max(0.15, sph.ph - dy * 0.0065));
+    T.atHome = false;
     setCam();
   });
   window.addEventListener("pointerup", e => { if (drag && moved < 6) pick(e); drag = false; });
-  el.addEventListener("wheel", e => { e.preventDefault(); sph.r = Math.min(32, Math.max(4, sph.r * (1 + e.deltaY * 0.001))); setCam(); }, { passive: false });
+  el.addEventListener("wheel", e => { e.preventDefault(); zoomTo(sph.r * (1 + e.deltaY * 0.001)); }, { passive: false });
   el.addEventListener("touchstart", e => { if (e.touches.length === 2) { const [a, b] = e.touches; pinch = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY); } }, { passive: true });
-  el.addEventListener("touchmove", e => { if (e.touches.length === 2 && pinch) { const [a, b] = e.touches; const d = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY); sph.r = Math.min(32, Math.max(4, sph.r * pinch / d)); pinch = d; setCam(); e.preventDefault(); } }, { passive: false });
+  el.addEventListener("touchmove", e => { if (e.touches.length === 2 && pinch) { const [a, b] = e.touches; const d = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY); if (d > 0) { zoomTo(sph.r * pinch / d); pinch = d; } e.preventDefault(); } }, { passive: false });
 
   const ray = new THREE.Raycaster();
   function pick(e) {
@@ -114,7 +138,7 @@ function initThree() {
 
   (function loop() {
     const dt = T.clock.getDelta(), now = T.clock.elapsedTime;
-    if (autoRot) { sph.th += dt * 0.35; setCam(); }
+    if (autoRot) { sph.th += dt * 0.35; T.atHome = false; setCam(); }
     T.anims = T.anims.filter(a => {
       const p = Math.min(1, Math.max(0, (now - a.start) / a.dur));
       a.step(p);
@@ -367,7 +391,20 @@ function buildScene(p) {
     T.constructHide = () => { cg.visible = false; T.solidMats.length = 0; };
   } else { T.constructBuild = null; T.constructHide = null; }
 
-  T.sph.r = 12; T.sph.th = -0.65; T.sph.ph = 1.18; T.setCam();
+  /* радиус сцены вокруг центра обзора (0,0,0) — по всем вершинам геометрий
+     (рёбра, грани, окружности, поверхности) и углам подписей; по нему
+     T.goHome подбирает расстояние камеры */
+  T.group.updateMatrixWorld(true);
+  let R = 0;
+  const v3 = new THREE.Vector3();
+  T.group.traverse(o => {
+    if (o.isSprite) { R = Math.max(R, o.getWorldPosition(v3).length() + Math.hypot(o.scale.x, o.scale.y) / 2); return; }
+    const pos = o.geometry && o.geometry.attributes && o.geometry.attributes.position;
+    if (!pos) return;
+    for (let i = 0; i < pos.count; i++) R = Math.max(R, v3.fromBufferAttribute(pos, i).applyMatrix4(o.matrixWorld).length());
+  });
+  T.sceneR = isFinite(R) ? R : 0;
+  T.goHome();
 }
 
 /* ============================================================
@@ -582,7 +619,7 @@ function bind() {
     p.style.display = p.style.display === "block" ? "none" : "block";
   };
   $("btnRotate").onclick = () => { autoRot = !autoRot; $("btnRotate").classList.toggle("on", autoRot); };
-  $("btnHome").onclick = () => { T.sph.r = 12; T.sph.th = -0.65; T.sph.ph = 1.18; T.setCam(); };
+  $("btnHome").onclick = () => T.goHome();
 }
 
 /* ---------- запуск ---------- */

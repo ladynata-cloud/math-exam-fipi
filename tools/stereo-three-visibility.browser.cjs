@@ -56,16 +56,48 @@ Object.defineProperty(window, '__stereoVisibilityRead', { value: () => {
   }
   const rendered=[];
   T.group.traverse(group=>{if(group.name!=='classified-stroke')return;const previous=group.parent.children[group.parent.children.indexOf(group)-1];rendered.push({name:previous?.userData.seg||'circle',shown:shown(group),pieces:group.children.filter(p=>p.visible).map(p=>({ ...p.userData.visibility,color:p.material.color.getHex(),depthTest:p.material.depthTest,position:p.position.toArray(),scale:p.scale.toArray()}))});});
+  // Read the actual mesh intervals, then project their centers for an image
+  // check. A real interval gap can still be painted by a thick tube's end cap.
+  for(const group of rendered){
+    const curve=inspector.strokes.find(s=>s.name===group.name)?.curve;
+    if(!curve||curve.kind!=='line')continue;
+    const at=t=>project(new THREE.Vector3(...curve.a).lerp(new THREE.Vector3(...curve.b),t));
+    const pieces=group.pieces.filter(p=>p.hidden).sort((a,b)=>a.start-b.start);
+    group.pixelPaint=pieces.map(p=>({t:(p.start+p.end)/2,point:at((p.start+p.end)/2)}));
+    group.pixelGaps=[];
+    for(let i=1;i<pieces.length;i++){
+      const a=pieces[i-1].end,b=pieces[i].start,t=(a+b)/2;
+      if(b>a&&inspector.strokes.find(s=>s.name===group.name).parts.some(p=>p.hidden&&p.start<=a+1e-8&&p.end>=b-1e-8)){
+        const first=at(a),last=at(b);group.pixelGaps.push({t,point:at(t),length:Math.hypot(last.x-first.x,last.y-first.y)});
+      }
+    }
+  }
   let manualPair=null;
   const available=vertices.filter(v=>v.clickable);
   for(let i=0;i<available.length&&!manualPair;i++)for(let j=i+1;j<available.length;j++){
     const a=available[i],b=available[j],key=segKey(a.name,b.name);
     if(!T.segMap[key]&&Math.hypot(a.x-b.x,a.y-b.y)>25){manualPair={a:a.name,b:b.name,key};break;}
   }
+  if(String(prob().id)==='27055'){
+    const a=available.find(v=>v.name==='C'),b=available.find(v=>v.name==='A1');
+    manualPair=a&&b?{a:a.name,b:b.name,key:segKey(a.name,b.name)}:null;
+  }
+  const badgeRects=[];
+  T.badges.traverse(sprite=>{
+    if(!sprite.isSprite||!shown(sprite))return;
+    const center=sprite.getWorldPosition(new THREE.Vector3()),scale=sprite.getWorldScale(new THREE.Vector3());
+    const right=new THREE.Vector3().setFromMatrixColumn(T.camera.matrixWorld,0),up=new THREE.Vector3().setFromMatrixColumn(T.camera.matrixWorld,1);
+    const angle=sprite.material.rotation||0,cos=Math.cos(angle),sin=Math.sin(angle),corners=[];
+    for(const x of[0,1])for(const y of[0,1]){
+      const dx=(x-sprite.center.x)*scale.x,dy=(y-sprite.center.y)*scale.y;
+      corners.push(project(center.clone().addScaledVector(right,dx*cos-dy*sin).addScaledVector(up,dx*sin+dy*cos)));
+    }
+    badgeRects.push({left:Math.min(...corners.map(p=>p.x))-2,right:Math.max(...corners.map(p=>p.x))+2,top:Math.min(...corners.map(p=>p.y))-2,bottom:Math.max(...corners.map(p=>p.y))+2});
+  });
   const source=sceneData(prob()),sourceGeometry=source.gen.map(g=>({ghost:!!g.ghost,edges:g.edges.map(([a,b])=>({names:[a,b],a:source.toW(g.pts[a]).toArray(),b:source.toW(g.pts[b]).toArray()}))}));
   return {id:String(prob().id),index:idx,bankSize:PROBLEMS.length,bankUnchanged:JSON.stringify(PROBLEMS)===visibilityBankBefore,
     camera:T.camera.position.toArray(),spherical:{...T.sph},autoRot,constructOn,constructVisible:!!T.constructGroup?.visible,anims:T.anims.length,
-    rect:{x:rect.left,y:rect.top,width:rect.width,height:rect.height},vertices,hiddenCandidates,segmentCandidates,manualPair,sourceGeometry,
+    rect:{x:rect.left,y:rect.top,width:rect.width,height:rect.height},layout:{width:innerWidth,scrollWidth:document.documentElement.scrollWidth},vertices,hiddenCandidates,segmentCandidates,manualPair,sourceGeometry,badgeRects,
     segments:Object.entries(T.segMap).map(([key,s])=>({key,kind:s.kind,selected:s.selected,shown:shown(s.mesh),materialVisible:s.mesh.material.visible,a:s.A.toArray(),b:s.B.toArray(),pointKeys:[s.p1,s.p2],names:[displayName(s.p1),displayName(s.p2)],given:T.givenMap?.[key]||s.given,sourceLength:T.scaleFn(s.p1,s.p2)})),
     selected:selected.map(s=>({...s})),inspector,rendered,selectColor:COL.select,
     progress:localStorage.getItem('stereo3.status'),answer:$('answer').value,uiAliasLeak:/__body\d+_/.test(document.body.innerText)};
@@ -155,6 +187,70 @@ function assertDashedSelection(state, key) {
   assert(group.pieces.every(p=>p.color===state.selectColor),'every actual selected dash uses selection color');
   assert.equal(state.segments.find(s=>s.key===key).materialVisible,false,'selected pick mesh stays invisible');
 }
+function assertPixelGaps(result) {
+  assert(result.gaps.length>=3,'at least three readable projected gaps outside the midpoint label');
+  assert(result.paint.length>=3,'at least three projected painted dash centers');
+  assert(result.gaps.every(p=>!p.pink),'actual screenshot gap centers are empty of the selected line');
+  assert(result.paint.filter(p=>p.pink).length>=3,'actual screenshot contains the selected pink dashes');
+}
+assert.throws(()=>assertPixelGaps({gaps:Array(3).fill({pink:true}),paint:Array(3).fill({pink:true})}),/gap centers/, 'continuous pink negative control');
+assert.throws(()=>assertPixelGaps({gaps:Array(3).fill({pink:false}),paint:Array(3).fill({pink:false})}),/pink dashes/, 'missing line negative control');
+async function samplePixelGaps({encoded,group,rect,badgeRects=[]}) {
+  const image=new Image();image.src='data:image/png;base64,'+encoded;await image.decode();
+  const canvas=document.createElement('canvas');canvas.width=image.width;canvas.height=image.height;
+  const ctx=canvas.getContext('2d');ctx.drawImage(image,0,0);const pixels=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+  const outsideBadge=p=>!badgeRects.some(b=>p.point.x>=b.left&&p.point.x<=b.right&&p.point.y>=b.top&&p.point.y<=b.bottom);
+  const sample=p=>{
+    const x=Math.round((p.point.x-rect.x)*canvas.width/rect.width-.5),y=Math.round((p.point.y-rect.y)*canvas.height/rect.height-.5);
+    if(x<1||y<1||x>=canvas.width-1||y>=canvas.height-1)return null;
+    const colors=[];
+    for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
+      const at=((y+dy)*canvas.width+x+dx)*4;colors.push([pixels[at],pixels[at+1],pixels[at+2]]);
+    }
+    return {...p,x,y,colors,pink:colors.some(([r,g,b])=>r>150&&r-g>65&&b-g>20)};
+  };
+  // A 3×3 neighborhood detects thin antialiased paint while staying inside
+  // these >=3.5px gaps. Actual badge rectangles exclude text, not line pixels.
+  return {width:canvas.width,height:canvas.height,gaps:group.pixelGaps.filter(p=>outsideBadge(p)&&p.length>=3.5).map(sample).filter(Boolean),paint:group.pixelPaint.filter(outsideBadge).map(sample).filter(Boolean)};
+}
+async function pixelSamplerControls() {
+  if(evidence.pixelSamplerControls)return;
+  const fixtures=await page.evaluate(()=>{
+    const rect={x:11,y:23,width:100,height:100};
+    const row=(x,y)=>({t:.1,point:{x:rect.x+x,y:rect.y+y},length:10});
+    const group={pixelGaps:[row(15,25),row(35,45),row(55,65)],pixelPaint:[row(25,15),row(45,35),row(65,55)]};
+    const make=mode=>{
+      const canvas=document.createElement('canvas');canvas.width=canvas.height=200;const ctx=canvas.getContext('2d');
+      ctx.fillStyle=mode==='solid'?'#d93a6a':'#ffffff';ctx.fillRect(0,0,200,200);
+      if(mode==='pattern'){ctx.fillStyle='#d93a6a';for(const p of group.pixelPaint)ctx.fillRect((p.point.x-rect.x)*2-4,(p.point.y-rect.y)*2-4,8,8);}
+      return canvas.toDataURL('image/png').split(',')[1];
+    };
+    return {rect,group,images:{pattern:make('pattern'),solid:make('solid'),missing:make('missing')}};
+  });
+  const results={};
+  for(const [mode,encoded]of Object.entries(fixtures.images)){
+    const result=await page.evaluate(samplePixelGaps,{encoded,group:fixtures.group,rect:fixtures.rect});
+    if(mode==='pattern')assertPixelGaps(result);
+    else assert.throws(()=>assertPixelGaps(result),mode==='solid'?/gap centers/:/pink dashes/,'actual decoded '+mode+' PNG control');
+    results[mode]={sha256:hash(Buffer.from(encoded,'base64')),result};
+  }
+  evidence.pixelSamplerControls=results;save();
+}
+async function manualPixelGaps(name,state,key) {
+  const group=state.rendered.find(g=>g.name===key);
+  assert(group,'actual manual render group');await pixelSamplerControls();
+  const bytes=await page.locator('#viewport canvas').screenshot({path:path.join(out,name+'-manual-pixel.png'),animations:'disabled'});
+  const result=await page.evaluate(samplePixelGaps,{encoded:bytes.toString('base64'),group,rect:state.rect,badgeRects:state.badgeRects});
+  const record={filename:name+'-manual-pixel.png',sha256:hash(bytes),key,badgeRects:state.badgeRects,...result};
+  evidence.pixelGaps??=[];evidence.pixelGaps.push(record);save();assertPixelGaps(result);
+  return {filename:record.filename,gaps:result.gaps.length,paint:result.paint.filter(p=>p.pink).length};
+}
+function assertContained(state,label) {
+  assert(state.layout.scrollWidth<=state.layout.width+1,label+' page has no horizontal overflow');
+  for(const v of state.vertices){
+    assert(v.z>=-1&&v.z<=1&&v.x>=state.rect.x+3&&v.x<=state.rect.x+state.rect.width-3&&v.y>=state.rect.y+3&&v.y<=state.rect.y+state.rect.height-3,label+' vertex '+v.name+' fits the canvas');
+  }
+}
 async function selectedAndManual(name,row) {
   let state=await findInteraction('hidden'),target=state.hiddenCandidates[0];
   const old=state.inspector.strokes.find(s=>s.name===target.key).parts;
@@ -173,7 +269,7 @@ async function selectedAndManual(name,row) {
     assert(state.segments.some(s=>s.key===pair.key&&s.kind==='user'),'real two-point click creates user segment');
     assert(state.selected.some(s=>s.key===pair.key&&s.user),'new manual line is selected');
     assert(state.inspector.strokes.some(s=>s.name===pair.key),'manual line receives visibility classification');
-    if(!repeat)await capture(name+'-manual',state);
+    if(!repeat){await capture(name+'-manual',state);row.manualPixels=await manualPixelGaps(name,state,pair.key);}
     await page.locator('#measureList .measure-del').click(); await frames();state=await snapshot();
     assert(!state.segments.some(s=>s.key===pair.key),'delete removes manual source line');
     assert(!state.inspector.strokes.some(s=>s.name===pair.key),'delete removes classification record');
@@ -267,8 +363,8 @@ async function responsiveness() {
         if((await snapshot()).id!==testCase.id){await page.locator('#navToggle').click();await page.locator('#navBody').getByRole('button',{name:String(testCase.index+1),exact:true}).click();}
         await page.waitForFunction(id=>window.__stereoVisibilityRead().id===id,testCase.id);await page.locator('#answer').fill('7/');
         const initial=await canvasReady();inspect(initial,name);assert.equal(initial.bankSize,route.count);assert(initial.inspector.strokes.some(s=>s.parts.some(p=>p.hidden)),name+' actual hidden parts');
-        row.initial=initial;if(route.label==='legacy143'&&['27061','676923'].includes(testCase.id))distinctBodies(initial);await capture(name+'-initial',initial);
-        await drag();const rotated=await canvasReady();inspect(rotated,name+' rotated');assert.notDeepEqual(rotated.camera,initial.camera,'actual pointer drag rotates camera');row.rotated=rotated;await capture(name+'-rotated',rotated);
+        row.initial=initial;assertContained(initial,name+' initial');if(route.label==='legacy143'&&['27061','676923'].includes(testCase.id))distinctBodies(initial);await capture(name+'-initial',initial);
+        await drag();const rotated=await canvasReady();inspect(rotated,name+' rotated');assertContained(rotated,name+' rotated');assert.notDeepEqual(rotated.camera,initial.camera,'actual pointer drag rotates camera');row.rotated=rotated;await capture(name+'-rotated',rotated);
         await page.locator('#btnHome').click();await frames();const home=await canvasReady();home.camera.forEach((n,i)=>assert(Math.abs(n-initial.camera[i])<1e-7,'home restores original camera'));
         if(testCase.id==='27055')await selectedAndManual(name,row);
         if(testCase.construct)await construction(name,row);

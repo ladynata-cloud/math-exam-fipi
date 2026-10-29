@@ -61,8 +61,11 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
 - Coverage audit additionally found active independent Atanasyan-EGE,
   profile-EGE SVG/task14, two Three.js banks and basic-EGE spatial renderers.
   These also fall under the owner's all-courses request. Their source and
-  geometry reviews pass; exact-head CI and actual browser evidence are pending.
-  The shared-renderer passes alone do not establish complete coverage.
+  geometry reviews and the additional-renderer CI pass. Actual image review
+  found two further perspective issues: clipped legacy figures and thick
+  foreshortened dashes whose end caps filled the gaps. The bounded corrections
+  and the old Atanasyan catalog's rear-edge fix require fresh exact-head browser
+  evidence; this work is not yet published.
 - Visible and hidden intervals must be computed for body edges, auxiliary
   constructions, highlighted section boundaries, vectors and learner lines.
   Exact-model surface amendments correct missing faces without changing source

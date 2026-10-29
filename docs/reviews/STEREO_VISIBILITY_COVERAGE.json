@@ -179,6 +179,7 @@
     "implementation": "Additional active renderer repairs implemented in the same PR; all task banks preserved.",
     "mathematics": "Source-bound component reviews in STEREO_VISIBILITY_ADDITIONAL.json.",
     "browser": "Pending exact final head CI and actual screenshot review.",
-    "outOfScope": "Elementary transparent counting demonstrations, planar geometry, OGE tyre visualizations, archival/source-bank/catalog-only paths are not independent active stereometry courses."
+    "outOfScope": "Elementary transparent counting demonstrations, planar geometry, OGE tyre visualizations, archival/source-bank/catalog-only paths are not independent active stereometry courses.",
+    "staticCourseFigure": "The old Atanasyan catalog pyramid is corrected as a visible course figure although the catalog is not a separate runtime renderer."
   }
 }

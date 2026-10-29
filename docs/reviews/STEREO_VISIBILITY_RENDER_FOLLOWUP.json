@@ -1,0 +1,894 @@
+{
+  "schemaVersion": 1,
+  "base": "6fb959fc0130a0bb8842601d19297e305ac91ac0",
+  "parentHead": "b3c0083bd762af46b74ce4b4ddc3b81b5c9f3ea6",
+  "status": "PASS_SOURCE_AND_INDEPENDENT_GEOMETRY; FOLLOWUP_EXACT_HEAD_CI_AND_IMAGES_PENDING",
+  "scope": "Actual-image follow-up: readable projected straight dashes, legacy camera framing and static course pyramid. Earlier component reviews remain historical and source-bound.",
+  "externalProviderReview": false,
+  "priorCI": {
+    "head": "b3c0083bd762af46b74ce4b4ddc3b81b5c9f3ea6",
+    "all12WorkflowsPassed": true,
+    "runs": [
+      {
+        "id": 40953643155,
+        "name": "Public SEO and sitemap",
+        "conclusion": "success"
+      },
+      {
+        "id": 40953643283,
+        "name": "Basic EGE 11 and 13 shared board",
+        "conclusion": "success"
+      },
+      {
+        "id": 40953643179,
+        "name": "Stereometry — task first and faithful figures",
+        "conclusion": "success"
+      },
+      {
+        "id": 40953643140,
+        "name": "EGE 2027 — task-first courses",
+        "conclusion": "success"
+      },
+      {
+        "id": 40953643176,
+        "name": "Stereometry — all active renderers",
+        "conclusion": "success"
+      },
+      {
+        "id": 40953643152,
+        "name": "Atanasyan symmetry — source regression and editorial preview",
+        "conclusion": "success"
+      },
+      {
+        "id": 40953643540,
+        "name": "Profile START — five added board trainers",
+        "conclusion": "success"
+      },
+      {
+        "id": 40953643174,
+        "name": "EGE base — virtual classroom",
+        "conclusion": "success"
+      },
+      {
+        "id": 40953643198,
+        "name": "Profile 2027 — learning start",
+        "conclusion": "success"
+      },
+      {
+        "id": 40953643267,
+        "name": "Merzlyak 10 basic — source, state and figures",
+        "conclusion": "success"
+      },
+      {
+        "id": 40953643370,
+        "name": "Unified learning — accounts, classroom and trainers",
+        "conclusion": "success"
+      },
+      {
+        "id": 40953643503,
+        "name": "Atanasyan textbook — source, proof and interactive course",
+        "conclusion": "success"
+      }
+    ],
+    "sourceBindingReportSHA256": "91838d4de27f33858af94aa6586cf0ba90e44f3a4830f00810c81e949f9050fd",
+    "artifacts": [
+      {
+        "id": 12933585008,
+        "name": "ege-base-stereo-visibility",
+        "zipSha256": "6f5d0856ad0962c897043084394afd723c4a521f29764eeab25b6e3e49e2137d"
+      },
+      {
+        "id": 12933375744,
+        "name": "stereo-three-visibility",
+        "zipSha256": "05afe943ff484b05ed7211410a4b7a1cc9a4d3d8928e72320042da6a1301ed71"
+      },
+      {
+        "id": 12932885825,
+        "name": "ege-base-lab-visibility",
+        "zipSha256": "197b7940bab9fd427b80fbc0848fa99ccf68dd14ed83b7e0300c913956273c62"
+      },
+      {
+        "id": 12931144965,
+        "name": "profile-and-legacy-visibility",
+        "zipSha256": "ee9b10a36270ef6896cc98fce6637ffec6000ea917ca056558e1132bbe1e5341"
+      }
+    ]
+  },
+  "priorActualImageReviews": {
+    "profileAndOldAtanasyan": {
+      "originalReportSHA256": "44f207627a4da7448f1cbb6251712edd3c7e10fcafefc80bb2ebdaa8eb97547d",
+      "review": {
+        "schemaVersion": 1,
+        "reviewer": "independent agent visual_profile",
+        "method": "Every one of the 75 original PNGs opened with view_image and visually inspected; two additional unmodified-image crops enlarged the mobile lesson model and catalog hero. No reuse by metadata only.",
+        "head": "b3c0083bd762af46b74ce4b4ddc3b81b5c9f3ea6",
+        "syntheticMerge": "d42b742112d35cc32d9f64c69c688bb2335aec3c",
+        "artifactId": 12931144965,
+        "runId": 40953643176,
+        "artifactSha256": "ee9b10a36270ef6896cc98fce6637ffec6000ea917ca056558e1132bbe1e5341",
+        "evidenceSha256": "2d217529adc99a3d7ecffb396d75f4796a3821f42e0b317c19921b6bcff8f79d",
+        "checkedAt": "2026-10-29T21:13:52.716285+00:00",
+        "verdict": "CHANGES_REQUIRED: catalog hero static hidden edges; all profile/T14 and old-Atanasyan lesson screenshots PASS",
+        "sourceHashes": {
+          "ege-profil/learning/data.js": "9a221de139c943ec94092e4eae7626ed8438a8b30c38d0255b2da5f71b133bc9",
+          "ege-profil/learning/route.js": "6849bafdf56d445d1858dd3027bb7f2938126ef8878cc4fd545ea5010bc60809",
+          "ege-profil/learning/style.css": "f57fce4a5e4d7cf71323f1ac7e9fb617ead87af91782b665870c42d1358bff0c",
+          "ege-profil/start/algebra-data.js": "6f1526827b5efdb6259cae74af93e4849161de9368efef48d5a14fa2de73f70a",
+          "ege-profil/start/algebra-models.js": "d75bf2233b4af804a34153249af5535f8e5918f85ccaa34100a820fd1ba226fc",
+          "ege-profil/start/app.js": "2ab510c1c9457fc9cc784faf1219136ccea2ae4795afe1922696dc7a835be347",
+          "ege-profil/start/applied-data.js": "686274fea177536bb13909c726636a7fbc269a0d87d8676168e838f488c70c86",
+          "ege-profil/start/applied-tasks.js": "400a342cd0c281906ba0bd0bde9e58cf26b4467ee6299e452bf2166e6d7581e5",
+          "ege-profil/start/calm-data.js": "6a226d153361678dda853008127c9aa4e5a7384af31d9931897772ff944b1711",
+          "ege-profil/start/calm-micro.js": "f58760cba1eabcf0c16863ad512599c9b95acd6ca674eff6ee5ff9d6d9b832e8",
+          "ege-profil/start/calm-ui.js": "9423f01b3f590b672ed3beeba04ece036037215c27a37895813d6ffe9dd12555",
+          "ege-profil/start/checkpoint.js": "75489c2eecc0cee07f12c140c3d44e0007018e61142cc8393bdd05d79fea4ef3",
+          "ege-profil/start/checks.js": "4ac38143ed4e7730a99857935989b1f583d14893be4cb582e39729fde92b3012",
+          "ege-profil/start/course-links.js": "f54e955de34165c36d6d738171a4977ff63404c051101dd3936cf696f5d24c67",
+          "ege-profil/start/equations-data.js": "45c8090c44e6c163e1ae7cb00e2a6540179f490096e4f0d28111016b1c2de423",
+          "ege-profil/start/equations-tasks.js": "f6bef3f872d1e24aa078c242d62aff4753b3c30e0b8573ec65ea89a1f5164122",
+          "ege-profil/start/functions-data.js": "3118570eb23578c2dedca8dfd67cc0a696619eeceddea2c63f3c6740d3dbf180",
+          "ege-profil/start/functions-tasks.js": "6101dd6e93db69eb3a9acface6f36ef8c9f4bfce5ef22fe606b35f35dd1783ec",
+          "ege-profil/start/geometry-data.js": "c1639261f279bcdde103bd0a67d24d0f96b01c3df5955b57213b92484bc4dd33",
+          "ege-profil/start/geometry-models.js": "3a9fecabdfd1a3f0cac649a881e41114b5b04dc3ff1fd31ef459ac9a95986520",
+          "ege-profil/start/index.html": "07f8b5a60ab56992ccad503474c862e79695cdc60f62033b2f1c87a6563fc094",
+          "ege-profil/start/planimetry-tasks.js": "72eaf6e0d878721b58290c1a57f25db6c9bdd1c8c118ab9ba0680dd9f44ec268",
+          "ege-profil/start/probability-data.js": "ee344efd308b715d4027a6e870d2f57e35785352df12752205b448007337b03a",
+          "ege-profil/start/probability-tasks.js": "07d7ce593e8e07d754b6ec42e00dbbd0731bb2fbb791d8f7ac68a5c387471fce",
+          "ege-profil/start/readiness-data.js": "fd7908bfad539fa2022677e3c749e74622ea3e5bef4efe733b69dd502f3c9e28",
+          "ege-profil/start/readiness.js": "631309834340fd5ab3015a7272845985e0103a93f7ec65d65721c4305521badf",
+          "ege-profil/start/solution-details.js": "4d52425e7f1ef73208a2f64306b1c4d8409c43dce89786d28104969ef23f8711",
+          "ege-profil/start/solutions.js": "f2f6bd241b0e333f5f4877af235420242ce95509ad3aa4ef0cf8638c63fd326e",
+          "ege-profil/start/state.js": "91b6a0be499874f89e2e2a53102653e4b5dca309f7bf817bc037bed4b5c6ce36",
+          "ege-profil/start/stereo-data.js": "8aad61a5db607982675b1e7e5a0d583bc66d116ec352fd3f3e07e5f7ef95d690",
+          "ege-profil/start/stereo-tasks.js": "21fdb8fe975d14d8e5366706f425a219c728239253e2fd624ea8e623b8ef14f9",
+          "ege-profil/start/style.css": "e5bfb12391c5f184a6b0a2a61dba3aa2054b2b300279d6a284f779cd11873d59",
+          "ege-profil/start/task-first.js": "162b9d5e45786238d2ed1fe3431cd7122da2808dfb741e49e062549b57e2dd7f",
+          "ege-profil/start/vector-tasks.js": "1ba1d809750ae93129c66b03d7ba5192242322ae261bb7e95e6b6a1685017a94",
+          "ege-profil/trainers/stereo-t14.html": "1c56ec8f30e30664062ad03590fdaa87d55deb0b0ce07f8e022b1cb366d378a1",
+          "stereo-course/assets/task-scene-viewer.js": "91ef00cd15e0e831fa835c089116e5150813ce0bd6554280d3e9f76a5c547f64",
+          "tools/profile-stereo-visibility.browser.cjs": "b0897e0dea59db4b1730067f1ff9789cced7f5eb1e20f3f4c88aa1a26c27933b"
+        },
+        "legacySourceHashesAtHead": {
+          "ege-profil/atanasyan-10-11/index.html": "5f7e88fe0bd5a5d6145c0db8d9786c848e8743a0aca60d3d7c40d398e00040c5",
+          "ege-profil/atanasyan-10-11/model.js": "69013fa9dd9cb2feebc8912e2c92aeee04b142d7c2ec2d0d89b5dc5ab99ef3d7",
+          "ege-profil/atanasyan-10-11/model.css": "ec1811bca9b41e49201579e55ce0d992b343c663f18f3e83f971ddab6a90801b",
+          "ege-profil/atanasyan-10-11/lesson.html": "22d1ebb7be3d3a1f3a9c9b7a52cd56bc39c3bebed773f387d327909237d1a724",
+          "tools/atanasyan-profile15.browser.cjs": "b2b7516a6365c3ba997a9398ba0e6ed4184cdae4715b3da9ebe5b088c6b8c099"
+        },
+        "currentProfileSourceHashesMatchEvidence": true,
+        "counts": {
+          "productionProfileAndT14": 68,
+          "negativeControls": 4,
+          "oldAtanasyanPreviews": 3,
+          "actualOriginalPngsViewed": 75,
+          "browserJourneys": 34
+        },
+        "findings": [
+          {
+            "severity": "blocker",
+            "file": "ege-profil/atanasyan-10-11/index.html",
+            "image": "atanasyan-profile15-visibility/atanasyan-course-preview-catalog.png",
+            "detail": "Static hero draws rear AD, DC and SD solid. D is rear base vertex inside projected silhouette S-A-B-C. Split stroked polygon from fill and draw these three rear edges dashed while retaining visible SA, AB, BC, CS and SB solid. Root notified; no edits by reviewer."
+          },
+          {
+            "severity": "observation",
+            "detail": "Default tall-box interior diagonal nearly coincides in projection with visible height and is visually obscured. Rotating separates it into a clearly dashed purple diagonal. Both deliberate solid negative controls visibly differ and CI pixel thresholds pass."
+          },
+          {
+            "severity": "observation",
+            "detail": "Phone T14 labels are small but fully contained and readable when inspecting native image; existing layout is preserved. The old-Atanasyan mobile model and dashed orange MP/BP are fully contained and visible."
+          }
+        ],
+        "pixelControls": [
+          {
+            "renderer": "profile",
+            "id": "stereo-box-diagonal",
+            "width": 320,
+            "stage": "rotated",
+            "baseFile": "profile-stereo-box-diagonal-rotated-320.png",
+            "solidFile": "profile-stereo-box-diagonal-rotated-320-negative-solid.png",
+            "solidSHA256": "10f60d51b71d51305fb17d5059664c8c9d71eca9faed895b08e9f04f0c9960d4",
+            "kind": "negative-control-only",
+            "comparison": {
+              "width": 256,
+              "height": 203,
+              "changed": 73
+            },
+            "passed": true
+          },
+          {
+            "renderer": "t14",
+            "id": "t1",
+            "width": 320,
+            "baseFile": "t14-t1-highlight-320.png",
+            "solidFile": "t14-t1-highlight-320-negative-solid.png",
+            "solidSHA256": "b28c4a95359a4e4d2a0f79663afbd6e1fc7892d515974554edf763621c1100d4",
+            "kind": "negative-control-only",
+            "comparison": {
+              "width": 242,
+              "height": 331,
+              "changed": 134
+            },
+            "passed": true
+          },
+          {
+            "renderer": "profile",
+            "id": "stereo-box-diagonal",
+            "width": 1280,
+            "stage": "rotated",
+            "baseFile": "profile-stereo-box-diagonal-rotated-1280.png",
+            "solidFile": "profile-stereo-box-diagonal-rotated-1280-negative-solid.png",
+            "solidSHA256": "206aa3de7858c21950e0e856749eb2351247a1d5e945977fb9e2f74c97957dd2",
+            "kind": "negative-control-only",
+            "comparison": {
+              "width": 510,
+              "height": 402,
+              "changed": 217
+            },
+            "passed": true
+          },
+          {
+            "renderer": "t14",
+            "id": "t1",
+            "width": 1280,
+            "baseFile": "t14-t1-highlight-1280.png",
+            "solidFile": "t14-t1-highlight-1280-negative-solid.png",
+            "solidSHA256": "80cf62fff13028807bdbee98db80cd17909efa4c831e184bd620e9ba80b581b6",
+            "kind": "negative-control-only",
+            "comparison": {
+              "width": 440,
+              "height": 330,
+              "changed": 376
+            },
+            "passed": true
+          }
+        ],
+        "limitations": [
+          "Old Atanasyan artifact contains only three screenshots (catalog, one desktop lesson step and its360px mobile version). Other lesson views rely on source-bound numerical and retained full browser journey checks; this report does not claim manual screenshots of all124 steps.",
+          "No local Chromium rendering performed; actual images came from GitHub Actions artifact.",
+          "This review identifies static catalog hero outside initial renderer inventory; root must explicitly resolve before claiming complete all-course visual correction."
+        ]
+      }
+    },
+    "baseCourse": {
+      "originalReportSHA256": "18a7aec097a090e9aec7d51726d941189437826bc331cb30970b8411183a6909",
+      "review": {
+        "reviewer": "/root/visual_base",
+        "timestamp": "2026-10-29T21:14:05.560926+00:00",
+        "result": "VISUAL_PASS for all listed exact PNG bytes; no blocking visual finding",
+        "head": "b3c0083bd762af46b74ce4b4ddc3b81b5c9f3ea6",
+        "runId": 40953643176,
+        "artifact": {
+          "id": 12933585008,
+          "name": "ege-base-stereo-visibility",
+          "zipSha256": "6f5d0856ad0962c897043084394afd723c4a521f29764eeab25b6e3e49e2137d",
+          "downloadManifest": "b3-artifact-download-evidence.json",
+          "downloadManifestSha256": "72619f164a4ba5d34c4f67f55b0f1f96298c7264b50e1605efd92ecd54a0c5c0"
+        },
+        "sourceEvidence": {
+          "filename": "base-stereo-visibility-evidence.json",
+          "sha256": "50234174ec778c4a275cb6b3ca8b12f2d6f227c8436d3a98fffd8ad4b4c20c8e",
+          "completed": true,
+          "errors": [],
+          "browserVersion": "151.0.7922.34",
+          "sourceHashes": {
+            "ege-baza/path/index.html": "459f31f2fb6f1c8ad403644dbc53632a079049d61d1397d01f25ce772832ccd9",
+            "ege-baza/path/models.js": "4842548be6d6ffe0c6778b8f5dec62df17a8a7c851c09789c3dd30bfbde543f3",
+            "ege-baza/path/stereo-figures.js": "3e81413e6d222e40543d7ad9c2cb945a11c5476d03cdad9c1675fdb205606285",
+            "ege-baza/path/data.js": "2bc695b5d6ef37527ba5d668696d3fc8ec4b04667fc836f5c7cb982037884d40",
+            "ege-baza/path/practice.js": "514258aa85c59ee3cc597681908a00bca625f3fa3e054ea4a11a27ba4610f87c",
+            "ege-baza/path/task-first.js": "d233078fd7d30728823eca2a8f1b41bad1798a5b1157e58e97e3d6f43f570279",
+            "ege-baza/path/app.js": "2dc26dcf2c48aaa7dcca69b9a77d19b6ac689f915e876c1fdd4180195116fe8a",
+            "ege-baza/path/managed-state.js": "cf6c4d85a1284f258204ec733c2100520df4183cbec7b1942341099cae756094",
+            "ege-baza/path/style.css": "2f2f28267af70cf53df5daf74706459c60750b3914edb15eaa68786e624a3846"
+          },
+          "sourceHashesMatchWorkspaceAtReviewCompletion": {
+            "ege-baza/path/index.html": true,
+            "ege-baza/path/models.js": true,
+            "ege-baza/path/stereo-figures.js": true,
+            "ege-baza/path/data.js": true,
+            "ege-baza/path/practice.js": true,
+            "ege-baza/path/task-first.js": true,
+            "ege-baza/path/app.js": true,
+            "ege-baza/path/managed-state.js": true,
+            "ege-baza/path/style.css": true
+          }
+        },
+        "counts": {
+          "totalPng": 60,
+          "actuallyViewedNow": 50,
+          "exactByteIdentityReuse": 10,
+          "completedJourneys": 28
+        },
+        "previousActualReview": {
+          "filename": "root-base-thirteen-f81-visual-review.json",
+          "sha256": "3de39af5d3658e2981b1a7c245c3d21002a2df02c3eda9b296eb6422c7c1de43"
+        },
+        "findings": [
+          "All60 PNGs are production condition/initial/rotated pictures:28 condition PNGs plus16 solid-model journeys with2 further PNGs each. The browser harness console text saying52 PNGs is stale; its2 live CSS negative controls create no PNG files.",
+          "Rear polyhedron edges, internal axes/radii, rear ring arcs and occluded section spans are visibly dashed; visible contours and front surface lines are continuous.",
+          "Cone viewed above its shallow apex has visible lateral generators; the view from below correctly dashes the hidden generators behind its base.",
+          "Figures and controls are contained on320px and1280px captures. Desktop box/pyramid initial and rotated pixels occupy y33..436 inside the470px SVG panel, retaining a33px top margin.",
+          "Existing dense sphere/cylinder wireframes and small mobile diagram strokes remain legible as dashed versus solid; generic English model identifiers and generic volume captions are unchanged presentation limitations."
+        ],
+        "limitations": [
+          "Visual verdict applies only to listed PNG bytes and depicted states; it does not establish all possible geometry, cameras or interactions.",
+          "No local browser execution was performed by this reviewer. Completed CI run/evidence supplies browser status.",
+          "Later source changes invalidate a source-bound general verdict; later PNGs need inspection unless exact SHA256 byte identity to actually inspected images is established."
+        ]
+      }
+    },
+    "laboratory": {
+      "originalReportSHA256": "c736540c304d8601ffb3b0017e4d55573f9cfb3294b24c13d00453f70e3c76e5",
+      "review": {
+        "reviewer": "/root/visual_base",
+        "timestamp": "2026-10-29T21:14:05.568510+00:00",
+        "result": "VISUAL_PASS for all listed exact PNG bytes; no blocking visual finding",
+        "head": "b3c0083bd762af46b74ce4b4ddc3b81b5c9f3ea6",
+        "runId": 40953643176,
+        "artifact": {
+          "id": 12932885825,
+          "name": "ege-base-lab-visibility",
+          "zipSha256": "197b7940bab9fd427b80fbc0848fa99ccf68dd14ed83b7e0300c913956273c62",
+          "downloadManifest": "b3-artifact-download-evidence.json",
+          "downloadManifestSha256": "72619f164a4ba5d34c4f67f55b0f1f96298c7264b50e1605efd92ecd54a0c5c0"
+        },
+        "sourceEvidence": {
+          "filename": "base-lab-visibility-evidence.json",
+          "sha256": "3c3881afecbb1bc65c0e85bcef684eec4f5b837c6c35731fb0e94fd8688f3347",
+          "completed": true,
+          "errors": [],
+          "browserVersion": "151.0.7922.34",
+          "sourceHashes": {
+            "ege-baza/labs/index.html": "c01a50ee5d2728f0c7cd50a79510ee6c14b31014da3cff7aa7785cd4ed69f8f7",
+            "ege-baza/labs/stereo.js": "8dd0eff55b70caf4d6f3df68602f92b7402f95f94e91c4d829e7d71e0140b59c",
+            "ege-baza/labs/labs.js": "808611b1d9c75f961d56e3dd80dd71df728bc31e53f1023ea7582cc73fa24ae2",
+            "ege-baza/labs/math.js": "7bc30eb6a6c2e1d32205553d7d133418fd92a2e6e67632a6c64ddf5c631a5ccf",
+            "ege-baza/labs/style.css": "80fa6685438f01a1dcdcab75e9a256d698685d8c7eabcffb47bfa4a3a455ee6b",
+            "assets/stereo-three-visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab",
+            "ege-profil/trainers/stereo/js/three.min.js": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2"
+          },
+          "sourceHashesMatchWorkspaceAtReviewCompletion": {
+            "ege-baza/labs/index.html": false,
+            "ege-baza/labs/stereo.js": true,
+            "ege-baza/labs/labs.js": true,
+            "ege-baza/labs/math.js": true,
+            "ege-baza/labs/style.css": true,
+            "assets/stereo-three-visibility.js": false,
+            "ege-profil/trainers/stereo/js/three.min.js": true
+          }
+        },
+        "counts": {
+          "totalPng": 28,
+          "actuallyViewedNow": 5,
+          "exactByteIdentityReuse": 23,
+          "completedJourneys": 4
+        },
+        "previousActualReview": {
+          "filename": "ege-base-lab-visual-review-f81.json",
+          "sha256": "20ae798c6b50199936e356d70add49e33cd3b3bbc75420ef56e89427327d0dd7"
+        },
+        "findings": [
+          "The five changed images were actually inspected: both widths of paused cone and water model, plus the1280px inequality page.",
+          "Paused cones retain visible silhouettes and a small orange section, with rear arc/generators and axis dashed. The paused water scene retains its intentionally transparent open vessel; inserted cube rear edges are visibly dashed.",
+          "The inequality page retains readable controls and number line without overlap; no blocking layout issue.",
+          "The23 byte-identical images retain the preceding independent actual-image review; this is not a new render claim."
+        ],
+        "limitations": [
+          "Visual verdict applies only to listed PNG bytes and depicted states; it does not establish all possible geometry, cameras or interactions.",
+          "No local browser execution was performed by this reviewer. Completed CI run/evidence supplies browser status.",
+          "Later source changes invalidate a source-bound general verdict; later PNGs need inspection unless exact SHA256 byte identity to actually inspected images is established.",
+          "Twelve broad laboratory PNGs are not individually listed in the focused browser evidence JSON; their hashes are independently verified against the downloaded artifact manifest and prior review where applicable.",
+          "The shared Three.js helper is being changed separately; this review does not approve those future bytes."
+        ]
+      }
+    },
+    "canonicalDesktop": {
+      "originalReportSHA256": "197c574bae0be0ab4fd2e092ed66885f6c7278b1430e5c063e08425fae5e5beb",
+      "review": {
+        "status": "PASS_DESKTOP_VISUAL_SUBSET_NOT_WHOLE_CI",
+        "reviewedAt": "2026-10-29T21:00:06.173666+00:00",
+        "reviewer": "visibility_audit (did not author perspective renderer)",
+        "scope": "All20 canonical288 desktop1280 PNGs from actual Chromium/WebGL artifact; mobile reviewed separately.",
+        "sourceHashes": {
+          "assets/stereo-three-visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab",
+          "ege-profil/trainers/stereo/trainer.html": "2f99b2c66bd1b8e31f177892faae9ed96f26e7bea7fc31a08a93cd7d62159957",
+          "ege-profil/trainers/stereo/css/style.css": "a63301ed30fdaf8c1ecb48df1bc35ae8cfb6aaf640ebea93c93bd5089b596e9f",
+          "ege-profil/trainers/stereo/js/three.min.js": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2",
+          "ege-profil/trainers/stereo/js/data.js": "c0e3488edd7c558095004df21d9f1b033fa19cdec03f91f84c3a24c3ba9dcfec",
+          "ege-profil/trainers/stereo/js/trainer.js": "7a1a6a64648cb2ae50d91b0162d5df77b19e6542a14544f5714f09fa72b424df",
+          "ege-profil/trainers/stereo/js/visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab"
+        },
+        "artifactEvidenceSHA256": "1fa91063231eb0d821a06301481ab40449faeaffc0a27fe9a6c1d11bdea51002",
+        "artifactWholeRunCompleted": false,
+        "canonicalCasesCompleted": 14,
+        "wholeRunLimitation": "Artifact overall remains failed on separately owned legacy143-676923 pickability assertions; no global CI pass is claimed.",
+        "blockingFindings": [],
+        "nonblockingFindings": [
+          "Small comparison pyramid labels S/C/O crowd h badge.",
+          "Multiple-sphere O/P labels and touching projected arcs are visually dense.",
+          "Faint ghost cone/sphere surfaces deliberately have lower contrast than active constructions."
+        ]
+      }
+    },
+    "canonicalMobile": {
+      "originalReportSHA256": "135253a3ddfc4f1f6bd7ebe0512dfe097b2c50382fd8ab84edfb916fa5304311",
+      "review": {
+        "status": "PASS_SCOPED_VISUAL_REVIEW_WITH_EXISTING_MOBILE_LABEL_LIMITATIONS",
+        "reviewedAt": "2026-10-29T21:02:05.418515+00:00",
+        "reviewer": "independent child agent extra_stereo_paths; did not author Three visibility helper or canonical Three trainer changes",
+        "scope": "Exactly 20 canonical288 mobile production screenshots from the existing real-browser CI artifact; no desktop, legacy143, or negative-control screenshots claimed by this report",
+        "head": "f81b863821451392bb8e4ba830c415e320ac2723",
+        "artifactFolder": "stereo-three-visibility-f81",
+        "artifactEvidenceSHA256": "1fa91063231eb0d821a06301481ab40449faeaffc0a27fe9a6c1d11bdea51002",
+        "browserVersion": "151.0.7922.34",
+        "sourceHashes": {
+          "assets/stereo-three-visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab",
+          "ege-profil/trainers/stereo/trainer.html": "2f99b2c66bd1b8e31f177892faae9ed96f26e7bea7fc31a08a93cd7d62159957",
+          "ege-profil/trainers/stereo/css/style.css": "a63301ed30fdaf8c1ecb48df1bc35ae8cfb6aaf640ebea93c93bd5089b596e9f",
+          "ege-profil/trainers/stereo/js/three.min.js": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2",
+          "ege-profil/trainers/stereo/js/data.js": "c0e3488edd7c558095004df21d9f1b033fa19cdec03f91f84c3a24c3ba9dcfec",
+          "ege-profil/trainers/stereo/js/trainer.js": "7a1a6a64648cb2ae50d91b0162d5df77b19e6542a14544f5714f09fa72b424df",
+          "ege-profil/trainers/stereo/js/visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab"
+        },
+        "observedResult": "No blocking hidden-line, selected-line, construction-line, ghost-circle, or rotation defect observed in these 20 screenshots. Hidden segments retain actual visible dash gaps; near and silhouette strokes remain continuous.",
+        "limitations": [
+          "Point-letter sprites are small on the 320-pixel view; nearby labels on small sphere and pyramid bodies can be crowded. This is a pre-existing mobile typography limitation: canonical CSS has no diff from base 6fb959fc, and vertex fontPx 46 and placement remain unchanged (only source-name display normalization changed).",
+          "Ghost objects deliberately use pale strokes. Dash gaps are visible at original image resolution, but ghost contrast is lower than the active bodies.",
+          "The sphere fixtures use authored circle wireframes without a separate camera-facing sphere outline; this report judges the near/far stroke treatment, not a new sphere silhouette design.",
+          "This is image inspection, not a proof of every parameter value. Numeric and interaction gates remain separate.",
+          "The enclosing CI artifact has completed:false owing to separate legacy143-676923 picking assertions at 320 and 1280. This scoped visual PASS does not claim that the whole browser suite passed."
+        ]
+      }
+    },
+    "legacyCollision": {
+      "originalReportSHA256": "a0e748e5a6d3a3dff258835d55434da9415203543f58a50b3dae9f62da451c51",
+      "review": {
+        "schemaVersion": 1,
+        "head": "b3c0083bd762af46b74ce4b4ddc3b81b5c9f3ea6",
+        "runId": 40953643176,
+        "artifactId": 12933375744,
+        "artifactZipSha256": "05afe943ff484b05ed7211410a4b7a1cc9a4d3d8928e72320042da6a1301ed71",
+        "reviewer": "ci_evidence independent actual-image inspection",
+        "timestamp": "2026-10-29T21:10:08.201806+00:00",
+        "sourceHashes": {
+          "assets/stereo-three-visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab",
+          "ege-profil/trainers/stereo/trainer.html": "2f99b2c66bd1b8e31f177892faae9ed96f26e7bea7fc31a08a93cd7d62159957",
+          "ege-profil/trainers/stereo/css/style.css": "a63301ed30fdaf8c1ecb48df1bc35ae8cfb6aaf640ebea93c93bd5089b596e9f",
+          "ege-profil/trainers/stereo/js/three.min.js": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2",
+          "ege-profil/trainers/stereo/js/data.js": "c0e3488edd7c558095004df21d9f1b033fa19cdec03f91f84c3a24c3ba9dcfec",
+          "ege-profil/trainers/stereo/js/trainer.js": "7a1a6a64648cb2ae50d91b0162d5df77b19e6542a14544f5714f09fa72b424df",
+          "ege-profil/trainers/stereo/js/visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab",
+          "trainers/ege-profile-stereometry-3d/trainer.html": "9301215c58627ff7fbec78ac22ae98277c19dd79d890f851f1e10d7165100794",
+          "trainers/ege-profile-stereometry-3d/css/style.css": "dc208ea1383bef7acce398b3cc040dbaa0ff269ddd88180c59ff2f30de2f9383",
+          "trainers/ege-profile-stereometry-3d/js/three.min.js": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2",
+          "trainers/ege-profile-stereometry-3d/js/data.js": "213b31051d71ac33b0e444c4e60ad1e5bc3ae84d21b973bd24cf821498866bde",
+          "trainers/ege-profile-stereometry-3d/js/trainer.js": "976d958bcfb74c52199671204def850054f91e088eab95767881119a158c93bd",
+          "trainers/ege-profile-stereometry-3d/js/visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab"
+        },
+        "files": [
+          {
+            "file": "legacy143-676923-1280-given-labels.png",
+            "sha256": "62255b632aa1aa5d01df9fb21746eee76b91c7ece1a88e79b561f030a0b78783",
+            "dimensions": [
+              1280,
+              1000
+            ],
+            "actualImageViewed": true,
+            "findings": [
+              "Selection panel displays OP = 3, SP = 6, SQ = 6.",
+              "Hidden SP and OP have visible pink gaps; front SQ is solid.",
+              "Figure fits viewport; base bottom is close to/over legend."
+            ]
+          },
+          {
+            "file": "legacy143-676923-320-given-labels.png",
+            "sha256": "36eb5bb11e0cb7d6967c3bf8febf6fc6cf600a785b94a1e4158311026adb1d31",
+            "dimensions": [
+              369,
+              1469
+            ],
+            "actualImageViewed": true,
+            "findings": [
+              "Selection panel displays OP = 3, SP = 6, SQ = 6.",
+              "Hidden SP and OP have visible pink gaps; front SQ is solid.",
+              "Cone base clips at both sides; Q and base overlap legend/hint.",
+              "Screenshot width369 exceeds requested viewport320: answer-row button overflows."
+            ]
+          }
+        ],
+        "verdict": "BLOCKED_LAYOUT",
+        "semanticGivenLabels": "PASS",
+        "blockingFindings": [
+          "Legacy143 framing and mobile layout clipping. Assigned to legacy_framing; no release verdict implied."
+        ],
+        "scope": "Only two newly produced successful676923 PNGs; 76 other PNGs byte-identical to f81 artifact, not re-reviewed by this reviewer."
+      }
+    }
+  },
+  "followupReviews": {
+    "framing": {
+      "originalReportSHA256": "63dde536765f9b5aecbd806db990184dbc15b7ef6232d37eb8d1b28ed0d38507",
+      "review": {
+        "reviewer": "/root/visual_base",
+        "timestamp": "2026-10-29T21:17:11.863588+00:00",
+        "scope": "Independent source and projection review of bounded legacy143 camera fitting / mobile legend correction. No code changes made by reviewer.",
+        "verdict": "SOURCE_AND_NUMERIC_PASS; actual raster pending new exact-head CI",
+        "reviewBaseHead": "b3c0083bd762af46b74ce4b4ddc3b81b5c9f3ea6",
+        "sources": {
+          "trainers/ege-profile-stereometry-3d/js/trainer.js": "c448b103e4b9f2583f5f9e9a8750952b584889ee4474e8a50ac03cc710cfc9c0",
+          "trainers/ege-profile-stereometry-3d/css/style.css": "b2f07a358f4f0c663e9721cab7cd6db0ab2319c8478c2170aa0618aff54d0cf2",
+          "tools/stereo-three-framing.test.cjs": "f163e6b4bf2f7561ea66a9c2b24cfb1f209ca113763787e6a1810f0695ec137e"
+        },
+        "canonicalBackport": {
+          "comparisonSource": "ege-profil/trainers/stereo/js/trainer.js",
+          "comparisonSourceSha256": "7a1a6a64648cb2ae50d91b0162d5df77b19e6542a14544f5714f09fa72b424df",
+          "HOME_fitDistance_goHome_zoomTo_resize_exactCopy": true,
+          "groupTraversal_sceneR_goHome_exactCopy": true,
+          "explanation": "The radius around the unchanged look-at origin bounds all transformed mesh vertices and sprite corner radii. Distance R/sin(minimum half-field-of-view) contains that sphere in both image axes. Minimum distance12 preserves previous camera distance when already sufficient.",
+          "CSS": "Mobile max520px viewport becomes relative fixed52vh/min280px followed by static legend; max400px panel padding/min-width and answer input min-width prevent horizontal overflow. These are bounded canonical layout backports; no learning flow change."
+        },
+        "numericalChecks": [
+          {
+            "command": "node tools/stereo-three-framing.test.cjs",
+            "result": "STEREO_THREE_FRAMING_OK",
+            "cards": 143,
+            "projections": 6253185,
+            "sizes": [
+              [
+                320,
+                521
+              ],
+              [
+                320,
+                416
+              ],
+              [
+                320,
+                280
+              ],
+              [
+                760,
+                900
+              ],
+              [
+                1280,
+                720
+              ]
+            ],
+            "anglesPerSize": 3,
+            "oldCameraFailingFixtures": 6,
+            "raster": "NOT_RUN"
+          },
+          {
+            "method": "Independent in-memory test extension: after each real buildScene(card), call constructBuild when present and finish every animation with step(1), then collect actual geometry and label corners before the same projection checks. Production files unchanged.",
+            "result": "INDEPENDENT_EXPANDED_CONSTRUCTION_FRAMING_OK",
+            "cards": 143,
+            "projections": 6578340,
+            "oldCameraFailingFixtures": 6,
+            "raster": "NOT_RUN"
+          }
+        ],
+        "preservation": {
+          "taskBankByteIdenticalToAuthorizedBase": true,
+          "taskBankSha256": "213b31051d71ac33b0e444c4e60ad1e5bc3ae84d21b973bd24cf821498866bde",
+          "taskBankPath": "trainers/ege-profile-stereometry-3d/js/data.js",
+          "learningSequenceAnswerStatusStorageCodeUnchangedByThisDiff": true,
+          "userZoomPreservedOnResize": true,
+          "homeRecomputesForViewportAspect": true,
+          "automaticRotationExitsAtHome": true,
+          "hiddenZeroSizeViewportDoesNotCorruptCamera": true
+        },
+        "findings": [
+          "No blocking source/numeric finding. Original clipping is reproduced by fixedr12 negative fixtures27052 and27054.",
+          "The production camera controls and radius calculation exactly match existing canonical implementation, including finite/zero-size guards.",
+          "Both all143 initial scenes and fully expanded construction scenes remain inside clip volume at5aspectratios and3angles without a changed look-at origin.",
+          "Intentional user zoom remains unchanged on resize, home reframes at current aspect, and automatic rotation retains its angle.",
+          "No task data, answer, progress key, selected-line handling or public exercise wording is changed by the bounded framing diff."
+        ],
+        "limitations": [
+          "Node uses real scene geometries and camera projection but stubs WebGL and labels. Synthetic sprite sizes vary with text length; actual font rasterization and CSS geometry require browser evidence.",
+          "The external grid is intentionally not fitted as educational body geometry; overlay badges created by later user selections are outside initialgroup radius traversal.",
+          "Screenshots at new source bytes must be inspected after exact-head CI before overall release approval.",
+          "Shared visibility helper is under separate concurrent review and is not approved by this framing verdict."
+        ]
+      }
+    },
+    "dashProjection": {
+      "originalReportSHA256": "3321e7a39aea8c037c1cc042e40120695cc21e86473c6af3ff17ad396dcb2423",
+      "review": {
+        "status": "PASS_SCOPED_INDEPENDENT_CODE_AND_PROJECTED_GEOMETRY_REVIEW",
+        "reviewedAt": "2026-10-29T21:22:09.209231+00:00",
+        "reviewer": "legacy_framing; did not author the Three visibility helper or dash projection test",
+        "reviewedBaseHead": "b3c0083bd762af46b74ce4b4ddc3b81b5c9f3ea6",
+        "scope": "Uncommitted helper amendment bound to exact source hashes; no browser raster or release approval",
+        "sourceHashes": {
+          "assets/stereo-three-visibility.js": "60c6c10d2bc5d0b5bc1770cfce22e20a2af9e085fba0857becd9754058eb53a0",
+          "ege-profil/trainers/stereo/js/visibility.js": "60c6c10d2bc5d0b5bc1770cfce22e20a2af9e085fba0857becd9754058eb53a0",
+          "trainers/ege-profile-stereometry-3d/js/visibility.js": "60c6c10d2bc5d0b5bc1770cfce22e20a2af9e085fba0857becd9754058eb53a0",
+          "tools/stereo-three-dash-projection.test.cjs": "8665cb2e551612c7b3b51d8e3f89dd568b3f7cdd50b719a47d26d0eabba52554"
+        },
+        "findings": [
+          {
+            "status": "RESOLVED",
+            "finding": "Foreshortened cylindrical dash end caps overlap real projected gaps on manual CA1.",
+            "resolution": "Hidden straight strokes use camera-facing quad meshes with flat screen-perpendicular endpoints and exact homogeneous projected dash boundaries."
+          },
+          {
+            "status": "RESOLVED",
+            "finding": "Fitted phone camera reduces the old world-unit gaps below readable size.",
+            "resolution": "Projected straight-line pitch is .04 in image-height NDC coordinates with existing 4/7 duty ratio; classification intervals remain unchanged. Canonical projected line direction and absolute screen coordinate preserve coincident full/reversed/subsegment phase."
+          },
+          {
+            "status": "RESOLVED",
+            "finding": "Independent nonuniform-parent test initially found two covered gap centres and eleven missing dash centres.",
+            "resolution": "Full inverse-parent matrix retained without lossy TRS decomposition; independent actual-triangle test now passes identity, uniform and rotated nonuniform parents."
+          }
+        ],
+        "codeReview": [
+          "All code preceding create(THREE,camera), including visibility classification, exact line/circle interval mathematics and world/circular dash phase, is byte-identical to b3c0083.",
+          "Projected coordinate q(t)=(n0+nd*t)/(w0+wd*t) is inverted algebraically for each dash boundary. Near-clipped intervals have positive homogeneous depth, making this mapping monotone on each drawn segment.",
+          "Canonical projected direction and absolute projected coordinate depend on the infinite line, not authored endpoint order or subsegment length. Independent mesh coverage checks validate that coincident intervals do not fill each other’s gaps.",
+          "The projected viewport extent is the support of its rectangular bounds along the canonical line direction, with .1 margin. Cropping only q outside that range bounds near-plane mesh generation while preserving on-screen phase.",
+          "Projection matrix and inverse camera matrix participate in invalidation, including aspect/fov changes and pure roll. Hidden quad BufferAttribute storage is reused. Mesh geometries are reused or disposed on representation changes; removal disposes retained unique geometries and material.",
+          "Original invisible-material pick targets, source curve geometry, construction animation extent, and visibility inspector interface remain intact. Both standalone helper copies are byte-identical."
+        ],
+        "checks": {
+          "authoredProjectionGate": {
+            "result": "PASS",
+            "triangleChecks": 319,
+            "phaseComparisons": 2880,
+            "minimumPhoneGapPixelsAt520CanvasHeight": 4.457142857142815,
+            "negativeControl": "Old fixed world dash gaps under 1.5 pixels at fitted phone camera",
+            "additionalCases": [
+              "Pure camera roll with unchanged forward/projection refreshes phase",
+              "Dash geometry and position BufferAttribute identities retained across camera changes",
+              "Removed source stroke disposes retained dash geometry exactly once"
+            ]
+          },
+          "independentNestedMeshCoverage": {
+            "checks": 171,
+            "results": [
+              {
+                "scale": [
+                  1,
+                  1,
+                  1
+                ],
+                "pieces": 21,
+                "coveredGaps": 0,
+                "missingDashes": 0
+              },
+              {
+                "scale": [
+                  2,
+                  2,
+                  2
+                ],
+                "pieces": 39,
+                "coveredGaps": 0,
+                "missingDashes": 0
+              },
+              {
+                "scale": [
+                  0.8,
+                  1.7,
+                  0.5
+                ],
+                "pieces": 27,
+                "coveredGaps": 0,
+                "missingDashes": 0
+              }
+            ]
+          },
+          "independentRandomCurvePhase": {
+            "result": "INDEPENDENT_PROJECTED_DASH_PHASE_OK",
+            "cases": 90,
+            "sampleComparisons": 43380,
+            "gaps": 9454,
+            "painted": 12236,
+            "actualGapChecks": 959,
+            "maxGapError": 3.365363543395006e-16,
+            "sourceSHA256": "60c6c10d2bc5d0b5bc1770cfce22e20a2af9e085fba0857becd9754058eb53a0",
+            "raster": "NOT_RUN"
+          },
+          "independentVisibilityOracle": {
+            "cases": 2400,
+            "raySamples": 290400,
+            "mismatches": 0,
+            "circleReversalSamples": 1000,
+            "circleReversalMismatches": 0,
+            "invisibleMaterialOriginalPickHits": 1
+          },
+          "wholeBankCompatibility": {
+            "result": "STEREO_THREE_VISIBILITY_OK",
+            "cards": 431,
+            "strokes": 4553,
+            "constructed": 221,
+            "performance": [
+              {
+                "folder": "trainers/ege-profile-stereometry-3d",
+                "id": "27125",
+                "strokes": 12,
+                "spheres": 4,
+                "medianMs": 5.209177999999952
+              },
+              {
+                "folder": "trainers/ege-profile-stereometry-3d",
+                "id": "27163",
+                "strokes": 9,
+                "spheres": 3,
+                "medianMs": 2.625968999999941
+              },
+              {
+                "folder": "ege-profil/trainers/stereo",
+                "id": "27125",
+                "strokes": 12,
+                "spheres": 4,
+                "medianMs": 3.1671360000000277
+              },
+              {
+                "folder": "ege-profil/trainers/stereo",
+                "id": "27163",
+                "strokes": 9,
+                "spheres": 3,
+                "medianMs": 2.060453999999936
+              }
+            ],
+            "sourceNameCollisionCardsRebound": [
+              "trainers/ege-profile-stereometry-3d:27061",
+              "trainers/ege-profile-stereometry-3d:27081",
+              "trainers/ege-profile-stereometry-3d:27102",
+              "trainers/ege-profile-stereometry-3d:27130",
+              "trainers/ege-profile-stereometry-3d:27168",
+              "trainers/ege-profile-stereometry-3d:639940",
+              "trainers/ege-profile-stereometry-3d:27094",
+              "trainers/ege-profile-stereometry-3d:27095",
+              "trainers/ege-profile-stereometry-3d:27136",
+              "trainers/ege-profile-stereometry-3d:27137",
+              "trainers/ege-profile-stereometry-3d:676923",
+              "trainers/ege-profile-stereometry-3d:5077",
+              "trainers/ege-profile-stereometry-3d:245348"
+            ]
+          },
+          "sync": "STEREO_THREE_LOCAL_COPIES_OK 2",
+          "diffCheck": "PASS"
+        },
+        "independentScripts": {
+          "dash-quad-independent.cjs": "f8982be279ee3a1ec1b2daa2a2a499e2e1fbc85b1d2996648bdd84679acd277c",
+          "dash-phase-independent.cjs": "57e3db1da007fb2d7452b3419e814a9af73d0114f04156f533c4bb96d9375e91",
+          "perspective-independent-review.cjs": "74e059eb03501e58a3cd1ab3d86b3ccbbac6b2edaf2fb92e05fad4cacd74c8fd"
+        },
+        "limits": [
+          "No local Chromium/WebGL raster pass is claimed. Exact-head actual screenshots and real pixel gap checks remain required.",
+          "Projected pitch applies to hidden straight strokes. Curved strokes retain their already-reviewed torus geometry and world/circumference-based dash phase; their actual screenshots require reinspection after the shared helper amendment.",
+          "Extremely short projected hidden intervals may contain fewer full dashes; a line projected to a single point does not generate an infinite dash loop.",
+          "Review is internal independent technical review, not the separate external HIGH-scope review or owner merge authorization."
+        ]
+      }
+    },
+    "catalog": {
+      "originalReportSHA256": "8ad6e43b2ae09539089c3cb6e2772d826e308926fb359e7557ef324a28614d0a",
+      "review": {
+        "scope": "Atanasyan catalog hero hidden rear edges only",
+        "author": "visual_profile",
+        "baseHead": "b3c0083bd762af46b74ce4b4ddc3b81b5c9f3ea6",
+        "sourceHashes": {
+          "ege-profil/atanasyan-10-11/index.html": "3d47b7efa89094b07c6cb996bd35a517930a515abd224255c696e1aa8e6aa701",
+          "tools/atanasyan-profile15.browser.cjs": "cc3c2b72f3a68f47816c38392a69364bff259e2cdb52b69cca1e9d11b5b8a85f"
+        },
+        "changes": [
+          "Separate base/selected-triangle fill paths from stroke paths so hidden edges are not painted solid by filled polygon outlines.",
+          "AD/DC/SD dashed; SA/AB/BC/CS/SB remain solid; all non-SVG HTML unchanged.",
+          "Existing full browser journey inspects computed dash styles of every SVG path geometrically covering the eight known edges, including duplicate overpaint."
+        ],
+        "checks": [
+          {
+            "name": "node --check tools/atanasyan-profile15.browser.cjs",
+            "result": "PASS"
+          },
+          {
+            "name": "git diff --check",
+            "result": "PASS"
+          },
+          {
+            "name": "Independent static path decomposition at original/fixed sources",
+            "result": "PASS: original rejected for exactly AD/DC/SD; fixed has all8 correct; all non-SVG HTML identical"
+          }
+        ],
+        "notRun": [
+          "Local Chromium unavailable; actual corrected catalog preview and browser assertion await CI."
+        ],
+        "reviewBoundary": "Author local check only; original b3 actual visualreview is separately hash-bound and preserves the discovered defect until corrected artifact inspection."
+      },
+      "rootReview": "Root read exact SVG paths and independently confirmed AD/DC/SD rear dashes and SA/AB/BC/CS/SB continuous strokes; all fills are separate and cannot overpaint hidden strokes. Actual refreshed screenshot still pending."
+    },
+    "actualPixelGate": {
+      "originalReportSHA256": "1ee6193c1aca5a76b8bb2643939e90703eb0ea6aea860544f836032304fdc166",
+      "review": {
+        "schemaVersion": 1,
+        "reviewer": "independent agent visual_profile",
+        "reviewedAt": "2026-10-29T21:24:45.646365+00:00",
+        "reviewType": "Focused source and preflight review of actual-page browser regression harness; no production edits by reviewer",
+        "baseHead": "b3c0083bd762af46b74ce4b4ddc3b81b5c9f3ea6",
+        "sourceHashes": {
+          "tools/stereo-three-visibility.browser.cjs": "70cab19c3943ee6e5c7f709caa02fb5e563a7ccf14263edf697e07493b096541"
+        },
+        "probeSHA256": "5aee5d303105ef9a936f1588e3db28f3fe16b7fd17edd052d9a9fb0beb160e79",
+        "verdict": "PASS source review and CHECK_ONLY; actual browser and pixel results pending CI",
+        "reviewedBehaviors": [
+          "Read-only appended probe obtains actual classified-mesh intervals and projects their endpoints/centers with the current perspective camera. It does not change selection, answers, original geometry or visibility.",
+          "Fixture27055 explicitly chooses real clickable C and A1 vertices in both banks, preserving the body-diagonal raster defect instead of accidentally testing an easier surface diagonal.",
+          "Pixel screenshot is the real WebGL canvas; a detached canvas decodes the image for sampling. No source canvas or production scene is modified to obtain the result.",
+          "Current selected badge sprites are excluded using camera-facing projected rectangles derived from actual world scale, center and material rotation, with2CSSpixel padding. This replaces the unsafe fixed world-parameter midpoint window.",
+          "A3x3 pixel neighborhood handles thin antialiased strokes. Counts require at least3 gaps with projected length>=3.5px, all without pink, and at least3 pink dash centers. Missing and continuous selected lines cannot pass both conditions.",
+          "Synthetic positive-pattern, solid-pink and missing-line PNG controls exercise the same decode/sampling function, with asymmetric sample positions, nonzero page origin and2x image scaling. These are detached control images, not edits to the actual screenshot.",
+          "Initial and rotated public-page journeys assert visible vertex centers inside the actual canvas plus document horizontal containment; source-bound full screenshots remain necessary for round contours and label placement.",
+          "Original direct hidden-line selection, full28 journeys, delete/recreate, construction lifecycle, collision labels, retained answer/progress and responsiveness checks remain."
+        ],
+        "resolvedReviewFindings": [
+          {
+            "finding": "Fixed worldt[.3,.7] exclusion could miss a perspective/offset selected badge.",
+            "resolution": "Actual projected T.badges sprite rectangles used."
+          },
+          {
+            "finding": "Single-pixel sampling could confuse antialiasing with a gap.",
+            "resolution": "3x3 neighborhood samples retain strict minimum3gap and3paint counts."
+          },
+          {
+            "finding": "Boolean-only negative fixtures did not exercise image decode/coordinate transform.",
+            "resolution": "Same sampler now receives positive asymmetricPNG and two negativePNGs."
+          }
+        ],
+        "executedChecks": [
+          {
+            "command": "STEREO_THREE_VISIBILITY_CHECK_ONLY=1 node tools/stereo-three-visibility.browser.cjs",
+            "result": "PASS: actual banks288/143,14fixtures,2viewportwidths; emitted probe compiled in both trainer closures"
+          },
+          {
+            "command": "node --check tools/stereo-three-visibility.browser.cjs",
+            "result": "PASS"
+          }
+        ],
+        "notRun": [
+          "Local Chromium/WebGL execution unavailable; real pixel values, projected badge exclusions and remaining counts must pass CI.",
+          "SyntheticPNG controls are reviewed in source but run only in the browser; CHECK_ONLY does not execute Canvas/Image APIs."
+        ],
+        "limitations": [
+          "Projected3Dvertex containment does not by itself prove containment of curved silhouettes or sprites; retained numeric fit tests and actual PNG inspection cover those separately.",
+          "Exactly edge-on lines may project to zero length; the chosen original CA1 fixture is not edge-on, and no gate exception was added.",
+          "Numerical helper author predicts3outside-midpoint-window gaps phone and5desktop for representative home cameras; this is not claimed as actual badge-filtered count, which depends on browser font metrics and camera fit."
+        ]
+      }
+    }
+  },
+  "localChecks": {
+    "framing": "PASS143 cards6253185projections; independent expanded constructions6578340projections",
+    "dashProjection": "PASS319actual-triangle checks2880phase checks; minimumgap4.457pixels at520pixel height",
+    "labVisibility": "PASS6models15camera cases18tangent checks18rebuilds2negativecontrols",
+    "labMathematics": "PASS381assertions",
+    "offlineCopies": "PASS byte-identical helpercopies",
+    "preflight": "PASS syntax and browser instrumentation; actual local Chromium not run",
+    "perspectiveCompatibility": "PASS431cards4553strokes221constructions; final independent290400rays",
+    "environmentRetry": "One local lab command omitted NODE_PATH and failed to locatejsdom; rerun with existing dependency path passed. No failed assertion suppressed."
+  },
+  "limits": [
+    "No merge, deployment or external provider review is claimed.",
+    "Earlier successful CI did not waive the subsequently observed visual defects. New production hashes require fresh exact-head CI and inspection.",
+    "Phone sprite labels remain small in the pre-existing canonical course; task conditions and measurement panels remain readable."
+  ],
+  "preservedSincePriorHead": {
+    "files": 8,
+    "result": "Byte-identical source lessons, two perspectivebanks, base data and frozen sharedSVG/CSS explicitlychecked; no data files changed in followup."
+  },
+  "sourceHashes": {
+    "assets/stereo-three-visibility.js": "60c6c10d2bc5d0b5bc1770cfce22e20a2af9e085fba0857becd9754058eb53a0",
+    "trainers/ege-profile-stereometry-3d/js/trainer.js": "c448b103e4b9f2583f5f9e9a8750952b584889ee4474e8a50ac03cc710cfc9c0",
+    "trainers/ege-profile-stereometry-3d/css/style.css": "b2f07a358f4f0c663e9721cab7cd6db0ab2319c8478c2170aa0618aff54d0cf2",
+    "ege-profil/atanasyan-10-11/index.html": "3d47b7efa89094b07c6cb996bd35a517930a515abd224255c696e1aa8e6aa701",
+    "tools/stereo-three-visibility.browser.cjs": "70cab19c3943ee6e5c7f709caa02fb5e563a7ccf14263edf697e07493b096541",
+    "tools/stereo-three-framing.test.cjs": "f163e6b4bf2f7561ea66a9c2b24cfb1f209ca113763787e6a1810f0695ec137e",
+    "tools/stereo-three-dash-projection.test.cjs": "8665cb2e551612c7b3b51d8e3f89dd568b3f7cdd50b719a47d26d0eabba52554",
+    "tools/atanasyan-profile15.browser.cjs": "cc3c2b72f3a68f47816c38392a69364bff259e2cdb52b69cca1e9d11b5b8a85f"
+  }
+}

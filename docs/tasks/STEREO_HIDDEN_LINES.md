@@ -87,6 +87,8 @@ Archive/source-bank copies, planar geometry and catalog-only pages are not
 separate active renderers. Elementary5–6 transparent counting demonstrations
 are recorded separately from the named stereometry courses; this task does not
 claim to rewrite every illustrative three-dimensional picture on the site.
+The old Atanasyan catalog's static pyramid is nevertheless a visible course
+figure: its three rear edges are corrected alongside the lesson models.
 
 ### Additional active renderers
 
@@ -116,6 +118,29 @@ claim to rewrite every illustrative three-dimensional picture on the site.
 
 Local checks are not browser approval. The final PR handoff must bind successful
 CI and inspected screenshot artifacts to the published branch head.
+
+### Actual-image follow-up
+
+[Follow-up evidence](../reviews/STEREO_VISIBILITY_RENDER_FOLLOWUP.json) records
+source-bound reviews, earlier CI and the remaining final-head verification.
+
+Successful additional-renderer CI on `b3c0083bd762af46b74ce4b4ddc3b81b5c9f3ea6`
+did not end visual review. Actual images exposed a nearly end-on manual cube
+diagonal whose cylindrical dash end caps filled its apparent gaps, and legacy
+perspective figures clipped by a fixed camera distance. These are production
+defects, not accepted test exceptions.
+
+- Hidden straight strokes now use camera-facing pieces and a shared projected
+  dash phase, so their gaps remain readable despite foreshortening. Curved
+  strokes retain their existing circumference-consistent phase.
+- The legacy perspective course adopts the established camera-fit behavior,
+  narrow-screen legend flow and bounded answer-input layout from the canonical
+  course. Deliberate rotation/zoom and the home control remain available.
+- A numeric projection gate checks every legacy card; actual-browser assertions
+  check containment and screenshot pixels of the selected internal diagonal.
+- The catalog pyramid's rear edges are split into an explicit dashed path.
+- The final follow-up still requires its own exact-head CI and inspection of
+  changed screenshots. Earlier component verdicts remain bound to their hashes.
 
 ### Shared-renderer implementation
 

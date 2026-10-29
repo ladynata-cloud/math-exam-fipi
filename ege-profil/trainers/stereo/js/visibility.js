@@ -233,6 +233,36 @@
   function create(THREE,camera) {
     const surfaces=[],spheres=[],strokes=[],records=new WeakMap();let lastCamera='',prepared=[];
     const array=v=>[v.x,v.y,v.z];
+    function projectedDashes(curve,parts) {
+      // Use one absolute projected coordinate for an entire infinite line.
+      // Reversed lines and separately authored collinear subsegments therefore
+      // share their gaps. Perspective inversion keeps the gaps readable even
+      // when a spatial diagonal points almost towards the camera.
+      const m=new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse).elements;
+      const clip=p=>[0,1,3].map(row=>m[row]*p[0]+m[row+4]*p[1]+m[row+8]*p[2]+m[row+12]);
+      const a=clip(curve.a),b=clip(curve.b),d=b.map((v,i)=>v-a[i]),aspect=camera.aspect||1;
+      let nx=(d[0]*a[2]-a[0]*d[2])*aspect,ny=d[1]*a[2]-a[1]*d[2];
+      const length=Math.hypot(nx,ny);if(length<1e-12)return parts.filter(p=>!p.hidden);
+      nx/=length;ny/=length;if(Math.abs(nx)>1e-10?nx<0:ny<0){nx=-nx;ny=-ny;}
+      const n0=nx*a[0]*aspect+ny*a[1],nd=nx*d[0]*aspect+ny*d[1];
+      const coordinate=t=>(n0+nd*t)/(a[2]+d[2]*t),parameter=q=>(q*a[2]-n0)/(nd-q*d[2]);
+      const pitch=.04,painted=pitch*.16/.28,extent=Math.abs(nx)*aspect+Math.abs(ny)+.1,out=[];
+      for(const part of parts){
+        if(!part.hidden){out.push(part);continue;}
+        const qa=coordinate(part.start),qb=coordinate(part.end);
+        // Near-plane crossings can project far outside the viewport. Cropping
+        // only that unpaintable range bounds the number of dash meshes without
+        // changing their phase inside the viewport.
+        const lo=Math.max(-extent,Math.min(qa,qb)),hi=Math.min(extent,Math.max(qa,qb));
+        if(!(hi>lo))continue;
+        for(let k=Math.floor(lo/pitch);k<=Math.floor(hi/pitch);k++){
+          const q0=Math.max(lo,k*pitch),q1=Math.min(hi,k*pitch+painted);if(!(q1>q0))continue;
+          const ta=parameter(q0),tb=parameter(q1),start=Math.max(part.start,Math.min(ta,tb)),end=Math.min(part.end,Math.max(ta,tb));
+          if(Number.isFinite(start)&&Number.isFinite(end)&&end-start>1e-8)out.push({start,end,hidden:true});
+        }
+      }
+      return out;
+    }
     function surface(mesh,options={}) {
       mesh.updateWorldMatrix(true,false);
       if(mesh.geometry.type==='SphereGeometry'&&Math.abs(mesh.geometry.parameters.phiLength-TAU)<1e-8&&Math.abs(mesh.geometry.parameters.thetaStart)<1e-8&&Math.abs(mesh.geometry.parameters.thetaLength-Math.PI)<1e-8){const center=array(new THREE.Vector3().setFromMatrixPosition(mesh.matrixWorld)),scale=new THREE.Vector3().setFromMatrixScale(mesh.matrixWorld);if(Math.abs(scale.x-scale.y)<1e-8&&Math.abs(scale.x-scale.z)<1e-8){spheres.push({center,radius:mesh.geometry.parameters.radius*scale.x,body:options.body,context:!!options.context});lastCamera='';return;}}
@@ -260,7 +290,7 @@
     function register(mesh,options={}) {
       if(!options.curve&&records.has(mesh)){const old=records.get(mesh);if(options.body!=null&&!old.owners.includes(options.body))old.owners.push(options.body);old.key='';return old;}
       const group=new THREE.Group();group.name='classified-stroke';mesh.parent.add(group);
-      const material=new THREE.MeshBasicMaterial({color:mesh.material.color,transparent:true,opacity:1,depthTest:false,depthWrite:false});
+      const material=new THREE.MeshBasicMaterial({color:mesh.material.color,transparent:true,opacity:1,depthTest:false,depthWrite:false,side:THREE.DoubleSide});
       const stroke={mesh,parent:mesh.parent,group,material,owners:options.body==null?[]:[options.body],radius:options.radius||.03,circle:!!options.circle,localCurve:options.curve,key:'',parts:[]};
       stroke.geometry=new THREE.CylinderGeometry(stroke.radius,stroke.radius,1,8);
       if(!options.curve)records.set(mesh,stroke);strokes.push(stroke);mesh.material.visible=false;return stroke;
@@ -268,7 +298,7 @@
     function update() {
       camera.updateMatrixWorld();
       const cam=array(camera.getWorldPosition(new THREE.Vector3())),forward=array(camera.getWorldDirection(new THREE.Vector3()));
-      const near={n:forward,d:-dot(forward,cam)-camera.near},key=[...cam,...forward,camera.near].join(',');
+      const near={n:forward,d:-dot(forward,cam)-camera.near},key=[...cam,...forward,camera.near,...camera.projectionMatrix.elements,...camera.matrixWorldInverse.elements].join(',');
       const changed=lastCamera!==key;
       if(changed){prepared=cones(surfaces,cam,near);lastCamera=key;}
       for(const stroke of [...strokes]){
@@ -285,7 +315,7 @@
         else curve={kind:'line',a:world([0,-.5,0]),b:world([0,.5,0])};
         if(curve.kind==='circle'?norm(curve.u)<1e-7:norm(sub(curve.b,curve.a))<1e-7){group.visible=false;continue;}
         stroke.curve=curve;stroke.parts=classify(curve,prepared,near,stroke.owners,spheres,cam);
-        const pieces=dashes(curve,stroke.parts);
+        const pieces=curve.kind==='circle'?dashes(curve,stroke.parts):projectedDashes(curve,stroke.parts);
         // Reuse meshes on camera moves; only short arc geometries vary.
         for(let i=0;i<Math.max(pieces.length,group.children.length);i++){
           let part=group.children[i];if(i>=pieces.length){part.visible=false;continue;}
@@ -298,14 +328,39 @@
             const u=new THREE.Vector3(...unit(curve.u)),v=new THREE.Vector3(...unit(curve.v)),n=new THREE.Vector3().crossVectors(u,v);
             const basis=new THREE.Matrix4().makeBasis(u,v,n).multiply(new THREE.Matrix4().makeRotationZ(from));
             part.quaternion.setFromRotationMatrix(basis);part.position.set(...curve.center);part.scale.set(1,1,1);
+          }else if(piece.hidden){
+            // A cylindrical dash has round end caps in projection. Along a
+            // foreshortened diagonal those caps can overlap the next dash and
+            // paint an apparently solid line despite correct interval gaps.
+            // Flat, camera-facing ends retain those exact canonical gaps.
+            const a=new THREE.Vector3(...point(curve,piece.start)),b=new THREE.Vector3(...point(curve,piece.end));
+            const pa=a.clone().project(camera),pb=b.clone().project(camera),aspect=camera.aspect||1;
+            const dx=(pb.x-pa.x)*aspect,dy=pb.y-pa.y,projected=Math.hypot(dx,dy);
+            const nx=projected>1e-12?-dy/projected:1,ny=projected>1e-12?dx/projected:0,vertices=[];
+            for(const [world,screen]of [[a,pa],[b,pb]]){
+              const depth=-world.clone().applyMatrix4(camera.matrixWorldInverse).z;
+              const width=stroke.radius*camera.projectionMatrix.elements[5]/Math.max(camera.near,depth);
+              for(const sign of [-1,1])vertices.push(...new THREE.Vector3(screen.x+sign*nx*width/aspect,screen.y+sign*ny*width,screen.z).unproject(camera).toArray());
+            }
+            if(part.geometry===stroke.geometry){part.geometry=new THREE.BufferGeometry();part.geometry.setIndex([0,1,2,2,1,3]);}
+            let position=part.geometry.attributes.position;
+            if(!position){position=new THREE.Float32BufferAttribute(vertices,3);part.geometry.setAttribute('position',position);}
+            else{position.array.set(vertices);position.needsUpdate=true;}
+            part.geometry.computeBoundingSphere();
+            part.position.set(0,0,0);part.quaternion.identity();part.scale.set(1,1,1);
           }else{
+            if(part.geometry!==stroke.geometry){part.geometry.dispose();part.geometry=stroke.geometry;}
             const a=new THREE.Vector3(...point(curve,piece.start)),b=new THREE.Vector3(...point(curve,piece.end)),dir=b.clone().sub(a),len=dir.length();
             part.position.copy(a).addScaledVector(dir,.5);part.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir.normalize());part.scale.set(1,len,1);
           }
           // Original course groups are identity transforms. Convert world
           // pieces to the actual parent frame for adapters with nested groups.
           group.updateWorldMatrix(true,false);
-          const inverse=new THREE.Matrix4().copy(group.matrixWorld).invert();part.updateMatrix();part.matrix.premultiply(inverse);part.matrix.decompose(part.position,part.quaternion,part.scale);
+          const inverse=new THREE.Matrix4().copy(group.matrixWorld).invert();
+          // Retain the full matrix: decomposing a rotated nonuniform parent
+          // would discard its inverse shear and move the projected dash ends.
+          part.matrix.compose(part.position,part.quaternion,part.scale).premultiply(inverse);
+          part.matrixAutoUpdate=false;part.matrixWorldNeedsUpdate=true;
           part.userData.visibility={...piece};
         }
       }
