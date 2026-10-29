@@ -228,6 +228,25 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
   state-timing issue remain documented in the release record; this is not a
   new whole-site gate. Crawl acceptance and search indexing remain separate.
 
+## Verified inventory and common textbook companion requirement
+
+- [Current audit](reports/TEXTBOOK_COURSE_AUDIT_20261026.md) was computed from
+  `main` at `1aa517ed819d09ff18649b0855319ecccaee5bc0`; eighteen public content/runtime
+  files returned HTTP 200 and matched the corresponding repository bytes.
+- Full source coverage is confirmed for **Merzlyak geometry 10, basic level,
+  2022**: 989 cards, including all 736 numbered exercises. This does not describe
+  Merzlyak advanced. The 7–9 basic and advanced thematic tracks are separate.
+- Atanasyan 7–9 has 569 cards and complete main exercises 1–330; Atanasyan
+  10–11 has 507 cards and complete main exercises 1–309. Shestakov–Yaschenko
+  has 516 of 1,980 exercise variants and 27 theory companions. Historical
+  preparation entries below are not current publication evidence.
+- The owner requires every textbook course to follow the
+  [companion standard](TEXTBOOK_COMPANION_STANDARD.md). This audit establishes
+  the rule and records the existing gaps; it does not claim that all old
+  interfaces, textbook PDFs or source illustrations have been migrated.
+- Scope is documentation only. Runtime, source tasks, models, learner records,
+  cabinets, board synchronization and hosting are unchanged.
+
 ## Prepared: Pogorelov course accompanying numbered textbook exercises
 
 - [Scope](tasks/POGORELOV_TEXTBOOK_COMPANION.md), MEDIUM isolated companion;

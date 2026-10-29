@@ -9,12 +9,28 @@ add local constraints, but they must not weaken this file.
 - [Roadmap](docs/ROADMAP.md)
 - [Review policy](docs/REVIEW_POLICY.md)
 - [Task specification template](docs/tasks/TASK_TEMPLATE.md)
+- [Textbook companion standard](docs/TEXTBOOK_COMPANION_STANDARD.md)
 - [Trainer Bridge Platform ADR (Proposed)](docs/adr/0001-trainer-bridge-platform.md)
 - [PR workflow skill](.agents/skills/mathexam-pr/SKILL.md)
 - [Release workflow skill](.agents/skills/mathexam-release/SKILL.md)
 
 The older [ChatGPT and Claude workflow](docs/claude-chatgpt-workflow.md) is an
 archived pointer, not an active source of instructions.
+
+## Textbook courses and honest coverage
+
+Apply the owner's [textbook companion standard](docs/TEXTBOOK_COMPANION_STANDARD.md)
+to every new or updated textbook course: **course accompanying a named textbook;
+trainer accompanying a verified exercise**, with edition, level, part, section,
+number/subpart and printed page as applicable. Never invent an exercise number
+for an authored practice task. Distinguish complete topic coverage, selected
+exercise coverage, and a complete source-specific course. Publication, a source
+inventory and a large card count do not establish completeness.
+
+Always distinguish **Merzlyak basic** from **Merzlyak advanced**, including grade,
+subject and edition. A shared catalog or reused topic does not merge their
+coverage or completion status. Existing migration gaps must be reported as gaps;
+adopting the rule does not mean the old interfaces already comply.
 
 ## Roles
 
