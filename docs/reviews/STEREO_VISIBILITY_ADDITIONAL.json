@@ -1,0 +1,1766 @@
+{
+  "schemaVersion": 1,
+  "task": "All active stereometry renderers: hidden intervals and source-body binding",
+  "base": "6fb959fc0130a0bb8842601d19297e305ac91ac0",
+  "status": "PASS_LOCAL_SOURCE_AND_INDEPENDENT_GEOMETRY; EXACT_HEAD_CI_AND_ACTUAL_BROWSER_REVIEW_PENDING",
+  "externalProviderReview": false,
+  "records": {
+    "legacyAtanasyan": {
+      "originalReportSHA256": "30a09a8ca156a60908c78a053e38611ced557646a303f8b39b391f50526c86ea",
+      "review": {
+        "reviewer": "/root/visibility_shestakov",
+        "author": "/root/visibility_oracle",
+        "verdict": "PASS source review, mathematical oracle and sync validation; not a browser verdict",
+        "files": {
+          "ege-profil/atanasyan-10-11/model.js": "69013fa9dd9cb2feebc8912e2c92aeee04b142d7c2ec2d0d89b5dc5ab99ef3d7",
+          "ege-profil/atanasyan-10-11/model.css": "ec1811bca9b41e49201579e55ce0d992b343c663f18f3e83f971ddab6a90801b",
+          "tools/stereo/sync_atanasyan_visibility.cjs": "de663d59b14366323098d127b6f5da10e3ca3a0e4514eccdd66f07302bd6b7cd",
+          "tools/stereo/atanasyan-visibility.test.cjs": "56e01fba5833b14ac923d6edf8f4907f3533c6ce9d0650eb1a96ec30a2e9c28b"
+        },
+        "findings": [
+          "Generated preparation, interval classifier and line drawing are byte-exact ports from frozen shared core; source-profile lookup intentionally absent because all12models have complete closed convex shells.",
+          "Public AtanasyanModel API,420×320projection,5controls,selected-view/camera state,source lessons and storage keys remain unchanged.",
+          "Allbody,segment and plane boundary strokes pass classifier; fill nodes remain stroke none; hidden paths draw before visible crossings; reversed collinear dash phase retained.",
+          "CSS adds scoped am-line-hidden class for auxiliary/boundary strokes; no broad style changes."
+        ],
+        "checks": {
+          "sync": "PASS",
+          "independentOracle": {
+            "models": 12,
+            "authoredViews": 68,
+            "cameraViews": 204,
+            "paths": 3436,
+            "hiddenPaths": 948,
+            "splitLines": 314,
+            "rays": 66615,
+            "negativeControls": 2
+          }
+        },
+        "notRun": "Existing real-browser tools/atanasyan-profile15-model.test.cjs cannot launch local Chromium: expected Playwright executable is missing. No browser approval claimed."
+      }
+    },
+    "baseCourse": {
+      "originalReportSHA256": "a6e7d74a75f62a1cb477fab98071c00d8040d517ddb490f41be615d7f1e26f48",
+      "review": {
+        "reviewer": "visibility_oracle",
+        "sourceHashes": {
+          "ege-baza/path/models.js": "4842548be6d6ffe0c6778b8f5dec62df17a8a7c851c09789c3dd30bfbde543f3",
+          "ege-baza/path/stereo-figures.js": "3e81413e6d222e40543d7ad9c2cb945a11c5476d03cdad9c1675fdb205606285",
+          "tools/ege-baza-stereo-visibility.test.cjs": "1988e60baf2a5ca77dc250c24ff19323803ddc81e8d85accbbd1d69b4bbcebf8",
+          "tools/ege-baza-stereo-visibility.browser.cjs": "136da1abfa8729c879964c04013ba23ad2d45aa82de8938f74b68b4bde1977f1"
+        },
+        "stats": {
+          "mounts": 96,
+          "lineSamples": 285408,
+          "classified": 276403,
+          "facetGrazingSamples": 9005,
+          "silhouetteSamples": 3984,
+          "staticVariants": 84,
+          "negativeControls": 2
+        },
+        "findings": [],
+        "method": "Nine uniform probes per independently reconstructed source line use analytic convex-body normals; exact tangent/camera-plane contour coverage is checked separately. No fractional probes are placed inside numerical endpoint fragments. Production solidModel is never called. Faceted curved-surface samples within 0.04 normal-dot margin are counted separately; exact contour checks do not use this exclusion.",
+        "actualBrowser": "not run locally; author browser gate has preflight only until CI",
+        "verdict": "PASS"
+      }
+    },
+    "profileSVG": {
+      "originalReportSHA256": "2ef777e6571a6fa4a7f4c9534d182b01815469cc4861697c0dfafe8e9b8cfd36",
+      "review": {
+        "schemaVersion": 1,
+        "status": "PASS_LOCAL_INDEPENDENT_PENDING_CI_AND_BROWSER",
+        "reviewedAt": "2026-10-29T20:32:48.440188+00:00",
+        "reviewer": "extra_stereo_paths independent reviewer of profile renderer; did not author stereo-tasks.js",
+        "reviewedSource": {
+          "file": "ege-profil/start/stereo-tasks.js",
+          "sha256": "21fdb8fe975d14d8e5366706f425a219c728239253e2fd624ea8e623b8ef14f9"
+        },
+        "authorSeparation": {
+          "independentlyReviewed": [
+            "ege-profil/start/stereo-tasks.js"
+          ],
+          "authoredByThisReviewerNotIndependentVerdicts": [
+            "ege-profil/trainers/stereo-t14.html",
+            "tools/profile-t14-visibility.test.cjs",
+            "tools/profile-stereo-visibility.browser.cjs"
+          ],
+          "t14AndBrowserIndependentReview": "Parent visibility_audit reports separate review; not claimed as an independent verdict by this report."
+        },
+        "codeInspection": [
+          "Embedded visibilityParts remains the shared polyhedral/sphere core; body faces alone occlude auxiliary construction strokes.",
+          "Camera direction is the inverse rotated positive depth axis. Polyhedral faces including concave cut-box polygons use full interval splitting; visible and hidden layers preserve stroke registration.",
+          "roundVisibilityParts derives the correct cylinder/cone quadratic along the viewing ray. Parameter cuts cover physical side intersections, ray tangencies, height crossings, and ray intersections with top/bottom rim circles; tube inner-wall radii are included.",
+          "Ray/quadric tangencies do not invent positive-length occlusion. Enabled caps and component ownership preserve the hollow tube and the cylinder-cone internal join.",
+          "The duplicated cylinder-cone seam was removed from the cylinder upper-rim stroke; the cone bottom seam is rendered once. The independently found front-seam misclassification is resolved.",
+          "Explicit curved-surface arcs and actual generators use smooth-normal ownership; interior chords/radii do not receive this exemption. Analytic spheres classify radii and diameters behind the surface.",
+          "Curve dash phase uses cumulative projected chord arclength. Canonical endpoint/adjacent-point comparison reverses consistently; split intervals continue the phase from their original start. Straight coincident strokes retain global canonical phase.",
+          "Top-cap front visibility relies on the existing validated positive pitch range [0.14, 1.25]. Below-body views are not currently permitted; changing that range would require a sign-aware top-cap condition."
+        ],
+        "independentTests": {
+          "domRenderer": {
+            "fixtures": "11 synthetic diagram variants rendered by the actual production SVG builder in jsdom; original-space analytic ray-volume oracle, not the production interval algorithm",
+            "cameras": "8 yaw values including axis-aligned views, 4 valid pitches",
+            "scenes": 352,
+            "samples": 85530,
+            "mismatches": 0,
+            "variants": [
+              "box",
+              "cube",
+              "triangular-prism",
+              "square-pyramid",
+              "cylinder",
+              "cone",
+              "sphere-radius",
+              "sphere-diameter",
+              "concave-cut-box",
+              "hollow-tube",
+              "cylinder-plus-cone"
+            ]
+          },
+          "roundProperty": {
+            "fixtures": "Deterministic random external/interior straight segments across cylinder, cone, wide cone, narrow cone and hollow tube; independent analytic volume inequality/ray-boundary oracle",
+            "segments": 7200,
+            "samples": 53644,
+            "partialVisibilitySegments": 4014,
+            "mismatches": 0,
+            "seed": 246813579
+          },
+          "resolvedFindings": [
+            "Front-facing duplicate compound seam arcs no longer become dashed.",
+            "Inscribed-mesh endpoint slivers up to 0.03112 SVG units are eliminated by exact round-body classification."
+          ],
+          "evidenceFiles": {
+            "profile-task-independent.cjs": "d240793371b30b90ed4476bcddfa99c599ea54f12f0dd3beae954b73a5191c98",
+            "profile-task-independent.json": "d6a2ae79d97778e5d16737a9233160bcb483c5798e33360f7db47f360c227edd",
+            "profile-round-property.cjs": "56e006471c0b1a4fa1e986317d33b6d357f480d0180d7f38259de5d226519b39",
+            "profile-round-property.json": "fac18998b9b3a4abd430181b7d189d8ebde514d9bd12823402e50d0f12baa4b9"
+          }
+        },
+        "browserRunner": {
+          "file": "tools/profile-stereo-visibility.browser.cjs",
+          "sha256": "fff61c831bb81f1a37d52462a28379e6e57c89592c561c30f0778f2ffb472d31",
+          "preflight": "PASS",
+          "plannedJourneys": 34,
+          "plannedProductionPNGs": 68,
+          "plannedNegativePixelControls": 4,
+          "actualLocalBrowser": "NOT RUN: Chromium launch failed because sandbox rejected socket(); no UI or pixel pass is claimed.",
+          "actualCIAndVisualReview": "PENDING"
+        },
+        "scope": "No production changes made during this independent review. Read-only source inspection and temporary source instrumentation in memory only. No commit, push or publication."
+      }
+    },
+    "profileLocal": {
+      "originalReportSHA256": "33bbfbbf81b1858e5607c3dbf4d54d36816bc4c8d4c7959ff2f5fc8c531ddfa0",
+      "review": {
+        "status": "PASS_LOCAL_PENDING_BROWSER_AND_EXACT_HEAD_CI",
+        "reviewedAt": "2026-10-29T20:35:20.247124+00:00",
+        "baseHead": "72a337e9994a7e32141277dcb27bec5619838c11",
+        "authorship": {
+          "profile_runtime_and_focused_numeric_test": "visibility_audit",
+          "t14_runtime_and_focused_numeric_test": "extra_stereo_paths",
+          "independent_profile_runtime_review": "extra_stereo_paths (separate analytic oracle)",
+          "independent_t14_code_review": "visibility_audit"
+        },
+        "sourceSha256": {
+          "ege-profil/start/stereo-tasks.js": "21fdb8fe975d14d8e5366706f425a219c728239253e2fd624ea8e623b8ef14f9",
+          "ege-profil/trainers/stereo-t14.html": "1c56ec8f30e30664062ad03590fdaa87d55deb0b0ce07f8e022b1cb366d378a1",
+          "ege-profil/start/stereo-data.js": "8aad61a5db607982675b1e7e5a0d583bc66d116ec352fd3f3e07e5f7ef95d690",
+          "tools/profile-stereo-visibility.test.cjs": "007f67a964a4b88874558850a31f36127dc8e57919e1da5fcbde7208aaf5e8cc",
+          "tools/profile-t14-visibility.test.cjs": "8ffe701e1db525d969fd543122ceb0b78538f30d781c4ef7ceb5d047ed839f8c",
+          "tools/sync-profile-stereo-visibility.cjs": "00cffcbb7e69086d0d170fa55fe47c0f75b14f6acdebe8d005b2c95ae34282b0",
+          "stereo-course/assets/task-scene-viewer.js": "91ef00cd15e0e831fa835c089116e5150813ce0bd6554280d3e9f76a5c547f64",
+          "tools/profile-stereo-round-visibility.test.cjs": "0d27403a9ad931839959092e57fe12b3c4d171877f363c509c9ded90a384a359",
+          "tools/profile-stereo-visibility.browser.cjs": "fff61c831bb81f1a37d52462a28379e6e57c89592c561c30f0778f2ffb472d31"
+        },
+        "preserved": {
+          "profile_control_slices": {
+            "camera_validation_and_public_helpers": "42e2e3a657e388270b483ffcafafa52817c6541082147192f428c21d7ead438e",
+            "camera_ui_input_listener_setup": "ca04c0dc96bc28012e253a8fe5c1cb2a7f65d2ece80ee7fe54c5a674bd29a577",
+            "cleanup_hydration_registration": "98f7d48905425f3f476e05a99f93157671545950b5991013203446d77656aa12"
+          },
+          "profile_task_data_byte_identical": true,
+          "t14_geometry_tasks_and_outside_scene_ui_byte_identical": true,
+          "shared_runtime_byte_identical_sha256": "91ef00cd15e0e831fa835c089116e5150813ce0bd6554280d3e9f76a5c547f64"
+        },
+        "tests": {
+          "profile_numeric": {
+            "scenes": 177,
+            "raySamples": 39693,
+            "partialStrokeCases": 54,
+            "straightReversalSamples": 499,
+            "curveReversalSamples": 582,
+            "negativeControls": 2,
+            "coneTangentViews": 3
+          },
+          "profile_independent_oracle": {
+            "scenes": 352,
+            "raySamples": 85530,
+            "mismatches": 0,
+            "artifact": "visibility_audit/profile-task-independent.json"
+          },
+          "existing_profile_tests": {
+            "tests": 12,
+            "failures": 0
+          },
+          "t14_numeric": {
+            "scenes": 7,
+            "segments": 94,
+            "raySamples": 615,
+            "partialIntervals": 3,
+            "reversalSamples": 499,
+            "negativeControls": 1
+          },
+          "fallback_sync_check": "PASS (profile SVG, T14 and base models)",
+          "syntax_and_diff_check": "PASS",
+          "profile_round_property": {
+            "segments": 7200,
+            "raySamples": 53644,
+            "partialVisibilitySegments": 4014,
+            "negativeControls": 2,
+            "independentAuthor": "extra_stereo_paths",
+            "reproducedBy": "visibility_audit",
+            "status": "PASS"
+          },
+          "browser_preflight": "PASS; actual browser pending CI"
+        },
+        "independentT14Review": {
+          "projection": "Affine camera [x+.45y,z+.30y,-y] has world viewing ray [.45,-1,.30], consistent with published projection.",
+          "surfaces": "Explicit closed faces match all four authored named solids; auxiliary highlighted planes do not become opaque occluders.",
+          "strokes": "Body edges, formerly hidden-list edges and all extra constructions use identical interval depth tests. Hidden/visible layers are separate; highlight updates only width/color, preserving dash/phase.",
+          "task_preservation": "Original G14 geometry/tasks and all code outside scene/UI prefix unchanged; tested original SHA fixtures.",
+          "verdict": "PASS_LOCAL"
+        },
+        "remaining": [
+          "Actual browser screenshots for added profile SVG/T14 paths and human visual inspection",
+          "Exact-final-head CI of expanded all-renderer scope",
+          "HIGH external review or explicit owner exception handled by parent; this is not merge authorization"
+        ],
+        "independentProfileReview": {
+          "artifact": "visibility_audit/profile-final-independent-review.json",
+          "sha256": "2ef777e6571a6fa4a7f4c9534d182b01815469cc4861697c0dfafe8e9b8cfd36",
+          "verdict": "PASS_LOCAL_INDEPENDENT_PENDING_CI_AND_BROWSER"
+        },
+        "independentBrowserRunnerReview": {
+          "reviewer": "visibility_audit (did not author runner)",
+          "verdict": "PASS_CODE_AND_PREFLIGHT_PENDING_ACTUAL_BROWSER",
+          "findings": [
+            "Authored tasks are selected on actual public routes in fresh contexts; identity and visible T14 title/condition are checked.",
+            "Real keyboard and proof controls drive state changes; mouse moved away prevents hover highlights changing during screenshot capture.",
+            "Computed SVG dash state, full hidden interior length, viewport fit, labelled actual PNGs and actual solid-negative pixel differences are enforced.",
+            "Negative controls restore exact prior SVG; failure preserves screenshot and DOM; final source hashes must match start."
+          ]
+        }
+      }
+    },
+    "labAdapter": {
+      "originalReportSHA256": "2aa9dd6d700bc91ff5efcd4994e3aa5d2e3f898f5cc054729d4669650f1c413d",
+      "review": {
+        "reviewer": "visibility_merzlyak",
+        "review": "independent adapter source/API review; shared helper authored by reviewer",
+        "sourceHashes": {
+          "ege-baza/labs/stereo.js": "8dd0eff55b70caf4d6f3df68602f92b7402f95f94e91c4d829e7d71e0140b59c",
+          "ege-baza/labs/index.html": "c01a50ee5d2728f0c7cd50a79510ee6c14b31014da3cff7aa7785cd4ed69f8f7",
+          "assets/stereo-three-visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab",
+          "tools/ege-baza-lab-visibility.test.cjs": "ea87647f62c1bd1dcbb123164c41ba609d664c4ca8cb5d69089e8364960f773b"
+        },
+        "verdict": "PASS",
+        "findings": [
+          "All surfaces are cached in world coordinates before helper mesh disposal; vessel detached proxy translation is applied before registration.",
+          "Open vessel top face excluded; context=true restricts shell occlusion to vessel-owned wires. The opaque inserted block occludes all appropriate strokes. Water planes/fills do not become invented solid occluders.",
+          "Each original LineSegments pair registers a generic line curve; circle uses explicit exact local center/u/v rather than polyline chords.",
+          "set() disposes classified siblings before source objects and creates fresh helper; coneSilhouette() unregisters old siblings before removing/disposal. destroy() disposes helper and original GPU resources.",
+          "draw() positions and aims camera before cone tangency rebuilding and update. Tangent equation uses true perspective camera position.",
+          "Re-ran author Node lab gate:6models/15camera cases/18tangencies/18rebuilds/2negativecontrols PASS; this execution uses mock WebGL and is not actual pixel verification."
+        ],
+        "browserPixelsReviewed": false
+      }
+    },
+    "cacheLoaders": {
+      "originalReportSHA256": "0b4c3954bdd35a4a0763c3b501f56c68748e11bc6989332c0e951b52212f96a6",
+      "review": {
+        "status": "PASS_CACHE_AND_LOAD_ORDER",
+        "reviewedAt": "2026-10-29T20:39:11.767573+00:00",
+        "head": "72a337e9994a7e32141277dcb27bec5619838c11",
+        "scope": "Read-only cache/version/load-order audit of additional stereometry renderer entry points; no workflow or production edits.",
+        "scan": {
+          "htmlFiles": 832,
+          "jsFiles": 582,
+          "targetRuntimeAssets": 11,
+          "references": 22,
+          "entries": 15,
+          "method": "Resolve every HTML src/href against its entry URL; compare matching runtime URLs with HEAD. Complement with repository-wide HTML/JS literal searches for runtime names, script/import/fetch loaders, serviceWorker registration and CacheStorage loaders. No additional active JS loader or service-worker cache for these assets was found."
+        },
+        "references": [
+          {
+            "entry": "ege-profil/atanasyan-10-11/lesson.html",
+            "tag": "link",
+            "attribute": "href",
+            "url": "model.css?v=20261030-hidden-lines",
+            "asset": "ege-profil/atanasyan-10-11/model.css",
+            "query": "v=20261030-hidden-lines",
+            "version": "20261030-hidden-lines",
+            "line": 9,
+            "defer": false,
+            "async": false,
+            "previousURLs": [
+              "model.css?v=20261007"
+            ],
+            "cacheBump": true
+          },
+          {
+            "entry": "ege-profil/atanasyan-10-11/lesson.html",
+            "tag": "script",
+            "attribute": "src",
+            "url": "model.js?v=20261030-hidden-lines",
+            "asset": "ege-profil/atanasyan-10-11/model.js",
+            "query": "v=20261030-hidden-lines",
+            "version": "20261030-hidden-lines",
+            "line": 10,
+            "defer": true,
+            "async": false,
+            "previousURLs": [
+              "model.js?v=20261007"
+            ],
+            "cacheBump": true
+          },
+          {
+            "entry": "ege-profil/start/index.html",
+            "tag": "script",
+            "attribute": "src",
+            "url": "stereo-tasks.js?v=20261030-hidden-lines",
+            "asset": "ege-profil/start/stereo-tasks.js",
+            "query": "v=20261030-hidden-lines",
+            "version": "20261030-hidden-lines",
+            "line": 21,
+            "defer": true,
+            "async": false,
+            "previousURLs": [
+              "stereo-tasks.js?v=20261023-stereo-board"
+            ],
+            "cacheBump": true
+          },
+          {
+            "entry": "ege-profil/trainers/stereo/trainer.html",
+            "tag": "script",
+            "attribute": "src",
+            "url": "js/visibility.js?v=20261030-hidden-lines",
+            "asset": "ege-profil/trainers/stereo/js/visibility.js",
+            "query": "v=20261030-hidden-lines",
+            "version": "20261030-hidden-lines",
+            "line": 77,
+            "defer": false,
+            "async": false,
+            "previousURLs": [],
+            "cacheBump": true
+          },
+          {
+            "entry": "ege-profil/trainers/stereo/trainer.html",
+            "tag": "script",
+            "attribute": "src",
+            "url": "js/trainer.js?v=20261030-hidden-lines",
+            "asset": "ege-profil/trainers/stereo/js/trainer.js",
+            "query": "v=20261030-hidden-lines",
+            "version": "20261030-hidden-lines",
+            "line": 78,
+            "defer": false,
+            "async": false,
+            "previousURLs": [
+              "js/trainer.js"
+            ],
+            "cacheBump": true
+          },
+          {
+            "entry": "ege-baza/labs/index.html",
+            "tag": "script",
+            "attribute": "src",
+            "url": "../../assets/stereo-three-visibility.js?v=20261029-hidden-lines",
+            "asset": "assets/stereo-three-visibility.js",
+            "query": "v=20261029-hidden-lines",
+            "version": "20261029-hidden-lines",
+            "line": 1,
+            "defer": true,
+            "async": false,
+            "previousURLs": [],
+            "cacheBump": true
+          },
+          {
+            "entry": "ege-baza/labs/index.html",
+            "tag": "script",
+            "attribute": "src",
+            "url": "stereo.js?v=20261029-hidden-lines",
+            "asset": "ege-baza/labs/stereo.js",
+            "query": "v=20261029-hidden-lines",
+            "version": "20261029-hidden-lines",
+            "line": 1,
+            "defer": true,
+            "async": false,
+            "previousURLs": [
+              "stereo.js"
+            ],
+            "cacheBump": true
+          },
+          {
+            "entry": "ege-baza/path/index.html",
+            "tag": "script",
+            "attribute": "src",
+            "url": "models.js?v=20261030-hidden-lines",
+            "asset": "ege-baza/path/models.js",
+            "query": "v=20261030-hidden-lines",
+            "version": "20261030-hidden-lines",
+            "line": 1,
+            "defer": false,
+            "async": false,
+            "previousURLs": [
+              "models.js?v=pre7-20261006"
+            ],
+            "cacheBump": true
+          },
+          {
+            "entry": "ege-baza/path/index.html",
+            "tag": "script",
+            "attribute": "src",
+            "url": "stereo-figures.js?v=20261030-hidden-lines",
+            "asset": "ege-baza/path/stereo-figures.js",
+            "query": "v=20261030-hidden-lines",
+            "version": "20261030-hidden-lines",
+            "line": 1,
+            "defer": false,
+            "async": false,
+            "previousURLs": [
+              "stereo-figures.js?v=20261025-stereo"
+            ],
+            "cacheBump": true
+          },
+          {
+            "entry": "trainers/ege-profile-expressions.html",
+            "tag": "script",
+            "attribute": "src",
+            "url": "/ege-profil/start/stereo-tasks.js?v=20261030-hidden-lines",
+            "asset": "ege-profil/start/stereo-tasks.js",
+            "query": "v=20261030-hidden-lines",
+            "version": "20261030-hidden-lines",
+            "line": 19,
+            "defer": true,
+            "async": false,
+            "previousURLs": [
+              "/ege-profil/start/stereo-tasks.js?v=20261023-stereo-board"
+            ],
+            "cacheBump": true
+          },
+          {
+            "entry": "trainers/ege-profile-random-variables.html",
+            "tag": "script",
+            "attribute": "src",
+            "url": "/ege-profil/start/stereo-tasks.js?v=20261030-hidden-lines",
+            "asset": "ege-profil/start/stereo-tasks.js",
+            "query": "v=20261030-hidden-lines",
+            "version": "20261030-hidden-lines",
+            "line": 19,
+            "defer": true,
+            "async": false,
+            "previousURLs": [
+              "/ege-profil/start/stereo-tasks.js?v=20261023-stereo-board"
+            ],
+            "cacheBump": true
+          },
+          {
+            "entry": "trainers/ege-profile-planimetry.html",
+            "tag": "script",
+            "attribute": "src",
+            "url": "/ege-profil/start/stereo-tasks.js?v=20261030-hidden-lines",
+            "asset": "ege-profil/start/stereo-tasks.js",
+            "query": "v=20261030-hidden-lines",
+            "version": "20261030-hidden-lines",
+            "line": 19,
+            "defer": true,
+            "async": false,
+            "previousURLs": [
+              "/ege-profil/start/stereo-tasks.js?v=20261023-stereo-board"
+            ],
+            "cacheBump": true
+          },
+          {
+            "entry": "trainers/ege-baza-13.html",
+            "tag": "script",
+            "attribute": "src",
+            "url": "/ege-baza/path/models.js?v=20261030-hidden-lines",
+            "asset": "ege-baza/path/models.js",
+            "query": "v=20261030-hidden-lines",
+            "version": "20261030-hidden-lines",
+            "line": 9,
+            "defer": true,
+            "async": false,
+            "previousURLs": [
+              "/ege-baza/path/models.js?v=20261025-stereo-board"
+            ],
+            "cacheBump": true
+          },
+          {
+            "entry": "trainers/ege-baza-13.html",
+            "tag": "script",
+            "attribute": "src",
+            "url": "/ege-baza/path/stereo-figures.js?v=20261030-hidden-lines",
+            "asset": "ege-baza/path/stereo-figures.js",
+            "query": "v=20261030-hidden-lines",
+            "version": "20261030-hidden-lines",
+            "line": 12,
+            "defer": true,
+            "async": false,
+            "previousURLs": [
+              "/ege-baza/path/stereo-figures.js?v=20261025-stereo-board"
+            ],
+            "cacheBump": true
+          },
+          {
+            "entry": "trainers/ege-baza-11.html",
+            "tag": "script",
+            "attribute": "src",
+            "url": "/ege-baza/path/models.js?v=20261030-hidden-lines",
+            "asset": "ege-baza/path/models.js",
+            "query": "v=20261030-hidden-lines",
+            "version": "20261030-hidden-lines",
+            "line": 9,
+            "defer": true,
+            "async": false,
+            "previousURLs": [
+              "/ege-baza/path/models.js?v=20261025-stereo-board"
+            ],
+            "cacheBump": true
+          },
+          {
+            "entry": "trainers/ege-baza-11.html",
+            "tag": "script",
+            "attribute": "src",
+            "url": "/ege-baza/path/stereo-figures.js?v=20261030-hidden-lines",
+            "asset": "ege-baza/path/stereo-figures.js",
+            "query": "v=20261030-hidden-lines",
+            "version": "20261030-hidden-lines",
+            "line": 12,
+            "defer": true,
+            "async": false,
+            "previousURLs": [
+              "/ege-baza/path/stereo-figures.js?v=20261025-stereo-board"
+            ],
+            "cacheBump": true
+          },
+          {
+            "entry": "trainers/ege-profile-equations.html",
+            "tag": "script",
+            "attribute": "src",
+            "url": "/ege-profil/start/stereo-tasks.js?v=20261030-hidden-lines",
+            "asset": "ege-profil/start/stereo-tasks.js",
+            "query": "v=20261030-hidden-lines",
+            "version": "20261030-hidden-lines",
+            "line": 19,
+            "defer": true,
+            "async": false,
+            "previousURLs": [
+              "/ege-profil/start/stereo-tasks.js?v=20261023-stereo-board"
+            ],
+            "cacheBump": true
+          },
+          {
+            "entry": "trainers/ege-profile-stereometry-3d/trainer.html",
+            "tag": "script",
+            "attribute": "src",
+            "url": "js/visibility.js?v=20261030-hidden-lines",
+            "asset": "trainers/ege-profile-stereometry-3d/js/visibility.js",
+            "query": "v=20261030-hidden-lines",
+            "version": "20261030-hidden-lines",
+            "line": 75,
+            "defer": false,
+            "async": false,
+            "previousURLs": [],
+            "cacheBump": true
+          },
+          {
+            "entry": "trainers/ege-profile-stereometry-3d/trainer.html",
+            "tag": "script",
+            "attribute": "src",
+            "url": "js/trainer.js?v=20261030-hidden-lines",
+            "asset": "trainers/ege-profile-stereometry-3d/js/trainer.js",
+            "query": "v=20261030-hidden-lines",
+            "version": "20261030-hidden-lines",
+            "line": 76,
+            "defer": false,
+            "async": false,
+            "previousURLs": [
+              "js/trainer.js"
+            ],
+            "cacheBump": true
+          },
+          {
+            "entry": "trainers/ege-profile-stereometry.html",
+            "tag": "script",
+            "attribute": "src",
+            "url": "/ege-profil/start/stereo-tasks.js?v=20261030-hidden-lines",
+            "asset": "ege-profil/start/stereo-tasks.js",
+            "query": "v=20261030-hidden-lines",
+            "version": "20261030-hidden-lines",
+            "line": 19,
+            "defer": true,
+            "async": false,
+            "previousURLs": [
+              "/ege-profil/start/stereo-tasks.js?v=20261023-stereo-board"
+            ],
+            "cacheBump": true
+          },
+          {
+            "entry": "trainers/ege-profile-probability.html",
+            "tag": "script",
+            "attribute": "src",
+            "url": "/ege-profil/start/stereo-tasks.js?v=20261030-hidden-lines",
+            "asset": "ege-profil/start/stereo-tasks.js",
+            "query": "v=20261030-hidden-lines",
+            "version": "20261030-hidden-lines",
+            "line": 19,
+            "defer": true,
+            "async": false,
+            "previousURLs": [
+              "/ege-profil/start/stereo-tasks.js?v=20261023-stereo-board"
+            ],
+            "cacheBump": true
+          },
+          {
+            "entry": "trainers/ege-profile-vectors.html",
+            "tag": "script",
+            "attribute": "src",
+            "url": "/ege-profil/start/stereo-tasks.js?v=20261030-hidden-lines",
+            "asset": "ege-profil/start/stereo-tasks.js",
+            "query": "v=20261030-hidden-lines",
+            "version": "20261030-hidden-lines",
+            "line": 19,
+            "defer": true,
+            "async": false,
+            "previousURLs": [
+              "/ege-profil/start/stereo-tasks.js?v=20261023-stereo-board"
+            ],
+            "cacheBump": true
+          }
+        ],
+        "dependencyOrderChecks": [
+          {
+            "entry": "ege-profil/atanasyan-10-11/lesson.html",
+            "dependency": "ege-profil/atanasyan-10-11/lessons.js",
+            "consumer": "ege-profil/atanasyan-10-11/model.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "ege-profil/atanasyan-10-11/lesson.html",
+            "dependency": "ege-profil/atanasyan-10-11/model.js",
+            "consumer": "ege-profil/atanasyan-10-11/lesson-model.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "ege-profil/start/index.html",
+            "dependency": "ege-profil/start/stereo-data.js",
+            "consumer": "ege-profil/start/stereo-tasks.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "ege-profil/start/index.html",
+            "dependency": "ege-profil/start/geometry-models.js",
+            "consumer": "ege-profil/start/stereo-tasks.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "ege-profil/start/index.html",
+            "dependency": "ege-profil/start/stereo-tasks.js",
+            "consumer": "ege-profil/start/app.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "ege-profil/trainers/stereo/trainer.html",
+            "dependency": "ege-profil/trainers/stereo/js/three.min.js",
+            "consumer": "ege-profil/trainers/stereo/js/visibility.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "ege-profil/trainers/stereo/trainer.html",
+            "dependency": "ege-profil/trainers/stereo/js/data.js",
+            "consumer": "ege-profil/trainers/stereo/js/trainer.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "ege-profil/trainers/stereo/trainer.html",
+            "dependency": "ege-profil/trainers/stereo/js/visibility.js",
+            "consumer": "ege-profil/trainers/stereo/js/trainer.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "ege-baza/labs/index.html",
+            "dependency": "ege-profil/trainers/stereo/js/three.min.js",
+            "consumer": "assets/stereo-three-visibility.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "ege-baza/labs/index.html",
+            "dependency": "assets/stereo-three-visibility.js",
+            "consumer": "ege-baza/labs/stereo.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "ege-baza/labs/index.html",
+            "dependency": "ege-baza/labs/math.js",
+            "consumer": "ege-baza/labs/stereo.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "ege-baza/labs/index.html",
+            "dependency": "ege-baza/labs/stereo.js",
+            "consumer": "ege-baza/labs/labs.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "ege-baza/path/index.html",
+            "dependency": "ege-baza/path/data.js",
+            "consumer": "ege-baza/path/models.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "ege-baza/path/index.html",
+            "dependency": "ege-baza/path/models.js",
+            "consumer": "ege-baza/path/stereo-figures.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "ege-baza/path/index.html",
+            "dependency": "ege-baza/path/stereo-figures.js",
+            "consumer": "ege-baza/path/task-first.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-expressions.html",
+            "dependency": "ege-profil/start/stereo-data.js",
+            "consumer": "ege-profil/start/stereo-tasks.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-expressions.html",
+            "dependency": "ege-profil/start/geometry-models.js",
+            "consumer": "ege-profil/start/stereo-tasks.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-expressions.html",
+            "dependency": "ege-profil/start/stereo-tasks.js",
+            "consumer": "ege-profil/start/app.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-random-variables.html",
+            "dependency": "ege-profil/start/stereo-data.js",
+            "consumer": "ege-profil/start/stereo-tasks.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-random-variables.html",
+            "dependency": "ege-profil/start/geometry-models.js",
+            "consumer": "ege-profil/start/stereo-tasks.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-random-variables.html",
+            "dependency": "ege-profil/start/stereo-tasks.js",
+            "consumer": "ege-profil/start/app.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-planimetry.html",
+            "dependency": "ege-profil/start/stereo-data.js",
+            "consumer": "ege-profil/start/stereo-tasks.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-planimetry.html",
+            "dependency": "ege-profil/start/geometry-models.js",
+            "consumer": "ege-profil/start/stereo-tasks.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-planimetry.html",
+            "dependency": "ege-profil/start/stereo-tasks.js",
+            "consumer": "ege-profil/start/app.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-baza-13.html",
+            "dependency": "ege-baza/path/data.js",
+            "consumer": "ege-baza/path/models.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-baza-13.html",
+            "dependency": "ege-baza/path/models.js",
+            "consumer": "ege-baza/path/stereo-figures.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-baza-13.html",
+            "dependency": "ege-baza/path/stereo-figures.js",
+            "consumer": "ege-baza/path/task-first.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-baza-11.html",
+            "dependency": "ege-baza/path/data.js",
+            "consumer": "ege-baza/path/models.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-baza-11.html",
+            "dependency": "ege-baza/path/models.js",
+            "consumer": "ege-baza/path/stereo-figures.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-baza-11.html",
+            "dependency": "ege-baza/path/stereo-figures.js",
+            "consumer": "ege-baza/path/task-first.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-equations.html",
+            "dependency": "ege-profil/start/stereo-data.js",
+            "consumer": "ege-profil/start/stereo-tasks.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-equations.html",
+            "dependency": "ege-profil/start/geometry-models.js",
+            "consumer": "ege-profil/start/stereo-tasks.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-equations.html",
+            "dependency": "ege-profil/start/stereo-tasks.js",
+            "consumer": "ege-profil/start/app.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-stereometry-3d/trainer.html",
+            "dependency": "trainers/ege-profile-stereometry-3d/js/three.min.js",
+            "consumer": "trainers/ege-profile-stereometry-3d/js/visibility.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-stereometry-3d/trainer.html",
+            "dependency": "trainers/ege-profile-stereometry-3d/js/data.js",
+            "consumer": "trainers/ege-profile-stereometry-3d/js/trainer.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-stereometry-3d/trainer.html",
+            "dependency": "trainers/ege-profile-stereometry-3d/js/visibility.js",
+            "consumer": "trainers/ege-profile-stereometry-3d/js/trainer.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-stereometry.html",
+            "dependency": "ege-profil/start/stereo-data.js",
+            "consumer": "ege-profil/start/stereo-tasks.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-stereometry.html",
+            "dependency": "ege-profil/start/geometry-models.js",
+            "consumer": "ege-profil/start/stereo-tasks.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-stereometry.html",
+            "dependency": "ege-profil/start/stereo-tasks.js",
+            "consumer": "ege-profil/start/app.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-probability.html",
+            "dependency": "ege-profil/start/stereo-data.js",
+            "consumer": "ege-profil/start/stereo-tasks.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-probability.html",
+            "dependency": "ege-profil/start/geometry-models.js",
+            "consumer": "ege-profil/start/stereo-tasks.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-probability.html",
+            "dependency": "ege-profil/start/stereo-tasks.js",
+            "consumer": "ege-profil/start/app.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-vectors.html",
+            "dependency": "ege-profil/start/stereo-data.js",
+            "consumer": "ege-profil/start/stereo-tasks.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-vectors.html",
+            "dependency": "ege-profil/start/geometry-models.js",
+            "consumer": "ege-profil/start/stereo-tasks.js",
+            "status": "PASS"
+          },
+          {
+            "entry": "trainers/ege-profile-vectors.html",
+            "dependency": "ege-profil/start/stereo-tasks.js",
+            "consumer": "ege-profil/start/app.js",
+            "status": "PASS"
+          }
+        ],
+        "copyIdentity": {
+          "status": "PASS",
+          "files": {
+            "assets/stereo-three-visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab",
+            "ege-profil/trainers/stereo/js/visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab",
+            "trainers/ege-profile-stereometry-3d/js/visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab"
+          }
+        },
+        "findings": [],
+        "sourceHashes": {
+          "assets/stereo-three-visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab",
+          "ege-baza/labs/index.html": "c01a50ee5d2728f0c7cd50a79510ee6c14b31014da3cff7aa7785cd4ed69f8f7",
+          "ege-baza/labs/stereo.js": "8dd0eff55b70caf4d6f3df68602f92b7402f95f94e91c4d829e7d71e0140b59c",
+          "ege-baza/path/index.html": "459f31f2fb6f1c8ad403644dbc53632a079049d61d1397d01f25ce772832ccd9",
+          "ege-baza/path/models.js": "4842548be6d6ffe0c6778b8f5dec62df17a8a7c851c09789c3dd30bfbde543f3",
+          "ege-baza/path/stereo-figures.js": "3e81413e6d222e40543d7ad9c2cb945a11c5476d03cdad9c1675fdb205606285",
+          "ege-profil/atanasyan-10-11/lesson.html": "22d1ebb7be3d3a1f3a9c9b7a52cd56bc39c3bebed773f387d327909237d1a724",
+          "ege-profil/atanasyan-10-11/model.css": "ec1811bca9b41e49201579e55ce0d992b343c663f18f3e83f971ddab6a90801b",
+          "ege-profil/atanasyan-10-11/model.js": "69013fa9dd9cb2feebc8912e2c92aeee04b142d7c2ec2d0d89b5dc5ab99ef3d7",
+          "ege-profil/start/index.html": "07f8b5a60ab56992ccad503474c862e79695cdc60f62033b2f1c87a6563fc094",
+          "ege-profil/start/stereo-tasks.js": "21fdb8fe975d14d8e5366706f425a219c728239253e2fd624ea8e623b8ef14f9",
+          "ege-profil/trainers/stereo/js/trainer.js": "7a1a6a64648cb2ae50d91b0162d5df77b19e6542a14544f5714f09fa72b424df",
+          "ege-profil/trainers/stereo/js/visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab",
+          "ege-profil/trainers/stereo/trainer.html": "2f99b2c66bd1b8e31f177892faae9ed96f26e7bea7fc31a08a93cd7d62159957",
+          "trainers/ege-baza-11.html": "9544b4f3bdae49cb325aca9b03bd433c46c70085de221876d3f0fd80d74b6fbb",
+          "trainers/ege-baza-13.html": "95cf64678f211fdc4bc0414d8cca4dbb4fb93adffb9aea06906cb42e379b2358",
+          "trainers/ege-profile-equations.html": "6050b913f4cf11322ce7beafe93e9d05e004270c3a83420343f3c96e196f9062",
+          "trainers/ege-profile-expressions.html": "bb11f0a844dbbc89c9522100442cc09e5a441c65325955900ada489efd85c74d",
+          "trainers/ege-profile-planimetry.html": "535f465a68cbc7789d8b6e323627309ae05f1c89b29d6c4e95d15df1a13fafb5",
+          "trainers/ege-profile-probability.html": "405dff5abc6762a165f4288ae67ab279fe00b26deaefd50b5c2d0203f6843cac",
+          "trainers/ege-profile-random-variables.html": "4cc2432e618a9df510523c7a8916357e2494f5e2a9ed55171285afb59d538e2f",
+          "trainers/ege-profile-stereometry-3d/js/trainer.js": "f7c6ddf3a6bfdec663e1eecec5fe617550802e1fcf9ce551434163adf45f930a",
+          "trainers/ege-profile-stereometry-3d/js/visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab",
+          "trainers/ege-profile-stereometry-3d/trainer.html": "9301215c58627ff7fbec78ac22ae98277c19dd79d890f851f1e10d7165100794",
+          "trainers/ege-profile-stereometry.html": "12586d800ea1a22fdba34a9f479c4af318e3bb23f5e530a4b2c1424b6caf576e",
+          "trainers/ege-profile-vectors.html": "c29650148f980e6807e03dd148ffaa19cf4c63bfee54dbe3c5dfb7e4c737414e"
+        }
+      }
+    },
+    "perspectiveIndependent": {
+      "originalReportSHA256": "15d16be61812e5691e5e78cb93afac2dc1c741c671fc26d22ef59432a6cf7ab3",
+      "review": {
+        "reviewer": "/root/visibility_perspective_review",
+        "scope": "Read-only independent mathematical, source and real-Three Node review; no production edits",
+        "timestamp": "2026-10-29T20:44:14.250080+00:00",
+        "head": "72a337e9994a7e32141277dcb27bec5619838c11",
+        "files": {
+          "assets/stereo-three-visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab",
+          "trainers/ege-profile-stereometry-3d/js/trainer.js": "976d958bcfb74c52199671204def850054f91e088eab95767881119a158c93bd",
+          "ege-profil/trainers/stereo/js/trainer.js": "7a1a6a64648cb2ae50d91b0162d5df77b19e6542a14544f5714f09fa72b424df",
+          "ege-baza/labs/stereo.js": "8dd0eff55b70caf4d6f3df68602f92b7402f95f94e91c4d829e7d71e0140b59c",
+          "trainers/ege-profile-stereometry-3d/js/visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab",
+          "ege-profil/trainers/stereo/js/visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab"
+        },
+        "result": "No blocking finding remaining for these file hashes; browser/WebGL execution still required",
+        "tests": {
+          "triangle_oracle": {
+            "cases": 2400,
+            "rays": 290400,
+            "mismatches": 0,
+            "oracle": "Independent finite Moller-Trumbore camera-to-point ray intersections with near-depth rejection"
+          },
+          "sphere_oracle": {
+            "cases": 4800,
+            "front_visible_samples": 234312,
+            "mismatches": 0,
+            "oracle": "Independent world-distance closest-point/chord ray-sphere intersection"
+          },
+          "degeneracies": {
+            "polynomials": 7,
+            "near_tangent_probes": 60,
+            "near_clipped_interior_controls": 2,
+            "result": "PASS"
+          },
+          "coplanar_faces": {
+            "cards": 431,
+            "face_triangle_edges": 10842,
+            "false_self_occlusions": 0
+          },
+          "production_build_scene": {
+            "cards": 431,
+            "strokes": 5038,
+            "cards_with_hidden_parts": 431,
+            "result": "PASS",
+            "stub": "Text sprites only; actual source buildScene and vendored Three geometries"
+          },
+          "name_binding": {
+            "points": 3367,
+            "edges": 4200,
+            "faces": 1932,
+            "legacy_cards_repaired": 13,
+            "canonical_cards_changed": 0,
+            "676923": "OP=3,SP=SQ=6 by actual production displayLen before solution; given labels and original visible letters preserved; construction hide/show does not duplicate labels"
+          },
+          "labs": {
+            "mode_parameters": 10,
+            "orbit_cases": 30,
+            "result": "PASS",
+            "stub": "Renderer draw only; actual geometry and production SolidView"
+          },
+          "lifecycle": "Nested uniform scale/rotation, color-only selection, visibility hide/show, animated endpoint recomputation, material-hidden Raycaster picking PASS",
+          "circle_phase": "Reversal plus 20,000 equivalent start/basis probes PASS",
+          "performance": "Sphere48x32,4circles+4radiallines: median3.64ms Node update after analytic sphere vs88.75ms before; not a browser benchmark"
+        },
+        "fixed_findings": [
+          "Circular dash phase seam/reversal mismatch",
+          "Deleting user segment left sibling classified mesh",
+          "Ghost section circle/auxiliary line ownership omissions",
+          "Legacy z-up ownership mismatch",
+          "Float32 face planes hid their own double-precision edges",
+          "Cone .001 tip radius hid true front generators",
+          "Sphere interval predicate needed actual clipped surface roots instead of volume overlap",
+          "Repeated-root floating bisection duplicates",
+          "13legacy body-name collisions altered body geometry; renderer-local binding repair reviewed",
+          "Task676923 legacy construction reused SP but dropped its declared6 label/measurement; task-scoped rec.given+sprite handling reviewed"
+        ],
+        "semantic_notes": [
+          "Logical ordinary cylinder top/bottom and cone bottom caps; water-cylinder mouth open; flipped cone vessel no cap",
+          "Ghost bodies self-occlude own/contained auxiliary strokes, not unrelated active solids",
+          "cst.solid lists are partial explanatory fills, none of48bank entries have ghost bodies; retain non-occluder treatment",
+          "Analytic sphere is ideal mathematical surface; other curved-body boundaries use authored triangulated resolution with Float32-safe depth tolerance"
+        ],
+        "limits": [
+          "No Chromium available locally; no screenshot or actual WebGL PASS claimed",
+          "Report binds current worktree hashes, not a final commit or deployment",
+          "External HIGH review/owner publication process remains root responsibility"
+        ],
+        "followup_review": {
+          "trigger": "676923 existing SP given-label omission identified by browser fixture source preflight",
+          "changed_production": "Only legacy adapter task-specific existing-edge handling; shared math, canonical adapter and labs unchanged",
+          "rerun": "431cards/5038strokes and3367points/4200edges/1932faces PASS; targeted actual displayLen and construction label lifecycle PASS",
+          "unchanged_math": "524712ray comparisons were not unnecessarily repeated; shared helper bytes remain f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab"
+        }
+      }
+    },
+    "perspectiveAuthor": {
+      "originalReportSHA256": "1978c9941a209ce2cf1fcdae2a1793f71dd3ea412386509ec84ec9c073efb9c5",
+      "review": {
+        "phase": "implementation author freeze; independent review and real browser gates separate",
+        "sourceHashes": {
+          "assets/stereo-three-visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab",
+          "trainers/ege-profile-stereometry-3d/js/visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab",
+          "ege-profil/trainers/stereo/js/visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab",
+          "trainers/ege-profile-stereometry-3d/js/trainer.js": "976d958bcfb74c52199671204def850054f91e088eab95767881119a158c93bd",
+          "ege-profil/trainers/stereo/js/trainer.js": "7a1a6a64648cb2ae50d91b0162d5df77b19e6542a14544f5714f09fa72b424df",
+          "trainers/ege-profile-stereometry-3d/trainer.html": "9301215c58627ff7fbec78ac22ae98277c19dd79d890f851f1e10d7165100794",
+          "ege-profil/trainers/stereo/trainer.html": "2f99b2c66bd1b8e31f177892faae9ed96f26e7bea7fc31a08a93cd7d62159957",
+          "tools/stereo-three-visibility.test.cjs": "de8cea63564b08693ef08f56747e41064d4feea6c5c31c03cb381d38445e0c99",
+          "tools/sync-stereo-three-visibility.cjs": "684bc08681305e6973c782258fd55cf06dc495039a3de11d27715a61b2fc883b"
+        },
+        "sourceBanksUnchanged": true,
+        "offlineCopiesIdentical": true,
+        "tests": {
+          "result": "STEREO_THREE_VISIBILITY_OK",
+          "cards": 431,
+          "strokes": 4553,
+          "constructed": 221,
+          "performance": [
+            {
+              "folder": "trainers/ege-profile-stereometry-3d",
+              "id": "27125",
+              "strokes": 12,
+              "spheres": 4,
+              "medianMs": 4.53604299999995
+            },
+            {
+              "folder": "trainers/ege-profile-stereometry-3d",
+              "id": "27163",
+              "strokes": 9,
+              "spheres": 3,
+              "medianMs": 2.4971210000001065
+            },
+            {
+              "folder": "ege-profil/trainers/stereo",
+              "id": "27125",
+              "strokes": 12,
+              "spheres": 4,
+              "medianMs": 3.152939999999944
+            },
+            {
+              "folder": "ege-profil/trainers/stereo",
+              "id": "27163",
+              "strokes": 9,
+              "spheres": 3,
+              "medianMs": 1.9166869999999108
+            }
+          ],
+          "sourceNameCollisionCardsRebound": [
+            "trainers/ege-profile-stereometry-3d:27061",
+            "trainers/ege-profile-stereometry-3d:27081",
+            "trainers/ege-profile-stereometry-3d:27102",
+            "trainers/ege-profile-stereometry-3d:27130",
+            "trainers/ege-profile-stereometry-3d:27168",
+            "trainers/ege-profile-stereometry-3d:639940",
+            "trainers/ege-profile-stereometry-3d:27094",
+            "trainers/ege-profile-stereometry-3d:27095",
+            "trainers/ege-profile-stereometry-3d:27136",
+            "trainers/ege-profile-stereometry-3d:27137",
+            "trainers/ege-profile-stereometry-3d:676923",
+            "trainers/ege-profile-stereometry-3d:5077",
+            "trainers/ege-profile-stereometry-3d:245348"
+          ]
+        },
+        "notes": [
+          "All body/aux/manual/selected/animated strokes and exact circle arcs classify against near-clipped body triangles; full spheres use analytic finite ray surface intersections.",
+          "Ghost/reference surfaces self-occlude related strokes, with bounded world-coordinate membership for auxiliary strokes and surface-less section circles.",
+          "Closed cylinder/cone logical caps restored; open vessel mouths stay open; cone tip is mathematical zero.",
+          "13 legacy scene vertex-name collisions normalized locally to private render keys; display names, IDs, storage keys and source banks retained.",
+          "676923 explicit given/construction references bind to active cone: OP=3,SP=SQ=6, manualOQ=3. This single reference exception was explicitly authorized by root after source-condition review.",
+          "Original full tube objects remain pick targets with material hidden; classified siblings inherit color and animation; deletion unregisters and disposes siblings.",
+          "No real browser or PNG result is claimed by this report.",
+          "Final legacy676923 existing SP constructor branch preserves its declared6 sprite and measured given; regression checks effective displayed SP/SQ values after construction. Canonical source already has SP=6 in givenMap and required no analogous change."
+        ],
+        "browserExecuted": false
+      }
+    },
+    "integrationIndependent": {
+      "originalReportSHA256": "0b3107126145ad1d75abb161d81aba4935c367e1599222a3841f40aa46fa8247",
+      "review": {
+        "reviewedAt": "2026-10-29T20:40:04.866424+00:00",
+        "workflow": ".github/workflows/stereometry-visibility.yml",
+        "workflowSha256": "89a0b1910ce6036413435df4984db560e54a9040b5f6d88c0265dc59b1855f01",
+        "parser": "PyYAML6.0.3 BaseLoader; actionlint unavailable, so no claim of actionlint/schema validation",
+        "structuralChecks": "PASS",
+        "jobCount": 5,
+        "actionPins": [
+          "actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+        ],
+        "scriptReferences": [
+          {
+            "job": "independent-geometry",
+            "file": "tools/stereo/sync_atanasyan_visibility.cjs",
+            "exists": true,
+            "triggerCovered": true
+          },
+          {
+            "job": "independent-geometry",
+            "file": "tools/sync-profile-stereo-visibility.cjs",
+            "exists": true,
+            "triggerCovered": true
+          },
+          {
+            "job": "independent-geometry",
+            "file": "tools/sync-stereo-three-visibility.cjs",
+            "exists": true,
+            "triggerCovered": true
+          },
+          {
+            "job": "independent-geometry",
+            "file": "tools/stereo/atanasyan-visibility.test.cjs",
+            "exists": true,
+            "triggerCovered": true
+          },
+          {
+            "job": "independent-geometry",
+            "file": "tools/profile-stereo-visibility.test.cjs",
+            "exists": true,
+            "triggerCovered": true
+          },
+          {
+            "job": "independent-geometry",
+            "file": "tools/profile-stereo-round-visibility.test.cjs",
+            "exists": true,
+            "triggerCovered": true
+          },
+          {
+            "job": "independent-geometry",
+            "file": "tools/profile-t14-visibility.test.cjs",
+            "exists": true,
+            "triggerCovered": true
+          },
+          {
+            "job": "independent-geometry",
+            "file": "tools/ege-baza-stereo-visibility.test.cjs",
+            "exists": true,
+            "triggerCovered": true
+          },
+          {
+            "job": "independent-geometry",
+            "file": "tools/stereo-three-visibility.test.cjs",
+            "exists": true,
+            "triggerCovered": true
+          },
+          {
+            "job": "independent-geometry",
+            "file": "tools/ege-baza-lab-visibility.test.cjs",
+            "exists": true,
+            "triggerCovered": true
+          },
+          {
+            "job": "profile-and-legacy-course",
+            "file": "tools/profile-stereo-visibility.browser.cjs",
+            "exists": true,
+            "triggerCovered": true
+          },
+          {
+            "job": "profile-and-legacy-course",
+            "file": "tools/atanasyan-profile15-model.test.cjs",
+            "exists": true,
+            "triggerCovered": true
+          },
+          {
+            "job": "profile-and-legacy-course",
+            "file": "tools/atanasyan-profile15.browser.cjs",
+            "exists": true,
+            "triggerCovered": true
+          },
+          {
+            "job": "base-course",
+            "file": "tools/ege-baza-stereo-visibility.browser.cjs",
+            "exists": true,
+            "triggerCovered": true
+          },
+          {
+            "job": "perspective-trainers",
+            "file": "tools/stereo-three-visibility.browser.cjs",
+            "exists": true,
+            "triggerCovered": true
+          },
+          {
+            "job": "base-laboratory",
+            "file": "tools/ege-baza-labs.test.cjs",
+            "exists": true,
+            "triggerCovered": false
+          },
+          {
+            "job": "base-laboratory",
+            "file": "tools/ege-baza-labs.browser.cjs",
+            "exists": true,
+            "triggerCovered": false
+          },
+          {
+            "job": "base-laboratory",
+            "file": "tools/ege-baza-lab-visibility.browser.cjs",
+            "exists": true,
+            "triggerCovered": true
+          }
+        ],
+        "changedPathCoverage": [
+          {
+            "file": "ege-baza/labs/index.html",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "ege-baza/labs/stereo.js",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "ege-baza/path/index.html",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "ege-baza/path/models.js",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "ege-baza/path/stereo-figures.js",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "ege-profil/atanasyan-10-11/lesson.html",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "ege-profil/atanasyan-10-11/model.css",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "ege-profil/atanasyan-10-11/model.js",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "ege-profil/start/index.html",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "ege-profil/start/stereo-tasks.js",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "ege-profil/trainers/stereo-t14.html",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "ege-profil/trainers/stereo/js/trainer.js",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "ege-profil/trainers/stereo/trainer.html",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "tools/atanasyan-profile15-model.test.cjs",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "tools/atanasyan-profile15.browser.cjs",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "trainers/ege-baza-11.html",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "trainers/ege-baza-13.html",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "trainers/ege-profile-equations.html",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "trainers/ege-profile-expressions.html",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "trainers/ege-profile-planimetry.html",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "trainers/ege-profile-probability.html",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "trainers/ege-profile-random-variables.html",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "trainers/ege-profile-stereometry-3d/js/trainer.js",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "trainers/ege-profile-stereometry-3d/trainer.html",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "trainers/ege-profile-stereometry.html",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "trainers/ege-profile-vectors.html",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "assets/stereo-three-visibility.js",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "ege-profil/trainers/stereo/js/visibility.js",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "tools/ege-baza-lab-visibility.browser.cjs",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "tools/ege-baza-lab-visibility.test.cjs",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "tools/ege-baza-stereo-visibility.browser.cjs",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "tools/ege-baza-stereo-visibility.test.cjs",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "tools/profile-stereo-round-visibility.test.cjs",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "tools/profile-stereo-visibility.browser.cjs",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "tools/profile-stereo-visibility.test.cjs",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "tools/profile-t14-visibility.test.cjs",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "tools/stereo-three-visibility.browser.cjs",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "tools/stereo-three-visibility.test.cjs",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "tools/stereo/atanasyan-visibility.test.cjs",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "tools/stereo/sync_atanasyan_visibility.cjs",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "tools/sync-profile-stereo-visibility.cjs",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "tools/sync-stereo-three-visibility.cjs",
+            "newWorkflowTriggered": true
+          },
+          {
+            "file": "trainers/ege-profile-stereometry-3d/js/visibility.js",
+            "newWorkflowTriggered": true
+          }
+        ],
+        "uploads": [
+          {
+            "job": "profile-and-legacy-course",
+            "name": "profile-and-legacy-visibility",
+            "path": "artifacts/profile-stereo-visibility\nartifacts/atanasyan-profile15-visibility\n",
+            "if-no-files-found": "error",
+            "retention-days": "14"
+          },
+          {
+            "job": "base-course",
+            "name": "ege-base-stereo-visibility",
+            "path": "artifacts/ege-base-stereo-visibility",
+            "if-no-files-found": "error",
+            "retention-days": "14"
+          },
+          {
+            "job": "perspective-trainers",
+            "name": "stereo-three-visibility",
+            "path": "artifacts/stereo-three-visibility",
+            "if-no-files-found": "error",
+            "retention-days": "14"
+          },
+          {
+            "job": "base-laboratory",
+            "name": "ege-base-lab-visibility",
+            "path": "artifacts/ege-base-lab-visibility",
+            "if-no-files-found": "error",
+            "retention-days": "14"
+          }
+        ],
+        "remainingIntentional": [],
+        "triggerNotes": [
+          {
+            "job": "base-laboratory",
+            "file": "tools/ege-baza-labs.test.cjs",
+            "exists": true,
+            "triggerCovered": false
+          },
+          {
+            "job": "base-laboratory",
+            "file": "tools/ege-baza-labs.browser.cjs",
+            "exists": true,
+            "triggerCovered": false
+          }
+        ],
+        "status": "PASS_STATIC_INTEGRATION_PENDING_CI",
+        "resolvedConcurrentFinding": {
+          "issue": "Perspective local helper copies lacked normalizeBodies while author was editing",
+          "resolution": "Both copied helper assets now match shared source f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab; sync --check PASS"
+        },
+        "browserPreflights": {
+          "profile": "PASS",
+          "base": "PASS",
+          "lab": "PASS",
+          "perspective": "PASS"
+        },
+        "remaining": "Exact-head CI and actual screenshot inspection; static review is not an execution pass",
+        "cacheAudit": {
+          "path": "visibility_audit/cache-loader-audit.json",
+          "sha256": "0b4c3954bdd35a4a0763c3b501f56c68748e11bc6989332c0e951b52212f96a6",
+          "status": "PASS_CACHE_AND_LOAD_ORDER",
+          "assetReferences": 22,
+          "entryPages": 15,
+          "dependencyOrderChecks": 45
+        }
+      }
+    },
+    "activeResolution": {
+      "originalReportSHA256": "47d8c43510a9a7c5561dd68011b18fae00de1d88e0409d108ed4c03d0e9e9b1b",
+      "review": {
+        "status": "IMPLEMENTATION_IN_PROGRESS_NOT_GLOBAL_PASS",
+        "reviewedAt": "2026-10-29T20:40:04.866015+00:00",
+        "basis": "Approved all-stereometry scope and current active-route/source loader inventory. This mapping does not claim new independent mathematical review of code authored by other agents.",
+        "families": [
+          {
+            "family": "Atanasyan textbook; Merzlyak10base; Shestakov–Yashchenko10–11",
+            "entries": [
+              "stereo-course/textbook/index.html",
+              "stereo-course/merzlyak-10-base/index.html",
+              "stereo-course/shestakov-yaschenko-10-11/index.html"
+            ],
+            "renderers": [
+              "stereo-course/assets/task-scene-viewer.js"
+            ],
+            "resolution": "Shared exact interval classification plus reviewed explicit surface profiles; source lesson bundles preserved.",
+            "numeric": [
+              "tools/stereo-textbook/visibility-math.test.cjs"
+            ],
+            "browser": [
+              "tools/stereo-textbook/visibility.browser.cjs"
+            ],
+            "workflow": "atanasyan-textbook.yml",
+            "sourceSha256": {
+              "stereo-course/assets/task-scene-viewer.js": "91ef00cd15e0e831fa835c089116e5150813ce0bd6554280d3e9f76a5c547f64"
+            },
+            "evidenceState": "Local authored checks/review recorded separately; actual final-head CI/browser visual completion required."
+          },
+          {
+            "family": "Original spatial workshop and Merzlyak/Pogorelov atlases",
+            "entries": [
+              "stereo-course/index.html",
+              "geometry-merzlyak/atlas/",
+              "geometry-pogorelov/atlas/"
+            ],
+            "renderers": [
+              "stereo-course/assets/viewer.js",
+              "geometry-merzlyak/assets/viewer.js",
+              "geometry-pogorelov/assets/viewer.js"
+            ],
+            "resolution": "Shared exact canvas fallback; physical manual constructions and highlights classified.",
+            "numeric": [
+              "tools/stereo/canvas-visibility.test.cjs"
+            ],
+            "browser": [
+              "tools/stereo/canvas-visibility.browser.cjs"
+            ],
+            "workflow": "atanasyan-textbook.yml; stereo-task-first.yml",
+            "sourceSha256": {
+              "stereo-course/assets/viewer.js": "73e5a58a693c56499bba10b5dc04346c6f8bcbe82a95673c8f177feca115aa6a",
+              "geometry-merzlyak/assets/viewer.js": "73e5a58a693c56499bba10b5dc04346c6f8bcbe82a95673c8f177feca115aa6a",
+              "geometry-pogorelov/assets/viewer.js": "73e5a58a693c56499bba10b5dc04346c6f8bcbe82a95673c8f177feca115aa6a"
+            },
+            "evidenceState": "Local authored checks/review recorded separately; actual final-head CI/browser visual completion required."
+          },
+          {
+            "family": "Legacy Atanasyan EGE lessons",
+            "entries": [
+              "ege-profil/atanasyan-10-11/lesson.html"
+            ],
+            "renderers": [
+              "ege-profil/atanasyan-10-11/model.js"
+            ],
+            "resolution": "Exact copied interval core; authored body topology and split highlights.",
+            "numeric": [
+              "tools/stereo/atanasyan-visibility.test.cjs",
+              "tools/atanasyan-profile15-model.test.cjs"
+            ],
+            "browser": [
+              "tools/atanasyan-profile15.browser.cjs"
+            ],
+            "workflow": "stereometry-visibility.yml / profile-and-legacy-course",
+            "sourceSha256": {
+              "ege-profil/atanasyan-10-11/model.js": "69013fa9dd9cb2feebc8912e2c92aeee04b142d7c2ec2d0d89b5dc5ab99ef3d7"
+            },
+            "evidenceState": "Local authored checks/review recorded separately; actual final-head CI/browser visual completion required."
+          },
+          {
+            "family": "Profile EGE guided and independent stereometry tasks",
+            "entries": [
+              "ege-profil/start/index.html",
+              "trainers/ege-profile-stereometry.html"
+            ],
+            "renderers": [
+              "ege-profil/start/stereo-tasks.js"
+            ],
+            "resolution": "Body and auxiliary strokes classified together; exact round-body ray intervals; continuous straight/curve dash phases.",
+            "numeric": [
+              "tools/profile-stereo-visibility.test.cjs",
+              "tools/profile-stereo-round-visibility.test.cjs"
+            ],
+            "browser": [
+              "tools/profile-stereo-visibility.browser.cjs"
+            ],
+            "workflow": "stereometry-visibility.yml / profile-and-legacy-course",
+            "sourceSha256": {
+              "ege-profil/start/stereo-tasks.js": "21fdb8fe975d14d8e5366706f425a219c728239253e2fd624ea8e623b8ef14f9"
+            },
+            "evidenceState": "Local authored checks/review recorded separately; actual final-head CI/browser visual completion required."
+          },
+          {
+            "family": "Fixed profile task14 proof trainer",
+            "entries": [
+              "ege-profil/trainers/stereo-t14.html"
+            ],
+            "renderers": [
+              "ege-profil/trainers/stereo-t14.html"
+            ],
+            "resolution": "Authored solid faces, exact affine-camera depth intervals, selection preserves dash state.",
+            "numeric": [
+              "tools/profile-t14-visibility.test.cjs"
+            ],
+            "browser": [
+              "tools/profile-stereo-visibility.browser.cjs"
+            ],
+            "workflow": "stereometry-visibility.yml / profile-and-legacy-course",
+            "sourceSha256": {
+              "ege-profil/trainers/stereo-t14.html": "1c56ec8f30e30664062ad03590fdaa87d55deb0b0ce07f8e022b1cb366d378a1"
+            },
+            "evidenceState": "Local authored checks/review recorded separately; actual final-head CI/browser visual completion required."
+          },
+          {
+            "family": "Basic EGE static task figures and dynamic spatial models",
+            "entries": [
+              "ege-baza/path/index.html",
+              "trainers/ege-baza-11.html",
+              "trainers/ege-baza-13.html"
+            ],
+            "renderers": [
+              "ege-baza/path/stereo-figures.js",
+              "ege-baza/path/models.js"
+            ],
+            "resolution": "Body/feature visibility and curve silhouettes; reused shared interval core for dynamic models.",
+            "numeric": [
+              "tools/ege-baza-stereo-visibility.test.cjs"
+            ],
+            "browser": [
+              "tools/ege-baza-stereo-visibility.browser.cjs"
+            ],
+            "workflow": "stereometry-visibility.yml / base-course",
+            "sourceSha256": {
+              "ege-baza/path/stereo-figures.js": "3e81413e6d222e40543d7ad9c2cb945a11c5476d03cdad9c1675fdb205606285",
+              "ege-baza/path/models.js": "4842548be6d6ffe0c6778b8f5dec62df17a8a7c851c09789c3dd30bfbde543f3"
+            },
+            "evidenceState": "Local authored checks/review recorded separately; actual final-head CI/browser visual completion required."
+          },
+          {
+            "family": "Both perspective stereometry task banks (288 and143)",
+            "entries": [
+              "ege-profil/trainers/stereo/trainer.html",
+              "trainers/ege-profile-stereometry-3d/trainer.html"
+            ],
+            "renderers": [
+              "ege-profil/trainers/stereo/js/trainer.js",
+              "trainers/ege-profile-stereometry-3d/js/trainer.js",
+              "assets/stereo-three-visibility.js",
+              "ege-profil/trainers/stereo/js/visibility.js",
+              "trainers/ege-profile-stereometry-3d/js/visibility.js"
+            ],
+            "resolution": "Shared perspective classifier and dashed meshes for physical/task/user/selection strokes; generated copies now match the shared helper.",
+            "numeric": [
+              "tools/stereo-three-visibility.test.cjs"
+            ],
+            "browser": [
+              "tools/stereo-three-visibility.browser.cjs"
+            ],
+            "workflow": "stereometry-visibility.yml / perspective-trainers",
+            "sourceSha256": {
+              "ege-profil/trainers/stereo/js/trainer.js": "7a1a6a64648cb2ae50d91b0162d5df77b19e6542a14544f5714f09fa72b424df",
+              "trainers/ege-profile-stereometry-3d/js/trainer.js": "f7c6ddf3a6bfdec663e1eecec5fe617550802e1fcf9ce551434163adf45f930a",
+              "assets/stereo-three-visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab",
+              "ege-profil/trainers/stereo/js/visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab",
+              "trainers/ege-profile-stereometry-3d/js/visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab"
+            },
+            "evidenceState": "Local authored checks/review recorded separately; actual final-head CI/browser visual completion required."
+          },
+          {
+            "family": "Basic EGE volume laboratory",
+            "entries": [
+              "ege-baza/labs/index.html"
+            ],
+            "renderers": [
+              "ege-baza/labs/stereo.js",
+              "assets/stereo-three-visibility.js"
+            ],
+            "resolution": "Shared perspective helper; closed solid cube/cone occlude while intentionally transparent vessel stays transparent.",
+            "numeric": [
+              "tools/ege-baza-lab-visibility.test.cjs",
+              "tools/ege-baza-labs.test.cjs"
+            ],
+            "browser": [
+              "tools/ege-baza-lab-visibility.browser.cjs",
+              "tools/ege-baza-labs.browser.cjs"
+            ],
+            "workflow": "stereometry-visibility.yml / base-laboratory",
+            "sourceSha256": {
+              "ege-baza/labs/stereo.js": "8dd0eff55b70caf4d6f3df68602f92b7402f95f94e91c4d829e7d71e0140b59c",
+              "assets/stereo-three-visibility.js": "f89675d4c54c7f4cdc611ba212e0f281a12cf8d81ac5666d79f411d0e3e166ab"
+            },
+            "evidenceState": "Local authored checks/review recorded separately; actual final-head CI/browser visual completion required."
+          }
+        ],
+        "excludedByApprovedScope": [
+          "Archived/source-bank copies and catalog-only pages",
+          "Planar diagrams",
+          "Elementary grade5–6 transparent counting illustrations (outside named stereometry course scope)"
+        ],
+        "remaining": [
+          "Freeze final source hashes and rerun exact-head CI",
+          "Inspect actual new-renderer browser screenshots at phone and desktop widths",
+          "HIGH external review or explicit owner exception, then separate release authorization"
+        ],
+        "cacheAudit": {
+          "path": "visibility_audit/cache-loader-audit.json",
+          "sha256": "0b4c3954bdd35a4a0763c3b501f56c68748e11bc6989332c0e951b52212f96a6",
+          "status": "PASS_CACHE_AND_LOAD_ORDER",
+          "assetReferences": 22,
+          "entryPages": 15,
+          "dependencyOrderChecks": 45
+        }
+      }
+    }
+  },
+  "retainedBrowserGateCorrection": {
+    "file": "tools/atanasyan-profile15.browser.cjs",
+    "reason": "A logical highlighted segment can produce multiple depth intervals. The old one-SVG-path count was incompatible with the required fix.",
+    "replacement": "Exact logical identities, finite positive intervals, complete contiguous0–1partition and computed dash/hidden agreement; all124learnersteps, storage and layout checks retained.",
+    "independentReviewer": "visibility_shestakov",
+    "sourceReview": "PASS; actual browser pending CI"
+  },
+  "initialSharedRuntimeCI": {
+    "head": "72a337e9994a7e32141277dcb27bec5619838c11",
+    "syntheticCommit": "eace76b9cfe7a41ea971654977789b07327f15e9",
+    "tree": "a4d178678c1f46c04b7da88ad2f3ff3b1656bc82",
+    "result": "PASS: all six workflows",
+    "runIDs": [
+      40944621505,
+      40944621613,
+      40944621525,
+      40944621575,
+      40944621599,
+      40944621653
+    ],
+    "svgCases": 18,
+    "svgPNGs": 66,
+    "canvasPNGs": 24,
+    "workshopPNGs": 40,
+    "manualVisualReview": "130actualPNG inspected, including8labelled pixel controls;36newSVG+4changedworkshop directly inspected byroot,30SVG+24canvas+36workshop reused only after byte identity to already inspected originals.",
+    "rootReviewSHA256": "c7ecb83cb8f8b423f4d177d40c84b408df7016bf82821eb7086ec5eefe4a90c1",
+    "scope": "Shared3textbooks/workshop/2atlases only; does not approve additional active renderers. Shared production runtime bytes remain unchanged.",
+    "numericMatrix": {
+      "publishedCards": 2086,
+      "authoredViews": 7432,
+      "rotatedViews": 11022,
+      "independentRays": 6159527
+    },
+    "zipSHA256": {
+      "svg": "e099c78daafcaa6c77d8831f46c52ff0bcb9c5844931638aaec1093bfc8b19af",
+      "canvas": "2fe0e21df7d9bf6b256140d9c4de9f598f6eae8e36a731ea39623b5e3882c3eb",
+      "workshop": "ddec878986a812b2134594ac4230241f7a2340700e4c61d320165b46a9435ff1"
+    }
+  },
+  "postReviewWhitespaceCleanup": {
+    "file": "tools/stereo/atanasyan-visibility.test.cjs",
+    "beforeSHA256": "56e01fba5833b14ac923d6edf8f4907f3533c6ce9d0650eb1a96ec30a2e9c28b",
+    "afterSHA256": "8ecd00f14c206ec202efb499c31899fe75d2ece011a47c4ec10595bfe4423a40",
+    "change": "Removed one trailing ASCII space; every non-whitespace byte is identical. No production file or test assertion changed.",
+    "reviewer": "root"
+  },
+  "followup": "STEREO_VISIBILITY_RENDER_FOLLOWUP.json records successful b3 CI, actual-image findings and source-bound follow-up reviews. This document preserves the earlier implementation snapshot."
+}

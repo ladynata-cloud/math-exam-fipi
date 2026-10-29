@@ -86,6 +86,36 @@
 
 Updated: 2026-10-28 (Asia/Novosibirsk)
 
+## In preparation: hidden lines across the stereometry courses
+
+- [Owner-requested correction](tasks/STEREO_HIDDEN_LINES.md), HIGH, base
+  `6fb959fc0130a0bb8842601d19297e305ac91ac0`, branch
+  `fix/atanasyan-hidden-lines-20261030`.
+- Covers every published card in Atanasyan 10–11 (554), Merzlyak 10 base (989)
+  and Shestakov–Yashchenko (543), plus the spatial workshop and both spatial
+  atlases. Prepared cone PR374 is a separate compatibility check and remains
+  unpublished pending the visibility correction and its own release decision.
+- Coverage audit additionally found active independent Atanasyan-EGE,
+  profile-EGE SVG/task14, two Three.js banks and basic-EGE spatial renderers.
+  These also fall under the owner's all-courses request. Their source and
+  geometry reviews and the additional-renderer CI pass. Actual image review
+  found two further perspective issues: clipped legacy figures and thick
+  foreshortened dashes whose end caps filled the gaps. The bounded corrections
+  and the old Atanasyan catalog's rear-edge fix require fresh exact-head browser
+  evidence; this work is not yet published.
+- Visible and hidden intervals must be computed for body edges, auxiliary
+  constructions, highlighted section boundaries, vectors and learner lines.
+  Exact-model surface amendments correct missing faces without changing source
+  lesson bytes or learner identities. Spheres use analytic depth geometry.
+- Independent geometry, topology, actual browser, regression and exact-head CI
+  evidence must be completed before recommending publication. This entry does
+  not claim that the correction has been released.
+- Production reconciliation: cylinder PR372 was published as
+  `6b25302788f36d92723e487e92afa7044ced3ad3`; the later main commit is the
+  separate grade 7–9 chapter VI release. The published stereometry course still
+  has 554 cards. Cone PR374 head `065c2a294faf0f3b505eb53a2c8ac4f55621e313`
+  contains 594 candidate cards and is not merged.
+
 ## Prepared: Atanasyan 10–11, complete cylinder paragraph
 
 - [Task](tasks/ATANASYAN_CYLINDER_320_345.md), HIGH, explicitly continued by the
