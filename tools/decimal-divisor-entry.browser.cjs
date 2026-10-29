@@ -36,7 +36,7 @@ async function reflow(page, width) {
 async function shot(page, name) {
   if (!process.env.DIVISION_SCREENSHOTS) return;
   fs.mkdirSync(process.env.DIVISION_SCREENSHOTS, {recursive:true});
-  await page.screenshot({path:path.join(process.env.DIVISION_SCREENSHOTS, 'decimal-entry-' + name + '.png'), fullPage:true});
+  await page.screenshot({path:path.join(process.env.DIVISION_SCREENSHOTS, 'decimal-entry-' + name + '.png'), fullPage:true, animations:'disabled'});
 }
 async function prepare(page) {
   assert.equal(await page.locator('#taskTitle').innerText(), '21,44 : 6,7');
