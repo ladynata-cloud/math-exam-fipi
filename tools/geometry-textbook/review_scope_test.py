@@ -130,7 +130,9 @@ class ChapterReviewBoundary(unittest.TestCase):
         # working course. It exercises invalidation after an otherwise matching
         # manifest, even before an independent new-chapter review exists.
         chapter = self.chapter(self.original, number)
-        if (number == '7-advanced' or (isinstance(number, int) and number <= 5)) and any(c['chapter'] == 6 for c in self.chapters):
+        amended_vi = (number == '7-advanced' or (isinstance(number, int) and number <= 5)) and any(c['chapter'] == 6 for c in self.chapters)
+        amended_vii = (number == '7-advanced' or (isinstance(number, int) and number <= 6)) and any(c['chapter'] == 7 for c in self.chapters)
+        if amended_vi or amended_vii:
             # The old approval is immutable; exercise the actual extension chain.
             shutil.copy2(COURSE/self.review_name(number), self.course/self.review_name(number))
             return

@@ -91,6 +91,21 @@
       ],
       "selfcheckQuestions": 22,
       "cards": 138
+    },
+    {
+      "chapter": 7,
+      "label": "VII",
+      "exerciseNumbers": [
+        541,
+        639
+      ],
+      "mainParts": 169,
+      "theoryPoints": [
+        54,
+        62
+      ],
+      "selfcheckQuestions": 12,
+      "cards": 190
     }
   ],
   "supplements": [
@@ -105,6 +120,6 @@
       "cards": 50
     }
   ],
-  "totalCards": 893,
+  "totalCards": 1083,
   "fullTextbookComplete": false
 }

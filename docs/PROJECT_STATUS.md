@@ -1,6 +1,35 @@
 # MathExam project status
 
-## Reviewed preparation: Atanasyan chapter VI, quadrilaterals, 462–540
+## Prepared and reviewed: Atanasyan chapter VII, area, 541–639
+
+- [Task](tasks/ATANASYAN_7_9_CHAPTER_VII.md), HIGH; owner continued on
+  2026-10-30 (Asia/Novosibirsk), branch `content/atanasyan-chapter-vii-20261030`.
+- Base is published PR373, `6fb959fc0130a0bb8842601d19297e305ac91ac0`.
+- All 99 numbered exercises 541–639 / 169 parts, 9 theory points and 12
+  selfchecks are implemented from printed pages 139–162 of the supplied
+  2023 edition: 190 cards, 633 steps and 865 drawing views.
+- Independent source, mathematics and pedagogy reviews are complete. Source
+  inconsistencies in 560в and 570 are explained explicitly. Grid orientation
+  and omitted construction extensions found during review were corrected.
+- Final browser verification passed 11110 view/width checks, 2166 step flows
+  and 20 interaction scenarios. Independent actual image inspection covers all
+  2490 new-chapter PNGs at 320/1280 px, including initial/final states. The
+  earlier missing-font failure remains recorded separately; the final run uses
+  the documented browser font dependency without changing application code or
+  weakening the gate. See the [browser review](reviews/ATANASYAN_7_9_CHAPTER_VII_BROWSER_REVIEW.json).
+- The local release now contains 1083 `reviewed` cards: exercises 1–639 /
+  870 parts, 62 theory points and 151 selfchecks. All 893 prior records and
+  their review/storage identities are preserved. New source references use
+  the actual three paragraph ranges of chapter VII.
+- Prepared release bundle SHA256:
+  `9730c6446a1503b460f40e6951458714730a7a731298fa22ff09fd49d03ec01c`.
+- The verified live release remains PR373 / chapter VI with 893 cards.
+  Exact-head CI, merge and deployment of chapter VII are still pending;
+  local review and release preparation do not claim publication.
+- Next source chapter: VIII «Подобные треугольники», exercises 640–736.
+  The complete 1–1431 textbook, research tasks and appendices remain unfinished.
+
+## Published: Atanasyan chapter VI, quadrilaterals, 462–540
 
 - [Task](tasks/ATANASYAN_7_9_CHAPTER_VI.md), HIGH; PR373, branch
   `content/atanasyan-chapter-vi-20261029`, original base
@@ -8,16 +37,24 @@
 - All79 exercise numbers /108 parts,8 theory points and22 selfchecks:
   138 new cards,413 steps,589 model views; total893 cards.
 - Independent source, mathematics, pedagogy, visual and technical review
-  completed against exact content/runtime hashes. Findings were corrected and
-  rereviewed. Full-head CI and deployment are separate states recorded in the
-  [report](reports/ATANASYAN_7_9_CHAPTER_VI_20261029.md) and PR.
+  completed against exact content/runtime hashes. Final exact-head CI and
+  all composed gates passed. Owner separately authorized publication.
+- PR373 was squashed as `6fb959fc0130a0bb8842601d19297e305ac91ac0`, sole parent
+  `6b25302788f36d92723e487e92afa7044ced3ad3`. An independent release verifier
+  checked the exact authorized tree,63 paths, affected blobs and stable patch.
+- Pages40930045230 and post-merge board40930045316 passed on that exact commit.
+  All18 checked live files matched production Git. Actual320/1280 browser
+  checks passed source links,138-card catalogue/search, saved steps/drafts and
+  native cross-tab recovery with zero page errors. Final evidence and the
+  transparently corrected test-environment attempts are recorded in
+  [PR373](https://github.com/ladynata-cloud/math-exam-fipi/pull/373).
+- Published bundle SHA256:
+  `d15bb793245f20b9f1b8d4bac726637192c816922effd45d209618a0c244f3fc`.
 - Every full record and storage key of the previously published755 cards is
   preserved. Only three source paragraph rows and separately hash-bound
   runtime amendments to six historical manifests extend their review scope;
   all historical content evidence and fixtures remain intact.
-- This branch does not itself publish chapter VI. Without VI's own completed
-  approval, the old755 remain reviewed and the new138 remain pending.
-  Merge requires a separate owner decision on final head and current main.
+- No rollback was needed. The next numbered chapter is VII «Площадь».
 
 ## Published: Atanasyan source captions and advanced grade-seven problems 413–461
 

@@ -5,7 +5,7 @@ const {JSDOM}=require('jsdom'),{expectedTitle}=require('./caption_expectations.c
 const root=path.resolve(process.argv[2]||''),dir=path.join(root,'geometry-course/textbook');
 assert(process.argv[2],'Pass the isolated review root');
 const bundle=JSON.parse(fs.readFileSync(path.join(dir,'data/course.json'))),api=require(path.join(dir,'assets/engine.js')),viewer=require(path.join(dir,'assets/planar-viewer.js'));
-const lessons=bundle.lessons.filter(l=>l.source.chapter==='VI');assert.equal(lessons.length,138);assert.equal(bundle.lessons.length,893);
+const lessons=bundle.lessons.filter(l=>l.source.chapter==='VI');assert.equal(lessons.length,138);const scope=JSON.parse(fs.readFileSync(path.join(root,'tools/geometry-textbook/release-scope.json')));assert.equal(bundle.lessons.length,scope.totalCards);
 const paragraphs=bundle.sourceInventory.paragraphs.filter(p=>p.chapter===6);assert.equal(paragraphs.length,3);
 const dom=new JSDOM('<div id="app"></div>',{url:'https://example.test/geometry-course/textbook/review.html',runScripts:'outside-only'}),w=dom.window,d=w.document;
 for(const name of ['math-text.js','planar-viewer.js','engine.js'])w.eval(fs.readFileSync(path.join(dir,'assets',name),'utf8'));
