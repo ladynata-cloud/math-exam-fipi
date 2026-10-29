@@ -437,7 +437,7 @@
       if (identity !== errorStep) { errorStep = identity; stepErrors = 0; }
       if (raw) { s.errors = Math.min(1000000, s.errors + 1); stepErrors++; }
       feedback = errorText(raw, p, a);
-      if (stepErrors >= 2) feedback += ' Если трудно, открой подсказку к этому шагу ниже.';
+      if (stepErrors >= 2) feedback += ' Если трудно, открой подсказку к этому шагу.';
       feedbackKind = 'error'; save(); render(); return;
     }
     s.answers.push(raw); s.accepted = true;
