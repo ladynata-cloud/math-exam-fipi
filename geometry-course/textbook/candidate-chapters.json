@@ -1,15 +1,4 @@
 {
   "schemaVersion": 1,
-  "chapters": [
-    {
-      "chapter": 6,
-      "status": "awaiting-independent-review",
-      "scope": {"chapter": 6, "label": "VI", "exerciseNumbers": [462, 540], "mainParts": 108, "theoryPoints": [46, 53], "selfcheckQuestions": 22, "cards": 138},
-      "paragraphs": [
-        {"chapter": 6, "number": 1, "title": "Многоугольники", "pointNumbers": [46, 47], "exerciseNumbers": [462, 470], "printedPages": [121, 123]},
-        {"chapter": 6, "number": 2, "title": "Параллелограмм и трапеция", "pointNumbers": [48, 50], "exerciseNumbers": [471, 501], "printedPages": [124, 131]},
-        {"chapter": 6, "number": 3, "title": "Прямоугольник, ромб, квадрат", "pointNumbers": [51, 53], "exerciseNumbers": [502, 519], "printedPages": [131, 135]}
-      ]
-    }
-  ]
+  "chapters": []
 }

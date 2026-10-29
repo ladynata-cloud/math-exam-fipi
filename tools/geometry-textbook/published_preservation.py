@@ -5,6 +5,7 @@ Historical fixtures remain intact. Permitted caption changes cover the three
 presentation surfaces and fixed board adapter; every changed byte needs a
 current review binding.
 """
+from chapter06_extension import validate_extension, previous_inventory, restore_manifest, RECEIPT as EXTENSION
 from copy import deepcopy
 import hashlib
 import json
@@ -66,6 +67,9 @@ def runtime_review(implementation_hash=None):
         require(name in ALLOWED_RUNTIME or files[name] == old,
                 'Caption amendment changed geometry/math rendering: ' + name)
     inventory_raw = (COURSE / 'source-inventory.json').read_bytes()
+    if (ROOT/EXTENSION).exists():
+        extension, _ = validate_extension(ROOT)
+        inventory_raw = previous_inventory(inventory_raw, ROOT)
     require(files['source-inventory.json'] == sha(inventory_raw), 'Stale reviewed paragraph index')
     require(files['assets/board-adapter.js'] == sha((COURSE / 'assets/board-adapter.js').read_bytes()),
             'Stale reviewed caption adapter')
@@ -73,7 +77,7 @@ def runtime_review(implementation_hash=None):
     require(review.get('implementationSha256') == digest(files),
             'Caption runtime digest does not match reviewed files')
     if implementation_hash is not None:
-        require(implementation_hash == review['implementationSha256'],
+        require(implementation_hash == (extension['implementationSha256'] if (ROOT/EXTENSION).exists() else review['implementationSha256']),
                 'Bundle runtime does not match caption review')
     return review, {'path': REVIEW_PATH, 'sha256': sha(raw)}
 
@@ -119,6 +123,8 @@ def assert_file_preserved(name, raw, expected):
         assert_source_inventory_preserved(json.loads(raw), digest(base['sourceInventory']))
     elif name in base['releaseReviews']:
         require(base['releaseReviewSha256'][name] == expected, 'Unknown original chapter review')
+        if (ROOT/EXTENSION).exists():
+            raw = restore_manifest(name, raw, ROOT)
         current = json.loads(raw)
         require(raw == (json.dumps(current, ensure_ascii=False, indent=2) + '\n').encode(),
                 'Amended historical review has unrelated byte changes')
@@ -144,7 +150,7 @@ def assert_all_705_preserved(bundle):
     require(digest(entries) == base['normalizedCatalogEntriesSha256'],
             'Published I–V catalog or storage identity changed')
     require(bundle['catalog']['book'] == base['catalogBook'], 'Published edition changed')
-    require(bundle['build']['chapters'] == base['buildChapters'],
+    require([c for c in bundle['build']['chapters'] if c['chapter'] <= 5] == base['buildChapters'],
             'Supplement changed existing chapter boundaries or review bindings')
     assert_source_inventory_preserved(bundle['sourceInventory'], digest(base['sourceInventory']))
     assert_runtime_preserved(bundle['build']['implementationSha256'], base['implementationSha256'])

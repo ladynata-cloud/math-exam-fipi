@@ -130,6 +130,10 @@ class ChapterReviewBoundary(unittest.TestCase):
         # working course. It exercises invalidation after an otherwise matching
         # manifest, even before an independent new-chapter review exists.
         chapter = self.chapter(self.original, number)
+        if (number == '7-advanced' or (isinstance(number, int) and number <= 5)) and any(c['chapter'] == 6 for c in self.chapters):
+            # The old approval is immutable; exercise the actual extension chain.
+            shutil.copy2(COURSE/self.review_name(number), self.course/self.review_name(number))
+            return
         review = dict(schemaVersion=1, status='passed',
                       authoredContentSha256=chapter['authoredContentSha256'],
                       implementationSha256=self.original['build']['implementationSha256'],

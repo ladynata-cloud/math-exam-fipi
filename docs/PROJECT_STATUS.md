@@ -1,26 +1,23 @@
 # MathExam project status
 
-## Candidate prepared: Atanasyan chapter VI, quadrilaterals, 462–540
+## Reviewed preparation: Atanasyan chapter VI, quadrilaterals, 462–540
 
-- Owner continuation on 29 October 2026; [task](tasks/ATANASYAN_7_9_CHAPTER_VI.md),
-  HIGH, branch `content/atanasyan-chapter-vi-20261029`, base
+- [Task](tasks/ATANASYAN_7_9_CHAPTER_VI.md), HIGH; PR373, branch
+  `content/atanasyan-chapter-vi-20261029`, original base
   `d3122b9f3905cd8f7715cee6a873d031cdb43de4`.
-- Complete authored candidate: 79 numbered exercises / 108 explicit parts,
-  all eight theory points 46–53 and 22 review questions. Total 138 new cards,
-  411 original steps and 585 views; combined preview 893 cards.
-- Source references include the three actual chapter paragraphs. Exercises
-  520–540 and chapter questions have chapter references without invented §.
-- All 755 published cards, their review provenance and 63 existing preparation,
-  model, runtime and review files remain byte-identical to the published base.
-  A separate explicit candidate build adds VI for review; the default build
-  remains the exact approved 755-card course. No old review is rewritten.
-- Source and mathematical author checks are complete; independent review is
-  pending. No chapter-VI publication manifest exists. Full browser/CI evidence
-  and its actual completion status belong in the PR and
-  [report](reports/ATANASYAN_7_9_CHAPTER_VI_20261029.md).
-- Do not publish this candidate as approved or advance to chapter VII while
-  presenting VI as reviewed. Merge requires a separate owner decision.
-
+- All79 exercise numbers /108 parts,8 theory points and22 selfchecks:
+  138 new cards,413 steps,589 model views; total893 cards.
+- Independent source, mathematics, pedagogy, visual and technical review
+  completed against exact content/runtime hashes. Findings were corrected and
+  rereviewed. Full-head CI and deployment are separate states recorded in the
+  [report](reports/ATANASYAN_7_9_CHAPTER_VI_20261029.md) and PR.
+- Every full record and storage key of the previously published755 cards is
+  preserved. Only three source paragraph rows and separately hash-bound
+  runtime amendments to six historical manifests extend their review scope;
+  all historical content evidence and fixtures remain intact.
+- This branch does not itself publish chapter VI. Without VI's own completed
+  approval, the old755 remain reviewed and the new138 remain pending.
+  Merge requires a separate owner decision on final head and current main.
 
 ## Published: Atanasyan source captions and advanced grade-seven problems 413–461
 

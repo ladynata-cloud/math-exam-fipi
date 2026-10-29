@@ -4,22 +4,24 @@ const {JSDOM}=require('jsdom'),{expectedTitle}=require('./caption_expectations.c
 const dir=path.resolve(__dirname,'../../geometry-course/textbook');
 const bundle=JSON.parse(fs.readFileSync(path.join(dir,'data/course.json'),'utf8'));
 const api=require(path.join(dir,'assets/engine.js'));
-const original=JSON.stringify(bundle),roman=['','I','II','III','IV','V'];
+const original=JSON.stringify(bundle),roman=['','I','II','III','IV','V','VI'];
 const paragraphMap=JSON.parse(fs.readFileSync(path.join(__dirname,'paragraph-source-map.json'),'utf8'));
 assert.equal(paragraphMap.bookId,'atanasyan-2023-7-9');
 assert.equal(paragraphMap.sourceSha256,'3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72');
-assert.deepEqual(bundle.sourceInventory.paragraphs,paragraphMap.paragraphs,'Published paragraph index matches the independent source reading');
+const viParagraphs=JSON.parse(fs.readFileSync(path.join(__dirname,'../../docs/reviews/ATANASYAN_7_9_CHAPTER_VI_SOURCE_REVIEW.json'),'utf8')).paragraphs;
+const allParagraphs=[...paragraphMap.paragraphs,...viParagraphs];
+assert.deepEqual(bundle.sourceInventory.paragraphs,allParagraphs,'Published paragraph index matches the independent source reading');
 for(const lesson of bundle.lessons){
  assert.equal(api.lessonTitle(lesson),expectedTitle(lesson),lesson.id+' exact reference caption');
  const location=api.sourceLocation(lesson.source,bundle.sourceInventory);
  const chapter=bundle.sourceInventory.chapters.find(c=>roman[c.chapter]===lesson.source.chapter);
- const matches=paragraphMap.paragraphs.filter(p=>roman[p.chapter]===lesson.source.chapter&&((lesson.source.collection==='theory'&&Number(lesson.source.point)>=p.pointNumbers[0]&&Number(lesson.source.point)<=p.pointNumbers[1])||(lesson.source.collection==='main'&&Number(lesson.source.exercise)>=p.exerciseNumbers[0]&&Number(lesson.source.exercise)<=p.exerciseNumbers[1])));
+ const matches=allParagraphs.filter(p=>roman[p.chapter]===lesson.source.chapter&&((lesson.source.collection==='theory'&&Number(lesson.source.point)>=p.pointNumbers[0]&&Number(lesson.source.point)<=p.pointNumbers[1])||(lesson.source.collection==='main'&&Number(lesson.source.exercise)>=p.exerciseNumbers[0]&&Number(lesson.source.exercise)<=p.exerciseNumbers[1])));
  assert(matches.length<=1,'A source item cannot belong to two paragraphs');
  if(matches.length){const p=matches[0];assert(location.includes('К параграфу §'+p.number+' «'+p.title+'»'),lesson.id+' exact paragraph reference');}
  else assert(!location.includes('К параграфу'),lesson.id+' no inferred paragraph');
  if(chapter)assert(location.startsWith('К главе '+lesson.source.chapter+' «'+chapter.title+'»'),lesson.id+' chapter reference');
  if(lesson.source.collection==='selfcheck')assert(!location.includes('К параграфу'),'A chapter question has no fabricated paragraph');
- if(Number(lesson.source.exercise)>=413){
+ if(lesson.source.advancedGrade===7){
   assert(location.startsWith('К разделу «Задачи повышенной трудности за 7 класс»'),'Advanced section caption');
   assert(!location.includes('К параграфу')&&!location.includes('К главе VI'),'No invented paragraph or chapter VI');
  }
@@ -39,7 +41,7 @@ const sample=[];
 for(const chapter of bundle.build.chapters){
  for(const collection of ['main','theory','selfcheck'])sample.push(bundle.lessons.find(l=>l.source.chapter===chapter.chapterLabel&&l.source.collection===collection));
 }
-const advanced=bundle.lessons.filter(l=>Number(l.source.exercise)>=413);
+const advanced=bundle.lessons.filter(l=>l.source.advancedGrade===7);
 if(advanced.length)sample.push(advanced[0],advanced.at(-1));
 for(const lesson of sample){
  assert(app.open(lesson.id));

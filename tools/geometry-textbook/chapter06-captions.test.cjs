@@ -1,5 +1,5 @@
 'use strict';
-// Checks the explicit candidate only. It neither grants review nor changes the public course.
+// Checks captions and the actual candidate/release boundary; grants no approval.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {JSDOM}=require('jsdom'),{expectedTitle}=require('./caption_expectations.cjs');
 const root=path.resolve(process.argv[2]||''),dir=path.join(root,'geometry-course/textbook');
@@ -9,11 +9,12 @@ const lessons=bundle.lessons.filter(l=>l.source.chapter==='VI');assert.equal(les
 const paragraphs=bundle.sourceInventory.paragraphs.filter(p=>p.chapter===6);assert.equal(paragraphs.length,3);
 const dom=new JSDOM('<div id="app"></div>',{url:'https://example.test/geometry-course/textbook/review.html',runScripts:'outside-only'}),w=dom.window,d=w.document;
 for(const name of ['math-text.js','planar-viewer.js','engine.js'])w.eval(fs.readFileSync(path.join(dir,'assets',name),'utf8'));
-const app=w.GeometryTextbook.createApp(d.getElementById('app'),{...bundle,allowInReview:true});
-assert.equal(d.querySelectorAll('[data-preview-notice]').length,1);
+const app=w.GeometryTextbook.createApp(d.getElementById('app'),{...bundle,allowInReview:!bundle.build.publicationReviewMatches});
+const approved=bundle.build.chapters.find(c=>c.chapter===6).publicationReviewMatches;
+assert.equal(d.querySelectorAll('[data-preview-notice]').length,bundle.build.publicationReviewMatches?0:1);
 for(const lesson of lessons){
  assert.deepEqual(api.validateLesson(lesson,bundle.catalog.book),[],lesson.id);assert.deepEqual(viewer.validateModel(lesson.visualization.model),[],lesson.id);
- assert.equal(lesson.status,'in-review');assert.equal(api.lessonTitle(lesson),expectedTitle(lesson));
+ assert.equal(lesson.status,approved?'reviewed':'in-review');assert.equal(api.lessonTitle(lesson),expectedTitle(lesson));
  const s=lesson.source,n=Number(s.point||s.exercise),expected=s.collection==='selfcheck'?null:s.collection==='theory'?(n<=47?1:n<=50?2:3):n<=470?1:n<=501?2:n<=519?3:null;
  const location=api.sourceLocation(s,bundle.sourceInventory);assert(location.startsWith('К главе VI «Четырёхугольники»'));
  if(expected){const p=paragraphs.find(p=>p.number===expected);assert(location.includes('К параграфу §'+p.number+' «'+p.title+'»'),lesson.id);}
@@ -25,5 +26,5 @@ for(const chapter of ['I','VI']){
  app.open(question.id);const input=d.getElementById('final-answer');input.value='Черновик главы '+chapter;input.dispatchEvent(new w.Event('input',{bubbles:true}));
 }
 for(const chapter of ['I','VI']){const q=bundle.lessons.find(l=>l.source.chapter===chapter&&l.source.collection==='selfcheck'&&l.source.exercise==='1');app.open(q.id);assert.equal(d.getElementById('final-answer').value,'Черновик главы '+chapter);}
-const publicInspection=api.inspectBundle(bundle.catalog,bundle.lessons);assert(![...publicInspection.available.values()].some(l=>l.source.chapter==='VI'),'Candidate must not leak into the public entry');
-app.destroy();dom.window.close();console.log(JSON.stringify({gate:'CHAPTER_VI_CANDIDATE_CAPTIONS_OK',cards:138,paragraphs:3,domJourneys:138,independentApproval:false}));
+const publicInspection=api.inspectBundle(bundle.catalog,bundle.lessons);assert.equal([...publicInspection.available.values()].filter(l=>l.source.chapter==='VI').length,approved?138:0,'Only independently approved VI cards appear publicly');
+app.destroy();dom.window.close();console.log(JSON.stringify({gate:'CHAPTER_VI_CAPTIONS_OK',cards:138,paragraphs:3,domJourneys:138,independentApproval:false}));

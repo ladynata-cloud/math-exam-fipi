@@ -9,6 +9,7 @@ from pathlib import Path
 from build_course import ROOT,COURSE,compose,digest,read
 from build_candidate import build
 from check_models import validate
+from chapter06_extension import assert_755_preserved, previous_inventory
 
 FIXTURE=ROOT/'tools/geometry-textbook/published-through-461.json'
 FIXTURE_SHA='8a552a7b75e1401178a2aea29c8b180d6acdfb33bff5d9757f2e8073a61ad98e'
@@ -51,11 +52,20 @@ class CandidateVI(unittest.TestCase):
  def setUpClass(cls):
   cls.temp=tempfile.TemporaryDirectory();cls.addClassCleanup(cls.temp.cleanup)
   cls.out=Path(cls.temp.name)/'preview'
-  with contextlib.redirect_stdout(io.StringIO()):cls.bundle=build(6,cls.out)
   cls.public=compose();cls.frozen=read(FIXTURE)
+  cls.released=any(c['chapter']==6 for c in cls.public['build']['chapters'])
+  with contextlib.redirect_stdout(io.StringIO()):cls.bundle=build(6,cls.out)
+  if cls.released:
+   target=cls.out/'geometry-course/textbook'
+   (target/'release-review-chapter-06.json').unlink(missing_ok=True)
+   cls.bundle=compose(target)
  def test_exact_755_published_cards_and_all_63_source_runtime_review_files(self):
   self.assertEqual(sha(FIXTURE.read_bytes()),FIXTURE_SHA)
   self.assertEqual(self.frozen['sourceCommit'],'d3122b9f3905cd8f7715cee6a873d031cdb43de4')
+  if self.released:
+   assert_755_preserved(self.public)
+   assert_755_preserved(self.bundle)
+   return
   self.assertEqual(sha((COURSE/'data/course.json').read_bytes()),self.frozen['courseSha256'])
   self.assertEqual(digest(self.public['lessons']),self.frozen['lessonsSha256'])
   self.assertEqual(digest(self.public['catalog']['entries']),self.frozen['catalogEntriesSha256'])
@@ -65,10 +75,10 @@ class CandidateVI(unittest.TestCase):
   self.assertEqual(len(source_coverage(self.bundle)),138)
   self.assertEqual(len(self.bundle['lessons']),893)
   self.assertFalse(self.bundle['build']['publicationReviewMatches'])
-  self.assertFalse((COURSE/'release-review-chapter-06.json').exists())
-  ids={x['id'] for x in self.public['lessons']}
-  self.assertEqual([teaching(x) for x in self.bundle['lessons'] if x['id'] in ids],[teaching(x) for x in self.public['lessons']])
-  original=read(COURSE/'source-inventory.json')
+  self.assertEqual((COURSE/'release-review-chapter-06.json').exists(),self.released)
+  ids={x['id'] for x in self.public['lessons'] if x['source']['chapter']!='VI'}
+  self.assertEqual([teaching(x) for x in self.bundle['lessons'] if x['id'] in ids],[teaching(x) for x in self.public['lessons'] if x['id'] in ids])
+  original=(json.loads(previous_inventory((COURSE/'source-inventory.json').read_bytes())) if self.released else read(COURSE/'source-inventory.json'))
   preview=self.bundle['sourceInventory']
   self.assertEqual(preview['paragraphs'][:-3],original['paragraphs'])
   for key,value in original.items():
@@ -92,8 +102,8 @@ class CandidateVI(unittest.TestCase):
   with tempfile.TemporaryDirectory() as name:
    course=Path(name)/'course';shutil.copytree(COURSE,course)
    path=course/'preparation/chapter-06-d.json';p=read(path);p['exercises'].pop();path.write_text(json.dumps(p))
-   with self.assertRaisesRegex(ValueError,'every exercise 462'):compose(course,include_candidates=[6])
-   self.assertEqual(digest(compose(course)['lessons']),self.frozen['lessonsSha256'])
+   with self.assertRaisesRegex(ValueError,'every exercise 462'):compose(course,include_candidates=[] if self.released else [6])
+   if not self.released:self.assertEqual(digest(compose(course)['lessons']),self.frozen['lessonsSha256'])
  def test_targeted_answers_and_non_generic_cases(self):
   rows=source_coverage(self.bundle);by={(x['source']['collection'],x['source'].get('exercise'),x['source'].get('subpart','single')):x for x in rows}
   answer=lambda n,p='single':next(h['text'] for h in by['main',str(n),p]['help'] if h['id']=='compare-result')

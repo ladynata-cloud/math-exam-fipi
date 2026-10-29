@@ -18,18 +18,23 @@ def build(chapter,output):
         raise ValueError('Choose a new review output directory; existing output is not overwritten')
     registry=read(COURSE/'candidate-chapters.json')
     candidate=next((x for x in registry['chapters'] if x['chapter']==chapter),None)
-    if candidate is None:raise ValueError('Chapter is not a registered candidate')
+    scope=read(ROOT/'tools/geometry-textbook/release-scope.json')
+    released=next((x for x in scope['chapters'] if x['chapter']==chapter),None)
+    if candidate is None and released is None:raise ValueError('Chapter is not a registered candidate or release chapter')
     target=output/'geometry-course/textbook'
     shutil.copytree(COURSE,target)
     inventory=read(target/'source-inventory.json')
-    if any(x['chapter']==chapter for x in inventory['paragraphs']):
-        raise ValueError('Candidate paragraph metadata would overwrite an existing chapter')
-    inventory['paragraphs']+=candidate['paragraphs']
-    (target/'source-inventory.json').write_text(json.dumps(inventory,ensure_ascii=False,indent=2)+'\n')
-    bundle=compose(target,include_candidates=[chapter])
+    if candidate is not None:
+        if any(x['chapter']==chapter for x in inventory['paragraphs']):
+            raise ValueError('Candidate paragraph metadata would overwrite an existing chapter')
+        inventory['paragraphs']+=candidate['paragraphs']
+        (target/'source-inventory.json').write_text(json.dumps(inventory,ensure_ascii=False,indent=2)+'\n')
+        bundle=compose(target,include_candidates=[chapter])
+        scope['chapters'].append(candidate['scope']);scope['totalCards']+=candidate['scope']['cards']
+    else:
+        # Copy the exact release snapshot; never manufacture or refresh approval.
+        bundle=compose(target)
     (target/'data/course.json').write_text(json.dumps(bundle,ensure_ascii=False,separators=(',',':'))+'\n')
-    scope=read(ROOT/'tools/geometry-textbook/release-scope.json')
-    scope['chapters'].append(candidate['scope']);scope['totalCards']+=candidate['scope']['cards']
     dest=output/'tools/geometry-textbook';dest.mkdir(parents=True)
     (dest/'release-scope.json').write_text(json.dumps(scope,ensure_ascii=False,indent=2)+'\n')
     # A separate explicit entry enables preview; index.html stays byte-identical.

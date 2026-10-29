@@ -161,6 +161,90 @@
               [
                 "E",
                 "A"
+              ]
+            ]
+          },
+          "step-3": {
+            "label": "Шаг 3",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "E"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "E"
+              ],
+              [
+                "E",
+                "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "A",
+                "D"
+              ],
+              [
+                "B",
+                "D"
+              ],
+              [
+                "B",
+                "E"
+              ],
+              [
+                "C",
+                "E"
+              ]
+            ]
+          },
+          "step-4": {
+            "label": "Шаг 4",
+            "points": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "E"
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "D"
+              ],
+              [
+                "D",
+                "E"
+              ],
+              [
+                "E",
+                "A"
               ],
               [
                 "A",
@@ -172,8 +256,8 @@
               ]
             ]
           },
-          "step-3": {
-            "label": "Шаг 3",
+          "step-5": {
+            "label": "Шаг 5",
             "points": [
               "A",
               "B",
@@ -250,7 +334,7 @@
                 "C__case1"
               ]
             ],
-            "availableFromStep": 1
+            "availableFromStep": 2
           }
         },
         "checks": [],
@@ -266,8 +350,22 @@
       "didactics": {
         "steps": [
           {
+            "prompt": "Какие элементы есть у n-угольника?",
+            "justification": "Определения элементов многоугольника.",
+            "theoryPoints": [
+              46
+            ]
+          },
+          {
             "prompt": "Что называется выпуклым многоугольником?",
             "justification": "Определение выпуклости.",
+            "theoryPoints": [
+              46
+            ]
+          },
+          {
+            "prompt": "Сколько диагоналей у n-угольника?",
+            "justification": "Подсчёт диагоналей от каждой вершины с устранением двойного счёта.",
             "theoryPoints": [
               46
             ]
@@ -4693,32 +4791,26 @@
               [
                 "D",
                 "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "B",
+                "D"
               ]
             ],
-            "rightAngles": [
-              {
-                "a": "D",
-                "vertex": "A",
-                "b": "B",
-                "size": 2.3
-              },
+            "equalSegments": [
               {
                 "a": "A",
-                "vertex": "B",
                 "b": "C",
-                "size": 2.3
+                "marks": 1
               },
               {
                 "a": "B",
-                "vertex": "C",
                 "b": "D",
-                "size": 2.3
-              },
-              {
-                "a": "C",
-                "vertex": "D",
-                "b": "A",
-                "size": 2.3
+                "marks": 1
               }
             ]
           },
@@ -4728,8 +4820,7 @@
               "A",
               "B",
               "C",
-              "D",
-              "O"
+              "D"
             ],
             "segments": [
               [
@@ -4757,30 +4848,16 @@
                 "D"
               ]
             ],
-            "rightAngles": [
-              {
-                "a": "D",
-                "vertex": "A",
-                "b": "B",
-                "size": 2.3
-              },
+            "equalSegments": [
               {
                 "a": "A",
-                "vertex": "B",
                 "b": "C",
-                "size": 2.3
+                "marks": 1
               },
               {
                 "a": "B",
-                "vertex": "C",
                 "b": "D",
-                "size": 2.3
-              },
-              {
-                "a": "C",
-                "vertex": "D",
-                "b": "A",
-                "size": 2.3
+                "marks": 1
               }
             ]
           },
@@ -4790,8 +4867,7 @@
               "A",
               "B",
               "C",
-              "D",
-              "O"
+              "D"
             ],
             "segments": [
               [
@@ -4818,6 +4894,18 @@
                 "B",
                 "D"
               ]
+            ],
+            "equalSegments": [
+              {
+                "a": "A",
+                "b": "C",
+                "marks": 1
+              },
+              {
+                "a": "B",
+                "b": "D",
+                "marks": 1
+              }
             ],
             "rightAngles": [
               {
@@ -5189,68 +5277,53 @@
           "step-4": {
             "label": "Шаг 4",
             "points": [
-              "A",
-              "B",
-              "C",
-              "D",
-              "O"
+              "A__case1",
+              "B__case1",
+              "C__case1",
+              "D__case1",
+              "O__case1"
             ],
             "segments": [
               [
-                "A",
-                "B"
+                "A__case1",
+                "B__case1"
               ],
               [
-                "B",
-                "C"
+                "B__case1",
+                "C__case1"
               ],
               [
-                "C",
-                "D"
+                "C__case1",
+                "D__case1"
               ],
               [
-                "D",
-                "A"
+                "D__case1",
+                "A__case1"
               ],
               [
-                "A",
-                "C"
+                "A__case1",
+                "C__case1"
               ],
               [
-                "B",
-                "D"
+                "B__case1",
+                "D__case1"
               ]
-            ],
-            "equalSegments": [
-              {
-                "a": "A",
-                "b": "B",
-                "marks": 1
-              },
-              {
-                "a": "B",
-                "b": "C",
-                "marks": 1
-              },
-              {
-                "a": "C",
-                "b": "D",
-                "marks": 1
-              },
-              {
-                "a": "D",
-                "b": "A",
-                "marks": 1
-              }
             ],
             "rightAngles": [
               {
-                "a": "A",
-                "vertex": "O",
-                "b": "B",
+                "a": "D__case1",
+                "vertex": "A__case1",
+                "b": "B__case1",
+                "size": 2.3
+              },
+              {
+                "a": "A__case1",
+                "vertex": "O__case1",
+                "b": "B__case1",
                 "size": 2.3
               }
-            ]
+            ],
+            "availableFromStep": 4
           },
           "case-1": {
             "label": "Квадрат",
@@ -6530,6 +6603,56 @@
             50.0,
             40.0,
             0
+          ],
+          "A__case1": [
+            13.0,
+            63.57159965,
+            0
+          ],
+          "B__case1": [
+            34.983234863,
+            16.42840035,
+            0
+          ],
+          "C__case1": [
+            87.0,
+            16.42840035,
+            0
+          ],
+          "D__case1": [
+            65.016765137,
+            63.57159965,
+            0
+          ],
+          "O__case1": [
+            50.0,
+            40.0,
+            0
+          ],
+          "A__case2": [
+            13.0,
+            63.57159965,
+            0
+          ],
+          "B__case2": [
+            34.983234863,
+            16.42840035,
+            0
+          ],
+          "C__case2": [
+            87.0,
+            16.42840035,
+            0
+          ],
+          "D__case2": [
+            65.016765137,
+            63.57159965,
+            0
+          ],
+          "O__case2": [
+            50.0,
+            40.0,
+            0
           ]
         },
         "edges": [],
@@ -6547,7 +6670,8 @@
               "A",
               "B",
               "C",
-              "D"
+              "D",
+              "O"
             ],
             "segments": [
               [
@@ -6565,29 +6689,15 @@
               [
                 "D",
                 "A"
+              ],
+              [
+                "A",
+                "C"
+              ],
+              [
+                "B",
+                "D"
               ]
-            ],
-            "equalSegments": [
-              {
-                "a": "A",
-                "b": "B",
-                "marks": 1
-              },
-              {
-                "a": "B",
-                "b": "C",
-                "marks": 1
-              },
-              {
-                "a": "C",
-                "b": "D",
-                "marks": 1
-              },
-              {
-                "a": "D",
-                "b": "A",
-                "marks": 1
-              }
             ]
           },
           "step-1": {
@@ -6712,7 +6822,121 @@
                 "b": "A",
                 "marks": 1
               }
+            ],
+            "angleArcs": [
+              {
+                "vertex": "A",
+                "from": "B",
+                "to": "C",
+                "marks": 1,
+                "radius": 5
+              },
+              {
+                "vertex": "A",
+                "from": "C",
+                "to": "D",
+                "marks": 1,
+                "radius": 5
+              }
             ]
+          },
+          "case-1": {
+            "label": "Условие: диагонали перпендикулярны",
+            "points": [
+              "A__case1",
+              "B__case1",
+              "C__case1",
+              "D__case1",
+              "O__case1"
+            ],
+            "segments": [
+              [
+                "A__case1",
+                "B__case1"
+              ],
+              [
+                "B__case1",
+                "C__case1"
+              ],
+              [
+                "C__case1",
+                "D__case1"
+              ],
+              [
+                "D__case1",
+                "A__case1"
+              ],
+              [
+                "A__case1",
+                "C__case1"
+              ],
+              [
+                "B__case1",
+                "D__case1"
+              ]
+            ],
+            "rightAngles": [
+              {
+                "a": "A__case1",
+                "vertex": "O__case1",
+                "b": "B__case1",
+                "size": 2.3
+              }
+            ],
+            "availableFromStep": 0
+          },
+          "case-2": {
+            "label": "Условие: диагональ — биссектриса",
+            "points": [
+              "A__case2",
+              "B__case2",
+              "C__case2",
+              "D__case2",
+              "O__case2"
+            ],
+            "segments": [
+              [
+                "A__case2",
+                "B__case2"
+              ],
+              [
+                "B__case2",
+                "C__case2"
+              ],
+              [
+                "C__case2",
+                "D__case2"
+              ],
+              [
+                "D__case2",
+                "A__case2"
+              ],
+              [
+                "A__case2",
+                "C__case2"
+              ],
+              [
+                "B__case2",
+                "D__case2"
+              ]
+            ],
+            "angleArcs": [
+              {
+                "vertex": "A__case2",
+                "from": "B__case2",
+                "to": "C__case2",
+                "marks": 1,
+                "radius": 5
+              },
+              {
+                "vertex": "A__case2",
+                "from": "C__case2",
+                "to": "D__case2",
+                "marks": 1,
+                "radius": 5
+              }
+            ],
+            "availableFromStep": 0
           }
         },
         "checks": [
@@ -6751,7 +6975,18 @@
             ]
           }
         ],
-        "labels": {},
+        "labels": {
+          "A__case1": "A",
+          "B__case1": "B",
+          "C__case1": "C",
+          "D__case1": "D",
+          "O__case1": "O",
+          "A__case2": "A",
+          "B__case2": "B",
+          "C__case2": "C",
+          "D__case2": "D",
+          "O__case2": "O"
+        },
         "labelOffsets": {},
         "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
       },

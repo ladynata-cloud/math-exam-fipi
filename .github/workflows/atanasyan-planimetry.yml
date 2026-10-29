@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'geometry-course/textbook/**'
+      - 'docs/reviews/ATANASYAN_7_9_CHAPTER_VI*'
       - 'geometry-course/index.html'
       - 'tools/geometry-textbook/**'
       - 'tools/geometry/check_textbook_preparation.py'
@@ -32,6 +33,7 @@ jobs:
           python3 tools/geometry-textbook/check_models.py
           python3 tools/geometry-textbook/model_claims_test.py
           python3 tools/geometry-textbook/chapter06-candidate.test.py
+          python3 tools/geometry-textbook/chapter06-release.test.py
           python3 tools/geometry-textbook/advanced7-c-math.test.py
           node tools/geometry-textbook/check_course.cjs
           node tools/geometry-textbook/captions.test.cjs
@@ -57,7 +59,7 @@ jobs:
       - name: All source-audited cards, every drawing, mobile and desktop, actual saved work
         env:
           GEOMETRY_TEXTBOOK_ARTIFACTS: artifacts/geometry-textbook
-          GEOMETRY_TEXTBOOK_CAPTURE_CHAPTERS: '7 класс · повышенная трудность'
+          GEOMETRY_TEXTBOOK_CAPTURE_CHAPTERS: 'VI,7 класс · повышенная трудность'
           GEOMETRY_TEXTBOOK_HEAD: ${{ github.event.pull_request.head.sha }}
         run: node tools/geometry-textbook/browser_check.js
       - name: Preserve actual browser evidence even on failure
@@ -83,12 +85,12 @@ jobs:
           node-version: '22'
       - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
       - run: npx playwright install --with-deps chromium
-      - name: Build the explicit unapproved candidate without changing public bytes
+      - name: Reproduce the isolated reviewed release snapshot
         run: |
           python3 tools/geometry-textbook/build_candidate.py --chapter 6 --output "$RUNNER_TEMP/chapter06-review"
           node tools/geometry-textbook/chapter06-captions.test.cjs "$RUNNER_TEMP/chapter06-review"
           python3 tools/geometry-textbook/build_course.py --check
-      - name: All 893 preview cards, every view and actual saved work
+      - name: All 893 isolated release cards, every view and actual saved work
         env:
           GEOMETRY_TEXTBOOK_ROOT: ${{ runner.temp }}/chapter06-review
           GEOMETRY_TEXTBOOK_ARTIFACTS: artifacts/chapter06-candidate
