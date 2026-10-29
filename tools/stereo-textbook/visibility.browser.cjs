@@ -37,7 +37,25 @@ const save = () => fs.writeFileSync(path.join(out, 'visibility-browser-evidence.
 const flatHelp = items => items.flatMap(item => [item, ...flatHelp(item.children || [])]);
 const lessonFor = c => courses[c.course].bundle.lessons.find(l => l.id === c.id);
 
+function checkReportedHidden(parts, name) {
+  assert(parts.length && parts.filter(part => part.hidden).reduce((sum, part) => sum + part.end - part.start, 0) > 1 - 1e-6, 'Reported hidden coverage ' + name);
+  // A vertex on the visible contour can retain a depth-tolerance endpoint.
+  // It must have no measurable solid stroke on the SVG.
+  for (const part of parts.filter(part => !part.hidden)) {
+    const xy = part.d.match(/[-+]?(?:\d*\.)?\d+(?:e[-+]?\d+)?/ig).map(Number);
+    assert.equal(xy.length, 4, 'Reported straight SVG interval ' + name);
+    assert(Math.hypot(xy[2] - xy[0], xy[3] - xy[1]) <= .001, 'No visible solid length on reported hidden ' + name);
+  }
+}
+
 function preflight() {
+  const endpoint = { hidden: false, start: 0, end: 2e-8, d: 'M10 20 L10 20' };
+  const hidden = { hidden: true, start: 2e-8, end: 1, d: 'M10 20 L30 40' };
+  checkReportedHidden([endpoint, hidden], 'zero-length contour endpoint control');
+  assert.throws(() => checkReportedHidden([{ ...endpoint, end: .1 }, { ...hidden, start: .1 }], 'visible interval control'), /Reported hidden coverage/);
+  assert.throws(() => checkReportedHidden([{ ...endpoint, d: 'M10 20 L10.01 20' }, hidden], 'measurable solid stroke control'), /No visible solid length/);
+  assert.throws(() => checkReportedHidden([], 'missing line control'), /Reported hidden coverage/);
+  assert.throws(() => checkReportedHidden([{ ...endpoint, end: 1, d: 'M10 20 L30 40' }], 'all-solid control'), /Reported hidden coverage/);
   for (const c of cases) {
     const lesson = lessonFor(c);
     assert(lesson && lesson.status === 'reviewed', 'Reviewed actual lesson ' + c.id);
@@ -224,7 +242,10 @@ async function main() {
         assert.equal(data.faces, c.faces[i], 'Active source surfaces ' + c.id + '/' + view);
         assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'No overflow ' + c.id);
         if (c.reported && view === 'neutral') {
-          for (const name of ['D-E', 'E-C', 'M-K']) { const parts = data.lines.filter(line => line.kind === 'edge' && line.name === name); assert(parts.length && parts.every(part => part.hidden), 'Reported hidden ' + name); }
+          for (const name of ['D-E', 'E-C', 'M-K']) {
+            const parts = data.lines.filter(line => line.kind === 'edge' && line.name === name);
+            checkReportedHidden(parts, name);
+          }
           const dc = data.lines.filter(line => line.kind === 'edge' && line.name === 'C-D'); assert(dc.length && dc.every(line => !line.hidden), 'DC silhouette stays solid');
         }
         if (c.spheres) {
@@ -253,5 +274,18 @@ async function main() {
   evidence.completed = true; evidence.completedAt = new Date().toISOString(); save();
   console.log('STEREO_VISIBILITY_BROWSER_OK: ' + evidence.cases.length + ' actual-page journeys, ' + evidence.screenshots.length + ' actual PNG, ' + evidence.phases.length + ' reversed-dash pixel checks, three courses, both widths, rotated camera and retained drafts');
 }
-main().catch(error => { evidence.errors.push(error.stack || String(error)); if (fs.existsSync(out)) save(); console.error(error); process.exitCode = 1; })
+main().catch(async error => {
+  evidence.errors.push(error.stack || String(error));
+  if (page && fs.existsSync(out)) {
+    evidence.failure = { url: page.url() };
+    try {
+      const filename = 'failure.png', bytes = await page.screenshot({ path: path.join(out, filename), timeout: 10000 });
+      Object.assign(evidence.failure, { filename, sha256: hash(bytes), bytes: bytes.length });
+    } catch (captureError) { evidence.errors.push('Failure capture: ' + captureError.message); }
+    try {
+      if (await page.locator('[data-main-model] svg').count()) evidence.failure.geometry = await geometry();
+    } catch (geometryError) { evidence.errors.push('Failure geometry: ' + geometryError.message); }
+  }
+  if (fs.existsSync(out)) save(); console.error(error); process.exitCode = 1;
+})
   .finally(async () => { await browser?.close(); if (server) await new Promise(resolve => server.close(resolve)); });
