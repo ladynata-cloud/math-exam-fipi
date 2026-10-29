@@ -150,8 +150,8 @@ async function arrowGeometry(page, label, expectedIndex) {
  assert(Math.abs(geometry.source.x-geometry.target.x)<1.5,label+': source and brought digit share a place-value column');
  assert(Math.abs(geometry.start.x-geometry.source.x)<1.5,label+': arrow starts over the actual source digit');
  assert(Math.abs(geometry.end.x-geometry.target.x)<1.5,label+': arrow points at the actual destination digit');
- assert(geometry.start.y>=geometry.source.top-3&&geometry.start.y<=geometry.source.bottom+16,label+': arrow starts beside the source cell');
- assert(geometry.end.y>=geometry.target.top-16&&geometry.end.y<=geometry.target.bottom+3,label+': arrow ends beside the destination cell');
+ assert(geometry.start.y>=geometry.source.top-3&&geometry.start.y<=geometry.source.bottom+16,label+': arrow starts beside the source cell: '+JSON.stringify(geometry));
+ assert(geometry.end.y>=geometry.target.top-16&&geometry.end.y<=geometry.target.bottom+3,label+': arrow ends beside the destination cell: '+JSON.stringify(geometry));
  assert(geometry.end.y>geometry.start.y,label+': bring-down direction is downward');
  return geometry.index;
 }
@@ -173,6 +173,22 @@ async function commaAndBring(page, expected, label) {
   assert.equal(await page.locator('[data-append-zero]').getAttribute('data-earned'),'false');
  }
  await arrowGeometry(page,label+'-before-bring',a.sourceIndex);
+ const viewport = page.viewportSize();
+ const prefixEnd = Number(await page.locator('#notebook').getAttribute('data-selected-end'));
+ await page.evaluate(() => window.scrollTo(0, 0));
+ await arrowGeometry(page,label+'-scrolled-top',a.sourceIndex);
+ await prefixArch(page,prefixEnd);
+ await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+ await arrowGeometry(page,label+'-scrolled-bottom',a.sourceIndex);
+ await prefixArch(page,prefixEnd);
+ await page.setViewportSize({width:viewport.width + 10,height:viewport.height});
+ await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+ await arrowGeometry(page,label+'-resized',a.sourceIndex);
+ await prefixArch(page,prefixEnd);
+ await page.setViewportSize(viewport);
+ await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+ await arrowGeometry(page,label+'-restored-width',a.sourceIndex);
+ await prefixArch(page,prefixEnd);
  await answer(page,expected.bring);
  assert.equal((await page.locator('[data-bring-target="'+a.sourceIndex+'"]').innerText()).trim(),expected.bring);
  if(expected.appended) {

@@ -52,7 +52,8 @@ Owner authorized implementation in the current conversation ("хорошо, да
 - Base and branch verified; initially clean worktree.
 - Focused independent code review completed; the raised font-selector specificity initially suppressed selection colors and was corrected to target only `font`.
 - Local passing checks: guided core (2700 plans), decimal shift (2800 exact properties), protected URL contract, route DOM, decimal entry DOM, contextual help/standalone/managed suites (33), remediation-bank check, SEO sitemap (12 tests), sitemap generation and SEO entrance/canonical checks.
-- Initial browser attempts did not execute learner scenarios: pinned Chromium was missing; download was invalid, and an available Chromium launch was blocked by OS socket permissions. Browser gates remain pending GitHub CI, not recorded as passed. No security settings or gates were weakened.
+- First remote browser runs passed all learner scenarios, but an intermittent later geometry failure and its screenshot exposed viewport-origin drift in notebook marks. Drawing now uses notebook-local layout coordinates, with scroll and resize regression coverage. Final exact-head CI is recorded in the PR.
+- Initial local browser attempts did not execute learner scenarios: pinned Chromium was missing; download was invalid, and an available Chromium launch was blocked by OS socket permissions. Browser gates remain pending GitHub CI, not recorded as passed. No security settings or gates were weakened.
 - PR/head: recorded in the final PR handoff; this document does not claim publication.
 - Remote handoffs contain only relevant public repository material; no credentials, private learner records or machine paths.
 

@@ -113,15 +113,26 @@
   function drawNotebookMarks() {
     const notebook = $('notebook'), svg = notebook.querySelector('.notebook-marks');
     if (!svg || notebook.parentElement.hidden) return;
-    const box = notebook.getBoundingClientRect();
-    svg.setAttribute('viewBox', '0 0 ' + box.width + ' ' + box.height);
+    // Marks belong to the notebook, not the viewport. Reading client rects
+    // around an SVG write can mix origins when scrolling/anchoring relayouts.
+    // Measure the layout first, then write the SVG once all coordinates agree.
+    const width = notebook.offsetWidth, height = notebook.offsetHeight;
+    function localBox(element) {
+      if (!element) return null;
+      let left = 0, top = 0, node = element;
+      while (node && node !== notebook) {
+        left += node.offsetLeft; top += node.offsetTop; node = node.offsetParent;
+      }
+      if (node !== notebook) return null;
+      return {left, top, right:left + element.offsetWidth, bottom:top + element.offsetHeight, width:element.offsetWidth};
+    }
     const archEnd = Number(notebook.dataset.selectedEnd);
     let marks = '';
     if (Number.isInteger(archEnd) && archEnd >= 0) {
-      const first = notebook.querySelector('[data-source-digit="0"]')?.getBoundingClientRect();
-      const last = notebook.querySelector('[data-source-digit="' + archEnd + '"]')?.getBoundingClientRect();
+      const first = localBox(notebook.querySelector('[data-source-digit="0"]'));
+      const last = localBox(notebook.querySelector('[data-source-digit="' + archEnd + '"]'));
       if (first && last) {
-        const x1 = first.left - box.left + 3, x2 = last.right - box.left - 3, y = first.top - box.top - 4;
+        const x1 = first.left + 3, x2 = last.right - 3, y = first.top - 4;
         marks += '<path class="first-arch" data-first-arch data-selected-end="' + archEnd + '" d="M ' + x1 + ' ' + y + ' Q ' + ((x1 + x2) / 2) + ' ' + (y - 22) + ' ' + x2 + ' ' + y + '"/>';
       }
     }
@@ -129,13 +140,14 @@
     if (target) {
       const index = target.dataset.bringTarget;
       const source = notebook.querySelector('[data-source-digit="' + index + '"]');
-      if (source) {
-        const from = source.getBoundingClientRect(), to = target.getBoundingClientRect();
-        const x1 = from.left + from.width / 2 - box.left, y1 = from.bottom - box.top + 2;
-        const x2 = to.left + to.width / 2 - box.left, y2 = to.top - box.top - 3;
+      const from = localBox(source), to = localBox(target);
+      if (from && to) {
+        const x1 = from.left + from.width / 2, y1 = from.bottom + 2;
+        const x2 = to.left + to.width / 2, y2 = to.top - 3;
         marks += '<defs><marker id="bring-arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z"/></marker></defs><path data-bring-arrow data-source-index="' + index + '" class="bring-arrow" pathLength="1" marker-end="url(#bring-arrowhead)" d="M ' + x1 + ' ' + y1 + ' L ' + x2 + ' ' + y2 + '"/>';
       }
     }
+    svg.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
     svg.innerHTML = marks;
   }
   function renderNotebook(p, s) {
