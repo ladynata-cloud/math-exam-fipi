@@ -1,0 +1,282 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "Independent browser verification agent (non-author of chapter VII content and browser gate)",
+  "verifiedAtUtc": "2026-10-29T20:47:24.596534+00:00",
+  "verdict": "PASS",
+  "scope": "Full-course engineering preview; exact uncommitted final authored content before release-manifest promotion",
+  "testedHead": null,
+  "baseCommit": "6fb959fc0130a0bb8842601d19297e305ac91ac0",
+  "environment": {
+    "browser": "Chromium 153.0.8010.0",
+    "playwright": "1.62.1",
+    "headless": true,
+    "tlsVerificationDisabled": false,
+    "fontDependency": "Existing Liberation Serif2.1.5 and installed companion families exposed through normal Fontconfig; no font aliases or app/source/gate changes",
+    "actualFontVerifiedBeforeRun": "Liberation Serif / LiberationSerif-Italic",
+    "fontDiagnosticSha256": "c2651d2d6fde86133503a4333db24e9d3e3d332090eff123482485a39e08976e"
+  },
+  "fontEnvironmentReview": {
+    "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_FONT_ENVIRONMENT_REVIEW.json",
+    "sha256": "3f6e2f8b19489ff3f9379b1c5a67a39f9875d023c39b9b57944f5422bf793cd5",
+    "expectedSha256": "3f6e2f8b19489ff3f9379b1c5a67a39f9875d023c39b9b57944f5422bf793cd5",
+    "configurationSha256": "5799e9e1ee3756a0a995507a7cb327b4eaea1847b611956c7d7e9986470b0ab2"
+  },
+  "priorFailedRun": {
+    "artifact": "vii-full-6",
+    "evidenceSha256": "bce5c9c1011fe9e5d275d2158a4ad6f977e4cdf8f74dd58b810453969cd58156",
+    "report": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_BROWSER_FAILURE_REVIEW.json",
+    "reportSha256": "a50319b9c5229506ae737c80cb6631a58bf9c21e85e7e9cf1eeb34178caf55d0",
+    "result": "FAIL14 historical320px views with DejaVu Serif fallback; failure preserved. Separate read-only cold-render diagnostic reproduced five representatives on both published893 and candidate1083; the complete14-view set was then checked on both bundles and all28 checks passed after exposing the already-installed documented Liberation font dependency. This successful rerun does not convert the previous failure into PASS."
+  },
+  "captureDataset": "vii-full-7",
+  "supersededIncompleteDataset": "vii-full-5 (interrupted; not a completed gate)",
+  "gate": {
+    "file": "tools/geometry-textbook/browser_check.js",
+    "sha256": "d5d1e5af7e377d5921c86e84c36e81489c150b78db6442a2b71f1c0aba817be7",
+    "marker": "ATANASYAN_PLANAR_BROWSER_OK",
+    "exitCode": 0,
+    "completed": true,
+    "mode": "full-course",
+    "focusSection": null,
+    "widths": [
+      320,
+      1280
+    ],
+    "captureChapters": [
+      "VII"
+    ]
+  },
+  "evidence": {
+    "file": "vii-full-7/browser-evidence.json",
+    "sha256": "52556a12e813e60f58959de22c9c3f7d771caad9d23abcdc21a7a2bb296c2769",
+    "screenshotHashManifest": "vii-full-7/screenshots.sha256",
+    "screenshotHashManifestSha256": "2b52b26805d82cd427fb9157fa82a13392c7118f428b87bc30495db05a6ae0d2"
+  },
+  "browserEvidence": {
+    "schemaVersion": 1,
+    "scope": "full-course",
+    "head": null,
+    "gateScriptSha256": "d5d1e5af7e377d5921c86e84c36e81489c150b78db6442a2b71f1c0aba817be7",
+    "implementationSha256": "06f892e4142242b6e1f22331479c884924d5e6690f18ca0fb3d6202bac0c319c",
+    "authoredContentSha256": "d68d1165bcbd9edc2901d78c46301da041c44ed7bba75da7d2a66d86961f3430",
+    "bundleSha256": "42d3cfaa4fc4fc23484c6fd59bc744f7e3a55e58341320c654796f4f63e59109",
+    "widths": [
+      320,
+      1280
+    ],
+    "lessons": 1083,
+    "completed": true,
+    "errors": [],
+    "evidenceSha256": "52556a12e813e60f58959de22c9c3f7d771caad9d23abcdc21a7a2bb296c2769",
+    "viewWidthChecks": 11110,
+    "stepFlows": 2166,
+    "initialFinalCaptures": 4332,
+    "chapterVIIViewCaptures": 1730,
+    "interactions": [
+      "expansion-lesson-320-button-and-Escape",
+      "expansion-lesson-1280-button-and-Escape",
+      "notes-and-steps-reload",
+      "expansion-theory-1280-button-and-Escape",
+      "theory-return-retains-answer",
+      "manual-answer-honesty",
+      "two-tab-conflict-preserves-work",
+      "chapter-selfcheck-draft-isolation-and-reload",
+      "chapter-II-theory-return-and-saved-step",
+      "chapter-II-first-and-last-direct-entry",
+      "chapter-III-theory-return-and-saved-step",
+      "chapter-III-first-and-last-direct-entry",
+      "chapter-IV-theory-return-and-saved-step",
+      "chapter-IV-first-and-last-direct-entry",
+      "chapter-V-theory-return-and-saved-step",
+      "chapter-V-first-and-last-direct-entry",
+      "chapter-VI-theory-return-and-saved-step",
+      "chapter-VI-first-and-last-direct-entry",
+      "chapter-VII-theory-return-and-saved-step",
+      "chapter-VII-first-and-last-direct-entry"
+    ],
+    "artifact": "vii-full-7",
+    "binding": "Pre-manifest engineering-preview run; exact committed-head and reviewed public-entry checks are separate."
+  },
+  "reviewedBundle": {
+    "file": "geometry-course/textbook/data/course.json",
+    "sha256": "42d3cfaa4fc4fc23484c6fd59bc744f7e3a55e58341320c654796f4f63e59109",
+    "implementationSha256": "06f892e4142242b6e1f22331479c884924d5e6690f18ca0fb3d6202bac0c319c",
+    "authoredContentSha256": "d68d1165bcbd9edc2901d78c46301da041c44ed7bba75da7d2a66d86961f3430",
+    "publicationReviewMatches": false
+  },
+  "authoredFiles": {
+    "geometry-course/textbook/preparation/chapter-07-a.json": "024840fce8be7be977c566203b1445333f772a217817d0ae579914ac832fc568",
+    "geometry-course/textbook/preparation/chapter-07-b.json": "b88edfacda577c584b2612c7e151cab81494288391b7c61b362549c3e9b651c5",
+    "geometry-course/textbook/preparation/chapter-07-c.json": "4137b49f5469904447f3e565bcd889618fcf8dea96e9c8ed018dcbf08a45ec4c",
+    "geometry-course/textbook/preparation/chapter-07-theory.json": "7ad100d65e400e93f6541301f966c0d57458b3ddb410a416b7c6d2745df93aa7",
+    "geometry-course/textbook/models/chapter-07-a.json": "ebaa8881705c79c6ae51bfff67053910d1d67f94b869e711dbe8c741434dd1f7",
+    "geometry-course/textbook/models/chapter-07-b.json": "c4920455920861cb1ff9af1feb4c4aee6b47274caf21146e5216499b19a34797",
+    "geometry-course/textbook/models/chapter-07-c.json": "516b8169ac55ac5a290da2a6d46232b853b5db777270c42779cde6abbb6e1758",
+    "geometry-course/textbook/models/chapter-07-theory.json": "83f86c8ba72c86370ca6434bdae78f177e2cc376f6819a233b30f9a5c5af9cdb"
+  },
+  "priorFailureViewsRechecked": [
+    {
+      "id": "atanasyan-7-9-main-494-part-1",
+      "width": 320,
+      "view": "case-1",
+      "issues": [],
+      "result": "PASS in corrected documented-font environment"
+    },
+    {
+      "id": "atanasyan-7-9-main-536-part-1",
+      "width": 320,
+      "view": "step-2",
+      "issues": [],
+      "result": "PASS in corrected documented-font environment"
+    },
+    {
+      "id": "atanasyan-7-9-main-536-part-1",
+      "width": 320,
+      "view": "step-3",
+      "issues": [],
+      "result": "PASS in corrected documented-font environment"
+    },
+    {
+      "id": "atanasyan-7-9-main-536-part-1",
+      "width": 320,
+      "view": "step-4",
+      "issues": [],
+      "result": "PASS in corrected documented-font environment"
+    },
+    {
+      "id": "atanasyan-7-9-main-450-part-1",
+      "width": 320,
+      "view": "step-1",
+      "issues": [],
+      "result": "PASS in corrected documented-font environment"
+    },
+    {
+      "id": "atanasyan-7-9-main-450-part-1",
+      "width": 320,
+      "view": "step-2",
+      "issues": [],
+      "result": "PASS in corrected documented-font environment"
+    },
+    {
+      "id": "atanasyan-7-9-main-450-part-1",
+      "width": 320,
+      "view": "step-3",
+      "issues": [],
+      "result": "PASS in corrected documented-font environment"
+    },
+    {
+      "id": "atanasyan-7-9-main-450-part-1",
+      "width": 320,
+      "view": "step-4",
+      "issues": [],
+      "result": "PASS in corrected documented-font environment"
+    },
+    {
+      "id": "atanasyan-7-9-main-450-part-1",
+      "width": 320,
+      "view": "case-1",
+      "issues": [],
+      "result": "PASS in corrected documented-font environment"
+    },
+    {
+      "id": "atanasyan-7-9-main-450-part-1",
+      "width": 320,
+      "view": "case-2",
+      "issues": [],
+      "result": "PASS in corrected documented-font environment"
+    },
+    {
+      "id": "atanasyan-7-9-main-450-part-1",
+      "width": 320,
+      "view": "case-3",
+      "issues": [],
+      "result": "PASS in corrected documented-font environment"
+    },
+    {
+      "id": "atanasyan-7-9-main-450-part-1",
+      "width": 320,
+      "view": "case-4",
+      "issues": [],
+      "result": "PASS in corrected documented-font environment"
+    },
+    {
+      "id": "atanasyan-7-9-main-452-part-1",
+      "width": 320,
+      "view": "step-4",
+      "issues": [],
+      "result": "PASS in corrected documented-font environment"
+    },
+    {
+      "id": "atanasyan-7-9-main-454-part-1",
+      "width": 320,
+      "view": "case-4",
+      "issues": [],
+      "result": "PASS in corrected documented-font environment"
+    }
+  ],
+  "counts": {
+    "cards": 1083,
+    "chapterVIICards": 190,
+    "chapterVIISteps": 633,
+    "chapterVIIModelViews": 865,
+    "allSteps": 3806,
+    "allModelViews": 5555,
+    "viewWidthChecks": 11110,
+    "completeStepFlows": 2166,
+    "allRevealedStepOccurrences": 7612,
+    "initialAndFinalCaptures": 4332,
+    "chapterVIIAllViewCaptures": 1730,
+    "interactions": 20,
+    "browserErrors": 0,
+    "problemViews": 0,
+    "missingOrDuplicateViewChecks": 0,
+    "missingOrDuplicateStepFlows": 0
+  },
+  "checks": [
+    "Every exact authored view is reachable at both widths",
+    "Every rendered label set matches its authored visible-point set",
+    "No clipped, overlapping, undersized or line/circle-intersected labels",
+    "No non-finite SVG, horizontal page overflow, or actual viewport geometry clipping",
+    "Every authored step remains visible and every explanation expands without page overflow",
+    "Initial cases reveal only given configurations",
+    "The final authored step selects its exact model scene",
+    "Notes, assisted state and steps persist across reload",
+    "Separate chapter selfcheck drafts persist without key collision",
+    "Theory return retains work and explicit step progress",
+    "First and last exercises of chapters II–VII open via direct hash links",
+    "Two-tab conflict preserves local work and locks the stale tab",
+    "Fullscreen button and Escape preserve SVG identity, view and draft",
+    "Manual proof answers are not automatically certified correct"
+  ],
+  "interactions": [
+    "expansion-lesson-320-button-and-Escape",
+    "expansion-lesson-1280-button-and-Escape",
+    "notes-and-steps-reload",
+    "expansion-theory-1280-button-and-Escape",
+    "theory-return-retains-answer",
+    "manual-answer-honesty",
+    "two-tab-conflict-preserves-work",
+    "chapter-selfcheck-draft-isolation-and-reload",
+    "chapter-II-theory-return-and-saved-step",
+    "chapter-II-first-and-last-direct-entry",
+    "chapter-III-theory-return-and-saved-step",
+    "chapter-III-first-and-last-direct-entry",
+    "chapter-IV-theory-return-and-saved-step",
+    "chapter-IV-first-and-last-direct-entry",
+    "chapter-V-theory-return-and-saved-step",
+    "chapter-V-first-and-last-direct-entry",
+    "chapter-VI-theory-return-and-saved-step",
+    "chapter-VI-first-and-last-direct-entry",
+    "chapter-VII-theory-return-and-saved-step",
+    "chapter-VII-first-and-last-direct-entry"
+  ],
+  "limits": [
+    "Actual manual image review is recorded separately; this browser geometry/interaction gate alone does not certify mathematical or visual content.",
+    "The prior environment without the documented Liberation font dependency failed14 historical views and remains recorded separately; no cross-font guarantee is claimed.",
+    "This report binds a working-tree preview, not an exact committed Git head or public deployment.",
+    "Approval manifests and public entry require separate verification after promotion.",
+    "No claim is made that the whole textbook is complete."
+  ],
+  "contentApprovalGranted": false,
+  "publicationApprovalGranted": false
+}

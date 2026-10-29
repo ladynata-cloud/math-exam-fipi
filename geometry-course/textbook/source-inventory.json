@@ -1189,6 +1189,57 @@
         131,
         135
       ]
+    },
+    {
+      "chapter": 7,
+      "number": 1,
+      "title": "Площадь многоугольника",
+      "pointNumbers": [
+        54,
+        56
+      ],
+      "exerciseNumbers": [
+        541,
+        554
+      ],
+      "printedPages": [
+        139,
+        145
+      ]
+    },
+    {
+      "chapter": 7,
+      "number": 2,
+      "title": "Площади параллелограмма, треугольника и трапеции",
+      "pointNumbers": [
+        57,
+        59
+      ],
+      "exerciseNumbers": [
+        555,
+        580
+      ],
+      "printedPages": [
+        146,
+        152
+      ]
+    },
+    {
+      "chapter": 7,
+      "number": 3,
+      "title": "Теорема Пифагора",
+      "pointNumbers": [
+        60,
+        62
+      ],
+      "exerciseNumbers": [
+        581,
+        604
+      ],
+      "printedPages": [
+        152,
+        158
+      ]
     }
   ]
 }

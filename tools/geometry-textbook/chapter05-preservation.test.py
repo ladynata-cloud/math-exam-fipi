@@ -260,6 +260,15 @@ def historical_v_projection(bundle, scope):
     Unknown sections are retained here so the existing whitelist rejects them.
     """
     bundle, scope = deepcopy(bundle), deepcopy(scope)
+    # VII is independently constrained by the exact1083 release union gate.
+    if any(c['chapter'] == 7 for c in scope['chapters']):
+        bundle['lessons'] = [r for r in bundle['lessons'] if r['source']['chapter'] != 'VII']
+        bundle['catalog']['entries'] = [r for r in bundle['catalog']['entries'] if r['source']['chapter'] != 'VII']
+        bundle['build']['chapters'] = [c for c in bundle['build']['chapters'] if c['chapter'] != 7]
+        bundle['build']['authoredCards'] -= 190
+        bundle['build']['numberedExercises'] -= 99
+        scope['chapters'] = [c for c in scope['chapters'] if c['chapter'] != 7]
+        scope['totalCards'] -= 190
     if any(c['chapter'] == 6 for c in scope['chapters']):
         bundle['lessons'] = [r for r in bundle['lessons'] if r['source']['chapter'] != 'VI']
         bundle['catalog']['entries'] = [r for r in bundle['catalog']['entries'] if r['source']['chapter'] != 'VI']

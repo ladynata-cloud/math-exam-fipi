@@ -1,0 +1,3601 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "Independent non-author OpenAI source reviewer /root/vii_source",
+  "verdict": "PASS",
+  "approvalScope": "Source fidelity only: exact inventory, all190 authored card conditions/statements, page mapping, paragraph metadata, source-specific interpretations and exact grid-figure reconstruction.",
+  "date": "2026-10-30",
+  "base": "6fb959fc0130a0bb8842601d19297e305ac91ac0",
+  "startingHead": "6fb959fc0130a0bb8842601d19297e305ac91ac0",
+  "sourceSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "method": "Actually viewed all24 exact source pages, inventoried every number and explicit subpart, then read all authored exercise conditions and all theory/selfcheck statements. Re-viewed exercise pages while comparing B and C. OCR was not used. Authored conditions are concise adaptations, not a verbatim transcription.",
+  "pages": [
+    {
+      "printedPage": 139,
+      "pdfPage": 140,
+      "pngSha256": "1d328a8b7d15dae970ec88103046acbb173043e9f2b8bf49273e3dc8d8632446",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 140,
+      "pdfPage": 141,
+      "pngSha256": "a27eb4f9336fedfbaa65bdb5ca7da03639f7b29bd5cf5b0cd8bb770f3b4553c6",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 141,
+      "pdfPage": 142,
+      "pngSha256": "d86f3992a8586411e45462bc24b927b7f8a1cb9d4fb3953b9cb19b4e6c0ff576",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 142,
+      "pdfPage": 143,
+      "pngSha256": "10264e408b94c27f32f5b35f37792626c2a6ae8e731aeee63735563515407319",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 143,
+      "pdfPage": 144,
+      "pngSha256": "3758f612fb28ab375a6c40343cb992ebbcf641d4f1608c739472c0c89cdd47b4",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 144,
+      "pdfPage": 145,
+      "pngSha256": "202976aca7514c92ce9bd950be673f0d66ef9b0ff48d940f34654012b6ca0f15",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 145,
+      "pdfPage": 146,
+      "pngSha256": "d4e8abe44a23987fc3fe13715029fbc18b822e8c7242df61f296d2bc865800fe",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 146,
+      "pdfPage": 147,
+      "pngSha256": "2331e1169b5cc289ef4d0466d40c861f0599d684a5cbd89c25c3556e03531686",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 147,
+      "pdfPage": 148,
+      "pngSha256": "349b4cbed902bc46c0f153637b1152c54e759bce21f759aa08764ad9d521d2d0",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 148,
+      "pdfPage": 149,
+      "pngSha256": "350de4a622220c9d942ae73cbcf2e52602c0ddc53876ba31616ca75ac8262975",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 149,
+      "pdfPage": 150,
+      "pngSha256": "78e1e388df66e1353a2bfbb5afa8e03ccd0c362d44bc7818a3f52e9ef32fc35c",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 150,
+      "pdfPage": 151,
+      "pngSha256": "28e45e75a8b739513a63919bb24db74546d7857a49a7bd4c0cf469aa704245db",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 151,
+      "pdfPage": 152,
+      "pngSha256": "cf3c9808636cae388ecef54327416512f38b427ca96ea664c7aeba9c3d8d4b28",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 152,
+      "pdfPage": 153,
+      "pngSha256": "fe89ff678d750605917d0a4fb9cb988d8b89df80d45697e5b5a7da3f9ef51c70",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 153,
+      "pdfPage": 154,
+      "pngSha256": "b890c94c2f4ab34a0ba4b1e8e5a31afbd555a4684564ae216307da4daac33f5f",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 154,
+      "pdfPage": 155,
+      "pngSha256": "d8c7168ff86e8f5ab0ae86843b2c8464c985b19b2adab4bc25beb3d41c6f984a",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 155,
+      "pdfPage": 156,
+      "pngSha256": "23a4dc15f830d323ce3cd48431b8f17943ad5fdd8a8ee93f61b2a653f6d80452",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 156,
+      "pdfPage": 157,
+      "pngSha256": "c2424df68175ddef00372e58e05cbea88b4f489d8a90bf3b19080d433086ec5b",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 157,
+      "pdfPage": 158,
+      "pngSha256": "7c815b20e6284a87b70a12082006da947316a6b32bfa44c3a864ab97e340cced",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 158,
+      "pdfPage": 159,
+      "pngSha256": "7cdda1075011ef02e312e260cb8718db7ad3cca47ff586cf4578ad3ee5f076ef",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 159,
+      "pdfPage": 160,
+      "pngSha256": "ea9c9ecf68a1d00add3f751410447eaa18ea8d53b9641c8a410c0e1bcc77cef6",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 160,
+      "pdfPage": 161,
+      "pngSha256": "0ee8185c1ca9292dd499cc1fd666461ed528b68cf8afdf4eb24a37ee98d96b0c",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 161,
+      "pdfPage": 162,
+      "pngSha256": "3e63cf10c623e86bb3841100a9ee281b71b9a20b3b9830e23413cebbd1ebb841",
+      "visuallyRead": true
+    },
+    {
+      "printedPage": 162,
+      "pdfPage": 163,
+      "pngSha256": "49209f4047aad8a14d5fab2c0855b9427a432988875f0e297c269dcba6a8679d",
+      "visuallyRead": true
+    }
+  ],
+  "counts": {
+    "exerciseNumbers": 99,
+    "exerciseParts": 169,
+    "theoryPoints": 9,
+    "selfcheckQuestions": 12,
+    "paragraphs": 3,
+    "cards": 190,
+    "cardConditionsActuallyRead": 190,
+    "gridFigures": 2,
+    "gridParts": 10
+  },
+  "inventoryChecks": {
+    "contiguousExerciseRange": [
+      541,
+      639
+    ],
+    "exactSubpartsAndOrder": "PASS",
+    "exercisePrintedAndPdfPages": "PASS",
+    "theoryTitlesAndPages": "PASS",
+    "selfcheckTopicsAndPages": "PASS",
+    "paragraphsAgainstCandidateRegistry": "PASS",
+    "additionalTasksAndSelfchecksHaveNoInventedParagraph": "PASS"
+  },
+  "sourceMap": {
+    "path": "tools/geometry-textbook/chapter-07-source-map.json",
+    "sha256": "7c87229a8316a601c806f78ea4d6a41bedc9818b571e3e7e848bc411c9aee463"
+  },
+  "paragraphs": [
+    {
+      "chapter": 7,
+      "number": 1,
+      "title": "Площадь многоугольника",
+      "pointNumbers": [
+        54,
+        56
+      ],
+      "exerciseNumbers": [
+        541,
+        554
+      ],
+      "printedPages": [
+        139,
+        145
+      ]
+    },
+    {
+      "chapter": 7,
+      "number": 2,
+      "title": "Площади параллелограмма, треугольника и трапеции",
+      "pointNumbers": [
+        57,
+        59
+      ],
+      "exerciseNumbers": [
+        555,
+        580
+      ],
+      "printedPages": [
+        146,
+        152
+      ]
+    },
+    {
+      "chapter": 7,
+      "number": 3,
+      "title": "Теорема Пифагора",
+      "pointNumbers": [
+        60,
+        62
+      ],
+      "exerciseNumbers": [
+        581,
+        604
+      ],
+      "printedPages": [
+        152,
+        158
+      ]
+    }
+  ],
+  "candidateMetadata": {
+    "path": "geometry-course/textbook/candidate-chapters.json",
+    "sha256": "39acca72e24524fea5f6571a9ac1af38650d80778082e03b9e9094a3dcd66ef7",
+    "canonicalChapter7MetadataSha256": "5a24c219abda3f10775aa95dbe82e3e1d09efa313b0af2595ab88a6a7c7b25e0"
+  },
+  "preparationFiles": [
+    {
+      "path": "geometry-course/textbook/preparation/chapter-07-a.json",
+      "sha256": "024840fce8be7be977c566203b1445333f772a217817d0ae579914ac832fc568",
+      "reviewScope": "Every condition/statement, source page, explicit subpart and source title read and compared. Answers/notes read; only the enumerated special-case proofs were examined as source-interpretation evidence. This is not blanket mathematics approval."
+    },
+    {
+      "path": "geometry-course/textbook/preparation/chapter-07-b.json",
+      "sha256": "b88edfacda577c584b2612c7e151cab81494288391b7c61b362549c3e9b651c5",
+      "reviewScope": "Every condition/statement, source page, explicit subpart and source title read and compared. Answers/notes read; only the enumerated special-case proofs were examined as source-interpretation evidence. This is not blanket mathematics approval."
+    },
+    {
+      "path": "geometry-course/textbook/preparation/chapter-07-c.json",
+      "sha256": "4137b49f5469904447f3e565bcd889618fcf8dea96e9c8ed018dcbf08a45ec4c",
+      "reviewScope": "Every condition/statement, source page, explicit subpart and source title read and compared. Answers/notes read; only the enumerated special-case proofs were examined as source-interpretation evidence. This is not blanket mathematics approval."
+    },
+    {
+      "path": "geometry-course/textbook/preparation/chapter-07-theory.json",
+      "sha256": "7ad100d65e400e93f6541301f966c0d57458b3ddb410a416b7c6d2745df93aa7",
+      "reviewScope": "Every condition/statement, source page, explicit subpart and source title read and compared. Answers/notes read; only the enumerated special-case proofs were examined as source-interpretation evidence. This is not blanket mathematics approval."
+    }
+  ],
+  "selectedModelEvidence": [
+    {
+      "path": "geometry-course/textbook/models/chapter-07-a.json",
+      "sha256": "ebaa8881705c79c6ae51bfff67053910d1d67f94b869e711dbe8c741434dd1f7",
+      "reviewScope": "Only listed entries were read for source-specific geometry/labels. Numeric constraints and limited source-comparison screenshots are enumerated below; no general browser or unlisted-model approval.",
+      "items": [
+        {
+          "collection": "main",
+          "number": 560,
+          "part": "в",
+          "canonicalEntrySha256": "c4b4bc38360a160aa60c658bdbe4986416e27c95557a18ab9b0ed6f1e14079f8"
+        }
+      ]
+    },
+    {
+      "path": "geometry-course/textbook/models/chapter-07-b.json",
+      "sha256": "c4920455920861cb1ff9af1feb4c4aee6b47274caf21146e5216499b19a34797",
+      "reviewScope": "Only listed entries were read for source-specific geometry/labels. Numeric constraints and limited source-comparison screenshots are enumerated below; no general browser or unlisted-model approval.",
+      "items": [
+        {
+          "collection": "main",
+          "number": 570,
+          "part": "single",
+          "canonicalEntrySha256": "78e41b1c985673a3c4c121e65045471a913809f6b7279dc2034e540fe464479e"
+        },
+        {
+          "collection": "main",
+          "number": 603,
+          "part": "single",
+          "canonicalEntrySha256": "9c7e122f8bc13f28bc5e23e49073bbf8506f2de4ade7ac2cf32d4a32dc955e5a"
+        },
+        {
+          "collection": "main",
+          "number": 604,
+          "part": "single",
+          "canonicalEntrySha256": "f20d460a7ec53f079912cc4be84c6d8d9612e759f1939c2e45875c72c0bdaf17"
+        },
+        {
+          "collection": "main",
+          "number": 569,
+          "part": "а",
+          "canonicalEntrySha256": "1c5a7193c79b712521cce1563913f68e4f51bcc2379d8f18c764bb90d041411d"
+        },
+        {
+          "collection": "main",
+          "number": 569,
+          "part": "б",
+          "canonicalEntrySha256": "2c8518e918ee3657d3e12501a840769e3a934e612c986954d7f418bd58de7991"
+        },
+        {
+          "collection": "main",
+          "number": 569,
+          "part": "в",
+          "canonicalEntrySha256": "675685f37ac2b52c53b56f6da71796e1890b07936f3617d2955ca561be47511a"
+        },
+        {
+          "collection": "main",
+          "number": 574,
+          "part": "а",
+          "canonicalEntrySha256": "fb792f39651a144cf52e9861f52fccc35de774776a61917c4534ae5e501a7182"
+        },
+        {
+          "collection": "main",
+          "number": 574,
+          "part": "б",
+          "canonicalEntrySha256": "9ba5c8e8c834d19a453ef2cf6f6612036e4825d15fb5a136033e95bf160566d4"
+        },
+        {
+          "collection": "main",
+          "number": 599,
+          "part": "а",
+          "canonicalEntrySha256": "32056a2a815934cc0e3860f71d3ac67b6e48979125cdd7e544ef53f1cfdd02bf"
+        },
+        {
+          "collection": "main",
+          "number": 599,
+          "part": "б",
+          "canonicalEntrySha256": "9e99a70e3eb3caf4673752047be595ac3c7a543ddee51984abb887e0e2eb7a1a"
+        },
+        {
+          "collection": "main",
+          "number": 602,
+          "part": "single",
+          "canonicalEntrySha256": "be02cded726280d503db3ef71d4d05a20a636e22ac162c9411e4c56bf3ea030f"
+        }
+      ]
+    },
+    {
+      "path": "geometry-course/textbook/models/chapter-07-c.json",
+      "sha256": "516b8169ac55ac5a290da2a6d46232b853b5db777270c42779cde6abbb6e1758",
+      "reviewScope": "Only listed entries were read for source-specific geometry/labels. Numeric constraints and limited source-comparison screenshots are enumerated below; no general browser or unlisted-model approval.",
+      "items": [
+        {
+          "collection": "main",
+          "number": 613,
+          "part": "single",
+          "canonicalEntrySha256": "8e95e03510c004846d4b459138c66d0ba78820e7f6689280b6f31a67b618bec7"
+        },
+        {
+          "collection": "main",
+          "number": 628,
+          "part": "single",
+          "canonicalEntrySha256": "9d520f3ddb46556aa54bf1bc3625c550f47f5075aea4aa413fe1a63300e39a26"
+        },
+        {
+          "collection": "main",
+          "number": 637,
+          "part": "а",
+          "canonicalEntrySha256": "e4dfccfd30fa8b9e2ecacd4404413dd3ef7d261944d897558b2e3304ea46cd97"
+        },
+        {
+          "collection": "main",
+          "number": 637,
+          "part": "б",
+          "canonicalEntrySha256": "698e5e3c671908609baf91e2c2e95f8017ed8258319a8cdb65dd8aa8fda36090"
+        },
+        {
+          "collection": "main",
+          "number": 609,
+          "part": "single",
+          "canonicalEntrySha256": "a4c4427150ad4c6476633176031675ea2b7ee399574ce4a84d9af45586f9a530"
+        },
+        {
+          "collection": "main",
+          "number": 614,
+          "part": "single",
+          "canonicalEntrySha256": "f2381375ebc6b91f48575b7fe48ef734853dacf39ae89a1e0240af380eaa898c"
+        },
+        {
+          "collection": "main",
+          "number": 630,
+          "part": "single",
+          "canonicalEntrySha256": "005f00beca86c0ce1dd0ddb3f2009659f9343b7fa1be26261cd95ce79f5ddb18"
+        },
+        {
+          "collection": "main",
+          "number": 638,
+          "part": "а",
+          "canonicalEntrySha256": "46079ed9414105f59610ab4c0ae8fb9044e04ab815ae063978392c589fed2973"
+        },
+        {
+          "collection": "main",
+          "number": 638,
+          "part": "б",
+          "canonicalEntrySha256": "efaa068607eb072a7bb25d20ab2bacda11bbc53e97b3b012c6bb6e266c12bc97"
+        },
+        {
+          "collection": "main",
+          "number": 638,
+          "part": "в",
+          "canonicalEntrySha256": "3e254efe163f68e55d45782d016f64faef327aff5b00a710398407bf08cc1ee7"
+        },
+        {
+          "collection": "main",
+          "number": 638,
+          "part": "г",
+          "canonicalEntrySha256": "5f85201a49d10218f271b85ccddbab3fe7e216a99340e6b09d070a03dfec15c9"
+        },
+        {
+          "collection": "main",
+          "number": 638,
+          "part": "д",
+          "canonicalEntrySha256": "c7100eccc82e01bd934276b66e4c0437c672cc502922f9c8d6ea67207b1688e0"
+        },
+        {
+          "collection": "main",
+          "number": 639,
+          "part": "а",
+          "canonicalEntrySha256": "0edbfbdad570431fa886d4ddf26311e3ba10675825070b403b2f3005cbd54f48"
+        },
+        {
+          "collection": "main",
+          "number": 639,
+          "part": "б",
+          "canonicalEntrySha256": "4e6104e06482cd45077c4d0279819b356b98f89e4f60c4331b997dde797f4473"
+        },
+        {
+          "collection": "main",
+          "number": 639,
+          "part": "в",
+          "canonicalEntrySha256": "67162ea635a36e6cbdacdeb6306da82e3d5af796982062486867dcd2f2b05325"
+        },
+        {
+          "collection": "main",
+          "number": 639,
+          "part": "г",
+          "canonicalEntrySha256": "10a66301efd2ada1ea16fb339ebd6e8526fa5dd86e67705c24273606ee9ab332"
+        },
+        {
+          "collection": "main",
+          "number": 639,
+          "part": "д",
+          "canonicalEntrySha256": "cb49a6225f2cd7dc46a621c1cad089bda3eb35e6674b000db6e83afd9b02d843"
+        }
+      ]
+    },
+    {
+      "path": "geometry-course/textbook/models/chapter-07-theory.json",
+      "sha256": "83f86c8ba72c86370ca6434bdae78f177e2cc376f6819a233b30f9a5c5af9cdb",
+      "reviewScope": "Only listed entries were read for source-specific geometry/labels. Numeric constraints and limited source-comparison screenshots are enumerated below; no general browser or unlisted-model approval.",
+      "items": [
+        {
+          "collection": "theory",
+          "number": 56,
+          "part": "single",
+          "canonicalEntrySha256": "2b303ed9e5277f7e3381ee30706c5e00b69ba265794b7f19c18e5d5fc7e16432"
+        },
+        {
+          "collection": "selfcheck",
+          "number": 4,
+          "part": "single",
+          "canonicalEntrySha256": "464301bba826bad9bab088cfa1824bd3683240a250a482db4611db9a7a4bb8d5"
+        }
+      ]
+    }
+  ],
+  "conditionBindings": [
+    {
+      "kind": "exercise",
+      "number": 541,
+      "part": "а",
+      "printedPages": [
+        144
+      ],
+      "pdfPages": [
+        145
+      ],
+      "canonicalConditionSha256": "edc35f0fdfded9d296a800d44a4224cc210737223e0c4b92e4ee97b0ecfdcd16",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 541,
+      "part": "б",
+      "printedPages": [
+        144
+      ],
+      "pdfPages": [
+        145
+      ],
+      "canonicalConditionSha256": "a9461e26204fccae33b78e89dcf60117f69ae25c245145e9f040dcf5c9cba1e9",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 541,
+      "part": "в",
+      "printedPages": [
+        144
+      ],
+      "pdfPages": [
+        145
+      ],
+      "canonicalConditionSha256": "324ddc2baa3280017e2433e9db9e51904dfcfe15a19617d10b75f63d8e3b54db",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 542,
+      "part": "а",
+      "printedPages": [
+        144
+      ],
+      "pdfPages": [
+        145
+      ],
+      "canonicalConditionSha256": "0f07a31783a8d9a6ff460f61d9b640ea975a82d8cc57c61534a31e6cf97a6e9f",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 542,
+      "part": "б",
+      "printedPages": [
+        144
+      ],
+      "pdfPages": [
+        145
+      ],
+      "canonicalConditionSha256": "bcb39c02e4357ad26e9eac0e8aade0589ebf2057d73a432c425ef128957e02f5",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 542,
+      "part": "в",
+      "printedPages": [
+        144
+      ],
+      "pdfPages": [
+        145
+      ],
+      "canonicalConditionSha256": "258566bb681af99a01661716ae538a7b10932001c66ba7597b8f1209b79499d6",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 543,
+      "part": "single",
+      "printedPages": [
+        144
+      ],
+      "pdfPages": [
+        145
+      ],
+      "canonicalConditionSha256": "7b117786005841c1ea4ebb42a694b42fe8d6be38a3bc2c76e6d66ce48bf13845",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 544,
+      "part": "single",
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "canonicalConditionSha256": "c44773186b8825d9b226e76488438fc96f465361fb7c03608a496e7e854e053b",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 545,
+      "part": "а",
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "canonicalConditionSha256": "c0cdcbb304f860931f3bc9104995f6a016aba6b7c45e3cec2a3e737bd2058a65",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 545,
+      "part": "б",
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "canonicalConditionSha256": "35bb70de68c875e783ca81635d0d30cde09ccf9da752def24798f2ed82408b2a",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 545,
+      "part": "в",
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "canonicalConditionSha256": "8a7bfe5bbb6536b76b65667fe557d3b5506029c24390ecd0231f24c637f67740",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 546,
+      "part": "а",
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "canonicalConditionSha256": "a72af323b2d02ae0bff45ff94f6e86afffc93a46878652fa4501a4b23ef5023f",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 546,
+      "part": "б",
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "canonicalConditionSha256": "8a826a4f25ca9f1669012a36147acdcd85d81dd07ccdc29ea539e3f3abc7e880",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 546,
+      "part": "в",
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "canonicalConditionSha256": "6a53b89b97ce9d7f0af044f189b9a2ae838058a493aceafeab8247ef337c950f",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 547,
+      "part": "а",
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "canonicalConditionSha256": "c85fead9c93509bdd16b599e5880d1feb02da189c3eeb4541d82243c93c00213",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 547,
+      "part": "б",
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "canonicalConditionSha256": "f54f803874d33bc4fc576b1022f1a0a6fd678b9cd863db795491c8b73e7d22b6",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 548,
+      "part": "а",
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "canonicalConditionSha256": "959cbe3d0b84c484fcbe853bc7862aace6870a4832efb1b207926a518b4959c0",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 548,
+      "part": "б",
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "canonicalConditionSha256": "fe2160071ba85c7d0983ae4dc454e7f1e36bc1a49cba769689864e46722ef69a",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 548,
+      "part": "в",
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "canonicalConditionSha256": "db71e83982027125f5cb91e7c3896b95bf48dc81f0449c952b205f11d92e23d8",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 548,
+      "part": "г",
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "canonicalConditionSha256": "9a2ac961c92672ae7fc6bc7c6f6142357aab067af1569b497315facd72d555c1",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 549,
+      "part": "а",
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "canonicalConditionSha256": "c95ffec1342a71a7e80501147f0b32af552e19ff4047997ceb45f8bb30abe503",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 549,
+      "part": "б",
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "canonicalConditionSha256": "8eb912218f5400177f3b839092b9d073869458824f6e101694e5a55792f6dba2",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 549,
+      "part": "в",
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "canonicalConditionSha256": "33b2e7d45a41ccb186f9a44c64cd5aedab935459bb0b376dcfea176bf7c78763",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 550,
+      "part": "а",
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "canonicalConditionSha256": "442bef38d995e5f2f5dae9f90100bc14981474ee9a7908a5aad00fe6ed399844",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 550,
+      "part": "б",
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "canonicalConditionSha256": "e73d6dc57fc33f4002bb0b8d655ada93e83ef4a7a7ab9db62d9234ff6d99b104",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 551,
+      "part": "single",
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "canonicalConditionSha256": "d6d3d028d1fcceb13b0fa818a6026fb4b09671c27e173716c1661d51cc8ad9c1",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 552,
+      "part": "single",
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "canonicalConditionSha256": "5a6465fe5e72a05c705286f252fdb6aeee3cac61dc4701776fdb77f1fda2c2a0",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 553,
+      "part": "single",
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "canonicalConditionSha256": "c00a4e3c059fafe9a676d21e29ce9adbb796d585773ac2170b07d76cb456723e",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 554,
+      "part": "single",
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "canonicalConditionSha256": "aa7c1b0be43876f539925a80a4acff1439c00b0355605fa522f5ebf5c0ec4153",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 555,
+      "part": "а",
+      "printedPages": [
+        150
+      ],
+      "pdfPages": [
+        151
+      ],
+      "canonicalConditionSha256": "10e0c5dcd70298f29c14a268a7207dea7facf7f07492f1ce7f0a7a89fd6d15b5",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 555,
+      "part": "б",
+      "printedPages": [
+        150
+      ],
+      "pdfPages": [
+        151
+      ],
+      "canonicalConditionSha256": "dd3463e5b4b70e0aab56618afd24fef0b472daedbc57a236e612d30f080ed177",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 555,
+      "part": "в",
+      "printedPages": [
+        150
+      ],
+      "pdfPages": [
+        151
+      ],
+      "canonicalConditionSha256": "12bfbd80a00e26a08b11b80cd5d7ca20ed67d2ceb71a79c06d343c770bc2edc2",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 555,
+      "part": "г",
+      "printedPages": [
+        150
+      ],
+      "pdfPages": [
+        151
+      ],
+      "canonicalConditionSha256": "a412529ce7a33d742ab2b95c2efd5d361eb5ccdad261518206ed5afbd5bff311",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 556,
+      "part": "single",
+      "printedPages": [
+        150
+      ],
+      "pdfPages": [
+        151
+      ],
+      "canonicalConditionSha256": "57554cd68a92c6ccacd89e3974c9be61377b7f92d4f475080d2ba4be12a49ed8",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 557,
+      "part": "single",
+      "printedPages": [
+        150
+      ],
+      "pdfPages": [
+        151
+      ],
+      "canonicalConditionSha256": "68284311b1791bffe038fdae534434bdebf8d72733e9e368aa936fb6f72fd5e9",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 558,
+      "part": "single",
+      "printedPages": [
+        150
+      ],
+      "pdfPages": [
+        151
+      ],
+      "canonicalConditionSha256": "2d94514e4ae0eb0b64f9c1bc20c458410175c331414c8ef38a64898889697709",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 559,
+      "part": "single",
+      "printedPages": [
+        150
+      ],
+      "pdfPages": [
+        151
+      ],
+      "canonicalConditionSha256": "6e1cd79e37fc3bdef21e64c84c7a303e2a73b31b0dfcafeee48151daf9afcf23",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 560,
+      "part": "а",
+      "printedPages": [
+        150
+      ],
+      "pdfPages": [
+        151
+      ],
+      "canonicalConditionSha256": "f19940a48ebb5caee31917dbbf3306f6fdef99afe2906dc97d8d6efb63af1c69",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 560,
+      "part": "б",
+      "printedPages": [
+        150
+      ],
+      "pdfPages": [
+        151
+      ],
+      "canonicalConditionSha256": "e3668e50e779c4dec41ac98dbe818ba29a659cb4303599595817177d7b06150b",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 560,
+      "part": "в",
+      "printedPages": [
+        150
+      ],
+      "pdfPages": [
+        151
+      ],
+      "canonicalConditionSha256": "be46b7ff9084aeef1ceebbf02d847045c57189acd64d496b297c21c4f833ddda",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 561,
+      "part": "single",
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "canonicalConditionSha256": "1e4b6a622577afc265ffab448274a0f841351766afc6bca9b58b4aaca3390b1a",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 562,
+      "part": "single",
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "canonicalConditionSha256": "647685b86387e493fa2023dcece11260c49aa0515ee592370301145b3c9c318d",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 563,
+      "part": "single",
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "canonicalConditionSha256": "c97a1111286b2d71c63489d11f719e1a77c3a3cb0bf32caa3c26edd79cb9f671",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 564,
+      "part": "а",
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "canonicalConditionSha256": "58971ca48b251f7fa821c4890bbae3b45bcdada6c3a3eff7e4c8de609d020edf",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 564,
+      "part": "б",
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "canonicalConditionSha256": "eda7d60a9c1b458acdf7a9a6a140e6c550aecdaec7d28e2145d92b7b96b76d2b",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 564,
+      "part": "в",
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "canonicalConditionSha256": "1d92f9852c77d10969b1c302f5495ab1503c866b8ce33e2f9a276832a0cc53cc",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 564,
+      "part": "г",
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "canonicalConditionSha256": "9f99708ce0c520e1019fb112691eba243f19360e5e94424d9554c665a2def313",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 565,
+      "part": "single",
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "canonicalConditionSha256": "062870337e79f445b15fbf7db7b872befd28c3aa5e147d783491bcf0a4c6e908",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 566,
+      "part": "single",
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "canonicalConditionSha256": "9a790e660aaa87d2b5eae7cacb8274c84623176733674c3aee45c796ae214da7",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 567,
+      "part": "а",
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "canonicalConditionSha256": "cd0b3cdebdc5ad1476aeba884b05a290cd7b608b272be4fa496c4291c2b2d87c",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 567,
+      "part": "б",
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "canonicalConditionSha256": "8c20716ee08c1f1148d601e6ec9136570f74e95a61ac0553e92f18b58f5aa79d",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 568,
+      "part": "single",
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "canonicalConditionSha256": "6bc0dac275f457d505cedad4ed63efca2caddd32ab2051e079afa1df69fe9c96",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 569,
+      "part": "а",
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "canonicalConditionSha256": "c7794a987930284f12d4e43f4969ff6008a598914335aa3c760f383dccea36ce",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 569,
+      "part": "б",
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "canonicalConditionSha256": "281d599673bf0a64e91845ad861f4765b3b1880d951822ab56d1994df31dabbb",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 569,
+      "part": "в",
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "canonicalConditionSha256": "e68681122eb3ffa5eb8493e2772d3fb8b0a01963eedc475d947f85b1271d96db",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 570,
+      "part": "single",
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "canonicalConditionSha256": "2e68aa68cb9eb8d781175d9321a193661a6745aa488cb0d87c9f7f91a54bdecc",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 571,
+      "part": "single",
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "canonicalConditionSha256": "2fb547c470ad70278d310df7ec6b8bd0b8d5ddef37077856609cd8250f4aa293",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 572,
+      "part": "single",
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "canonicalConditionSha256": "d0bdcc32496acf890b7b44c88d4f8e5cbabd7483edc4202e79ad42a8bc559bbd",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 573,
+      "part": "single",
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "canonicalConditionSha256": "e6e1210d947bde472eb4017753db9c639183b3efa5e52aaace26fecb05304b2e",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 574,
+      "part": "а",
+      "printedPages": [
+        152
+      ],
+      "pdfPages": [
+        153
+      ],
+      "canonicalConditionSha256": "0211cbd44a4091206d1105445a89f3411b1ef1a2acac02cd48aa10bca676db6c",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 574,
+      "part": "б",
+      "printedPages": [
+        152
+      ],
+      "pdfPages": [
+        153
+      ],
+      "canonicalConditionSha256": "cba17a7fee5d451599fd5d398c3075a0168431f711a1db6fb8e0660f8a292452",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 575,
+      "part": "single",
+      "printedPages": [
+        152
+      ],
+      "pdfPages": [
+        153
+      ],
+      "canonicalConditionSha256": "164e400fec6833df9dcbf69d8e18f08d8241e6cf9cef0fb25b9d35d65ab989dc",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 576,
+      "part": "single",
+      "printedPages": [
+        152
+      ],
+      "pdfPages": [
+        153
+      ],
+      "canonicalConditionSha256": "682a7ac48b75259fc8f313521e2bff57aba687c46f3c3c16a70e286a9632eb6b",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 577,
+      "part": "а",
+      "printedPages": [
+        152
+      ],
+      "pdfPages": [
+        153
+      ],
+      "canonicalConditionSha256": "4992320873ef0b2a8ed8e98f02398b8428daa5eb72694a3f3e837d5a7ce39ceb",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 577,
+      "part": "б",
+      "printedPages": [
+        152
+      ],
+      "pdfPages": [
+        153
+      ],
+      "canonicalConditionSha256": "69490256c3255784ef092fe8fc76dfa60e785130f609d2e463cf24f46f13ba29",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 578,
+      "part": "а",
+      "printedPages": [
+        152
+      ],
+      "pdfPages": [
+        153
+      ],
+      "canonicalConditionSha256": "c370fa56071f0f452ed9743caa216fbc9cceb5eb25f2b032c2f950e0fb19bd81",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 578,
+      "part": "б",
+      "printedPages": [
+        152
+      ],
+      "pdfPages": [
+        153
+      ],
+      "canonicalConditionSha256": "8764559250fa8b04e4d310ce78c9542dbde1b87900b291137f2dcb49cb9df421",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 578,
+      "part": "в",
+      "printedPages": [
+        152
+      ],
+      "pdfPages": [
+        153
+      ],
+      "canonicalConditionSha256": "036fc41f0ba931b1454789ab7079cb3b1eff8f1cde1f9eff849c97b83bea49e6",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 579,
+      "part": "single",
+      "printedPages": [
+        152
+      ],
+      "pdfPages": [
+        153
+      ],
+      "canonicalConditionSha256": "ff665921a7109f9d2bad2bb7feacca5c1c77c83f9be96d694c043529fd2e0cde",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 580,
+      "part": "single",
+      "printedPages": [
+        152
+      ],
+      "pdfPages": [
+        153
+      ],
+      "canonicalConditionSha256": "9c98a15c1765c8308e2cc1204552da99491693d3a494d0a6fc444baf1fe2c0a9",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 581,
+      "part": "а",
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        157
+      ],
+      "canonicalConditionSha256": "f72960b53cfb2d776a496b345d0b6f4267345f461358567c98b00087fd79a801",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 581,
+      "part": "б",
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        157
+      ],
+      "canonicalConditionSha256": "2c69c094ece1a285a4e8bd575f7d67c0201da1ffe0abc5205316959a4c21dce5",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 581,
+      "part": "в",
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        157
+      ],
+      "canonicalConditionSha256": "58b88fa5909a55e91cf1dc1b4d790cf4049b4b2cd7cf1e5aec0bdee928049b29",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 581,
+      "part": "г",
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        157
+      ],
+      "canonicalConditionSha256": "ff94dac0abe1fc847c57a2affeb04ed4b18f594954515a5edfe266d8741a1f57",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 582,
+      "part": "а",
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        157
+      ],
+      "canonicalConditionSha256": "241dfa250a02a2745d172be052e1e41509ba78aeabc86961c2282f9c55749363",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 582,
+      "part": "б",
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        157
+      ],
+      "canonicalConditionSha256": "196aabd130f1fdc85c1f7b045e9faf9f8b4a65047478ae9aa453051944f7a97d",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 582,
+      "part": "в",
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        157
+      ],
+      "canonicalConditionSha256": "d804e20e1cd1fdb2419f5cf76c5d2f20fbfb22cf136689ca98e8a4f7fdbe04ea",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 582,
+      "part": "г",
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        157
+      ],
+      "canonicalConditionSha256": "3d21cdd55545d06d20b9a83a23dec9cab441abc07295d8fee268c4164f15aac3",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 582,
+      "part": "д",
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        157
+      ],
+      "canonicalConditionSha256": "e0c2c18eac3ad335fbbd39d15343797fcd72b1bdec86ee7908e149296ebb3ac9",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 583,
+      "part": "single",
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        157
+      ],
+      "canonicalConditionSha256": "dd49936a1adaf022077450e265149e7263325fdf64c00852f97ab198c60a0463",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 584,
+      "part": "а",
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        157
+      ],
+      "canonicalConditionSha256": "e48ce92afe69c0440ad11de78e329f038a84a9d72a7f7dd8ea926c449a433eec",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 584,
+      "part": "б",
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        157
+      ],
+      "canonicalConditionSha256": "9f0b7ef01f707775b281264b632bb8f669100f5f425c138019a76fb145a75436",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 584,
+      "part": "в",
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        157
+      ],
+      "canonicalConditionSha256": "24930ecb2ff2d83f760edbd949db97ca791e74918ac77fbd74397f9dd7281e6f",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 585,
+      "part": "single",
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        157
+      ],
+      "canonicalConditionSha256": "75d9f76ead9a525c4d69a6a51de8e876a0155aa3b45e59c4ac7ce5ecfe5aa0fd",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 586,
+      "part": "а",
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        157
+      ],
+      "canonicalConditionSha256": "c385c7ff71e99efebe490fab453972df23bbe83aeabc06eb0b76418539e80598",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 586,
+      "part": "б",
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        157
+      ],
+      "canonicalConditionSha256": "18f4c9ba12e9f3bd257fc976ade214cccd0b9d51f169fe0829a3773fef0062dd",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 587,
+      "part": "а",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "e4c6dafe2e4902afc81d93c9a741c372f0cff62b8024e089bdab2599b812ffa4",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 587,
+      "part": "б",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "18b940411911d6cedf1e704a74c2bf4ef488e0e06d64e3cb294a589c4f988468",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 587,
+      "part": "в",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "a1e417e214173ef8bb17311f54f7fdccffab4064536e9b7bc6384b3634190a3f",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 588,
+      "part": "а",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "18375584f3136752835b3e5432f0219b0a4be1c018f926061bcd804d7a7d8e81",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 588,
+      "part": "б",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "d9b7446aadb66f4c73ecaefd406a1949df374ad1c295225995d063487795ecfe",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 588,
+      "part": "в",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "9a640878f61baef669c867d13a22eec27e86986d92cfd8ea2f740459cb681e1c",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 589,
+      "part": "а",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "20c317fb08026d76bb1758057854a617a40a4ae43e41d0acc5215d28506f887b",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 589,
+      "part": "б",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "ce6457355559698a838c96369b5520fa6bc79b52ac275de934ea7534a667c48f",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 590,
+      "part": "single",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "4130cc32e213459563e98f06a077e44a927a1f01dc915186b7afa36d7414b8c5",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 591,
+      "part": "single",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "616851b80ba59f7585bbf4bcd796fc9dc94fc29161f4f84edc4ec9bd3d2d70c4",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 592,
+      "part": "single",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "fb1bd2c7d129ebb13a47bb30ab2a9481c77fb987f1a520bf42ab8bf1aca28c44",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 593,
+      "part": "а",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "027c86cd845c8ab9adef316c6e63bb73113e13b870da10cfd293b549322cc067",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 593,
+      "part": "б",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "ccef62c06ae5b65be3d406bed38c0503496ab3fda82f254775fd0bab54824870",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 593,
+      "part": "в",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "4974583b2a3a96a32f36e4e6d4aa037b8f5a3764dacee611fad9b361e488ead8",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 594,
+      "part": "single",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "64e846ea8b15e7fab504b176b6e40939260757e7577008155fdf35ec187c5859",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 595,
+      "part": "single",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "a195580db32f76a68b3239de65bde38db0e0242b1d56bdd42b5944cd566faf79",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 596,
+      "part": "а",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "17392b6b1bb72d2a75261828595743b27125ce0a4652aaeadb8420124cd4616d",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 596,
+      "part": "б",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "ccc1a4cb0f064fe23ab13ffad375f81ddbf69b652b0748d14508f0a08298e9b3",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 596,
+      "part": "в",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "13eae9e12acf4b21312f56e7cb85132a8a2fcb69022b319dfcdd6a2ea0596990",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 596,
+      "part": "г",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "3a343244a124774b8a104cb98055e7355a0c1aa2c3497c7e85f7bbc57b4a0a2d",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 596,
+      "part": "д",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "80009664e1996a1ff2e7142e7a858d876d3d8a4299b47d5fc0f7245f287efaff",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 596,
+      "part": "е",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "0dc7ffc1706fab7a23cc6087640262f2da835139024eee4b206a5427457e558a",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 596,
+      "part": "ж",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "d50c1fd5828ec8a52e0fa2ea7d7983abea2d5f65a5d6f9cbeebc40999200e80c",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 597,
+      "part": "а",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "2e7eda8c45a7f5508893523df2315c2d965a918b3e7531b3374ade39079d240d",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 597,
+      "part": "б",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "131afe4da7f67836bdb19d78b66a43dc835bda57e764e8bb5db7fc790822897c",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 598,
+      "part": "single",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "9718357bd1ecc683703cb4f01ea033b22db089c88b0d20afa1b236fef77834de",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 599,
+      "part": "а",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "49d7a4253c26bb1b7209bae745533b53022f3557e12a2e64fb29670c7297dae3",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 599,
+      "part": "б",
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "canonicalConditionSha256": "822063e63d88e44b10d2be100689fc56e66d8153340ae614717ae4c3cb546582",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 600,
+      "part": "а",
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "canonicalConditionSha256": "7846258269f8abc8b0400800d73ff2d437cf96071499f11f310cd0765e42e53c",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 600,
+      "part": "б",
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "canonicalConditionSha256": "71c943c2597b1616b798df70f3d8cb114e37015d89e3dbc5d54a6c081416f7d1",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 601,
+      "part": "single",
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "canonicalConditionSha256": "2313ed5e80e70aec6566089d4e5150b08b2046cde02c944bf6683c8053eb9ac6",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 602,
+      "part": "single",
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "canonicalConditionSha256": "67be5a2276559f41d0f30349e944973ba1d196e6c5680bb92760908f3104fcab",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 603,
+      "part": "single",
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "canonicalConditionSha256": "59f2ecbc843ac272954e23986d5cf550205e9345685f5979af6bd8f469270e2c",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 604,
+      "part": "single",
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "canonicalConditionSha256": "569c68259a2444c8bc92d2662a19cf9b26a9900388d43078d230a50b1b4b7a49",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 605,
+      "part": "single",
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "canonicalConditionSha256": "4d6ba1193901e37e02b23c2f1a9f5e6b7a62f509f86dd9b54690c56277c90da1",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 606,
+      "part": "а",
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "canonicalConditionSha256": "69a19d877558554ad764f2dd4d0c6f357fc5f1778a111fb57a359984cc50e517",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 606,
+      "part": "б",
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "canonicalConditionSha256": "fd956eb6437ca5a2ad5590d9781e46459665197d01f6e90e05dbe12b036d05a1",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 607,
+      "part": "single",
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "canonicalConditionSha256": "08b8057b45fef77793b0e3af04a11f53be43caffba3025a6bef2b863bb615576",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 608,
+      "part": "single",
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "canonicalConditionSha256": "577f6ab4e28d1ee67ab2e5a642a6fcda6e96c3d1269e32d3886188dcd6a90a72",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 609,
+      "part": "single",
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "canonicalConditionSha256": "d390a18d2d2c299091a882efd57fc860c06f9da8cc32b1504a5784c0d4b0eca8",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 610,
+      "part": "single",
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "canonicalConditionSha256": "f7b4b947c3ec55eaac2517fb5ac5fc44322f3d47382575d0d5290829e036532c",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 611,
+      "part": "single",
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "canonicalConditionSha256": "5bf0caa59f13a783338500ccd934017dff30db5fdc81802c86dbe12485702172",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 612,
+      "part": "single",
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "canonicalConditionSha256": "fc715d031129e5dc837356f2b23c132eab70dfa71cd55c3a3b6774af7e4af74e",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 613,
+      "part": "single",
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "canonicalConditionSha256": "e8a3a297328b5308112fafa8a7dfa60c06e83cdc82cacbdefa635110720633bd",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 614,
+      "part": "single",
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "canonicalConditionSha256": "628f01e99e95c0cf2262a408a857c95ca423598222592dd3b866f3fdc282b8d8",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 615,
+      "part": "single",
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "canonicalConditionSha256": "43ba21ef6f211da95bfe67f6027d620db396a174cef84064c692f1304eb990bf",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 616,
+      "part": "а",
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "canonicalConditionSha256": "0fe0cef44262af47806aa4f89cc6f9a4ec04a818ee429d541a217cff5d6c14f4",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 616,
+      "part": "б",
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "canonicalConditionSha256": "1ce02ddf5b122a86eefeb41020f90e371a73141a9c4fb2e81684956b3d31148c",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 616,
+      "part": "в",
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "canonicalConditionSha256": "02fbac560af14f4704f140548bd9212e90c8b15ffe86c05b5a5bca2b6942871b",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 617,
+      "part": "single",
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "canonicalConditionSha256": "48dc0e5e2cdc63d028b5e0af2d5aca225f81d3111afe8d5aca7d6a76002240dd",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 618,
+      "part": "single",
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "canonicalConditionSha256": "65944aac24419ed1c2fa292e4a65a6ee4c3f98018ac183e63beaefef70d8a141",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 619,
+      "part": "single",
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "canonicalConditionSha256": "575fd22561c7ebda27a24f14cd8c28b3cc341442b63726f4ea34bef3b5837c07",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 620,
+      "part": "а",
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "canonicalConditionSha256": "ec22a1e447971311fce7d776b783ee90074783f504b480a38f5608a867c7b820",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 620,
+      "part": "б",
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "canonicalConditionSha256": "ee0886c6d9396e8f18bf39995b795df6e18559672dc3024b52276a0fd94e9104",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 621,
+      "part": "single",
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "canonicalConditionSha256": "eb176f60605cdbe31013bdd2ce7ae75dc636440aa7c0d36a560dbcd1a22f332e",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 622,
+      "part": "single",
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "canonicalConditionSha256": "5a774e50c54e5d4b13f902f19ae4333dfa706ec267f8b555c14646b2ee6156a0",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 623,
+      "part": "а",
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "canonicalConditionSha256": "8287ad74d1caa0f195538d11f91c5197987f1eee54e11880d6bbd766145b9c86",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 623,
+      "part": "б",
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "canonicalConditionSha256": "b329f841e06b631221adf7df72c3ffc2d6ad050f0d223b6e4384c5413e1eece3",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 624,
+      "part": "single",
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "canonicalConditionSha256": "fc936ec544a559990d6778e8a74b7e4e0cf325ea1069a161b7d612758fbdc02b",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 625,
+      "part": "single",
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "canonicalConditionSha256": "f91fdecad62a69292074004a4b370118b7f8bd121df03920b0c15a4fa05e179f",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 626,
+      "part": "single",
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "canonicalConditionSha256": "3095515b3ab209707aac52d44864f2b85ba37ad0843319959295fac5d29e4755",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 627,
+      "part": "single",
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "canonicalConditionSha256": "2d0ce0114ef750793417962133d91a5ca19c8f68016e90b99a4cd4cc2f6bda93",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 628,
+      "part": "single",
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "canonicalConditionSha256": "f9508d97d0bbcc4f87d80207f267e19b562135d9c2dda7ee7709c8128575034a",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 629,
+      "part": "single",
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "canonicalConditionSha256": "b26026efb54d4d4a4043e58416c815ea991e1c66349b3818f2ea1f61ebfba830",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 630,
+      "part": "single",
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "canonicalConditionSha256": "4c19ad1bbcde2c1e82fac96c3a1d9ce12572612ad90ca0a0d2a1031b1fecb2ea",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 631,
+      "part": "single",
+      "printedPages": [
+        161
+      ],
+      "pdfPages": [
+        162
+      ],
+      "canonicalConditionSha256": "68e9c4587f006edbaa7bf464cbabdcf7e0d94481f4a2578315cccbda94bcd47d",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 632,
+      "part": "single",
+      "printedPages": [
+        161
+      ],
+      "pdfPages": [
+        162
+      ],
+      "canonicalConditionSha256": "ef0a182bb6051d9df8f00e4a9a49b19e36614dd733e66903e208da895590b7d5",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 633,
+      "part": "single",
+      "printedPages": [
+        161
+      ],
+      "pdfPages": [
+        162
+      ],
+      "canonicalConditionSha256": "f1eb47739534b2d1f9a6ea748cf030bf4bb03b8329dc34672fe6a01fdd18b653",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 634,
+      "part": "single",
+      "printedPages": [
+        161
+      ],
+      "pdfPages": [
+        162
+      ],
+      "canonicalConditionSha256": "64df55a36e8b7d6ca82a7173eff8d30ac6a72fbe6822319b9238b5eab22f43ed",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 635,
+      "part": "single",
+      "printedPages": [
+        161
+      ],
+      "pdfPages": [
+        162
+      ],
+      "canonicalConditionSha256": "f778e3cb520ab341076483887f9d8492aa13ba37ef89f4f5072faec631523eee",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 636,
+      "part": "single",
+      "printedPages": [
+        161
+      ],
+      "pdfPages": [
+        162
+      ],
+      "canonicalConditionSha256": "e8b211fac4c0c7c3e4671ca2ccfa5d95123a883e7b3f9b2858aba8076c822f5c",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 637,
+      "part": "а",
+      "printedPages": [
+        161
+      ],
+      "pdfPages": [
+        162
+      ],
+      "canonicalConditionSha256": "ed6124b030c8c3208d5b9c60a8109d540bcb7cb40d0d603fe191e727cac7fdb1",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 637,
+      "part": "б",
+      "printedPages": [
+        161
+      ],
+      "pdfPages": [
+        162
+      ],
+      "canonicalConditionSha256": "5c814625de1e4d86c9a81c36c9b60237e695e811a17b3ef601e13d5a50c88652",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 638,
+      "part": "а",
+      "printedPages": [
+        161
+      ],
+      "pdfPages": [
+        162
+      ],
+      "canonicalConditionSha256": "a9d80e421330e0b4d086b7348aa2b5f7f8709cb3b0968499539d179a414ae0a7",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 638,
+      "part": "б",
+      "printedPages": [
+        161
+      ],
+      "pdfPages": [
+        162
+      ],
+      "canonicalConditionSha256": "151fcb2743fa9ad289e158d34c42cbe266b1a57513c0c6c988c91b944d575e5e",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 638,
+      "part": "в",
+      "printedPages": [
+        161
+      ],
+      "pdfPages": [
+        162
+      ],
+      "canonicalConditionSha256": "3fd773d1edeee4367d0338c8155921c35cc68dc3791d31538bc609ea8e7c871f",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 638,
+      "part": "г",
+      "printedPages": [
+        161
+      ],
+      "pdfPages": [
+        162
+      ],
+      "canonicalConditionSha256": "68fcf935c9b7981765c93f85dc88657b003dc4ca1ee0ea1981ab7664813ef239",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 638,
+      "part": "д",
+      "printedPages": [
+        161
+      ],
+      "pdfPages": [
+        162
+      ],
+      "canonicalConditionSha256": "43570e8e56109b510299e7376af42e5a4f00e37ac18dca85c36e8b302faf5c1e",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 639,
+      "part": "а",
+      "printedPages": [
+        162
+      ],
+      "pdfPages": [
+        163
+      ],
+      "canonicalConditionSha256": "55f9bc11633bb650b522835a20b009d456b477dd82ba763d5a32768f11a5c984",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 639,
+      "part": "б",
+      "printedPages": [
+        162
+      ],
+      "pdfPages": [
+        163
+      ],
+      "canonicalConditionSha256": "6c51f05c755530306d347a51f1f4faa7f19b9cbd909ba27c2fa796a5c6fe7874",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 639,
+      "part": "в",
+      "printedPages": [
+        162
+      ],
+      "pdfPages": [
+        163
+      ],
+      "canonicalConditionSha256": "205478ddff562c325e289908d72a7a01fd175b44a17aa04e0ca707a27f5a825c",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 639,
+      "part": "г",
+      "printedPages": [
+        162
+      ],
+      "pdfPages": [
+        163
+      ],
+      "canonicalConditionSha256": "09f5a16d131927b22d3944cec6440c08ff80b166c95cd855c0b23868e47e77b1",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "exercise",
+      "number": 639,
+      "part": "д",
+      "printedPages": [
+        162
+      ],
+      "pdfPages": [
+        163
+      ],
+      "canonicalConditionSha256": "756ee5f823e9f5ee5f8befc25e44b886b2b69e558223a22b6028d4c6ce1b7f8f",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "theory",
+      "number": 54,
+      "part": null,
+      "printedPages": [
+        139,
+        140,
+        141,
+        142
+      ],
+      "pdfPages": [
+        140,
+        141,
+        142,
+        143
+      ],
+      "canonicalConditionSha256": "a5b9a986d7d447313dee47e571cababed37c1e46464e2895646fe0af91f6c3c5",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "theory",
+      "number": 55,
+      "part": null,
+      "printedPages": [
+        142,
+        143,
+        144
+      ],
+      "pdfPages": [
+        143,
+        144,
+        145
+      ],
+      "canonicalConditionSha256": "09b4ea55bf1aa7472f6881b1be3ec2968455c96398fa0bef98f448ccf2336091",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "theory",
+      "number": 56,
+      "part": null,
+      "printedPages": [
+        144
+      ],
+      "pdfPages": [
+        145
+      ],
+      "canonicalConditionSha256": "664000c368e4d83cedba1842e0f76b72e531282fdd9244f27b2659d3617f719e",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "theory",
+      "number": 57,
+      "part": null,
+      "printedPages": [
+        146,
+        147
+      ],
+      "pdfPages": [
+        147,
+        148
+      ],
+      "canonicalConditionSha256": "ccda1d3041a015279a8b16f8c272a194bf3ca15447ec3534d3c2f3e3238472d1",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "theory",
+      "number": 58,
+      "part": null,
+      "printedPages": [
+        147,
+        148,
+        149
+      ],
+      "pdfPages": [
+        148,
+        149,
+        150
+      ],
+      "canonicalConditionSha256": "eb7300f6240ab417edfb6561b8f53a80ddcce1c14c857b2f99cd38c246ede05c",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "theory",
+      "number": 59,
+      "part": null,
+      "printedPages": [
+        149,
+        150
+      ],
+      "pdfPages": [
+        150,
+        151
+      ],
+      "canonicalConditionSha256": "f1663308d8ed924e36afa1f2278048dcc8c5ea3e2fd41948f0888366e4a9d8ee",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "theory",
+      "number": 60,
+      "part": null,
+      "printedPages": [
+        152,
+        153
+      ],
+      "pdfPages": [
+        153,
+        154
+      ],
+      "canonicalConditionSha256": "2834651d49b2ac415d048f3dd7c7621452035d2a9d58daa96c1a48ae500e057c",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "theory",
+      "number": 61,
+      "part": null,
+      "printedPages": [
+        154,
+        155
+      ],
+      "pdfPages": [
+        155,
+        156
+      ],
+      "canonicalConditionSha256": "da441a6cd9e28885481965fe9f9b64df1f0e393c217f20194cc2a64c21016a26",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "theory",
+      "number": 62,
+      "part": null,
+      "printedPages": [
+        155,
+        156
+      ],
+      "pdfPages": [
+        156,
+        157
+      ],
+      "canonicalConditionSha256": "63ea2c8f14bc85fe8a746a5b0f86ac08c3bd6d377dc491339fd0e76536cee6c8",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "selfchecks",
+      "number": 1,
+      "part": null,
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "canonicalConditionSha256": "3ecfdd2947705351a0e52276260e3ed4218f74d6bf798f06bf9cf131eef1902a",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "selfchecks",
+      "number": 2,
+      "part": null,
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "canonicalConditionSha256": "81993de0de7d2204da097fe08adfe0ccd92b417242d90d612372c318ad2a6c25",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "selfchecks",
+      "number": 3,
+      "part": null,
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "canonicalConditionSha256": "ec208943aa6d5961f9c8b8f99253ae68bbefa0b9c6d8fbcaae191460ba8727c2",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "selfchecks",
+      "number": 4,
+      "part": null,
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "canonicalConditionSha256": "c3c4174807f3a180ea70949153900a00519330d70ecfa596723c25566a0d2e17",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "selfchecks",
+      "number": 5,
+      "part": null,
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "canonicalConditionSha256": "6b1e10cbf6ea1360acafc4ce01a8308fba37167a035901fa89723b0da8ddc6ad",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "selfchecks",
+      "number": 6,
+      "part": null,
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "canonicalConditionSha256": "a1fa1797ec78717591945ebd870e567c9ac93819228ccbebcc80ced9eed0c8a0",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "selfchecks",
+      "number": 7,
+      "part": null,
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "canonicalConditionSha256": "87b88055d8abbbb47357ae0bd0e80d7f08af5aa00ce449c4f19f0ca627911820",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "selfchecks",
+      "number": 8,
+      "part": null,
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "canonicalConditionSha256": "8ec2c65eb2ffe99195647db1195563cdc01184f34c007c1331b68231aa92ff82",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "selfchecks",
+      "number": 9,
+      "part": null,
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "canonicalConditionSha256": "c898e90c207b926863faa0e8d0817d3df6f3f4374c494f766dd496eaf09e9de4",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "selfchecks",
+      "number": 10,
+      "part": null,
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "canonicalConditionSha256": "350f9cddec2f21be33c1bfa7ca678a073aab98b00b7aa7c4d93e5525cc4508ed",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "selfchecks",
+      "number": 11,
+      "part": null,
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "canonicalConditionSha256": "dd79acc156a2de4445af1ee8a52089258de812f18f30617500de77899586bf78",
+      "sourceFidelity": "PASS"
+    },
+    {
+      "kind": "selfchecks",
+      "number": 12,
+      "part": null,
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "canonicalConditionSha256": "ebb5274118b78388b130f430aa5ba14721582ee3791edc5517965dafae6a84cd",
+      "sourceFidelity": "PASS"
+    }
+  ],
+  "sourceIssues": [
+    {
+      "number": 560,
+      "part": "в",
+      "printedPage": 150,
+      "sourceValues": "S=54 cm², a=4.5 cm, b=6 cm",
+      "finding": "Impossible: maximum parallelogram area is ab=27 cm². Formal heights are12 and9 cm, not heights of an existing figure.",
+      "handlingVerified": "Condition, answer and steps preserve source numbers and explain impossibility. Visible model description identifies limiting4.5×6 rectangle with area27; no false54-area geometry.",
+      "verdict": "PASS"
+    },
+    {
+      "number": 570,
+      "part": "single",
+      "printedPage": 151,
+      "sourceValues": "r=3 cm; AP=5 cm, BQ=5 cm, CR=6 cm",
+      "finding": "Tangencies force sides10,11,11: area20√6 and true inradius5√6/4, incompatible with3.",
+      "handlingVerified": "Formal48 distinguished from existence failure in condition/answer/steps. Later Pythagoras verification is labeled as such. Visible model description states actual radius and mismatch.",
+      "verdict": "PASS"
+    }
+  ],
+  "resolvedReviewFindings": [
+    {
+      "number": 603,
+      "finding": "Initial authored transcription and reviewer note incorrectly had800×200 mm. Source actually reads800×2000 mm.",
+      "resolution": "Author corrected condition, steps, notes and model description; reviewer re-read corrected files. Source map corrected. Edge800 lies along opening diagonal,2000 along travel perpendicular to opening.",
+      "status": "resolved"
+    },
+    {
+      "number": 616,
+      "part": "б",
+      "finding": "Initial separate-card condition referred to the same trapezoid without repeating lateral-side and diagonal-intersection givens.",
+      "resolution": "Corrected standalone condition now repeats AB/CD as lateral sides and O as diagonal intersection. Re-read after regeneration.",
+      "status": "resolved"
+    },
+    {
+      "numbers": [
+        638,
+        639
+      ],
+      "finding": "Displayed grid polygons were vertically mirrored. Initial source audit compared normalized model coordinates directly with source rows and did not apply renderer y inversion, so it missed displayed orientation.",
+      "resolution": "Author reflected input coordinates before normalize. Reviewer inspected normalize and renderer projection, verified all10 projected polygons with positive scale, and actually viewed all10 focused4 neutral PNGs against source figures218/219.",
+      "status": "resolved"
+    },
+    {
+      "number": 638,
+      "part": "в",
+      "finding": "Removing grid lines also removed the required dashed BH continuation in steps2/3.",
+      "resolution": "Author now filters only background _gx/_gy segments. Reviewer read final views and viewed final steps2/3 at1280 and320 in delta5; BH is restored and joins CH.",
+      "status": "resolved"
+    }
+  ],
+  "sourceSpecificChecks": [
+    {
+      "number": 560,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "result": "h1/h2 not falsely assigned to a/b. Ordering h2>h1 yields h2=10 in а and h1=4 in б."
+    },
+    {
+      "number": 604,
+      "result": "31.5in,16:9,25cm stand depth,74cm square niche width,35cm depth preserved. Answer explicitly limits conclusion to stated dimensional model."
+    },
+    {
+      "number": 613,
+      "result": "Proof and answer explicitly interpret distances to containing lines, cover obtuse apex with foot on extension and endpoints; no silent finite-segment claim."
+    },
+    {
+      "number": 617,
+      "result": "Preserves a,b and area-bisecting parallel segment; proof explicitly derives intercept relation by area before using equal-angle area theorem, rather than assuming future similarity."
+    },
+    {
+      "number": 622,
+      "result": "All5 lengths preserved. Answer84 applies to simple quadrilateral; same-side B,D crossed contour explicitly excluded."
+    },
+    {
+      "number": 628,
+      "result": "Finite equal squares with common vertex and side along diagonal preserved. Proof subtracts CEP; model coordinates satisfy equal squares and side/diagonal incidence; overlap a²(√2−1)."
+    },
+    {
+      "number": 631,
+      "result": "Unusual printed height4√2/6 cm and ratio2/3 of larger diagonal preserved without correction."
+    },
+    {
+      "number": 637,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "result": "Both signs match source. Acute-A proof includes H beyond C and H=C; extra models exist for both, obtuse-A model has H beyond A."
+    }
+  ],
+  "gridModelChecks": [
+    {
+      "number": 638,
+      "part": "а",
+      "sourceFigure": 218,
+      "projection": "planar-viewer point(name)=[modelX,-modelY]",
+      "projectedVerticesMatchSourceRowsDownUpToTranslationAndPositiveUniformScale": true,
+      "areaSquareCm": 24.0,
+      "actualNeutralPngComparedWithSource": "PASS"
+    },
+    {
+      "number": 638,
+      "part": "б",
+      "sourceFigure": 218,
+      "projection": "planar-viewer point(name)=[modelX,-modelY]",
+      "projectedVerticesMatchSourceRowsDownUpToTranslationAndPositiveUniformScale": true,
+      "areaSquareCm": 24.0,
+      "actualNeutralPngComparedWithSource": "PASS"
+    },
+    {
+      "number": 638,
+      "part": "в",
+      "sourceFigure": 218,
+      "projection": "planar-viewer point(name)=[modelX,-modelY]",
+      "projectedVerticesMatchSourceRowsDownUpToTranslationAndPositiveUniformScale": true,
+      "areaSquareCm": 9.0,
+      "actualNeutralPngComparedWithSource": "PASS"
+    },
+    {
+      "number": 638,
+      "part": "г",
+      "sourceFigure": 218,
+      "projection": "planar-viewer point(name)=[modelX,-modelY]",
+      "projectedVerticesMatchSourceRowsDownUpToTranslationAndPositiveUniformScale": true,
+      "areaSquareCm": 12.0,
+      "actualNeutralPngComparedWithSource": "PASS"
+    },
+    {
+      "number": 638,
+      "part": "д",
+      "sourceFigure": 218,
+      "projection": "planar-viewer point(name)=[modelX,-modelY]",
+      "projectedVerticesMatchSourceRowsDownUpToTranslationAndPositiveUniformScale": true,
+      "areaSquareCm": 21.0,
+      "actualNeutralPngComparedWithSource": "PASS"
+    },
+    {
+      "number": 639,
+      "part": "а",
+      "sourceFigure": 219,
+      "projection": "planar-viewer point(name)=[modelX,-modelY]",
+      "projectedVerticesMatchSourceRowsDownUpToTranslationAndPositiveUniformScale": true,
+      "areaSquareCm": 18.0,
+      "actualNeutralPngComparedWithSource": "PASS"
+    },
+    {
+      "number": 639,
+      "part": "б",
+      "sourceFigure": 219,
+      "projection": "planar-viewer point(name)=[modelX,-modelY]",
+      "projectedVerticesMatchSourceRowsDownUpToTranslationAndPositiveUniformScale": true,
+      "areaSquareCm": 32.0,
+      "actualNeutralPngComparedWithSource": "PASS"
+    },
+    {
+      "number": 639,
+      "part": "в",
+      "sourceFigure": 219,
+      "projection": "planar-viewer point(name)=[modelX,-modelY]",
+      "projectedVerticesMatchSourceRowsDownUpToTranslationAndPositiveUniformScale": true,
+      "areaSquareCm": 27.0,
+      "actualNeutralPngComparedWithSource": "PASS"
+    },
+    {
+      "number": 639,
+      "part": "г",
+      "sourceFigure": 219,
+      "projection": "planar-viewer point(name)=[modelX,-modelY]",
+      "projectedVerticesMatchSourceRowsDownUpToTranslationAndPositiveUniformScale": true,
+      "areaSquareCm": 19.5,
+      "actualNeutralPngComparedWithSource": "PASS"
+    },
+    {
+      "number": 639,
+      "part": "д",
+      "sourceFigure": 219,
+      "projection": "planar-viewer point(name)=[modelX,-modelY]",
+      "projectedVerticesMatchSourceRowsDownUpToTranslationAndPositiveUniformScale": true,
+      "areaSquareCm": 23.5,
+      "actualNeutralPngComparedWithSource": "PASS"
+    }
+  ],
+  "unresolvedSourceFindings": [],
+  "notReviewed": [
+    "Full mathematical correctness of every lesson and interactive model. Separate independent mathematics review is required.",
+    "General browser behavior, label collisions, responsive layout and reveal states outside the14 enumerated source-comparison captures.",
+    "Release bundle integrity, preservation, deployment or production behavior."
+  ],
+  "bindingRule": "PASS applies only to the listed source/preparation file hashes and selected model entry hashes. Changed content requires delta review; no future commit or bundle is pre-approved.",
+  "sourceDeltaAudit": {
+    "previousReportSha256": "39d32879c538a0aaa31bea50fb038413264e69852bf21d12d24a15003303fa4e",
+    "preparationChanges": [
+      {
+        "path": "geometry-course/textbook/preparation/chapter-07-a.json",
+        "beforeSha256": "12d94d026b26c4cdad66cdf55c06da495f9ccd1d71df603caf4a024451a8f7bc",
+        "afterSha256": "024840fce8be7be977c566203b1445333f772a217817d0ae579914ac832fc568"
+      },
+      {
+        "path": "geometry-course/textbook/preparation/chapter-07-theory.json",
+        "beforeSha256": "42e221f55173a865220c0588478e2da168ee035523af6a8a595552a1ae7ab351",
+        "afterSha256": "7ad100d65e400e93f6541301f966c0d57458b3ddb410a416b7c6d2745df93aa7"
+      }
+    ],
+    "conditionContentUnchangedExceptWhitespace": true,
+    "whitespaceConditionChanges": [
+      {
+        "kind": "exercise",
+        "number": 542,
+        "part": "а",
+        "change": "Whitespace only"
+      },
+      {
+        "kind": "exercise",
+        "number": 542,
+        "part": "б",
+        "change": "Whitespace only"
+      },
+      {
+        "kind": "exercise",
+        "number": 542,
+        "part": "в",
+        "change": "Whitespace only"
+      },
+      {
+        "kind": "exercise",
+        "number": 547,
+        "part": "а",
+        "change": "Whitespace only"
+      },
+      {
+        "kind": "exercise",
+        "number": 547,
+        "part": "б",
+        "change": "Whitespace only"
+      },
+      {
+        "kind": "exercise",
+        "number": 549,
+        "part": "а",
+        "change": "Whitespace only"
+      },
+      {
+        "kind": "exercise",
+        "number": 549,
+        "part": "б",
+        "change": "Whitespace only"
+      },
+      {
+        "kind": "exercise",
+        "number": 549,
+        "part": "в",
+        "change": "Whitespace only"
+      },
+      {
+        "kind": "exercise",
+        "number": 550,
+        "part": "а",
+        "change": "Whitespace only"
+      },
+      {
+        "kind": "exercise",
+        "number": 550,
+        "part": "б",
+        "change": "Whitespace only"
+      },
+      {
+        "kind": "exercise",
+        "number": 551,
+        "part": "single",
+        "change": "Whitespace only"
+      },
+      {
+        "kind": "exercise",
+        "number": 552,
+        "part": "single",
+        "change": "Whitespace only"
+      },
+      {
+        "kind": "exercise",
+        "number": 553,
+        "part": "single",
+        "change": "Whitespace only"
+      },
+      {
+        "kind": "exercise",
+        "number": 554,
+        "part": "single",
+        "change": "Whitespace only"
+      },
+      {
+        "kind": "exercise",
+        "number": 556,
+        "part": "single",
+        "change": "Whitespace only"
+      },
+      {
+        "kind": "exercise",
+        "number": 557,
+        "part": "single",
+        "change": "Whitespace only"
+      },
+      {
+        "kind": "exercise",
+        "number": 558,
+        "part": "single",
+        "change": "Whitespace only"
+      },
+      {
+        "kind": "exercise",
+        "number": 559,
+        "part": "single",
+        "change": "Whitespace only"
+      },
+      {
+        "kind": "exercise",
+        "number": 561,
+        "part": "single",
+        "change": "Whitespace only"
+      },
+      {
+        "kind": "exercise",
+        "number": 562,
+        "part": "single",
+        "change": "Whitespace only"
+      },
+      {
+        "kind": "exercise",
+        "number": 565,
+        "part": "single",
+        "change": "Whitespace only"
+      }
+    ],
+    "theoryChange": "Point56/selfcheck4 step2 now says opposite corners. Both current dissection model entries were read and support that wording.",
+    "numericCases": [
+      {
+        "exercise": 569,
+        "part": "а",
+        "sourceAreaPerimeterRadius": "PASS"
+      },
+      {
+        "exercise": 569,
+        "part": "б",
+        "sourceAreaPerimeterRadius": "PASS"
+      },
+      {
+        "exercise": 569,
+        "part": "в",
+        "sourceAreaPerimeterRadius": "PASS"
+      },
+      {
+        "exercise": 574,
+        "part": "а",
+        "sourceDiagonalRatioAndArea": "PASS"
+      },
+      {
+        "exercise": 574,
+        "part": "б",
+        "sourceDiagonalRatioAndArea": "PASS"
+      },
+      {
+        "exercise": 599,
+        "part": "а",
+        "sourceRightTriangleRadiusAndTangencies": "PASS"
+      },
+      {
+        "exercise": 599,
+        "part": "б",
+        "sourceRightTriangleRadiusAndTangencies": "PASS"
+      },
+      {
+        "exercise": 602,
+        "sourceSidesApexAngleAndCircumradius": "PASS"
+      },
+      {
+        "exercise": 613,
+        "obtuseApexEqualSidesMOnBaseKOnExtensionPerpendicular": "PASS"
+      },
+      {
+        "exercise": 638,
+        "part": "а",
+        "sourceGridVerticesUnitAndArea": "PASS"
+      },
+      {
+        "exercise": 638,
+        "part": "б",
+        "sourceGridVerticesUnitAndArea": "PASS"
+      },
+      {
+        "exercise": 638,
+        "part": "в",
+        "sourceGridVerticesUnitAndArea": "PASS"
+      },
+      {
+        "exercise": 638,
+        "part": "г",
+        "sourceGridVerticesUnitAndArea": "PASS"
+      },
+      {
+        "exercise": 638,
+        "part": "д",
+        "sourceGridVerticesUnitAndArea": "PASS"
+      },
+      {
+        "exercise": 639,
+        "part": "а",
+        "sourceGridVerticesUnitAndArea": "PASS"
+      },
+      {
+        "exercise": 639,
+        "part": "б",
+        "sourceGridVerticesUnitAndArea": "PASS"
+      },
+      {
+        "exercise": 639,
+        "part": "в",
+        "sourceGridVerticesUnitAndArea": "PASS"
+      },
+      {
+        "exercise": 639,
+        "part": "г",
+        "sourceGridVerticesUnitAndArea": "PASS"
+      },
+      {
+        "exercise": 639,
+        "part": "д",
+        "sourceGridVerticesUnitAndArea": "PASS"
+      },
+      {
+        "exercise": 609,
+        "sourceShortSideFootSegmentsAndArea": "PASS"
+      },
+      {
+        "exercise": 614,
+        "sourceEquilateralTriangleAndDistanceSum": "PASS"
+      },
+      {
+        "exercise": 630,
+        "sourceSidesAndGivenDistances": "PASS"
+      }
+    ],
+    "numericTolerance": "1e-8 relative,1e-6 absolute for rounded display coordinates; projected grid relative vertex differences checked within1e-8.",
+    "finalModelSha256": {
+      "geometry-course/textbook/models/chapter-07-a.json": "ebaa8881705c79c6ae51bfff67053910d1d67f94b869e711dbe8c741434dd1f7",
+      "geometry-course/textbook/models/chapter-07-b.json": "c4920455920861cb1ff9af1feb4c4aee6b47274caf21146e5216499b19a34797",
+      "geometry-course/textbook/models/chapter-07-c.json": "516b8169ac55ac5a290da2a6d46232b853b5db777270c42779cde6abbb6e1758",
+      "geometry-course/textbook/models/chapter-07-theory.json": "83f86c8ba72c86370ca6434bdae78f177e2cc376f6819a233b30f9a5c5af9cdb"
+    },
+    "renderer": {
+      "path": "geometry-course/textbook/assets/planar-viewer.js",
+      "sha256": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061",
+      "checkedMapping": "point(name) returns[p[0],-p[1]]; displayed grid verification uses this mapping."
+    },
+    "actualSourceComparisonScreenshots": [
+      {
+        "artifactGroup": "vii-focused-4",
+        "file": "review-atanasyan-7-9-main-638-part-1-neutral-1280.png",
+        "sha256": "75e6273cc9914fb815ea5a64e8936d70e12300822cce07ba7d21ffb30f3c19cc",
+        "lessonId": "atanasyan-7-9-main-638-part-1",
+        "view": "neutral",
+        "width": 1280,
+        "actuallyViewed": true,
+        "sourceComparison": "Orientation, polygon vertices, cell counts and shape match source figure218/219.",
+        "canonicalRenderInputsSha256": "0346a05a09b4f6ab3662e79b50fd7075ef493226bacb31eb3be9d1594185bc5e"
+      },
+      {
+        "artifactGroup": "vii-focused-4",
+        "file": "review-atanasyan-7-9-main-638-part-2-neutral-1280.png",
+        "sha256": "c04f818d967cdeeff19fb02c299dd1b0bd548e2cacac8d14632f20b8f8e1f80f",
+        "lessonId": "atanasyan-7-9-main-638-part-2",
+        "view": "neutral",
+        "width": 1280,
+        "actuallyViewed": true,
+        "sourceComparison": "Orientation, polygon vertices, cell counts and shape match source figure218/219.",
+        "canonicalRenderInputsSha256": "a8c9ee59f56cb08d6a59a2213b4a4112b856837653b1f15700c1af3384df95be"
+      },
+      {
+        "artifactGroup": "vii-focused-4",
+        "file": "review-atanasyan-7-9-main-638-part-3-neutral-1280.png",
+        "sha256": "2fddfea61894a1f5dde0b8116976e4458620478d9dc27f70c2bea6e2319d4f1b",
+        "lessonId": "atanasyan-7-9-main-638-part-3",
+        "view": "neutral",
+        "width": 1280,
+        "actuallyViewed": true,
+        "sourceComparison": "Orientation, polygon vertices, cell counts and shape match source figure218/219.",
+        "canonicalRenderInputsSha256": "32d4e917ce3b9ae0229601a63f782b35d849943e8f4b2cc53fba1745a76462e3"
+      },
+      {
+        "artifactGroup": "vii-focused-4",
+        "file": "review-atanasyan-7-9-main-638-part-4-neutral-1280.png",
+        "sha256": "111958040c93a959939edfd438b0edde86b32fd13179a37a0b40ec21dccbbbc7",
+        "lessonId": "atanasyan-7-9-main-638-part-4",
+        "view": "neutral",
+        "width": 1280,
+        "actuallyViewed": true,
+        "sourceComparison": "Orientation, polygon vertices, cell counts and shape match source figure218/219.",
+        "canonicalRenderInputsSha256": "4c215655fff518eff9747dcd6d035b3180b71141bf318ec1d0e542eb9290a3e5"
+      },
+      {
+        "artifactGroup": "vii-focused-4",
+        "file": "review-atanasyan-7-9-main-638-part-5-neutral-1280.png",
+        "sha256": "2948be5adaf14c07556e496e00d78d637e8c1c80fbcd731f84b54725aeff78c5",
+        "lessonId": "atanasyan-7-9-main-638-part-5",
+        "view": "neutral",
+        "width": 1280,
+        "actuallyViewed": true,
+        "sourceComparison": "Orientation, polygon vertices, cell counts and shape match source figure218/219.",
+        "canonicalRenderInputsSha256": "6258c0660e5473227ef236634de6f5b5e03dcce3e74c6c8654e24af3fa598df1"
+      },
+      {
+        "artifactGroup": "vii-focused-4",
+        "file": "review-atanasyan-7-9-main-639-part-1-neutral-1280.png",
+        "sha256": "c9bdb20ce4ff0de1305f0cc7aaf3283c85fe7c398dfdf3e3e1f751965cd7ea43",
+        "lessonId": "atanasyan-7-9-main-639-part-1",
+        "view": "neutral",
+        "width": 1280,
+        "actuallyViewed": true,
+        "sourceComparison": "Orientation, polygon vertices, cell counts and shape match source figure218/219.",
+        "canonicalRenderInputsSha256": "c8480ba1524558b7a9caba7b0e789bec1ba5fb523535650290a6af9fa7351cb5"
+      },
+      {
+        "artifactGroup": "vii-focused-4",
+        "file": "review-atanasyan-7-9-main-639-part-2-neutral-1280.png",
+        "sha256": "e092ea39e1a831b0f355187395f82bd144047ddaba914b6804d6e78dd2af88bb",
+        "lessonId": "atanasyan-7-9-main-639-part-2",
+        "view": "neutral",
+        "width": 1280,
+        "actuallyViewed": true,
+        "sourceComparison": "Orientation, polygon vertices, cell counts and shape match source figure218/219.",
+        "canonicalRenderInputsSha256": "1bfec968cd843962e04ccf18fb485489d9038599aa41a39c87bb0574e5551dc3"
+      },
+      {
+        "artifactGroup": "vii-focused-4",
+        "file": "review-atanasyan-7-9-main-639-part-3-neutral-1280.png",
+        "sha256": "9d863edec6157771f15cc0ad3eeef638db47474c39735948ee7913f2ef926a4f",
+        "lessonId": "atanasyan-7-9-main-639-part-3",
+        "view": "neutral",
+        "width": 1280,
+        "actuallyViewed": true,
+        "sourceComparison": "Orientation, polygon vertices, cell counts and shape match source figure218/219.",
+        "canonicalRenderInputsSha256": "aa0a8be051675831ad212940ff5f035d71300c4cfbd57f36d18c7059dbf58a80"
+      },
+      {
+        "artifactGroup": "vii-focused-4",
+        "file": "review-atanasyan-7-9-main-639-part-4-neutral-1280.png",
+        "sha256": "9c8f2f3bf356c388786e60078635446509e1071140bb67a75b70a360a86dbf9d",
+        "lessonId": "atanasyan-7-9-main-639-part-4",
+        "view": "neutral",
+        "width": 1280,
+        "actuallyViewed": true,
+        "sourceComparison": "Orientation, polygon vertices, cell counts and shape match source figure218/219.",
+        "canonicalRenderInputsSha256": "171b8e9ea968fb583aea02d11f506b1f085d2f12f7e91c66e5a41dece94b8399"
+      },
+      {
+        "artifactGroup": "vii-focused-4",
+        "file": "review-atanasyan-7-9-main-639-part-5-neutral-1280.png",
+        "sha256": "5f943e5782aa1a0385e5f0123963e7694236d11cb4015f6e52bda87a40ddab31",
+        "lessonId": "atanasyan-7-9-main-639-part-5",
+        "view": "neutral",
+        "width": 1280,
+        "actuallyViewed": true,
+        "sourceComparison": "Orientation, polygon vertices, cell counts and shape match source figure218/219.",
+        "canonicalRenderInputsSha256": "a7d14185df6f8f4fac4de7e4744cfdbb799a4b99530a475224921f5cbc4fc846"
+      },
+      {
+        "artifactGroup": "vii-delta-5",
+        "file": "review-atanasyan-7-9-main-638-part-3-step-2-1280.png",
+        "sha256": "9252c2f123a4a3f60a4490c03219fea031a15ab54087af6d598d4d2f582187c9",
+        "lessonId": "atanasyan-7-9-main-638-part-3",
+        "view": "step-2",
+        "width": 1280,
+        "actuallyViewed": true,
+        "sourceComparison": "Altitude CH and restored extension BH visibly join at H, outside AB; final orientation matches source.",
+        "canonicalRenderInputsSha256": "57d25cce06d39c4020a2428fc2c7d46c0f6d101d2ab6ef37188b7dc682141904"
+      },
+      {
+        "artifactGroup": "vii-delta-5",
+        "file": "review-atanasyan-7-9-main-638-part-3-step-2-320.png",
+        "sha256": "84dcc0a2e89f08959e18bb2ee16a27c40f35ac753477e14cd4b7b53262cf5c42",
+        "lessonId": "atanasyan-7-9-main-638-part-3",
+        "view": "step-2",
+        "width": 320,
+        "actuallyViewed": true,
+        "sourceComparison": "Altitude CH and restored extension BH visibly join at H, outside AB; final orientation matches source.",
+        "canonicalRenderInputsSha256": "57d25cce06d39c4020a2428fc2c7d46c0f6d101d2ab6ef37188b7dc682141904"
+      },
+      {
+        "artifactGroup": "vii-delta-5",
+        "file": "review-atanasyan-7-9-main-638-part-3-step-3-1280.png",
+        "sha256": "9252c2f123a4a3f60a4490c03219fea031a15ab54087af6d598d4d2f582187c9",
+        "lessonId": "atanasyan-7-9-main-638-part-3",
+        "view": "step-3",
+        "width": 1280,
+        "actuallyViewed": true,
+        "sourceComparison": "Altitude CH and restored extension BH visibly join at H, outside AB; final orientation matches source.",
+        "canonicalRenderInputsSha256": "c754d8d4b6e597cc3f327c261055b842f336a049de994a1a2f0ed9333b5cf630"
+      },
+      {
+        "artifactGroup": "vii-delta-5",
+        "file": "review-atanasyan-7-9-main-638-part-3-step-3-320.png",
+        "sha256": "84dcc0a2e89f08959e18bb2ee16a27c40f35ac753477e14cd4b7b53262cf5c42",
+        "lessonId": "atanasyan-7-9-main-638-part-3",
+        "view": "step-3",
+        "width": 320,
+        "actuallyViewed": true,
+        "sourceComparison": "Altitude CH and restored extension BH visibly join at H, outside AB; final orientation matches source.",
+        "canonicalRenderInputsSha256": "c754d8d4b6e597cc3f327c261055b842f336a049de994a1a2f0ed9333b5cf630"
+      }
+    ],
+    "captureBundles": [
+      {
+        "artifactGroup": "vii-focused-4",
+        "bundleSha256": "975b2c05c52ffec8fe34be3cf18cb2df36c582d302e273f87d6f7e777cf74bbd",
+        "scope": "Only listed neutral grid views; each render-input binding compared to current models."
+      },
+      {
+        "artifactGroup": "vii-delta-5",
+        "bundleSha256": "42d3cfaa4fc4fc23484c6fd59bc744f7e3a55e58341320c654796f4f63e59109",
+        "scope": "Only listed final638в steps2/3 at two widths."
+      }
+    ],
+    "verdict": "PASS"
+  }
+}

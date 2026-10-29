@@ -26,6 +26,8 @@ def require(ok,message):
 def frozen(root=ROOT):
  raw=(root/FIXTURE).read_bytes();require(sha(raw)==FIXTURE_SHA,'755-card oracle changed');return json.loads(raw)
 def previous_inventory(raw,root=ROOT):
+ from chapter07_extension import has_vii,previous_inventory as before_vii
+ if has_vii(raw):raw=before_vii(raw,root)
  current=json.loads(raw);require(raw==encoded(current),'Unrelated source-index formatting changes')
  require(current.get('paragraphs',[])[-3:]==PARAGRAPHS,'VI paragraphs must be the exact reviewed suffix')
  old=deepcopy(current);old['paragraphs']=old['paragraphs'][:-3]
@@ -40,6 +42,11 @@ def validate_extension(root=ROOT,course=None):
  require(review.get('preservedCards')==755 and review.get('contentApprovalGranted') is False,'Runtime review cannot approve content')
  oldfiles={name:base['immutableFiles'][PREFIX+name] for name in RUNTIME}
  files={name:sha((course/name).read_bytes()) for name in RUNTIME}
+ from chapter07_extension import has_vii,previous_inventory as before_vii,validate_extension as validate_vii
+ inventory_raw=(course/'source-inventory.json').read_bytes()
+ if has_vii(inventory_raw):
+  validate_vii(root,course)
+  files['source-inventory.json']=sha(before_vii(inventory_raw,root))
  require(review.get('oldImplementationSha256')==digest(oldfiles)==base['implementationSha256'],'Wrong prior runtime chain')
  require(review.get('implementationFiles')==files and review.get('implementationSha256')==digest(files),'Stale extension runtime files')
  require([name for name in RUNTIME if oldfiles[name]!=files[name]]==['source-inventory.json'],'Only the source paragraph index may change')
@@ -55,6 +62,8 @@ def validate_extension(root=ROOT,course=None):
  return review,{'path':RECEIPT,'sha256':sha(raw)}
 def restore_manifest(name,raw,root=ROOT,course=None):
  """Undo ONLY this amendment, then compare the entire previous manifest bytes."""
+ from chapter07_extension import BINDING as VII_BINDING,restore_manifest as before_vii_manifest
+ if VII_BINDING in json.loads(raw):raw=before_vii_manifest(name,raw,root,course)
  base=frozen(root);review,binding=validate_extension(root,course);obj=json.loads(raw)
  require(raw==encoded(obj),'Unrelated review formatting change')
  require(obj.pop('runtimeExtensionReview',None)==binding,'Missing/stale extension binding')
@@ -64,11 +73,13 @@ def restore_manifest(name,raw,root=ROOT,course=None):
  return oldraw
 
 def assert_755_preserved(bundle,root=ROOT):
- base=frozen(root);lessons=[x for x in bundle['lessons'] if x['source']['chapter']!='VI'];entries=[x for x in bundle['catalog']['entries'] if x['source']['chapter']!='VI']
+ base=frozen(root);lessons=[x for x in bundle['lessons'] if x['source']['chapter'] not in ('VI','VII')];entries=[x for x in bundle['catalog']['entries'] if x['source']['chapter'] not in ('VI','VII')]
  require(len(lessons)==len(entries)==755,'Unexpected old-card scope')
  require(digest(lessons)==base['lessonsSha256'],'Previous755 lesson/order/review/storage identity changed')
  require(digest(entries)==base['catalogEntriesSha256'],'Previous755 catalog changed')
  review,_=validate_extension(root)
+ from chapter07_extension import has_vii,validate_extension as validate_vii
+ if has_vii((root/PREFIX/'source-inventory.json').read_bytes()):review,_=validate_vii(root)
  require(bundle['build']['implementationSha256']==review['implementationSha256'],'Stale bundle runtime')
  require(bundle['sourceInventory']==json.loads((root/PREFIX/'source-inventory.json').read_bytes()),'Stale bundle source index')
  for name,expected in base['immutableFiles'].items():
