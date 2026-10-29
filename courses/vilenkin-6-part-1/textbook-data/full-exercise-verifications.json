@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "scope": "Only explicitly enumerated and independently reviewed original numbered exercises; no completion inferred from card counts.",
+  "fullExerciseVerifications": [
+    {
+      "sourceId": "p1-exercise-2-97",
+      "sourcePdfSha256": "4d00b6a2515f3e3b2e3de02ce53754f179d3f54b7347065484fe699293aad96f",
+      "printedPage": 56,
+      "pdfPage": 57,
+      "allSourceSubpartsEnumerated": true,
+      "sourceSubparts": [
+        {
+          "part": "а",
+          "taskId": "v6-book-2-97-а"
+        },
+        {
+          "part": "б",
+          "taskId": "v6-book-2-97-б"
+        },
+        {
+          "part": "в",
+          "taskId": "v6-book-2-97-в"
+        },
+        {
+          "part": "г",
+          "taskId": "v6-book-2-97-г"
+        },
+        {
+          "part": "д",
+          "taskId": "v6-book-2-97-д"
+        },
+        {
+          "part": "е",
+          "taskId": "v6-book-2-97-е"
+        },
+        {
+          "part": "ж",
+          "taskId": "v6-book-2-97-ж"
+        },
+        {
+          "part": "з",
+          "taskId": "v6-book-2-97-з"
+        }
+      ],
+      "independentReview": {
+        "file": "docs/reports/VILENKIN6_EXERCISE_COMPLETENESS_REVIEW_20261030.json",
+        "sha256": "30babafbdbdb331f172409517a065f60a9eb23e01391d1c0af6e25ef867b90fe"
+      }
+    },
+    {
+      "sourceId": "p1-exercise-2-134",
+      "sourcePdfSha256": "4d00b6a2515f3e3b2e3de02ce53754f179d3f54b7347065484fe699293aad96f",
+      "printedPage": 62,
+      "pdfPage": 63,
+      "allSourceSubpartsEnumerated": true,
+      "sourceSubparts": [
+        {
+          "part": "а",
+          "taskId": "v6-book-2-134-а"
+        },
+        {
+          "part": "б",
+          "taskId": "v6-book-2-134-б"
+        },
+        {
+          "part": "в",
+          "taskId": "v6-book-2-134-в"
+        },
+        {
+          "part": "г",
+          "taskId": "v6-book-2-134-г"
+        },
+        {
+          "part": "д",
+          "taskId": "v6-book-2-134-д"
+        },
+        {
+          "part": "е",
+          "taskId": "v6-book-2-134-е"
+        },
+        {
+          "part": "ж",
+          "taskId": "v6-book-2-134-ж"
+        },
+        {
+          "part": "з",
+          "taskId": "v6-book-2-134-з"
+        }
+      ],
+      "independentReview": {
+        "file": "docs/reports/VILENKIN6_EXERCISE_COMPLETENESS_REVIEW_20261030.json",
+        "sha256": "30babafbdbdb331f172409517a065f60a9eb23e01391d1c0af6e25ef867b90fe"
+      }
+    }
+  ]
+}

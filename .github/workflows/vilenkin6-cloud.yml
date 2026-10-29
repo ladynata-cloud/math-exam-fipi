@@ -8,6 +8,9 @@ on:
       - 'Dockerfile'
       - 'tools/vilenkin6-course/**'
       - 'tools/learning-vilenkin6.dom.cjs'
+      - 'tools/learning-vilenkin-textbook.dom.cjs'
+      - 'tools/learning-vilenkin-textbook.browser.cjs'
+      - 'tools/learning-number-theory-route.dom.cjs'
       - 'docs/tasks/VILENKIN6_CLOUD_CABINET.md'
       - '.github/workflows/vilenkin6-cloud.yml'
 permissions:
@@ -27,11 +30,20 @@ jobs:
       - name: Install locked backend and isolated DOM dependencies
         run: |
           npm --prefix board-server ci --include=optional
-          npm install --prefix "$RUNNER_TEMP/v6-cloud" --no-save --no-package-lock --ignore-scripts linkedom@0.18.14 jsdom@26.1.0
+          npm install --prefix "$RUNNER_TEMP/v6-cloud" --no-save --no-package-lock --ignore-scripts linkedom@0.18.14 jsdom@26.1.0 playwright@1.62.1
+          node "$RUNNER_TEMP/v6-cloud/node_modules/playwright/cli.js" install --with-deps chromium
           echo "NODE_PATH=$RUNNER_TEMP/v6-cloud/node_modules" >> "$GITHUB_ENV"
       - name: Cloud persistence, managed course and standalone regression
         run: |
-          node --test board-server/test/learning-vilenkin6.test.js
+          node --test board-server/test/learning-vilenkin6.test.js board-server/test/learning-vilenkin-textbook.test.js
+          node tools/vilenkin6-course/build-textbook-catalog.cjs --check
+          node --test tools/vilenkin6-course/textbook-managed-dom.cjs tools/learning-vilenkin-textbook.dom.cjs tools/learning-number-theory-route.dom.cjs
+          node tools/vilenkin6-course/textbook-dom.cjs
+          node --test tools/vilenkin6-course/textbook-support.test.cjs tools/vilenkin6-course/textbook-source-labels.test.cjs tools/vilenkin6-course/textbook-integrated-support.test.cjs
+          python3 tools/vilenkin6-course/coverage-inventory.py --check
+          python3 tools/vilenkin6-course/coverage-inventory.test.py
+          node tools/learning-vilenkin-textbook.browser.cjs
+          node tools/vilenkin6-course/textbook-support-browser.cjs
           node tools/vilenkin6-course/check.cjs
           node tools/vilenkin6-course/dom.cjs
           node tools/vilenkin6-course/managed-dom.cjs

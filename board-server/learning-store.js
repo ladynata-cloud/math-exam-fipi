@@ -463,7 +463,7 @@ class LearningStore {
     const runFilter = this.runGuard ? `AND id NOT IN (SELECT a.attempt_id FROM learning_run_attempts a
       JOIN learning_runs r ON r.id=a.run_id WHERE r.finished_at IS NULL)` : '';
     const rows = this.db.prepare(`SELECT id,trainer_id,json_extract(task_json,'$.contentId') AS content_id,outcome,updated_at,created_at
-      FROM attempts WHERE learner_id=? AND archived_at IS NULL AND trainer_id IN ('ege-path','oge-basics','motion-grade6','vilenkin6-part1','atanasyan-7-9')
+      FROM attempts WHERE learner_id=? AND archived_at IS NULL AND trainer_id IN ('ege-path','oge-basics','motion-grade6','vilenkin6-part1','vilenkin6-textbook','atanasyan-7-9')
         AND id NOT IN (SELECT attempt_id FROM assignments WHERE status!='published')
         ${runFilter}
       ORDER BY updated_at DESC,id DESC`).iterate(auth.id);
@@ -499,7 +499,7 @@ class LearningStore {
   }
   grade7Exposure(learnerId, trainerId, taskSpec, excludeAttemptId = '') {
     // Pinned finite banks retain exposure; leave other legacy assessment alone.
-    if (!(trainerId === 'ege-path' && taskSpec?.task?.grade7 === true) && !['motion-grade6','vilenkin6-part1'].includes(trainerId)) return null;
+    if (!(trainerId === 'ege-path' && taskSpec?.task?.grade7 === true) && !['motion-grade6','vilenkin6-part1','vilenkin6-textbook'].includes(trainerId)) return null;
     // Reset clears current progress, not knowledge of an already shown question.
     // Archived homework has lost its former publication status, so conservatively
     // retain it; an unpublished current draft is not learner exposure.
@@ -533,13 +533,14 @@ class LearningStore {
       const exposure = this.grade7Exposure(auth.id, body.trainerId, generated.taskSpec);
       if (exposure) {
         // Motion has exactly 12 authored exercises per lesson, independent of seed.
-        for (let tries = 0; !['motion-grade6','vilenkin6-part1'].includes(body.trainerId) && tries < 15 && (exposure.truncated || exposure.fingerprints.has(this.taskFingerprint(generated.taskSpec))); tries++) {
+        for (let tries = 0; !['motion-grade6','vilenkin6-part1','vilenkin6-textbook'].includes(body.trainerId) && tries < 15 && (exposure.truncated || exposure.fingerprints.has(this.taskFingerprint(generated.taskSpec))); tries++) {
           generated = this.contracts.create(body.trainerId, body.contentId);
         }
       } else if (source && body.fresh) {
         const sourceFingerprint = this.taskFingerprint(parse(source.task_json));
         for (let tries = 0; tries < 15 && this.taskFingerprint(generated.taskSpec) === sourceFingerprint; tries++) generated = this.contracts.create(body.trainerId, body.contentId);
       }
+      if (body.trainerId === 'vilenkin6-textbook' && exposure && (exposure.truncated || exposure.fingerprints.has(this.taskFingerprint(generated.taskSpec)))) generated.state.task.repeated = true;
       const attempt = this.newAttempt(auth.id, auth.teacherId, body.trainerId, generated, source?.id || null);
       if (lesson) {
         seats.find(seat => seat.learnerId === auth.id).attemptId = attempt.id;
@@ -659,6 +660,12 @@ class LearningStore {
             else if (prior.outcome !== 'started') attempt.outcome = 'repeated';
           }
         }
+      }
+      if (attempt.trainerId === 'vilenkin6-textbook' && attempt.outcome === 'practiced') {
+        // Another tab can expose the finite source task after this attempt was
+        // opened. Keep its renderer result consistent with the server verdict.
+        attempt.state.task.repeated = true;
+        if (attempt.state.task.status === 'independent') attempt.state.task.status = 'repeated';
       }
       attempt.version++; if (semantic) attempt.trainerVersion++; attempt.updatedAt = this.clock();
       this.run('UPDATE attempts SET state_json=?,strokes_json=?,version=?,trainer_version=?,controller=?,assistance_json=?,outcome=?,updated_at=? WHERE id=?',
