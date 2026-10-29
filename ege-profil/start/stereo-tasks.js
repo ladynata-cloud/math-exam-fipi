@@ -47,6 +47,108 @@
     if (key === 'scale' || key === 'cut' || text === key || /=|основан|поверх|объём|объем|площадь|радиус|высота|ребро|сторон/i.test(text)) return text;
     return `${({ area: 'S основания', volume: 'V', a: 'a', b: 'b', h: 'h', r: 'r', l: 'l', d: 'd', diameter: 'd', inner: 'r', coneHeight: 'h конуса' })[key] || key} = ${text}`;
   }
+  // BEGIN GENERATED PROFILE VISIBILITY FALLBACK
+  function visibilityParts(a, b, surfaces, tolerance) {
+    const delta = sub(b, a), cross2 = (u, v) => u[0] * v[1] - u[1] * v[0];
+    const parameterTolerance = Math.min(1e-7, tolerance / Math.max(Math.hypot(...delta), tolerance));
+    const at = t => add(a, mul(delta, t));
+    const hidden = [];
+    for (const face of surfaces) {
+      if (face.sphere) {
+        const { center, radius } = face.sphere, offset = sub(a, center), cuts = [0, 1];
+        const roots = (A, B, C) => {
+          if (Math.abs(A) < 1e-20) { if (Math.abs(B) > 1e-20) cuts.push(-C / B); return; }
+          let discriminant = B * B - 4 * A * C;
+          if (Math.abs(discriminant) <= 1e-12 * (B * B + Math.abs(4 * A * C))) discriminant = 0;
+          if (discriminant >= 0) { const d = Math.sqrt(discriminant); cuts.push((-B - d) / (2 * A), (-B + d) / (2 * A)); }
+        };
+        if (face.surface) {
+          // Great circles are stored as short chords. Only the explicitly
+          // reviewed ring strokes represent arcs on this sphere's surface.
+          if (Math.abs(delta[2]) > tolerance) cuts.push(-offset[2] / delta[2]);
+        } else {
+          roots(delta[0] ** 2 + delta[1] ** 2, 2 * (offset[0] * delta[0] + offset[1] * delta[1]), offset[0] ** 2 + offset[1] ** 2 - radius ** 2);
+          roots(dot(delta, delta), 2 * dot(offset, delta), dot(offset, offset) - radius ** 2);
+        }
+        const sorted = cuts.filter(t => t >= 0 && t <= 1).sort((x, y) => x - y);
+        for (let i = 1; i < sorted.length; i++) {
+          const start = sorted[i - 1], end = sorted[i];
+          if (end - start < 1e-10) continue;
+          const p = sub(at((start + end) / 2), center), radial2 = p[0] ** 2 + p[1] ** 2;
+          const covered = face.surface ? p[2] < -tolerance
+            : radial2 < radius ** 2 * (1 - 1e-12) && Math.sqrt(Math.max(0, radius ** 2 - radial2)) > p[2] + tolerance;
+          if (covered) hidden.push([start, end]);
+        }
+        continue;
+      }
+      const { vertices, normal } = face;
+      if (Math.abs(normal[2]) < 1e-10) continue; // An edge-on face covers no area.
+      const depthDifference = p => dot(normal, sub(vertices[0], p)) / normal[2];
+      const da = depthDifference(a), db = depthDifference(b);
+      if (Math.max(da, db) <= tolerance) continue; // On or in front of this face.
+      const cuts = [0, 1];
+      if ((da - tolerance) * (db - tolerance) < 0) cuts.push((tolerance - da) / (db - da));
+      const length2 = delta[0] ** 2 + delta[1] ** 2;
+      for (let i = 0; i < vertices.length; i++) {
+        const p = vertices[i], q = vertices[(i + 1) % vertices.length];
+        const edge = sub(q, p), offset = sub(p, a), denominator = cross2(delta, edge);
+        const scale = Math.sqrt(length2 * (edge[0] ** 2 + edge[1] ** 2));
+        if (Math.abs(denominator) > scale * 1e-12) {
+          const t = cross2(offset, edge) / denominator, u = cross2(offset, delta) / denominator;
+          if (t > 0 && t < 1 && u >= -1e-10 && u <= 1 + 1e-10) cuts.push(t);
+        } else if (length2 > tolerance ** 2 && Math.abs(cross2(offset, delta)) <= tolerance * Math.sqrt(length2)) {
+          for (const v of [p, q]) {
+            const t = ((v[0] - a[0]) * delta[0] + (v[1] - a[1]) * delta[1]) / length2;
+            if (t > 0 && t < 1) cuts.push(t);
+          }
+        }
+      }
+      function inside(p) {
+        let enclosed = false;
+        for (let i = 0, j = vertices.length - 1; i < vertices.length; j = i++) {
+          const v = vertices[j], w = vertices[i], e = sub(w, v), relative = sub(p, v);
+          const len = Math.hypot(e[0], e[1]);
+          if (len > tolerance && Math.abs(cross2(e, relative)) <= tolerance * len
+              && relative[0] * e[0] + relative[1] * e[1] >= -tolerance * len
+              && relative[0] * e[0] + relative[1] * e[1] <= len * len + tolerance * len) return true;
+          if ((v[1] > p[1]) !== (w[1] > p[1])
+              && p[0] < (w[0] - v[0]) * (p[1] - v[1]) / (w[1] - v[1]) + v[0]) enclosed = !enclosed;
+        }
+        return enclosed;
+      }
+      cuts.sort((x, y) => x - y);
+      for (let i = 1; i < cuts.length; i++) {
+        const start = cuts[i - 1], end = cuts[i];
+        if (end - start < 1e-10) continue;
+        const p = at((start + end) / 2);
+        if (depthDifference(p) > tolerance && inside(p)) hidden.push([start, end]);
+      }
+    }
+    hidden.sort((x, y) => x[0] - y[0]);
+    const merged = [];
+    for (const interval of hidden) {
+      // Coordinate rounding must not create a zero-pixel phantom dash at a
+      // vertex. Discard only intervals below the same world-space tolerance
+      // used for depth, and keep an exact partition of the remaining line.
+      if (interval[1] - interval[0] <= parameterTolerance) continue;
+      if (interval[0] < parameterTolerance) interval[0] = 0;
+      if (interval[1] > 1 - parameterTolerance) interval[1] = 1;
+      const last = merged[merged.length - 1];
+      if (last && interval[0] <= last[1] + parameterTolerance) last[1] = Math.max(last[1], interval[1]);
+      else merged.push(interval.slice());
+    }
+    const result = [];
+    let start = 0;
+    for (const [from, to] of merged) {
+      if (from > start + 1e-10) result.push({ start, end: from, hidden: false });
+      result.push({ start: from, end: to, hidden: true });
+      start = to;
+    }
+    if (start < 1 - 1e-10) result.push({ start, end: 1, hidden: false });
+    return result;
+  }
+
+  // END GENERATED PROFILE VISIBILITY FALLBACK
   function drawing(container, task, context) {
     const diagram = task.diagram || {};
     const shape = diagram.shape || 'box';
@@ -172,7 +274,151 @@
     function project(p) { const q = rotated(p); return [210 + q[0] * scale, 162 - q[1] * scale]; }
     const xy = p => project(p).map(v => v.toFixed(2)).join(' ');
     const path = points => points.map((p, i) => `${i ? 'L' : 'M'} ${xy(p)}`).join(' ');
-    function line3(p, q, color = C.edge, attrs = '') { return `<path d="${path([p, q])}" fill="none" stroke="${color}" stroke-width="2.4" stroke-linecap="round" ${attrs}/>`; }
+    const surfaces = [], roundBodies = [], strokes = [];
+    const tolerance = 1e-7;
+    function faceSurface(points, owner) {
+      const vertices = points.map(rotated);
+      const normal = cross(sub(vertices[1], vertices[0]), sub(vertices[2], vertices[0]));
+      if (Math.hypot(...normal) > 1e-12) surfaces.push({ vertices, normal, owner });
+    }
+    function line3(p, q, color = C.edge, attrs = '', surface = null) {
+      strokes.push({ p, q, color, attrs, surface });
+      return '';
+    }
+    function curve3(points, color, attrs = '', surface = null) {
+      const compare = (p, q) => {
+        for (let i = 0; i < 3; i++) if (Math.abs(p[i] - q[i]) > tolerance) return p[i] - q[i];
+        return 0;
+      };
+      const orientation = compare(points[0], points.at(-1)) || compare(points[1], points.at(-2));
+      const forward = orientation <= 0;
+      const lengths = points.slice(1).map((p, i) => Math.hypot(...sub(project(p), project(points[i]))));
+      const total = lengths.reduce((sum, length) => sum + length, 0);
+      let distance = 0;
+      for (let i = 1; i < points.length; i++) {
+        line3(points[i - 1], points[i], color, attrs, surface);
+        strokes.at(-1).curvePhase = { forward, start: forward ? distance : total - distance, length: lengths[i - 1] };
+        distance += lengths[i - 1];
+      }
+      return '';
+    }
+    function roundSurface(isCone, radius, height, yOffset, options = {}) {
+      const body = { isCone, radius, height, low: -height / 2 + yOffset,
+        high: height / 2 + yOffset, top: options.top !== false,
+        bottom: options.bottom !== false, inner: options.inner || 0 };
+      roundBodies.push(body); return body;
+    }
+    // Exact ray/quadric intervals for round bodies. A faceted occluder would
+    // leave small solid pieces at the ends of otherwise hidden radii.
+    function roundVisibilityParts(p, q, body, direction) {
+      const delta = sub(q, p), k = body.isCone ? body.radius / body.height : 0;
+      const roots = (a, b, c) => {
+        if (Math.abs(a) < 1e-13) return Math.abs(b) < 1e-13 ? [] : [-c / b];
+        const discriminant = b * b - 4 * a * c;
+        if (discriminant <= 1e-12 * (b * b + Math.abs(4 * a * c))) return [];
+        const root = Math.sqrt(discriminant);
+        return [(-b - root) / (2 * a), (-b + root) / (2 * a)];
+      };
+      const coefficients = (point, vector, radius) => [
+        vector[0] ** 2 + vector[2] ** 2 - k * k * vector[1] ** 2,
+        2 * (point[0] * vector[0] + point[2] * vector[2] + k * k * (body.high - point[1]) * vector[1]),
+        point[0] ** 2 + point[2] ** 2 - (body.isCone ? k * k * (body.high - point[1]) ** 2 : radius ** 2)
+      ];
+      const radii = body.inner ? [body.radius, body.inner] : [body.radius], cuts = [0, 1];
+      for (const radius of radii) {
+        const [aa, ab, ac] = coefficients(p, direction, radius);
+        const [, bb] = coefficients(q, direction, radius), bd = bb - ab;
+        const [ca, cb] = coefficients(p, delta, radius);
+        // The stroke crosses the physical side, or its viewing ray is tangent.
+        cuts.push(...roots(ca, cb, ac));
+        cuts.push(...roots(bd * bd - 4 * aa * ca, 2 * ab * bd - 4 * aa * cb, ab * ab - 4 * aa * ac));
+        for (const height of [body.low, body.high]) {
+          if (Math.abs(delta[1]) > 1e-13) cuts.push((height - p[1]) / delta[1]);
+          if (Math.abs(direction[1]) < 1e-13) continue;
+          const t = (height - p[1]) / direction[1];
+          const start = add(p, mul(direction, t));
+          const step = sub(delta, mul(direction, delta[1] / direction[1]));
+          const capRadius = body.isCone ? body.radius * (body.high - height) / body.height : radius;
+          cuts.push(...roots(step[0] ** 2 + step[2] ** 2, 2 * (start[0] * step[0] + start[2] * step[2]), start[0] ** 2 + start[2] ** 2 - capRadius ** 2));
+        }
+      }
+      const hiddenAt = point => {
+        for (const radius of radii) {
+          if (roots(...coefficients(point, direction, radius)).some(t => t > tolerance &&
+            point[1] + t * direction[1] >= body.low - tolerance && point[1] + t * direction[1] <= body.high + tolerance)) return true;
+        }
+        for (const [height, enabled] of [[body.low, body.bottom], [body.high, body.top && !body.isCone]]) {
+          if (!enabled || Math.abs(direction[1]) < 1e-13) continue;
+          const t = (height - point[1]) / direction[1];
+          if (t <= tolerance) continue;
+          const hit = add(point, mul(direction, t)), r2 = hit[0] ** 2 + hit[2] ** 2;
+          if (r2 <= body.radius ** 2 + 1e-10 && r2 >= body.inner ** 2 - 1e-10) return true;
+        }
+        return false;
+      };
+      const sorted = [...new Set(cuts.filter(t => Number.isFinite(t) && t >= 0 && t <= 1))].sort((a, b) => a - b), parts = [];
+      for (let i = 1; i < sorted.length; i++) {
+        const start = sorted[i - 1], end = sorted[i];
+        if (end - start < 1e-10) continue;
+        const hidden = hiddenAt(add(p, mul(delta, (start + end) / 2))), last = parts.at(-1);
+        if (last && last.hidden === hidden) last.end = end; else parts.push({ start, end, hidden });
+      }
+      return parts;
+    }
+    function renderStrokes() {
+      const direction = [-Math.sin(yaw) * Math.cos(pitch), Math.sin(pitch), Math.cos(yaw) * Math.cos(pitch)];
+      const layers = [[], []];
+      const sideValue = (body, p) => dot([p[0], body.isCone ? body.radius ** 2 / body.height ** 2 * (body.high - p[1]) : 0, p[2]], direction);
+      const onSide = (body, p) => p[1] >= body.low - tolerance && p[1] <= body.high + tolerance &&
+        Math.abs(Math.hypot(p[0], p[2]) - body.radius * (body.isCone ? (body.high - p[1]) / body.height : 1)) < tolerance;
+      strokes.forEach((stroke, index) => {
+        const { p, q, color } = stroke, a = rotated(p), b = rotated(q);
+        // A straight generator belongs to the smooth surface; sampled arcs are
+        // explicitly marked. Interior chords and radii must not get this exemption.
+        const owner = stroke.surface?.body || (!stroke.surface && roundBodies.find(body =>
+          onSide(body, p) && onSide(body, q) && onSide(body, mid(p, q))));
+        const sourceSurfaces = surfaces.map(face =>
+          face.sphere && stroke.surface?.sphere === face.sphere ? { ...face, surface: true } : face);
+        const parts = visibilityParts(a, b, sourceSurfaces, tolerance);
+        roundBodies.filter(body => body !== owner).forEach(body => parts.push(...roundVisibilityParts(p, q, body, direction)));
+        const cuts = [0, 1, ...parts.flatMap(part => [part.start, part.end])];
+        let ownHidden = () => false;
+        if (owner) {
+          const cap = stroke.surface?.cap;
+          const frontCap = cap === 'top' && owner.top || cap === 'bottom' && owner.bottom && direction[1] < 0;
+          if (!frontCap) {
+            const va = sideValue(owner, p), vb = sideValue(owner, q);
+            if (va * vb < 0) cuts.push(va / (va - vb));
+            ownHidden = t => va + (vb - va) * t < -tolerance;
+          }
+        }
+        const sorted = [...new Set(cuts)].sort((x, y) => x - y), intervals = [];
+        for (let i = 1; i < sorted.length; i++) {
+          const start = sorted[i - 1], end = sorted[i], t = (start + end) / 2;
+          if (end - start < 1e-10) continue;
+          const hidden = ownHidden(t) || parts.some(part => part.hidden && t >= part.start && t <= part.end);
+          const last = intervals.at(-1);
+          if (last && last.hidden === hidden) last.end = end; else intervals.push({ start, end, hidden });
+        }
+        intervals.forEach(part => {
+          const from = add(p, mul(sub(q, p), part.start)), to = add(p, mul(sub(q, p), part.end));
+          const x = project(from), y = project(to), dx = y[0] - x[0], dy = y[1] - x[1], length = Math.hypot(dx, dy);
+          if (length < .0001) return;
+          const sign = Math.abs(dx) > length * 1e-10 ? Math.sign(dx) : Math.sign(dy);
+          const along = (x[0] * dx + x[1] * dy) / length * sign;
+          const phase = stroke.curvePhase;
+          // Sampled curved paths keep one arclength phase through every chord.
+          // Canonical direction also aligns a reversed copy of the same curve.
+          const curveAlong = phase && phase.start + (phase.forward ? 1 : -1) * phase.length * part.start;
+          const offset = phase ? (phase.forward ? curveAlong : 5 - curveAlong) % 10 : (sign > 0 ? along : 5 - along) % 10;
+          const ghost = /data-ghost="true"/.test(stroke.attrs), dashed = part.hidden || ghost;
+          const attrs = stroke.attrs.replace(/\s*stroke-dasharray="[^"]*"/g, '');
+          const markup = `<path d="${path([from, to])}" fill="none" stroke="${color}" stroke-width="2.4" stroke-linecap="round" ${attrs} data-source-stroke="${index}" data-hidden="${part.hidden}" data-part-start="${part.start}" data-part-end="${part.end}"${dashed ? ` stroke-dasharray="5 5" stroke-dashoffset="${offset}"` : ''}/>`;
+          layers[part.hidden ? 0 : 1].push(markup);
+        });
+      });
+      return `<g data-visibility-layer="hidden">${layers[0].join('')}</g><g data-visibility-layer="visible">${layers[1].join('')}</g>`;
+    }
     function polygon(points, color, attrs = '') { return `<path d="${path(points)} Z" fill="${color}" ${attrs}/>`; }
     function circlePoints(r, y, from = 0, to = TAU, n = 64) { return Array.from({ length: n + 1 }, (_, i) => { const t = from + (to - from) * i / n; return [r * Math.cos(t), y, r * Math.sin(t)]; }); }
     const features = [];
@@ -185,12 +431,13 @@
     function rightAngle(origin, alongA, alongB) {
       const unit = v => mul(v, 0.09 / Math.max(Math.hypot(...v), 0.001));
       const u = unit(alongA), v = unit(alongB);
-      return `<path d="${path([add(origin, u), add(add(origin, u), v), add(origin, v)])}" fill="none" stroke="${C.height}" stroke-width="1.8" data-feature="right-angle"/>`;
+      return curve3([add(origin, u), add(add(origin, u), v), add(origin, v)], C.height, 'style="stroke-width:1.8" data-feature="right-angle"');
     }
     function solid(vertices, faces) {
       const center = mean(vertices);
       const prepared = faces.map(face => {
         const points = face.indices.map(i => vertices[i]);
+        faceSurface(points);
         let normal = face.normal || cross(sub(points[1], points[0]), sub(points[2], points[0]));
         if (!face.normal && dot(normal, sub(mean(points), center)) < 0) normal = mul(normal, -1);
         const front = rotated(normal)[2] > 1e-8;
@@ -262,9 +509,10 @@
       if (focus === 'section') out += polygon([mid(v[0], v[1]), mid(v[2], v[3]), v[4]], C.section, 'fill-opacity=".55" data-feature="section"');
       return out;
     }
-    function roundBody(isCone, radius = a, height = h, yOffset = 0, cut = false) {
+    function roundBody(isCone, radius = a, height = h, yOffset = 0, cut = false, options = {}) {
       const low = -height / 2 + yOffset, high = height / 2 + yOffset;
       const lower = circlePoints(radius, low), upper = isCone ? null : circlePoints(radius, high), tip = [0, high, 0];
+      const surface = roundSurface(isCone, radius, height, yOffset, options);
       const topColor = focus === 'surface' ? '#cce8d9' : C.face;
       let out = polygon(lower, C.base, 'fill-opacity=".72" data-feature="base"');
       const panels = [];
@@ -281,11 +529,11 @@
       const angleOffset = Math.asin(clamp(tangentRatio, -1, 1));
       const tLeft = yaw - angleOffset, tRight = yaw + Math.PI + angleOffset;
       if (tangentRatio < 1) {
-        out += `<path d="${path(circlePoints(radius, low, tRight, tLeft + TAU, 32))}" fill="none" stroke="${C.hidden}" stroke-width="2" stroke-dasharray="5 5"/>`;
-        out += `<path d="${path(circlePoints(radius, low, tLeft, tRight, 32))}" fill="none" stroke="${C.edge}" stroke-width="2.4"/>`;
-        [tLeft, tRight].forEach(t => { const p = [radius * Math.cos(t), low, radius * Math.sin(t)]; out += line3(p, isCone ? tip : [p[0], high, p[2]]); });
-      } else out += `<path d="${path(lower)}" fill="none" stroke="${C.edge}" stroke-width="2.4"/>`;
-      if (!isCone) out += `<path d="${path(upper)}" fill="none" stroke="${C.edge}" stroke-width="2.4"/>`;
+        out += curve3(circlePoints(radius, low, tRight, tLeft + TAU, 32), C.edge, '', { body: surface, cap: 'bottom' });
+        out += curve3(circlePoints(radius, low, tLeft, tRight, 32), C.edge, '', { body: surface, cap: 'bottom' });
+        [tLeft, tRight].forEach(t => { const p = [radius * Math.cos(t), low, radius * Math.sin(t)]; out += line3(p, isCone ? tip : [p[0], high, p[2]], C.edge, '', { body: surface }); });
+      } else out += curve3(lower, C.edge, '', { body: surface, cap: 'bottom' });
+      if (!isCone && options.top !== false) out += curve3(upper, C.edge, '', { body: surface, cap: 'top' });
       if ((focus === 'base' || focus === 'volume') && diagram.variant !== 'tube') out += polygon(lower, '#64bc91', 'fill-opacity=".28" data-feature="base-highlight"');
       return out;
     }
@@ -309,9 +557,9 @@
     }
     function sphere() {
       const O = [0, 0, 0], center = project(O), R = a * scale;
+      const sphere = { center: rotated(O), radius: a }; surfaces.push({ sphere });
       let out = `<circle cx="${center[0]}" cy="${center[1]}" r="${R}" fill="${focus === 'surface' ? '#d8e8f4' : '#e1f0e7'}" stroke="${C.edge}" stroke-width="2.4" data-feature="surface"/>`;
-      out += `<path d="${path(circlePoints(a, 0, yaw + Math.PI, yaw + TAU, 32))}" fill="none" stroke="${C.hidden}" stroke-width="1.7" stroke-dasharray="5 5"/>`;
-      out += `<path d="${path(circlePoints(a, 0, yaw, yaw + Math.PI, 32))}" fill="none" stroke="${C.edge}" stroke-width="1.7"/>`;
+      out += curve3(circlePoints(a, 0, 0, TAU, 128), C.edge, 'style="stroke-width:1.7" data-feature="equator"', { sphere });
       // The endpoint is on the sphere; this is one radius, never a diameter.
       const E = [a, 0, 0];
       if (has('diameter')) feature('diameter', [-a, 0, 0], E, 'diameter', C.radius);
@@ -351,15 +599,16 @@
       feature('edge-b', [x1,y0,z1], [x1,y0,z0], 'b', C.ink);
       feature('height', [x0,y0,z1], [x0,y1,z1], 'h', C.height);
       if (focus === 'section') {
-        out += line3([x1,y1,z1], [xi,y1,z1], C.height, 'stroke-dasharray="5 5" data-feature="removed"');
-        out += line3([x1,y1,z1], [x1,yi,z1], C.height, 'stroke-dasharray="5 5"');
-        out += line3([x1,y1,z1], [x1,y1,zi], C.height, 'stroke-dasharray="5 5"');
+        out += line3([x1,y1,z1], [xi,y1,z1], C.height, 'data-ghost="true" data-feature="removed"');
+        out += line3([x1,y1,z1], [x1,yi,z1], C.height, 'data-ghost="true" data-feature="removed"');
+        out += line3([x1,y1,z1], [x1,y1,zi], C.height, 'data-ghost="true" data-feature="removed"');
       }
       return out;
     }
     function tube() {
       const inner = finitePositive(diagram.inner) ? clamp(diagram.inner / largest, 0.05, a * .95) : a * .5;
-      let out = roundBody(false);
+      let out = roundBody(false, a, h, 0, false, { inner });
+      const surface = roundBodies.at(-1);
       const topOuter = circlePoints(a, h / 2), topInner = circlePoints(inner, h / 2);
       const clipId = `stereo-hole-${String(task.id).replace(/[^a-z0-9-]/gi, '')}`;
       out += `<defs><clipPath id="${clipId}">${polygon(topInner, '#fff')}</clipPath></defs>`;
@@ -371,7 +620,8 @@
         innerWalls.push(polygon([p,q,[q[0],-h/2,q[2]],[p[0],-h/2,p[2]]], '#c4d6cd'));
       }
       out += `<g clip-path="url(#${clipId})" data-feature="hole">${innerWalls.join('')}</g>`;
-      out += `<path d="${path(topOuter)} Z ${path(topInner.slice().reverse())} Z" fill="${C.base}" fill-rule="evenodd" stroke="${C.edge}" stroke-width="2.2" data-feature="base"/>`;
+      out += `<path d="${path(topOuter)} Z ${path(topInner.slice().reverse())} Z" fill="${C.base}" fill-rule="evenodd" data-feature="base"/>`;
+      out += curve3(topInner, C.edge, 'data-feature="inner-rim"', { body: surface, cap: 'top', radius: inner });
       const E = [a * Math.cos(yaw + .45), h / 2, a * Math.sin(yaw + .45)], I = [inner * Math.cos(yaw + 2.3), h / 2, inner * Math.sin(yaw + 2.3)];
       feature('radius', [0,h/2,0], E, 'r', C.radius);
       feature('inner-radius', [0,h/2,0], I, 'inner', C.height);
@@ -381,8 +631,8 @@
     }
     function cylinderCone() {
       const bottom = -(h + coneHeight) / 2, seam = bottom + h, top = (h + coneHeight) / 2;
-      let out = roundBody(false, a, h, -coneHeight / 2);
-      out += roundBody(true, a, coneHeight, h / 2, focus === 'section');
+      let out = roundBody(false, a, h, -coneHeight / 2, false, { top: false });
+      out += roundBody(true, a, coneHeight, h / 2, focus === 'section', { bottom: false });
       const E = [a * Math.cos(yaw), bottom, a * Math.sin(yaw)];
       feature('radius', [0,bottom,0], E, 'r', C.radius);
       const side = [a * Math.cos(yaw), bottom, a * Math.sin(yaw)];
@@ -408,6 +658,7 @@
     }
     function render() {
       features.length = 0; annotations.length = 0;
+      surfaces.length = 0; roundBodies.length = 0; strokes.length = 0;
       let body;
       if (shape === 'box' || shape === 'cube') body = box();
       else if (shape === 'prism') body = prism();
@@ -415,7 +666,7 @@
       else if (shape === 'cylinder' || shape === 'cone') body = cylinderOrCone();
       else if (shape === 'sphere') body = sphere();
       else body = compound();
-      svg.innerHTML = `<title>${esc(title)}</title><desc>${esc(description)} ${esc(Object.entries(labels).map(([key, value]) => shown(key, value)).join('; '))}. ${esc(problemNote)}</desc>${body}${features.join('')}${renderAnnotations()}`;
+      svg.innerHTML = `<title>${esc(title)}</title><desc>${esc(description)} ${esc(Object.entries(labels).map(([key, value]) => shown(key, value)).join('; '))}. ${esc(problemNote)}</desc>${body}${renderStrokes()}${renderAnnotations()}`;
       svg.dataset.yaw = String(yaw); svg.dataset.pitch = String(pitch);
       svg.dataset.focus = focus; svg.dataset.shape = shape;
       container._profileStereoView = { task: task.id, yaw, pitch };

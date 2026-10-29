@@ -27,6 +27,12 @@ MK are hidden in the default view, while DC is a visible silhouette.
 
 - Atanasyan textbook, Merzlyak 10 base, Shestakov–Yashchenko 10–11,
   the original spatial workshop, and the Merzlyak/Pogorelov spatial atlases.
+- The final active-route inventory also identified separate renderers in the
+  12-lesson Atanasyan EGE course, profile-EGE task models and fixed task14
+  trainer, both Three.js stereometry banks (288 and143 tasks), and basic-EGE
+  dynamic/static spatial figures and volume laboratory. These are included by
+  the owner's explicit all-courses request. The initial shared-renderer patch
+  alone does not complete that request.
 - Shared SVG and legacy canvas visibility, missing reviewed surface topology,
   analytic spheres, selected section outlines and learner constructions.
 - Exact-signature model amendments supply missing faces without rewriting
@@ -65,6 +71,53 @@ lesson identities and storage formats retain learner work. No data migration
 or destructive operation is needed.
 
 ## Execution record
+
+### Coverage audit amendment
+
+The shared SVG/canvas implementation below is reviewed and its initial exact-head
+CI passed. Additional active renderers now pass independent source and geometry
+review; the complete task remains IN PROGRESS until their exact-head CI and actual
+browser screenshots also pass. Verified defects include fixed-style overlays
+painting over hidden edges, always-solid manual/construction strokes, whole-edge
+midpoint classification, selection forcing hidden lines solid, and full rear
+ellipse arcs. Correct these within existing interactions and data contracts;
+no new trainer archetype, learning sequence or mathematical task bank is added.
+
+Archive/source-bank copies, planar geometry and catalog-only pages are not
+separate active renderers. Elementary5–6 transparent counting demonstrations
+are recorded separately from the named stereometry courses; this task does not
+claim to rewrite every illustrative three-dimensional picture on the site.
+
+### Additional active renderers
+
+- [Active-route coverage inventory](../reviews/STEREO_VISIBILITY_COVERAGE.json)
+  preserves the discovery snapshot and records the implementation boundary.
+- [Additional independent reviews](../reviews/STEREO_VISIBILITY_ADDITIONAL.json)
+  bind source hashes, methods, resolved findings and verification limits.
+- The old Atanasyan course uses the same generated interval engine, retaining
+  its 12 lessons, 68 authored views, API, controls and stored work.
+- Profile SVG, fixed task14 and basic-EGE models classify body and auxiliary
+  strokes, including curved arcs, visible silhouettes and highlighted lines.
+  Generated fallback cores are checked byte-for-byte against the shared source.
+- Both perspective banks use exact line/circle interval boundaries, analytic
+  sphere occlusion, camera clipping, stable dash phase and original picking
+  targets. Selection changes color; manual/animated lines retain visibility.
+- Thirteen legacy comparison scenes reused names for different body coordinates.
+  Renderer-local aliases now bind each face/edge to its own source body. Task
+  676923's displayed OP/SP/SQ references resolve to the stated cone (3/6/6),
+  and manual OQ remains3. No bank conditions, answers or stored IDs changed.
+- The volume lab preserves its intentionally open transparent vessel, correctly
+  classifies the inserted block, cone/base/section arcs and perspective outlines,
+  and disposes/rebuilds classified meshes with the existing session lifecycle.
+- All changed script loaders have fresh cache versions; both perspective folders
+  retain exact local helper copies for their standalone/offline contract.
+- A new five-job CI workflow runs the additional independent oracles and real
+  profile, base-course, perspective and lab page journeys. Existing gates remain.
+
+Local checks are not browser approval. The final PR handoff must bind successful
+CI and inspected screenshot artifacts to the published branch head.
+
+### Shared-renderer implementation
 
 Local implementation and independent numeric/code review are complete.
 There are 245 exact-model surface amendments; all 2086 published lesson records

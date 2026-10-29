@@ -58,7 +58,27 @@ const server = http.createServer((request, response) => {
     await page.waitForFunction(key => document.querySelector('#model svg').dataset.view === key, step.modelView);
     assert.equal(await page.locator('.am-focus').textContent(), view.label);
     assert.equal(await page.locator('[data-highlight="plane"]').count(), view.polygon.length ? 1 : 0);
-    assert.deepEqual(await page.locator('[data-highlight="segment"]').evaluateAll(nodes => nodes.map(node => node.dataset.segment)), view.segments.map(segment => segment.join('-')));
+    // One authored segment may cross an occluding face and produce several
+    // paths. Check its identity, complete partition and actual computed style.
+    const pieces = await page.locator('[data-highlight="segment"]').evaluateAll(nodes => nodes.map(node => ({
+      id: node.dataset.segment, start: Number(node.dataset.partStart), end: Number(node.dataset.partEnd),
+      hidden: node.dataset.hidden, dash: getComputedStyle(node).strokeDasharray
+    })));
+    const groups = new Map();
+    for (const part of pieces) {
+      assert(Number.isFinite(part.start) && Number.isFinite(part.end) && part.end > part.start);
+      assert(['true', 'false'].includes(part.hidden));
+      assert.equal(part.dash !== 'none', part.hidden === 'true', 'highlight keeps computed hidden-line style');
+      if (!groups.has(part.id)) groups.set(part.id, []);
+      groups.get(part.id).push(part);
+    }
+    assert.deepEqual([...groups.keys()].sort(), view.segments.map(segment => segment.join('-')).sort());
+    for (const parts of groups.values()) {
+      parts.sort((a, b) => a.start - b.start);
+      assert.equal(parts[0].start, 0);
+      assert.equal(parts.at(-1).end, 1);
+      for (let i = 1; i < parts.length; i++) assert.equal(parts[i].start, parts[i - 1].end, 'no omitted or overlapping highlight interval');
+    }
     const visible = await page.locator('[data-point]').evaluateAll(nodes => nodes.map(node => node.dataset.point));
     for (const name of [...view.segments.flat(), ...view.polygon, ...(view.points || [])]) assert.ok(visible.includes(name), lesson.id + ': highlighted point ' + name);
   }

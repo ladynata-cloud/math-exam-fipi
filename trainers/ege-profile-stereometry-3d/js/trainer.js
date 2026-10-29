@@ -122,6 +122,7 @@ function initThree() {
     });
     T.solidMats.forEach(mm => { mm.opacity = mm.userData.base + 0.06 * Math.sin(now * 2.2); });
     if (T.pendingMesh) { const s = 1 + 0.25 * Math.sin(now * 6); T.pendingMesh.scale.setScalar(s); }
+    T.visibility?.update();
     renderer.render(scene, camera);
     requestAnimationFrame(loop);
   })();
@@ -131,13 +132,38 @@ function initThree() {
    СЦЕНА ЗАДАЧИ
    ============================================================ */
 function buildScene(p) {
+  T.visibility?.dispose();
   T.group.clear(); T.badges.clear();
   T.segMap = {}; T.vertMap = {}; T.anims = []; T.solidMats = []; T.constructGroup = null; T.pendingMesh = null;
 
-  const { gen, s, toW, groundY, firstBox } = sceneData(p);
+  const { gen:sourceGen, s, toW, groundY, firstBox } = sceneData(p);
+  const normalized=StereoThreeVisibility.normalizeBodies(sourceGen),gen=normalized.bodies;
+  T.displayName = name => normalized.displayNames[name] || name;
+  // Legacy 676923 labels describe the active cone (OP=3, SP=SQ=6),
+  // while its later reference sphere reused O/P. Keep those references on
+  // the cone; problem-bank bytes and visible mathematical letters stay intact.
+  if (p.id === "676923" && normalized.maps[0]?.O !== "O") {
+    const names=normalized.maps[0],remap=rows=>(rows||[]).map(row=>row.map((v,i)=>i<2?(names[v]||v):v));
+    const c=p.construct;
+    p={...p,labels:remap(p.labels),construct:c?{...c,segments:remap(c.segments),fills:(c.fills||[]).map(row=>row.map(n=>names[n]||n))}:c};
+  }
+  T.visibility = StereoThreeVisibility.create(THREE, T.camera);
+  let visibilityBody = null;
   T.unitPts = {}; const V = {};
   for (const g of gen) for (const [nm, pt] of Object.entries(g.pts)) { T.unitPts[nm] = pt; V[nm] = toW(pt); }
   T.V = V;
+  // Source generators use both z-up (legacy) and y-up coordinates. Ownership
+  // is tested in the same world frame as the rendered lines and surfaces.
+  const visibilityBodies=gen.map(g=>({...g,pts:Object.fromEntries(Object.entries(g.pts).map(([n,p])=>[n,toW(p).toArray()])),
+    surfaces:g.surfaces.map(sf=>({...sf,c:toW(sf.c).toArray(),r:sf.r*s,h:sf.h*s}))}));
+  const registerStroke = (rec, radius) => {
+    if (!rec) return;
+    const owners = visibilityBody == null ? gen.map((g, i) => ({g, i})).filter(({g,i}) =>
+      (g.ghost ? StereoThreeVisibility.bodyContains(visibilityBodies[i],rec.A.toArray()) && StereoThreeVisibility.bodyContains(visibilityBodies[i],rec.B.toArray()) :
+      g.pts[rec.p1] && g.pts[rec.p2] && toW(g.pts[rec.p1]).distanceTo(rec.A) < 1e-7 && toW(g.pts[rec.p2]).distanceTo(rec.B) < 1e-7)).map(({i}) => i) : [visibilityBody];
+    if (!owners.length) T.visibility.segment(rec, {radius});
+    for (const body of owners) T.visibility.segment(rec, {body, radius});
+  };
   T.scaleFn = (n1, n2) => {
     const a = T.unitPts[n1], b = T.unitPts[n2];
     return Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
@@ -147,7 +173,7 @@ function buildScene(p) {
   const rad = 0.03;
   const addSeg = (p1, p2, { color = COL.edge, r = rad, parent = T.group, kind = "edge", given = null } = {}) => {
     const k = segKey(p1, p2);
-    if (T.segMap[k]) return T.segMap[k];
+    if (T.segMap[k]) { registerStroke(T.segMap[k], r); return T.segMap[k]; }
     const A = V[p1], B = V[p2];
     const dir = B.clone().sub(A), len = dir.length();
     if (len < 1e-6) return null;
@@ -157,20 +183,22 @@ function buildScene(p) {
     mesh.position.copy(A).addScaledVector(dir, 0.5);
     mesh.userData.seg = k;
     parent.add(mesh);
-    const rec = { mesh, mat: mesh.material, base: color, p1, p2, kind, given, A, B, len, anon: p1.startsWith("_") };
+    const rec = { mesh, mat: mesh.material, base: color, p1, p2, kind, given, A, B, len, anon: T.displayName(p1).startsWith("_") };
+    registerStroke(rec, r);
     T.segMap[k] = rec;
     return rec;
   };
   T.addSeg = addSeg;
 
-  const addPoly = (names, { color = COL.face, opacity = 0.07, parent = T.group } = {}) => {
+  const addPoly = (names, { color = COL.face, opacity = 0.07, parent = T.group, occluder = false } = {}) => {
     const pts = names.map(n => V[n]);
     const g = new THREE.BufferGeometry();
     const arr = [];
     for (let i = 1; i < pts.length - 1; i++) arr.push(pts[0], pts[i], pts[i + 1]);
     g.setFromPoints(arr); g.computeVertexNormals();
     const m = new THREE.MeshBasicMaterial({ color, transparent: true, opacity, side: THREE.DoubleSide, depthWrite: false });
-    parent.add(new THREE.Mesh(g, m));
+    const mesh = new THREE.Mesh(g, m); parent.add(mesh);
+    if (occluder) T.visibility.surface(mesh, {body:visibilityBody, context:!!gen[visibilityBody]?.ghost});
     return m;
   };
 
@@ -178,7 +206,7 @@ function buildScene(p) {
     const m = new THREE.Mesh(new THREE.SphereGeometry(0.085, 14, 14), new THREE.MeshBasicMaterial({ color }));
     m.position.copy(V[name]); m.userData.vertex = name;
     parent.add(m);
-    const lbl = makeSprite(SUB(name), { fontPx: 46 });
+    const lbl = makeSprite(SUB(T.displayName(name)), { fontPx: 46 });
     const off = V[name].clone().setY(0).normalize().multiplyScalar(0.4);
     off.y = V[name].y >= 0 ? 0.28 : -0.28;
     lbl.position.copy(V[name]).add(off);
@@ -187,9 +215,10 @@ function buildScene(p) {
   };
   T.addVertex = addVertex;
 
-  for (const g of gen) {
+  for (const [body, g] of gen.entries()) {
+    visibilityBody = body;
     const ghost = g.ghost;
-    for (const f of g.faces) addPoly(f, { opacity: ghost ? 0.04 : 0.07 });
+    for (const f of g.faces) addPoly(f, { opacity: ghost ? 0.04 : 0.07, occluder:true });
     for (const [p1, p2] of g.edges)
       addSeg(p1, p2, { color: ghost ? COL.ghost : COL.edge, r: ghost ? rad * 0.75 : rad, kind: ghost ? "ghost" : "edge" });
     for (const c of g.circles) {
@@ -198,6 +227,9 @@ function buildScene(p) {
       mesh.position.copy(toW(c.c));
       if (c.plane === "h") mesh.rotation.x = Math.PI / 2;
       T.group.add(mesh);
+      T.visibility.circle(mesh, {body, radius:.022});
+      if (!g.faces.length && !g.surfaces.some(sf => ["cyl","cone","sphere"].includes(sf.type)))
+        gen.forEach((other, i) => { if (other.ghost && StereoThreeVisibility.bodyContains(visibilityBodies[i],toW(c.c).toArray(),{...c,r:c.r*s})) T.visibility.circle(mesh, {body:i, radius:.022}); });
     }
     for (const sf of g.surfaces) {
       let mesh = null;
@@ -205,7 +237,7 @@ function buildScene(p) {
         mesh = new THREE.Mesh(new THREE.CylinderGeometry(sf.r * s, sf.r * s, sf.h * s, 48, 1, true),
           new THREE.MeshBasicMaterial({ color: COL.face, transparent: true, opacity: ghost ? 0.07 : 0.11, side: THREE.DoubleSide, depthWrite: false }));
       else if (sf.type === "cone")
-        mesh = new THREE.Mesh(new THREE.CylinderGeometry(sf.flip ? sf.r * s : 0.001, sf.flip ? 0.001 : sf.r * s, sf.h * s, 48, 1, true, sf.ts || 0, sf.tl || Math.PI * 2),
+        mesh = new THREE.Mesh(new THREE.CylinderGeometry(sf.flip ? sf.r * s : 0, sf.flip ? 0 : sf.r * s, sf.h * s, 48, 1, true, sf.ts || 0, sf.tl || Math.PI * 2),
           new THREE.MeshBasicMaterial({ color: COL.face, transparent: true, opacity: ghost ? 0.07 : 0.12, side: THREE.DoubleSide, depthWrite: false }));
       else if (sf.type === "waterCone")
         mesh = new THREE.Mesh(new THREE.CylinderGeometry(sf.r * s, 0.001, sf.h * s, 48),
@@ -221,7 +253,14 @@ function buildScene(p) {
           new THREE.MeshBasicMaterial({ color: COL.fill, transparent: true, opacity: 0.3, side: THREE.DoubleSide, depthWrite: false }));
         mesh.rotation.x = Math.PI / 2;
       }
-      if (mesh) { mesh.position.copy(toW(sf.c)); T.group.add(mesh); }
+      if (mesh) {
+        mesh.position.copy(toW(sf.c)); T.group.add(mesh);
+        if (["cyl", "cone", "sphere"].includes(sf.type)) {
+          T.visibility.surface(mesh, {body, context:ghost});
+          const caps = sf.type === "cyl" ? (g.surfaces.some(x => x.type === "water") ? "bottom" : "both") : sf.flip ? "none" : "bottom";
+          T.visibility.caps(mesh, {body, context:ghost, caps});
+        }
+      }
     }
     if (!g.anonymous && !g.hideLabels)
       for (const nm of Object.keys(g.pts)) addVertex(nm);
@@ -234,6 +273,8 @@ function buildScene(p) {
       T.group.add(sp);
     }
   }
+
+  visibilityBody = null;
 
   /* подписи данных */
   T.givenMap = {};
@@ -288,7 +329,17 @@ function buildScene(p) {
       for (const sg of [...segs, ...ringEdges]) {
         const [p1, p2, given] = sg;
         const rec = addSeg(p1, p2, { color: COL.construct, r: rad * 1.15, parent: cg, kind: "construct", given: given || null });
-        if (!rec || rec.kind !== "construct") continue;
+        if (!rec) continue;
+        if (rec.kind !== "construct") {
+          // 676923 reuses the cone generator SP: its declared 6 belongs to
+          // that existing line as well as to the newly constructed SQ.
+          if (p.id === "676923" && given) {
+            rec.given=given;
+            const sp=makeSprite(given,{fontPx:44,color:PAL.amber,bg:"rgba(255,255,255,0.92)",pad:10,italicSerif:false});
+            const mid=rec.A.clone().add(rec.B).multiplyScalar(.5);sp.position.copy(mid).add(mid.clone().normalize().multiplyScalar(.34));cg.add(sp);
+          }
+          continue;
+        }
         const { mesh, A, B, len } = rec;
         const dir = B.clone().sub(A);
         mesh.scale.y = 0.0001;
@@ -322,7 +373,7 @@ function buildScene(p) {
 /* ============================================================
    ВЫБОР ЛИНИЙ / ОТРЕЗКИ ПО ДВУМ ТОЧКАМ
    ============================================================ */
-const segLabel = rec => rec.anon ? "отрезок" : SUB(rec.p1) + SUB(rec.p2);
+const segLabel = rec => rec.anon ? "отрезок" : SUB(T.displayName(rec.p1)) + SUB(T.displayName(rec.p2));
 
 function onSegClick(key) {
   if (selected.some(x => x.key === key)) selected = selected.filter(x => x.key !== key);
@@ -353,7 +404,7 @@ function setPending(name) {
     T.pendingMesh.material.color.setHex(COL.select);
   }
   const hintEl = $("pendingHint");
-  if (name) { hintEl.style.display = "block"; hintEl.innerHTML = "Точка <b>" + SUB(name) + "</b> выбрана — кликните вторую точку, чтобы построить отрезок"; }
+  if (name) { hintEl.style.display = "block"; hintEl.innerHTML = "Точка <b>" + SUB(T.displayName(name)) + "</b> выбрана — кликните вторую точку, чтобы построить отрезок"; }
   else hintEl.style.display = "none";
 }
 
@@ -391,7 +442,7 @@ function paintSelection() {
     del.className = "measure-del"; del.textContent = "✕";
     del.onclick = () => {
       selected = selected.filter(x => x.key !== s2.key);
-      if (rec && rec.kind === "user") { rec.mesh.parent?.remove(rec.mesh); delete T.segMap[s2.key]; }
+      if (rec && rec.kind === "user") { T.visibility.remove(rec.mesh); rec.mesh.parent?.remove(rec.mesh); delete T.segMap[s2.key]; }
       paintSelection();
     };
     row.appendChild(del);

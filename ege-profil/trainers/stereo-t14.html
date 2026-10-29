@@ -476,11 +476,133 @@ if (typeof module !== "undefined") module.exports = G14;
     return e;
   }
 
+  // Projection coordinates are (x + .45y, z + .30y); larger -y is nearer.
+  // Only the four authored bodies occlude strokes. Auxiliary planes do not.
+  var add = G14.add, sub = G14.sub, mul = G14.mul, dot = G14.dot;
+  var BODY_FACES = {
+    cube: [["A","B","C","D"],["A1","B1","C1","D1"],["A","B","B1","A1"],
+      ["B","C","C1","B1"],["C","D","D1","C1"],["D","A","A1","D1"]],
+    pyr4: [["A","B","C","D"],["S","A","B"],["S","B","C"],["S","C","D"],["S","D","A"]],
+    prism3: [["A","B","C"],["A1","B1","C1"],["A","B","B1","A1"],
+      ["B","C","C1","B1"],["C","A","A1","C1"]],
+    pyr3: [["A","B","C"],["S","A","B"],["S","B","C"],["S","C","A"]]
+  };
+  function cameraPoint(p){ return [p[0] + .45*p[1], p[2] + .30*p[1], -p[1]]; }
+  // BEGIN GENERATED PROFILE VISIBILITY FALLBACK
+  function visibilityParts(a, b, surfaces, tolerance) {
+    const delta = sub(b, a), cross2 = (u, v) => u[0] * v[1] - u[1] * v[0];
+    const parameterTolerance = Math.min(1e-7, tolerance / Math.max(Math.hypot(...delta), tolerance));
+    const at = t => add(a, mul(delta, t));
+    const hidden = [];
+    for (const face of surfaces) {
+      if (face.sphere) {
+        const { center, radius } = face.sphere, offset = sub(a, center), cuts = [0, 1];
+        const roots = (A, B, C) => {
+          if (Math.abs(A) < 1e-20) { if (Math.abs(B) > 1e-20) cuts.push(-C / B); return; }
+          let discriminant = B * B - 4 * A * C;
+          if (Math.abs(discriminant) <= 1e-12 * (B * B + Math.abs(4 * A * C))) discriminant = 0;
+          if (discriminant >= 0) { const d = Math.sqrt(discriminant); cuts.push((-B - d) / (2 * A), (-B + d) / (2 * A)); }
+        };
+        if (face.surface) {
+          // Great circles are stored as short chords. Only the explicitly
+          // reviewed ring strokes represent arcs on this sphere's surface.
+          if (Math.abs(delta[2]) > tolerance) cuts.push(-offset[2] / delta[2]);
+        } else {
+          roots(delta[0] ** 2 + delta[1] ** 2, 2 * (offset[0] * delta[0] + offset[1] * delta[1]), offset[0] ** 2 + offset[1] ** 2 - radius ** 2);
+          roots(dot(delta, delta), 2 * dot(offset, delta), dot(offset, offset) - radius ** 2);
+        }
+        const sorted = cuts.filter(t => t >= 0 && t <= 1).sort((x, y) => x - y);
+        for (let i = 1; i < sorted.length; i++) {
+          const start = sorted[i - 1], end = sorted[i];
+          if (end - start < 1e-10) continue;
+          const p = sub(at((start + end) / 2), center), radial2 = p[0] ** 2 + p[1] ** 2;
+          const covered = face.surface ? p[2] < -tolerance
+            : radial2 < radius ** 2 * (1 - 1e-12) && Math.sqrt(Math.max(0, radius ** 2 - radial2)) > p[2] + tolerance;
+          if (covered) hidden.push([start, end]);
+        }
+        continue;
+      }
+      const { vertices, normal } = face;
+      if (Math.abs(normal[2]) < 1e-10) continue; // An edge-on face covers no area.
+      const depthDifference = p => dot(normal, sub(vertices[0], p)) / normal[2];
+      const da = depthDifference(a), db = depthDifference(b);
+      if (Math.max(da, db) <= tolerance) continue; // On or in front of this face.
+      const cuts = [0, 1];
+      if ((da - tolerance) * (db - tolerance) < 0) cuts.push((tolerance - da) / (db - da));
+      const length2 = delta[0] ** 2 + delta[1] ** 2;
+      for (let i = 0; i < vertices.length; i++) {
+        const p = vertices[i], q = vertices[(i + 1) % vertices.length];
+        const edge = sub(q, p), offset = sub(p, a), denominator = cross2(delta, edge);
+        const scale = Math.sqrt(length2 * (edge[0] ** 2 + edge[1] ** 2));
+        if (Math.abs(denominator) > scale * 1e-12) {
+          const t = cross2(offset, edge) / denominator, u = cross2(offset, delta) / denominator;
+          if (t > 0 && t < 1 && u >= -1e-10 && u <= 1 + 1e-10) cuts.push(t);
+        } else if (length2 > tolerance ** 2 && Math.abs(cross2(offset, delta)) <= tolerance * Math.sqrt(length2)) {
+          for (const v of [p, q]) {
+            const t = ((v[0] - a[0]) * delta[0] + (v[1] - a[1]) * delta[1]) / length2;
+            if (t > 0 && t < 1) cuts.push(t);
+          }
+        }
+      }
+      function inside(p) {
+        let enclosed = false;
+        for (let i = 0, j = vertices.length - 1; i < vertices.length; j = i++) {
+          const v = vertices[j], w = vertices[i], e = sub(w, v), relative = sub(p, v);
+          const len = Math.hypot(e[0], e[1]);
+          if (len > tolerance && Math.abs(cross2(e, relative)) <= tolerance * len
+              && relative[0] * e[0] + relative[1] * e[1] >= -tolerance * len
+              && relative[0] * e[0] + relative[1] * e[1] <= len * len + tolerance * len) return true;
+          if ((v[1] > p[1]) !== (w[1] > p[1])
+              && p[0] < (w[0] - v[0]) * (p[1] - v[1]) / (w[1] - v[1]) + v[0]) enclosed = !enclosed;
+        }
+        return enclosed;
+      }
+      cuts.sort((x, y) => x - y);
+      for (let i = 1; i < cuts.length; i++) {
+        const start = cuts[i - 1], end = cuts[i];
+        if (end - start < 1e-10) continue;
+        const p = at((start + end) / 2);
+        if (depthDifference(p) > tolerance && inside(p)) hidden.push([start, end]);
+      }
+    }
+    hidden.sort((x, y) => x[0] - y[0]);
+    const merged = [];
+    for (const interval of hidden) {
+      // Coordinate rounding must not create a zero-pixel phantom dash at a
+      // vertex. Discard only intervals below the same world-space tolerance
+      // used for depth, and keep an exact partition of the remaining line.
+      if (interval[1] - interval[0] <= parameterTolerance) continue;
+      if (interval[0] < parameterTolerance) interval[0] = 0;
+      if (interval[1] > 1 - parameterTolerance) interval[1] = 1;
+      const last = merged[merged.length - 1];
+      if (last && interval[0] <= last[1] + parameterTolerance) last[1] = Math.max(last[1], interval[1]);
+      else merged.push(interval.slice());
+    }
+    const result = [];
+    let start = 0;
+    for (const [from, to] of merged) {
+      if (from > start + 1e-10) result.push({ start, end: from, hidden: false });
+      result.push({ start: from, end: to, hidden: true });
+      start = to;
+    }
+    if (start < 1 - 1e-10) result.push({ start, end: 1, hidden: false });
+    return result;
+  }
+
+  // END GENERATED PROFILE VISIBILITY FALLBACK
+
   /* ---------- сцена ---------- */
   function buildScene(p){
     var geom = G14.points(p), V = geom.V;
-    var flat = {}, k;
-    for (k in V) flat[k] = G14.proj(V[k]);
+    var flat = {}, camera = {}, k;
+    for (k in V) { flat[k] = G14.proj(V[k]); camera[k] = cameraPoint(V[k]); }
+    var surfaces = BODY_FACES[p.fig[0]].map(function(face){
+      var vertices = face.map(function(name){ return camera[name]; });
+      return { vertices:vertices, normal:G14.cross(sub(vertices[1], vertices[0]), sub(vertices[2], vertices[0])) };
+    });
+    var bodyNames = Array.from(new Set([].concat.apply([], BODY_FACES[p.fig[0]])));
+    var bodyCenter = mul(bodyNames.reduce(function(sum, name){ return add(sum, camera[name]); }, [0,0,0]), 1/bodyNames.length);
+    var tolerance = Math.max.apply(null, bodyNames.map(function(name){ return G14.len(sub(camera[name], bodyCenter)); })) * 1e-8;
     var used = {};
     function useNames(list){ (list || []).forEach(function(e){ e.forEach(function(n){ used[n] = 1; }); }); }
     useNames(geom.edges); useNames(geom.hidden); useNames(p.extra); useNames(p.faces);
@@ -512,18 +634,36 @@ if (typeof module !== "undefined") module.exports = G14;
       svg.appendChild(poly);
       reg(f.join(""), poly);
     });
-    /* рёбра */
+    /* Every stroke, including section boundaries, uses the same depth test. */
+    var hiddenLines = el("g", { "data-visibility-layer":"hidden" });
+    var visibleLines = el("g", { "data-visibility-layer":"visible" });
+    svg.appendChild(hiddenLines); svg.appendChild(visibleLines);
     function seg(a, b, opt){
-      var line = el("line", { x1:X(a), y1:Y(a), x2:X(b), y2:Y(b),
-        stroke:opt.color, "stroke-width":opt.w, "stroke-linecap":"round" });
-      if (opt.dash) line.setAttribute("stroke-dasharray", "6 5");
-      if (opt.op) line.setAttribute("opacity", opt.op);
-      svg.appendChild(line);
-      return reg(a + b, line);
+      var parts = visibilityParts(camera[a], camera[b], surfaces, tolerance);
+      parts.forEach(function(part){
+        var x1 = X(a) + (X(b)-X(a))*part.start, y1 = Y(a) + (Y(b)-Y(a))*part.start;
+        var x2 = X(a) + (X(b)-X(a))*part.end, y2 = Y(a) + (Y(b)-Y(a))*part.end;
+        var line = el("line", { x1:x1, y1:y1, x2:x2, y2:y2,
+          stroke:opt.color, "stroke-width":part.hidden && opt.body ? 1.7 : opt.w,
+          "stroke-linecap":"round", "data-segment":a+"-"+b,
+          "data-hidden":String(part.hidden), "data-part-start":part.start, "data-part-end":part.end });
+        if (part.hidden) {
+          line.setAttribute("stroke-dasharray", "5 5");
+          // Canonical screen phase keeps reversed/overlapping highlights dashed.
+          var dx = x2-x1, dy = y2-y1, length = Math.hypot(dx, dy);
+          if (length > 1e-8) {
+            var direction = Math.abs(dx) > length*1e-10 ? Math.sign(dx) : Math.sign(dy);
+            var along = (x1*dx+y1*dy)/length*direction;
+            line.setAttribute("stroke-dashoffset", ((direction > 0 ? along : 5-along)%10).toFixed(6));
+          }
+          line.setAttribute("opacity", ".65");
+        }
+        (part.hidden ? hiddenLines : visibleLines).appendChild(line);
+        reg(a + b, line);
+      });
     }
     (p.extra || []).forEach(function(e){ seg(e[0], e[1], { color:"#67707E", w:1.8 }); });
-    geom.hidden.forEach(function(e){ seg(e[0], e[1], { color:"#2A2F38", w:1.7, dash:true, op:".45" }); });
-    geom.edges.forEach(function(e){ seg(e[0], e[1], { color:"#2A2F38", w:2.2 }); });
+    geom.hidden.concat(geom.edges).forEach(function(e){ seg(e[0], e[1], { color:"#2A2F38", w:2.2, body:true }); });
     /* вершины и подписи */
     var ccx = 0, ccy = 0;
     names.forEach(function(n){ ccx += X(n); ccy += Y(n); });

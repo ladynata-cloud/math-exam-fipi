@@ -58,6 +58,11 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
   and Shestakov–Yashchenko (543), plus the spatial workshop and both spatial
   atlases. Prepared cone PR374 is a separate compatibility check and remains
   unpublished pending the visibility correction and its own release decision.
+- Coverage audit additionally found active independent Atanasyan-EGE,
+  profile-EGE SVG/task14, two Three.js banks and basic-EGE spatial renderers.
+  These also fall under the owner's all-courses request. Their source and
+  geometry reviews pass; exact-head CI and actual browser evidence are pending.
+  The shared-renderer passes alone do not establish complete coverage.
 - Visible and hidden intervals must be computed for body edges, auxiliary
   constructions, highlighted section boundaries, vectors and learner lines.
   Exact-model surface amendments correct missing faces without changing source

@@ -1,0 +1,184 @@
+name: Stereometry — all active renderers
+on:
+  pull_request:
+    paths:
+      - 'stereo-course/assets/task-scene-viewer.js'
+      - 'ege-profil/atanasyan-10-11/**'
+      - 'ege-profil/start/stereo-*.js'
+      - 'ege-profil/start/index.html'
+      - 'ege-profil/trainers/stereo/**'
+      - 'ege-profil/trainers/stereo-t14.html'
+      - 'trainers/ege-profile-*.html'
+      - 'trainers/ege-profile-stereometry-3d/**'
+      - 'ege-baza/path/**'
+      - 'ege-baza/labs/**'
+      - 'trainers/ege-baza-*.html'
+      - 'assets/stereo-three-visibility.js'
+      - 'tools/*stereo*visibility*'
+      - 'tools/profile-t14-visibility*'
+      - 'tools/ege-baza-lab-visibility*'
+      - 'tools/atanasyan-profile15*'
+      - 'tools/stereo/*atanasyan*visibility*'
+      - '.github/workflows/stereometry-visibility.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'stereo-course/assets/task-scene-viewer.js'
+      - 'ege-profil/atanasyan-10-11/**'
+      - 'ege-profil/start/stereo-*.js'
+      - 'ege-profil/start/index.html'
+      - 'ege-profil/trainers/stereo/**'
+      - 'ege-profil/trainers/stereo-t14.html'
+      - 'trainers/ege-profile-*.html'
+      - 'trainers/ege-profile-stereometry-3d/**'
+      - 'ege-baza/path/**'
+      - 'ege-baza/labs/**'
+      - 'trainers/ege-baza-*.html'
+      - 'assets/stereo-three-visibility.js'
+      - 'tools/*stereo*visibility*'
+      - 'tools/profile-t14-visibility*'
+      - 'tools/ege-baza-lab-visibility*'
+      - 'tools/atanasyan-profile15*'
+      - 'tools/stereo/*atanasyan*visibility*'
+      - '.github/workflows/stereometry-visibility.yml'
+permissions:
+  contents: read
+concurrency:
+  group: stereometry-visibility-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  independent-geometry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts jsdom@26.1.0
+      - name: Reproducible standalone visibility engines
+        run: |
+          node tools/stereo/sync_atanasyan_visibility.cjs --check
+          node tools/sync-profile-stereo-visibility.cjs --check
+          node tools/sync-stereo-three-visibility.cjs --check
+      - name: Actual render output against independent geometry
+        run: |
+          node tools/stereo/atanasyan-visibility.test.cjs
+          node tools/profile-stereo-visibility.test.cjs
+          node tools/profile-stereo-round-visibility.test.cjs
+          node tools/profile-t14-visibility.test.cjs
+          node tools/ege-baza-stereo-visibility.test.cjs
+          node tools/stereo-three-visibility.test.cjs
+          node tools/ege-baza-lab-visibility.test.cjs
+          git diff --check
+  profile-and-legacy-course:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+      - run: npx playwright install --with-deps chromium
+      - name: Profile SVG and task14 actual page screenshots
+        env:
+          VISIBILITY_PROFILE_ARTIFACTS: artifacts/profile-stereo-visibility
+        run: node tools/profile-stereo-visibility.browser.cjs
+      - name: Legacy Atanasyan models and retained full learner journey
+        env:
+          ATANASYAN_PREVIEW_DIR: artifacts/atanasyan-profile15-visibility
+        run: |
+          mkdir -p "$ATANASYAN_PREVIEW_DIR"
+          node tools/atanasyan-profile15-model.test.cjs
+          node tools/atanasyan-profile15.browser.cjs
+      - name: Keep actual page evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: profile-and-legacy-visibility
+          path: |
+            artifacts/profile-stereo-visibility
+            artifacts/atanasyan-profile15-visibility
+          if-no-files-found: error
+          retention-days: 14
+  base-course:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+      - run: npx playwright install --with-deps chromium
+      - name: Basic EGE actual figures, rotations and retained drafts
+        env:
+          EGE_BASE_VISIBILITY_OUT: artifacts/ege-base-stereo-visibility
+        run: node tools/ege-baza-stereo-visibility.browser.cjs
+      - name: Keep base-course evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ege-base-stereo-visibility
+          path: artifacts/ege-base-stereo-visibility
+          if-no-files-found: error
+          retention-days: 14
+  perspective-trainers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+      - run: npx playwright install --with-deps chromium
+      - name: Both perspective trainers in actual Chromium WebGL
+        run: node tools/stereo-three-visibility.browser.cjs
+      - name: Keep perspective evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: stereo-three-visibility
+          path: artifacts/stereo-three-visibility
+          if-no-files-found: error
+          retention-days: 14
+  base-laboratory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+      - run: npx playwright install --with-deps chromium
+      - name: Existing laboratory mathematics and learner journey
+        env:
+          LABS_SCREENSHOT_DIR: artifacts/ege-base-lab-visibility
+        run: |
+          node tools/ege-baza-labs.test.cjs
+          node tools/ege-baza-labs.browser.cjs
+      - name: Actual laboratory hidden strokes and camera changes
+        env:
+          EGE_LAB_VISIBILITY_OUT: artifacts/ege-base-lab-visibility
+        run: node tools/ege-baza-lab-visibility.browser.cjs
+      - name: Keep laboratory evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ege-base-lab-visibility
+          path: artifacts/ege-base-lab-visibility
+          if-no-files-found: error
+          retention-days: 14

@@ -34,6 +34,7 @@
 .atanasyan-model .am-plane { fill: #5592ca; fill-opacity: .24; stroke: none; }
 .atanasyan-model .am-plane-border { fill: none; stroke: #286694; stroke-width: 2; stroke-linejoin: round; }
 .atanasyan-model .am-segment { fill: none; stroke: #bd5724; stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round; }
+.atanasyan-model .am-line-hidden { stroke-dasharray: 5 5; }
 .atanasyan-model .am-point { fill: #334f49; }
 .atanasyan-model .am-point-focus { fill: #93411e; }
 .atanasyan-model .am-label {

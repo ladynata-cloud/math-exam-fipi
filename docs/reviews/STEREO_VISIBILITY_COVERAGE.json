@@ -1,0 +1,184 @@
+{
+  "head": "72a337e9994a7e32141277dcb27bec5619838c11",
+  "readOnly": true,
+  "scope": "Repository-wide active stereometry renderer inventory beyond existing shared SVG/workshop/atlas coverage",
+  "inventory": [
+    {
+      "entry": "/stereo-course/textbook/",
+      "renderer": "stereo-course/assets/task-scene-viewer.js",
+      "status": "covered_current_change",
+      "class": "active textbook stereometry"
+    },
+    {
+      "entry": "/stereo-course/merzlyak-10-base/",
+      "renderer": "stereo-course/assets/task-scene-viewer.js",
+      "status": "covered_current_change",
+      "class": "active textbook stereometry"
+    },
+    {
+      "entry": "/stereo-course/shestakov-yaschenko-10-11/",
+      "renderer": "stereo-course/assets/task-scene-viewer.js",
+      "status": "covered_current_change",
+      "class": "active textbook stereometry"
+    },
+    {
+      "entry": "/stereo-course/",
+      "renderer": "stereo-course/assets/viewer.js; task-scenes.js; task-proof-scenes.js; task-scene-viewer.js",
+      "status": "covered_current_change",
+      "class": "active workshop"
+    },
+    {
+      "entry": "/geometry-merzlyak/ and /geometry-pogorelov/",
+      "renderer": "assets/viewer.js within each course",
+      "status": "covered_current_change",
+      "class": "active atlas spatial sections"
+    },
+    {
+      "entry": "/ege-profil/atanasyan-10-11/lesson.html",
+      "renderer": "ege-profil/atanasyan-10-11/model.js",
+      "status": "uncovered_defect",
+      "class": "active separate stereometry course",
+      "size": "12 lessons, 68 views, complete4–7face body shells",
+      "reachability": [
+        "ege-profil/index.html:249",
+        "ege-profil/start/app.js:70",
+        "ege-profil/atanasyan-10-11/lesson.html:10"
+      ],
+      "finding": "Auxiliary segments and polygon highlight boundaries always solid; only full adjacent body edges use visibility. Shared renderer is not loaded."
+    },
+    {
+      "entry": "/ege-profil/trainers/stereo-t14.html",
+      "renderer": "inline buildScene",
+      "status": "uncovered_defect",
+      "class": "active fixed-projection stereometry trainer",
+      "size": "six authored problems plus drills",
+      "reachability": [
+        "ege-profil/index.html:344",
+        "ege-profil/registry.js:17"
+      ],
+      "finding": "Manual hidden body-edge arrays exist, but all p.extra segments solid at line524; t1 internal cube diagonal A-C1 is in p.extra and t2 interior S-O also solid."
+    },
+    {
+      "entry": "/ege-profil/trainers/stereo/",
+      "renderer": "ege-profil/trainers/stereo/js/trainer.js",
+      "status": "separate_agent_audit_confirms_gap",
+      "class": "active canonical Three.js stereometry bank",
+      "size": "288 tasks",
+      "reachability": [
+        "trainers/index.html:134",
+        "ege-profil/index.html:296"
+      ],
+      "finding": "Merzlyak audit agent reports midpoint-only body-edge rule, constructions default dashable=false, circle toruses solid and selected hidden edges forced solid."
+    },
+    {
+      "entry": "/trainers/ege-profile-stereometry-3d/",
+      "renderer": "trainers/ege-profile-stereometry-3d/js/trainer.js",
+      "status": "separate_agent_audit_confirms_gap",
+      "class": "legacy separate public bank, not an archive directory",
+      "size": "143 tasks per Merzlyak audit",
+      "finding": "Separate code from canonical288task bank; Merzlyak agent reports no hidden-line classifier."
+    },
+    {
+      "entry": "/ege-profil/start/#exam/3 and /trainers/ege-profile-stereometry.html",
+      "renderer": "ege-profil/start/stereo-tasks.js",
+      "status": "separate_agent_audit",
+      "class": "active profile course plus board wrapper",
+      "reachability": [
+        "ege-profil/start/index.html:21",
+        "trainers/ege-profile-stereometry.html:19"
+      ],
+      "finding": "Same renderer used by two entrypoints; do not count board wrapper as a distinct implementation."
+    },
+    {
+      "entry": "/ege-baza/path/",
+      "renderer": "ege-baza/path/models.js solid branch",
+      "status": "uncovered_defect",
+      "class": "active basic-EGE course interactive help",
+      "size": "box, roundbody(cylinder/cone/sphere), pyramid, scale",
+      "reachability": [
+        "ege-baza/path/task-first.js:80",
+        "ege-baza/path/app.js:39"
+      ],
+      "finding": "Body edges, sphere rings, generators and section rings all solid; only radius/height forced dashed, without camera-depth classification. It is mounted in actual help, not dead code."
+    },
+    {
+      "entry": "/ege-baza/path/",
+      "renderer": "ege-baza/path/stereo-figures.js",
+      "status": "uncovered_fixed_view_review_needed",
+      "class": "active basic-EGE static SVG diagrams",
+      "size": "12 task family IDs",
+      "reachability": [
+        "ege-baza/path/index.html scripts",
+        "ege-baza/path/task-first.js"
+      ],
+      "finding": "Box and pyramid template manual dashes exist. Cylinder bottom ellipse, cone base/section ellipses drawn complete solid; not covered by rotating-renderer changes."
+    },
+    {
+      "entry": "/ege-baza/labs/",
+      "renderer": "ege-baza/labs/stereo.js",
+      "status": "uncovered_volume_demonstrations",
+      "class": "active Three.js volume laboratory",
+      "size": "water displacement and cone section, two modes",
+      "reachability": [
+        "ege-baza/index.html:16",
+        "ege-baza/labs/index.html",
+        "ege-baza/labs/labs.js:15"
+      ],
+      "finding": "Always-solid LineBasicMaterial wire/lines; transparent vessel intentionally disclosed in UI, opaque block uses depth buffer. Cone transparent wire and internal section/axis need semantic review before applying school-diagram convention."
+    },
+    {
+      "entry": "/school/",
+      "renderer": "school/models.js solid branch; school/vilenkin6-models.js solid branch",
+      "status": "outside_named_stereometry_courses_but_active_spatial_models",
+      "class": "elementary5–6spatial visualization",
+      "reachability": [
+        "school/index.html:9",
+        "school/math.js:84",
+        "school/vilenkin6-lessons.js:109"
+      ],
+      "finding": "Generic box faces/level lines and Vilenkin6box wireframe draw solid; sphere section full ellipse. These are explicit transparent counting/frame demonstrations, separate from10–11stereometry."
+    },
+    {
+      "entry": "/school/m9-exercises/",
+      "renderer": "school/m9-exercises/models.js cylinder",
+      "status": "contextual_2d_illustration",
+      "class": "algebra9mass-formula schematic",
+      "finding": "Fixed2Drod silhouette with no spatial rotation; UI explicitly says conditional diagram, not3Dmodel. No independently rendered hidden back contour found in this scope."
+    },
+    {
+      "entry": "/trainers/oge-1-5-trainers/",
+      "renderer": "tire-3d.js",
+      "status": "outside_stereometry_courses",
+      "class": "OGEtyre measurement visualization",
+      "finding": "Dedicated solid-of-revolution tyre model, not a geometry proof course."
+    },
+    {
+      "entry": "/geometry-course/ and /geometry-course/textbook/",
+      "renderer": "lab.js and planar-viewer.js",
+      "status": "planar_only",
+      "class": "Atanasyan7–9planimetry",
+      "finding": "Canvas/TaskSceneViewer-like search hits are2Dplanar assets, not spatial hidden-line scope."
+    },
+    {
+      "entry": "/ege-profil/_istochniki/stereo-bank/; trainers/archive*; tools/fixtures; downloads",
+      "status": "source_archive_fixture_or_generated_copy",
+      "class": "not independent active course entry",
+      "finding": "Source-bank generators build active Three.jsdata but are not student renderers. No stereometry-named downloadable course HTML/ZIP was found by filename inventory."
+    },
+    {
+      "entry": "/trainers/ege-profile-task3-stereometry-catalog.html",
+      "status": "catalog_only",
+      "class": "referencecatalog/PDFdownload",
+      "finding": "No spatial renderer; distinguish from ege-profile-stereometry.html active board wrapper."
+    }
+  ],
+  "method": "Searched active JS/HTML spatial renderer signatures, course and catalog links, body-kind dispatch, script imports and legacy/archive paths. Read code and public repository data only; no external/private files. Findings describe source behavior, not a completed visual audit.",
+  "conclusion": "Cannot describe current shared-renderer patch as fixing every active stereometry course. Separate Atanasyan12lesson course, profile14fixed trainer, profile3banks and basic-EGE interactive/static renderers remain distinct active paths.",
+  "snapshotMeaning": "Discovery at the initial reviewed head, before additional active renderers were repaired. Resolution does not imply browser approval.",
+  "resolution": {
+    "implementation": "Additional active renderer repairs implemented in the same PR; all task banks preserved.",
+    "mathematics": "Source-bound component reviews in STEREO_VISIBILITY_ADDITIONAL.json.",
+    "browser": "Pending exact final head CI and actual screenshot review.",
+    "outOfScope": "Elementary transparent counting demonstrations, planar geometry, OGE tyre visualizations, archival/source-bank/catalog-only paths are not independent active stereometry courses."
+  }
+}
