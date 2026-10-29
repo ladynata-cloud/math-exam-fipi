@@ -173,7 +173,7 @@ async function reversedDashPixels(c, width) {
   // same polygon boundary. Inspect their actual pixel gaps in the browser.
   // Use viewport pixels at deviceScaleFactor1. Element screenshots round their
   // crop rectangle; treating that rounding as a rescale displaces line samples.
-  await page.locator('[data-main-model] svg').scrollIntoViewIfNeeded(); await settle();
+  await page.locator('[data-main-model] svg').evaluate(svg => svg.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'instant' })); await settle();
   const info = await page.locator('[data-main-model] svg').evaluate(svg => {
     const paths = [...svg.querySelectorAll('path')];
     const base = paths.find(p => p.dataset.edge === 'B-D' && p.dataset.hidden === 'true');
@@ -215,13 +215,23 @@ async function reversedDashPixels(c, width) {
       return positions;
     };
     const candidates = centers(7.5), inkCenters = centers(2.5);
-    phaseEvidence.samples = candidates.map(s => ({ distance: s, pixel: at(s).map(Math.floor), base: basePixels.at(...at(s)), composite: composite.at(...at(s)) }));
+    // A5px gap with the widest2.8px round stroke has a1.1px clear half-gap.
+    // Search only within its central±0.75CSSpx: antialiasing can tint one
+    // nearest pixel, while its neighbor still records the actual clear gap.
+    const unitsPerPixel = info.pathLength / Math.hypot(info.q[0] - info.p[0], info.q[1] - info.p[1]);
+    const halfRange = Math.min(.75, .75 / unitsPerPixel);
+    const gapSamples = candidates.map(center => [0, -2 / 3, 2 / 3, -1, 1].map(fraction => {
+      const offset = fraction * halfRange;
+      const distance = center + offset * unitsPerPixel;
+      return { center, offset, distance, pixel: at(distance).map(Math.floor), base: basePixels.at(...at(distance)), composite: composite.at(...at(distance)) };
+    }));
+    phaseEvidence.samples = gapSamples;
     phaseEvidence.background = background; save();
     assert(candidates.length >= 2, 'At least two interior dash-gap centers at ' + width);
-    assert(candidates.every(s => blank(basePixels, s)), 'Base dash-gap centers are clear in actual PNG');
     assert(inkCenters.some(s => !blank(basePixels, s)), 'Actual base stroke is present between its gaps');
-    const gapsFilled = candidates.filter(s => !blank(composite, s));
-    assert.equal(gapsFilled.length, 0, 'Reversed highlighted strokes must preserve base dash gaps: ' + JSON.stringify(gapsFilled));
+    const chosen = gapSamples.map(samples => samples.find(sample => blank(basePixels, sample.distance) && blank(composite, sample.distance)));
+    assert(chosen.every(Boolean), 'Every predicted gap retains a clear actual pixel within its central0.75px neighborhood');
+    phaseEvidence.chosenGapPixels = chosen; save();
     for (const control of ['solid', 'shifted']) {
       await page.locator('[data-phase-test="overlay"]').evaluateAll((nodes, control) => nodes.forEach(node => {
         node.style.removeProperty('stroke-dasharray'); node.style.removeProperty('stroke-dashoffset');
@@ -229,12 +239,12 @@ async function reversedDashPixels(c, width) {
         else node.style.setProperty('stroke-dashoffset', String(Number(node.getAttribute('stroke-dashoffset')) + 5), 'important');
       }), control);
       await settle();
-      const captured = await capture(control), filled = candidates.filter(s => !blank(captured.pixels, s));
+      const captured = await capture(control), filled = chosen.filter(sample => !blank(captured.pixels, sample.distance));
       phaseEvidence.controls.push({ control, gapsFilled: filled.length, filename: captured.filename, sha256: captured.sha256,
-        samples: candidates.map(s => ({ distance: s, color: captured.pixels.at(...at(s)) })) }); save();
-      assert(filled.length > 0, 'Pixel negative control detects ' + control + ' overlay filling real gaps');
+        samples: chosen.map(sample => ({ distance: sample.distance, pixel: sample.pixel, color: captured.pixels.at(...at(sample.distance)) })) }); save();
+      assert.equal(filled.length, chosen.length, 'Pixel negative control detects ' + control + ' overlay at every verified gap pixel');
     }
-    Object.assign(phaseEvidence, { completed: true, overlays: info.overlays, measuredGapSamples: candidates.length, gapsFilled: gapsFilled.length }); save();
+    Object.assign(phaseEvidence, { completed: true, overlays: info.overlays, measuredGapSamples: candidates.length, gapsFilled: 0 }); save();
   } finally {
     await page.evaluate(() => { document.getElementById('visibility-pixel-isolation')?.remove(); document.querySelectorAll('[data-phase-test]').forEach(node => {
       node.style.removeProperty('stroke-dasharray'); node.style.removeProperty('stroke-dashoffset'); node.removeAttribute('data-phase-test');
@@ -289,7 +299,12 @@ async function main() {
           assert(arcs.some(line => line.hidden) && arcs.some(line => !line.hidden), 'Sphere front/back arc distinction');
         }
         await screenshot(c, width, view); row.views.push({ view, faces: data.faces, lines: data.lines.length, hiddenParts: data.lines.filter(line => line.hidden).length, labels: data.labels.length });
-        if (c.reported && view === 'dbc-lines') await reversedDashPixels(c, width);
+        if (c.reported && view === 'dbc-lines') {
+          // Retain all subsequent real course images if this pixel check fails;
+          // the final errors assertion still fails the complete browser gate.
+          try { await reversedDashPixels(c, width); }
+          catch (error) { evidence.errors.push('Dash pixels at ' + width + ': ' + (error.stack || error)); save(); }
+        }
       }
       if (c.reported) {
         await page.locator('[data-main-model] button[aria-label="Вернуть исходный вид"]').click();
