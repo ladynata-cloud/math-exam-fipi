@@ -19,7 +19,9 @@ const cases = [
   { course: 'merzlyak-10-base', id: 'ex-16-001', views: ['neutral', 'base', 'lateral'], faces: [5, 5, 5] },
   { course: 'merzlyak-10-base', id: 'merz-theory-19-detail-07', views: ['neutral', 'balls', 'line'], faces: [0, 0, 0], spheres: true },
   { course: 'shestakov-yaschenko-10-11', id: 'sy-4-6-a28-a', views: ['neutral', 'notch'], faces: [9, 9] },
-  { course: 'shestakov-yaschenko-10-11', id: 'sy-4-6-b2-a', views: ['neutral', 'first', 'second'], faces: [2, 2, 2] }
+  // These two open rectangles have no occluded line in the default camera;
+  // requiring invented dashes would contradict their independent ray oracle.
+  { course: 'shestakov-yaschenko-10-11', id: 'sy-4-6-b2-a', views: ['neutral', 'first', 'second'], faces: [2, 2, 2], fullyVisible: true }
 ];
 const widths = [320, 1280];
 const courses = Object.fromEntries([...new Set(cases.map(c => c.course))].map(name => {
@@ -56,6 +58,10 @@ function preflight() {
   assert.throws(() => checkReportedHidden([{ ...endpoint, d: 'M10 20 L10.01 20' }, hidden], 'measurable solid stroke control'), /No visible solid length/);
   assert.throws(() => checkReportedHidden([], 'missing line control'), /Reported hidden coverage/);
   assert.throws(() => checkReportedHidden([{ ...endpoint, end: 1, d: 'M10 20 L30 40' }], 'all-solid control'), /Reported hidden coverage/);
+  const openRectangles = { lines: [{ start: 0, end: 1, hidden: false, dash: 'none', d: 'M0 0 L1 1' }], labels: [] };
+  checkGeometry(openRectangles, 'fully visible open-surface control', false);
+  assert.throws(() => checkGeometry(openRectangles, 'missing hidden-line control'), /Expected hidden portions/);
+  assert.throws(() => checkGeometry({ ...openRectangles, lines: [...openRectangles.lines, { start: 0, end: 1, hidden: true, dash: '5px, 5px', d: 'M0 1 L1 0' }] }, 'invented hidden-line control', false), /Expected hidden portions/);
   for (const c of cases) {
     const lesson = lessonFor(c);
     assert(lesson && lesson.status === 'reviewed', 'Reviewed actual lesson ' + c.id);
@@ -123,9 +129,9 @@ async function geometry() {
       }) };
   });
 }
-function checkGeometry(data, name) {
+function checkGeometry(data, name, hiddenExpected = true) {
   assert(data.lines.length > 0, name + ' actual lines');
-  assert(data.lines.some(line => line.hidden), name + ' contains genuinely hidden portions');
+  assert.equal(data.lines.some(line => line.hidden), hiddenExpected, name + ' Expected hidden portions match the actual geometry');
   assert(data.lines.some(line => !line.hidden), name + ' contains genuinely visible portions');
   for (const line of data.lines) {
     assert(line.start >= 0 && line.end <= 1 && line.end > line.start, name + ' valid interval');
@@ -284,7 +290,7 @@ async function main() {
       if (lesson.answer) await page.locator('#final-answer').fill(draft);
       for (let i = 0; i < c.views.length; i++) {
         const view = c.views[i]; await showView(lesson, view);
-        const data = await geometry(); checkGeometry(data, c.id + '/' + view + '/' + width);
+        const data = await geometry(); checkGeometry(data, c.id + '/' + view + '/' + width, !c.fullyVisible);
         assert.equal(data.faces, c.faces[i], 'Active source surfaces ' + c.id + '/' + view);
         assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'No overflow ' + c.id);
         if (c.reported && view === 'neutral') {
