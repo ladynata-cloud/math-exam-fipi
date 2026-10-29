@@ -77,6 +77,20 @@ manual checklist order/incomplete feedback, a fresh current-version attempt,
 read-only takeover, peer access denial and the separate division refresher.
 The synthetic test data contain no real pupil identity or credentials.
 
+Exact-head CI on the initial candidate passed the three Vilenkin jobs. It
+also exposed three global-catalog assertions that still assumed only 378 rows.
+They now explicitly account for the new source-task group; an additional pinned
+check proves that all 378 old rows, their order and fields remain byte-identical
+to base 6fb959fc. The focused cross-course tests (11), geometry catalog partition
+and source-contract tests (15) passed after this test-only correction.
+
+Three unrelated CI failures were reproduced on the unchanged base: the
+Atanasyan canonical-source SHA guard, the Ichenskaya workflow calling that same
+guard, and Merzlyak's strict engine equality at schema-runtime.test.cjs:71.
+Their affected input/test/workflow Git blobs match the base. They remain failed,
+not waived or relabelled as passing; this patch does not change those courses.
+The final PR records the updated exact head and subsequent CI status.
+
 No actual pupil learning gains, live assignment, production rollout or external
 Claude review are claimed. The prior provider credit failure is not approval;
 no paid retry has been made without evidence of changed access. The task is

@@ -32,7 +32,9 @@ const originalTrainers=new Set(['ege-path','oge-basics','motion-grade6']);
 assert.equal(catalog.items.filter(item=>originalTrainers.has(item.trainerId)&&!item.geometryRebuild&&!addedDivisionIds.has(item.id)&&!addedMultiplicationIds.has(item.id)).length,217,'Existing identities remain available');
 const manualItems=catalog.items.filter(item=>item.trainerId==='atanasyan-7-9');
 assert.deepEqual(manualItems.map(item=>item.id),['atanasyan-7-9:atanasyan-7-9-main-92-part-1'],'The fixed manual exercise is separate from the original trainer identities');
-assert.equal(catalog.items.length,217+items.length+addedDivisionIds.size+addedMultiplicationIds.size+addedVilenkin6Ids.size+manualItems.length,'Every catalog entry belongs to an explicitly checked group');
+const textbookIds=new Set(['A','B','C','D'].flatMap(block=>JSON.parse(read('courses/vilenkin-6-part-1/textbook-data/units-'+block+'.json')).flatMap(unit=>unit.tasks.map(task=>'vilenkin6-textbook:'+task.id))));
+assert.deepEqual(catalog.items.filter(item=>item.trainerId==='vilenkin6-textbook').map(item=>item.id).sort(),[...textbookIds].sort(),'Every revised Vilenkin source task belongs to its distinct group exactly once');
+assert.equal(catalog.items.length,217+items.length+addedDivisionIds.size+addedMultiplicationIds.size+addedVilenkin6Ids.size+manualItems.length+textbookIds.size,'Every catalog entry belongs to an explicitly checked group');
 for(const meta of families){
  const item=catalog.get('path:'+meta.id);assert(item);assert(item.grade7&&item.trainingOnly&&item.geometryRebuild);
  assert.equal(item.trainerId,'ege-path');assert.equal(item.contentVersion,1);assert.equal(item.position,null);assert.equal(item.topicId,'plane');

@@ -24,6 +24,12 @@ function fixture(t){const dir=fs.mkdtempSync(path.join(os.tmpdir(),'v6-textbook-
     attempt(contentId=choice.id,who=student){return store.createAttempt(who,{opId:op(),trainerId:C.TRAINER,contentId,fresh:true}).attempt;},
     action(a,type,payload,who=student){return store.action(who,a.id,{opId:op(),expectedVersion:a.version,type,payload});},finish(a){return this.action(a,'check',final(a.taskSpec,a.state)).attempt;}};
 }
+test('all 378 prior catalog rows preserve their exact base content and order',()=>{
+  const prior=catalog.items.filter(item=>item.trainerId!=='vilenkin6-textbook');
+  assert.equal(prior.length,378);
+  // Independently compared with main 6fb959fc before adding this source course.
+  assert.equal(crypto.createHash('sha256').update(JSON.stringify(prior)).digest('hex'),'86c3504c2d170b3afb208b96c4dc0a0fa689290fe646935683ab8c29691bf439');
+});
 test('all revised textbook tasks have separate exact cloud identities; legacy 27 modules survive',()=>{
   const items=catalog.items.filter(row=>row.trainerId===C.TRAINER);assert.equal(items.length,tasks.size);assert(items.length>=192);assert.deepEqual(items,manifest);assert.equal(catalog.items.filter(row=>row.trainerId==='vilenkin6-part1').length,27);
   for(const item of items){const generated=contracts.create(C.TRAINER,item.contentId,13);assert.equal(generated.taskSpec.sourceRevision,item.sourceRevision);assert.equal(generated.taskSpec.unitId,item.unitId);assert.deepEqual(C.normalize(generated.taskSpec,generated.state),generated.state);assert.equal(C.questionIdentity(generated.taskSpec),C.questionIdentity(C.create(item.contentId,999).taskSpec));assert(item.trainingOnly&&item.grade6);}
