@@ -193,3 +193,27 @@ or deletion of learner work.
 - Exact-head CI results and release status are recorded in PR #368; they are
   pending when this integration record is committed. No production publication
   or post-release success is claimed by this preparation record.
+
+### Final-CI navigation contract reconciliation
+
+The first integrated-head CI passed the new real-browser SEO gate and the
+number-theory board/cabinet gate, but the OGE course job failed at its historical
+link-preservation assertion: it still required the OGE-13 redirect URL. The
+approved product change intentionally uses the direct destination. The test now
+accepts only that exact, independently checked replacement, requires both direct
+course/download links and verifies the unchanged legacy canonical, HTML refresh,
+JavaScript redirect and visible fallback. All other historical links remain
+subject to exact preservation; no assertion family is skipped.
+
+The next local command exposed another stale expectation in
+`oge-focus-navigation.test.cjs`: home and lab links were compared with the nested
+division address, although PR #365 already published the short entry. Both input
+pages and the failing test matched current main before this correction, so this
+was a baseline mismatch. Expectations now require the published short address,
+its canonical and the shared guided engine at both old/new URLs; all other
+navigation checks remain intact. The actual pages and division engines are not
+edited. `OGE_FOCUS_NAVIGATION_OK` checks 244 internal links.
+
+These two test migrations add two paths to the release delta (37 total).
+The initial failed CI is retained as evidence; a fresh complete PR CI run is
+required for the final head. Its exact result belongs in the PR release record.

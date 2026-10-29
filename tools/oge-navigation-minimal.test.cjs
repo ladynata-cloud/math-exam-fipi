@@ -10,6 +10,21 @@ const base=process.env.OGE_BASE_ROOT||root;
 const files=['trainers/oge-course/index.html','oge/index.html'];
 const read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const load=(f,hash='')=>new JSDOM(read(f),{url:'https://mathexam.space/'+f+hash,runScripts:'dangerously'});
+const legacyInequalities='https://mathexam.space/trainers/oge-task13-inequalities.html';
+const currentInequalities='https://mathexam.space/trainers/oge13-inequalities-series.html';
+test('OGE-13 direct route retains the legacy redirect and both task/download destinations',()=>{
+ const legacy=new JSDOM(read('trainers/oge-task13-inequalities.html'),{url:legacyInequalities});
+ const d=legacy.window.document;
+ assert.equal(d.querySelector('link[rel="canonical"]').href,currentInequalities);
+ assert.equal(d.querySelector('meta[http-equiv="refresh"]').content,'0; url=/trainers/oge13-inequalities-series.html');
+ assert.equal(d.querySelector('script').textContent,"window.location.replace('/trainers/oge13-inequalities-series.html');");
+ assert(d.querySelector('main a[href="/trainers/oge13-inequalities-series.html"]'));
+ const course=load(files[0]);
+ assert(course.window.document.querySelector('h3 a[href="/trainers/oge13-inequalities-series.html"]'));
+ assert(course.window.document.querySelector('#downloads a[download][href="/trainers/oge13-inequalities-series.html"]'));
+ assert(![...course.window.document.querySelectorAll('a[href]')].some(a=>a.href===legacyInequalities));
+ legacy.window.close();course.window.close();
+});
 test('course keeps every task route and the required honest trainer/variant labels',()=>{
  const d=load(files[0]).window.document;
  assert.equal(d.querySelectorAll('h1').length,1);
@@ -42,7 +57,12 @@ test('both hubs retain all previous navigation destinations and resolve local li
   const old=execFileSync('git',['show','4b56350c35a67e41add8f2b25cf2bf7d73d1f71f:'+f],{cwd:base,encoding:'utf8'});
   const od=new JSDOM(old,{url:'https://mathexam.space/'+f}).window.document;
   const dest=new Set([...d.querySelectorAll('a[href]')].map(a=>a.href));
-  for(const a of od.querySelectorAll('a[href]'))assert(dest.has(a.href),'Retain '+a.href);
+  // Only this explicitly verified compatibility redirect has a direct replacement.
+  // Every other historical destination must remain exactly as before.
+  for(const a of od.querySelectorAll('a[href]')){
+   const expected=a.href===legacyInequalities?currentInequalities:a.href;
+   assert(dest.has(expected),'Retain '+a.href+' via '+expected);
+  }
   for(const a of d.querySelectorAll('a[href]')){const u=new URL(a.href);if(u.origin!=='https://mathexam.space')continue;let target=decodeURIComponent(u.pathname).slice(1);if(!target||target.endsWith('/'))target+='index.html';assert(fs.existsSync(path.join(root,target))||fs.existsSync(path.join(base,target)),f+' broken '+a.href);if(u.pathname==='/'+f&&u.hash)assert(d.getElementById(u.hash.slice(1)));}
  }
 });

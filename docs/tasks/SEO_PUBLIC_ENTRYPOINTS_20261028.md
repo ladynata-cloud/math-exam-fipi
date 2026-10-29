@@ -169,3 +169,8 @@ release preparation. Final merge follows the exact-base/head release decision.
   gate to the existing SEO workflow so actual catalog clicks, legacy URL
   handling with/without JavaScript and embedded NOK/NOD run on final CI.
 - No mathematical engine, account, persistence or assistant changes.
+
+- Final-CI remediation: update the two existing navigation test contracts for
+  the approved direct OGE-13 route and the already-published PR365 division
+  route. Require explicit legacy compatibility/shared-engine checks and retain
+  every other historical destination assertion. No page/engine edits or skips.
