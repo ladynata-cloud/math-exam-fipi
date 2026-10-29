@@ -1,0 +1,562 @@
+{
+  "commit": "0ad2680f9039a27cd1188eccc55cfcd932d4bf64",
+  "cards": 518,
+  "catalogEntries": 1375,
+  "reviewBatches": 27,
+  "screenshotCases": 1272,
+  "bundleBytesSHA256": "6450ea80dc28439e3e1836a3396f2465f0b305368f8a2ca594579c993f8fe28a",
+  "canonicalBundleSHA256": "683bcb55da8197329877a5503c03c32be499b8cfccdc69b92525137a7f5a70ad",
+  "rawLessonManifestSHA256": "20e2e972b82bc3072bac67f8dbe513006b2804af5436d94b7e2fbc6a666ea704",
+  "registrySHA256": "e00b199b295d353b700e1b6382547e5d3f50b5a2b2b48d03d93e2c202b84f6ab",
+  "reviewRowsSHA256": "e95c42b1ec40af9d4fa6c846af365b21ca2156a7c98d6f6d9fccfd463a7c8af0",
+  "reviewBatchesSHA256": "5cd80b1d526fb3f868ca083c80261de8c38f8043d7c27adcc23dc86b918a10e1",
+  "sourceIndexSHA256": "20b6ee19e3d9c63bd0abde06dcd2818964eb33c2db877bd3e26657531cd4a862",
+  "screenshotCasesSHA256": "80ff98e4d5069f722156bb038075209d2dd8094c01e6a48a6b71c43378e09a6f",
+  "immutableFiles": {
+    "stereo-course/textbook/assets/engine.js": "9da6fb10924d50793521740ea779d81ef78fe3dfee5dbd71ab138b7d345dba74",
+    "stereo-course/textbook/assets/style.css": "56b3ec43f680dde578320a9ea1c5969a9a15d2d0344bfa1eda903f5bd3e09f51",
+    "stereo-course/textbook/index.html": "af453fa854b9995f3a41bbf1a476564116a8efff43cee2234716e2c5489b5e55",
+    "stereo-course/assets/task-scene-viewer.js": "a3e470e55b45d658cb74b2e32b5f1e9479785fa9b014be3929591bdcd55cefe6",
+    "stereo-course/assets/task-scenes.css": "5dbecdc2c98fbb030bcc4dba224f3b4ae89af292579a5136942810be75fd2cbf",
+    "stereo-course/assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+    "stereo-course/textbook/schema/lesson.schema.json": "0afbe8ada69985cda31e8c77168ac101aac05f04ae53c401b91c1bfd969972ba",
+    "stereo-course/textbook/schema/catalog.schema.json": "a497a09012767582238db69a7966f43d08f293b6a43f1ffc70ce6b15ed5a6e08",
+    "tools/stereo-textbook/build_textbook.py": "96e1e919ae6f231ae63ef5ba9fa57819e820a325ab128fd129a53c25b2aa9dc3"
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-10-26T15:53:31.463Z",
+    "registeredAt": "2026-10-26T15:54:08.705Z",
+    "scope": "Introduction and chapters I–III: main exercises 1–319, theory points 1–37, all 40 chapter self-check questions. Chapter III is complete. Chapter IV and main exercises 320 onward remain pending. Not the complete book."
+  },
+  "originalSources": [
+    {
+      "id": "source-main-0320",
+      "kind": "exercise",
+      "title": "Задача № 320",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "320",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          92
+        ],
+        "pdfPages": [
+          94
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0321",
+      "kind": "exercise",
+      "title": "Задача № 321",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "321",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          92
+        ],
+        "pdfPages": [
+          94
+        ]
+      },
+      "sourceSubparts": [
+        "а",
+        "б",
+        "в"
+      ]
+    },
+    {
+      "id": "source-main-0322",
+      "kind": "exercise",
+      "title": "Задача № 322",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "322",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          92
+        ],
+        "pdfPages": [
+          94
+        ]
+      },
+      "sourceSubparts": [
+        "а",
+        "б"
+      ]
+    },
+    {
+      "id": "source-main-0323",
+      "kind": "exercise",
+      "title": "Задача № 323",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "323",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          92
+        ],
+        "pdfPages": [
+          94
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0324",
+      "kind": "exercise",
+      "title": "Задача № 324",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "324",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          92
+        ],
+        "pdfPages": [
+          94
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0325",
+      "kind": "exercise",
+      "title": "Задача № 325",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "325",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          92
+        ],
+        "pdfPages": [
+          94
+        ]
+      },
+      "sourceSubparts": [
+        "а",
+        "б"
+      ]
+    },
+    {
+      "id": "source-main-0326",
+      "kind": "exercise",
+      "title": "Задача № 326",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "326",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          92
+        ],
+        "pdfPages": [
+          94
+        ]
+      },
+      "sourceSubparts": [
+        "а",
+        "б"
+      ]
+    },
+    {
+      "id": "source-main-0327",
+      "kind": "exercise",
+      "title": "Задача № 327",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "327",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          92
+        ],
+        "pdfPages": [
+          94
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0328",
+      "kind": "exercise",
+      "title": "Задача № 328",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "328",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          92
+        ],
+        "pdfPages": [
+          94
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0329",
+      "kind": "exercise",
+      "title": "Задача № 329",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "329",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          93
+        ],
+        "pdfPages": [
+          95
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0330",
+      "kind": "exercise",
+      "title": "Задача № 330",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "330",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          93
+        ],
+        "pdfPages": [
+          95
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0331",
+      "kind": "exercise",
+      "title": "Задача № 331",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "331",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          93
+        ],
+        "pdfPages": [
+          95
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0332",
+      "kind": "exercise",
+      "title": "Задача № 332",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "332",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          93
+        ],
+        "pdfPages": [
+          95
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0333",
+      "kind": "exercise",
+      "title": "Задача № 333",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "333",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          93
+        ],
+        "pdfPages": [
+          95
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0334",
+      "kind": "exercise",
+      "title": "Задача № 334",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "334",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          93
+        ],
+        "pdfPages": [
+          95
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0335",
+      "kind": "exercise",
+      "title": "Задача № 335",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "335",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          93
+        ],
+        "pdfPages": [
+          95
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0336",
+      "kind": "exercise",
+      "title": "Задача № 336",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "336",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          93
+        ],
+        "pdfPages": [
+          95
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0337",
+      "kind": "exercise",
+      "title": "Задача № 337",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "337",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          93
+        ],
+        "pdfPages": [
+          95
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0338",
+      "kind": "exercise",
+      "title": "Задача № 338",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "338",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          93
+        ],
+        "pdfPages": [
+          95
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0339",
+      "kind": "exercise",
+      "title": "Задача № 339",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "339",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          93
+        ],
+        "pdfPages": [
+          95
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0340",
+      "kind": "exercise",
+      "title": "Задача № 340",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "340",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          93
+        ],
+        "pdfPages": [
+          95
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0341",
+      "kind": "exercise",
+      "title": "Задача № 341",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "341",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          93
+        ],
+        "pdfPages": [
+          95
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0342",
+      "kind": "exercise",
+      "title": "Задача № 342",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "342",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          93
+        ],
+        "pdfPages": [
+          95
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0343",
+      "kind": "exercise",
+      "title": "Задача № 343",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "343",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          94
+        ],
+        "pdfPages": [
+          96
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0344",
+      "kind": "exercise",
+      "title": "Задача № 344",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "344",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          94
+        ],
+        "pdfPages": [
+          96
+        ]
+      },
+      "sourceSubparts": [
+        "а",
+        "б",
+        "в"
+      ]
+    },
+    {
+      "id": "source-main-0345",
+      "kind": "exercise",
+      "title": "Задача № 345",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "345",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          94
+        ],
+        "pdfPages": [
+          96
+        ]
+      },
+      "sourceSubparts": [
+        "а",
+        "б"
+      ]
+    },
+    {
+      "id": "source-theory-038",
+      "kind": "theory",
+      "title": "38. Понятие цилиндра",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "38",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          89,
+          90,
+          91
+        ],
+        "pdfPages": [
+          91,
+          92,
+          93
+        ]
+      }
+    },
+    {
+      "id": "source-theory-039",
+      "kind": "theory",
+      "title": "39. Площадь поверхности цилиндра",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "39",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          91,
+          92
+        ],
+        "pdfPages": [
+          93,
+          94
+        ]
+      }
+    }
+  ]
+}
