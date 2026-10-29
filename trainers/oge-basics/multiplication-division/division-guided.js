@@ -12,6 +12,7 @@
   let state = {version:1, active:'start', serial:0, next:{}, sessions:{}, records:[]};
   let lastRaw = null, blocked = false, storageAvailable = true, helpOpen = false, revealOpen = false;
   let feedback = '', feedbackKind = '';
+  let errorStep = '', stepErrors = 0;
   let decimalShift = null, decimalShiftKey = '', normalizationKey = '';
   let multiplicationRefresh = null;
   let contextualHelp = null, contextualHost = null;
@@ -42,6 +43,13 @@
       const count = s.step + (s.accepted ? 1 : 0);
       if (s.step >= p.actions.length || count !== s.answers.length || s.done !== (count === p.actions.length) || !s.answers.every((v, i) => typeof v === 'string' && G.check(v, p.actions[i]))) throw Error('Ответы не совпали');
       out.sessions[id] = {id:s.id, task:p.task, step:s.step, answers:[...s.answers], accepted:s.accepted, done:s.done, draft:s.draft, errors:s.errors, hints:s.hints, reveals:s.reveals, repeated:s.repeated};
+      // Older v1 sessions could pause after checking. Keep the earned answer
+      // and resume at the next question without asking for another confirmation.
+      if (s.accepted && !s.done) {
+        out.sessions[id].step++;
+        out.sessions[id].accepted = false;
+        out.sessions[id].draft = '';
+      }
     }
     const ids = new Set();
     for (const r of raw.records) {
@@ -333,7 +341,7 @@
     $('answer-label').hidden = !!a.options;
     $('answer-options').hidden = !a.options;
     $('answer-options').innerHTML = a.options ? a.options.map(o => '<button type="button" data-option="' + esc(o.value) + '" aria-pressed="' + (s.draft === o.value) + '" ' + (s.accepted ? 'disabled' : '') + '>' + esc(o.label) + '</button>').join('') : '';
-    $('primary').textContent = s.accepted ? 'Дальше' : 'Проверить';
+    $('primary').textContent = 'Проверить';
     $('feedback').textContent = feedback || (s.accepted ? a.kind.startsWith('shift-') ? 'Верно. Оба числа изменяются одинаково.' : 'Верно. Посмотри, что записалось в уголке.' : '');
     $('feedback').className = feedbackKind || (s.accepted ? 'good' : '');
     $('help-area').hidden = s.accepted;
@@ -409,25 +417,29 @@
   $('answer-form').addEventListener('submit', event => {
     event.preventDefault();
     const s = current(); if (s.done) return;
-    if (s.accepted) {
-      s.step++; s.accepted = false; s.draft = ''; feedback = ''; feedbackKind = ''; helpOpen = false; revealOpen = false;
-      save(); render(); moveFocus(); return;
-    }
     const p = G.plan(s.task), a = p.actions[s.step];
     const raw = a.options ? s.draft : $('answer').value.trim();
     s.draft = raw;
     if (!G.check(raw, a)) {
-      if (raw) s.errors = Math.min(1000000, s.errors + 1);
-      feedback = errorText(raw, p, a); feedbackKind = 'error'; save(); render(); return;
+      const identity = s.id + ':' + s.step;
+      if (identity !== errorStep) { errorStep = identity; stepErrors = 0; }
+      if (raw) { s.errors = Math.min(1000000, s.errors + 1); stepErrors++; }
+      feedback = errorText(raw, p, a);
+      if (stepErrors >= 2) feedback += ' Если трудно, открой подсказку к этому шагу ниже.';
+      feedbackKind = 'error'; save(); render(); return;
     }
-    s.answers.push(raw); s.accepted = true; feedback = ''; feedbackKind = '';
+    s.answers.push(raw); s.accepted = true;
+    feedback = 'Предыдущий шаг выполнен: ' + raw + '. Ответ записан.'; feedbackKind = 'good';
+    helpOpen = false; revealOpen = false; errorStep = ''; stepErrors = 0;
     s.done = s.answers.length === p.actions.length;
     if (s.done && !state.records.some(r => r.id === s.id)) state.records.push({id:s.id, task:s.task, topic:state.active, at:Date.now(), errors:s.errors, hints:s.hints, reveals:s.reveals, repeated:s.repeated});
-    save(); render();
-    if (s.done) moveFocus(); else $('primary').focus({preventScroll:true});
+    if (!s.done) { s.step++; s.accepted = false; s.draft = ''; }
+    save(); render(); moveFocus();
   });
   $('answer').addEventListener('input', () => {
-    const s = current(); s.draft = $('answer').value; save();
+    const s = current(); s.draft = $('answer').value;
+    if (feedbackKind === 'good') { feedback = ''; feedbackKind = ''; $('feedback').textContent = ''; $('feedback').className = ''; }
+    save();
     const p = G.plan(s.task);
     if (p.actions[s.step].kind === 'start') renderNotebook(p, s);
     if (p.actions[s.step].kind === 'shift-count') renderDecimalShift(p, s);

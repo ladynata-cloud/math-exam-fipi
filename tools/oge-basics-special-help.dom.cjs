@@ -28,7 +28,6 @@ for(const v of variants)for(const late of [false,true])test(v.id+' keeps its tas
  f.$('.bh-close').click();assert.equal(f.$('.bh-panel').hidden,true);f.$('.bh-toggle').click();assert.equal(f.$('.bh-frame:not([hidden]) .bh-answer'),child);assert.equal(child.readOnly,true);
  f.$('.bh-root').click();assert.equal(f.$(v.input),initial,'opening help does not replace the original input');assert.equal(initial.value,'7');assert.equal(f.$(v.prompt).textContent,initialPrompt);assert.equal(v.progress(v.read(f.w)),progress);
  initial.value=v.answer(f.w);initial.dispatchEvent(new f.w.Event('input',{bubbles:true}));f.$(v.form).dispatchEvent(new f.w.Event('submit',{cancelable:true}));assert.equal(v.progress(v.read(f.w)),progress+1);assert.equal(f.$('.bh-panel')?.hidden??true,true,'accepted or new steps close old help');
- if(v.id==='long-division-from-simple-to-decimals')f.$(v.form).dispatchEvent(new f.w.Event('submit',{cancelable:true}));
  assert(f.$('.bh-toggle'));f.$('.bh-toggle').click();assert.equal(f.$('.bh-panel').hidden,false);assert(f.$('.bh-current-hint').textContent.trim().length>10,'the following step retains its own hint');assert.equal(f.$('.bh-panel').dataset.bhDepth,'0');
 });
 test('five navigation maps retain every existing link and diagnostic requires an explicit start',t=>{

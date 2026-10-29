@@ -23,7 +23,13 @@ const server = http.createServer((req, res) => {
 });
 let origin;
 async function route(page, skill = 'division') {
-  await page.goto(origin + ROUTE + '?skill=' + skill);
+  await page.goto(origin + ROUTE);
+  await page.waitForFunction(() => window.PreOgeArithmetic && document.querySelector('#route-overview [data-skill]'));
+  const topics = page.locator('#route-topics');
+  assert.equal(await topics.getAttribute('open'), null, 'The topic catalogue starts collapsed');
+  await topics.locator(':scope > summary').click();
+  await topics.locator('[data-skill="' + skill + '"]').click();
+  assert.equal(new URL(page.url()).searchParams.get('skill'), skill);
   await page.waitForFunction(() => window.PreOgeArithmetic && document.querySelector('a[data-level]'));
 }
 async function legacyReady(page, level) {
@@ -90,13 +96,12 @@ async function guidedReady(page) { await page.waitForFunction(() => window.__div
 async function guidedOne(page) {
   const all = await guidedState(page), s = all.sessions[all.active];
   if (s.done) return false;
-  if (s.accepted) { await page.locator('#primary').click(); return true; }
   const a = G.plan(s.task).actions[s.step];
   if (a.options) await page.locator('[data-option=' + JSON.stringify(a.answer) + ']').click();
   else if (a.kind === 'start') await page.locator('[data-prefix-end="' + a.sourceIndex + '"]').click();
   else await page.locator('#answer').fill(a.answer);
   await page.locator('#primary').click();
-  assert((await guidedState(page)).sessions[all.active].accepted, 'The correct guided action must be accepted');
+  assert.equal((await guidedState(page)).sessions[all.active].answers.length, s.answers.length + 1, 'One check records the correct guided action exactly once');
   return true;
 }
 async function guidedFinish(page) {
@@ -267,8 +272,10 @@ async function learner(browser, name, width, run) {
       assert.equal(p.solved, 0, 'Guided examples remain separate from self-practice');
     });
     await learner(browser, 'mobile return and interrupted lesson', 320, async page => {
-      await route(page); await reflow(page, 'route on 320px');
-      await page.locator('a[href*="long-division-from-simple-to-decimals"][href*="#start"]').first().click();
+      await page.goto(origin + ROUTE);
+      await page.locator('[data-operation="division"]').waitFor({state:'visible'});
+      await reflow(page, 'four simple starts on 320px');
+      await page.locator('[data-operation="division"]').click();
       await guidedReady(page);
       await page.locator('#answer').fill('4'); await page.locator('#primary').click();
       const before = await guidedState(page);

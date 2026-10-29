@@ -1,5 +1,26 @@
 # MathExam project status
 
+## Prepared: clearer arithmetic entry and division (first release)
+
+- [Task](tasks/ARITHMETIC_CLARITY_FIRST_RELEASE.md), MEDIUM, approved on
+  2026-10-30. Base `6fb959fc0130a0bb8842601d19297e305ac91ac0`.
+- Candidate: four clear arithmetic starts; existing results can continue the
+  matching topic; optional division diagnosis and retained detailed catalogue.
+- Guided division records a correct answer and opens the next mathematical
+  question with one submission. All mathematical actions, URLs, v1 keys and
+  assistance accounting remain. Prefix digits match the notebook font.
+- The decimal-divisor entry keeps original operands and reveals both earned
+  transformations before the notebook. Current-number hints and description
+  are corrected. Twenty existing entry/canonical contracts are protected.
+- Focused independent code review found and resolved a CSS selection regression.
+  Local core, DOM and SEO checks passed; browser execution is pending CI because
+  the local browser launch is blocked by the environment. The PR holds exact
+  head and gate evidence. This entry is not a publication claim.
+- The wider strategy continues with remaining trainer-interface consistency
+  and search metadata after this release is verified. No common engine,
+  storage migration, board protocol or server change is part of this candidate.
+
+
 ## Reviewed preparation: Atanasyan chapter VI, quadrilaterals, 462–540
 
 - [Task](tasks/ATANASYAN_7_9_CHAPTER_VI.md), HIGH; PR373, branch

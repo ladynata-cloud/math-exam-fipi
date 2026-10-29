@@ -11,6 +11,11 @@ on:
       - 'trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html'
       - 'tools/preoge-arithmetic*'
       - 'tools/arithmetic-course.test.cjs'
+      - 'tools/arithmetic-route-entry.dom.cjs'
+      - 'tools/division-guided-continuation.dom.cjs'
+      - 'tools/decimal-divisor-entry*'
+      - 'tools/arithmetic-url-contract*'
+      - 'trainers/oge-basics/multiplication-division/decimal-divisor-shift.html'
       - 'tools/decimal-shift*'
       - '.github/workflows/preoge-arithmetic-quality.yml'
   push:
@@ -43,8 +48,12 @@ jobs:
           NODE_PATH: /tmp/preoge-quality/node_modules
         run: |
           node tools/preoge-arithmetic.test.cjs
+          node tools/arithmetic-route-entry.dom.cjs
+          node tools/decimal-divisor-entry.dom.cjs
+          node tools/arithmetic-url-contract.test.cjs
           node tools/arithmetic-course.test.cjs
           node tools/division-guided.test.cjs
+          node tools/division-guided-continuation.dom.cjs
           node tools/decimal-shift.test.cjs
           node tools/learning-remediation-bank.cjs --check
           git diff --check
