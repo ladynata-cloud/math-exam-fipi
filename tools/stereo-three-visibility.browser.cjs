@@ -68,7 +68,7 @@ Object.defineProperty(window, '__stereoVisibilityRead', { value: () => {
     for(let i=1;i<pieces.length;i++){
       const a=pieces[i-1].end,b=pieces[i].start,t=(a+b)/2;
       if(b>a&&inspector.strokes.find(s=>s.name===group.name).parts.some(p=>p.hidden&&p.start<=a+1e-8&&p.end>=b-1e-8)){
-        const first=at(a),last=at(b);group.pixelGaps.push({t,point:at(t),length:Math.hypot(last.x-first.x,last.y-first.y)});
+        const first=at(a),last=at(b);group.pixelGaps.push({t,point:at(t),from:first,to:last,length:Math.hypot(last.x-first.x,last.y-first.y)});
       }
     }
   }
@@ -200,24 +200,35 @@ async function samplePixelGaps({encoded,group,rect,badgeRects=[]}) {
   const canvas=document.createElement('canvas');canvas.width=image.width;canvas.height=image.height;
   const ctx=canvas.getContext('2d');ctx.drawImage(image,0,0);const pixels=ctx.getImageData(0,0,canvas.width,canvas.height).data;
   const outsideBadge=p=>!badgeRects.some(b=>p.point.x>=b.left&&p.point.x<=b.right&&p.point.y>=b.top&&p.point.y<=b.bottom);
-  const sample=p=>{
+  const sample=(p,gap=false)=>{
     const x=Math.round((p.point.x-rect.x)*canvas.width/rect.width-.5),y=Math.round((p.point.y-rect.y)*canvas.height/rect.height-.5);
     if(x<1||y<1||x>=canvas.width-1||y>=canvas.height-1)return null;
+    const scaleX=canvas.width/rect.width,scaleY=canvas.height/rect.height;
+    const a=gap?{x:(p.from.x-rect.x)*scaleX,y:(p.from.y-rect.y)*scaleY}:null;
+    const dxGap=gap?(p.to.x-p.from.x)*scaleX:0,dyGap=gap?(p.to.y-p.from.y)*scaleY:0,length=gap?Math.hypot(dxGap,dyGap):1;
+    const ux=dxGap/length,uy=dyGap/length,halfFootprint=(Math.abs(ux)+Math.abs(uy))/2;
     const colors=[];
     for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
+      if(gap){
+        const along=(x+dx+.5-a.x)*ux+(y+dy+.5-a.y)*uy;
+        // Test pixels wholly inside the actual projected gap. A rounded 3×3
+        // corner can intersect the neighboring dash and legitimately carry AA.
+        if(along-halfFootprint<.05||along+halfFootprint>length-.05)continue;
+      }
       const at=((y+dy)*canvas.width+x+dx)*4;colors.push([pixels[at],pixels[at+1],pixels[at+2]]);
     }
+    if(!colors.length)throw Error('No whole pixel inside projected gap');
     return {...p,x,y,colors,pink:colors.some(([r,g,b])=>r>150&&r-g>65&&b-g>20)};
   };
-  // A 3×3 neighborhood detects thin antialiased paint while staying inside
-  // these >=3.5px gaps. Actual badge rectangles exclude text, not line pixels.
-  return {width:canvas.width,height:canvas.height,gaps:group.pixelGaps.filter(p=>outsideBadge(p)&&p.length>=3.5).map(sample).filter(Boolean),paint:group.pixelPaint.filter(outsideBadge).map(sample).filter(Boolean)};
+  // Keep the 3×3 search for thin antialiased paint, restricting gap samples by
+  // their actual pixel footprint. Badge rectangles exclude label text.
+  return {width:canvas.width,height:canvas.height,gaps:group.pixelGaps.filter(p=>outsideBadge(p)&&p.length>=3.5).map(p=>sample(p,true)).filter(Boolean),paint:group.pixelPaint.filter(outsideBadge).map(p=>sample(p)).filter(Boolean)};
 }
 async function pixelSamplerControls() {
   if(evidence.pixelSamplerControls)return;
   const fixtures=await page.evaluate(()=>{
     const rect={x:11,y:23,width:100,height:100};
-    const row=(x,y)=>({t:.1,point:{x:rect.x+x,y:rect.y+y},length:10});
+    const row=(x,y)=>({t:.1,point:{x:rect.x+x,y:rect.y+y},from:{x:rect.x+x-5,y:rect.y+y},to:{x:rect.x+x+5,y:rect.y+y},length:10});
     const group={pixelGaps:[row(15,25),row(35,45),row(55,65)],pixelPaint:[row(25,15),row(45,35),row(65,55)]};
     const make=mode=>{
       const canvas=document.createElement('canvas');canvas.width=canvas.height=200;const ctx=canvas.getContext('2d');

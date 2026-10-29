@@ -886,9 +886,139 @@
     "trainers/ege-profile-stereometry-3d/js/trainer.js": "c448b103e4b9f2583f5f9e9a8750952b584889ee4474e8a50ac03cc710cfc9c0",
     "trainers/ege-profile-stereometry-3d/css/style.css": "b2f07a358f4f0c663e9721cab7cd6db0ab2319c8478c2170aa0618aff54d0cf2",
     "ege-profil/atanasyan-10-11/index.html": "3d47b7efa89094b07c6cb996bd35a517930a515abd224255c696e1aa8e6aa701",
-    "tools/stereo-three-visibility.browser.cjs": "70cab19c3943ee6e5c7f709caa02fb5e563a7ccf14263edf697e07493b096541",
+    "tools/stereo-three-visibility.browser.cjs": "fec4f2476a78984400764e9844810c5e457edb95c7d9735eb574fed28425cd01",
     "tools/stereo-three-framing.test.cjs": "f163e6b4bf2f7561ea66a9c2b24cfb1f209ca113763787e6a1810f0695ec137e",
     "tools/stereo-three-dash-projection.test.cjs": "8665cb2e551612c7b3b51d8e3f89dd568b3f7cdd50b719a47d26d0eabba52554",
     "tools/atanasyan-profile15.browser.cjs": "cc3c2b72f3a68f47816c38392a69364bff259e2cdb52b69cca1e9d11b5b8a85f"
+  },
+  "samplerCorrection": {
+    "parentHead": "83bedb7fcd71a0dbb6ac52e095f4cbd9d5251163",
+    "scope": "Browser test only; frozen production bytes unchanged. Four mobile 3x3 corner samples overlapped the legitimate antialiased end of the neighboring dash. Actual centers were empty. The same screenshot sampler now checks only pixel footprints wholly between projected gap endpoints; all21gaps and painted counts retained.",
+    "originalReportSHA256": "d8dd6c19a715c3a2901cbc162981d51d33fd4d205129ce43f8ac9e7a3b2467d2",
+    "review": {
+      "verdict": "PASS replay of identical actual CI PNGs through exact patched sampler; no new browser run",
+      "samplerSHA256": "fec4f2476a78984400764e9844810c5e457edb95c7d9735eb574fed28425cd01",
+      "helperSHA256": "60c6c10d2bc5d0b5bc1770cfce22e20a2af9e085fba0857becd9754058eb53a0",
+      "method": "Extract exact old/new async sampler function, independently decode unchanged PNG bytes with Pillow to RGBA; mock Image/Canvas only supplies that buffer. Reconstruct gap endpoints from actual source-bank points, recorded camera, frozen renderer mesh intervals; require every recorded t/projection/length matches. No synthetic replacement of actual pixels.",
+      "rows": [
+        {
+          "filename": "canonical288-27055-320-manual-pixel.png",
+          "sha256": "527c5b6d57cdecbf0908f1266f63dcf21a973852c133cabe6c1ecc13b94bb74a",
+          "rect": {
+            "x": 0,
+            "y": 319.53125,
+            "width": 320,
+            "height": 520
+          },
+          "oldFalsePositiveGaps": 2,
+          "newPaintedGaps": 0,
+          "gaps": 5,
+          "paint": 5,
+          "negativeControls": {
+            "solidRejected": true,
+            "missingRejected": true
+          },
+          "interiorPixelCounts": [
+            8,
+            8,
+            8,
+            8,
+            9
+          ]
+        },
+        {
+          "filename": "legacy143-27055-320-manual-pixel.png",
+          "sha256": "0fa2bb171a2b51806a4aa5d2d035808636aadc3f0ad821662877f8d467cb8f05",
+          "rect": {
+            "x": 0,
+            "y": 507.875,
+            "width": 320,
+            "height": 520
+          },
+          "oldFalsePositiveGaps": 2,
+          "newPaintedGaps": 0,
+          "gaps": 4,
+          "paint": 5,
+          "negativeControls": {
+            "solidRejected": true,
+            "missingRejected": true
+          },
+          "interiorPixelCounts": [
+            8,
+            8,
+            8,
+            9
+          ]
+        },
+        {
+          "filename": "canonical288-27055-1280-manual-pixel.png",
+          "sha256": "1b98f27094a6c35789c01ebaaee43c89cffa1f6d1c9774e94f073803adbdb200",
+          "rect": {
+            "x": 520,
+            "y": 0.1875,
+            "width": 760,
+            "height": 1000
+          },
+          "oldFalsePositiveGaps": 0,
+          "newPaintedGaps": 0,
+          "gaps": 6,
+          "paint": 6,
+          "negativeControls": {
+            "solidRejected": true,
+            "missingRejected": true
+          },
+          "interiorPixelCounts": [
+            9,
+            9,
+            9,
+            9,
+            9,
+            9
+          ]
+        },
+        {
+          "filename": "legacy143-27055-1280-manual-pixel.png",
+          "sha256": "0b47c7a74840da04438fe3ab4c07bf645e511304c8f61cda1e7951d95d01fccb",
+          "rect": {
+            "x": 520,
+            "y": 0,
+            "width": 760,
+            "height": 1000
+          },
+          "oldFalsePositiveGaps": 0,
+          "newPaintedGaps": 0,
+          "gaps": 6,
+          "paint": 7,
+          "negativeControls": {
+            "solidRejected": true,
+            "missingRejected": true
+          },
+          "interiorPixelCounts": [
+            9,
+            9,
+            9,
+            9,
+            9,
+            9
+          ]
+        }
+      ]
+    },
+    "browserRerun": "PENDING"
+  },
+  "baseDrift": {
+    "originalBase": "6fb959fc0130a0bb8842601d19297e305ac91ac0",
+    "currentMain": "884d1b646cb67a115f4bf70c2c0ce2ed7b987e52",
+    "newCommitCount": 1,
+    "concurrentPR": 379,
+    "provenance": "Verified web-flow squash of Atanasyan7–9 chapterVII Area; author/merger ladynata-cloud; parent originalbase.",
+    "changedPaths": 82,
+    "intersection": [
+      "docs/PROJECT_STATUS.md"
+    ],
+    "runtimeIntersection": [],
+    "priorHeadVirtualMergeTree": "9e267ec903678a760c90849d659b976e2c6ace15",
+    "branchRepairPerformed": false,
+    "nextVerification": "New test-only head CI must use current884d main synthetic merge; separate current-base/head owner merge authorization still required."
   }
 }
