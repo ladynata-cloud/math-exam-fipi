@@ -143,6 +143,22 @@ async function learner(browser, name, width, run) {
   origin = 'http://127.0.0.1:' + server.address().port;
   const browser = await chromium.launch({headless:true, ...(process.env.CHROMIUM_EXECUTABLE_PATH ? {executablePath:process.env.CHROMIUM_EXECUTABLE_PATH} : {})});
   try {
+    for (const width of [1280,390,320]) {
+      await learner(browser, 'four arithmetic starts ' + width, width, async page => {
+        await page.goto(origin + ROUTE);
+        await page.waitForFunction(() => window.PreOgeArithmetic);
+        assert.equal(await page.locator('#route-title').innerText(), 'Научиться считать');
+        assert.equal(await page.locator('[data-operation]:visible').count(), 4);
+        for (const operation of ['addition','subtraction','multiplication','division']) {
+          const card = page.locator('[data-operation="' + operation + '"]');
+          const box = await card.boundingBox();
+          assert(box.width >= 44 && box.height >= 44, operation + ': readable touch target');
+        }
+        assert.equal(await page.locator('#route-topics').getAttribute('open'), null);
+        await reflow(page, 'four arithmetic starts on ' + width);
+        await shot(page, 'arithmetic-entry-' + width);
+      });
+    }
     await learner(browser, 'weak multiplication table', 390, async page => {
       await route(page, 'multiply');
       await page.locator('a[data-level="t2a"]').first().click(); await legacyReady(page, 't2a');
@@ -311,6 +327,6 @@ async function learner(browser, name, width, run) {
       console.log('PASS compatibility: hints across ' + levels.length + ' legacy levels');
     } finally { await context.close(); }
     assert.deepEqual(errors, [], 'No browser JavaScript exceptions');
-    console.log('PREOGE_ARITHMETIC_BROWSER_OK: six fictional learner journeys, real controls, mistakes, help, repeats, separate progress, reload, route returns, clipboard fallback and 320/390px.');
+    console.log('PREOGE_ARITHMETIC_BROWSER_OK: four-operation entries at 1280/390/320px; six fictional learner journeys, real controls, mistakes, help, repeats, separate progress, reload, route returns, clipboard fallback and 320/390px.');
   } finally { await browser.close(); server.close(); }
 })().catch(error => { console.error(error); if (errors.length) console.error('Browser errors:', errors); server.close(); process.exitCode = 1; });

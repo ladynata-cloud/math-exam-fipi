@@ -60,8 +60,17 @@ jobs:
       - name: Fictional learner scenarios
         env:
           NODE_PATH: /tmp/preoge-quality/node_modules
+          PREOGE_SCREENSHOTS: arithmetic-browser-results
         run: |
           node tools/preoge-arithmetic.browser.cjs
           node tools/division-guided.browser.cjs
           node tools/division-notebook.browser.cjs
           node tools/decimal-shift.browser.cjs
+      - name: Arithmetic entry screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: arithmetic-entry-${{ github.run_id }}
+          path: arithmetic-browser-results/
+          retention-days: 7
+          if-no-files-found: ignore
