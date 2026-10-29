@@ -137,8 +137,9 @@ async function pixelControl(svgSelector,targetSelector,baseFile,meta){
       let changed=0;for(let i=0;i<a.data.length;i+=4)if(Math.max(Math.abs(a.data[i]-b.data[i]),Math.abs(a.data[i+1]-b.data[i+1]),Math.abs(a.data[i+2]-b.data[i+2]))>30)changed++;
       return {width:a.width,height:a.height,changed};
     },{base:fs.readFileSync(path.join(out,baseFile)).toString('base64'),solid:fs.readFileSync(path.join(out,solidFile)).toString('base64')});
-    checkPixelChange(comparison,baseFile);
-    evidence.pixelControls.push({...meta,baseFile,solidFile,solidSHA256:hash(fs.readFileSync(path.join(out,solidFile))),kind:'negative-control-only',comparison});
+    const record={...meta,baseFile,solidFile,solidSHA256:hash(fs.readFileSync(path.join(out,solidFile))),kind:'negative-control-only',comparison,passed:false};
+    evidence.pixelControls.push(record);save();
+    checkPixelChange(comparison,baseFile);record.passed=true;save();
   }finally{
     await target.evaluateAll((nodes,styles)=>nodes.forEach((n,i)=>styles[i]===null?n.removeAttribute('style'):n.setAttribute('style',styles[i])),saved);
     assert.equal(await page.locator(svgSelector).evaluate(n=>n.outerHTML),prior,'negative control restores exact production SVG');
@@ -159,12 +160,16 @@ async function profileCase(base,item,width){
   if(item.hidden)checkInterior(before.lines.filter(n=>n.feature===item.hidden),item.id+' '+item.hidden);
   if(item.equator){const equator=before.lines.filter(n=>n.feature==='equator');assert(equator.some(n=>n.hidden)&&equator.some(n=>!n.hidden),'sphere equator has front/back arcs');}
   if(item.tube){const rim=before.lines.filter(n=>n.feature==='inner-rim');assert(rim.length>30&&rim.every(n=>!n.hidden),'visible tube opening rim');}
-  const defaultFile=await capture(selector,'profile-'+item.id+'-default-'+width+'.png',{renderer:'profile',id:item.id,width,stage:'default'});
-  if(item.pixels)await pixelControl(selector,'[data-feature="'+item.hidden+'"]',defaultFile,{renderer:'profile',id:item.id,width});
+  await capture(selector,'profile-'+item.id+'-default-'+width+'.png',{renderer:'profile',id:item.id,width,stage:'default'});
   await page.locator(selector).focus();for(let i=0;i<5;i++)await page.keyboard.press('ArrowRight');for(let i=0;i<2;i++)await page.keyboard.press('ArrowUp');await settle();
   const rotated=await geometry(selector);checkGeometry(rotated,item.id+' rotated');assert.notEqual(rotated.yaw,before.yaw,'real keyboard rotation changes camera');
   if(item.hidden)checkInterior(rotated.lines.filter(n=>n.feature===item.hidden),item.id+' rotated '+item.hidden);
-  await capture(selector,'profile-'+item.id+'-rotated-'+width+'.png',{renderer:'profile',id:item.id,width,stage:'rotated'});
+  const rotatedFile=await capture(selector,'profile-'+item.id+'-rotated-'+width+'.png',{renderer:'profile',id:item.id,width,stage:'rotated'});
+  // In the initial box camera, the interior diagonal projects underneath the
+  // thicker visible front height. The existing user rotation separates them,
+  // so the pixel control measures exposed dash gaps without changing drawing
+  // styles or weakening the contrast/count thresholds.
+  if(item.pixels)await pixelControl(selector,'[data-feature="'+item.hidden+'"]',rotatedFile,{renderer:'profile',id:item.id,width,stage:'rotated'});
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'profile page has no horizontal overflow');
   evidence.journeys.push({renderer:'profile',id:item.id,width,condition:task.prompt,before,rotated});save();await context.close();context=null;page=null;
 }

@@ -66,7 +66,7 @@ Object.defineProperty(window, '__stereoVisibilityRead', { value: () => {
   return {id:String(prob().id),index:idx,bankSize:PROBLEMS.length,bankUnchanged:JSON.stringify(PROBLEMS)===visibilityBankBefore,
     camera:T.camera.position.toArray(),spherical:{...T.sph},autoRot,constructOn,constructVisible:!!T.constructGroup?.visible,anims:T.anims.length,
     rect:{x:rect.left,y:rect.top,width:rect.width,height:rect.height},vertices,hiddenCandidates,segmentCandidates,manualPair,sourceGeometry,
-    segments:Object.entries(T.segMap).map(([key,s])=>({key,kind:s.kind,selected:s.selected,shown:shown(s.mesh),materialVisible:s.mesh.material.visible,a:s.A.toArray(),b:s.B.toArray(),names:[displayName(s.p1),displayName(s.p2)],given:T.givenMap?.[key]||s.given,sourceLength:T.scaleFn(s.p1,s.p2)})),
+    segments:Object.entries(T.segMap).map(([key,s])=>({key,kind:s.kind,selected:s.selected,shown:shown(s.mesh),materialVisible:s.mesh.material.visible,a:s.A.toArray(),b:s.B.toArray(),pointKeys:[s.p1,s.p2],names:[displayName(s.p1),displayName(s.p2)],given:T.givenMap?.[key]||s.given,sourceLength:T.scaleFn(s.p1,s.p2)})),
     selected:selected.map(s=>({...s})),inspector,rendered,selectColor:COL.select,
     progress:localStorage.getItem('stereo3.status'),answer:$('answer').value,uiAliasLeak:/__body\d+_/.test(document.body.innerText)};
 }});
@@ -200,20 +200,39 @@ async function construction(name,row) {
   row.construct={hiddenKeys:[...constructionKeys],shownInspector:shown.inspector}; await capture(name+'-construction',shown);
 }
 async function collisionLabels(name,row) {
+  const interactions=[];
   for(const [letters,length]of [['OP',3],['SP',6],['SQ',6]]) {
-    let target,record;
+    let target,record,vertices,state;
     for(let attempt=0;attempt<7;attempt++){
-      const state=await canvasReady();record=state.segments.find(s=>s.names.join('')===letters&&Math.abs(s.sourceLength-length)<1e-7);
+      state=await canvasReady();record=state.segments.find(s=>s.names.join('')===letters&&Math.abs(s.sourceLength-length)<1e-7);
       assert(record,'primary cone '+letters+' has correct source length');assert.equal(String(record.given),String(length),'primary cone given label');
-      target=state.segmentCandidates.find(s=>s.key===record.key);if(target)break;
+      target=state.segmentCandidates.find(s=>s.key===record.key);
+      vertices=record.pointKeys.map(name=>state.vertices.find(v=>v.name===name&&v.clickable));
+      if(target||vertices.every(Boolean))break;
       if(attempt===1){const r=await page.locator('#viewport canvas').boundingBox();await page.mouse.move(r.x+r.width/2,r.y+r.height/2);await page.mouse.wheel(0,250);await frames();}
       await drag(attempt%2?-78:65,attempt%3?22:-32);
     }
-    assert(target,'given cone line is pickable through public canvas');await page.mouse.click(target.x,target.y);await frames();
-    const state=await snapshot();assert(state.selected.some(s=>s.key===record.key),'actual given line selected');
+    const keysBefore=state.segments.map(s=>s.key).sort(),strokesBefore=state.inspector.strokes.length;
+    if(target){await page.mouse.click(target.x,target.y);await frames();}
+    else{
+      // In676923 the larger construction tube PQ covers OP exactly. Picking
+      // two existing endpoints is the trainer's public way to select this
+      // shorter collinear line; it must not create a replacement user line.
+      assert(vertices.every(Boolean),'given cone '+letters+' has two genuinely pickable endpoints');
+      for(const pointKey of record.pointKeys){
+        const current=await canvasReady(),point=current.vertices.find(v=>v.name===pointKey&&v.clickable);
+        assert(point,'fresh existing endpoint remains pickable after layout changes');
+        await page.mouse.click(point.x,point.y);await frames();
+      }
+    }
+    state=await snapshot();assert(state.selected.some(s=>s.key===record.key&&!s.user),'actual existing given line selected');
+    assert.deepEqual(state.segments.map(s=>s.key).sort(),keysBefore,'given-line selection creates no extra geometry');
+    assert.equal(state.inspector.strokes.length,strokesBefore,'given-line selection creates no replacement dash group');
     assert((await page.locator('#measureList').innerText()).replace(/\s+/g,' ').includes(letters+' = '+length),'actual measurement UI preserves '+letters+' = '+length);
+    interactions.push({letters,key:record.key,method:target?'line':'two existing vertices',pointKeys:record.pointKeys,geometryUnchanged:true});
+    row.collisionLabels={interactions};save();
   }
-  const state=await canvasReady();distinctBodies(state);inspect(state,'primary cone labels');row.collisionLabels={values:{OP:3,SP:6,SQ:6},selection:state.selected};await capture(name+'-given-labels',state,true);
+  const state=await canvasReady();distinctBodies(state);inspect(state,'primary cone labels');row.collisionLabels={values:{OP:3,SP:6,SQ:6},interactions,selection:state.selected};await capture(name+'-given-labels',state,true);
 }
 async function responsiveness() {
   await page.locator('#btnRotate').click();await frames(3);
