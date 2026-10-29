@@ -49,7 +49,12 @@ assert.equal(doc.querySelector('[data-catalog-pending]'),null,'the entire cylind
 const cylinderSeen=new Set();collect('[data-catalog-ready]',cylinderSeen,true);
 assert.deepEqual([...cylinderSeen].sort(),[...require('./cylinder-baseline.cjs').ids].sort(),'all 34 cylinder task parts and both theory points have captions across pages');
 choose('catalog-paragraph','IV:2');
-assert.match(doc.querySelector('[data-catalog-pending] .companion-location').textContent,/К главе IV.*К параграфу 2 «Конус»/);
+assert.match(doc.querySelector('[data-catalog-ready] .companion-location').textContent,/К главе IV.*К параграфу 2 «Конус»/);
+assert.equal(doc.querySelector('[data-catalog-pending]'),null,'the entire cone paragraph is available');
+const coneSeen=new Set();collect('[data-catalog-ready]',coneSeen,true);
+assert.deepEqual([...coneSeen].sort(),[...require('./cone-baseline.cjs').ids].sort(),'all 37 cone task parts and three theory points have captions across pages');
+choose('catalog-paragraph','IV:3');
+assert.match(doc.querySelector('[data-catalog-pending] .companion-location').textContent,/К главе IV.*К параграфу 3 «Сфера»/);
 assert.equal(doc.querySelectorAll('[data-catalog-ready] [data-lesson]').length,0,'a pending paragraph never becomes available because it has a caption');
 app.home();search('Пирамида');assert.ok(doc.querySelector('[data-catalog-ready] [data-lesson]'));
 
@@ -70,11 +75,11 @@ assert.ok(references>1000,'all actual justification source captions were mounted
 
 // Actual tasks at page-shared headings remain in the preceding paragraph;
 // first-page-only or all-pages-contained heuristics mislabel these source cases.
-for(const [number,paragraph]of [[32,1],[33,1],[164,2],[165,2],[196,3],[238,1],[270,2],[287,3],[320,1],[345,1]]){
+for(const [number,paragraph]of [[32,1],[33,1],[164,2],[165,2],[196,3],[238,1],[270,2],[287,3],[320,1],[345,1],[346,2],[371,2]]){
  const lesson=bundle.lessons.find(l=>l.source.collection==='main'&&l.source.exercise===String(number));assert.ok(lesson);app.open(lesson.id);assert.match(visibleReference().textContent,new RegExp('К параграфу '+paragraph+' «'));
 }
 app.home();choose('catalog-collection','main');
-for(const [number,paragraph]of [[346,2],[371,2],[395,3],[451,1],[502,3],[517,4],[591,2],[612,3],[681,1],[835,1],[848,2],[849,2],[850,2],[857,3],[858,3],[862,3],[870,4]]){
+for(const [number,paragraph]of [[372,3],[395,3],[451,1],[502,3],[517,4],[591,2],[612,3],[681,1],[835,1],[848,2],[849,2],[850,2],[857,3],[858,3],[862,3],[870,4]]){
  search(String(number));const reference=doc.querySelector('[data-catalog-pending] [data-companion-source]');assert.ok(reference);assert.match(reference.textContent,new RegExp('К параграфу '+paragraph+' «'));
 }
 search('518');assert.doesNotMatch(doc.querySelector('[data-catalog-pending] [data-companion-source]').textContent,/К параграфу/,'additional task 518 shares page138 with chapter questions, not paragraph4');

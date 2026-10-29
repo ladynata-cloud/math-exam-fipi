@@ -6,12 +6,13 @@ assert.equal(review.cards.length,ls.length,'review applies to every published ca
 for(const item of review.cards){const lesson=ls.find(l=>l.id===item.id);assert(lesson,'missing reviewed card '+item.id);const content=structuredClone(lesson);delete content.status;delete content.review;assert.equal(crypto.createHash('sha256').update(JSON.stringify(canonical(content))).digest('hex'),item.sha256,'content changed after independent review: '+item.id);}
 const ids=new Set(ls.map(l=>l.id)),keys=new Set();let steps=0,views=0;
 for(const l of ls){assert.deepEqual(API.validateLesson(l,book),[],l.id);assert.equal(l.status,'reviewed');for(const field of ['source','mathematics','pedagogy'])assert.equal(l.review[field],'passed');const key=JSON.stringify([l.kind,l.source.bookId,l.source.collection,['main','theory'].includes(l.source.collection)?null:l.source.chapter,l.source.examTask,l.source.point,l.source.exercise,l.source.subpart]);assert(!keys.has(key),'source identity '+l.id);keys.add(key);Viewer.prepare(l.visualization.model);steps+=l.steps.length;function h(hs){for(const x of hs){for(const id of x.theoryIds||[])assert(ids.has(id),'missing theory '+id);h(x.children||[]);}}h(l.help);for(const s of l.steps)for(const j of s.justifications)if(j.theoryId)assert(ids.has(j.theoryId),'missing theory '+j.theoryId);}
-assert.equal(ls.length,554);assert.equal(ls.filter(x=>x.kind==='exercise').length,464);
+assert.equal(ls.length,594);assert.equal(ls.filter(x=>x.kind==='exercise').length,501);
 for(let n=1;n<=270;n++)assert(ls.some(l=>l.source.collection==='main'&&l.source.exercise===String(n)),'missing exercise '+n);
 for(let n=271;n<=319;n++)assert(ls.some(l=>l.source.collection==='main'&&l.source.exercise===String(n)),'missing polyhedra exercise '+n);
 for(let n=320;n<=345;n++)assert(ls.some(l=>l.source.collection==='main'&&l.source.exercise===String(n)),'missing cylinder exercise '+n);
-for(let n=1;n<=39;n++)assert(ls.some(l=>l.source.collection==='theory'&&l.source.point===String(n)),'missing theory point '+n);
-const coverage=API.inspectBundle(bundle.catalog,ls).coverage;assert.equal(coverage.availableExercises,345);assert.equal(coverage.availableTheoryPoints,39);assert.equal(coverage.availableSelfchecks,40);assert.equal(coverage.partiallyAvailable,0,'chapter IV paragraph1 is complete; later sources remain inventoried drafts');
+for(let n=346;n<=371;n++)assert(ls.some(l=>l.source.collection==='main'&&l.source.exercise===String(n)),'missing cone exercise '+n);
+for(let n=1;n<=42;n++)assert(ls.some(l=>l.source.collection==='theory'&&l.source.point===String(n)),'missing theory point '+n);
+const coverage=API.inspectBundle(bundle.catalog,ls).coverage;assert.equal(coverage.availableExercises,371);assert.equal(coverage.availableTheoryPoints,42);assert.equal(coverage.availableSelfchecks,40);assert.equal(coverage.partiallyAvailable,0,'chapter IV paragraphs1–2 are complete; later sources remain inventoried drafts');
 for(let n=1;n<=16;n++)assert(ls.some(l=>l.source.collection==='selfcheck'&&l.source.chapter==='I. Параллельность прямых и плоскостей'&&l.source.exercise===String(n)),'missing chapterI self-check '+n);
 for(let n=1;n<=10;n++)assert(ls.some(l=>l.source.collection==='selfcheck'&&l.source.chapter==='II. Перпендикулярность прямых и плоскостей'&&l.source.exercise===String(n)),'missing chapterII self-check '+n);
 for(let n=1;n<=14;n++)assert(ls.some(l=>l.source.collection==='selfcheck'&&l.source.chapter==='III. Многогранники'&&l.source.exercise===String(n)),'missing chapterIII self-check '+n);
@@ -31,7 +32,8 @@ for(const l of ls.filter(l=>l.kind==='exercise'))assert(!/бесконеч|ко�
 const dom=new JSDOM('<div id="m"></div>',{runScripts:'outside-only',pretendToBeVisual:true});const w=dom.window;w.eval(fs.readFileSync(path.join(root,'stereo-course/assets/task-scene-viewer.js'),'utf8'));
 for(const l of ls){const mount=w.TaskSceneViewer.mount(w.document.getElementById('m'),l.visualization.model);assert(w.document.querySelector('svg'));for(const name of Object.keys(l.visualization.model.views)){assert.equal(mount.setView(name),true);assert(!/NaN|Infinity/.test(w.document.querySelector('svg').outerHTML),l.id+':'+name);views++;}mount.destroy();}
 const cylinder=require('./cylinder-content.test.cjs');
-assert.equal(steps,1969+cylinder.steps,'exact prior plus cylinder justified-step count');assert.equal(views,2050+cylinder.views,'exact prior plus cylinder authored-view count');
+const cone=require('./cone-content.test.cjs');
+assert.equal(steps,1969+cylinder.steps+cone.steps,'exact prior plus cylinder and cone justified-step count');assert.equal(views,2050+cylinder.views+cone.views,'exact prior plus cylinder and cone authored-view count');
 require('./symmetry-content.test.cjs');
 require('./regular-polyhedra-content.test.cjs');
 require('./polyhedra-symmetry-content.test.cjs');
