@@ -1,5 +1,22 @@
 # MathExam project status
 
+## Prepared: Vilenkin 6 source clarity and revised cabinet course
+
+- [Task](tasks/VILENKIN6_CLARITY_CABINET_20261030.md), HIGH; branch
+  `fix/vilenkin6-clarity-cabinet-20261030`, original candidate base
+  `6fb959fc0130a0bb8842601d19297e305ac91ac0`.
+- 24 units, 194 source-selected cards, 615 steps; exact source captions,
+  prime table through 1000, elementary/grade-five refreshers and optional hints.
+- Separate per-task cloud attempts preserve the prior 27-module course and its
+  work. Assignment to a real cabinet and production deployment are not done.
+- [Review report](reports/VILENKIN6_CLARITY_CABINET_20261030.md) separates source,
+  mathematics, saved-work and browser evidence. External review is unavailable,
+  not approved. Release requires the scoped exact-head decision.
+- Full-book goal remains open: only numbers 2.97 and 2.134 have explicit complete
+  subpart proofs; the [coverage audit](vilenkin6-source-coverage-audit-2026-10-29.md)
+  and [expansion plan](vilenkin6-expansion-plan-2026-10-30.md) enumerate the gaps.
+
+
 ## Prepared: public search entry corrections
 
 - [Scope](tasks/SEO_PUBLIC_ENTRYPOINTS_20261028.md), MEDIUM bounded navigation
