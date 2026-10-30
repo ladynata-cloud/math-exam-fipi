@@ -77,7 +77,11 @@ def runtime_review(implementation_hash=None):
     require(review.get('implementationSha256') == digest(files),
             'Caption runtime digest does not match reviewed files')
     if implementation_hash is not None:
-        require(implementation_hash == (extension['implementationSha256'] if (ROOT/EXTENSION).exists() else review['implementationSha256']),
+        from chapter07_extension import has_vii, validate_extension as validate_vii
+        expected_hash = extension['implementationSha256'] if (ROOT/EXTENSION).exists() else review['implementationSha256']
+        if has_vii((COURSE/'source-inventory.json').read_bytes()):
+            expected_hash = validate_vii(ROOT)[0]['implementationSha256']
+        require(implementation_hash == expected_hash,
                 'Bundle runtime does not match caption review')
     return review, {'path': REVIEW_PATH, 'sha256': sha(raw)}
 

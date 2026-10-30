@@ -7,9 +7,24 @@ from build_course import compose,COURSE,ROOT,read
 from chapter06_extension import (PREFIX,FIXTURE,RECEIPT,LABELS,PARAGRAPHS,encoded,sha,
  validate_extension,restore_manifest,assert_755_preserved,frozen,require)
 
+def historical_vi_projection(bundle,scope):
+ bundle,scope=deepcopy(bundle),deepcopy(scope)
+ if any(c['chapter']==7 for c in scope['chapters']):
+  bundle['lessons']=[r for r in bundle['lessons'] if r['source']['chapter']!='VII']
+  bundle['catalog']['entries']=[r for r in bundle['catalog']['entries'] if r['source']['chapter']!='VII']
+  bundle['build']['chapters']=[c for c in bundle['build']['chapters'] if c['chapter']!=7]
+  bundle['build']['authoredCards']-=190;bundle['build']['numberedExercises']-=99
+  scope['chapters']=[c for c in scope['chapters'] if c['chapter']!=7];scope['totalCards']-=190
+ return bundle,scope
+
 def validate_release(bundle,root=ROOT,require_review=True):
  assert_755_preserved(bundle,root)
  scope=read(root/'tools/geometry-textbook/release-scope.json')
+ if any(c['chapter']==7 for c in scope['chapters']):
+  # Validate the full union before projecting, so forged VII records cannot hide.
+  from chapter07_release import validate_release as validate_vii_release
+  validate_vii_release(bundle,root=root,require_review=require_review,scope=scope)
+ bundle,scope=historical_vi_projection(bundle,scope)
  require([c['chapter'] for c in scope['chapters']]==[1,2,3,4,5,6],'Wrong release chapter scope')
  require([c['chapter'] for c in bundle['build']['chapters']]==[1,2,3,4,5,6],'Wrong built chapter scope')
  require(scope['totalCards']==bundle['build']['authoredCards']==len(bundle['lessons'])==len(bundle['catalog']['entries'])==893,'Wrong complete release size')
@@ -51,7 +66,7 @@ class ChapterVIRelease(unittest.TestCase):
   with tempfile.TemporaryDirectory() as temp:
    course=Path(temp)/'course';shutil.copytree(COURSE,course);(course/'release-review-chapter-06.json').unlink(missing_ok=True)
    bundle=compose(course);assert_755_preserved(bundle)
-   self.assertEqual(sum(x['status']=='reviewed' for x in bundle['lessons']),755)
+   self.assertEqual(sum(x['status']=='reviewed' for x in bundle['lessons'] if x['source']['chapter']!='VII'),755)
    self.assertTrue(all(x['status']=='in-review' for x in bundle['lessons'] if x['source']['chapter']=='VI'))
  def test_union_cannot_hide_corruptions_behind_historical_projection(self):
   for mode in ('old text','old order','old review','old revision','foreign ID','missing VI','duplicate VI','VI page','VI scope','fullbook'):
@@ -65,12 +80,16 @@ class ChapterVIRelease(unittest.TestCase):
     elif mode=='missing VI':b['lessons'].remove(vi)
     elif mode=='duplicate VI':b['lessons'].append(deepcopy(vi))
     elif mode=='VI page':vi['source']['printedPages']=[999]
-    elif mode=='VI scope':b['build']['chapters'].append({'chapter':7})
+    elif mode=='VI scope':b['build']['chapters'].append({'chapter':8})
     else:b['build']['fullTextbookComplete']=True
     with self.assertRaises(AssertionError):validate_release(b,require_review=False)
  def copy_chain(self,temp):
   root=Path(temp);base=frozen();paths=set(base['immutableFiles'])|{FIXTURE,RECEIPT,LABELS}
   paths|={x['path'] for x in read(ROOT/RECEIPT)['evidence']}
+  from chapter07_extension import RECEIPT as VII_RECEIPT,FIXTURE as VII_FIXTURE
+  if (ROOT/VII_RECEIPT).exists():
+   paths|={VII_RECEIPT,VII_FIXTURE}
+   paths|={x['path'] for x in read(ROOT/VII_RECEIPT)['evidence']}
   for name in paths:
    p=root/name;p.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(ROOT/name,p)
   return root
