@@ -259,7 +259,11 @@ def historical_v_projection(bundle, scope):
     VI is separately subject to chapter06-release.test.py's exact union gate.
     Unknown sections are retained here so the existing whitelist rejects them.
     """
-    bundle, scope = deepcopy(bundle), deepcopy(scope)
+    from chapter07_release import historical_vii_projection
+    if any(c['chapter'] == 8 for c in scope['chapters']):
+        from chapter08_release import validate_release as validate_viii_release
+        validate_viii_release(bundle, scope=scope)
+    bundle, scope = historical_vii_projection(bundle, scope)
     # VII is independently constrained by the exact1083 release union gate.
     if any(c['chapter'] == 7 for c in scope['chapters']):
         bundle['lessons'] = [r for r in bundle['lessons'] if r['source']['chapter'] != 'VII']

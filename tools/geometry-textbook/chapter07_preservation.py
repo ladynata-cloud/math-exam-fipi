@@ -30,7 +30,7 @@ def assert_public893(bundle,root=ROOT,check_files=True):
 def assert_candidate_old_teaching(bundle):
  # Isolated paragraph metadata invalidates runtime approval, so the preview is
  # deliberately in-review. It cannot alter any original teaching/work identity.
- rows=[l for l in bundle['lessons'] if l['source']['chapter']!='VII']
+ rows=[l for l in bundle['lessons'] if l['source']['chapter'] not in ('VII','VIII')]
  teaching=[{k:v for k,v in row.items() if k not in ('status','review')} for row in rows]
  require(len(rows)==893 and digest(teaching)==frozen()['authoredLessonsSha256'],'Candidate changed old teaching/order/storage identity')
  return True

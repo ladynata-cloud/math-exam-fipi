@@ -17,7 +17,7 @@
   and [expansion plan](vilenkin6-expansion-plan-2026-10-30.md) enumerate the gaps.
 
 
-## Prepared: public search entry corrections
+## Merged: public search entry corrections
 
 - [Scope](tasks/SEO_PUBLIC_ENTRYPOINTS_20261028.md), MEDIUM bounded navigation
   and explanatory-copy repairs; base `81abfce101edc83bc591e938dfd42bbfc7a039ec`.
@@ -35,15 +35,44 @@
   assistant and hidden-line changes. The status conflict is resolved; product
   changes retain their original patch identity. Fresh local regression passes
   and a public-navigation browser CI step are recorded in the report.
-- Current next actions: require final exact-head CI, obtain the exact-base/head
-  release decision, then publish and verify live transitions. The separately
-  administered HTTP-to-HTTPS setting remains outside this code task.
-- HTTP-to-HTTPS hosting enforcement remains an operational follow-up. No
-  hosting mutation, search-account write, merge or deployment is part of this
-  prepared code change. Private search metrics are not in this repository.
+- [PR368](https://github.com/ladynata-cloud/math-exam-fipi/pull/368) was merged
+  on 2026-10-30 as `3eb0e787f30a8d0c16782a96bd928f25ba4f92c4`, with sole parent
+  `51f7fa550bae29f0110a0f06608a3e35bb1f65fd`. Its reviewed source head
+  `7a1a5ec321abd4981aa1296cef77a90f288ff770` and squash commit have identical trees.
+  This status reconciliation confirms Git and primary PR metadata; it does not
+  claim a new independent verification of that release's CI or live deployment.
+- HTTP-to-HTTPS hosting enforcement remains an operational follow-up outside
+  this code task. No hosting or search-account settings are changed here.
+  Private search metrics are not in this repository.
 
+## Prepared and reviewed: Atanasyan chapter VIII, similar triangles, 640–736
 
-## Prepared and reviewed: Atanasyan chapter VII, area, 541–639
+- [Task](tasks/ATANASYAN_7_9_CHAPTER_VIII.md), HIGH; continuing owner permission
+  includes publication after the concrete result passes review and checks.
+- Final branch `content/atanasyan-chapter-viii-publish-20261030-b`; current merge base
+  `7547ea565871e09ee02b632761f27bc088bd5c8a`. Preparation used published PR379;
+  the first PR head used `3eb0e787f30a8d0c16782a96bd928f25ba4f92c4`.
+  Concurrent PR376, PR368 and PR378 are preserved. PR378 changes no Atanasyan
+  course/runtime files; its51 non-status paths remain exact. A fresh integration
+  branch resolves the shared status insertion without rewriting either history.
+  The inherited Vilenkin status above is retained verbatim; primary PR378 metadata
+  confirms its merge, while its deployment is not independently certified here.
+- Complete chapter:97 numbers,133 parts,13 theory points and18 selfchecks —
+  164 cards,564 steps,789 views. All source, proof and mathematical reviews pass.
+- The uninterrupted full5 browser run checks1247 cards,12688 view/width pairs,
+  2494 step flows and22 interactions. All2234 VIII panels have independent
+  whole-image review with exact PNG bindings; no open findings remain.
+- The local reviewed version contains1247 cards and preserves all1083 previous
+  complete records and storage identities. Only four paragraph metadata rows
+  extend the runtime inventory; application HTML/JS/CSS are unchanged.
+- Earlier drawing defects and two interrupted execution sessions are recorded
+  honestly. No failed or incomplete run is used as the full-course pass.
+- Last live verification still confirms1083 cards. Reviewed public-entry checks,
+  exact-head CI and publication are separate from this local preparation record.
+  Completed release evidence will be recorded in the PR; no status-only PR is needed.
+- Next source chapter: IX. The complete textbook is not yet finished.
+
+## Published: Atanasyan chapter VII, area, 541–639
 
 - [Task](tasks/ATANASYAN_7_9_CHAPTER_VII.md), HIGH; owner continued on
   2026-10-30 (Asia/Novosibirsk), branch `content/atanasyan-chapter-vii-20261030`.
@@ -60,15 +89,22 @@
   earlier missing-font failure remains recorded separately; the final run uses
   the documented browser font dependency without changing application code or
   weakening the gate. See the [browser review](reviews/ATANASYAN_7_9_CHAPTER_VII_BROWSER_REVIEW.json).
-- The local release now contains 1083 `reviewed` cards: exercises 1–639 /
+- The published release contains 1083 `reviewed` cards: exercises 1–639 /
   870 parts, 62 theory points and 151 selfchecks. All 893 prior records and
   their review/storage identities are preserved. New source references use
   the actual three paragraph ranges of chapter VII.
-- Prepared release bundle SHA256:
+- Published release bundle SHA256:
   `9730c6446a1503b460f40e6951458714730a7a731298fa22ff09fd49d03ec01c`.
-- The verified live release remains PR373 / chapter VI with 893 cards.
-  Exact-head CI, merge and deployment of chapter VII are still pending;
-  local review and release preparation do not claim publication.
+- [PR379](https://github.com/ladynata-cloud/math-exam-fipi/pull/379) was squashed
+  as `884d1b646cb67a115f4bf70c2c0ce2ed7b987e52`, sole parent `6fb959fc0130a0bb8842601d19297e305ac91ac0`.
+  Reviewed head `f1b84f940efbcc7242813d108dfc8b5675ff1619` and merge have identical
+  full trees and82-file deltas. All5 exact-head CI jobs passed; each of three
+  full browser jobs checked1083 cards,11110 view/width pairs and20 interactions.
+- Pages40958488740 and postmerge board40958489831 passed for the exact merge.
+  Live20-file HTTPS comparison and16 direct entries at320/1280 passed;9 retained-work
+  flows and4 actually viewed images passed. A mobile run interrupted by the execution
+  layer remains recorded as incomplete; a desktop-only retry completed all remaining
+  checks without changing TLS or application code. No rollback was needed.
 - Next source chapter: VIII «Подобные треугольники», exercises 640–736.
   The complete 1–1431 textbook, research tasks and appendices remain unfinished.
 

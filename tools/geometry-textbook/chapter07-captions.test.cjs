@@ -7,7 +7,7 @@ const root=path.resolve(process.argv[2]),dir=path.join(root,'geometry-course/tex
 const source=JSON.parse(fs.readFileSync(path.join(__dirname,'chapter-07-source-map.json')));
 const bundle=JSON.parse(fs.readFileSync(path.join(dir,'data/course.json'))),api=require(path.join(dir,'assets/engine.js')),viewer=require(path.join(dir,'assets/planar-viewer.js'));
 const lessons=bundle.lessons.filter(l=>l.source.chapter==='VII');
-assert.equal(lessons.length,source.counts.cards);assert.equal(bundle.lessons.length,893+source.counts.cards);
+assert.equal(lessons.length,source.counts.cards);assert.equal(bundle.lessons.length,bundle.build.chapters.some(c=>c.chapter===8)?1247:893+source.counts.cards);
 const paragraphs=bundle.sourceInventory.paragraphs.filter(p=>p.chapter===7);
 assert.deepEqual(paragraphs,source.paragraphs,'Exact independently read VII paragraph map');assert.equal(paragraphs.length,3);
 const approved=bundle.build.chapters.find(c=>c.chapter===7).publicationReviewMatches;

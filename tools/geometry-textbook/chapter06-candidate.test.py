@@ -107,7 +107,7 @@ class CandidateVI(unittest.TestCase):
    registry=read(course/'candidate-chapters.json');registry['chapters'].append({'chapter':1})
    (course/'candidate-chapters.json').write_text(json.dumps(registry))
    with self.assertRaisesRegex(ValueError,'cannot hide'):compose(course)
-  with self.assertRaisesRegex(ValueError,'registered'):compose(include_candidates=[8])
+  with self.assertRaisesRegex(ValueError,'registered'):compose(include_candidates=[9])
  def test_missing_candidate_number_fails_explicit_build(self):
   with tempfile.TemporaryDirectory() as name:
    course=Path(name)/'course';shutil.copytree(COURSE,course)

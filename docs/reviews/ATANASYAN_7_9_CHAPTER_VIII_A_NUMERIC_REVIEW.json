@@ -1,0 +1,305 @@
+{
+  "scope": "Independent mathematics and pedagogy, VIII exercises640–671, all45 explicit parts",
+  "reviewer": "/root/viii_b",
+  "independentOfAuthor": true,
+  "sourcePages": [
+    165,
+    166,
+    167,
+    168,
+    169,
+    170,
+    171
+  ],
+  "method": "Actual source images and every condition, answer, proof and geometric case read; independent constants, side correspondences, areas, ratios, angle roles and boundary cases evaluated. Shared generic marker gate supplementary only.",
+  "verdict": "PASS",
+  "cards": 45,
+  "independentAssertions": 393,
+  "views": 199,
+  "claims": 296,
+  "files": {
+    "tools/geometry-textbook/models_ch8_a.py": "3eca12e9a2561f19ba8def419ddb851fdfa2a0e207b9d3b470a071f9cbf1ca21",
+    "geometry-course/textbook/preparation/chapter-08-a.json": "6eb59e2721c150630d1c549fd82321f4afac3fed66a0765ea3e19c52574fcfa9",
+    "geometry-course/textbook/models/chapter-08-a.json": "b5d72202451a1e0db0de54dc1404c97a81693dc5d42ad2edf62a34746d4b9132"
+  },
+  "cardsReviewed": [
+    {
+      "number": 640,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 641,
+      "part": "а",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 641,
+      "part": "б",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 641,
+      "part": "в",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 642,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Area proof checked for an interior and an exterior altitude foot; no similarity criterion is used before its introduction."
+    },
+    {
+      "number": 643,
+      "part": "а",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 643,
+      "part": "б",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 644,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 645,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 646,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 647,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 648,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Source inconsistency independently confirmed: side data imply angle A = 104.374083739234°, not106°. Definition64 is used for the formal intended correspondence, and computational compatibility check is editorial."
+    },
+    {
+      "number": 649,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 650,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Area-ratio proof valid for either foot position; internal and external coordinate cases verified."
+    },
+    {
+      "number": 651,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 652,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 653,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Area scale10^10 and cm²→km² and hectares conversions verified; separate viewport scales explicitly disclosed."
+    },
+    {
+      "number": 654,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 655,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 656,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 657,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Both unlettered source drawings checked separately: x9 and y21; matching α roles verified."
+    },
+    {
+      "number": 658,
+      "part": "а",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 658,
+      "part": "б",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 659,
+      "part": "а",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 659,
+      "part": "б",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 659,
+      "part": "в",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 660,
+      "part": "а",
+      "result": "PASS",
+      "reason": "Valid unequal angle-multiset counterexample; same acute angle has different roles."
+    },
+    {
+      "number": 660,
+      "part": "б",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 660,
+      "part": "в",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 661,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 662,
+      "part": "а",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 662,
+      "part": "б",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 663,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 664,
+      "part": "а",
+      "result": "PASS",
+      "reason": "Both allowed parallel-section orders satisfy all given data and the corresponding distinct answer."
+    },
+    {
+      "number": 664,
+      "part": "б",
+      "result": "PASS",
+      "reason": "Both allowed parallel-section orders satisfy all given data and the corresponding distinct answer."
+    },
+    {
+      "number": 664,
+      "part": "в",
+      "result": "PASS",
+      "reason": "Both allowed parallel-section orders satisfy all given data and the corresponding distinct answer."
+    },
+    {
+      "number": 665,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Intercept relation checked for intersecting and parallel transversals; auxiliary parallels and correspondence verified."
+    },
+    {
+      "number": 666,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 667,
+      "part": "а",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 667,
+      "part": "б",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 668,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 669,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 670,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Formula ah/(a+h), right-angle boundary and non-existence with external foot independently verified."
+    },
+    {
+      "number": 671,
+      "part": "а",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    },
+    {
+      "number": 671,
+      "part": "б",
+      "result": "PASS",
+      "reason": "Independent source quantities and geometric argument verified."
+    }
+  ],
+  "fixesBeforeApproval": [
+    "648 no longer invokes AA before point66: correspondence then definition64; inconsistency check explicitly editorial.",
+    "650 added an external-foot pair with visible baseline extensions."
+  ],
+  "limits": [
+    "This is not a visual approval of all320/1280 rendered views.",
+    "This is not a Claude/external-provider verdict, release approval, or Git exact-head CI result."
+  ]
+}

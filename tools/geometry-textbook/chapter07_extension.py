@@ -31,12 +31,16 @@ def frozen(root=ROOT):
  return obj
 def has_vii(raw):return any(p.get('chapter')==7 for p in json.loads(raw).get('paragraphs',[]))
 def previous_inventory(raw,root=ROOT):
+ from chapter08_extension import has_viii,previous_inventory as before_viii
+ if has_viii(raw):raw=before_viii(raw,root)
  current=json.loads(raw);require(raw==encoded(current),'Unrelated source-index formatting changes')
  require(current.get('paragraphs',[])[-3:]==PARAGRAPHS,'VII paragraphs must be the exact reviewed suffix')
  old=deepcopy(current);old['paragraphs']=old['paragraphs'][:-3]
  require(sha(encoded(old))==frozen(root)['immutableFiles'][PREFIX+'source-inventory.json'],'Previous source index/order/metadata changed')
  return encoded(old)
 def previous_scope(scope,root=ROOT):
+ from chapter08_extension import previous_scope as before_viii
+ if any(c['chapter']==8 for c in scope['chapters']):scope=before_viii(scope,root)
  old=deepcopy(scope)
  require(old.get('chapters',[])[-1:]==[SCOPE] and old.get('totalCards')==1083,'Wrong VII release union')
  old['chapters']=old['chapters'][:-1];old['totalCards']-=190
@@ -55,6 +59,11 @@ def validate_extension(root=ROOT,course=None):
  require(review.get('preservedCards')==893 and review.get('contentApprovalGranted') is False,'Runtime review cannot approve VII content')
  oldfiles={name:base['immutableFiles'][PREFIX+name] for name in RUNTIME}
  files={name:sha((course/name).read_bytes()) for name in RUNTIME}
+ from chapter08_extension import has_viii,previous_inventory as before_viii,validate_extension as validate_viii
+ inventory_raw=(course/'source-inventory.json').read_bytes()
+ if has_viii(inventory_raw):
+  validate_viii(root,course)
+  files['source-inventory.json']=sha(before_viii(inventory_raw,root))
  require(review.get('oldImplementationSha256')==digest(oldfiles)==base['implementationSha256'],'Wrong prior runtime chain')
  require(review.get('implementationFiles')==files and review.get('implementationSha256')==digest(files),'Stale VII runtime files')
  require([name for name in RUNTIME if oldfiles[name]!=files[name]]==['source-inventory.json'],'Only VII paragraph metadata may change')
@@ -69,6 +78,8 @@ def validate_extension(root=ROOT,course=None):
  check_evidence(review.get('evidence'),root,'independent VII runtime')
  return review,{'path':RECEIPT,'sha256':sha(raw)}
 def restore_manifest(name,raw,root=ROOT,course=None):
+ from chapter08_extension import BINDING as VIII_BINDING,restore_manifest as before_viii_manifest
+ if VIII_BINDING in json.loads(raw):raw=before_viii_manifest(name,raw,root,course)
  base=frozen(root);review,binding=validate_extension(root,course);obj=json.loads(raw)
  require(name in base['immutableFiles'] and name.startswith(PREFIX+'release-review'),'Not a prior published manifest')
  require(raw==encoded(obj),'Unrelated review formatting change')
@@ -80,12 +91,14 @@ def restore_manifest(name,raw,root=ROOT,course=None):
 
 def assert_893_preserved(bundle,root=ROOT,course=None,scope=None):
  course=course or root/PREFIX;base=frozen(root)
- rows=[x for x in bundle['lessons'] if x['source']['chapter']!='VII']
- entries=[x for x in bundle['catalog']['entries'] if x['source']['chapter']!='VII']
+ rows=[x for x in bundle['lessons'] if x['source']['chapter'] not in ('VII','VIII')]
+ entries=[x for x in bundle['catalog']['entries'] if x['source']['chapter'] not in ('VII','VIII')]
  require(len(rows)==len(entries)==893,'Unexpected old-card scope')
  require(digest(rows)==base['lessonsSha256'],'Previous893 lesson/order/status/review/storage identity changed')
  require(digest(entries)==base['catalogEntriesSha256'],'Previous893 catalog changed')
  review,_=validate_extension(root,course)
+ from chapter08_extension import has_viii,validate_extension as validate_viii
+ if has_viii((course/'source-inventory.json').read_bytes()):review,_=validate_viii(root,course)
  require(bundle['build']['implementationSha256']==review['implementationSha256'],'Stale bundle VII runtime')
  require(bundle['sourceInventory']==json.loads((course/'source-inventory.json').read_bytes()),'Stale bundle source index')
  scope=scope or json.loads((root/'tools/geometry-textbook/release-scope.json').read_bytes())

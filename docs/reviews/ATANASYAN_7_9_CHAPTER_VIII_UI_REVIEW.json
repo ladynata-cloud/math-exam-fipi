@@ -1,0 +1,2306 @@
+{
+  "schemaVersion": 1,
+  "scope": "Supplemental whole-card UI review of four Chapter VIII samples; initial and final states at 320 and 1280 CSS pixels",
+  "reviewedAt": "2026-10-29T23:26:52.009376+00:00",
+  "reviewer": {
+    "agent": "/root/viii_integration",
+    "role": "Integration author and independent UI reviewer; not author/editor of the four sampled lesson bodies or models",
+    "externalProviderReview": false
+  },
+  "passed": true,
+  "publicationApprovalGranted": false,
+  "runtimeReceiptGranted": false,
+  "fullChapterVisualApprovalGranted": false,
+  "reviewedTree": {
+    "baseCommit": "884d1b646cb67a115f4bf70c2c0ce2ed7b987e52",
+    "state": "Uncommitted candidate content; the base commit alone does not identify the reviewed files",
+    "candidateArtifact": "viii-candidate-3",
+    "originalCaptureSourceArtifact": "viii-c-contract-check",
+    "candidateBundleBytesEqualOriginalCaptureSource": true,
+    "bindings": {
+      "bundleSha256": "8e6d98e500a96b3db5bd120362195da000955d790699c8fa73433f60ab4c5d24",
+      "implementationSha256": "b831d68dbdaaf2e696a99699e228cb646ba03d76c7333f799a9c10e4bb904ad7",
+      "authoredContentSha256": "a92b9e1c8d7d06e8a995d805a757690ca56b6b9521e8129b31965b8bd34e07da",
+      "chapterVIIIAuthoredContentSha256": "4a01227216d6bcf57495cd90975350fd7aaa823ef1c5566b1c3335e7f2d6d723",
+      "sourceInventorySha256": "de0d2f2c7762df3e9fb0851ad27d1ba82fb826b8b3727c6fc386e462c9433224",
+      "entrySha256": "130271040eefef94ac1e92ed31063a4a694c87bfc4c62d5620c2a2c9120f2238",
+      "scriptSha256": "20f6576d267ea3da44e08d4958dc742dde6d6aceab3ff7fe101d93fbf9e6edd5"
+    },
+    "sourceMapSha256": "c8a03bfd554007d3a0b6f2ad0f8ecea08e28b4a647e943ddd7abccc599bfa3b0",
+    "inputSha256": {
+      "geometry-course/textbook/models/chapter-08-a.json": "b5d72202451a1e0db0de54dc1404c97a81693dc5d42ad2edf62a34746d4b9132",
+      "geometry-course/textbook/models/chapter-08-b.json": "10f843470acba4a93913ddc2b5f812344502b38e7a6a62f90b95ff4dcbd51301",
+      "geometry-course/textbook/models/chapter-08-c.json": "9cc150634f3effb64179df3e3914800436245de38da70bd86a3b168819d9db1d",
+      "geometry-course/textbook/models/chapter-08-theory.json": "b3ad223e3aec5a4d8b4920b799fba81a1797ae07ba7cefc6cbf023bf4d45a819",
+      "geometry-course/textbook/preparation/chapter-08-a.json": "6eb59e2721c150630d1c549fd82321f4afac3fed66a0765ea3e19c52574fcfa9",
+      "geometry-course/textbook/preparation/chapter-08-b.json": "6841e8969cbcd4f0b5dcb933b335d9e0980ed5bb777b32745ffa94d101eced45",
+      "geometry-course/textbook/preparation/chapter-08-c.json": "af2d652b4ddb16ed1110b6b557d021a2c0aa1fe10e50813106b9bc20aadf4285",
+      "geometry-course/textbook/preparation/chapter-08-theory.json": "48d07f10f635bbcb11b6f6044ae15c89daef3f1a05f47c87776587368b11f6d1",
+      "tools/geometry-textbook/chapter-08-source-map.json": "c8a03bfd554007d3a0b6f2ad0f8ecea08e28b4a647e943ddd7abccc599bfa3b0",
+      "tools/geometry-textbook/chapter08_common.py": "520e4d83ea3360aee4da44d2ae45613073b7ec293722d2e16fda6aac9c7c5591",
+      "tools/geometry-textbook/models_ch8_a.py": "3eca12e9a2561f19ba8def419ddb851fdfa2a0e207b9d3b470a071f9cbf1ca21",
+      "tools/geometry-textbook/models_ch8_b.py": "a531e80fa23b7cd0f5525b0cc4a37084a48b410fb904e371c5c588f960d33b7b",
+      "tools/geometry-textbook/models_ch8_c.py": "c9ac1c321be0262317da4f2231529727515d178c7d87ecdc67df0c97b27d325d",
+      "tools/geometry-textbook/models_ch8_theory.py": "81ff22e843d95c4ae4ab2aa6715baf8a75f7d73c983b04b1ac287fa648295f97"
+    },
+    "candidateRuntimeFiles": {
+      "index.html": "098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804",
+      "assets/engine.js": "85d395dbfb66f8a1409f1d2f930fbb6f742c0085239d34d18ec2a901f3bd6492",
+      "assets/planar-viewer.js": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061",
+      "assets/style.css": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b",
+      "assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+      "source-inventory.json": "de0d2f2c7762df3e9fb0851ad27d1ba82fb826b8b3727c6fc386e462c9433224",
+      "assets/board-adapter.js": "e1c366fd77f2cc822894be7e21139ce99b9e7b3c568392b122f2a3b386b7545b"
+    },
+    "allEightAuthoredJsonsEqualCurrentWorkingTreeAndBothCaptureRoots": true
+  },
+  "coverage": {
+    "chapterCards": 164,
+    "sampleCards": 4,
+    "sampleIds": [
+      "atanasyan-7-9-main-640-part-1",
+      "atanasyan-7-9-theory-73-part-1",
+      "atanasyan-7-9-main-736-part-1",
+      "atanasyan-7-9-selfcheck-chapter-8-1-part-1"
+    ],
+    "widths": [
+      320,
+      1280
+    ],
+    "states": [
+      "initial",
+      "final"
+    ],
+    "completeReviewedComposites": 16,
+    "originalImagesInspected": 16,
+    "originalImagesWithIncompleteCapture": 2,
+    "rawViewportTiles": 77,
+    "nativeSizeViewingArtifacts": 39,
+    "target": "Entire lesson main: title, chapter/paragraph caption, condition, drawing, source disclosure, learner answer area where present, complete help column",
+    "excluded": "Other 160 Chapter VIII cards, intermediate step drawings, alternate-case drawings, catalog-wide layout, persistence, live site and publication approval"
+  },
+  "method": [
+    "First inspected all 16 original whole-main PNG files by contiguous vertical slices at native resolution. Two long mobile captures repeated the header at approximately 8192 pixels, hiding the final tail.",
+    "Repeated all 16 captures from candidate3 using a real browser at a fixed 900-pixel viewport height. Each scroll viewport PNG is retained with a hash; exact cropped rows are concatenated without rescaling.",
+    "Verified by decoded-pixel comparison that the complete composite consists of every recorded viewport row in order with no gap. Viewed every row of all 16 replacement composites at native resolution: mobile strips on 11 contact sheets and desktop vertical slices. No inference from DOM or model hashes replaced manual image reading.",
+    "Initial means a fresh temporary browser context and neutral drawing with help closed; source disclosure was deliberately opened. Final means the actual last step drawing with every step explanation and its justification expanded; the separate overall-result disclosure remains closed."
+  ],
+  "captureEvidence": {
+    "original": {
+      "path": "viii-c-contract-ui/evidence.json",
+      "sha256": "71ebb7ac6a3b1a22028d0299a37dec9f85defb5a32f3b58da384adfd0afa18f2"
+    },
+    "replacement": {
+      "path": "viii-ui-viewport-review/evidence.json",
+      "sha256": "aaccefe53b3e225c707b00e5c865f69c96dbd22c7bd4a23b8a510eb10c835782"
+    },
+    "originalScript": {
+      "path": "viii-local-ui-capture.cjs",
+      "sha256": "753c2d1e9a06971a0ee46f6e2906b5a94b9c853e56e30322ee83936f8c7eba56"
+    },
+    "replacementScript": {
+      "path": "viii-ui-viewport-capture.cjs",
+      "sha256": "20f6576d267ea3da44e08d4958dc742dde6d6aceab3ff7fe101d93fbf9e6edd5"
+    },
+    "browserVersion": "153.0.8010.0",
+    "entry": "review.html",
+    "previewFlagsInjected": false,
+    "publicReviewed": false,
+    "liveRequests": false,
+    "freshTemporaryBrowserContext": true,
+    "realLearnerDataAccessed": false,
+    "automaticChecks": [
+      {
+        "id": "atanasyan-7-9-main-640-part-1",
+        "width": 320,
+        "heading": true,
+        "chapterAndParagraph": true,
+        "sourcePages": true,
+        "initialNeutral": true,
+        "finalActualStep": true,
+        "allStepsVisible": true,
+        "overflow": false
+      },
+      {
+        "id": "atanasyan-7-9-theory-73-part-1",
+        "width": 320,
+        "heading": true,
+        "chapterAndParagraph": true,
+        "sourcePages": true,
+        "initialNeutral": true,
+        "finalActualStep": true,
+        "allStepsVisible": true,
+        "overflow": false
+      },
+      {
+        "id": "atanasyan-7-9-main-736-part-1",
+        "width": 320,
+        "heading": true,
+        "chapterAndParagraph": true,
+        "sourcePages": true,
+        "initialNeutral": true,
+        "finalActualStep": true,
+        "allStepsVisible": true,
+        "overflow": false
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-8-1-part-1",
+        "width": 320,
+        "heading": true,
+        "chapterAndParagraph": true,
+        "sourcePages": true,
+        "initialNeutral": true,
+        "finalActualStep": true,
+        "allStepsVisible": true,
+        "overflow": false
+      },
+      {
+        "id": "atanasyan-7-9-main-640-part-1",
+        "width": 1280,
+        "heading": true,
+        "chapterAndParagraph": true,
+        "sourcePages": true,
+        "initialNeutral": true,
+        "finalActualStep": true,
+        "allStepsVisible": true,
+        "overflow": false
+      },
+      {
+        "id": "atanasyan-7-9-theory-73-part-1",
+        "width": 1280,
+        "heading": true,
+        "chapterAndParagraph": true,
+        "sourcePages": true,
+        "initialNeutral": true,
+        "finalActualStep": true,
+        "allStepsVisible": true,
+        "overflow": false
+      },
+      {
+        "id": "atanasyan-7-9-main-736-part-1",
+        "width": 1280,
+        "heading": true,
+        "chapterAndParagraph": true,
+        "sourcePages": true,
+        "initialNeutral": true,
+        "finalActualStep": true,
+        "allStepsVisible": true,
+        "overflow": false
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-8-1-part-1",
+        "width": 1280,
+        "heading": true,
+        "chapterAndParagraph": true,
+        "sourcePages": true,
+        "initialNeutral": true,
+        "finalActualStep": true,
+        "allStepsVisible": true,
+        "overflow": false
+      }
+    ],
+    "browserErrors": [],
+    "blockedExternalRequests": [],
+    "rawEvidenceManualField": "The capture reports remain unchanged with manualImageInspection=pending; this separate report records the later actual manual review."
+  },
+  "findings": [
+    {
+      "id": "UI-CAPTURE-01",
+      "severity": "capture-integrity",
+      "status": "resolved in replacement evidence",
+      "affectedOriginals": [
+        "viii-c-contract-ui/atanasyan-7-9-theory-73-part-1-wholecard-final-320.png",
+        "viii-c-contract-ui/atanasyan-7-9-main-736-part-1-wholecard-final-320.png"
+      ],
+      "description": "Oversized element screenshot repeats page header after approximately 8192 pixels, so the original final320 theory73 and exercise736 PNGs cannot certify their complete last step.",
+      "resolution": "Actual fixed-viewport captures retain all 8483 and 9366 rows. Last-step explanations, justification and final drawing buttons were manually read in their entirety. No runtime or lesson change was needed."
+    }
+  ],
+  "observations": [
+    {
+      "sample": "main640",
+      "source": "Chapter VIII §1; printed 165 / PDF 166",
+      "result": "Correct problem heading and caption; AB/CD segment labels readable; two-step ratio and unit-conversion flow fits both widths; learner response field remains visible."
+    },
+    {
+      "sample": "theory73",
+      "source": "Chapter VIII §3; printed 176,177,178 / PDF 177,178,179",
+      "result": "Long title wraps within the card; height-condition initial drawing and final field-measurement drawing are readable. All six steps are present. Step 6 visibly distinguishes the printed 153 m example from approximately 146.08 m implied by the stated angles."
+    },
+    {
+      "sample": "main736",
+      "source": "Chapter VIII with no invented paragraph; printed 188 / PDF 189",
+      "result": "Three supplied lengths in the initial drawing; final triangle/centroid labels A,B,C,G,K,M,N readable; six-step construction, existence and mirrored-solution explanation is fully visible. Alternate-case controls are readable, but their drawings are outside this review."
+    },
+    {
+      "sample": "selfcheck8q1",
+      "source": "Chapter VIII with no invented paragraph; printed 185 / PDF 186",
+      "result": "Self-check heading and open-ended answer field shown. Segment labels, ratio definition and unit-invariance explanations remain readable at both widths."
+    },
+    {
+      "sample": "all4",
+      "result": "No horizontal overflow, missing source caption, clipped meaningful label, concealed final step or premature worked explanation observed. Narrow why-link buttons sometimes wrap within words and long mobile cards require vertical scrolling; text remains available and readable."
+    }
+  ],
+  "unresolvedFindings": [],
+  "sourceAndModelWorkflow": {
+    "summaryArtifact": {
+      "path": "viii-final-workflow-gates/summary.json",
+      "sha256": "28841698303669fc1cc55d9ea02e766e19106796f2cf815967b214d337faa8a1"
+    },
+    "runnerArtifact": {
+      "path": "viii-final-workflow-gates.py",
+      "sha256": "dd5e8a16ce212f4b8ef383e425fdc4d4c30f8803947080449b61ef2754534e3a"
+    },
+    "scope": "one non-browser source-and-models workflow pass on corrected VIII working tree; public1083 remains published",
+    "startedAt": "2026-10-29T23:11:32.478964+00:00",
+    "finishedAt": "2026-10-29T23:15:33.586041+00:00",
+    "workflowSha256": "6125d4e4b4873c67cbe29d0830be06e3c9dc74a971fbe91b232786df86140dbe",
+    "commandsPassed": 25,
+    "commandsFailed": 0,
+    "allFourVIIIIndependentOraclesRan": true,
+    "changedInputs": [],
+    "currentInputsStillMatchRun": true,
+    "publicFreeze": {
+      "cards": 1083,
+      "courseSha256": "9730c6446a1503b460f40e6951458714730a7a731298fa22ff09fd49d03ec01c",
+      "expectedCourseSha256": "9730c6446a1503b460f40e6951458714730a7a731298fa22ff09fd49d03ec01c",
+      "fileCount": 209,
+      "changedFrozenFiles": []
+    },
+    "commands": [
+      {
+        "command": "python3 tools/geometry/check_textbook_preparation.py",
+        "exitCode": 0,
+        "seconds": 0.028,
+        "log": "viii-final-workflow-gates/01.log",
+        "logSha256": "d0352de6966f75bbf7c8873ef195daef78fb21b37fe769ebebe6b1b411bd8600"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/build_course.py --check",
+        "exitCode": 0,
+        "seconds": 0.783,
+        "log": "viii-final-workflow-gates/02.log",
+        "logSha256": "4a4d776de9c2476176373c3e0c7d0191cdef0cd3c498ac8ff9f95e1cf5e0f505"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/review_scope_test.py",
+        "exitCode": 0,
+        "seconds": 33.095,
+        "log": "viii-final-workflow-gates/03.log",
+        "logSha256": "32982749ddd18c3f737d84ccec7eda7f3949f8cbc7ca88ff86a7e17c3666fafc"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/chapter05-preservation.test.py",
+        "exitCode": 0,
+        "seconds": 8.473,
+        "log": "viii-final-workflow-gates/04.log",
+        "logSha256": "2fd4a6ad9a851b9af96965a68fc7d78cab266a4a51897943a8fece7ad36b59cf"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/check_models.py",
+        "exitCode": 0,
+        "seconds": 0.151,
+        "log": "viii-final-workflow-gates/05.log",
+        "logSha256": "ccc66a0603134c826f523187176df0bfa74cef9a7490edcdcc403cad4e088382"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/model_claims_test.py",
+        "exitCode": 0,
+        "seconds": 0.044,
+        "log": "viii-final-workflow-gates/06.log",
+        "logSha256": "41ca3233b3ac8bdc18f0d4a81eaf9d8edf0662d836a46b26d172221b8f913643"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/chapter06-candidate.test.py",
+        "exitCode": 0,
+        "seconds": 4.694,
+        "log": "viii-final-workflow-gates/07.log",
+        "logSha256": "497888062835cb87933ec31599a604de8f8830919d04b658f9b3fe243e655662"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/chapter06-release.test.py",
+        "exitCode": 0,
+        "seconds": 10.065,
+        "log": "viii-final-workflow-gates/08.log",
+        "logSha256": "f81fe4d696d2d349c5413ab5c87833a8bb7cee330bdc829efed82b6cfb6f745d"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/chapter07-candidate.test.py",
+        "exitCode": 0,
+        "seconds": 12.444,
+        "log": "viii-final-workflow-gates/09.log",
+        "logSha256": "90538e5b0181cbece81cd4e1505ebf0e8cfda3eac8cd0c623e55271288dd006f"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/chapter07-release.test.py",
+        "exitCode": 0,
+        "seconds": 36.705,
+        "log": "viii-final-workflow-gates/10.log",
+        "logSha256": "ea1351ed96a36bc487eaea8722929d319f2c1aaf2a33b885529e060ec9537b45"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/chapter07-theory-math.test.py",
+        "exitCode": 0,
+        "seconds": 0.09,
+        "log": "viii-final-workflow-gates/11.log",
+        "logSha256": "9fda0b1daca1b3154d3dfc8bfa55cc8254581ceb9249e9bd439e3dcfa95607dd"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/chapter08-candidate.test.py",
+        "exitCode": 0,
+        "seconds": 15.625,
+        "log": "viii-final-workflow-gates/12.log",
+        "logSha256": "d5a24e2800de6e83633a6c936efae9e5ee64f56e7da6e3af6cbe3525d2fec128"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/chapter08-release.test.py",
+        "exitCode": 0,
+        "seconds": 76.141,
+        "log": "viii-final-workflow-gates/13.log",
+        "logSha256": "8f25e0d4a474333d081c39dba383f896bba6ff3ccb6905ad25fce10ebd62006c"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/chapter08-a-independent.test.py",
+        "exitCode": 0,
+        "seconds": 0.038,
+        "log": "viii-final-workflow-gates/14.log",
+        "logSha256": "93e997a940081f79d3c130f5478ae0e4a0f8e6caee3275533863e42171f69a18"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/chapter08-b-independent.test.py",
+        "exitCode": 0,
+        "seconds": 0.045,
+        "log": "viii-final-workflow-gates/15.log",
+        "logSha256": "94eb1dba8c682c06fbcc6f0d851a8b10b4686babd4cc79aa12c34a67e5b4919b"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/chapter08-c-independent.test.py",
+        "exitCode": 0,
+        "seconds": 0.034,
+        "log": "viii-final-workflow-gates/16.log",
+        "logSha256": "50a0a2a8ada9d846a426832b81ba566c273c94d389f7d99422fbce755290b9b6"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/chapter08-theory-independent.test.py",
+        "exitCode": 0,
+        "seconds": 0.036,
+        "log": "viii-final-workflow-gates/17.log",
+        "logSha256": "de42d15bebdc1238048c06c597daa676cef254252804e3938e5d4f3b6bb0b6e5"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/advanced7-c-math.test.py",
+        "exitCode": 0,
+        "seconds": 0.034,
+        "log": "viii-final-workflow-gates/18.log",
+        "logSha256": "68218cd804c45b604a47a1aba94462fc59b74d4cc271974f62da89b3d89a7cef"
+      },
+      {
+        "command": "node tools/geometry-textbook/check_course.cjs",
+        "exitCode": 0,
+        "seconds": 0.452,
+        "log": "viii-final-workflow-gates/19.log",
+        "logSha256": "a9acdc35106dc17ec7013f3cef4a342967257617513d63836b90b88d0ec09cc7"
+      },
+      {
+        "command": "node tools/geometry-textbook/captions.test.cjs",
+        "exitCode": 0,
+        "seconds": 1.422,
+        "log": "viii-final-workflow-gates/20.log",
+        "logSha256": "5fbe14d3fcce8003d72db401e0071e2ddf73e7fee69a14d238b9210c0af270c9"
+      },
+      {
+        "command": "node tools/geometry-textbook/runtime_check.cjs",
+        "exitCode": 0,
+        "seconds": 4.843,
+        "log": "viii-final-workflow-gates/21.log",
+        "logSha256": "069d81c7b3904202d7f868123a37d208e187d2733164e495046b972b50265ab9"
+      },
+      {
+        "command": "node tools/geometry-textbook/reviewer_runtime_check.cjs",
+        "exitCode": 0,
+        "seconds": 34.439,
+        "log": "viii-final-workflow-gates/22.log",
+        "logSha256": "953eedca04cd69d25fb32304b85004d8f7fb54854a34e514645587b905271945"
+      },
+      {
+        "command": "node tools/geometry/check.js",
+        "exitCode": 0,
+        "seconds": 0.215,
+        "log": "viii-final-workflow-gates/23.log",
+        "logSha256": "2192e846e35579deb726b2c420ff5258c96c8b36b6c8f7b149b3f1b4ea64028d"
+      },
+      {
+        "command": "python3 tools/seo-check.py",
+        "exitCode": 0,
+        "seconds": 1.066,
+        "log": "viii-final-workflow-gates/24.log",
+        "logSha256": "597d7a3c06815729525ffdb2eb994c04d536945d5e78923607cd85ab746b905a"
+      },
+      {
+        "command": "git diff --check",
+        "exitCode": 0,
+        "seconds": 0.01,
+        "log": "viii-final-workflow-gates/25.log",
+        "logSha256": "6f32f181b575ccd1b1bfbe06c707bd5a7acc4062edfaee23e752c1e7b77e7db9"
+      }
+    ]
+  },
+  "images": [
+    {
+      "id": "atanasyan-7-9-main-640-part-1",
+      "width": 320,
+      "state": "initial",
+      "title": "К задаче №640",
+      "sourceCaption": "К главе VIII «Подобные треугольники» · К параграфу §1 «Определение подобных треугольников»",
+      "pixels": [
+        298,
+        2210
+      ],
+      "originalImage": {
+        "path": "viii-c-contract-ui/atanasyan-7-9-main-640-part-1-wholecard-initial-320.png",
+        "sha256": "77ddd2c9a1dca6cefc0e16c185fd6cba07816f18c27e9b3acbb207760988ff25",
+        "inspection": "complete visual inspection passed"
+      },
+      "reviewedImage": {
+        "path": "viii-ui-viewport-review/atanasyan-7-9-main-640-part-1-wholecard-initial-320.png",
+        "sha256": "41dc9a2d500b778626fd57d19fb7842ea37d22dad6d47bacb59a748036bb507e"
+      },
+      "rawViewportTiles": [
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-640-part-1-wholecard-initial-320-viewport-01.png",
+          "sha256": "7ebf4c66c4e22608e5d83d32651a3626989412aeb3f901689cdcf2175db601fc",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 0,
+          "coveredRows": [
+            0,
+            900
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-640-part-1-wholecard-initial-320-viewport-02.png",
+          "sha256": "da808cf92c3eda7e61f519b3a8b9b6c6b7be3c3c3feeeed6f169952ba626359a",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 900,
+          "coveredRows": [
+            900,
+            1800
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-640-part-1-wholecard-initial-320-viewport-03.png",
+          "sha256": "41f234b5f78534cc4dda7d580bdc155d463dea26df97d7800e640d6f0c3e3f9e",
+          "crop": [
+            11,
+            457,
+            309,
+            867
+          ],
+          "destinationY": 1800,
+          "coveredRows": [
+            1800,
+            2210
+          ]
+        }
+      ],
+      "nativeSizeViewingArtifacts": [
+        {
+          "path": "viii-ui-review-tiles/verified-mobile-00-group-1.png",
+          "sha256": "4e27328a0a07b95a30e946e0e834927764ea97496b57fd8786fd917d8e0322d0"
+        }
+      ],
+      "allRowsRetainedWithoutRescaling": true,
+      "allRowsActuallyViewed": true,
+      "manualResult": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-640-part-1",
+      "width": 320,
+      "state": "final",
+      "title": "К задаче №640",
+      "sourceCaption": "К главе VIII «Подобные треугольники» · К параграфу §1 «Определение подобных треугольников»",
+      "pixels": [
+        298,
+        4129
+      ],
+      "originalImage": {
+        "path": "viii-c-contract-ui/atanasyan-7-9-main-640-part-1-wholecard-final-320.png",
+        "sha256": "1dc219db557f97c6de1b789eb227812b1044d455547607af1d090658c1365e2c",
+        "inspection": "complete visual inspection passed"
+      },
+      "reviewedImage": {
+        "path": "viii-ui-viewport-review/atanasyan-7-9-main-640-part-1-wholecard-final-320.png",
+        "sha256": "6f84854cef16cb750103ae0e3f50be565db4d46e1ea91fefbd9bd7000f5504d3"
+      },
+      "rawViewportTiles": [
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-640-part-1-wholecard-final-320-viewport-01.png",
+          "sha256": "01ca1c6f029c817ee28e96ec4f3d5b8ecb03c23c826476ad778001e0d9fa7f3b",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 0,
+          "coveredRows": [
+            0,
+            900
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-640-part-1-wholecard-final-320-viewport-02.png",
+          "sha256": "da808cf92c3eda7e61f519b3a8b9b6c6b7be3c3c3feeeed6f169952ba626359a",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 900,
+          "coveredRows": [
+            900,
+            1800
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-640-part-1-wholecard-final-320-viewport-03.png",
+          "sha256": "790d5f66913c642fde10d4529b6b03dbc5b3850b762f0c6ee01a62cb8975b9ed",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 1800,
+          "coveredRows": [
+            1800,
+            2700
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-640-part-1-wholecard-final-320-viewport-04.png",
+          "sha256": "b37b19998644761a3f77aae96597c5b4d843b7e699c516d9805fba93abb8f347",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 2700,
+          "coveredRows": [
+            2700,
+            3600
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-640-part-1-wholecard-final-320-viewport-05.png",
+          "sha256": "12f6713fa0db7649b2e7aa8d591dab7dfb7cb7a36a88fbe184c60b97ae08d8bd",
+          "crop": [
+            11,
+            337,
+            309,
+            866
+          ],
+          "destinationY": 3600,
+          "coveredRows": [
+            3600,
+            4129
+          ]
+        }
+      ],
+      "nativeSizeViewingArtifacts": [
+        {
+          "path": "viii-ui-review-tiles/verified-mobile-01-group-1.png",
+          "sha256": "7692ddb36e666ab168e6f6d41cf0aa899c1cb632185a1b6ddd7f6c66f716d2a6"
+        }
+      ],
+      "allRowsRetainedWithoutRescaling": true,
+      "allRowsActuallyViewed": true,
+      "manualResult": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-theory-73-part-1",
+      "width": 320,
+      "state": "initial",
+      "title": "К пункту 73 · Применение подобия треугольников в измерительных работах на местности",
+      "sourceCaption": "К главе VIII «Подобные треугольники» · К параграфу §3 «Применение подобия к доказательству теорем и решению задач»",
+      "pixels": [
+        298,
+        2168
+      ],
+      "originalImage": {
+        "path": "viii-c-contract-ui/atanasyan-7-9-theory-73-part-1-wholecard-initial-320.png",
+        "sha256": "b081e955d1c7be933ea42a9fe25c6d516ec7d8b1b2de35d0a1e8e52b25446046",
+        "inspection": "complete visual inspection passed"
+      },
+      "reviewedImage": {
+        "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-initial-320.png",
+        "sha256": "c4a4d0e8dfa7aad8659ed99b9b608c668c8d0f889501b89d87019047b6556ac9"
+      },
+      "rawViewportTiles": [
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-initial-320-viewport-01.png",
+          "sha256": "74dc1d69ec230af595ae225a1aadf44a69bb655628026dea37e06b9156d9e204",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 0,
+          "coveredRows": [
+            0,
+            900
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-initial-320-viewport-02.png",
+          "sha256": "40e2ed25b9d9e2cd4098eb6b214103aca968312a2c104addee5756c77c9f7134",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 900,
+          "coveredRows": [
+            900,
+            1800
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-initial-320-viewport-03.png",
+          "sha256": "bc887a4c26e7a736cdeb154409907b4dba1e56cf7c22e890c8ced0ed2f49d5ab",
+          "crop": [
+            11,
+            498,
+            309,
+            866
+          ],
+          "destinationY": 1800,
+          "coveredRows": [
+            1800,
+            2168
+          ]
+        }
+      ],
+      "nativeSizeViewingArtifacts": [
+        {
+          "path": "viii-ui-review-tiles/verified-mobile-02-group-1.png",
+          "sha256": "d986d1c1b28c206d9c3a2ba3651d9d4fc93ea8b3f4c735b2273726993ff13ce9"
+        }
+      ],
+      "allRowsRetainedWithoutRescaling": true,
+      "allRowsActuallyViewed": true,
+      "manualResult": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-theory-73-part-1",
+      "width": 320,
+      "state": "final",
+      "title": "К пункту 73 · Применение подобия треугольников в измерительных работах на местности",
+      "sourceCaption": "К главе VIII «Подобные треугольники» · К параграфу §3 «Применение подобия к доказательству теорем и решению задач»",
+      "pixels": [
+        298,
+        8483
+      ],
+      "originalImage": {
+        "path": "viii-c-contract-ui/atanasyan-7-9-theory-73-part-1-wholecard-final-320.png",
+        "sha256": "8c8300af9b603336891540196936d5d88d4c3243c088c36073ecdcfea6012399",
+        "inspection": "capture defect; bottom rows repeat the header"
+      },
+      "reviewedImage": {
+        "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-final-320.png",
+        "sha256": "b64f979fad0622bd3a87a5a5b6b24ff88be11b7e30391ee4936e26e8b72b9efd"
+      },
+      "rawViewportTiles": [
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-final-320-viewport-01.png",
+          "sha256": "74dc1d69ec230af595ae225a1aadf44a69bb655628026dea37e06b9156d9e204",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 0,
+          "coveredRows": [
+            0,
+            900
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-final-320-viewport-02.png",
+          "sha256": "86900e04043c1a1efa66c6eb6b5f47b4b6a80e086c7771fda0f1e9de8dc4aa0a",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 900,
+          "coveredRows": [
+            900,
+            1800
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-final-320-viewport-03.png",
+          "sha256": "58af9b086ac4b57a76304550e3d4ba3d2cec7733e493d30d55fdff62c2c53976",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 1800,
+          "coveredRows": [
+            1800,
+            2700
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-final-320-viewport-04.png",
+          "sha256": "b955bc7d784832e3d0b59ae9e2b90f805aa9ff0395885519bbc10692012d16eb",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 2700,
+          "coveredRows": [
+            2700,
+            3600
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-final-320-viewport-05.png",
+          "sha256": "b6ddfcf4939ceb2670bcc4851b53e5ff61299a6ec79f99be6f77d3ba5d1a5d5d",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 3600,
+          "coveredRows": [
+            3600,
+            4500
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-final-320-viewport-06.png",
+          "sha256": "3ec74ee488d063dfaf1f5291f03832e624c72bff8642ac921238671d5dd3c99b",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 4500,
+          "coveredRows": [
+            4500,
+            5400
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-final-320-viewport-07.png",
+          "sha256": "6d6916fc599f863b648095c495bdd82a90b06f8ec4cac683cee1fb84e36bfbbd",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 5400,
+          "coveredRows": [
+            5400,
+            6300
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-final-320-viewport-08.png",
+          "sha256": "f003fd902b9b9646ce74395bf7ce58713488ae696d32edf34d37c9a604e31da3",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 6300,
+          "coveredRows": [
+            6300,
+            7200
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-final-320-viewport-09.png",
+          "sha256": "3ac433ce52f90c72d26f2cacc5d840b2374b0ba2a970b35d97dae875adbbb9fc",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 7200,
+          "coveredRows": [
+            7200,
+            8100
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-final-320-viewport-10.png",
+          "sha256": "ccaeb476fdbd8c854fcf5843964188bcec91cc0e9f2fa6fef8ea7ab775b1652c",
+          "crop": [
+            11,
+            483,
+            309,
+            866
+          ],
+          "destinationY": 8100,
+          "coveredRows": [
+            8100,
+            8483
+          ]
+        }
+      ],
+      "nativeSizeViewingArtifacts": [
+        {
+          "path": "viii-ui-review-tiles/verified-mobile-03-group-1.png",
+          "sha256": "bc7e65a9acfa423ee9467d0a2b15728a319effa70c0189b21d698022edb0229f"
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-mobile-03-group-2.png",
+          "sha256": "cdddea0d609cbca514662319f0266008e7ebf7e20b2e4cbc3bb54e98c670fd9e"
+        }
+      ],
+      "allRowsRetainedWithoutRescaling": true,
+      "allRowsActuallyViewed": true,
+      "manualResult": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-736-part-1",
+      "width": 320,
+      "state": "initial",
+      "title": "К задаче №736",
+      "sourceCaption": "К главе VIII «Подобные треугольники»",
+      "pixels": [
+        298,
+        2008
+      ],
+      "originalImage": {
+        "path": "viii-c-contract-ui/atanasyan-7-9-main-736-part-1-wholecard-initial-320.png",
+        "sha256": "a0f9b3e4b59ecd02958f31c52a03ba9b7feaece0ef4d9d0a7901934ced703fd2",
+        "inspection": "complete visual inspection passed"
+      },
+      "reviewedImage": {
+        "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-initial-320.png",
+        "sha256": "04ff2fa6f02f9b9a55f2cc61a93af6fee0ce9650b9e7c424679ff16ae9d5bf05"
+      },
+      "rawViewportTiles": [
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-initial-320-viewport-01.png",
+          "sha256": "356d5dbae1058e2cbce3083df0d9fa75a30a20af9504720553b9daefb42e9668",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 0,
+          "coveredRows": [
+            0,
+            900
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-initial-320-viewport-02.png",
+          "sha256": "7cd1da6f796638eedb01fb21678677042c849e7172b36447752d7c0c6b9a9096",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 900,
+          "coveredRows": [
+            900,
+            1800
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-initial-320-viewport-03.png",
+          "sha256": "cf3a709f168756da64ae18971c7a4b0a335ae06fb0f756351b3106cd5f112c78",
+          "crop": [
+            11,
+            658,
+            309,
+            866
+          ],
+          "destinationY": 1800,
+          "coveredRows": [
+            1800,
+            2008
+          ]
+        }
+      ],
+      "nativeSizeViewingArtifacts": [
+        {
+          "path": "viii-ui-review-tiles/verified-mobile-04-group-1.png",
+          "sha256": "060bf96c9192f99de5d3bfa2ff317c20abcb9c4ad8fd24e570744ae351186408"
+        }
+      ],
+      "allRowsRetainedWithoutRescaling": true,
+      "allRowsActuallyViewed": true,
+      "manualResult": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-736-part-1",
+      "width": 320,
+      "state": "final",
+      "title": "К задаче №736",
+      "sourceCaption": "К главе VIII «Подобные треугольники»",
+      "pixels": [
+        298,
+        9366
+      ],
+      "originalImage": {
+        "path": "viii-c-contract-ui/atanasyan-7-9-main-736-part-1-wholecard-final-320.png",
+        "sha256": "877eb050bbd3732b21d04cdd39232b958cc78dc7997f3226f02262e1cf9dcbca",
+        "inspection": "capture defect; bottom rows repeat the header"
+      },
+      "reviewedImage": {
+        "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-final-320.png",
+        "sha256": "15cb06b8a9813000e59bcc1f230207030fb3f8cddd7fdb1aa84889cc36a6898f"
+      },
+      "rawViewportTiles": [
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-final-320-viewport-01.png",
+          "sha256": "aa9885da94b4770632e7a2d315311e53ed85b886d375fbf0871222afe5033011",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 0,
+          "coveredRows": [
+            0,
+            900
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-final-320-viewport-02.png",
+          "sha256": "b37298f6945b1f7179d9b3717d32dd081ec1856549e3aa2d98e8b863bcf460cc",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 900,
+          "coveredRows": [
+            900,
+            1800
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-final-320-viewport-03.png",
+          "sha256": "91360b919d6a441a60a9d9f3f04bf14890af2458a0035c77fd63f4570d27efc9",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 1800,
+          "coveredRows": [
+            1800,
+            2700
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-final-320-viewport-04.png",
+          "sha256": "579db6bd4d68f5fd2c8211a908ca8f7b8d9477fa4a31411c5603c175fb04bf57",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 2700,
+          "coveredRows": [
+            2700,
+            3600
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-final-320-viewport-05.png",
+          "sha256": "05925821d5195ee6475db797e6bf6f306162bf38293b2e9af8c2150f7b51bb52",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 3600,
+          "coveredRows": [
+            3600,
+            4500
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-final-320-viewport-06.png",
+          "sha256": "a301dad1f2ddf6f0081d4653bec132047fc0254ad8fc707d3721498a3ad0e7c1",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 4500,
+          "coveredRows": [
+            4500,
+            5400
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-final-320-viewport-07.png",
+          "sha256": "fcf5e7999a4928bce59d9875689df3685f1b0b832d14ec43474078cf1c007344",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 5400,
+          "coveredRows": [
+            5400,
+            6300
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-final-320-viewport-08.png",
+          "sha256": "4c0634f2b4436124ca099abf8467f2dfed04d3226ce22a804dab33eefeb01c23",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 6300,
+          "coveredRows": [
+            6300,
+            7200
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-final-320-viewport-09.png",
+          "sha256": "8d584d646955536b143188942d19061e524bc87c53205c8dad8e25220893d77b",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 7200,
+          "coveredRows": [
+            7200,
+            8100
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-final-320-viewport-10.png",
+          "sha256": "fc3c9ddface1dd7df92ba9fe2d0597ebcb8e98e45d5ddfd4bc0506075d8c6b8d",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 8100,
+          "coveredRows": [
+            8100,
+            9000
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-final-320-viewport-11.png",
+          "sha256": "9aef2f6b2e2043ff3832f8eb9908b21dd6930a2e4e54a9648fe0c7caa7a4f397",
+          "crop": [
+            11,
+            500,
+            309,
+            866
+          ],
+          "destinationY": 9000,
+          "coveredRows": [
+            9000,
+            9366
+          ]
+        }
+      ],
+      "nativeSizeViewingArtifacts": [
+        {
+          "path": "viii-ui-review-tiles/verified-mobile-05-group-1.png",
+          "sha256": "e58e794fba5683703ddf5f94fa7f4a02dc58a91db24834adbfee46d56f4eb5c8"
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-mobile-05-group-2.png",
+          "sha256": "c77cf9b1beb4109a67bf97e58042ddd965456ba7f3068f199ca8dcc575625d49"
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-mobile-05-group-3.png",
+          "sha256": "56b345a9549be2a4471a4fa59c91c99ef9a5a339c19f419e402a37c097d853c1"
+        }
+      ],
+      "allRowsRetainedWithoutRescaling": true,
+      "allRowsActuallyViewed": true,
+      "manualResult": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-8-1-part-1",
+      "width": 320,
+      "state": "initial",
+      "title": "К вопросу №1 для самопроверки",
+      "sourceCaption": "К главе VIII «Подобные треугольники»",
+      "pixels": [
+        298,
+        2080
+      ],
+      "originalImage": {
+        "path": "viii-c-contract-ui/atanasyan-7-9-selfcheck-chapter-8-1-part-1-wholecard-initial-320.png",
+        "sha256": "36419ffd1dca8cede05673cda8e85bb8765ab8bdaf45137cbb0b81ea73213934",
+        "inspection": "complete visual inspection passed"
+      },
+      "reviewedImage": {
+        "path": "viii-ui-viewport-review/atanasyan-7-9-selfcheck-chapter-8-1-part-1-wholecard-initial-320.png",
+        "sha256": "57b16002100594d26937c158ed639eae00858b9a839a83e0982e8b8a684e6f85"
+      },
+      "rawViewportTiles": [
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-selfcheck-chapter-8-1-part-1-wholecard-initial-320-viewport-01.png",
+          "sha256": "f47f9e27a2b9c7ac54b48729c6e4b0e4873d916e24bc1c48410c52b5ffcc6ccc",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 0,
+          "coveredRows": [
+            0,
+            900
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-selfcheck-chapter-8-1-part-1-wholecard-initial-320-viewport-02.png",
+          "sha256": "90a147f59ce0cc7a88af5a933032bc60132829806f55cb37c4070a4c0f801e44",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 900,
+          "coveredRows": [
+            900,
+            1800
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-selfcheck-chapter-8-1-part-1-wholecard-initial-320-viewport-03.png",
+          "sha256": "6d0a9055c7df94e0027d0a49e6fd58f7d5cbc285ecb391d87704eccc461b72d5",
+          "crop": [
+            11,
+            587,
+            309,
+            867
+          ],
+          "destinationY": 1800,
+          "coveredRows": [
+            1800,
+            2080
+          ]
+        }
+      ],
+      "nativeSizeViewingArtifacts": [
+        {
+          "path": "viii-ui-review-tiles/verified-mobile-06-group-1.png",
+          "sha256": "43e8aed42498274197e7382f224a09fd510b563256b0dd061a566d4c266b7f03"
+        }
+      ],
+      "allRowsRetainedWithoutRescaling": true,
+      "allRowsActuallyViewed": true,
+      "manualResult": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-8-1-part-1",
+      "width": 320,
+      "state": "final",
+      "title": "К вопросу №1 для самопроверки",
+      "sourceCaption": "К главе VIII «Подобные треугольники»",
+      "pixels": [
+        298,
+        4195
+      ],
+      "originalImage": {
+        "path": "viii-c-contract-ui/atanasyan-7-9-selfcheck-chapter-8-1-part-1-wholecard-final-320.png",
+        "sha256": "195820c5916b0107fa37b8b7d1dd8238bb11d07a1cf422ceeb067495fe927fb3",
+        "inspection": "complete visual inspection passed"
+      },
+      "reviewedImage": {
+        "path": "viii-ui-viewport-review/atanasyan-7-9-selfcheck-chapter-8-1-part-1-wholecard-final-320.png",
+        "sha256": "212cd296eed1fb36b9f00ece9e799d79b165d0e057f0b5634aecb8bbe634ddaf"
+      },
+      "rawViewportTiles": [
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-selfcheck-chapter-8-1-part-1-wholecard-final-320-viewport-01.png",
+          "sha256": "f47f9e27a2b9c7ac54b48729c6e4b0e4873d916e24bc1c48410c52b5ffcc6ccc",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 0,
+          "coveredRows": [
+            0,
+            900
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-selfcheck-chapter-8-1-part-1-wholecard-final-320-viewport-02.png",
+          "sha256": "90a147f59ce0cc7a88af5a933032bc60132829806f55cb37c4070a4c0f801e44",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 900,
+          "coveredRows": [
+            900,
+            1800
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-selfcheck-chapter-8-1-part-1-wholecard-final-320-viewport-03.png",
+          "sha256": "80dcebb9203a1574ac83fa99a90b3c4f8d8eb1b8108fd4cd5d9fb1062b48507e",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 1800,
+          "coveredRows": [
+            1800,
+            2700
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-selfcheck-chapter-8-1-part-1-wholecard-final-320-viewport-04.png",
+          "sha256": "f5677c075bf5649608f39eae02a1c158a39c8e9e17ee51d14661dc4b7a092bce",
+          "crop": [
+            11,
+            0,
+            309,
+            900
+          ],
+          "destinationY": 2700,
+          "coveredRows": [
+            2700,
+            3600
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-selfcheck-chapter-8-1-part-1-wholecard-final-320-viewport-05.png",
+          "sha256": "fef87925a031b771adc24f2320d18879921d7fd2a2b4f4ba3fa98a2a7a647bb2",
+          "crop": [
+            11,
+            272,
+            309,
+            867
+          ],
+          "destinationY": 3600,
+          "coveredRows": [
+            3600,
+            4195
+          ]
+        }
+      ],
+      "nativeSizeViewingArtifacts": [
+        {
+          "path": "viii-ui-review-tiles/verified-mobile-07-group-1.png",
+          "sha256": "97ee7fda282c51e044349e105409a51d58973ff2511003836fc8f5858f98fabd"
+        }
+      ],
+      "allRowsRetainedWithoutRescaling": true,
+      "allRowsActuallyViewed": true,
+      "manualResult": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-640-part-1",
+      "width": 1280,
+      "state": "initial",
+      "title": "К задаче №640",
+      "sourceCaption": "К главе VIII «Подобные треугольники» · К параграфу §1 «Определение подобных треугольников»",
+      "pixels": [
+        1242,
+        2087
+      ],
+      "originalImage": {
+        "path": "viii-c-contract-ui/atanasyan-7-9-main-640-part-1-wholecard-initial-1280.png",
+        "sha256": "303e6e8014284b84b2e1f05c49157e1710fb6a7abdf3ad9b8664810b7730f21c",
+        "inspection": "complete visual inspection passed"
+      },
+      "reviewedImage": {
+        "path": "viii-ui-viewport-review/atanasyan-7-9-main-640-part-1-wholecard-initial-1280.png",
+        "sha256": "a5146906c5ab11914529d8269afddf3c0b731aaf67811813d821a99ebabf8f6b"
+      },
+      "rawViewportTiles": [
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-640-part-1-wholecard-initial-1280-viewport-01.png",
+          "sha256": "4e5981a38ad9579c7ec5101b930ccecf34b00d86d25a5042d342ebb4dd08981d",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 0,
+          "coveredRows": [
+            0,
+            900
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-640-part-1-wholecard-initial-1280-viewport-02.png",
+          "sha256": "7476a48528a8c4ce762b35b71f1148387034b406c20e5d896ad5c74eac2b921c",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 900,
+          "coveredRows": [
+            900,
+            1800
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-640-part-1-wholecard-initial-1280-viewport-03.png",
+          "sha256": "bb5d83dbf1a2832c944f43cc1b49c6c18a4bdd4b3a9c16d418500d40db4feb58",
+          "crop": [
+            19,
+            557,
+            1261,
+            844
+          ],
+          "destinationY": 1800,
+          "coveredRows": [
+            1800,
+            2087
+          ]
+        }
+      ],
+      "nativeSizeViewingArtifacts": [
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-08-y0.png",
+          "sha256": "bfbaac7a5a62dd52fb36aeb94d5fcbf655fc130fae34e51495f75cc3cc8a2d51",
+          "coveredRows": [
+            0,
+            1120
+          ]
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-08-y1080.png",
+          "sha256": "5e1a94b9c4eecf8290284ebb6e2635da65fcbb0958363fe5aa2f292d9d3eb6fb",
+          "coveredRows": [
+            1080,
+            2087
+          ]
+        }
+      ],
+      "allRowsRetainedWithoutRescaling": true,
+      "allRowsActuallyViewed": true,
+      "manualResult": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-640-part-1",
+      "width": 1280,
+      "state": "final",
+      "title": "К задаче №640",
+      "sourceCaption": "К главе VIII «Подобные треугольники» · К параграфу §1 «Определение подобных треугольников»",
+      "pixels": [
+        1242,
+        2363
+      ],
+      "originalImage": {
+        "path": "viii-c-contract-ui/atanasyan-7-9-main-640-part-1-wholecard-final-1280.png",
+        "sha256": "4237acb86db4294e26f73ee9a17bfde23e16ac92ba9896fc8f607bb4c9f65117",
+        "inspection": "complete visual inspection passed"
+      },
+      "reviewedImage": {
+        "path": "viii-ui-viewport-review/atanasyan-7-9-main-640-part-1-wholecard-final-1280.png",
+        "sha256": "a087b7377a3b615320c220246b852225eb21fb2858d5ae168bade3fa0fe8090e"
+      },
+      "rawViewportTiles": [
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-640-part-1-wholecard-final-1280-viewport-01.png",
+          "sha256": "2eef63bf0a482647edb98ce56b0809e4543199179a2aab46148d129d751cd71d",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 0,
+          "coveredRows": [
+            0,
+            900
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-640-part-1-wholecard-final-1280-viewport-02.png",
+          "sha256": "4fbd02efffffde2eaeaef10a9f44d44a6311e7bde135f0e1483e38af935eb28b",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 900,
+          "coveredRows": [
+            900,
+            1800
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-640-part-1-wholecard-final-1280-viewport-03.png",
+          "sha256": "eb52862d8ae3733c7d34a531c2fb3526d81c97e202f86a4e91e7d553c18716d0",
+          "crop": [
+            19,
+            281,
+            1261,
+            844
+          ],
+          "destinationY": 1800,
+          "coveredRows": [
+            1800,
+            2363
+          ]
+        }
+      ],
+      "nativeSizeViewingArtifacts": [
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-09-y0.png",
+          "sha256": "8f4ca5d360f3661fb17ed36a1cf9df9f08ffc3b188b570998ea0d1acc7625afe",
+          "coveredRows": [
+            0,
+            1120
+          ]
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-09-y1080.png",
+          "sha256": "188c65e66b123ae5c1a0f25c5f3f5b6a226c1046354372c272c257c78e465be5",
+          "coveredRows": [
+            1080,
+            2200
+          ]
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-09-y2160.png",
+          "sha256": "5647f91e4cf13e300aa71b1d8d16203fc93f16489b46275776bb832b4fe3c035",
+          "coveredRows": [
+            2160,
+            2363
+          ]
+        }
+      ],
+      "allRowsRetainedWithoutRescaling": true,
+      "allRowsActuallyViewed": true,
+      "manualResult": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-theory-73-part-1",
+      "width": 1280,
+      "state": "initial",
+      "title": "К пункту 73 · Применение подобия треугольников в измерительных работах на местности",
+      "sourceCaption": "К главе VIII «Подобные треугольники» · К параграфу §3 «Применение подобия к доказательству теорем и решению задач»",
+      "pixels": [
+        1242,
+        1880
+      ],
+      "originalImage": {
+        "path": "viii-c-contract-ui/atanasyan-7-9-theory-73-part-1-wholecard-initial-1280.png",
+        "sha256": "a9a1a7119b6e5ab8c2b10c956f300bd76c00b917c6bf3f11b6bd32fe3b7e0554",
+        "inspection": "complete visual inspection passed"
+      },
+      "reviewedImage": {
+        "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-initial-1280.png",
+        "sha256": "a57e2a9568b7b8ce3b052ce0093077a2baf0e502462d397ab2ac781736d2088d"
+      },
+      "rawViewportTiles": [
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-initial-1280-viewport-01.png",
+          "sha256": "7aa754bfd1de44d848dca4fd36b6f8c67bb8ab13b866d9b14ad2c52fe78609ba",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 0,
+          "coveredRows": [
+            0,
+            900
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-initial-1280-viewport-02.png",
+          "sha256": "df238ef6dc9bf59afdf67350123419e55e27a70802a87a8eb28170c90d7fcbad",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 900,
+          "coveredRows": [
+            900,
+            1800
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-initial-1280-viewport-03.png",
+          "sha256": "a32f45254686088e53addfc8d8714b0bd3a6292ed63bfaa1e9ebafba000c8220",
+          "crop": [
+            19,
+            763,
+            1261,
+            843
+          ],
+          "destinationY": 1800,
+          "coveredRows": [
+            1800,
+            1880
+          ]
+        }
+      ],
+      "nativeSizeViewingArtifacts": [
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-10-y0.png",
+          "sha256": "6197b8ce557c36e0240c62459fd33be7fa9538ada40241877fa7e4ba5ce2ee48",
+          "coveredRows": [
+            0,
+            1120
+          ]
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-10-y1080.png",
+          "sha256": "69ff54906ac402ddbe6930c164dff5f6b9626236840fe571d10c8495018e93f8",
+          "coveredRows": [
+            1080,
+            1880
+          ]
+        }
+      ],
+      "allRowsRetainedWithoutRescaling": true,
+      "allRowsActuallyViewed": true,
+      "manualResult": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-theory-73-part-1",
+      "width": 1280,
+      "state": "final",
+      "title": "К пункту 73 · Применение подобия треугольников в измерительных работах на местности",
+      "sourceCaption": "К главе VIII «Подобные треугольники» · К параграфу §3 «Применение подобия к доказательству теорем и решению задач»",
+      "pixels": [
+        1242,
+        6591
+      ],
+      "originalImage": {
+        "path": "viii-c-contract-ui/atanasyan-7-9-theory-73-part-1-wholecard-final-1280.png",
+        "sha256": "add085da67f620c840cc08adc06de5652ef568b903c22f59f06176c5603aa4d0",
+        "inspection": "complete visual inspection passed"
+      },
+      "reviewedImage": {
+        "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-final-1280.png",
+        "sha256": "efe39e51878ea955fe76ecbf8f483b7d026e53924a2714113fd396c580076186"
+      },
+      "rawViewportTiles": [
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-final-1280-viewport-01.png",
+          "sha256": "7723da1ec69ca08d550d7dbae9ed2a7dc6d5cae11ee9e81cc23d904e8d848cfa",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 0,
+          "coveredRows": [
+            0,
+            900
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-final-1280-viewport-02.png",
+          "sha256": "28de1e2e5dc47206e2e37728a8c9b48df3bef77a219b9f6c32d3be0a33f2c905",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 900,
+          "coveredRows": [
+            900,
+            1800
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-final-1280-viewport-03.png",
+          "sha256": "e95fdda7341bf55bac8327c43be28871cd1ca20f29f60a6ec5f8bec188f5f3e0",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 1800,
+          "coveredRows": [
+            1800,
+            2700
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-final-1280-viewport-04.png",
+          "sha256": "8172517e8d11bf355bd6c70ff06a3f8b8162d0e56482c762ab612a07f16ecc48",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 2700,
+          "coveredRows": [
+            2700,
+            3600
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-final-1280-viewport-05.png",
+          "sha256": "ced23c814318f3ec83467d75e1462137625bd86cd1a81c37c95782467467cbf5",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 3600,
+          "coveredRows": [
+            3600,
+            4500
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-final-1280-viewport-06.png",
+          "sha256": "c4be783cd756dda5500d405da5cd9fed836a698c4dd4bc88189ee653297f6092",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 4500,
+          "coveredRows": [
+            4500,
+            5400
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-final-1280-viewport-07.png",
+          "sha256": "405514207e223e0d13f4c32657b5d06e6053c1e9a8ae4c89803c99039ae4538c",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 5400,
+          "coveredRows": [
+            5400,
+            6300
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-theory-73-part-1-wholecard-final-1280-viewport-08.png",
+          "sha256": "c73afb17f8cf88c510fa6ebefbd108f14ab578c720e679cb697855787a022f01",
+          "crop": [
+            19,
+            552,
+            1261,
+            843
+          ],
+          "destinationY": 6300,
+          "coveredRows": [
+            6300,
+            6591
+          ]
+        }
+      ],
+      "nativeSizeViewingArtifacts": [
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-11-y0.png",
+          "sha256": "29ca87827a3df13db2671f4dd441575a6fc594775a90ea348ea34e53be94b76c",
+          "coveredRows": [
+            0,
+            1120
+          ]
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-11-y1080.png",
+          "sha256": "4dda2b2b9debf69e05bf06b79f13191404fef108a33731b3f95946849acfc079",
+          "coveredRows": [
+            1080,
+            2200
+          ]
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-11-y2160.png",
+          "sha256": "1e6641c77fd82408fcb532e122fc79aa9e97b6be2a2b28622821c41a037e80ac",
+          "coveredRows": [
+            2160,
+            3280
+          ]
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-11-y3240.png",
+          "sha256": "e4b797741c0efdbcf0bdad287b82dc7fee0069ca4b47ca0dc7798ea45dbffc4b",
+          "coveredRows": [
+            3240,
+            4360
+          ]
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-11-y4320.png",
+          "sha256": "cf5f38b37079bc4539097c1291421af260b8e6436984ef51e85a4d47730659ca",
+          "coveredRows": [
+            4320,
+            5440
+          ]
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-11-y5400.png",
+          "sha256": "288b6c09e86f581d01757caa6dfb7fada53d409cf4c3633f20e6aa3c5a3f0c30",
+          "coveredRows": [
+            5400,
+            6520
+          ]
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-11-y6480.png",
+          "sha256": "eebc6ba2bc58060ba39fcb08fa17fe67faa96653a4d4424e1b9d0b74d13ce4af",
+          "coveredRows": [
+            6480,
+            6591
+          ]
+        }
+      ],
+      "allRowsRetainedWithoutRescaling": true,
+      "allRowsActuallyViewed": true,
+      "manualResult": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-736-part-1",
+      "width": 1280,
+      "state": "initial",
+      "title": "К задаче №736",
+      "sourceCaption": "К главе VIII «Подобные треугольники»",
+      "pixels": [
+        1242,
+        2021
+      ],
+      "originalImage": {
+        "path": "viii-c-contract-ui/atanasyan-7-9-main-736-part-1-wholecard-initial-1280.png",
+        "sha256": "73e8eb707e51bb47c71a5aa5489b05baa7f6f89f178acb4f9b9fed6f67b2217b",
+        "inspection": "complete visual inspection passed"
+      },
+      "reviewedImage": {
+        "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-initial-1280.png",
+        "sha256": "8bf9e9f962eb781d2d260cb6bca70b007b7972e6ffd0d5a408baf74c66e0ca28"
+      },
+      "rawViewportTiles": [
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-initial-1280-viewport-01.png",
+          "sha256": "3e020df31e73eb44bb37f1761f541e0fad369828a9d52fd5543c7f5242a6df76",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 0,
+          "coveredRows": [
+            0,
+            900
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-initial-1280-viewport-02.png",
+          "sha256": "328f4005310c1e88ad711b5a89b1b0dc750ae722aed609e0d39953af1abbccbc",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 900,
+          "coveredRows": [
+            900,
+            1800
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-initial-1280-viewport-03.png",
+          "sha256": "23453efbbbc878007927e575b9777bec27202cbefff45b28908139cf6518ff07",
+          "crop": [
+            19,
+            623,
+            1261,
+            844
+          ],
+          "destinationY": 1800,
+          "coveredRows": [
+            1800,
+            2021
+          ]
+        }
+      ],
+      "nativeSizeViewingArtifacts": [
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-12-y0.png",
+          "sha256": "c5f65f292e5b46d7e4a5d536bedeea11906aa999b3f170bc30554940e01f41c5",
+          "coveredRows": [
+            0,
+            1120
+          ]
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-12-y1080.png",
+          "sha256": "249dfe652b4eedc211cd59406d8d920f7496eae3cf7bf07620628c35d4c82e0d",
+          "coveredRows": [
+            1080,
+            2021
+          ]
+        }
+      ],
+      "allRowsRetainedWithoutRescaling": true,
+      "allRowsActuallyViewed": true,
+      "manualResult": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-736-part-1",
+      "width": 1280,
+      "state": "final",
+      "title": "К задаче №736",
+      "sourceCaption": "К главе VIII «Подобные треугольники»",
+      "pixels": [
+        1242,
+        7093
+      ],
+      "originalImage": {
+        "path": "viii-c-contract-ui/atanasyan-7-9-main-736-part-1-wholecard-final-1280.png",
+        "sha256": "01489411d06f546d2bd628905eee1c141970e528d21cb914001db92f2f940f64",
+        "inspection": "complete visual inspection passed"
+      },
+      "reviewedImage": {
+        "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-final-1280.png",
+        "sha256": "41cdd14ccb5b8d0f7f396557ac46b0294e8acb700e742a9e648dd2db9ec60738"
+      },
+      "rawViewportTiles": [
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-final-1280-viewport-01.png",
+          "sha256": "227a61e282fa7fbe67ee552ca4aa257299ef621f57d74ff815e4378c3749272f",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 0,
+          "coveredRows": [
+            0,
+            900
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-final-1280-viewport-02.png",
+          "sha256": "fc2ff8ebe2da00c54857be44af6e7e716b90ed046cc8e7d0f5837030fdbffe6b",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 900,
+          "coveredRows": [
+            900,
+            1800
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-final-1280-viewport-03.png",
+          "sha256": "fd8426d003edd677fc3c0069339b0219cf6f18bc05559e7608ee5eb7d1486440",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 1800,
+          "coveredRows": [
+            1800,
+            2700
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-final-1280-viewport-04.png",
+          "sha256": "1a1b42f6b172e19d7a438ee4fa56176a5340b19d5b506f6f2b56bf65d8b91e8a",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 2700,
+          "coveredRows": [
+            2700,
+            3600
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-final-1280-viewport-05.png",
+          "sha256": "f3a4122e2ea59c0b93697d9f0328cf67846179f060a61168906baac052527809",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 3600,
+          "coveredRows": [
+            3600,
+            4500
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-final-1280-viewport-06.png",
+          "sha256": "34ceef4f974b230abcb2819fb4b2620a25186ce63071e4d2b40e42d3c8ea9cdf",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 4500,
+          "coveredRows": [
+            4500,
+            5400
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-final-1280-viewport-07.png",
+          "sha256": "b0ee00ce5157e8b682dd122fecabfe7fec7e12a49c03c5f65a5069af3de39771",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 5400,
+          "coveredRows": [
+            5400,
+            6300
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-main-736-part-1-wholecard-final-1280-viewport-08.png",
+          "sha256": "1ff946649da9eba22a98fa89ceb3c4e139d82f955d27d2b6ed5267c0b20b5238",
+          "crop": [
+            19,
+            50,
+            1261,
+            843
+          ],
+          "destinationY": 6300,
+          "coveredRows": [
+            6300,
+            7093
+          ]
+        }
+      ],
+      "nativeSizeViewingArtifacts": [
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-13-y0.png",
+          "sha256": "4de9e2fca63c407c2610d5b3a840d3d109b482d92fd954174bf11b3431c6357c",
+          "coveredRows": [
+            0,
+            1120
+          ]
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-13-y1080.png",
+          "sha256": "0001170a8cc9ba325639804ebcc87ed1085e72cfa83fe6da81cbe7a64daa737c",
+          "coveredRows": [
+            1080,
+            2200
+          ]
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-13-y2160.png",
+          "sha256": "1b4c43bc02cb6f8786130c4baba110b2f7d7d5c26c0690fb91adeb8229b5ae32",
+          "coveredRows": [
+            2160,
+            3280
+          ]
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-13-y3240.png",
+          "sha256": "18f3d48e8cc0eca32b040e6f3070dcfeb8dc0ed9b1b19b3d3b59703e8ac6e3c5",
+          "coveredRows": [
+            3240,
+            4360
+          ]
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-13-y4320.png",
+          "sha256": "64c543c317a56dc868a4001cc5677a025a42001d91e3d9f5dea801f5d46a94b5",
+          "coveredRows": [
+            4320,
+            5440
+          ]
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-13-y5400.png",
+          "sha256": "04aca0d1c80ac2e8ad1e94a65c4986f01ac04efd77bd1c38781e3cd8b687a2d2",
+          "coveredRows": [
+            5400,
+            6520
+          ]
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-13-y6480.png",
+          "sha256": "b3b1a582440a07d8f7892e6b7e485414a0048c79d0433db0fee7e980bdb9ce6c",
+          "coveredRows": [
+            6480,
+            7093
+          ]
+        }
+      ],
+      "allRowsRetainedWithoutRescaling": true,
+      "allRowsActuallyViewed": true,
+      "manualResult": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-8-1-part-1",
+      "width": 1280,
+      "state": "initial",
+      "title": "К вопросу №1 для самопроверки",
+      "sourceCaption": "К главе VIII «Подобные треугольники»",
+      "pixels": [
+        1242,
+        1986
+      ],
+      "originalImage": {
+        "path": "viii-c-contract-ui/atanasyan-7-9-selfcheck-chapter-8-1-part-1-wholecard-initial-1280.png",
+        "sha256": "1c3547dde3d9f251ece2340e45a15f28dcd67b4a036d8a14edbf83560f728bca",
+        "inspection": "complete visual inspection passed"
+      },
+      "reviewedImage": {
+        "path": "viii-ui-viewport-review/atanasyan-7-9-selfcheck-chapter-8-1-part-1-wholecard-initial-1280.png",
+        "sha256": "567cc1d8ef0994ae4c3ab603da8a432ffacb9cb59f71efa4950cb17ad36b9006"
+      },
+      "rawViewportTiles": [
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-selfcheck-chapter-8-1-part-1-wholecard-initial-1280-viewport-01.png",
+          "sha256": "f94c020b7cd5f27b78256ea3eba6851a7e265f821816caf0be2b53de0a59daa7",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 0,
+          "coveredRows": [
+            0,
+            900
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-selfcheck-chapter-8-1-part-1-wholecard-initial-1280-viewport-02.png",
+          "sha256": "512c60d6cfe24100540995eacf35f38890979c60acafc876c63342617c2117e1",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 900,
+          "coveredRows": [
+            900,
+            1800
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-selfcheck-chapter-8-1-part-1-wholecard-initial-1280-viewport-03.png",
+          "sha256": "015d10bc779dc3ad65755e4fe6d441938871691726c31f6612df39db4595bad6",
+          "crop": [
+            19,
+            657,
+            1261,
+            843
+          ],
+          "destinationY": 1800,
+          "coveredRows": [
+            1800,
+            1986
+          ]
+        }
+      ],
+      "nativeSizeViewingArtifacts": [
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-14-y0.png",
+          "sha256": "e0c962153eccfca5f23fa111ad674fa7b58d027a221b63e4e826bf6274f7c0b2",
+          "coveredRows": [
+            0,
+            1120
+          ]
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-14-y1080.png",
+          "sha256": "e7495e2c6360c14cdebd5a99f312b204f5b16bb1c548d605ad7c2d0f0197ff12",
+          "coveredRows": [
+            1080,
+            1986
+          ]
+        }
+      ],
+      "allRowsRetainedWithoutRescaling": true,
+      "allRowsActuallyViewed": true,
+      "manualResult": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-chapter-8-1-part-1",
+      "width": 1280,
+      "state": "final",
+      "title": "К вопросу №1 для самопроверки",
+      "sourceCaption": "К главе VIII «Подобные треугольники»",
+      "pixels": [
+        1242,
+        2538
+      ],
+      "originalImage": {
+        "path": "viii-c-contract-ui/atanasyan-7-9-selfcheck-chapter-8-1-part-1-wholecard-final-1280.png",
+        "sha256": "614f0482b8fdfe4cda2485daff8947c23cd75a1e465849a02b89b8115031278b",
+        "inspection": "complete visual inspection passed"
+      },
+      "reviewedImage": {
+        "path": "viii-ui-viewport-review/atanasyan-7-9-selfcheck-chapter-8-1-part-1-wholecard-final-1280.png",
+        "sha256": "f7b7b031d5a6a32d1f8abd880a006715ccc44f7a0cf0b0cb547d34ab42af6aa4"
+      },
+      "rawViewportTiles": [
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-selfcheck-chapter-8-1-part-1-wholecard-final-1280-viewport-01.png",
+          "sha256": "bc0895c4982b32b7a2195e40702890e913dc2b59d8c4372ade35624cf0545625",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 0,
+          "coveredRows": [
+            0,
+            900
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-selfcheck-chapter-8-1-part-1-wholecard-final-1280-viewport-02.png",
+          "sha256": "70890ee59f2d5fe9490c4b84badbd72f7d48b5bc987ec28a8a5a8a2bf897a63c",
+          "crop": [
+            19,
+            0,
+            1261,
+            900
+          ],
+          "destinationY": 900,
+          "coveredRows": [
+            900,
+            1800
+          ]
+        },
+        {
+          "path": "viii-ui-viewport-review/atanasyan-7-9-selfcheck-chapter-8-1-part-1-wholecard-final-1280-viewport-03.png",
+          "sha256": "7fc2968c182959d8fbac907ba3af79adf1495a03e7b1f86ada3974f65b360bd5",
+          "crop": [
+            19,
+            105,
+            1261,
+            843
+          ],
+          "destinationY": 1800,
+          "coveredRows": [
+            1800,
+            2538
+          ]
+        }
+      ],
+      "nativeSizeViewingArtifacts": [
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-15-y0.png",
+          "sha256": "7e7dc27b884ccbd647636f7f5bdc02a4efe32c505e45ef127c8d291f2a537d2b",
+          "coveredRows": [
+            0,
+            1120
+          ]
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-15-y1080.png",
+          "sha256": "5cf578542d027db560a5dc26ae29dd69ada8f2b543eb6caf8d9cb5849a9f56a9",
+          "coveredRows": [
+            1080,
+            2200
+          ]
+        },
+        {
+          "path": "viii-ui-review-tiles/verified-desktop-15-y2160.png",
+          "sha256": "9f957c4c7f0df7302ea3e5f148fb73fa1ca2583a442fb402df14d57c579d88b7",
+          "coveredRows": [
+            2160,
+            2538
+          ]
+        }
+      ],
+      "allRowsRetainedWithoutRescaling": true,
+      "allRowsActuallyViewed": true,
+      "manualResult": "PASS"
+    }
+  ]
+}
