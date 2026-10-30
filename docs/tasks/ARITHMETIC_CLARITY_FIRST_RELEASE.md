@@ -60,3 +60,29 @@ Owner authorized implementation in the current conversation ("хорошо, да
 ## Required handoff
 
 Report task, PR, base, head, gate, passed/failed/not-run tests, scope deviations, recommendation and next owner decision.
+
+## Owner-requested release continuation, 2026-10-30
+
+The owner explicitly requested continuing PR #377, comparing it with current
+main, resolving real conflicts while preserving published work, rerunning
+mathematical, visual, hint, synchronization and saved-result checks, and
+publishing after successful checks and required approvals. This continues the
+same task, branch and PR; it does not start the deferred interface rollout.
+
+- Original reviewed head: `3d6dab62d24df4f5464570a3ee23a383383d9a21`.
+- Current comparison base: `3411acd7df5ebfbd4179cce85c2300c59677ddf7`.
+- The read-only virtual merge found conflicts only in `docs/PROJECT_STATUS.md`
+  and the top-level `updated` date of `downloads/trainers-manifest.json`.
+- Resolution preserves the whole current-main status document and all manifest
+  entries and published catalogue date, and appends this release's evidence.
+  The already-verified division package bytes are retained; no catalogue entry
+  changed, and package verification dates are recorded in the release report.
+- Ordinary forward commits on the existing PR branch are permitted by this
+  continuation. No reset, rebase, force operation or branch merge is used.
+- Before release, verify the composed new-main delta, all 315 nonoverlapping
+  concurrent-main paths, scoped URL/canonical contracts, browser behavior,
+  old v1 states and managed classroom regressions.
+- The owner requests publication after approvals. Under AGENTS/release policy,
+  final merge authorization still must name the newly verified base and exact
+  head; neither this record nor the prior PR body supplies that authorization.
+- Fresh evidence: `docs/reports/ARITHMETIC_CLARITY_REVALIDATION_20261030.md`.
