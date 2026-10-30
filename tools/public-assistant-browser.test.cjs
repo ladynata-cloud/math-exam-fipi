@@ -115,6 +115,14 @@ async function assertUsableTarget(locator, label) {
       && (top === element || element.contains(top));
   }), true, label + ': original control receives pointer hits with the navigator closed');
 }
+async function assertLauncherClickable(page, label) {
+  assert.equal(await page.locator(HOST + ' .launcher').evaluate(node => {
+    const rect = node.getBoundingClientRect(), x = rect.x + rect.width / 2, y = rect.y + rect.height / 2;
+    if (x < 0 || y < 0 || x >= innerWidth || y >= innerHeight) return false;
+    const root = node.getRootNode(), outer = document.elementFromPoint(x, y), inner = root.elementFromPoint(x, y);
+    return outer === root.host && (node === inner || node.contains(inner));
+  }), true, label + ': closed navigator launcher receives pointer hits');
+}
 async function assertLayout(page) {
   const box = await page.getByRole('dialog', { name: 'MaxExam 0.0' }).boundingBox();
   const view = page.viewportSize();
@@ -211,6 +219,58 @@ async function assertLayout(page) {
       await page.locator('.peterson-help-close').click();
     }
     pass('catalogue reaches Peterson practice; existing Peterson and Maxim task helpers remain usable without duplicate launchers');
+
+    const currentEntries = [
+      ['/trainers/oge-basics/arithmetic-route.html', '#route-start', 'Деление уголком', '/trainers/long-division-stepwise.html'],
+      ['/trainers/long-division-stepwise.html', '#answer', 'Деление уголком', '/trainers/long-division-stepwise.html'],
+      ['/courses/vilenkin-6-part-1/textbook.html', '.topic-card', 'Виленкин 6 класс', '/courses/vilenkin-6-part-1/textbook.html'],
+      ['/trainers/oge-course/', 'h1', 'Геометрия ОГЭ', '/topics/oge-geometriya/'],
+      ['/ege-profil/', 'h1', 'ЕГЭ профиль', '/ege-profil/']
+    ];
+    for (const width of [320, 390, 1280]) {
+      await page.setViewportSize({ width, height: 900 });
+      for (const [url, ready, query, destination] of currentEntries) {
+        await page.goto(origin + url);
+        await page.locator(ready).first().waitFor();
+        const canonical = await page.locator('link[rel="canonical"]').getAttribute('href');
+        const before = await page.evaluate(() => ({ text: [...document.body.children].filter(node => node.id !== 'maxexam-public-assistant').map(node => node.textContent).join('\n'), storage: { ...localStorage } }));
+        if (url.includes('arithmetic-route')) assert.equal(await page.locator('#route-start [data-operation]').count(), 4, 'Published four-operation entry remains');
+        await assertLauncherClickable(page, url);
+        await opened(page); await ask(page, query); await assertLayout(page);
+        assert.ok(await page.locator(HOST + ' a[href="' + destination + '"]').count() > 0, url + ': verified current destination');
+        assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), canonical, 'Chat leaves canonical unchanged');
+        assert.deepEqual(await page.evaluate(() => ({ text: [...document.body.children].filter(node => node.id !== 'maxexam-public-assistant').map(node => node.textContent).join('\n'), storage: { ...localStorage } })), before, url + ': navigation leaves published content and saved work unchanged');
+        await page.locator(HOST + ' textarea').press('Escape');
+      }
+    }
+    pass('15 current-main entry/viewport journeys: arithmetic chooser, notebook division, Vilenkin, OGE and profile EGE');
+
+    await page.goto(origin + '/trainers/long-division-stepwise.html');
+    await page.locator('#answer').fill('4');
+    // The retained selection arch renders on the next animation frame.
+    await page.locator('#notebook [data-first-arch]').waitFor();
+    const divisionBefore = await page.evaluate(() => ({ prompt: document.querySelector('#prompt').textContent, notebook: document.querySelector('#notebook').innerHTML, storage: { ...localStorage } }));
+    await opened(page); await ask(page, 'Как решить этот пример?');
+    await page.locator(HOST + ' textarea').press('Escape');
+    assert.equal(await page.locator('#answer').inputValue(), '4', 'Division draft survives a navigation question');
+    assert.deepEqual(await page.evaluate(() => ({ prompt: document.querySelector('#prompt').textContent, notebook: document.querySelector('#notebook').innerHTML, storage: { ...localStorage } })), divisionBefore);
+    await page.locator('#answer').press('Enter');
+    assert.notEqual(await page.locator('#prompt').textContent(), divisionBefore.prompt, 'The published one-submit step advances after chat');
+    assert.equal(await page.locator('#feedback').innerText().then(text => /ошиб|неверн/i.test(text)), false);
+    pass('published division draft, notebook, progress and one-submit advancement survive the navigator');
+
+    await page.goto(origin + '/courses/vilenkin-6-part-1/textbook.html');
+    await page.locator('.topic-card').first().click();
+    await page.locator('.button-link').first().click();
+    await page.locator('#answer').fill('123');
+    const textbookBefore = await page.evaluate(() => ({ route: location.hash, prompt: document.querySelector('.prompt').textContent, storage: { ...localStorage } }));
+    await opened(page); await ask(page, 'НОД и НОК');
+    await page.locator(HOST + ' .icon-button').click();
+    assert.equal(await page.locator('#answer').inputValue(), '123');
+    assert.deepEqual(await page.evaluate(() => ({ route: location.hash, prompt: document.querySelector('.prompt').textContent, storage: { ...localStorage } })), textbookBefore, 'Vilenkin task route, condition and saved work remain unchanged');
+    await page.reload();
+    assert.equal(await page.locator('#answer').inputValue(), '123', 'Vilenkin keeps the actual task draft after reload');
+    pass('published Vilenkin task keeps its condition, draft and saved progress across navigation and reload');
 
     const fixtureRun = await context(true), fp = fixtureRun.page;
     await fp.goto(origin + '/widget-test.html?token=synthetic-query-never-context#synthetic-hash');
@@ -412,8 +472,9 @@ async function assertLayout(page) {
     assert.equal(await page.locator('.planar-expanded').count(), 0, 'Diagram Escape still works outside helper');
     pass('protected textbook stays deferred; synthetic helper injection preserves real diagram capture keyboard');
 
-    if (process.env.PUBLIC_ASSISTANT_BROWSER_ARTIFACTS) {
-      const dir = path.resolve(process.env.PUBLIC_ASSISTANT_BROWSER_ARTIFACTS);
+    const artifactPath = process.env.PUBLIC_ASSISTANT_BROWSER_ARTIFACTS || process.env.PUBLIC_ASSISTANT_SCREENSHOT_DIR;
+    if (artifactPath) {
+      const dir = path.resolve(artifactPath);
       if (!dir.startsWith(os.tmpdir() + path.sep)) throw Error('Browser artifacts must be in the temporary directory');
       fs.mkdirSync(dir, { recursive: true });
       await page.goto(origin + '/'); await opened(page); await ask(page, 'Геометрия ОГЭ');

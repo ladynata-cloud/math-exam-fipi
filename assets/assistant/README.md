@@ -12,10 +12,16 @@ separate exact-base/head release decision and the repository's HIGH review.
 ## Visitor behavior
 
 A closed launcher opens a chat-style panel containing prepared navigation replies.
-The 132-entry catalogue covers current arithmetic, OGE/EGE and public textbook
+The 134-entry catalogue covers current arithmetic, OGE/EGE and public textbook
 routes. Explicit exam/course choices take precedence over page context. Ambiguous
 authors, classes and competing exams receive choices. Unknown courses are not
 substituted with a different class or claimed complete.
+
+Numbered requests retain the number through exam/level clarification, including
+`ОГЭ №13` and `ЕГЭ профиль №3`. Several different numbers prompt a clarification
+without assigning the first number to every exam. Requests about polynomials or
+vectors do not silently enter elementary arithmetic. The prime-number table in
+Vilenkin unit 6 and the existing Ichenskaya grade 7 collection have verified entries.
 
 The short canonical division URL is retained. New NOD/NOK and arithmetic skill
 entries match the current published routes. A query for Merzlyak 10 goes to the

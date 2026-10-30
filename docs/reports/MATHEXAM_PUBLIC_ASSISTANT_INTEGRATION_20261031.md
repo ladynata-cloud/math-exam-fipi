@@ -50,7 +50,11 @@ other scripts cannot see page data is made.
 
 ## Verification
 
-### Completed local checks
+### Initial preparation and compatibility checks
+
+The catalogue/browser follow-up below supersedes the 22-test/132-entry and
+13-browser-group counts in this historical record. Each final-head cloud outcome
+is recorded separately in PR #385.
 
 - Navigation: 22/22 groups, 132 checked catalogue entries, current file/PDF/router
   targets, exact query allowlist, exam precedence, ambiguity and refusal/access
@@ -192,6 +196,48 @@ Reviewed runtime blobs: data.js `df31ce32945bbcb45aace303d83d471fca652f1f`,
 widget.js `c92c51efe21ba7cc100422c798c1e1a2b3694d72`,
 widget.css `3b91089b66f6bb464197c597de99a39663f5af41`.
 Final commit identity is checked against these reviewed blobs in the PR.
+
+### Catalogue and browser follow-up on `89f13c038beb5de5b9b3bf2ba65bd0acc453ba27`
+
+The existing PR #385 and its concurrent compatibility commit are retained. This
+follow-up changes eight files; all four corrected learner/geometry fixtures and
+both strengthened global placement-check files remain byte-identical to 89f13c0.
+No second branch/PR, wholesale runtime replacement or older HTML is published.
+
+- Catalogue: 134 entries. All 132 prior IDs and their data remain, except OGE13 now
+  uses its verified direct destination while its old redirect stays unchanged.
+  The two additions are the Vilenkin unit 6 prime table and Ichenskaya grade 7 collection.
+- Russian number signs and exam-level shorthand preserve the requested task.
+  Different explicit numbers prompt clarification without copying the first
+  number into every choice. A numbered exam request retains priority over a
+  prime-factor topic match. Advanced objects do not select elementary arithmetic;
+  word-start matching keeps ordinary queries containing `постепенно` working.
+- The navigation suite passes 26/26 groups. Independent review closed three P2
+  findings, then passed 25 additional final probes and 528 old-title/context
+  comparisons. Reviewed data blob: `7a0c01f858c8e5a2bfc070ddfa33eae3493da194`.
+  Widget JavaScript/CSS retain their earlier reviewed blobs; no HTML changes
+  occur in this follow-up.
+- The expanded browser suite passes 16/16 groups on Playwright 1.62.1 and
+  Chrome 151.0.7922.34. It covers 15 combinations of current arithmetic entry,
+  division, Vilenkin, OGE and EGE pages at 320/390/1280px, in addition to the
+  retained privacy, mobile obstruction, keyboard and existing-helper scenarios.
+- Actual division checks preserve its draft, notebook markup, prompt and stored
+  work while chatting, then verify advancement after one Enter. Actual Vilenkin
+  checks preserve the condition, hash, draft and stored work, including reload.
+  These bounded journeys do not claim every-task or all managed-mode coverage.
+- The workflow screenshot variable is now accepted by the browser test. CI
+  uploads desktop, 390px and 320px screenshots; local final screenshots were
+  inspected. The existing mobile launcher remains 54px.
+- Fresh composition checks retain 595 inclusions, all 832 base HTML blobs and
+  641 scoped changed paths. Global admission/placement tests now total 9, retaining
+  the concurrent guard improvements; sitemap tests total 12. Source/SEO data,
+  learner state, protected shells and offline exports remain unchanged.
+
+Independent review also confirmed that all existing browser assertions remain.
+The concurrent compatibility fixes are reviewed and rerun on this composition,
+not replaced by independently prepared duplicates. Final cloud outcomes and
+exact final commit identity belong to the PR handoff. Internal review is not an
+external HIGH verdict, and no merge or deployment permission is inferred.
 
 ### Production reconciliation before release
 

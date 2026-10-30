@@ -14,13 +14,18 @@
 - Public navigator is being validated on 595 pages. All 832 existing HTML files
   preserve their base bytes outside the exact inclusion. The two protected
   textbook shells and two existing task-helper pages remain unchanged.
+- The catalogue has 134 verified entries. Additional checks cover numbered exam
+  requests, current prime-table/Ichenskaya routes and actual division/Vilenkin
+  draft preservation. Concurrent fixture and source-placement guard corrections
+  are retained without replacing them or changing protected course/review hashes.
 - No model is connected. This is a prepared navigation release, not a production
   claim or an external-review approval. Exact evidence is in the
   [integration report](reports/MATHEXAM_PUBLIC_ASSISTANT_INTEGRATION_20261031.md)
   and the replacement Draft PR linked there.
-- Next three actions: complete current-head regression and independent review;
+- Next three actions: reconcile current-head CI and the inherited source/layout
+  conditions, including the separate proposed source-pin correction in PR #375;
   obtain HIGH external review or a reasoned owner exception and exact release
-  decision; then verify the authorized deployment on the public site.
+  decision; verify the authorized deployment on the public site.
 
 ## Prepared: Vilenkin 6 source clarity and revised cabinet course
 

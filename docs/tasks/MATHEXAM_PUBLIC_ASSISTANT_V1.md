@@ -8,6 +8,7 @@
 - Base branch: `main`.
 - Base SHA: `c9bf66e2d95f48db0134d43cc590da89f8bc3053`.
 - Branch: `feat/public-assistant-main-20261031`.
+- Current Draft PR: [#385](https://github.com/ladynata-cloud/math-exam-fipi/pull/385).
 - Review level: `HIGH`: broad public-page wiring and a free-text interface.
 - Related accepted ADR: [0011](../adr/0011-independent-assistant.md), bounded public navigation extension.
 - Original prepared head: `391f595ab3639fe24990911691d24192a58b44ab`, stacked on the earlier cabinet branch.
@@ -43,6 +44,9 @@ records fresh evidence and the remaining release conditions.
 - Port the isolated public navigator from #361 onto current main, including its
   exact two-script inclusion and narrow fixture/generator compatibility changes.
 - Update verified material routes and clarify ambiguous course/grade requests.
+- Preserve numbered exam intent through clarification, and avoid substituting
+  elementary arithmetic for advanced mathematical objects. Include the current
+  prime-number table and Ichenskaya grade 7 collection without dropping existing routes.
 - Make its limits visible: prepared navigation only, no current-exercise reading,
   no answer checking, no general AI dialogue, no invented textbook completeness.
 - Closed-by-default mobile/desktop panel, scoped keys/focus, inert text rendering,
@@ -92,9 +96,14 @@ board/source/archive/export/redirect pages remain outside public admission.
 - Admission and strict static-script exception, full 832-HTML base-byte proof and exact scope.
 - Real browser public sections, 320/390/1280 layouts, obstruction, existing-helper preservation,
   storage/network interception, keyboard and iframe/private suppression.
+- Actual division draft/notebook and single-submit continuation; actual Vilenkin
+  condition/draft/route/storage preservation and draft retention after reload.
 - SEO/sitemap/catalogue, existing arithmetic/OGE/profile fixture and browser gates.
 - Unchanged protected shells; stereo generator and offline Pogorelov reproduction.
 - Syntax and `git diff --check`; cloud checks must match the final PR head.
+- Four additional narrow fixture corrections cover URL loading in public
+  continuation/arithmetic and exact T14 inclusion normalization. Original UI and
+  geometry hashes remain fixed; negative controls reject unrelated changes.
 - Local preparation marker: `MATHEXAM_PUBLIC_ASSISTANT_PREPARED_OK`.
 - Provider inference, real pupil activation and production rollout are not local test claims.
 

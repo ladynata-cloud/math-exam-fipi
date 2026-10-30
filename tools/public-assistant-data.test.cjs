@@ -138,6 +138,15 @@ test('every catalogue destination exists, and special anchors match the actual p
       assert(schoolApp.includes("parts[0]==='course')course(parts[1])"), 'School course router changed');
       const courseSource = fs.readFileSync(path.join(root, 'school/' + course + '-lessons.js'), 'utf8');
       assert(courseSource.includes(course), 'School course data must exist');
+    } else if (url.pathname === '/courses/vilenkin-6-part-1/textbook.html') {
+      assert.equal(url.hash, '#unit/6', 'Only the checked prime-factor unit is linked directly');
+      const units = ['A', 'B', 'C', 'D'].flatMap(letter => JSON.parse(fs.readFileSync(path.join(root, 'courses/vilenkin-6-part-1/textbook-data/units-' + letter + '.json'), 'utf8')));
+      const unit = units.find(row => row.id === 6);
+      assert(unit && unit.title.includes('простые множители'), 'The target unit teaches prime factors');
+      const app = fs.readFileSync(path.join(root, 'courses/vilenkin-6-part-1/textbook-course.js'), 'utf8');
+      assert(app.includes('const unitURL=unit=>`#unit/${unit.id}`'), 'The direct unit route is supported');
+      const support = fs.readFileSync(path.join(root, 'courses/vilenkin-6-part-1/textbook-support.js'), 'utf8');
+      assert(support.includes('Таблица простых чисел и признаки делимости'), 'The requested table actually exists in the unit support');
     } else {
       const html = fs.readFileSync(file, 'utf8');
       assert(new RegExp('id=["\']' + url.hash.slice(1) + '["\']').test(html), `Missing anchor ${entry.url}`);
@@ -352,7 +361,7 @@ test('explicit exam and level choices override page context, including welcome a
     [basePath, 'ЕГЭ профиль задание 2', '/trainers/ege-profile-vectors-trainer.html'],
     [profilePath, 'ОГЭ задание 2', '/trainers/oge-1-5-trainers/'],
     [profilePath, 'ОГЭ задание 6', '/trainers/oge-task6-fractions.html'],
-    [basePath, 'ОГЭ задание 13', '/trainers/oge-task13-inequalities.html'],
+    [basePath, 'ОГЭ задание 13', '/trainers/oge13-inequalities-series.html'],
     ['/trainers/oge-course/', 'ЕГЭ профиль задание 2', '/trainers/ege-profile-vectors-trainer.html'],
     ['/trainers/oge-course/', 'ЕГЭ база задание 13', '/ege-baza/']
   ]) {
@@ -590,4 +599,113 @@ test('all entry names, welcome actions and repeated difficulty responses preserv
     checkShape(response);
     for (const action of response.actions || []) checkShape(ask(action.text, { pathname }));
   }
+});
+
+test('Russian number signs and exam-level shorthand retain the requested exercise', () => {
+  const cases = [
+    ['ОГЭ №6', '/trainers/oge-task6-fractions.html'],
+    ['ОГЭ № 13', '/trainers/oge13-inequalities-series.html'],
+    ['ОГЭ №16', '/trainers/oge-task16-circle.html'],
+    ['ОГЭ №19', '/trainers/task19-trainer.html'],
+    ['ОГЭ номер 13', '/trainers/oge13-inequalities-series.html'],
+    ['ЕГЭ профиль 2', '/trainers/ege-profile-vectors-trainer.html'],
+    ['ЕГЭ профиль №2', '/trainers/ege-profile-vectors-trainer.html'],
+    ['ЕГЭ профильный 3', '/ege-profil/trainers/stereo/'],
+    ['ЕГЭ профиль №3', '/ege-profil/trainers/stereo/']
+  ];
+  for (const [text, first] of cases) {
+    const response = ask(text); checkShape(response);
+    assert.equal(response.links[0].url, first, text);
+  }
+  assert.equal(ask('№6').kind, 'unknown', 'A number alone cannot select an examination');
+  assert.equal(ask('ОГЭ №999').kind, 'clarify', 'Never truncate an unknown number to an existing two-digit task');
+  const legacy = fs.readFileSync(path.join(root, 'trainers/oge-task13-inequalities.html'), 'utf8');
+  assert(legacy.includes('rel="canonical" href="https://mathexam.space/trainers/oge13-inequalities-series.html"'));
+  assert(legacy.includes('http-equiv="refresh" content="0; url=/trainers/oge13-inequalities-series.html"'), 'The original public address remains a functioning redirect');
+});
+
+test('competing exams retain one numbered task but clarify several distinct numbered tasks', () => {
+  for (const pathname of ['/', '/ege-profil/', '/trainers/oge-course/']) {
+    const response = ask('не ОГЭ, а ЕГЭ профиль №3', { pathname }); checkShape(response);
+    assert.equal(response.kind, 'clarify');
+    assert.deepEqual(response.actions.map(action => action.label), ['ОГЭ', 'ЕГЭ база', 'ЕГЭ профиль']);
+    for (const action of response.actions) assert(action.text.endsWith(': задание 3'));
+    const profile = response.actions.find(action => action.label === 'ЕГЭ профиль');
+    assert.equal(ask(profile.text, { pathname }).links[0].url, '/ege-profil/trainers/stereo/');
+    const oge = response.actions.find(action => action.label === 'ОГЭ');
+    assert.equal(ask(oge.text, { pathname }).links[0].url, '/trainers/oge-1-5-trainers/');
+  }
+  const informatics = ask('ОГЭ или ЕГЭ по информатике №1');
+  assert.equal(informatics.kind, 'clarify');
+  for (const action of informatics.actions) assert(action.text.endsWith(': задание 1'));
+  for (const pathname of ['/', '/ege-profil/', '/trainers/oge-course/']) {
+    for (const text of ['Не ОГЭ №6, а ЕГЭ профиль №3', 'ОГЭ №6 или №19', 'ОГЭ задание 6 или задание 19', 'ОГЭ 6 или ЕГЭ профиль 3', 'ЕГЭ профиль №2 или №3']) {
+      const response = ask(text, { pathname }); checkShape(response);
+      assert.equal(response.kind, 'clarify', text);
+      assert(response.text.includes('несколько разных номеров'));
+      assert.deepEqual(urls(response), ['/trainers/oge-course/', '/ege-baza/', '/ege-profil/']);
+      assert.deepEqual(response.actions.map(action => action.text), ['ОГЭ', 'ЕГЭ база', 'ЕГЭ профиль'], 'Do not silently carry the first number: ' + text);
+    }
+  }
+  const distinctInformatics = ask('ОГЭ по информатике №1 или ЕГЭ по информатике №15');
+  checkShape(distinctInformatics);
+  assert.equal(distinctInformatics.kind, 'clarify');
+  assert.deepEqual(distinctInformatics.actions.map(action => action.text), ['ОГЭ по информатике', 'ЕГЭ по информатике']);
+  const repeatedNumber = ask('ОГЭ №3 или ЕГЭ профиль №3');
+  assert.equal(repeatedNumber.kind, 'clarify');
+  for (const action of repeatedNumber.actions) assert(action.text.endsWith(': задание 3'), 'Repeating one number is not a multi-task ambiguity');
+});
+
+test('advanced arithmetic objects never select primary multiplication or long division', () => {
+  const primaryURLs = new Set([
+    '/trainers/long-division-stepwise.html', '/trainers/trainers/long-division.html',
+    '/trainers/trainers/long-multiplication.html', '/trainers/oge-basics/multiplication-division/division-lab.html',
+    '/trainers/oge-basics/arithmetic-route.html', '/trainers/oge-basics/arithmetic-route.html?skill=count',
+    '/trainers/oge-basics/arithmetic-route.html?skill=multiply', '/trainers/oge-basics/arithmetic-route.html?skill=division',
+    '/trainers/oge-basics/multiplication-division/multiplication-mixed.html'
+  ]);
+  for (const text of ['деление многочленов', 'умножение многочленов', 'умножение векторов', 'сложение векторов', 'деление степеней', 'умножение корней', 'арифметика многочленов', 'Степени: умножение', 'Умножение (степеней)']) {
+    const response = ask(text); checkShape(response);
+    assert(!['division', 'multiplication', 'arithmetic'].includes(response.kind), text);
+    assert(!urls(response).some(url => primaryURLs.has(url)), 'Do not substitute ordinary number arithmetic: ' + text);
+  }
+  assert.equal(ask('Деление уголком').links[0].url, '/trainers/long-division-stepwise.html');
+  assert.equal(ask('Умножение').links[0].url, '/trainers/oge-basics/arithmetic-route.html?skill=multiply');
+  assert.equal(ask('Сложение и вычитание').links[0].url, '/trainers/oge-basics/arithmetic-route.html?skill=count');
+  assert.equal(ask('формулы сокращённого умножения').links[0].url, '/trainers/formuly-sokrashchennogo-umnozheniya.html');
+  for (const [text, destination] of [
+    ['Я хочу научиться считать постепенно', '/trainers/oge-basics/arithmetic-route.html'],
+    ['Постепенно учусь умножению', '/trainers/oge-basics/arithmetic-route.html?skill=multiply'],
+    ['Умножение постепенно', '/trainers/oge-basics/arithmetic-route.html?skill=multiply']
+  ]) {
+    const response = ask(text); checkShape(response);
+    assert.equal(response.links[0].url, destination, 'An adverb is not an advanced mathematical object: ' + text);
+  }
+});
+
+test('prime-table and Ichenskaya queries reach verified public material with grade and answer limits', () => {
+  for (const text of ['Таблица простых чисел', 'Виленкин 6 класс таблица простых чисел', 'Разложение на простые множители']) {
+    const response = ask(text); checkShape(response);
+    assert.equal(response.links[0].url, '/courses/vilenkin-6-part-1/textbook.html#unit/6', text);
+    assert(response.text.includes('Таблица простых чисел и признаки делимости'));
+  }
+  for (const [text, destination] of [
+    ['ОГЭ задание 6 разложение на простые множители', '/trainers/oge-task6-fractions.html'],
+    ['ОГЭ №6 разложение 12 на простые множители', '/trainers/oge-task6-fractions.html'],
+    ['ЕГЭ профиль №2 таблица простых чисел', '/trainers/ege-profile-vectors-trainer.html']
+  ]) {
+    const response = ask(text); checkShape(response);
+    assert.equal(response.links[0].url, destination, 'An explicit exam task must take priority over the prime-table topic: ' + text);
+  }
+  for (const text of ['Иченская', 'Иченская 7 класс', 'Иченская7', 'По Иченской 7']) {
+    assert.equal(ask(text).links[0].url, '/geometry-course/ichenskaya-7-works/', text);
+  }
+  for (const text of ['Иченская 8 класс', 'Иченская 6']) {
+    const response = ask(text); checkShape(response);
+    assert(!urls(response).includes('/geometry-course/ichenskaya-7-works/'), 'Do not substitute another grade: ' + text);
+    assert(response.text.includes('относится к 7 классу'));
+  }
+  const request = ask('Разложи 77 на простые множители');
+  assert(!request.text.includes('7 · 11') && !request.text.includes('Ответ:'));
+  assert(!urls(ask('Проверить простые уравнения')).includes('/courses/vilenkin-6-part-1/textbook.html#unit/6'), 'Simple equations are not prime numbers');
 });

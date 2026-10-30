@@ -96,6 +96,7 @@
     ['fraction-to-decimal', 'Из обыкновенной дроби в десятичную', '/school/peterson6/#practice/fraction-to-decimal/1', 'Дроби', ['перевод дробей']],
     ['vilenkin6', 'Виленкин: 6 класс, часть 1', '/courses/vilenkin-6-part-1/', 'Учебники', ['виленкин', '6 класс']],
     ['vilenkin6-textbook', 'Виленкин 6: выбранные задания учебника по шагам', '/courses/vilenkin-6-part-1/textbook.html', 'Учебники', ['виленкин 6', 'учебник', 'разборы']],
+    ['prime-factors', 'Простые множители и таблица простых чисел', '/courses/vilenkin-6-part-1/textbook.html#unit/6', 'Основы', ['простые числа', 'разложение на простые множители', 'таблица простых чисел']],
     ['vilenkin5', 'Виленкин: 5 класс', '/school/index.html?course=vilenkin5#course/vilenkin5', 'Учебники', ['виленкин 5', 'пятый класс']],
     ['vilenkin6-topics', 'Виленкин 6: прежний курс по темам', '/school/index.html?course=vilenkin6#course/vilenkin6', 'Учебники', ['виленкин 6', 'темы', 'обзор']],
     ['makarychev7', 'Макарычев: алгебра 7 класса', '/school/makarychev7/', 'Учебники', ['макарычев 7', 'алгебра']],
@@ -125,7 +126,7 @@
     ['oge-10', 'ОГЭ 10: вероятность', '/trainers/oge-task10-probability.html', 'ОГЭ', ['вероятность']],
     ['oge-11', 'ОГЭ 11: графики функций', '/trainers/oge-task11-graphs-trainer.html', 'ОГЭ', ['графики функций']],
     ['oge-12', 'ОГЭ 12: расчёты по формулам', '/trainers/oge-task12-formulas-trainer.html', 'ОГЭ', ['расчеты по формулам']],
-    ['oge-13', 'ОГЭ 13: неравенства', '/trainers/oge-task13-inequalities.html', 'ОГЭ', ['неравенства']],
+    ['oge-13', 'ОГЭ 13: неравенства', '/trainers/oge13-inequalities-series.html', 'ОГЭ', ['неравенства']],
     ['oge-15', 'ОГЭ 15: треугольники', '/trainers/oge-task15-triangles.html', 'ОГЭ', ['треугольники', 'биссектрисы']],
     ['oge-16', 'ОГЭ 16: окружность', '/trainers/oge-task16-circle.html', 'ОГЭ', ['окружность', 'касательная', 'хорда']],
     ['oge-17', 'ОГЭ 17: четырёхугольники', '/trainers/oge-task17-quadrilaterals.html', 'ОГЭ', ['четырехугольники', 'ромб', 'трапеция']],
@@ -140,6 +141,7 @@
     ['congruence-first', 'Выбор первого или второго признака', '/geometry-course/trainers/ch2-p3-t3-which-sign.html', 'Геометрия', ['первый признак', 'второй признак']],
     ['congruence-all', 'Выбор из трёх признаков равенства', '/geometry-course/trainers/ch2-p4-t3-which-sign.html', 'Геометрия', ['третий признак', 'равенство треугольников']],
     ['atanasyan-textbook', 'Атанасян 7–9: занятия по учебнику', '/geometry-course/textbook/', 'Учебники', ['атанасян', 'учебник']],
+    ['ichenskaya', 'Иченская: самостоятельные и контрольные работы 7 класса', '/geometry-course/ichenskaya-7-works/', 'Учебники', ['иченская', 'геометрия 7', 'самостоятельные', 'контрольные']],
     ['stereo-textbook', 'Атанасян 10–11: занятия по учебнику', '/stereo-course/textbook/', 'Учебники', ['атанасян 10', 'атанасян 11', 'учебник', 'стереометрия']],
     ['similarity', 'Признаки подобия треугольников', '/geometry-course/atlas/similarity-signs.html', 'Геометрия', ['подобие треугольников']],
     ['pythagoras', 'Теорема Пифагора', '/geometry-course/atlas/pythagoras.html', 'Геометрия', ['теорема пифагора', 'катет', 'гипотенуза']]
@@ -151,7 +153,8 @@
   catalogue.forEach(function (entry) { byId[entry.id] = entry; });
 
   function normalize(value) {
-    return value.normalize('NFKC').toLowerCase().replace(/ё/g, 'е')
+    // NFKC turns the Russian number sign into "No"; preserve its meaning first.
+    return value.replace(/№/g, ' номер ').normalize('NFKC').toLowerCase().replace(/ё/g, 'е')
       .replace(/(^|[^а-яa-z])([ое])ге(?=$|[^а-яa-z])/g, '$1$2гэ')
       .replace(/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/g, ' ')
       .replace(/\s+/g, ' ').trim();
@@ -207,14 +210,18 @@
       referralShown: input.referralShown === true };
   }
   function hasExam(text, exam) { return new RegExp('(?:^|[^а-яa-z])' + exam + '(?:$|[^а-яa-z])').test(text); }
-  function taskNumber(text) {
-    var match = /(?:задани[еяию]|номер|№)\s*[-:]?\s*(\d{1,2})(?!\d)/.exec(text)
-      || /(?:огэ|егэ)\s*[-:]?\s*(\d{1,2})(?!\d)/.exec(text);
-    return match ? Number(match[1]) : null;
+  function taskNumbers(text) {
+    var numbers = [], match;
+    var pattern = /(?:задани[еяию]|номер|№|(?:огэ|егэ)(?:\s+(?:база|базовый|профиль|профильный))?)\s*[-:]?\s*(\d{1,3})(?!\d)/g;
+    while ((match = pattern.exec(text))) {
+      var number = Number(match[1]);
+      if (numbers.indexOf(number) === -1) numbers.push(number);
+    }
+    return numbers;
   }
   function classNumber(text) {
     var match = /(?:^|[^\d])(\d{1,2})\s*(?:[-–]?\s*[йя]\s*)?класс/.exec(text)
-      || /(?:петерс[ое]на?|дорофеева?|виленкина?|атанасяна?|мерзляка?|макарычева?|алимова?|никольск(?:ий|ого))\s*[,·:-]?\s*(\d{1,2})(?!\d)/.exec(text);
+      || /(?:петерс[ое]на?|дорофеева?|виленкина?|атанасяна?|мерзляка?|макарычева?|алимова?|никольск(?:ий|ого)|иченск(?:ая|ой))\s*[,·:-]?\s*(\d{1,2})(?!\d)/.exec(text);
     return match ? Number(match[1]) : null;
   }
   function accessIntent(text) {
@@ -337,9 +344,18 @@
     }
     var oge = hasExam(text, 'огэ');
     var ege = hasExam(text, 'егэ');
-    var number = taskNumber(text);
+    var numbers = taskNumbers(text);
+    var number = numbers.length === 1 ? numbers[0] : null;
     var grade = classNumber(text);
     function done(value) { return finish(value, text, state); }
+    if ((oge || ege) && numbers.length > 1) {
+      // Do not assign the first of several explicitly named tasks to every exam.
+      var numberPrompt = 'В запросе несколько разных номеров заданий. Напишите один номер вместе с экзаменом и, для ЕГЭ по математике, уровнем. Можно также открыть карту курса.';
+      if (/информатик/.test(text)) return done(result('clarify', numberPrompt, ['oge-informatics', 'informatics-graphs', 'informatics-logic'], state,
+        [choice('ОГЭ по информатике'), choice('ЕГЭ по информатике')]));
+      return done(result('clarify', numberPrompt, ['oge', 'ege-base', 'ege-profile'], state,
+        [choice('ОГЭ'), choice('ЕГЭ база'), choice('ЕГЭ профиль')]));
+    }
     if (oge && ege) {
       var examSuffix = number === null ? '' : ': задание ' + number;
       if (/информатик/.test(text)) return done(result('clarify', 'В запросе названы ОГЭ и ЕГЭ по информатике. Уточните экзамен: одинаковый номер относится к разным заданиям.', ['oge-informatics', 'informatics-graphs', 'informatics-logic'], state,
@@ -353,6 +369,11 @@
       return done(result('clarify', 'Нужна подготовка к ОГЭ или ЕГЭ по информатике?', ['oge-informatics', 'informatics-graphs', 'informatics-logic'], state,
         [choice('ОГЭ по информатике'), choice('ЕГЭ по информатике')]));
     }
+    if (/прост.{0,12}(?:чис(?:л|ел)|множител)|разлож.{0,20}прост.{0,12}множител/.test(text) && !((oge || ege) && number !== null)) return done(result('number-theory', 'В занятии о разложении на простые множители откройте справку «Таблица простых чисел и признаки делимости». После неё можно перейти к НОД или НОК.', ['prime-factors', 'nod', 'nok'], state));
+    if (/иченск/.test(text)) return done(result('textbook', grade === null || grade === 7
+      ? 'В подборке Иченской для 7 класса есть самостоятельные и контрольные работы. Выберите работу и вариант в самом курсе.'
+      : 'Подготовленная подборка Иченской относится к 7 классу. Для другого класса выберите доступный материал в каталоге.',
+      grade === null || grade === 7 ? ['ichenskaya', 'atanasyan-textbook'] : ['school', 'courses'], state));
     if (/петерс[ое]н|дорофеев/.test(text)) {
       if (grade === 5) return done(result('textbook', 'В курсе Петерсона 5 класса выберите нужную тему. Если ищете конкретный номер, воспользуйтесь навигацией самого курса.', ['peterson5'], state));
       if (grade !== null && grade !== 6) return done(result('textbook', 'Для этого запроса лучше начать с каталога школьных курсов и выбрать класс и учебник.', ['school', 'courses'], state));
@@ -438,11 +459,13 @@
     if (/умнож.{0,15}на\s*(?:9(?:$|\D)|девять)|таблиц.{0,15}на\s*9(?:$|\D)/.test(text)) return done(result('multiplication', 'В занятии о приёмах таблицы умножения есть отдельный шаг про умножение на 9. Можно также потренироваться читать произведение в таблице Пифагора.', ['times-nine', 'pythagoras-table'], state));
     if (/таблиц.{0,15}умнож/.test(text) && /вперемешк|смешанн/.test(text)) return done(result('multiplication', 'В этом тренажёре можно повторить таблицу умножения вперемешку и найти неизвестный множитель.', ['multiplication-mixed', 'pythagoras-table'], state));
     if (/таблиц.{0,15}умнож/.test(text)) return done(result('multiplication', 'Выберите удобный вход: таблицу Пифагора, приёмы запоминания или общий маршрут умножения и деления.', ['pythagoras-table', 'times-nine', 'multiplication-table'], state));
-    if (/делени|делить|поделить|делим|уголком/.test(text)) return done(result('division', 'Для деления уголком начните с пошагового тренажёра. Если трудно выбрать цифру или выполнить отдельное действие, откройте маршрут деления и выберите нужный навык.', ['division-stepwise', 'arithmetic-division', 'division-lab'], state));
-    if (/арифметик|научиться считать|считать с нуля|с самого начала/.test(text)) return done(result('arithmetic', 'В маршруте по арифметике выберите одно действие: сложение и вычитание, умножение, деление или десятичные дроби. Начать можно с маленьких чисел.', ['arithmetic-route', 'basics'], state,
+    // Explicit advanced objects must reach topic search, not primary arithmetic.
+    var advancedArithmetic = /(?:^|[^а-яa-z])(?:многочлен|вектор|степен|корн|выражен|матриц)/.test(text);
+    if (/делени|делить|поделить|делим|уголком/.test(text) && !advancedArithmetic) return done(result('division', 'Для деления уголком начните с пошагового тренажёра. Если трудно выбрать цифру или выполнить отдельное действие, откройте маршрут деления и выберите нужный навык.', ['division-stepwise', 'arithmetic-division', 'division-lab'], state));
+    if (/арифметик|научиться считать|считать с нуля|с самого начала/.test(text) && !advancedArithmetic) return done(result('arithmetic', 'В маршруте по арифметике выберите одно действие: сложение и вычитание, умножение, деление или десятичные дроби. Начать можно с маленьких чисел.', ['arithmetic-route', 'basics'], state,
       [choice('Сложение и вычитание'), choice('Умножение'), choice('Деление уголком')]));
-    if (/сложени|складыв|прибав|вычит|вычесть|отним/.test(text) && !/уравнен|вектор|вероятност/.test(text)) return done(result('arithmetic', 'Для сложения и вычитания выберите нужную ступень: от маленьких чисел до вычислений столбиком.', ['arithmetic-count', 'arithmetic-route'], state));
-    if (/умнож|произвед/.test(text) && !/формул|многочлен|вероятност/.test(text)) return done(result('multiplication', 'В маршруте умножения можно начать с равных групп, повторить таблицу и перейти к столбику.', ['arithmetic-multiply', 'multiplication-notebook', 'multiplication-mixed'], state));
+    if (/сложени|складыв|прибав|вычит|вычесть|отним/.test(text) && !advancedArithmetic && !/уравнен|вероятност/.test(text)) return done(result('arithmetic', 'Для сложения и вычитания выберите нужную ступень: от маленьких чисел до вычислений столбиком.', ['arithmetic-count', 'arithmetic-route'], state));
+    if (/умнож|произвед/.test(text) && !advancedArithmetic && !/формул|вероятност/.test(text)) return done(result('multiplication', 'В маршруте умножения можно начать с равных групп, повторить таблицу и перейти к столбику.', ['arithmetic-multiply', 'multiplication-notebook', 'multiplication-mixed'], state));
     var hits = search(text);
     if (hits.length) return done(result('search', 'Подойдут эти разделы. Если искали другое, добавьте класс, экзамен или автора учебника.', hits, state));
     if (explicitDifficulty(text)) {
