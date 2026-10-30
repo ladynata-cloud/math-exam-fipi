@@ -12,7 +12,8 @@ const files = ['index.html', 'laboratory/index.html', 'oge/index.html',
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const doc = file => new JSDOM(read(file), { url: 'https://mathexam.space/' + file }).window.document;
 const home = doc('index.html'), lab = doc('laboratory/index.html');
-const division = '/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html';
+const legacyDivision = '/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html';
+const division = '/trainers/long-division-stepwise.html';
 const cabinet = 'https://mathexam-board-ladynata.msk1.amvera.tech/learning/#route';
 // Private-lesson contact is an owner-requested service entry, not another course.
 const allowedNav = new Set(['/', '/foundations/', '/trainers/oge-course/', '/trainers/oge-basics/', '/laboratory/', '/lessons/', cabinet]);
@@ -33,7 +34,15 @@ for (const href of ['/trainers/oge-course/', '/foundations/']) {
 }
 assert(home.querySelector('footer a[href="/trainers/oge-basics/"]'), 'Quick-skill map remains directly reachable');
 assert.equal(doc('foundations/index.html').querySelector('link[rel="canonical"]').href, 'https://mathexam.space/foundations/');
-assert(home.querySelector('main a[href="' + division + '"]'), 'Division is directly reachable from home');
+// PR #365 published the short entry across home and lab; both URLs keep the same engine.
+assert(home.querySelector('main a[href="' + division + '"]'), 'Published division entry is directly reachable from home');
+assert.equal(doc(division.slice(1)).querySelector('link[rel="canonical"]').href,
+  'https://mathexam.space' + division);
+for (const file of [division.slice(1), legacyDivision.slice(1)]) {
+  assert([...doc(file).scripts].some(script => script.src && new URL(script.src).pathname ===
+    '/trainers/oge-basics/multiplication-division/division-guided-core.js'),
+  file + ' retains the guided division engine');
+}
 assert.equal(home.querySelectorAll('a[href="/laboratory/"]').length, 1);
 assert(home.querySelector('footer a[href="/laboratory/"]'), 'Lab remains a discreet footer entry');
 assert(!home.querySelector('main a[href="/laboratory/"]'));

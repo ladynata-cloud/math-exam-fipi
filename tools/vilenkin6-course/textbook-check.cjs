@@ -14,6 +14,24 @@ const units = ['A','B','C','D'].flatMap(x => JSON.parse(fs.readFileSync(path.joi
 const reviewed = JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../docs/reports/VILENKIN6_TEXTBOOK_SOURCE_REVIEW.json')));
 for(const block of ['A','B','C','D']){
   const name=`units-${block}.json`,digest=crypto.createHash('sha256').update(fs.readFileSync(path.join(root,'textbook-data',name))).digest('hex');
+  const file=`courses/vilenkin-6-part-1/textbook-data/${name}`;
+  const historicalHashes=reviewed.independentReviews.map(review=>review.fileSha256?.[file] || (review.block===block?review.reviewedFileSha256:undefined) || (review.reviewedFile===file?review.sha256:undefined)).filter(Boolean);
+  assert.equal(new Set(historicalHashes).size,1,name+': original independent review hash required');
+  let reviewedHash=historicalHashes[0];
+  for(const amendment of (reviewed.amendments || []).filter(item=>item.file===file)){
+    assert.equal(amendment.fromSha256,reviewedHash,name+': amendment must continue the recorded review chain');
+    assert.match(amendment.toSha256,/^[a-f0-9]{64}$/);
+    assert.equal(amendment.status,'PASS',name+': current amendment must be independently reviewed');
+    assert(amendment.author&&amendment.reviewer&&amendment.author!==amendment.reviewer,name+': author and reviewer must differ');
+    assert(amendment.date&&amendment.verification?.length&&amendment.limitations?.length,name+': amendment evidence and limits required');
+    if(amendment.evidence){
+      assert.match(amendment.evidence.file,/^docs\/reports\/[\w.-]+\.json$/);
+      const evidence=fs.readFileSync(path.resolve(__dirname,'../..',amendment.evidence.file));
+      assert.equal(crypto.createHash('sha256').update(evidence).digest('hex'),amendment.evidence.sha256,name+': amendment evidence changed');
+    }
+    reviewedHash=amendment.toSha256;
+  }
+  assert.equal(reviewed.dataHashes[name],reviewedHash,name+': current guard must follow historical review plus explicit amendments');
   assert.equal(digest,reviewed.dataHashes[name],name+': source review must match current content');
 }
 assert.deepEqual(units.map(u => u.id), Array.from({length:24},(_,i)=>i));

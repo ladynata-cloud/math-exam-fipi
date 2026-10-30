@@ -452,6 +452,18 @@ class LearningStore {
     return row;
   }
   getAttempt(auth, id) { return this.attemptDTO(this.attemptRow(auth, id)); }
+  textbookHelpAccess(auth,attempt) {
+    requireValue(auth.role==='student','LEARNING_FORBIDDEN',403);
+    requireValue(attempt.archivedAt==null,'LEARNING_ATTEMPT_ARCHIVED',409);
+    requireValue(attempt.controller===auth.role,'LEARNING_CONTROL_REQUIRED',409);
+    requireValue(!(this.row("SELECT name FROM sqlite_master WHERE type='table' AND name='learning_runs'")
+      && this.row('SELECT id FROM learning_runs WHERE learner_id=? AND finished_at IS NULL',auth.id)),'LEARNING_RUN_ACTIVE',409);
+  }
+  textbookHelpContext(auth,id) {
+    const attempt=this.getAttempt(auth,id);this.textbookHelpAccess(auth,attempt);
+    this.contracts.textbookHelpContext(attempt.taskSpec,attempt.state);
+    return {attempt};
+  }
   progress(auth) {
     requireValue(auth?.role === 'student', 'LEARNING_FORBIDDEN', 403);
     this.ready();
@@ -463,7 +475,7 @@ class LearningStore {
     const runFilter = this.runGuard ? `AND id NOT IN (SELECT a.attempt_id FROM learning_run_attempts a
       JOIN learning_runs r ON r.id=a.run_id WHERE r.finished_at IS NULL)` : '';
     const rows = this.db.prepare(`SELECT id,trainer_id,json_extract(task_json,'$.contentId') AS content_id,outcome,updated_at,created_at
-      FROM attempts WHERE learner_id=? AND archived_at IS NULL AND trainer_id IN ('ege-path','oge-basics','motion-grade6','vilenkin6-part1','atanasyan-7-9')
+      FROM attempts WHERE learner_id=? AND archived_at IS NULL AND trainer_id IN ('ege-path','oge-basics','motion-grade6','vilenkin6-part1','vilenkin6-textbook','atanasyan-7-9')
         AND id NOT IN (SELECT attempt_id FROM assignments WHERE status!='published')
         ${runFilter}
       ORDER BY updated_at DESC,id DESC`).iterate(auth.id);
@@ -499,7 +511,7 @@ class LearningStore {
   }
   grade7Exposure(learnerId, trainerId, taskSpec, excludeAttemptId = '') {
     // Pinned finite banks retain exposure; leave other legacy assessment alone.
-    if (!(trainerId === 'ege-path' && taskSpec?.task?.grade7 === true) && !['motion-grade6','vilenkin6-part1'].includes(trainerId)) return null;
+    if (!(trainerId === 'ege-path' && taskSpec?.task?.grade7 === true) && !['motion-grade6','vilenkin6-part1','vilenkin6-textbook'].includes(trainerId)) return null;
     // Reset clears current progress, not knowledge of an already shown question.
     // Archived homework has lost its former publication status, so conservatively
     // retain it; an unpublished current draft is not learner exposure.
@@ -533,13 +545,14 @@ class LearningStore {
       const exposure = this.grade7Exposure(auth.id, body.trainerId, generated.taskSpec);
       if (exposure) {
         // Motion has exactly 12 authored exercises per lesson, independent of seed.
-        for (let tries = 0; !['motion-grade6','vilenkin6-part1'].includes(body.trainerId) && tries < 15 && (exposure.truncated || exposure.fingerprints.has(this.taskFingerprint(generated.taskSpec))); tries++) {
+        for (let tries = 0; !['motion-grade6','vilenkin6-part1','vilenkin6-textbook'].includes(body.trainerId) && tries < 15 && (exposure.truncated || exposure.fingerprints.has(this.taskFingerprint(generated.taskSpec))); tries++) {
           generated = this.contracts.create(body.trainerId, body.contentId);
         }
       } else if (source && body.fresh) {
         const sourceFingerprint = this.taskFingerprint(parse(source.task_json));
         for (let tries = 0; tries < 15 && this.taskFingerprint(generated.taskSpec) === sourceFingerprint; tries++) generated = this.contracts.create(body.trainerId, body.contentId);
       }
+      if (body.trainerId === 'vilenkin6-textbook' && exposure && (exposure.truncated || exposure.fingerprints.has(this.taskFingerprint(generated.taskSpec)))) generated.state.task.repeated = true;
       const attempt = this.newAttempt(auth.id, auth.teacherId, body.trainerId, generated, source?.id || null);
       if (lesson) {
         seats.find(seat => seat.learnerId === auth.id).attemptId = attempt.id;
@@ -583,17 +596,24 @@ class LearningStore {
       const row = this.attemptRow(auth, id), attempt = this.attemptDTO(row);
       requireValue(!this.runGuard?.(id), 'LEARNING_RUN_ACTIVE', 409);
       requireValue(row.archived_at == null, 'LEARNING_ATTEMPT_ARCHIVED', 409);
+      let textbookHelp;
+      if(body.type==='textbook-help'){
+        this.textbookHelpAccess(auth,attempt);
+        // Recheck authority and the live source even when replaying an operation.
+        textbookHelp=this.contracts.textbookHelp(attempt.taskSpec,attempt.state,body.payload);
+      }
       const previous = this.row('SELECT * FROM events WHERE actor_id=? AND op_id=?', auth.id, body.opId);
-      if (previous) { requireValue(previous.fingerprint === fingerprint, 'LEARNING_OP_CONFLICT', 409); return { attempt, duplicate: true }; }
+      if (previous) { requireValue(previous.fingerprint === fingerprint, 'LEARNING_OP_CONFLICT', 409); return { attempt, duplicate: true,
+        ...(textbookHelp?{help:parse(previous.payload_json).help}:{}) }; }
       const commutative = ['stroke','erase','reference'].includes(body.type) || (body.type === 'undo' && !!body.payload?.strokeId);
-      const semantic = ['state','check','hint','control'].includes(body.type);
+      const semantic = ['state','check','hint','control','textbook-help'].includes(body.type);
       requireValue(commutative ? body.expectedVersion <= row.version
         : !semantic || body.expectedTrainerVersion === undefined ? body.expectedVersion === row.version
           : body.expectedVersion <= row.version && body.expectedTrainerVersion === row.trainer_version, 'LEARNING_STATE_CONFLICT', 409);
       this.limit('events', 500000);
       requireValue(this.row('SELECT COUNT(*) AS n FROM events WHERE attempt_id=?', id).n < 20000, 'LEARNING_LIMIT_EXCEEDED', 507);
       const { type, payload } = body;
-      requireValue(['state','check','hint','reference','stroke','erase','undo','control'].includes(type));
+      requireValue(['state','check','hint','reference','stroke','erase','undo','control','textbook-help'].includes(type));
       let evaluation;
       if (['state','check','hint'].includes(type)) requireValue(attempt.controller === auth.role, 'LEARNING_CONTROL_REQUIRED', 409);
       if (type === 'state') {
@@ -621,6 +641,9 @@ class LearningStore {
           if (payload.details.step !== undefined) requireValue(Number.isInteger(payload.details.step) && payload.details.step >= 0 && payload.details.step < 100);
         }
         attempt.assistance.hints = true;
+      } else if(type==='textbook-help') {
+        attempt.state=textbookHelp.state;
+        if(!textbookHelp.help.completed)attempt.assistance.hints=true;
       } else if (type === 'reference') {
         exactKeys(payload, ['id']); if (payload.id !== undefined) safeName(payload.id, 100);
       } else if (type === 'control') {
@@ -660,14 +683,20 @@ class LearningStore {
           }
         }
       }
+      if (attempt.trainerId === 'vilenkin6-textbook' && attempt.outcome === 'practiced') {
+        // Another tab can expose the finite source task after this attempt was
+        // opened. Keep its renderer result consistent with the server verdict.
+        attempt.state.task.repeated = true;
+        if (attempt.state.task.status === 'independent') attempt.state.task.status = 'repeated';
+      }
       attempt.version++; if (semantic) attempt.trainerVersion++; attempt.updatedAt = this.clock();
       this.run('UPDATE attempts SET state_json=?,strokes_json=?,version=?,trainer_version=?,controller=?,assistance_json=?,outcome=?,updated_at=? WHERE id=?',
         json(attempt.state), json(attempt.strokes), attempt.version, attempt.trainerVersion, attempt.controller, json(attempt.assistance), attempt.outcome, attempt.updatedAt, id);
       this.run('INSERT INTO events(attempt_id,actor_id,actor_role,op_id,fingerprint,revision,type,payload_json,at) VALUES(?,?,?,?,?,?,?,?,?)',
         id, auth.id, auth.role, body.opId, fingerprint, attempt.version, type, json({ ...payload, ...(['state','check'].includes(type) || payload.state !== undefined ? { state: attempt.state } : {}),
-          ...(evaluation ? { evaluation } : {}), after: { outcome: attempt.outcome, assistance: attempt.assistance, controller: attempt.controller, trainerVersion: attempt.trainerVersion } }), attempt.updatedAt);
+          ...(evaluation ? { evaluation } : {}), ...(textbookHelp?{state:attempt.state,help:textbookHelp.help}:{}), after: { outcome: attempt.outcome, assistance: attempt.assistance, controller: attempt.controller, trainerVersion: attempt.trainerVersion } }), attempt.updatedAt);
       attempt.submission = this.submissionForAttempt?.({ ...row, version: attempt.version }) || null;
-      return { attempt, duplicate: false, ...(evaluation ? { evaluation } : {}) };
+      return { attempt, duplicate: false, ...(evaluation ? { evaluation } : {}), ...(textbookHelp?{help:textbookHelp.help}:{}) };
     });
   }
   history(auth, id, { after = 0, through, limit = 100 } = {}) {

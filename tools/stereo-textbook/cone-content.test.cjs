@@ -62,8 +62,16 @@ assert.equal(rawPrevious.length, 554);
 assert.equal(sha(rawPrevious), published.rawLessonManifestSHA256, 'all 554 prior authored files byte-identical');
 assert.equal(sha(oldRegistry.cards), published.reviewRowsSHA256, 'all 554 prior review rows');
 assert.equal(sha(oldRegistry.batches), published.reviewBatchesSHA256, 'all 28 prior review batches');
-for (const [file, expectedHash] of Object.entries(published.immutableFiles))
-  assert.equal(hash(fs.readFileSync(path.join(root, file))), expectedHash, 'unchanged released runtime/schema/builder: ' + file);
+// Preserve the original cone baseline, while accepting only the exact two
+// visibility assets already reviewed and published in PR376. All other
+// runtime/schema/builder bytes remain frozen by this content-only release.
+const visibilityMigration = require('./visibility-migration.cjs');
+for (const [file, expectedHash] of Object.entries(published.immutableFiles)) {
+  if (Object.hasOwn(visibilityMigration.originals, file))
+    visibilityMigration.assertVisibilityMigration(file, expectedHash);
+  else
+    assert.equal(hash(fs.readFileSync(path.join(root, file))), expectedHash, 'unchanged released runtime/schema/builder: ' + file);
+}
 assert.equal(registry.cards.length, 594);
 assert.equal(registry.batches.length, 29);
 exact(registry.cards.map(row => row.id), production.lessons.map(card => card.id), 'one review per published card');

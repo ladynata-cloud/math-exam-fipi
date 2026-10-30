@@ -80,4 +80,5 @@
     return esc(value).replace(/\[\[([^\[\]]+)\/([^\[\]]+)\]\]/g,(_,n,d)=>`<span class="fraction" role="math" aria-label="${n} разделить на ${d}"><span>${n}</span><span>${d}</span></span>`).replace(/\n/g,'<br>');
   }
   global.TextbookMath={check,parse,primeProduct,esc,fmt,formats};
+  if(typeof module==='object'&&module.exports)module.exports=global.TextbookMath;
 })(typeof window === 'undefined' ? globalThis : window);

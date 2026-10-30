@@ -18,8 +18,31 @@ function input(e,selector,text){const x=e.doc.querySelector(selector);assert.ok(
 function submit(e,selector){e.doc.querySelector(selector).dispatchEvent(new e.w.Event('submit',{bubbles:true,cancelable:true}));}
 function state(e,id){return JSON.parse(e.w.localStorage.getItem('mathExamStereo.v1')).units[id];}
 const tick=()=>new Promise(r=>setTimeout(r,8));
+function checkHomeHero(doc){
+ const svg=doc.querySelector('.hero-art svg');assert(svg,'course cover has its spatial figure');
+ const points={A:[65,240],B:[235,290],C:[345,210],D:[180,165],A1:[65,85],B1:[235,135],C1:[345,70],D1:[180,20],M:[65,160],N:[235,220],P:[345,130],Q:[180,95]};
+ const name=xy=>{const match=Object.entries(points).find(([,p])=>p[0]===xy[0]&&p[1]===xy[1]);assert(match,'retained cover vertex '+xy);return match[0];};
+ const key=(a,b)=>[a,b].sort().join('-'),expected={
+  'body-hidden':[['A','D'],['C','D'],['D','D1']],
+  'body-visible':[['A','B'],['B','C'],['A','A1'],['A1','D1'],['D1','C1'],['C1','C'],['A1','B1'],['B1','C1'],['B1','B']],
+  'section-hidden':[['M','Q'],['Q','P']], 'section-visible':[['M','N'],['N','P']]
+ };
+ assert.equal(svg.querySelectorAll('[data-hero-lines]').length,4);
+ for(const [group,pairs]of Object.entries(expected)){
+  const path=svg.querySelector('[data-hero-lines="'+group+'"]');assert(path);
+  assert.equal(path.hasAttribute('stroke-dasharray'),group.endsWith('hidden'),'rear cover edges must be dashed');
+  if(group.endsWith('hidden'))assert.match(path.getAttribute('stroke-dasharray'),/^6 5$/);
+  const tokens=path.getAttribute('d').match(/[ML]|-?\d+(?:\.\d+)?/g),edges=[];let last=null;
+  for(let i=0;i<tokens.length;){const cmd=tokens[i++];assert(['M','L'].includes(cmd));const point=name([+tokens[i++],+tokens[i++]]);if(cmd==='L'){assert(last);edges.push(key(last,point));}last=point;}
+  assert.deepEqual(edges.sort(),pairs.map(([a,b])=>key(a,b)).sort(),group+' retains exact visible/hidden topology');
+ }
+ for(const path of svg.querySelectorAll('path:not([data-hero-lines])'))assert.equal(path.getAttribute('stroke'),'none','section fill must not repaint hidden edges solid');
+}
 (async()=>{
  const e=boot();
+ checkHomeHero(e.doc);
+ const rear=e.doc.querySelector('[data-hero-lines="body-hidden"]');rear.removeAttribute('stroke-dasharray');assert.throws(()=>checkHomeHero(e.doc));rear.setAttribute('stroke-dasharray','6 5');
+ const fill=e.doc.querySelector('[data-hero-fill]');fill.setAttribute('stroke','#f0bd76');assert.throws(()=>checkHomeHero(e.doc));fill.setAttribute('stroke','none');checkHomeHero(e.doc);
  for(const u of C.units){
   click(e,'[data-unit="'+u.id+'"]');const rec=state(e,u.id),t=T.make(u.task,rec.seed),model=e.doc.querySelector('#task-model svg'),answer=e.doc.querySelector('#answer');
   assert.equal(plainDisplay(e.doc.querySelector('.task-question')),t.q);assert.ok(model,u.id+' model immediately');assert.equal(e.doc.querySelector('#task-help').open,false);assert.equal(e.doc.querySelector('#answer-form').dataset.mode,'independent');

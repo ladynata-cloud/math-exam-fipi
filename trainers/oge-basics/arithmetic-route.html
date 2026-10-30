@@ -3,13 +3,14 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="color-scheme" content="light">
-  <title>Арифметика перед ОГЭ — мой маршрут · MathExam</title>
+  <title>Научиться считать — понятный маршрут · MathExam</title>
+  <meta name="description" content="Начните с одного действия: сложения, вычитания, умножения или деления. Простые примеры, помощь по шагам и продолжение занятий с сохранёнными результатами.">
 <link rel="canonical" href="https://mathexam.space/trainers/oge-basics/arithmetic-route.html">
-  <link rel="stylesheet" href="arithmetic-route.css?v=division-course-20261019">
+  <link rel="stylesheet" href="arithmetic-route.css?v=arithmetic-entry-20261030">
   <script src="multiplication-division/division-lab-core.js" defer></script>
   <script src="multiplication-division/division-guided-core.js" defer></script>
-  <script src="arithmetic-route.js?v=division-course-20261019" defer></script>
-  <script src="arithmetic-route-page.js?v=division-course-20261019" defer></script>
+  <script src="arithmetic-route.js?v=arithmetic-entry-20261030" defer></script>
+  <script src="arithmetic-route-page.js?v=arithmetic-entry-20261030" defer></script>
 <!-- BEGIN OGE BASICS CONTEXTUAL SHELL -->
 <link rel="stylesheet" href="navigation-minimal.css?v=20261020">
 <script defer src="navigation-minimal.js?v=20261020"></script>
@@ -17,12 +18,27 @@
 <body>
 <header><a href="index.html">← Все темы ПредОГЭ</a><a href="../oge-course/">Курс ОГЭ</a></header>
 <main>
-  <div class="eyebrow">ПредОГЭ · арифметика</div>
-  <h1 id="route-title">Что сейчас трудно?</h1>
-  <p id="route-lead" class="lead">Выбери один навык. Можно начать с простого или сразу открыть нужное упражнение.</p>
+  <div class="eyebrow">Математические основы · арифметика</div>
+  <h1 id="route-title">Научиться считать</h1>
+  <p id="route-lead" class="lead">Выбери одно действие. Начнём с простого примера, разберём трудный шаг и попробуем ещё раз.</p>
   <p id="route-notice" class="notice" role="status" hidden></p>
-  <section id="division-course-entry" class="start-card division-course-entry"><p class="eyebrow">Деление уголком · весь курс</p><h2>Учимся по одному действию</h2><p>Выбрать цифру → умножить → вычесть → перенести следующую цифру. Маленькие шаги, прикидка и самостоятельные примеры.</p><a class="button" href="multiplication-division/division-course.html">Открыть курс сверху вниз →</a><a class="level-detail" href="../../learning/#division-course">Заниматься с преподавателем в кабинете →</a></section>
-  <section id="route-overview" aria-label="Выбрать навык"></section>
+  <section id="route-resume" class="start-card" aria-labelledby="resume-title" hidden>
+    <h2 id="resume-title">Продолжить занятия</h2>
+    <p id="resume-note"></p>
+    <a id="resume-link" class="button">Продолжить занятия →</a>
+    <p class="small">По последнему сохранённому результату в этом браузере.</p>
+  </section>
+  <section id="route-start" aria-label="Начать с простого">
+    <div class="operation-grid">
+      <a class="skill-card" data-operation="addition" href="../arifmetika.html?course=preoge&amp;level=n1a"><span class="skill-example">3 + 2</span><h2>Сложение</h2><p>Сначала складываем маленькие числа — до 10.</p><span class="open">Начать с простого →</span></a>
+      <a class="skill-card" data-operation="subtraction" href="../arifmetika.html?course=preoge&amp;level=n1b"><span class="skill-example">7 − 3</span><h2>Вычитание</h2><p>Сначала вычитаем маленькие числа — до 10.</p><span class="open">Начать с простого →</span></a>
+      <a class="skill-card" data-operation="multiplication" href="../arifmetika.html?course=preoge&amp;level=t2a"><span class="skill-example">3 × 2</span><h2>Умножение</h2><p>Начинаем с одинаковых групп на рисунке. Таблица будет дальше.</p><span class="open">Начать с рисунка →</span></a>
+      <a class="skill-card" data-operation="division" href="multiplication-division/long-division-from-simple-to-decimals.html?course=preoge#start"><span class="skill-example">48 : 2</span><h2>Деление уголком</h2><p>Делим на одну цифру. Заполняем уголок по одному действию.</p><span class="open">Начать по шагам →</span></a>
+    </div>
+    <p class="diagnostic-choice">Не знаешь, с чего начать деление? <a href="multiplication-division/division-diagnostic.html">Пройти короткую проверку</a>. Её можно пропустить.</p>
+  </section>
+  <section id="division-course-entry" class="start-card division-course-entry"><p class="eyebrow">Сложение · вычитание · умножение · деление</p><h2>Все четыре линейки арифметики</h2><p>Если знаешь, что хочешь повторить, выбери нужный шаг в подробном списке.</p><a class="button" href="multiplication-division/division-course.html">Выбрать шаг в четырёх линейках →</a><a class="level-detail" href="../../learning/#division-course">Заниматься с преподавателем в кабинете →</a></section>
+  <details id="route-topics" class="topic-picker"><summary>Выбрать отдельную тему</summary><p>Здесь можно сразу перейти к столбику, запятой, дробям или другой знакомой теме.</p><section id="route-overview" aria-label="Выбрать навык"></section></details>
   <section id="route-detail" hidden aria-label="Упражнения по выбранному навыку">
     <a href="arithmetic-route.html" class="back">← Выбрать другой навык</a>
     <div class="start-card">

@@ -45,11 +45,14 @@ async function checkCanonical(page) {
   assert.equal(await page.locator('meta[property="og:url"]').getAttribute('content'), canonical);
 }
 async function continueWith(page, value) {
+  const before = await snapshot(page), previous = before.sessions[before.active];
   await page.locator('#answer').fill(value);
   await page.locator('#primary').click();
-  const state = await snapshot(page);
-  assert.equal(state.sessions[state.active].accepted, true, 'The current answer must be accepted before continuing');
-  await page.locator('#primary').click();
+  const state = await snapshot(page), current = state.sessions[state.active];
+  assert.equal(current.answers.length, previous.answers.length + 1, 'One check records one answer');
+  assert.equal(current.step, previous.step + 1, 'One check advances to the next question');
+  assert.equal(current.accepted, false);
+  assert.equal(current.draft, '');
 }
 async function finishInitialExample(page) {
   for (let turn = 0; turn < 80; turn++) {

@@ -9,7 +9,7 @@
   "reviewer": "Independent reviewers: labels (A), source_audit (B), regression (C and integration); independent visual reviewers for A/B/C; coordinator records evidence",
   "at": "2026-10-28T16:29:28.995076+00:00",
   "authoredContentSha256": "3c73fd47306c858e31c92201d92760a8477a3197295b4d8812c887c43db4078a",
-  "implementationSha256": "f358f65b5955ad8ae2443bc8916aadda8f502a07e6274e90b9b21d727979813c",
+  "implementationSha256": "b831d68dbdaaf2e696a99699e228cb646ba03d76c7333f799a9c10e4bb904ad7",
   "scope": {
     "key": "7-advanced",
     "grade": 7,
@@ -116,5 +116,17 @@
     "No external Claude review; owner exception applies to this course",
     "Chapters VI and later remain incomplete",
     "Prepared for review; not deployed; separate owner merge authorization required"
-  ]
+  ],
+  "runtimeExtensionReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_RUNTIME_EXTENSION_REVIEW.json",
+    "sha256": "76c2cb88441a834286dcf8fe6bb7ce0048a50542ec9d2bac315e8a263889487e"
+  },
+  "runtimeChapterVIIReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_RUNTIME_EXTENSION_REVIEW.json",
+    "sha256": "9bb1b9a34a45f26e21484ae90ec7f42dc1094ad9e06beca9851939243d80b4cc"
+  },
+  "runtimeChapterVIIIReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_RUNTIME_EXTENSION_REVIEW.json",
+    "sha256": "fb8cafb8b3b839b763d3041d51e54b24c93f57291119333fdcd0da847daa106a"
+  }
 }

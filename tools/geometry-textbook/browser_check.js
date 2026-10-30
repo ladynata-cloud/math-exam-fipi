@@ -15,15 +15,16 @@ fs.mkdirSync(out,{recursive:true});
 const interactionsOnly=process.env.GEOMETRY_TEXTBOOK_INTERACTIONS_ONLY==='1',viewsOnly=process.env.GEOMETRY_TEXTBOOK_VIEWS_ONLY==='1';
 assert(!(interactionsOnly&&viewsOnly),'Select at most one focused browser mode');
 const focusSection=process.env.GEOMETRY_TEXTBOOK_FOCUS_SECTION||'';
-assert(!focusSection||focusSection==='7-advanced','Unknown focused diagnostic section');
+const focusedScope=focusSection?[...releaseScope.chapters,...(releaseScope.supplements||[])].find(s=>s.key===focusSection||s.label===focusSection):null;
+assert(!focusSection||focusedScope,'Unknown focused diagnostic section');
 assert(!focusSection||viewsOnly,'Focused section is only a drawing diagnostic, never a full-course gate');
-const inspectedLessons=focusSection?bundle.lessons.filter(l=>l.source.advancedGrade===7):bundle.lessons;
-if(focusSection)assert.equal(inspectedLessons.length,releaseScope.supplements.find(s=>s.key===focusSection).cards,'Every focused card must be inspected');
+const inspectedLessons=focusSection?bundle.lessons.filter(l=>l.source.chapter===focusedScope.label):bundle.lessons;
+if(focusSection)assert.equal(inspectedLessons.length,focusedScope.cards,'Every focused card must be inspected');
 // Optional full scene captures supplement, never replace, the existing gate.
 const captureChapters=new Set((process.env.GEOMETRY_TEXTBOOK_CAPTURE_CHAPTERS||'').split(',').map(s=>s.trim()).filter(Boolean));
 for(const chapter of captureChapters)assert([...releaseScope.chapters,...(releaseScope.supplements||[])].some(c=>c.label===chapter),'Unknown capture section '+chapter);
 const evidence={schemaVersion:1,gateScriptSha256:crypto.createHash('sha256').update(fs.readFileSync(__filename)).digest('hex'),scope:interactionsOnly?'interactions-only':viewsOnly?'views-only':'full-course',head:process.env.GEOMETRY_TEXTBOOK_HEAD||process.env.GITHUB_SHA||null,implementationSha256:bundle.build?.implementationSha256||null,authoredContentSha256:bundle.build?.authoredContentSha256||null,bundleSha256:crypto.createHash('sha256').update(fs.readFileSync(bundleFile)).digest('hex'),widths:[320,1280],lessons:bundle.lessons.length,views:[],stepFlows:[],screenshots:[],reviewScreenshots:[],interactions:[],errors:[],completed:false};
-if(focusSection){evidence.scope='focused-advanced-drawing-diagnostic';evidence.focusSection=focusSection;evidence.inspectedLessons=inspectedLessons.length;}
+if(focusSection){evidence.scope='focused-section-drawing-diagnostic';evidence.focusSection=focusSection;evidence.inspectedLessons=inspectedLessons.length;}
 let server,browser,context,page,base;
 const write=()=>fs.writeFileSync(path.join(out,'browser-evidence.json'),JSON.stringify(evidence,null,2));
 function serve(){return new Promise(resolve=>{server=http.createServer((request,response)=>{try{const url=new URL(request.url,'http://127.0.0.1'),pathname=decodeURIComponent(url.pathname),file=path.resolve(root,'.'+pathname+(pathname.endsWith('/')?'index.html':''));if(!file.startsWith(root+path.sep))return response.writeHead(403).end();const mime={'.html':'text/html; charset=utf-8','.js':'application/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8'};response.writeHead(200,{'Content-Type':mime[path.extname(file)]||'application/octet-stream','Cache-Control':'no-store'});fs.createReadStream(file).on('error',()=>response.end()).pipe(response);}catch{response.writeHead(404).end();}});server.listen(0,'127.0.0.1',()=>resolve('http://127.0.0.1:'+server.address().port+'/geometry-course/textbook/'));});}

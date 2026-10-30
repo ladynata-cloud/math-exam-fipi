@@ -270,6 +270,10 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
   for (const folder of ['learning', 'ege-baza/path', 'trainers/oge-basics', 'trainers/motion-grade6']) assert.ok(dockerfile.includes(`COPY ${folder}/ /app/${folder}/`));
   assert.match(dockerfile, /COPY courses\/vilenkin-6-part-1\/math\.js courses\/vilenkin-6-part-1\/learning-contracts\.js \/app\/courses\/vilenkin-6-part-1\//);
   assert.match(dockerfile, /COPY courses\/vilenkin-6-part-1\/data\/ \/app\/courses\/vilenkin-6-part-1\/data\//);
+  assert.match(dockerfile, /COPY courses\/vilenkin-6-part-1\/textbook-math\.js courses\/vilenkin-6-part-1\/textbook-learning-contracts\.js \/app\/courses\/vilenkin-6-part-1\//);
+  assert.match(dockerfile, /COPY courses\/vilenkin-6-part-1\/textbook-data\/ \/app\/courses\/vilenkin-6-part-1\/textbook-data\//);
+  const vilenkinSupportAssets = ['textbook-source-labels.js', 'textbook-support.js', 'textbook-support.css'];
+  assert.ok(dockerfile.includes(`COPY ${vilenkinSupportAssets.map(file => 'courses/vilenkin-6-part-1/' + file).join(' ')} /app/courses/vilenkin-6-part-1/`));
   const textbookContract = 'geometry-course/textbook/learning-contracts.js';
   assert.ok(dockerfile.includes(`COPY ${textbookContract} /app/${textbookContract}`));
   const textbookAssets = ['math-text.js', 'planar-viewer.js'].map(file => 'geometry-course/textbook/assets/' + file);
@@ -298,8 +302,8 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
   for (const folder of ['learning', 'ege-baza/path', 'trainers/oge-basics', 'trainers/motion-grade6']) fs.cpSync(path.join(rootDir, folder), path.join(directory, 'app', folder), { recursive: true });
   const coursePath = 'courses/vilenkin-6-part-1';
   fs.mkdirSync(path.join(directory, 'app', coursePath), { recursive: true });
-  for (const file of ['math.js', 'learning-contracts.js']) fs.copyFileSync(path.join(rootDir, coursePath, file), path.join(directory, 'app', coursePath, file));
-  fs.cpSync(path.join(rootDir, coursePath, 'data'), path.join(directory, 'app', coursePath, 'data'), { recursive: true });
+  for (const file of ['math.js', 'learning-contracts.js', 'textbook-math.js', 'textbook-learning-contracts.js', ...vilenkinSupportAssets]) fs.copyFileSync(path.join(rootDir, coursePath, file), path.join(directory, 'app', coursePath, file));
+  for (const folder of ['data', 'textbook-data']) fs.cpSync(path.join(rootDir, coursePath, folder), path.join(directory, 'app', coursePath, folder), { recursive: true });
   fs.mkdirSync(path.dirname(path.join(directory, 'app', textbookContract)), { recursive: true });
   fs.copyFileSync(path.join(rootDir, textbookContract), path.join(directory, 'app', textbookContract));
   fs.mkdirSync(path.join(directory, 'app', 'geometry-course/textbook/assets'), { recursive: true });
@@ -374,11 +378,18 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
     assert.equal(companion.topic, 'ichenskaya-course-step'); assert(companion.stepCount > 0);
     // Keep the path allowlist: unrelated files and server sources stay private.
     for (const blocked of ['/ege-baza/path/managed-state.js', '/board-server/index.js',
+      '/courses/vilenkin-6-part-1/textbook.html', '/courses/vilenkin-6-part-1/textbook-learning-contracts.js',
       '/geometry-course/textbook/learning-contracts.js',
       ...['engine.js', 'board-adapter.js', 'style.css'].map(file => '/geometry-course/textbook/assets/' + file)]) {
       assert.equal((await fetch(server.baseUrl + blocked)).status, 404, blocked);
     }
     for (const asset of ['/learning/catalog.js', '/learning/references.js', '/ege-baza/path/practice-view.js', ...['base', 'foundations', 'triangles', 'relations'].map(name => '/ege-baza/path/grade7-geometry-rebuild-' + name + '.js')]) assert.equal((await fetch(server.baseUrl + asset)).status, 200);
+    for (const file of vilenkinSupportAssets) {
+      const response = await fetch(server.baseUrl + '/courses/vilenkin-6-part-1/' + file);
+      assert.equal(response.status, 200, file);
+      assert.equal(response.headers.get('cross-origin-resource-policy'), 'same-origin');
+      assert.deepEqual(Buffer.from(await response.arrayBuffer()), fs.readFileSync(path.join(rootDir, 'courses/vilenkin-6-part-1', file)));
+    }
     const learningStatus = await (await fetch(`${server.baseUrl}/api/learning/status`)).json();
     const originalTrainers = new Set(['ege-path', 'oge-basics', 'motion-grade6']);
     assert.equal(learningStatus.trainers.filter(item => originalTrainers.has(item.trainerId) && !item.geometryRebuild).length, 244); // Preserve the previous non-geometry bank.
@@ -386,10 +397,14 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
       Array.from({ length: 27 }, (_, id) => 'lesson-' + id).sort());
     assert.deepEqual(learningStatus.trainers.filter(item => item.trainerId === 'atanasyan-7-9').map(item => item.contentId),
       ['atanasyan-7-9-main-92-part-1']);
-    assert.equal(learningStatus.trainers.length, 378);
+    const revisedTextbook = require('../../learning/vilenkin6-textbook-catalog');
+    assert.deepEqual(learningStatus.trainers.filter(item => item.trainerId === 'vilenkin6-textbook').map(item => item.contentId).sort(), revisedTextbook.map(item => item.contentId).sort());
+    assert.equal(learningStatus.trainers.filter(item => item.trainerId !== 'vilenkin6-textbook').length, 378);
+    assert.equal(learningStatus.trainers.length, 378 + revisedTextbook.length);
     for(const id of ['course-column-one-digit','course-column-two-digit','course-column-three-by-one','course-column-four-by-one','course-column-three-by-two','course-column-two-by-three','course-column-three-by-three','course-column-zeros','course-column-mixed']) assert(learningStatus.trainers.some(item=>item.contentId==='multiplication-division/'+id));
     assert.equal(learningStatus.trainers.filter(item => item.geometryRebuild).length, require('../../learning/catalog').items.filter(item => item.geometryRebuild).length);
-    assert.equal(learningStatus.trainers.filter(item => item.grade6).length, 39); // 12 motion lessons + all 27 Vilenkin modules.
+    assert.equal(learningStatus.trainers.filter(item => item.grade6 && item.trainerId !== 'vilenkin6-textbook').length, 39); // 12 motion lessons + all 27 legacy Vilenkin modules.
+    assert.equal(learningStatus.trainers.filter(item => item.grade6).length, 39 + revisedTextbook.length);
     assert.equal(learningStatus.trainers.filter(item => item.trainerId === 'ege-path' && item.grade7 && !item.geometryRebuild).length, 62);
     assert.equal(learningStatus.trainers.filter(item => item.grade7 && !item.geometryRebuild).length, 63); // Original route plus fixed Atanasyan 92a.
     assert.equal(learningStatus.available, false);

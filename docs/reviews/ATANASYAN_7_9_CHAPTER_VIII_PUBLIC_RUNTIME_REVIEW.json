@@ -1,0 +1,2081 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "at": "2026-10-30T00:41:36.113153+00:00",
+  "reviewer": "root integrates independently executed workflow, public-entry smoke and actual image/test-fixture reviews",
+  "scope": "Post-promotion engineering verification of the actual reviewed1247-card local public entry on the fresh-main composition; not live deployment or exact committed-head CI",
+  "baseCommit": "51f7fa550bae29f0110a0f06608a3e35bb1f65fd",
+  "testedCommittedHead": null,
+  "contentApprovalGranted": false,
+  "publicationApprovalGranted": false,
+  "bindings": {
+    "bundleSha256": "af1e3a373745d3a66e3e6f71b14d02de4cd81f0c688a8929c0475277cc22b574",
+    "implementationSha256": "b831d68dbdaaf2e696a99699e228cb646ba03d76c7333f799a9c10e4bb904ad7",
+    "authoredContentSha256": "a92b9e1c8d7d06e8a995d805a757690ca56b6b9521e8129b31965b8bd34e07da",
+    "chapterVIIIAuthoredContentSha256": "4a01227216d6bcf57495cd90975350fd7aaa823ef1c5566b1c3335e7f2d6d723",
+    "sourceInventorySha256": "de0d2f2c7762df3e9fb0851ad27d1ba82fb826b8b3727c6fc386e462c9433224",
+    "chapterVIIIManifestSha256": "b43a7f0dfb91add6acf879d45d5786495bb0fad121abe8cfa9d3fe8aeba4c93b",
+    "scriptSha256": "d178731ad1f7f4ab4c4df7a18257afd1c5ea355e0970a5c1ddaedba5ad38960a",
+    "fileSha256": {
+      "data/course.json": "af1e3a373745d3a66e3e6f71b14d02de4cd81f0c688a8929c0475277cc22b574",
+      "index.html": "098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804",
+      "assets/engine.js": "85d395dbfb66f8a1409f1d2f930fbb6f742c0085239d34d18ec2a901f3bd6492",
+      "assets/planar-viewer.js": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061",
+      "assets/style.css": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b",
+      "assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+      "source-inventory.json": "de0d2f2c7762df3e9fb0851ad27d1ba82fb826b8b3727c6fc386e462c9433224",
+      "assets/board-adapter.js": "e1c366fd77f2cc822894be7e21139ce99b9e7b3c568392b122f2a3b386b7545b",
+      "release-review.json": "3201666c89ed0a1c92a6675e1d2021eb1f5eade75253c771ba4fbfce433cf8d4",
+      "release-review-chapter-02.json": "8ba617e69db49bc83183807407ef6c03ec3f2bb8f034a9ca2f2315d0fc810e03",
+      "release-review-chapter-03.json": "12bfa29e75da2dcf07da2f29bb1015cb387f3a241f0204ef6edc1cf7709a9719",
+      "release-review-chapter-04.json": "48d6dce1d15eeb61520b266dddc3175cce0215173e289043b9a85ad772798fe2",
+      "release-review-chapter-05.json": "cb31f2315149d5b58a4b875837f21be46d8db0651713a2180a9842a2ab9fd2a2",
+      "release-review-chapter-06.json": "ef1a1c5947a15fa5687bb0c7b7eb37fd7c01335a970f508ccb74b19331726268",
+      "release-review-chapter-07.json": "d4e11f678aea67d72d33f3bce4986e4a7ad5a9759463247c2bfeab8ec46fa144",
+      "release-review-chapter-08.json": "b43a7f0dfb91add6acf879d45d5786495bb0fad121abe8cfa9d3fe8aeba4c93b",
+      "release-review-advanced-07.json": "1e64c22f617b6703107db81dc34bf887534031cf3f95678783eea5f57f2b436d"
+    }
+  },
+  "workflow": {
+    "evidence": {
+      "artifact": "viii-postpromotion-workflow-gates/summary.json",
+      "sha256": "76b703e7528d00e9946a684a5e25d5363ceca86ecaf4db0a5b56846ba760ed4a"
+    },
+    "commands": [
+      {
+        "index": 1,
+        "command": "python3 tools/geometry/check_textbook_preparation.py",
+        "exitCode": 0,
+        "seconds": 0.039,
+        "log": "01.log",
+        "logSha256": "d0352de6966f75bbf7c8873ef195daef78fb21b37fe769ebebe6b1b411bd8600"
+      },
+      {
+        "index": 2,
+        "command": "python3 tools/geometry-textbook/build_course.py --check",
+        "exitCode": 0,
+        "seconds": 0.843,
+        "log": "02.log",
+        "logSha256": "8c6168b4dc25d500db4b45b7a3ed51b378c32b2bda362183746d3ee932b34370"
+      },
+      {
+        "index": 3,
+        "command": "python3 tools/geometry-textbook/review_scope_test.py",
+        "exitCode": 0,
+        "seconds": 55.14,
+        "log": "03.log",
+        "logSha256": "e260ef5f7a7769b864da8ea70f622fbaafa124f998333986d9f325d98030ad53"
+      },
+      {
+        "index": 4,
+        "command": "python3 tools/geometry-textbook/chapter05-preservation.test.py",
+        "exitCode": 0,
+        "seconds": 11.045,
+        "log": "04.log",
+        "logSha256": "4de12803b4d6853752cf3d70ed9550242db000013ea3b9e936b34f4a31448126"
+      },
+      {
+        "index": 5,
+        "command": "python3 tools/geometry-textbook/check_models.py",
+        "exitCode": 0,
+        "seconds": 0.163,
+        "log": "05.log",
+        "logSha256": "ccc66a0603134c826f523187176df0bfa74cef9a7490edcdcc403cad4e088382"
+      },
+      {
+        "index": 6,
+        "command": "python3 tools/geometry-textbook/model_claims_test.py",
+        "exitCode": 0,
+        "seconds": 0.052,
+        "log": "06.log",
+        "logSha256": "ae2ed2be351809adf36d5540045a1b4bb74fd3502ee2e41854904eb1682fb050"
+      },
+      {
+        "index": 7,
+        "command": "python3 tools/geometry-textbook/chapter06-candidate.test.py",
+        "exitCode": 0,
+        "seconds": 6.797,
+        "log": "07.log",
+        "logSha256": "70fefa0d17239ce3780e7ea441421ef89059fe629b1c4d242a6a724ae6f32985"
+      },
+      {
+        "index": 8,
+        "command": "python3 tools/geometry-textbook/chapter06-release.test.py",
+        "exitCode": 0,
+        "seconds": 15.06,
+        "log": "08.log",
+        "logSha256": "fbe96f47b012d2569f29b392763c8ddaf7ab342b731e5a56ebdffd8fec48056c"
+      },
+      {
+        "index": 9,
+        "command": "python3 tools/geometry-textbook/chapter07-candidate.test.py",
+        "exitCode": 0,
+        "seconds": 20.974,
+        "log": "09.log",
+        "logSha256": "5ff4d0c01c826c5c7c5f867fbfc083c6d52584fd7c7cc7b2722772b4adca44a0"
+      },
+      {
+        "index": 10,
+        "command": "python3 tools/geometry-textbook/chapter07-release.test.py",
+        "exitCode": 0,
+        "seconds": 42.437,
+        "log": "10.log",
+        "logSha256": "e9c207f6f14434ebac0210a59e8c7b683b21fa50449ccf58d646b9bc6cb76d8c"
+      },
+      {
+        "index": 11,
+        "command": "python3 tools/geometry-textbook/chapter07-theory-math.test.py",
+        "exitCode": 0,
+        "seconds": 0.064,
+        "log": "11.log",
+        "logSha256": "9fda0b1daca1b3154d3dfc8bfa55cc8254581ceb9249e9bd439e3dcfa95607dd"
+      },
+      {
+        "index": 12,
+        "command": "python3 tools/geometry-textbook/chapter08-candidate.test.py",
+        "exitCode": 0,
+        "seconds": 15.46,
+        "log": "12.log",
+        "logSha256": "f32593a20c9bcf84fa8d48232099d8295d05a00261c0b608bfb418d764652e44"
+      },
+      {
+        "index": 13,
+        "command": "python3 tools/geometry-textbook/chapter08-release.test.py",
+        "exitCode": 0,
+        "seconds": 67.769,
+        "log": "13.log",
+        "logSha256": "272c08ba37c69b6c517cec0c1f9ce718e55148f5c4723a3c086a160b5f4e234b"
+      },
+      {
+        "index": 14,
+        "command": "python3 tools/geometry-textbook/chapter08-a-independent.test.py",
+        "exitCode": 0,
+        "seconds": 0.047,
+        "log": "14.log",
+        "logSha256": "93e997a940081f79d3c130f5478ae0e4a0f8e6caee3275533863e42171f69a18"
+      },
+      {
+        "index": 15,
+        "command": "python3 tools/geometry-textbook/chapter08-b-independent.test.py",
+        "exitCode": 0,
+        "seconds": 0.041,
+        "log": "15.log",
+        "logSha256": "3a8234fbc3b4454a5bfab72c71b6ffe0bbb27dae34fd8bcfcf5e47fb891509f5"
+      },
+      {
+        "index": 16,
+        "command": "python3 tools/geometry-textbook/chapter08-c-independent.test.py",
+        "exitCode": 0,
+        "seconds": 0.036,
+        "log": "16.log",
+        "logSha256": "50a0a2a8ada9d846a426832b81ba566c273c94d389f7d99422fbce755290b9b6"
+      },
+      {
+        "index": 17,
+        "command": "python3 tools/geometry-textbook/chapter08-theory-independent.test.py",
+        "exitCode": 0,
+        "seconds": 0.039,
+        "log": "17.log",
+        "logSha256": "de42d15bebdc1238048c06c597daa676cef254252804e3938e5d4f3b6bb0b6e5"
+      },
+      {
+        "index": 18,
+        "command": "python3 tools/geometry-textbook/advanced7-c-math.test.py",
+        "exitCode": 0,
+        "seconds": 0.034,
+        "log": "18.log",
+        "logSha256": "68218cd804c45b604a47a1aba94462fc59b74d4cc271974f62da89b3d89a7cef"
+      },
+      {
+        "index": 19,
+        "command": "node tools/geometry-textbook/check_course.cjs",
+        "exitCode": 0,
+        "seconds": 0.523,
+        "log": "19.log",
+        "logSha256": "a5c51460529e0ed0b7fcfd73cf0bf67e219c6944d65522950691e15d1300cb70"
+      },
+      {
+        "index": 20,
+        "command": "node tools/geometry-textbook/captions.test.cjs",
+        "exitCode": 0,
+        "seconds": 1.573,
+        "log": "20.log",
+        "logSha256": "250efff68c0bc965d65a01fee7da8f78edb00a5b53e4c0a7e7603d7941ecf273"
+      },
+      {
+        "index": 21,
+        "command": "node tools/geometry-textbook/runtime_check.cjs",
+        "exitCode": 0,
+        "seconds": 4.824,
+        "log": "21.log",
+        "logSha256": "757efa996eac8b6caf6f1d815d043a9aa2d6cf86fa492f64040aa16a5016a756"
+      },
+      {
+        "index": 22,
+        "command": "node tools/geometry-textbook/reviewer_runtime_check.cjs",
+        "exitCode": 0,
+        "seconds": 44.314,
+        "log": "22.log",
+        "logSha256": "8db3a604518dd4c4845b8e65dc7c57c466980bc32f8aa27fadb48c378b2f902a"
+      },
+      {
+        "index": 23,
+        "command": "node tools/geometry/check.js",
+        "exitCode": 0,
+        "seconds": 0.224,
+        "log": "23.log",
+        "logSha256": "2192e846e35579deb726b2c420ff5258c96c8b36b6c8f7b149b3f1b4ea64028d"
+      },
+      {
+        "index": 24,
+        "command": "python3 tools/seo-check.py",
+        "exitCode": 0,
+        "seconds": 1.086,
+        "log": "24.log",
+        "logSha256": "597d7a3c06815729525ffdb2eb994c04d536945d5e78923607cd85ab746b905a"
+      },
+      {
+        "index": 25,
+        "command": "git diff --check",
+        "exitCode": 0,
+        "seconds": 0.067,
+        "log": "25.log",
+        "logSha256": "6f32f181b575ccd1b1bfbe06c707bd5a7acc4062edfaee23e752c1e7b77e7db9"
+      }
+    ],
+    "commandsPassed": 25,
+    "nodeVersion": "v24.22.1",
+    "ciNodeVersion": "22",
+    "pythonVersion": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "inputsCount": 5403,
+    "inputsBeforeSha256": "0af73225a0a39fbd6ba9a937aa306a63955d52065064bbcbe2a70a4752bd0394",
+    "inputsAfterSha256": "0af73225a0a39fbd6ba9a937aa306a63955d52065064bbcbe2a70a4752bd0394",
+    "changedInputs": [],
+    "gitStateUnchanged": true,
+    "preflight": {
+      "passed": true,
+      "reviewedCards": 1247,
+      "chapterVIII": 164,
+      "bundleSha256": "af1e3a373745d3a66e3e6f71b14d02de4cd81f0c688a8929c0475277cc22b574",
+      "candidateBundleSha256": "8e6d98e500a96b3db5bd120362195da000955d790699c8fa73433f60ab4c5d24",
+      "authoredContentSha256": "a92b9e1c8d7d06e8a995d805a757690ca56b6b9521e8129b31965b8bd34e07da",
+      "implementationSha256": "b831d68dbdaaf2e696a99699e228cb646ba03d76c7333f799a9c10e4bb904ad7",
+      "authoredFiles": 8,
+      "runtimeFiles": 7,
+      "candidateComparisons": {
+        "geometry-course/textbook/preparation/chapter-08-a.json": {
+          "sha256": "6eb59e2721c150630d1c549fd82321f4afac3fed66a0765ea3e19c52574fcfa9",
+          "candidateSha256": "6eb59e2721c150630d1c549fd82321f4afac3fed66a0765ea3e19c52574fcfa9",
+          "passed": true
+        },
+        "geometry-course/textbook/preparation/chapter-08-b.json": {
+          "sha256": "6841e8969cbcd4f0b5dcb933b335d9e0980ed5bb777b32745ffa94d101eced45",
+          "candidateSha256": "6841e8969cbcd4f0b5dcb933b335d9e0980ed5bb777b32745ffa94d101eced45",
+          "passed": true
+        },
+        "geometry-course/textbook/preparation/chapter-08-c.json": {
+          "sha256": "af2d652b4ddb16ed1110b6b557d021a2c0aa1fe10e50813106b9bc20aadf4285",
+          "candidateSha256": "af2d652b4ddb16ed1110b6b557d021a2c0aa1fe10e50813106b9bc20aadf4285",
+          "passed": true
+        },
+        "geometry-course/textbook/preparation/chapter-08-theory.json": {
+          "sha256": "48d07f10f635bbcb11b6f6044ae15c89daef3f1a05f47c87776587368b11f6d1",
+          "candidateSha256": "48d07f10f635bbcb11b6f6044ae15c89daef3f1a05f47c87776587368b11f6d1",
+          "passed": true
+        },
+        "geometry-course/textbook/models/chapter-08-a.json": {
+          "sha256": "b5d72202451a1e0db0de54dc1404c97a81693dc5d42ad2edf62a34746d4b9132",
+          "candidateSha256": "b5d72202451a1e0db0de54dc1404c97a81693dc5d42ad2edf62a34746d4b9132",
+          "passed": true
+        },
+        "geometry-course/textbook/models/chapter-08-b.json": {
+          "sha256": "10f843470acba4a93913ddc2b5f812344502b38e7a6a62f90b95ff4dcbd51301",
+          "candidateSha256": "10f843470acba4a93913ddc2b5f812344502b38e7a6a62f90b95ff4dcbd51301",
+          "passed": true
+        },
+        "geometry-course/textbook/models/chapter-08-c.json": {
+          "sha256": "9cc150634f3effb64179df3e3914800436245de38da70bd86a3b168819d9db1d",
+          "candidateSha256": "9cc150634f3effb64179df3e3914800436245de38da70bd86a3b168819d9db1d",
+          "passed": true
+        },
+        "geometry-course/textbook/models/chapter-08-theory.json": {
+          "sha256": "b3ad223e3aec5a4d8b4920b799fba81a1797ae07ba7cefc6cbf023bf4d45a819",
+          "candidateSha256": "b3ad223e3aec5a4d8b4920b799fba81a1797ae07ba7cefc6cbf023bf4d45a819",
+          "passed": true
+        },
+        "geometry-course/textbook/index.html": {
+          "sha256": "098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804",
+          "candidateSha256": "098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804",
+          "passed": true
+        },
+        "geometry-course/textbook/assets/engine.js": {
+          "sha256": "85d395dbfb66f8a1409f1d2f930fbb6f742c0085239d34d18ec2a901f3bd6492",
+          "candidateSha256": "85d395dbfb66f8a1409f1d2f930fbb6f742c0085239d34d18ec2a901f3bd6492",
+          "passed": true
+        },
+        "geometry-course/textbook/assets/planar-viewer.js": {
+          "sha256": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061",
+          "candidateSha256": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061",
+          "passed": true
+        },
+        "geometry-course/textbook/assets/style.css": {
+          "sha256": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b",
+          "candidateSha256": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b",
+          "passed": true
+        },
+        "geometry-course/textbook/assets/math-text.js": {
+          "sha256": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+          "candidateSha256": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+          "passed": true
+        },
+        "geometry-course/textbook/source-inventory.json": {
+          "sha256": "de0d2f2c7762df3e9fb0851ad27d1ba82fb826b8b3727c6fc386e462c9433224",
+          "candidateSha256": "de0d2f2c7762df3e9fb0851ad27d1ba82fb826b8b3727c6fc386e462c9433224",
+          "passed": true
+        },
+        "geometry-course/textbook/assets/board-adapter.js": {
+          "sha256": "e1c366fd77f2cc822894be7e21139ce99b9e7b3c568392b122f2a3b386b7545b",
+          "candidateSha256": "e1c366fd77f2cc822894be7e21139ce99b9e7b3c568392b122f2a3b386b7545b",
+          "passed": true
+        }
+      },
+      "historicalCards": 1083,
+      "historicalLessonsSha256": "412ee635d7674ec759a669520785c3df9a85e248cf0a024ccba9418281fdcde3",
+      "historicalCatalogEntriesSha256": "a28a3f0df8aec693fda98e86879d6d1535e19886442209d597bef3c8dd7a578a",
+      "historicalFileCount": 209,
+      "historicalFiles": [
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_ADVANCED_A_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "5d0d0d4c13f1a17670e15da3f32235724d51e7e0948ea685d9301ba2e8814bae",
+          "historicalSha256": "5d0d0d4c13f1a17670e15da3f32235724d51e7e0948ea685d9301ba2e8814bae",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_ADVANCED_A_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "0a44ce86742b24008c7a876be8ee82845167a0ac2b699da4b1cbcdc41d4b3ff6",
+          "historicalSha256": "0a44ce86742b24008c7a876be8ee82845167a0ac2b699da4b1cbcdc41d4b3ff6",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_ADVANCED_B_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "253d718793908b4c0898f7eb8044c05e10d8c1fbffc1148ffdc1f1b21ba4cfac",
+          "historicalSha256": "253d718793908b4c0898f7eb8044c05e10d8c1fbffc1148ffdc1f1b21ba4cfac",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_ADVANCED_B_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "caf2d62927c56d2c47dba3d2d14da12457c9cc7d50824fc8527a22785de1cdec",
+          "historicalSha256": "caf2d62927c56d2c47dba3d2d14da12457c9cc7d50824fc8527a22785de1cdec",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_ADVANCED_C_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "6a7564a0ce10ba67da2426d6bbf576ecbab1029a8a47328fabd3102f953bb068",
+          "historicalSha256": "6a7564a0ce10ba67da2426d6bbf576ecbab1029a8a47328fabd3102f953bb068",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_ADVANCED_C_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "7b9ee6c4a20a796e7bf74f21b6665e14b54ae46c8dac4687675734c8ea2bbf04",
+          "historicalSha256": "7b9ee6c4a20a796e7bf74f21b6665e14b54ae46c8dac4687675734c8ea2bbf04",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_BROWSER_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "e64640506c09d54dc0d0afe01dcab04319570e14a81779f931d6b529698a1ffd",
+          "historicalSha256": "e64640506c09d54dc0d0afe01dcab04319570e14a81779f931d6b529698a1ffd",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_BUILD_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "ca46f57abcc3100a0e070fe141bfeeced45f0e61d00f6fb2bb540eac19fdda3b",
+          "historicalSha256": "ca46f57abcc3100a0e070fe141bfeeced45f0e61d00f6fb2bb540eac19fdda3b",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_III_A_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "412cbed0e7c39897aadc5eb7cfb0ac8577a193e9093b181711ac77665a2a880a",
+          "historicalSha256": "412cbed0e7c39897aadc5eb7cfb0ac8577a193e9093b181711ac77665a2a880a",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_III_A_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "c19cd68abd5aceed49dce735d17feeda2c39206a582862b2e233f139997b2ebf",
+          "historicalSha256": "c19cd68abd5aceed49dce735d17feeda2c39206a582862b2e233f139997b2ebf",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_III_B_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "f571dd308cbb0f3cce47705e900bf0924ce5a1aefed082d627b4e4241025bf93",
+          "historicalSha256": "f571dd308cbb0f3cce47705e900bf0924ce5a1aefed082d627b4e4241025bf93",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_III_B_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "4a37394cac74ff769129761ec150b0daed73810a4eda6b1169205b0e3d80881d",
+          "historicalSha256": "4a37394cac74ff769129761ec150b0daed73810a4eda6b1169205b0e3d80881d",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_III_GATES_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "f4cfe3a310182951c382d0c76cb2c239793ac83870647dee805784c971ac4dc3",
+          "historicalSha256": "f4cfe3a310182951c382d0c76cb2c239793ac83870647dee805784c971ac4dc3",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_III_LOCAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "96aa016b1db248c199de8aa1202397454102c0b0aa9a05e4d5fc5aed2ef1fae7",
+          "historicalSha256": "96aa016b1db248c199de8aa1202397454102c0b0aa9a05e4d5fc5aed2ef1fae7",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_III_THEORY_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "83924f7df07041a3546b93a9ca06505f73e52653b77481a8979463beb2af28bb",
+          "historicalSha256": "83924f7df07041a3546b93a9ca06505f73e52653b77481a8979463beb2af28bb",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_III_THEORY_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "8b9fceec40fe2ed373c05989e40f2ad0d06c00374391379de0e9c6d470adfa88",
+          "historicalSha256": "8b9fceec40fe2ed373c05989e40f2ad0d06c00374391379de0e9c6d470adfa88",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_II_A_CROSS_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "de65e058494c6897b587e8bd967dc33c1c9d734aaaf827e99b2051381edb14ed",
+          "historicalSha256": "de65e058494c6897b587e8bd967dc33c1c9d734aaaf827e99b2051381edb14ed",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_II_B_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "15ec22427520afe97456c70a8b6a13127b8ec0938781778521f3aba11021c8f0",
+          "historicalSha256": "15ec22427520afe97456c70a8b6a13127b8ec0938781778521f3aba11021c8f0",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_II_C_CROSS_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "627d77e4a2b439645fe3642f7956cc4bf20ee671652ae2c966f7caea41599fae",
+          "historicalSha256": "627d77e4a2b439645fe3642f7956cc4bf20ee671652ae2c966f7caea41599fae",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_II_INTEGRATION_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "7fb85261558ea15bc9ac54f8a705f01b38af08c39105d68d2709aaf88214ffe9",
+          "historicalSha256": "7fb85261558ea15bc9ac54f8a705f01b38af08c39105d68d2709aaf88214ffe9",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_II_LOCAL_RELEASE_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "4a79ddf58306a862be03f4d22863d93e084cbbb19943098e3515d02080d15611",
+          "historicalSha256": "4a79ddf58306a862be03f4d22863d93e084cbbb19943098e3515d02080d15611",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_A_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "fd46986818ecadbe565e3543d88e8cbe47bec361f09a713cf9e78d53d9524864",
+          "historicalSha256": "fd46986818ecadbe565e3543d88e8cbe47bec361f09a713cf9e78d53d9524864",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_A_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "afce9e075f3d651c1481cb1ea23f3253d2dcc8089ca1399ffe833e339f83b5d5",
+          "historicalSha256": "afce9e075f3d651c1481cb1ea23f3253d2dcc8089ca1399ffe833e339f83b5d5",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_BROWSER_CAPTURE_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "ee449d1c767549a2296f43e13fa1e0f9032d37bbb85eb6119eeea85337c51012",
+          "historicalSha256": "ee449d1c767549a2296f43e13fa1e0f9032d37bbb85eb6119eeea85337c51012",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_B_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "0a82ee1cd6fc4ecd9495cc0ec9506029063c95a8bd705c69da7c2709ab0ebef8",
+          "historicalSha256": "0a82ee1cd6fc4ecd9495cc0ec9506029063c95a8bd705c69da7c2709ab0ebef8",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_B_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "dfa3d988fa28436d48dd010380660a972b16553aaeb2a5bfc573d5ef5b07a3bc",
+          "historicalSha256": "dfa3d988fa28436d48dd010380660a972b16553aaeb2a5bfc573d5ef5b07a3bc",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_C_DESKTOP_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "a24216030021f7b5bb49062a79780c8e9c0201c204a1bd90626afa4b4b4f8838",
+          "historicalSha256": "a24216030021f7b5bb49062a79780c8e9c0201c204a1bd90626afa4b4b4f8838",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_C_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "f66e8ace322027a7f3d2e44ca3877b6b9e0ecc8b509a8996b47ff151120ee600",
+          "historicalSha256": "f66e8ace322027a7f3d2e44ca3877b6b9e0ecc8b509a8996b47ff151120ee600",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_C_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "a9690b805b8ff972ed5e430acc76c9c1b290533c9bdc7218b850a40a565c5e8b",
+          "historicalSha256": "a9690b805b8ff972ed5e430acc76c9c1b290533c9bdc7218b850a40a565c5e8b",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_FINAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "1ed7bfbf1c2473321e22e6c3b6e61073cff50225ea9d1fb14b075eac4df147b2",
+          "historicalSha256": "1ed7bfbf1c2473321e22e6c3b6e61073cff50225ea9d1fb14b075eac4df147b2",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_GATES_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "d8fa72f6c1ebc13240a6c0e5a9e67633dcdd2e595eee8343bf633fc23ca7b8b8",
+          "historicalSha256": "d8fa72f6c1ebc13240a6c0e5a9e67633dcdd2e595eee8343bf633fc23ca7b8b8",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_IMAGE_TRANSFER.json",
+          "mode": "byte-identical",
+          "currentSha256": "969b1a303f162abc34efc00aaab21fedc03c9967232c2af24fe49975e2337fe8",
+          "historicalSha256": "969b1a303f162abc34efc00aaab21fedc03c9967232c2af24fe49975e2337fe8",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_SOURCE_INVENTORY.md",
+          "mode": "byte-identical",
+          "currentSha256": "8f489e9dfc40661a5494034f6e6cfec6398bd821a9253ca3758718a3c905fc68",
+          "historicalSha256": "8f489e9dfc40661a5494034f6e6cfec6398bd821a9253ca3758718a3c905fc68",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_THEORY_DESKTOP_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "e6d6a7eb8e4f95321e6f36933b7fd4b2c257f37dbdb7bc554d47109610e64d07",
+          "historicalSha256": "e6d6a7eb8e4f95321e6f36933b7fd4b2c257f37dbdb7bc554d47109610e64d07",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_THEORY_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "2c1357c8091b9f49dbc30ead39e5efb9ada047b60cda7f26d643ae743a5c7121",
+          "historicalSha256": "2c1357c8091b9f49dbc30ead39e5efb9ada047b60cda7f26d643ae743a5c7121",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_THEORY_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "22d1dd31e3a8c19acb2bf30e92185dac770b4f1730a9ff04194b9698541e2638",
+          "historicalSha256": "22d1dd31e3a8c19acb2bf30e92185dac770b4f1730a9ff04194b9698541e2638",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_A_FULL_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "a4fab1f2ba2de3d65c4791beb1060d05f99b0920efaec21ebc86e6884f767562",
+          "historicalSha256": "a4fab1f2ba2de3d65c4791beb1060d05f99b0920efaec21ebc86e6884f767562",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_A_NUMERIC_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "ce04f4daa3822bc58e54730efd9ebf0e36d6f4d60390c2c4eda1504ce49cf5d7",
+          "historicalSha256": "ce04f4daa3822bc58e54730efd9ebf0e36d6f4d60390c2c4eda1504ce49cf5d7",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_A_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "19cc177484162ad66275250e8707cabd8e7211f55324c77c7765f2c12c1510ef",
+          "historicalSha256": "19cc177484162ad66275250e8707cabd8e7211f55324c77c7765f2c12c1510ef",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_A_STANDARD_FONT_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "9c13d7a0917e832a966fcbbdf31c34b075748224f778dea6079829f571ed884c",
+          "historicalSha256": "9c13d7a0917e832a966fcbbdf31c34b075748224f778dea6079829f571ed884c",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_BROWSER_FAILURE_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "a50319b9c5229506ae737c80cb6631a58bf9c21e85e7e9cf1eeb34178caf55d0",
+          "historicalSha256": "a50319b9c5229506ae737c80cb6631a58bf9c21e85e7e9cf1eeb34178caf55d0",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_BROWSER_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "9e33eea958bb0fa7dbc27df5c00aabaf6529c1b4d3115fa0b722778f192fdf70",
+          "historicalSha256": "9e33eea958bb0fa7dbc27df5c00aabaf6529c1b4d3115fa0b722778f192fdf70",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_B_FULL_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "a4ef23942f55fbff46bda661fc97c4094ba6bb145b47ae2993a53a5997a4ba50",
+          "historicalSha256": "a4ef23942f55fbff46bda661fc97c4094ba6bb145b47ae2993a53a5997a4ba50",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_B_NUMERIC_ORACLE.py",
+          "mode": "byte-identical",
+          "currentSha256": "1f5110c8c07a723431d222fca5d4e9ae3ff9398e4a622b45d0bd7f0c3e23761a",
+          "historicalSha256": "1f5110c8c07a723431d222fca5d4e9ae3ff9398e4a622b45d0bd7f0c3e23761a",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_B_NUMERIC_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "449493e7304fda7e09f4bb07338fc93536db0732e63755a2bc211415cd48558f",
+          "historicalSha256": "449493e7304fda7e09f4bb07338fc93536db0732e63755a2bc211415cd48558f",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_B_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "61e8968d399e756b2e54932ce84e1e10eb35f7ab8824cb3ae945b975a983c39b",
+          "historicalSha256": "61e8968d399e756b2e54932ce84e1e10eb35f7ab8824cb3ae945b975a983c39b",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_B_STANDARD_FONT_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "6697764573f4a698e486bca2c9d7051bc82fe0b0b2b9aba168b9ebb49a9b6240",
+          "historicalSha256": "6697764573f4a698e486bca2c9d7051bc82fe0b0b2b9aba168b9ebb49a9b6240",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_B_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "4abf49691073fc1e305e0fdb39772aa2d64ae40bea007c6c5707cf47613e1c76",
+          "historicalSha256": "4abf49691073fc1e305e0fdb39772aa2d64ae40bea007c6c5707cf47613e1c76",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_C_FULL_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "fe743997fb0957776c2f3d8c1e4224940e93ab56d03fd9d77905a7eab427947d",
+          "historicalSha256": "fe743997fb0957776c2f3d8c1e4224940e93ab56d03fd9d77905a7eab427947d",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_C_NUMERIC_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "f933c048ecea520af015f96b91f2b320b04a01efe228f7e98e3c0bf94ae692bb",
+          "historicalSha256": "f933c048ecea520af015f96b91f2b320b04a01efe228f7e98e3c0bf94ae692bb",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_C_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "f11193184e074526c6968360e88d6a679f1fb5552a9ec2b20191ba61f8f1336b",
+          "historicalSha256": "f11193184e074526c6968360e88d6a679f1fb5552a9ec2b20191ba61f8f1336b",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_C_STANDARD_FONT_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "dfa2e4742bf97360e1c8a609970a84cbd534f67c7fa556c5af14fbb0176ea9b5",
+          "historicalSha256": "dfa2e4742bf97360e1c8a609970a84cbd534f67c7fa556c5af14fbb0176ea9b5",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_FONT_ENVIRONMENT_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "3f6e2f8b19489ff3f9379b1c5a67a39f9875d023c39b9b57944f5422bf793cd5",
+          "historicalSha256": "3f6e2f8b19489ff3f9379b1c5a67a39f9875d023c39b9b57944f5422bf793cd5",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_FONT_ENVIRONMENT_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "b76f77d79e082b38ae09a100e0f3f310783a830b9f5c066fb6c175a7c15da4df",
+          "historicalSha256": "b76f77d79e082b38ae09a100e0f3f310783a830b9f5c066fb6c175a7c15da4df",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_POSTPROMOTION_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "fb44e27d82a74f45d100d50fc48ca348bdff85dcb022f85bfd1e32174c3b574f",
+          "historicalSha256": "fb44e27d82a74f45d100d50fc48ca348bdff85dcb022f85bfd1e32174c3b574f",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_POSTPROMOTION_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "448c30a5de44ef1db14e1bac463a0283597bb5b4631e111f8c57f8f815f3642e",
+          "historicalSha256": "448c30a5de44ef1db14e1bac463a0283597bb5b4631e111f8c57f8f815f3642e",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_PUBLIC_RUNTIME_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "b10c2277eb5ce9a618ae8334841426b42792b9d2e4bd8f482d044c2fc229314a",
+          "historicalSha256": "b10c2277eb5ce9a618ae8334841426b42792b9d2e4bd8f482d044c2fc229314a",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_PUBLIC_RUNTIME_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "4644da43d96536b404316ea627938fcba0f36b0e3d3c8f0d0b7d603e07cfe844",
+          "historicalSha256": "4644da43d96536b404316ea627938fcba0f36b0e3d3c8f0d0b7d603e07cfe844",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_RUNTIME_EXTENSION_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "9bb1b9a34a45f26e21484ae90ec7f42dc1094ad9e06beca9851939243d80b4cc",
+          "historicalSha256": "9bb1b9a34a45f26e21484ae90ec7f42dc1094ad9e06beca9851939243d80b4cc",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_SOURCE_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "c321a845027d4120f34d534e9fb04f825d03e6569fdc5ee2db81cce46dfc2c41",
+          "historicalSha256": "c321a845027d4120f34d534e9fb04f825d03e6569fdc5ee2db81cce46dfc2c41",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_TECHNICAL_PROBES.json",
+          "mode": "byte-identical",
+          "currentSha256": "cbc898c16035298122c61aaea19512a285c6fe7d3b165978b730c557ff9dd2bf",
+          "historicalSha256": "cbc898c16035298122c61aaea19512a285c6fe7d3b165978b730c557ff9dd2bf",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_TECHNICAL_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "e87f4c6dce74f5a36cdeffef18015c1bc97232725ffa64007eafcb21ac8d0e21",
+          "historicalSha256": "e87f4c6dce74f5a36cdeffef18015c1bc97232725ffa64007eafcb21ac8d0e21",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_THEORY_FULL_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "b12f9f27e668d7df602a1633c2999d71ae8af44e27bb74f837ee3e87be3a95fb",
+          "historicalSha256": "b12f9f27e668d7df602a1633c2999d71ae8af44e27bb74f837ee3e87be3a95fb",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_THEORY_NUMERIC_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "f1afe1bfdb02f117fc593fefa1b04acd5460e971f3f27c0d215b3baa5acbb761",
+          "historicalSha256": "f1afe1bfdb02f117fc593fefa1b04acd5460e971f3f27c0d215b3baa5acbb761",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_THEORY_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "f4f940f2eed9c092ba6765066c729c4e382960b4db4cea6e422db311b33030e0",
+          "historicalSha256": "f4f940f2eed9c092ba6765066c729c4e382960b4db4cea6e422db311b33030e0",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_THEORY_STANDARD_FONT_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "a556d5d7ac8550e43a27f19cbfdb9a4d50a096adf102ebace8ed410b4ad8cc15",
+          "historicalSha256": "a556d5d7ac8550e43a27f19cbfdb9a4d50a096adf102ebace8ed410b4ad8cc15",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_THEORY_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "3701b76bc010d1c003282508a5239212ab669aae391d1e3fd3e4979565f33bd0",
+          "historicalSha256": "3701b76bc010d1c003282508a5239212ab669aae391d1e3fd3e4979565f33bd0",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_A_FULL_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "8dc383edb0e1b6c75b17a663f59382f0ed40860ccd1e2d2df00afd564751fbf0",
+          "historicalSha256": "8dc383edb0e1b6c75b17a663f59382f0ed40860ccd1e2d2df00afd564751fbf0",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_A_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "2b671d0ad5b3b608bcd5728ecb88479230d59e86f99f87c399c905e4b7357a85",
+          "historicalSha256": "2b671d0ad5b3b608bcd5728ecb88479230d59e86f99f87c399c905e4b7357a85",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_A_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "32e8737997ade16239ddc14d6e8ac1988ee61a43d4eceb9a20f834e3ce216013",
+          "historicalSha256": "32e8737997ade16239ddc14d6e8ac1988ee61a43d4eceb9a20f834e3ce216013",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_B_FULL_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "a7009fd18b333a9de72a58c5c76877565c323a7d3ef78e5caf5fd2ed047b7038",
+          "historicalSha256": "a7009fd18b333a9de72a58c5c76877565c323a7d3ef78e5caf5fd2ed047b7038",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_B_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "c2d08f87399867e9a8fbe2d29dce8533c759ea51190f8072feffdae15deb0876",
+          "historicalSha256": "c2d08f87399867e9a8fbe2d29dce8533c759ea51190f8072feffdae15deb0876",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_B_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "65998cc1a62850430e41be705a0d52485225fc563c11aa6d302afdff4487b065",
+          "historicalSha256": "65998cc1a62850430e41be705a0d52485225fc563c11aa6d302afdff4487b065",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_FULL_BROWSER_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "ed91b63797750f1f8d4fbccc7e8ea0dedd4fd5fee50bdcbe58dfa7144d7bb32b",
+          "historicalSha256": "ed91b63797750f1f8d4fbccc7e8ea0dedd4fd5fee50bdcbe58dfa7144d7bb32b",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_PUBLIC_RUNTIME_BROWSER.json",
+          "mode": "byte-identical",
+          "currentSha256": "4962bbab0b60b5c07c1dfa610812e4837ec5ce3defc9e4c564e06435bb4a3f45",
+          "historicalSha256": "4962bbab0b60b5c07c1dfa610812e4837ec5ce3defc9e4c564e06435bb4a3f45",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_PUBLIC_RUNTIME_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "6408eef9f239e5e32cf96a7b346c6d10a7096030d66de336fdc95600fa9a5bc0",
+          "historicalSha256": "6408eef9f239e5e32cf96a7b346c6d10a7096030d66de336fdc95600fa9a5bc0",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_RELEASE_PROBES.json",
+          "mode": "byte-identical",
+          "currentSha256": "b9894ff546f50d874b19f9d44a56bbb81b107d47f0aa00e0d097a2643bbf4443",
+          "historicalSha256": "b9894ff546f50d874b19f9d44a56bbb81b107d47f0aa00e0d097a2643bbf4443",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_RELEASE_TECHNICAL_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "83ebb1af2d82eeb256aa10f7d0a19b56c5812f2bd8e24f65a18335a9001d865c",
+          "historicalSha256": "83ebb1af2d82eeb256aa10f7d0a19b56c5812f2bd8e24f65a18335a9001d865c",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_RUNTIME_BROWSER.json",
+          "mode": "byte-identical",
+          "currentSha256": "25897311ee48c734a13755334df4865c3f727f50da62b3f2bae98f8124b25eec",
+          "historicalSha256": "25897311ee48c734a13755334df4865c3f727f50da62b3f2bae98f8124b25eec",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_RUNTIME_EXTENSION_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "76c2cb88441a834286dcf8fe6bb7ce0048a50542ec9d2bac315e8a263889487e",
+          "historicalSha256": "76c2cb88441a834286dcf8fe6bb7ce0048a50542ec9d2bac315e8a263889487e",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_RUNTIME_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "e3254f0837d89c54af0356315992a0e8e7a1c8326334bf17fc6075a0f5281f62",
+          "historicalSha256": "e3254f0837d89c54af0356315992a0e8e7a1c8326334bf17fc6075a0f5281f62",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_SOURCE_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "9c32a1ea1389f6c09f92fac00b00d8638b4972372233b13f65ed8dd012b3758d",
+          "historicalSha256": "9c32a1ea1389f6c09f92fac00b00d8638b4972372233b13f65ed8dd012b3758d",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_THEORY_FULL_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "d887166ee52ed7440458781d8c1e553eac200bbd902bb8cbcd56cd63ce5f5b32",
+          "historicalSha256": "d887166ee52ed7440458781d8c1e553eac200bbd902bb8cbcd56cd63ce5f5b32",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_THEORY_NUMERIC_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "b4794c4ba55d6133100292f86f2d13a7a70277aa1343c2cc6cafb6a66a504b89",
+          "historicalSha256": "b4794c4ba55d6133100292f86f2d13a7a70277aa1343c2cc6cafb6a66a504b89",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_THEORY_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "b11cf2b8ea3e7ea0e8fb52160eba44f21424f3cc88616e5a9e554d76130b4d53",
+          "historicalSha256": "b11cf2b8ea3e7ea0e8fb52160eba44f21424f3cc88616e5a9e554d76130b4d53",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_THEORY_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "6718bff1734fbe2e8a942804516741b914031f467215869be374f685f8caa914",
+          "historicalSha256": "6718bff1734fbe2e8a942804516741b914031f467215869be374f685f8caa914",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_A_FULL_CONTEXT_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "954369b74c66b1dfdc5b6291962a69a6a69a7523fb4d0d45d8f8d1bc753d5d6f",
+          "historicalSha256": "954369b74c66b1dfdc5b6291962a69a6a69a7523fb4d0d45d8f8d1bc753d5d6f",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_A_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "4b96159fba2c3e5783379460a20b520eb4cc8270079059f699d633d1ed924114",
+          "historicalSha256": "4b96159fba2c3e5783379460a20b520eb4cc8270079059f699d633d1ed924114",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_A_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "66c8c70658fc3e8ab1c358c69795cf017ca1fac618d313c2465aa4ff0696a9d8",
+          "historicalSha256": "66c8c70658fc3e8ab1c358c69795cf017ca1fac618d313c2465aa4ff0696a9d8",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_B_FULL_CONTEXT_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "feeb89cc84f5e31319d7c1d9c0fd8cb6dbe3c59f4b7995597ce46eb22898e496",
+          "historicalSha256": "feeb89cc84f5e31319d7c1d9c0fd8cb6dbe3c59f4b7995597ce46eb22898e496",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_B_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "fb37f6d012641e5866230fd35d10744e186a77e65d00edd8f0b1a4dce1913a12",
+          "historicalSha256": "fb37f6d012641e5866230fd35d10744e186a77e65d00edd8f0b1a4dce1913a12",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_B_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "75fe2e9322c25fc0dc1fc95308905f7efe7253ac2ee18541ef0846375e012b6d",
+          "historicalSha256": "75fe2e9322c25fc0dc1fc95308905f7efe7253ac2ee18541ef0846375e012b6d",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_CAPTION_DELTA.json",
+          "mode": "byte-identical",
+          "currentSha256": "9d780d16c63f4d83a0bb6b7b6349841138e294e827827aa2d008af3d0da52383",
+          "historicalSha256": "9d780d16c63f4d83a0bb6b7b6349841138e294e827827aa2d008af3d0da52383",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_CLOUD_B_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "9233f4c406c683dc1b391f3452b32b79de48a0bbc5ac7cf3690ba727264b0f10",
+          "historicalSha256": "9233f4c406c683dc1b391f3452b32b79de48a0bbc5ac7cf3690ba727264b0f10",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_CLOUD_LABEL_DELTA_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "9acb887a437d7f9d615296d5888986576974094f1aaec43b220aab1f83b8e724",
+          "historicalSha256": "9acb887a437d7f9d615296d5888986576974094f1aaec43b220aab1f83b8e724",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_CLOUD_THEORY_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "8e49ce6b5e5b8fa141bf523a39cdda430aa78f387fe8d01058d334fbf99ef4fa",
+          "historicalSha256": "8e49ce6b5e5b8fa141bf523a39cdda430aa78f387fe8d01058d334fbf99ef4fa",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_C_FULL_CONTEXT_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "8eb8b8f89e21ec9697b3cdf438127c2602ae98dd92198c5b051829cfdbd6abab",
+          "historicalSha256": "8eb8b8f89e21ec9697b3cdf438127c2602ae98dd92198c5b051829cfdbd6abab",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_C_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "f348e0e452fe0b4783272fad2f325c4a6dde5d9a84398811d0bc25a278f5e559",
+          "historicalSha256": "f348e0e452fe0b4783272fad2f325c4a6dde5d9a84398811d0bc25a278f5e559",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_C_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "9a600b2c26b83ac4e0808293c7dbae872c6f66721c0886f6f24e47fb9b816698",
+          "historicalSha256": "9a600b2c26b83ac4e0808293c7dbae872c6f66721c0886f6f24e47fb9b816698",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_FINAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "ecc075d79ca2a77e881cc7a4845cf2ee25258108eaaa869fd60743a08a756c93",
+          "historicalSha256": "ecc075d79ca2a77e881cc7a4845cf2ee25258108eaaa869fd60743a08a756c93",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_INTEGRATION_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "9bc48db0d5e3699281f3fe35b318cd856587f67c23f52b385a7134d8528f0fd6",
+          "historicalSha256": "9bc48db0d5e3699281f3fe35b318cd856587f67c23f52b385a7134d8528f0fd6",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_SOURCE_INVENTORY.md",
+          "mode": "byte-identical",
+          "currentSha256": "48f6e8c8e6f6f895a89c0cc008dfd80f6a1f1d8ae9a606d83ebd6a8066d29134",
+          "historicalSha256": "48f6e8c8e6f6f895a89c0cc008dfd80f6a1f1d8ae9a606d83ebd6a8066d29134",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_THEORY_FULL_CONTEXT_LATE_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "b50de3185e9c12ede9991fb35268845e5c449e2ec1b211e35aa8d085fe7cd515",
+          "historicalSha256": "b50de3185e9c12ede9991fb35268845e5c449e2ec1b211e35aa8d085fe7cd515",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_THEORY_FULL_CONTEXT_PRIMARY_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "ed8a8f2afbb3694583df9a519872e3c1490d468e8b84b3848e0034ea87e525d0",
+          "historicalSha256": "ed8a8f2afbb3694583df9a519872e3c1490d468e8b84b3848e0034ea87e525d0",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_THEORY_FULL_CONTEXT_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "2400feb1c421c9cbc583a83e11cf6667c177eed7b2806e221cbcc0447f0828ad",
+          "historicalSha256": "2400feb1c421c9cbc583a83e11cf6667c177eed7b2806e221cbcc0447f0828ad",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_THEORY_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "401fb9ad452edfdd2b9d1805d1e141261a0e1e744cf095584a5b536f2208d03a",
+          "historicalSha256": "401fb9ad452edfdd2b9d1805d1e141261a0e1e744cf095584a5b536f2208d03a",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_THEORY_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "ba2acabeeecc5d099f9f76d9905f87679914291522148dd7ad4c95f5c5bd211d",
+          "historicalSha256": "ba2acabeeecc5d099f9f76d9905f87679914291522148dd7ad4c95f5c5bd211d",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_VISUAL_DELTA_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "cbc4685443bb39dbc273b80403bc41c5494c0c36028649e583ff84c70904f0ac",
+          "historicalSha256": "cbc4685443bb39dbc273b80403bc41c5494c0c36028649e583ff84c70904f0ac",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_CONTENT_ADDENDUM.json",
+          "mode": "byte-identical",
+          "currentSha256": "68903676e57bbfa6594fe2039f16e171e31d313966937d31aa8461c39e9721fd",
+          "historicalSha256": "68903676e57bbfa6594fe2039f16e171e31d313966937d31aa8461c39e9721fd",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_DESIGN_BRIEF.md",
+          "mode": "byte-identical",
+          "currentSha256": "7bc900409f9c65837933c1796a186541b9389e0d8e4d9f3de40558451be7c52f",
+          "historicalSha256": "7bc900409f9c65837933c1796a186541b9389e0d8e4d9f3de40558451be7c52f",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_EVIDENCE_AUDIT.json",
+          "mode": "byte-identical",
+          "currentSha256": "1a0f1fe03bc5d296c62eb4a561b10f8e2fdb152a42f6698c95fbe73f8d5273bc",
+          "historicalSha256": "1a0f1fe03bc5d296c62eb4a561b10f8e2fdb152a42f6698c95fbe73f8d5273bc",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_FRONTEND_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "67ef657c517aa28fff1b8d5aad23dc9ab857a394e526cca760a682dc1b1b4ace",
+          "historicalSha256": "67ef657c517aa28fff1b8d5aad23dc9ab857a394e526cca760a682dc1b1b4ace",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_INTEGRATION_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "44f034b18e862f0dfd3bd7f1a76dd2a2bb6802adef3903400df9879bd4f6d3ec",
+          "historicalSha256": "44f034b18e862f0dfd3bd7f1a76dd2a2bb6802adef3903400df9879bd4f6d3ec",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_LABELS_RUNTIME_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "0ade5dd181b4467a1af642d0bfa13e5192f64e3093e73035bf0835a10b1faf00",
+          "historicalSha256": "0ade5dd181b4467a1af642d0bfa13e5192f64e3093e73035bf0835a10b1faf00",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_MODEL_CROSS_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "dd97057df1384ac98ae8d585d46908024e449ff1bb4c6e13ea6e6c218eb1c870",
+          "historicalSha256": "dd97057df1384ac98ae8d585d46908024e449ff1bb4c6e13ea6e6c218eb1c870",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_SOURCE_LABELS_REVIEW.md",
+          "mode": "byte-identical",
+          "currentSha256": "05856221a39bf7e52d747ae7a5d4672732d4d5ed8cd50d53dcf2470521772c97",
+          "historicalSha256": "05856221a39bf7e52d747ae7a5d4672732d4d5ed8cd50d53dcf2470521772c97",
+          "passed": true
+        },
+        {
+          "file": "docs/reviews/ATANASYAN_7_9_THEORY_VISUAL_REVIEW.json",
+          "mode": "byte-identical",
+          "currentSha256": "f673d6c39a230ef7d96eb8c678842c047bb8f63181721f83664f0ca6e308034a",
+          "historicalSha256": "f673d6c39a230ef7d96eb8c678842c047bb8f63181721f83664f0ca6e308034a",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/assets/board-adapter.js",
+          "mode": "byte-identical",
+          "currentSha256": "e1c366fd77f2cc822894be7e21139ce99b9e7b3c568392b122f2a3b386b7545b",
+          "historicalSha256": "e1c366fd77f2cc822894be7e21139ce99b9e7b3c568392b122f2a3b386b7545b",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/assets/engine.js",
+          "mode": "byte-identical",
+          "currentSha256": "85d395dbfb66f8a1409f1d2f930fbb6f742c0085239d34d18ec2a901f3bd6492",
+          "historicalSha256": "85d395dbfb66f8a1409f1d2f930fbb6f742c0085239d34d18ec2a901f3bd6492",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/assets/math-text.js",
+          "mode": "byte-identical",
+          "currentSha256": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+          "historicalSha256": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/assets/planar-viewer.js",
+          "mode": "byte-identical",
+          "currentSha256": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061",
+          "historicalSha256": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/assets/style.css",
+          "mode": "byte-identical",
+          "currentSha256": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b",
+          "historicalSha256": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/data/course.json",
+          "mode": "1247-union-validator-and-1083-lesson-catalog-digests",
+          "currentSha256": "af1e3a373745d3a66e3e6f71b14d02de4cd81f0c688a8929c0475277cc22b574",
+          "historicalSha256": "9730c6446a1503b460f40e6951458714730a7a731298fa22ff09fd49d03ec01c",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/index.html",
+          "mode": "byte-identical",
+          "currentSha256": "098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804",
+          "historicalSha256": "098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/learning-contracts.js",
+          "mode": "byte-identical",
+          "currentSha256": "2f1f8220d74797cd270d874cbe7505290527d6ffcfe024d8cb64c4601313be8b",
+          "historicalSha256": "2f1f8220d74797cd270d874cbe7505290527d6ffcfe024d8cb64c4601313be8b",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-01-a.json",
+          "mode": "byte-identical",
+          "currentSha256": "b01c8ec4cc2c621dd360a547ffe314e901c0fa3f446b97bb2cb2a844f8e8ea52",
+          "historicalSha256": "b01c8ec4cc2c621dd360a547ffe314e901c0fa3f446b97bb2cb2a844f8e8ea52",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-01-b.json",
+          "mode": "byte-identical",
+          "currentSha256": "49dab55e0d1c497c91fbf6a400d055387ac9a589a2c835f1bf14c48682d7bb11",
+          "historicalSha256": "49dab55e0d1c497c91fbf6a400d055387ac9a589a2c835f1bf14c48682d7bb11",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-01-c.json",
+          "mode": "byte-identical",
+          "currentSha256": "fda759f01529544b6ce35bef458c425a294b695560c0bb6cd535683d69643731",
+          "historicalSha256": "fda759f01529544b6ce35bef458c425a294b695560c0bb6cd535683d69643731",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-01-theory.json",
+          "mode": "byte-identical",
+          "currentSha256": "74a34c6c441f65e3c957a6c46ef99cdb265a2442ee85db5f99743ee5fa7143ff",
+          "historicalSha256": "74a34c6c441f65e3c957a6c46ef99cdb265a2442ee85db5f99743ee5fa7143ff",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-02-a.json",
+          "mode": "byte-identical",
+          "currentSha256": "7678ddd773b5132aee66014c241d2baefb82c4f0000aca22581ae9cb43299717",
+          "historicalSha256": "7678ddd773b5132aee66014c241d2baefb82c4f0000aca22581ae9cb43299717",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-02-b.json",
+          "mode": "byte-identical",
+          "currentSha256": "0b7c3874dac28779c46bb2c01fa361ff829adcf959b13af2d06863e1a2198090",
+          "historicalSha256": "0b7c3874dac28779c46bb2c01fa361ff829adcf959b13af2d06863e1a2198090",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-02-c.json",
+          "mode": "byte-identical",
+          "currentSha256": "05fa573d941e612e263f3dc97fb376850fa78a99b67bd81133060f16986a707d",
+          "historicalSha256": "05fa573d941e612e263f3dc97fb376850fa78a99b67bd81133060f16986a707d",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-02-theory.json",
+          "mode": "byte-identical",
+          "currentSha256": "30c006ca60c8b7481d32925cb6029b4a7261b42e7c0d64fa3b4830dc0a904f6a",
+          "historicalSha256": "30c006ca60c8b7481d32925cb6029b4a7261b42e7c0d64fa3b4830dc0a904f6a",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-03-a.json",
+          "mode": "byte-identical",
+          "currentSha256": "ef5a5988e0945041c0ea34a20ff966b011302e2fef5ea9c0987f440fc465173d",
+          "historicalSha256": "ef5a5988e0945041c0ea34a20ff966b011302e2fef5ea9c0987f440fc465173d",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-03-b.json",
+          "mode": "byte-identical",
+          "currentSha256": "5aab78fd9b9b3ef77f236df601b332c8050a5498934e46edcb1c02903fd56a06",
+          "historicalSha256": "5aab78fd9b9b3ef77f236df601b332c8050a5498934e46edcb1c02903fd56a06",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-03-theory.json",
+          "mode": "byte-identical",
+          "currentSha256": "6724b3349c1e287ba06c33fe9837f15bf0b2dd7db35f201904f8a52739f6ae00",
+          "historicalSha256": "6724b3349c1e287ba06c33fe9837f15bf0b2dd7db35f201904f8a52739f6ae00",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-04-a.json",
+          "mode": "byte-identical",
+          "currentSha256": "f31f566850547741205b60dedfebf7994e7a6264a19ca14604b63594f2f7d8d8",
+          "historicalSha256": "f31f566850547741205b60dedfebf7994e7a6264a19ca14604b63594f2f7d8d8",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-04-b.json",
+          "mode": "byte-identical",
+          "currentSha256": "114a278f8eda45c80d3dfa8167ae93e9177883d04205cd2eb2aeac77391b3a4d",
+          "historicalSha256": "114a278f8eda45c80d3dfa8167ae93e9177883d04205cd2eb2aeac77391b3a4d",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-04-c.json",
+          "mode": "byte-identical",
+          "currentSha256": "97d3bdd8de484f766aa3b75061d6c08fad9df0d4738c3beaa93d2a80c26b00cf",
+          "historicalSha256": "97d3bdd8de484f766aa3b75061d6c08fad9df0d4738c3beaa93d2a80c26b00cf",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-04-theory.json",
+          "mode": "byte-identical",
+          "currentSha256": "01f22365db641b2363fbcf03f88898f4aae004aecda0b302c3bb94b2eafad474",
+          "historicalSha256": "01f22365db641b2363fbcf03f88898f4aae004aecda0b302c3bb94b2eafad474",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-05-a.json",
+          "mode": "byte-identical",
+          "currentSha256": "869e3b74171061e0078d08d964ccf9d4f5e845010f5486053d768604f6f473e7",
+          "historicalSha256": "869e3b74171061e0078d08d964ccf9d4f5e845010f5486053d768604f6f473e7",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-05-b.json",
+          "mode": "byte-identical",
+          "currentSha256": "fd845b4e97a122860533694ee9e4b3bd5e4a720c2e82de061d912f8da3acbdc1",
+          "historicalSha256": "fd845b4e97a122860533694ee9e4b3bd5e4a720c2e82de061d912f8da3acbdc1",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-05-c.json",
+          "mode": "byte-identical",
+          "currentSha256": "431d8b0a402f13faf9f40a24efae092999623fbe1823a1f8bee262481a8a1090",
+          "historicalSha256": "431d8b0a402f13faf9f40a24efae092999623fbe1823a1f8bee262481a8a1090",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-05-theory.json",
+          "mode": "byte-identical",
+          "currentSha256": "f884217f1af5ce4b281ad84da2fef26ee299cbe021186d5b3d0e24673313b946",
+          "historicalSha256": "f884217f1af5ce4b281ad84da2fef26ee299cbe021186d5b3d0e24673313b946",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-06-a.json",
+          "mode": "byte-identical",
+          "currentSha256": "04f1a4524e4bafb7161aec834b579390c09329851eaea5799ec3c713e0e6d77b",
+          "historicalSha256": "04f1a4524e4bafb7161aec834b579390c09329851eaea5799ec3c713e0e6d77b",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-06-b.json",
+          "mode": "byte-identical",
+          "currentSha256": "3feac7945c0aead63bd2247d751cbfe553c09511397146298336bdd9660a8529",
+          "historicalSha256": "3feac7945c0aead63bd2247d751cbfe553c09511397146298336bdd9660a8529",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-06-c.json",
+          "mode": "byte-identical",
+          "currentSha256": "01b76e738125a6bb533dd0c36b53fd9c4fe2218c61b2c4f1625de4409587230c",
+          "historicalSha256": "01b76e738125a6bb533dd0c36b53fd9c4fe2218c61b2c4f1625de4409587230c",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-06-d.json",
+          "mode": "byte-identical",
+          "currentSha256": "3836fa89b278f7142cc70b856939e23d76b37a382d01b31f6fbeda2fb91fb814",
+          "historicalSha256": "3836fa89b278f7142cc70b856939e23d76b37a382d01b31f6fbeda2fb91fb814",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-06-theory.json",
+          "mode": "byte-identical",
+          "currentSha256": "b36394aa07bd8cc0cf92814edb1189d6565b77bb27de06b328d97150bb3ad7e3",
+          "historicalSha256": "b36394aa07bd8cc0cf92814edb1189d6565b77bb27de06b328d97150bb3ad7e3",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-07-a.json",
+          "mode": "byte-identical",
+          "currentSha256": "ebaa8881705c79c6ae51bfff67053910d1d67f94b869e711dbe8c741434dd1f7",
+          "historicalSha256": "ebaa8881705c79c6ae51bfff67053910d1d67f94b869e711dbe8c741434dd1f7",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-07-b.json",
+          "mode": "byte-identical",
+          "currentSha256": "c4920455920861cb1ff9af1feb4c4aee6b47274caf21146e5216499b19a34797",
+          "historicalSha256": "c4920455920861cb1ff9af1feb4c4aee6b47274caf21146e5216499b19a34797",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-07-c.json",
+          "mode": "byte-identical",
+          "currentSha256": "516b8169ac55ac5a290da2a6d46232b853b5db777270c42779cde6abbb6e1758",
+          "historicalSha256": "516b8169ac55ac5a290da2a6d46232b853b5db777270c42779cde6abbb6e1758",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-07-theory.json",
+          "mode": "byte-identical",
+          "currentSha256": "83f86c8ba72c86370ca6434bdae78f177e2cc376f6819a233b30f9a5c5af9cdb",
+          "historicalSha256": "83f86c8ba72c86370ca6434bdae78f177e2cc376f6819a233b30f9a5c5af9cdb",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/grade-07-advanced-a.json",
+          "mode": "byte-identical",
+          "currentSha256": "3b08db94f508b636b93d5069b4259afcf9aeeec0cb534b379aeee48d606e55da",
+          "historicalSha256": "3b08db94f508b636b93d5069b4259afcf9aeeec0cb534b379aeee48d606e55da",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/grade-07-advanced-b.json",
+          "mode": "byte-identical",
+          "currentSha256": "0abda31e287a2b30ae4f6c1e8444bea11f11e6c00aee0aa2b15b0ca8b7ce2027",
+          "historicalSha256": "0abda31e287a2b30ae4f6c1e8444bea11f11e6c00aee0aa2b15b0ca8b7ce2027",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/models/grade-07-advanced-c.json",
+          "mode": "byte-identical",
+          "currentSha256": "872af4ad27744a4eb0ba9b4505210970f8fb4d42f145ecafbf7ae8e6e8304495",
+          "historicalSha256": "872af4ad27744a4eb0ba9b4505210970f8fb4d42f145ecafbf7ae8e6e8304495",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-01-corrections.json",
+          "mode": "byte-identical",
+          "currentSha256": "1c6d32ceb9f5b820f28f4ad75682c59a9a0de500e0d5076bde18838f33572d61",
+          "historicalSha256": "1c6d32ceb9f5b820f28f4ad75682c59a9a0de500e0d5076bde18838f33572d61",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-01-models-a-review.json",
+          "mode": "byte-identical",
+          "currentSha256": "49546d37d1ee064ed8ddbae722239fb173dc82a14fa85f022e55b722ba6165e1",
+          "historicalSha256": "49546d37d1ee064ed8ddbae722239fb173dc82a14fa85f022e55b722ba6165e1",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-01-models-a-visual-review.json",
+          "mode": "byte-identical",
+          "currentSha256": "bbf01b26fe0f9c2fe6306173fb53502e0d0a4c1d2224ecba66263ef889bdb61e",
+          "historicalSha256": "bbf01b26fe0f9c2fe6306173fb53502e0d0a4c1d2224ecba66263ef889bdb61e",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-01-models-b-review.json",
+          "mode": "byte-identical",
+          "currentSha256": "c24624bea14d1b4d30362bcdcf172b300cfec205ecfa72516ab4a4e5cb5d3290",
+          "historicalSha256": "c24624bea14d1b4d30362bcdcf172b300cfec205ecfa72516ab4a4e5cb5d3290",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-01-models-b-visual-review.json",
+          "mode": "byte-identical",
+          "currentSha256": "80918247de1b585a233f05613ea01766ba7560bbd988248d7d5c63683bf071bc",
+          "historicalSha256": "80918247de1b585a233f05613ea01766ba7560bbd988248d7d5c63683bf071bc",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-01-models-c-review.json",
+          "mode": "byte-identical",
+          "currentSha256": "66512ac7db24b1a3d047b653068a1f973d3e512db3f6402a74dfcada437c9bc8",
+          "historicalSha256": "66512ac7db24b1a3d047b653068a1f973d3e512db3f6402a74dfcada437c9bc8",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-01-models-c-visual-review.json",
+          "mode": "byte-identical",
+          "currentSha256": "90a2bb182f800b45bb90363f3d5d79c31327a28191abf6fb852fe68993f82fd4",
+          "historicalSha256": "90a2bb182f800b45bb90363f3d5d79c31327a28191abf6fb852fe68993f82fd4",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-01-review.json",
+          "mode": "byte-identical",
+          "currentSha256": "f49120c3ce6863ae9ae4758905e0b55081b2fedd7017b131e1da912f75aee282",
+          "historicalSha256": "f49120c3ce6863ae9ae4758905e0b55081b2fedd7017b131e1da912f75aee282",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-01-theory.json",
+          "mode": "byte-identical",
+          "currentSha256": "c12e0ea1a911b30bcab2ecd22369e86fb6f628b3336d95c58d013b26118b5983",
+          "historicalSha256": "c12e0ea1a911b30bcab2ecd22369e86fb6f628b3336d95c58d013b26118b5983",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-01.json",
+          "mode": "byte-identical",
+          "currentSha256": "460fd91d5ab2e6c245a75872ee04be27a20cb86340b39ef924b89d78c1e5f57f",
+          "historicalSha256": "460fd91d5ab2e6c245a75872ee04be27a20cb86340b39ef924b89d78c1e5f57f",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-02-a.json",
+          "mode": "byte-identical",
+          "currentSha256": "2b61b581d00189331d820b5440518a23ca1c4671772effa3144f71f0a8c75250",
+          "historicalSha256": "2b61b581d00189331d820b5440518a23ca1c4671772effa3144f71f0a8c75250",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-02-b.json",
+          "mode": "byte-identical",
+          "currentSha256": "7255b10084efce92277edf3aca6d77a215f259c1680990b221cf8cb225ea0b14",
+          "historicalSha256": "7255b10084efce92277edf3aca6d77a215f259c1680990b221cf8cb225ea0b14",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-02-c.json",
+          "mode": "byte-identical",
+          "currentSha256": "d421e4390fe583dede8770895dde9c484575068de240f2cd35e84c537d6c3c47",
+          "historicalSha256": "d421e4390fe583dede8770895dde9c484575068de240f2cd35e84c537d6c3c47",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-02-theory.json",
+          "mode": "byte-identical",
+          "currentSha256": "9edce3117e42d7482c8acb166fb6b688ea58c89172022e41c12f5e636158dfac",
+          "historicalSha256": "9edce3117e42d7482c8acb166fb6b688ea58c89172022e41c12f5e636158dfac",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-03-a.json",
+          "mode": "byte-identical",
+          "currentSha256": "823aebf87d1eca1641e71ac9420d9f64d3b4fe1d1e9319005077731d3ada6fd4",
+          "historicalSha256": "823aebf87d1eca1641e71ac9420d9f64d3b4fe1d1e9319005077731d3ada6fd4",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-03-b.json",
+          "mode": "byte-identical",
+          "currentSha256": "7a98acfc88154e220f01e348eb26335473915fdfd9cd977d0cef62aae56a0ef6",
+          "historicalSha256": "7a98acfc88154e220f01e348eb26335473915fdfd9cd977d0cef62aae56a0ef6",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-03-theory.json",
+          "mode": "byte-identical",
+          "currentSha256": "1cad741797f564a2530b1f1878eafeac2c8154f57377e7ec11f49d11f2b51b10",
+          "historicalSha256": "1cad741797f564a2530b1f1878eafeac2c8154f57377e7ec11f49d11f2b51b10",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-04-a.json",
+          "mode": "byte-identical",
+          "currentSha256": "27c3bb48a30576e7070c8c5ea3f9732724950f2e4fe7e82ccd3680edaacedd2b",
+          "historicalSha256": "27c3bb48a30576e7070c8c5ea3f9732724950f2e4fe7e82ccd3680edaacedd2b",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-04-b.json",
+          "mode": "byte-identical",
+          "currentSha256": "280634e5e55c283761fed8d6b0084fa678b38985cf08f5eaf734a12887704a9c",
+          "historicalSha256": "280634e5e55c283761fed8d6b0084fa678b38985cf08f5eaf734a12887704a9c",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-04-c.json",
+          "mode": "byte-identical",
+          "currentSha256": "932b282663c84a09e68799629871ecf6881be1cf636c4e4ea4412c8fd0d29f44",
+          "historicalSha256": "932b282663c84a09e68799629871ecf6881be1cf636c4e4ea4412c8fd0d29f44",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-04-theory.json",
+          "mode": "byte-identical",
+          "currentSha256": "d2a7d2dbe4fedb3ba5e6b961679dffdecd3193d6c6ba24a7d2fbef62bdaed094",
+          "historicalSha256": "d2a7d2dbe4fedb3ba5e6b961679dffdecd3193d6c6ba24a7d2fbef62bdaed094",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-05-a.json",
+          "mode": "byte-identical",
+          "currentSha256": "8798875fe0ec80bbc5c3013a6bf03882d6c974c3513dfffb969f0a89b60b8a1c",
+          "historicalSha256": "8798875fe0ec80bbc5c3013a6bf03882d6c974c3513dfffb969f0a89b60b8a1c",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-05-b.json",
+          "mode": "byte-identical",
+          "currentSha256": "fc4b0476a16bf2f433f17c514bd45165945fc0c3bbb4e783e0b0d9b4d1d892bc",
+          "historicalSha256": "fc4b0476a16bf2f433f17c514bd45165945fc0c3bbb4e783e0b0d9b4d1d892bc",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-05-c.json",
+          "mode": "byte-identical",
+          "currentSha256": "31f8b5b78af98e80fb5a32ac1f63276dab9d3f88f54d22b4e7ebc1df2a1368c8",
+          "historicalSha256": "31f8b5b78af98e80fb5a32ac1f63276dab9d3f88f54d22b4e7ebc1df2a1368c8",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-05-theory.json",
+          "mode": "byte-identical",
+          "currentSha256": "5f22564984fa7846baaeae6d87b9c54c7f14c7c4c8b89589b126e0c9c8bb2597",
+          "historicalSha256": "5f22564984fa7846baaeae6d87b9c54c7f14c7c4c8b89589b126e0c9c8bb2597",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-06-a.json",
+          "mode": "byte-identical",
+          "currentSha256": "cd3ade56ae93895258c3298156af8d94178bdd0c004bdeb1ccf11b6920e88aad",
+          "historicalSha256": "cd3ade56ae93895258c3298156af8d94178bdd0c004bdeb1ccf11b6920e88aad",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-06-b.json",
+          "mode": "byte-identical",
+          "currentSha256": "d131311dc91f4c2f30239b58cff85b604166ea5409163ffc109d54dcd8f7f775",
+          "historicalSha256": "d131311dc91f4c2f30239b58cff85b604166ea5409163ffc109d54dcd8f7f775",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-06-c.json",
+          "mode": "byte-identical",
+          "currentSha256": "544c45c5a89a9ee0ac3d23be8222eb05432384ae59f7258131fbbf6bcfeb3f15",
+          "historicalSha256": "544c45c5a89a9ee0ac3d23be8222eb05432384ae59f7258131fbbf6bcfeb3f15",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-06-d.json",
+          "mode": "byte-identical",
+          "currentSha256": "5f4a97f6f9ddfeb7d12305e17cd6faa55d586bfbe83c0268bdf2525e69e95513",
+          "historicalSha256": "5f4a97f6f9ddfeb7d12305e17cd6faa55d586bfbe83c0268bdf2525e69e95513",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-06-theory.json",
+          "mode": "byte-identical",
+          "currentSha256": "51963adcbc234ac289a6869b1960ad1a7d00671d1c2b4d2c7bfe03843a47d574",
+          "historicalSha256": "51963adcbc234ac289a6869b1960ad1a7d00671d1c2b4d2c7bfe03843a47d574",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-07-a.json",
+          "mode": "byte-identical",
+          "currentSha256": "024840fce8be7be977c566203b1445333f772a217817d0ae579914ac832fc568",
+          "historicalSha256": "024840fce8be7be977c566203b1445333f772a217817d0ae579914ac832fc568",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-07-b.json",
+          "mode": "byte-identical",
+          "currentSha256": "b88edfacda577c584b2612c7e151cab81494288391b7c61b362549c3e9b651c5",
+          "historicalSha256": "b88edfacda577c584b2612c7e151cab81494288391b7c61b362549c3e9b651c5",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-07-c.json",
+          "mode": "byte-identical",
+          "currentSha256": "4137b49f5469904447f3e565bcd889618fcf8dea96e9c8ed018dcbf08a45ec4c",
+          "historicalSha256": "4137b49f5469904447f3e565bcd889618fcf8dea96e9c8ed018dcbf08a45ec4c",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-07-theory.json",
+          "mode": "byte-identical",
+          "currentSha256": "7ad100d65e400e93f6541301f966c0d57458b3ddb410a416b7c6d2745df93aa7",
+          "historicalSha256": "7ad100d65e400e93f6541301f966c0d57458b3ddb410a416b7c6d2745df93aa7",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/grade-07-advanced-a.json",
+          "mode": "byte-identical",
+          "currentSha256": "f619243eb1e55e5d1887c0c6dd2646fdae4639035ac28ef2019590b3d7c9108b",
+          "historicalSha256": "f619243eb1e55e5d1887c0c6dd2646fdae4639035ac28ef2019590b3d7c9108b",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/grade-07-advanced-b.json",
+          "mode": "byte-identical",
+          "currentSha256": "1e3e832b0aa84e7f18bfab882b9ca37b7b1342edfe5b72ad0c38deecc27b5a2a",
+          "historicalSha256": "1e3e832b0aa84e7f18bfab882b9ca37b7b1342edfe5b72ad0c38deecc27b5a2a",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/preparation/grade-07-advanced-c.json",
+          "mode": "byte-identical",
+          "currentSha256": "42aac6737590e2d0e1da6d99a2f8b92982cd8a5c19fcefdbaf82a14c6b06d3b5",
+          "historicalSha256": "42aac6737590e2d0e1da6d99a2f8b92982cd8a5c19fcefdbaf82a14c6b06d3b5",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/release-review-advanced-07.json",
+          "mode": "exact-prior-manifest-restoration",
+          "currentSha256": "1e64c22f617b6703107db81dc34bf887534031cf3f95678783eea5f57f2b436d",
+          "historicalSha256": "784b2b976e51fff4158b18d65805359d5bba75a5fd94da137d8c30efb0c001f4",
+          "passed": true,
+          "restoredSha256": "784b2b976e51fff4158b18d65805359d5bba75a5fd94da137d8c30efb0c001f4"
+        },
+        {
+          "file": "geometry-course/textbook/release-review-chapter-02.json",
+          "mode": "exact-prior-manifest-restoration",
+          "currentSha256": "8ba617e69db49bc83183807407ef6c03ec3f2bb8f034a9ca2f2315d0fc810e03",
+          "historicalSha256": "59a43992589970544dc7da053c8a043ab9c5c0f7dc09d857b5ca7b8fa0618a01",
+          "passed": true,
+          "restoredSha256": "59a43992589970544dc7da053c8a043ab9c5c0f7dc09d857b5ca7b8fa0618a01"
+        },
+        {
+          "file": "geometry-course/textbook/release-review-chapter-03.json",
+          "mode": "exact-prior-manifest-restoration",
+          "currentSha256": "12bfa29e75da2dcf07da2f29bb1015cb387f3a241f0204ef6edc1cf7709a9719",
+          "historicalSha256": "8a17a35bd30fd7da0de9e8dba376017345866a537f7e74cd63dbca1bb1a453ec",
+          "passed": true,
+          "restoredSha256": "8a17a35bd30fd7da0de9e8dba376017345866a537f7e74cd63dbca1bb1a453ec"
+        },
+        {
+          "file": "geometry-course/textbook/release-review-chapter-04.json",
+          "mode": "exact-prior-manifest-restoration",
+          "currentSha256": "48d6dce1d15eeb61520b266dddc3175cce0215173e289043b9a85ad772798fe2",
+          "historicalSha256": "189f14f9efb426a3f4250d34c388bb6ce9d00e402f361a938c9cc9385f9dbcb9",
+          "passed": true,
+          "restoredSha256": "189f14f9efb426a3f4250d34c388bb6ce9d00e402f361a938c9cc9385f9dbcb9"
+        },
+        {
+          "file": "geometry-course/textbook/release-review-chapter-05.json",
+          "mode": "exact-prior-manifest-restoration",
+          "currentSha256": "cb31f2315149d5b58a4b875837f21be46d8db0651713a2180a9842a2ab9fd2a2",
+          "historicalSha256": "86021c0a466722f26f76feaa1cb8db346b6bdfca8af3d0634d0b70c643e7257b",
+          "passed": true,
+          "restoredSha256": "86021c0a466722f26f76feaa1cb8db346b6bdfca8af3d0634d0b70c643e7257b"
+        },
+        {
+          "file": "geometry-course/textbook/release-review-chapter-06.json",
+          "mode": "exact-prior-manifest-restoration",
+          "currentSha256": "ef1a1c5947a15fa5687bb0c7b7eb37fd7c01335a970f508ccb74b19331726268",
+          "historicalSha256": "a54d4812b18ff324cbe4255df4abf8191aec49e2430f312b4734eacdadf72312",
+          "passed": true,
+          "restoredSha256": "a54d4812b18ff324cbe4255df4abf8191aec49e2430f312b4734eacdadf72312"
+        },
+        {
+          "file": "geometry-course/textbook/release-review-chapter-07.json",
+          "mode": "exact-prior-manifest-restoration",
+          "currentSha256": "d4e11f678aea67d72d33f3bce4986e4a7ad5a9759463247c2bfeab8ec46fa144",
+          "historicalSha256": "bfeb67b70fcbd75341f0d4163e27e433880918ce13f13fdcd6a9323c97fa4d07",
+          "passed": true,
+          "restoredSha256": "bfeb67b70fcbd75341f0d4163e27e433880918ce13f13fdcd6a9323c97fa4d07"
+        },
+        {
+          "file": "geometry-course/textbook/release-review.json",
+          "mode": "exact-prior-manifest-restoration",
+          "currentSha256": "3201666c89ed0a1c92a6675e1d2021eb1f5eade75253c771ba4fbfce433cf8d4",
+          "historicalSha256": "19ef34d074804120c6a58aed62074d685948fdde1b62459563773ddc685b8f11",
+          "passed": true,
+          "restoredSha256": "19ef34d074804120c6a58aed62074d685948fdde1b62459563773ddc685b8f11"
+        },
+        {
+          "file": "geometry-course/textbook/source-chapters.tsv",
+          "mode": "byte-identical",
+          "currentSha256": "19d8a5bf1d80d693abd2a79d4694d080528865baafcc030d7fb5d8487104a93c",
+          "historicalSha256": "19d8a5bf1d80d693abd2a79d4694d080528865baafcc030d7fb5d8487104a93c",
+          "passed": true
+        },
+        {
+          "file": "geometry-course/textbook/source-inventory.json",
+          "mode": "exact-prior-source-inventory-restoration",
+          "currentSha256": "de0d2f2c7762df3e9fb0851ad27d1ba82fb826b8b3727c6fc386e462c9433224",
+          "historicalSha256": "2c7afd7f801e3dc282fe4cfe85b86342d9d17e961986ce663beb3443f17bf3f3",
+          "passed": true,
+          "restoredSha256": "2c7afd7f801e3dc282fe4cfe85b86342d9d17e961986ce663beb3443f17bf3f3"
+        },
+        {
+          "file": "tools/geometry-textbook/chapter-07-source-map.json",
+          "mode": "byte-identical",
+          "currentSha256": "7c87229a8316a601c806f78ea4d6a41bedc9818b571e3e7e848bc411c9aee463",
+          "historicalSha256": "7c87229a8316a601c806f78ea4d6a41bedc9818b571e3e7e848bc411c9aee463",
+          "passed": true
+        },
+        {
+          "file": "tools/geometry-textbook/published-chapters-01-04.json",
+          "mode": "byte-identical",
+          "currentSha256": "379869da94677385c338d0b6332f809ff7e407ae5af60a695c7773298583b625",
+          "historicalSha256": "379869da94677385c338d0b6332f809ff7e407ae5af60a695c7773298583b625",
+          "passed": true
+        },
+        {
+          "file": "tools/geometry-textbook/published-chapters-01-05.json",
+          "mode": "byte-identical",
+          "currentSha256": "ab9c380dbf6e4a9d3cbd753437a10a9e973b99e3581b406a0f52f796dea4e1b3",
+          "historicalSha256": "ab9c380dbf6e4a9d3cbd753437a10a9e973b99e3581b406a0f52f796dea4e1b3",
+          "passed": true
+        },
+        {
+          "file": "tools/geometry-textbook/published-through-461.json",
+          "mode": "byte-identical",
+          "currentSha256": "8a552a7b75e1401178a2aea29c8b180d6acdfb33bff5d9757f2e8073a61ad98e",
+          "historicalSha256": "8a552a7b75e1401178a2aea29c8b180d6acdfb33bff5d9757f2e8073a61ad98e",
+          "passed": true
+        },
+        {
+          "file": "tools/geometry-textbook/published-through-540.json",
+          "mode": "byte-identical",
+          "currentSha256": "b53fe1c528bc0660f6f512a0e70ea77d4c9e9031b5905a954035ae54ca290935",
+          "historicalSha256": "b53fe1c528bc0660f6f512a0e70ea77d4c9e9031b5905a954035ae54ca290935",
+          "passed": true
+        },
+        {
+          "file": "tools/geometry-textbook/release-scope.json",
+          "mode": "exact-prior-release-scope-restoration",
+          "currentSha256": "2932313d89792303e7dc0ab9b43b42e0610b6ec4e8decbb7532c56a8a94ea127",
+          "historicalSha256": "1b53721595ae8f38b6362882b9cb6c9f6a684ecdd2f96f8a6526964395cff12b",
+          "passed": true,
+          "restoredSha256": "1b53721595ae8f38b6362882b9cb6c9f6a684ecdd2f96f8a6526964395cff12b"
+        }
+      ],
+      "historicalModes": {
+        "byte-identical": 198,
+        "1247-union-validator-and-1083-lesson-catalog-digests": 1,
+        "exact-prior-manifest-restoration": 8,
+        "exact-prior-source-inventory-restoration": 1,
+        "exact-prior-release-scope-restoration": 1
+      }
+    },
+    "postflightPassed": true
+  },
+  "publicEntry": {
+    "evidence": {
+      "artifact": "viii-public-approved-smoke/evidence.json",
+      "sha256": "f3193ecedcaffb582d3db85578442793f5222493155f202c1c9c8e562c964fda"
+    },
+    "script": {
+      "artifact": "viii-public-approved-smoke.cjs",
+      "sha256": "d178731ad1f7f4ab4c4df7a18257afd1c5ea355e0970a5c1ddaedba5ad38960a"
+    },
+    "coldLinks": 328,
+    "catalogues": 2,
+    "flows": [
+      {
+        "width": 320,
+        "name": "catalogue-search640-navigation",
+        "passed": true
+      },
+      {
+        "width": 320,
+        "name": "real-paragraph3-search",
+        "count": 37,
+        "passed": true
+      },
+      {
+        "width": 320,
+        "name": "manual-draft-and-two-steps-reload-no-false-grading",
+        "id": "atanasyan-7-9-main-685-part-1",
+        "passed": true
+      },
+      {
+        "width": 320,
+        "name": "chapterVIII-theory-return-keeps-draft",
+        "exercise": "atanasyan-7-9-main-640-part-1",
+        "theory": "atanasyan-7-9-theory-63-part-1",
+        "passed": true
+      },
+      {
+        "width": 1280,
+        "name": "catalogue-search640-navigation",
+        "passed": true
+      },
+      {
+        "width": 1280,
+        "name": "real-paragraph3-search",
+        "count": 37,
+        "passed": true
+      },
+      {
+        "width": 1280,
+        "name": "manual-draft-and-two-steps-reload-no-false-grading",
+        "id": "atanasyan-7-9-main-685-part-1",
+        "passed": true
+      },
+      {
+        "width": 1280,
+        "name": "chapterVIII-theory-return-keeps-draft",
+        "exercise": "atanasyan-7-9-main-640-part-1",
+        "theory": "atanasyan-7-9-theory-63-part-1",
+        "passed": true
+      },
+      {
+        "name": "all-eight-selfcheck-drafts-independent-after-page-close",
+        "keys": [
+          "mathExamTextbook.v1:atanasyan-2023-7-9:atanasyan-7-9-selfcheck-1-part-1:r1",
+          "mathExamTextbook.v1:atanasyan-2023-7-9:atanasyan-7-9-selfcheck-chapter-2-1-part-1:r1",
+          "mathExamTextbook.v1:atanasyan-2023-7-9:atanasyan-7-9-selfcheck-chapter-3-1-part-1:r1",
+          "mathExamTextbook.v1:atanasyan-2023-7-9:atanasyan-7-9-selfcheck-chapter-4-1-part-1:r1",
+          "mathExamTextbook.v1:atanasyan-2023-7-9:atanasyan-7-9-selfcheck-chapter-5-1-part-1:r1",
+          "mathExamTextbook.v1:atanasyan-2023-7-9:atanasyan-7-9-selfcheck-chapter-6-1-part-1:r1",
+          "mathExamTextbook.v1:atanasyan-2023-7-9:atanasyan-7-9-selfcheck-chapter-7-1-part-1:r1",
+          "mathExamTextbook.v1:atanasyan-2023-7-9:atanasyan-7-9-selfcheck-chapter-8-1-part-1:r1"
+        ],
+        "passed": true
+      },
+      {
+        "name": "native-storage-event-freezes-old-editor-and-recovers-new-draft",
+        "passed": true
+      },
+      {
+        "name": "VIII-conflict-leaves-seven-earlier-chapter-drafts-exact",
+        "passed": true
+      },
+      {
+        "name": "preserved-chapter-cold-link",
+        "id": "atanasyan-7-9-main-1-part-1",
+        "passed": true
+      },
+      {
+        "name": "preserved-chapter-cold-link",
+        "id": "atanasyan-7-9-main-92-part-1",
+        "passed": true
+      },
+      {
+        "name": "preserved-chapter-cold-link",
+        "id": "atanasyan-7-9-main-191-part-1",
+        "passed": true
+      },
+      {
+        "name": "preserved-chapter-cold-link",
+        "id": "atanasyan-7-9-main-228-part-1",
+        "passed": true
+      },
+      {
+        "name": "preserved-chapter-cold-link",
+        "id": "atanasyan-7-9-main-331-part-1",
+        "passed": true
+      },
+      {
+        "name": "preserved-chapter-cold-link",
+        "id": "atanasyan-7-9-main-462-part-1",
+        "passed": true
+      },
+      {
+        "name": "preserved-chapter-cold-link",
+        "id": "atanasyan-7-9-main-541-part-1",
+        "passed": true
+      },
+      {
+        "name": "preserved-advanced7-cold-link",
+        "id": "atanasyan-7-9-main-413-part-1",
+        "passed": true
+      }
+    ],
+    "previewFlagsInjected": false,
+    "actualReviewedCards": 1247,
+    "chapterVIIICards": 164,
+    "errors": [],
+    "liveSiteChecked": false,
+    "freshTemporaryBrowserContext": true,
+    "realLearnerDataAccessed": false
+  },
+  "manualUiReview": {
+    "evidence": {
+      "artifact": "viii-public-smoke-independent-manual.json",
+      "sha256": "f8894b202f149cb2b20ef2117e614aa598e331dc6fd261fb8f5178877d0e097f"
+    },
+    "passed": true,
+    "frames": [
+      {
+        "file": "viii-public-approved-smoke/catalog-paragraph3-320.png",
+        "sha256": "3421256cca83551c1c1ff15c62ef504582bd22197230929364811ad3fe6f35b8",
+        "pixelDimensions": [
+          320,
+          900
+        ],
+        "method": "Actually opened complete original PNG with view_image detail=original; no resized substitute",
+        "passed": true,
+        "findings": [],
+        "observations": "Visible catalogue search, chapter VIII selector, type/section controls and incomplete-course notice are readable at320px. The image begins at a scrolled position; catalogue title and matching result cards are outside this viewport."
+      },
+      {
+        "file": "viii-public-approved-smoke/task685-restored-model-320.png",
+        "sha256": "c8c4748d5eb32fc0994d984b74e6bbea42e699bb17129a76848f5c486464bcf1",
+        "pixelDimensions": [
+          274,
+          467
+        ],
+        "method": "Actually opened complete original PNG with view_image detail=original; no resized substitute",
+        "passed": true,
+        "findings": [],
+        "observations": "Complete native viewer visible. Upright AC and A₁C₁, common baselineBC₁, rayBA₁, both right-angle marks and all five labels readable without overlap; controls and drawing caption fit320px."
+      },
+      {
+        "file": "viii-public-approved-smoke/theory-return-dialog-320.png",
+        "sha256": "1346799a31cbe79744887516e4e55b6815c08945a2d1964af79e963673d8d5f5",
+        "pixelDimensions": [
+          320,
+          900
+        ],
+        "method": "Actually opened complete original PNG with view_image detail=original; no resized substitute",
+        "passed": true,
+        "findings": [],
+        "observations": "Return button, point63 heading, chapter VIII/paragraph1 captions, summary and visible proportional-segment diagram are readable. Heading wraps within the narrow dialog; lower content extends beyond the viewport and is not claimed as inspected."
+      },
+      {
+        "file": "viii-public-approved-smoke/catalog-paragraph3-1280.png",
+        "sha256": "70d2fb87d9b03931e3e0d5c89776d11334be72771b27294ceb05502cd319a3d1",
+        "pixelDimensions": [
+          1280,
+          900
+        ],
+        "method": "Actually opened complete original PNG with view_image detail=original; no resized substitute",
+        "passed": true,
+        "findings": [],
+        "observations": "Desktop course title, edition2023, available totals736/75/169/1247, incomplete-course notice, paragraph3 query and chapter VIII selector are readable with no overlap. Matching result cards lie below the captured viewport."
+      },
+      {
+        "file": "viii-public-approved-smoke/task685-restored-model-1280.png",
+        "sha256": "9b4813c4fc34fb99f88809e893af8c93da8f468551c619a19305e1a47c70c4ac",
+        "pixelDimensions": [
+          749,
+          758
+        ],
+        "method": "Actually opened complete original PNG with view_image detail=original; no resized substitute",
+        "passed": true,
+        "findings": [],
+        "observations": "Complete native viewer visible. Same correct upright figure, distinct labels and right-angle marks; controls and drawing caption readable with no clipping."
+      },
+      {
+        "file": "viii-public-approved-smoke/theory-return-dialog-1280.png",
+        "sha256": "4aea9ece9b8aef3b9d51e781b7ed8ddc14b879143bbaa5a7be1160994477577b",
+        "pixelDimensions": [
+          1280,
+          900
+        ],
+        "method": "Actually opened complete original PNG with view_image detail=original; no resized substitute",
+        "passed": true,
+        "findings": [],
+        "observations": "Return button, point63 heading, correct chapter VIII/paragraph1 captions and summary are readable. Visible segment labels remain distinct. Lower diagram content extends beyond the viewport and is not claimed as inspected."
+      }
+    ],
+    "unresolvedFindings": [],
+    "limits": [
+      "Only pixels within the six provided images were inspected. The raw DOM checks cover result counts and offscreen flows; those are distinct automated evidence.",
+      "No raw evidence, product files, release manifests or committed review receipts were modified.",
+      "This locally served reviewed snapshot is not a deployed-site verification."
+    ]
+  },
+  "testFixtureCorrection": {
+    "evidence": {
+      "artifact": "viii-review-scope-independent/fixture-review.json",
+      "sha256": "32abd1c16abcafce9dad2c436e2b7a123736a6fbe544a3e857b253d5c3a1a6e6"
+    },
+    "file": "tools/geometry-textbook/review_scope_test.py",
+    "oldSha256": "34fbefd3675f94121962467f3e83b7afeb64b113afcf8c3d22847cbf5da6c26c",
+    "newSha256": "953269ee4323fa937061fa7bb60bdfa93725ee0de1f5b4e7882e2bdd61f0242d",
+    "unchangedTestMethods": 13,
+    "unchangedAssertionCalls": 40,
+    "guardCases": 14,
+    "reason": "With VIII present, chapter VII is immutable reviewed history. Its real manifest retains the exact VIII runtime-extension binding; a synthetic replacement omits that binding and is rightly rejected by the unchanged production restorer. The added guard copies chapterVII as well as all older published chapters and advanced7; it does not copy the new VIII chapter or future chapters. The chapter8-existence condition preserves earlier-course fixture behavior.",
+    "productionFilesChanged": false,
+    "releasedEvidenceChanged": false
+  },
+  "priorAttempt": {
+    "evidence": {
+      "artifact": "viii-postpromotion-workflow-gates-attempt-1/summary.json",
+      "sha256": "2d5515cb60d9583ab95e71215acd1af4fe0c5d1f1f0d3cccb001ec2d98844805"
+    },
+    "status": "failed-preserved",
+    "commandsPassed": 24,
+    "commandFailed": "python3 tools/geometry-textbook/review_scope_test.py",
+    "failures": 15,
+    "cause": "The legacy synthetic fixture replaced the now-immutable chapterVII manifest, losing its required VIII runtime-extension binding. The real production restorer correctly rejected it.",
+    "resolution": "Copy the real historical manifest when VIII exists; all13 test methods and40 assertions are unchanged. Repeat of all25 commands passed."
+  },
+  "remainingReleaseSteps": [
+    "exact committed-head CI",
+    "fresh-main guard and authorized controlled squash",
+    "Pages and live HTTPS/runtime verification"
+  ]
+}

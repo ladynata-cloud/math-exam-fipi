@@ -1,7 +1,7 @@
 name: Atanasyan textbook — source, proof and interactive course
 on:
   pull_request:
-    paths: ['stereo-course/textbook/**', 'stereo-course/assets/task-scene-viewer.js', 'stereo-course/assets/math-text.js', 'tools/stereo-textbook/**', '.github/workflows/atanasyan-textbook.yml']
+    paths: ['stereo-course/textbook/**', 'stereo-course/assets/**', 'geometry-merzlyak/assets/viewer.js', 'geometry-pogorelov/assets/viewer.js', 'tools/stereo-textbook/**', '.github/workflows/atanasyan-textbook.yml']
 permissions:
   contents: read
 jobs:
@@ -17,6 +17,13 @@ jobs:
           node-version: '22'
       - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0 ajv@8.17.1 ajv-formats@3.0.1
       - run: python3 -m pip install numpy==2.2.6
+      - name: Exact reviewed surface profiles and shared offline visibility core
+        run: |
+          node tools/stereo-textbook/build_visibility_profiles.cjs --check
+          node tools/stereo/sync_canvas_visibility.cjs --check
+          node tools/stereo/canvas-visibility.test.cjs
+          VISIBILITY_CHECK_ONLY=1 node tools/stereo-textbook/visibility.browser.cjs
+          VISIBILITY_CANVAS_CHECK_ONLY=1 node tools/stereo/canvas-visibility.browser.cjs
       - name: Source catalogue and reproducible build
         run: |
           python3 tools/stereo-textbook/build_textbook.py
@@ -24,6 +31,7 @@ jobs:
           python3 tools/stereo-textbook/catalog.test.py
           node tools/stereo-textbook/schema.test.cjs
           node tools/stereo-textbook/companion-migration.test.cjs
+          node tools/stereo-textbook/visibility-migration.test.cjs
           node tools/stereo-textbook/companion-labels.test.cjs
           node tools/stereo-textbook/content.test.cjs
           node tools/stereo-textbook/parallel-content.test.cjs
@@ -48,6 +56,129 @@ jobs:
             TEXTBOOK_CHECK_ONLY=1 TEXTBOOK_SHARD_COUNT=4 TEXTBOOK_SHARD_INDEX=$i node tools/stereo-textbook/browser.cjs
           done
       - run: git diff --check
+  visibility-math:
+    needs: source-model
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        course: [textbook, merzlyak-10-base, shestakov-yaschenko-10-11]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts jsdom@26.1.0
+      - name: Independently verify hidden and visible intervals at multiple camera angles
+        env:
+          VISIBILITY_BUNDLE: stereo-course/${{ matrix.course }}/data/course.json
+        run: node tools/stereo-textbook/visibility-math.test.cjs
+  visibility-browser:
+    needs: source-model
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+      - run: npx playwright install --with-deps chromium
+      - name: Actual reported figure, source surfaces, rotations and dash pixels
+        env:
+          VISIBILITY_ARTIFACTS: artifacts/visibility
+        run: node tools/stereo-textbook/visibility.browser.cjs
+      - name: Actual workshop and atlas canvases, manual lines and sphere sections
+        if: ${{ !cancelled() }}
+        env:
+          VISIBILITY_CANVAS_ARTIFACTS: artifacts/visibility-canvas
+        run: node tools/stereo/canvas-visibility.browser.cjs
+      - name: Preserve focused visibility evidence, including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: stereometry-visibility-focused
+          path: artifacts/visibility/
+          retention-days: 7
+          if-no-files-found: error
+      - name: Preserve actual canvas visibility screenshots and source identity
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: stereometry-visibility-canvas
+          path: artifacts/visibility-canvas/
+          retention-days: 7
+          if-no-files-found: error
+  shared-consumers:
+    needs: source-model
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - tools: merzlyak-10-base
+            course: merzlyak-10-base
+          - tools: shestakov-yaschenko
+            course: shestakov-yaschenko-10-11
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0 ajv@8.17.1 ajv-formats@3.0.1
+      - run: npx playwright install --with-deps chromium
+      - name: Preserve Merzlyak source and retained-work contracts
+        if: matrix.tools == 'merzlyak-10-base'
+        run: |
+          node tools/merzlyak-10-base/schema-runtime.test.cjs
+          node tools/merzlyak-10-base/reviewer-runtime-wrapper-checks.cjs
+      - name: Preserve Shestakov source and retained-work contracts
+        if: matrix.tools == 'shestakov-yaschenko'
+        run: |
+          python3 tools/shestakov-yaschenko/build.py --check
+          node tools/shestakov-yaschenko/check.cjs
+          node tools/shestakov-yaschenko/runtime-browser.cjs
+          node tools/shestakov-yaschenko/ch1-completion-browser.cjs
+      - name: Check every shared consumer model and its authored views
+        run: |
+          node tools/stereo-textbook/model-geometry.test.cjs stereo-course/${{ matrix.course }}/data/course.json
+          node tools/${{ matrix.tools }}/model-browser.cjs
+      - name: Preserve shared-renderer consumer evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: visibility-shared-${{ matrix.tools }}
+          path: artifacts/
+          retention-days: 7
+          if-no-files-found: error
+  canvas-consumers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        course: [merzlyak, pogorelov]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+      - run: npx playwright install --with-deps chromium
+      - name: Preserve source mathematics and stored work in existing canvas courses
+        run: node tools/${{ matrix.course }}/check.cjs
+      - name: Complete existing canvas lessons, mobile and offline journeys
+        run: node tools/${{ matrix.course }}/browser.cjs
   browser-shard:
     needs: source-model
     runs-on: ubuntu-latest

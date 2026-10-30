@@ -253,6 +253,37 @@ class PublishedPreservation(unittest.TestCase):
                 assert_file_bytes(name, (ROOT/name).read_bytes()+b'\n', self.frozen['immutableFiles'][name])
 
 
+def historical_v_projection(bundle, scope):
+    """Run the original I–V integration oracle on its exact historical scope.
+
+    VI is separately subject to chapter06-release.test.py's exact union gate.
+    Unknown sections are retained here so the existing whitelist rejects them.
+    """
+    from chapter07_release import historical_vii_projection
+    if any(c['chapter'] == 8 for c in scope['chapters']):
+        from chapter08_release import validate_release as validate_viii_release
+        validate_viii_release(bundle, scope=scope)
+    bundle, scope = historical_vii_projection(bundle, scope)
+    # VII is independently constrained by the exact1083 release union gate.
+    if any(c['chapter'] == 7 for c in scope['chapters']):
+        bundle['lessons'] = [r for r in bundle['lessons'] if r['source']['chapter'] != 'VII']
+        bundle['catalog']['entries'] = [r for r in bundle['catalog']['entries'] if r['source']['chapter'] != 'VII']
+        bundle['build']['chapters'] = [c for c in bundle['build']['chapters'] if c['chapter'] != 7]
+        bundle['build']['authoredCards'] -= 190
+        bundle['build']['numberedExercises'] -= 99
+        scope['chapters'] = [c for c in scope['chapters'] if c['chapter'] != 7]
+        scope['totalCards'] -= 190
+    if any(c['chapter'] == 6 for c in scope['chapters']):
+        bundle['lessons'] = [r for r in bundle['lessons'] if r['source']['chapter'] != 'VI']
+        bundle['catalog']['entries'] = [r for r in bundle['catalog']['entries'] if r['source']['chapter'] != 'VI']
+        bundle['build']['chapters'] = [c for c in bundle['build']['chapters'] if c['chapter'] != 6]
+        bundle['build']['authoredCards'] -= 138
+        bundle['build']['numberedExercises'] -= 79
+        scope['chapters'] = [c for c in scope['chapters'] if c['chapter'] != 6]
+        scope['totalCards'] -= 138
+    return bundle, scope
+
+
 class ChapterVIntegration(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -260,6 +291,7 @@ class ChapterVIntegration(unittest.TestCase):
         cls.bundle = read(COURSE/'data/course.json')
         cls.source_map = read(SOURCE_MAP)
         cls.scope = read(ROOT/'tools/geometry-textbook/release-scope.json')
+        cls.bundle, cls.scope = historical_v_projection(cls.bundle, cls.scope)
 
     def test_exact_source_and_stable_v_namespaces(self):
         validate_chapter_v(self.bundle, self.frozen, self.source_map, self.scope)
