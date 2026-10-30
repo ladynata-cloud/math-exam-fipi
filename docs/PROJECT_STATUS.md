@@ -165,7 +165,7 @@
 
 Updated: 2026-10-28 (Asia/Novosibirsk)
 
-## In preparation: hidden lines across the stereometry courses
+## Published: hidden lines across the stereometry courses
 
 - [Owner-requested correction](tasks/STEREO_HIDDEN_LINES.md), HIGH, base
   `6fb959fc0130a0bb8842601d19297e305ac91ac0`, branch
@@ -186,32 +186,57 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
   constructions, highlighted section boundaries, vectors and learner lines.
   Exact-model surface amendments correct missing faces without changing source
   lesson bytes or learner identities. Spheres use analytic depth geometry.
-- Independent geometry, topology, actual browser, regression and exact-head CI
-  evidence must be completed before recommending publication. This entry does
-  not claim that the correction has been released.
+- PR376 was published as `51f7fa550bae29f0110a0f06608a3e35bb1f65fd`.
+  Exact-commit Pages deployment and production verification are recorded in
+  https://github.com/ladynata-cloud/math-exam-fipi/pull/376.
+  The preparation details above describe the retained implementation scope.
 - Production reconciliation: cylinder PR372 was published as
   `6b25302788f36d92723e487e92afa7044ced3ad3`; the later main commit is the
   separate grade 7–9 chapter VI release. The published stereometry course still
   has 554 cards. Cone PR374 head `065c2a294faf0f3b505eb53a2c8ac4f55621e313`
   contains 594 candidate cards and is not merged.
 
-## Prepared: Atanasyan 10–11, complete cylinder paragraph
+## Prepared: Atanasyan 10–11, complete cone paragraph
 
-- [Task](tasks/ATANASYAN_CYLINDER_320_345.md), HIGH, explicitly continued by the
-  owner on 2026-10-29. Base `0ad2680f9039a27cd1188eccc55cfcd932d4bf64`.
-- Complete chapter IV §1: theory 38–39 and exercises 320–345 with every printed
-  subpart, using the existing companion labels, models and retained-work UI.
-- Candidate: 554 cards, 2134 justified steps and 2228 model states; main
-  exercises 1–345 and theory points 1–39. The 36 added cards complete this
-  paragraph; all 518 prior lesson files remain byte-identical.
-- Independent source/math/pedagogy review and its six resolved findings are
-  recorded in [content evidence](reviews/ATANASYAN_CYLINDER_CONTENT.json).
-  [Integration evidence](reviews/ATANASYAN_CYLINDER_INTEGRATION.json) and
-  [visual evidence](reviews/ATANASYAN_CYLINDER_VISUAL.json) distinguish local
-  checks from exact-commit CI. Final CI and release status belong in the PR.
-- Next numbered paragraph: chapter IV §2 «Конус», beginning with exercise 346.
-  This entry does not claim completion of chapter IV or publication; release
-  requires the owner's decision and a fresh authoritative main check.
+
+- [Task](tasks/ATANASYAN_CONE_346_371.md), HIGH, explicitly continued by the
+  owner on 2026-10-29. Base `6b25302788f36d92723e487e92afa7044ced3ad3`.
+- Complete chapter IV §2: theory 40–42 and exercises 346–371 with every printed
+  subpart. The 40 new cards preserve the existing task, chapter and paragraph
+  captions, optional theory/help, exact diagrams and retained learner work.
+- Candidate: 594 cards, 2300 justified steps and 2399 model states; main
+  exercises 1–371 and theory points 1–42. All 554 published lesson files and
+  the runtime/schema/storage contracts remain unchanged.
+- Independent [source, proof and coordinate review](reviews/ATANASYAN_CONE_CONTENT.json)
+  covers all 40 cards and 3120 parameter checks. The [integration report](reviews/ATANASYAN_CONE_INTEGRATION.json)
+  records 52 passed local checks, preserved historical fixtures and resolved
+  failures. [Visual evidence](reviews/ATANASYAN_CONE_VISUAL.json) records the
+  exact new-card browser run and independent image review separately.
+- Final committed-source CI and release status belong in the PR. This entry is
+  preparation, not a claim that the cone paragraph has been deployed.
+- Next numbered paragraph: chapter IV §3 «Сфера», beginning with exercise 372.
+  Later source positions remain inventoried and visibly pending.
+
+## Published: Atanasyan 10–11, complete cylinder paragraph
+
+- [PR372](https://github.com/ladynata-cloud/math-exam-fipi/pull/372) was explicitly
+  authorized and squashed as `6b25302788f36d92723e487e92afa7044ced3ad3`, sole parent
+  `d3122b9f3905cd8f7715cee6a873d031cdb43de4`. The exact 60-path delta, affected
+  blobs, stable patch and preservation of all unrelated paths were verified.
+- Complete chapter IV §1: theory 38–39 and exercises 320–345 with all subparts.
+  Published course: 554 cards, 2134 justified steps and 2228 model states.
+- Independent source/math/pedagogy, integration and actual-image reports are
+  preserved in the repository. Reviewed-head CI passed all 11 jobs across four
+  workflows, including 1108 desktop/mobile textbook journeys and 2960 images.
+- Exact-production Pages deployment
+  [40878392354](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40878392354)
+  and post-merge Profile CI passed. All 46 canonical live files returned HTTP200
+  and matched production blobs. Live 320/1280px checks passed 18 journeys,
+  88 steps, 168 model states, 18 theory returns and 14 draft restorations;
+  all 34 focused original screenshots were inspected. No rollback was needed.
+- This continuation reconciles the preceding release within its own task;
+  there is no separate status-only PR. Chapter IV and the whole book remain
+  incomplete beyond the published cylinder paragraph until later releases.
 
 ## Published: Atanasyan companion labels and chapter III completion
 

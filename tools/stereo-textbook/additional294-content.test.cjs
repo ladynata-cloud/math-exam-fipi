@@ -23,7 +23,7 @@ const corruptRegistry=structuredClone(registry);corruptRegistry.cards[0].sha256=
 const corruptIndex=structuredClone(sourceIndex);corruptIndex.entries[0].source.printedPages=[999];assert.throws(()=>baseline.previousIndex(corruptIndex),/exact source index/);
 const corruptCases=new Map(screenshots);corruptCases.set([...corruptCases.keys()][0],'changed-historical-case');assert.throws(()=>baseline.previousCases(corruptCases),/all 1033 prior browser cases/);
 assert.equal(sha([...screenshots].filter(([key])=>ids.has(key.split('|')[0]))),'53cc5c7edaa25976c8fe59ce4ca7f2123eddcc47459e23c49f81ddf1d6a19bbf','exact additive screenshot inventory');
-const rawPrevious=fs.readdirSync(dir).filter(name=>name.endsWith('.json')&&!require('./cylinder-baseline.cjs').ids.has(name.slice(0,-5))&&!ids.has(name.slice(0,-5))&&!later.ids.has(name.slice(0,-5))&&!require('./additional310-baseline.cjs').ids.has(name.slice(0,-5))).sort().map(name=>[name,hash(fs.readFileSync(path.join(dir,name)))]);
+const rawPrevious=fs.readdirSync(dir).filter(name=>name.endsWith('.json')&&!require('./cone-baseline.cjs').ids.has(name.slice(0,-5))&&!require('./cylinder-baseline.cjs').ids.has(name.slice(0,-5))&&!ids.has(name.slice(0,-5))&&!later.ids.has(name.slice(0,-5))&&!require('./additional310-baseline.cjs').ids.has(name.slice(0,-5))).sort().map(name=>[name,hash(fs.readFileSync(path.join(dir,name)))]);
 assert.equal(rawPrevious.length,485);assert.equal(sha(rawPrevious),published.rawLessonManifestSHA256,'all 485 prior authored files byte-identical');
 for(const[file,value]of Object.entries(published.immutableFiles))require('./companion-migration.cjs').assertHistoricalFile(file,value);
 assert.equal(previous.lessons.length,485);assert.equal(previous.catalog.entries.length,1368);

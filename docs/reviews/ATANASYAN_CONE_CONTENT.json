@@ -1,0 +1,887 @@
+{
+  "reviewer": "Codex independent reviews: /root/cone_source (original full review); /root/source_review (371 help-question amendment only); no lesson authorship",
+  "reviewedAt": "2026-10-30T22:10:04Z",
+  "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+  "authorBase": "6b25302788f36d92723e487e92afa7044ced3ad3",
+  "authorReviewerSeparation": {
+    "reviewerAuthoredLessons": false,
+    "lessonAuthors": [
+      "root:theory040–042",
+      "cone_a:346–353",
+      "cone_b:354–362",
+      "cone_c:363–371"
+    ],
+    "reviewerOwnedFiles": [
+      "tools/stereo-textbook/cone-math.test.py",
+      "docs/reviews/ATANASYAN_CONE_CONTENT.json"
+    ]
+  },
+  "scope": "All40new cards: full theory40–42 and every printed main exercise346–371 with all parts. Independently read every condition, goal, help question/text, step prompt/explanation, justification, answer contract, model note, view label and named construction. All actual coordinate models, smooth-surface geometry, mesh edges/facets and overlay states were independently checked. This is not responsive lesson-image or release approval.",
+  "sourceSHA256": "bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "edition": "2024,12th edition",
+    "printedPages": [
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100
+    ],
+    "pdfPages": [
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102
+    ],
+    "answerKey": {
+      "printedPages": [
+        264,
+        265
+      ],
+      "pdfPages": [
+        266,
+        267
+      ],
+      "actuallyViewed": true
+    },
+    "inspection": "All seven supplied source page images and both freshly rendered answer-key images were actually viewed and read; extracted text was only a lookup aid. Boundary after371 to paragraph3 confirmed visually. All numerical and symbolic answers independently derived before consulting the answer key.",
+    "inspectedPageImages": [
+      {
+        "pdfPage": 96,
+        "sha256": "d626822abc61a1d688635fe3335cff39b510300f67c166a1b890b4c3fbce866b"
+      },
+      {
+        "pdfPage": 97,
+        "sha256": "a10b8590660a5fe5425bd610a96165385283505f1000b0285009bf41f35debd9"
+      },
+      {
+        "pdfPage": 98,
+        "sha256": "7bd524aa7fa16f356188c63c677eb65d06d88239fed9256536d8c4277f552265"
+      },
+      {
+        "pdfPage": 99,
+        "sha256": "102c2ff44b21aec68ef700feba7f319c2f4ca2a276a7f65474cbcf2ca0f4522b"
+      },
+      {
+        "pdfPage": 100,
+        "sha256": "fb895201a521f2c987929d4d8acf7f7a9f43ee937409c327fdc13244aa5ed8a6"
+      },
+      {
+        "pdfPage": 101,
+        "sha256": "24ed1fa02f2676636c17ab0f3e0f59760dcd9d8cd1ef6f459cd734a889794845"
+      },
+      {
+        "pdfPage": 102,
+        "sha256": "741b264c0c5020da91d6f53734388d2fcdc2f04a4f6a4a9bf85700b41a4ab80f"
+      },
+      {
+        "pdfPage": 266,
+        "sha256": "a29adf4c9cabdbf2b9136350144e8c3788e14d0a3359305865feb555ed1f472f"
+      },
+      {
+        "pdfPage": 267,
+        "sha256": "c6a17555540ac028774e71c206898b46647b5f3c44ebfd5375f13cefce184434"
+      }
+    ],
+    "sourceSubparts": {
+      "347": [
+        "а",
+        "б",
+        "в"
+      ],
+      "348": [
+        "а",
+        "б"
+      ],
+      "350": [
+        "а",
+        "б",
+        "в"
+      ],
+      "353": [
+        "а",
+        "б"
+      ],
+      "354": [
+        "а",
+        "б",
+        "в"
+      ],
+      "359": [
+        "а",
+        "б",
+        "в"
+      ],
+      "367": [
+        "а",
+        "б"
+      ]
+    }
+  },
+  "canonicalization": "Remove top-level status and review; recursively sort object keys while preserving arrays; SHA256 of UTF-8 JSON.stringify serialization. Aggregate uses exact cone-baseline.cjs ID order: all main346–371 parts then theory040–042, identical to lexicographic ID order.",
+  "independentMathematics": {
+    "parameterFamilies": 3120,
+    "familiesPerExercise": 120,
+    "groups": [
+      "346",
+      "347",
+      "348",
+      "349",
+      "350",
+      "351",
+      "352",
+      "353",
+      "354",
+      "355",
+      "356",
+      "357",
+      "358",
+      "359",
+      "360",
+      "361",
+      "362",
+      "363",
+      "364",
+      "365",
+      "366",
+      "367",
+      "368",
+      "369",
+      "370",
+      "371"
+    ],
+    "fixedAndBoundaryChecks": "PASS exact source values, inverse angles, disk interiors/endpoints/empty planes, proper cones, open bucket units",
+    "actualModels": {
+      "cards": 40,
+      "coneOrBiconeModels": 32,
+      "frustumModels": 7,
+      "planarNetModels": 1,
+      "lateralFacetsChecked": 2576,
+      "modelViews": 171,
+      "solutionSteps": 166
+    },
+    "methods": [
+      "Vector cross-product triangle and trapezoid areas; scalar-product generator/axis angles and plane-normal dihedral angles",
+      "Ray-plane intersection and inverse homothety for boundary and filled disk, with endpoint and empty-plane cases",
+      "Analytic surface Jacobians for cone/frustum, independently compared with sector area and similar-cone subtraction",
+      "Every curved mesh rim vertex on exact circle, every generator on correct axis geometry, all2576 lateral facets and all171 overlays/labels",
+      "Every declared mesh edge belongs to an actual face adjacency, so smooth rotated silhouettes use true mesh generators",
+      "Exact source radicals and inverse-sine branches, general obtuse inscribed angles, and positive parameter domains",
+      "Bicone internal disk excluded; bucket small bottom plus open large mouth, both paint sides and cm2/m2/g/kg conversion"
+    ]
+  },
+  "pedagogy": {
+    "solutionSteps": 166,
+    "modelStates": 171,
+    "finalAnswerLeakage": "No numeric requested answer or final area formula is disclosed in exercise neutral model labels/notes, initial captions or incorrect-answer feedback. Source givens and the proposition explicitly requested for proof may appear. Optional help and revealed steps may guide intermediate calculations.",
+    "answerAssessment": "Proofs, symbolic expressions and multi-value answers use explicit manual comparison; the lesson does not claim arbitrary proof/free-text automatic grading. Numerical exact values and approximate units are distinguished.",
+    "proofCompleteness": "Both inclusions and the filled disk are proved in355;356 excludes a zero denominator;349 locates the right apex;354 constructs both perpendiculars to the edge;365 excludes the shared interior disk;theory042 derives the lateral formula by subtraction and similarity."
+  },
+  "resolvedFindings": [
+    {
+      "id": "350c-exact-axial",
+      "resolution": "Central arc snapped to exactly180degrees, removing nearly duplicated rim vertices and nonzero chord-centre offset at the axial limiting case."
+    },
+    {
+      "id": "355-zero-homothety",
+      "resolution": "Replaced zero-coefficient homothety wording with a direct endpoint-plane argument explicitly perpendicular to the axis."
+    },
+    {
+      "id": "359a-exact-feedback",
+      "resolution": "Removed unnecessary arcsin-only answer feedback in the subpart with natural exact answer60degrees."
+    },
+    {
+      "id": "rendered-quotients",
+      "resolution": "Re-read equivalent factored/prose rewrites in354,356,theory042 after integration found actual DOM fraction defects; no mathematical change."
+    },
+    {
+      "id": "mesh-silhouette-adjacency",
+      "resolution": "Authors regenerated the same mathematical surfaces with actual mesh generator edges; independent oracle verifies every declared edge has a face adjacency."
+    },
+    {
+      "id": "focused-mobile-formulas-and-titles",
+      "resolution": "Independently reread348a/b expanded square ratio,351 expanded slant square,349/351/364/365 shortened titles and369 prose model labels. All these corrections were already included in the initially written canonical aggregate; a fresh comparison found zero unbound card changes."
+    },
+    {
+      "id": "bicone-orientation-and-final-mobile-display",
+      "resolution": "Rotated365 without geometric distortion, named tips in prose, explicit367 givens and equivalent formula display in355/356/359b/c/theory042 independently reread and rebound. Full oracle passed on final40models."
+    }
+  ],
+  "openFindings": [],
+  "cards": [
+    {
+      "id": "ex-main-0346",
+      "sha256": "f3d704184fb4818c5bd82cc3aa3a48363465ead86ffe324459bc55bfbb219645",
+      "steps": 3,
+      "modelStates": 3,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Right triangle POA has source legs15cm and8cm; positive generator17cm. Actual model preserves the exact source dimensions."
+    },
+    {
+      "id": "ex-main-0347-a",
+      "sha256": "816b771c6f74935a41cc5cccc48d8971c076a9b3df09bd988a8fb44efd5201a6",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Generator12cm and base-plane angle30degrees use the radius as adjacent projection: r6sqrt3, one base area108pi cm2. Actual projected angle independently measured."
+    },
+    {
+      "id": "ex-main-0347-b",
+      "sha256": "f0509dfcc2a90e072723e20c2b0a724bb97238d7476e407253bc40a5403cc033",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Generator12cm and base-plane angle45degrees give r6sqrt2 and one base area72pi cm2; the angle is at the base endpoint, not the apex."
+    },
+    {
+      "id": "ex-main-0347-c",
+      "sha256": "086d0dab159ed010b55c5ac16f78b92463f09bd8c8ece831f90c70e8fb5142b1",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Generator12cm and base-plane angle60degrees give r6 and one base area36pi cm2. Units and actual projected angle checked."
+    },
+    {
+      "id": "ex-main-0348-a",
+      "sha256": "77ec8d1a0e96cffd9069c6a98ec41931e58eb6dd2f6014589150e5150f954984",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:53:40.767184+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Area fraction1/2 implies the linear ratio1/sqrt2; requested distance is from the vertex,4sqrt2dm, not from the base. Actual entire section circle and homothety checked. Focused follow-up verified the renderer-safe expansion(x/8) squared=x squared/64; unchanged result."
+    },
+    {
+      "id": "ex-main-0348-b",
+      "sha256": "776277fe2524c8ded8521473deadba61e054ac0467c03027c8db8a9756ee7883",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:53:40.767184+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Area fraction1/4 implies the linear ratio1/2, so vertex-to-plane distance4dm. Source height8dm and actual circular section checked. Focused follow-up verified the renderer-safe expansion(x/8) squared=x squared/64; unchanged result."
+    },
+    {
+      "id": "ex-main-0349",
+      "sha256": "98b2d1db2a2d0fe866326b036f74423a443351999e5b28008e837329b33a8e88",
+      "steps": 3,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:53:40.767184+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Right isosceles axial triangle has its right angle at the apex: equal base angles cannot both be90degrees. Radius5 implies height5, axial area25cm2. Full diameter used. Shortened initial title retains the exact task and discloses no answer."
+    },
+    {
+      "id": "ex-main-0350-a",
+      "sha256": "e0f4cd5813b8b99c8b38a04cdb6dd56aae4dad58d430fb2fae12fff000d5c32a",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Equilateral axial section with side2r makes both selected generators2r. Their actual mutual30degree angle gives area r squared, not an area computed from the central base angle."
+    },
+    {
+      "id": "ex-main-0350-b",
+      "sha256": "131c5148be0d13c169def26013f07a308a8c84668ef5d9d0e572828aa7fcf8fe",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Actual selected generators have mutual45degree angle; their lengths2r give section area sqrt2 times r squared. Axial equilateral constraint and positive radius checked."
+    },
+    {
+      "id": "ex-main-0350-c",
+      "sha256": "e2c7f17b5dbd2e46767e007c0b97068a45bc9cdfa9ca8772fa6ad75c39762109",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Mutual generator60degree angle reaches the axial maximum in this cone. Model was snapped to exactly180degree base arc so the chord midpoint is exactly the centre; area sqrt3 times r squared."
+    },
+    {
+      "id": "ex-main-0351",
+      "sha256": "d87cf5db7da162c291a17d11ef0b33b3b71390528c81a5b0c730a01f83f65c54",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T14:01:28.953776+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Axis-generator angle60degrees gives slant2h. Actual selected generators are perpendicular, hence their section is a right isosceles triangle of area2h squared; h positive. Focused follow-up independently checked the renderer-safe derivation l squared=4h squared, then S=l squared/2=4h squared/2=2h squared; shorter title retains the task. Final geometric-view follow-up rotates all69points45degrees about the cone axis. Complete card text reread; exact generator-axis60degree and perpendicular selected-generator constraints, complete circle/facets and overlays independently rechecked. Full oracle passed with invariant area2h squared."
+    },
+    {
+      "id": "ex-main-0352",
+      "sha256": "8b8e76e1511c51d382331377f71014b3e4da0cd352c2fb0a4e4d28c6eb159609",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Base pi r squared8 and axial triangle area rh6 give h squared9pi/2 and positive height(3/2)sqrt(2pi)dm. Both original areas and exact model checked."
+    },
+    {
+      "id": "ex-main-0353-a",
+      "sha256": "76d9dd360a8b8df93839e154e026f4fcc64cd13ec7f41f612fb58b758b4ffa5a",
+      "steps": 5,
+      "modelStates": 5,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Base arc60degrees gives half-chord r/2. Section altitude is sqrt(l squared minus r squared/4), yielding(r/4)sqrt(4l squared minus r squared), with l>r>0."
+    },
+    {
+      "id": "ex-main-0353-b",
+      "sha256": "c572938832d7751ffe634fdbab0d7320f3965843de3389247d02a1cf11d33f0f",
+      "steps": 5,
+      "modelStates": 5,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Base arc90degrees gives half-chord r/sqrt2. Section area(r/2)sqrt(2l squared minus r squared), with l>r>0. Central arc and generator angle are explicitly distinguished."
+    },
+    {
+      "id": "ex-main-0354-a",
+      "sha256": "b02c86423a336b03016d22c9728ac6435b4ce73e2ad6c7d61689e55f3171243f",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Height10, base arc60 and dihedral30degrees give r20 and section altitude20, so area200cm2. Both PM and OM are perpendicular to chordAB; independent plane normals confirm the linear anglePMO."
+    },
+    {
+      "id": "ex-main-0354-b",
+      "sha256": "a9d8102cf3db42d5d314f69fab352917e58171b8fac9d8dbb658f36f7c3ed606",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Height10, base arc60 and dihedral45degrees give r20sqrt3/3 and PM10sqrt2, area100sqrt6/3cm2. Actual midpoint, chord and plane angle checked; rewritten product uses equivalent factor0.5."
+    },
+    {
+      "id": "ex-main-0354-c",
+      "sha256": "5aa920b607fcbd85821d562a280cea416099122fae9262f77004e36877a057f2",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Height10, base arc60 and dihedral60degrees give r20/3 and PM20sqrt3/3, area200sqrt3/9cm2. Actual plane normals and both chord perpendiculars checked; nested rendered quotient removed without changing mathematics."
+    },
+    {
+      "id": "ex-main-0355",
+      "sha256": "d6323d4a9aaa8b0b2e1d6681b3648d34b44a1b04e7c606802108025c19b73c66",
+      "steps": 5,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:57:59.964529+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Complete proof verifies both boundary inclusions and both filled-disk inclusions, including the centre. Proper inner section0<PO1<PO; vertex point, base disk and exterior empty planes distinguished. Removed undefined zero-coefficient homothety wording; extreme-plane claim now explicitly requires perpendicularity to axis. Actual boundary and interior homotheties checked. Additional mobile-format follow-up: goal and final formula use r times PO1 divided by PO, algebraically equal to the previously parenthesized ratio. Entire corrected proof reread."
+    },
+    {
+      "id": "ex-main-0356",
+      "sha256": "2831aaf111496d44743c80ed4e6ca11cb3d41eea9ff05b30e319b6913a352880",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:57:59.964529+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "For nonzero second section, ordered area ratio equals squared ordered vertex-distance ratio. Proof allows the base plane and separately discusses first-area zero; no division by zero. Both actual entire circles and common selected generator checked. Additional mobile-format follow-up: ratio-of-squares proof is split into two equalities without parenthesized fractions; the positive denominator and ordered comparison are unchanged."
+    },
+    {
+      "id": "ex-main-0357",
+      "sha256": "33b61c1baec5902e23eef8a39922ed09e546dbfc37516fbecf686861db528540",
+      "steps": 4,
+      "modelStates": 3,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Source height4 and radius3 give slant5; sector arc equals circumference6pi, so degree measure216. Major sector angle is distinct from axial apex angle; actual cone ratio verified."
+    },
+    {
+      "id": "ex-main-0358",
+      "sha256": "8c262af03400517a8642240bdfc020f1632bb50c39e09efb70731a4e61ccee7f",
+      "steps": 4,
+      "modelStates": 3,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Generator-base angle60 gives r/l=cos60=1/2 and sector measure180degrees independently of scale. Actual model uses r2,h2sqrt3 and satisfies that exact angle."
+    },
+    {
+      "id": "ex-main-0359-a",
+      "sha256": "5fec59d64b5c3c4d6d411ae85c8c138d49ceeade49adf30f0158ca9adc5ed817",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Sector180 means r/l=1/2. Half axial apex angle30 gives the requested full angle60degrees. Feedback corrected to accept the natural exact60degree answer without requiring arcsin notation."
+    },
+    {
+      "id": "ex-main-0359-b",
+      "sha256": "c93c7eac5125de3496356efeae3c36ab6a4456c9992f195b383a38b4b0334c66",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:57:59.964529+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Sector90 means r/l=1/4; acute half-angle gives exact full apex2arcsin(1/4). No false30degree simplification. Actual axial angle and degree/radian guidance checked. Mobile-format follow-up moves the unchanged exact2arcsin(1/4) answer to the first sentence of step4, followed by full-angle doubling explanation; entire corrected card reread."
+    },
+    {
+      "id": "ex-main-0359-c",
+      "sha256": "352e778dee1913844117b8ce9192ebf8794d317d4f97f1f41929d832dc28b3ac",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:57:59.964529+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Sector60 means r/l=1/6; exact full apex2arcsin(1/6), not20degrees. Acute inverse branch and full-angle doubling explained; actual model ratio independently verified. Mobile-format follow-up moves the unchanged exact2arcsin(1/6) answer to the first sentence of step4, followed by full-angle doubling explanation; entire corrected card reread."
+    },
+    {
+      "id": "ex-main-0360",
+      "sha256": "fb6b0e5895c7dcfd9a42e19e4a55d5274284d5daf64f13b96476c0384c87cbba",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:59:23.827374+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Net radius9 is generator, not base radius. Arc120degrees gives r3, base9pi cm2 and positive height6sqrt2cm; exact actual cone dimensions checked. Final display follow-up independently reread:120degrees is one third of360, so2pi r=2pi l/3 is equivalent to the former sector-fraction equation."
+    },
+    {
+      "id": "ex-main-0361",
+      "sha256": "64d99b4c43958eea02e66896ecdf3045ec28e99fc8b304c7283c032f1338f2f7",
+      "steps": 3,
+      "modelStates": 3,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Slant6.5 and axis angle45 give r13sqrt2/4 and lateral169pi sqrt2/8cm2. Only lateral surface requested; actual apex-axis angle verified."
+    },
+    {
+      "id": "ex-main-0362",
+      "sha256": "23857f5995376063acb1ecc8aa9be1f2c018d614b3515b301beb3f2e25a3dc99",
+      "steps": 4,
+      "modelStates": 5,
+      "reviewedAt": "2026-10-29T13:59:23.827374+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Axial area0.6 and height1.2 imply r0.5, slant1.3, total0.9pi cm2. One base is added. Actual full axial triangle and source dimensions checked. Final display follow-up independently reread: full area addition and factoring are split into separate sentences; pi rl+pi r squared=pi r(l+r) and0.9pi result are unchanged."
+    },
+    {
+      "id": "ex-main-0363",
+      "sha256": "4abd1ccf7eaefd57be8efc745d58120832f481e5f2bfe998fd3c3c9a90056bed",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Extended sine theorem gives r=a/(2sin alpha), valid for acute or obtuse0<alpha<180degrees. Generator-base angle gives l=r/cos phi,0<phi<90. Authored factored full-area formula is algebraically equivalent to printed answer. Actual inscribed triangle, angle, radii and total surface independently checked."
+    },
+    {
+      "id": "ex-main-0364",
+      "sha256": "45aa46ed4d4d1a2fc18c5798cb8383e402d002d69e69ee99a1c5de4b5e8c0bdd",
+      "steps": 4,
+      "modelStates": 3,
+      "reviewedAt": "2026-10-29T13:53:40.767184+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Rotation about smaller leg6 creates height6, radius8 and slant10. Lateral80pi and full144pi cm2; radius is not half the other leg. Actual generating triangle checked. Shortened title retains rotation of the source triangle without an initial answer."
+    },
+    {
+      "id": "ex-main-0365",
+      "sha256": "cae33fdf78c14ed3e6349e6f2ee9a4db833c112d12e4b9a45ae9f7390b4013a0",
+      "steps": 5,
+      "modelStates": 5,
+      "reviewedAt": "2026-10-29T13:57:59.964529+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Rotation around isosceles triangle base creates two equal cones joined along an internal disk. Radius m sin phi, slant m, external area2pi m squared sin phi. Every actual equatorial point and both complete cone surfaces checked; no shared disk mesh face. Shortened title retains the surface-of-rotation task; no initial area formula. Follow-up rotates every point cyclically(x,y,z) to(y,z,x), preserving Euclidean lengths, areas and orientation. Axis AB is now vertical. Left/right wording replaced with named vertices A/B; full orientation-invariant oracle passed on the rotated mesh."
+    },
+    {
+      "id": "ex-main-0366",
+      "sha256": "6ba4670db343c56aaf0180fdad28e4e4a5b06d5cc3cf710d7e0be2107e9d114e",
+      "steps": 3,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Radii6 and3 with height4 give generator5 by the actual auxiliary triangle with horizontal legR-r, not R+r. Exact source dimensions and projectionH checked."
+    },
+    {
+      "id": "ex-main-0367-a",
+      "sha256": "20929d56f8092bc242bcc56577064bf3a5df25bb28e17f5185bc0f8d3b7ff030",
+      "steps": 2,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:57:59.964529+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Source radii11 and5, slant10 imply positive height8 via difference6. Actual projected auxiliary triangle checked. Follow-up neutral view now explicitly shows the given generator BB1 and both radius segments; source data are visible without revealing the unknown height."
+    },
+    {
+      "id": "ex-main-0367-b",
+      "sha256": "59540f1c4c0433af244e16eb63f44dabe3d0e43ca99fe4d0927c639599ad2eae",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:57:59.964529+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Same source dimensions give height8. Full axial trapezoid has bases22 and10, area128cm2. Actual polygon area independently measured. Follow-up neutral view explicitly shows the given generator BB1 and both radii; it does not disclose the requested axial area."
+    },
+    {
+      "id": "ex-main-0368",
+      "sha256": "414af85aca97d8778557babdefec93bcffd435d7d2cbd4ea4b0c6d34339369cd",
+      "steps": 3,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Proper frustum R>r>0 with generator-base45degrees has heightR-r; axial trapezoid area(R+r)(R-r)=R squared minus r squared. Actual linear angle and full diameter bases checked."
+    },
+    {
+      "id": "ex-main-0369",
+      "sha256": "118efcd40dd95437325142f4ad36c54ec3c89042e2688169ea73c5bb51eb8839",
+      "steps": 4,
+      "modelStates": 5,
+      "reviewedAt": "2026-10-29T13:53:40.767184+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Half-height cone has linear scale1/2 and lateral area1/4 of80=20, leaving60cm2. Actual original cone has exact smooth lateral80; full section circle and remaining frustum independently integrated. New base disk is not added to lateral area. Re-read model labels after SVG ratio wording was expressed in prose; similarity and remaining-surface meaning unchanged."
+    },
+    {
+      "id": "ex-main-0370",
+      "sha256": "9f3b5b0528ad89e2699d3871f378b8e53705fe89d7f228f158a2ccf9ca95eae7",
+      "steps": 5,
+      "modelStates": 5,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Source CD is3sqrt2, verified visually. Trapezoid45degree projection gives height3, radius difference3; small radiusBC4 and largeAD7. Lateral33pi sqrt2, totalpi(65+33sqrt2)cm2. All actual source angles, renamed axisAB, right projectionK and radius lengths checked."
+    },
+    {
+      "id": "ex-main-0371",
+      "sha256": "d550ca76986ba8b4183a80535752d9368ea2bdfc19317169dfdbb7ebbe4d30b9",
+      "steps": 5,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-30T22:10:04Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Ordinary bucket has open large mouth and small bottom. One side750pi+100pi=850pi cm2; two sides100 buckets give17pi m2,150g/m2 gives2.55pi kg, approximately8.011. Actual slant30, lower radius10, upper15, only small cap and open mouth mesh independently checked.",
+      "reviewAmendment": "371-square-unit-help-question"
+    },
+    {
+      "id": "theory-040",
+      "sha256": "feb6d8f5e9b79811a5cc8b2b3920c1507ad1e5a149c0b01abededf19e72cfe1b",
+      "steps": 6,
+      "modelStates": 7,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Full point40: infinite conical surface versus bounded body, equality of generators, right-triangle rotation, axial triangle and complete perpendicular disk via homothety. Positive heights/radii and0<k<1 stated. Actual extended generators collinear, slice disk exact and named E1 on PE."
+    },
+    {
+      "id": "theory-041",
+      "sha256": "287779f608f94cf273371e68e4be9f220477bbf0936e7011cac9664b59e68989",
+      "steps": 6,
+      "modelStates": 7,
+      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Full point41: cut yields sector radiusl with arc2pi r; degree ratio and0<alpha<360; lateral area defined via net; full area adds one disk. Actual planar mesh sweeps216degrees, not complementary144, and its exact arc length matches radius3 base; smooth area checked analytically rather than by facets."
+    },
+    {
+      "id": "theory-042",
+      "sha256": "9bc1315bac8fdcd8bc4ef7bd1bf6e1c4e624b99aaf782a4a69fd26b3c27c0590",
+      "steps": 7,
+      "modelStates": 8,
+      "reviewedAt": "2026-10-29T13:57:59.964529+00:00",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Full point42: proper frustum R>r>0,h>0, equal generators, axial trapezoid and right-trapezoid rotation. Surface subtraction and similar-triangle proof eliminate small-cone slant and yieldpi(R+r)l; total adds two disks. Actual common apex, generator collinearity, circle radii and smooth surface subtraction checked. Renderer-focused ratio prose preserves the proof. Follow-up final sentence states full surface by adding the two base areas in prose; the complete lateral-area derivation is unchanged and both base formulas remain exact."
+    }
+  ],
+  "aggregateSHA256": "4685bdf519b9a2e7cdc612d15dc7b1658ad0a417b488ba09fa747d69df166e2f",
+  "oracle": {
+    "path": "tools/stereo-textbook/cone-math.test.py",
+    "sha256": "4f2eb38a98a5a877316dbf71c7346a22b36405ca043e8dc5b7c41d97b57925d5"
+  },
+  "limitations": [
+    "Independent written-content/source/mathematics pass only; final responsive browser and actual lesson-image review are separate requirements.",
+    "No physical-device, screen-reader or real-pupil learning-efficacy trial.",
+    "No external paid-model review was performed or claimed; the existing whole-course owner decision is handled by the parent task.",
+    "Sampled mesh circles, sectors and facets illustrate smooth surfaces; exact analytical geometry and Jacobians, not polygon area approximations, determine mathematical answers."
+  ],
+  "focusedFollowup": {
+    "reviewedAt": "2026-10-29T13:53:40.767184+00:00",
+    "aggregateSHA256": "776ace343025da3b8de4614fe559b7fb53f8cc61de09e13eb4a18636df0c50d6",
+    "cards": [
+      "ex-main-0348-a",
+      "ex-main-0348-b",
+      "ex-main-0349",
+      "ex-main-0351",
+      "ex-main-0364",
+      "ex-main-0365",
+      "ex-main-0369"
+    ],
+    "unboundPayloadChanges": 0,
+    "scope": "Actual corrected text reread; canonical comparison confirmed the report already binds these exact bytes. Mathematical values, conditions and coordinates unchanged."
+  },
+  "reviewHistory": [
+    {
+      "reviewedAt": "2026-10-29T13:57:59.964529+00:00",
+      "previousAggregateSHA256": "776ace343025da3b8de4614fe559b7fb53f8cc61de09e13eb4a18636df0c50d6",
+      "aggregateSHA256": "6a715e7b086b72de8e327176d57b5cf348f940748efd91c37c4737e280aa8172",
+      "changedCards": [
+        {
+          "id": "ex-main-0355",
+          "previousSHA256": "74f4c94079640cc2471309572ca5200f08d24ee9ac2652677fe1152380a04d36",
+          "sha256": "d6323d4a9aaa8b0b2e1d6681b3648d34b44a1b04e7c606802108025c19b73c66"
+        },
+        {
+          "id": "ex-main-0356",
+          "previousSHA256": "a46cbfd58d9a76bc9582d93ffbf47f744a11f8e140ce20934fd6842b67681791",
+          "sha256": "2831aaf111496d44743c80ed4e6ca11cb3d41eea9ff05b30e319b6913a352880"
+        },
+        {
+          "id": "ex-main-0359-b",
+          "previousSHA256": "ccc2015f9f1f290d835267d0ed9b780b136dc8a7b2d352e49dd4195fb1b14807",
+          "sha256": "c93c7eac5125de3496356efeae3c36ab6a4456c9992f195b383a38b4b0334c66"
+        },
+        {
+          "id": "ex-main-0359-c",
+          "previousSHA256": "8d97763337771fa8ffa223afe44f4167722f4f14944a289cd03f764cb62404be",
+          "sha256": "352e778dee1913844117b8ce9192ebf8794d317d4f97f1f41929d832dc28b3ac"
+        },
+        {
+          "id": "ex-main-0365",
+          "previousSHA256": "83a0515fea8ff4bc45e31ad1db0189bf56fd32b58af8367de3a5676eaba3663c",
+          "sha256": "cae33fdf78c14ed3e6349e6f2ee9a4db833c112d12e4b9a45ae9f7390b4013a0"
+        },
+        {
+          "id": "ex-main-0367-a",
+          "previousSHA256": "abc819a5ecd9c909f9668c7eb28f4e570b53fe08f83a95097b93c3206bc8fa0b",
+          "sha256": "20929d56f8092bc242bcc56577064bf3a5df25bb28e17f5185bc0f8d3b7ff030"
+        },
+        {
+          "id": "ex-main-0367-b",
+          "previousSHA256": "dc750504e83588cfaa0ee9276b5f60707753236e70336f429f41bbf0e549998b",
+          "sha256": "59540f1c4c0433af244e16eb63f44dabe3d0e43ca99fe4d0927c639599ad2eae"
+        },
+        {
+          "id": "theory-042",
+          "previousSHA256": "6a80b5267719ae4c9261a9d0ce68744e43ae26e6f1ddcd19cc4ba45f7a168c8e",
+          "sha256": "9bc1315bac8fdcd8bc4ef7bd1bf6e1c4e624b99aaf782a4a69fd26b3c27c0590"
+        }
+      ],
+      "previousOracleSHA256": "7ad7c55d482dd36fc6bda45b45a4328552e9c016b656a23f57c01c612d77c622",
+      "oracleSHA256": "4f2eb38a98a5a877316dbf71c7346a22b36405ca043e8dc5b7c41d97b57925d5",
+      "scope": "Focused actual text/model reread of eight changed cards. Bicone is a proper rotation; source values and formulas unchanged. Neutral367 now shows given segments;355/356,359b/c and42 formula display rewritten equivalently. Full independent oracle rerun passed. Other32card payloads unchanged; oracle code changed only an orientation-neutral explanatory comment."
+    },
+    {
+      "reviewedAt": "2026-10-29T13:59:23.827374+00:00",
+      "previousAggregateSHA256": "6a715e7b086b72de8e327176d57b5cf348f940748efd91c37c4737e280aa8172",
+      "aggregateSHA256": "ca3749b2667da3e232832423d6cd6eb1895a3f2e30dfc5acd3dceb23d040452a",
+      "changedCards": [
+        {
+          "id": "ex-main-0360",
+          "previousSHA256": "a6dc135a28d290a32e0df5f723fcf09380ed9d02e97ebdd334fd476bc2bc0882",
+          "sha256": "fb6b0e5895c7dcfd9a42e19e4a55d5274284d5daf64f13b96476c0384c87cbba"
+        },
+        {
+          "id": "ex-main-0362",
+          "previousSHA256": "7eb8befee82d0f47075ce3ea2312cbdd5533d29b6cea69c4e133c1a95d41b8fc",
+          "sha256": "23857f5995376063acb1ecc8aa9be1f2c018d614b3515b301beb3f2e25a3dc99"
+        }
+      ],
+      "scope": "Two final renderer-safe text rewrites only:360step1 sector-fraction relation and362step4 addition/factoring split. Both independently reread and algebraically checked;38other card payloads and all model coordinates unchanged. Full independent oracle rerun passed with unchanged oracle bytes."
+    },
+    {
+      "reviewedAt": "2026-10-29T14:01:28.953776+00:00",
+      "previousAggregateSHA256": "ca3749b2667da3e232832423d6cd6eb1895a3f2e30dfc5acd3dceb23d040452a",
+      "aggregateSHA256": "5db18f931a8a0b2833495cd3f2ee05f38570597af894cd463ec47ae7cec20875",
+      "changedCards": [
+        {
+          "id": "ex-main-0351",
+          "previousSHA256": "4312dede129b4869afda36837ed6864ed2bf47110d20081316241f0a63ce34e8",
+          "sha256": "d87cf5db7da162c291a17d11ef0b33b3b71390528c81a5b0c730a01f83f65c54"
+        }
+      ],
+      "scope": "Only351 model points rotated45degrees about z so trianglePOA is visible in the default view. Full card reread and full independent oracle rerun passed: right generator section,60degree axis angle and area2h squared unchanged.39other card payloads and oracle bytes unchanged."
+    },
+    {
+      "id": "371-square-unit-help-question",
+      "reviewer": "Codex independent focused reviewer /root/source_review; no lesson authorship",
+      "reviewedAt": "2026-10-30T22:10:04Z",
+      "verdict": "PASS_INDEPENDENT_SOURCE_AND_WRITTEN_PEDAGOGY_ONE_FIELD_AMENDMENT",
+      "scope": "Actual amended ex-main-0371 was reread against the original PDF, its unchanged help body and all five explanations. The sole JSON difference from the checkpoint is /help/2/question. This record supplements the original full review; it does not claim a new full 40-card review.",
+      "previousCheckpoint": {
+        "head": "75570c7f315325cdfa9e54c55730707ca10bff57",
+        "reportPath": "docs/reviews/ATANASYAN_CONE_CONTENT.json",
+        "reportFileSHA256": "6f9a27a1dfb8105702f9045aaab70aa918d0316d5801247d07c3fecb7e9fa18c",
+        "registryPath": "tools/stereo-textbook/content-review.json",
+        "registryFileSHA256": "66394882668c5cc70d610a770fa4d701c334c84ce44584b416311e5a55282fc4",
+        "reviewer": "Codex independent source/math reviewer /root/cone_source; no lesson authorship",
+        "reviewedAt": "2026-10-29T14:01:28.953776+00:00",
+        "aggregateSHA256": "5db18f931a8a0b2833495cd3f2ee05f38570597af894cd463ec47ae7cec20875",
+        "card": {
+          "id": "ex-main-0371",
+          "sha256": "d4cfb41fc0dccae0e4739867e23c5c476dbb28b0a50819a9acd7f41af707f367",
+          "steps": 5,
+          "modelStates": 4,
+          "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Ordinary bucket has open large mouth and small bottom. One side750pi+100pi=850pi cm2; two sides100 buckets give17pi m2,150g/m2 gives2.55pi kg, approximately8.011. Actual slant30, lower radius10, upper15, only small cap and open mouth mesh independently checked."
+        },
+        "registryMetadata": {
+          "reviewer": "Independent Codex content and coordinate reviews; see batches",
+          "reviewedAt": "2026-10-29T14:01:28.953776+00:00",
+          "registeredAt": "2026-10-29T14:01:28.953776+00:00"
+        },
+        "coneBatchMetadata": {
+          "reviewer": "Codex independent source/math reviewer /root/cone_source; no lesson authorship",
+          "reviewedAt": "2026-10-29T14:01:28.953776+00:00",
+          "sourceBundleSHA256": "5db18f931a8a0b2833495cd3f2ee05f38570597af894cd463ec47ae7cec20875"
+        },
+        "meaning": "Exact historical report and registry bytes remain recoverable at this head and path. Their original attribution and timestamps are preserved; they are not evidence that the corrected question was reviewed at that earlier time."
+      },
+      "previousAggregateSHA256": "5db18f931a8a0b2833495cd3f2ee05f38570597af894cd463ec47ae7cec20875",
+      "aggregateSHA256": "4685bdf519b9a2e7cdc612d15dc7b1658ad0a417b488ba09fa747d69df166e2f",
+      "changedCards": [
+        {
+          "id": "ex-main-0371",
+          "previousSHA256": "d4cfb41fc0dccae0e4739867e23c5c476dbb28b0a50819a9acd7f41af707f367",
+          "sha256": "d550ca76986ba8b4183a80535752d9368ea2bdfc19317169dfdbb7ebbe4d30b9",
+          "previousFileSHA256": "1204363dba9e1efc5c94d619d4070d574bf1a343ee7145df707ba9ea31b4fd59",
+          "fileSHA256": "c58dbc01486ee491d40f4586256c5e09ef65660eec8d7746c3b1e25d75e1f94d",
+          "jsonPointer": "/help/2/question",
+          "helpId": "h3",
+          "before": "Почему сантиметры переводятся в метры через 10000?",
+          "after": "Почему в 1 м² содержится 10000 см²?"
+        }
+      ],
+      "sourceInspection": {
+        "sourceSHA256": "bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770",
+        "printedPage": 100,
+        "pdfPage": 102,
+        "actualImageViewed": true,
+        "imageSHA256": "a09b13b9a6e64569e2718d7a43891120e6f9ff6058b83f2714a84d3dcf6b9fbd",
+        "finding": "Exercise 371 gives paint consumption per square metre. The corrected question states area units explicitly and agrees with h3 and step 4: 1 m = 100 cm, so 1 m² = 10000 cm²."
+      },
+      "resolvedFinding": "The old question named linear centimetres and metres with an area conversion factor. Only the question needed correction; the existing explanation and calculations already used square units correctly.",
+      "preservation": {
+        "otherConeCardPayloadsUnchanged": 39,
+        "priorLessonFilesByteIdentical": 554,
+        "priorRegistryRowsUnchanged": 554,
+        "priorRegistryBatchesUnchanged": 28,
+        "priorRawLessonManifestSHA256": "113f6338d925d9775b5c618e72c91f8a61291fb2b0da8b2aa6a668699e3f606e",
+        "lessonReviewMetadataUnchanged": true,
+        "testsAndFixturesUnchanged": true,
+        "note": "The amended payload is bound by the hashes above before commit. The unchanged original lesson review metadata remains historical; current registration is supported by this separately attributed amendment."
+      },
+      "openFindings": [],
+      "limitations": [
+        "No new browser-image verdict, exact-head CI result, full oracle rerun or release approval is claimed by this focused review. Those checks and the final committed-head binding are separate."
+      ]
+    }
+  ]
+}

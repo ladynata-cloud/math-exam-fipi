@@ -4,6 +4,7 @@
 const assert = require('node:assert/strict');
 const crypto = require('node:crypto');
 const published = require('./cylinder-baseline.json');
+const later = require('./cone-baseline.cjs');
 const parts = Object.fromEntries(Array.from({length: 26}, (_, i) => [String(i + 320), [null]]));
 for (const number of ['321', '344']) parts[number] = ['а', 'б', 'в'];
 for (const number of ['322', '325', '326', '345']) parts[number] = ['а', 'б'];
@@ -23,6 +24,7 @@ const originals = new Map(published.originalSources.map(entry => [sourceKey(entr
 const requiredParts = entry => entry.source.collection === 'theory' ? [null] : parts[entry.source.exercise];
 
 function previousIndex(sourceIndex) {
+  if (sourceIndex.entries.some(entry => later.target(entry) && Object.hasOwn(entry, 'requiredParts'))) sourceIndex = later.previousIndex(sourceIndex);
   const copy = structuredClone(sourceIndex), entries = copy.entries.filter(target);
   assert.equal(entries.length, 28, 'exact 26 cylinder exercises and two theory points');
   for (const entry of entries) {
@@ -35,6 +37,10 @@ function previousIndex(sourceIndex) {
 }
 
 function previousCourse(course, sourceIndex) {
+  if (course.lessons.some(card => later.ids.has(card.id))) {
+    course = later.previousCourse(course, sourceIndex);
+    sourceIndex = later.previousIndex(sourceIndex);
+  }
   previousIndex(sourceIndex);
   const copy = structuredClone(course), seen = new Set(), entries = [];
   copy.lessons = copy.lessons.filter(card => !ids.has(card.id));
@@ -56,6 +62,7 @@ function previousCourse(course, sourceIndex) {
 }
 
 function previousRegistry(registry) {
+  if (registry.cards.some(card => later.ids.has(card.id))) registry = later.previousRegistry(registry);
   assert(registry.batches.length === 27 || registry.batches.length === 28, 'only one cylinder review batch may be appended');
   if (registry.batches.length === 28) {
     const added = registry.batches[27].cardIds;
@@ -71,6 +78,7 @@ function previousRegistry(registry) {
 }
 
 function previousCases(cases) {
+  if ([...cases.keys()].some(key => later.ids.has(key.split('|')[0]))) cases = later.previousCases(cases);
   const rows = [...cases].filter(([key]) => !ids.has(key.split('|')[0]));
   assert.equal(rows.length, 1272, 'all 1272 prior browser cases');
   assert.equal(sha(rows), published.screenshotCasesSHA256, 'all 1272 prior browser cases');

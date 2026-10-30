@@ -9,10 +9,12 @@ const root = path.resolve(__dirname, '../..');
 const dir = path.join(root, 'stereo-course/textbook/lessons');
 const baseline = require('./cylinder-baseline.cjs');
 const {ids, published, sha} = baseline;
-const sourceIndex = require(root + '/stereo-course/textbook/source-index.json');
-const production = require(root + '/stereo-course/textbook/data/course.json');
-const registry = require('./content-review.json');
-const screenshots = require('./browser-cases.cjs');
+const later = require('./cone-baseline.cjs');
+const currentIndex = require(root + '/stereo-course/textbook/source-index.json');
+const sourceIndex = later.previousIndex(currentIndex);
+const production = later.previousCourse(require(root + '/stereo-course/textbook/data/course.json'), currentIndex);
+const registry = later.previousRegistry(require('./content-review.json'));
+const screenshots = later.previousCases(require('./browser-cases.cjs'));
 const API = require(root + '/stereo-course/textbook/assets/engine.js');
 const reportPath = 'docs/reviews/ATANASYAN_CYLINDER_CONTENT.json';
 const report = JSON.parse(fs.readFileSync(path.join(root, reportPath), 'utf8'));
@@ -55,7 +57,7 @@ const CHECKPOINT = {
 const previous = baseline.previousCourse(production, sourceIndex);
 const oldRegistry = baseline.previousRegistry(registry);
 baseline.previousCases(screenshots);
-const rawPrevious = fs.readdirSync(dir).filter(name => name.endsWith('.json') && !ids.has(name.slice(0, -5)))
+const rawPrevious = fs.readdirSync(dir).filter(name => name.endsWith('.json') && !later.ids.has(name.slice(0, -5)) && !ids.has(name.slice(0, -5)))
   .sort().map(name => [name, hash(fs.readFileSync(path.join(dir, name)))]);
 assert.equal(rawPrevious.length, 518);
 assert.equal(sha(rawPrevious), published.rawLessonManifestSHA256, 'all 518 prior authored files byte-identical');
