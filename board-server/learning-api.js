@@ -206,6 +206,7 @@ function createLearningApi(options = {}) {
   router.get('/attempts', authMiddleware, handler((req, res) => res.json({ attempts: store.listAttempts(req.learningAuth) })));
   router.post('/attempts', authMiddleware, mutationMiddleware, handler((req, res) => res.status(201).json(store.createAttempt(req.learningAuth, req.body))));
   router.get('/attempts/:id', authMiddleware, handler((req, res) => res.json(store.getAttempt(req.learningAuth, req.params.id))));
+  router.get('/attempts/:id/textbook-help-context', authMiddleware, handler((req, res) => res.json(store.textbookHelpContext(req.learningAuth, req.params.id))));
   router.post('/attempts/:id/actions', authMiddleware, mutationMiddleware, handler((req, res) => res.json(store.action(req.learningAuth, req.params.id, req.body))));
   router.get('/attempts/:id/history', authMiddleware, handler((req, res) => res.json(store.history(req.learningAuth, req.params.id,
     { after: Number(req.query.after || 0), limit: Number(req.query.limit || 100), ...(req.query.through === undefined ? {} : { through: Number(req.query.through) }) }))));

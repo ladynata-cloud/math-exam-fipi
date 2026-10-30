@@ -161,9 +161,21 @@ function expectedText(taskSpec) {
   return '';
 }
 
+function textbookHelp(taskSpec,state,request) {
+  requireValue(taskSpec?.trainerId==='vilenkin6-textbook','LEARNING_TRAINER_UNKNOWN');
+  try { return vilenkinTextbook.help(taskSpec,state,request); }
+  catch (_) { throw new LearningError('LEARNING_HELP_CONTEXT_CHANGED',409); }
+}
+
+function textbookHelpContext(taskSpec,state) {
+  requireValue(taskSpec?.trainerId==='vilenkin6-textbook','LEARNING_TRAINER_UNKNOWN');
+  try { vilenkinTextbook.normalize(taskSpec,state); }
+  catch (_) { throw new LearningError('LEARNING_HELP_CONTEXT_CHANGED',409); }
+}
+
 function examPool(position) {
   const ids = new Set(pathExamPool.select(D.meta, position).map(item => item.id));
   return list().filter(item => item.trainerId === 'ege-path' && ids.has(item.contentId));
 }
 
-module.exports = { list, create, normalize, evaluate, describe, questionIdentity, assistance, expectedText, examPool };
+module.exports = { list, create, normalize, evaluate, describe, questionIdentity, assistance, expectedText, textbookHelp, textbookHelpContext, examPool };

@@ -452,6 +452,18 @@ class LearningStore {
     return row;
   }
   getAttempt(auth, id) { return this.attemptDTO(this.attemptRow(auth, id)); }
+  textbookHelpAccess(auth,attempt) {
+    requireValue(auth.role==='student','LEARNING_FORBIDDEN',403);
+    requireValue(attempt.archivedAt==null,'LEARNING_ATTEMPT_ARCHIVED',409);
+    requireValue(attempt.controller===auth.role,'LEARNING_CONTROL_REQUIRED',409);
+    requireValue(!(this.row("SELECT name FROM sqlite_master WHERE type='table' AND name='learning_runs'")
+      && this.row('SELECT id FROM learning_runs WHERE learner_id=? AND finished_at IS NULL',auth.id)),'LEARNING_RUN_ACTIVE',409);
+  }
+  textbookHelpContext(auth,id) {
+    const attempt=this.getAttempt(auth,id);this.textbookHelpAccess(auth,attempt);
+    this.contracts.textbookHelpContext(attempt.taskSpec,attempt.state);
+    return {attempt};
+  }
   progress(auth) {
     requireValue(auth?.role === 'student', 'LEARNING_FORBIDDEN', 403);
     this.ready();
@@ -584,17 +596,24 @@ class LearningStore {
       const row = this.attemptRow(auth, id), attempt = this.attemptDTO(row);
       requireValue(!this.runGuard?.(id), 'LEARNING_RUN_ACTIVE', 409);
       requireValue(row.archived_at == null, 'LEARNING_ATTEMPT_ARCHIVED', 409);
+      let textbookHelp;
+      if(body.type==='textbook-help'){
+        this.textbookHelpAccess(auth,attempt);
+        // Recheck authority and the live source even when replaying an operation.
+        textbookHelp=this.contracts.textbookHelp(attempt.taskSpec,attempt.state,body.payload);
+      }
       const previous = this.row('SELECT * FROM events WHERE actor_id=? AND op_id=?', auth.id, body.opId);
-      if (previous) { requireValue(previous.fingerprint === fingerprint, 'LEARNING_OP_CONFLICT', 409); return { attempt, duplicate: true }; }
+      if (previous) { requireValue(previous.fingerprint === fingerprint, 'LEARNING_OP_CONFLICT', 409); return { attempt, duplicate: true,
+        ...(textbookHelp?{help:parse(previous.payload_json).help}:{}) }; }
       const commutative = ['stroke','erase','reference'].includes(body.type) || (body.type === 'undo' && !!body.payload?.strokeId);
-      const semantic = ['state','check','hint','control'].includes(body.type);
+      const semantic = ['state','check','hint','control','textbook-help'].includes(body.type);
       requireValue(commutative ? body.expectedVersion <= row.version
         : !semantic || body.expectedTrainerVersion === undefined ? body.expectedVersion === row.version
           : body.expectedVersion <= row.version && body.expectedTrainerVersion === row.trainer_version, 'LEARNING_STATE_CONFLICT', 409);
       this.limit('events', 500000);
       requireValue(this.row('SELECT COUNT(*) AS n FROM events WHERE attempt_id=?', id).n < 20000, 'LEARNING_LIMIT_EXCEEDED', 507);
       const { type, payload } = body;
-      requireValue(['state','check','hint','reference','stroke','erase','undo','control'].includes(type));
+      requireValue(['state','check','hint','reference','stroke','erase','undo','control','textbook-help'].includes(type));
       let evaluation;
       if (['state','check','hint'].includes(type)) requireValue(attempt.controller === auth.role, 'LEARNING_CONTROL_REQUIRED', 409);
       if (type === 'state') {
@@ -622,6 +641,9 @@ class LearningStore {
           if (payload.details.step !== undefined) requireValue(Number.isInteger(payload.details.step) && payload.details.step >= 0 && payload.details.step < 100);
         }
         attempt.assistance.hints = true;
+      } else if(type==='textbook-help') {
+        attempt.state=textbookHelp.state;
+        if(!textbookHelp.help.completed)attempt.assistance.hints=true;
       } else if (type === 'reference') {
         exactKeys(payload, ['id']); if (payload.id !== undefined) safeName(payload.id, 100);
       } else if (type === 'control') {
@@ -672,9 +694,9 @@ class LearningStore {
         json(attempt.state), json(attempt.strokes), attempt.version, attempt.trainerVersion, attempt.controller, json(attempt.assistance), attempt.outcome, attempt.updatedAt, id);
       this.run('INSERT INTO events(attempt_id,actor_id,actor_role,op_id,fingerprint,revision,type,payload_json,at) VALUES(?,?,?,?,?,?,?,?,?)',
         id, auth.id, auth.role, body.opId, fingerprint, attempt.version, type, json({ ...payload, ...(['state','check'].includes(type) || payload.state !== undefined ? { state: attempt.state } : {}),
-          ...(evaluation ? { evaluation } : {}), after: { outcome: attempt.outcome, assistance: attempt.assistance, controller: attempt.controller, trainerVersion: attempt.trainerVersion } }), attempt.updatedAt);
+          ...(evaluation ? { evaluation } : {}), ...(textbookHelp?{state:attempt.state,help:textbookHelp.help}:{}), after: { outcome: attempt.outcome, assistance: attempt.assistance, controller: attempt.controller, trainerVersion: attempt.trainerVersion } }), attempt.updatedAt);
       attempt.submission = this.submissionForAttempt?.({ ...row, version: attempt.version }) || null;
-      return { attempt, duplicate: false, ...(evaluation ? { evaluation } : {}) };
+      return { attempt, duplicate: false, ...(evaluation ? { evaluation } : {}), ...(textbookHelp?{help:textbookHelp.help}:{}) };
     });
   }
   history(auth, id, { after = 0, through, limit = 100 } = {}) {
