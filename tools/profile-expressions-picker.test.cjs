@@ -8,6 +8,10 @@ const vm = require('node:vm');
 
 const root = path.resolve(__dirname, '..');
 const sourcePath = '/ege-profil/start/index.html';
+const publicAssistantScripts = [
+  '/assets/assistant/data.js?v=public-assistant-20261031',
+  '/assets/assistant/widget.js?v=public-assistant-20261031'
+];
 const wrapperPath = '/trainers/ege-profile-expressions.html';
 const lessonIds = [
   'expr-powers', 'expr-roots', 'expr-fractions', 'expr-logarithms',
@@ -111,13 +115,17 @@ test('the wrapper reuses the original scripts in order without a base, redirect,
   const wrapper = fs.readFileSync(path.join(root, wrapperPath), 'utf8');
   const canonical = fs.readFileSync(path.join(root, sourcePath), 'utf8');
   const scripts = html => [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)].map(match => match[1]);
-  const canonicalScripts = scripts(canonical)
-    .filter(src => !src.startsWith('../learning/'))
-    .map(src => '/ege-profil/start/' + src);
+  const canonicalScripts = scripts(canonical);
   const wrapperScripts = scripts(wrapper);
+  assert.deepEqual(canonicalScripts.filter(src => src.startsWith('/assets/assistant/')), publicAssistantScripts,
+    'Only the exact public navigation scripts are included on the canonical page');
+  assert.deepEqual(wrapperScripts.filter(src => src.startsWith('/assets/assistant/')), [],
+    'Board wrappers must not include the public navigation helper');
   const bridge = '/trainers/board-bridge.js';
   const adapter = '/ege-profil/start/board-session.js?v=20261024-added-board';
-  assert.deepEqual(wrapperScripts.filter(src => src !== bridge && src !== adapter), canonicalScripts);
+  assert.deepEqual(wrapperScripts.filter(src => src !== bridge && src !== adapter),
+    canonicalScripts.filter(src => !src.startsWith('../learning/') && !publicAssistantScripts.includes(src))
+      .map(src => '/ege-profil/start/' + src));
   const app = wrapperScripts.findIndex(src => src.startsWith('/ege-profil/start/app.js?'));
   assert.deepEqual(wrapperScripts.slice(app - 2, app), [bridge, adapter]);
   assert.doesNotMatch(wrapper, /<base\b|<iframe\b|http-equiv\s*=\s*["']refresh|location\.(?:replace|assign)/i);

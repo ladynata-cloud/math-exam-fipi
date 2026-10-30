@@ -13,6 +13,7 @@ const trainerPath = 'trainers/oge-task6-fractions.html';
 // cannot classify unrelated releases already included in current main.
 const baselineSha = '4b56350c35a67e41add8f2b25cf2bf7d73d1f71f';
 const scopeBaseSha = 'df63bacb2f82acf5f8543297c372b414925d6113';
+const scopeHeadSha = '813fdcc129b27e71cc83ebaa80bd590cf1d1f1f1';
 const git = (...args) => execFileSync('git',
   ['-c', 'safe.directory=' + root, ...args], { cwd: root, encoding: 'utf8' });
 const html = fs.readFileSync(path.join(root, trainerPath), 'utf8');
@@ -23,9 +24,22 @@ const tasksBlock = source => {
   return { bytes: Buffer.from(matches[0][0], 'utf8'), tasks: JSON.parse(matches[0][1]) };
 };
 const tasks = tasksBlock(html).tasks;
-const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)];
-assert.equal(scripts.length, 1, 'One self-contained inline script');
-const script = scripts[0][1];
+const scripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)];
+const externalScripts = scripts.filter(([, attrs]) => /\bsrc\s*=/i.test(attrs));
+assert.deepEqual(externalScripts.map(([, attrs, body]) => {
+  const src = attrs.match(/\bsrc\s*=\s*["']([^"']+)["']/i);
+  assert.ok(src, 'External helper source must be quoted');
+  assert.match(attrs, /(?:^|\s)defer(?:\s|$)/i, 'Helper assets load with defer');
+  assert.doesNotMatch(attrs, /(?:^|\s)async(?:\s|=|$)/i, 'Helper asset order is preserved');
+  assert.equal(body.trim(), '', 'External helpers have no hidden inline payload');
+  return src[1];
+}), [
+  '/assets/assistant/data.js?v=public-assistant-20261031',
+  '/assets/assistant/widget.js?v=public-assistant-20261031',
+], 'Exactly the two reviewed local helper assets, in order');
+const inlineScripts = scripts.filter(([, attrs]) => !/\bsrc\s*=/i.test(attrs));
+assert.equal(inlineScripts.length, 1, 'One self-contained inline trainer script');
+const script = inlineScripts[0][2];
 // Validate the actual inline script before evaluating any trainer functions.
 const syntaxResult = spawnSync(process.execPath, ['--check', '--input-type=commonjs'], {
   input: script, encoding: 'utf8', timeout: 10000,
@@ -488,8 +502,11 @@ test('summary gives disjoint counts for current order and all-skipped truth', ()
     { first: 0, retry: 0, revealed: 0, skipped: 0, unseen: 0, independent: 0, total: 0 });
 });
 
-test('trainer remains offline, dependency-free and without storage APIs or dynamic code evaluation', () => {
-  sourceRejects(/<script\b[^>]*\bsrc\s*=/i);
+test('inline trainer remains offline, dependency-free and without storage APIs or dynamic code evaluation', () => {
+  // The exact two deferred navigation assets are checked above. The trainer
+  // itself still has one inline program and no other script dependency.
+  const trainerOnlyHtml = externalScripts.reduce((source, [tag]) => source.replace(tag, ''), html);
+  assert.doesNotMatch(trainerOnlyHtml, /<script\b[^>]*\bsrc\s*=/i);
   // Current main already carries canonical SEO metadata. It does not load a
   // resource; every other remote link (stylesheet, preload, etc.) stays banned.
   for (const [tag] of html.matchAll(/<link\b[^>]*>/gi)) {
@@ -537,7 +554,7 @@ test('two scoped relative help links resolve to existing offline files', () => {
   sourceMatches(/Потренировать общий знаменатель/);
 });
 
-test('only the interactive-help task paths differ from the approved current base', () => {
+test('the released interactive-help task remains within its immutable reviewed scope', () => {
   const allowed = new Set([
     trainerPath,
     'tools/oge-task6-fractions-focused.test.mjs',
@@ -549,9 +566,10 @@ test('only the interactive-help task paths differ from the approved current base
     'docs/tasks/TASK6_INTERACTIVE_HELP.md',
     'docs/PROJECT_STATUS.md',
   ]);
-  const changed = [
-    ...git('diff', '--name-only', scopeBaseSha).trim().split(/\r?\n/),
-    ...git('ls-files', '--others', '--exclude-standard').trim().split(/\r?\n/),
-  ].filter(Boolean);
+  // PR287 is a completed task. Preserve its original allowlist against the
+  // exact released range; later approved tasks must use their own scope gate.
+  // Comparing all later HEAD changes to this old base misclassifies releases
+  // already present before the public-helper task began.
+  const changed = git('diff', '--name-only', scopeBaseSha, scopeHeadSha).trim().split(/\r?\n/).filter(Boolean);
   for (const file of changed) assert.ok(allowed.has(file), 'Out-of-scope change: ' + file);
 });

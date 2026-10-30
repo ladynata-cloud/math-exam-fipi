@@ -1,5 +1,26 @@
 # MathExam project status
 
+## Prepared: public MaxExam navigation chat, current-main integration
+
+- Continuation of [PR #361](https://github.com/ladynata-cloud/math-exam-fipi/pull/361),
+  [HIGH task](tasks/MATHEXAM_PUBLIC_ASSISTANT_V1.md), branch
+  `feat/public-assistant-main-20261031`; base
+  `c9bf66e2d95f48db0134d43cc590da89f8bc3053`.
+- Reconciled on 2026-10-31 (Asia/Novosibirsk): current main includes #358, #369,
+  #376, #368, #378, #380, #382 and #377. The preceding division/arithmetic
+  candidate is now merged by #377. These publication facts supersede older
+  prepared-state snapshots below, without claiming unrelated backend rollouts.
+- Public navigator is being validated on 595 pages. All 832 existing HTML files
+  preserve their base bytes outside the exact inclusion. The two protected
+  textbook shells and two existing task-helper pages remain unchanged.
+- No model is connected. This is a prepared navigation release, not a production
+  claim or an external-review approval. Exact evidence is in the
+  [integration report](reports/MATHEXAM_PUBLIC_ASSISTANT_INTEGRATION_20261031.md)
+  and the replacement Draft PR linked there.
+- Next three actions: complete current-head regression and independent review;
+  obtain HIGH external review or a reasoned owner exception and exact release
+  decision; then verify the authorized deployment on the public site.
+
 ## Prepared: Vilenkin 6 source clarity and revised cabinet course
 
 - [Task](tasks/VILENKIN6_CLARITY_CABINET_20261030.md), HIGH; branch

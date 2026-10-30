@@ -29,13 +29,22 @@ test('HTML loads the presentation helper before the learner engine',()=>{
 
 test('All 68 lesson families keep the real task, answer, diagram and nested help mounted across collapse',()=>{
   const {JSDOM}=require('jsdom'),path=require('node:path');
-  const start=path.resolve('ege-profil/start');
+  const repo=path.resolve(__dirname,'..'),start=path.join(repo,'ege-profil/start');
   const html=fs.readFileSync(path.join(start,'index.html'),'utf8');
   for(const lesson of lessons){
     const dom=new JSDOM(html,{url:'https://mathexam.space/ege-profil/start/#practice/'+lesson.id+'/independent',runScripts:'outside-only',pretendToBeVisual:true});
     const w=dom.window;w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};
     try{
-      for(const script of w.document.querySelectorAll('script[src]'))w.eval(fs.readFileSync(path.resolve(start,script.getAttribute('src').split(/[?#]/)[0]),'utf8'));
+      for(const script of w.document.querySelectorAll('script[src]')){
+        const url=new URL(script.getAttribute('src'),w.location.href);
+        assert.equal(url.origin,w.location.origin,'Declared scripts must be same-origin site resources');
+        const pathname=decodeURIComponent(url.pathname);
+        assert(!/[\\\0]/.test(pathname),'Invalid local script path');
+        const filename=path.resolve(repo,'.'+pathname);
+        assert(filename.startsWith(repo+path.sep),'Declared scripts must stay inside the site');
+        assert(fs.existsSync(filename),'Every declared script exists: '+script.getAttribute('src'));
+        w.eval(fs.readFileSync(filename,'utf8'));
+      }
       const d=w.document,input=d.querySelector('#answer'),hint=d.querySelector('#hint'),box=d.querySelector('#hint-box'),model=d.querySelector('#task-model');
       assert(input&&hint&&box,lesson.id+': task is ready');assert.equal(box.hidden,true);
       const read=()=>JSON.parse(w.localStorage.getItem('mathexam.profileStart2027.v1')).sessions[lesson.id+':independent'];

@@ -38,7 +38,12 @@ function mount(t, contentId, { saved, seed = 1, readOnly = false, publicPage = f
       const register = window.MathExamLearning.register;
       window.MathExamLearning.register = adapter => { bridge = adapter; register(adapter); };
     }
-    const filename = path.resolve(repo, path.dirname(relative), src);
+    const resource = new URL(script.getAttribute('src'), window.location.href);
+    assert.equal(resource.origin, window.location.origin, 'Wrapper dependencies must be same-origin site resources');
+    const pathname = decodeURIComponent(resource.pathname);
+    assert(!/[\\\0]/.test(pathname), 'Invalid local wrapper dependency path');
+    const filename = path.resolve(repo, '.' + pathname);
+    assert(filename.startsWith(repo + path.sep), 'Wrapper dependencies must stay inside the site');
     assert(fs.existsSync(filename), 'Every declared wrapper dependency exists: ' + src);
     window.eval(fs.readFileSync(filename, 'utf8'));
   }
