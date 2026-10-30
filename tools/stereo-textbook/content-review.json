@@ -1,7 +1,7 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
-  "reviewedAt": "2026-10-29T14:01:28.953776+00:00",
-  "registeredAt": "2026-10-29T14:01:28.953776+00:00",
+  "reviewedAt": "2026-10-30T22:10:04Z",
+  "registeredAt": "2026-10-30T22:10:04Z",
   "scope": "Introduction and chapters I–III plus chapter IV paragraphs 1–2 Cylinder and Cone: main exercises 1–371, theory 1–42 and 40 earlier chapter self-check questions. Chapter IV paragraph 3 and main exercises 372 onward remain pending. Not the complete book.",
   "batches": [
     {
@@ -880,9 +880,9 @@
       "mathematicalReport": "docs/reviews/ATANASYAN_CYLINDER_CONTENT.json"
     },
     {
-      "reviewer": "Codex independent source/math reviewer /root/cone_source; no lesson authorship",
-      "reviewedAt": "2026-10-29T14:01:28.953776+00:00",
-      "sourceBundleSHA256": "5db18f931a8a0b2833495cd3f2ee05f38570597af894cd463ec47ae7cec20875",
+      "reviewer": "Codex independent reviews: /root/cone_source (original full review); /root/source_review (371 help-question amendment only); no lesson authorship",
+      "reviewedAt": "2026-10-30T22:10:04Z",
+      "sourceBundleSHA256": "4685bdf519b9a2e7cdc612d15dc7b1658ad0a417b488ba09fa747d69df166e2f",
       "scope": "All 40 source-specific cone cards: complete theory 40–42 and every part of exercises 346–371. 166 justified steps and 171 coordinate model states independently reviewed. Final responsive browser images are separate evidence.",
       "cardIds": [
         "ex-main-0346",
@@ -3293,7 +3293,7 @@
     },
     {
       "id": "ex-main-0371",
-      "sha256": "d4cfb41fc0dccae0e4739867e23c5c476dbb28b0a50819a9acd7f41af707f367"
+      "sha256": "d550ca76986ba8b4183a80535752d9368ea2bdfc19317169dfdbb7ebbe4d30b9"
     },
     {
       "id": "theory-040",

@@ -1,6 +1,6 @@
 {
-  "reviewer": "Codex independent source/math reviewer /root/cone_source; no lesson authorship",
-  "reviewedAt": "2026-10-29T14:01:28.953776+00:00",
+  "reviewer": "Codex independent reviews: /root/cone_source (original full review); /root/source_review (371 help-question amendment only); no lesson authorship",
+  "reviewedAt": "2026-10-30T22:10:04Z",
   "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
   "authorBase": "6b25302788f36d92723e487e92afa7044ced3ad3",
   "authorReviewerSeparation": {
@@ -649,15 +649,16 @@
     },
     {
       "id": "ex-main-0371",
-      "sha256": "d4cfb41fc0dccae0e4739867e23c5c476dbb28b0a50819a9acd7f41af707f367",
+      "sha256": "d550ca76986ba8b4183a80535752d9368ea2bdfc19317169dfdbb7ebbe4d30b9",
       "steps": 5,
       "modelStates": 4,
-      "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+      "reviewedAt": "2026-10-30T22:10:04Z",
       "source": "PASS",
       "mathematics": "PASS",
       "writtenPedagogy": "PASS",
       "findings": [],
-      "verification": "Ordinary bucket has open large mouth and small bottom. One side750pi+100pi=850pi cm2; two sides100 buckets give17pi m2,150g/m2 gives2.55pi kg, approximately8.011. Actual slant30, lower radius10, upper15, only small cap and open mouth mesh independently checked."
+      "verification": "Ordinary bucket has open large mouth and small bottom. One side750pi+100pi=850pi cm2; two sides100 buckets give17pi m2,150g/m2 gives2.55pi kg, approximately8.011. Actual slant30, lower radius10, upper15, only small cap and open mouth mesh independently checked.",
+      "reviewAmendment": "371-square-unit-help-question"
     },
     {
       "id": "theory-040",
@@ -696,7 +697,7 @@
       "verification": "Full point42: proper frustum R>r>0,h>0, equal generators, axial trapezoid and right-trapezoid rotation. Surface subtraction and similar-triangle proof eliminate small-cone slant and yieldpi(R+r)l; total adds two disks. Actual common apex, generator collinearity, circle radii and smooth surface subtraction checked. Renderer-focused ratio prose preserves the proof. Follow-up final sentence states full surface by adding the two base areas in prose; the complete lateral-area derivation is unchanged and both base formulas remain exact."
     }
   ],
-  "aggregateSHA256": "5db18f931a8a0b2833495cd3f2ee05f38570597af894cd463ec47ae7cec20875",
+  "aggregateSHA256": "4685bdf519b9a2e7cdc612d15dc7b1658ad0a417b488ba09fa747d69df166e2f",
   "oracle": {
     "path": "tools/stereo-textbook/cone-math.test.py",
     "sha256": "4f2eb38a98a5a877316dbf71c7346a22b36405ca043e8dc5b7c41d97b57925d5"
@@ -803,6 +804,84 @@
         }
       ],
       "scope": "Only351 model points rotated45degrees about z so trianglePOA is visible in the default view. Full card reread and full independent oracle rerun passed: right generator section,60degree axis angle and area2h squared unchanged.39other card payloads and oracle bytes unchanged."
+    },
+    {
+      "id": "371-square-unit-help-question",
+      "reviewer": "Codex independent focused reviewer /root/source_review; no lesson authorship",
+      "reviewedAt": "2026-10-30T22:10:04Z",
+      "verdict": "PASS_INDEPENDENT_SOURCE_AND_WRITTEN_PEDAGOGY_ONE_FIELD_AMENDMENT",
+      "scope": "Actual amended ex-main-0371 was reread against the original PDF, its unchanged help body and all five explanations. The sole JSON difference from the checkpoint is /help/2/question. This record supplements the original full review; it does not claim a new full 40-card review.",
+      "previousCheckpoint": {
+        "head": "75570c7f315325cdfa9e54c55730707ca10bff57",
+        "reportPath": "docs/reviews/ATANASYAN_CONE_CONTENT.json",
+        "reportFileSHA256": "6f9a27a1dfb8105702f9045aaab70aa918d0316d5801247d07c3fecb7e9fa18c",
+        "registryPath": "tools/stereo-textbook/content-review.json",
+        "registryFileSHA256": "66394882668c5cc70d610a770fa4d701c334c84ce44584b416311e5a55282fc4",
+        "reviewer": "Codex independent source/math reviewer /root/cone_source; no lesson authorship",
+        "reviewedAt": "2026-10-29T14:01:28.953776+00:00",
+        "aggregateSHA256": "5db18f931a8a0b2833495cd3f2ee05f38570597af894cd463ec47ae7cec20875",
+        "card": {
+          "id": "ex-main-0371",
+          "sha256": "d4cfb41fc0dccae0e4739867e23c5c476dbb28b0a50819a9acd7f41af707f367",
+          "steps": 5,
+          "modelStates": 4,
+          "reviewedAt": "2026-10-29T13:52:08.323724+00:00",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Ordinary bucket has open large mouth and small bottom. One side750pi+100pi=850pi cm2; two sides100 buckets give17pi m2,150g/m2 gives2.55pi kg, approximately8.011. Actual slant30, lower radius10, upper15, only small cap and open mouth mesh independently checked."
+        },
+        "registryMetadata": {
+          "reviewer": "Independent Codex content and coordinate reviews; see batches",
+          "reviewedAt": "2026-10-29T14:01:28.953776+00:00",
+          "registeredAt": "2026-10-29T14:01:28.953776+00:00"
+        },
+        "coneBatchMetadata": {
+          "reviewer": "Codex independent source/math reviewer /root/cone_source; no lesson authorship",
+          "reviewedAt": "2026-10-29T14:01:28.953776+00:00",
+          "sourceBundleSHA256": "5db18f931a8a0b2833495cd3f2ee05f38570597af894cd463ec47ae7cec20875"
+        },
+        "meaning": "Exact historical report and registry bytes remain recoverable at this head and path. Their original attribution and timestamps are preserved; they are not evidence that the corrected question was reviewed at that earlier time."
+      },
+      "previousAggregateSHA256": "5db18f931a8a0b2833495cd3f2ee05f38570597af894cd463ec47ae7cec20875",
+      "aggregateSHA256": "4685bdf519b9a2e7cdc612d15dc7b1658ad0a417b488ba09fa747d69df166e2f",
+      "changedCards": [
+        {
+          "id": "ex-main-0371",
+          "previousSHA256": "d4cfb41fc0dccae0e4739867e23c5c476dbb28b0a50819a9acd7f41af707f367",
+          "sha256": "d550ca76986ba8b4183a80535752d9368ea2bdfc19317169dfdbb7ebbe4d30b9",
+          "previousFileSHA256": "1204363dba9e1efc5c94d619d4070d574bf1a343ee7145df707ba9ea31b4fd59",
+          "fileSHA256": "c58dbc01486ee491d40f4586256c5e09ef65660eec8d7746c3b1e25d75e1f94d",
+          "jsonPointer": "/help/2/question",
+          "helpId": "h3",
+          "before": "Почему сантиметры переводятся в метры через 10000?",
+          "after": "Почему в 1 м² содержится 10000 см²?"
+        }
+      ],
+      "sourceInspection": {
+        "sourceSHA256": "bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770",
+        "printedPage": 100,
+        "pdfPage": 102,
+        "actualImageViewed": true,
+        "imageSHA256": "a09b13b9a6e64569e2718d7a43891120e6f9ff6058b83f2714a84d3dcf6b9fbd",
+        "finding": "Exercise 371 gives paint consumption per square metre. The corrected question states area units explicitly and agrees with h3 and step 4: 1 m = 100 cm, so 1 m² = 10000 cm²."
+      },
+      "resolvedFinding": "The old question named linear centimetres and metres with an area conversion factor. Only the question needed correction; the existing explanation and calculations already used square units correctly.",
+      "preservation": {
+        "otherConeCardPayloadsUnchanged": 39,
+        "priorLessonFilesByteIdentical": 554,
+        "priorRegistryRowsUnchanged": 554,
+        "priorRegistryBatchesUnchanged": 28,
+        "priorRawLessonManifestSHA256": "113f6338d925d9775b5c618e72c91f8a61291fb2b0da8b2aa6a668699e3f606e",
+        "lessonReviewMetadataUnchanged": true,
+        "testsAndFixturesUnchanged": true,
+        "note": "The amended payload is bound by the hashes above before commit. The unchanged original lesson review metadata remains historical; current registration is supported by this separately attributed amendment."
+      },
+      "openFindings": [],
+      "limitations": [
+        "No new browser-image verdict, exact-head CI result, full oracle rerun or release approval is claimed by this focused review. Those checks and the final committed-head binding are separate."
+      ]
     }
   ]
 }
