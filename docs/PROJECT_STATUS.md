@@ -2902,3 +2902,30 @@ final exact-head CI and deployment verification; see PR266 for current evidence.
 - Visual browser QA and external Claude review were not completed; these
   limitations were disclosed. Progress is browser-local; no synchronized-board
   or cloud learner-storage claim is made. Final evidence is in PR #319.
+
+## Revalidated candidate: clearer arithmetic entry and division (PR #377)
+
+- [Task](tasks/ARITHMETIC_CLARITY_FIRST_RELEASE.md), MEDIUM. Original base
+  `6fb959fc0130a0bb8842601d19297e305ac91ac0`; revalidation base on 2026-10-30:
+  `3411acd7df5ebfbd4179cce85c2300c59677ddf7`.
+- Four arithmetic starts, optional division diagnosis and existing-result
+  continuation. Correct answers open the next mathematical question with one
+  submission; previous calculations remain visible and initial digits use the
+  notebook font. Decimal preparation retains both original operands until
+  their corresponding transformations have been completed.
+- Existing mathematical actions, 20 protected URL/canonical contracts, v1
+  storage keys, saved results and assistance accounting are retained.
+- The continuation resolves only two real merge conflicts: shared status
+  insertions and the download manifest date. The published catalogue date and
+  every manifest entry are retained; the verified division package is unchanged.
+  All concurrent main changes from
+  PRs #379, #376, #368, #378, #380 and #382 are retained. Their merge identities
+  are verified from Git/PR metadata; this does not certify their deployments.
+- The original head passed seven CI workflows. Fresh composed-tree regression,
+  exact-head CI and independent focused review are recorded in the
+  [revalidation report](reports/ARITHMETIC_CLARITY_REVALIDATION_20261030.md)
+  and [PR #377](https://github.com/ladynata-cloud/math-exam-fipi/pull/377).
+- This is a prepared release, not a publication claim. Separate exact-base/head
+  merge authorization and live post-deployment verification remain required.
+  No common engine, storage migration, board protocol or server change belongs
+  to this candidate.

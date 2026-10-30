@@ -23,7 +23,13 @@ const server = http.createServer((req, res) => {
 });
 let origin;
 async function route(page, skill = 'division') {
-  await page.goto(origin + ROUTE + '?skill=' + skill);
+  await page.goto(origin + ROUTE);
+  await page.waitForFunction(() => window.PreOgeArithmetic && document.querySelector('#route-overview [data-skill]'));
+  const topics = page.locator('#route-topics');
+  assert.equal(await topics.getAttribute('open'), null, 'The topic catalogue starts collapsed');
+  await topics.locator(':scope > summary').click();
+  await topics.locator('[data-skill="' + skill + '"]').click();
+  assert.equal(new URL(page.url()).searchParams.get('skill'), skill);
   await page.waitForFunction(() => window.PreOgeArithmetic && document.querySelector('a[data-level]'));
 }
 async function legacyReady(page, level) {
@@ -90,13 +96,12 @@ async function guidedReady(page) { await page.waitForFunction(() => window.__div
 async function guidedOne(page) {
   const all = await guidedState(page), s = all.sessions[all.active];
   if (s.done) return false;
-  if (s.accepted) { await page.locator('#primary').click(); return true; }
   const a = G.plan(s.task).actions[s.step];
   if (a.options) await page.locator('[data-option=' + JSON.stringify(a.answer) + ']').click();
   else if (a.kind === 'start') await page.locator('[data-prefix-end="' + a.sourceIndex + '"]').click();
   else await page.locator('#answer').fill(a.answer);
   await page.locator('#primary').click();
-  assert((await guidedState(page)).sessions[all.active].accepted, 'The correct guided action must be accepted');
+  assert.equal((await guidedState(page)).sessions[all.active].answers.length, s.answers.length + 1, 'One check records the correct guided action exactly once');
   return true;
 }
 async function guidedFinish(page) {
@@ -138,6 +143,22 @@ async function learner(browser, name, width, run) {
   origin = 'http://127.0.0.1:' + server.address().port;
   const browser = await chromium.launch({headless:true, ...(process.env.CHROMIUM_EXECUTABLE_PATH ? {executablePath:process.env.CHROMIUM_EXECUTABLE_PATH} : {})});
   try {
+    for (const width of [1280,390,320]) {
+      await learner(browser, 'four arithmetic starts ' + width, width, async page => {
+        await page.goto(origin + ROUTE);
+        await page.waitForFunction(() => window.PreOgeArithmetic);
+        assert.equal(await page.locator('#route-title').innerText(), 'Научиться считать');
+        assert.equal(await page.locator('[data-operation]:visible').count(), 4);
+        for (const operation of ['addition','subtraction','multiplication','division']) {
+          const card = page.locator('[data-operation="' + operation + '"]');
+          const box = await card.boundingBox();
+          assert(box.width >= 44 && box.height >= 44, operation + ': readable touch target');
+        }
+        assert.equal(await page.locator('#route-topics').getAttribute('open'), null);
+        await reflow(page, 'four arithmetic starts on ' + width);
+        await shot(page, 'arithmetic-entry-' + width);
+      });
+    }
     await learner(browser, 'weak multiplication table', 390, async page => {
       await route(page, 'multiply');
       await page.locator('a[data-level="t2a"]').first().click(); await legacyReady(page, 't2a');
@@ -267,8 +288,10 @@ async function learner(browser, name, width, run) {
       assert.equal(p.solved, 0, 'Guided examples remain separate from self-practice');
     });
     await learner(browser, 'mobile return and interrupted lesson', 320, async page => {
-      await route(page); await reflow(page, 'route on 320px');
-      await page.locator('a[href*="long-division-from-simple-to-decimals"][href*="#start"]').first().click();
+      await page.goto(origin + ROUTE);
+      await page.locator('[data-operation="division"]').waitFor({state:'visible'});
+      await reflow(page, 'four simple starts on 320px');
+      await page.locator('[data-operation="division"]').click();
       await guidedReady(page);
       await page.locator('#answer').fill('4'); await page.locator('#primary').click();
       const before = await guidedState(page);
@@ -304,6 +327,6 @@ async function learner(browser, name, width, run) {
       console.log('PASS compatibility: hints across ' + levels.length + ' legacy levels');
     } finally { await context.close(); }
     assert.deepEqual(errors, [], 'No browser JavaScript exceptions');
-    console.log('PREOGE_ARITHMETIC_BROWSER_OK: six fictional learner journeys, real controls, mistakes, help, repeats, separate progress, reload, route returns, clipboard fallback and 320/390px.');
+    console.log('PREOGE_ARITHMETIC_BROWSER_OK: four-operation entries at 1280/390/320px; six fictional learner journeys, real controls, mistakes, help, repeats, separate progress, reload, route returns, clipboard fallback and 320/390px.');
   } finally { await browser.close(); server.close(); }
 })().catch(error => { console.error(error); if (errors.length) console.error('Browser errors:', errors); server.close(); process.exitCode = 1; });
