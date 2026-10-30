@@ -106,6 +106,21 @@
       ],
       "selfcheckQuestions": 12,
       "cards": 190
+    },
+    {
+      "chapter": 8,
+      "label": "VIII",
+      "exerciseNumbers": [
+        640,
+        736
+      ],
+      "mainParts": 133,
+      "theoryPoints": [
+        63,
+        75
+      ],
+      "selfcheckQuestions": 18,
+      "cards": 164
     }
   ],
   "supplements": [
@@ -120,6 +135,6 @@
       "cards": 50
     }
   ],
-  "totalCards": 1083,
+  "totalCards": 1247,
   "fullTextbookComplete": false
 }

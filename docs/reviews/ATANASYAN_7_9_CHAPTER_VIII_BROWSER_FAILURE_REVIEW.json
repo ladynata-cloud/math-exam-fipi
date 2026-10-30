@@ -1,0 +1,303 @@
+{
+  "schemaVersion": 1,
+  "status": "failed-preserved-for-review",
+  "reviewer": "root",
+  "at": "2026-10-30",
+  "captureScope": "focused-section-drawing-diagnostic",
+  "completed": false,
+  "rawEvidenceSha256": "7daca737e743db069bf3cc132166f3dfb64ac0654958ebc56cd11333877596d1",
+  "snapshotBundleSha256": "341d81adeee2a5568ee2bd94d13ee965bd16cb1534bb72fac5fe80b7184ab50d",
+  "implementationSha256": "b831d68dbdaaf2e696a99699e228cb646ba03d76c7333f799a9c10e4bb904ad7",
+  "authoredContentSha256": "3eb222be46d8734be49356d09c3cbff081cb05f2a8e574720fea50614ba96f7f",
+  "gateScriptSha256": "d5d1e5af7e377d5921c86e84c36e81489c150b78db6442a2b71f1c0aba817be7",
+  "viewsChecked": 1574,
+  "viewFailures": [
+    {
+      "id": "atanasyan-7-9-main-659-part-3",
+      "width": 320,
+      "view": "neutral",
+      "issues": [
+        "unresolved label placement A",
+        "unresolved label placement C",
+        "unresolved label placement D",
+        "unresolved label placement O",
+        "overlapping labels C/O",
+        "line through label A",
+        "line through label C",
+        "line through label D",
+        "line through label O"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-659-part-3",
+      "width": 320,
+      "view": "step-1",
+      "issues": [
+        "unresolved label placement A",
+        "unresolved label placement C",
+        "unresolved label placement D",
+        "unresolved label placement O",
+        "overlapping labels C/O",
+        "line through label A",
+        "line through label C",
+        "line through label D",
+        "line through label O"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-659-part-3",
+      "width": 320,
+      "view": "step-2",
+      "issues": [
+        "unresolved label placement A",
+        "unresolved label placement C",
+        "unresolved label placement D",
+        "unresolved label placement O",
+        "overlapping labels C/O",
+        "line through label A",
+        "line through label C",
+        "line through label D",
+        "line through label O"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-659-part-3",
+      "width": 320,
+      "view": "step-3",
+      "issues": [
+        "unresolved label placement A",
+        "unresolved label placement C",
+        "unresolved label placement D",
+        "unresolved label placement O",
+        "overlapping labels C/O",
+        "line through label A",
+        "line through label C",
+        "line through label D",
+        "line through label O"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-731-part-1",
+      "width": 320,
+      "view": "neutral",
+      "issues": [
+        "unresolved label placement A",
+        "unresolved label placement B",
+        "unresolved label placement C",
+        "unresolved label placement M",
+        "line through label A",
+        "line through label M"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-731-part-1",
+      "width": 320,
+      "view": "step-1",
+      "issues": [
+        "unresolved label placement A",
+        "unresolved label placement B",
+        "unresolved label placement C",
+        "unresolved label placement M",
+        "line through label A",
+        "line through label M"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-731-part-1",
+      "width": 320,
+      "view": "step-2",
+      "issues": [
+        "unresolved label placement A",
+        "unresolved label placement B",
+        "unresolved label placement C",
+        "unresolved label placement M",
+        "line through label A",
+        "line through label M"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-731-part-1",
+      "width": 320,
+      "view": "step-3",
+      "issues": [
+        "unresolved label placement A",
+        "unresolved label placement B",
+        "unresolved label placement C",
+        "unresolved label placement M",
+        "line through label A",
+        "line through label M"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-731-part-1",
+      "width": 320,
+      "view": "step-4",
+      "issues": [
+        "unresolved label placement A",
+        "unresolved label placement B",
+        "unresolved label placement C",
+        "unresolved label placement M",
+        "line through label A",
+        "line through label M"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-736-part-1",
+      "width": 320,
+      "view": "step-4",
+      "issues": [
+        "unresolved label placement mb",
+        "unresolved label placement mc",
+        "unresolved label placement G",
+        "unresolved label placement K",
+        "overlapping labels mb/mc",
+        "line through label mb",
+        "line through label mc",
+        "line through label G",
+        "circle through label K",
+        "circle through label G"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-736-part-1",
+      "width": 320,
+      "view": "step-5",
+      "issues": [
+        "unresolved label placement mb",
+        "unresolved label placement mc",
+        "unresolved label placement G",
+        "unresolved label placement K",
+        "unresolved label placement M",
+        "unresolved label placement N",
+        "overlapping labels mb/mc",
+        "overlapping labels G/N",
+        "line through label mb",
+        "line through label mc",
+        "line through label G",
+        "circle through label K",
+        "circle through label M",
+        "circle through label G",
+        "circle through label N"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-736-part-1",
+      "width": 320,
+      "view": "step-6",
+      "issues": [
+        "unresolved label placement mb",
+        "unresolved label placement mc",
+        "unresolved label placement G",
+        "unresolved label placement K",
+        "unresolved label placement M",
+        "unresolved label placement N",
+        "overlapping labels mb/mc",
+        "overlapping labels G/N",
+        "line through label mb",
+        "line through label mc",
+        "line through label G",
+        "circle through label K",
+        "circle through label M",
+        "circle through label G",
+        "circle through label N"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-736-part-1",
+      "width": 320,
+      "view": "case-2",
+      "issues": [
+        "unresolved label placement A__case2",
+        "unresolved label placement B__case2",
+        "unresolved label placement G__case2",
+        "unresolved label placement K__case2",
+        "unresolved label placement M__case2",
+        "unresolved label placement N__case2",
+        "overlapping labels G__case2/N__case2",
+        "line through label A__case2",
+        "line through label B__case2",
+        "line through label G__case2",
+        "line through label K__case2",
+        "line through label M__case2",
+        "line through label N__case2",
+        "circle through label G__case2",
+        "circle through label K__case2",
+        "circle through label M__case2",
+        "circle through label B__case2",
+        "circle through label N__case2"
+      ]
+    }
+  ],
+  "manualFindings": [
+    {
+      "number": 712,
+      "finding": "Equal-angle ticks near M are cramped; enlarge arc radius."
+    },
+    {
+      "number": 725,
+      "finding": "Draw extensions CF/BE to the exterior perpendicular feet; remove isolated unused X in alternate view."
+    },
+    {
+      "number": 731,
+      "finding": "Flat diagram makes labels cross the geometry."
+    },
+    {
+      "number": 736,
+      "finding": "Separate each given median label from the other; simplify late construction views while retaining construction access."
+    }
+  ],
+  "disposition": "Content findings corrected. The unchanged full-course gate completed successfully on frozen candidate3 in full5. Prior failed and interrupted runs remain preserved and are not counted as passes.",
+  "runtimeGateChanged": false,
+  "followupFailure": {
+    "snapshot": "viii-candidate-2",
+    "card": "atanasyan-7-9-main-736-part-1",
+    "failure": "Production engine quarantined Invalid model labels: orphan R1/R2/R3 keys.",
+    "fix": "Removed exactly the three orphan keys; actual valid R₁/R₂/R₃ case labels and all geometry/views retained.",
+    "verified": "Unchanged production engine: validateLesson=[], inspectBundle available1247/issues[];164captionjourneysPASS;16wholecardcapturescompleted on corrected copy.",
+    "finalGate": "Fresh whole-course candidate3 run required; candidate2 never approved.",
+    "actualFullBrowser": {
+      "completed": false,
+      "evidenceSha256": "352eebfbbd6a8dea2e7850de312e5fd746e422db7f9045706afd0294fb7b02ee",
+      "viewsBeforeFailure": 5831,
+      "stepFlowsBeforeFailure": 1165,
+      "failure": "AssertionError [ERR_ASSERTION]: Available in explicit preview atanasyan-7-9-main-736-part-1\n    at tools/geometry-textbook/browser_check.js:138:42",
+      "termination": "Run ended naturally with assertion; attempted scopedSIGTERM didnotfindprocess, no cancellation/recovery success claimed."
+    }
+  },
+  "interruptedRun": {
+    "dataset": "viii-full-3",
+    "candidate": "viii-candidate-3",
+    "completed": false,
+    "rawEvidencePresent": false,
+    "preservedPngs": 2635,
+    "reason": "Executor transport outage interrupted session33598. The session became unavailable and captures stopped; no full-course pass is claimed.",
+    "record": "viii-full-3/interruption.json",
+    "retry": "viii-full-4 with unchanged candidate3 and browser gate"
+  },
+  "secondInterruptedRun": {
+    "dataset": "viii-full-4",
+    "candidate": "viii-candidate-3",
+    "completed": false,
+    "rawEvidencePresent": false,
+    "preservedPngs": 5286,
+    "record": "viii-full-4/interruption.json",
+    "reason": "Execution session disappeared without a browser error or exit result; no gate pass is claimed.",
+    "retry": "viii-full-5 unchanged candidate3/gate with monitored heartbeat execution"
+  },
+  "finalFullGate": {
+    "dataset": "viii-full-5",
+    "status": "passed",
+    "completed": true,
+    "evidenceSha256": "21dbd56b2bbf74c3b720561fadbd13456c4107fb688fadb541bc89e4a2e14827",
+    "bundleSha256": "8e6d98e500a96b3db5bd120362195da000955d790699c8fa73433f60ab4c5d24",
+    "viewWidthChecks": 12688,
+    "stepFlows": 2494,
+    "interactions": 22,
+    "viewIssues": 0,
+    "browserErrors": [],
+    "candidate": "viii-candidate-3",
+    "gateScriptUnchanged": true,
+    "execution": "TTY wrapper with20second visible heartbeat; actual node process exit0 after1543seconds.",
+    "manualFinalImageBinding": "Separate independent A/B/C/theory review reports; content/runtime receipt requires their complete actual PNG binding."
+  }
+}

@@ -21,6 +21,10 @@ def build(chapter,output):
     scope=read(ROOT/'tools/geometry-textbook/release-scope.json')
     released=next((x for x in scope['chapters'] if x['chapter']==chapter),None)
     if candidate is None and released is None:raise ValueError('Chapter is not a registered candidate or release chapter')
+    if chapter == 8 and candidate is not None:
+        from chapter08_extension import SCOPE, PARAGRAPHS
+        if candidate != {'chapter': 8, 'scope': SCOPE, 'paragraphs': PARAGRAPHS}:
+            raise ValueError('Chapter VIII candidate must use its exact source scope and paragraphs')
     target=output/'geometry-course/textbook'
     shutil.copytree(COURSE,target)
     inventory=read(target/'source-inventory.json')

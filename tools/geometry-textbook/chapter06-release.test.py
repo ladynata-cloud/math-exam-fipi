@@ -8,7 +8,8 @@ from chapter06_extension import (PREFIX,FIXTURE,RECEIPT,LABELS,PARAGRAPHS,encode
  validate_extension,restore_manifest,assert_755_preserved,frozen,require)
 
 def historical_vi_projection(bundle,scope):
- bundle,scope=deepcopy(bundle),deepcopy(scope)
+ from chapter07_release import historical_vii_projection
+ bundle,scope=historical_vii_projection(bundle,scope)
  if any(c['chapter']==7 for c in scope['chapters']):
   bundle['lessons']=[r for r in bundle['lessons'] if r['source']['chapter']!='VII']
   bundle['catalog']['entries']=[r for r in bundle['catalog']['entries'] if r['source']['chapter']!='VII']
@@ -66,7 +67,7 @@ class ChapterVIRelease(unittest.TestCase):
   with tempfile.TemporaryDirectory() as temp:
    course=Path(temp)/'course';shutil.copytree(COURSE,course);(course/'release-review-chapter-06.json').unlink(missing_ok=True)
    bundle=compose(course);assert_755_preserved(bundle)
-   self.assertEqual(sum(x['status']=='reviewed' for x in bundle['lessons'] if x['source']['chapter']!='VII'),755)
+   self.assertEqual(sum(x['status']=='reviewed' for x in bundle['lessons'] if x['source']['chapter'] not in ('VII','VIII')),755)
    self.assertTrue(all(x['status']=='in-review' for x in bundle['lessons'] if x['source']['chapter']=='VI'))
  def test_union_cannot_hide_corruptions_behind_historical_projection(self):
   for mode in ('old text','old order','old review','old revision','foreign ID','missing VI','duplicate VI','VI page','VI scope','fullbook'):
@@ -90,6 +91,10 @@ class ChapterVIRelease(unittest.TestCase):
   if (ROOT/VII_RECEIPT).exists():
    paths|={VII_RECEIPT,VII_FIXTURE}
    paths|={x['path'] for x in read(ROOT/VII_RECEIPT)['evidence']}
+  from chapter08_extension import RECEIPT as VIII_RECEIPT,FIXTURE as VIII_FIXTURE
+  if (ROOT/VIII_RECEIPT).exists():
+   paths|={VIII_RECEIPT,VIII_FIXTURE}
+   paths|={x['path'] for x in read(ROOT/VIII_RECEIPT)['evidence']}
   for name in paths:
    p=root/name;p.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(ROOT/name,p)
   return root
