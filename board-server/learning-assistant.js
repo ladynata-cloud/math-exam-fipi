@@ -6,7 +6,8 @@ const express = require('express');
 const crypto = require('node:crypto');
 const { LearningError, requireValue, exactKeys, tokenHash } = require('./learning-auth');
 const { SOURCE_PROFILE_ID, resolveCourseContext } = require('./assistant-course-context');
-const PROFILE_IDS = ['oge-geometry', 'peterson-decimals', 'triangle-congruence', SOURCE_PROFILE_ID];
+const { createDialogueCache } = require('./assistant-dialogue');
+const PROFILE_IDS = ['oge-geometry', 'peterson-decimals', 'triangle-congruence', SOURCE_PROFILE_ID, 'vilenkin-grade6'];
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const ID = /^[A-Za-z0-9_-]{12,80}$/;
 const DAY = 86400000, RETENTION = 30 * DAY, MAX_REQUESTS = 100000;
@@ -130,6 +131,7 @@ function createLearningAssistantRouter(learning, options = {}) {
   initializeAssistant(store);
   const router = express.Router(); let cached = null, statusPending = null, lastCleanup = 0;
   const profiles = new Map(catalog.map(profile => [profile.id, profile]));
+  const dialogues = createDialogueCache(() => store.clock());
   const day = () => new Date(store.clock()).toISOString().slice(0, 10);
   function cleanup() {
     const now = store.clock(); if (now - lastCleanup < 60000) return; lastCleanup = now;
@@ -221,6 +223,7 @@ function createLearningAssistantRouter(learning, options = {}) {
     requireValue(typeof attemptId === 'string' && ID.test(attemptId), 'LEARNING_ASSISTANT_INPUT_INVALID');
     const a = store.getAttempt(auth, attemptId);
     requireValue(a.archivedAt == null, 'LEARNING_ATTEMPT_ARCHIVED', 409);
+    requireValue(a.controller === auth.role, 'LEARNING_CONTROL_REQUIRED', 409);
     requireValue(!store.runGuard?.(attemptId), 'LEARNING_RUN_ACTIVE', 409);
     // Only published fixed task formats are projected. No state/history/photo,
     // answer key, title containing a pupil's name or whole DTO is forwarded.
@@ -233,7 +236,7 @@ function createLearningAssistantRouter(learning, options = {}) {
     requireValue(req.learningAuth.role === 'student', 'LEARNING_FORBIDDEN', 403); exactKeys(req.query, []);
     const fromCourse = req.body !== null && typeof req.body === 'object' && Object.hasOwn(req.body, 'courseContext');
     exactKeys(req.body, fromCourse ? ['requestId','courseContext','attempt','mode','hintLevel','simpler','externalConsent']
-      : ['requestId','topic','question','attempt','mode','hintLevel','simpler','attemptId','externalConsent'],
+      : ['requestId','topic','question','attempt','mode','hintLevel','simpler','attemptId','externalConsent','followUp'],
     fromCourse ? ['requestId','courseContext','mode','hintLevel','simpler'] : ['requestId','topic','question','mode','hintLevel','simpler']);
     const b = req.body, id = req.learningAuth.id;
     requireValue(typeof b.requestId === 'string' && UUID.test(b.requestId) && ['hint','full'].includes(b.mode) && Number.isInteger(b.hintLevel) && b.hintLevel >= 1 && b.hintLevel <= 8
@@ -252,6 +255,27 @@ function createLearningAssistantRouter(learning, options = {}) {
     requireValue(!externalConsent || row.profile_id !== SOURCE_PROFILE_ID, 'LEARNING_ASSISTANT_COURSE_SOURCE_ONLY', 409);
     // Check synchronous config before any remote I/O or request reservation.
     requireValue(!externalConsent || (row.external_allowed && config.external), 'LEARNING_ASSISTANT_EXTERNAL_UNAVAILABLE', 409);
+    const hasFollowUp = Object.hasOwn(b, 'followUp');
+    let followUp;
+    if (hasFollowUp) {
+      exactKeys(b.followUp, ['answerId','question'], ['answerId','question']);
+      requireValue(typeof b.followUp.answerId === 'string' && UUID.test(b.followUp.answerId), 'LEARNING_ASSISTANT_INPUT_INVALID');
+      requireValue(externalConsent && row.external_allowed && config.external, 'LEARNING_ASSISTANT_EXTERNAL_UNAVAILABLE', 409);
+      followUp = { answerId: b.followUp.answerId.toLowerCase(), question: mathText(b.followUp.question, 400) };
+    }
+    requireValue(![question, attempt, followUp?.question].some(text => typeof text === 'string' && text.includes(config.key)), 'LEARNING_ASSISTANT_PERSONAL_DATA');
+    // Bind to this login as well as the account and current task/settings. A
+    // browser cannot supply a transcript, and another tab/login cannot change
+    // the task under an earlier answer. Only a digest is kept with the cache.
+    const dialogueBinding = tokenHash(canonical({ id, session: tokenHash(req.learningSessionToken),
+      version: row.version, profile: row.profile_id, topic, question, effectiveQuestion: context?.question || question,
+      attempt, attemptId: b.attemptId || null }));
+    const dialogue = followUp ? dialogues.prepare(followUp.answerId, dialogueBinding, followUp.question) : null;
+    const payload = { subject: row.subject, requestId:b.requestId,profileId:row.profile_id,topic,
+      question:context?.question || question,attempt,mode:b.mode,hintLevel:b.hintLevel,simpler:b.simpler,externalConsent,
+      ...(course ? { courseContext: course.courseContext, courseRevision: course.courseRevision } : {}),
+      ...(dialogue ? { dialogue } : {}) };
+    requireValue(Buffer.byteLength(JSON.stringify(payload), 'utf8') <= 8192, 'LEARNING_ASSISTANT_INPUT_INVALID');
     cleanup();
     const requestKey = tokenHash(id + ':' + b.requestId), settingsVersion = row.version;
     store.transaction(() => {
@@ -272,9 +296,6 @@ function createLearningAssistantRouter(learning, options = {}) {
         store.action(req.learningAuth, context.attempt.id, { opId: 'assistant-' + b.requestId,
           expectedVersion: context.attempt.version, type: 'hint', payload: { step: b.hintLevel-1 } });
       }
-      const payload = { subject: row.subject, requestId:b.requestId,profileId:row.profile_id,topic,
-        question:context?.question || question,attempt,mode:b.mode,hintLevel:b.hintLevel,simpler:b.simpler,externalConsent,
-        ...(course ? { courseContext: course.courseContext, courseRevision: course.courseRevision } : {}) };
       const result = await bridgeCall(config, 'ask', payload, fetchImpl, controller.signal);
       const answer = checkedAnswer(result.answer,topic,config.key);
       if (course) requireValue(answer.verification === 'curated-guidance'
@@ -288,7 +309,15 @@ function createLearningAssistantRouter(learning, options = {}) {
       requireValue(current?.enabled && current.version === settingsVersion && !examActive(id), 'LEARNING_ASSISTANT_SETTINGS_CHANGED', 409);
       if(context)structuredContext(req.learningAuth,b.attemptId,current.profile_id);
       store.run("UPDATE learning_assistant_requests SET status='done',answer_id=?,verification=?,updated_at=? WHERE request_key=? AND status='running'",answer.answerId,answer.verification,store.clock(),requestKey);
+      // Only validated, delivered answers can become context. Deterministic
+      // arithmetic sometimes contains long digit runs allowed for display but
+      // disallowed by the external-transfer filter; do not cache those.
+      const transferText = JSON.stringify({ title: answer.title, text: answer.text, steps: answer.steps, check: answer.check });
+      const followUpAvailable = !course && row.external_allowed && config.external && !res.destroyed
+        && (!followUp || answer.verification === 'model-unverified') && !containsSensitive(transferText)
+        && dialogues.remember(answer.answerId.toLowerCase(), dialogueBinding, followUp?.question || context?.question || question, answer, followUp?.answerId);
       res.json({ok:true,answer,...(notice ? {notice}:{}),remaining:Math.max(0,row.daily_limit-used(id)),
+        followUpAvailable: !!followUpAvailable,
         contextMode:course ? 'course-task' : context?.question ? 'current-task' : 'entered',mode:answer.verification === 'model-unverified' ? 'api' : 'offline',
         ...(course ? { courseContext: course.courseContext, courseTask: { title: course.title, stepCount: course.stepCount } } : {}) });
     } catch (error) {

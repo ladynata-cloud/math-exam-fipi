@@ -189,5 +189,35 @@
         "example": "Как разобрать задание самостоятельной или контрольной работы?"
       }
     ]
+  },
+  {
+    "id": "vilenkin-grade6",
+    "title": "Виленкин · 6 класс · НОД и НОК",
+    "links": [
+      {
+        "title": "Курс к учебнику Виленкина, 6 класс",
+        "url": "https://mathexam.space/courses/vilenkin-6-part-1/"
+      },
+      {
+        "title": "Тренажёр НОД",
+        "url": "https://mathexam.space/trainers/grade6-nod.html"
+      },
+      {
+        "title": "Тренажёр НОК",
+        "url": "https://mathexam.space/trainers/grade6-nok.html"
+      }
+    ],
+    "topics": [
+      {
+        "id": "divisibility-gcd",
+        "title": "Наибольший общий делитель",
+        "example": "НОД 24 и 36"
+      },
+      {
+        "id": "divisibility-lcm",
+        "title": "Наименьшее общее кратное",
+        "example": "НОК 12 и 18"
+      }
+    ]
   }
 ]
