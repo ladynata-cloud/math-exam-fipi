@@ -199,6 +199,32 @@ def inventory():
     }, dict(Counter(excluded.values()))
 
 
+def insert_block(raw, path):
+    heads = list(re.finditer(rb"</head\s*>", raw, re.I))
+    if not heads and path in IMPLICIT_HEAD:
+        # Valid HTML can omit both head/body tags. Preserve that source and
+        # defer the same scripts at its explicit closing html boundary.
+        heads = list(re.finditer(rb"</html\s*>", raw, re.I))
+    if len(heads) != 1:
+        raise ValueError("Expected one closing head: " + path)
+    pos = heads[0].start()
+    # Keep existing inline whitespace after the block for exact source identity.
+    while pos > 0 and raw[pos - 1:pos] in (b" ", b"\t"):
+        pos -= 1
+    return raw[:pos] + BLOCK + raw[pos:]
+
+
+def validate_block(raw, path):
+    if raw.count(BLOCK) != 1 or raw.count(MARKER) != 2:
+        raise ValueError("Missing/duplicate exact helper block: " + path)
+    original = raw.replace(BLOCK, b"", 1)
+    if b"/assets/assistant/" in original:
+        raise ValueError("Unexpected extra helper resource: " + path)
+    if raw != insert_block(original, path):
+        raise ValueError("Helper block moved outside its reviewed insertion boundary: " + path)
+    return original
+
+
 def apply(manifest):
     # Validate all pages before the first write; do not repair unexpected blocks.
     updates = []
@@ -206,31 +232,15 @@ def apply(manifest):
         f = ROOT / path
         raw = f.read_bytes()
         if BLOCK in raw:
-            if raw.count(BLOCK) != 1 or raw.count(MARKER) != 2:
-                raise ValueError("Unexpected block on deferred document: " + path)
-            updates.append((f, raw.replace(BLOCK, b"", 1)))
+            updates.append((f, validate_block(raw, path)))
     for path in manifest["pages"]:
         f = ROOT / path
         raw = f.read_bytes()
         if BLOCK in raw:
-            if raw.count(BLOCK) != 1 or raw.count(MARKER) != 2:
-                raise ValueError("Duplicate helper: " + path)
-            raw = raw.replace(BLOCK, b"", 1)
+            raw = validate_block(raw, path)
         if MARKER in raw or b"/assets/assistant/" in raw:
             raise ValueError("Unexpected helper inclusion: " + path)
-        heads = list(re.finditer(rb"</head\s*>", raw, re.I))
-        if not heads and path in IMPLICIT_HEAD:
-            # Valid HTML can omit both head/body tags. Preserve that source and
-            # defer the same scripts at its explicit closing html boundary.
-            heads = list(re.finditer(rb"</html\s*>", raw, re.I))
-        if len(heads) != 1:
-            raise ValueError("Expected one closing head: " + path)
-        pos = heads[0].start()
-        # Do not turn pre-existing inline whitespace into a new trailing-space
-        # line. Keeping it after the block preserves the exact source bytes.
-        while pos > 0 and raw[pos - 1:pos] in (b" ", b"\t"):
-            pos -= 1
-        updated = raw[:pos] + BLOCK + raw[pos:]
+        updated = insert_block(raw, path)
         if updated != f.read_bytes():
             updates.append((f, updated))
     for f, raw in updates:
@@ -246,10 +256,7 @@ def check(manifest):
     for path in tracked_html():
         raw = (ROOT / path).read_bytes()
         if path in wanted:
-            if raw.count(BLOCK) != 1 or raw.count(MARKER) != 2:
-                raise ValueError("Missing/duplicate exact helper block: " + path)
-            if b"/assets/assistant/" in raw.replace(BLOCK, b"", 1):
-                raise ValueError("Unexpected extra helper resource: " + path)
+            validate_block(raw, path)
         elif MARKER in raw or b"/assets/assistant/" in raw:
             raise ValueError("Helper leaked into an excluded page: " + path)
 

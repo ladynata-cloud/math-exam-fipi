@@ -9,7 +9,40 @@ const path = require('node:path');
 const vm = require('node:vm');
 const crypto = require('node:crypto');
 const root = path.resolve(__dirname, '..');
-const html = fs.readFileSync(path.join(root, 'ege-profil/trainers/stereo-t14.html'), 'utf8');
+const publicAssistantBlock = '\n<!-- MathExam public assistant -->\n'
+  + '<script defer src="/assets/assistant/data.js?v=public-assistant-20261031"></script>\n'
+  + '<script defer src="/assets/assistant/widget.js?v=public-assistant-20261031"></script>\n'
+  + '<!-- /MathExam public assistant -->\n';
+function withoutPublicAssistant(source) {
+  // Keep the original immutable mathematics/UI/storage hashes below. The
+  // separately checked public inclusion is the only new source allowance.
+  assert(source.split(publicAssistantBlock).length <= 2, 'duplicate public navigator inclusion');
+  const original = source.replace(publicAssistantBlock, '');
+  assert(!original.includes('/assets/assistant/') && !original.includes('MathExam public assistant'),
+    'unrecognized public navigator inclusion');
+  if (source.includes(publicAssistantBlock)) {
+    assert.equal((original.match(/<\/head\s*>/gi) || []).length, 1, 'public navigator inclusion requires one head boundary');
+    const expected = original.replace(/[ \t]*(<\/head\s*>)/i, match => publicAssistantBlock + match);
+    assert.equal(source, expected, 'public navigator inclusion must stay at the reviewed head boundary');
+  }
+  return original;
+}
+const rawHtml = fs.readFileSync(path.join(root, 'ege-profil/trainers/stereo-t14.html'), 'utf8');
+const html = withoutPublicAssistant(rawHtml);
+assert.equal(withoutPublicAssistant(html), html, 'the exact original source remains an accepted baseline');
+for (const changedBlock of [publicAssistantBlock + publicAssistantBlock,
+  publicAssistantBlock.replace(' defer ', ' async '),
+  publicAssistantBlock.replace('defer src=', 'defer onload="unexpected()" src='),
+  publicAssistantBlock.replace('public-assistant-20261031', 'unknown-version'),
+  publicAssistantBlock.replace('data.js', 'unapproved.js'),
+  publicAssistantBlock.replace('data.js', 'TEMP.js').replace('widget.js', 'data.js').replace('TEMP.js', 'widget.js'),
+  publicAssistantBlock.replace('<!-- /MathExam public assistant -->\n', '')]) {
+  assert.throws(() => withoutPublicAssistant(html.replace('</head>', changedBlock + '</head>')), /public navigator inclusion/,
+    'unknown, duplicate, reordered or executable markup cannot bypass the original source hashes');
+}
+assert.throws(() => withoutPublicAssistant(html.replace('<script>\n/* ================= ГЕОМЕТРИЯ',
+  '<script>\n' + publicAssistantBlock + '/* ================= ГЕОМЕТРИЯ')), /public navigator inclusion/,
+  'moving an exact block into the geometry script cannot bypass source preservation');
 const shared = fs.readFileSync(path.join(root, 'stereo-course/assets/task-scene-viewer.js'), 'utf8');
 const hash = text => crypto.createHash('sha256').update(text).digest('hex');
 const geometry = html.match(/<script>\n(\/\* ================= ГЕОМЕТРИЯ.*?<\/script>)/s)[1];

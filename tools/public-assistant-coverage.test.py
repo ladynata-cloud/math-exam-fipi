@@ -79,6 +79,22 @@ class PublicAdmissionTests(unittest.TestCase):
             with self.subTest(path=path), self.assertRaisesRegex(ValueError, "Out-of-task"):
                 coverage.validate_scope_paths([path], allowed)
 
+    def test_exact_block_cannot_be_moved_into_script_or_outside_reviewed_boundary(self):
+        original = b'<html><head><script>const value=1;</script>  </head><body></body></html>'
+        good = original.replace(b'  </head>', coverage.BLOCK + b'  </head>')
+        self.assertEqual(coverage.validate_block(good, 'index.html'), original)
+        for moved in (coverage.BLOCK + original,
+                      original.replace(b'const value=1;', coverage.BLOCK + b'const value=1;'),
+                      original.replace(b'</body>', coverage.BLOCK + b'</body>')):
+            with self.subTest(moved=moved[:100]), self.assertRaisesRegex(ValueError, 'insertion boundary'):
+                coverage.validate_block(moved, 'index.html')
+        implicit = b'<html><title>Public material</title><p>Lesson</p>\t</html>'
+        allowed_path = next(iter(coverage.IMPLICIT_HEAD))
+        implicit_good = implicit.replace(b'\t</html>', coverage.BLOCK + b'\t</html>')
+        self.assertEqual(coverage.validate_block(implicit_good, allowed_path), implicit)
+        with self.assertRaisesRegex(ValueError, 'closing head'):
+            coverage.validate_block(implicit_good, 'unreviewed.html')
+
 
 class StaticScriptBoundaryTests(unittest.TestCase):
     def scripts(self, markup):

@@ -2,6 +2,7 @@
 
 [Task](../../docs/tasks/MATHEXAM_PUBLIC_ASSISTANT_V1.md) ·
 [Current integration report](../../docs/reports/MATHEXAM_PUBLIC_ASSISTANT_INTEGRATION_20261031.md) ·
+[Current Draft PR #385](https://github.com/ladynata-cloud/math-exam-fipi/pull/385) ·
 [Original PR #361](https://github.com/ladynata-cloud/math-exam-fipi/pull/361)
 
 This is a prepared static navigator. No language model is connected. It cannot
@@ -105,8 +106,10 @@ unrelated shared-CSS change or alter downloadable practical archives.
 
 The integration report separates fresh passes, failures and checks not run.
 Pre-existing 320px overflows in a percentages route and practical diagnostic
-have been reproduced with and without the widget; the full contextual and
-practical browser gates are not labelled passing.
+have been reproduced locally with and without the widget. Both complete cloud
+suites pass in the CI environment; the local failures remain explicitly recorded.
+Existing Atanasyan/Ichenskaya source-pin failures and their separate proposed fix
+in PR #375 are also distinguished from this component's compatibility fixes.
 Cloud results must match the final head. Internal review is not external approval.
 
 ## Release and rollback

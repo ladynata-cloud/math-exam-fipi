@@ -2,7 +2,8 @@
 
 ## Prepared: public MaxExam navigation chat, current-main integration
 
-- Continuation of [PR #361](https://github.com/ladynata-cloud/math-exam-fipi/pull/361),
+- [Draft PR #385](https://github.com/ladynata-cloud/math-exam-fipi/pull/385)
+  continues superseded [PR #361](https://github.com/ladynata-cloud/math-exam-fipi/pull/361),
   [HIGH task](tasks/MATHEXAM_PUBLIC_ASSISTANT_V1.md), branch
   `feat/public-assistant-main-20261031`; base
   `c9bf66e2d95f48db0134d43cc590da89f8bc3053`.

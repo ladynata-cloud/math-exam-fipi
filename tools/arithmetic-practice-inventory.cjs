@@ -4,7 +4,30 @@ const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),asse
 const root=path.resolve(__dirname,'..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const course=require('../learning/division-course-map.js'),server=require('../board-server/learning-contracts.js'),soviet=require('../soviet-math/course.js'),equations=require('../equations/data.js'),extra=require('../soviet-math/arithmetic-practice.js');
 const school={};school.window=school;vm.createContext(school);
-for(const m of read('school/index.html').matchAll(/<script[^>]+src="([^"]+)"/g)){const file=m[1].split('?')[0];if(file!=='app.js')vm.runInContext(read('school/'+file),school,{filename:'school/'+file});}
+const schoolPageURL='https://example.test/school/index.html';
+function localScriptFilename(src){
+ const page=new URL(schoolPageURL),resource=new URL(src,page);
+ assert.equal(resource.origin,page.origin,'School dependencies must be same-origin site resources');
+ const pathname=decodeURIComponent(resource.pathname);
+ assert(!/[\\\0]/.test(pathname),'Invalid local school dependency path');
+ const filename=path.resolve(root,'.'+pathname);
+ assert(filename.startsWith(root+path.sep),'School dependencies must stay inside the site');
+ assert(fs.existsSync(filename)&&fs.statSync(filename).isFile(),'Every declared school dependency must be a local file: '+src);
+ return filename;
+}
+assert.equal(localScriptFilename('math.js?version20261031#fixture'),path.join(root,'school/math.js'));
+assert.equal(localScriptFilename('/school/math.js?version20261031'),path.join(root,'school/math.js'));
+for(const src of ['https://other.test/script.js','//other.test/script.js','http://example.test/script.js','https://example.test:8443/script.js'])assert.throws(()=>localScriptFilename(src),/same-origin/);
+assert.throws(()=>localScriptFilename('/%2e%2e%2foutside.js'),/inside the site/);
+for(const src of ['/assets/%5cscript.js','/assets/%00script.js'])assert.throws(()=>localScriptFilename(src),/Invalid local/);
+for(const src of ['/assets/missing-inventory-fixture.js','/assets/'])assert.throws(()=>localScriptFilename(src),/must be a local file/);
+// The pure mathematics inventory does not mount either page interface. Their
+// declared files still pass the same local-resource checks before exclusion.
+const pageInterfaces=new Set(['school/app.js','assets/assistant/widget.js'].map(file=>path.join(root,file)));
+for(const m of read('school/index.html').matchAll(/<script[^>]+src="([^"]+)"/g)){
+ const filename=localScriptFilename(m[1]);
+ if(!pageInterfaces.has(filename))vm.runInContext(fs.readFileSync(filename,'utf8'),school,{filename:path.relative(root,filename)});
+}
 const seeds=Array.from({length:200},(_,i)=>i);
 const textTask=t=>JSON.stringify({prompt:t.task?.prompt||t.task?.q||t.prompt||t.q,items:t.items?.map(q=>q.prompt||q.q),steps:t.steps?.map(q=>q.prompt||q.q)});
 function sample(make){const tasks=seeds.map(make),prints=tasks.map(textTask);return {seeds:'0..199',count:seeds.length,uniqueConditions:new Set(prints).size,examples:[...new Set(tasks.map(t=>t.task?.prompt||t.task?.q||t.prompt||t.q))].slice(0,3)};}
