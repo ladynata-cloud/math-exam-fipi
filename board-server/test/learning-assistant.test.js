@@ -568,3 +568,44 @@ test('oversized or transfer-filtered deterministic answers stay displayable but 
   assert.equal((await f.request(f.learners[0], '/assistant')).body.used, 2);
   assert.equal(f.calls.filter(call => call.url.endsWith('/ask')).length, 2);
 });
+
+test('teacher control blocks pending initial and follow-up answers without refunding or retrying', async t => {
+  for (const followUp of [false, true]) {
+    let release, started, delay = false, asks = 0;
+    const entered = new Promise(resolve => { started = resolve; });
+    const f = await fixture(t, { external: true, transport: async (url, options, next) => {
+      if (!url.endsWith('/ask')) return next(url, options);
+      asks++;
+      if (!delay) return next(url, options);
+      started(); await new Promise(resolve => { release = resolve; });
+      return jsonResponse({ ok: true, answer: sampleAnswer(JSON.parse(options.body).topic, 'model-unverified') });
+    } });
+    const profile = catalog.find(p => p.id === 'triangle-congruence');
+    await f.configure(0, { profileId: profile.id, externalAllowed: true });
+    const generated = contracts.create('atanasyan-7-9', 'atanasyan-7-9-main-92-part-1', 123);
+    const attempt = f.api.store.newAttempt(f.learners[0].account.id, f.teacher.account.id, 'atanasyan-7-9', generated);
+    const original = { topic: profile.topics[0].id, attemptId: attempt.id, externalConsent: true };
+    let parent;
+    if (followUp) {
+      const initial = await f.request(f.learners[0], '/assistant/ask', f.ask(original));
+      assert.equal(initial.status, 200); assert.equal(initial.body.followUpAvailable, true);
+      parent = initial.body.answer.answerId;
+    }
+    delay = true;
+    const pending = f.request(f.learners[0], '/assistant/ask', f.ask({ ...original,
+      ...(followUp ? { followUp: { answerId: parent, question: 'Почему?' } } : {}) }));
+    await entered;
+    f.api.store.action(f.teacher.account, attempt.id, { opId: uuid(),
+      expectedVersion: f.api.store.getAttempt(f.teacher.account, attempt.id).version,
+      type: 'control', payload: { controller: 'teacher' } });
+    release();
+    const denied = await pending;
+    assert.equal(denied.status, 409); assert.equal(denied.body.error, 'LEARNING_CONTROL_REQUIRED');
+    assert.equal(denied.body.answer, undefined); assert.equal(denied.body.followUpAvailable, undefined);
+    assert.equal((await f.request(f.learners[0], '/assistant')).body.used, followUp ? 2 : 1);
+    const again = await f.request(f.learners[0], '/assistant/ask', f.ask(original));
+    assert.equal(again.body.error, 'LEARNING_CONTROL_REQUIRED');
+    assert.equal(asks, followUp ? 2 : 1, 'Read-only requests cannot cross the bridge');
+    assert.equal(f.api.store.rows("SELECT * FROM learning_assistant_requests WHERE status='failed'").length, 1);
+  }
+});

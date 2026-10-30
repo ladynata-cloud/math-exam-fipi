@@ -223,6 +223,7 @@ function createLearningAssistantRouter(learning, options = {}) {
     requireValue(typeof attemptId === 'string' && ID.test(attemptId), 'LEARNING_ASSISTANT_INPUT_INVALID');
     const a = store.getAttempt(auth, attemptId);
     requireValue(a.archivedAt == null, 'LEARNING_ATTEMPT_ARCHIVED', 409);
+    requireValue(a.controller === auth.role, 'LEARNING_CONTROL_REQUIRED', 409);
     requireValue(!store.runGuard?.(attemptId), 'LEARNING_RUN_ACTIVE', 409);
     // Only published fixed task formats are projected. No state/history/photo,
     // answer key, title containing a pupil's name or whole DTO is forwarded.

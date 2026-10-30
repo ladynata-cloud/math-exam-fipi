@@ -134,7 +134,7 @@ jobs:
           node tools/photo-proof-clear.dom.cjs
       - name: Source helper boundaries and complete geometry object naming audit
         run: |
-          node --test tools/learning-assistant-local.test.cjs tools/learning-assistant-dialogue.test.cjs
+          node --test tools/learning-assistant-local.test.cjs tools/learning-assistant-dialogue.test.cjs tools/learning-assistant-context-label.test.cjs
           node --test tools/learning-legacy-geometry-helper.dom.cjs
           node --test tools/geometry-object-labels.test.cjs
           node --test tools/geometry/object-labels.test.cjs
@@ -198,6 +198,7 @@ jobs:
         run: |
           node --test --test-isolation=none tools/learning-assistant-browser.test.cjs
           node tools/learning-assistant-e2e.browser.cjs
+          node tools/learning-assistant-dialogue.e2e.cjs
           node tools/learning-path.browser.cjs
           node tools/motion-grade6.browser.cjs
           node tools/learning-remediation-smoke.cjs

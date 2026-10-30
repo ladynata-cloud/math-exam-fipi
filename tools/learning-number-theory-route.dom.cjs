@@ -10,6 +10,7 @@ const ROOT = path.resolve(__dirname, '..');
 const read = name => fs.readFileSync(path.join(ROOT, 'learning', name), 'utf8');
 const attached = require('../learning/attached-course');
 const catalog = require('../learning/catalog');
+const textbookCount=require('../learning/vilenkin6-textbook-catalog').length;
 const map = require('../learning/preparation-map');
 const MARKER = 'Индивидуальный маршрут: только НОК и НОД.';
 const COMMENT = 'Сначала выпиши множители.\nСохрани <b>свой разбор</b>.';
@@ -99,7 +100,7 @@ async function fixture(t, { role = 'student', route = 'home', focus = COMMENT + 
     assert(Object.hasOwn(values, route), 'Unexpected read ' + route);
     return response(values[route]);
   };
-  for (const file of ['attached-course.js', 'preparation.js', 'vilenkin6-course.js', 'teaching.js', 'app.js']) window.eval(read(file));
+  for (const file of ['attached-course.js', 'preparation.js', 'vilenkin6-course.js', 'vilenkin6-textbook-catalog.js', 'vilenkin6-textbook-course.js', 'teaching.js', 'app.js']) window.eval(read(file));
   await settle();
   const main = window.document.getElementById('main');
   return { window, main, profile, pupil, peer, plan, calls, errors, retained, before,
@@ -275,6 +276,22 @@ test('ordinary Vilenkin profiles and a refreshed ordinary profile retain courses
   assert.equal(selected.window.document.querySelector('.site-link').hidden, false);
   assert(selected.window.document.querySelector('[data-nav=division-course]'));
   assert.equal(selected.retained(), selected.before);
-  assert.equal(catalog.items.length, 378);
+  assert.equal(catalog.items.filter(item => item.trainerId !== 'vilenkin6-textbook').length, 378);
+  assert.equal(catalog.items.filter(item => item.trainerId === 'vilenkin6-textbook').length, textbookCount);
   assert.equal(catalog.items.filter(item => item.trainerId === 'vilenkin6-part1').length, 27);
+});
+
+test('teacher switches the exact number-theory profile to the revised whole-course and preserves all old records',async t=>{
+ const f=await fixture(t,{role:'teacher',route:'student=fixture-pupil',allowSave:true});
+ const form=f.main.querySelector('#teaching-profile');assert.equal(form.elements.routeMode.value,'number-theory-only');
+ form.elements.routeMode.value='vilenkin-textbook';await f.submit();
+ assert.equal(attached.routeMode(f.profile),'vilenkin-textbook');assert.equal(attached.numberTheoryOnly(f.profile),false);assert.equal(attached.focusComment(f.profile.focus),COMMENT);assert.equal(form.elements.focus.value,COMMENT);assert.equal(form.elements.routeMode.value,'vilenkin-textbook');assert.equal(f.profile.course,'vilenkin6');assert.equal(f.retained(),f.before);
+ assert(f.main.querySelector('[data-attached-course="vilenkin6-textbook"]'));assert.equal(f.main.querySelector('[data-number-theory-only]'),null);
+ const writes=f.calls.filter(call=>call.method==='POST');assert.equal(writes.length,1);assert.equal(writes[0].body.expectedVersion,4);assert.equal(writes[0].route,'/teacher/students/fixture-pupil/profile');
+ const learner=await fixture(t,{focus:f.profile.focus});assert(learner.main.querySelector('a[href="#vilenkin-textbook"]'));
+ await learner.go('vilenkin-textbook');assert.equal(learner.main.querySelectorAll('[data-vilenkin-textbook-open]').length,textbookCount);assert.equal(learner.retained(),learner.before);
+ await learner.go('vilenkin-legacy');assert.equal(new Set([...learner.main.querySelectorAll('[data-vilenkin6-open]')].map(button=>button.dataset.vilenkin6Open)).size,27);
+ await learner.go('history');assert(learner.main.querySelector('a[href="#attempt=fixture-work"]'));assert.equal(learner.main.querySelector('a[href="#attempt=peer-work"]'),null);
+ assert(learner.calls.every(call=>call.method==='GET'));
+ form.elements.routeMode.value='number-theory-only';await f.submit();assert.equal(attached.routeMode(f.profile),'number-theory-only');assert.equal(attached.focusComment(f.profile.focus),COMMENT);assert.equal(f.retained(),f.before);
 });

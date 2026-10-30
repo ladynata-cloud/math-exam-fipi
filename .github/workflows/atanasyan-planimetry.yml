@@ -4,6 +4,7 @@ on:
     paths:
       - 'geometry-course/textbook/**'
       - 'docs/reviews/ATANASYAN_7_9_CHAPTER_VI*'
+      - 'docs/reviews/ATANASYAN_7_9_CHAPTER_VIII*'
       - 'geometry-course/index.html'
       - 'tools/geometry-textbook/**'
       - 'tools/geometry/check_textbook_preparation.py'
@@ -34,6 +35,15 @@ jobs:
           python3 tools/geometry-textbook/model_claims_test.py
           python3 tools/geometry-textbook/chapter06-candidate.test.py
           python3 tools/geometry-textbook/chapter06-release.test.py
+          python3 tools/geometry-textbook/chapter07-candidate.test.py
+          python3 tools/geometry-textbook/chapter07-release.test.py
+          python3 tools/geometry-textbook/chapter07-theory-math.test.py
+          python3 tools/geometry-textbook/chapter08-candidate.test.py
+          python3 tools/geometry-textbook/chapter08-release.test.py
+          python3 tools/geometry-textbook/chapter08-a-independent.test.py
+          python3 tools/geometry-textbook/chapter08-b-independent.test.py
+          python3 tools/geometry-textbook/chapter08-c-independent.test.py
+          python3 tools/geometry-textbook/chapter08-theory-independent.test.py
           python3 tools/geometry-textbook/advanced7-c-math.test.py
           node tools/geometry-textbook/check_course.cjs
           node tools/geometry-textbook/captions.test.cjs
@@ -45,7 +55,7 @@ jobs:
   browser:
     needs: source-and-models
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 55
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -59,7 +69,7 @@ jobs:
       - name: All source-audited cards, every drawing, mobile and desktop, actual saved work
         env:
           GEOMETRY_TEXTBOOK_ARTIFACTS: artifacts/geometry-textbook
-          GEOMETRY_TEXTBOOK_CAPTURE_CHAPTERS: 'VI,7 класс · повышенная трудность'
+          GEOMETRY_TEXTBOOK_CAPTURE_CHAPTERS: 'VIII,VII,VI,7 класс · повышенная трудность'
           GEOMETRY_TEXTBOOK_HEAD: ${{ github.event.pull_request.head.sha }}
         run: node tools/geometry-textbook/browser_check.js
       - name: Preserve actual browser evidence even on failure
@@ -74,7 +84,7 @@ jobs:
   chapter-vi-candidate:
     needs: source-and-models
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 55
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -90,7 +100,7 @@ jobs:
           python3 tools/geometry-textbook/build_candidate.py --chapter 6 --output "$RUNNER_TEMP/chapter06-review"
           node tools/geometry-textbook/chapter06-captions.test.cjs "$RUNNER_TEMP/chapter06-review"
           python3 tools/geometry-textbook/build_course.py --check
-      - name: All 893 isolated release cards, every view and actual saved work
+      - name: All release cards, every view and actual saved work
         env:
           GEOMETRY_TEXTBOOK_ROOT: ${{ runner.temp }}/chapter06-review
           GEOMETRY_TEXTBOOK_ARTIFACTS: artifacts/chapter06-candidate
@@ -105,5 +115,79 @@ jobs:
           path: |
             artifacts/chapter06-candidate/
             ${{ runner.temp }}/chapter06-review/geometry-course/textbook/
+          retention-days: 7
+          if-no-files-found: error
+
+  chapter-vii-candidate:
+    needs: source-and-models
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+      - run: npx playwright install --with-deps chromium
+      - name: Reproduce the isolated VII snapshot without changing the public bundle
+        run: |
+          python3 tools/geometry-textbook/build_candidate.py --chapter 7 --output "$RUNNER_TEMP/chapter07-review"
+          node tools/geometry-textbook/chapter07-captions.test.cjs "$RUNNER_TEMP/chapter07-review"
+          python3 tools/geometry-textbook/build_course.py --check
+      - name: All isolated release cards, every view and actual saved work
+        env:
+          GEOMETRY_TEXTBOOK_ROOT: ${{ runner.temp }}/chapter07-review
+          GEOMETRY_TEXTBOOK_ARTIFACTS: artifacts/chapter07-candidate
+          GEOMETRY_TEXTBOOK_CAPTURE_CHAPTERS: VII
+          GEOMETRY_TEXTBOOK_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: node tools/geometry-textbook/browser_check.js
+      - name: Preserve candidate evidence and explicit preview
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: atanasyan-chapter07-candidate
+          path: |
+            artifacts/chapter07-candidate/
+            ${{ runner.temp }}/chapter07-review/geometry-course/textbook/
+          retention-days: 7
+          if-no-files-found: error
+
+  chapter-viii-candidate:
+    needs: source-and-models
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+      - run: npx playwright install --with-deps chromium
+      - name: Reproduce the isolated VIII snapshot without changing the public bundle
+        run: |
+          python3 tools/geometry-textbook/build_candidate.py --chapter 8 --output "$RUNNER_TEMP/chapter08-review"
+          node tools/geometry-textbook/chapter08-captions.test.cjs "$RUNNER_TEMP/chapter08-review"
+          python3 tools/geometry-textbook/build_course.py --check
+      - name: All 1247 isolated cards, every view and actual saved work
+        env:
+          GEOMETRY_TEXTBOOK_ROOT: ${{ runner.temp }}/chapter08-review
+          GEOMETRY_TEXTBOOK_ARTIFACTS: artifacts/chapter08-candidate
+          GEOMETRY_TEXTBOOK_CAPTURE_CHAPTERS: VIII
+          GEOMETRY_TEXTBOOK_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: node tools/geometry-textbook/browser_check.js
+      - name: Preserve candidate evidence and explicit preview
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: atanasyan-chapter08-candidate
+          path: |
+            artifacts/chapter08-candidate/
+            ${{ runner.temp }}/chapter08-review/geometry-course/textbook/
           retention-days: 7
           if-no-files-found: error

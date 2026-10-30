@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "authoredContentSha256": "4a01227216d6bcf57495cd90975350fd7aaa823ef1c5566b1c3335e7f2d6d723",
+  "implementationSha256": "b831d68dbdaaf2e696a99699e228cb646ba03d76c7333f799a9c10e4bb904ad7",
+  "source": "passed",
+  "mathematics": "passed",
+  "models": "passed",
+  "pedagogy": "passed",
+  "browser": "passed",
+  "reviewer": "Independent non-author OpenAI source, mathematics, proof, visual and technical reviewers; root verifies exact content/runtime/evidence/image bindings",
+  "at": "2026-10-30T00:26:23.009264+00:00",
+  "reviewKind": "Exact final content/runtime/image hash-bound review. Commit CI and public deployment remain separate.",
+  "sourcePdfSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "scope": {
+    "chapter": "VIII",
+    "mainNumbers": 97,
+    "mainParts": 133,
+    "theory": 13,
+    "selfchecks": 18,
+    "cards": 164,
+    "steps": 564,
+    "views": 789,
+    "coordinateClaims": 1505,
+    "fullBookComplete": false
+  },
+  "evidence": [
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_A_FULL_VISUAL_REVIEW.json",
+      "sha256": "9c0fc2f1685b526ca24d9040ac28b4e49b9613d93831d00b02af7c90c4958676"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_A_NUMERIC_REVIEW.json",
+      "sha256": "45cfdc5a63907ec522b38de3699f272be3b2c925c63f70a201e91c18707a760d"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_A_REVIEW.md",
+      "sha256": "dc1e12d55c4e8cc69bb32f9a0fb8e249cabeff198ad83e0cf7ca9a1aeafdcb04"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_BROWSER_FAILURE_REVIEW.json",
+      "sha256": "ae579362003cdaec3c414e20c96b693db2d613347ed945a4cd1343b42ed1b64a"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_BROWSER_REVIEW.json",
+      "sha256": "f790843f93d722e9748b90f0442fd3a7747e7138dd1efb47d84a1aa548d861ba"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_B_FULL_VISUAL_REVIEW.json",
+      "sha256": "5207a20bac94327f3a80322873b7c0953b6e52180d1fdc000b058a1946d57ac9"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_B_NUMERIC_REVIEW.json",
+      "sha256": "2a9b38820eb8d3aed5823bd0de27f3e18dc29d6122e32626ebeb721526859f9d"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_B_REVIEW.md",
+      "sha256": "631df2e73d7ef8e73ec899bf2d7d391f8f3fa11f88f4f8ffe7a10a369a0dcf17"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_C_DESKTOP_VISUAL_REVIEW.json",
+      "sha256": "bcce9fa0b093f8c76cab7e63403ed15a7767d1b28ff9e929579d4c8785d828df"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_C_MOBILE_VISUAL_REVIEW.json",
+      "sha256": "f685fa533c66c1f19aa934d8f0d78e9c6d3ef54dd9ecd0d01ea848f396da65e2"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_C_NUMERIC_REVIEW.json",
+      "sha256": "e1eedf7eecfbef338ade16688903aa2edbc64207b105150c6f478b8e823c1ab6"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_C_REVIEW.md",
+      "sha256": "6a607598e85fe703f689645ce8d41dd58238b0e79f3ed64ff920614b4cc1dedf"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_RUNTIME_EXTENSION_REVIEW.json",
+      "sha256": "fb8cafb8b3b839b763d3041d51e54b24c93f57291119333fdcd0da847daa106a"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_SOURCE_REVIEW.json",
+      "sha256": "9fa2b8746010d03afef65cd0dc710e6642ad52d2994eba8c5b9869f98c365d55"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_TECHNICAL_PROBES.json",
+      "sha256": "4c100f38f8b6471388f3b7ce93aa6c3cff54335d05a68aecd8d46c36a8381717"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_TECHNICAL_REVIEW.md",
+      "sha256": "e94a1f5ccc3e150b3d2a01ec438eddfdec1b3853a13eb04c1eec67137b257692"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_THEORY_FULL_VISUAL_REVIEW.json",
+      "sha256": "1912b46fec3bb4a3a4d4808295df49d80aad86774c50a25428e22ce7e81562ee"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_THEORY_NUMERIC_REVIEW.json",
+      "sha256": "cf94f38203c337f1fe5f9898e3ff801f5ee46e0558eda07bf6a751aa6248e289"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_THEORY_REVIEW.md",
+      "sha256": "72a2dd664fef5fb6699b2d31a9a2724e2feff70dff755fb4efda141a8844d912"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_UI_REVIEW.json",
+      "sha256": "44f3515551bac28f682d35a6f69e0035e674cb6ca93c4793d173a12a722ab581"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_UI_REVIEW.md",
+      "sha256": "470cd98c49d709b19beb88738f88ce64dedfa7fbec7c6d5436e00f23dfdfcf17"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter-08-source-map.json",
+      "sha256": "c8a03bfd554007d3a0b6f2ad0f8ecea08e28b4a647e943ddd7abccc599bfa3b0"
+    }
+  ],
+  "browserEvidence": {
+    "schemaVersion": 1,
+    "scope": "full-course",
+    "gateScriptSha256": "d5d1e5af7e377d5921c86e84c36e81489c150b78db6442a2b71f1c0aba817be7",
+    "implementationSha256": "b831d68dbdaaf2e696a99699e228cb646ba03d76c7333f799a9c10e4bb904ad7",
+    "authoredContentSha256": "a92b9e1c8d7d06e8a995d805a757690ca56b6b9521e8129b31965b8bd34e07da",
+    "bundleSha256": "8e6d98e500a96b3db5bd120362195da000955d790699c8fa73433f60ab4c5d24",
+    "widths": [
+      320,
+      1280
+    ],
+    "lessons": 1247,
+    "completed": true,
+    "errors": [],
+    "evidenceSha256": "21dbd56b2bbf74c3b720561fadbd13456c4107fb688fadb541bc89e4a2e14827",
+    "viewWidthChecks": 12688,
+    "stepFlows": 2494,
+    "initialFinalCaptures": 4988,
+    "chapterVIIIViewCaptures": 1578,
+    "interactions": [
+      "expansion-lesson-320-button-and-Escape",
+      "expansion-lesson-1280-button-and-Escape",
+      "notes-and-steps-reload",
+      "expansion-theory-1280-button-and-Escape",
+      "theory-return-retains-answer",
+      "manual-answer-honesty",
+      "two-tab-conflict-preserves-work",
+      "chapter-selfcheck-draft-isolation-and-reload",
+      "chapter-II-theory-return-and-saved-step",
+      "chapter-II-first-and-last-direct-entry",
+      "chapter-III-theory-return-and-saved-step",
+      "chapter-III-first-and-last-direct-entry",
+      "chapter-IV-theory-return-and-saved-step",
+      "chapter-IV-first-and-last-direct-entry",
+      "chapter-V-theory-return-and-saved-step",
+      "chapter-V-first-and-last-direct-entry",
+      "chapter-VI-theory-return-and-saved-step",
+      "chapter-VI-first-and-last-direct-entry",
+      "chapter-VII-theory-return-and-saved-step",
+      "chapter-VII-first-and-last-direct-entry",
+      "chapter-VIII-theory-return-and-saved-step",
+      "chapter-VIII-first-and-last-direct-entry"
+    ],
+    "artifact": "viii-full-5",
+    "binding": "Actual uncommitted engineering preview; exact committed-head CI and reviewed public-entry verification are separate."
+  },
+  "manualImageReview": {
+    "totalCaptures": 2234,
+    "viewWidthPairs": 1578,
+    "initialFinalCaptures": 656,
+    "widths": [
+      320,
+      1280
+    ],
+    "openFindings": 0,
+    "exactWholePngDuplicateGroupingOnly": true,
+    "finalDataset": "viii-full-5",
+    "priorFailedGatesRetained": true
+  },
+  "claude": "Same-course owner exception applies; no external Claude/provider verdict claimed.",
+  "mergeOrDeploymentAuthorization": false
+}

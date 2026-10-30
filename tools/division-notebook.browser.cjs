@@ -36,22 +36,22 @@ async function reflow(page, label) {
  assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), label + ': no horizontal document overflow');
 }
 async function answer(page, value, keyboard = false) {
+ const before = (await work(page)).s;
  await page.locator('#answer').fill(value);
  if (keyboard) await page.locator('#answer').press('Enter');
  else await page.locator('#primary').click();
  const {s} = await work(page);
- assert(s.accepted, 'Expected accepted answer ' + value + ': ' + await page.locator('#feedback').innerText());
+ assert.equal(s.answers.length, before.answers.length + 1, 'Expected accepted answer ' + value + ': ' + await page.locator('#feedback').innerText());
+ assert.equal(s.step, before.step + (s.done ? 0 : 1), 'Only one mathematical action advances');
 }
-async function next(page) { await page.locator('#primary').click(); }
 async function one(page) {
  const {s,a} = await work(page);
  if (s.done) return false;
- if (s.accepted) { await next(page); return true; }
  if (a.options) await page.locator('[data-option=' + JSON.stringify(a.answer) + ']').click();
  else if (a.kind === 'start') await page.locator('[data-prefix-end="' + a.sourceIndex + '"]').click();
  else await page.locator('#answer').fill(a.answer);
  await page.locator('#primary').click();
- assert((await work(page)).s.accepted, 'Valid guided answer rejected for ' + a.kind);
+ assert.equal((await work(page)).s.answers.length, s.answers.length + 1, 'Valid guided answer recorded once for ' + a.kind);
  return true;
 }
 async function until(page, predicate) {
@@ -89,7 +89,7 @@ async function decimalPreparation(page, expected, label) {
   assert.equal(view[id].normalized,'?','No normalized operand is disclosed before its own answer');
  }
  assert.equal(await page.locator('#notebook').isVisible(),false,'The old decimal divisor is not silently written as an integer');
- await answer(page,'1',true);await next(page);
+ await answer(page,'1',true);
  assert.equal((await work(page)).a.kind,'shift-factor');
  await page.locator('#answer').fill('100');await page.locator('#primary').click();
  assert.equal((await work(page)).s.accepted,false,'Wrong common multiplier is rejected');
@@ -99,12 +99,12 @@ async function decimalPreparation(page, expected, label) {
  view=await normalization(page);
  assert(view.dividend.factor.includes('10')&&view.divisor.factor.includes('10'),'Both operands show the same earned multiplier');
  assert.equal(view.dividend.normalized,'?');assert.equal(view.divisor.normalized,'?');
- await next(page);assert.equal((await work(page)).a.kind,'shift-divisor');
+ assert.equal((await work(page)).a.kind,'shift-divisor');
  await answer(page,expected.normalDivisor);
  view=await normalization(page);
  assert.equal(view.divisor.normalized,expected.normalDivisor);
  assert.equal(view.dividend.normalized,'?','The dividend remains a separate learner action');
- await reloadExact(page);await next(page);
+ await reloadExact(page);
  assert.equal((await work(page)).a.kind,'shift-dividend');
  await answer(page,expected.normalDividend);
  view=await normalization(page);
@@ -113,7 +113,7 @@ async function decimalPreparation(page, expected, label) {
  assert.equal(await page.locator('#notebook').isVisible(),true);
  assert.equal(await page.locator('.divisor').innerText(),expected.normalDivisor);
  await shot(page,label+'-equal-shift');await reflow(page,label+'-equal-shift');
- await next(page);
+
  assert.equal((await work(page)).a.kind,'start');
  assert.equal(await page.locator('[data-first-arch]').count(),0,'Normalization does not preselect the first partial dividend');
  const start=(await work(page)).a;
@@ -150,8 +150,8 @@ async function arrowGeometry(page, label, expectedIndex) {
  assert(Math.abs(geometry.source.x-geometry.target.x)<1.5,label+': source and brought digit share a place-value column');
  assert(Math.abs(geometry.start.x-geometry.source.x)<1.5,label+': arrow starts over the actual source digit');
  assert(Math.abs(geometry.end.x-geometry.target.x)<1.5,label+': arrow points at the actual destination digit');
- assert(geometry.start.y>=geometry.source.top-3&&geometry.start.y<=geometry.source.bottom+16,label+': arrow starts beside the source cell');
- assert(geometry.end.y>=geometry.target.top-16&&geometry.end.y<=geometry.target.bottom+3,label+': arrow ends beside the destination cell');
+ assert(geometry.start.y>=geometry.source.top-3&&geometry.start.y<=geometry.source.bottom+16,label+': arrow starts beside the source cell: '+JSON.stringify(geometry));
+ assert(geometry.end.y>=geometry.target.top-16&&geometry.end.y<=geometry.target.bottom+3,label+': arrow ends beside the destination cell: '+JSON.stringify(geometry));
  assert(geometry.end.y>geometry.start.y,label+': bring-down direction is downward');
  return geometry.index;
 }
@@ -163,7 +163,7 @@ async function commaAndBring(page, expected, label) {
  assert.equal(await page.locator('[data-quotient-comma]').innerText(),',','Comma appears after the accepted comma action');
  assert((await page.locator('.quotient').innerText()).startsWith(quotientBefore+','));
  await shot(page,label+'-comma');
- await next(page);
+
  const {a}=await work(page);assert.equal(a.kind,'bring');
  assert.equal(a.answer,expected.bring);assert.equal(a.appended,expected.appended);
  const beforeText=await page.locator('[data-bring-target="'+a.sourceIndex+'"]').innerText();
@@ -173,6 +173,22 @@ async function commaAndBring(page, expected, label) {
   assert.equal(await page.locator('[data-append-zero]').getAttribute('data-earned'),'false');
  }
  await arrowGeometry(page,label+'-before-bring',a.sourceIndex);
+ const viewport = page.viewportSize();
+ const prefixEnd = Number(await page.locator('#notebook').getAttribute('data-selected-end'));
+ await page.evaluate(() => window.scrollTo(0, 0));
+ await arrowGeometry(page,label+'-scrolled-top',a.sourceIndex);
+ await prefixArch(page,prefixEnd);
+ await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+ await arrowGeometry(page,label+'-scrolled-bottom',a.sourceIndex);
+ await prefixArch(page,prefixEnd);
+ await page.setViewportSize({width:viewport.width + 10,height:viewport.height});
+ await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+ await arrowGeometry(page,label+'-resized',a.sourceIndex);
+ await prefixArch(page,prefixEnd);
+ await page.setViewportSize(viewport);
+ await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+ await arrowGeometry(page,label+'-restored-width',a.sourceIndex);
+ await prefixArch(page,prefixEnd);
  await answer(page,expected.bring);
  assert.equal((await page.locator('[data-bring-target="'+a.sourceIndex+'"]').innerText()).trim(),expected.bring);
  if(expected.appended) {
@@ -202,6 +218,21 @@ function legacySession(task, step, draft) {
  try {
   const page=await open();
   assert.equal(await page.locator('#problem').innerText(),'48 : 2');
+  for (const width of [1280, 390, 320]) {
+   await page.setViewportSize({width,height:900});
+   const fonts = await page.locator('.notebook').evaluate(el => ({
+    notebook:parseFloat(getComputedStyle(el).fontSize),
+    digits:[...el.querySelectorAll('.prefix-digit')].map(n=>parseFloat(getComputedStyle(n).fontSize)),
+    divisor:parseFloat(getComputedStyle(el.querySelector('.divisor')).fontSize)
+   }));
+   assert(fonts.notebook >= 24, width + ': notebook digits remain readable');
+   assert(fonts.digits.every(size => size === fonts.notebook), width + ': prefix buttons keep notebook-sized digits');
+   assert.equal(fonts.divisor, fonts.notebook);
+   await reflow(page, 'prefix-' + width);
+   await shot(page, 'initial-' + width);
+  }
+  await page.setViewportSize({width:1280,height:900});
+
   assert.equal(await page.locator('[data-first-arch]').count(),0,'The correct prefix is not drawn on initial entry');
   assert.equal(await page.locator('[data-source-digit].current').count(),0,'The first partial dividend is not highlighted in advance');
   const last=page.locator('[data-prefix-end="1"]');
@@ -216,28 +247,54 @@ function legacySession(task, step, draft) {
   assert.equal(await page.locator('[data-first-arch]').getAttribute('data-selected-end'),'1','A prefix draft restores from the old state field');
   await page.locator('[data-prefix-end="0"]').press('Enter');
   assert.equal((await work(page)).s.draft,'4');
+  const selection = await page.locator('.number-row').first().evaluate(row => [...row.querySelectorAll('.prefix-digit')].map(el => ({
+   selected:el.getAttribute('aria-pressed'), background:getComputedStyle(el).backgroundColor
+  })));
+  assert.equal(selection[0].selected,'true');
+  assert.equal(selection[1].selected,'false');
+  assert.notEqual(selection[0].background,selection[1].background,'The larger selected digit keeps visible selection styling');
   await page.locator('#primary').press('Enter');
-  assert.equal((await work(page)).s.accepted,true);
-  assert.equal((await work(page)).s.step,0,'A correct prefix waits for explicit continuation');
+  assert.equal((await work(page)).s.accepted,false);
+  assert.equal((await work(page)).s.step,1,'A correct prefix immediately opens the next question');
   await prefixArch(page,0);
   await shot(page,'prefix-desktop');
   await chooseTopic(page,'twoDigit');
   await page.locator('[data-prefix-end="1"]').click();
   assert.equal((await work(page)).s.draft,'86');await page.locator('#primary').click();
-  assert((await work(page)).s.accepted,'The last digit of a two-digit prefix selects 86 in 864 : 36');
+  assert.equal((await work(page)).s.answers[0],'86','The last digit of a two-digit prefix selects 86 in 864 : 36');
+  assert.equal((await work(page)).s.step,1);
   await chooseTopic(page,'decimalDivisor');
   await decimalPreparation(page,{dividend:'8',divisor:'2,5',normalDividend:'80',normalDivisor:'25'},'desktop-8');
   await commaAndBring(page,{whole:'3',bring:'0',appended:true},'desktop-8');
   await finish(page);assert.equal(await page.locator('.quotient').innerText(),'3,2');
 
   // A hand-authored old version-1 attempt resumes halfway through preparation.
+  // A pre-release accepted v1 answer resumes after that answer exactly once.
+  const checked = legacySession(G.make('start',0),0,'4');
+  checked.sessions.start.accepted = true;
+  checked.sessions.start.answers = ['4'];
+  const continued = await open(390,checked);
+  const resumedChecked = (await state(continued)).sessions.start;
+  assert.equal(resumedChecked.step,1);
+  assert.equal(resumedChecked.accepted,false);
+  assert.equal(resumedChecked.draft,'');
+  assert.deepEqual(resumedChecked.answers,['4']);
+  assert.equal(resumedChecked.errors,checked.sessions.start.errors);
+  assert.equal(resumedChecked.hints,checked.sessions.start.hints);
+  await reloadExact(continued);
+  await answer(continued,'2',true);
+  assert.equal((await work(continued)).s.step,2);
+  assert.deepEqual((await work(continued)).s.answers,['4','2']);
+  await finish(continued);
+  assert.equal((await state(continued)).records.length,1);
+
   const legacy=legacySession(G.make('decimalDivisor',0),3,'8');
   const resumed=await open(390,legacy);
   assert.deepEqual(await state(resumed),legacy,'Existing v1 answers, help counts and in-progress draft are preserved');
   const view=await normalization(resumed);
   assert.equal(view.divisor.normalized,'25');assert.equal(view.dividend.normalized,'?');
   assert.equal(await resumed.locator('#answer').inputValue(),'8');
-  await answer(resumed,'80');await next(resumed);
+  await answer(resumed,'80');
   await reflow(resumed,'resumed-390');
 
   for(const width of [320,390]) {

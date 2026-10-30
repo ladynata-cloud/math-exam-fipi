@@ -53,6 +53,21 @@ let browser;
  await page.reload();await page.waitForFunction(()=>window.VilenkinTextbook?.ready);
  assert.equal(await page.locator('.step-history li').count(),1);assert.equal(await page.locator('#answer').inputValue(),'17');
  await page.screenshot({path:path.join(out,'mobile-retained-steps.png'),fullPage:true});
+ const lcmUnit=units.find(u=>u.id===8),lcmTask=lcmUnit.tasks.find(t=>t.id==='v6-book-2-97-е');
+ await nav(lcmUnit,lcmTask);
+ for(const wrong of ['4','12']){
+   await page.locator('#answer').fill(wrong);await page.locator('#answer-form').evaluate(f=>f.requestSubmit());
+   assert.equal(await page.locator('.hint').count(),0,'mistakes must not open help without the learner');
+ }
+ assert((await page.locator('.feedback').innerText()).includes('Хочешь подсказку?'));
+ await page.locator('#answer').fill('24');await page.locator('#answer-form').evaluate(f=>f.requestSubmit());
+ assert((await page.locator('.work h2').innerText()).includes('Решено самостоятельно'));
+ await page.locator('[data-action="review-solution"]').click();assert.equal(await page.locator('.solution').count(),1);
+ await page.reload();await page.waitForFunction(()=>window.VilenkinTextbook?.ready);
+ assert((await page.locator('.work h2').innerText()).includes('Решено самостоятельно'),'review after completion retains earned result');
+ assert.equal(await page.locator('.solution').count(),1);
+ assert(!await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),'completed review has no mobile overflow');
+ await page.screenshot({path:path.join(out,'mobile-completed-review.png'),fullPage:true});
  for(const [id,name] of [[17,'complex-fraction'],[22,'symmetry']]){
    const unit=units.find(u=>u.id===id),task=unit.tasks.find(t=>t.visual?.type==='image');
    await page.setViewportSize({width:1280,height:900});await nav(unit,task);
@@ -61,6 +76,6 @@ let browser;
  await page.goto(base+'?learning=1');await page.waitForLoadState('domcontentloaded');
  assert(!page.url().includes('textbook.html'),'managed entry must retain legacy contract');
  assert.deepEqual(errors,[]);
- const result={status:'PASS',gate:'VILENKIN6_TEXTBOOK_BROWSER_OK',viewports:[1280,390],taskViews:views,flows:['public default','all source figures load','no page overflow','keyboard skip preserves task','step/hint/draft reload','managed entry preserved'],screenshots:4};
+ const result={status:'PASS',gate:'VILENKIN6_TEXTBOOK_BROWSER_OK',viewports:[1280,390],taskViews:views,flows:['public default','all source figures load','no page overflow','keyboard skip preserves task','step/hint/draft reload','optional help after two mistakes','self-correction stays independent','post-answer solution review reload','managed entry preserved'],screenshots:5};
  fs.writeFileSync(path.join(out,'result.json'),JSON.stringify(result,null,2));console.log(JSON.stringify(result));
 })().catch(e=>{console.error(e);process.exitCode=1}).finally(async()=>{if(browser)await browser.close();server.close()});

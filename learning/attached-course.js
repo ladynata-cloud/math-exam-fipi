@@ -37,6 +37,8 @@
   // An explicit presentation choice in the existing versioned focus note.
   // URLs or a pupil's identity never opt a profile into this mode.
   const numberTheoryMarker = 'Индивидуальный маршрут: только НОК и НОД.';
+  const vilenkinTextbookMarker = 'Курс в кабинете: Виленкин, 6 класс, часть 1 — задания учебника.';
+  const vilenkinTextbook = Object.freeze({id:'vilenkin6-textbook',kind:'cloud-textbook-course',title:'Виленкин · 6 класс · задания учебника'});
   const numberTheory = Object.freeze({id:'grade6-number-theory-only', kind:'trainer-set', title:'НОК и НОД'});
   const egeBase = Object.freeze({id:'ege-base-11-13', kind:'trainer-set', title:'ЕГЭ база · №11 и №13'});
   const egeBaseLessons = Object.freeze([
@@ -59,16 +61,23 @@
     return lines(profile?.focus).includes(numberTheoryMarker);
   }
   function focusComment(value) {
-    if (!lines(value).includes(numberTheoryMarker)) return typeof value === 'string' ? value : '';
-    return lines(value).filter(line => line !== numberTheoryMarker).join('\n');
+    if (typeof value !== 'string') return '';
+    if (!lines(value).some(line => line === numberTheoryMarker || line === vilenkinTextbookMarker)) return value;
+    return lines(value).filter(line => line !== numberTheoryMarker && line !== vilenkinTextbookMarker).join('\n');
   }
   function withNumberTheoryOnly(value, enabled) {
     const comment = focusComment(value).trim();
     return enabled ? (comment ? comment + '\n' : '') + numberTheoryMarker : comment;
   }
+  function routeMode(profile){return numberTheoryOnly(profile)?'number-theory-only':lines(profile?.focus).includes(vilenkinTextbookMarker)?'vilenkin-textbook':'ordinary';}
+  function withRouteMode(value,mode){
+    const comment=focusComment(value).trim(),marker=mode==='number-theory-only'?numberTheoryMarker:mode==='vilenkin-textbook'?vilenkinTextbookMarker:'';
+    return marker?(comment?comment+'\n':'')+marker:comment;
+  }
   function selected(profile) {
     if (typeof profile?.focus !== 'string') return null;
     if (numberTheoryOnly(profile)) return numberTheory;
+    if (routeMode(profile)==='vilenkin-textbook') return vilenkinTextbook;
     const urls = focusURLs(profile.focus);
     if (urls.has(course.url)) return course;
     if (urls.has(collegeFunctions.url)) return collegeFunctions;
@@ -83,6 +92,10 @@
     const active = selected(profile);
     if (!active) return '';
     const tag = heading === 'h1' ? 'h1' : 'h2';
+    if(active===vilenkinTextbook){
+      const href=teacher?'https://mathexam.space/courses/vilenkin-6-part-1/textbook.html':'#vilenkin-textbook';
+      return `<section class="panel" data-attached-course="vilenkin6-textbook"><p class="eyebrow">К УЧЕБНИКУ · 6 КЛАСС · ЧАСТЬ 1</p><${tag}>Курс Виленкина · задания учебника</${tag}><p>Все 23 пункта первой части и повторение: правило, разбор по шагам и самостоятельные задания с номерами и страницами учебника.</p><div class="actions"><a class="button primary" data-attached-course-open href="${href}"${teacher?' target="_blank" rel="noopener noreferrer"':''}>${teacher?'Посмотреть материалы':'Открыть мой курс'} →</a></div><p class="form-hint">В кабинете каждое задание сохраняется отдельной работой. Прежние 27 модулей и их результаты остаются доступны.</p>${teacher?'<p class="form-hint">Этот просмотр открывает общедоступный курс без личных решений ученика.</p>':''}</section>`;
+    }
     if (active === petersonPair) {
       const preview = teacher || !!previewStudentId;
       const cardTag = tag === 'h1' ? 'h2' : 'h3';
@@ -126,5 +139,5 @@
     const comment = focusComment(profile?.focus);
     return comment ? `<section class="panel"><h2>От преподавателя</h2><p class="prep-focus">${escape(comment)}</p></section>` : '';
   }
-  return Object.freeze({selected, markup, note, publicCourse, numberTheoryOnly, focusComment, withNumberTheoryOnly});
+  return Object.freeze({selected, markup, note, publicCourse, numberTheoryOnly, focusComment, withNumberTheoryOnly,routeMode,withRouteMode});
 });

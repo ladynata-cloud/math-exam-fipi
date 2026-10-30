@@ -286,7 +286,7 @@
       const modeNotice = node('p', '', { class: 'cabinet-assistant-mode', 'data-assistant-mode': status.mode || 'unavailable' });
       section.append(modeNotice);
       section.append(node('p', courseMode ? (floating?'Условие уже выбрано. Помощь отмечается в работе; доказательство проверяет преподаватель.':'Помощник знает выбранную задачу и текущий шаг этого курса. Условие переписывать не нужно. Помощь отмечается в твоей работе; доказательство проверяет преподаватель.')
-        : context.attemptId ? 'Помощь относится к открытой работе. После подсказки результат учитывается как выполненный с помощью.' : 'Для задачи из курса, открытого в другой вкладке, впиши условие сюда. Помощник не видит ту вкладку.', { class: 'cabinet-assistant-context' }));
+        : context.attemptId ? 'Проверь тему и впиши условие открытой работы. Уточнения продолжают показанную ниже подсказку. Помощь отмечается в этой работе.' : 'Для задачи из курса, открытого в другой вкладке, впиши условие сюда. Помощник не видит ту вкладку.', { class: 'cabinet-assistant-context' }));
       const form = node('form', null, { class: 'cabinet-assistant-form' });
       const topics = node('select', null, { name: 'assistant-topic' });
       for (const topic of status.profile.topics) topics.append(node('option', topic.title, { value: topic.id }));
@@ -468,6 +468,14 @@
           if (courseMode && (result.contextMode !== 'course-task'
             || JSON.stringify(result.courseContext) !== JSON.stringify(capturedCourse))) throw Error('INVALID_RESPONSE');
           status.remaining = Number.isInteger(result.remaining) ? result.remaining : Math.max(0, status.remaining - 1);
+          // Control can change while the service is preparing an explanation.
+          // Keep the spent allowance, but never reveal or anchor a late answer
+          // after the current work has become read-only.
+          if (context.canAsk && !context.canAsk()) {
+            followUpAnchor = null; hintLevel = 0; fingerprint = '';
+            announce(message, 'Управление работой изменилось. Подсказка не показана. Вернись к текущему решению.', true);
+            return;
+          }
           const stillSameTask = courseMode ? JSON.stringify(courseSnapshot()) === JSON.stringify(capturedCourse)
             : capturedTaskRevision === taskRevision && taskSignature() === signature;
           if (stillSameTask) { hintLevel = level; fingerprint = signature; }

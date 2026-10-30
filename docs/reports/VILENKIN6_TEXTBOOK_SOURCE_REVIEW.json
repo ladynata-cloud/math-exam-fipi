@@ -726,8 +726,122 @@
   ],
   "dataHashes": {
     "units-A.json": "7e5538b27c4c6b72b5d9f2d6600a8569397db387836ff4aefbb594dc2513f5e2",
-    "units-B.json": "7eabd6e2eba2433be29f5f2a9c900a78d4f782d4a8db2545ae61d7df96046bdb",
+    "units-B.json": "3ac7e7da0cde2668ba680c93c3d8d3475cac9c6f5f8821e76529821d9c64ca6e",
     "units-C.json": "b25ee6d369a35b567fd64065c3e7780a9a06d2aebe5eea77980306329ca3e943",
     "units-D.json": "16655c9558ebea1b9f797b6a8527470388887f25682acdf9ab6873c1a951465e"
-  }
+  },
+  "amendments": [
+    {
+      "id": "vilenkin6-clarity-copy-20261030",
+      "date": "2026-10-30",
+      "timezone": "Asia/Novosibirsk",
+      "kind": "bounded-explanation-amendment",
+      "file": "courses/vilenkin-6-part-1/textbook-data/units-B.json",
+      "baseCommit": "6fb959fc0130a0bb8842601d19297e305ac91ac0",
+      "fromSha256": "7eabd6e2eba2433be29f5f2a9c900a78d4f782d4a8db2545ae61d7df96046bdb",
+      "toSha256": "cada8c284729108b444f0c38c6a28e5f54e5cf517e30eddb0386d9a8b9a96b80",
+      "author": "vilenkin_pedagogy",
+      "reviewer": "vilenkin_runtime_audit",
+      "role": "Independent review of the current explanation-only diff; reviewer did not author these content changes.",
+      "status": "PASS",
+      "changedLeafFields": 60,
+      "independentPrimeMultiplicityAssertions": 154,
+      "verification": [
+        "Compared all JSON leaves against the unchanged base: exactly 60 changed fields, confined to rule text, hints, explanations, prompts and solution prose.",
+        "Independently recomputed every prime-multiplicity statement and the minimum/maximum choices in changed GCD/LCM explanations using integer trial division: 154 occurrence-count assertions passed.",
+        "Checked 1001 = 700 + 280 + 21, division by 7, and 143 = 110 + 33, division by 11, including the unsuccessful preceding prime tests.",
+        "Checked the final revised divisibility rules for 2, 3 and 5, and re-read the final wording after the author fixed eight missing spaces and made repetition counts explicit.",
+        "Confirmed that source references, task IDs, mathematical answers, answer validators, task/step counts and ordering are unchanged."
+      ],
+      "reviewedChanges": [
+        "Explicit divisibility reminders before prime factorization.",
+        "Concrete division support for 1001 / 7 and 143 / 11.",
+        "Concrete minimum/maximum repetition counts for GCD/LCM; no new task or numerical target.",
+        "Independent common-denominator instructions now expressly require the LCM of the given denominators without prior reduction."
+      ],
+      "sourceBasis": "The 2026-10-25 source review remains historical evidence for the unchanged source exercises. Its recorded definition on printed pages 60-61 uses the LCM of the GIVEN denominators; this amendment makes that instruction explicit and does not claim a new PDF inspection.",
+      "resolvedFindings": [
+        "Eight missing spaces before the explanatory sentence about zero occurrences were corrected.",
+        "Repetition selections now say how many repetitions to take instead of an ambiguous bare number."
+      ],
+      "openFindings": [],
+      "limitations": [
+        "This is a bounded internal explanation review, not a new review of all source pages or all arithmetic answers.",
+        "The historical reviewers and their original file hashes are retained unchanged; they are not claimed to have reviewed this amendment.",
+        "No live pupil comprehension study or learning gain is established.",
+        "This amendment is not an external exact-head release verdict and does not review the new runtime, support UI or cloud adapter."
+      ]
+    },
+    {
+      "id": "vilenkin6-exercise-2-97-completion-20261030",
+      "date": "2026-10-30",
+      "timezone": "Asia/Novosibirsk",
+      "kind": "bounded-source-exercise-addition",
+      "file": "courses/vilenkin-6-part-1/textbook-data/units-B.json",
+      "fromSha256": "cada8c284729108b444f0c38c6a28e5f54e5cf517e30eddb0386d9a8b9a96b80",
+      "toSha256": "b564ee22a3e450b9a497ca038be21fe35ad76c992e8d991fd8527a4ff88d38c7",
+      "author": "vilenkin_pedagogy",
+      "reviewer": "vilenkin_runtime_audit",
+      "role": "Independent visual source, arithmetic, explanation and integrated-diff review of two added tasks; reviewer did not author the additions.",
+      "status": "PASS",
+      "sourcePrintedPage": 56,
+      "sourcePdfPage": 57,
+      "sourceExercise": "2.97",
+      "addedTaskIds": [
+        "v6-book-2-97-д",
+        "v6-book-2-97-ж"
+      ],
+      "addedTasks": 2,
+      "addedSteps": 10,
+      "resultingCourseTotals": {
+        "units": 24,
+        "tasks": 194,
+        "steps": 615
+      },
+      "verification": [
+        "Independently viewed the supplied source PDF page: exercise 2.97 has exactly eight subparts а–з. All eight operand sets and their mapping are accounted for after the two additions.",
+        "Independently recomputed all eight final LCM answers using integer arithmetic; the new answers are 30 for (10,15,30) and 18 for (6,9,18).",
+        "Checked all ten added steps, forty prime-multiplicity assertions, twelve canonical accepted answers and fourteen alternate/wrong-answer validator probes.",
+        "Removing only the two integrated additions and serializing the file in its unchanged format reproduces the exact previously reviewed SHA256. Added task objects equal the independently reviewed candidate; old content and source subpart order are preserved."
+      ],
+      "evidence": {
+        "file": "docs/reports/VILENKIN6_EXERCISE_COMPLETENESS_REVIEW_20261030.json",
+        "sha256": "30babafbdbdb331f172409517a065f60a9eb23e01391d1c0af6e25ef867b90fe",
+        "scope": "Exercise 2.97 addition and complete source-subpart evidence; the same report separately records new verification of unchanged number 2.134."
+      },
+      "openFindings": [],
+      "limitations": [
+        "Only these two source tasks are added; this does not establish completeness of other textbook numbers or either complete textbook part.",
+        "The separate verification of number 2.134 does not add or change its tasks and is not included in the two-task addition count.",
+        "No live pupil trial, browser/cloud integration verdict or external exact-head release approval is asserted."
+      ]
+    },
+    {
+      "id": "vilenkin6-integer-fraction-clarity-20261030",
+      "date": "2026-10-30",
+      "timezone": "Asia/Novosibirsk",
+      "kind": "bounded-explanation-amendment",
+      "file": "courses/vilenkin-6-part-1/textbook-data/units-B.json",
+      "fromSha256": "b564ee22a3e450b9a497ca038be21fe35ad76c992e8d991fd8527a4ff88d38c7",
+      "toSha256": "3ac7e7da0cde2668ba680c93c3d8d3475cac9c6f5f8821e76529821d9c64ca6e",
+      "author": "root",
+      "reviewer": "vilenkin_runtime_audit",
+      "role": "Parent authored the exact proposed wording; independent reviewer read it in task context, verified the arithmetic, and applied the two text-field changes unchanged.",
+      "status": "PASS",
+      "taskIds": [
+        "v6-book-2-206-б"
+      ],
+      "changedLeafFields": 2,
+      "verification": [
+        "The first guided prompt now explains 2 = 2 + 0/1 before asking for the LCM of 1 and 7; the hint explains that adding zero preserves the integer.",
+        "Independently verified 2 + 0/1 = 2, LCM(1,7) = 7, and 2 - 3/7 = 11/7 = 1 4/7 with exact integer/Fraction arithmetic.",
+        "Compared all JSON leaves before and after: only the first-step prompt and hint changed. IDs, answers, validators, source references, other content, and all task/step counts are unchanged."
+      ],
+      "openFindings": [],
+      "limitations": [
+        "This is a bounded wording clarification; no new source-page inspection, new task, or changed mathematical answer is claimed.",
+        "No live pupil comprehension trial, runtime/cloud integration review or external release approval is implied."
+      ]
+    }
+  ]
 }

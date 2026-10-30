@@ -22,7 +22,9 @@
       this.origin=url.origin;
       url.searchParams.set('learning','1');url.searchParams.set('parentOrigin',location.origin);url.searchParams.set('channel',this.channel);
       this.element=document.createElement('div');this.element.className='learning-frame';
-      this.iframe=document.createElement('iframe');this.iframe.title=this.item.title+(this.preview?' — живая работа ученика':'');this.iframe.referrerPolicy='no-referrer';this.iframe.setAttribute('sandbox','allow-scripts allow-same-origin');this.iframe.src=url.href;
+      // Textbook references open fixed trusted trainers in noopener popups.
+      // Those popups inherit this sandbox and need forms for answer checking.
+      this.iframe=document.createElement('iframe');this.iframe.title=this.item.title+(this.preview?' — живая работа ученика':'');this.iframe.referrerPolicy='no-referrer';this.iframe.setAttribute('sandbox','allow-scripts allow-same-origin'+(this.item.trainerId==='vilenkin6-textbook'?' allow-popups allow-forms':''));this.iframe.src=url.href;
       this.shield=document.createElement('div');this.shield.className='frame-shield';this.shield.setAttribute('aria-hidden','true');
       this.status=document.createElement('div');this.status.className='frame-status';this.status.setAttribute('role','status');
       this.element.append(this.iframe,this.shield,this.status);host.append(this.element);

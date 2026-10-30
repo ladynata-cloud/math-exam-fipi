@@ -59,6 +59,13 @@ class CandidateVI(unittest.TestCase):
    target=cls.out/'geometry-course/textbook'
    (target/'release-review-chapter-06.json').unlink(missing_ok=True)
    cls.bundle=compose(target)
+  cls.has_vii=any(c['chapter']==7 for c in cls.public['build']['chapters'])
+  if cls.has_vii:
+   from importlib.util import spec_from_file_location,module_from_spec
+   spec=spec_from_file_location('vi_release_projection',ROOT/'tools/geometry-textbook/chapter06-release.test.py');mod=module_from_spec(spec);spec.loader.exec_module(mod)
+   scope=read(ROOT/'tools/geometry-textbook/release-scope.json')
+   cls.public,_=mod.historical_vi_projection(cls.public,scope)
+   cls.bundle,_=mod.historical_vi_projection(cls.bundle,scope)
  def test_exact_755_published_cards_and_all_63_source_runtime_review_files(self):
   self.assertEqual(sha(FIXTURE.read_bytes()),FIXTURE_SHA)
   self.assertEqual(self.frozen['sourceCommit'],'d3122b9f3905cd8f7715cee6a873d031cdb43de4')
@@ -79,7 +86,10 @@ class CandidateVI(unittest.TestCase):
   ids={x['id'] for x in self.public['lessons'] if x['source']['chapter']!='VI'}
   self.assertEqual([teaching(x) for x in self.bundle['lessons'] if x['id'] in ids],[teaching(x) for x in self.public['lessons'] if x['id'] in ids])
   original=(json.loads(previous_inventory((COURSE/'source-inventory.json').read_bytes())) if self.released else read(COURSE/'source-inventory.json'))
-  preview=self.bundle['sourceInventory']
+  preview=deepcopy(self.bundle['sourceInventory'])
+  if self.has_vii:
+   from chapter07_extension import previous_inventory as before_vii
+   preview=json.loads(before_vii((COURSE/'source-inventory.json').read_bytes()))
   self.assertEqual(preview['paragraphs'][:-3],original['paragraphs'])
   for key,value in original.items():
    if key!='paragraphs':self.assertEqual(preview[key],value)
@@ -97,7 +107,7 @@ class CandidateVI(unittest.TestCase):
    registry=read(course/'candidate-chapters.json');registry['chapters'].append({'chapter':1})
    (course/'candidate-chapters.json').write_text(json.dumps(registry))
    with self.assertRaisesRegex(ValueError,'cannot hide'):compose(course)
-  with self.assertRaisesRegex(ValueError,'registered'):compose(include_candidates=[7])
+  with self.assertRaisesRegex(ValueError,'registered'):compose(include_candidates=[9])
  def test_missing_candidate_number_fails_explicit_build(self):
   with tempfile.TemporaryDirectory() as name:
    course=Path(name)/'course';shutil.copytree(COURSE,course)

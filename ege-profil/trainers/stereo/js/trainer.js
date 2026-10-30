@@ -270,16 +270,41 @@ function disposeTree(root) {
 }
 
 function buildScene(p) {
+  T.visibility?.dispose();
   disposeTree(T.group); T.group.clear();
   disposeTree(T.badges); T.badges.clear();
   T.segMap = {}; T.vertMap = {}; T.anims = []; T.solidMats = []; T.constructGroup = null; T.pendingMesh = null;
 
-  const { gen, s, toW, groundY, firstBox } = sceneData(p);
+  const { gen:sourceGen, s, toW, groundY, firstBox } = sceneData(p);
+  const normalized=StereoThreeVisibility.normalizeBodies(sourceGen),gen=normalized.bodies;
+  T.displayName = name => normalized.displayNames[name] || name;
+  // Legacy 676923 labels describe the active cone (OP=3, SP=SQ=6),
+  // while its later reference sphere reused O/P. Keep those references on
+  // the cone; problem-bank bytes and visible mathematical letters stay intact.
+  if (p.id === "676923" && normalized.maps[0]?.O !== "O") {
+    const names=normalized.maps[0],remap=rows=>(rows||[]).map(row=>row.map((v,i)=>i<2?(names[v]||v):v));
+    const c=p.construct;
+    p={...p,labels:remap(p.labels),construct:c?{...c,segments:remap(c.segments),fills:(c.fills||[]).map(row=>row.map(n=>names[n]||n))}:c};
+  }
   const hasGhost = gen.some(g => g.ghost);
   T.occluders = []; T.dashables = []; T._hforce = true;
+  T.visibility = StereoThreeVisibility.create(THREE, T.camera);
+  let visibilityBody = null;
   T.unitPts = {}; const V = {};
   for (const g of gen) for (const [nm, pt] of Object.entries(g.pts)) { T.unitPts[nm] = pt; V[nm] = toW(pt); }
   T.V = V;
+  // Source generators use both z-up (legacy) and y-up coordinates. Ownership
+  // is tested in the same world frame as the rendered lines and surfaces.
+  const visibilityBodies=gen.map(g=>({...g,pts:Object.fromEntries(Object.entries(g.pts).map(([n,p])=>[n,toW(p).toArray()])),
+    surfaces:g.surfaces.map(sf=>({...sf,c:toW(sf.c).toArray(),r:sf.r*s,h:sf.h*s}))}));
+  const registerStroke = (rec, radius) => {
+    if (!rec) return;
+    const owners = visibilityBody == null ? gen.map((g, i) => ({g, i})).filter(({g,i}) =>
+      (g.ghost ? StereoThreeVisibility.bodyContains(visibilityBodies[i],rec.A.toArray()) && StereoThreeVisibility.bodyContains(visibilityBodies[i],rec.B.toArray()) :
+      g.pts[rec.p1] && g.pts[rec.p2] && toW(g.pts[rec.p1]).distanceTo(rec.A) < 1e-7 && toW(g.pts[rec.p2]).distanceTo(rec.B) < 1e-7)).map(({i}) => i) : [visibilityBody];
+    if (!owners.length) T.visibility.segment(rec, {radius});
+    for (const body of owners) T.visibility.segment(rec, {body, radius});
+  };
   T.scaleFn = (n1, n2) => {
     const a = T.unitPts[n1], b = T.unitPts[n2];
     return Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
@@ -288,27 +313,11 @@ function buildScene(p) {
 
   const rad = 0.042;
 
-  const mkDash = (A, B, color, r) => {
-    const grp = new THREE.Group();
-    const dir = B.clone().sub(A); const len = dir.length(); const n = dir.clone().normalize();
-    const mat = new THREE.MeshBasicMaterial({ color });
-    const pitch = 0.36, dLen = 0.2; let t = 0.03;
-    while (t < len - 0.001) {
-      const seg = Math.min(dLen, len - t);
-      const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, seg, 6), mat);
-      m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), n);
-      m.position.copy(A).addScaledVector(n, t + seg / 2);
-      grp.add(m); t += pitch;
-    }
-    grp.visible = false;
-    return grp;
-  };
-
   /* word — как назвать линию в панели и на бейдже, если букв её концов
      на чертеже нет (segLabel): «ребро» у многогранника, иначе «отрезок» */
   const addSeg = (p1, p2, { color = COL.edge, r = rad, parent = T.group, kind = "edge", given = null, dashable = false, word = "отрезок" } = {}) => {
     const k = segKey(p1, p2);
-    if (T.segMap[k]) return T.segMap[k];
+    if (T.segMap[k]) { registerStroke(T.segMap[k], r); return T.segMap[k]; }
     const A = V[p1], B = V[p2];
     const dir = B.clone().sub(A), len = dir.length();
     if (len < 1e-6) return null;
@@ -318,8 +327,8 @@ function buildScene(p) {
     mesh.position.copy(A).addScaledVector(dir, 0.5);
     mesh.userData.seg = k;
     parent.add(mesh);
-    const rec = { mesh, mat: mesh.material, base: color, p1, p2, kind, given, A, B, len, anon: p1.startsWith("_") || p2.startsWith("_"), dashable, dash: null, selected: false, word };
-    if (dashable) { rec.dash = mkDash(A, B, color, r * 0.9); parent.add(rec.dash); T.dashables.push(rec); }
+    const rec = { mesh, mat: mesh.material, base: color, p1, p2, kind, given, A, B, len, anon: T.displayName(p1).startsWith("_") || T.displayName(p2).startsWith("_"), dashable: false, dash: null, selected: false, word };
+    registerStroke(rec, r);
     T.segMap[k] = rec;
     return rec;
   };
@@ -353,7 +362,7 @@ function buildScene(p) {
     const m = new THREE.Mesh(new THREE.SphereGeometry(0.1, 16, 16), new THREE.MeshBasicMaterial({ color }));
     m.position.copy(V[name]); m.userData.vertex = name;
     parent.add(m);
-    const lbl = makeSprite(SUB(name), { fontPx: 46 });
+    const lbl = makeSprite(SUB(T.displayName(name)), { fontPx: 46 });
     const off = V[name].clone().setY(0).normalize().multiplyScalar(0.4);
     off.y = V[name].y >= 0 ? 0.28 : -0.28;
     lbl.position.copy(V[name]).add(off);
@@ -362,7 +371,8 @@ function buildScene(p) {
   };
   T.addVertex = addVertex;
 
-  for (const g of gen) {
+  for (const [body, g] of gen.entries()) {
+    visibilityBody = body;
     const ghost = g.ghost;
     const round = g.matKind === "round";
     const pal = ghost ? { face: COL.ghost, edge: COL.ghost, ring: COL.ghost }
@@ -371,6 +381,7 @@ function buildScene(p) {
 
     for (const f of g.faces) {
       const me = addFaceLit(f, { color: pal.face, opacity: ghost ? 0.12 : 0.5 });
+      T.visibility.surface(me, {body, context:ghost});
       if (!ghost) T.occluders.push(me);
     }
     const word = round ? "отрезок" : "ребро";
@@ -391,6 +402,9 @@ function buildScene(p) {
       if (c.plane === "h") mesh.rotation.x = Math.PI / 2;
       if (arc < Math.PI * 2 && typeof c.ts === "number") mesh.rotation.z = c.ts;
       T.group.add(mesh);
+      T.visibility.circle(mesh, {body, radius:.03});
+      if (!g.faces.length && !g.surfaces.some(sf => ["cyl","cone","sphere"].includes(sf.type)))
+        gen.forEach((other, i) => { if (other.ghost && StereoThreeVisibility.bodyContains(visibilityBodies[i],toW(c.c).toArray(),{...c,r:c.r*s})) T.visibility.circle(mesh, {body:i, radius:.03}); });
     }
     for (const sf of g.surfaces) {
       if (sf.type === "waterCone") {
@@ -417,7 +431,7 @@ function buildScene(p) {
         geo = new THREE.CylinderGeometry(sf.r * s, sf.r * s, sf.h * s, 64, 1, true);
         opacity = ghost ? 0.12 : see ? 0.3 : (hasGhost ? 0.5 : 0.9); dw = !hasGhost && !ghost && !see;
       } else if (sf.type === "cone") {
-        geo = new THREE.CylinderGeometry(sf.flip ? sf.r * s : 0.001, sf.flip ? 0.001 : sf.r * s, sf.h * s, 64, 1, true, sf.ts || 0, sf.tl || Math.PI * 2);
+        geo = new THREE.CylinderGeometry(sf.flip ? sf.r * s : 0, sf.flip ? 0 : sf.r * s, sf.h * s, 64, 1, true, sf.ts || 0, sf.tl || Math.PI * 2);
         opacity = ghost ? 0.12 : see ? 0.3 : (hasGhost ? 0.5 : 0.9); dw = !hasGhost && !ghost && !see;
       } else if (sf.type === "sphere") {
         geo = new THREE.SphereGeometry(sf.r * s, 48, 32);
@@ -426,10 +440,13 @@ function buildScene(p) {
       if (!geo) continue;
       const mat = new THREE.MeshLambertMaterial({ color: pal.face, transparent: opacity < 1, opacity, side: sideD ? THREE.DoubleSide : THREE.FrontSide, depthWrite: dw });
       const me = new THREE.Mesh(geo, mat); me.position.copy(toW(sf.c)); T.group.add(me);
+      T.visibility.surface(me, {body, context:ghost});
+      const caps = sf.type === "cyl" ? (g.surfaces.some(x => x.type === "water") ? "bottom" : "both") : sf.flip ? "none" : "bottom";
+      T.visibility.caps(me, {body, context:ghost, caps});
       if (!ghost) T.occluders.push(me);
     }
     if (!g.anonymous && !g.hideLabels)
-      for (const nm of Object.keys(g.pts)) { if (nm[0] !== "_") addVertex(nm); }
+      for (const nm of Object.keys(g.pts)) { if (T.displayName(nm)[0] !== "_") addVertex(nm); }
     for (const cl of (g.coordLabels || [])) {
       if (!cl.t) continue;
       const sp = makeSprite(cl.t, { fontPx: 42, color: PAL.blue, bg: "rgba(255,255,255,0.92)", pad: 9, italicSerif: false });
@@ -439,6 +456,8 @@ function buildScene(p) {
       T.group.add(sp);
     }
   }
+
+  visibilityBody = null;
 
   /* место подписи отрезка: его середина. Если та же середина у подписи
      ДРУГОГО отрезка (диагонали ромба делятся точкой пересечения пополам),
@@ -583,32 +602,11 @@ function buildScene(p) {
 
 /* ============================================================
    СКРЫТЫЕ РЁБРА — пунктир (как в GeoGebra)
-   Ребро считается скрытым, если луч от камеры к его середине
-   упирается в грань/поверхность тела раньше самого ребра.
+   Каждая линия разбивается по точным границам видимости: передняя
+   часть сплошная, закрытая поверхностью часть пунктирная.
    ============================================================ */
 function updateHiddenEdges() {
-  if (!T.dashables || !T.dashables.length) return;
-  const s = T.sph;
-  if (T._hs && !T._hforce &&
-      Math.abs(s.th - T._hs.th) < 0.0025 &&
-      Math.abs(s.ph - T._hs.ph) < 0.0025 &&
-      Math.abs(s.r - T._hs.r) < 0.01) return;
-  T._hs = { th: s.th, ph: s.ph, r: s.r }; T._hforce = false;
-  const ray = T._ray || (T._ray = new THREE.Raycaster());
-  const camPos = T.camera.position;
-  const occ = T.occluders || [];
-  for (const rec of T.dashables) {
-    if (rec.selected) { rec.mat.visible = true; rec.mat.color.setHex(COL.select); if (rec.dash) rec.dash.visible = false; continue; }
-    const mid = rec.A.clone().add(rec.B).multiplyScalar(0.5);
-    const dv = mid.clone().sub(camPos); const dist = dv.length();
-    ray.set(camPos, dv.normalize());
-    let hidden = false;
-    const hits = ray.intersectObjects(occ, false);
-    for (let i = 0; i < hits.length; i++) { if (hits[i].distance < dist - 0.09) { hidden = true; break; } }
-    rec.mat.visible = !hidden;
-    rec.mat.color.setHex(rec.base);
-    if (rec.dash) rec.dash.visible = hidden;
-  }
+  T.visibility?.update();
 }
 
 /* ============================================================
@@ -617,7 +615,7 @@ function updateHiddenEdges() {
 /* подпись линии в панели и на бейдже: буквы концов — только если обе видны
    на чертеже; иначе слово (у тела со скрытыми буквами — «ребро» многогранника
    или «отрезок»), а не невидимые имена */
-const segLabel = rec => rec.anon ? "отрезок" : T.namesShown(rec) ? SUB(rec.p1) + SUB(rec.p2) : (rec.word || "отрезок");
+const segLabel = rec => rec.anon ? "отрезок" : T.namesShown(rec) ? SUB(T.displayName(rec.p1)) + SUB(T.displayName(rec.p2)) : (rec.word || "отрезок");
 
 function onSegClick(key) {
   if (selected.some(x => x.key === key)) selected = selected.filter(x => x.key !== key);
@@ -648,7 +646,7 @@ function setPending(name) {
     T.pendingMesh.material.color.setHex(COL.select);
   }
   const hintEl = $("pendingHint");
-  if (name) { hintEl.style.display = "block"; hintEl.innerHTML = "Точка <b>" + esc(SUB(name)) + "</b> выбрана — кликните вторую точку, чтобы построить отрезок"; }
+  if (name) { hintEl.style.display = "block"; hintEl.innerHTML = "Точка <b>" + esc(SUB(T.displayName(name))) + "</b> выбрана — кликните вторую точку, чтобы построить отрезок"; }
   else hintEl.style.display = "none";
 }
 
@@ -697,7 +695,7 @@ function paintSelection() {
     del.className = "measure-del"; del.textContent = "✕";
     del.onclick = () => {
       selected = selected.filter(x => x.key !== s2.key);
-      if (rec && rec.kind === "user") { rec.mesh.parent?.remove(rec.mesh); disposeTree(rec.mesh); delete T.segMap[s2.key]; }
+      if (rec && rec.kind === "user") { T.visibility.remove(rec.mesh); rec.mesh.parent?.remove(rec.mesh); disposeTree(rec.mesh); delete T.segMap[s2.key]; }
       paintSelection();
     };
     row.appendChild(del);

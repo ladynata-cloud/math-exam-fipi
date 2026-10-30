@@ -89,12 +89,11 @@ async function guidedReady(page) { await page.waitForFunction(() => window.__div
 async function guidedOne(page) {
   const all = await guidedState(page), s = all.sessions[all.active];
   if (s.done) return false;
-  if (s.accepted) { await page.locator('#primary').click(); return true; }
   const a = G.plan(s.task).actions[s.step];
   if (a.options) await page.locator('[data-option=' + JSON.stringify(a.answer) + ']').click();
   else await page.locator('#answer').fill(a.answer);
   await page.locator('#primary').click();
-  assert((await guidedState(page)).sessions[all.active].accepted, 'Correct guided response is accepted');
+  assert.equal((await guidedState(page)).sessions[all.active].answers.length, s.answers.length + 1, 'One check records the correct guided action exactly once');
   return true;
 }
 async function guidedFinish(page) {
@@ -233,7 +232,8 @@ async function refresh(page, button) {
       await paired(p,1,'Restored paired commas');
       await p.locator('#primary').click();
       state = (await guidedState(p)).sessions.decimalDivisor;
-      assert.equal(state.accepted,true); assert.equal(state.step,0,'Check waits for deliberate continuation');
+      assert.equal(state.accepted,false); assert.equal(state.step,1,'One check advances to the multiplier question');
+      assert.deepEqual(state.answers,['1']); assert.equal(state.draft,'');
       // Complete the remaining preparation without changing its established four-step plan.
       for (let n = 0; n < 12; n++) {
         const s = (await guidedState(p)).sessions.decimalDivisor;

@@ -13,7 +13,7 @@ function deferred() { let resolve, reject; const promise = new Promise((a, b) =>
 async function fixture(t, external = true) {
   const dom = new JSDOM('<!doctype html><body><div id="host"></div></body>', { url: 'https://cabinet.example/learning/', runScripts: 'outside-only' });
   const { window } = dom, host = window.document.getElementById('host');
-  const state = { active: true, before: async () => true, reply: null, calls: [], answerId: null,
+  const state = { active: true, canAsk: true, before: async () => true, reply: null, calls: [], answerId: null,
     status: { enabled: true, available: true, externalEnabled: external, mode: external ? 'api' : 'offline', remaining: 20, dailyLimit: 20,
       profile: { id: 'vilenkin-grade6', title: '6 класс · Виленкин · НОД и НОК', topics: [
         { id: 'gcd', title: 'НОД', example: 'НОД 12 и 18' }, { id: 'lcm', title: 'НОК', example: 'НОК 6 и 8' }] } } };
@@ -21,6 +21,7 @@ async function fixture(t, external = true) {
     answer: { answerId: state.answerId = randomUUID(), title: 'Следующий шаг', text: 'Найди общие делители.', steps: ['Начни с делителей 12.'], check: '', verification: 'curated-guidance' } });
   window.eval(source);
   const dispose = window.LearningAssistant.mount(host, { role: 'student', floating: false, isCurrent: () => state.active,
+    canAsk: () => state.canAsk,
     onBeforeAsk: () => state.before(), api: async (route, request = {}) => {
       const body = request.body ? JSON.parse(request.body) : undefined; state.calls.push({ route, body });
       if (route === '/assistant/ask') return state.reply ? state.reply(body) : answer();
@@ -113,4 +114,21 @@ test('follow-up length is bounded before any API request and consent is not cons
   await f.submit(true); assert.equal(f.asks.length, 1); assert.equal(f.field('follow-up-consent').checked, true);
   f.enter('follow-up', 'x'.repeat(401)); await f.submit(true); assert.equal(f.asks.length, 1);
   assert.equal(f.field('follow-up').maxLength, 400);
+});
+
+test('control revoked during a pending explanation withholds the answer and continuation', async t => {
+  for (const followUp of [false, true]) {
+    const f = await fixture(t);
+    if (followUp) await f.first();
+    const shown = f.shown.length, pending = deferred();
+    f.state.reply = () => pending.promise;
+    if (followUp) { f.enter('follow-up', 'Почему?'); f.field('follow-up-consent').checked = true; }
+    else f.enter('question', 'НОД 12 и 18');
+    await f.submit(followUp);
+    f.state.canAsk = false; pending.resolve(f.answer()); await settle();
+    assert.equal(f.shown.length, shown);
+    assert.equal(f.followUpVisible, false);
+    assert.match(f.query('[role=status]').textContent, /Управление работой изменилось/);
+    assert.equal(f.asks.length, followUp ? 2 : 1, 'No automatic retry');
+  }
 });

@@ -52,7 +52,7 @@ function getRewards(store, auth, learnerId = auth?.id) {
   // successful publish operation proves that an archived assignment really
   // was available to the pupil. Archiving an unseen teacher draft earns zero.
   const rows = store.db.prepare(`SELECT trainer_id,task_json,outcome FROM attempts
-    WHERE learner_id=? AND trainer_id IN ('ege-path','oge-basics','motion-grade6','vilenkin6-part1')
+    WHERE learner_id=? AND trainer_id IN ('ege-path','oge-basics','motion-grade6','vilenkin6-part1','vilenkin6-textbook')
       AND outcome IN ('together','hinted','independent','repeated','practiced')
       AND id NOT IN (SELECT attempt_id FROM assignments WHERE status='draft'
         OR (status='archived' AND id NOT IN (

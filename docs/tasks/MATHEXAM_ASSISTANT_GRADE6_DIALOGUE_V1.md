@@ -83,3 +83,25 @@ Execution results and exact committed head will be recorded in the PR.
 
 Base refresh: main advanced during implementation with unrelated Atanasyan chapter
 content. Adopted 6fb959fc by fast-forward only; no rebase or merge commit.
+
+
+## Authorized continuation — 2026-10-31
+
+The owner explicitly requested reconciliation of PR375 with published changes,
+rechecking and repairing confirmed CI failures, independent HIGH review and
+fresh browser/integration validation before a compatible release. Current
+revalidation base: `c9bf66e2d95f48db0134d43cc590da89f8bc3053`.
+This supersedes the original preparation-only scope for branch integration and
+confirmed protective/source-provenance fixes. Paid model calls, real learner
+settings and a live pupil pilot remain excluded. No external-review waiver is
+inferred. Required external review and exact release evidence remain gates.
+
+Additional acceptance:
+- Preserve PR380 saved Vilenkin source help and all concurrent published work.
+- Keep source/content mathematical oracles while refreshing audited provenance.
+- Withhold a pending initial/follow-up answer when teacher control is active.
+- Distinguish a manually entered root question from an automatically projected
+  course task. Generic dialogue does not automatically replace the existing
+  Vilenkin textbook or embedded Peterson source helpers.
+- Exercise browser → cabinet → assistant integration using synthetic accounts
+  and in-process mock provider transport, with zero external model calls.

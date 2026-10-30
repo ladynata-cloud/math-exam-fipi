@@ -2,13 +2,15 @@
 // The owner explicitly requested source-label edits after the content-only
 // batches froze these three UI files. Keep those historical assertions against
 // exact archived bytes, AND require the current UI to equal the reviewed label
-// migration. Every other frozen file still uses a direct unchanged-byte check.
+// migration. The subsequent shared visibility correction has its own exact
+// two-file amendment; all other frozen files retain unchanged-byte checks.
 const assert = require('node:assert/strict');
 const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const root = path.resolve(__dirname, '../..');
 const manifest = require('./companion-migration.json');
+const visibility = require('./visibility-migration.cjs');
 const approved = {
   'stereo-course/textbook/assets/engine.js': '3b2f3c3fae68a9c8e6f532d32a19df1fb1c5749b60253c75d9241ff639066ad4',
   'stereo-course/textbook/assets/style.css': '268af771d4e1fe44d69fddb966f5a4bf2e5d6febc2102425675b0ba8aca92740',
@@ -20,6 +22,10 @@ function assertHistoricalFile(file, expected, read = name => fs.readFileSync(pat
   assert.equal(manifest.schemaVersion, 1);
   assert.equal(manifest.base, 'fa8d1b7ced31a5941ad52d8a21a48b63daaa84a8');
   assert.deepEqual(Object.keys(manifest.files).sort(), Object.keys(approved).sort(), 'only three approved companion UI paths');
+  if (Object.hasOwn(visibility.originals, file)) {
+    visibility.assertVisibilityMigration(file, expected, read);
+    return;
+  }
   if (!Object.hasOwn(approved, file)) {
     assert.equal(hash(read(file)), expected, 'unchanged runtime/schema/builder: ' + file);
     return;

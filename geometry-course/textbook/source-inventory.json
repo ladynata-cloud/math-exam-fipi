@@ -1189,6 +1189,125 @@
         131,
         135
       ]
+    },
+    {
+      "chapter": 7,
+      "number": 1,
+      "title": "Площадь многоугольника",
+      "pointNumbers": [
+        54,
+        56
+      ],
+      "exerciseNumbers": [
+        541,
+        554
+      ],
+      "printedPages": [
+        139,
+        145
+      ]
+    },
+    {
+      "chapter": 7,
+      "number": 2,
+      "title": "Площади параллелограмма, треугольника и трапеции",
+      "pointNumbers": [
+        57,
+        59
+      ],
+      "exerciseNumbers": [
+        555,
+        580
+      ],
+      "printedPages": [
+        146,
+        152
+      ]
+    },
+    {
+      "chapter": 7,
+      "number": 3,
+      "title": "Теорема Пифагора",
+      "pointNumbers": [
+        60,
+        62
+      ],
+      "exerciseNumbers": [
+        581,
+        604
+      ],
+      "printedPages": [
+        152,
+        158
+      ]
+    },
+    {
+      "chapter": 8,
+      "number": 1,
+      "title": "Определение подобных треугольников",
+      "pointNumbers": [
+        63,
+        65
+      ],
+      "exerciseNumbers": [
+        640,
+        656
+      ],
+      "printedPages": [
+        163,
+        167
+      ]
+    },
+    {
+      "chapter": 8,
+      "number": 2,
+      "title": "Признаки подобия треугольников",
+      "pointNumbers": [
+        66,
+        68
+      ],
+      "exerciseNumbers": [
+        657,
+        671
+      ],
+      "printedPages": [
+        167,
+        171
+      ]
+    },
+    {
+      "chapter": 8,
+      "number": 3,
+      "title": "Применение подобия к доказательству теорем и решению задач",
+      "pointNumbers": [
+        69,
+        73
+      ],
+      "exerciseNumbers": [
+        672,
+        696
+      ],
+      "printedPages": [
+        171,
+        180
+      ]
+    },
+    {
+      "chapter": 8,
+      "number": 4,
+      "title": "Соотношения между сторонами и углами прямоугольного треугольника",
+      "pointNumbers": [
+        74,
+        75
+      ],
+      "exerciseNumbers": [
+        697,
+        709
+      ],
+      "printedPages": [
+        181,
+        185
+      ]
     }
   ]
 }

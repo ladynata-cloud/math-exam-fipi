@@ -7,6 +7,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { JSDOM } = require('jsdom');
 const catalog = require('../learning/catalog');
+const textbookCount=require('../learning/vilenkin6-textbook-catalog').length;
 const source = fs.readFileSync(path.join(__dirname,'../learning/vilenkin6-course.js'),'utf8');
 const appSource = fs.readFileSync(path.join(__dirname,'../learning/app.js'),'utf8');
 const html = fs.readFileSync(path.join(__dirname,'../learning/index.html'),'utf8');
@@ -72,8 +73,9 @@ test('actual cabinet home/course/route target Vilenkin and old school route stay
 test('actual teacher course, assignment filtering, and pupil preview use correct class without account mutations',async t=>{
  const f=cabinetFixture(t,'teacher');await f.go('course');assert(f.main.querySelector('a[href="#course=vilenkin6"]'));
  await f.go('course=vilenkin6');assert(f.main.querySelector('[data-vilenkin6-course]'));
- assert.equal(f.w.fixtureApp.assignmentItems('vilenkin6').length,27);
- f.w.fixtureApp.assignmentDialog({learnerIds:[learner.id]});const form=f.w.document.querySelector('#assignment-form');assert.equal(form.elements.course.value,'vilenkin6');assert.equal(form.elements.content.options.length,27);assert.equal(form.querySelector('[type=submit]').textContent,'Создать черновик');
+ assert.equal(f.w.fixtureApp.assignmentItems('vilenkin6').filter(item=>item.trainerId==='vilenkin6-part1').length,27);
+ assert.equal(f.w.fixtureApp.assignmentItems('vilenkin6').filter(item=>item.trainerId==='vilenkin6-textbook').length,textbookCount);
+ f.w.fixtureApp.assignmentDialog({learnerIds:[learner.id]});const form=f.w.document.querySelector('#assignment-form');assert.equal(form.elements.course.value,'vilenkin6');assert.equal(form.elements.content.options.length,27+textbookCount);assert.equal(form.querySelector('[type=submit]').textContent,'Создать черновик');
  f.w.document.querySelector('#modal').close();await f.go('preview='+learner.id);assert(f.main.querySelector('[data-vilenkin6-preview]'));assert.match(f.main.textContent,/6 класс · Виленкин/);
  assert(f.calls.every(call=>!call.options?.method||call.options.method==='GET'));
 });
