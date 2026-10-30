@@ -41,6 +41,9 @@
 .cabinet-assistant-dock .cabinet-assistant-form{margin-top:16px;gap:12px}.cabinet-assistant-dock .cabinet-assistant-actions{display:grid;grid-template-columns:1fr;gap:8px}
 .cabinet-assistant-dock p,.cabinet-assistant-dock li{font-size:.94rem;line-height:1.6}.cabinet-assistant-dock .cabinet-assistant-answer{padding:14px}.cabinet-assistant-dock .cabinet-assistant-steps{font-size:1rem;padding-left:21px}
 .cabinet-assistant-local-object{padding:10px 12px;border:1px solid #c6dccf;border-radius:9px;background:#f2f8f3}.cabinet-assistant-local-object p{margin:4px 0}
+.vilenkin-source-helper .fraction{display:inline-flex;vertical-align:middle;flex-direction:column;align-items:stretch;text-align:center;line-height:1.15;margin:0 .18em}
+.vilenkin-source-helper .fraction>span{padding:.08em .2em}.vilenkin-source-helper .fraction>span:first-child{border-bottom:1px solid currentColor}
+.vilenkin-source-helper [data-source-help-answer] p{white-space:pre-wrap}
 @media(max-width:600px){.cabinet-assistant-dock{right:10px;bottom:max(10px,env(safe-area-inset-bottom));width:calc(100vw - 20px)}.cabinet-assistant-dock>.cabinet-assistant{padding:0 14px 14px;max-height:min(620px,calc(100dvh - 130px))}.cabinet-assistant-dock-header{margin:0 -14px 12px;padding:12px 14px}.cabinet-assistant-dock .cabinet-assistant-dock-header h2{font-size:1rem}.cabinet-assistant-launcher{min-height:44px;padding:10px 17px}}
 
 .cabinet-assistant-dock>.cabinet-assistant-launcher{background:#176c52;color:#fff;border-color:#176c52}.cabinet-assistant-dock .cabinet-assistant button.primary{background:#26734d;color:#fff;border-color:#26734d}

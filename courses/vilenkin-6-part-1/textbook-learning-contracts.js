@@ -114,6 +114,29 @@
   }
   function assistance(spec,state){return assisted(guard(spec).task,state.task);}
   function describe(spec){const {task,row}=guard(spec);return {title:row.title,prompt:task.prompt,contentId:spec.contentId,position:null,steps:task.steps.length};}
+  // Only canonical course material is projected. No question, draft or answer
+  // supplied by the browser can become the helper's source of truth.
+  function help(spec,value,request){
+    const {task,row}=guard(spec),state=normalize(spec,value),p=state.task;
+    keys(request,['mode','sourceRevision','step','workMode']);
+    if(!['hint','step','solution'].includes(request.mode)||request.sourceRevision!==spec.sourceRevision||
+      request.step!==p.step||request.workMode!==p.mode)fail('Шаг задания изменился.');
+    const completed=!!p.status,index=Math.min(p.step,task.steps.length-1),item=p.mode==='guided'?task.steps[index]:task;
+    if(completed&&request.mode!=='solution')fail('После ответа доступен разбор решения.');
+    let lines;
+    if(request.mode==='solution')lines=task.solution.slice();
+    else if(request.mode==='step')lines=[task.steps[index].prompt,task.steps[index].explain].filter(Boolean);
+    else lines=[item.hint||item.prompt];
+    if(!lines.length||lines.length>16)fail();
+    lines=lines.map(line=>text(line,2048));
+    // Save assistance, but do not open native hint/solution disclosures during
+    // ACK hydration. Only the helper panel reveals text after its final context
+    // check. Completed review is recorded by the event; its result stays intact.
+    if(!completed)p.helped=true;
+    return {state:normalize(spec,state,value),help:{contentId:spec.contentId,sourceRevision:spec.sourceRevision,
+      mode:request.mode,step:request.step,workMode:request.workMode,completed,
+      title:text(row.title,500),prompt:text(task.prompt,2048),lines}};
+  }
   function questionIdentity(spec){
     // Rewards and finite-bank exposure read immutable historical specifications.
     // A newer answer/step revision (or removal from today's catalogue) must not
@@ -126,5 +149,5 @@
     integer(spec.unitId,0,10000);integer(spec.seed,0,1000000000);
     return JSON.stringify({trainerId:TRAINER,contentId:spec.contentId});
   }
-  return Object.freeze({TRAINER,ANSWER_LIMIT,STATE_BYTES,create,fresh,normalize,evaluate,assistance,describe,questionIdentity,routeOf});
+  return Object.freeze({TRAINER,ANSWER_LIMIT,STATE_BYTES,create,fresh,normalize,evaluate,assistance,describe,help,questionIdentity,routeOf});
 });
