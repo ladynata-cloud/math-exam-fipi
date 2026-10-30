@@ -68,7 +68,7 @@ jobs:
       - name: Real public-page journeys and unchanged catalogue destinations
         env:
           NODE_PATH: ${{ runner.temp }}/public-helper-browser/node_modules
-          PUBLIC_ASSISTANT_SCREENSHOT_DIR: ${{ runner.temp }}/public-helper-screenshots
+          PUBLIC_ASSISTANT_SCREENSHOT_DIR: /tmp/public-helper-screenshots
         run: |
           node tools/seo-catalog.test.cjs
           node tools/public-assistant-browser.test.cjs
@@ -79,6 +79,6 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: public-navigator-screenshots
-          path: ${{ runner.temp }}/public-helper-screenshots
+          path: /tmp/public-helper-screenshots
           if-no-files-found: warn
           retention-days: 7
