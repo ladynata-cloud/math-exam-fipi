@@ -709,3 +709,107 @@ test('prime-table and Ichenskaya queries reach verified public material with gra
   assert(!request.text.includes('7 · 11') && !request.text.includes('Ответ:'));
   assert(!urls(ask('Проверить простые уравнения')).includes('/courses/vilenkin-6-part-1/textbook.html#unit/6'), 'Simple equations are not prime numbers');
 });
+
+test('EGE level clarification preserves the task through the actual choice and route', () => {
+  const destinations = {
+    1: '/trainers/ege-t1-planimetry-generator.html',
+    2: '/trainers/ege-profile-vectors-trainer.html',
+    3: '/ege-profil/trainers/stereo/'
+  };
+  for (const pathname of ['/', '/trainers/oge-course/', '/foundations/']) {
+    for (const [number, destination] of Object.entries(destinations)) {
+      for (const text of ['ЕГЭ №' + number, 'ЕГЭ номер ' + number, 'ЕГЭ база или профиль №' + number]) {
+        const response = ask(text, { pathname }); checkShape(response);
+        assert.equal(response.kind, 'clarify', text);
+        for (const action of response.actions) assert(action.text.endsWith(': задание ' + number));
+        assert.equal(ask(response.actions.find(action => action.label === 'ЕГЭ профиль').text, { pathname }).links[0].url, destination);
+        assert.equal(ask(response.actions.find(action => action.label === 'ЕГЭ база').text, { pathname }).links[0].url, '/ege-baza/');
+      }
+    }
+  }
+  for (const pathname of ['/ege-profil/', '/ege-baza/']) {
+    const response = ask('ЕГЭ база или профиль №3', { pathname });
+    assert.equal(response.kind, 'clarify', 'Competing levels still require a choice on an exam page');
+    assert.equal(ask(response.actions[1].text, { pathname }).links[0].url, destinations[3]);
+  }
+  assert.deepEqual(ask('ЕГЭ').actions.map(action => action.text), ['ЕГЭ база', 'ЕГЭ профиль'], 'No task is invented when none was requested');
+});
+
+test('adjacent task lists and ranges clarify even without repeated number markers', () => {
+  const queries = ['ОГЭ №6 или 19', 'ОГЭ задания 6, 13 и 19', 'ОГЭ 6 или 19',
+    'ОГЭ №6–19', 'ОГЭ №6-19', 'ОГЭ №6 — 19', 'ОГЭ номер 6; 13; 19',
+    'ЕГЭ профиль №2 и 3', 'ЕГЭ профиль 1, 2, 3', 'ОГЭ №6 или номер 19'];
+  for (const pathname of ['/', '/ege-profil/', '/trainers/oge-course/']) {
+    for (const text of queries) {
+      const response = ask(text, { pathname }); checkShape(response);
+      assert.equal(response.kind, 'clarify', text);
+      assert(response.text.includes('несколько разных номеров'), text);
+      assert.deepEqual(response.actions.map(action => action.text), ['ОГЭ', 'ЕГЭ база', 'ЕГЭ профиль'], 'A list does not silently select its first task');
+    }
+  }
+  const informatics = ask('ЕГЭ по информатике №1 и 15');
+  assert.equal(informatics.kind, 'clarify');
+  assert.deepEqual(informatics.actions.map(action => action.text), ['ОГЭ по информатике', 'ЕГЭ по информатике']);
+  for (const text of ['ОГЭ №6 или 6', 'ОГЭ №6, разложение 12 на простые множители', 'ОГЭ №6 умножение 7 и 9', 'ОГЭ №6: 12 / 3']) {
+    assert.equal(ask(text).links[0].url, '/trainers/oge-task6-fractions.html', 'Repeated task and exercise operands are not different task numbers: ' + text);
+  }
+});
+
+test('the published OGE 1–5 course range retains its verified shared entrance', () => {
+  for (const pathname of ['/', '/ege-profil/', '/trainers/oge-course/']) {
+    for (const text of ['ОГЭ 1–5', 'ОГЭ №1-5', 'ОГЭ задания 1 — 5', 'Практические задачи ОГЭ 1–5', 'практические задачи 1–5']) {
+      const response = ask(text, { pathname }); checkShape(response);
+      assert.equal(response.links[0].url, '/trainers/oge-1-5-trainers/', text);
+    }
+  }
+  for (const text of ['ОГЭ №1 и 5', 'ОГЭ №1–5 или №6', 'ЕГЭ профиль №1–5', 'ОГЭ №1–5 или ЕГЭ №3', 'ОГЭ №6–19']) {
+    const response = ask(text); checkShape(response);
+    assert.equal(response.kind, 'clarify', 'Only the verified OGE course range is exempt: ' + text);
+    assert(response.text.includes('несколько разных номеров'));
+  }
+});
+
+test('advanced objects cannot enter the times-nine shortcut or singular-root division', () => {
+  const primary = new Set(data.catalogue.filter(entry => ['times-nine', 'pythagoras-table', 'multiplication-table',
+    'multiplication-mixed', 'arithmetic-multiply', 'multiplication-notebook', 'arithmetic-route',
+    'arithmetic-count', 'arithmetic-division', 'division-stepwise', 'division-lab'].includes(entry.id)).map(entry => entry.url));
+  for (const text of ['Умножить вектор на 9', 'Умножить вектор на девять', 'Умножить матрицу на 9',
+    'Умножить корень на 9', 'Деление на корень', 'Поделить на квадратный корень',
+    'Таблица умножения векторов', 'Таблица умножения матриц вперемешку']) {
+    const response = ask(text); checkShape(response);
+    assert(!['division', 'multiplication', 'arithmetic'].includes(response.kind), text);
+    assert(!urls(response).some(url => primary.has(url)), 'Do not replace the requested object with a number table: ' + text);
+  }
+  assert.equal(ask('Умножить на 9').links[0].url, '/trainers/oge-basics/multiplication-division/multiplication-tricks.html');
+  assert.equal(ask('Таблица умножения').links[0].url, '/trainers/oge-basics/multiplication-division/multiplication-pythagoras-table.html');
+  assert.equal(ask('Деление уголком').links[0].url, '/trainers/long-division-stepwise.html');
+});
+
+test('prime-table topic cannot override an explicitly requested author or grade', () => {
+  const prime = '/courses/vilenkin-6-part-1/textbook.html#unit/6';
+  for (const [text, destination] of [
+    ['Виленкин 5 таблица простых чисел', '/school/index.html?course=vilenkin5#course/vilenkin5'],
+    ['Петерсон 6 класс таблица простых чисел', '/school/peterson6/'],
+    ['Иченская 7 таблица простых чисел', '/geometry-course/ichenskaya-7-works/'],
+    ['Мерзляк 10 таблица простых чисел', '/stereo-course/merzlyak-10-base/'],
+    ['Макарычев 8 таблица простых чисел', '/school/makarychev8/']
+  ]) {
+    const response = ask(text); checkShape(response);
+    assert.equal(response.links[0].url, destination, text);
+    assert(!urls(response).includes(prime), 'Keep the selected author and grade: ' + text);
+  }
+  for (const text of ['Иченская 6 класс таблица простых чисел', 'Виленкин 7 таблица простых чисел',
+    'Таблица простых чисел 5 класс', 'Разложение на простые множители 8 класс']) {
+    const response = ask(text); checkShape(response);
+    assert(!urls(response).includes(prime), 'An unsupported grade does not silently become grade 6: ' + text);
+    assert.deepEqual(urls(response), ['/school/', '/courses/']);
+  }
+  const choose = ask('Виленкин таблица простых чисел');
+  assert.equal(choose.kind, 'clarify');
+  assert.equal(ask(choose.actions.find(action => action.label === 'Виленкин 6 класс').text).links[0].url, prime, 'Class clarification retains the requested table');
+  for (const text of ['Таблица простых чисел', 'Виленкин 6 таблица простых чисел', 'Таблица простых чисел 6 класс']) {
+    const response = ask(text); checkShape(response);
+    assert.equal(response.links[0].url, prime);
+    assert(response.text.includes('Виленкина') && response.text.includes('6 класса'), 'The actual author and grade are explicit');
+  }
+});

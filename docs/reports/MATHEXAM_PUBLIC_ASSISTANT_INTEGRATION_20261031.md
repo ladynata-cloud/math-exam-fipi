@@ -195,7 +195,8 @@ below remain unchanged through the compatibility commit.
 Reviewed runtime blobs: data.js `df31ce32945bbcb45aace303d83d471fca652f1f`,
 widget.js `c92c51efe21ba7cc100422c798c1e1a2b3694d72`,
 widget.css `3b91089b66f6bb464197c597de99a39663f5af41`.
-Final commit identity is checked against these reviewed blobs in the PR.
+These identities bind the original integration through the compatibility commit.
+Later catalogue revisions are bound separately below and in the final PR handoff.
 
 ### Catalogue and browser follow-up on `89f13c038beb5de5b9b3bf2ba65bd0acc453ba27`
 
@@ -225,9 +226,10 @@ No second branch/PR, wholesale runtime replacement or older HTML is published.
   work while chatting, then verify advancement after one Enter. Actual Vilenkin
   checks preserve the condition, hash, draft and stored work, including reload.
   These bounded journeys do not claim every-task or all managed-mode coverage.
-- The workflow screenshot variable is now accepted by the browser test. CI
-  uploads desktop, 390px and 320px screenshots; local final screenshots were
-  inspected. The existing mobile launcher remains 54px.
+- The workflow screenshot variable is now accepted by the browser test, and an
+  upload step is configured for desktop, 390px and 320px screenshots. The local
+  screenshots were inspected. Its first cloud execution exposed the temporary
+  directory mismatch documented below. The mobile launcher remains 54px.
 - Fresh composition checks retain 595 inclusions, all 832 base HTML blobs and
   641 scoped changed paths. Global admission/placement tests now total 9, retaining
   the concurrent guard improvements; sitemap tests total 12. Source/SEO data,
@@ -238,6 +240,52 @@ The concurrent compatibility fixes are reviewed and rerun on this composition,
 not replaced by independently prepared duplicates. Final cloud outcomes and
 exact final commit identity belong to the PR handoff. Internal review is not an
 external HIGH verdict, and no merge or deployment permission is inferred.
+
+### Further review of `5cd1ae77f02a4fc1452bc64ec99fd2dbd598d9a2`
+
+This fast-forward contribution arrived while the preceding head's CI was running.
+It preserves the prepared widget, all HTML and the compatibility fixes. Its new
+catalogue and draft-preservation journeys are retained and independently checked;
+cancelled older-head workflows are not treated as final-head passes.
+
+Focused review found four remaining routing boundaries: retaining a numbered
+request when choosing the EGE level; clarifying number lists/ranges with omitted
+repeated markers; keeping vectors/roots and other advanced objects out of basic
+times-nine/column-arithmetic routes; and honoring an explicit textbook author or
+grade before the prime-table shortcut. These are bounded navigation corrections,
+not new mathematical solving or model capabilities. The catalogue retains134
+entries and the original learner/source files remain unchanged.
+
+All31 navigation groups pass, including the original26 and five regressions for
+these boundaries and the retained OGE1–5 bundle. Independent review also passes
+29 focused probes. Reviewed blobs: data.js
+`46e182af541e280f76e49670079614ab00c3db0c`; data-test
+`0983326a66ca6edbc7b1ceb237ac7b35e4b6b3f0`. The full16-group browser suite passes
+on these exact files and creates all three PNGs through the screenshot alias
+with the unchanged default temporary-directory guard. Global coverage/placement
+remains9/9, with595 inclusions,832 preserved HTML files and641 accounted paths.
+
+The dedicated [5cd cloud run](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41140489457)
+passed all16 functional browser groups, then failed while saving screenshots:
+the configured runner-owned temporary directory differed from Node's default
+temporary directory. Concurrent follow-up
+`66e715dc7486d29476bcfa313156d639b99b2d6c` aligns both the screenshot and upload
+destinations at `/tmp/public-helper-screenshots`. That correction is preserved,
+without publishing a duplicate alternative. The original containment check and
+pinned upload action are unchanged; no path allowance or test is weakened.
+
+The earlier [Task19 run on89f](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41139461657)
+failed one desktop linked-highlight assertion on attempt1 and passed the single
+unchanged failed-job rerun on attempt2. The same strict check also passes on5cd's
+first attempt. This is intermittent acceptance evidence; a pointer/focus timing
+cause is a hypothesis, not a proven baseline defect. No Task19 source, assertion
+or delay was changed. The earlier expressions-board failure is retained above.
+
+The final PR handoff binds the corrected catalogue, tests and workflow to the
+published head and records their actual local/cloud results. The two inherited
+source-pin failures, external HIGH review and exact release authorization remain
+separate conditions; this follow-up does not normalize those source hashes or
+import another task's review exception.
 
 ### Production reconciliation before release
 
