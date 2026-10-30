@@ -1,5 +1,31 @@
 # MathExam project status
 
+## Prepared: public search entry corrections
+
+- [Scope](tasks/SEO_PUBLIC_ENTRYPOINTS_20261028.md), MEDIUM bounded navigation
+  and explanatory-copy repairs; base `81abfce101edc83bc591e938dfd42bbfc7a039ec`.
+- The owner requested the necessary corrections after the public SEO audit.
+  Repair three blank multiplication entries, expose NOK/NOD, use the direct
+  OGE-13 entry and distinguish useful rounding/tire lessons from their main
+  practice entries. Existing exercise engines and learner work are retained.
+- [Local verification](reports/SEO_PUBLIC_ENTRYPOINTS_20261028.md) passes:
+  SEO/catalog gates, 531 sitemap addresses after current-main integration, unchanged managed bank, affected
+  trainer checks, responsive browser navigation and scoped download packages.
+  Independent internal review has no remaining material findings. Gate:
+  `SEO_PUBLIC_ENTRYPOINTS_OK`.
+- PR #368 continuation on 2026-10-30 integrates current main
+  `51f7fa550bae29f0110a0f06608a3e35bb1f65fd`, preserving all published course,
+  assistant and hidden-line changes. The status conflict is resolved; product
+  changes retain their original patch identity. Fresh local regression passes
+  and a public-navigation browser CI step are recorded in the report.
+- Current next actions: require final exact-head CI, obtain the exact-base/head
+  release decision, then publish and verify live transitions. The separately
+  administered HTTP-to-HTTPS setting remains outside this code task.
+- HTTP-to-HTTPS hosting enforcement remains an operational follow-up. No
+  hosting mutation, search-account write, merge or deployment is part of this
+  prepared code change. Private search metrics are not in this repository.
+
+
 ## Prepared and reviewed: Atanasyan chapter VII, area, 541–639
 
 - [Task](tasks/ATANASYAN_7_9_CHAPTER_VII.md), HIGH; owner continued on
@@ -283,7 +309,7 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
   Paid inference, required external review and hosting validation remain pending.
 - No merge, paid activation, production account changes or publication occurred.
 
-## Prepared: guided division at the search entrypoint
+## Published: guided division at the search entrypoint
 
 - [Scope](tasks/DIVISION_SEARCH_ENTRYPOINT_20261028.md), MEDIUM bounded public
   entry integration; base `8723d6bfb19e64d43c474b1fc7116fe8630ec20a`.
@@ -295,9 +321,13 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
   2,700 arithmetic plans, both complete browser suites on both URLs, exact
   cross-entry resume, offline package and SEO/catalog/source-bank checks.
   Independent internal review has no remaining material findings.
-- Gate: `DIVISION_SEARCH_ENTRYPOINT_OK`. One Draft PR; exact-head CI is
-  recorded in its handoff. Merge, deployment and recrawl require a separate
-  release decision. The public entry has not yet changed.
+- Gate: `DIVISION_SEARCH_ENTRYPOINT_OK`. PR #365 was squash-merged as
+  `81abfce101edc83bc591e938dfd42bbfc7a039ec` under its separate owner release
+  authorization. Pages run 40599525841 succeeded on that commit. At the start
+  of the current task the public home and short division HTML both returned
+  200 and matched the published main blobs. The detailed release and offline
+  interaction evidence is recorded in PR #365; this bounded reconciliation
+  does not claim a fresh whole-site gate or successful search indexing.
 
 ## Published: separate grade-six Peterson learning line
 
