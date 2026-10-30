@@ -167,9 +167,14 @@ jobs:
         run: |
           npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
           npx playwright install --with-deps chromium
-      - name: Eleven pages, exact destinations and six events with a mock counter
+      - name: Original additive instrumentation proof on its exact published release
         run: |
+          git worktree add --detach "$RUNNER_TEMP/funnel-original-release" e50fcfb7ffe4a99447ee18e4d2ca2f937cd1dd68
+          cd "$RUNNER_TEMP/funnel-original-release"
           python3 tools/lesson-funnel-static.test.py
+      - name: Current eleven pages, exact destinations and six events with a mock counter
+        if: ${{ !cancelled() }}
+        run: |
           node tools/lesson-funnel.test.cjs
           node tools/lesson-funnel.browser.cjs
       - name: Public bytes only, without analytics or messenger requests

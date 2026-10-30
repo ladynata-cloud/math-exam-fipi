@@ -24,7 +24,7 @@ function answer(q){if(q.answer&&typeof q.answer==='object'&&Object.hasOwn(q.answ
 try{
  const descriptors=C.list().filter(d=>['fraction-common-denominator','fraction-meaning'].includes(d.contentId));
  assert.equal(descriptors.length,2,'Both core fraction trainers must exist');
- const seeds=Array.from({length:24},(_,i)=>Math.imul(i+1,2654435761)>>>0);
+ const seeds=Array.from({length:24},(_,i)=>(Math.imul(i+1,2654435761)>>>0)%1000000000);
  for(const descriptor of descriptors)for(const seed of seeds){
   const generated=contracts.create('oge-basics',descriptor.contentId,seed),q=generated.taskSpec.task;
   if(q.kind==='choice')continue;
@@ -49,7 +49,7 @@ try{
     dom=new JSDOM('<main id="learning-remediation-root"></main>',{url:'https://synthetic.example.test/?learning=1',runScripts:'outside-only'});
     const w=dom.window;w.MathExamRemediationManaged=true;for(const [name,file]of dependencies)w[name]=require(path.join(root,file));let bridge;
     w.MathExamLearning={register(adapter){bridge=adapter;}};w.eval(source);
-    bridge.subscribe(event=>{if(event.kind==='new-task')return;const type=event.kind==='check'?'check':event.kind==='hint'?'hint':'state';const payload=type==='check'?{state:event.state,details:event.details}:type==='hint'?{state:event.state,step:event.details.step}:{state:event.state};current=store.action(student,current.id,{opId:crypto.randomUUID(),expectedVersion:current.version,expectedTrainerVersion:current.trainerVersion,type,payload}).attempt;});
+    bridge.subscribe(event=>{event=clone(event);if(event.kind==='new-task')return;const type=event.kind==='check'?'check':event.kind==='hint'?'hint':'state';const payload=type==='check'?{state:event.state,details:event.details}:type==='hint'?{state:event.state,step:event.details.step}:{state:event.state};current=store.action(student,current.id,{opId:crypto.randomUUID(),expectedVersion:current.version,expectedTrainerVersion:current.trainerVersion,type,payload}).attempt;});
     bridge.applyState({taskSpec:clone(current.taskSpec),state:clone(current.state),readOnly:false});
    }
    function input(value){const field=dom.window.document.querySelector('#lm-answer');assert(field);field.value=value;field.dispatchEvent(new dom.window.Event('input',{bubbles:true}));}
