@@ -23,6 +23,21 @@ def fixture(root):
  base=frozen()
  for name in set(base['immutableFiles'])|{FIXTURE,'tools/geometry-textbook/chapter-07-source-map.json'}:
   p=root/name;p.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(ROOT/name,p)
+ # Strip the later chapter only in this synthetic historical test root.
+ from chapter08_extension import (has_viii,previous_inventory as before_viii,
+  BINDING as VIII_BINDING,restore_manifest as before_viii_manifest,
+  previous_scope as before_viii_scope)
+ inventory_raw=(course/'source-inventory.json').read_bytes()
+ if has_viii(inventory_raw):
+  (course/'source-inventory.json').write_bytes(before_viii(inventory_raw,ROOT))
+  for p in course.glob('release-review*.json'):
+   if VIII_BINDING in json.loads(p.read_bytes()):
+    p.write_bytes(before_viii_manifest(PREFIX+p.name,p.read_bytes(),ROOT,ROOT/PREFIX))
+  p=root/'tools/geometry-textbook/release-scope.json'
+  p.write_bytes(encoded(before_viii_scope(json.loads(p.read_bytes()),ROOT)))
+ for folder in ['preparation','models']:
+  for p in (course/folder).glob('chapter-08*.json'):p.unlink()
+ (course/'release-review-chapter-08.json').unlink(missing_ok=True)
  # Reconstruct the true previous publication if tests run after promotion.
  inventory_raw=(course/'source-inventory.json').read_bytes()
  if has_vii(inventory_raw):(course/'source-inventory.json').write_bytes(previous_inventory(inventory_raw,ROOT))

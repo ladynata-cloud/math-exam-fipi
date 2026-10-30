@@ -4,13 +4,14 @@ const {JSDOM}=require('jsdom'),{expectedTitle}=require('./caption_expectations.c
 const dir=path.resolve(__dirname,'../../geometry-course/textbook');
 const bundle=JSON.parse(fs.readFileSync(path.join(dir,'data/course.json'),'utf8'));
 const api=require(path.join(dir,'assets/engine.js'));
-const original=JSON.stringify(bundle),roman=['','I','II','III','IV','V','VI','VII'];
+const original=JSON.stringify(bundle),roman=['','I','II','III','IV','V','VI','VII','VIII'];
 const paragraphMap=JSON.parse(fs.readFileSync(path.join(__dirname,'paragraph-source-map.json'),'utf8'));
 assert.equal(paragraphMap.bookId,'atanasyan-2023-7-9');
 assert.equal(paragraphMap.sourceSha256,'3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72');
 const viParagraphs=JSON.parse(fs.readFileSync(path.join(__dirname,'../../docs/reviews/ATANASYAN_7_9_CHAPTER_VI_SOURCE_REVIEW.json'),'utf8')).paragraphs;
 const viiParagraphs=bundle.build.chapters.some(c=>c.chapter===7)?JSON.parse(fs.readFileSync(path.join(__dirname,'chapter-07-source-map.json'),'utf8')).paragraphs:[];
-const allParagraphs=[...paragraphMap.paragraphs,...viParagraphs,...viiParagraphs];
+const viiiParagraphs=bundle.build.chapters.some(c=>c.chapter===8)?JSON.parse(fs.readFileSync(path.join(__dirname,'chapter-08-source-map.json'),'utf8')).paragraphs:[];
+const allParagraphs=[...paragraphMap.paragraphs,...viParagraphs,...viiParagraphs,...viiiParagraphs];
 assert.deepEqual(bundle.sourceInventory.paragraphs,allParagraphs,'Published paragraph index matches the independent source reading');
 for(const lesson of bundle.lessons){
  assert.equal(api.lessonTitle(lesson),expectedTitle(lesson),lesson.id+' exact reference caption');

@@ -90,7 +90,7 @@ class ChapterVIIPublishedBoundary(unittest.TestCase):
    course=Path(name)/'course';shutil.copytree(COURSE,course)
    p=course/'candidate-chapters.json';r=read(p);r['chapters'].append({'chapter':6});p.write_text(json.dumps(r))
    with self.assertRaisesRegex(ValueError,'cannot hide'):compose(course)
-  with self.assertRaisesRegex(ValueError,'registered'):compose(include_candidates=[8])
+  with self.assertRaisesRegex(ValueError,'registered'):compose(include_candidates=[9])
 
 
 class ChapterVIICompleteCandidate(unittest.TestCase):
@@ -99,9 +99,15 @@ class ChapterVIICompleteCandidate(unittest.TestCase):
   cls.temp=tempfile.TemporaryDirectory();cls.addClassCleanup(cls.temp.cleanup)
   cls.out=Path(cls.temp.name)/'preview';cls.public=compose()
   with contextlib.redirect_stdout(io.StringIO()):cls.bundle=build(7,cls.out)
-  cls.released=any(c['chapter']==7 for c in cls.public['build']['chapters'])
+  cls.released=any(c['chapter']==7 for c in cls.public['build']['chapters']);cls.full_public=cls.public
   if cls.released:
    target=cls.out/'geometry-course/textbook';(target/'release-review-chapter-07.json').unlink(missing_ok=True);cls.bundle=compose(target)
+  if any(c['chapter']==8 for c in cls.public['build']['chapters']):
+   from chapter08_release import validate_release
+   from chapter07_release import historical_vii_projection
+   scope=read(ROOT/'tools/geometry-textbook/release-scope.json');validate_release(cls.public)
+   cls.public,_=historical_vii_projection(cls.public,scope)
+   cls.bundle,_=historical_vii_projection(cls.bundle,scope)
  def test_complete190_source_cards_and_unapproved_isolated1083(self):
   self.assertEqual(len(source_coverage(self.bundle)),190)
   self.assertEqual(len(self.bundle['lessons']),1083);self.assertEqual(len(self.bundle['catalog']['entries']),1083)
@@ -112,7 +118,7 @@ class ChapterVIICompleteCandidate(unittest.TestCase):
   if self.released:
    from chapter07_extension import assert_893_preserved
    from chapter07_release import validate_release
-   assert_893_preserved(self.bundle);validate_release(self.public)
+   assert_893_preserved(self.bundle);validate_release(self.full_public)
   else:
    self.assertTrue(all(x['status']=='in-review' for x in self.bundle['lessons']),'Changed preview runtime cannot inherit old approval')
    assert_public893(self.public)
@@ -124,8 +130,11 @@ class ChapterVIICompleteCandidate(unittest.TestCase):
   if self.released:
    from chapter07_extension import previous_inventory
    before=json.loads(previous_inventory((COURSE/'source-inventory.json').read_bytes()))
-  self.assertEqual(after['paragraphs'][-3:],source['paragraphs']);after['paragraphs']=after['paragraphs'][:-3]
-  self.assertEqual(after,before);self.assertEqual(len(self.bundle['sourceInventory']['paragraphs']),25)
+  if any(p['chapter']==8 for p in after['paragraphs']):
+   from chapter08_extension import previous_inventory as before_viii
+   after=json.loads(before_viii((COURSE/'source-inventory.json').read_bytes()))
+  self.assertEqual(after['paragraphs'][-3:],source['paragraphs']);self.assertEqual(len(after['paragraphs']),25);after['paragraphs']=after['paragraphs'][:-3]
+  self.assertEqual(after,before)
   new=self.bundle['build']['implementationFiles'];old={name:frozen()['immutableFiles']['geometry-course/textbook/'+name] for name in new}
   self.assertEqual(set(old),set(new));self.assertEqual([k for k in old if old[k]!=new[k]],['source-inventory.json'])
  def test_source_coverage_rejects_missing_page_namespace_part_and_duplicate(self):
