@@ -1,0 +1,2750 @@
+{
+  "reviewer": "Codex independent source, mathematics and written-pedagogy panel: visual_middle, visual_late, release_audit; no reviewed-candidate lesson authorship",
+  "reviewedAt": "2026-10-31T01:04:51.530Z",
+  "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+  "authorBase": "139b944a70f2e8ba4d340d152d08807fad03e5da",
+  "authorReviewerSeparation": {
+    "reviewerAuthoredLessons": false,
+    "lessonAuthors": [
+      "root: theory043–051",
+      "sphere_exercises_a: main372–381",
+      "sphere_exercises_b: main382–395",
+      "Continuation executing root: theory051 follow-up text only"
+    ],
+    "reviewerOwnedFiles": [
+      "docs/reviews/ATANASYAN_SPHERE_CONTENT.json",
+      "docs/reviews/ATANASYAN_SPHERE_372_395_REVIEW.md"
+    ],
+    "inheritedOracleAuthor": "Codex independent source, mathematics and written-pedagogy reviewer /root/release_verification; no lesson authorship",
+    "independence": "None of the three panel members authored or modified the recovered candidate lessons. Separate interrupted draft alternatives in other worktrees are not this reviewed candidate. The theory051 amendments were written by the executing root and independently reread by release_audit."
+  },
+  "scope": "Joint independent review of all46 exact current card payloads: visual_middle covers19 exercise cards372–382, visual_late covers18 exercise cards383–395, release_audit covers9 theory cards043–051 and the full amended theory051. Each member read all written fields in its declared scope. This record approves source, mathematics and written pedagogy only; actual responsive image review, integration gates and exact-head CI are separate.",
+  "sourceSHA256": "bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "edition": "2024, 12th edition",
+    "printedPages": [
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111
+    ],
+    "pdfPages": [
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113
+    ],
+    "inspection": "Inherited source-materialization evidence: the original reviewer Codex independent source, mathematics and written-pedagogy reviewer /root/release_verification; no lesson authorship reported the verified original PDF hash, personal inspection of all twelve rendered pages and a pixel comparison against fresh renders. The current panel separately checked its assigned cards against the independently established source contracts and inspected source pages documented in each scoped evidence record. The current panel did not personally repeat the original twelve-render comparison.",
+    "inspectedPageImages": [
+      {
+        "pdfPage": 102,
+        "sha256": "a09b13b9a6e64569e2718d7a43891120e6f9ff6058b83f2714a84d3dcf6b9fbd"
+      },
+      {
+        "pdfPage": 103,
+        "sha256": "3fbc7c4063e0f4da13a32c5de7bdd15b0041842425e43e2326f0e4d462b3e018"
+      },
+      {
+        "pdfPage": 104,
+        "sha256": "d706b3200c7ada23bc1544c410779c63be678fe24852af644f1b5e5e38542271"
+      },
+      {
+        "pdfPage": 105,
+        "sha256": "d07d9810caf43054be4099771179254080efc6804790875b80fc9c97721c3286"
+      },
+      {
+        "pdfPage": 106,
+        "sha256": "5c104285a5fea267caa5a6e90cc4e780b52da00dab88f6c71196693e7fd28d49"
+      },
+      {
+        "pdfPage": 107,
+        "sha256": "1a5ed4c341fdd948861697f7937e130bc4d71954a890c862d3969d143a72a17e"
+      },
+      {
+        "pdfPage": 108,
+        "sha256": "6f8b3832dca5b7232a6ed96d691544a9ca47bafa57b0332374437003bb8f182a"
+      },
+      {
+        "pdfPage": 109,
+        "sha256": "fdf8480dad3a9e1a667dec0b767961dcf64b418568cca3bf0c1bc37f64cb3567"
+      },
+      {
+        "pdfPage": 110,
+        "sha256": "a45f4a7b890957e5a7ed5db5c7c4705f3a81bcf8d4bdb8afe71eb64d66f56ec5"
+      },
+      {
+        "pdfPage": 111,
+        "sha256": "0dc08e1c63d3a7339cb68fb1cdb2bcaf8f2376da673e2f76012587a07006aea6"
+      },
+      {
+        "pdfPage": 112,
+        "sha256": "5b8b7411a98719eeb06a49463ae53fccef223beb8f96ba79df07933e9d465fec"
+      },
+      {
+        "pdfPage": 113,
+        "sha256": "227416e80606d00c76a134e0cb6bb40866f7e6f79df5f607950b7ea9fc0edb87"
+      }
+    ],
+    "sourceSubparts": {
+      "372": [
+        "а",
+        "б"
+      ],
+      "373": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "381": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "382": [
+        "а",
+        "б"
+      ],
+      "383": [
+        "а",
+        "б"
+      ],
+      "384": [
+        "а",
+        "б"
+      ],
+      "388": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ]
+    },
+    "theoryHeadingsAndPages": [
+      {
+        "point": 43,
+        "title": "Сфера и шар",
+        "printedPages": [
+          100
+        ]
+      },
+      {
+        "point": 44,
+        "title": "Взаимное расположение сферы и плоскости",
+        "printedPages": [
+          101,
+          102
+        ]
+      },
+      {
+        "point": 45,
+        "title": "Касательная плоскость к сфере",
+        "printedPages": [
+          102,
+          103
+        ]
+      },
+      {
+        "point": 46,
+        "title": "Площадь сферы",
+        "printedPages": [
+          103
+        ]
+      },
+      {
+        "point": 47,
+        "title": "Взаимное расположение сферы и прямой",
+        "printedPages": [
+          104,
+          105
+        ]
+      },
+      {
+        "point": 48,
+        "title": "Сфера, вписанная в цилиндрическую поверхность",
+        "printedPages": [
+          105
+        ]
+      },
+      {
+        "point": 49,
+        "title": "Сфера, вписанная в коническую поверхность",
+        "printedPages": [
+          106
+        ]
+      },
+      {
+        "point": 50,
+        "title": "Сечения цилиндрической поверхности",
+        "printedPages": [
+          107,
+          108
+        ]
+      },
+      {
+        "point": 51,
+        "title": "Сечения конической поверхности",
+        "printedPages": [
+          108,
+          109
+        ]
+      }
+    ],
+    "evidenceAttribution": {
+      "originalReviewer": "Codex independent source, mathematics and written-pedagogy reviewer /root/release_verification; no lesson authorship",
+      "originalReviewAt": "2026-10-31T00:05:46.437Z",
+      "originalReportSHA256": "ebfba91f42bb8cb533c329da5967a2277122d1ecb4dc060aadb3b8e6783ffd0f",
+      "sourceRenderComparisonInherited": true,
+      "currentPanelSourceEvidence": "See panel.members for exact scoped reports and their source-reading qualifications."
+    }
+  },
+  "canonicalization": "Remove top-level status and review; recursively sort object keys, preserving array order; SHA256 of UTF-8 JSON.stringify serialization in Node. Cards are sorted lexicographically by ID. Aggregate hashes the canonical ordered array of all 46 content objects. Individual card hashes and oracle file hash bind this completed review to exact content.",
+  "independentMathematics": {
+    "parameterFamilies": 3300,
+    "familiesPerExerciseOrTheory": 100,
+    "groups": [
+      "372",
+      "373",
+      "374",
+      "375",
+      "376",
+      "377",
+      "378",
+      "379",
+      "380",
+      "381",
+      "382",
+      "383",
+      "384",
+      "385",
+      "386",
+      "387",
+      "388",
+      "389",
+      "390",
+      "391",
+      "392",
+      "393",
+      "394",
+      "395",
+      "43",
+      "44",
+      "45",
+      "46",
+      "47",
+      "48",
+      "49",
+      "50",
+      "51"
+    ],
+    "fixedAndBoundaryChecks": {
+      "verdict": "PASS",
+      "cases": 276,
+      "diameterAndCentralSection": 4,
+      "lineAndPlaneTransitions": 16,
+      "cylinderParallelPlanes": 16,
+      "cylinderCenterOnPlane": 24,
+      "coneChosenNappeAndHomothety": 28,
+      "conicBothBranchesAndDegeneracies": 188
+    },
+    "actualModels": {
+      "cards": 46,
+      "exerciseModels": 37,
+      "theoryModels": 9,
+      "analyticSpheres": 48,
+      "planarPolygons": 14257,
+      "nonzeroSegments": 30099,
+      "sphereArcEndpointChecks": 57088,
+      "reachableModelStates": 197
+    },
+    "writtenContracts": {
+      "exerciseConditionAnswerContracts": 37,
+      "essentialProofContracts": 18
+    },
+    "negativeControls": {
+      "rejected": 29,
+      "criticalCases": [
+        "omitted382b",
+        "wrong382b source part/inserted pi/wrong inverse-area answer",
+        "389 inserted pi in condition or result",
+        "390 incorrect radius in result or actual sphere",
+        "393 wrong gap/omitted opposite-side exclusion/wrong final area/opposite-side model",
+        "wrong circumcenter/finite-side contact/line-plane angle/tangent plane/nearest point/common tangent/diameter",
+        "nonplanar polygon/off-sphere arc endpoint",
+        "47 converse missing line through contact",
+        "49 wrong contact-circle center",
+        "50 wrong Dandelin focus",
+        "51 wrong cone slope/missing lower hyperbola branch",
+        "385 wrong central radius or central paragraph bound to the acute view",
+        "46 area formula falsely attributed to point43"
+      ]
+    },
+    "methods": [
+      "Independent Euclidean vector projections and quadratic line/sphere intersections on actual authored coordinates.",
+      "Independent incenter/circumcenter construction, finite side contact parameters, complete sampled circle and conic membership checks.",
+      "Smooth sphere area obtained from a surface Jacobian and numerical quadrature, not polygon mesh area.",
+      "Deterministic parameter families and explicit endpoint/degenerate constructions; deep-copy negative controls never mutate lesson files.",
+      "Source-specific regression contracts supplement the complete independent written review; they do not establish semantic correctness by keyword presence alone."
+    ],
+    "evidenceAttribution": {
+      "originalReviewer": "Codex independent source, mathematics and written-pedagogy reviewer /root/release_verification; no lesson authorship",
+      "originalReviewAt": "2026-10-31T00:05:46.437Z",
+      "originalReportSHA256": "ebfba91f42bb8cb533c329da5967a2277122d1ecb4dc060aadb3b8e6783ffd0f",
+      "oracleSHA256": "99cde0f45bf77a4a088982641f8fc0b34fc22f3252b75ab21615bdee45ce8737",
+      "inherited": true,
+      "personallyRepeatedByCurrentPanel": false,
+      "scope": "Original3300parameter families,276boundary cases,29negative controls and complete model oracle results. Current independent scoped coordinate checks and amended051 proof review are separately attributed in panel and focusedFollowup. The inherited oracle statistics are not a new run against the current text."
+    }
+  },
+  "pedagogy": {
+    "solutionSteps": 192,
+    "modelStates": 197,
+    "helpItems": 105,
+    "finalAnswerLeakage": "Initial exercise conditions, captions, neutral view labels and notes disclose source givens and the construction. Requested numerical answers are revealed in solution steps; proof propositions may appear when they are the stated goal. Dedicated auxiliary diameter views make central boundary cases honest.",
+    "answerAssessment": "All 37 exercise answers use manual comparison with task-specific instructions; no arbitrary written proof is claimed to be automatically certified.",
+    "proofCompleteness": "Current panel reviewed all written fields in disjoint scopes. The amended051 now includes the previously omitted source remark1, strict generator-contact ordering with spheres in closed half-spaces, nonzero directrix distance, a local reversible focus/directrix lemma, correct hyperbola-branch/asymptote wording and explicit through-vertex angle cases. The previous source/math PASS for051 is retained as history and is not treated as sufficient evidence for these obligations."
+  },
+  "resolvedFindings": [
+    {
+      "cards": [
+        "ex-main-0373-d",
+        "ex-main-0374"
+      ],
+      "finding": "A diameter boundary paragraph originally used an ordinary chord view.",
+      "resolution": "Authors added an actual auxiliary diameter DE through O, a reachable view and explicit explanatory wording; exact coordinates verified."
+    },
+    {
+      "cards": [
+        "ex-main-0383-a",
+        "ex-main-0383-b",
+        "ex-main-0384-a",
+        "ex-main-0384-b"
+      ],
+      "finding": "Sphere circumference and ball/base disk terminology or fill needed separation.",
+      "resolution": "Boundary-only target views, correct circumference labels, and explicit disk bounded by the sphere section for the cone base."
+    },
+    {
+      "cards": [
+        "theory-044"
+      ],
+      "finding": "A filled view was labeled as a set of equidistant sphere-section points.",
+      "resolution": "Removed disk fill from the circumference view; great-section label explicitly distinguishes ball disk and sphere boundary."
+    },
+    {
+      "cards": [
+        "theory-047"
+      ],
+      "finding": "Converse tangency statement omitted explicit T on the line; center-on-line boundary used ordinary secant view.",
+      "resolution": "Added line through T and a real diameter IJ through O, linked to its dedicated hint."
+    },
+    {
+      "cards": [
+        "theory-049"
+      ],
+      "finding": "Author browser review found the tangent plane projected edge-on.",
+      "resolution": "Root rotated every point and sphere center rigidly by 90 degrees about z. This reviewer checked invariants on the final JSON; browser visual acceptance is separately attributed to authors."
+    },
+    {
+      "cards": [
+        "ex-main-0385"
+      ],
+      "finding": "The 90-degree boundary paragraph used an acute triangle view with a nonzero OH.",
+      "resolution": "Added an exact central disk through O and A, with radius OA and plane perpendicular to the tangent plane. Step4 uses central; hint h2 keeps radius reachable; its label explicitly identifies the acute case."
+    },
+    {
+      "cards": [
+        "theory-046"
+      ],
+      "finding": "The final-step justification linked point43 for both the diameter definition and sphere-area substitution.",
+      "resolution": "Split the reasons. Only the D=2R definition links point43; area substitution references the formula stated in point46."
+    },
+    {
+      "cards": [
+        "ex-main-0387"
+      ],
+      "finding": "Author/root browser inspection found labels P and Q displaced to opposite sides of their close points, potentially obscuring the order along the radius.",
+      "resolution": "Nearest-view label explicitly states O–Q–P, Q between O and P on the sphere, and the short exterior segment PQ. Exact geometry and proof are unchanged."
+    },
+    {
+      "id": "SPH-T51-01",
+      "cards": [
+        "theory-051"
+      ],
+      "finding": "Source point51 remark1 required the second Dandelin sphere and focal sum/difference proof; the recovered nine-step card omitted it.",
+      "resolution": "Steps9–11 now construct both finite spheres for a≠s, distinguish their signed distances and nappes, justify contact-point ordering, and derive the constant sum or absolute difference. The parabola has no second finite sphere. The displayed hyperbola is explicitly distinguished from the unrelated sphere retained in the static scene.",
+      "resolutionReviewedBy": "release_audit",
+      "resolvedAt": "2026-10-31T01:04:51.530Z",
+      "previousContentSHA256": "ef7d1d48972c3d322e95bc5e65f26a4cc57580f50a4719fe04c0cb65ad9a461b",
+      "contentSHA256": "7215244fdf5ec90fe93dbe64bb8817bb1e700541dec3b211c192a439c8f1e07c"
+    },
+    {
+      "id": "SPH-T51-02",
+      "cards": [
+        "theory-051"
+      ],
+      "finding": "Help h2 incorrectly included hyperbola asymptotes in the converse.",
+      "resolution": "Help h2 now covers both hyperbola branches and explicitly excludes asymptotes, with the exact z²−y²=1 versus z=±y comparison.",
+      "resolutionReviewedBy": "release_audit",
+      "resolvedAt": "2026-10-31T01:04:51.530Z",
+      "previousContentSHA256": "ef7d1d48972c3d322e95bc5e65f26a4cc57580f50a4719fe04c0cb65ad9a461b",
+      "contentSHA256": "7215244fdf5ec90fe93dbe64bb8817bb1e700541dec3b211c192a439c8f1e07c"
+    },
+    {
+      "id": "SPH-T51-03",
+      "cards": [
+        "theory-051"
+      ],
+      "finding": "MH>0 and the local focus/directrix-to-canonical-conic equivalence were not established.",
+      "resolution": "Step3 excludes F and every section point from the directrix using contact-circle incidence and P∉α. New help h5 proves the reversible equation, excludes X=0, and treats ellipse, parabola and hyperbola separately. The existing valid cone-plane quadratic converse remains intact.",
+      "resolutionReviewedBy": "release_audit",
+      "resolvedAt": "2026-10-31T01:04:51.530Z",
+      "previousContentSHA256": "ef7d1d48972c3d322e95bc5e65f26a4cc57580f50a4719fe04c0cb65ad9a461b",
+      "contentSHA256": "7215244fdf5ec90fe93dbe64bb8817bb1e700541dec3b211c192a439c8f1e07c"
+    },
+    {
+      "id": "SPH-T51-04",
+      "cards": [
+        "theory-051"
+      ],
+      "finding": "A preliminary amendment applied strict half-space wording to tangent spheres themselves.",
+      "resolution": "Final steps10–11 put spheres in closed half-spaces and the generator contact points in the corresponding strict open half-spaces. This correction was reread before PASS.",
+      "resolutionReviewedBy": "release_audit",
+      "resolvedAt": "2026-10-31T01:04:51.530Z",
+      "previousContentSHA256": "ef7d1d48972c3d322e95bc5e65f26a4cc57580f50a4719fe04c0cb65ad9a461b",
+      "contentSHA256": "7215244fdf5ec90fe93dbe64bb8817bb1e700541dec3b211c192a439c8f1e07c"
+    },
+    {
+      "id": "SPH-T51-05",
+      "cards": [
+        "theory-051"
+      ],
+      "finding": "Actual display gate reported a raw cosφ/cosθ expression in step3.",
+      "resolution": "The executing agent added grouping parentheses around numerator and denominator. Independent inverse reconstruction proves this is the sole content change; mathematical value and all prior proof resolutions are preserved.",
+      "resolutionReviewedBy": "release_audit",
+      "resolvedAt": "2026-10-31T01:10:17.075Z",
+      "previousContentSHA256": "7215244fdf5ec90fe93dbe64bb8817bb1e700541dec3b211c192a439c8f1e07c",
+      "contentSHA256": "a7e5f4a85bd60135b5c2a1843ac8b0815010aa287f717ee94b68182b7f8bf6bc",
+      "evidence": {
+        "artifact": "sphere-theory051-formatting-followup-review.json",
+        "sha256": "3256ab11596cb365d29b08ca23984ac2bbb44f57c9997fc5217ca924b1e13929"
+      }
+    }
+  ],
+  "openFindings": [],
+  "cards": [
+    {
+      "id": "ex-main-0372-a",
+      "sha256": "1ad09a81a1fd65e013e326acf2b017d0bc1dac39b7fd7020d93971932c87a8ce",
+      "steps": 3,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Proof uses three correct equal side pairs, explicitly excludes degenerate triangles by O not on AB, then equal supplementary angles. Neutral state states only given midpoint.",
+      "scopedReviewer": "visual_middle",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-early-review.json",
+        "sha256": "f2e49ebdf9c09cbf136c1765573c971c0883d08f9ec55e59581867327ac2e671"
+      }
+    },
+    {
+      "id": "ex-main-0372-b",
+      "sha256": "85f44158f197cd7f29633e9ec23a4235469473a39750392fda9e512d7be462ad",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Proof excludes M=A or B before Pythagoras and uses nonnegative/positive lengths correctly. Neutral state gives perpendicularity, not the sought midpoint.",
+      "scopedReviewer": "visual_middle",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-early-review.json",
+        "sha256": "f2e49ebdf9c09cbf136c1765573c971c0883d08f9ec55e59581867327ac2e671"
+      }
+    },
+    {
+      "id": "ex-main-0373-a",
+      "sha256": "2440cbab6d2b829a4c15c1c991c5c47390d18ff3e7f5417e0b62aba04da56853",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Half chord 20 cm, radius 50 cm, square distance 2100. Positive root simplifies to 10 sqrt(21).",
+      "scopedReviewer": "visual_middle",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-early-review.json",
+        "sha256": "f2e49ebdf9c09cbf136c1765573c971c0883d08f9ec55e59581867327ac2e671"
+      }
+    },
+    {
+      "id": "ex-main-0373-b",
+      "sha256": "2032d2ccaea5d49d5f149de08bf8f4976687cf753bc11e5f8544314ef5bbb253",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Half chord 9 mm, radius 15 mm, square distance 144. Unit remains mm.",
+      "scopedReviewer": "visual_middle",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-early-review.json",
+        "sha256": "f2e49ebdf9c09cbf136c1765573c971c0883d08f9ec55e59581867327ac2e671"
+      }
+    },
+    {
+      "id": "ex-main-0373-c",
+      "sha256": "b64e276b7d4c3d4f3ac1776bb415fcdd6fe0ee93b2460c126e4e8906b004ad13",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "60 cm is converted to 6 dm before computing half chord 8 dm, then doubled to 16 dm.",
+      "scopedReviewer": "visual_middle",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-early-review.json",
+        "sha256": "f2e49ebdf9c09cbf136c1765573c971c0883d08f9ec55e59581867327ac2e671"
+      }
+    },
+    {
+      "id": "ex-main-0373-d",
+      "sha256": "332a645918163697eed47da04bc4118457ff500ef3604b80c305b96d48d30f6e",
+      "steps": 4,
+      "modelStates": 5,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Separate b=0 argument prevents use of a degenerate right triangle. Auxiliary DE is explicitly identified as an illustration of the diameter, not a second condition on AB. Domain excludes coincident A,B.",
+      "scopedReviewer": "visual_middle",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-early-review.json",
+        "sha256": "f2e49ebdf9c09cbf136c1765573c971c0883d08f9ec55e59581867327ac2e671"
+      }
+    },
+    {
+      "id": "ex-main-0374",
+      "sha256": "625419d434fbbec451f9bd8cea70a6083a7fd9f693a175db791526cae459f365",
+      "steps": 4,
+      "modelStates": 5,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Separates diameter before applying the isosceles-triangle altitude argument. General formula correctly includes d=0; nonzero chord domain stated.",
+      "scopedReviewer": "visual_middle",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-early-review.json",
+        "sha256": "f2e49ebdf9c09cbf136c1765573c971c0883d08f9ec55e59581867327ac2e671"
+      }
+    },
+    {
+      "id": "ex-main-0375",
+      "sha256": "de4d15277b02d479f21851ff822e91f6264dc3ddbd50eac81fcccd58fbba81d3",
+      "steps": 4,
+      "modelStates": 3,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Distinguishes sphere boundary circle from ball section disk. Correct area formula pi*r^2, not sphere surface area.",
+      "scopedReviewer": "visual_middle",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-early-review.json",
+        "sha256": "f2e49ebdf9c09cbf136c1765573c971c0883d08f9ec55e59581867327ac2e671"
+      }
+    },
+    {
+      "id": "ex-main-0376",
+      "sha256": "75a5838fe916de30ad592d5d1c8c23f9fd5373f27656bab06fbc4b9e10957eff",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "6-8-10 right triangle recognized at B; circumcircle, not incircle, has radius 5. Distance is 12.",
+      "scopedReviewer": "visual_middle",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-early-review.json",
+        "sha256": "f2e49ebdf9c09cbf136c1765573c971c0883d08f9ec55e59581867327ac2e671"
+      }
+    },
+    {
+      "id": "ex-main-0377",
+      "sha256": "03c09aa22dc57dba2ea2bd87e16bbb4f0c15d8a0cef66b3af49fb6dc5b244689",
+      "steps": 4,
+      "modelStates": 5,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Uses half the diagonal (8), not either side. Selected rectangle proportions are explicitly illustrative; proof applies to all rectangles with the given diagonal.",
+      "scopedReviewer": "visual_middle",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-early-review.json",
+        "sha256": "f2e49ebdf9c09cbf136c1765573c971c0883d08f9ec55e59581867327ac2e671"
+      }
+    },
+    {
+      "id": "ex-main-0378",
+      "sha256": "89e49c8a03e1c98fbcc6da5f9b7fb0f03e4062e77c777941b837546e762aaa7b",
+      "steps": 5,
+      "modelStates": 5,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Projection/circle argument, actual side-segment contacts and exclusion of excircle alternatives are explicit. Height 8, area 48, semiperimeter 16, inradius 3, distance 4.",
+      "scopedReviewer": "visual_middle",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-early-review.json",
+        "sha256": "f2e49ebdf9c09cbf136c1765573c971c0883d08f9ec55e59581867327ac2e671"
+      }
+    },
+    {
+      "id": "ex-main-0379",
+      "sha256": "0c4e59bf0673eef8b05f74967491b3f14677edefbca5cde842f5056600b0dc31",
+      "steps": 5,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Projection/circle argument distinguishes incircle from excircle. Heron product 7056, area 84, semiperimeter 21, inradius 4, distance 3. T is on BC in both prose and geometry.",
+      "scopedReviewer": "visual_middle",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-early-review.json",
+        "sha256": "f2e49ebdf9c09cbf136c1765573c971c0883d08f9ec55e59581867327ac2e671"
+      }
+    },
+    {
+      "id": "ex-main-0380",
+      "sha256": "43fbb861680ec109a318efccb133a394629e313988a40f1ab4aa0a20fae20a7a",
+      "steps": 5,
+      "modelStates": 6,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "All four side contacts, diagonal intersection as incenter, side 12.5, area 150, semiperimeter 25, inradius 6 and distance 8 are correct.",
+      "scopedReviewer": "visual_middle",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-early-review.json",
+        "sha256": "f2e49ebdf9c09cbf136c1765573c971c0883d08f9ec55e59581867327ac2e671"
+      }
+    },
+    {
+      "id": "ex-main-0381-a",
+      "sha256": "f1452fa3932d16c795d44d2520c6b498176f78e7978479e362da073af5ed43cf",
+      "steps": 3,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "R=60 cm equals OH=60 cm, so exactly H is common; statement concerns the full plane ABC.",
+      "scopedReviewer": "visual_middle",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-early-review.json",
+        "sha256": "f2e49ebdf9c09cbf136c1765573c971c0883d08f9ec55e59581867327ac2e671"
+      }
+    },
+    {
+      "id": "ex-main-0381-b",
+      "sha256": "125c355d91bbf6feb2746df57bb267ec83b0103012075f253f726efe9b6a5025",
+      "steps": 3,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "R=300 cm exceeds OH=95 cm. Does not assume A,B,C are on the sphere; arbitrary tetrahedron base dimensions are disclosed.",
+      "scopedReviewer": "visual_middle",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-early-review.json",
+        "sha256": "f2e49ebdf9c09cbf136c1765573c971c0883d08f9ec55e59581867327ac2e671"
+      }
+    },
+    {
+      "id": "ex-main-0381-c",
+      "sha256": "c4f045317836fa07fbf820e7deecf793c94af5cfb340286d27cc6dcd553ca477",
+      "steps": 3,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "R=50 cm exceeds OH=45 cm; circle intersection, not a filled disk.",
+      "scopedReviewer": "visual_middle",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-early-review.json",
+        "sha256": "f2e49ebdf9c09cbf136c1765573c971c0883d08f9ec55e59581867327ac2e671"
+      }
+    },
+    {
+      "id": "ex-main-0381-d",
+      "sha256": "5870f4d454eaab30c9660ddf054f40a9776cf3c4d527899cdfaf34070854c6e7",
+      "steps": 3,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "R=35 cm is less than OH=40 cm; no section circle is fabricated.",
+      "scopedReviewer": "visual_middle",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-early-review.json",
+        "sha256": "f2e49ebdf9c09cbf136c1765573c971c0883d08f9ec55e59581867327ac2e671"
+      }
+    },
+    {
+      "id": "ex-main-0382-a",
+      "sha256": "877cf17ab8368cc032c54d82d291ceb94ce22bff16d0117a5a4cce751952be63",
+      "steps": 3,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Uses r^2=144-64=80 and disk area 80 pi cm^2. Text does not substitute sphere surface area.",
+      "scopedReviewer": "visual_middle",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-early-review.json",
+        "sha256": "f2e49ebdf9c09cbf136c1765573c971c0883d08f9ec55e59581867327ac2e671"
+      }
+    },
+    {
+      "id": "ex-main-0382-b",
+      "sha256": "fe5e3e21f4dede18c10f46e37a0a7f8c31e188ecb0dedafae5c6bd33af70bdaf",
+      "steps": 3,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Source says 12 cm^2 without pi. Candidate preserves this precisely, gives r^2=12/pi and R=sqrt(4+12/pi)>2. Neither initial condition nor neutral caption gives the answer.",
+      "scopedReviewer": "visual_middle",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-early-review.json",
+        "sha256": "f2e49ebdf9c09cbf136c1765573c971c0883d08f9ec55e59581867327ac2e671"
+      }
+    },
+    {
+      "id": "ex-main-0383-a",
+      "sha256": "3554effccebb9ddfc15b52ab2cc249c77b3d5ee5010d3dd4e81f1d64759d3c5f",
+      "steps": 3,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "The perpendicular from O ends at radius midpoint H, so OH=R/2 and HA²=R²−(R/2)². Positive root chosen. Circle rather than disk is named in the sphere-section views.",
+      "scopedReviewer": "visual_late",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-late-review.json",
+        "sha256": "2c613115e2c52b60830cb63a1d0d9f8a133368b3294f852a25bebf6f2564f100"
+      }
+    },
+    {
+      "id": "ex-main-0383-b",
+      "sha256": "558423244127741bdbcfbb924192994f24f1f9156aff4da51f59ea6316f5abbf",
+      "steps": 3,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Apex O is the center of the sphere, h=R/2, l=R, r=√3R/2. Lateral area πrl excludes the base; the cone mesh has apex O and all 64 generators ending on the correct section.",
+      "scopedReviewer": "visual_late",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-late-review.json",
+        "sha256": "2c613115e2c52b60830cb63a1d0d9f8a133368b3294f852a25bebf6f2564f100"
+      }
+    },
+    {
+      "id": "ex-main-0384-a",
+      "sha256": "92a6349ad28736856e929be1d960e793d5309c125cdadf0064f822fe16234e5e",
+      "steps": 3,
+      "modelStates": 5,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "AO projects to AH in the secant plane; ∠OAH=30°, HA=2cos30°=√3. Circumference equals 2πHA.",
+      "scopedReviewer": "visual_late",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-late-review.json",
+        "sha256": "2c613115e2c52b60830cb63a1d0d9f8a133368b3294f852a25bebf6f2564f100"
+      }
+    },
+    {
+      "id": "ex-main-0384-b",
+      "sha256": "d05783f1aa19348e4e4dbd0185a14ef58914cae310ebe535d36671ca0ad8c279",
+      "steps": 3,
+      "modelStates": 5,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "AO projects to AH; ∠OAH=45°, HA=5√2/2. Circumference equals 5√2π m.",
+      "scopedReviewer": "visual_late",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-late-review.json",
+        "sha256": "2c613115e2c52b60830cb63a1d0d9f8a133368b3294f852a25bebf6f2564f100"
+      }
+    },
+    {
+      "id": "ex-main-0385",
+      "sha256": "31a4d43f4f593e9426a2208232d45aace1e458cacf3750d80df66be5c320d5aa",
+      "steps": 4,
+      "modelStates": 6,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "For 0<φ<90°, the normal section gives ∠OAH=90°−φ and HA=Rsinφ. The 90° case is independently handled as a central great disk; no degenerate OAH triangle is used there. The zero-angle tangent case is explicitly excluded from positive-area secant sections.",
+      "scopedReviewer": "visual_late",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-late-review.json",
+        "sha256": "2c613115e2c52b60830cb63a1d0d9f8a133368b3294f852a25bebf6f2564f100"
+      }
+    },
+    {
+      "id": "ex-main-0386",
+      "sha256": "78dcb806987d5c2fb0b60b866bd4cab691ab8ad329da37771cd89a438b31c0db",
+      "steps": 4,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Normal section has ∠AHB=120°. Equal right triangles and the contact half-rays select the internal bisector, giving ∠AHO=60°. R=a sin60° and ∠AOB=60°, so AOB is equilateral. The text excludes the external bisector.",
+      "scopedReviewer": "visual_late",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-late-review.json",
+        "sha256": "2c613115e2c52b60830cb63a1d0d9f8a133368b3294f852a25bebf6f2564f100"
+      }
+    },
+    {
+      "id": "ex-main-0387",
+      "sha256": "ab274648efdb732f6b0b7e4722c10d6dbd6b8ba05883e88e2a3655ffcff634a3",
+      "steps": 4,
+      "modelStates": 3,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "OA=112 and AP=15 are perpendicular, so OP=113. For any sphere point X, PX≥OP−OX=1; exact Q on segment OP attains equality. A is the tangent contact point and Q is a distinct nearest point.",
+      "scopedReviewer": "visual_late",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-late-review.json",
+        "sha256": "2c613115e2c52b60830cb63a1d0d9f8a133368b3294f852a25bebf6f2564f100"
+      }
+    },
+    {
+      "id": "ex-main-0388-a",
+      "sha256": "afd2256dc32e89715422c153988df8e5d481976c3431bdf34c546ec534dfe357",
+      "steps": 3,
+      "modelStates": 2,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "4π·6²=144π; given radius is not halved. Squared units retained.",
+      "scopedReviewer": "visual_late",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-late-review.json",
+        "sha256": "2c613115e2c52b60830cb63a1d0d9f8a133368b3294f852a25bebf6f2564f100"
+      }
+    },
+    {
+      "id": "ex-main-0388-b",
+      "sha256": "3963e430b2f9c8c203d8d6a1715e12e3bfe9b2d94f5da5c61d9f99818a644891",
+      "steps": 3,
+      "modelStates": 2,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "4π·2²=16π; squared decimeter units retained.",
+      "scopedReviewer": "visual_late",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-late-review.json",
+        "sha256": "2c613115e2c52b60830cb63a1d0d9f8a133368b3294f852a25bebf6f2564f100"
+      }
+    },
+    {
+      "id": "ex-main-0388-c",
+      "sha256": "1c8e4eb07a17620761b2bb8e07df72a526fd6003b5c841349bd2373575950ec1",
+      "steps": 3,
+      "modelStates": 2,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "4π·(√2)²=8π; positive radical is squared correctly.",
+      "scopedReviewer": "visual_late",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-late-review.json",
+        "sha256": "2c613115e2c52b60830cb63a1d0d9f8a133368b3294f852a25bebf6f2564f100"
+      }
+    },
+    {
+      "id": "ex-main-0388-d",
+      "sha256": "70523f7cbe80d38ae157a154c6fb52f44ad9d2ed86584b89636b2ee62fca9c26",
+      "steps": 3,
+      "modelStates": 2,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "4π·(2√3)²=4π·12=48π; the entire product is squared.",
+      "scopedReviewer": "visual_late",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-late-review.json",
+        "sha256": "2c613115e2c52b60830cb63a1d0d9f8a133368b3294f852a25bebf6f2564f100"
+      }
+    },
+    {
+      "id": "ex-main-0389",
+      "sha256": "eed78bd1cd8fe15cb22da234af24c4f1715d7a6681654985871b56c1606728cf",
+      "steps": 3,
+      "modelStates": 3,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "The central disk has area πR²=9, so sphere area is four times that area, 36. The text explicitly rejects inserting an additional π into the datum or answer.",
+      "scopedReviewer": "visual_late",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-late-review.json",
+        "sha256": "2c613115e2c52b60830cb63a1d0d9f8a133368b3294f852a25bebf6f2564f100"
+      }
+    },
+    {
+      "id": "ex-main-0390",
+      "sha256": "bc995a6033b682eaa8e8d71f3b9a435a4d8f7dd4fe6e7e18d7a18a690bdc2979",
+      "steps": 3,
+      "modelStates": 2,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Source datum is exactly 324 cm² without π. From 4πR²=324 obtain R²=81/π and the positive root 9/√π. Actual model area independently equals 324.",
+      "scopedReviewer": "visual_late",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-late-review.json",
+        "sha256": "2c613115e2c52b60830cb63a1d0d9f8a133368b3294f852a25bebf6f2564f100"
+      }
+    },
+    {
+      "id": "ex-main-0391",
+      "sha256": "deb8a63719596fa0aa27072e7fd4489cb6185f2f2d7ec9891385cba06ec2bb47",
+      "steps": 3,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "The candidate proves the ratio for arbitrary positive radii using both 4πR² formulas and cancellation of nonzero 4π. It does not rely on the specific model sizes.",
+      "scopedReviewer": "visual_late",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-late-review.json",
+        "sha256": "2c613115e2c52b60830cb63a1d0d9f8a133368b3294f852a25bebf6f2564f100"
+      }
+    },
+    {
+      "id": "ex-main-0392",
+      "sha256": "4043a52777b8ab5b54d00bab076164db12398de6df4281555a2bf4609a518079",
+      "steps": 3,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Sphere radius 5 gives area 100π. A separate disk satisfies πr²=100π, giving positive r=10.",
+      "scopedReviewer": "visual_late",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-late-review.json",
+        "sha256": "2c613115e2c52b60830cb63a1d0d9f8a133368b3294f852a25bebf6f2564f100"
+      }
+    },
+    {
+      "id": "ex-main-0393",
+      "sha256": "466e26a93dffbae51991fb0e8e15dd0f7e547baf9f609c32844ec6443245ce3d",
+      "steps": 6,
+      "modelStates": 5,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "From x²+81=y²+144 obtain x²−y²=63. Opposite-side or center-on-plane placement would give x+y=3 and x−y=21, impossible. Thus x−y=3, x+y=21, x=12,y=9, R=15 and S=900π.",
+      "scopedReviewer": "visual_late",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-late-review.json",
+        "sha256": "2c613115e2c52b60830cb63a1d0d9f8a133368b3294f852a25bebf6f2564f100"
+      }
+    },
+    {
+      "id": "ex-main-0394",
+      "sha256": "9d81167bd37b0b793028fea5b0c1a332e7d5d9151aab9100e38ee4d76090fd6a",
+      "steps": 5,
+      "modelStates": 5,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Any point where the common line meets the sphere is common to both section circles. Uniqueness and the reflected-point argument force OT perpendicular to that line. In the perpendicular normal section, projections H₁,H₂ form rectangle OH₁TH₂; OT²=r₁²+r₂².",
+      "scopedReviewer": "visual_late",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-late-review.json",
+        "sha256": "2c613115e2c52b60830cb63a1d0d9f8a133368b3294f852a25bebf6f2564f100"
+      }
+    },
+    {
+      "id": "ex-main-0395",
+      "sha256": "bc6b0a53ae0e0956b1410aa187cab54cae13e19a05ff995e5ba772faf09c2128",
+      "steps": 5,
+      "modelStates": 6,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "For arbitrary a>0, rotation around side AD gives cylinder radius a and height a. Lateral area 2πa² plus both bases 2πa² gives 4πa², equal to sphere area at R=a.",
+      "scopedReviewer": "visual_late",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-late-review.json",
+        "sha256": "2c613115e2c52b60830cb63a1d0d9f8a133368b3294f852a25bebf6f2564f100"
+      }
+    },
+    {
+      "id": "theory-043",
+      "sha256": "fe4555e09936b030c8253cc10908371d8a5ca2a00963eae3e8db28a07ede9222",
+      "steps": 5,
+      "modelStates": 6,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Sphere/ball membership, diameter and both inclusions in semicircle/half-disk rotation are complete; source identity and selected semantic coordinates checked.",
+      "scopedReviewer": "release_audit",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-theory-review.json",
+        "sha256": "84c58bf358daf25a34c8662c185319144a5f9d415f1b07358df2011108284dde"
+      }
+    },
+    {
+      "id": "theory-044",
+      "sha256": "64c5868d72bda87cd45ee7d3d87afb6be9c9e8e4827f43145baf7208d06d990b",
+      "steps": 6,
+      "modelStates": 6,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "All plane-distance regimes and both section inclusions are complete; circle versus disk and d=0 are explicit; section radius and contact patch coordinates checked.",
+      "scopedReviewer": "release_audit",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-theory-review.json",
+        "sha256": "84c58bf358daf25a34c8662c185319144a5f9d415f1b07358df2011108284dde"
+      }
+    },
+    {
+      "id": "theory-045",
+      "sha256": "d98769728ce2b4877441f3276f584a5c587f1fa078d5555f6629dfbe453431db",
+      "steps": 5,
+      "modelStates": 3,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Both tangent-plane directions, incidence of the endpoint and uniqueness are complete; contact point lies inside the finite patch with perpendicular radius.",
+      "scopedReviewer": "release_audit",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-theory-review.json",
+        "sha256": "84c58bf358daf25a34c8662c185319144a5f9d415f1b07358df2011108284dde"
+      }
+    },
+    {
+      "id": "theory-046",
+      "sha256": "add3ad0c44969b653eabb62aef67bbb03372716e4721ec9e76ec0dc44950524e",
+      "steps": 5,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Circumscription includes finite face contact and shrinking maximum face diameter; formula proof is honestly deferred to point62. No mesh area is treated as proof.",
+      "scopedReviewer": "release_audit",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-theory-review.json",
+        "sha256": "84c58bf358daf25a34c8662c185319144a5f9d415f1b07358df2011108284dde"
+      }
+    },
+    {
+      "id": "theory-047",
+      "sha256": "ad19789df92d1c5af16c89893ea27673e08a72504c42908b894a5fc869bb3957",
+      "steps": 6,
+      "modelStates": 7,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "All line-distance regimes, both tangent criteria, diameter boundary, equal tangent lengths and equal angles are complete; actual contacts and radii checked.",
+      "scopedReviewer": "release_audit",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-theory-review.json",
+        "sha256": "84c58bf358daf25a34c8662c185319144a5f9d415f1b07358df2011108284dde"
+      }
+    },
+    {
+      "id": "theory-048",
+      "sha256": "023d11cd813205941d2d3fb9e4289fec084735feeb16b96f57243e43ca0c31d4",
+      "steps": 5,
+      "modelStates": 5,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Axial-center construction r/cosβ is a complete alternative proof, including initial center on plane, initial tangency and perpendicular/parallel boundaries; actual contact geometry checked.",
+      "scopedReviewer": "release_audit",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-theory-review.json",
+        "sha256": "84c58bf358daf25a34c8662c185319144a5f9d415f1b07358df2011108284dde"
+      }
+    },
+    {
+      "id": "theory-049",
+      "sha256": "89206442815cc0a8cf2c56d7d63a24ec07a893659edfdec1f633eb20183b21ac",
+      "steps": 5,
+      "modelStates": 4,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Positive chosen-nappe construction is justified by m+sinθ>0 and a sufficiently small initial sphere; analytic formula, contact-circle level and tangent patch checked.",
+      "scopedReviewer": "release_audit",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-theory-review.json",
+        "sha256": "84c58bf358daf25a34c8662c185319144a5f9d415f1b07358df2011108284dde"
+      }
+    },
+    {
+      "id": "theory-050",
+      "sha256": "fa9492544daac88093f84efc52748ed5568dea4a2a39a47d23db523fc26ccc2e",
+      "steps": 7,
+      "modelStates": 6,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Dandelin tangent equality, contact-level ordering, focal sum, complete canonical/focal lemma and coordinate converse are correct; all actual sampled ellipse incidences and ratios checked.",
+      "scopedReviewer": "release_audit",
+      "scopeEvidence": {
+        "artifact": "sphere-existing-candidate-theory-review.json",
+        "sha256": "84c58bf358daf25a34c8662c185319144a5f9d415f1b07358df2011108284dde"
+      }
+    },
+    {
+      "id": "theory-051",
+      "sha256": "a7e5f4a85bd60135b5c2a1843ac8b0815010aa287f717ee94b68182b7f8bf6bc",
+      "steps": 12,
+      "modelStates": 7,
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Full12-step/5-help amended card reread. All SPH-T51 findings resolved: second-sphere existence and sum/difference proofs, contact ordering and closed half-spaces, directrix nondegeneracy and local lemma, asymptote exclusion and all angle/nappe boundaries. Existing full visualization remains exact and unchanged.",
+      "scopedReviewer": "release_audit",
+      "scopeEvidence": {
+        "artifact": "sphere-theory051-followup-review.json",
+        "sha256": "48f2d1c4c3439d4e02300bb3ac8541d3dee6b177efa0c234fcad4420554190e4"
+      },
+      "formattingReviewedAt": "2026-10-31T01:10:17.075Z",
+      "formattingEvidence": {
+        "artifact": "sphere-theory051-formatting-followup-review.json",
+        "sha256": "3256ab11596cb365d29b08ca23984ac2bbb44f57c9997fc5217ca924b1e13929"
+      }
+    }
+  ],
+  "aggregateSHA256": "fd5ee10548e6a7aba2287364fbf2648db1b3c81bab64195a9f8cc2d4f77c4a73",
+  "oracle": {
+    "path": "tools/stereo-textbook/sphere-math.test.py",
+    "sha256": "99cde0f45bf77a4a088982641f8fc0b34fc22f3252b75ab21615bdee45ce8737",
+    "evidenceAttribution": "Inherited exact oracle authored by the recovered-candidate reviewer; unchanged and not rerun by the current panel."
+  },
+  "limitations": [
+    "The current joint panel has not approved actual responsive candidate images. Visual review and complete browser journeys remain separate pending gates.",
+    "Original full-source-render comparison and3300-family/276-boundary/29-negative-control oracle evidence are explicitly inherited from the original reviewer; current panel scoped reasoning/coordinate checks are separately attributed.",
+    "No external paid-provider review, exact committed-head CI, merge authorization or deployment is claimed.",
+    "No physical-device, screen-reader or real-pupil learning-efficacy trial.",
+    "Canonical hashes exclude only top-level status/review. Any other payload change requires a focused independent rereview and rebinding."
+  ],
+  "focusedFollowup": {
+    "reviewer": "release_audit",
+    "reviewedAt": "2026-10-31T01:10:17.075Z",
+    "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+    "reason": "The executing agent reported a conservative StereoMath display gate rejecting a bare trigonometric numerator. Parentheses make the fraction display unambiguous without changing its value.",
+    "mainPanelReviewedAt": "2026-10-31T01:04:51.530Z",
+    "dating": "The main panel review timestamp remains unchanged. This later timestamp binds the sole formatting change;45other payloads and all main panel registration timestamps remain unchanged.",
+    "previousEvidence": {
+      "reviewer": "Codex independent source, mathematics and written-pedagogy panel: visual_middle, visual_late, release_audit; no reviewed-candidate lesson authorship",
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "aggregateSHA256": "2f8592fb5e50599ae284b4c912897c8dd2d7263c6619375212668d0d53b3bb92",
+      "reportSHA256": "58fc23e0f9bbbeec43ed41989ae49e18e9ecf7cc65934f758621a38656fd0105",
+      "oracle": {
+        "path": "tools/stereo-textbook/sphere-math.test.py",
+        "sha256": "99cde0f45bf77a4a088982641f8fc0b34fc22f3252b75ab21615bdee45ce8737",
+        "evidenceAttribution": "Inherited exact oracle authored by the recovered-candidate reviewer; unchanged and not rerun by the current panel."
+      },
+      "cardRows": [
+        {
+          "id": "theory-051",
+          "sha256": "7215244fdf5ec90fe93dbe64bb8817bb1e700541dec3b211c192a439c8f1e07c",
+          "steps": 12,
+          "modelStates": 7,
+          "reviewedAt": "2026-10-31T01:04:51.530Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Full12-step/5-help amended card reread. All SPH-T51 findings resolved: second-sphere existence and sum/difference proofs, contact ordering and closed half-spaces, directrix nondegeneracy and local lemma, asymptote exclusion and all angle/nappe boundaries. Existing full visualization remains exact and unchanged.",
+          "scopedReviewer": "release_audit",
+          "scopeEvidence": {
+            "artifact": "sphere-theory051-followup-review.json",
+            "sha256": "48f2d1c4c3439d4e02300bb3ac8541d3dee6b177efa0c234fcad4420554190e4"
+          }
+        }
+      ]
+    },
+    "changedCards": [
+      {
+        "id": "theory-051",
+        "previousSHA256": "7215244fdf5ec90fe93dbe64bb8817bb1e700541dec3b211c192a439c8f1e07c",
+        "sha256": "a7e5f4a85bd60135b5c2a1843ac8b0815010aa287f717ee94b68182b7f8bf6bc",
+        "jsonPointer": "/steps/2/explanation",
+        "before": "Поэтому MF/MH=cosφ/cosθ=e.",
+        "after": "Поэтому MF/MH=(cosφ)/(cosθ)=e."
+      }
+    ],
+    "preservation": {
+      "restoringExactlyTheOneStringReconstructsPriorCanonicalPayload": true,
+      "unchangedOtherCardContentHashes": 45,
+      "unchangedOtherReviewRows": 45,
+      "geometryAndAllViewTextUnchanged": true,
+      "proofMathematicsUnchanged": true,
+      "sourceAndStatementUnchanged": true,
+      "steps": 12,
+      "modelStates": 7,
+      "helpItems": 5,
+      "oracleBytesUnchanged": true
+    },
+    "verification": {
+      "independent": "The entire current payload was canonicalized and the single-string inverse replacement exactly reconstructed the prior independently approved hash. The parenthesized quotient equals the same cosine ratio; cosθ>0 in the lesson domain.",
+      "executorReportedDOMCheck": {
+        "performedBy": "Executing root",
+        "strings": 161,
+        "result": "PASS",
+        "scope": "Actual StereoMath DOM for lesson steps, help and statement; no raw fractions or detached superscripts reported.",
+        "independentlyRerunByThisReviewer": false
+      }
+    },
+    "evidence": {
+      "artifact": "sphere-theory051-formatting-followup-review.json",
+      "sha256": "3256ab11596cb365d29b08ca23984ac2bbb44f57c9997fc5217ca924b1e13929"
+    },
+    "oracleRerun": {
+      "performed": false,
+      "reason": "A single pair of grouping parentheses changes display parsing only. Exact inverse replacement reconstructs the previously approved payload, and oracle bytes are unchanged."
+    },
+    "openFindings": [],
+    "limitations": [
+      "This follow-up does not claim a new responsive screenshot review, full gate run or exact-head CI.",
+      "The executing agent retained the failed gate log and owns rerunning the affected gate.",
+      "No card, registry, oracle, test or ref was modified by this reviewer."
+    ]
+  },
+  "reviewHistory": [
+    {
+      "reviewer": "Codex independent source, mathematics and written-pedagogy reviewer /root/release_verification; no lesson authorship",
+      "reviewedAt": "2026-10-31T00:04:05.092Z",
+      "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+      "reason": "Two targeted source-link and boundary-model refinements after the initial complete46-card review.",
+      "previousEvidence": {
+        "reviewedAt": "2026-10-30T23:59:31.207Z",
+        "aggregateSHA256": "58ff02a5f68856b099364ff62f2f3bfdd2b65a401f89c0c39a1a6583c17aa563",
+        "reportSHA256": "c24d0c1aac581b9f8024ea623fd8c852e6ee5c7944de95d0b743cad8cdfcf4ca",
+        "oracle": {
+          "path": "tools/stereo-textbook/sphere-math.test.py",
+          "sha256": "da8ffd306a60155ee6b76d96dd7bbdf4481adaf1a64f16dbfd15ff5d0aab9857"
+        },
+        "cardRows": [
+          {
+            "id": "ex-main-0385",
+            "sha256": "484d5b8901a54585e3581a254d1a15d9251917f7b2337759b70181ff047326ca",
+            "steps": 4,
+            "modelStates": 5,
+            "reviewedAt": "2026-10-30T23:59:31.207Z",
+            "source": "PASS",
+            "mathematics": "PASS",
+            "writtenPedagogy": "PASS",
+            "findings": [],
+            "verification": "Angle is between tangent and secant planes: section radius R sin(phi), area pi R squared sin squared(phi). Acute proof, 90-degree central case and excluded zero angle are explicit."
+          },
+          {
+            "id": "theory-046",
+            "sha256": "130d0468b0ae9d95f9fe87dfea04acfa14f57525df2c8ed344a85810bee7263a",
+            "steps": 5,
+            "modelStates": 4,
+            "reviewedAt": "2026-10-30T23:59:31.207Z",
+            "source": "PASS",
+            "mathematics": "PASS",
+            "writtenPedagogy": "PASS",
+            "findings": [],
+            "verification": "Circumscribed polyhedron definition and shrinking maximum face diameter; formula 4 pi R squared stated honestly with source proof deferred to point 62. All six actual cube face planes tangent; no fabricated sphere net."
+          }
+        ]
+      },
+      "changedCards": [
+        {
+          "id": "ex-main-0385",
+          "previousSHA256": "484d5b8901a54585e3581a254d1a15d9251917f7b2337759b70181ff047326ca",
+          "sha256": "31a4d43f4f593e9426a2208232d45aace1e458cacf3750d80df66be5c320d5aa",
+          "steps": 4,
+          "modelStates": 6
+        },
+        {
+          "id": "theory-046",
+          "previousSHA256": "130d0468b0ae9d95f9fe87dfea04acfa14f57525df2c8ed344a85810bee7263a",
+          "sha256": "add3ad0c44969b653eabb62aef67bbb03372716e4721ec9e76ec0dc44950524e",
+          "steps": 5,
+          "modelStates": 4
+        }
+      ],
+      "preservation": {
+        "unchangedOtherCardContentHashes": 44,
+        "unchangedOtherCardReviewRows": 44,
+        "priorCanonicalContentReconstructedExactly": true,
+        "explanation": "Removing only the64new central points/arcs and central view, restoring the declared385view/note/label bindings, and recombining the46justification reconstructs both original canonical hashes exactly. This proves the delta contains no undeclared content changes."
+      },
+      "oracleRerun": {
+        "verdict": "PASS_INDEPENDENT_SPHERE_SOURCE_MATHEMATICS",
+        "parameterCases": 3300,
+        "boundaryCases": 276,
+        "negativeControlsRejected": 29,
+        "actualModels": 46,
+        "reachableModelStates": 197
+      },
+      "openFindings": [],
+      "limitations": [
+        "This focused review verifies source reference scope and exact central geometry. It does not claim that this reviewer performed responsive browser screenshots."
+      ]
+    },
+    {
+      "reviewer": "Codex independent source, mathematics and written-pedagogy reviewer /root/release_verification; no lesson authorship",
+      "reviewedAt": "2026-10-31T00:05:46.437Z",
+      "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+      "reason": "One caption clarification after root actually inspected the close P/Q labels in the mobile nearest-point view.",
+      "previousEvidence": {
+        "reviewedAt": "2026-10-31T00:04:05.092Z",
+        "aggregateSHA256": "398f9f1fb57af286159c08ee565bb17f96a99743fd665a73c1cf11a92b2347fc",
+        "reportSHA256": "9ae76e54d43f680f951ee47545a7d9feaf95d95e8b408b3747ee4ac5bbce3b40",
+        "oracle": {
+          "path": "tools/stereo-textbook/sphere-math.test.py",
+          "sha256": "99cde0f45bf77a4a088982641f8fc0b34fc22f3252b75ab21615bdee45ce8737"
+        },
+        "cardRows": [
+          {
+            "id": "ex-main-0387",
+            "sha256": "1ae8804e36ed7ea194c346f795633ab1eb5751a20a583cb8f95202490ca41a38",
+            "steps": 4,
+            "modelStates": 3,
+            "reviewedAt": "2026-10-30T23:59:31.207Z",
+            "source": "PASS",
+            "mathematics": "PASS",
+            "writtenPedagogy": "PASS",
+            "findings": [],
+            "verification": "112-15-113 right triangle; the radial nearest point is justified by the triangle inequality, giving 1 cm. The actual nearest point lies on the sphere and on OP."
+          }
+        ]
+      },
+      "changedCards": [
+        {
+          "id": "ex-main-0387",
+          "previousSHA256": "1ae8804e36ed7ea194c346f795633ab1eb5751a20a583cb8f95202490ca41a38",
+          "sha256": "ab274648efdb732f6b0b7e4722c10d6dbd6b8ba05883e88e2a3655ffcff634a3",
+          "jsonPointer": "/visualization/model/views/nearest/label",
+          "before": "Q находится на луче OP и на сфере. Отрезок PQ сравнивается со всеми расстояниями от P до сферы.",
+          "after": "Точный порядок точек: O — Q — P. Точка Q лежит на сфере между O и P; PQ — короткий внешний отрезок.",
+          "steps": 4,
+          "modelStates": 3
+        }
+      ],
+      "preservation": {
+        "unchangedOtherCardContentHashes": 45,
+        "unchangedOtherCardReviewRows": 45,
+        "priorCanonicalContentReconstructedExactly": true,
+        "coordinatesUnchanged": true,
+        "proofAndStepsUnchanged": true,
+        "oracleBytesUnchanged": true
+      },
+      "verification": {
+        "source": "PASS",
+        "writtenPedagogy": "PASS",
+        "mathematics": "PASS",
+        "actualOrder": "O–Q–P",
+        "radialParameter": 0.9911504424778761,
+        "nearestDistance": 0.999999999999998,
+        "sphereRadius": 112,
+        "scope": "Read the changed label with step3 and checked collinearity, strict betweenness, sphere membership and the exact nearest distance on the unchanged coordinates."
+      },
+      "oracleRerun": {
+        "performed": false,
+        "reason": "Only one explanatory label changed; restoration reproduces the prior canonical hash exactly. The oracle file and all geometry are unchanged. The complete mathematical rerun from the preceding focused review remains recorded in reviewHistory."
+      },
+      "openFindings": [],
+      "limitations": [
+        "No new screenshot verdict is asserted by this independent reviewer; root supplied the observed mobile-label finding."
+      ]
+    },
+    {
+      "event": "Recovered-candidate report before joint panel; theory051 completeness was subsequently found insufficient",
+      "candidateCommit": "a1e4b7611ec4b829ccdc5ab0023d9679ab2899e5",
+      "candidateTree": "d4466c7b40b455aff3e2441c314f2ed50c017928",
+      "reportSHA256": "ebfba91f42bb8cb533c329da5967a2277122d1ecb4dc060aadb3b8e6783ffd0f",
+      "markdownSHA256": "33352b7fae2de348e5170f57c3a87923912676455fdcff8b1fb8775a45e6d0a9",
+      "reviewer": "Codex independent source, mathematics and written-pedagogy reviewer /root/release_verification; no lesson authorship",
+      "reviewedAt": "2026-10-31T00:05:46.437Z",
+      "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+      "aggregateSHA256": "b30c75c0bae3e8131510f703b5dee4712042c2bdf1ba1a82fc6eb256f1d13310",
+      "authorReviewerSeparation": {
+        "reviewerAuthoredLessons": false,
+        "lessonAuthors": [
+          "root: theory043–051",
+          "sphere_exercises_a: main372–381",
+          "sphere_exercises_b: main382–395"
+        ],
+        "reviewerOwnedFiles": [
+          "tools/stereo-textbook/sphere-math.test.py",
+          "docs/reviews/ATANASYAN_SPHERE_CONTENT.json",
+          "docs/reviews/ATANASYAN_SPHERE_372_395_REVIEW.md"
+        ]
+      },
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "edition": "2024, 12th edition",
+        "printedPages": [
+          100,
+          101,
+          102,
+          103,
+          104,
+          105,
+          106,
+          107,
+          108,
+          109,
+          110,
+          111
+        ],
+        "pdfPages": [
+          102,
+          103,
+          104,
+          105,
+          106,
+          107,
+          108,
+          109,
+          110,
+          111,
+          112,
+          113
+        ],
+        "inspection": "The exact original PDF SHA256 was independently recomputed. All twelve rendered page images102–113 were actually viewed and read. Each was independently compared pixel-for-pixel against a fresh rendering of the verified original PDF; all twelve matched. Extracted text was only a lookup aid. Numerical and symbolic answers were independently derived; no claim of an answer-key inspection.",
+        "inspectedPageImages": [
+          {
+            "pdfPage": 102,
+            "sha256": "a09b13b9a6e64569e2718d7a43891120e6f9ff6058b83f2714a84d3dcf6b9fbd"
+          },
+          {
+            "pdfPage": 103,
+            "sha256": "3fbc7c4063e0f4da13a32c5de7bdd15b0041842425e43e2326f0e4d462b3e018"
+          },
+          {
+            "pdfPage": 104,
+            "sha256": "d706b3200c7ada23bc1544c410779c63be678fe24852af644f1b5e5e38542271"
+          },
+          {
+            "pdfPage": 105,
+            "sha256": "d07d9810caf43054be4099771179254080efc6804790875b80fc9c97721c3286"
+          },
+          {
+            "pdfPage": 106,
+            "sha256": "5c104285a5fea267caa5a6e90cc4e780b52da00dab88f6c71196693e7fd28d49"
+          },
+          {
+            "pdfPage": 107,
+            "sha256": "1a5ed4c341fdd948861697f7937e130bc4d71954a890c862d3969d143a72a17e"
+          },
+          {
+            "pdfPage": 108,
+            "sha256": "6f8b3832dca5b7232a6ed96d691544a9ca47bafa57b0332374437003bb8f182a"
+          },
+          {
+            "pdfPage": 109,
+            "sha256": "fdf8480dad3a9e1a667dec0b767961dcf64b418568cca3bf0c1bc37f64cb3567"
+          },
+          {
+            "pdfPage": 110,
+            "sha256": "a45f4a7b890957e5a7ed5db5c7c4705f3a81bcf8d4bdb8afe71eb64d66f56ec5"
+          },
+          {
+            "pdfPage": 111,
+            "sha256": "0dc08e1c63d3a7339cb68fb1cdb2bcaf8f2376da673e2f76012587a07006aea6"
+          },
+          {
+            "pdfPage": 112,
+            "sha256": "5b8b7411a98719eeb06a49463ae53fccef223beb8f96ba79df07933e9d465fec"
+          },
+          {
+            "pdfPage": 113,
+            "sha256": "227416e80606d00c76a134e0cb6bb40866f7e6f79df5f607950b7ea9fc0edb87"
+          }
+        ],
+        "sourceSubparts": {
+          "372": [
+            "а",
+            "б"
+          ],
+          "373": [
+            "а",
+            "б",
+            "в",
+            "г"
+          ],
+          "381": [
+            "а",
+            "б",
+            "в",
+            "г"
+          ],
+          "382": [
+            "а",
+            "б"
+          ],
+          "383": [
+            "а",
+            "б"
+          ],
+          "384": [
+            "а",
+            "б"
+          ],
+          "388": [
+            "а",
+            "б",
+            "в",
+            "г"
+          ]
+        },
+        "theoryHeadingsAndPages": [
+          {
+            "point": 43,
+            "title": "Сфера и шар",
+            "printedPages": [
+              100
+            ]
+          },
+          {
+            "point": 44,
+            "title": "Взаимное расположение сферы и плоскости",
+            "printedPages": [
+              101,
+              102
+            ]
+          },
+          {
+            "point": 45,
+            "title": "Касательная плоскость к сфере",
+            "printedPages": [
+              102,
+              103
+            ]
+          },
+          {
+            "point": 46,
+            "title": "Площадь сферы",
+            "printedPages": [
+              103
+            ]
+          },
+          {
+            "point": 47,
+            "title": "Взаимное расположение сферы и прямой",
+            "printedPages": [
+              104,
+              105
+            ]
+          },
+          {
+            "point": 48,
+            "title": "Сфера, вписанная в цилиндрическую поверхность",
+            "printedPages": [
+              105
+            ]
+          },
+          {
+            "point": 49,
+            "title": "Сфера, вписанная в коническую поверхность",
+            "printedPages": [
+              106
+            ]
+          },
+          {
+            "point": 50,
+            "title": "Сечения цилиндрической поверхности",
+            "printedPages": [
+              107,
+              108
+            ]
+          },
+          {
+            "point": 51,
+            "title": "Сечения конической поверхности",
+            "printedPages": [
+              108,
+              109
+            ]
+          }
+        ]
+      },
+      "independentMathematics": {
+        "parameterFamilies": 3300,
+        "familiesPerExerciseOrTheory": 100,
+        "groups": [
+          "372",
+          "373",
+          "374",
+          "375",
+          "376",
+          "377",
+          "378",
+          "379",
+          "380",
+          "381",
+          "382",
+          "383",
+          "384",
+          "385",
+          "386",
+          "387",
+          "388",
+          "389",
+          "390",
+          "391",
+          "392",
+          "393",
+          "394",
+          "395",
+          "43",
+          "44",
+          "45",
+          "46",
+          "47",
+          "48",
+          "49",
+          "50",
+          "51"
+        ],
+        "fixedAndBoundaryChecks": {
+          "verdict": "PASS",
+          "cases": 276,
+          "diameterAndCentralSection": 4,
+          "lineAndPlaneTransitions": 16,
+          "cylinderParallelPlanes": 16,
+          "cylinderCenterOnPlane": 24,
+          "coneChosenNappeAndHomothety": 28,
+          "conicBothBranchesAndDegeneracies": 188
+        },
+        "actualModels": {
+          "cards": 46,
+          "exerciseModels": 37,
+          "theoryModels": 9,
+          "analyticSpheres": 48,
+          "planarPolygons": 14257,
+          "nonzeroSegments": 30099,
+          "sphereArcEndpointChecks": 57088,
+          "reachableModelStates": 197
+        },
+        "writtenContracts": {
+          "exerciseConditionAnswerContracts": 37,
+          "essentialProofContracts": 18
+        },
+        "negativeControls": {
+          "rejected": 29,
+          "criticalCases": [
+            "omitted382b",
+            "wrong382b source part/inserted pi/wrong inverse-area answer",
+            "389 inserted pi in condition or result",
+            "390 incorrect radius in result or actual sphere",
+            "393 wrong gap/omitted opposite-side exclusion/wrong final area/opposite-side model",
+            "wrong circumcenter/finite-side contact/line-plane angle/tangent plane/nearest point/common tangent/diameter",
+            "nonplanar polygon/off-sphere arc endpoint",
+            "47 converse missing line through contact",
+            "49 wrong contact-circle center",
+            "50 wrong Dandelin focus",
+            "51 wrong cone slope/missing lower hyperbola branch",
+            "385 wrong central radius or central paragraph bound to the acute view",
+            "46 area formula falsely attributed to point43"
+          ]
+        },
+        "methods": [
+          "Independent Euclidean vector projections and quadratic line/sphere intersections on actual authored coordinates.",
+          "Independent incenter/circumcenter construction, finite side contact parameters, complete sampled circle and conic membership checks.",
+          "Smooth sphere area obtained from a surface Jacobian and numerical quadrature, not polygon mesh area.",
+          "Deterministic parameter families and explicit endpoint/degenerate constructions; deep-copy negative controls never mutate lesson files.",
+          "Source-specific regression contracts supplement the complete independent written review; they do not establish semantic correctness by keyword presence alone."
+        ]
+      },
+      "pedagogy": {
+        "solutionSteps": 189,
+        "modelStates": 197,
+        "helpItems": 104,
+        "finalAnswerLeakage": "Initial exercise conditions, captions, neutral view labels and notes disclose source givens and the construction. Requested numerical answers are revealed in solution steps; proof propositions may appear when they are the stated goal. Dedicated auxiliary diameter views make central boundary cases honest.",
+        "answerAssessment": "All 37 exercise answers use manual comparison with task-specific instructions; no arbitrary written proof is claimed to be automatically certified.",
+        "proofCompleteness": "Both inclusions, finite-side versus extension tangencies, source units, all plane/line distance cases, exact pi factors, opposite-side exclusion in393, common-line tangency in394, positive homothety in49 and the full cone-plane quadratic in51 were checked."
+      },
+      "oracle": {
+        "path": "tools/stereo-textbook/sphere-math.test.py",
+        "sha256": "99cde0f45bf77a4a088982641f8fc0b34fc22f3252b75ab21615bdee45ce8737"
+      },
+      "cards": [
+        {
+          "id": "ex-main-0372-a",
+          "sha256": "1ad09a81a1fd65e013e326acf2b017d0bc1dac39b7fd7020d93971932c87a8ce",
+          "steps": 3,
+          "modelStates": 4,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Equal sphere radii and the midpoint give congruent triangles; their supplementary equal angles prove OM perpendicular to AB. O is explicitly outside AB."
+        },
+        {
+          "id": "ex-main-0372-b",
+          "sha256": "85f44158f197cd7f29633e9ec23a4235469473a39750392fda9e512d7be462ad",
+          "steps": 4,
+          "modelStates": 4,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Pythagoras gives AM squared = BM squared; the point is inside the finite segment, so the positive lengths are equal and M is its midpoint."
+        },
+        {
+          "id": "ex-main-0373-a",
+          "sha256": "2440cbab6d2b829a4c15c1c991c5c47390d18ff3e7f5417e0b62aba04da56853",
+          "steps": 4,
+          "modelStates": 4,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Source R=50 cm and chord 40 cm give OM=10 sqrt(21) cm. Actual radius, midpoint, chord and perpendicular measured independently."
+        },
+        {
+          "id": "ex-main-0373-b",
+          "sha256": "2032d2ccaea5d49d5f149de08bf8f4976687cf753bc11e5f8544314ef5bbb253",
+          "steps": 4,
+          "modelStates": 4,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Source R=15 mm and chord 18 mm give OM=12 mm. Actual model obeys both dimensions."
+        },
+        {
+          "id": "ex-main-0373-c",
+          "sha256": "b64e276b7d4c3d4f3ac1776bb415fcdd6fe0ee93b2460c126e4e8906b004ad13",
+          "steps": 4,
+          "modelStates": 4,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Source 10 dm radius and 60 cm center distance require conversion to 6 dm; chord is 16 dm = 160 cm. Actual model uses dm."
+        },
+        {
+          "id": "ex-main-0373-d",
+          "sha256": "332a645918163697eed47da04bc4118457ff500ef3604b80c305b96d48d30f6e",
+          "steps": 4,
+          "modelStates": 5,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "AM=sqrt(a squared-b squared), with a>0 and 0<=b<a. The b=0 case has a real auxiliary diameter DE through O and a reachable dedicated view."
+        },
+        {
+          "id": "ex-main-0374",
+          "sha256": "625419d434fbbec451f9bd8cea70a6083a7fd9f693a175db791526cae459f365",
+          "steps": 4,
+          "modelStates": 5,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Distance sqrt(R squared-m squared/4), with R>0 and 0<m<=2R. The diameter endpoint case is proved separately and modeled by actual DE."
+        },
+        {
+          "id": "ex-main-0375",
+          "sha256": "de4d15277b02d479f21851ff822e91f6264dc3ddbd50eac81fcccd58fbba81d3",
+          "steps": 4,
+          "modelStates": 3,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Source ball radius 41 dm and plane distance 9 dm give section radius 40 dm and disk area 1600 pi dm squared."
+        },
+        {
+          "id": "ex-main-0376",
+          "sha256": "75a5838fe916de30ad592d5d1c8c23f9fd5373f27656bab06fbc4b9e10957eff",
+          "steps": 4,
+          "modelStates": 4,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "6-8-10 right triangle has circumradius 5 cm; sphere radius 13 cm gives center-plane distance 12 cm. Actual circumcenter solved independently."
+        },
+        {
+          "id": "ex-main-0377",
+          "sha256": "03c09aa22dc57dba2ea2bd87e16bbb4f0c15d8a0cef66b3af49fb6dc5b244689",
+          "steps": 4,
+          "modelStates": 5,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Rectangle diagonal 16 cm gives circumradius 8 cm; sphere radius 10 cm gives distance 6 cm. Only the diagonal is prescribed, not an invented aspect ratio."
+        },
+        {
+          "id": "ex-main-0378",
+          "sha256": "89e49c8a03e1c98fbcc6da5f9b7fb0f03e4062e77c777941b837546e762aaa7b",
+          "steps": 5,
+          "modelStates": 5,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "10-10-12 triangle has area 48 and inradius 3; sphere radius 5 gives distance 4 cm. Actual feet lie inside all finite sides, excluding excenters."
+        },
+        {
+          "id": "ex-main-0379",
+          "sha256": "0c4e59bf0673eef8b05f74967491b3f14677edefbca5cde842f5056600b0dc31",
+          "steps": 5,
+          "modelStates": 4,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "13-14-15 triangle has area 84 and inradius 4; sphere radius 5 gives distance 3 cm. Actual weighted incenter and finite side contacts checked."
+        },
+        {
+          "id": "ex-main-0380",
+          "sha256": "43fbb861680ec109a318efccb133a394629e313988a40f1ab4aa0a20fae20a7a",
+          "steps": 5,
+          "modelStates": 6,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Rhombus diagonals 15 and 20 cm give side 12.5, area 150 and inradius 6; sphere radius 10 gives distance 8 cm. All four actual side tangencies checked."
+        },
+        {
+          "id": "ex-main-0381-a",
+          "sha256": "f1452fa3932d16c795d44d2520c6b498176f78e7978479e362da073af5ed43cf",
+          "steps": 3,
+          "modelStates": 4,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "6 dm = 60 cm equals the tetrahedron height: the base plane is tangent and has one common point H."
+        },
+        {
+          "id": "ex-main-0381-b",
+          "sha256": "125c355d91bbf6feb2746df57bb267ec83b0103012075f253f726efe9b6a5025",
+          "steps": 3,
+          "modelStates": 4,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "3 m = 300 cm exceeds height 95 cm: the sphere meets the base plane in a circumference. Actual section and projection verified."
+        },
+        {
+          "id": "ex-main-0381-c",
+          "sha256": "c4f045317836fa07fbf820e7deecf793c94af5cfb340286d27cc6dcd553ca477",
+          "steps": 3,
+          "modelStates": 4,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "5 dm = 50 cm exceeds height 45 cm: a circumference. Exact radius and section points verified."
+        },
+        {
+          "id": "ex-main-0381-d",
+          "sha256": "5870f4d454eaab30c9660ddf054f40a9776cf3c4d527899cdfaf34070854c6e7",
+          "steps": 3,
+          "modelStates": 4,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "3.5 dm = 35 cm is less than height 40 cm: no common points. Actual closest plane point lies outside the ball."
+        },
+        {
+          "id": "ex-main-0382-a",
+          "sha256": "877cf17ab8368cc032c54d82d291ceb94ce22bff16d0117a5a4cce751952be63",
+          "steps": 3,
+          "modelStates": 4,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Ball radius 12 cm and plane distance 8 cm give disk area 80 pi cm squared."
+        },
+        {
+          "id": "ex-main-0382-b",
+          "sha256": "fe5e3e21f4dede18c10f46e37a0a7f8c31e188ecb0dedafae5c6bd33af70bdaf",
+          "steps": 3,
+          "modelStates": 4,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Printed part b is present. Given disk area is exactly 12 cm squared, without pi; radius is sqrt(4+12/pi) cm. Text and actual sphere/section dimensions independently bound."
+        },
+        {
+          "id": "ex-main-0383-a",
+          "sha256": "3554effccebb9ddfc15b52ab2cc249c77b3d5ee5010d3dd4e81f1d64759d3c5f",
+          "steps": 3,
+          "modelStates": 4,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Section through midpoint of a radius has circumference radius sqrt(3) R/2. Its model shows the boundary without incorrectly filling a sphere section."
+        },
+        {
+          "id": "ex-main-0383-b",
+          "sha256": "558423244127741bdbcfbb924192994f24f1f9156aff4da51f59ea6316f5abbf",
+          "steps": 3,
+          "modelStates": 4,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "The circumference bounds the cone base disk; apex is the sphere center, height R/2 and generator R. Lateral area is sqrt(3) pi R squared/2."
+        },
+        {
+          "id": "ex-main-0384-a",
+          "sha256": "92a6349ad28736856e929be1d960e793d5309c125cdadf0064f822fe16234e5e",
+          "steps": 3,
+          "modelStates": 5,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Angle of diameter to secant plane is 30 degrees: section radius sqrt(3) cm and circumference length 2 pi sqrt(3) cm. Actual line-plane angle checked."
+        },
+        {
+          "id": "ex-main-0384-b",
+          "sha256": "d05783f1aa19348e4e4dbd0185a14ef58914cae310ebe535d36671ca0ad8c279",
+          "steps": 3,
+          "modelStates": 5,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Radius 5 m and diameter-plane angle 45 degrees give circumference length 5 pi sqrt(2) m."
+        },
+        {
+          "id": "ex-main-0385",
+          "sha256": "31a4d43f4f593e9426a2208232d45aace1e458cacf3750d80df66be5c320d5aa",
+          "steps": 4,
+          "modelStates": 6,
+          "reviewedAt": "2026-10-31T00:04:05.092Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Angle is between tangent and secant planes: section radius R sin(phi), area pi R squared sin squared(phi). Acute proof, 90-degree central case and excluded zero angle are explicit. Focused follow-up: final step now uses an actual central disk centered at O with radius OA, passing through A in a plane perpendicular to the tangent plane; no fictitious nonzero OH is shown. The former radius view remains reachable from hint h2 and explicitly states that it is the acute example."
+        },
+        {
+          "id": "ex-main-0386",
+          "sha256": "78dcb806987d5c2fb0b60b866bd4cab691ab8ad329da37771cd89a438b31c0db",
+          "steps": 4,
+          "modelStates": 4,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "120-degree wedge and center-edge distance a give sphere radius and contact chord both sqrt(3) a/2. Finite face rays force the internal bisector."
+        },
+        {
+          "id": "ex-main-0387",
+          "sha256": "ab274648efdb732f6b0b7e4722c10d6dbd6b8ba05883e88e2a3655ffcff634a3",
+          "steps": 4,
+          "modelStates": 3,
+          "reviewedAt": "2026-10-31T00:05:46.437Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "112-15-113 right triangle; the radial nearest point is justified by the triangle inequality, giving 1 cm. The actual nearest point lies on the sphere and on OP. Caption-only focused follow-up: nearest view explicitly states the exact order O–Q–P and identifies PQ as the short exterior segment. Coordinates, proof, steps and state count are unchanged; label alone reproduces the previous content hash when reverted."
+        },
+        {
+          "id": "ex-main-0388-a",
+          "sha256": "afd2256dc32e89715422c153988df8e5d481976c3431bdf34c546ec534dfe357",
+          "steps": 3,
+          "modelStates": 2,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "R=6 cm gives sphere area 144 pi cm squared; actual smooth sphere area independently integrated."
+        },
+        {
+          "id": "ex-main-0388-b",
+          "sha256": "3963e430b2f9c8c203d8d6a1715e12e3bfe9b2d94f5da5c61d9f99818a644891",
+          "steps": 3,
+          "modelStates": 2,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "R=2 dm gives sphere area 16 pi dm squared."
+        },
+        {
+          "id": "ex-main-0388-c",
+          "sha256": "1c8e4eb07a17620761b2bb8e07df72a526fd6003b5c841349bd2373575950ec1",
+          "steps": 3,
+          "modelStates": 2,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "R=sqrt(2) m gives sphere area 8 pi m squared."
+        },
+        {
+          "id": "ex-main-0388-d",
+          "sha256": "70523f7cbe80d38ae157a154c6fb52f44ad9d2ed86584b89636b2ee62fca9c26",
+          "steps": 3,
+          "modelStates": 2,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "R=2 sqrt(3) cm gives sphere area 48 pi cm squared."
+        },
+        {
+          "id": "ex-main-0389",
+          "sha256": "eed78bd1cd8fe15cb22da234af24c4f1715d7a6681654985871b56c1606728cf",
+          "steps": 3,
+          "modelStates": 3,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Given full great-disk area is 9 m squared without pi; sphere area is 36 m squared. Actual sphere radius is 3/sqrt(pi)."
+        },
+        {
+          "id": "ex-main-0390",
+          "sha256": "bc995a6033b682eaa8e8d71f3b9a435a4d8f7dd4fe6e7e18d7a18a690bdc2979",
+          "steps": 3,
+          "modelStates": 2,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Given full sphere area is 324 cm squared without pi; positive radius is 9/sqrt(pi) cm, not 9 cm."
+        },
+        {
+          "id": "ex-main-0391",
+          "sha256": "deb8a63719596fa0aa27072e7fd4489cb6185f2f2d7ec9891385cba06ec2bb47",
+          "steps": 3,
+          "modelStates": 4,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "For arbitrary positive radii, dividing 4 pi R1 squared by 4 pi R2 squared proves S1/S2 = R1 squared/R2 squared. Model is explicitly only one representative pair."
+        },
+        {
+          "id": "ex-main-0392",
+          "sha256": "4043a52777b8ab5b54d00bab076164db12398de6df4281555a2bf4609a518079",
+          "steps": 3,
+          "modelStates": 4,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "A disk equal in area to a sphere of radius 5 m has radius 10 m. Both areas and actual model radii checked."
+        },
+        {
+          "id": "ex-main-0393",
+          "sha256": "466e26a93dffbae51991fb0e8e15dd0f7e547baf9f609c32844ec6443245ce3d",
+          "steps": 6,
+          "modelStates": 5,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Radii 9 and 12 cm, plane gap 3 cm: opposite sides would force x-y=21 with x+y=3 and are impossible. Same-side distances 12 and 9 give R=15 and area 900 pi cm squared."
+        },
+        {
+          "id": "ex-main-0394",
+          "sha256": "9d81167bd37b0b793028fea5b0c1a332e7d5d9151aab9100e38ee4d76090fd6a",
+          "steps": 5,
+          "modelStates": 5,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Unique common point forces the plane-intersection line to be tangent, proved by reflection. Perpendicular section is a rectangle, so R squared=r1 squared+r2 squared and S=4 pi(r1 squared+r2 squared)."
+        },
+        {
+          "id": "ex-main-0395",
+          "sha256": "bc6b0a53ae0e0956b1410aa187cab54cae13e19a05ff995e5ba772faf09c2128",
+          "steps": 5,
+          "modelStates": 6,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Rotating a square about a side gives cylinder radius and height both a. Lateral surface plus both bases equals 4 pi a squared, equal to a sphere of radius a."
+        },
+        {
+          "id": "theory-043",
+          "sha256": "fe4555e09936b030c8253cc10908371d8a5ca2a00963eae3e8db28a07ede9222",
+          "steps": 5,
+          "modelStates": 6,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Exact sphere/ball definitions, positive radius, diameter and both inclusions for rotation of semicircle/semidisk. Actual half-circle, interior point and diameters checked."
+        },
+        {
+          "id": "theory-044",
+          "sha256": "64c5868d72bda87cd45ee7d3d87afb6be9c9e8e4827f43145baf7208d06d990b",
+          "steps": 6,
+          "modelStates": 6,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Both inclusions of the sphere circumference and ball disk; d<R, d=R, d>R and d=0. Actual four plane positions and strict circle/disk labeling verified."
+        },
+        {
+          "id": "theory-045",
+          "sha256": "d98769728ce2b4877441f3276f584a5c587f1fa078d5555f6629dfbe453431db",
+          "steps": 5,
+          "modelStates": 3,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Tangent plane theorem and converse with T on the sphere and in the plane, direct uniqueness proof, unique tangent plane at each point. Exact distance and outside point checked."
+        },
+        {
+          "id": "theory-046",
+          "sha256": "add3ad0c44969b653eabb62aef67bbb03372716e4721ec9e76ec0dc44950524e",
+          "steps": 5,
+          "modelStates": 4,
+          "reviewedAt": "2026-10-31T00:04:05.092Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Circumscribed polyhedron definition and shrinking maximum face diameter; formula 4 pi R squared stated honestly with source proof deferred to point 62. All six actual cube face planes tangent; no fabricated sphere net. Focused follow-up: final-step area substitution and diameter definition are separate justifications; point43 is linked only for D=2R."
+        },
+        {
+          "id": "theory-047",
+          "sha256": "ad19789df92d1c5af16c89893ea27673e08a72504c42908b894a5fc869bb3957",
+          "steps": 6,
+          "modelStates": 7,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Line 0/1/2 intersections, both directions of tangency with explicit T on the line, equal tangent lengths and angles, actual auxiliary diameter for center-on-line boundary."
+        },
+        {
+          "id": "theory-048",
+          "sha256": "023d11cd813205941d2d3fb9e4289fec084735feeb16b96f57243e43ca0c31d4",
+          "steps": 5,
+          "modelStates": 5,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Infinite cylinder, all generator contacts and contact circle; centers at distance r/cos(beta) from the axis-plane intersection. Initial center on plane and already tangent case covered; actual tangent plane and all generator distances checked."
+        },
+        {
+          "id": "theory-049",
+          "sha256": "89206442815cc0a8cf2c56d7d63a24ec07a893659edfdec1f633eb20183b21ac",
+          "steps": 5,
+          "modelStates": 4,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Infinite cone, positive generator rays, radius d sin(theta), contact-plane distance d cos squared(theta). Full chosen-nappe scalar construction and positive homothety prove existence without an unjustified initial sphere. Final 90-degree model rotation preserves all checked invariants."
+        },
+        {
+          "id": "theory-050",
+          "sha256": "fa9492544daac88093f84efc52748ed5568dea4a2a39a47d23db523fc26ccc2e",
+          "steps": 7,
+          "modelStates": 6,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Two Dandelin spheres, constant focus-distance sum, converse via orthonormal plane equation, semiaxes r/sin(phi),r and eccentricity cos(phi). Includes perpendicular and parallel 0/1/2-generator cases; all 80 actual ellipse points checked against plane, cylinder, focus sum and directrix ratio."
+        },
+        {
+          "id": "theory-051",
+          "sha256": "ef7d1d48972c3d322e95bc5e65f26a4cc57580f50a4719fe04c0cb65ad9a461b",
+          "steps": 9,
+          "modelStates": 7,
+          "reviewedAt": "2026-10-30T23:59:31.207Z",
+          "source": "PASS",
+          "mathematics": "PASS",
+          "writtenPedagogy": "PASS",
+          "findings": [],
+          "verification": "Exact cone-plane quadratic and reversible transformations prove complete ellipse/parabola/hyperbola classification. Covers both nappes, both hyperbola branches, circle, through-vertex degeneracies and projection limits. Every sampled curve point and actual Dandelin contact checked."
+        }
+      ],
+      "resolvedFindings": [
+        {
+          "cards": [
+            "ex-main-0373-d",
+            "ex-main-0374"
+          ],
+          "finding": "A diameter boundary paragraph originally used an ordinary chord view.",
+          "resolution": "Authors added an actual auxiliary diameter DE through O, a reachable view and explicit explanatory wording; exact coordinates verified."
+        },
+        {
+          "cards": [
+            "ex-main-0383-a",
+            "ex-main-0383-b",
+            "ex-main-0384-a",
+            "ex-main-0384-b"
+          ],
+          "finding": "Sphere circumference and ball/base disk terminology or fill needed separation.",
+          "resolution": "Boundary-only target views, correct circumference labels, and explicit disk bounded by the sphere section for the cone base."
+        },
+        {
+          "cards": [
+            "theory-044"
+          ],
+          "finding": "A filled view was labeled as a set of equidistant sphere-section points.",
+          "resolution": "Removed disk fill from the circumference view; great-section label explicitly distinguishes ball disk and sphere boundary."
+        },
+        {
+          "cards": [
+            "theory-047"
+          ],
+          "finding": "Converse tangency statement omitted explicit T on the line; center-on-line boundary used ordinary secant view.",
+          "resolution": "Added line through T and a real diameter IJ through O, linked to its dedicated hint."
+        },
+        {
+          "cards": [
+            "theory-049"
+          ],
+          "finding": "Author browser review found the tangent plane projected edge-on.",
+          "resolution": "Root rotated every point and sphere center rigidly by 90 degrees about z. This reviewer checked invariants on the final JSON; browser visual acceptance is separately attributed to authors."
+        },
+        {
+          "cards": [
+            "ex-main-0385"
+          ],
+          "finding": "The 90-degree boundary paragraph used an acute triangle view with a nonzero OH.",
+          "resolution": "Added an exact central disk through O and A, with radius OA and plane perpendicular to the tangent plane. Step4 uses central; hint h2 keeps radius reachable; its label explicitly identifies the acute case."
+        },
+        {
+          "cards": [
+            "theory-046"
+          ],
+          "finding": "The final-step justification linked point43 for both the diameter definition and sphere-area substitution.",
+          "resolution": "Split the reasons. Only the D=2R definition links point43; area substitution references the formula stated in point46."
+        },
+        {
+          "cards": [
+            "ex-main-0387"
+          ],
+          "finding": "Author/root browser inspection found labels P and Q displaced to opposite sides of their close points, potentially obscuring the order along the radius.",
+          "resolution": "Nearest-view label explicitly states O–Q–P, Q between O and P on the sphere, and the short exterior segment PQ. Exact geometry and proof are unchanged."
+        }
+      ],
+      "openFindings": [],
+      "limitations": [
+        "This reviewer did not perform the responsive browser screenshot review; author/root browser evidence and its exact-content binding are separate requirements.",
+        "No external paid-provider review, exact committed-head CI, merge authorization or production deployment is claimed by this report.",
+        "No physical-device, screen-reader or real-pupil learning-efficacy trial.",
+        "Sampled meshes illustrate smooth surfaces; geometric equations and numerical surface integration determine the mathematical answers.",
+        "Canonical hashes deliberately exclude status and review metadata. Any other content change invalidates the corresponding review binding and requires an attributed follow-up review."
+      ],
+      "supersededForTheory051": true
+    },
+    {
+      "event": "Independent recovery review found incomplete theory051 despite matching existing review hashes",
+      "reviewer": "release_audit",
+      "reviewedAt": "2026-10-31T00:57:29.579265+00:00",
+      "verdict": "CHANGES_REQUIRED_THEORY_051",
+      "contentSHA256": "ef7d1d48972c3d322e95bc5e65f26a4cc57580f50a4719fe04c0cb65ad9a461b",
+      "evidence": {
+        "artifact": "sphere-existing-candidate-theory-review.json",
+        "sha256": "84c58bf358daf25a34c8662c185319144a5f9d415f1b07358df2011108284dde"
+      },
+      "findings": [
+        {
+          "id": "SPH-T51-01",
+          "severity": "HIGH",
+          "card": "theory-051",
+          "locations": [
+            "steps (all nine)",
+            "help (all four)"
+          ],
+          "finding": "The entire second-Dandelin-sphere argument is absent. The source explicitly asks for an additional proof for ellipse and hyperbola using another sphere; the candidate contains one sphere and no focal sum/difference proof. The general quadratic classification is valid but does not complete this separate assignment.",
+          "requiredResolution": "Add the second-sphere existence and equal-tangent argument. For a=sinφ, s=sinθ, c>0, centers t1=c/(a+s) and t2=c/(a−s) are finite when a≠s; radii |ti|s. For a>s the plane separates the spheres and M lies between generator contacts, giving MF1+MF2=constant. For a<s both contacts lie on the same side of α and M lies outside their interval, giving |MF1−MF2|=constant, with both branches distinguished. At a=s only one finite sphere is available. Justify the ordering before using sum/difference."
+        },
+        {
+          "id": "SPH-T51-02",
+          "severity": "MEDIUM",
+          "card": "theory-051",
+          "locations": [
+            "help/h2/text"
+          ],
+          "finding": "The hint claims the converse applies to the asymptotes of a hyperbola. Finite asymptote points are not hyperbola points and are not points of the cone section.",
+          "requiredResolution": "Replace asymptotes with both hyperbola branches, or explicitly say asymptotes are approached and are not included as finite section points. Rebind exact content review after the edit."
+        },
+        {
+          "id": "SPH-T51-03",
+          "severity": "MEDIUM",
+          "card": "theory-051",
+          "locations": [
+            "steps/step-3/explanation",
+            "steps/step-4/justifications",
+            "steps/step-5 through step-8"
+          ],
+          "finding": "The distance ratio is introduced only conditionally, if MH≠0; the candidate never proves that a section point cannot lie on the directrix. The focus/directrix definition is invoked but no local equivalence to the canonical quadratic definition is supplied. The subsequent cone-plane substitution and completed-square classification are correct as a separate coordinate proof; this finding does not invalidate that calculation.",
+          "requiredResolution": "Prove F is not on the directrix and MH>0 for every section point. Geometrically, F on the contact-circle plane would lie on a generator and force its tangent plane α to contain P; a section point on that plane would also lie on the sphere and hence equal F. Supply the small local conic lemma or the exact focus/directrix identity already derived in theory-047-051-independent.json, so references to later point97 are not silently assumed. Preserve the valid existing quadratic converse."
+        }
+      ],
+      "effect": "Publication completeness was not accepted until these findings were repaired and reread."
+    },
+    {
+      "reviewer": "Codex independent source, mathematics and written-pedagogy panel: visual_middle, visual_late, release_audit; no reviewed-candidate lesson authorship",
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+      "reason": "Recover existing candidate, independently review all46 payloads in three disjoint scopes, and close the actual source/proof omissions in theory051.",
+      "previousEvidence": {
+        "candidateCommit": "a1e4b7611ec4b829ccdc5ab0023d9679ab2899e5",
+        "reviewedAt": "2026-10-31T00:05:46.437Z",
+        "aggregateSHA256": "b30c75c0bae3e8131510f703b5dee4712042c2bdf1ba1a82fc6eb256f1d13310",
+        "reportSHA256": "ebfba91f42bb8cb533c329da5967a2277122d1ecb4dc060aadb3b8e6783ffd0f",
+        "oracle": {
+          "path": "tools/stereo-textbook/sphere-math.test.py",
+          "sha256": "99cde0f45bf77a4a088982641f8fc0b34fc22f3252b75ab21615bdee45ce8737"
+        },
+        "cardRows": [
+          {
+            "id": "theory-051",
+            "sha256": "ef7d1d48972c3d322e95bc5e65f26a4cc57580f50a4719fe04c0cb65ad9a461b",
+            "steps": 9,
+            "modelStates": 7,
+            "reviewedAt": "2026-10-30T23:59:31.207Z",
+            "source": "PASS",
+            "mathematics": "PASS",
+            "writtenPedagogy": "PASS",
+            "findings": [],
+            "verification": "Exact cone-plane quadratic and reversible transformations prove complete ellipse/parabola/hyperbola classification. Covers both nappes, both hyperbola branches, circle, through-vertex degeneracies and projection limits. Every sampled curve point and actual Dandelin contact checked."
+          }
+        ]
+      },
+      "changedCards": [
+        {
+          "id": "theory-051",
+          "previousSHA256": "ef7d1d48972c3d322e95bc5e65f26a4cc57580f50a4719fe04c0cb65ad9a461b",
+          "sha256": "7215244fdf5ec90fe93dbe64bb8817bb1e700541dec3b211c192a439c8f1e07c",
+          "steps": 12,
+          "modelStates": 7,
+          "helpItems": 5
+        }
+      ],
+      "preservation": {
+        "unchangedOtherContentHashes": 45,
+        "fullVisualizationExactlyUnchanged": true,
+        "sourceAndStatementUnchanged": true,
+        "oracleBytesUnchanged": true
+      },
+      "verification": {
+        "schemaVersion": 1,
+        "reviewer": "release_audit",
+        "reviewedAt": "2026-10-31T01:04:51.530Z",
+        "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+        "card": "theory-051",
+        "canonicalContentSHA256": "7215244fdf5ec90fe93dbe64bb8817bb1e700541dec3b211c192a439c8f1e07c",
+        "rawFileSHA256AtReview": "036f3726b01ac38b3b831a58ea756a85039e04867b1dcf4c0a22a14b19ebcfd2",
+        "contentHashExcludes": [
+          "status",
+          "review"
+        ],
+        "previousContentSHA256": "ef7d1d48972c3d322e95bc5e65f26a4cc57580f50a4719fe04c0cb65ad9a461b",
+        "previousCandidateCommit": "a1e4b7611ec4b829ccdc5ab0023d9679ab2899e5",
+        "scope": "Reread the entire amended card, all12steps and5help entries; independently checked every repaired argument, retained proof, boundary case and geometry attribution.",
+        "resolutions": [
+          {
+            "id": "SPH-T51-01",
+            "cards": [
+              "theory-051"
+            ],
+            "finding": "Source point51 remark1 required the second Dandelin sphere and focal sum/difference proof; the recovered nine-step card omitted it.",
+            "resolution": "Steps9–11 now construct both finite spheres for a≠s, distinguish their signed distances and nappes, justify contact-point ordering, and derive the constant sum or absolute difference. The parabola has no second finite sphere. The displayed hyperbola is explicitly distinguished from the unrelated sphere retained in the static scene.",
+            "resolutionReviewedBy": "release_audit",
+            "resolvedAt": "2026-10-31T01:04:51.530Z",
+            "previousContentSHA256": "ef7d1d48972c3d322e95bc5e65f26a4cc57580f50a4719fe04c0cb65ad9a461b",
+            "contentSHA256": "7215244fdf5ec90fe93dbe64bb8817bb1e700541dec3b211c192a439c8f1e07c"
+          },
+          {
+            "id": "SPH-T51-02",
+            "cards": [
+              "theory-051"
+            ],
+            "finding": "Help h2 incorrectly included hyperbola asymptotes in the converse.",
+            "resolution": "Help h2 now covers both hyperbola branches and explicitly excludes asymptotes, with the exact z²−y²=1 versus z=±y comparison.",
+            "resolutionReviewedBy": "release_audit",
+            "resolvedAt": "2026-10-31T01:04:51.530Z",
+            "previousContentSHA256": "ef7d1d48972c3d322e95bc5e65f26a4cc57580f50a4719fe04c0cb65ad9a461b",
+            "contentSHA256": "7215244fdf5ec90fe93dbe64bb8817bb1e700541dec3b211c192a439c8f1e07c"
+          },
+          {
+            "id": "SPH-T51-03",
+            "cards": [
+              "theory-051"
+            ],
+            "finding": "MH>0 and the local focus/directrix-to-canonical-conic equivalence were not established.",
+            "resolution": "Step3 excludes F and every section point from the directrix using contact-circle incidence and P∉α. New help h5 proves the reversible equation, excludes X=0, and treats ellipse, parabola and hyperbola separately. The existing valid cone-plane quadratic converse remains intact.",
+            "resolutionReviewedBy": "release_audit",
+            "resolvedAt": "2026-10-31T01:04:51.530Z",
+            "previousContentSHA256": "ef7d1d48972c3d322e95bc5e65f26a4cc57580f50a4719fe04c0cb65ad9a461b",
+            "contentSHA256": "7215244fdf5ec90fe93dbe64bb8817bb1e700541dec3b211c192a439c8f1e07c"
+          },
+          {
+            "id": "SPH-T51-04",
+            "cards": [
+              "theory-051"
+            ],
+            "finding": "A preliminary amendment applied strict half-space wording to tangent spheres themselves.",
+            "resolution": "Final steps10–11 put spheres in closed half-spaces and the generator contact points in the corresponding strict open half-spaces. This correction was reread before PASS.",
+            "resolutionReviewedBy": "release_audit",
+            "resolvedAt": "2026-10-31T01:04:51.530Z",
+            "previousContentSHA256": "ef7d1d48972c3d322e95bc5e65f26a4cc57580f50a4719fe04c0cb65ad9a461b",
+            "contentSHA256": "7215244fdf5ec90fe93dbe64bb8817bb1e700541dec3b211c192a439c8f1e07c"
+          }
+        ],
+        "additionalCheck": "Through-vertex cases now explicitly match φ<θ, φ=θ, φ>θ; the existing exact quadratic at h=0 supports these cases.",
+        "preservation": {
+          "unchangedOtherContentHashes": 45,
+          "fullVisualizationExactlyUnchanged": true,
+          "sourceAndStatementUnchanged": true,
+          "oracleBytesUnchanged": true
+        },
+        "mathReasoning": {
+          "MHPositive": "A section point on the directrix lies on the contact circle and sphere, hence equals F. Its tangent generator then lies in α, forcing P∈α. This also excludes F from the directrix.",
+          "focusDirectrix": "For f>0 and e>0, squaring sqrt((X−f)²+Y²)=e|X| is reversible. The resulting quadratic has no X=0 point and gives the three nondegenerate conics after completing the square.",
+          "secondSpheres": "With a=sinφ,s=sinθ and h>0, t1=h/(a+s),t2=h/(a−s),ri=|ti|s. Signed center distances give opposite closed half-spaces for ellipse, one closed half-space for hyperbola. Generator contacts cannot lie on α. Ordering follows, and the sum/difference equals |t1−t2|cosθ; focal separation is |t1−t2|cosφ.",
+          "boundaryCases": "Parabola lacks a second finite sphere; φ=90° gives coincident foci/circle; φ=0 remains a valid hyperbola; P∈α has the three classified degeneracies."
+        },
+        "openFindings": [],
+        "limitations": [
+          "No lesson or review flag was changed by this reviewer.",
+          "No new browser image or journey verdict; all responsive images remain a separate pending gate.",
+          "No oracle or full repository gate rerun is claimed for this manual follow-up."
+        ]
+      },
+      "oracleRerun": {
+        "performed": false,
+        "reason": "Current panel independently reviewed amended written proofs. Inherited oracle evidence and all original model coordinates remain attributed and unchanged; no new oracle execution is claimed."
+      },
+      "openFindings": [],
+      "limitations": [
+        "Actual responsive images and complete browser journeys for the amended candidate remain pending.",
+        "No exact-head CI, merge authorization or release verdict is provided."
+      ],
+      "event": "Completed main-panel proof follow-up before a later isolated math-display normalization",
+      "reportSHA256": "58fc23e0f9bbbeec43ed41989ae49e18e9ecf7cc65934f758621a38656fd0105",
+      "aggregateSHA256": "2f8592fb5e50599ae284b4c912897c8dd2d7263c6619375212668d0d53b3bb92"
+    }
+  ],
+  "panel": {
+    "recordedAt": "2026-10-31T01:04:51.530Z",
+    "coverage": {
+      "exerciseCards": 37,
+      "theoryCards": 9,
+      "totalCards": 46,
+      "disjointScopes": true,
+      "allCurrentContentHashesBound": true
+    },
+    "members": [
+      {
+        "reviewer": "visual_middle",
+        "scope": "Exercises372–382, all19cards including382a/b",
+        "cardIds": [
+          "ex-main-0372-a",
+          "ex-main-0372-b",
+          "ex-main-0373-a",
+          "ex-main-0373-b",
+          "ex-main-0373-c",
+          "ex-main-0373-d",
+          "ex-main-0374",
+          "ex-main-0375",
+          "ex-main-0376",
+          "ex-main-0377",
+          "ex-main-0378",
+          "ex-main-0379",
+          "ex-main-0380",
+          "ex-main-0381-a",
+          "ex-main-0381-b",
+          "ex-main-0381-c",
+          "ex-main-0381-d",
+          "ex-main-0382-a",
+          "ex-main-0382-b"
+        ],
+        "reviewedAt": "2026-10-31T00:57:45.717619+00:00",
+        "verdict": "PASS",
+        "evidence": {
+          "artifact": "sphere-existing-candidate-early-review.json",
+          "sha256": "f2e49ebdf9c09cbf136c1765573c971c0883d08f9ec55e59581867327ac2e671"
+        },
+        "independence": "Did not author the recovered candidate.",
+        "checks": {
+          "sourceAndWrittenFields": "All statements, help, steps, justifications, answer instructions and view labels read",
+          "targetedChecks": 619,
+          "failures": []
+        }
+      },
+      {
+        "reviewer": "visual_late",
+        "scope": "Exercises383–395, all18cards",
+        "cardIds": [
+          "ex-main-0383-a",
+          "ex-main-0383-b",
+          "ex-main-0384-a",
+          "ex-main-0384-b",
+          "ex-main-0385",
+          "ex-main-0386",
+          "ex-main-0387",
+          "ex-main-0388-a",
+          "ex-main-0388-b",
+          "ex-main-0388-c",
+          "ex-main-0388-d",
+          "ex-main-0389",
+          "ex-main-0390",
+          "ex-main-0391",
+          "ex-main-0392",
+          "ex-main-0393",
+          "ex-main-0394",
+          "ex-main-0395"
+        ],
+        "reviewedAt": "2026-10-31T00:58:14.768137+00:00",
+        "verdict": "PASS",
+        "evidence": {
+          "artifact": "sphere-existing-candidate-late-review.json",
+          "sha256": "2c613115e2c52b60830cb63a1d0d9f8a133368b3294f852a25bebf6f2564f100"
+        },
+        "independence": "Did not author the recovered candidate.",
+        "checks": {
+          "sourceAndWrittenFields": "All conditions, solutions, help, answers, captions, model notes and view labels read",
+          "targetedCoordinateChecks": 328,
+          "failures": []
+        }
+      },
+      {
+        "reviewer": "release_audit",
+        "scope": "Theory043–051, all9cards; full follow-up review of amended051",
+        "cardIds": [
+          "theory-043",
+          "theory-044",
+          "theory-045",
+          "theory-046",
+          "theory-047",
+          "theory-048",
+          "theory-049",
+          "theory-050",
+          "theory-051"
+        ],
+        "reviewedAt": "2026-10-31T01:04:51.530Z",
+        "verdict": "PASS_AFTER_THEORY051_REPAIRS",
+        "evidence": [
+          {
+            "artifact": "sphere-existing-candidate-theory-review.json",
+            "sha256": "84c58bf358daf25a34c8662c185319144a5f9d415f1b07358df2011108284dde",
+            "status": "Initial CHANGES_REQUIRED record retained"
+          },
+          {
+            "artifact": "sphere-existing-candidate-theory-coordinate-checks.json",
+            "sha256": "5eabd5d82fda7f2839ac77dff552b0aedaad996f5330fdcc8093bfdc47f55326"
+          },
+          {
+            "artifact": "sphere-theory051-followup-review.json",
+            "sha256": "48f2d1c4c3439d4e02300bb3ac8541d3dee6b177efa0c234fcad4420554190e4"
+          },
+          {
+            "artifact": "sphere-theory051-formatting-followup-review.json",
+            "sha256": "3256ab11596cb365d29b08ca23984ac2bbb44f57c9997fc5217ca924b1e13929",
+            "status": "Later formatting-only follow-up; main panel timestamp retained"
+          }
+        ],
+        "independence": "Did not author recovered or amended candidate lessons; executing root authored051 repairs.",
+        "checks": {
+          "initialSelectedIdentitySourceAndCoordinateChecks": 4520,
+          "coordinateFailures": [],
+          "full051ManualFollowup": true
+        }
+      }
+    ],
+    "renderedImageReview": {
+      "status": "PENDING",
+      "claimedByThisPanel": false
+    },
+    "externalProviderVerdict": false,
+    "latestFormattingFollowup": {
+      "reviewer": "release_audit",
+      "reviewedAt": "2026-10-31T01:10:17.075Z",
+      "artifact": "sphere-theory051-formatting-followup-review.json",
+      "sha256": "3256ab11596cb365d29b08ca23984ac2bbb44f57c9997fc5217ca924b1e13929"
+    }
+  },
+  "contentBindingUpdatedAt": "2026-10-31T01:10:17.075Z"
+}
