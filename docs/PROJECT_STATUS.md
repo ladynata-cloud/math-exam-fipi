@@ -1,6 +1,6 @@
 # MathExam project status
 
-## Locally prepared: corrected fixed OGE book edition v2, 2026-10-31
+## Merged: corrected fixed OGE book edition v2, 2026-10-31
 
 - [Task](tasks/OGE_BOOK_EDITION_V2_DALI_20261031.md), `MEDIUM`; owner START,
   base `4a90592077934d9a6d8a617b4afa50938798efb2`, branch
@@ -14,11 +14,14 @@
   records 426 source/v2 learner cases, 790 independent math comparisons,
   142+10+3 v2 runtime checks and independent internal focused review, all PASS.
   The earlier v1 failure is retained; exact-head CI is recorded in the Draft PR.
-- V2 is unpublished. This START permits a new Draft PR, not its merge,
-  auto-merge or deployment. No external-provider review is requested or claimed.
-- Next: (1) inspect the new candidate and exact-head CI; (2) after separate owner
-  release permission, verify the new live bytes/aliases and physical QR/devices
-  before distributing the book.
+- [PR388](https://github.com/ladynata-cloud/math-exam-fipi/pull/388) was merged
+  on 2026-10-31 as `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`, from reviewed
+  head `0aedd01941096636ae75f05bbc8147de937e2db2`. Primary PR metadata was
+  reconciled when starting the LCM task. The earlier local report is a
+  preparation record; this reconciliation does not independently recertify
+  v2 production bytes, physical QR/devices or its distribution gate.
+- Release evidence and any remaining distribution checks belong in PR388;
+  they are outside the new LCM task. No external-provider verdict is claimed.
 
 ## Published with an open distribution gate: OGE book edition v1
 
@@ -50,7 +53,7 @@
   with no provider verdict. Physical phones/printed QR, iOS/Safari/Firefox,
   screen keyboard and pupil trials were not performed.
 
-## Prepared: Vilenkin 6 source clarity and revised cabinet course
+## Published source assets: Vilenkin 6 source clarity and revised cabinet course
 
 - [Task](tasks/VILENKIN6_CLARITY_CABINET_20261030.md), HIGH; branch
   `fix/vilenkin6-clarity-cabinet-20261030`, original candidate base
@@ -58,10 +61,14 @@
 - 24 units, 194 source-selected cards, 615 steps; exact source captions,
   prime table through 1000, elementary/grade-five refreshers and optional hints.
 - Separate per-task cloud attempts preserve the prior 27-module course and its
-  work. Assignment to a real cabinet and production deployment are not done.
+  work. [PR378](https://github.com/ladynata-cloud/math-exam-fipi/pull/378) is
+  merged as `7547ea565871e09ee02b632761f27bc088bd5c8a`. During LCM preparation,
+  HTTPS checks of the live textbook catalog and `units-B.json` returned 200
+  and exact base bytes. This confirms those source assets, not a new complete
+  production regression or assignment to any specific learner's cabinet.
 - [Review report](reports/VILENKIN6_CLARITY_CABINET_20261030.md) separates source,
-  mathematics, saved-work and browser evidence. External review is unavailable,
-  not approved. Release requires the scoped exact-head decision.
+  mathematics, saved-work and browser evidence. The historical preparation
+  report records unavailable external review; it is not a waiver for new work.
 - Full-book goal remains open: only numbers 2.97 and 2.134 have explicit complete
   subpart proofs; the [coverage audit](vilenkin6-source-coverage-audit-2026-10-29.md)
   and [expansion plan](vilenkin6-expansion-plan-2026-10-30.md) enumerate the gaps.
@@ -95,7 +102,7 @@
   this code task. No hosting or search-account settings are changed here.
   Private search metrics are not in this repository.
 
-## Prepared and reviewed: Atanasyan chapter VIII, similar triangles, 640–736
+## Published source bundle: Atanasyan chapter VIII, similar triangles, 640–736
 
 - [Task](tasks/ATANASYAN_7_9_CHAPTER_VIII.md), HIGH; continuing owner permission
   includes publication after the concrete result passes review and checks.
@@ -117,9 +124,13 @@
   extend the runtime inventory; application HTML/JS/CSS are unchanged.
 - Earlier drawing defects and two interrupted execution sessions are recorded
   honestly. No failed or incomplete run is used as the full-course pass.
-- Last live verification still confirms1083 cards. Reviewed public-entry checks,
-  exact-head CI and publication are separate from this local preparation record.
-  Completed release evidence will be recorded in the PR; no status-only PR is needed.
+- Source reconciliation at 2026-10-31 18:47 UTC returned HTTP 200 for the
+  public canonical JSON: all1247 cards and exact current-main bytes, SHA256
+  `af1e3a373745d3a66e3e6f71b14d02de4cd81f0c688a8929c0475277cc22b574`.
+  This confirms publication of the source bundle; it does not recertify every
+  deployed runtime, browser journey or original release decision. The linked
+  255-card native course still has the older whole-bundle provenance pin; the
+  separate bounded repair below addresses that metadata discrepancy.
 - Next source chapter: IX. The complete textbook is not yet finished.
 
 ## Published: Atanasyan chapter VII, area, 541–639
@@ -3016,3 +3027,32 @@ final exact-head CI and deployment verification; see PR266 for current evidence.
   including the released arithmetic entries. Learner-flow evidence for the
   book is recorded separately in the current book task. No common engine,
   storage migration, board protocol or server change belongs to PR377.
+
+
+## Prepared: geometry source provenance synchronization, 2026-11-01
+
+- [Task](tasks/GEOMETRY_SOURCE_PROVENANCE_20261101.md), `MEDIUM`; owner directly
+  approved a separate repair, based on
+  `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`, branch
+  `fix/geometry-source-provenance-20261101`. Merge and deployment remain
+  separately authorized actions.
+- The bounded patch updates the audited canonical-source pin, one native-course
+  provenance field and two assistant-snapshot metadata fields, plus dependent
+  current-artifact test pins. Historical fingerprints and all705 original and
+  255 selected cards remain intact; no runtime, storage or teaching change.
+- [Verification](reports/GEOMETRY_SOURCE_PROVENANCE_20261101.md) records source,
+  preserved-work and helper compatibility checks. Exact-head CI and the
+  independent review are reported in the repair Draft PR. No real cabinet
+  profile has been accessed or changed by this repair.
+- Cabinet/public course and assistant knowledge must be released and rolled
+  back as matching packages. Their existing revision fence rejects a mixed
+  deployment; lesson IDs/revisions and saved-work keys do not change.
+- The owner separately waived external review for the presented PR389 because
+  its provider is unavailable and independent checks were completed. That
+  decision is recorded in PR389 metadata, without an external-provider verdict,
+  and does not apply to other tasks or waive its two recorded CI failures.
+- Both geometry workflows checkout the PR head explicitly. Even after this
+  repair is merged under separate approval, rerunning unchanged PR389 head
+  `a14fed1152a0dbfdca07775dd891ba3af00a2e30` would retain its old pins. Read-only
+  composed validation is evidence for the next integration decision; it does
+  not change that head, its CI, or its separate release permissions.
