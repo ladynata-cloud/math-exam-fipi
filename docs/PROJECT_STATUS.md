@@ -13,8 +13,12 @@
   [report](reports/EGE_P13_FINANCE_LESSON_20261101.md) records 78 independent
   mathematical oracles, 156 finance browser journeys, 26 existing unit files
   and affected course/browser/package gates passing.
-- The Draft PR records its published head and CI outcome. No merge, auto-merge
-  or production deployment is authorized or claimed for this task.
+- [Draft PR390](https://github.com/ladynata-cloud/math-exam-fipi/pull/390) records
+  its published head and CI outcome. Initial CI found canonical asset drift in
+  seven board wrappers and an outdated aggregate test inventory; the bounded
+  follow-up synchronizes them while preserving the existing assertions.
+- No merge, auto-merge or production deployment is authorized or claimed for
+  this task.
 
 ## Published; production browser gate incomplete: fixed OGE book edition v2
 

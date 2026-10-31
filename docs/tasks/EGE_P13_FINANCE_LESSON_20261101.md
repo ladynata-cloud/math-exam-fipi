@@ -58,6 +58,8 @@ without changing existing tasks or invalidating saved attempts.
 - Exact fractions and units in accepted-step history and worked solutions.
 - Registration in the main course and task13 navigation, focused mobile and
   desktop styling, mathematical/lifecycle/browser checks and CI integration.
+  Existing board wrappers must retain exact canonical asset parity; their
+  script/CSS references are synchronized without changing adapters or protocols.
 - Reconcile project status against the already completed PR388 release record.
 
 ### Out of scope
@@ -90,7 +92,7 @@ without changing existing tasks or invalidating saved attempts.
   honestly; the previous eighteen task objects and saved step remain intact.
 - [x] At 320×900 and 1280×900 the active model is readable, keyboard/touch
   controls work and the document has no horizontal clipping.
-- [x] Existing course gates plus targeted finance checks pass; all failures and
+- [ ] Existing course gates plus targeted finance checks pass; all failures and
   unrun checks remain separately recorded.
 
 ## Checks and gates
@@ -148,12 +150,18 @@ without changing existing tasks or invalidating saved attempts.
 
 - Actual branch/base: as specified above; authoritative remote main was
   unchanged at task start and the new worktree was clean.
-- Actual head/PR: to be recorded in the Draft PR after local validation.
+- Actual PR: [Draft PR390](https://github.com/ladynata-cloud/math-exam-fipi/pull/390).
+  The current head and authoritative CI outcome are recorded in its body.
+- First published head `75e5a7a33d7f512cb1a61708be3d4986d1ed428b` had two CI
+  integration findings: canonical asset references in seven board wrappers and
+  an aggregate browser inventory missing the finance module. The follow-up
+  synchronizes those dependencies while retaining the exact equality gates.
 - Verification and focused review: `docs/reports/EGE_P13_FINANCE_LESSON_20261101.md`.
 - Tests passed, failed and not run: recorded separately in that report.
 - Scope deviations: none; owner's task-specific Claude refusal is recorded above.
-- Local acceptance checks are complete. Exact-head CI and its final gate
-  verdict are recorded in the Draft PR after publication.
+- Local content/model acceptance checks are complete. The last checkbox stays
+  open in this prepublication record until replacement-head CI passes; its
+  authoritative outcome is recorded in the Draft PR without a status-only commit.
 
 ## Required handoff
 

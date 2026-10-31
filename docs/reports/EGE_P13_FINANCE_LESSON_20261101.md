@@ -260,3 +260,43 @@ commit and PR remain the authoritative revision identifiers.
 | `tools/profile-readable-help.browser.cjs` | `89ccf0ea53c7925f94f7cd18a2dba43552011cdac742fcd2bbf49b3a0e5f21e2` |
 | `tools/profile-exam-first.browser.cjs` | `357263c2ee1873009c0def9e3aefb76053b24201c390897c0badb8a90fdd59c4` |
 | `tools/profile-unified-course.browser.cjs` | `c4c9e21a015faebc56def1385ab32ae322dbf76015719ca735740aa02cacb5a4` |
+
+## First published CI and dependency follow-up
+
+The first published candidate was
+`75e5a7a33d7f512cb1a61708be3d4986d1ed428b` in
+[Draft PR390](https://github.com/ladynata-cloud/math-exam-fipi/pull/390).
+Its local checks above passed, but its first CI did not pass:
+
+- [Profile learning-start run41228700466](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41228700466)
+  found an omitted `finance` module in the existing `#home` catalogue assertion
+  and stale canonical script lists in the stereometry/expressions wrappers.
+- [Five added board trainers run41228700314](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41228700314)
+  found the same asset-list drift in five other wrappers.
+- SEO, task-first courses and all active stereometry renderers passed on that
+  initial head. Downstream steps skipped by the two failed workflows are not
+  counted as passing.
+
+The correction synchronizes seven existing wrapper HTML files with the main
+course's canonical script/CSS references, including the new finance module and
+cache queries. Each wrapper's body, board adapter, bridge and route/protocol
+boundary remain unchanged. The exact asset-parity assertions are retained.
+`profile-start.browser.cjs` adds the finance module to its aggregate expected
+catalogue while retaining `assert.deepEqual` and all legacy scenarios.
+
+The corrected `PROFILE_START_BROWSER_OK` gate passes **108 tasks / 224 answers**,
+including 360/768/1280px, keyboard, reduced motion, zoom, board and damaged-save
+checks, with no runtime errors. Seventeen relevant browser loaders were
+inspected; no other aggregate omissions were found. The corrected test SHA256
+is `4a8e0d95bae9e62bf1859843eb5b5d305c01daa1b97f608760cedc0b380e4b35`.
+
+This is a required registration dependency within the same task. It adds no
+board protocol or registry behaviour, changes no financial content, and does
+not weaken a gate. The reviewed core source hashes above remain identical.
+All three picker suites pass: `profile-expressions-picker.test.cjs`,
+`profile-stereo-picker.test.cjs` and `profile-added-picker.test.cjs`. The
+independent read-only follow-up review confirmed exact order/cache queries for
+31 shared scripts, unchanged wrapper bodies and board bootstrap order, and no
+changes to the old eight data modules, state, adapter, bridge or server files.
+`git diff --check` passes. Replacement-head CI is recorded in the current PR
+verdict; initial failed runs remain part of the evidence history.
