@@ -40,7 +40,7 @@ The updated source catalogs were regenerated. Fresh local results:
 | Original textbook DOM | PASS, 194 views / 25 figures / 30 journeys |
 | Original legacy bank | PASS, 27 modules / 475 tasks / 81 examples / 266 steps |
 | Exhaustive catalog partition | PASS, 616 identities / 676 legacy cases / 62 reshuffle checks |
-| New two-origin API/SQLite browser run | `LCM_MULTI_BROWSER_OK`, 11 checks; all 194 original saved attempts and legacy work preserved |
+| New two-origin API/SQLite browser run | `LCM_MULTI_BROWSER_OK`, 12 checks; all 194 original saved attempts and legacy work preserved |
 | Screenshot inspection | 14 of 14 inspected, including review controls at 320/390/1280 px |
 
 The browser run again exercised ten complete guided cases, all six fresh
@@ -75,6 +75,32 @@ content fingerprints and rerunning both courses' gates.
 
 External design/result review remains unavailable and not waived. The
 continuation does not authorize merge, publication or a live cabinet change.
+
+### Login-readiness regression found in CI
+
+The first continuation head `4cdb84a9758393a12e727e2cbb2dbad3f70744e3`
+had an additional failure in the
+[Vilenkin cloud browser job](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41228595025/job/124617846111):
+the second-device iframe wait timed out. The login helper had returned as soon
+as the navigation shell appeared, while the initial cabinet requests were
+still pending. The later initial home navigation could replace the test's
+immediate programmatic attempt navigation.
+
+The browser helper now waits for the application's existing
+`#main[aria-busy="false"]` login-completion marker and verifies the synthetic
+account identity. On the second device, the test deliberately holds the first
+cabinet-data response, proves that login remains pending after the shell
+appears, then explicitly releases the response. Only after completed login
+does it restore and verify the saved draft and accepted step. Original iframe,
+retained-work, control, layout assertions and 15-second timeouts are unchanged.
+Failure diagnostics now inspect the actual failing browser page.
+
+The strengthened browser run passes all 12 checks. Its 14 images are
+byte-identical to the already inspected continuation screenshots. Product,
+authentication and persistence code did not change for this test correction;
+the 58 focused and 36 backend results above still bind to identical product
+bytes. The failed CI attempt remains recorded here. The next exact-head CI
+result belongs in PR389 and is not inferred from this local pass.
 
 ## Delivered behavior
 

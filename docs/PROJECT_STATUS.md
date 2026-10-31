@@ -21,7 +21,7 @@
 - The 2026-11-01 continuation adds the agreed missing-factor explanation and
   quick review/return controls for the original prime-factor, GCD and LCM
   sections. Fresh local checks pass: 58 focused tests, 36 backend tests and
-  11 two-origin browser checks; all 14 current screenshots were inspected.
+  12 two-origin browser checks; all 14 current screenshots were inspected.
   The original 194 cards and saved synthetic attempts remain unchanged.
 - Initial exact-head CI passes the Vilenkin cloud/publication workflows. The
   global catalog partition was extended to check original 194 and author 44

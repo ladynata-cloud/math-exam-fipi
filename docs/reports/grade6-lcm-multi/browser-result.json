@@ -8,6 +8,7 @@
     "Normal teacher profile form selects the textbook route only for the intended synthetic pupil",
     "Review shortcuts open prime factors, GCD and original LCM exercises and return without changing route or starting work",
     "Cabinet keeps all 194 textbook tasks and adds separately labelled examples, paired practice methods and six checks",
+    "Delayed initial cabinet data keeps login pending until completion before second-device navigation",
     "A verified chain step and unfinished next answer survive reload and a separate browser context",
     "Switching both methods through course buttons resumes separate saved steps and drafts; both stay supported learning",
     "Real form submissions verify both methods with three, four and five numbers, one, repeated inputs and answers above 200",
@@ -447,24 +448,6 @@
   "runtime": "Chromium 140.0.7339.16; Playwright 1.62.1; Node 24.22.1",
   "environment": "Two local origins, isolated SQLite, synthetic accounts; browser public requests blocked",
   "base": "a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3",
-  "verifiedAtUtc": "2026-10-31T18:11:52Z",
-  "fileSha256": {
-    "courses/vilenkin-6-part-1/textbook-data/supplement-lcm-multi.json": "2d5a4afaea50e855d8df63d53337a5f0211c0d51c55eacb926d7af57140eeee1",
-    "courses/vilenkin-6-part-1/textbook-course.js": "7055395ff6ffe9cb3478f1533042129cf7dabae952269b80adf69d4f2cd5938d",
-    "courses/vilenkin-6-part-1/textbook-course.css": "9506cf6b0f9f67935c71e0fafce30596e16d479c8fc312d3734aa9b73b16fc3d",
-    "courses/vilenkin-6-part-1/textbook-source-labels.js": "17bff05c56f9b075f2d171230f80b31f3e4f93858e856029e10868f10ba1174a",
-    "courses/vilenkin-6-part-1/textbook-learning-contracts.js": "52d94141ba0be881a00c5eb37f50aa95b9a5c175441f9955be7b60a1c3487ce9",
-    "courses/vilenkin-6-part-1/textbook.html": "70f7bc7fc725281280dc816a907f37a148d41f44fd1f58ab183fba7b84b588d3",
-    "learning/app.js": "83e96e17e5336a9e9aa8457346f109b83a46149197a2390089a1cc4935acbee0",
-    "learning/style.css": "f84170ec5787b25846ccbf3b0c4d5fad0d59ea816bedf5ce2dbbad9e9adce0cf",
-    "learning/attached-course.js": "21b0024b0910d5bd937a25b16aab7e174d84d10d5695a2668edf78dee3b0392f",
-    "learning/vilenkin6-textbook-course.js": "6d1e3b94958315a740ae342ecbeeee5c242688a03aeab51ca178a558b420b3fc",
-    "learning/vilenkin6-textbook-catalog.js": "88e3020a5545b28a3d16bde317c3011dd5fe30650d1873879c951149594ab023",
-    "learning/catalog.js": "36d65fed06c4bdf77e1af1bce612db2261e80a64d362a16119c9ad79fc6f672b",
-    "learning/index.html": "946083f36fb154648074779f54e42743b9c3bbe639d5b937e609a13d98088221",
-    "tools/vilenkin6-course/build-textbook-catalog.cjs": "3556aab09b41da1b11ad992fe85291beb948104e94dd746acbdbc4ec233ed92f",
-    "tools/learning-lcm-multi.browser.cjs": "aa1538719ecfc927f77f34f08c1adecefb47bd1d8a15174758edb05628a9032d"
-  },
   "imageSha256": {
     "course-review-320.png": "d556071fc3bf10a0e3a038346114fdb0cfd3dddafe03e6f90cec41a138c244bd",
     "course-examples-320.png": "06e775645795047d4c385ab3734dd96cd282a81c1aa123fc071c4d1180ebcfe4",
@@ -507,7 +490,8 @@
       "Completed step history pushed the active factor step below the visible iframe",
       "Closed floating helper launcher covered the submit button",
       "The agreed missing-factor explanation was absent from the worked 12,18,30 solution",
-      "The cabinet placed earlier review topics below the complete author bank without quick review and return controls"
+      "The cabinet placed earlier review topics below the complete author bank without quick review and return controls",
+      "The browser login helper returned at shell visibility before initial cabinet data completed; the second-device test now holds that data and waits for the normal login-completion marker"
     ],
     "observations": [
       "A transient correct-step toast overlaps part of the lower history heading in one screenshot, without covering the active answer, check button or hints"
@@ -518,5 +502,23 @@
       "Real pupil cabinet and release not performed",
       "External design and ready-result reviews unavailable"
     ]
+  },
+  "verifiedAtUtc": "2026-10-31T18:22:30Z",
+  "fileSha256": {
+    "courses/vilenkin-6-part-1/textbook-data/supplement-lcm-multi.json": "2d5a4afaea50e855d8df63d53337a5f0211c0d51c55eacb926d7af57140eeee1",
+    "courses/vilenkin-6-part-1/textbook-course.js": "7055395ff6ffe9cb3478f1533042129cf7dabae952269b80adf69d4f2cd5938d",
+    "courses/vilenkin-6-part-1/textbook-course.css": "9506cf6b0f9f67935c71e0fafce30596e16d479c8fc312d3734aa9b73b16fc3d",
+    "courses/vilenkin-6-part-1/textbook-source-labels.js": "17bff05c56f9b075f2d171230f80b31f3e4f93858e856029e10868f10ba1174a",
+    "courses/vilenkin-6-part-1/textbook-learning-contracts.js": "52d94141ba0be881a00c5eb37f50aa95b9a5c175441f9955be7b60a1c3487ce9",
+    "courses/vilenkin-6-part-1/textbook.html": "70f7bc7fc725281280dc816a907f37a148d41f44fd1f58ab183fba7b84b588d3",
+    "learning/app.js": "83e96e17e5336a9e9aa8457346f109b83a46149197a2390089a1cc4935acbee0",
+    "learning/style.css": "f84170ec5787b25846ccbf3b0c4d5fad0d59ea816bedf5ce2dbbad9e9adce0cf",
+    "learning/attached-course.js": "21b0024b0910d5bd937a25b16aab7e174d84d10d5695a2668edf78dee3b0392f",
+    "learning/vilenkin6-textbook-course.js": "6d1e3b94958315a740ae342ecbeeee5c242688a03aeab51ca178a558b420b3fc",
+    "learning/vilenkin6-textbook-catalog.js": "88e3020a5545b28a3d16bde317c3011dd5fe30650d1873879c951149594ab023",
+    "learning/catalog.js": "36d65fed06c4bdf77e1af1bce612db2261e80a64d362a16119c9ad79fc6f672b",
+    "learning/index.html": "946083f36fb154648074779f54e42743b9c3bbe639d5b937e609a13d98088221",
+    "tools/vilenkin6-course/build-textbook-catalog.cjs": "3556aab09b41da1b11ad992fe85291beb948104e94dd746acbdbc4ec233ed92f",
+    "tools/learning-lcm-multi.browser.cjs": "3eb9b4483fddb301671a890f4859c10d23562b0b85fe4ef9d816e2061c19438f"
   }
 }

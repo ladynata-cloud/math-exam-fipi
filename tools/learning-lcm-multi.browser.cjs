@@ -145,7 +145,7 @@ function reviewData() {
 (async () => {
   const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'learning-lcm-multi-browser-'));
   const checks = [], errors = [], screenshots = [], layout = [], layoutFailures = [], exercised = [];
-  let store, server, trainerServer, browser, page, student;
+  let store, server, trainerServer, browser, page, student, inspectedPage;
   try {
     reviewData();
     checks.push('All 44 answers and every intermediate step agree with independent arithmetic; six checks use fresh conditions');
@@ -196,7 +196,7 @@ function reviewData() {
     browser = await chromium.launch({ headless: true, executablePath: process.env.CHROMIUM_EXECUTABLE_PATH,
       args: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-background-networking'] });
 
-    async function login(person) {
+    async function login(person, { holdInitialData = false } = {}) {
       const context = await browser.newContext({ viewport: { width: 1280, height: 900 }, locale: 'ru-RU', serviceWorkers: 'block' });
       await context.route('**/*', route => {
         const url = new URL(route.request().url());
@@ -206,7 +206,18 @@ function reviewData() {
       await context.addInitScript(key => {
         if (localStorage.getItem(key) === null) localStorage.setItem(key, 'public-sentinel');
       }, standaloneKey);
+      let dataHeld = false, holdExpired = false, releaseInitialData;
+      const initialDataGate = new Promise(resolve => { releaseInitialData = resolve; });
+      if (holdInitialData) {
+        await context.route(origin + '/api/learning/attempts', async route => {
+          dataHeld = true;
+          const timeout = setTimeout(() => { holdExpired = true; releaseInitialData(); }, 15000);
+          try { await initialDataGate; await route.continue(); }
+          finally { clearTimeout(timeout); }
+        }, { times: 1 });
+      }
       const target = await context.newPage();
+      inspectedPage = target;
       target.setDefaultTimeout(15000);
       target.on('pageerror', error => errors.push(error.message));
       await target.goto(origin + '/learning/#home');
@@ -214,10 +225,32 @@ function reviewData() {
       await target.locator('#auth-form [name=password]').fill(password);
       await target.locator('#auth-form [type=submit]').click();
       await target.locator('#navigation').waitFor();
+      // The shell appears before loadCabinet finishes its initial requests.
+      // Navigate only after the existing login-completion marker is cleared;
+      // otherwise the late initial home route can replace the requested work.
+      const ready = target.locator('#main[aria-busy="false"]').waitFor();
+      // The final await below still fails on rejection; attach a handler now
+      // while the independent held-data assertion is being awaited.
+      ready.catch(() => {});
+      if (holdInitialData) {
+        try {
+          await until(() => dataHeld, 'held initial cabinet data');
+          assert.equal(await target.locator('#main').getAttribute('aria-busy'), 'true');
+          assert.equal(await Promise.race([ready.then(() => true),
+            new Promise(resolve => setTimeout(() => resolve(false), 100))]), false,
+          'Login must remain pending after the navigation shell appears while cabinet data is held');
+          assert.equal(holdExpired, false, 'The explicit release, not a timeout, must unblock login');
+        } finally { releaseInitialData(); }
+      }
+      await ready;
+      assert.equal(await target.evaluate(() => LearningApp.account()?.id), person.id,
+        'Login completed for the intended synthetic account');
+      if (holdInitialData) checks.push('Delayed initial cabinet data keeps login pending until completion before second-device navigation');
       return target;
     }
 
     async function managedFrame(target, { readOnly = false, selector = '#answer' } = {}) {
+      inspectedPage = target;
       const child = target.frameLocator('#trainer-host iframe');
       await child.locator('body[data-managed-readonly="' + readOnly + '"]').waitFor();
       await child.locator(selector).first().waitFor();
@@ -400,7 +433,7 @@ function reviewData() {
     let frame = await managedFrame(page);
     assert.equal(await frame.locator('#answer').inputValue(), '20');
     assert.match(await frame.locator('.step-history').innerText(), /12/);
-    const secondDevice = await login(student);
+    const secondDevice = await login(student, { holdInitialData: true });
     await secondDevice.evaluate(id => LearningApp.navigate('attempt=' + id), chainId);
     const secondFrame = await managedFrame(secondDevice);
     assert.equal(await secondFrame.locator('#answer').inputValue(), '20');
@@ -538,13 +571,14 @@ function reviewData() {
     console.error(error);
     console.error('COMPLETED_CHECKS', JSON.stringify(checks));
     console.error('LAYOUT_FAILURES', JSON.stringify(layoutFailures));
-    if (page && !page.isClosed()) {
+    const failedPage = inspectedPage && !inspectedPage.isClosed() ? inspectedPage : page;
+    if (failedPage && !failedPage.isClosed()) {
       fs.mkdirSync(artifactDir, { recursive: true });
-      await page.screenshot({ path: path.join(artifactDir, 'failure.png'), fullPage: false }).catch(() => {});
-      console.error('CABINET', await page.locator('body').innerText().catch(() => 'Unavailable'));
-      const id = attemptId(page);
+      await failedPage.screenshot({ path: path.join(artifactDir, 'failure.png'), fullPage: false }).catch(() => {});
+      console.error('CABINET', await failedPage.locator('body').innerText().catch(() => 'Unavailable'));
+      const id = attemptId(failedPage);
       if (id && student && store) console.error('SYNTHETIC_ATTEMPT', JSON.stringify(store.getAttempt(student, id)));
-      for (const frame of page.frames().slice(1)) {
+      for (const frame of failedPage.frames().slice(1)) {
         console.error('TRAINER', await frame.locator('body').innerText().catch(() => 'Unavailable'));
       }
     }
