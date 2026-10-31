@@ -15,14 +15,21 @@
   Original public addresses are retained. Separate fixed copies under
   `/book/oge/2026-10-31/v1/` and `/b/oge26-1/` remain unpublished candidates,
   with matching candidate PDF/DOCX and 34 QR codes.
-- [ADR 0012](adr/0012-fixed-oge-book-editions.md) is Proposed. The overall gate
-  remains `INCOMPLETE`: two historical tests also fail on the unchanged base;
-  exact-head external review and production release are recorded separately
-  in the PR. No merge, auto-merge or deployment is authorized by this task.
-- Next: (1) review the concrete candidate and decide ADR acceptance;
-  (2) resolve the historical gate contract and the book's 2026/2027 diagnostic
-  caption, then test a physical QR print; (3) after separate release permission,
-  verify all deployed aliases and bytes before distributing the new book.
+- The owner requested completion of every remaining preparation item except
+  external review. [ADR 0012](adr/0012-fixed-oge-book-editions.md) is Accepted
+  for this task. Historical Task6 scope and division compatibility contracts
+  are repaired with strict negative controls. The single book diagnostic
+  caption now says 2027; all 71 URLs, 34 QR and 72 pages are preserved.
+- Local technical checks pass, including 48 Task6/scope checks, 3500 laboratory
+  plans, 2700 guided plans, 12 document mutation controls, 28 collector checks,
+  and a 367-request release-check rehearsal. Exact-head CI is recorded in PR387.
+  Source/frozen teaching bytes are unchanged by this continuation.
+- External review is `NOT_RUN_BY_OWNER_REQUEST`, with no provider verdict and
+  no automatic paid retry. The distribution gate remains `INCOMPLETE` pending
+  publication and its checks. Merge, auto-merge and deployment remain unapproved.
+- Next: (1) inspect the updated candidate and exact-head CI; (2) test a physical
+  QR print and devices; (3) after separate release permission, verify all 71
+  deployed aliases/targets and 225 frozen files before distributing the book.
 
 ## Prepared: Vilenkin 6 source clarity and revised cabinet course
 

@@ -9,8 +9,8 @@
 - Base SHA: `139b944a70f2e8ba4d340d152d08807fad03e5da`.
 - Planned branch: `audit/oge-book-edition-20261031`.
 - Review level: `NEW_ARCHETYPE` for the first fixed book publication package.
-- Related ADR: fixed book edition proposal prepared within this task; acceptance
-  remains an owner decision before rollout.
+- Related ADR: [ADR 0012](../adr/0012-fixed-oge-book-editions.md), Accepted under
+  the owner's 2026-10-31 continuation instruction below.
 
 ## Goal
 
@@ -121,7 +121,42 @@ mobile inspection, persistence, package integrity, and publication evidence.
 - Actual branch: `audit/oge-book-edition-20261031`.
 - Actual base SHA: `139b944a70f2e8ba4d340d152d08807fad03e5da`.
 - Actual head SHA, PR, commits and checks: recorded in the final report.
-- Scope deviations: none authorized.
+- Scope deviations: none outside the explicit continuation below.
+
+## Owner-authorized continuation, 2026-10-31
+
+The owner supplied PR 387, base `139b944a70f2e8ba4d340d152d08807fad03e5da`
+and head `6c4b61573b5a9e1eb166b72b91187a815d1648a7`, then directly instructed:
+“сделай всё кроме внешнего ревью”. This is the current execution instruction,
+not a review verdict copied from the attached earlier report.
+
+- Complete the listed remaining preparation: accept the existing fixed-edition
+  ADR, repair the two historical test contracts without weakening their
+  intended protections, and correct the single diagnostic caption on book
+  page 13 from ОГЭ-2026 to ОГЭ-2027 to match the actual diagnostic.
+- Continue the same branch and Draft PR. The machine scope manifest
+  `OGE_BOOK_EDITION_AUDIT_20261031.scope.json` fixes the original 278-path delta
+  plus the exact continuation paths; it does not derive permission from the
+  current diff. Task6's original release scope remains checked over its exact
+  historical base and published endpoint. New out-of-scope paths must fail.
+- Retain all division arithmetic, state and original-content invariants; use
+  the actual published managed/guided runtime contracts for the migrated pages.
+- Keep original private book documents and earlier evidence. Permit only the
+  exact diagnostic-caption correction in document preservation checks; reject
+  any unrelated wording, placement, link, image or QR change.
+- Prepare and rehearse a read-only post-publication verifier for every frozen
+  file and all 71 short entries and targets. Local evidence must not be called
+  a production pass. Update PDF/DOCX, XLSX, archive and report consistently.
+- External review is **NOT_RUN_BY_OWNER_REQUEST** for this continuation. The
+  prior HTTP 400 remains a failed historical request with no verdict. Do not
+  retry the provider automatically on branch updates. Retain an explicit
+  manual opt-in for a future separately requested review. This is a task-only
+  exception, not a general waiver or substitute reviewer approval.
+- Merge, auto-merge and deployment remain unapproved. Physical devices,
+  physical printed QR and real-pupil trials cannot be replaced by automation.
+
+The local/CI preparation gate and the production/distribution gate are reported
+separately. Passing preparation tests does not close unperformed release steps.
 
 ## Required handoff
 

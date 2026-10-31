@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-31",
+  "timezone": "Asia/Novosibirsk",
+  "pr": 387,
+  "base": "139b944a70f2e8ba4d340d152d08807fad03e5da",
+  "initialHead": "6c4b61573b5a9e1eb166b72b91187a815d1648a7",
+  "ownerInstruction": "сделай всё кроме внешнего ревью",
+  "technicalGate": "PASS",
+  "preparationStatus": "Локальные проверки пройдены; CI точного head фиксируется в PR отдельно.",
+  "distributionGate": "INCOMPLETE",
+  "mergeAuthorized": false,
+  "deploymentAuthorized": false,
+  "externalReview": {
+    "status": "NOT_RUN_BY_OWNER_REQUEST",
+    "verdict": null,
+    "reason": "Владелец прямо исключил внешнее ревью из продолжения PR 387; автоматических запросов к провайдеру нет. Предыдущий HTTP 400 сохранён как история."
+  },
+  "adr": {
+    "status": "Accepted",
+    "source": "docs/adr/0012-fixed-oge-book-editions.md; direct owner continuation instruction on 2026-10-31"
+  },
+  "editorial": {
+    "status": "PASS",
+    "year": 2027,
+    "evidence": "docs/reports/oge-book-20261031/document-check.json",
+    "changes": [
+      {
+        "paragraph": 168,
+        "pdfPage": 13,
+        "before": "Входная диагностика ОГЭ-2026.",
+        "after": "Входная диагностика ОГЭ-2027."
+      }
+    ],
+    "pages": 72,
+    "uniqueUrls": 71,
+    "hyperlinkPlacements": 79,
+    "qr": 34,
+    "unchangedPageImages": 71,
+    "newlyViewedPage": 13
+  },
+  "repairs": {
+    "task6": {
+      "status": "PASS",
+      "tests": 48,
+      "evidence": "continuation/task6-scope.log",
+      "historicalBase": "df63bacb2f82acf5f8543297c372b414925d6113",
+      "historicalRelease": "813fdcc129b27e71cc83ebaa80bd590cf1d1f1f1",
+      "initialPaths": 278,
+      "explicitContinuationPaths": 9
+    },
+    "division": {
+      "status": "PASS",
+      "tests": 3500,
+      "guidedPlans": 2700,
+      "independentActionAnswers": 54697,
+      "negativeControls": 15,
+      "evidence": "continuation/division-validation.json"
+    }
+  },
+  "production": {
+    "status": "NOT_RUN",
+    "reason": "Новые адреса не опубликованы. После отдельного разрешения merge/deploy обязательны проверка всех байтов и браузерные переходы."
+  },
+  "localTests": [
+    {
+      "name": "book-unit",
+      "command": [
+        "node",
+        "--test",
+        "tools/oge-book-corrections.test.cjs",
+        "tools/oge-book-exam-corrections.test.cjs",
+        "tools/oge-basics-inventory.test.cjs",
+        "tools/oge-basics-standalone.test.cjs",
+        "tools/oge-basics-help.test.cjs",
+        "tools/oge-basics-percentages-contextual.test.cjs",
+        "tools/division-lab.test.cjs",
+        "tools/division-guided.test.cjs",
+        "tools/arithmetic-url-contract.test.cjs"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "log": "continuation/book-unit.log",
+      "logSha256": "deff2ed2e4f5f24f8ac3edc027e3f9b25effbc099ca2a3596e6b177b288e878d"
+    },
+    {
+      "name": "task6-scope",
+      "command": [
+        "node",
+        "--test",
+        "tools/oge-task6-fractions-focused.test.mjs",
+        "tools/task6-minimal.test.cjs",
+        "tools/task6-interactive.test.cjs",
+        "tools/task6-scope.test.cjs"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "log": "continuation/task6-scope.log",
+      "logSha256": "98d26b3f07fb095e039a2a33ea3fb4befd7ffd432fad571ac65a5b907bb536c4"
+    },
+    {
+      "name": "package-integrity",
+      "command": [
+        "python3",
+        "tools/book-edition/verify.py",
+        "--base",
+        "139b944a70f2e8ba4d340d152d08807fad03e5da"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "log": "continuation/package-integrity.log",
+      "logSha256": "2402e4c8c41727838e9596adea4de1e0fae9d46e73cc8f08c00904b23e869c96"
+    },
+    {
+      "name": "package-negative",
+      "command": [
+        "python3",
+        "tools/book-edition/test_package.py"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "log": "continuation/package-negative.log",
+      "logSha256": "360c49f063f0991327d545558472220d192d62170ee329e601762f6edf2de0d5"
+    },
+    {
+      "name": "deployed-negative",
+      "command": [
+        "python3",
+        "tools/book-edition/test_deployed.py"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "log": "continuation/deployed-negative.log",
+      "logSha256": "921da9643eba5b06509fbf36175df3a66ff990a3ac56e0d3a172c93d225471e5"
+    },
+    {
+      "name": "collector-negative",
+      "command": [
+        "python3",
+        "tools/oge-book-collect-results.test.py"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "log": "continuation/collector-negative.log",
+      "logSha256": "659e23fa1aba324c9b2ac582fed0fa0f8f765692fed1eb790389b61f4cd453e1"
+    },
+    {
+      "name": "document-synthetic",
+      "command": [
+        "python3",
+        "tools/oge-book-document-check.test.py",
+        "--synthetic-only"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "log": "continuation/document-synthetic.log",
+      "logSha256": "9830738d75e35650651ef68ed5097a6b0bf723fc610022e83bc5983ee99a4cce"
+    }
+  ],
+  "counts": {
+    "bookUnitTests": 58,
+    "task6ScopeTests": 48,
+    "packageNegativeTests": 10,
+    "deployedVerifierTests": 7,
+    "collectorTests": 28,
+    "documentTests": 12,
+    "publicSyntheticSubset": 8,
+    "runtimeEntryViewportChecks": 142,
+    "runtimeBoundaryChecks": 10,
+    "releaseHttpChecks": 367
+  },
+  "runtimeIdentity": {
+    "manifestSha256": "5254e9bba16f4891f2b32ce879d5a81a0eac7a3c5ef69b246d55ff27e7e18b61",
+    "sourceAndFrozenBytesUnchangedSince": "6c4b61573b5a9e1eb166b72b91187a815d1648a7",
+    "changedRuntimePaths": [],
+    "browser": "Chromium 140.0.7339.16",
+    "playwright": "1.62.1",
+    "note": "Existing Chromium explicitly selected after pinned Chromium 1234 download failed; no TLS or test assertions weakened."
+  },
+  "independentInternalReviews": {
+    "task6Scope": "PASS; reviewed by the division-contract agent",
+    "divisionContract": "PASS; root reviewed exact historical normalization and mutations",
+    "deployedVerifier": "PASS; reviewed by the task6-scope agent",
+    "editorialBoundary": "PASS; root reviewed exact single-caption opt-in and collector contract",
+    "externalProviderVerdict": false
+  },
+  "historicalPdfTransfer": {
+    "archivedPdfSha256": "71b53a84a35a4f3895593319b88beea87155e30bb98384b7bca8aa5b7d0dcb15",
+    "materializedPreviousPdfSha256": "f14ab93b2c85cad698bac55fb58948b2cef1bdef3d4cb8c33a59f472f64baaa7",
+    "cause": "UNKNOWN",
+    "newPdfSha256": "e6d6e0fefaddd5f5fc2209a3c7b24a8396d803d207df54d74ff1edb143ea8c61",
+    "newDocxSha256": "cceb260f99053b2d4c33f68871de4269e10e0b8eb717caab68689c9b328ab822",
+    "validation": "New bytes checked directly; prior DOCX matched; transfer of page visual evidence uses exact PNG SHA256 equality, not assumed previous PDF byte identity."
+  },
+  "notRun": [
+    "External review omitted by direct owner instruction.",
+    "Production addresses/bytes and deployed-browser navigation before separate release authorization.",
+    "Physical phones, iOS/Safari, Firefox and on-screen keyboard.",
+    "Physical printed QR/camera and real-pupil trials.",
+    "Local Jekyll build: Ruby/container tooling unavailable."
+  ],
+  "evidence": [
+    {
+      "path": "continuation/local-tests.json",
+      "sha256": "7823ebae65f4a3ea4f055940cd7f2ffd4124f7885150a2f2d7deca5e36e4c0b7",
+      "status": "PASS"
+    },
+    {
+      "path": "continuation/division-before.json",
+      "sha256": "dffac307ba345867aec80c1cdeffd2db6a4b930eb326d940b49baa3c0106f80d",
+      "status": "PASS"
+    },
+    {
+      "path": "continuation/division-validation.json",
+      "sha256": "fb107c6546d201c72af69fe5d7b213651b21fbb9d3e62391807e471aac29cab3",
+      "status": "PASS"
+    },
+    {
+      "path": "continuation/book-runtime/runtime.json",
+      "sha256": "f0062a4a4f45b5689e316a3b446cfdcddf3a30e18a933fb4bbc17fd20fe204e0",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/reports/oge-book-20261031/release-check-local.json",
+      "sha256": "dfc4934b78952c04cf029ede787f845eb8c46d259c8ab10c1b7179db017e6ecd",
+      "status": "PASS",
+      "productionVerified": false
+    }
+  ]
+}

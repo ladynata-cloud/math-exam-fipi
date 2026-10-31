@@ -7,6 +7,8 @@ No book or fixture is committed. Run after the positive document checker:
     --report POSITIVE_REPORT.json [--mapping scripts/oge-book-edition/urls.json]
 
 Requires the same dependencies as oge-book-document-check.py.
+Use --synthetic-only in public CI to run the eight caption-boundary tests
+without privately supplied books; it does not replace the full local run.
 """
 import argparse
 import copy
@@ -47,12 +49,15 @@ class PlacementRegressionTests(unittest.TestCase):
             with zipfile.ZipFile(ARGS.docx) as original, zipfile.ZipFile(candidate, 'w') as changed:
                 for item in original.infolist():
                     changed.writestr(item, edits.get(item.filename, original.read(item.filename)))
-            result = subprocess.run([
+            command = [
                 sys.executable, str(CHECKER), '--docx', str(candidate),
                 '--pdf', ARGS.pdf, '--source-docx', ARGS.source_docx,
                 '--inventory', ARGS.inventory, '--mapping', ARGS.mapping,
                 '--output', str(output),
-            ], capture_output=True, text=True, timeout=180)
+            ]
+            if ARGS.allow_diagnostic_season_2027:
+                command.append('--allow-diagnostic-season-2027')
+            result = subprocess.run(command, capture_output=True, text=True, timeout=180)
             self.assertNotEqual(result.returncode, 0, 'Mutated candidate was incorrectly accepted')
             self.assertIn(error, result.stderr)
             self.assertFalse(output.exists(), 'Failed verification retained stale passing evidence')
@@ -94,10 +99,71 @@ class PlacementRegressionTests(unittest.TestCase):
             CHECK.check_pdf_qr_placements(self.inventory['pdf']['qr_placements'], actual, self.replacement)
 
 
+class DiagnosticCaptionRegressionTests(unittest.TestCase):
+    """Synthetic text fixtures; no private paragraphs are embedded in tests."""
+    def setUp(self):
+        self.source = ['Synthetic paragraph ' + str(i) for i in range(168)]
+        self.source[167] = CHECK.DIAGNOSTIC_SEASON_CORRECTION['before'] + ' Synthetic text.'
+        self.candidate = list(self.source)
+        self.candidate[167] = CHECK.DIAGNOSTIC_SEASON_CORRECTION['after'] + ' Synthetic text.'
+        self.corrections = CHECK.check_non_url_text(self.source, self.candidate, True)
+        self.assertEqual(self.corrections, [CHECK.DIAGNOSTIC_SEASON_CORRECTION])
+
+    def test_extra_non_url_edit_is_rejected(self):
+        self.candidate[0] += ' Unapproved change.'
+        with self.assertRaisesRegex(ValueError, 'outside approved corrections'):
+            CHECK.check_non_url_text(self.source, self.candidate, True)
+
+    def test_diagnostic_edit_without_opt_in_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, 'outside approved corrections'):
+            CHECK.check_non_url_text(self.source, self.candidate)
+
+    def test_missing_diagnostic_edit_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, 'missing, duplicated or moved'):
+            CHECK.check_non_url_text(self.source, self.source, True)
+
+    def test_duplicated_diagnostic_edit_is_rejected(self):
+        self.candidate[0] = self.candidate[167]
+        with self.assertRaisesRegex(ValueError, 'missing, duplicated or moved'):
+            CHECK.check_non_url_text(self.source, self.candidate, True)
+
+    def test_moved_diagnostic_edit_is_rejected(self):
+        self.candidate[0], self.candidate[167] = self.candidate[167], self.candidate[0]
+        with self.assertRaisesRegex(ValueError, 'missing, duplicated or moved'):
+            CHECK.check_non_url_text(self.source, self.candidate, True)
+
+    def test_wrong_diagnostic_year_is_rejected(self):
+        self.candidate[167] = self.candidate[167].replace('2027', '2028')
+        with self.assertRaisesRegex(ValueError, 'missing, duplicated or moved'):
+            CHECK.check_non_url_text(self.source, self.candidate, True)
+
+    def test_stale_pdf_diagnostic_caption_is_rejected(self):
+        pages = ['Synthetic page' for _ in range(72)]
+        pages[12] = CHECK.DIAGNOSTIC_SEASON_CORRECTION['before']
+        with self.assertRaisesRegex(ValueError, 'PDF diagnostic season caption'):
+            CHECK.check_pdf_diagnostic_caption(pages, self.corrections)
+
+    def test_moved_pdf_diagnostic_caption_is_rejected(self):
+        pages = ['Synthetic page' for _ in range(72)]
+        pages[11] = CHECK.DIAGNOSTIC_SEASON_CORRECTION['after']
+        with self.assertRaisesRegex(ValueError, 'PDF diagnostic season caption'):
+            CHECK.check_pdf_diagnostic_caption(pages, self.corrections)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     for argument in ('docx', 'pdf', 'source-docx', 'inventory', 'report'):
-        parser.add_argument('--' + argument, required=True)
+        parser.add_argument('--' + argument)
     parser.add_argument('--mapping', default='scripts/oge-book-edition/urls.json')
+    parser.add_argument('--allow-diagnostic-season-2027', action='store_true')
+    parser.add_argument('--synthetic-only', action='store_true',
+                        help='Run public caption fixtures only; private placement checks remain required locally')
     ARGS, extra = parser.parse_known_args()
-    unittest.main(argv=[sys.argv[0], *extra], verbosity=2)
+    if ARGS.synthetic_only:
+        unittest.main(argv=[sys.argv[0], 'DiagnosticCaptionRegressionTests', *extra], verbosity=2)
+    else:
+        missing = [name for name in ('docx', 'pdf', 'source_docx', 'inventory', 'report')
+                   if getattr(ARGS, name) is None]
+        if missing:
+            parser.error('Full document checks require: ' + ', '.join('--' + name.replace('_', '-') for name in missing))
+        unittest.main(argv=[sys.argv[0], *extra], verbosity=2)

@@ -7,17 +7,28 @@ on:
       - 'scripts/build-oge-book-edition.py'
       - 'scripts/oge-book-edition/**'
       - 'tools/book-edition/**'
+      - 'tools/task6-scope*'
+      - 'tools/division-lab.test.cjs'
       - 'tools/oge-book-*'
       - 'tools/fixtures/oge-book-*'
       - 'docs/reports/oge-book-20261031/**'
       - 'docs/tasks/OGE_BOOK_EDITION_AUDIT_20261031.md'
+      - 'docs/tasks/OGE_BOOK_EDITION_AUDIT_20261031.scope.json'
       - 'trainers/oge-basics/**'
       - 'trainers/oge-task*.html'
       - 'trainers/oge-1-5-trainers/**'
       - '.github/workflows/book-edition.yml'
   workflow_dispatch:
+    inputs:
+      external_review:
+        description: 'Request one paid external review only after a new owner instruction'
+        type: boolean
+        required: false
+        default: false
 permissions:
   contents: read
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
 jobs:
   fixed-edition:
     runs-on: ubuntu-latest
@@ -37,11 +48,24 @@ jobs:
           fi
           python3 tools/book-edition/verify.py --base "$BOOK_BASE"
           python3 tools/book-edition/test_package.py
+          python3 tools/book-edition/test_deployed.py
           python3 tools/oge-book-collect-results.test.py
           git diff --check
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24.21.0'
+      - name: Check the exact editorial correction without private book files
+        run: |
+          python3 -m pip install --disable-pip-version-check PyMuPDF==1.26.6 Pillow==12.3.0 lxml==6.1.1 zxing-cpp==3.1.1
+          python3 tools/oge-book-document-check.test.py --synthetic-only
+      - name: Verify the separately approved continuation scope
+        if: github.event_name == 'pull_request' && github.event.pull_request.number == 387
+        env:
+          TASK_BASE: ${{ github.event.pull_request.base.sha }}
+          TASK_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          node tools/task6-scope.cjs --manifest docs/tasks/OGE_BOOK_EDITION_AUDIT_20261031.scope.json --base "$TASK_BASE" --head "$TASK_HEAD" --pr 387
+          node --test tools/task6-scope.test.cjs
       - name: Install the browser test dependency
         run: |
           npm install --prefix "$RUNNER_TEMP/book-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
@@ -54,7 +78,7 @@ jobs:
           node tools/oge-book-tire-images.browser.cjs
           BOOK_PREFIX=/book/oge/2026-10-31/v1 node tools/oge-book-tire-images.browser.cjs
       - name: Independent mathematical corrections and preserved historical engines
-        run: node --test tools/oge-book-corrections.test.cjs tools/oge-book-exam-corrections.test.cjs tools/oge-basics-inventory.test.cjs tools/oge-basics-standalone.test.cjs tools/oge-basics-help.test.cjs tools/oge-basics-percentages-contextual.test.cjs tools/division-guided.test.cjs tools/arithmetic-url-contract.test.cjs
+        run: node --test tools/oge-book-corrections.test.cjs tools/oge-book-exam-corrections.test.cjs tools/oge-basics-inventory.test.cjs tools/oge-basics-standalone.test.cjs tools/oge-basics-help.test.cjs tools/oge-basics-percentages-contextual.test.cjs tools/division-lab.test.cjs tools/division-guided.test.cjs tools/arithmetic-url-contract.test.cjs
       - name: Complete recorded learner scenarios on source and fixed copies
         run: |
           status=0
@@ -78,21 +102,24 @@ jobs:
           if-no-files-found: error
   external-review:
     needs: fixed-edition
-    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'audit/oge-book-edition-20261031'
+    # The owner explicitly excluded external review from PR 387 continuation.
+    # An omitted provider verdict is never represented as an approval. Keep the
+    # bounded reviewer available only through a deliberate future manual run.
+    if: github.event_name == 'workflow_dispatch' && inputs.external_review && github.ref == 'refs/heads/audit/oge-book-edition-20261031'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.sha }}
           fetch-depth: 0
           persist-credentials: false
       - name: Bounded read-only review of the exact public source patch
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           REVIEW_BASE: 139b944a70f2e8ba4d340d152d08807fad03e5da
-          REVIEW_HEAD: ${{ github.event.pull_request.head.sha }}
-          REVIEW_PR: ${{ github.event.pull_request.number }}
+          REVIEW_HEAD: ${{ github.sha }}
+          REVIEW_PR: 387
         run: python3 tools/oge-book-external-review.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()

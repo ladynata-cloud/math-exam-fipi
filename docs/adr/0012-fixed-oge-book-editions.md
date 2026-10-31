@@ -1,12 +1,17 @@
 # ADR 0012: fixed OGE book editions
 
-Status: Proposed
+Status: Accepted
 
 Date: 2026-10-31
 
-Owner acceptance and a separate exact-base/head release authorization are
-required before rollout. This proposal and its prototype do not certify that
-the book's learner scenarios passed, or that the new addresses are published.
+Owner decision: on 2026-10-31 the owner instructed the executing agent to
+complete every remaining item in the PR 387 handoff except external review
+(“сделай всё кроме внешнего ревью”). This accepts the fixed-edition decision
+below for this task and authorizes the historical-contract and diagnostic-year
+repairs described in the task continuation. It does not authorize merge or
+deployment. A separate exact-base/head release authorization and production
+verification remain required. Acceptance does not certify learner scenarios
+or publication of the new addresses.
 
 ## Context
 
@@ -15,7 +20,7 @@ unique destinations and 34 placed QR codes. Existing public URLs must keep
 working, while the edition used by the book must retain its teaching content,
 runtime, styles and local data. A successful HTTP response is insufficient.
 
-## Proposed decision
+## Decision
 
 An edition has a permanent namespace, initially
 `/book/oge/2026-10-31/v1/`, containing static copies with the original relative
@@ -62,8 +67,10 @@ as well as the proposed verifier when a previous verifier exists.
   mobile layout, help, completion and retained local results. Public-trainer
   checks do not silently substitute for package checks.
 - The PDF, DOCX and all placed QR codes agree with the exact alias mapping.
-- Required independent/external review and the separate merge/deployment
-  decision are recorded with exact provenance.
+- Independent review and the separate merge/deployment decision are recorded
+  with exact provenance. External review is omitted only for the PR 387
+  continuation under the owner's explicit instruction; no external verdict is
+  claimed, and no standing exception is granted for other tasks.
 - After publication, verify the deployed bytes and all short redirects before
   distributing the new book.
 
@@ -76,9 +83,10 @@ commit URL alone would not preserve root-relative dependencies or isolate saved
 results. Download ZIPs remain useful but their ordinary public URLs are mutable.
 Copying the entire site would freeze much unrelated content and increase the
 maintenance/review surface. The bounded closure plus observed browser requests
-is therefore proposed for this book.
+is therefore accepted for this book.
 
 If a critical security or factual issue requires withdrawal, the owner makes
 an explicit operational decision. Record the reason and preserve the original
 source/evidence; do not silently revise teaching content at the printed URL.
-No acceptance, publication or external-review waiver is implied by this ADR.
+Publication is not implied by ADR acceptance. The external-review exception
+above is limited to the owner's current PR 387 instruction.

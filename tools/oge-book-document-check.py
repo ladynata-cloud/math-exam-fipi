@@ -24,6 +24,13 @@ NS = {'w': 'http://schemas.openxmlformats.org/wordprocessingml/2006/main',
       'r': 'http://schemas.openxmlformats.org/officeDocument/2006/relationships',
       'a': 'http://schemas.openxmlformats.org/drawingml/2006/main'}
 
+DIAGNOSTIC_SEASON_CORRECTION = {
+    'paragraph': 168,
+    'pdf_page': 13,
+    'before': 'Входная диагностика ОГЭ-2026.',
+    'after': 'Входная диагностика ОГЭ-2027.',
+}
+
 
 def read_qr(data):
     try:
@@ -51,6 +58,51 @@ def normalized_text_urls(text):
         value = raw if raw.startswith('http') else 'https://' + raw
         values.append(value + '/' if value == 'https://mathexam.space' else value)
     return values
+
+
+def check_non_url_text(source_paragraphs, candidate_paragraphs,
+                       allow_diagnostic_season_2027=False):
+    """Compare every paragraph, permitting only the explicit season correction.
+
+    The opt-in is bounded to one exact caption at its original paragraph. It
+    does not permit other year changes, moved text, added text or an absent edit.
+    """
+    require(len(source_paragraphs) == len(candidate_paragraphs),
+            'Non-URL book paragraph count changed')
+    expected = list(source_paragraphs)
+    corrections = []
+    if allow_diagnostic_season_2027:
+        correction = DIAGNOSTIC_SEASON_CORRECTION
+        index = correction['paragraph'] - 1
+        before, after = correction['before'], correction['after']
+        require(index < len(expected)
+                and expected[index].startswith(before)
+                and sum(text.count(before) for text in expected) == 1
+                and sum(text.count(after) for text in expected) == 0,
+                'Diagnostic season correction does not match the source caption')
+        expected[index] = expected[index].replace(before, after, 1)
+        require(candidate_paragraphs[index].startswith(after)
+                and sum(text.count(after) for text in candidate_paragraphs) == 1
+                and sum(text.count(before) for text in candidate_paragraphs) == 0,
+                'Diagnostic season correction is missing, duplicated or moved')
+        corrections.append(dict(correction))
+    pattern = r'(?:https?://)?mathexam\.space(?:/[^\s<>]*)?'
+    require(all(re.sub(pattern, '', before) == re.sub(pattern, '', after)
+                for before, after in zip(expected, candidate_paragraphs)),
+            'Non-URL book text changed outside approved corrections')
+    return corrections
+
+
+def check_pdf_diagnostic_caption(page_texts, corrections):
+    if not corrections:
+        return
+    correction = DIAGNOSTIC_SEASON_CORRECTION
+    index = correction['pdf_page'] - 1
+    require(index < len(page_texts)
+            and page_texts[index].count(correction['after']) == 1
+            and sum(text.count(correction['after']) for text in page_texts) == 1
+            and sum(text.count(correction['before']) for text in page_texts) == 0,
+            'PDF diagnostic season caption is missing, duplicated or moved')
 
 
 def check_pdf_qr_placements(inventory_rows, actual_rows, replacement):
@@ -82,6 +134,8 @@ def main():
     p.add_argument('--mapping', default='scripts/oge-book-edition/urls.json')
     p.add_argument('--inventory', required=True)
     p.add_argument('--output', required=True)
+    p.add_argument('--allow-diagnostic-season-2027', action='store_true',
+                   help='Allow only the approved ОГЭ-2026 to ОГЭ-2027 caption at paragraph 168 / PDF page 13')
     args = p.parse_args()
     output = Path(args.output)
     inputs = [Path(value).resolve() for value in (args.docx, args.pdf, args.source_docx, args.mapping, args.inventory)]
@@ -154,13 +208,14 @@ def main():
             source_xml = etree.fromstring(src.read('word/document.xml'))
             # Paragraph boundaries are material: concatenating across them can
             # make a URL regex swallow the next paragraph after a trailing '/'.
-            source_text = '\n'.join(''.join(p.xpath('.//w:t/text()', namespaces=NS))
-                                    for p in source_xml.xpath('//w:p', namespaces=NS))
-            candidate_text = '\n'.join(''.join(p.xpath('.//w:t/text()', namespaces=NS))
-                                       for p in xml.xpath('//w:p', namespaces=NS))
-            pattern = r'(?:https?://)?mathexam\.space(?:/[^\s<>]*)?'
-            require(re.sub(pattern, '', source_text) == re.sub(pattern, '', candidate_text), 'Non-URL book text changed')
+            source_paragraphs = [''.join(p.xpath('.//w:t/text()', namespaces=NS))
+                                 for p in source_xml.xpath('//w:p', namespaces=NS)]
+            candidate_paragraphs = [''.join(p.xpath('.//w:t/text()', namespaces=NS))
+                                    for p in xml.xpath('//w:p', namespaces=NS)]
+            editorial_corrections = check_non_url_text(
+                source_paragraphs, candidate_paragraphs, args.allow_diagnostic_season_2027)
     pdf = fitz.open(args.pdf)
+    check_pdf_diagnostic_caption([page.get_text() for page in pdf], editorial_corrections)
     pdf_links = []
     pdf_qrs = []
     decoded_images = {}
@@ -201,7 +256,10 @@ def main():
               'pages': len(pdf), 'unique_urls': len(expected_links),
               'docx_hyperlink_placements': len(docx_links), 'pdf_hyperlink_annotations': len(pdf_links),
               'docx_placed_qr': len(docx_qrs), 'pdf_placed_qr': len(pdf_qrs),
-              'all_non_url_text_unchanged': True, 'all_non_qr_images_unchanged': True,
+              'all_non_url_text_unchanged': not editorial_corrections,
+              'all_non_url_text_unchanged_except_approved_corrections': True,
+              'approved_editorial_corrections': editorial_corrections,
+              'all_non_qr_images_unchanged': True,
               'all_qr_source_placements_match': True, 'all_docx_link_source_placements_match': True,
               'visible_url_occurrences_checked': len(displayed),
               'docx_qr': docx_qrs, 'pdf_qr': pdf_qrs, 'pdf_links': pdf_links,

@@ -173,6 +173,58 @@ class EvidenceTests(unittest.TestCase):
                                         {'sourceBase': 'f' * 40})
         self.assertTrue(all(item['status'] == 'NOT_RUN' for item in result.values()))
 
+    def test_document_caption_evidence_requires_the_exact_approved_delta(self):
+        original = {'all_non_url_text_unchanged': True}
+        self.assertTrue(C.document_text_evidence_valid(original))
+        approved = {'all_non_url_text_unchanged': False,
+                    'all_non_url_text_unchanged_except_approved_corrections': True,
+                    'approved_editorial_corrections': [{
+                        'paragraph': 168, 'pdf_page': 13,
+                        'before': 'Входная диагностика ОГЭ-2026.',
+                        'after': 'Входная диагностика ОГЭ-2027.',
+                    }]}
+        self.assertTrue(C.document_text_evidence_valid(approved))
+        for field, value in [('paragraph', 167), ('pdf_page', 14),
+                             ('before', 'Other caption'), ('after', 'ОГЭ-2028')]:
+            bad = copy.deepcopy(approved)
+            bad['approved_editorial_corrections'][0][field] = value
+            with self.subTest(field=field):
+                self.assertFalse(C.document_text_evidence_valid(bad))
+        for field in ('all_non_url_text_unchanged',
+                      'all_non_url_text_unchanged_except_approved_corrections',
+                      'approved_editorial_corrections'):
+            bad = copy.deepcopy(approved)
+            del bad[field]
+            with self.subTest(missing=field):
+                self.assertFalse(C.document_text_evidence_valid(bad))
+        bad = copy.deepcopy(approved)
+        bad['all_non_url_text_unchanged'] = True
+        self.assertFalse(C.document_text_evidence_valid(bad))
+        bad = copy.deepcopy(approved)
+        bad['approved_editorial_corrections'].append(dict(bad['approved_editorial_corrections'][0]))
+        self.assertFalse(C.document_text_evidence_valid(bad))
+
+    def test_document_negative_cases_cannot_be_omitted_or_invented(self):
+        expected = {
+            'swapped_docx_qr_images', 'wrong_displayed_url_unchanged_hyperlink',
+            'swapped_same_page_pdf_qr', 'moved_pdf_qr_page',
+            'extra_non_url_edit', 'diagnostic_edit_without_opt_in',
+            'missing_diagnostic_edit', 'duplicated_diagnostic_edit',
+            'moved_diagnostic_edit', 'wrong_diagnostic_year',
+            'stale_pdf_diagnostic_caption', 'moved_pdf_diagnostic_caption',
+        }
+        cases = dict.fromkeys(expected, 'rejected')
+        self.assertTrue(C.document_negative_cases_valid(cases))
+        for name in expected:
+            missing = dict(cases)
+            del missing[name]
+            failed = dict(cases, **{name: 'accepted'})
+            with self.subTest(name=name):
+                self.assertFalse(C.document_negative_cases_valid(missing))
+                self.assertFalse(C.document_negative_cases_valid(failed))
+        self.assertFalse(C.document_negative_cases_valid({**cases, 'invented': 'rejected'}))
+        self.assertFalse(C.document_negative_cases_valid(None))
+
     def test_forged_live_counts_do_not_hide_failed_rows(self):
         path = self.root / 'live.json'
         path.write_text(json.dumps({'base_sha': 'f' * 40, 'counts': {'http_200': 71},

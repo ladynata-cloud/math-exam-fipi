@@ -37,6 +37,35 @@ EXERCISE_NA = {
     '/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html': {'hints'},
 }
 PUBLIC_ORIGIN = 'https://mathexam.space'
+# Reviewed exception for the owner's 31 October continuation. This is an exact
+# caption delta, not a general allowlist supplied by a report or a caller.
+APPROVED_DOCUMENT_CORRECTIONS = [{
+    'paragraph': 168, 'pdf_page': 13,
+    'before': 'Входная диагностика ОГЭ-2026.',
+    'after': 'Входная диагностика ОГЭ-2027.',
+}]
+DOCUMENT_NEGATIVE_CASES = {
+    'swapped_docx_qr_images', 'wrong_displayed_url_unchanged_hyperlink',
+    'swapped_same_page_pdf_qr', 'moved_pdf_qr_page',
+    'extra_non_url_edit', 'diagnostic_edit_without_opt_in',
+    'missing_diagnostic_edit', 'duplicated_diagnostic_edit',
+    'moved_diagnostic_edit', 'wrong_diagnostic_year',
+    'stale_pdf_diagnostic_caption', 'moved_pdf_diagnostic_caption',
+}
+
+
+def document_text_evidence_valid(document):
+    corrections = document.get('approved_editorial_corrections', [])
+    if corrections == []:
+        return document.get('all_non_url_text_unchanged') is True
+    return (corrections == APPROVED_DOCUMENT_CORRECTIONS
+            and document.get('all_non_url_text_unchanged') is False
+            and document.get('all_non_url_text_unchanged_except_approved_corrections') is True)
+
+
+def document_negative_cases_valid(cases):
+    return (isinstance(cases, dict) and set(cases) == DOCUMENT_NEGATIVE_CASES
+            and all(value == 'rejected' for value in cases.values()))
 
 
 class DeclaredAssets(HTMLParser):
@@ -463,7 +492,7 @@ def collect_verification(root, mapping, inventory, manifest):
                   document.get('all_qr_source_placements_match') is True,
                   document.get('all_docx_link_source_placements_match') is True,
                   document.get('visible_url_occurrences_checked') == 37,
-                  document.get('all_non_url_text_unchanged') is True,
+                  document_text_evidence_valid(document),
                   document.get('all_non_qr_images_unchanged') is True)
         documents['status'] = 'PASS' if all(checks) else 'FAIL'
     regression_path = work / 'document-check-regressions.json'
@@ -479,7 +508,7 @@ def collect_verification(root, mapping, inventory, manifest):
                  and data.get('checker_sha256') == sha(root / 'tools/oge-book-document-check.py')
                  and data.get('test_script_sha256') == sha(root / 'tools/oge-book-document-check.test.py')
                  and data.get('stale_success_report_removed') is True
-                 and len(cases) == 4 and all(value == 'rejected' for value in cases.values()))
+                 and document_negative_cases_valid(cases))
         regressions['status'] = 'PASS' if valid else 'FAIL'
     visual = {'status': 'NOT_RUN', 'pages': 0, 'evidence': [], 'problems': []}
     pages = []

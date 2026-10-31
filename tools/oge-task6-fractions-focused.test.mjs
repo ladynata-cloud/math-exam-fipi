@@ -6,14 +6,14 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 import bookCorrections from './oge-book-exam-corrections.cjs';
+import taskScope from './task6-scope.cjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const trainerPath = 'trainers/oge-task6-fractions.html';
-// This task preserves the bank and contracts from its reviewed current-main
-// base. The earlier six-path scope described the historical focused fix and
-// cannot classify unrelated releases already included in current main.
+// This evergreen regression preserves the bank from its reviewed baseline.
+// The original Task6 path scope has its own closed, published Git range; the
+// active book PR uses its separate exact base/head scope inventory.
 const baselineSha = '4b56350c35a67e41add8f2b25cf2bf7d73d1f71f';
-const scopeBaseSha = 'df63bacb2f82acf5f8543297c372b414925d6113';
 const git = (...args) => execFileSync('git',
   ['-c', 'safe.directory=' + root, ...args], { cwd: root, encoding: 'utf8' });
 const html = fs.readFileSync(path.join(root, trainerPath), 'utf8');
@@ -540,21 +540,6 @@ test('two scoped relative help links resolve to existing offline files', () => {
   sourceMatches(/Потренировать общий знаменатель/);
 });
 
-test('only the interactive-help task paths differ from the approved current base', () => {
-  const allowed = new Set([
-    trainerPath,
-    'tools/oge-task6-fractions-focused.test.mjs',
-    'tools/task6-minimal.test.cjs',
-    'tools/task6-interactive.test.cjs',
-    'tools/task6-minimal.browser.cjs',
-    '.github/workflows/task6-minimal.yml',
-    'docs/tasks/TASK6_MINIMAL_HINTS.md',
-    'docs/tasks/TASK6_INTERACTIVE_HELP.md',
-    'docs/PROJECT_STATUS.md',
-  ]);
-  const changed = [
-    ...git('diff', '--name-only', scopeBaseSha).trim().split(/\r?\n/),
-    ...git('ls-files', '--others', '--exclude-standard').trim().split(/\r?\n/),
-  ].filter(Boolean);
-  for (const file of changed) assert.ok(allowed.has(file), 'Out-of-scope change: ' + file);
+test('the published interactive-help release stays within its exact approved base/head scope', () => {
+  assert.equal(taskScope.auditHistoricalTask6(root).status, 'PASS');
 });
