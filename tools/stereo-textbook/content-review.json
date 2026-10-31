@@ -932,7 +932,7 @@
     {
       "reviewer": "Codex independent source, mathematics and written-pedagogy panel: visual_middle, visual_late, release_audit; no reviewed-candidate lesson authorship",
       "reviewedAt": "2026-10-31T01:04:51.530Z",
-      "sourceBundleSHA256": "fd5ee10548e6a7aba2287364fbf2648db1b3c81bab64195a9f8cc2d4f77c4a73",
+      "sourceBundleSHA256": "c7a7223f22a96656fdc80354dc68194378b3d73a2a3a8aa89fb50ad3dd73ac5d",
       "scope": "All 46 sphere cards: complete theory 43–51 and every printed part of exercises 372–395. The independent panel reviewed 192 justified steps and 197 model states, including the corrected second-Dandelin-sphere proof in point 51. Responsive images and exact-head CI are separate evidence.",
       "cardIds": [
         "ex-main-0372-a",
@@ -3409,7 +3409,7 @@
     },
     {
       "id": "ex-main-0379",
-      "sha256": "0c4e59bf0673eef8b05f74967491b3f14677edefbca5cde842f5056600b0dc31"
+      "sha256": "17ad04b8e411dc60413f99a7676dfe21a1bc508370cb76e6822b332f19b5fe4a"
     },
     {
       "id": "ex-main-0380",
@@ -3537,7 +3537,7 @@
     },
     {
       "id": "theory-049",
-      "sha256": "89206442815cc0a8cf2c56d7d63a24ec07a893659edfdec1f633eb20183b21ac"
+      "sha256": "9ec735716f16899833be02b07980d7228fd736390ce2f1534fa95e5cd9a3cdcb"
     },
     {
       "id": "theory-050",

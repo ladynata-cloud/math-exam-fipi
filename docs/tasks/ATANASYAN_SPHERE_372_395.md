@@ -140,10 +140,18 @@ A fresh independent panel re-read all 46 cards. It found three omissions/errors
 in point 51: missing second-Dandelin-sphere reasoning from source remark 1, an
 incorrect reference to hyperbola asymptotes, and incomplete focus/directrix
 justification. The executing root corrected that card; an independent reviewer
-verified the amended proof. The other 45 content payloads and every geometry
-payload remain identical to the recovered candidate. New review metadata
+verified the amended proof. At that stage, the other 45 content payloads and every
+geometry payload remained identical to the recovered candidate. New review metadata
 records the actual panel and its current evidence.
 
 The prior browser run stopped near its beginning; no completed pass is inherited
 from it. Full integration, browser image review and exact-head CI are recorded
 separately in the PR handoff. This task does not authorize merge or deployment.
+
+A later browser and image review found display defects in 379 and theory 049.
+The continuation corrected only three written fields: equivalent Heron formatting
+and prose in 379, and operator spacing/denominator parentheses in 049 help h1.
+Independent exact-file and targeted native-image follow-ups are recorded in
+ATANASYAN_SPHERE_CONTENT.json. All geometry and runtime/style/gate files remain
+unchanged. The failed/stopped d0e3 runs are preserved; the amended committed head
+requires its own complete browser, image and CI evidence.

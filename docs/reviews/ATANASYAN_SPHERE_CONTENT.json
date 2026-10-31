@@ -9,14 +9,15 @@
       "root: theory043–051",
       "sphere_exercises_a: main372–381",
       "sphere_exercises_b: main382–395",
-      "Continuation executing root: theory051 follow-up text only"
+      "Continuation executing root: theory051 follow-up text only",
+      "Continuation executing root: display-only text amendments in379 and theory049"
     ],
     "reviewerOwnedFiles": [
       "docs/reviews/ATANASYAN_SPHERE_CONTENT.json",
       "docs/reviews/ATANASYAN_SPHERE_372_395_REVIEW.md"
     ],
     "inheritedOracleAuthor": "Codex independent source, mathematics and written-pedagogy reviewer /root/release_verification; no lesson authorship",
-    "independence": "None of the three panel members authored or modified the recovered candidate lessons. Separate interrupted draft alternatives in other worktrees are not this reviewed candidate. The theory051 amendments were written by the executing root and independently reread by release_audit."
+    "independence": "None of the three panel members authored or modified the recovered candidate lessons. Separate interrupted draft alternatives in other worktrees are not this reviewed candidate. The theory051 amendments were written by the executing root and independently reread by release_audit. The later379 wording received supplementary independent review by visual_late, who did not participate in it. Theory049 display changes were independently reviewed by release_audit."
   },
   "scope": "Joint independent review of all46 exact current card payloads: visual_middle covers19 exercise cards372–382, visual_late covers18 exercise cards383–395, release_audit covers9 theory cards043–051 and the full amended theory051. Each member read all written fields in its declared scope. This record approves source, mathematics and written pedagogy only; actual responsive image review, integration gates and exact-head CI are separate.",
   "sourceSHA256": "bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770",
@@ -446,6 +447,59 @@
         "artifact": "sphere-theory051-formatting-followup-review.json",
         "sha256": "3256ab11596cb365d29b08ca23984ac2bbb44f57c9997fc5217ca924b1e13929"
       }
+    },
+    {
+      "id": "SPH-V379-HERON",
+      "card": "ex-main-0379",
+      "finding": "At320px the help h2 radical produced329px document width; a second radical exceeded the192px nested justification container.",
+      "resolution": "Equivalent squared-area Heron form with explicit positive-root instruction, plus the same theorem stated in words in step3 justification.",
+      "resolutionReviewedBy": [
+        "visual_middle",
+        "visual_late"
+      ],
+      "resolvedAt": "2026-10-31T01:46:40.511968+00:00",
+      "evidence": [
+        {
+          "artifact": "sphere-379-two-text-followup-review.json",
+          "sha256": "c8fcc81f82d7fe8da5e0b50ee811e08a6a57e6fa4ca98dd164c7c1b6e9eeebc8"
+        },
+        {
+          "artifact": "sphere-379-two-text-supplementary-independent-review.json",
+          "sha256": "9ac70b7c3209375e25fd2d2310eeeaa65d19c6f54fe0d59c9a0730c2cbc39001"
+        }
+      ]
+    },
+    {
+      "id": "SPH-V49-01",
+      "card": "theory-049",
+      "finding": "The native320px help h1 image split the function name sinθ across lines.",
+      "resolution": "Operator spaces provide break opportunities around complete mathematical terms.",
+      "resolutionReviewedBy": [
+        "release_audit"
+      ],
+      "resolvedAt": "2026-10-31T01:46:40.511968+00:00",
+      "evidence": [
+        {
+          "artifact": "sphere-theory049-layout-followup-review.json",
+          "sha256": "9483f14da0596892fe93c7a8d6a0273ae9e54ed80afabb1b43bc0e1342cc7a78"
+        }
+      ]
+    },
+    {
+      "id": "SPH-V49-02",
+      "card": "theory-049",
+      "finding": "The denominator in h/[t₀(m+s)]>1 remained a raw slash in the native image.",
+      "resolution": "Equivalent balanced denominator parentheses produce the intended stacked fraction.",
+      "resolutionReviewedBy": [
+        "release_audit"
+      ],
+      "resolvedAt": "2026-10-31T01:46:40.511968+00:00",
+      "evidence": [
+        {
+          "artifact": "sphere-theory049-layout-followup-review.json",
+          "sha256": "9483f14da0596892fe93c7a8d6a0273ae9e54ed80afabb1b43bc0e1342cc7a78"
+        }
+      ]
     }
   ],
   "openFindings": [],
@@ -639,7 +693,7 @@
     },
     {
       "id": "ex-main-0379",
-      "sha256": "0c4e59bf0673eef8b05f74967491b3f14677edefbca5cde842f5056600b0dc31",
+      "sha256": "17ad04b8e411dc60413f99a7676dfe21a1bc508370cb76e6822b332f19b5fe4a",
       "steps": 5,
       "modelStates": 4,
       "reviewedAt": "2026-10-31T01:04:51.530Z",
@@ -652,7 +706,22 @@
       "scopeEvidence": {
         "artifact": "sphere-existing-candidate-early-review.json",
         "sha256": "f2e49ebdf9c09cbf136c1765573c971c0883d08f9ec55e59581867327ac2e671"
-      }
+      },
+      "layoutReviewedAt": "2026-10-31T01:44:44.181227+00:00",
+      "layoutFollowupReviewers": [
+        "visual_middle",
+        "visual_late"
+      ],
+      "layoutEvidence": [
+        {
+          "artifact": "sphere-379-two-text-followup-review.json",
+          "sha256": "c8fcc81f82d7fe8da5e0b50ee811e08a6a57e6fa4ca98dd164c7c1b6e9eeebc8"
+        },
+        {
+          "artifact": "sphere-379-two-text-supplementary-independent-review.json",
+          "sha256": "9ac70b7c3209375e25fd2d2310eeeaa65d19c6f54fe0d59c9a0730c2cbc39001"
+        }
+      ]
     },
     {
       "id": "ex-main-0380",
@@ -1183,7 +1252,7 @@
     },
     {
       "id": "theory-049",
-      "sha256": "89206442815cc0a8cf2c56d7d63a24ec07a893659edfdec1f633eb20183b21ac",
+      "sha256": "9ec735716f16899833be02b07980d7228fd736390ce2f1534fa95e5cd9a3cdcb",
       "steps": 5,
       "modelStates": 4,
       "reviewedAt": "2026-10-31T01:04:51.530Z",
@@ -1196,7 +1265,17 @@
       "scopeEvidence": {
         "artifact": "sphere-existing-candidate-theory-review.json",
         "sha256": "84c58bf358daf25a34c8662c185319144a5f9d415f1b07358df2011108284dde"
-      }
+      },
+      "layoutReviewedAt": "2026-10-31T01:46:40.511968+00:00",
+      "layoutFollowupReviewers": [
+        "release_audit"
+      ],
+      "layoutEvidence": [
+        {
+          "artifact": "sphere-theory049-layout-followup-review.json",
+          "sha256": "9483f14da0596892fe93c7a8d6a0273ae9e54ed80afabb1b43bc0e1342cc7a78"
+        }
+      ]
     },
     {
       "id": "theory-050",
@@ -1238,7 +1317,7 @@
       }
     }
   ],
-  "aggregateSHA256": "fd5ee10548e6a7aba2287364fbf2648db1b3c81bab64195a9f8cc2d4f77c4a73",
+  "aggregateSHA256": "c7a7223f22a96656fdc80354dc68194378b3d73a2a3a8aa89fb50ad3dd73ac5d",
   "oracle": {
     "path": "tools/stereo-textbook/sphere-math.test.py",
     "sha256": "99cde0f45bf77a4a088982641f8fc0b34fc22f3252b75ab21615bdee45ce8737",
@@ -1252,87 +1331,94 @@
     "Canonical hashes exclude only top-level status/review. Any other payload change requires a focused independent rereview and rebinding."
   ],
   "focusedFollowup": {
-    "reviewer": "release_audit",
-    "reviewedAt": "2026-10-31T01:10:17.075Z",
+    "reviewer": "Codex independent display follow-up: visual_middle, visual_late and release_audit",
+    "reviewedAt": "2026-10-31T01:46:40.511968+00:00",
     "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
-    "reason": "The executing agent reported a conservative StereoMath display gate rejecting a bare trigonometric numerator. Parentheses make the fraction display unambiguous without changing its value.",
+    "reason": "Actual 320px browser evidence exposed an overlong Heron radical in379 and split trigonometric notation plus an unformatted denominator in theory049. Only three text fields were amended.",
     "mainPanelReviewedAt": "2026-10-31T01:04:51.530Z",
-    "dating": "The main panel review timestamp remains unchanged. This later timestamp binds the sole formatting change;45other payloads and all main panel registration timestamps remain unchanged.",
+    "dating": "The original panel registration date is retained. This later exact-file review binds the display amendments; final frozen-head CI and images remain separate.",
     "previousEvidence": {
-      "reviewer": "Codex independent source, mathematics and written-pedagogy panel: visual_middle, visual_late, release_audit; no reviewed-candidate lesson authorship",
-      "reviewedAt": "2026-10-31T01:04:51.530Z",
-      "aggregateSHA256": "2f8592fb5e50599ae284b4c912897c8dd2d7263c6619375212668d0d53b3bb92",
-      "reportSHA256": "58fc23e0f9bbbeec43ed41989ae49e18e9ecf7cc65934f758621a38656fd0105",
-      "oracle": {
-        "path": "tools/stereo-textbook/sphere-math.test.py",
-        "sha256": "99cde0f45bf77a4a088982641f8fc0b34fc22f3252b75ab21615bdee45ce8737",
-        "evidenceAttribution": "Inherited exact oracle authored by the recovered-candidate reviewer; unchanged and not rerun by the current panel."
-      },
-      "cardRows": [
-        {
-          "id": "theory-051",
-          "sha256": "7215244fdf5ec90fe93dbe64bb8817bb1e700541dec3b211c192a439c8f1e07c",
-          "steps": 12,
-          "modelStates": 7,
-          "reviewedAt": "2026-10-31T01:04:51.530Z",
-          "source": "PASS",
-          "mathematics": "PASS",
-          "writtenPedagogy": "PASS",
-          "findings": [],
-          "verification": "Full12-step/5-help amended card reread. All SPH-T51 findings resolved: second-sphere existence and sum/difference proofs, contact ordering and closed half-spaces, directrix nondegeneracy and local lemma, asymptote exclusion and all angle/nappe boundaries. Existing full visualization remains exact and unchanged.",
-          "scopedReviewer": "release_audit",
-          "scopeEvidence": {
-            "artifact": "sphere-theory051-followup-review.json",
-            "sha256": "48f2d1c4c3439d4e02300bb3ac8541d3dee6b177efa0c234fcad4420554190e4"
-          }
-        }
-      ]
+      "commit": "d0e3fa45f43f8bdd65c7f7c8380eb2a540a5d7bc",
+      "tree": "e17536ae174889a914797584e8074bb90dba0251",
+      "aggregateSHA256": "fd5ee10548e6a7aba2287364fbf2648db1b3c81bab64195a9f8cc2d4f77c4a73",
+      "reportSHA256": "d89d4e3be83820117a5f6706dddd0c2138a13d3d4073dc0494b2b878271ad3dc"
     },
     "changedCards": [
       {
-        "id": "theory-051",
-        "previousSHA256": "7215244fdf5ec90fe93dbe64bb8817bb1e700541dec3b211c192a439c8f1e07c",
-        "sha256": "a7e5f4a85bd60135b5c2a1843ac8b0815010aa287f717ee94b68182b7f8bf6bc",
-        "jsonPointer": "/steps/2/explanation",
-        "before": "Поэтому MF/MH=cosφ/cosθ=e.",
-        "after": "Поэтому MF/MH=(cosφ)/(cosθ)=e."
+        "id": "ex-main-0379",
+        "previousSHA256": "0c4e59bf0673eef8b05f74967491b3f14677edefbca5cde842f5056600b0dc31",
+        "sha256": "17ad04b8e411dc60413f99a7676dfe21a1bc508370cb76e6822b332f19b5fe4a",
+        "rawSHA256": "54b4ff59a2b5d55af2211ec0e75a15038bfc4ccd538d8be9a1ddc7949d95ee47",
+        "reviewedAt": "2026-10-31T01:44:44.181227+00:00",
+        "reviewers": [
+          "visual_middle",
+          "visual_late"
+        ],
+        "changes": [
+          {
+            "jsonPointer": "/help/1/text",
+            "before": "Сначала вычисли полупериметр p, затем примени формулу Герона S = √(p(p − AB)(p − BC)(p − CA)).",
+            "after": "Сначала вычисли полупериметр p. По формуле Герона S² = p · (p − AB) · (p − BC) · (p − CA). Вычисли произведение и извлеки положительный квадратный корень."
+          },
+          {
+            "jsonPointer": "/steps/2/justifications/0/text",
+            "before": "Формула Герона: S = √(p(p − a)(p − b)(p − c)).",
+            "after": "По формуле Герона квадрат площади треугольника равен произведению его полупериметра и разностей полупериметра с длинами трёх сторон."
+          }
+        ],
+        "evidence": [
+          {
+            "artifact": "sphere-379-two-text-followup-review.json",
+            "sha256": "c8fcc81f82d7fe8da5e0b50ee811e08a6a57e6fa4ca98dd164c7c1b6e9eeebc8"
+          },
+          {
+            "artifact": "sphere-379-two-text-supplementary-independent-review.json",
+            "sha256": "9ac70b7c3209375e25fd2d2310eeeaa65d19c6f54fe0d59c9a0730c2cbc39001"
+          }
+        ]
+      },
+      {
+        "id": "theory-049",
+        "previousSHA256": "89206442815cc0a8cf2c56d7d63a24ec07a893659edfdec1f633eb20183b21ac",
+        "sha256": "9ec735716f16899833be02b07980d7228fd736390ce2f1534fa95e5cd9a3cdcb",
+        "rawSHA256": "fe320e3bc7926e2a25ce0cf62d527fcd782705d654d0f7221116edbab77d8ee4",
+        "reviewedAt": "2026-10-31T01:46:40.511968+00:00",
+        "reviewers": [
+          "release_audit"
+        ],
+        "changes": [
+          {
+            "jsonPointer": "/help/0/text",
+            "before": "Проверим это без предположения по рисунку. Поместим P в начало координат. Пусть a — единичный вектор оси выбранной полости, n — единичная нормаль, направленная от P к α, а уравнение α имеет вид n·X=h, h>0. Положим m=n·a и s=sinθ. Любая образующая направлена вдоль v=a·cosθ+b·sinθ, где b⊥a, |b|=1. Из пересечения α с её положительным лучом следует n·v>0. При m≤−s это невозможно: n·v≤m·cosθ+√(1−m²)·sinθ≤0. Последнее неравенство проверяется возведением неотрицательных частей в квадрат. Значит, m+s>0. У сферы с центром O₀=t₀a и радиусом t₀s опорная точка C=O₀+t₀s·n удовлетворяет n·C=t₀(m+s)>0. Выбрав t₀<h/(m+s), получим 0<n·C<h, поэтому вся сфера лежит со стороны P и луч PC пересечёт α при положительном коэффициенте h/[t₀(m+s)]>1. Это обосновывает выбор в построении.",
+            "after": "Проверим это без предположения по рисунку. Поместим P в начало координат. Пусть a — единичный вектор оси выбранной полости, n — единичная нормаль, направленная от P к α, а уравнение α имеет вид n·X=h, h>0. Положим m=n·a и s=sinθ. Любая образующая направлена вдоль v=a·cosθ+b·sinθ, где b⊥a, |b|=1. Из пересечения α с её положительным лучом следует n·v>0. При m≤−s это невозможно: n · v ≤ m · cosθ + √(1 − m²) · sinθ ≤ 0. Последнее неравенство проверяется возведением неотрицательных частей в квадрат. Значит, m+s>0. У сферы с центром O₀=t₀a и радиусом t₀s опорная точка C=O₀+t₀s·n удовлетворяет n·C=t₀(m+s)>0. Выбрав t₀<h/(m+s), получим 0<n·C<h, поэтому вся сфера лежит со стороны P и луч PC пересечёт α при положительном коэффициенте h/(t₀(m+s)) > 1. Это обосновывает выбор в построении."
+          }
+        ],
+        "evidence": [
+          {
+            "artifact": "sphere-theory049-layout-followup-review.json",
+            "sha256": "9483f14da0596892fe93c7a8d6a0273ae9e54ed80afabb1b43bc0e1342cc7a78"
+          }
+        ]
       }
     ],
     "preservation": {
-      "restoringExactlyTheOneStringReconstructsPriorCanonicalPayload": true,
-      "unchangedOtherCardContentHashes": 45,
-      "unchangedOtherReviewRows": 45,
-      "geometryAndAllViewTextUnchanged": true,
-      "proofMathematicsUnchanged": true,
-      "sourceAndStatementUnchanged": true,
-      "steps": 12,
-      "modelStates": 7,
-      "helpItems": 5,
-      "oracleBytesUnchanged": true
+      "otherSphereCardPayloadsAndRawFilesUnchanged": 44,
+      "allGeometryAndViewTextUnchanged": true,
+      "conditionsGoalsAndAnswersUnchanged": true,
+      "steps": 192,
+      "modelViews": 197,
+      "helpItems": 105,
+      "rendererCSSBuilderSchemaAndGatesUnchanged": true
     },
     "verification": {
-      "independent": "The entire current payload was canonicalized and the single-string inverse replacement exactly reconstructed the prior independently approved hash. The parenthesized quotient equals the same cosine ratio; cosθ>0 in the lesson domain.",
-      "executorReportedDOMCheck": {
-        "performedBy": "Executing root",
-        "strings": 161,
-        "result": "PASS",
-        "scope": "Actual StereoMath DOM for lesson steps, help and statement; no raw fractions or detached superscripts reported.",
-        "independentlyRerunByThisReviewer": false
-      }
-    },
-    "evidence": {
-      "artifact": "sphere-theory051-formatting-followup-review.json",
-      "sha256": "3256ab11596cb365d29b08ca23984ac2bbb44f57c9997fc5217ca924b1e13929"
-    },
-    "oracleRerun": {
-      "performed": false,
-      "reason": "A single pair of grouping parentheses changes display parsing only. Exact inverse replacement reconstructs the previously approved payload, and oracle bytes are unchanged."
+      "sourceAndMathematics": "Independent exact-file inverse replacements restore prior approved payloads; squared-area Heron plus the positive root is equivalent, and theory049 normalizations change only spacing and denominator delimiters.",
+      "diagnosticRendering": "Targeted native crops read at320/1280. These diagnostics served the frozen old bundle with the exact in-memory replacements and are not the final browser gate.",
+      "independence": "visual_late independently reviewed379 without participating in either replacement wording; release_audit reviewed049. The broader panel source/math review remains bound to unchanged payloads."
     },
     "openFindings": [],
     "limitations": [
-      "This follow-up does not claim a new responsive screenshot review, full gate run or exact-head CI.",
-      "The executing agent retained the failed gate log and owns rerunning the affected gate.",
-      "No card, registry, oracle, test or ref was modified by this reviewer."
+      "The prior d0e3 browser/CI failure is retained; no pass is inherited from the stopped attempt.",
+      "A new exact committed head, full browser run, final-image bindings and CI remain required."
     ]
   },
   "reviewHistory": [
@@ -2605,6 +2691,93 @@
       "event": "Completed main-panel proof follow-up before a later isolated math-display normalization",
       "reportSHA256": "58fc23e0f9bbbeec43ed41989ae49e18e9ecf7cc65934f758621a38656fd0105",
       "aggregateSHA256": "2f8592fb5e50599ae284b4c912897c8dd2d7263c6619375212668d0d53b3bb92"
+    },
+    {
+      "reviewer": "release_audit",
+      "reviewedAt": "2026-10-31T01:10:17.075Z",
+      "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+      "reason": "The executing agent reported a conservative StereoMath display gate rejecting a bare trigonometric numerator. Parentheses make the fraction display unambiguous without changing its value.",
+      "mainPanelReviewedAt": "2026-10-31T01:04:51.530Z",
+      "dating": "The main panel review timestamp remains unchanged. This later timestamp binds the sole formatting change;45other payloads and all main panel registration timestamps remain unchanged.",
+      "previousEvidence": {
+        "reviewer": "Codex independent source, mathematics and written-pedagogy panel: visual_middle, visual_late, release_audit; no reviewed-candidate lesson authorship",
+        "reviewedAt": "2026-10-31T01:04:51.530Z",
+        "aggregateSHA256": "2f8592fb5e50599ae284b4c912897c8dd2d7263c6619375212668d0d53b3bb92",
+        "reportSHA256": "58fc23e0f9bbbeec43ed41989ae49e18e9ecf7cc65934f758621a38656fd0105",
+        "oracle": {
+          "path": "tools/stereo-textbook/sphere-math.test.py",
+          "sha256": "99cde0f45bf77a4a088982641f8fc0b34fc22f3252b75ab21615bdee45ce8737",
+          "evidenceAttribution": "Inherited exact oracle authored by the recovered-candidate reviewer; unchanged and not rerun by the current panel."
+        },
+        "cardRows": [
+          {
+            "id": "theory-051",
+            "sha256": "7215244fdf5ec90fe93dbe64bb8817bb1e700541dec3b211c192a439c8f1e07c",
+            "steps": 12,
+            "modelStates": 7,
+            "reviewedAt": "2026-10-31T01:04:51.530Z",
+            "source": "PASS",
+            "mathematics": "PASS",
+            "writtenPedagogy": "PASS",
+            "findings": [],
+            "verification": "Full12-step/5-help amended card reread. All SPH-T51 findings resolved: second-sphere existence and sum/difference proofs, contact ordering and closed half-spaces, directrix nondegeneracy and local lemma, asymptote exclusion and all angle/nappe boundaries. Existing full visualization remains exact and unchanged.",
+            "scopedReviewer": "release_audit",
+            "scopeEvidence": {
+              "artifact": "sphere-theory051-followup-review.json",
+              "sha256": "48f2d1c4c3439d4e02300bb3ac8541d3dee6b177efa0c234fcad4420554190e4"
+            }
+          }
+        ]
+      },
+      "changedCards": [
+        {
+          "id": "theory-051",
+          "previousSHA256": "7215244fdf5ec90fe93dbe64bb8817bb1e700541dec3b211c192a439c8f1e07c",
+          "sha256": "a7e5f4a85bd60135b5c2a1843ac8b0815010aa287f717ee94b68182b7f8bf6bc",
+          "jsonPointer": "/steps/2/explanation",
+          "before": "Поэтому MF/MH=cosφ/cosθ=e.",
+          "after": "Поэтому MF/MH=(cosφ)/(cosθ)=e."
+        }
+      ],
+      "preservation": {
+        "restoringExactlyTheOneStringReconstructsPriorCanonicalPayload": true,
+        "unchangedOtherCardContentHashes": 45,
+        "unchangedOtherReviewRows": 45,
+        "geometryAndAllViewTextUnchanged": true,
+        "proofMathematicsUnchanged": true,
+        "sourceAndStatementUnchanged": true,
+        "steps": 12,
+        "modelStates": 7,
+        "helpItems": 5,
+        "oracleBytesUnchanged": true
+      },
+      "verification": {
+        "independent": "The entire current payload was canonicalized and the single-string inverse replacement exactly reconstructed the prior independently approved hash. The parenthesized quotient equals the same cosine ratio; cosθ>0 in the lesson domain.",
+        "executorReportedDOMCheck": {
+          "performedBy": "Executing root",
+          "strings": 161,
+          "result": "PASS",
+          "scope": "Actual StereoMath DOM for lesson steps, help and statement; no raw fractions or detached superscripts reported.",
+          "independentlyRerunByThisReviewer": false
+        }
+      },
+      "evidence": {
+        "artifact": "sphere-theory051-formatting-followup-review.json",
+        "sha256": "3256ab11596cb365d29b08ca23984ac2bbb44f57c9997fc5217ca924b1e13929"
+      },
+      "oracleRerun": {
+        "performed": false,
+        "reason": "A single pair of grouping parentheses changes display parsing only. Exact inverse replacement reconstructs the previously approved payload, and oracle bytes are unchanged."
+      },
+      "openFindings": [],
+      "limitations": [
+        "This follow-up does not claim a new responsive screenshot review, full gate run or exact-head CI.",
+        "The executing agent retained the failed gate log and owns rerunning the affected gate.",
+        "No card, registry, oracle, test or ref was modified by this reviewer."
+      ],
+      "event": "PRE_379_AND_049_DISPLAY_FOLLOWUP",
+      "aggregateSHA256": "fd5ee10548e6a7aba2287364fbf2648db1b3c81bab64195a9f8cc2d4f77c4a73",
+      "reportSHA256": "d89d4e3be83820117a5f6706dddd0c2138a13d3d4073dc0494b2b878271ad3dc"
     }
   ],
   "panel": {
@@ -2744,7 +2917,33 @@
       "reviewedAt": "2026-10-31T01:10:17.075Z",
       "artifact": "sphere-theory051-formatting-followup-review.json",
       "sha256": "3256ab11596cb365d29b08ca23984ac2bbb44f57c9997fc5217ca924b1e13929"
+    },
+    "latestLayoutFollowup": {
+      "reviewedAt": "2026-10-31T01:46:40.511968+00:00",
+      "reviewers": [
+        "visual_middle",
+        "visual_late",
+        "release_audit"
+      ],
+      "changedCards": [
+        "ex-main-0379",
+        "theory-049"
+      ],
+      "evidence": [
+        {
+          "artifact": "sphere-379-two-text-followup-review.json",
+          "sha256": "c8fcc81f82d7fe8da5e0b50ee811e08a6a57e6fa4ca98dd164c7c1b6e9eeebc8"
+        },
+        {
+          "artifact": "sphere-379-two-text-supplementary-independent-review.json",
+          "sha256": "9ac70b7c3209375e25fd2d2310eeeaa65d19c6f54fe0d59c9a0730c2cbc39001"
+        },
+        {
+          "artifact": "sphere-theory049-layout-followup-review.json",
+          "sha256": "9483f14da0596892fe93c7a8d6a0273ae9e54ed80afabb1b43bc0e1342cc7a78"
+        }
+      ]
     }
   },
-  "contentBindingUpdatedAt": "2026-10-31T01:10:17.075Z"
+  "contentBindingUpdatedAt": "2026-10-31T01:46:40.511968+00:00"
 }

@@ -8,7 +8,7 @@ PR: #386; the executing agent records the final committed head separately.
 
 Base: `139b944a70f2e8ba4d340d152d08807fad03e5da`
 
-Head: Recovered candidate `a1e4b7611ec4b829ccdc5ab0023d9679ab2899e5` plus the exact theory051 amendment bound below. This is a content verdict, not an exact-head CI verdict.
+Head: Recovered candidate `a1e4b7611ec4b829ccdc5ab0023d9679ab2899e5` plus the exact theory051 amendment and the later ex-main-0379/theory-049 display amendments bound below. This is a content verdict, not an exact-head CI verdict.
 
 Gate: `PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY`
 
@@ -18,9 +18,9 @@ Failures: No open source, mathematical or written-pedagogy findings remain at th
 
 Not run: This panel has not approved the responsive images, full amended browser journeys, exact-head CI or deployment.
 
-Scope deviations: None within this review. Only the two review reports were edited; no lesson, review flag, registry, oracle, test or ref was changed by the report recorder.
+Scope deviations: None. The original panel edited only its two review reports. The later scoped display amendments and their independent evidence are recorded below.
 
-Recommendation: Register the exact panel identity and timestamp, then finish the separate image, integration and CI gates.
+Recommendation: Preserve the registered panel identity and dated follow-ups, then finish the separate final-head image, integration and CI gates.
 
 Next user decision: Merge and publication still require separate explicit owner authorization.
 
@@ -37,11 +37,11 @@ Machine-readable record: [ATANASYAN_SPHERE_CONTENT.json](ATANASYAN_SPHERE_CONTEN
 | Binding | SHA256 |
 |---|---|
 | Original source PDF | `bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770` |
-| Current46-card canonical aggregate | `fd5ee10548e6a7aba2287364fbf2648db1b3c81bab64195a9f8cc2d4f77c4a73` |
+| Current46-card canonical aggregate | `c7a7223f22a96656fdc80354dc68194378b3d73a2a3a8aa89fb50ad3dd73ac5d` |
 | Amended theory051 canonical payload | `a7e5f4a85bd60135b5c2a1843ac8b0815010aa287f717ee94b68182b7f8bf6bc` |
 | Unchanged inherited oracle | `99cde0f45bf77a4a088982641f8fc0b34fc22f3252b75ab21615bdee45ce8737` |
 
-Canonicalization removes only top-level `status` and `review`, recursively sorts object keys, preserves array order and hashes UTF-8 Node `JSON.stringify`. The aggregate uses lexicographically ordered card IDs. All45 other content hashes remain identical to the recovered candidate. Theory051's complete visualization, including geometry, sphere primitives, view labels, note and caption, is also unchanged.
+Canonicalization removes only top-level `status` and `review`, recursively sorts object keys, preserves array order and hashes UTF-8 Node `JSON.stringify`. The aggregate uses lexicographically ordered card IDs. The initial theory051 follow-up preserved45 other payloads. The later display-only379 and049 amendments are separately bound below;43 payloads still match the recovered candidate. Theory051's complete visualization, including geometry, sphere primitives, view labels, note and caption, is also unchanged.
 
 The exact current batch has **46cards,192solution steps,197model views and105help entries**. It contains37 exercise parts372–395 and9 theory points43–51. Exercise382б remains included with its source area12cm² without an extra factor of π.
 
@@ -93,7 +93,7 @@ The JSON preserves the initial review, the385/46 boundary/source-link follow-up,
 | Original385/46 follow-up | `398f9f1fb57af286159c08ee565bb17f96a99743fd665a73c1cf11a92b2347fc` |
 | Recovered candidate after387 caption follow-up | `b30c75c0bae3e8131510f703b5dee4712042c2bdf1ba1a82fc6eb256f1d13310` |
 | Previous051 payload with the now-resolved omissions | `ef7d1d48972c3d322e95bc5e65f26a4cc57580f50a4719fe04c0cb65ad9a461b` |
-| Current46-card aggregate | `fd5ee10548e6a7aba2287364fbf2648db1b3c81bab64195a9f8cc2d4f77c4a73` |
+| Current46-card aggregate | `c7a7223f22a96656fdc80354dc68194378b3d73a2a3a8aa89fb50ad3dd73ac5d` |
 
 The old PASS for051 is explicitly superseded for completeness; it is not reused as sufficient approval of the omitted assignment. All four resolutions above are bound to the current051 payload.
 
@@ -113,3 +113,18 @@ The executing root reported a passing actual StereoMath DOM check on161strings w
 ## Remaining boundaries
 
 Actual responsive image review is **pending**. The executing team must verify the current text and added steps/help in the browser and finish applicable integration and exact-head CI gates. This report grants no merge or deployment authorization and claims no external paid-provider review, physical-device or pupil trial. The37 exercise cards retain manual answer assessment; arbitrary written proofs are not automatically certified.
+
+## Mobile display follow-up for 379 and theory 049
+
+Completed: **2026-10-31T01:46:40.511968+00:00**. The original panel registration date remains unchanged. The current 46-card aggregate is `c7a7223f22a96656fdc80354dc68194378b3d73a2a3a8aa89fb50ad3dd73ac5d`; the preceding d0e3 aggregate `fd5ee10548e6a7aba2287364fbf2648db1b3c81bab64195a9f8cc2d4f77c4a73` is retained in JSON history.
+
+Browser CI and the unchanged local gate reproduced a 329px document width at 320px in 379. Its Heron radical exceeded the hint container; a second radical exceeded a nested justification container. The hint now states the squared-area product and explicitly asks for the positive square root. The justification states the same Heron relation in words. Conditions, numeric derivation, answer and geometry are unchanged. visual_middle checked the exact implementation; visual_late separately reviewed it without participating in the wording.
+
+Native image review of theory 049 found sinθ split across lines and an unformatted square-bracket denominator. Two substitutions in help h1 add operator spaces and replace `h/[t₀(m+s)]>1` with `h/(t₀(m+s)) > 1`. release_audit verified the unchanged mathematical meaning and the diagnostic display.
+
+| Card | Current canonical SHA256 | Independent evidence |
+|---|---|---|
+| ex-main-0379 | `17ad04b8e411dc60413f99a7676dfe21a1bc508370cb76e6822b332f19b5fe4a` | `sphere-379-two-text-followup-review.json` SHA256 `c8fcc81f82d7fe8da5e0b50ee811e08a6a57e6fa4ca98dd164c7c1b6e9eeebc8`; `sphere-379-two-text-supplementary-independent-review.json` SHA256 `9ac70b7c3209375e25fd2d2310eeeaa65d19c6f54fe0d59c9a0730c2cbc39001` |
+| theory-049 | `9ec735716f16899833be02b07980d7228fd736390ce2f1534fa95e5cd9a3cdcb` | `sphere-theory049-layout-followup-review.json` SHA256 `9483f14da0596892fe93c7a8d6a0273ae9e54ed80afabb1b43bc0e1342cc7a78` |
+
+Only three text fields across two cards changed relative to d0e3. All 44 other sphere raw files, every geometry payload, the 192 steps, 197 views and 105 help entries, and all runtime/style/gate files remain unchanged. Inverse replacements restore both previous raw files exactly. Native target regions were read at 320/1280, with no remaining target clipping or function-name split. The diagnostic images do not establish a pass of the rebuilt bundle or the full browser gate. The original failures and stopped runs remain in the handoff; final exact-head browser and CI evidence are still required.
