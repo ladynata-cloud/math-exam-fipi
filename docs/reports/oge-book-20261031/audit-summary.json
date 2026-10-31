@@ -16,7 +16,7 @@
     "recordedCases": 426
   },
   "sourceInventory": "source-inventory.json",
-  "registerDataSha256": "0b6e50d0a438d35cd43cd83c0d48fe5ed12a6f63031531709f030ef674261224",
+  "registerDataSha256": "5c8901aba78f895594dbadcf1ccfa0327af18593cfa3ce212bf4dafb0d672ad8",
   "package": {
     "manifest": "book/oge/2026-10-31/v1/manifest.json",
     "manifestSha256": "5254e9bba16f4891f2b32ce879d5a81a0eac7a3c5ef69b246d55ff27e7e18b61",
@@ -190,7 +190,14 @@
       "publicSyntheticSubset": 8,
       "runtimeEntryViewportChecks": 142,
       "runtimeBoundaryChecks": 10,
-      "releaseHttpChecks": 367
+      "releaseHttpChecks": 367,
+      "task6BrowserWidths": [
+        320,
+        360,
+        1280
+      ],
+      "task6RetainedProgressFlows": 3,
+      "task6HelpFamiliesPerWidth": 11
     },
     "evidence": "continuation.json",
     "historicalLearnerEvidencePreserved": {
@@ -1681,6 +1688,6 @@
   },
   "continuation": {
     "path": "continuation.json",
-    "sha256": "f2567e78294c51050816b10702255a70551d69845e3e190923e457a0c12a5896"
+    "sha256": "1895f4707068b4f046371ac99fa4d477c4d57c41bffd4deb3cc7f26cf129ea99"
   }
 }

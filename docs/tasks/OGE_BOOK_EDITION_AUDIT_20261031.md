@@ -175,3 +175,15 @@ Scope deviations:
 Recommendation:
 Next user decision:
 ```
+
+### Follow-up found by the first repaired CI run
+
+The unit scope gate passed all48 checks on `69779993…`, allowing the previously
+blocked Task6 browser stage to execute. Its second viewport reused the first
+viewport's now-persistent progress while still supplying the hardcoded answer
+to the first task. The failed run is retained; it is not a passing result.
+The existing authorization to repair Task6's historical contracts covers the
+exact additional path `tools/task6-minimal.browser.cjs`, now the tenth explicit
+continuation path. Keep all browser assertions, isolate independent viewport
+fixtures and separately assert the intended persistence across a real reload.
+No learner or frozen-package code change is authorized by this test repair.

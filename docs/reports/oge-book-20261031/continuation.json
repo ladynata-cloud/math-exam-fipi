@@ -47,7 +47,9 @@
       "historicalBase": "df63bacb2f82acf5f8543297c372b414925d6113",
       "historicalRelease": "813fdcc129b27e71cc83ebaa80bd590cf1d1f1f1",
       "initialPaths": 278,
-      "explicitContinuationPaths": 9
+      "explicitContinuationPaths": 10,
+      "browserStatus": "PASS",
+      "browserEvidence": "continuation/task6-browser-validation.json"
     },
     "division": {
       "status": "PASS",
@@ -167,7 +169,14 @@
     "publicSyntheticSubset": 8,
     "runtimeEntryViewportChecks": 142,
     "runtimeBoundaryChecks": 10,
-    "releaseHttpChecks": 367
+    "releaseHttpChecks": 367,
+    "task6BrowserWidths": [
+      320,
+      360,
+      1280
+    ],
+    "task6RetainedProgressFlows": 3,
+    "task6HelpFamiliesPerWidth": 11
   },
   "runtimeIdentity": {
     "manifestSha256": "5254e9bba16f4891f2b32ce879d5a81a0eac7a3c5ef69b246d55ff27e7e18b61",
@@ -225,6 +234,21 @@
       "sha256": "dfc4934b78952c04cf029ede787f845eb8c46d259c8ab10c1b7179db017e6ecd",
       "status": "PASS",
       "productionVerified": false
+    },
+    {
+      "path": "continuation/task6-browser-validation.json",
+      "sha256": "d83cd2a78e3c869341ee3d8b731d529939c7fde328c26cb3eb2fc797777a7f10",
+      "status": "PASS"
     }
-  ]
+  ],
+  "task6BrowserFollowup": {
+    "failedHead": "69779993cde9a79068cb9afdac66c39f8b3c59a1",
+    "failedJob": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41183719597/job/124486248325",
+    "diagnosis": "Independent viewport/iframe first-visit scenarios shared browser storage; the second width restored position1 but submitted the hardcoded task0 answer. Runtime persistence was correct.",
+    "repair": "Fresh contexts for independent first visits; real same-context next/previous/reload and duplicate-credit checks at all three widths; iframe reload retained-result check. All original assertions retained.",
+    "status": "PASS",
+    "negativeControl": "Suppress only task6 progress storage writes: ordinary first-visit flow passes, new reload assertion rejects the mutation.",
+    "runtimeChanges": false,
+    "externalReviewPerformed": false
+  }
 }

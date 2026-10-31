@@ -77,20 +77,59 @@ async function screenshot(page, name) {
   await page.screenshot({ path: path.join(artifacts, name + '.png'), fullPage: true });
 }
 
+async function retainedProgress(page, width) {
+  const persisted = 'JSON.stringify({cat,order,pos,shuffle,records,streak})';
+  const before = await state(page, persisted);
+  await page.reload();
+  await page.locator('#ans').waitFor();
+  assert.equal(await state(page, persisted), before, width + 'px: next position and earned result survive reload');
+  assert.equal(await state(page, 'pos'), 1);
+  assert.equal(await state(page, 'summarizeRecords(order,records).independent'), 1);
+
+  // This is a real navigation action followed by reload: a restored correct
+  // result must not force the learner forward over a requested previous task.
+  await page.locator('#previous').click();
+  assert.equal(await state(page, 'pos'), 0);
+  await page.reload();
+  await page.locator('#ans').waitFor();
+  assert.equal(await state(page, 'pos'), 0, width + 'px: previous position survives reload');
+  assert.equal(await page.locator('#ans').inputValue(), '-0,62');
+  assert.equal(await state(page, 'currentRecord().status'), 'solved-first');
+  await page.locator('#settings > summary').click();
+  assert.ok(await page.locator('#counter').isVisible());
+  assert.match(await page.locator('#counter').innerText(), /самостоятельно 1\s/);
+  await page.locator('#settings > summary').click();
+  await page.locator('#check').click();
+  assert.match(await page.locator('#mark').innerText(), /результат уже учтён/);
+  assert.equal(await state(page, 'streak'), 1, width + 'px: replay after reload cannot increase streak');
+  assert.equal(await state(page, 'summarizeRecords(order,records).independent'), 1,
+    width + 'px: replay after reload cannot award duplicate credit');
+  await page.locator('#check').click();
+  assert.equal(await state(page, 'pos'), 1);
+  console.log('PASS retained result, next/previous reload and single credit at ' + width + 'px');
+}
+
 async function run() {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   const origin = 'http://127.0.0.1:' + server.address().port;
   let browser;
   try {
-    browser = await chromium.launch({ headless: true });
-    const context = await browser.newContext({ viewport: { width: 1280, height: 900 }, locale: 'ru-RU', reducedMotion: 'reduce' });
-    const page = await context.newPage();
-    watch(page);
+    browser = await chromium.launch({ headless: true,
+      ...(process.env.CHROMIUM_EXECUTABLE_PATH ? { executablePath: process.env.CHROMIUM_EXECUTABLE_PATH } : {}),
+    });
+    let context, page;
 
     for (const width of [320, 360, 1280]) {
-      await page.setViewportSize({ width, height: 900 });
+      // Each viewport checks a first visit. A separate context isolates saved
+      // progress; navigation in the same context must now restore that progress.
+      if (context) await context.close();
+      context = await browser.newContext({ viewport: { width, height: 900 }, locale: 'ru-RU', reducedMotion: 'reduce' });
+      page = await context.newPage();
+      watch(page);
       await page.goto(origin + trainerPath);
       await initialScreen(page);
+      assert.equal(await state(page, 'pos'), 0, width + 'px: a fresh context starts at the first task');
+      assert.equal(await state(page, 'Object.keys(records).length'), 0, width + 'px: fresh history is empty');
       await noOverflow(page, width + 'px initial');
       await screenshot(page, width + '-question');
 
@@ -127,6 +166,7 @@ async function run() {
       assert.equal((await page.locator('#hintSteps').textContent()).trim(), '');
       assert.equal(await state(page, 'records[order[0]].status'), 'solved-first');
       console.log('PASS minimal screen, guided step and keyboard at ' + width + 'px');
+      await retainedProgress(page, width);
     }
 
     // Exercise the real navigation controls after explicitly requesting them.
@@ -239,9 +279,16 @@ async function run() {
     await screenshot(page, '320-revealed-fraction');
     console.log('PASS explicit reveal, fraction bar and provenance');
 
-    await page.goto(origin + '/test-frame');
-    const embedded = page.frameLocator('iframe');
+    // The iframe case is another first visit, not a continuation of the
+    // previous revealed exercise in the standalone scenario.
+    const frameContext = await browser.newContext({ viewport: { width: 1280, height: 900 }, locale: 'ru-RU', reducedMotion: 'reduce' });
+    const framePage = await frameContext.newPage();
+    watch(framePage);
+    await framePage.goto(origin + '/test-frame');
+    const embedded = framePage.frameLocator('iframe');
     await embedded.locator('#ans').waitFor();
+    assert.equal(await embedded.locator('#ans').evaluate(() => eval('pos')), 0);
+    assert.equal(await embedded.locator('#ans').evaluate(() => eval('Object.keys(records).length')), 0);
     assert.equal(await embedded.locator('#hintPanel').isVisible(), false);
     await embedded.locator('#hintToggle').click();
     assert.ok(await embedded.locator('#stepAnswer').isVisible());
@@ -250,6 +297,12 @@ async function run() {
     await embedded.locator('#check').click();
     assert.match(await embedded.locator('#mark').innerText(), /Верно/);
     assert.equal(await embedded.locator('#ans').evaluate(element => element.readOnly), true);
+    await framePage.reload();
+    await embedded.locator('#ans').waitFor();
+    assert.equal(await embedded.locator('#ans').inputValue(), '-31/50');
+    assert.equal(await embedded.locator('#ans').evaluate(() => eval('currentRecord().status')), 'solved-first');
+    assert.equal(await embedded.locator('#ans').evaluate(() => eval('summarizeRecords(order,records).independent')), 1);
+    await frameContext.close();
     console.log('PASS canonical trainer embedded in an iframe');
 
     const offlineContext = await browser.newContext({ viewport: { width: 360, height: 800 }, offline: true });

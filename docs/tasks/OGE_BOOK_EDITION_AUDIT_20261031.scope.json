@@ -292,6 +292,7 @@
     "tools/book-edition/test_deployed.py",
     "tools/book-edition/verify_deployed.py",
     "tools/division-lab.test.cjs",
+    "tools/task6-minimal.browser.cjs",
     "tools/task6-scope.cjs",
     "tools/task6-scope.test.cjs"
   ]
