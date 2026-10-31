@@ -6,6 +6,7 @@
   "checks": [
     "All 44 answers and every intermediate step agree with independent arithmetic; six checks use fresh conditions",
     "Normal teacher profile form selects the textbook route only for the intended synthetic pupil",
+    "Review shortcuts open prime factors, GCD and original LCM exercises and return without changing route or starting work",
     "Cabinet keeps all 194 textbook tasks and adds separately labelled examples, paired practice methods and six checks",
     "A verified chain step and unfinished next answer survive reload and a separate browser context",
     "Switching both methods through course buttons resumes separate saved steps and drafts; both stay supported learning",
@@ -426,8 +427,11 @@
     }
   ],
   "screenshots": [
+    "course-review-320.png",
     "course-examples-320.png",
+    "course-review-390.png",
     "course-examples-390.png",
+    "course-review-1280.png",
     "course-examples-1280.png",
     "chain-first-screen-320.png",
     "chain-first-screen-390.png",
@@ -443,8 +447,9 @@
   "runtime": "Chromium 140.0.7339.16; Playwright 1.62.1; Node 24.22.1",
   "environment": "Two local origins, isolated SQLite, synthetic accounts; browser public requests blocked",
   "base": "a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3",
+  "verifiedAtUtc": "2026-10-31T18:11:52Z",
   "fileSha256": {
-    "courses/vilenkin-6-part-1/textbook-data/supplement-lcm-multi.json": "b3975d3294304547d92a1090d5670787164e470574a23bad25a73ecee53022fc",
+    "courses/vilenkin-6-part-1/textbook-data/supplement-lcm-multi.json": "2d5a4afaea50e855d8df63d53337a5f0211c0d51c55eacb926d7af57140eeee1",
     "courses/vilenkin-6-part-1/textbook-course.js": "7055395ff6ffe9cb3478f1533042129cf7dabae952269b80adf69d4f2cd5938d",
     "courses/vilenkin-6-part-1/textbook-course.css": "9506cf6b0f9f67935c71e0fafce30596e16d479c8fc312d3734aa9b73b16fc3d",
     "courses/vilenkin-6-part-1/textbook-source-labels.js": "17bff05c56f9b075f2d171230f80b31f3e4f93858e856029e10868f10ba1174a",
@@ -453,17 +458,20 @@
     "learning/app.js": "83e96e17e5336a9e9aa8457346f109b83a46149197a2390089a1cc4935acbee0",
     "learning/style.css": "f84170ec5787b25846ccbf3b0c4d5fad0d59ea816bedf5ce2dbbad9e9adce0cf",
     "learning/attached-course.js": "21b0024b0910d5bd937a25b16aab7e174d84d10d5695a2668edf78dee3b0392f",
-    "learning/vilenkin6-textbook-course.js": "0e74120f76bf33b8f15cf87b0798390671e34a51469d0814fe400dbcb06cc3fb",
+    "learning/vilenkin6-textbook-course.js": "6d1e3b94958315a740ae342ecbeeee5c242688a03aeab51ca178a558b420b3fc",
     "learning/vilenkin6-textbook-catalog.js": "88e3020a5545b28a3d16bde317c3011dd5fe30650d1873879c951149594ab023",
     "learning/catalog.js": "36d65fed06c4bdf77e1af1bce612db2261e80a64d362a16119c9ad79fc6f672b",
     "learning/index.html": "946083f36fb154648074779f54e42743b9c3bbe639d5b937e609a13d98088221",
     "tools/vilenkin6-course/build-textbook-catalog.cjs": "3556aab09b41da1b11ad992fe85291beb948104e94dd746acbdbc4ec233ed92f",
-    "tools/learning-lcm-multi.browser.cjs": "ca961522dc261f9a21a9568d1d67e73334f51aa79395413e6263ea7785ffad48"
+    "tools/learning-lcm-multi.browser.cjs": "aa1538719ecfc927f77f34f08c1adecefb47bd1d8a15174758edb05628a9032d"
   },
   "imageSha256": {
-    "course-examples-320.png": "ff7fc96aba95806fe96b48506c8a2e9c737e973635a3ff70cd1fcdd55b8cd4d1",
-    "course-examples-390.png": "1b53eb0e95ca98d3cb9bb2e6e5aa185e239869e74de720fd2978801c49378f4c",
-    "course-examples-1280.png": "9f8b30bd2ba8508b8e8a389346e511f1cc9c567a6bfa1ce1bb752164cbec395a",
+    "course-review-320.png": "d556071fc3bf10a0e3a038346114fdb0cfd3dddafe03e6f90cec41a138c244bd",
+    "course-examples-320.png": "06e775645795047d4c385ab3734dd96cd282a81c1aa123fc071c4d1180ebcfe4",
+    "course-review-390.png": "86d98ba16177baf382d18506b79318719d3d823150628e526792abeb1d3d7b86",
+    "course-examples-390.png": "cb9c160608aa55196912d69a0c212b287427f1912d4ae36f4b09efdc48c8434e",
+    "course-review-1280.png": "0b1f6118ad2d2775fedc6fd06d47a41d8520eb5ae0dd6e50929d14a677240005",
+    "course-examples-1280.png": "19c2087664665c9d9790197c5ab5801fcbff82dfcd6f25399ad1fcc9c3d440ba",
     "chain-first-screen-320.png": "45bb59298ab1d8acfb437f3925ccff0695bce9c7a8bdeb8d42a94e36fb2cd041",
     "chain-first-screen-390.png": "4144aa290b21ee9fa7fa6c10ae349ac7b5e38d23c83a94ad1f25e16c254a596b",
     "chain-first-screen-1280.png": "ade1bf3d20071333196d35b1ac2ce391bcce036f3a6490f6ee7b06869c643d6f",
@@ -471,15 +479,18 @@
     "factors-first-screen-390.png": "ef8c017301e5041072ef3d3c20f2c145962c55010f52f1a136e3830c00a5e0be",
     "factors-first-screen-1280.png": "acc812a46bcd1d9c340f790d58d2618c7aa3a49038afcd5e59350bb78b23fce5",
     "factors-after-three-steps-320.png": "1a1595d5d622a62c4f5abd6bf1292448577cd8625f9401556d5d5254a79ce187",
-    "factors-after-three-steps-390.png": "9ff82587d45e6bf926e3ad714472102a13709cde332a0fc665e61ea78690f772"
+    "factors-after-three-steps-390.png": "e778e20dfef718dffbc7906fa205211214443d6af37289745eaf55e3b349b1a4"
   },
   "review": {
     "kind": "independent internal review, not external provider approval",
-    "mathReviewer": "browser QA agent and primary executor, neither authored the dataset",
-    "uiReviewer": "curriculum agent, who did not author the UI, and primary executor",
+    "mathReviewer": "Independent arithmetic reviewer and primary executor; the added missing-factor explanation was separately checked by the primary executor",
+    "uiReviewer": "Independent curriculum reviewer checked the primary executor's navigation changes",
     "screenshotsInspected": [
+      "course-review-320.png",
       "course-examples-320.png",
+      "course-review-390.png",
       "course-examples-390.png",
+      "course-review-1280.png",
       "course-examples-1280.png",
       "chain-first-screen-320.png",
       "chain-first-screen-390.png",
@@ -494,7 +505,12 @@
     "closedFindings": [
       "Oversized outer title and secondary controls pushed initial mobile task below viewport",
       "Completed step history pushed the active factor step below the visible iframe",
-      "Closed floating helper launcher covered the submit button"
+      "Closed floating helper launcher covered the submit button",
+      "The agreed missing-factor explanation was absent from the worked 12,18,30 solution",
+      "The cabinet placed earlier review topics below the complete author bank without quick review and return controls"
+    ],
+    "observations": [
+      "A transient correct-step toast overlaps part of the lower history heading in one screenshot, without covering the active answer, check button or hints"
     ],
     "limitations": [
       "Synthetic tests do not establish learning gains with pupils",

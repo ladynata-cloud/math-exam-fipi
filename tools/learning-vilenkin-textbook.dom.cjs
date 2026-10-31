@@ -27,6 +27,17 @@ test('resumes exact completed and unfinished attempts and ignores the legacy ban
  const [a,b]=definitions,f=fixture(t,{progress:[{trainerId:a.trainerId,contentId:a.contentId,completed:true,latest:{id:'completed_work',outcome:'hinted'}},{trainerId:b.trainerId,contentId:b.contentId,latest:{id:'started_work',outcome:'started'}},{trainerId:'vilenkin6-part1',contentId:'lesson-1',completed:true,latest:{id:'old_work'}}]});await tick();
  f.button(a.id).click();f.button(b.id).click();assert.deepEqual(f.routes,['attempt=completed_work','attempt=started_work']);assert.equal(f.calls.length,0);assert(f.host.textContent.includes('Открыто 2 из '+definitions.length+' заданий. Завершённых работ: 1'));assert.match(f.host.textContent,/Решено с подсказкой/);
 });
+test('review shortcuts open the original topics without starting work and return to the LCM supplement',async t=>{
+ const id='vilenkin6-textbook:v6-book-2-97-д',item=catalog.get(id),f=fixture(t,{progress:[{trainerId:item.trainerId,contentId:item.contentId,latest:{id:'retained_lcm_review'}}]});await tick();
+ const route=f.w.location.hash;
+ for(const unitId of [6,7,8]){
+  const target=f.host.querySelector('details[data-vilenkin-textbook-unit="'+unitId+'"]');assert(!target.open);
+  f.host.querySelector('[data-vilenkin-review-unit="'+unitId+'"]').click();assert(target.open);assert.equal(f.w.document.activeElement,target.querySelector('summary'));assert.equal(f.w.location.hash,route);
+  target.querySelector('[data-vilenkin-return-lcm]').click();assert.equal(f.w.document.activeElement,f.host.querySelector('[data-lcm-title]'));
+ }
+ assert.deepEqual(f.calls,[]);assert.deepEqual(f.routes,[]);assert.deepEqual(f.reads,['/progress']);
+ f.button(id).click();assert.deepEqual(f.routes,['attempt=retained_lcm_review']);assert.deepEqual(f.calls,[]);
+});
 test('failed progress disables new starts, retry resumes saved work, disposed fetch cannot overwrite another view',async t=>{
  let n=0;const a=definitions[0],f=fixture(t,{api:async()=>{if(++n===1)throw Error('offline');return{progress:[{trainerId:a.trainerId,contentId:a.contentId,latest:{id:'saved_after_retry'}}]};}});await tick();f.button(a.id).click();assert.equal(f.calls.length,0);assert(f.button(a.id).disabled);
  f.host.querySelector('[data-vilenkin-textbook-retry]').click();await tick();f.button(a.id).click();assert.deepEqual(f.routes,['attempt=saved_after_retry']);

@@ -363,10 +363,29 @@ function reviewData() {
       await page.setViewportSize({ width, height: 900 });
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 2),
         'The course method groups must fit ' + width + 'px');
+      const courseUrl = page.url();
+      for (const unitId of [6, 7, 8]) {
+        await section.locator('[data-vilenkin-review-unit="' + unitId + '"]').click();
+        const original = page.locator('details[data-vilenkin-textbook-unit="' + unitId + '"]');
+        assert(await original.evaluate(element => element.open), 'Review shortcut opens the existing source unit');
+        if (unitId === 8) {
+          for (const part of ['д', 'е', 'ж', 'з']) {
+            assert(await original.locator('[data-vilenkin-textbook-open="vilenkin6-textbook:v6-book-2-97-' + part + '"]').isVisible(),
+              'Original exercise 2.97 ' + part + ' remains available for review');
+          }
+        }
+        await original.locator('[data-vilenkin-return-lcm]').click();
+        assert(await section.locator('[data-lcm-title]').evaluate(element => document.activeElement === element));
+        assert.equal(page.url(), courseUrl, 'Review shortcuts preserve the cabinet route');
+      }
+      const reviewFilename = path.join(artifactDir, 'course-review-' + width + '.png');
+      await section.locator('[data-lcm-review]').screenshot({ path: reviewFilename });
+      screenshots.push(reviewFilename);
       const filename = path.join(artifactDir, 'course-examples-' + width + '.png');
       await section.locator('[data-lcm-stage="example"]').screenshot({ path: filename });
       screenshots.push(filename);
     }
+    checks.push('Review shortcuts open prime factors, GCD and original LCM exercises and return without changing route or starting work');
     checks.push('Cabinet keeps all 194 textbook tasks and adds separately labelled examples, paired practice methods and six checks');
 
     const chain = unit.tasks.find(task => task.stage === 'example' && task.groupId === 'example-01' && task.method === 'chain');

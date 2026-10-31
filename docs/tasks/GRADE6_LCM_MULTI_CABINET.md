@@ -168,6 +168,10 @@ number and distinguish the least common multiple from a larger common multiple.
 
 ## Execution record
 
+- Continuation on 2026-11-01 uses the owner's renewed START for this same task:
+  restore the existing PR, close the missing-factor explanation and quick
+  review-navigation gaps, and refresh technical evidence. The original
+  source/content/storage boundaries and separate release permissions stand.
 - Actual branch: `feat/grade6-lcm-multi-20261031`.
 - Actual base: `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`.
 - Head, PR and exact-head CI: recorded in the Draft PR to avoid recursive

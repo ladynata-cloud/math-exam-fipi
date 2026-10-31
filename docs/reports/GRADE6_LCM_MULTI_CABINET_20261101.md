@@ -12,6 +12,70 @@ local regression pass. It is not a release verdict, proof of learning gains,
 or confirmation that a real learner's cabinet has been configured. The Draft
 PR records its exact head and CI; merge/deployment require a separate decision.
 
+## Continuation verified on 2026-11-01
+
+The owner reissued START to continue the existing task. The existing PR389
+candidate `02060fa6dd73d32a3e8ec8bc9a10d16bd331e91f` was recovered and reviewed;
+no duplicate task, branch or PR was created. An authoritative remote read at
+2026-10-31 18:11 UTC still returned the approved base above.
+
+The focused review found and corrected two small gaps against the agreed plan:
+
+- The worked factor solution for 12, 18 and 30 now also explains starting with
+  30, adding the missing factor 2 for 12 and then the missing factor 3 for 18:
+  `30 * 2 * 3 = 180`. These are two lines of the completed solution; early
+  hints, all identifiers, 44 answers and 203 steps remain unchanged.
+- The cabinet now begins the supplement with direct review controls for
+  prime factors (unit 6), GCD (unit 7) and LCM (unit 8, including 2.97 д–з).
+  Each opens the original section, moves keyboard focus and offers a return
+  to the new supplement. No route hash, attempt, progress or API write changes.
+
+The updated source catalogs were regenerated. Fresh local results:
+
+| Check | Result |
+| --- | --- |
+| Focused arithmetic, immutable source, DOM, helper and support tests | PASS, 58 tests including 7 LCM and 7 cabinet-navigation cases |
+| Relevant backend retained-work tests | PASS, 36 tests |
+| Original textbook source, entry and coverage | PASS, 194 cards / 615 steps, 10 coverage tests |
+| Original textbook DOM | PASS, 194 views / 25 figures / 30 journeys |
+| Original legacy bank | PASS, 27 modules / 475 tasks / 81 examples / 266 steps |
+| Exhaustive catalog partition | PASS, 616 identities / 676 legacy cases / 62 reshuffle checks |
+| New two-origin API/SQLite browser run | `LCM_MULTI_BROWSER_OK`, 11 checks; all 194 original saved attempts and legacy work preserved |
+| Screenshot inspection | 14 of 14 inspected, including review controls at 320/390/1280 px |
+
+The browser run again exercised ten complete guided cases, all six fresh
+checks, reload, second-device restoration, separate methods, assistance,
+read-only teacher control and peer denial. Review navigation preserves the
+route and exposes the original 2.97 д–з cards. The updated
+[browser evidence](grade6-lcm-multi/browser-result.json) binds this run to
+the actual product and screenshot hashes. An independent internal reviewer
+checked the navigation diff and seven screenshots; the primary executor
+checked the remaining seven and the added arithmetic explanation. No blocking
+internal findings remain. A temporary correct-step notification overlaps part
+of a lower history heading in one screenshot, without obscuring the active
+answer, check button or hints.
+
+The earlier broader unchanged-file evidence below remains historical; it is
+not represented as a new run. The updated exact-head CI is recorded in PR389.
+The two public source assets listed below were re-fetched and again returned
+HTTP 200 with bytes identical to current main. No real pupil data was read.
+The connected-browser request did not return, so current teacher sign-in was
+not established in this continuation. The earlier login observation is not
+presented as a fresh one.
+
+The unrelated geometry CI failure was diagnosed read-only in more detail:
+the shared guard pins the complete Atanasyan JSON to its former 705-card
+version, whereas current main has 1247 cards. The immutable historical oracle
+still matches all 705 old cards, and the entire selected 255-card first-steps
+projection remains identical. Ichenskaya's own source and mathematics checks
+pass. Both failing workflows call the same stale-source guard. No pins were
+relaxed or changed here. A separate authorized task can update the audited
+provenance and linked helper snapshot together, preserving all historical
+content fingerprints and rerunning both courses' gates.
+
+External design/result review remains unavailable and not waived. The
+continuation does not authorize merge, publication or a live cabinet change.
+
 ## Delivered behavior
 
 The existing textbook course now has a clearly labelled MathExam author
