@@ -1,6 +1,28 @@
 # MathExam project status
 
-## Locally prepared: corrected fixed OGE book edition v2, 2026-10-31
+## Locally prepared: grade-six LCM of three or more numbers
+
+- Owner START covers [this task](tasks/GRADE6_LCM_MULTI_CABINET.md), HIGH,
+  base `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`, branch
+  `feat/grade6-lcm-multi-20261031` and a Draft PR; no merge or deployment.
+- One explicitly authored supplement adds 3 worked examples and 16 practice
+  conditions through both successive pair LCMs and prime factorizations,
+  followed by 6 fresh checks: 44 cards / 203 steps. The existing 194 source
+  cards and their identities, 378 other catalog rows and 27 legacy modules
+  remain intact. The existing saved-work contract is used without a migration.
+- [Verification](reports/GRADE6_LCM_MULTI_CABINET_20261101.md) distinguishes
+  local technical preparation from production and real cabinet assignment.
+  `GRADE6_LCM_MULTI_PREPARATION_OK`: arithmetic, immutable base, retained-work,
+  source and relevant DOM/browser regression pass. The new real two-origin
+  browser gate preserves 194 saved synthetic attempts and checks mobile
+  condition/input visibility and unobstructed actions at 320/390/1280 px.
+  No actual pupil profile has been changed. External design/result review is
+  unavailable and is not approved or waived.
+- Next: complete exact-head technical/review evidence, obtain the separate
+  release decision, then verify the intended existing cabinet after owner
+  sign-in and publication. No other learner's route is in scope.
+
+## Merged: corrected fixed OGE book edition v2, 2026-10-31
 
 - [Task](tasks/OGE_BOOK_EDITION_V2_DALI_20261031.md), `MEDIUM`; owner START,
   base `4a90592077934d9a6d8a617b4afa50938798efb2`, branch
@@ -14,11 +36,14 @@
   records 426 source/v2 learner cases, 790 independent math comparisons,
   142+10+3 v2 runtime checks and independent internal focused review, all PASS.
   The earlier v1 failure is retained; exact-head CI is recorded in the Draft PR.
-- V2 is unpublished. This START permits a new Draft PR, not its merge,
-  auto-merge or deployment. No external-provider review is requested or claimed.
-- Next: (1) inspect the new candidate and exact-head CI; (2) after separate owner
-  release permission, verify the new live bytes/aliases and physical QR/devices
-  before distributing the book.
+- [PR388](https://github.com/ladynata-cloud/math-exam-fipi/pull/388) was merged
+  on 2026-10-31 as `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`, from reviewed
+  head `0aedd01941096636ae75f05bbc8147de937e2db2`. Primary PR metadata was
+  reconciled when starting the LCM task. The earlier local report is a
+  preparation record; this reconciliation does not independently recertify
+  v2 production bytes, physical QR/devices or its distribution gate.
+- Release evidence and any remaining distribution checks belong in PR388;
+  they are outside the new LCM task. No external-provider verdict is claimed.
 
 ## Published with an open distribution gate: OGE book edition v1
 
@@ -50,7 +75,7 @@
   with no provider verdict. Physical phones/printed QR, iOS/Safari/Firefox,
   screen keyboard and pupil trials were not performed.
 
-## Prepared: Vilenkin 6 source clarity and revised cabinet course
+## Published source assets: Vilenkin 6 source clarity and revised cabinet course
 
 - [Task](tasks/VILENKIN6_CLARITY_CABINET_20261030.md), HIGH; branch
   `fix/vilenkin6-clarity-cabinet-20261030`, original candidate base
@@ -58,10 +83,14 @@
 - 24 units, 194 source-selected cards, 615 steps; exact source captions,
   prime table through 1000, elementary/grade-five refreshers and optional hints.
 - Separate per-task cloud attempts preserve the prior 27-module course and its
-  work. Assignment to a real cabinet and production deployment are not done.
+  work. [PR378](https://github.com/ladynata-cloud/math-exam-fipi/pull/378) is
+  merged as `7547ea565871e09ee02b632761f27bc088bd5c8a`. During LCM preparation,
+  HTTPS checks of the live textbook catalog and `units-B.json` returned 200
+  and exact base bytes. This confirms those source assets, not a new complete
+  production regression or assignment to any specific learner's cabinet.
 - [Review report](reports/VILENKIN6_CLARITY_CABINET_20261030.md) separates source,
-  mathematics, saved-work and browser evidence. External review is unavailable,
-  not approved. Release requires the scoped exact-head decision.
+  mathematics, saved-work and browser evidence. The historical preparation
+  report records unavailable external review; it is not a waiver for new work.
 - Full-book goal remains open: only numbers 2.97 and 2.134 have explicit complete
   subpart proofs; the [coverage audit](vilenkin6-source-coverage-audit-2026-10-29.md)
   and [expansion plan](vilenkin6-expansion-plan-2026-10-30.md) enumerate the gaps.

@@ -12,7 +12,14 @@ function fixture(t,{teacher=false,api,open,progress=[]}={}){
 }
 test('all selected textbook tasks are catalog-derived and separate from the unchanged legacy modules',async t=>{
  const f=fixture(t);assert([...f.host.querySelectorAll('button[data-vilenkin-textbook-open]')].every(b=>b.disabled));await tick();
- assert.equal(f.host.querySelectorAll('[data-vilenkin-textbook-unit]').length,24);assert.deepEqual([...f.host.querySelectorAll('[data-vilenkin-textbook-open]')].map(b=>b.dataset.vilenkinTextbookOpen),definitions.map(row=>row.id));
+ const original=definitions.filter(row=>row.unitKind!=='author-supplement'),authored=definitions.filter(row=>row.unitKind==='author-supplement');
+ assert.equal(original.length,194);assert.equal(authored.length,44);
+ assert.equal(f.host.querySelectorAll('[data-vilenkin-textbook-unit]').length,25);
+ assert.equal(f.host.querySelectorAll('[data-vilenkin-textbook-author]').length,1);
+ const ids=[...f.host.querySelectorAll('[data-vilenkin-textbook-open]')].map(b=>b.dataset.vilenkinTextbookOpen);
+ assert.deepEqual(ids.filter(id=>original.some(row=>row.id===id)),original.map(row=>row.id),'All 194 original cards retain their relative order');
+ assert.deepEqual(ids.filter(id=>authored.some(row=>row.id===id)),authored.map(row=>row.id),'All 44 author cards are grouped without duplicates');
+ assert.deepEqual(new Set(ids),new Set(definitions.map(row=>row.id)));assert.equal(ids.length,238);
  assert.equal(catalog.items.filter(row=>row.trainerId==='vilenkin6-part1').length,27);assert.match(f.host.textContent,/не все номера учебника/);assert.match(f.host.textContent,/При потере связи/);assert.equal(f.calls.length,0);assert(f.host.querySelector('a[href="#vilenkin-legacy"]'));
  f.button(definitions[0].id).click();await tick();assert.deepEqual(f.calls,[definitions[0].id]);
 });

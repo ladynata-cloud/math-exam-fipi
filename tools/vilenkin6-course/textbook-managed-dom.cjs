@@ -3,7 +3,7 @@ const test=require('node:test'),assert=require('node:assert/strict'),fs=require(
 const {JSDOM}=require('jsdom');
 const root=path.resolve(__dirname,'../..'),base=path.join(root,'courses/vilenkin-6-part-1');
 const C=require(path.join(base,'textbook-learning-contracts'));
-const units=['A','B','C','D'].flatMap(name=>JSON.parse(fs.readFileSync(path.join(base,'textbook-data/units-'+name+'.json'),'utf8')));
+const units=[...['A','B','C','D'].flatMap(name=>JSON.parse(fs.readFileSync(path.join(base,'textbook-data/units-'+name+'.json'),'utf8'))),...JSON.parse(fs.readFileSync(path.join(base,'textbook-data/supplement-lcm-multi.json'),'utf8'))];
 const tasks=units.flatMap(unit=>unit.tasks),ORIGIN='https://mathexam-board-ladynata.msk1.amvera.tech',CHANNEL='fixture_textbook_channel_0001';
 const copy=value=>JSON.parse(JSON.stringify(value)),tick=()=>new Promise(resolve=>setTimeout(resolve,0));
 async function fixture(t){
@@ -69,4 +69,43 @@ test('manual criteria checked out of order serialize with false entries and rest
  f.submit();let incomplete=f.changes().at(-1);assert.equal(incomplete.kind,'input');assert.equal(incomplete.state.task.status,'');C.normalize(a.taskSpec,incomplete.state,a.state);
  const checkbox=f.w.document.querySelectorAll('[data-criterion]')[1];checkbox.checked=true;checkbox.dispatchEvent(new f.w.Event('change',{bubbles:true}));
  const change=f.changes().at(-1),wire=JSON.parse(JSON.stringify(change.state));assert.equal(wire.task.manualChecks.final[0],false);assert.equal(wire.task.manualChecks.final[1],true);C.normalize(a.taskSpec,wire,a.state);await f.hydrate(a.taskSpec,wire);assert(!f.w.document.querySelectorAll('[data-criterion]')[0].checked);assert(f.w.document.querySelectorAll('[data-criterion]')[1].checked);
+});
+
+test('author LCM feedback distinguishes a larger common multiple and retains optional help after two errors',async t=>{
+ const f=await fixture(t),task=tasks.find(item=>item.id==='v6-author-lcm-example-01-chain'),a=C.create(task.id,41);
+ await f.hydrate(a.taskSpec,a.state);
+ assert.match(f.w.document.querySelector('.source').textContent,/Авторское дополнение/);
+ assert.equal(f.w.document.querySelector('.source a'),null,'Author task must not link to an invented textbook page');
+ f.input('24');f.submit();
+ assert.match(f.w.document.querySelector('.feedback').textContent,/общее кратное, но есть меньшее/);
+ assert.equal(f.w.document.querySelector('.hint'),null);
+ f.input('48');f.submit();
+ const wrong=f.changes().at(-1).state;
+ assert.equal(wrong.task.step,0);assert.equal(wrong.task.helped,false);assert.equal(wrong.task.wrongCounts[0],2);
+ assert.match(f.w.document.querySelector('.feedback').textContent,/Хочешь подсказку/);
+ assert.equal(f.w.document.querySelector('.hint'),null,'Two errors offer, but do not automatically open, help');
+ f.w.document.querySelector('[data-action="hint"]').click();
+ f.w.document.querySelector('[data-action="hint"]').click();
+ const hidden=f.changes().at(-1).state;C.normalize(a.taskSpec,hidden,wrong);
+ assert.equal(hidden.task.helped,true);assert.deepEqual(hidden.task.hintKeys,[0]);assert.deepEqual(hidden.task.hiddenHints,[0]);
+ await f.hydrate(a.taskSpec,hidden);assert.equal(f.w.document.querySelector('#answer').value,'48');assert.equal(f.w.document.querySelector('.hint'),null);
+ f.input('12');f.submit();const next=f.changes().at(-1).state;
+ assert.equal(next.task.step,1);assert.equal(next.task.stepDrafts[0],'12');assert.equal(next.task.helped,true);
+ assert.match(f.w.document.querySelector('.entry-label').textContent,/НОК\(12, 8\)/);
+ assert.equal(f.w.document.querySelectorAll('.step-history li').length,1);
+ const work=f.w.document.querySelector('.work');assert(work.querySelector('#answer-form').compareDocumentPosition(work.querySelector('.step-history'))&f.w.Node.DOCUMENT_POSITION_FOLLOWING,'Current action precedes retained history');
+});
+
+test('larger-multiple feedback applies to the final LCM, not a prime multiplicity question',async t=>{
+ const f=await fixture(t),check=tasks.find(item=>item.id==='v6-author-lcm-check-02-factors'),a=C.create(check.id,42);
+ await f.hydrate(a.taskSpec,a.state);f.input('72');f.submit();
+ assert.match(f.w.document.querySelector('.feedback').textContent,/общее кратное, но есть меньшее/);
+ assert.equal(f.changes().at(-1).state.task.status,'');
+ const example=tasks.find(item=>item.id==='v6-author-lcm-example-01-factors'),b=C.create(example.id,43);
+ await f.hydrate(b.taskSpec,b.state);
+ for(const step of example.steps.slice(0,3)){f.input(String(step.answer));f.submit();}
+ assert.match(f.w.document.querySelector('.entry-label').textContent,/Сколько множителей 2/);
+ f.input('6');f.submit();
+ assert.doesNotMatch(f.w.document.querySelector('.feedback').textContent,/общее кратное/);
+ assert.equal(f.changes().at(-1).state.task.step,3);
 });

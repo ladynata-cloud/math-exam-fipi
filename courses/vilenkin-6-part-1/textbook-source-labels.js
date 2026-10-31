@@ -26,8 +26,15 @@
   }
   function taskLabel(task) {
     const s = task.source;
+    if (s.kind === 'author') return 'Авторское дополнение MathExam' + (s.label ? ` · ${s.label}` : '');
     const title = s.kind === 'example' ? 'Разбор примера из учебника' : s.kind === 'question' ? 'Тренажёр к вопросу из учебника' : s.kind === 'check' ? 'Тренажёр к проверочной работе' : `Тренажёр к задаче № ${s.number}`;
     return title + (s.part ? ` · ${s.part}` : '');
   }
-  return Object.freeze({paragraphs:Object.freeze(paragraphs), hierarchyForPoint, pointLabel, sectionLabel, taskLabel});
+  function unitLabel(unit) {
+    return unit.kind === 'author-supplement' ? 'Авторское дополнение' : pointLabel(unit.id);
+  }
+  function unitSectionLabel(unit) {
+    return unit.kind === 'author-supplement' ? `Авторское дополнение MathExam к пункту ${unit.relatedPoint} · НОК` : sectionLabel(unit.id);
+  }
+  return Object.freeze({paragraphs:Object.freeze(paragraphs), hierarchyForPoint, pointLabel, sectionLabel, taskLabel, unitLabel, unitSectionLabel});
 });
