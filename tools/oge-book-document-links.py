@@ -66,8 +66,15 @@ def main():
     parser.add_argument('--mapping', default='scripts/oge-book-edition/urls.json')
     parser.add_argument('--output', required=True)
     parser.add_argument('--report', required=True)
+    parser.add_argument('--qr-dir', type=Path,
+                        help='Separate QR output directory; defaults to QR_book_v1 beside the candidate')
     args = parser.parse_args()
     source = Path(args.docx)
+    inputs = {Path(value).resolve() for value in (args.docx, args.inventory, args.mapping)}
+    if Path(args.output).resolve() in inputs or Path(args.report).resolve() in inputs:
+        raise ValueError('Candidate and report must not overwrite an input')
+    if Path(args.output).resolve() == Path(args.report).resolve():
+        raise ValueError('Candidate and report must have separate paths')
     inventory = json.loads(Path(args.inventory).read_text())
     mapping = json.loads(Path(args.mapping).read_text())
     if isinstance(mapping, dict):
@@ -110,7 +117,7 @@ def main():
             raise ValueError('A shared QR image has conflicting targets')
         placed_qrs[media] = target
     qr_meta = []
-    qr_dir = Path(args.output).parent / 'QR_book_v1'
+    qr_dir = args.qr_dir or Path(args.output).parent / 'QR_book_v1'
     qr_dir.mkdir(parents=True, exist_ok=True)
     for media, target in placed_qrs.items():
         qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_Q,

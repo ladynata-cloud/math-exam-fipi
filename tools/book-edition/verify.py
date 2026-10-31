@@ -71,6 +71,10 @@ def inspect(root, manifest_path):
     prefix, alias = manifest["prefix"], manifest["aliasPrefix"]
     require(re.fullmatch(r"book/[a-z0-9-]+/\d{4}-\d{2}-\d{2}/v[1-9]\d*/", prefix), "Invalid fixed prefix")
     require(re.fullmatch(r"b/[a-z0-9-]+/", alias), "Invalid fixed alias prefix")
+    _, family, date, version, _ = prefix.split("/")
+    require(manifest["edition"] == family + "-" + date + "-" + version,
+            "Edition identity differs from its versioned prefix")
+    require(alias.endswith("-" + version[1:] + "/"), "Alias version differs from its edition")
     require(manifest_path == prefix + "manifest.json", "Manifest location differs from its frozen namespace")
     files = manifest["files"]
     require(len({f["path"] for f in files}) == len(files), "Duplicate output path")
@@ -88,12 +92,25 @@ def inspect(root, manifest_path):
         require(len(data) == record["bytes"], "Size mismatch: " + name)
         require(hashlib.sha256(data).hexdigest() == record["sha256"], "Hash mismatch: " + name)
     source_paths = {r["path"] for r in manifest["sourceFiles"]}
+    require(len(source_paths) == len(manifest["sourceFiles"]), "Duplicate source path")
     source_canonicals = {r["path"]: r.get("canonical") for r in manifest["sourceFiles"]}
     for source in manifest["sourceFiles"]:
         require(source["path"] not in manifest["removedOptionalIntegrations"], "Removed integration was packaged")
         for dep in source["dependencies"]:
             require(dep in source_paths, "Dependency absent from frozen closure: " + dep)
     origin = manifest["publicOrigin"]
+    bootstrap = (root / prefix / "edition-assets/bootstrap.js").read_text()
+    configurations = re.findall(r"const config = (\{[^\n]+\});", bootstrap)
+    require(len(configurations) == 1, "Expected one literal startup configuration")
+    config = json.loads(configurations[0])
+    # The historical v1 bootstrap predates an explicit visible-label field.
+    # Every later version must supply its own label, never inherit v1.
+    require(config.get("version", "v1") == version, "Startup visible version differs from its frozen edition")
+    require(config.get("edition") == manifest["edition"] and config.get("path") == "/" + prefix
+            and config.get("aliasPath") == "/" + alias and config.get("publicOrigin") == origin,
+            "Startup configuration differs from its frozen edition")
+    require(config.get("paths") == ["/" + p for p in sorted(source_paths)] + ["/manifest.json", "/url-map.json"],
+            "Startup link inventory differs from its frozen closure")
     for name in sorted(expected):
         if not name.endswith(".html"):
             continue
@@ -116,9 +133,15 @@ def inspect(root, manifest_path):
             require(target.startswith(prefix) and target in expected, "Mutable or missing resource: " + name + " -> " + target)
     rows = manifest["entries"]
     require(len(rows) == len({r["sourceUrl"] for r in rows}) == len({r["bookUrl"] for r in rows}), "Duplicate entry URL")
+    require([r["id"] for r in rows] == [f"{n:02}" for n in range(1, len(rows) + 1)], "Entry IDs must be complete and ordered")
+    if family == "oge" and date == "2026-10-31":
+        require(len(rows) == 71, "Expected the complete 71-entry OGE inventory")
     require(json.loads((root / prefix / "url-map.json").read_text()) == rows, "URL mapping differs from manifest")
     for row in rows:
         require(row["sourceUrl"].startswith(origin + "/"), "Unexpected source origin")
+        require(row["bookUrl"] == origin + "/" + alias + row["id"] + "/", "Short URL differs from its edition and entry ID")
+        require(row["frozenUrl"] == origin + "/" + prefix + row["sourceUrl"][len(origin) + 1:],
+                "Frozen entry differs from its original source path")
         frozen = row["frozenUrl"].removeprefix(origin + "/")
         target = relative_file("/" + frozen)
         require(target in expected and target.startswith(prefix), "Entry has no frozen target")
@@ -158,9 +181,13 @@ def verify(root, base=None):
     manifests = sorted(p.relative_to(root).as_posix() for p in (root / "book").glob("*/*/v*/manifest.json"))
     require(bool(manifests), "No fixed edition manifest found")
     results = [inspect(root, name) for name in manifests]
-    listed = set()
+    listed, identities, namespaces = set(), set(), set()
     for name in manifests:
         manifest = json.loads((root / name).read_text())
+        require(manifest["edition"] not in identities, "Two editions share an identity")
+        require(manifest["storageNamespace"] not in namespaces, "Two editions share a storage namespace")
+        identities.add(manifest["edition"])
+        namespaces.add(manifest["storageNamespace"])
         files = {r["path"] for r in manifest["files"]} | {name}
         require(not listed.intersection(files), "Two manifests claim the same frozen file")
         listed.update(files)

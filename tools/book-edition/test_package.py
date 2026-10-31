@@ -17,6 +17,8 @@ verify = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(verify)
 PREFIX = "book/oge/2026-10-31/v1/"
 MANIFEST = PREFIX + "manifest.json"
+NEW_PREFIX = "book/oge/2026-10-31/v2/"
+NEW_MANIFEST = NEW_PREFIX + "manifest.json"
 
 
 class GateTests(unittest.TestCase):
@@ -28,7 +30,8 @@ class GateTests(unittest.TestCase):
         self.command("init", "-q")
         self.command("config", "user.name", "Book edition regression")
         self.command("config", "user.email", "book-edition-tests@example.invalid")
-        self.command("add", "book", "b")
+        # The fixture models this PR: v1 is published, v2 is a new candidate.
+        self.command("add", PREFIX, "b/oge26-1/")
         self.command("commit", "-qm", "Fixture edition")
         self.base = self.command("rev-parse", "HEAD").decode().strip()
 
@@ -38,8 +41,8 @@ class GateTests(unittest.TestCase):
     def command(self, *args):
         return subprocess.check_output(["git", *args], cwd=self.root, stderr=subprocess.STDOUT)
 
-    def update_record(self, file):
-        path = self.root / MANIFEST
+    def update_record(self, file, manifest_name=MANIFEST):
+        path = self.root / manifest_name
         manifest = json.loads(path.read_text())
         records = {r["path"]: r for r in manifest["files"]}
         data = (self.root / file).read_bytes()
@@ -50,7 +53,69 @@ class GateTests(unittest.TestCase):
     def test_complete_package_and_unmodified_baseline(self):
         result = verify.verify(self.root, self.base)
         self.assertEqual(result["protectedBaseEditions"], 1)
-        self.assertEqual(result["editions"][0]["entries"], 71)
+        self.assertEqual([(e["edition"], e["entries"]) for e in result["editions"]],
+                         [("oge-2026-10-31-v1", 71), ("oge-2026-10-31-v2", 71)])
+
+    def test_new_edition_cannot_reuse_old_storage_identity(self):
+        path = self.root / NEW_MANIFEST
+        manifest = json.loads(path.read_text())
+        manifest["edition"] = "oge-2026-10-31-v1"
+        manifest["storageNamespace"] = "mathExamBook:oge-2026-10-31-v1:"
+        path.write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(verify.InvalidEdition, "identity differs"):
+            verify.inspect(self.root, NEW_MANIFEST)
+
+    def test_rehashed_bootstrap_cannot_use_old_storage_configuration(self):
+        name = NEW_PREFIX + "edition-assets/bootstrap.js"
+        file = self.root / name
+        file.write_text(file.read_text().replace('"edition":"oge-2026-10-31-v2"',
+                                                '"edition":"oge-2026-10-31-v1"'))
+        self.update_record(name, NEW_MANIFEST)
+        with self.assertRaisesRegex(verify.InvalidEdition, "Startup configuration differs"):
+            verify.inspect(self.root, NEW_MANIFEST)
+
+    def test_rehashed_bootstrap_cannot_display_a_wrong_or_missing_version(self):
+        name = NEW_PREFIX + "edition-assets/bootstrap.js"
+        file = self.root / name
+        original, manifest_bytes = file.read_text(), (self.root / NEW_MANIFEST).read_bytes()
+        for label in ['"version":"v1",', '']:
+            with self.subTest(label=label):
+                file.write_text(original.replace('"version":"v2",', label))
+                self.update_record(name, NEW_MANIFEST)
+                with self.assertRaisesRegex(verify.InvalidEdition, "Startup visible version differs"):
+                    verify.inspect(self.root, NEW_MANIFEST)
+                (self.root / NEW_MANIFEST).write_bytes(manifest_bytes)
+        file.write_text(original)
+
+    def test_rehashed_v2_resource_cannot_cross_to_v1(self):
+        name = NEW_PREFIX + "index.html"
+        file = self.root / name
+        file.write_text(file.read_text().replace("</head>",
+                        '<script src="/' + PREFIX + 'assets/site.css"></script></head>', 1))
+        self.update_record(name, NEW_MANIFEST)
+        with self.assertRaisesRegex(verify.InvalidEdition, "Mutable or missing resource"):
+            verify.inspect(self.root, NEW_MANIFEST)
+
+    def test_rehashed_mapping_cannot_swap_two_valid_targets(self):
+        path = self.root / NEW_MANIFEST
+        manifest = json.loads(path.read_text())
+        rows = manifest["entries"]
+        rows[0]["frozenUrl"], rows[1]["frozenUrl"] = rows[1]["frozenUrl"], rows[0]["frozenUrl"]
+        path.write_text(json.dumps(manifest))
+        (self.root / NEW_PREFIX / "url-map.json").write_text(json.dumps(rows))
+        self.update_record(NEW_PREFIX + "url-map.json", NEW_MANIFEST)
+        with self.assertRaisesRegex(verify.InvalidEdition, "Frozen entry differs"):
+            verify.inspect(self.root, NEW_MANIFEST)
+
+    def test_v2_alias_cannot_reuse_published_v1_address(self):
+        path = self.root / NEW_MANIFEST
+        manifest = json.loads(path.read_text())
+        manifest["entries"][0]["bookUrl"] = "https://mathexam.space/b/oge26-1/01/"
+        path.write_text(json.dumps(manifest))
+        (self.root / NEW_PREFIX / "url-map.json").write_text(json.dumps(manifest["entries"]))
+        self.update_record(NEW_PREFIX + "url-map.json", NEW_MANIFEST)
+        with self.assertRaisesRegex(verify.InvalidEdition, "Short URL differs"):
+            verify.inspect(self.root, NEW_MANIFEST)
 
     def test_byte_mutation_is_detected(self):
         file = self.root / PREFIX / "edition-assets/edition.css"

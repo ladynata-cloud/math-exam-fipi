@@ -1,35 +1,54 @@
 # MathExam project status
 
-## Prepared: audited OGE book edition, 2026-10-31
+## Locally prepared: corrected fixed OGE book edition v2, 2026-10-31
 
-- [Task](tasks/OGE_BOOK_EDITION_AUDIT_20261031.md), `NEW_ARCHETYPE`; base
-  `139b944a70f2e8ba4d340d152d08807fad03e5da`, branch
-  `audit/oge-book-edition-20261031`. [Report](reports/oge-book-20261031/README.md).
-- The current PDF/DOCX contain the same 71 URLs and 34 placed QR codes as the
-  earlier register. Live HTML and 158 dependencies match the named base.
-- Recorded learner coverage is 65 trainers plus six navigation pages at
-  320/390/1280 px in source and fixed copies: 426 cases. Required finite
-  assessments and browser-local retained outcomes have separate evidence.
-  This does not enumerate every random task or certify real-pupil outcomes.
-- Minimal mathematical-feedback, mobile and persistence repairs are included.
-  Original public addresses are retained. Separate fixed copies under
-  `/book/oge/2026-10-31/v1/` and `/b/oge26-1/` remain unpublished candidates,
-  with matching candidate PDF/DOCX and 34 QR codes.
-- The owner requested completion of every remaining preparation item except
-  external review. [ADR 0012](adr/0012-fixed-oge-book-editions.md) is Accepted
-  for this task. Historical Task6 scope and division compatibility contracts
-  are repaired with strict negative controls. The single book diagnostic
-  caption now says 2027; all 71 URLs, 34 QR and 72 pages are preserved.
-- Local technical checks pass, including 48 Task6/scope checks, 3500 laboratory
-  plans, 2700 guided plans, 12 document mutation controls, 28 collector checks,
-  and a 367-request release-check rehearsal. Exact-head CI is recorded in PR387.
-  Source/frozen teaching bytes are unchanged by this continuation.
-- External review is `NOT_RUN_BY_OWNER_REQUEST`, with no provider verdict and
-  no automatic paid retry. The distribution gate remains `INCOMPLETE` pending
-  publication and its checks. Merge, auto-merge and deployment remain unapproved.
-- Next: (1) inspect the updated candidate and exact-head CI; (2) test a physical
-  QR print and devices; (3) after separate release permission, verify all 71
-  deployed aliases/targets and 225 frozen files before distributing the book.
+- [Task](tasks/OGE_BOOK_EDITION_V2_DALI_20261031.md), `MEDIUM`; owner START,
+  base `4a90592077934d9a6d8a617b4afa50938798efb2`, branch
+  `fix/oge-book-dali-v2-20261031`.
+- The literal DALI image request is corrected in the public Task11 trainer.
+  `/book/oge/2026-10-31/v2/` and `/b/oge26-2/` have new matching PDF/DOCX,
+  34 QR and 71 addresses. All 225 published v1 files remain byte-identical.
+- The bounded work uses Accepted [ADR0012](adr/0012-fixed-oge-book-editions.md).
+  Existing learning engines, portrait JPEG, book wording and the 2027 caption
+  remain fixed. [Local verification](reports/oge-book-v2-20261031/README.md)
+  records 426 source/v2 learner cases, 790 independent math comparisons,
+  142+10+3 v2 runtime checks and independent internal focused review, all PASS.
+  The earlier v1 failure is retained; exact-head CI is recorded in the Draft PR.
+- V2 is unpublished. This START permits a new Draft PR, not its merge,
+  auto-merge or deployment. No external-provider review is requested or claimed.
+- Next: (1) inspect the new candidate and exact-head CI; (2) after separate owner
+  release permission, verify the new live bytes/aliases and physical QR/devices
+  before distributing the book.
+
+## Published with an open distribution gate: OGE book edition v1
+
+- [PR387](https://github.com/ladynata-cloud/math-exam-fipi/pull/387) was merged
+  on 2026-10-31 as `4a90592077934d9a6d8a617b4afa50938798efb2`, sole parent
+  `139b944a70f2e8ba4d340d152d08807fad03e5da`. The reviewed head
+  `4b77e8cadbac230671b697db7209c6e763081b0e` and squash merge have identical
+  full trees and288-path deltas. Separate owner release permission was used;
+  the authoritative main SHA matched that authorized base immediately before merge.
+- [Pages41196769978](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41196769978)
+  and postmerge EGE41196770721 passed for that exact merge. All367 production
+  comparisons passed:225 package-file checks,71 aliases and71 targets, exact
+  sizes/SHA256 and no HTTP redirect. This establishes delivery, not runtime quality.
+- Exact-head preparation CI passed9/9 workflows,426 recorded learner cases
+  and790 independent mathematical comparisons. The same71 addresses,34 QR,
+  72 pages and approved2027 diagnostic caption are in the candidate documents.
+- The final live Chromium140 run covered142 entry/width pairs and10 isolation
+  checks. It passed141/142 and10/10, with one real HTTP404 for entry54 at320px:
+  the literal image path `'+DALI_PORTRAIT_DATA+'`. Fifteen actual screenshot
+  inspections passed within their recorded states. The runtime gate is FAIL
+  and the distribution gate remains **INCOMPLETE**. Focused passing probes do
+  not close the repeatedly observed request failure.
+- The original [task](tasks/OGE_BOOK_EDITION_AUDIT_20261031.md) and
+  [preparation report](reports/oge-book-20261031/README.md) are historical
+  preparation records. The merged PR records production evidence and the open
+  finding. Published `/book/oge/2026-10-31/v1/` and `/b/oge26-1/` are immutable;
+  a correction must use a new edition rather than alter the printed destination.
+- External review was `NOT_RUN_BY_OWNER_REQUEST` for the PR387 continuation,
+  with no provider verdict. Physical phones/printed QR, iOS/Safari/Firefox,
+  screen keyboard and pupil trials were not performed.
 
 ## Prepared: Vilenkin 6 source clarity and revised cabinet course
 
