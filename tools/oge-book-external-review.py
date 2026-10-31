@@ -44,7 +44,7 @@ def main():
                 and name not in {'tools/oge-book-register.mjs', 'tools/fixtures/oge-book-exam-math.json'}]
     if not selected:
         raise ValueError('No eligible public source changes; refusing an unscoped diff')
-    patch = git('diff', '--no-ext-diff', '--unified=4', base, head, '--', *selected)
+    patch = git('diff', '--no-ext-diff', '--unified=3', base, head, '--', *selected)
     if len(patch.encode()) > 600_000:
         raise ValueError('Scoped source patch exceeds the bounded review budget')
     additions = '\n'.join(line[1:] for line in patch.splitlines()
@@ -58,7 +58,7 @@ def main():
               'base_sha': base, 'head_sha': head,
               'reviewed_at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
               'status': 'unavailable', 'verdict': None, 'files': selected,
-              'patch_bytes': len(patch.encode()),
+              'patch_bytes': len(patch.encode()), 'context_lines': 3,
               'patch_sha256': hashlib.sha256(patch.encode()).hexdigest(),
               'limits': ['No private book text, live browser or generated-copy byte inspection is supplied.',
                          'Generated reports, workbook presentation and the large recorded mathematics fixture are excluded; their checking code is supplied.']}
