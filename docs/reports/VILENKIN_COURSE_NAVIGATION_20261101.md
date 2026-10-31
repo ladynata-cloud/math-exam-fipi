@@ -1,16 +1,24 @@
-# Vilenkin course navigation — preparation report
+# Vilenkin course navigation — preparation and dependency integration
 
 Date: 2026-11-01 (Asia/Novosibirsk). Task:
 [VILENKIN_COURSE_NAVIGATION_20261101](../tasks/VILENKIN_COURSE_NAVIGATION_20261101.md).
-Review level: MEDIUM. Base: `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`.
+Review level: MEDIUM. Original base:
+`a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`.
+Authorized dependency integration base:
+`37718f1c0138ba031314b8f4716b73c9d963bc81`.
 Branch: `fix/vilenkin-course-navigation-20261101`.
 
-This is the local preparation record. The resulting Draft PR records the
-published head and later exact-head CI; this document does not claim a release.
+The navigation preparation evidence below is bound to reviewed head
+`97338833c9c92b164e73433c097464530507bd60`. The dependency continuation is
+recorded separately; earlier local and virtual passes are not execution on its
+resulting head. Existing [PR392](https://github.com/ladynata-cloud/math-exam-fipi/pull/392)
+records the final published head and exact-head CI. This report does not claim
+that PR392 is merged or deployed.
 
 ## Result
 
-**Local gate: `VILENKIN_COURSE_NAVIGATION_OK`.**
+**Original navigation preparation gate: `VILENKIN_COURSE_NAVIGATION_OK`.**
+The integration gate and release status are separate below.
 
 - Course entry has a visible Start/Continue action, readable topic cards,
   explicit task buttons, exact source references and real saved progress.
@@ -40,18 +48,23 @@ would need separate scope and applicable trainer consultation.
 
 ## Preservation and scope
 
-The 194 source cards, 615 authored steps, source JSON/hashes, catalog identities,
+The 194 Vilenkin source cards, 615 authored steps, Vilenkin source JSON/hashes, catalog identities,
 27 legacy modules, server code, authorization, saved-work contracts and learner
 records are unchanged. Git comparison against the base confirms byte identity
 of both source-data directories, both catalogs, textbook learning contracts and
 the board server. No paid model or provider was activated.
 
-PR389 (additional LCM cards) and PR391 (geometry source provenance) are separate
-pending tasks. This branch neither integrates them nor claims their release.
-The owner's later UI feedback added the broken catalogue return and an explicit
+The original navigation preparation excluded both PR389 and PR391. The owner's
+later approval permits ordinary integration of the separately released PR391
+source repair after coordinated publication was confirmed. Intake preserves its reviewed
+source metadata and associated assertions byte-for-byte;
+this does not authorize further geometry or teaching changes. PR389 (additional
+LCM cards) remains separate and excluded.
+
+The owner's UI feedback added the broken catalogue return and an explicit
 entry to the existing LCM trainer within this presentation/navigation scope.
 
-## Verification
+## Verification of the reviewed navigation head
 
 | Check | Result |
 | --- | --- |
@@ -151,30 +164,158 @@ not checks on a later head. Fresh HTTPS checks confirmed the live cabinet and
 public course still served the previous navigation code. Both publication
 surfaces must receive their new resources during a later authorized release.
 
+## Authorized dependency continuation — 2026-11-01
+
+The owner explicitly approved completing PR391's coordinated publication and
+then bringing updated main into the existing PR392 branch by an ordinary merge,
+including resolution of the status-document conflict. This is a bounded
+preparation authorization. It does not authorize merging or deploying PR392.
+
+### Confirmed dependency publication
+
+- [PR391](https://github.com/ladynata-cloud/math-exam-fipi/pull/391) was
+  squash-merged as `37718f1c0138ba031314b8f4716b73c9d963bc81`, sole parent
+  `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`.
+- Merged tree `ae2f591ce87bcde3ea6ac9b1f28bad42ff48e366` equals the tree of
+  reviewed repair head `7a4c049c3c58827774921e51d47b82bdd20219b8`.
+- [Pages run 41248923855](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41248923855)
+  succeeded for that merged commit. Independent verified-HTTPS checks at
+  2026-10-31 22:38:30 UTC (2026-11-01 05:38:30 Asia/Novosibirsk) confirmed the
+  matching public and cabinet bounded course: 2,805,951 bytes, SHA256
+  `0a55791957f465cf6f9c3736fe41ca8a4fb110601bbcf9c4e9843e38a3f5a0fe`.
+- Matching running assistant package / coordinated publication confirmation:
+  Amvera package `69afae86d08c0e6c3041a29646e1845704951f43` has a successful build, is marked used, and is running with one replica; its sole changed knowledge snapshot is 448638 bytes with SHA256 `755cd5c4593594f296cb1a7e03af5ad29ba5413104561522901918f31c418013`. Public/cabinet byte verification
+  alone does not establish the private helper package or process revision.
+- The Amvera Control version row dated 01.11.2026 05:37 identifies that
+  package with successful-build, stored and used indicators; application status
+  is running with one replica. This is package/version evidence, not a real
+  learner dialogue or a provider trial. The coordinated-publication prerequisite
+  is satisfied; the actual branch integration uses the separate owner approval.
+
+### Integration identity and preservation
+
+- Branch remains `fix/vilenkin-course-navigation-20261101`; PR remains #392.
+- Navigation parent: `97338833c9c92b164e73433c097464530507bd60`.
+- Authorized main input: `37718f1c0138ba031314b8f4716b73c9d963bc81`.
+- Immediately before the ordinary merge, the authoritative remote query
+  returned the named main and unchanged navigation head. No base drift was
+  observed. Any further movement before a later release remains subject to
+  the repository's mandatory stop and revalidation procedure.
+- Resulting head: recorded in the existing PR392 publication record to avoid a self-referential SHA in this commit. The merge preserves the
+  two named parents; the tested-tree and input identity are recorded below.
+- An ordinary merge preserves both histories. Only the shared status
+  document conflicted. Its reconciliation retains each task's truthful release
+  state, with bounded task/report updates and no product-file edit.
+- Comparison confirms every carried dependency product/test blob equals
+  released PR391 and every navigation product/test blob equals the reviewed
+  navigation head. The full checked-input manifest also matches. PR389 and
+  unrelated main commits are absent.
+
+### Checks on the resulting candidate
+
+Fresh local checks ran on **2026-10-31 22:48:13–22:49:46 UTC**
+(2026-11-01 05:48:13–05:49:46 Asia/Novosibirsk) against a read-only virtual
+composition of navigation head `97338833c9c92b164e73433c097464530507bd60`
+and released main `37718f1c0138ba031314b8f4716b73c9d963bc81`.
+The tested virtual tree is `885165ce75cd854e3e505416eab1ecc2b2e8c5c8`.
+The virtual status/task/report reconciliation contained explicitly unexecuted
+placeholders; it did not perform or establish actual branch integration.
+
+| Fresh composition check | Result |
+| --- | --- |
+| Source/generator/inventory commands | 9 PASS, including both previously failing geometry provenance guards |
+| Vilenkin navigation, bridge, helper, support and backend Node cases | 69/69 PASS, zero skips |
+| Atanasyan and Ichenskaya Node suites | 24/24 PASS, zero skips |
+| Complete assistant-service suite | 119/119 PASS, zero skips |
+| Actual Vilenkin navigation browser | 10 groups PASS at 320/390/1280 px |
+| Existing Vilenkin source-helper browser | 7 groups PASS |
+| Atanasyan browser | 12 public + 12 native journeys and teacher preview PASS |
+| Ichenskaya browser | 16 public + 16 native journeys, 2 retained course switches and teacher preview PASS |
+| Real local cabinet → separate assistant integration | 8 scenarios / 15 requests PASS |
+| Browser errors, unexpected external requests and model-provider calls | Zero |
+| Virtual patch whitespace and post-test input preservation | PASS |
+
+Runtime: Node 24.22.1, Playwright 1.62.1 and Chromium 140.0.7339.16 selected
+through the existing runner options. The runners and their assertions were
+unchanged. Accounts, records, HTTP services and SQLite were local synthetic
+fixtures. The actual task branch, index and worktree remained unchanged.
+
+The combined original-base delta contains exactly 43 paths, the union of the
+35-path navigation patch and 9-path source repair, sharing only
+`docs/PROJECT_STATUS.md`. Only that status document and the bounded navigation
+task/report proposals differ from the respective reviewed inputs. All 40
+other changed-file blobs match their reviewed heads. The six substantive
+repair files retain stable patch ID
+`0a3a728a1d34374f8d302d302ee5aaf355101802`.
+
+A canonical path/mode/blob manifest covers all **6,011 tracked inputs** other
+than those three reconciled documents. Its SHA256 is
+`2400dad31c28fdd2e13a8fd71ad18c89a344064c1bb498b81ae5bd3e7a6e8ecd`
+(UTF-8 compact sorted-key JSON without a final newline). All 2,963 exported
+tracked files were checked against the virtual tree before and after testing.
+The sparse export included every file required by the listed checks.
+
+These passes support the actual integration after the recorded identity
+comparison: the product/test inputs and the two intended parents match,
+and differences are confined to the three reconciled documents. They are
+tests of the **byte-identical candidate**, not executions at the later commit.
+Any subsequent product or test change requires the affected gates to run again.
+
+Exact resulting-head GitHub CI, final documentation/whitespace review and
+PR392 production remain separate evidence. The fresh runs generated browser
+images but do not claim a new exhaustive visual audit; the original visual
+review remains bound to the unchanged UI sources. No real pupil or physical
+device trial, other-browser trial or external-provider review is claimed.
+
+The actual ordinary integration preserves those tested product and test inputs.
+The authoritative remote-main query immediately before the merge returned
+`37718f1c0138ba031314b8f4716b73c9d963bc81`; the remote task head was still
+`97338833c9c92b164e73433c097464530507bd60`. No further base drift was
+observed. The only differences from the tested candidate are the finalized
+status, task and report documents. The merge has the named navigation and
+released-main parents, without rewriting either history. The final commit
+identity and fresh exact-head CI belong in PR392 after branch publication.
+
+
+The record distinguishes fresh virtual-candidate executions, actual input
+identity verification, and subsequent exact-head CI. No earlier count is
+silently reused as an execution at a later commit.
+
+The two geometry workflows check out the PR head explicitly. The old failures
+remain historical failures; PR391's successful release does not make an old
+PR392-head run pass. A passing local composed candidate is also separate from
+exact-head CI and production verification.
+
 ## Remaining checks and release
 
-- Later exact-head CI is recorded in the Draft PR, not inferred from these
-  local results. Existing source-provenance failures on main are not repaired
-  or waived by this UI task.
-- No production deployment, real pupil account change, physical-phone trial,
-  Safari/Firefox trial or external-provider review was performed.
+- PR392 remains Draft while branch publication and fresh exact-head CI
+  complete. CI is recorded in that PR; the local candidate evidence does not
+  substitute for it. Historical source failures remain distinct, with no
+  weakened or waived check.
+- PR392 production deployment, real pupil account change, physical-phone trial,
+  Safari/Firefox trial and external-provider review remain unperformed. The
+  separate PR391 publication evidence above is not a PR392 release claim.
 - No new 75/30 interactive worksheet and no PR389 content integration.
-- Rollback is a revert of this presentation patch; no database migration or
-  saved-work deletion is needed. The existing workflows retain their assertions;
-  the focused browser gate is added to the Vilenkin cloud workflow.
+- Rollback of a later PR392 release reverts its navigation/presentation delta
+  against the integrated base while retaining the separately released PR391
+  course/helper package pair. No database migration or saved-work deletion is
+  needed. Existing workflow assertions remain intact; the focused browser gate
+  is added to the Vilenkin cloud workflow.
+
+## Continuation handoff
 
 ```text
 EXECUTIVE STATUS
 
-Task: VILENKIN_COURSE_NAVIGATION_20261101
-PR: Draft PR URL and published head recorded after this local report
-Base: a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3
-Head: Exact published identity recorded in the Draft PR
-Gate: VILENKIN_COURSE_NAVIGATION_OK locally; CI/release separate
-Tests: 44 focused cases; 25 backend; 194 managed identities; 10+7 browser groups; 14 inspected screenshots
-Failures: No remaining local product finding; corrected review/harness findings above
-Not run: Production, real pupil changes, physical/other-browser trials, external review
-Scope deviations: None; direct owner follow-ups are included in this UI correction
-Recommendation: Review concrete screenshots and exact-head CI before release
-Next user decision: Separate exact-base/head merge/deployment authorization after gates
+Task: VILENKIN_COURSE_NAVIGATION_20261101 — dependency integrated locally
+PR: #392, Draft
+Base: 37718f1c0138ba031314b8f4716b73c9d963bc81; original preparation base a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3
+Head: recorded in the existing PR392 publication record to avoid a self-referential SHA in this commit
+Gate: Fresh virtual candidate PASS; identical integrated inputs verified; exact-head CI and PR392 release separate
+Tests: Fresh candidate 69+24+119 Node cases; 9 source commands; 10+7 browser groups; 24+32 geometry journeys; 8 assistant scenarios
+Failures: None in fresh composition checks; historical old-head geometry failures remain recorded; exact-head CI pending publication
+Not run: PR392 production, real pupil changes, physical/other-browser trials, external review; any additional unrun checks are recorded above
+Scope deviations: None beyond the explicitly approved dependency intake and status/task/report reconciliation; PR389 excluded
+Recommendation: Publish the preserved-history task update, obtain exact-head CI, then present the concrete PR392 release candidate
+Next user decision: Separate exact-base/head PR392 merge/deployment authorization after gates
 ```

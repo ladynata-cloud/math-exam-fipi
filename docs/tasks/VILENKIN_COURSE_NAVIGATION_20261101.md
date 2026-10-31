@@ -6,7 +6,9 @@
 - Owner: MathExam project owner.
 - Date: 2026-11-01, Asia/Novosibirsk.
 - Base branch: `main`.
-- Base SHA: `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`.
+- Original preparation base: `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`.
+- Authorized dependency integration base:
+  `37718f1c0138ba031314b8f4716b73c9d963bc81` (PR391 squash merge).
 - Planned branch: `fix/vilenkin-course-navigation-20261101`.
 - Review level: **MEDIUM** for bounded presentation/navigation within existing
   course, help and saved-work contracts.
@@ -32,8 +34,15 @@ existing learning material and every saved task identity.
 - `mountCabinetAssistant()` excludes the `vilenkin-textbook` route. The actual
   task helper already has a fixed dock and a server-confirmed help contract.
 - PR378 is merged as `7547ea565871e09ee02b632761f27bc088bd5c8a`.
-  PR389 (additional multi-number LCM tasks) and PR391 (geometry provenance)
-  remain separate, unmerged changes. This task does not integrate either.
+- Original navigation preparation excluded PR389 and PR391. The owner later
+  explicitly authorized ordinary integration of the released PR391 dependency
+  into this same task branch, after its coordinated publication is confirmed.
+- [PR391](https://github.com/ladynata-cloud/math-exam-fipi/pull/391) was
+  squash-merged as `37718f1c0138ba031314b8f4716b73c9d963bc81`, sole parent
+  `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`. Its tree equals reviewed head
+  `7a4c049c3c58827774921e51d47b82bdd20219b8`. Confirmed publication and the
+  authorized integration are recorded in the task report.
+- PR389 (additional multi-number LCM tasks) remains separate and excluded.
 
 ## Approved scope
 
@@ -54,12 +63,24 @@ existing learning material and every saved task identity.
   explicitly labelled as a separate example, with existing help provenance.
 - Focused DOM/browser regression, visual review, task/report/status documents
   and resource cache version updates.
+- After confirmed coordinated publication of PR391, integrate the named main
+  commit into this existing branch by an ordinary merge preserving both
+  histories. Carry the reviewed dependency files unchanged; reconcile the
+  `docs/PROJECT_STATUS.md` conflict and update this task and its report.
+- Verify the resulting patch against the integrated base and rerun the
+  applicable source, geometry, helper and navigation gates, followed by CI on
+  the resulting exact head. Keep PR392 Draft until the release gate is complete.
 
 ### Out of scope
 
-- Course JSON, source hashes, task IDs, answers, grades, storage contracts,
-  authentication, personal learner records and external model activation.
-- PR389/PR391 integration, merge, deployment, changes to other pupils' courses.
+- New edits to course JSON, source hashes, task IDs, answers, grades, storage
+  contracts, authentication, personal learner records or external model
+  activation. The only dependency intake is the unchanged, separately reviewed
+  and released PR391 patch; it does not authorize a further source revision.
+- PR389 integration or publication, changes to other pupils' courses, and
+  integration of unrelated concurrent main commits.
+- Merge of PR392 into main, auto-merge or deployment under this preparation
+  authorization; each requires the separate release decision below.
 - A new mathematical learning engine or changed authoritative step sequence.
 
 ## Acceptance criteria
@@ -76,6 +97,12 @@ existing learning material and every saved task identity.
 - [x] Existing task source data, legacy modules and saved identities are exact.
 - [x] Catalogue return remains available outside the protected frame in
   teacher and history views, without changing the saved attempt or controller.
+- [x] PR391 coordinated publication is confirmed for public/cabinet course and
+  the matching running assistant package before branch integration.
+- [x] The authorized ordinary integration is complete, the status conflict is
+  reconciled, and all non-document dependency files retain reviewed bytes.
+- [ ] Applicable composed checks and exact-head CI pass; failures and unrun
+  checks remain explicit in the report and PR.
 
 ## Checks and gates
 
@@ -86,6 +113,10 @@ existing learning material and every saved task identity.
 - Manual inspection of actual desktop/mobile screenshots.
 - Final gate: `VILENKIN_COURSE_NAVIGATION_OK`.
 - No real student account or physical-device trial is claimed.
+- Dependency integration also requires the existing Atanasyan and Ichenskaya
+  source/generator checks, their relevant geometry and helper boundary suites,
+  and actual browser navigation/helper regressions. Prior-head and virtual
+  results are historical evidence, not a pass for the eventual integrated head.
 
 ## Review plan
 
@@ -104,18 +135,31 @@ existing learning material and every saved task identity.
   hidden/offscreen actions, stale helper after account/route change.
 - Shared open-action lock, saved progress checks, current-view guards and
   actual browser journeys address these risks.
-- Rollback: revert this presentation patch. No database migration, content
-  revision or saved-work deletion is involved.
+- Rollback of a later PR392 release reverts its navigation/presentation delta
+  against the integrated base. Retain the separately released PR391 course and
+  assistant package pair. No database migration or saved-work deletion is
+  involved; the PR391 rollback procedure remains a separate release matter.
 
 ## Permissions
 
 - Implementation: explicitly requested by the owner in the current conversation
   ("переделай" and bottom-right helper instruction); no copied approval used.
 - Task branch, local commits, push and Draft PR: within that implementation work.
-- Merge, auto-merge and deployment: **not authorized for this task**.
+- The owner's direct continuation approval permits the ordinary main-to-task
+  merge and bounded documentation reconciliation after PR391 publication.
+  This records the current conversation decision; it is not external review.
+- Merge of PR392 into main, auto-merge and its deployment: **not authorized**.
+  Present the resulting exact base/head and gates for a separate owner decision.
 
 ## Execution record
 
 - Actual branch: `fix/vilenkin-course-navigation-20261101`.
-- Actual base: `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`.
-- Final head, PR, checks and remaining findings: recorded in the task report.
+- Original base: `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`.
+- Reviewed navigation head before integration:
+  `97338833c9c92b164e73433c097464530507bd60`.
+- Integration base: `37718f1c0138ba031314b8f4716b73c9d963bc81`.
+- Resulting integration head: recorded in the existing PR392 publication record to avoid a self-referential SHA in this commit.
+- Dependency publication confirmation: Amvera package `69afae86d08c0e6c3041a29646e1845704951f43` has a successful build, is marked used, and is running with one replica; its sole changed knowledge snapshot is 448638 bytes with SHA256 `755cd5c4593594f296cb1a7e03af5ad29ba5413104561522901918f31c418013`.
+- Local candidate checks and preservation are recorded in the task report.
+  The exact published head, fresh CI and remaining release findings are
+  recorded in the existing PR392 publication record.
