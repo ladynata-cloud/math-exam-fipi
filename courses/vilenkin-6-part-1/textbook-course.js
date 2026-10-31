@@ -13,6 +13,17 @@
   const unitURL=unit=>`#unit/${unit.id}`;
   const viewIsCurrent=(epoch,hash)=>epoch===renderEpoch&&location.hash===hash&&(!managed||managedReady&&!managedReadonly&&!managedApplying);
   function guardLinks(epoch,hash){main.querySelectorAll('a').forEach(link=>{
+    // The isolated task returns to its owning cabinet's existing catalogue.
+    if(managed&&link.getAttribute('href')==='#'){
+      link.dataset.managedCourseCatalog='';
+      link.setAttribute('aria-label','Все темы курса в кабинете');
+      link.setAttribute('aria-disabled',String(managedReadonly||!managedReady));
+      link.addEventListener('click',event=>{
+        event.preventDefault();
+        if(viewIsCurrent(epoch,hash))managedNotify({kind:'navigate',details:{target:'vilenkin-textbook-catalog'},state:managedSnapshot()});
+      });
+      return;
+    }
     if(managed&&link.getAttribute('href')?.startsWith('#')&&link.getAttribute('href')!==managedRoute()){
       link.removeAttribute('href');link.setAttribute('aria-disabled','true');link.title='Другую задачу можно выбрать в маршруте кабинета.';
     }
@@ -97,7 +108,7 @@
   function mountSupport(unit,epoch,hash,task=null,p=null) {
     const host=main.querySelector('[data-study-support]');
     if(!host||!window.VilenkinStudySupport)return;
-    window.VilenkinStudySupport.mount(host,{unitId:unit.id,isCurrent:()=>viewIsCurrent(epoch,hash)&&(!task||state.tasks[task.id]===p),onUse(reason){
+    window.VilenkinStudySupport.mount(host,{unitId:unit.id,answerType:task?.answerType,actionsHost:main.querySelector('.work .help-actions'),isCurrent:()=>viewIsCurrent(epoch,hash)&&(!task||state.tasks[task.id]===p),onUse(reason){
       if(!task||p.status)return;
       p.helped=true;
       save('hint',{resource:reason});
@@ -220,13 +231,14 @@
   function managedAccess(value){
     managedReadonly=!!value;main.inert=managedReadonly||!managedReady;
     document.body.dataset.managedReadonly=String(managedReadonly);
+    main.querySelectorAll('[data-managed-course-catalog]').forEach(link=>link.setAttribute('aria-disabled',String(managedReadonly||!managedReady)));
   }
   function initManaged(){
     document.body.classList.add('managed');
     main.innerHTML='<h1>Задание из учебника</h1><p role="status">Открываем сохранённую работу из кабинета…</p>';
     document.querySelector('.site-header nav')?.replaceChildren();
     const brand=document.querySelector('.site-header .brand');if(brand)brand.removeAttribute('href');
-    const note=document.createElement('p');note.className='managed-course-note';note.textContent='Ответы, шаги и подсказки сохраняются в этой работе. Другую задачу выбирай в маршруте кабинета.';main.before(note);
+    const note=document.createElement('p');note.className='managed-course-note';note.textContent='Работа сохраняется в кабинете. Вернуться к каталогу можно по ссылке «Все темы курса» над заданием.';main.before(note);
     announceStorage(true);managedAccess(true);
     if(!window.MathExamLearning?.enabled||!window.VilenkinTextbookLearning?.createFactory){
       main.innerHTML='<h1>Открой задание из кабинета</h1><p>Связь с кабинетом не установлена. Сохранённые работы остаются на сервере.</p>';return;
