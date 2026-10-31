@@ -4,7 +4,7 @@ const test=require('node:test'),assert=require('node:assert/strict'),fs=require(
 const C=require('../../courses/vilenkin-6-part-1/textbook-learning-contracts');
 const catalog=require('../../learning/catalog'),manifest=require('../../learning/vilenkin6-textbook-catalog'),contracts=require('../learning-contracts'),{LearningStore}=require('../learning-store');
 const {getRewards}=require('../learning-rewards');
-const units=['A','B','C','D'].flatMap(part=>require('../../courses/vilenkin-6-part-1/textbook-data/units-'+part+'.json'));
+const units=[...['A','B','C','D'].flatMap(part=>require('../../courses/vilenkin-6-part-1/textbook-data/units-'+part+'.json')),...require('../../courses/vilenkin-6-part-1/textbook-data/supplement-lcm-multi.json')];
 const tasks=new Map(units.flatMap(unit=>unit.tasks.map(task=>[task.id,task]))),copy=structuredClone,op=()=>crypto.randomUUID();
 const HASH='scrypt1:'+'01'.repeat(16)+':'+'02'.repeat(32),answerOf=answer=>String(Array.isArray(answer)?answer[0]:answer);
 const choice=[...tasks.values()].find(task=>task.role==='practice'&&task.answerType!=='self-check');

@@ -12,13 +12,31 @@ function fixture(t,{teacher=false,api,open,progress=[]}={}){
 }
 test('all selected textbook tasks are catalog-derived and separate from the unchanged legacy modules',async t=>{
  const f=fixture(t);assert([...f.host.querySelectorAll('button[data-vilenkin-textbook-open]')].every(b=>b.disabled));await tick();
- assert.equal(f.host.querySelectorAll('[data-vilenkin-textbook-unit]').length,24);assert.deepEqual([...f.host.querySelectorAll('[data-vilenkin-textbook-open]')].map(b=>b.dataset.vilenkinTextbookOpen),definitions.map(row=>row.id));
+ const original=definitions.filter(row=>row.unitKind!=='author-supplement'),authored=definitions.filter(row=>row.unitKind==='author-supplement');
+ assert.equal(original.length,194);assert.equal(authored.length,44);
+ assert.equal(f.host.querySelectorAll('[data-vilenkin-textbook-unit]').length,25);
+ assert.equal(f.host.querySelectorAll('[data-vilenkin-textbook-author]').length,1);
+ const ids=[...f.host.querySelectorAll('[data-vilenkin-textbook-open]')].map(b=>b.dataset.vilenkinTextbookOpen);
+ assert.deepEqual(ids.filter(id=>original.some(row=>row.id===id)),original.map(row=>row.id),'All 194 original cards retain their relative order');
+ assert.deepEqual(ids.filter(id=>authored.some(row=>row.id===id)),authored.map(row=>row.id),'All 44 author cards are grouped without duplicates');
+ assert.deepEqual(new Set(ids),new Set(definitions.map(row=>row.id)));assert.equal(ids.length,238);
  assert.equal(catalog.items.filter(row=>row.trainerId==='vilenkin6-part1').length,27);assert.match(f.host.textContent,/не все номера учебника/);assert.match(f.host.textContent,/При потере связи/);assert.equal(f.calls.length,0);assert(f.host.querySelector('a[href="#vilenkin-legacy"]'));
  f.button(definitions[0].id).click();await tick();assert.deepEqual(f.calls,[definitions[0].id]);
 });
 test('resumes exact completed and unfinished attempts and ignores the legacy bank progress',async t=>{
  const [a,b]=definitions,f=fixture(t,{progress:[{trainerId:a.trainerId,contentId:a.contentId,completed:true,latest:{id:'completed_work',outcome:'hinted'}},{trainerId:b.trainerId,contentId:b.contentId,latest:{id:'started_work',outcome:'started'}},{trainerId:'vilenkin6-part1',contentId:'lesson-1',completed:true,latest:{id:'old_work'}}]});await tick();
  f.button(a.id).click();f.button(b.id).click();assert.deepEqual(f.routes,['attempt=completed_work','attempt=started_work']);assert.equal(f.calls.length,0);assert(f.host.textContent.includes('Открыто 2 из '+definitions.length+' заданий. Завершённых работ: 1'));assert.match(f.host.textContent,/Решено с подсказкой/);
+});
+test('review shortcuts open the original topics without starting work and return to the LCM supplement',async t=>{
+ const id='vilenkin6-textbook:v6-book-2-97-д',item=catalog.get(id),f=fixture(t,{progress:[{trainerId:item.trainerId,contentId:item.contentId,latest:{id:'retained_lcm_review'}}]});await tick();
+ const route=f.w.location.hash;
+ for(const unitId of [6,7,8]){
+  const target=f.host.querySelector('details[data-vilenkin-textbook-unit="'+unitId+'"]');assert(!target.open);
+  f.host.querySelector('[data-vilenkin-review-unit="'+unitId+'"]').click();assert(target.open);assert.equal(f.w.document.activeElement,target.querySelector('summary'));assert.equal(f.w.location.hash,route);
+  target.querySelector('[data-vilenkin-return-lcm]').click();assert.equal(f.w.document.activeElement,f.host.querySelector('[data-lcm-title]'));
+ }
+ assert.deepEqual(f.calls,[]);assert.deepEqual(f.routes,[]);assert.deepEqual(f.reads,['/progress']);
+ f.button(id).click();assert.deepEqual(f.routes,['attempt=retained_lcm_review']);assert.deepEqual(f.calls,[]);
 });
 test('failed progress disables new starts, retry resumes saved work, disposed fetch cannot overwrite another view',async t=>{
  let n=0;const a=definitions[0],f=fixture(t,{api:async()=>{if(++n===1)throw Error('offline');return{progress:[{trainerId:a.trainerId,contentId:a.contentId,latest:{id:'saved_after_retry'}}]};}});await tick();f.button(a.id).click();assert.equal(f.calls.length,0);assert(f.button(a.id).disabled);
