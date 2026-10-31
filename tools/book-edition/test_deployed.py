@@ -17,6 +17,12 @@ spec.loader.exec_module(deployed)
 
 
 class ReleaseCheck(unittest.TestCase):
+    version = "v1"
+
+    @property
+    def manifest(self):
+        return "book/oge/2026-10-31/" + self.version + "/manifest.json"
+
     def fetch(self, url, size, timeout):
         name = unquote(urlsplit(url).path).lstrip("/")
         if name.endswith("/"):
@@ -24,7 +30,7 @@ class ReleaseCheck(unittest.TestCase):
         return 200, url, (ROOT / name).read_bytes(), None
 
     def run_check(self, fetch=None):
-        return deployed.verify(ROOT, "https://mathexam.space", fetch=fetch or self.fetch)
+        return deployed.verify(ROOT, "https://mathexam.space", manifest_name=self.manifest, fetch=fetch or self.fetch)
 
     def test_all_reviewed_bytes_and_pretty_entries(self):
         result = self.run_check()
@@ -53,7 +59,7 @@ class ReleaseCheck(unittest.TestCase):
 
     def test_missing_alias_route_is_rejected_even_if_index_file_exists(self):
         def missing(url, size, timeout):
-            if url.endswith("/b/oge26-1/05/"):
+            if url.endswith("/b/oge26-" + self.version[1:] + "/05/"):
                 return 404, url, b"", "HTTP 404"
             return self.fetch(url, size, timeout)
         result = self.run_check(missing)
@@ -77,7 +83,8 @@ class ReleaseCheck(unittest.TestCase):
         thread = threading.Thread(target=server.serve_forever, daemon=True)
         thread.start()
         try:
-            result = deployed.verify(ROOT, "http://127.0.0.1:" + str(server.server_port), local_rehearsal=True)
+            result = deployed.verify(ROOT, "http://127.0.0.1:" + str(server.server_port),
+                                     manifest_name=self.manifest, local_rehearsal=True)
             self.assertEqual(result["status"], "PASS")
             self.assertEqual(result["mode"], "LOCAL_REHEARSAL")
             self.assertFalse(result["productionVerified"])
@@ -85,6 +92,10 @@ class ReleaseCheck(unittest.TestCase):
             server.shutdown()
             server.server_close()
             thread.join()
+
+
+class ReleaseCheckV2(ReleaseCheck):
+    version = "v2"
 
 
 if __name__ == "__main__":

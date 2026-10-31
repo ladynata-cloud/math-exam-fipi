@@ -455,11 +455,37 @@ def live_verification(root, path, expected_urls, base):
     return result
 
 
-def collect_verification(root, mapping, inventory, manifest):
+def edition_paths(root, edition='v1', work_dir=None):
+    """Select only the two explicitly supported book editions.
+
+    V1 keeps its historical defaults. V2 sidecar evidence and private document
+    candidates must be supplied in a separate work directory, never inferred
+    from an earlier run's v1 evidence.
+    """
+    if edition not in {'v1', 'v2'}:
+        raise ValueError('Unsupported book edition')
+    if edition == 'v2' and work_dir is None:
+        raise ValueError('--work-dir is required for v2 evidence')
+    work = Path(work_dir).resolve() if work_dir is not None else root.parent / 'book-audit-work'
+    prefix = f'book/oge/2026-10-31/{edition}'
+    return {
+        'work': work,
+        'mapping': root / ('scripts/oge-book-edition/urls.json' if edition == 'v1' else prefix + '/url-map.json'),
+        'manifest': root / prefix / 'manifest.json',
+        'documents': (root / 'docs/reports/oge-book-20261031/document-check.json'
+                      if edition == 'v1' else work / 'document-check.json'),
+        'output': root.parent / 'outputs/oge-book-20261031' if edition == 'v1' else work / 'deliverables',
+        'stem': f'Kurs_molodogo_OGEshnika_MathExam_book_{edition}_candidate',
+        'render': work / f'render-book-{edition}',
+        'frozen_directory': 'frozen' if edition == 'v1' else 'frozen-v2',
+        'prefix': '/' + prefix,
+    }
+
+
+def collect_verification(root, mapping, inventory, manifest, edition='v1', work_dir=None):
     """Only this task's concrete HTTP, document and visual evidence contracts."""
-    work = root.parent / 'book-audit-work'
-    output = root.parent / 'outputs/oge-book-20261031'
-    stem = 'Kurs_molodogo_OGEshnika_MathExam_book_v1_candidate'
+    paths = edition_paths(root, edition, work_dir)
+    work, output, stem = paths['work'], paths['output'], paths['stem']
     docx, pdf = output / (stem + '.docx'), output / (stem + '.pdf')
     live = live_verification(root, root / 'artifacts/book-audit-live/report.json',
                              {row['sourceUrl'] for row in mapping}, manifest['sourceBase'])
@@ -474,7 +500,7 @@ def collect_verification(root, mapping, inventory, manifest):
         dependencies['inventory']['status'] = 'PASS' if inventory_matches else 'FAIL'
         if not inventory_matches:
             dependencies['status'] = 'FAIL'
-    document_path = root / 'docs/reports/oge-book-20261031/document-check.json'
+    document_path = paths['documents']
     documents = evidence_file(root, document_path)
     document = read(document_path) if document_path.is_file() else {}
     if document:
@@ -488,7 +514,7 @@ def collect_verification(root, mapping, inventory, manifest):
                   document.get('pdf_placed_qr') == 34,
                   document.get('docx_sha256') == sha(docx), document.get('pdf_sha256') == sha(pdf),
                   document.get('source_docx_sha256') == source_docx_sha,
-                  document.get('mapping_sha256') == sha(root / 'scripts/oge-book-edition/urls.json'),
+                  document.get('mapping_sha256') == sha(paths['mapping']),
                   document.get('all_qr_source_placements_match') is True,
                   document.get('all_docx_link_source_placements_match') is True,
                   document.get('visible_url_occurrences_checked') == 37,
@@ -524,7 +550,7 @@ def collect_verification(root, mapping, inventory, manifest):
             visual['problems'].append(name + ': candidate PDF binding is missing or stale')
         for row in data.get('pages', []):
             number = row.get('page')
-            image = work / 'render-book-v1' / f'page-{number}.png'
+            image = paths['render'] / f'page-{number}.png'
             if row.get('status', row.get('layoutStatus', '')).upper() not in {'PASS', 'PASSED'} or row.get('finding') or row.get('findings'):
                 visual['problems'].append(f'{name}: page {number} has no passing visual review')
             if not image.is_file() or sha(image) != row.get('sha256'):
@@ -542,11 +568,16 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', required=True)
     parser.add_argument('--math-review', type=Path)
+    parser.add_argument('--edition', choices=('v1', 'v2'), default='v1')
+    parser.add_argument('--work-dir', type=Path,
+                        help='Sidecar evidence directory; required for the separate v2 candidate')
     args = parser.parse_args()
+    paths = edition_paths(ROOT, args.edition, args.work_dir)
     target = Path(args.output)
     protected = [ROOT / 'docs/reports/oge-book-20261031/source-inventory.json',
                  ROOT / 'scripts/oge-book-edition/urls.json',
                  ROOT / 'book/oge/2026-10-31/v1/manifest.json']
+    protected.extend([paths['mapping'], paths['manifest'], paths['documents']])
     if args.math_review:
         protected.append(args.math_review)
     if target.resolve() in {path.resolve() for path in protected}:
@@ -554,10 +585,17 @@ def main():
     target.unlink(missing_ok=True)
     inventory_path = ROOT / 'docs/reports/oge-book-20261031/source-inventory.json'
     inventory = read(inventory_path)
-    mapping = read(ROOT / 'scripts/oge-book-edition/urls.json')
+    mapping = read(paths['mapping'])
     mapped_by_id = {row['id']: row for row in mapping}
-    manifest_path = ROOT / 'book/oge/2026-10-31/v1/manifest.json'
+    manifest_path = paths['manifest']
     manifest = read(manifest_path)
+    if '/' + manifest['prefix'].strip('/') != paths['prefix']:
+        raise ValueError('Manifest prefix does not match the selected edition')
+    expected_alias = 'oge26-1' if args.edition == 'v1' else 'oge26-2'
+    for row in mapping:
+        if (row['bookUrl'] != f'https://mathexam.space/b/{expected_alias}/{row["id"]}/'
+                or not row['frozenUrl'].startswith('https://mathexam.space' + paths['prefix'] + '/')):
+            raise ValueError('URL mapping does not match the selected edition')
     manifest_sha = sha(manifest_path)
     live_path = ROOT / 'artifacts/book-audit-live/report.json'
     live = {x['url']: x for x in read(live_path)['results']} if live_path.is_file() else {}
@@ -568,7 +606,8 @@ def main():
     evidence, all_cases = [], []
     for family, filename in [('basics', 'report.json'), ('exam', 'results.json')]:
         for version in ['source', 'frozen']:
-            path = ROOT / f'artifacts/book-audit-{family}/{version}/{filename}'
+            directory = 'source' if version == 'source' else paths['frozen_directory']
+            path = ROOT / f'artifacts/book-audit-{family}/{directory}/{filename}'
             if not path.is_file():
                 evidence.append({'path': path.relative_to(ROOT).as_posix(), 'status': 'NOT_RUN'})
                 continue
@@ -642,7 +681,7 @@ def main():
                          'navigationChecked': sum(p['fullStatus'] == 'NAVIGATION_CHECKED' for p in pages),
                          'requiresTesting': sum(p['fullStatus'] == 'REQUIRES_TESTING' for p in pages),
                          'recordedCases': len(all_cases)},
-              'verification': collect_verification(ROOT, mapping, inventory, manifest),
+              'verification': collect_verification(ROOT, mapping, inventory, manifest, args.edition, args.work_dir),
               'evidence': evidence, 'pages': pages, 'cases': all_cases}
     target.parent.mkdir(parents=True, exist_ok=True)
     if sha(manifest_path) != manifest_sha:

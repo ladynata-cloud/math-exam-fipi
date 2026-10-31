@@ -97,7 +97,7 @@
     footer.className = 'book-edition-note';
     footer.setAttribute('aria-label', 'Книжная редакция');
     const label = document.createElement('span');
-    label.textContent = 'Книжная редакция · 31.10.2026 · v1. Результаты хранятся отдельно в этом браузере.';
+    label.textContent = 'Книжная редакция · 31.10.2026 · ' + config.version + '. Результаты хранятся отдельно в этом браузере.';
     const manifest = document.createElement('a');
     manifest.href = config.path + 'manifest.json';
     manifest.textContent = 'Состав редакции';

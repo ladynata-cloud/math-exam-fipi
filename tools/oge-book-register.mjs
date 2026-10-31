@@ -3,11 +3,17 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
+import {parseArgs} from 'node:util';
 import {Workbook, SpreadsheetFile, FileBlob} from '@oai/artifact-tool';
 
-const [inputPath, outputDir, previewDir, templatePath] = process.argv.slice(2);
-if (!inputPath || !outputDir || !previewDir) throw new Error('Usage: node oge-book-register.mjs INPUT_JSON OUTPUT_DIR PREVIEW_DIR [EXISTING_XLSX]');
+const {values:options,positionals} = parseArgs({allowPositionals:true,options:{edition:{type:'string',default:'v1'},'inspect-only':{type:'boolean',default:false}}});
+const [inputPath, outputDir, previewDir, templatePath] = positionals;
+if (!inputPath || !outputDir || !previewDir || positionals.length>4) throw new Error('Usage: node oge-book-register.mjs INPUT_JSON OUTPUT_DIR PREVIEW_DIR [EXISTING_XLSX] [--edition v1|v2]');
+assert.ok(['v1','v2'].includes(options.edition),'Unsupported book edition');
+assert.ok(!options['inspect-only']||options.edition==='v2','Read-only template inspection is supported for the separate v2 workflow');
 const data = JSON.parse(await fs.readFile(inputPath, 'utf8'));
+assert.equal(data.edition,'oge-2026-10-31-'+options.edition,'Select the edition explicitly; never label v1 evidence as v2');
 const verification = data.verification ?? {};
 const inventory = data.inventorySummary ?? {};
 const continuation = data.continuation;
@@ -31,7 +37,7 @@ if (process.env.BOOK_REGISTER_HELP === '1') {
 const names = ['Реестр', 'Сценарии', 'Ссылки и QR', 'Исправления', 'Основания'];
 const sheets = Object.fromEntries(names.map(n => [n, templatePath ? wb.worksheets.getItem(n) : wb.worksheets.add(n)]));
 const initialSheets = templatePath ? Object.fromEntries(names.map(name => [name, {
-  values:sheets[name].getUsedRange().values, formulas:sheets[name].getUsedRange().formulas,
+  values:structuredClone(sheets[name].getUsedRange().values), formulas:structuredClone(sheets[name].getUsedRange().formulas),
   tables:sheets[name].tables.items.map(t=>t.name),
 }])) : null;
 const templateInputChecks=[];
@@ -116,6 +122,166 @@ function statusColors(sheet,range) {
   r.conditionalFormats.add('containsText',{text:'ДОПРОВЕРИТЬ',format:{fill:'#FFF1CD',font:{color:'#80580A'}}});
   r.conditionalFormats.add('containsText',{text:'ОШИБКА',format:{fill:'#FCE2DF',font:{bold:true,color:'#A32520'}}});
 }
+
+async function buildV2Candidate() {
+  assert.ok(templatePath,'The separate v2 register requires the existing v1 workbook');
+  assert.equal(continuation,undefined,'Do not apply the PR387 continuation contract to a new v2 candidate');
+  assert.equal(data.base,'4a90592077934d9a6d8a617b4afa50938798efb2','The v2 candidate starts from the published v1 merge');
+  assert.equal(data.publication,'UNPUBLISHED_CANDIDATE');
+  assert.equal(data.pages.length,71);assert.equal(data.cases.length,426);
+  assert.equal(data.counts.qr,34);
+  const prefix='/book/oge/2026-10-31/v2';
+  assert.ok(data.pages.every(p=>p.bookUrl===`https://mathexam.space/b/oge26-2/${p.id}/`&&p.frozenUrl.startsWith('https://mathexam.space'+prefix+'/')),'Every mapping must select v2');
+  assert.ok(data.cases.every(c=>c.prefix===(c.version==='source'?'':prefix)),'Every learner record must select source or v2');
+  const preparation=data.v2Preparation??{};
+  const technicalGate=preparation.technicalGate??'INCOMPLETE';
+  assert.ok(['PASS','INCOMPLETE','NOT_RUN'].includes(technicalGate));
+  assert.equal(preparation.distributionGate??'INCOMPLETE','INCOMPLETE');
+  assert.equal(preparation.production?.status??'NOT_RUN','NOT_RUN');
+  assert.equal(preparation.externalReview?.status??'NOT_RUN_BY_OWNER_REQUEST','NOT_RUN_BY_OWNER_REQUEST');
+  assert.equal(preparation.externalReview?.verdict??null,null);
+  const runtime=preparation.runtime??{status:'NOT_RUN'};
+  const dali=preparation.dali??{status:'NOT_RUN'};
+  if(runtime.status==='PASS') {
+    assert.equal(runtime.entries,142);assert.equal(runtime.isolation,10);assert.equal(runtime.crossEdition,3);
+    assert.ok(runtime.evidence?.path&&/^[a-f0-9]{64}$/.test(runtime.evidence.sha256));
+  }
+  if(dali.status==='PASS') assert.ok(dali.evidence?.path&&/^[a-f0-9]{64}$/.test(dali.evidence.sha256));
+  if(technicalGate==='PASS') {
+    assert.equal(data.counts.requiresTesting,0);
+    assert.equal(data.counts.completeTrainers,65);assert.equal(data.counts.navigationChecked,6);
+    assert.ok(data.cases.every(c=>c.status==='PASS'),'Technical PASS needs every fresh learner record');
+    assert.equal(runtime.status,'PASS');assert.equal(dali.status,'PASS');
+    for(const key of ['documents','documentRegressions','visualLayout']) assert.equal(verification[key]?.status,'PASS');
+  }
+  const digest=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
+  const inputBytes=await fs.readFile(templatePath);
+  const views=[['Реестр','A3:L9','register-header'],['Реестр','L63:P67','register-dali'],['Сценарии','Q6:U10','scenario-evidence'],['Ссылки и QR','A3:F9','links'],['Исправления','A19:G23','issues'],['Основания','A9:C13','provenance-identity'],['Основания','A17:C25','provenance-checks'],['Основания','A29:C34','provenance-evidence']];
+  async function renderViews(prefix) {
+    const renders=[];
+    await fs.mkdir(previewDir,{recursive:true});
+    for(const [sheetName,range,name] of views) {
+      const bytes=new Uint8Array(await (await wb.render({sheetName,range,scale:1,format:'png'})).arrayBuffer());
+      const filename=prefix+'-'+name+'.png';await fs.writeFile(path.join(previewDir,filename),bytes);
+      renders.push({sheet:sheetName,range,path:filename,sha256:digest(bytes)});
+    }
+    return renders;
+  }
+  if(options['inspect-only']) {
+    const report={input:{filename:path.basename(templatePath),sha256:digest(inputBytes)},counts:{sheets:5,scenarios:426,mappings:71},renders:await renderViews('before')};
+    await fs.writeFile(path.join(previewDir,'before-inspection.json'),JSON.stringify(report,null,2)+'\n');
+    console.log(JSON.stringify({mode:'read-only',...report}));return;
+  }
+  const inspected=JSON.parse(await fs.readFile(path.join(previewDir,'before-inspection.json'),'utf8'));
+  assert.equal(inspected.input.sha256,digest(inputBytes),'Inspect the exact source workbook before editing');
+  const updates=[];
+  const equal=(a,b)=>a instanceof Date&&b instanceof Date?Math.abs(a.valueOf()-b.valueOf())<=1:JSON.stringify(a)===JSON.stringify(b);
+  function update(sheetName,address,value,reason) {
+    const range=sheets[sheetName].getRange(address);
+    if(range.values.flat().every(previous=>equal(previous,value))) return;
+    range.values=[[clean(value)]];
+    updates.push({sheet:sheetName,address,value,valueType:value instanceof Date?'date':typeof value==='number'?'number':value==null?'blank':'text',reason});
+  }
+  function rows(sheetName,startRow,incoming,stableColumns) {
+    const previous=initialSheets[sheetName].values;
+    assert.equal(previous.length,startRow-1+incoming.length,'Preserve all rows: '+sheetName);
+    for(let r=0;r<incoming.length;r++) {
+      assert.equal(previous[startRow-1+r].length,incoming[r].length,'Preserve all columns: '+sheetName);
+      for(let c=0;c<incoming[r].length;c++) {
+        const address=column(c+1)+(startRow+r),old=previous[startRow-1+r][c],next=incoming[r][c];
+        if(stableColumns.includes(c)) assert.deepEqual(next,old,'Stable book identity changed: '+sheetName+'!'+address);
+        else update(sheetName,address,next,'Fresh source/v2 evidence and the explicitly selected v2 address map');
+      }
+    }
+  }
+  update('Реестр','A3:L3','Редакция 31 октября 2026 · 71 адрес · отдельный кандидат v2, ещё не опубликован.','Keep the new edition separate from published v1');
+  update('Реестр','E5:F5','Неполные сценарии','Retain the established metric label');
+  update('Реестр','A8:L9','«Полный сценарий» — записанные действия при 320/390/1280 px и предусмотренный зачёт. Для v2 собраны новые журналы. Физические устройства ещё не испытаны; публикация требует отдельного разрешения.','State the actual local evidence boundary');
+  const mainRows=data.pages.map(p=>[p.id,p.title,p.kind==='navigation'?'Навигация':'Тренажёр',p.pdfPages.join(', '),p.qrCount,p.liveHttp??'Не проверено',status(p.sourceStatus),status(p.frozenStatus),status(p.mathematics),status(p.actions.layout),status(p.actions.topic),fullStatus(p.fullStatus),p.pending.join('; ')||'В записанном сценарии открытых пунктов нет. Общие ограничения — на листе «Основания».',p.evidenceIds.join(', '),p.liveSourceMatch==='exact'?'Точные байты базы':p.liveSourceMatch||'Не проверено','Кандидат v2; не опубликован']);
+  rows('Реестр',12,mainRows,[0,1,2,3,4]);
+  // Parallel executions may serialize widths in a different order. Preserve
+  // the workbook's 426 identities while retaining each fresh report pointer.
+  const caseKey=(id,version,width)=>[id,version,width].join(':');
+  const casesByKey=new Map(data.cases.map(c=>[caseKey(c.id,c.version,c.width),c]));
+  assert.equal(casesByKey.size,426,'Every fresh case identity must be unique');
+  const orderedCases=initialSheets['Сценарии'].values.slice(6).map(row=>{
+    assert.ok(['Исходная','Книжная'].includes(row[1]));
+    const key=caseKey(row[0],row[1]==='Исходная'?'source':'frozen',row[2]);
+    const result=casesByKey.get(key);assert.ok(result,'Missing fresh learner identity: '+key);
+    casesByKey.delete(key);return result;
+  });
+  assert.equal(casesByKey.size,0,'All new learner records must be represented exactly once');
+  const scenarioRows=orderedCases.map(c=>[c.id,c.version==='source'?'Исходная':'Книжная',c.width,...['start','wrong-answer','correct-answer','hints','next-example','finish','saved-result','layout','topic','runtime','dependencies','identity'].map(k=>status(c.actions[k])),c.status==='PASS'?'ПРОЙДЕНО':'ДОПРОВЕРИТЬ',c.finite.map(a=>`${a.action}: ${status(a.status)}${a.reason?' — '+a.reason:''}`).join('; ')||'См. завершение основного сценария',Array.from(new Set(c.notes.split('; '))).join('; ')||'Ограничения общего охвата — на листе «Основания».',`${c.evidenceId} ${c.pointer}`,c.checkedAt?new Date(c.checkedAt):'',c.seed??'']);
+  update('Сценарии','A3:P4','426 новых записей: исходные страницы и книжная v2 при 320/390/1280 px. Статусы перенесены из фактических журналов; /reports/N указывает исходную запись. Публикация и реальные устройства проверяются отдельно.','Distinguish new executions from v1 history');
+  rows('Сценарии',7,scenarioRows,[0,1,2]);
+  update('Ссылки и QR','A3:F4','Новые адреса /b/oge26-2/ ведут в отдельную /book/oge/2026-10-31/v2/. Опубликованная v1 сохранена без изменений. До merge/deploy и проверки рабочего сайта эти файлы остаются кандидатами.','Show the new immutable namespace');
+  const linkRows=data.pages.map(p=>[p.id,p.sourceUrl,p.bookUrl,p.frozenUrl,p.pdfPages.join(', '),p.qrCount,p.pdfLinkCount,p.docxLinkCount,p.oldRegistryRows.join(', '),p.qrCount?`QR_book_v2/${p.id}.png`:'QR в книге не размещён',verification.documents?.status==='PASS'?'PDF / DOCX согласованы':status(verification.documents?.status??'NOT_RUN')]);
+  rows('Ссылки и QR',7,linkRows,[0,1,4,5,6,7,8]);
+  const issueValues=initialSheets['Исправления'].values;
+  assert.equal(issueValues.length,23);assert.equal(issueValues[21][0],'RELEASE-01');
+  update('Исправления','A3:F4','Новая редакция v2 устраняет причину DALI 404 в исходной странице и новой книжной копии. История опубликованной v1 и прежние исправления сохранены. Выпуск v2 требует отдельного решения.','Preserve history without promoting local checks to a release');
+  update('Исправления','B22','DALI 404 · новая редакция v2','Locate the current task in the existing release issue');
+  update('Исправления','C22','В опубликованной v1 на alias 54 при 320 px дважды наблюдался лишний HTTP 404 для DALI_PORTRAIT_DATA. Эти исторические результаты сохранены.','Keep the actual v1 failure record');
+  update('Исправления','D22','Адрес портрета задаётся после создания img. Исправлены исходная страница и отдельная v2; опубликованная v1 не меняется. После разрешения merge/deploy нужна проверка новых адресов на сайте.','Describe the scoped candidate fix and outstanding production step');
+  update('Исправления','E22','DALI regression: '+status(dali.status)+'. '+continuedEvidence(dali.evidence)+'; пакет 142 + 10 + 3: '+status(runtime.status)+'.','Bind local checks to their own new reports');
+  update('Исправления','F22','ДОПРОВЕРИТЬ','The separate release step remains incomplete');
+  update('Исправления','G22','trainers/oge-task11-graphs-trainer.html; /book/oge/2026-10-31/v2/','Identify the new version without changing old bytes');
+  const provenance=initialSheets['Основания'].values;
+  assert.equal(provenance.length,34);
+  const sourceRef=value=>value?.sha256?`${value.path}; SHA-256 ${value.sha256}`:'НЕ ВЫПОЛНЕНО';
+  const provenanceRows=[
+    ['Первичные сценарии',`71 адрес: ${data.counts.completeTrainers} полных сценариев, ${data.counts.navigationChecked} навигационных страниц, ${data.counts.requiresTesting} требуют испытания.`,`${data.counts.recordedCases} новых проверок source/v2; 34 размещённых QR. «Полный» относится к записанному сценарию.`],
+    provenance[7],
+    ['Сайт для v2 · HTML',status(verification.livePages?.status??'NOT_RUN'),sourceRef(verification.livePages)],
+    ['Сайт для v2 · зависимости',status(verification.liveDependencies?.status??'NOT_RUN'),sourceRef(verification.liveDependencies)],
+    ['Проверяемая база Git',data.base,'Новая ветка начинается от опубликованного merge PR #387. v2 пока не объединена и не развёрнута.'],
+    ['Книжная редакция',data.edition,'Отдельный кандидат: /book/oge/2026-10-31/v2/ и /b/oge26-2/. Опубликованная v1 сохранена побайтно.'],
+    ['SHA-256 манифеста',data.manifestSha256,'Манифест связывает 71 адрес и весь пакет v2. Старую опубликованную редакцию не меняем.'],
+    provenance[13],provenance[14],provenance[15],
+    ['Мобильная проверка',`Новые source/v2 сценарии: Chromium, 320/390/1280 CSS px. Локальный пакет 142 + 10 + 3: ${status(runtime.status)}.`,provenance[16][2]],
+    ['QR / документы',verification.documents?.status==='PASS'?`${verification.documents.pages} страниц PDF; ${verification.documents.uniqueUrls} целей; ${verification.documents.docxQr} QR в DOCX / ${verification.documents.pdfQr} QR в PDF`:status(verification.documents?.status??'NOT_RUN'),sourceRef(verification.documents)],
+    ['Документы · отрицательные проверки',`${status(verification.documentRegressions?.status??'NOT_RUN')}: отклонено ${verification.documentRegressions?.rejected??0} из ${verification.documentRegressions?.cases??0} нарушений`,sourceRef(verification.documentRegressions)],
+    ['Вёрстка книги',`${status(verification.visualLayout?.status??'NOT_RUN')}; просмотрено страниц: ${verification.visualLayout?.pages??0}`,`Найдено проблем: ${verification.visualLayout?.problems?.length??'не проверено'}. `+(verification.visualLayout?.evidence??[]).map(sourceRef).join('; ')],
+    ['Кандидат DOCX v2 · SHA-256',verification.documents?.docxSha256??'НЕ ПРОВЕРЕНО','Все книжные адреса и 34 QR заменены на v2. По сравнению с v1 остальной текст и оформление сохранены, включая диагностику ОГЭ-2027.'],
+    ['Кандидат PDF v2 · SHA-256',verification.documents?.pdfSha256??'НЕ ПРОВЕРЕНО','Проверки документа и всех 72 страниц связаны с этим новым PDF. Это отдельный файл, не замена v1.'],
+    ['Общий release gate',`INCOMPLETE. Локальный технический gate: ${status(technicalGate)}.`,`v1 DALI404 остаётся историческим FAIL. Локальный v2 DALI: ${status(dali.status)}. Внешнее ревью не выполнялось по указанию владельца; вердикта нет. `+sourceRef(dali.evidence)],
+    ['Время проверки / сборки','Exam: время отдельного случая. Basics: время сборки нового журнала.','Для v2 использованы новые source/v2 запуски. Статусы v1 не переписаны под новую редакцию; старые журналы сохранены отдельно.'],
+    ['Публикация','НЕ ОПУБЛИКОВАНО. Отдельные файлы v2_candidate.','START не разрешает merge/deploy. Нужны отдельное решение владельца и проверка новых адресов после публикации; реальные устройства и печатные QR ещё не испытаны.'],
+    ...data.sources.map(x=>['Исходный файл',x.name,`SHA-256 ${x.sha256}; ${x.bytes} байт`]),
+    ...data.evidence.map(x=>['Доказательство '+(x.id||''),x.path,x.sha256?`SHA-256 ${x.sha256}; записей ${x.cases??x.records??'—'}`:'НЕ ВЫПОЛНЕНО']),
+    ['Обновление реестра v2, UTC',new Date(data.generatedAt),'Новый реестр из актуальных журналов; 426 сценариев и 71 сопоставление. Локальный runtime: '+sourceRef(runtime.evidence)],
+  ];
+  rows('Основания',7,provenanceRows,[]);
+  for(const [name,range] of [['Реестр','G12:L82'],['Сценарии','D7:P432'],['Исправления','F7:F23']]) statusColors(sheets[name],range);
+  wb.recalculate();
+  const allowed=Object.fromEntries(names.map(name=>[name,new Set()]));
+  const coordinates=address=>{const m=address.match(/^([A-Z]+)(\d+)(?::([A-Z]+)(\d+))?$/);const col=s=>[...s].reduce((n,c)=>n*26+c.charCodeAt(0)-64,0);return[col(m[1]),+m[2],col(m[3]||m[1]),+(m[4]||m[2])];};
+  for(const item of updates){const [c0,r0,c1,r1]=coordinates(item.address);for(let r=r0;r<=r1;r++)for(let c=c0;c<=c1;c++)allowed[item.sheet].add(column(c)+r);}
+  const changes=[],errors=[];
+  for(const name of names) {
+    const current=sheets[name].getUsedRange().values,previous=initialSheets[name];
+    assert.equal(current.length,previous.values.length,'Rows changed: '+name);
+    assert.deepEqual(sheets[name].getUsedRange().formulas,previous.formulas,'Formulas changed: '+name);
+    assert.deepEqual(sheets[name].tables.items.map(t=>t.name),previous.tables,'Tables changed: '+name);
+    for(let r=0;r<current.length;r++)for(let c=0;c<current[r].length;c++) {
+      const cell=column(c+1)+(r+1),value=current[r][c];
+      if(!equal(value,previous.values[r][c])) {assert.ok(allowed[name].has(cell),'Unexpected edit: '+name+'!'+cell);changes.push({sheet:name,cell,before:previous.values[r][c],after:value});}
+      if(typeof value==='string'&&/^#(?:REF!|DIV\/0!|VALUE!|N\/A|NAME\?|NUM!|NULL!|SPILL!|CALC!)/.test(value)) errors.push({sheet:name,cell,value});
+    }
+  }
+  assert.deepEqual(errors,[]);
+  await fs.mkdir(outputDir,{recursive:true});await fs.mkdir(previewDir,{recursive:true});
+  const outputName='Proverka_knigi_i_knizhnye_trenazhery_2026-10-31_v2_candidate.xlsx';
+  assert.notEqual(path.resolve(templatePath),path.resolve(outputDir,outputName),'Do not replace v1');
+  await (await SpreadsheetFile.exportXlsx(wb)).save(path.join(outputDir,outputName));
+  const renders=await renderViews('after');
+  const summary=await wb.inspect({kind:'region',sheetId:'Реестр',range:'A5:G6',maxChars:2500});
+  const report={status:'PASS',edition:data.edition,input:{filename:path.basename(templatePath),sha256:digest(inputBytes)},output:{filename:outputName,sha256:digest(await fs.readFile(path.join(outputDir,outputName)))},inputData:{filename:path.basename(inputPath),sha256:digest(await fs.readFile(inputPath))},builder:{filename:path.basename(new URL(import.meta.url).pathname),sha256:digest(await fs.readFile(new URL(import.meta.url)))},technicalGate,releaseReadiness:'INCOMPLETE',production:'NOT_RUN',externalReview:'NOT_RUN_BY_OWNER_REQUEST',counts:{sheets:5,scenarios:426,mappings:71,qr:34},updates,changes,formulaErrors:errors,summary,renders};
+  await fs.writeFile(path.join(previewDir,'authoring-verification.json'),JSON.stringify(report,null,2)+'\n');
+  console.log(JSON.stringify({file:outputName,sha256:report.output.sha256,counts:report.counts,changedCells:changes.length,releaseReadiness:report.releaseReadiness}));
+}
+
+if(options.edition==='v2') {await buildV2Candidate();process.exit(0);}
 
 const s=sheets['Реестр'],last=11+data.pages.length;
 base(s,16,last);widths(s,[7,51,15,11,7,11,18,18,18,17,15,27,71,34,18,24]);
