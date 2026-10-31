@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "task": "MATHEXAM_PUBLIC_ASSISTANT_V1",
-  "base_sha": "c9bf66e2d95f48db0134d43cc590da89f8bc3053",
+  "base_sha": "139b944a70f2e8ba4d340d152d08807fad03e5da",
   "note": "Exact current task scope. HTML paths are separately constrained by the public-page manifest and full base-byte proof. Compatibility files do not authorize curriculum or server changes.",
   "allowed_non_html": [
     ".github/workflows/public-assistant.yml",

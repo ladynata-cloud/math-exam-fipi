@@ -4,19 +4,118 @@
 
 - Source PR: [#361](https://github.com/ladynata-cloud/math-exam-fipi/pull/361).
 - Source head: `391f595ab3639fe24990911691d24192a58b44ab`.
-- Current base: `c9bf66e2d95f48db0134d43cc590da89f8bc3053` (`main`, PR #377).
+- Current reconciled base: `139b944a70f2e8ba4d340d152d08807fad03e5da` (`main`, PR #374).
+- Original preparation base: `c9bf66e2d95f48db0134d43cc590da89f8bc3053` (PR #377).
 - Branch: `feat/public-assistant-main-20261031`.
 - Task: [MATHEXAM_PUBLIC_ASSISTANT_V1](../tasks/MATHEXAM_PUBLIC_ASSISTANT_V1.md), HIGH.
 - Replacement Draft PR: [#385](https://github.com/ladynata-cloud/math-exam-fipi/pull/385).
 - Exact final head and complete current-head CI: recorded in that PR's handoff.
 
-## Why a new composition is needed
+## Authorized current-main reconciliation — 2026-10-31
+
+The owner's direct instruction authorizes a normal history-preserving merge of
+the new `main` into the existing PR #385 branch, rebinding the task scope and
+updating its documents. It permits the validation, continuation commits and
+branch push needed to complete that update. It does not authorize merging
+PR #385 into `main`, auto-merge, deployment or a HIGH-review exception.
+
+### Identity and preservation
+
+- Authoritative GitHub `refs/heads/main`, checked immediately before creation of
+  the reconciliation commit at 2026-10-31T01:59:06Z, was
+  `139b944a70f2e8ba4d340d152d08807fad03e5da`. Its sole parent is the former
+  preparation base; the concurrent commit is the published Cone PR #374.
+- Normal merge commit: `7d1ab4e33d6d0b0b342d1d86b507808d05d5a762`.
+  Ordered parents: existing navigator head
+  `40a43c89d0f3c8738aa15ede96dd43ee5ceece70`, then current main
+  `139b944a70f2e8ba4d340d152d08807fad03e5da`.
+- Clean merge tree: `69aac2c41c036793408248dba09ac95e39a47446`, identical to the
+  locally computed and verified merge. Git combined the shared status document
+  without conflicts; both branch histories are retained.
+- The subsequent reconciliation edit is limited to four existing task paths:
+  the scope manifest, task specification, this report and the current public
+  navigator section of `PROJECT_STATUS.md`. No product files, checks, workflow,
+  page manifest or allowed-file list are changed by this continuation.
+- All 66 upstream paths other than the shared status document match new main
+  exactly. The final public-PR delta still contains the same 641 paths, without
+  added or lost paths. All 595 included HTML files and the three navigator
+  runtime blobs match the previous navigator head exactly. Other status sections
+  retain the clean merged contents.
+- `tools/public-assistant-scope.json` changes only `base_sha`. The task and scope
+  now name the same new base. The original strict base/placement/scope guards
+  remain intact; the former stale-base failure is resolved by this rebinding.
+
+### Fresh local checks on the reconciled composition
+
+- Navigation data: **31/31**; admission and placement: **9/9**.
+- Explicit new-base coverage: **832 original HTML files preserved**, **595
+  included pages**, **641 allowed changed paths**. The sitemap coverage remains
+  528 of 531 entries, with 67 additional reviewed public pages, two deferred
+  textbook shells and two existing task-helper pages retained.
+- Sitemap unit checks: **12/12**. Sitemap generation check: **531 URLs**. SEO:
+  **30 entrances, 203 links, 560 canonical declarations and seven redirects**.
+  All 531 sitemap pages keep self-canonical links; the catalogue check confirms
+  **71 nonempty destinations available without JavaScript**.
+- Public browser: **16/16 groups**, including 15 entry/viewport combinations,
+  division single-submit continuation and saved notebook/draft, Vilenkin draft
+  retention across reload, existing helpers, privacy/network/storage boundaries,
+  keyboard isolation, mobile controls and private/iframe suppression. Three
+  screenshots were produced in the permitted temporary directory. Synthetic
+  scenarios only; zero model calls and no browser page errors.
+- Cone content: **40 cards, 166 steps, 171 states, 20 negative controls**; all
+  previous **554 cards** exact. Cone mathematics: **3,120 parameter cases**.
+  Source catalogue: **7/7**; schema: **1,394 entries / 594 cards**; actual model
+  geometry: **594 cards / 7,633 polygons / 21,113 segments**.
+- Full stereo content and all incorporated historical guards: **594 cards,
+  2,300 justified steps and 2,399 views**. In-memory bundle reproduction matches
+  the committed 5,623,464 bytes, SHA256
+  `2f129a9bab292fae765c674268448895d0419e70e0fd4fd30120fcae53569bc1`.
+- `git diff --check` passes. No assertion, baseline, review hash or source pin
+  was weakened or rebound to obtain these results.
+
+The checks used Node 24.22.1, Playwright 1.62.1, Chrome 151.0.7922.34,
+jsdom 26.1.0 and the already installed schema dependencies. Initial environment
+attempts could not bind the sandbox localhost server or find Playwright's
+default browser; the complete unchanged browser suite then passed with approved
+local-server execution and the existing explicit Chromium executable. The first
+Cone invocation lacked its external dependency path; the unchanged complete
+test passed after selecting the installed dependencies. These setup failures are
+not counted as successful test runs. Local Node differs from the Node 22 Cone
+workflow; fresh cloud checks remain a separate requirement.
+
+### Remaining gates and historical evidence
+
+The shared Atanasyan first-steps source-pin failure is reproduced on this
+composition by `python3 tools/atanasyan-first-steps/build.py --check`. The builder,
+canonical source and selected first-steps bundle are byte-identical across the
+former base, new main and original navigator head. Two cloud workflows invoke
+this one failing guard: first-steps and Ichenskaya. The separate proposed fix in
+PR #375 remains outside this synchronization scope.
+
+Fresh retrieval completed the historical CI record for old head `40a43c89...`:
+**43 workflows, 41 success, two failure, none pending**. The previously running
+Atanasyan 7–9 workflow completed successfully. These are old-head results and
+are not reused as approval of the new reconciliation commit or final head.
+
+Exact final head, final tree and newly triggered cloud outcomes are recorded in
+the current PR #385 handoff, avoiding a self-referential documentation commit.
+Full Cone browser shards were not rerun locally in this continuation. Earlier
+local layout observations below remain historical; no new layout fix or waiver
+is claimed. External HIGH review, real-pupil/provider checks and production
+deployment are not performed. The specialized local navigator preparation gate
+passes on the new base; the overall release remains **HOLD** for the source-pin
+disposition, current-head cloud gates, external HIGH review and separate owner
+release authorization.
+
+## Initial main-based transfer — historical preparation
 
 The old branch was stacked on an earlier cabinet draft. Its dependencies and
 newer learning/SEO updates are now published through #358/#369/#376/#368/
 #378/#380/#382/#377. This candidate transfers only navigation code and required
 compatibility support onto current main. No old trainer HTML is copied over a
-newer version. Original branch history is retained; no force/rebase/merge is used.
+newer version. That initial transfer used no branch merge or history rewriting.
+The authorized reconciliation above subsequently retains both histories through
+a normal merge; no force, reset or rebase is used.
 
 Old cloud results: 40 workflows, 32 successes, seven failures, one cancelled.
 These are historical diagnostics, not current release evidence. The seven

@@ -6,7 +6,8 @@
 - Owner: repository owner.
 - Date: 2026-10-31 (Asia/Novosibirsk).
 - Base branch: `main`.
-- Base SHA: `c9bf66e2d95f48db0134d43cc590da89f8bc3053`.
+- Base SHA: `139b944a70f2e8ba4d340d152d08807fad03e5da`.
+- Original preparation base: `c9bf66e2d95f48db0134d43cc590da89f8bc3053`.
 - Branch: `feat/public-assistant-main-20261031`.
 - Current Draft PR: [#385](https://github.com/ladynata-cloud/math-exam-fipi/pull/385).
 - Review level: `HIGH`: broad public-page wiring and a free-text interface.
@@ -22,19 +23,26 @@ a separate future stage, with no model call or model capability claim here.
 
 ## Context and evidence
 
-The owner's current direct instruction to continue PR #361, compare it with
-current main, update the catalogue, test and prepare publication is this task's
-START. The final separate base/head release decision remains required by the
-repository policy. The old task is continued through a new main-based branch
-and replacement Draft PR, preserving PR #361's history without force, rebase or
-a non-fast-forward merge.
+The owner's direct instruction to continue PR #361, compare it with current
+main, update the catalogue, test and prepare publication established this task's
+START. Initial preparation continued the task through a main-based branch and
+replacement Draft PR, preserving PR #361's history without force or rebase.
+
+On 2026-10-31 the owner explicitly authorized a normal history-preserving merge
+of the new `main` into the existing PR #385 branch, scope rebinding and task
+document updates. The reconciled base is `139b944a70f2e8ba4d340d152d08807fad03e5da`.
+This authorization covers branch reconciliation, validation, commits and push;
+it does not authorize PR #385 to merge into `main`, auto-merge, deployment or an
+external-review exception. The separate exact-base/head release decision remains
+required by repository policy.
 
 Main already contains the assistant/cabinet foundation (#358), task helpers
 (#369), stereometry hidden-edge fixes (#376), public entry fixes (#368), updated
-Vilenkin courses/help (#378/#380), Atanasyan chapter VIII (#382), and improved
-arithmetic/division (#377). These changes are retained. The old PR's 40 cloud
-workflows were 32 successful, seven failed and one cancelled; they are not a
-passing release gate. The [integration report](../reports/MATHEXAM_PUBLIC_ASSISTANT_INTEGRATION_20261031.md)
+Vilenkin courses/help (#378/#380), Atanasyan chapter VIII (#382), improved
+arithmetic/division (#377), and Atanasyan 10–11 §2 Cone (#374). These changes are
+retained. The old PR's 40 cloud workflows were 32 successful, seven failed and
+one cancelled; they are not a passing release gate. The
+[integration report](../reports/MATHEXAM_PUBLIC_ASSISTANT_INTEGRATION_20261031.md)
 records fresh evidence and the remaining release conditions.
 
 ## Approved scope
@@ -43,6 +51,9 @@ records fresh evidence and the remaining release conditions.
 
 - Port the isolated public navigator from #361 onto current main, including its
   exact two-script inclusion and narrow fixture/generator compatibility changes.
+- Reconcile the existing PR #385 branch with the authorized current main by a
+  normal merge, preserve both histories, rebind the existing scope manifest and
+  update task records without widening its allowed-file list or product scope.
 - Update verified material routes and clarify ambiguous course/grade requests.
 - Preserve numbered exam intent through clarification, and avoid substituting
   elementary arithmetic for advanced mathematical objects. Include the current
@@ -64,8 +75,9 @@ records fresh evidence and the remaining release conditions.
   pupil records, service/account changes, automatic messages or navigation.
 - Exercise content, grading, learning sequence, stored progress, board protocols,
   server code, existing URLs/canonicals/sitemap/robots, or unrelated styling.
-- Rewriting an old branch, merge, auto-merge or deployment without the separate
-  exact-base/head owner decision. This task does not change review policy.
+- Rewriting branch history, merging PR #385 into `main`, auto-merge or deployment
+  without the separate exact-base/head owner decision. The authorized main-to-PR
+  reconciliation above does not change review policy or release permissions.
 
 ### Files and boundaries retained
 
@@ -80,6 +92,9 @@ published task-aware helpers without a duplicate public launcher. Private,
 board/source/archive/export/redirect pages remain outside public admission.
 
 ## Acceptance criteria
+
+Checked items record the previously verified product behavior. Fresh validation
+of the reconciled head is recorded separately in the integration report and PR.
 
 - [x] Current verified destinations work across home, arithmetic, OGE, EGE and public school courses.
 - [x] Ambiguity is clarified; a navigator is never presented as a general model or solver.
@@ -131,11 +146,26 @@ checks; it does not delete learner work or assistant-service accounting data.
 ## Permissions
 
 - Current START, local branch/commits, push and replacement Draft PR: yes.
+- Normal merge of main into the existing PR branch with both histories retained,
+  scope rebinding, task-document updates, validation, continuation commits and push: explicitly
+  authorized by the owner on 2026-10-31.
 - Existing public-source inspection and synthetic local/browser checks: yes.
 - Provider credentials/calls, external messages and new paid infrastructure: no.
-- Merge, auto-merge and deployment: pending separate current base/head decision.
+- PR #385 merge into `main`, auto-merge and deployment: pending separate current
+  base/head decision. External HIGH review remains required unless separately
+  waived by an explicit reasoned owner decision.
 
 ## Execution record
+
+The history-preserving reconciliation commit
+`7d1ab4e33d6d0b0b342d1d86b507808d05d5a762` has parents
+`40a43c89d0f3c8738aa15ede96dd43ee5ceece70` and
+`139b944a70f2e8ba4d340d152d08807fad03e5da`, with clean merged tree
+`69aac2c41c036793408248dba09ac95e39a47446`. The scope manifest uses the second
+parent as its base, retaining the existing allowed-file list and strict guards.
+Fresh local navigator, scope, browser, SEO and composed-course checks are recorded
+in the integration report. Exact final head, branch update and fresh cloud
+outcomes are recorded separately in the current PR handoff.
 
 Exact head, replacement PR, completed gates, failures/not-run items, coverage and
 review evidence are recorded in the integration report and final PR body. The
