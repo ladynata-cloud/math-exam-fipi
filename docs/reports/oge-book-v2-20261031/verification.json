@@ -184,7 +184,7 @@
   "fileHashes": [
     {
       "path": ".github/workflows/book-edition.yml",
-      "sha256": "52c3958af8f7232643a469fe022c68178740d220bc6c1084a475d451b617c6cd"
+      "sha256": "4a65750c4d4df53994ad2cf69516d9ffa627270dc40e85e26d302e40228c4f22"
     },
     {
       "path": "scripts/build-oge-book-edition.py",
@@ -299,5 +299,18 @@
     },
     "CIAtExport": "PENDING_PUBLICATION",
     "distributionGate": "INCOMPLETE"
-  }
+  },
+  "postLocalExecutionChanges": [
+    {
+      "path": ".github/workflows/book-edition.yml",
+      "beforeSha256": "52c3958af8f7232643a469fe022c68178740d220bc6c1084a475d451b617c6cd",
+      "afterSha256": "4a65750c4d4df53994ad2cf69516d9ffa627270dc40e85e26d302e40228c4f22",
+      "kind": "CI_ENVIRONMENT_ONLY",
+      "reason": "The initial PR388 DALI job failed before tests because Playwright1.55 cannot install Chromium on Ubuntu26.04. Pin only its historical-browser runner to Ubuntu24.04; current browser lane and test assertions unchanged.",
+      "initialHead": "efab9c0c79c63476d4657f7d4bc00fabc33f3127",
+      "initialRun": 41210533083,
+      "initialJob": 124564379114,
+      "result": "Initial setup FAIL retained; exact-head execution of the corrected workflow is pending."
+    }
+  ]
 }

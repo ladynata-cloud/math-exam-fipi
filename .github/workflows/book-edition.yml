@@ -145,7 +145,8 @@ jobs:
   dali-image-regression:
     # Chromium 140 deterministically exposes the immutable v1 preload defect.
     # Keep the current Chromium lane above unchanged; this is an extra control.
-    runs-on: ubuntu-latest
+    # Playwright 1.55 supports Ubuntu 24.04; ubuntu-latest now uses 26.04.
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262

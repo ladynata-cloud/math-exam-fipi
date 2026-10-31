@@ -105,6 +105,12 @@ lane exercises the old-byte negative control and corrected source/v2 portrait.
 The old external-review job remains deliberate manual opt-in only. Its skipped
 state is not a review approval.
 
+The first PR388 CI attempt could not install Playwright1.55 on the new
+Ubuntu26.04 `ubuntu-latest` image, before any DALI assertion ran. Only that
+historical-browser job is now pinned to supported Ubuntu24.04. The current
+browser job, tests and failure policy are unchanged. The failed attempt remains
+in the CI history; its setup failure is not counted as a passing regression.
+
 After inspecting the Draft PR and its exact-head CI, the owner may separately
 authorize merge and deployment for the current base/head. Before any merge the
 authoritative remote `main` must equal that authorization's base; drift invalidates
