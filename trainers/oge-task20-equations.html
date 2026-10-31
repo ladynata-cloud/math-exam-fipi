@@ -974,10 +974,24 @@ function mountStepper(host, cfg){
 function mountMarathon(host, engine){
   clear(host);
   var state={streak:0, solved:0, n:0, lastSig:null};
+  var progressKey='mathExam.oge20.practice.v1', moduleKey=STATE.module;
+  try{
+    var saved=JSON.parse(localStorage.getItem(progressKey)||'{}')[moduleKey];
+    if(saved) ['streak','solved'].forEach(function(k){if(Number.isSafeInteger(saved[k])&&saved[k]>=0)state[k]=saved[k];});
+  }catch(e){}
+  function savePractice(){
+    try{
+      var all={};
+      try{all=JSON.parse(localStorage.getItem(progressKey)||'{}');}catch(e){}
+      if(!all||typeof all!=='object'||Array.isArray(all))all={};
+      all[moduleKey]={streak:state.streak,solved:state.solved};
+      localStorage.setItem(progressKey,JSON.stringify(all));
+    }catch(e){}
+  }
   var top=el('<div class="mtop"><span class="stat solved">решено <b>0</b></span><span class="stat streak">серия <b>0</b></span><span class="spacer"></span><span class="probno"></span></div>');
   var arena=el('<div></div>'); host.appendChild(arena);
   var results=el('<details class="minimal-results"><summary>Мои результаты</summary></details>');results.appendChild(top);host.appendChild(results);
-  function refreshTop(){ top.querySelector('.solved b').textContent=state.solved; top.querySelector('.streak b').textContent=state.streak; top.querySelector('.probno').textContent='задача №'+state.n; }
+  function refreshTop(){ top.querySelector('.solved b').textContent=state.solved; top.querySelector('.streak b').textContent=state.streak; top.querySelector('.probno').textContent='задача №'+state.n; savePractice(); }
   function fresh(){
     var data, sig, guard=0;
     do{ data=engine.gen(); sig=JSON.stringify(data,function(k,v){return typeof v==='bigint'?v.toString():v;}); guard++; }while(sig===state.lastSig && guard<40);

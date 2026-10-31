@@ -1,0 +1,2740 @@
+{
+  "schema": 1,
+  "edition": "oge-2026-10-31-v1",
+  "preparedAs": "prototype; owner ADR acceptance and separate release approval required",
+  "sourceBase": "139b944a70f2e8ba4d340d152d08807fad03e5da",
+  "publicOrigin": "https://mathexam.space",
+  "prefix": "book/oge/2026-10-31/v1/",
+  "aliasPrefix": "b/oge26-1/",
+  "entries": [
+    {
+      "id": "01",
+      "sourceUrl": "https://mathexam.space/",
+      "bookUrl": "https://mathexam.space/b/oge26-1/01/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/"
+    },
+    {
+      "id": "02",
+      "sourceUrl": "https://mathexam.space/oge/geometry/task-15-external-angle.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/02/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/oge/geometry/task-15-external-angle.html"
+    },
+    {
+      "id": "03",
+      "sourceUrl": "https://mathexam.space/trainers/oge-1-5-trainers/percent-table-trainer.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/03/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/percent-table-trainer.html"
+    },
+    {
+      "id": "04",
+      "sourceUrl": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-apartments.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/04/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-apartments.html"
+    },
+    {
+      "id": "05",
+      "sourceUrl": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/05/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html"
+    },
+    {
+      "id": "06",
+      "sourceUrl": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-land-plots.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/06/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-land-plots.html"
+    },
+    {
+      "id": "07",
+      "sourceUrl": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-map.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/07/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-map.html"
+    },
+    {
+      "id": "08",
+      "sourceUrl": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/08/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html"
+    },
+    {
+      "id": "09",
+      "sourceUrl": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-roads-grid.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/09/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-roads-grid.html"
+    },
+    {
+      "id": "10",
+      "sourceUrl": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-roads-schema.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/10/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-roads-schema.html"
+    },
+    {
+      "id": "11",
+      "sourceUrl": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-stoves.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/11/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-stoves.html"
+    },
+    {
+      "id": "12",
+      "sourceUrl": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-tariffs.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/12/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-tariffs.html"
+    },
+    {
+      "id": "13",
+      "sourceUrl": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-tires.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/13/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-tires.html"
+    },
+    {
+      "id": "14",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/",
+      "bookUrl": "https://mathexam.space/b/oge26-1/14/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/"
+    },
+    {
+      "id": "15",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/decimal-add-subtract.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/15/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/decimal-add-subtract.html"
+    },
+    {
+      "id": "16",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/fraction-common-denominator.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/16/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/fraction-common-denominator.html"
+    },
+    {
+      "id": "17",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/fraction-meaning.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/17/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/fraction-meaning.html"
+    },
+    {
+      "id": "18",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/18/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division.html"
+    },
+    {
+      "id": "19",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/",
+      "bookUrl": "https://mathexam.space/b/oge26-1/19/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/"
+    },
+    {
+      "id": "20",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/20/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html"
+    },
+    {
+      "id": "21",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/column-multiplication-two-digit.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/21/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/column-multiplication-two-digit.html"
+    },
+    {
+      "id": "22",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/decimal-division-natural.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/22/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/decimal-division-natural.html"
+    },
+    {
+      "id": "23",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/decimal-divisor-shift.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/23/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/decimal-divisor-shift.html"
+    },
+    {
+      "id": "24",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/division-append-zeros.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/24/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/division-append-zeros.html"
+    },
+    {
+      "id": "25",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/division-with-remainder.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/25/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/division-with-remainder.html"
+    },
+    {
+      "id": "26",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/26/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html"
+    },
+    {
+      "id": "27",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-mixed-checkpoint.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/27/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-mixed-checkpoint.html"
+    },
+    {
+      "id": "28",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-one-digit.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/28/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-one-digit.html"
+    },
+    {
+      "id": "29",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-quotient-digit.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/29/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-quotient-digit.html"
+    },
+    {
+      "id": "30",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-two-digit.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/30/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-two-digit.html"
+    },
+    {
+      "id": "31",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-with-remainder.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/31/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-with-remainder.html"
+    },
+    {
+      "id": "32",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-zero-in-quotient.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/32/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-zero-in-quotient.html"
+    },
+    {
+      "id": "33",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-ladder.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/33/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-ladder.html"
+    },
+    {
+      "id": "34",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-meaning.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/34/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-meaning.html"
+    },
+    {
+      "id": "35",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-mixed.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/35/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-mixed.html"
+    },
+    {
+      "id": "36",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-pythagoras-table.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/36/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-pythagoras-table.html"
+    },
+    {
+      "id": "37",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-tricks.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/37/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-tricks.html"
+    },
+    {
+      "id": "38",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/tabular-division.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/38/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/tabular-division.html"
+    },
+    {
+      "id": "39",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/negative-add-subtract.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/39/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/negative-add-subtract.html"
+    },
+    {
+      "id": "40",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/negative-number-line.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/40/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/negative-number-line.html"
+    },
+    {
+      "id": "41",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/order-of-operations.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/41/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/order-of-operations.html"
+    },
+    {
+      "id": "42",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/percentages/",
+      "bookUrl": "https://mathexam.space/b/oge26-1/42/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/percentages/"
+    },
+    {
+      "id": "43",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/percentages/percent-change.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/43/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/percentages/percent-change.html"
+    },
+    {
+      "id": "44",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/percentages/percent-choose-question.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/44/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/percentages/percent-choose-question.html"
+    },
+    {
+      "id": "45",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/percentages/percent-final-checkpoint.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/45/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/percentages/percent-final-checkpoint.html"
+    },
+    {
+      "id": "46",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/percentages/percent-meaning.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/46/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/percentages/percent-meaning.html"
+    },
+    {
+      "id": "47",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/percentages/percent-of-number-and-whole.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/47/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/percentages/percent-of-number-and-whole.html"
+    },
+    {
+      "id": "48",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/percentages/proportion.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/48/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/percentages/proportion.html"
+    },
+    {
+      "id": "49",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/rounding.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/49/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/rounding.html"
+    },
+    {
+      "id": "50",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/units-area.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/50/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/units-area.html"
+    },
+    {
+      "id": "51",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/units-length-time.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/51/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/units-length-time.html"
+    },
+    {
+      "id": "52",
+      "sourceUrl": "https://mathexam.space/trainers/oge-course/",
+      "bookUrl": "https://mathexam.space/b/oge26-1/52/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-course/"
+    },
+    {
+      "id": "53",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task10-probability.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/53/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task10-probability.html"
+    },
+    {
+      "id": "54",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task11-graphs-trainer.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/54/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task11-graphs-trainer.html"
+    },
+    {
+      "id": "55",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task12-formulas-trainer.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/55/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task12-formulas-trainer.html"
+    },
+    {
+      "id": "56",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task13-inequalities.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/56/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task13-inequalities.html"
+    },
+    {
+      "id": "57",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task14-progressions.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/57/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task14-progressions.html"
+    },
+    {
+      "id": "58",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task16-circle.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/58/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task16-circle.html"
+    },
+    {
+      "id": "59",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task17-quadrilaterals.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/59/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task17-quadrilaterals.html"
+    },
+    {
+      "id": "60",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task18-grid.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/60/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task18-grid.html"
+    },
+    {
+      "id": "61",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task20-equations.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/61/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task20-equations.html"
+    },
+    {
+      "id": "62",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task21-word-problems.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/62/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task21-word-problems.html"
+    },
+    {
+      "id": "63",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task22-functions-graphs.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/63/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task22-functions-graphs.html"
+    },
+    {
+      "id": "64",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task23-geometry-calculations.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/64/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task23-geometry-calculations.html"
+    },
+    {
+      "id": "65",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task24-proofs.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/65/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task24-proofs.html"
+    },
+    {
+      "id": "66",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task25-geometry.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/66/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task25-geometry.html"
+    },
+    {
+      "id": "67",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task6-fractions.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/67/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task6-fractions.html"
+    },
+    {
+      "id": "68",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task7-number-line.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/68/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task7-number-line.html"
+    },
+    {
+      "id": "69",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task8-powers-roots.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/69/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task8-powers-roots.html"
+    },
+    {
+      "id": "70",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task9-equations.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/70/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task9-equations.html"
+    },
+    {
+      "id": "71",
+      "sourceUrl": "https://mathexam.space/trainers/task19-trainer.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/71/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/task19-trainer.html"
+    }
+  ],
+  "storageNamespace": "mathExamBook:oge-2026-10-31-v1:",
+  "removedOptionalIntegrations": [
+    "assets/download-panel.css",
+    "assets/lesson-funnel.js",
+    "ege-baza/return-to-course.js",
+    "learning/practice-entry.js",
+    "trainers/learning-bridge.js",
+    "trainers/oge-geometry-board-mode.js",
+    "trainers/oge-geometry-board.js",
+    "trainers/task19-board-session.js"
+  ],
+  "externalFonts": "system fallbacks; no remote font requests",
+  "retainedLocalBoundary": "Roads-grid requires the original state validator; its copied board register is always inert, including inside an iframe.",
+  "redirectContract": "Short aliases and the task-13 legacy redirect preserve the complete query and fragment; the original public redirect is unchanged.",
+  "sourceFiles": [
+    {
+      "path": "assets/lesson-contacts.css",
+      "sha256": "48e902fe7a0bc413894828cdb23d0fe46c2c3237f573d84f66b795af08402e7d",
+      "dependencies": []
+    },
+    {
+      "path": "assets/site.css",
+      "sha256": "4e7d1e5465af332b0c532af40efbcf5fc68072dbb0b762e99a21560532df49c2",
+      "dependencies": [
+        "assets/site.css"
+      ]
+    },
+    {
+      "path": "index.html",
+      "sha256": "38c2b22cd9fafe39dd537dedb4d44968b21233aa4e1300e1f8b6fca92110156c",
+      "dependencies": [
+        "assets/lesson-contacts.css",
+        "assets/site.css"
+      ],
+      "canonical": "https://mathexam.space/"
+    },
+    {
+      "path": "oge/geometry/task-15-external-angle.html",
+      "sha256": "3b2f6a7bda0c466fe70401a5c9401d38bd843cec769dfa586264ab2608b5676d",
+      "dependencies": [
+        "trainers/oge-course-geometry.css",
+        "trainers/oge-course-geometry.js",
+        "trainers/oge-course-reference.css",
+        "trainers/oge-course-reference.js",
+        "trainers/task19-reference.js",
+        "trainers/task19-textbook-data.js"
+      ],
+      "canonical": "https://mathexam.space/oge/geometry/task-15-external-angle.html"
+    },
+    {
+      "path": "trainers/board-bridge.js",
+      "sha256": "0061d9aac1cf3f9b20ff52ae26697f1ff518df0554eb7f8f87191ccc99dcaa3f",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/percent-table-trainer.html",
+      "sha256": "73e9acee03b06154bee8ee5c74c69ce815c55fa1b959aa7bae7bcdd9a60b0b7d",
+      "dependencies": [
+        "trainers/oge-1-5-trainers/practical-minimal.css",
+        "trainers/oge-1-5-trainers/practical-minimal.js",
+        "trainers/oge-1-5-trainers/progress.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-1-5-trainers/percent-table-trainer.html"
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/practical-discovery.js",
+      "sha256": "cf3f659aa12e92e2282f4d45727f3acdf33b8499bd67c925e8854a181ae6f0fe",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/practical-minimal.css",
+      "sha256": "0b8ed5ba4f9c828cb7175afe924cd0390bf72a32ea9b82f0915edb7ce33a9035",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/practical-minimal.js",
+      "sha256": "a07f447463a4b6d3820a91efb45a83d77188791797f35ec3df3a2bbe0a4e8cca",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/practical-variant-buildings.js",
+      "sha256": "e417db2795b8c89654011875c5d8e8b9e23fa80ad119fa4f6651b439d784445b",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/practical-variant-everyday.js",
+      "sha256": "1a8f0dd74d5aa50aa9c5e6b8b05071dfb3bd4b0ca96812d3211ebae3480e0502",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/practical-variant-roads.js",
+      "sha256": "4f2a718159f9a695f312b5309144daa80d80a0888e4623129d11caf562dbdec9",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/practical-variant.css",
+      "sha256": "67791e2f903ed33ed6e4250c9922433391c261468b53396638ef25fff28b59cc",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/practical-variant.js",
+      "sha256": "14730c6bee1fb9a7b4b34082565711c60869d8d49ea6b631477d9c1faf32a6e0",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/practice-1-5-apartments.html",
+      "sha256": "ae745c26891ec9d933b2c5f96736e67454da4918af73c559e3b4acb0e845f7b8",
+      "dependencies": [
+        "trainers/oge-1-5-trainers/practical-discovery.js",
+        "trainers/oge-1-5-trainers/practical-minimal.css",
+        "trainers/oge-1-5-trainers/practical-minimal.js",
+        "trainers/oge-1-5-trainers/practical-variant-buildings.js",
+        "trainers/oge-1-5-trainers/practical-variant.css",
+        "trainers/oge-1-5-trainers/practical-variant.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-apartments.html"
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html",
+      "sha256": "388cb58aea89a8807c4e40385503bd8d9fb0f9125e98b33bc740f6f37b0e86c7",
+      "dependencies": [
+        "trainers/oge-1-5-trainers/practical-minimal.css",
+        "trainers/oge-1-5-trainers/practical-minimal.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html"
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/practice-1-5-land-plots.html",
+      "sha256": "26ba2b7c180cec08560d9d0363847b7d4de8c589ef141eecd5f6f03f88687e0a",
+      "dependencies": [
+        "trainers/oge-1-5-trainers/practical-discovery.js",
+        "trainers/oge-1-5-trainers/practical-minimal.css",
+        "trainers/oge-1-5-trainers/practical-minimal.js",
+        "trainers/oge-1-5-trainers/practical-variant-buildings.js",
+        "trainers/oge-1-5-trainers/practical-variant.css",
+        "trainers/oge-1-5-trainers/practical-variant.js",
+        "trainers/oge-1-5-trainers/progress.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-land-plots.html"
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/practice-1-5-map.html",
+      "sha256": "a8d83b04a8e2a483ebfcaf4a96d48fa3fcb2252fef409d5931242453d8bea2d8",
+      "dependencies": [
+        "trainers/oge-1-5-trainers/practical-minimal.css",
+        "trainers/oge-1-5-trainers/practical-minimal.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-map.html"
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html",
+      "sha256": "74ffec17b2a1e43d10c573fc01c9ad14012ffbc9df1bddc7374691c0ad21bbfd",
+      "dependencies": [
+        "trainers/oge-1-5-trainers/practical-discovery.js",
+        "trainers/oge-1-5-trainers/practical-minimal.css",
+        "trainers/oge-1-5-trainers/practical-minimal.js",
+        "trainers/oge-1-5-trainers/practical-variant-everyday.js",
+        "trainers/oge-1-5-trainers/practical-variant.css",
+        "trainers/oge-1-5-trainers/practical-variant.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html"
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/practice-1-5-roads-grid.html",
+      "sha256": "f8dbb157acb2ba13d80e83cee7df6be434d3cacd1e616f5052033be0ea7af6bf",
+      "dependencies": [
+        "trainers/board-bridge.js",
+        "trainers/oge-1-5-trainers/practical-discovery.js",
+        "trainers/oge-1-5-trainers/practical-minimal.css",
+        "trainers/oge-1-5-trainers/practical-minimal.js",
+        "trainers/oge-1-5-trainers/practical-variant-roads.js",
+        "trainers/oge-1-5-trainers/practical-variant.css",
+        "trainers/oge-1-5-trainers/practical-variant.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-roads-grid.html"
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/practice-1-5-roads-schema.html",
+      "sha256": "7214f5676cb3d56b625a0d2a47937f2e8e7a0d5ba53bd22fa48c89596b519cf9",
+      "dependencies": [
+        "trainers/oge-1-5-trainers/practical-discovery.js",
+        "trainers/oge-1-5-trainers/practical-minimal.css",
+        "trainers/oge-1-5-trainers/practical-minimal.js",
+        "trainers/oge-1-5-trainers/practical-variant-roads.js",
+        "trainers/oge-1-5-trainers/practical-variant.css",
+        "trainers/oge-1-5-trainers/practical-variant.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-roads-schema.html"
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/practice-1-5-stoves.html",
+      "sha256": "164b6a6d44048a14f019c7ae15d55d958cd6d0473f5bafaf3e7e681951011659",
+      "dependencies": [
+        "trainers/oge-1-5-trainers/practical-discovery.js",
+        "trainers/oge-1-5-trainers/practical-minimal.css",
+        "trainers/oge-1-5-trainers/practical-minimal.js",
+        "trainers/oge-1-5-trainers/practical-variant-everyday.js",
+        "trainers/oge-1-5-trainers/practical-variant.css",
+        "trainers/oge-1-5-trainers/practical-variant.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-stoves.html"
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/practice-1-5-tariffs.html",
+      "sha256": "c77a86da15a88771b8e92ef58a9ac587279c834379aba5f8085e940d5e8c9102",
+      "dependencies": [
+        "trainers/oge-1-5-trainers/practical-discovery.js",
+        "trainers/oge-1-5-trainers/practical-minimal.css",
+        "trainers/oge-1-5-trainers/practical-minimal.js",
+        "trainers/oge-1-5-trainers/practical-variant-everyday.js",
+        "trainers/oge-1-5-trainers/practical-variant.css",
+        "trainers/oge-1-5-trainers/practical-variant.js",
+        "trainers/oge-1-5-trainers/progress.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-tariffs.html"
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/practice-1-5-tires.html",
+      "sha256": "73773a765b524fe5fd358e8a6fa352012ec070e88e294090cbe6b9e53613dd2d",
+      "dependencies": [
+        "trainers/oge-1-5-trainers/practical-discovery.js",
+        "trainers/oge-1-5-trainers/practical-minimal.css",
+        "trainers/oge-1-5-trainers/practical-minimal.js",
+        "trainers/oge-1-5-trainers/tire-3d-labels.css",
+        "trainers/oge-1-5-trainers/tire-3d.js",
+        "trainers/oge-1-5-trainers/tire-learning-flow.css",
+        "trainers/oge-1-5-trainers/tire-learning-flow.js",
+        "trainers/oge-1-5-trainers/tire-structure-quiz.css",
+        "trainers/oge-1-5-trainers/tire-structure-quiz.js",
+        "trainers/oge-1-5-trainers/tire-variant-layout.css",
+        "trainers/oge-1-5-trainers/tire-variant-layout.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-tires.html"
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/progress.js",
+      "sha256": "92aaadd89bb01a96b6dc96444012e11d479447881ea302146238020068c9a8b2",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/tire-3d-labels.css",
+      "sha256": "e9f5e0b3e9fe3b3f05a26b839a91195ae4fd287132adb3499c7b616c89ea4707",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/tire-3d.js",
+      "sha256": "511167734dadd7620c0b085c4894e161ab623a3b6bf04de000b87d16e6d8b5a5",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/tire-learning-flow.css",
+      "sha256": "d804ca73d2bd23f3877f528739b606d3809d016ae24cf5fb3a1581d6fc5fb277",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/tire-learning-flow.js",
+      "sha256": "80984e4a30a0e09b568ea8d492ee650030e5b5ca4d30e7df76c5a9588ed51176",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/tire-structure-quiz.css",
+      "sha256": "fc945039fdf27fbf8a48985fd1ea5d6c65870b70bbd44b4da7fcd85f4cbf06fa",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/tire-structure-quiz.js",
+      "sha256": "d8a1dc1e3907ee88fc17b48169c362748f1234289a90f8b5bbe2e0530afd17cc",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/tire-variant-layout.css",
+      "sha256": "8c4b39e0d52c9f1d0794ef41c4e7261aa99c928a25d6486149b646c7a4c198bf",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-1-5-trainers/tire-variant-layout.js",
+      "sha256": "a5d0cdb0b60ecb9e22fedab87679fb1b7f66bc06b927403e33e565de006e7809",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-basics/arithmetic-route.js",
+      "sha256": "fc40ccd0d15b2e7876151b9b5a05c85c494643eff5dc747ba4d9954b24f82d83",
+      "dependencies": [
+        "trainers/oge-basics/multiplication-division/division-guided-core.js"
+      ]
+    },
+    {
+      "path": "trainers/oge-basics/basics-help.css",
+      "sha256": "db64e836a1bd3ea158ed7a0cf184e5e80d11dea77fbeecab4f4a1cdfb9913cfa",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-basics/basics-help.js",
+      "sha256": "bdd412d6c3ea23e9b5406f37861d2b3fdae8b343a1cb76ae45ffd21b91bcf81d",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-basics/basics-standalone.css",
+      "sha256": "83a3ec853a96264894099a7d3ad180263814f1349333d5631211627f24b0cc6d",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-basics/basics-standalone.js",
+      "sha256": "6c424d4717fc3142f48e87ccc358d3581c1a72e24a632141212cdca060f55199",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-basics/decimal-add-subtract.html",
+      "sha256": "de2c571b0d8cb38e01da418d809c46376262c60ed4f145ad7c64d44ce2f1c95d",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/decimal-add-subtract.html"
+    },
+    {
+      "path": "trainers/oge-basics/fraction-common-denominator.html",
+      "sha256": "7ad6abd8e5e18bfef180b672117c997ee5b85740bb6ba44bef28ac2bf047802f",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/fraction-common-denominator.html"
+    },
+    {
+      "path": "trainers/oge-basics/fraction-meaning.html",
+      "sha256": "8f89b2348f8c0912a592a020d5ec745bdf44b97ccc7999ced654a3d10aac2ccc",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/fraction-meaning.html"
+    },
+    {
+      "path": "trainers/oge-basics/index.html",
+      "sha256": "0328a75ad5df340a59319c387a05741dd9fd32eed2d31046c243b1b9d728166a",
+      "dependencies": [
+        "trainers/oge-basics/navigation-minimal.css",
+        "trainers/oge-basics/navigation-minimal.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/"
+    },
+    {
+      "path": "trainers/oge-basics/learning-loader.js",
+      "sha256": "e398876921f71f04938c6e088929083bd555dc2c8d19f3e931a808f424b260d0",
+      "dependencies": [
+        "trainers/oge-basics/basics-help.css",
+        "trainers/oge-basics/basics-help.js",
+        "trainers/oge-basics/basics-standalone.css",
+        "trainers/oge-basics/basics-standalone.js",
+        "trainers/oge-basics/learning-loader.js"
+      ]
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division.html",
+      "sha256": "c2a87b9a777ce0d77cf395bd07ee325559ec1eebfb796dc4151d08f0d2c269e1",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/multiplication-division.html"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html",
+      "sha256": "e9c35b8970c6f412997a8a16cdf168706095a3f0b6fa7a1d5f719cf1bdd66903",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/column-multiplication-two-digit.html",
+      "sha256": "c4dacd283d053125a2b97ad8058c0d19e64654e46294e55e1886b81419b7d9c7",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/multiplication-division/column-multiplication-two-digit.html"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/decimal-division-natural.html",
+      "sha256": "dcb6aa83137169ed39f43fedff8c41d6071b31204de71fe9ba66bac8f50ffa9b",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/multiplication-division/decimal-division-natural.html"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/decimal-divisor-shift.html",
+      "sha256": "731e4c930b23885efb1efefcae273e1ff4293c8d826a45a0b4580a71dc704ecc",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/multiplication-division/decimal-divisor-shift.html"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/decimal-shift.css",
+      "sha256": "ea75ffa330d15b3d09ec7b7603a87d4f8b5aaf4bb6324385a86fce7d01455d81",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/decimal-shift.js",
+      "sha256": "b00f912078aa33ba0435ad50fb6dd9645e90efc8b3b947069288a804ae6affe6",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/division-append-zeros.html",
+      "sha256": "50edce7a9b99773d7aa6709811843b74abc944b93de59c94ee34a701d5dd79bc",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/multiplication-division/division-append-zeros.html"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/division-guided-core.js",
+      "sha256": "4ec6a38fd9fd589532a88347976183b55b207067e2c3476f159bc149365aa3a0",
+      "dependencies": [
+        "trainers/oge-basics/multiplication-division/division-lab-core.js"
+      ]
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/division-guided.css",
+      "sha256": "ae4f782eb2bdc87d6c8c556d22913f2e8223d450d7aee7a84ca286f48a3f39a5",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/division-guided.js",
+      "sha256": "3f21ce17e5a876481bfed83d2baf82abb51f35c292464b5bbebee694268fcf50",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/division-lab-core.js",
+      "sha256": "4a73c42fcd963a5cbd42b094bcc167ff4c5e1df9feae32294646e50a40cb2f4e",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/division-with-remainder.html",
+      "sha256": "b9d4ed3fe1c29e4662128df854799c4ddc4dd53ef2a5eddbf248f69b4998f4a3",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/multiplication-division/division-with-remainder.html"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/index.html",
+      "sha256": "4170d72e7e26ac6bd28e82685c2f09a1504bbe58d1d659945cd216c98176968d",
+      "dependencies": [
+        "trainers/oge-basics/navigation-minimal.css",
+        "trainers/oge-basics/navigation-minimal.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/multiplication-division/"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html",
+      "sha256": "ded2d3e8ab438756729f3add9165b71d0be4de85180db2b8827774f1810bb340",
+      "dependencies": [
+        "trainers/oge-basics/arithmetic-route.js",
+        "trainers/oge-basics/learning-loader.js",
+        "trainers/oge-basics/multiplication-division/decimal-shift.css",
+        "trainers/oge-basics/multiplication-division/decimal-shift.js",
+        "trainers/oge-basics/multiplication-division/division-guided-core.js",
+        "trainers/oge-basics/multiplication-division/division-guided.css",
+        "trainers/oge-basics/multiplication-division/division-guided.js",
+        "trainers/oge-basics/multiplication-division/division-lab-core.js",
+        "trainers/oge-basics/multiplication-division/multiplication-refresh.css",
+        "trainers/oge-basics/multiplication-division/multiplication-refresh.js",
+        "trainers/oge-basics/navigation-minimal.css",
+        "trainers/oge-basics/navigation-minimal.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/long-division-stepwise.html"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/long-division-mixed-checkpoint.html",
+      "sha256": "bded4b0d72058b061aa6767018cc3b783b6de0598f9435486bd151f20aaa0dd7",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-mixed-checkpoint.html"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/long-division-one-digit.html",
+      "sha256": "7979870477d40ec539701a6c5682095b77914f1b32c25b0985103292ad720249",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-one-digit.html"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/long-division-quotient-digit.html",
+      "sha256": "6dac256c59993cf370d75803ed7e17eb8687cdaca4836593eed7138129b58f65",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-quotient-digit.html"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/long-division-two-digit.html",
+      "sha256": "ffab674652eeea5cf5b2ba38a2c5bdb30c3bee3154dcc98b7e51c23859734f9b",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-two-digit.html"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/long-division-with-remainder.html",
+      "sha256": "310a1287ae0801ee3ea742b0296908af45004bc525a11473f757036f258ef9b5",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-with-remainder.html"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/long-division-zero-in-quotient.html",
+      "sha256": "d47786ee27c2dffe6e936995881f2cb03a2498ee231ec7a54ee8b48b4e012a00",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-zero-in-quotient.html"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/multiplication-ladder.html",
+      "sha256": "6b353c513b7963a6e63a15941d2d0a77538cdda9e2b9824a08d950d54856d646",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-ladder.html"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/multiplication-meaning.html",
+      "sha256": "fad19f7e7493cad22accf0d6289ca34db8449a685d56ae13a6cf5f36f42ee82a",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-meaning.html"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/multiplication-mixed.html",
+      "sha256": "6b112d4c7f41102b5fc3f0c0b6de1054caf6e8b9282bfb94f02f85a9e04c4789",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-mixed.html"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/multiplication-pythagoras-table.html",
+      "sha256": "cb30e82e504203c24c6cb468fd12b40af0d38c51a2795312b13666d692367f30",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-pythagoras-table.html"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/multiplication-refresh.css",
+      "sha256": "b69ddd0448f1ff5737038707cffa2f55e32751a45e42c49513880d26ed324579",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/multiplication-refresh.js",
+      "sha256": "499316978e5582a818f0292808aaae9876307f294c1b36c08abe564fc5242ebb",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/multiplication-tricks.html",
+      "sha256": "33ee7c2f0191c2d943a030a20d420a61ef1316a78056451672217ac00f130017",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-tricks.html"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/tabular-division.html",
+      "sha256": "eddf9edcf49cd6e64d1d9207ce70ed183275fed41caabba8726a198d334a947a",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/multiplication-division/tabular-division.html"
+    },
+    {
+      "path": "trainers/oge-basics/navigation-minimal.css",
+      "sha256": "353aebce0ea32f21ac8f9cf8ce214379e8254f86641df1904688a363a143d881",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-basics/navigation-minimal.js",
+      "sha256": "709f8b2c0c56d70bea4ce13e2657a0dad2f727212f5bb98977bbe9a2e4b14fe3",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-basics/negative-add-subtract.html",
+      "sha256": "5fea05254d6f1d6ecd8f8833c462d44d0373393ba403b9a4213a53a8b6f2c614",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/negative-add-subtract.html"
+    },
+    {
+      "path": "trainers/oge-basics/negative-number-line.html",
+      "sha256": "e54cddf6757598c4d43200f45eb5d5bda27d0b3cf1c58cf75400c1a8b92bba70",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/negative-number-line.html"
+    },
+    {
+      "path": "trainers/oge-basics/order-of-operations.html",
+      "sha256": "752fed23d0d0bd22db48af486d278177509b37fcf1126346a1b7b553cb0bb4b5",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/order-of-operations.html"
+    },
+    {
+      "path": "trainers/oge-basics/percentages/index.html",
+      "sha256": "395adb62d80b9a19a6ed81659cdfa673d4b31310d1ac9cd6cce5b871406adacd",
+      "dependencies": [
+        "trainers/oge-basics/navigation-minimal.css",
+        "trainers/oge-basics/navigation-minimal.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/percentages/"
+    },
+    {
+      "path": "trainers/oge-basics/percentages/percent-change.html",
+      "sha256": "bae2bb2c56de5239e7adef15dd8b8097872c298581455e03e917e405eba65a32",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/percentages/percent-change.html"
+    },
+    {
+      "path": "trainers/oge-basics/percentages/percent-choose-question.html",
+      "sha256": "073e1db210ed4a463b702934b714d54538d34a16921c13fdfb7be26922fa44e4",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/percentages/percent-choose-question.html"
+    },
+    {
+      "path": "trainers/oge-basics/percentages/percent-final-checkpoint.html",
+      "sha256": "bffd8c78dcfc6a51c51527b32b8d67c49247501fea8f664bd7cae0b2ad73f798",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/percentages/percent-final-checkpoint.html"
+    },
+    {
+      "path": "trainers/oge-basics/percentages/percent-meaning.html",
+      "sha256": "2b9ff332851434747de41e12439c65d61a0f57cca908c5d994a933cb4967a31a",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/percentages/percent-meaning.html"
+    },
+    {
+      "path": "trainers/oge-basics/percentages/percent-of-number-and-whole.html",
+      "sha256": "67b8d337676b357fcd4c5679e188024626f064887df2f69fe9ba7c86a5424599",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/percentages/percent-of-number-and-whole.html"
+    },
+    {
+      "path": "trainers/oge-basics/percentages/proportion.html",
+      "sha256": "6187a457e6bd85af9127b7901390d92c694d26a80f9a0bdb105b26beb8f9721d",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/percentages/proportion.html"
+    },
+    {
+      "path": "trainers/oge-basics/rounding.html",
+      "sha256": "9a1f925620dc54f48a99c29f8a7ffc362f34e8b251c51c320229dc4c534484e9",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/rounding.html"
+    },
+    {
+      "path": "trainers/oge-basics/units-area.html",
+      "sha256": "7ebdb24f1d2e4092c29ba914a98f15668a777283d2673abe27f9318844b8e088",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/units-area.html"
+    },
+    {
+      "path": "trainers/oge-basics/units-length-time.html",
+      "sha256": "496f9b18aae9995bce5befd98d8ee275dd6986055cfd5fdc1c55e12b598d1397",
+      "dependencies": [
+        "trainers/oge-basics/learning-loader.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-basics/units-length-time.html"
+    },
+    {
+      "path": "trainers/oge-course-algebra-reference.js",
+      "sha256": "d35128e5ec30bae35299b1446a33af3e90b995c8f9ace4cdc89a53ae1e9458fe",
+      "dependencies": [
+        "trainers/oge-course-reference/identities.png",
+        "trainers/oge-course-reference/parabola-vertex.png",
+        "trainers/oge-course-reference/quadratic-roots.png"
+      ]
+    },
+    {
+      "path": "trainers/oge-course-algebra.css",
+      "sha256": "7114dc768374abd392c564b431d1175b5eba23b0f350f40cf7846c8d175fd336",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-course-algebra.js",
+      "sha256": "94c827cc5fc6cf669f56aadb38a1a6f445709cadafdb37bc789c8793d3cd2fc2",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-course-geometry.css",
+      "sha256": "e5a62cb5ec55ebf4260265a1ea7c3ded7ca1a7dfee702e1bcc5966c98434a147",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-course-geometry.js",
+      "sha256": "19da14e77dc2d4d133686c1df5e9ea6e3a125cf7a0124913ba90262cc8a82b77",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-course-proof.css",
+      "sha256": "c081763b475d9f166a2da0ec44da07b467ade96f106fdf26aca13c433bef755a",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-course-proof.js",
+      "sha256": "c1650122b7b3126f672d8a777696c61d3769aefe5823b2e65f91c235500baf95",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-course-reference-entry.js",
+      "sha256": "d3f5c3e6306420bd5fa65c2ab2b7124de37fbd61938add865707343a3a39cee1",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-course-reference.css",
+      "sha256": "3f3b81b46495b47ec9251b7e60cec70507ab7dc5ad121d9beb1d7582d7fec35c",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-course-reference.js",
+      "sha256": "37754d14bcc29a7fdd45b0cc9fdcb71233071edd666bd05d82d531f9f7e0d8d6",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-course-reference/identities.png",
+      "sha256": "ffdb0ca08e10919c57374759ce07809c96769adec0e006ee49243871beb8d274",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-course-reference/parabola-vertex.png",
+      "sha256": "6da6bbe2ec224c86f6f67d12cc8651d4b57a6df54146f397de0c36ffe08d9efa",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-course-reference/quadratic-roots.png",
+      "sha256": "4ddb3b97a6714686ec65f8007d7e96dbdaaf7130900696fffbd6fa6d138a2960",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/oge-course/index.html",
+      "sha256": "206e9c6f88a5f49daf387f09062dc158f8acb43d8d4d88ebcd4168fdb939f077",
+      "dependencies": [
+        "assets/lesson-contacts.css"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-course/"
+    },
+    {
+      "path": "trainers/oge-task10-probability.html",
+      "sha256": "7abaf5f8d74c6ca8e7196b4aae3465db29a196dd0b643d3817edede52cf15463",
+      "dependencies": [
+        "trainers/oge-course-algebra.css",
+        "trainers/oge-course-algebra.js",
+        "trainers/oge-course-reference.css",
+        "trainers/oge-course-reference.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-task10-probability.html"
+    },
+    {
+      "path": "trainers/oge-task11-graphs-trainer.html",
+      "sha256": "6324a5c709a73e7fe1209675020e1583f7654b99b191b76ec35089672b139622",
+      "dependencies": [
+        "trainers/oge-course-algebra-reference.js",
+        "trainers/oge-course-reference-entry.js",
+        "trainers/oge-course-reference.css",
+        "trainers/oge-course-reference.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-task11-graphs-trainer.html"
+    },
+    {
+      "path": "trainers/oge-task12-formulas-trainer.html",
+      "sha256": "e91f8b10a6ccdcb78b6408bfaf95d61a12e636a2c3d2ab88c6a7a6c6d5b2dd76",
+      "dependencies": [
+        "trainers/oge-course-algebra.css",
+        "trainers/oge-course-algebra.js",
+        "trainers/oge-course-reference.css",
+        "trainers/oge-course-reference.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-task12-formulas-trainer.html"
+    },
+    {
+      "path": "trainers/oge-task13-inequalities.html",
+      "sha256": "be633489ed706dcbccf552b8df6fcc781e38da4ce23c9fdb5c7e95cc585c5051",
+      "dependencies": [
+        "assets/site.css"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge13-inequalities-series.html"
+    },
+    {
+      "path": "trainers/oge-task14-progressions.html",
+      "sha256": "2e6512004d501e4b6dda005f58bf6cdd35bb2ff83443f4f7b69313a060920e4b",
+      "dependencies": [
+        "trainers/oge-course-algebra.css",
+        "trainers/oge-course-algebra.js",
+        "trainers/oge-course-reference.css",
+        "trainers/oge-course-reference.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-task14-progressions.html"
+    },
+    {
+      "path": "trainers/oge-task16-circle.html",
+      "sha256": "2478f230be9a57b0762ea28ba0c31b39f4aee2b2a77ebc6be5e011a5c325be65",
+      "dependencies": [
+        "trainers/oge-course-geometry.css",
+        "trainers/oge-course-geometry.js",
+        "trainers/oge-course-reference.css",
+        "trainers/oge-course-reference.js",
+        "trainers/task19-reference.js",
+        "trainers/task19-textbook-data.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-task16-circle.html"
+    },
+    {
+      "path": "trainers/oge-task17-quadrilaterals.html",
+      "sha256": "376baf09ea72ff2b8219b7a3718970fd01858c30cf42a0e768fb54f647ec0677",
+      "dependencies": [
+        "trainers/oge-course-geometry.css",
+        "trainers/oge-course-geometry.js",
+        "trainers/oge-course-reference.css",
+        "trainers/oge-course-reference.js",
+        "trainers/task19-reference.js",
+        "trainers/task19-textbook-data.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-task17-quadrilaterals.html"
+    },
+    {
+      "path": "trainers/oge-task18-grid.html",
+      "sha256": "80202b73c872880a65e9a25de5eb927fe8b0d034fc76c086baffbe7d3b85e62f",
+      "dependencies": [
+        "trainers/oge-course-geometry.css",
+        "trainers/oge-course-geometry.js",
+        "trainers/oge-course-reference.css",
+        "trainers/oge-course-reference.js",
+        "trainers/task19-reference.js",
+        "trainers/task19-textbook-data.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-task18-grid.html"
+    },
+    {
+      "path": "trainers/oge-task20-equations.html",
+      "sha256": "1c3bb107dff15b6be4c5743b65be3bd98f2dfe568c37f1891acca7d15aa33159",
+      "dependencies": [
+        "trainers/oge-course-algebra.css",
+        "trainers/oge-course-algebra.js",
+        "trainers/oge-course-reference.css",
+        "trainers/oge-course-reference.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-task20-equations.html"
+    },
+    {
+      "path": "trainers/oge-task21-word-problems.html",
+      "sha256": "4c1ef388d85a836cf6117063f9420daee9df647ee7d937514ca682b1f59e6643",
+      "dependencies": [
+        "trainers/oge-course-algebra.css",
+        "trainers/oge-course-algebra.js",
+        "trainers/oge-course-reference.css",
+        "trainers/oge-course-reference.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-task21-word-problems.html"
+    },
+    {
+      "path": "trainers/oge-task22-functions-graphs.html",
+      "sha256": "ca2dd48a6601e2eaadb50c4709eedf49752a48ded1ea9b1a838562aa3b858f53",
+      "dependencies": [
+        "trainers/oge-course-algebra.css",
+        "trainers/oge-course-algebra.js",
+        "trainers/oge-course-reference.css",
+        "trainers/oge-course-reference.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-task22-functions-graphs.html"
+    },
+    {
+      "path": "trainers/oge-task23-geometry-calculations.html",
+      "sha256": "60a2ec5d2e09c0d1811b5589d347617b8a9e1fe3ebd82a74e80df0323db12408",
+      "dependencies": [
+        "trainers/oge-course-proof.css",
+        "trainers/oge-course-proof.js",
+        "trainers/oge-course-reference.css",
+        "trainers/oge-course-reference.js",
+        "trainers/task19-reference.js",
+        "trainers/task19-textbook-data.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-task23-geometry-calculations.html"
+    },
+    {
+      "path": "trainers/oge-task24-proofs.html",
+      "sha256": "40effa68a3210eea67dfe44fa7538f231903e8855dde46d2cfac015c4c19eeb2",
+      "dependencies": [
+        "trainers/oge-course-proof.css",
+        "trainers/oge-course-proof.js",
+        "trainers/oge-course-reference.css",
+        "trainers/oge-course-reference.js",
+        "trainers/task19-reference.js",
+        "trainers/task19-textbook-data.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-task24-proofs.html"
+    },
+    {
+      "path": "trainers/oge-task25-geometry.html",
+      "sha256": "b9a32579e258b066ea45c7032bfceaebf33d1b9dd36ce59de47c50fd97dcff27",
+      "dependencies": [
+        "trainers/oge-course-proof.css",
+        "trainers/oge-course-proof.js",
+        "trainers/oge-course-reference.css",
+        "trainers/oge-course-reference.js",
+        "trainers/task19-reference.js",
+        "trainers/task19-textbook-data.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-task25-geometry.html"
+    },
+    {
+      "path": "trainers/oge-task6-fractions.html",
+      "sha256": "9e06cc82f00752eb682c38f75b1dcb04c4d8fbff71a2415a9b8205e6ef5bc946",
+      "dependencies": [],
+      "canonical": "https://mathexam.space/trainers/oge-task6-fractions.html"
+    },
+    {
+      "path": "trainers/oge-task7-number-line.html",
+      "sha256": "adb6a251e8f8b713d52629ba9cfbc7502b6dfd8fd7a26a9c01c959712e9e4d8b",
+      "dependencies": [
+        "trainers/oge-course-algebra.css",
+        "trainers/oge-course-algebra.js",
+        "trainers/oge-course-reference.css",
+        "trainers/oge-course-reference.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-task7-number-line.html"
+    },
+    {
+      "path": "trainers/oge-task8-powers-roots.html",
+      "sha256": "33b6639666b0535ec5b40c4e4ca0067b1a251177743c16a92cb655afca389cb3",
+      "dependencies": [
+        "trainers/oge-course-algebra.css",
+        "trainers/oge-course-algebra.js",
+        "trainers/oge-course-reference.css",
+        "trainers/oge-course-reference.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-task8-powers-roots.html"
+    },
+    {
+      "path": "trainers/oge-task9-equations.html",
+      "sha256": "5ab61adb7bd0f2c2197c5c3de5d1e867528413f76175bdd66abadc6ed9552e2f",
+      "dependencies": [
+        "trainers/oge-course-algebra-reference.js",
+        "trainers/oge-course-reference-entry.js",
+        "trainers/oge-course-reference.css",
+        "trainers/oge-course-reference.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge-task9-equations.html"
+    },
+    {
+      "path": "trainers/oge13-inequalities-series.html",
+      "sha256": "e012b055866d42d9bdcedcab985470277276a4305ddc330f6809004e3e787ad9",
+      "dependencies": [
+        "trainers/oge-course-algebra-reference.js",
+        "trainers/oge-course-reference-entry.js",
+        "trainers/oge-course-reference.css",
+        "trainers/oge-course-reference.js"
+      ],
+      "canonical": "https://mathexam.space/trainers/oge13-inequalities-series.html"
+    },
+    {
+      "path": "trainers/task19-models-circles.js",
+      "sha256": "869a071ff25c8bfcf1e1f5ef8ab92d74fdbc2c1c0f6164a305baf7d763b8d593",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-models-lines-polygons.js",
+      "sha256": "7f8d26ca1fe9f27e0be3ee4063c61820e5ea1566f9484aa29fc49008572fe438",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-models-triangles.js",
+      "sha256": "2c4cc3247a5e5621f941c0b15da4c03bc918399471882dd0b63e227b7d975789",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-reference.js",
+      "sha256": "3abd14f5f4280bbc13c9f9721e9603e5e055b55e0df8d957f9eb9acd81c0ae80",
+      "dependencies": [
+        "trainers/task19-reference/areas.png",
+        "trainers/task19-reference/circle.png",
+        "trainers/task19-reference/equilateral-triangle.png",
+        "trainers/task19-reference/fipi-oge-2027-page-05.png",
+        "trainers/task19-reference/fipi-oge-2027-page-06.png",
+        "trainers/task19-reference/midlines.png",
+        "trainers/task19-reference/parallelogram-area.png",
+        "trainers/task19-reference/polygon-angles.png",
+        "trainers/task19-reference/pythagoras.png",
+        "trainers/task19-reference/rhombus-area.png",
+        "trainers/task19-reference/sine-cosine.png",
+        "trainers/task19-reference/trapezoid-area.png",
+        "trainers/task19-reference/triangle-area.png",
+        "trainers/task19-reference/trig-values.png"
+      ]
+    },
+    {
+      "path": "trainers/task19-reference/areas.png",
+      "sha256": "d62ce63f213473a71781256dac90341e006f985add20ba5f3592ea69abb0eb42",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-reference/circle.png",
+      "sha256": "de3feb9d37e09cc50b83ffa4bf02dead71eb33e1f818aec31ae552e9794628bc",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-reference/equilateral-triangle.png",
+      "sha256": "94693cf5266433bf4032decae4f324dcd0701c4a0aec67b70efb92a8ab355029",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-reference/fipi-oge-2027-page-03.png",
+      "sha256": "b5f6fc6778dadf1bc55da37a1c3cb5fa36424df24bcf81d9b1428eef6375a37b",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-reference/fipi-oge-2027-page-04.png",
+      "sha256": "0ac5b32d00377aa613e58ae10de717fde2e3c0e2965be795be8851a79b449a54",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-reference/fipi-oge-2027-page-05.png",
+      "sha256": "3ef258209fbbb051494b6c95cf6570c3949b4be6c4168a2bd705ddad0384f5b0",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-reference/fipi-oge-2027-page-06.png",
+      "sha256": "a06b1fab39a08a2ffb1d3367e1ed1f8db5d608f0204396b2ee9fff316df60f58",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-reference/midlines.png",
+      "sha256": "668088a8f4372842ec3f12f84eb53205e8febf6c07f9bbeaa7009fae5db07377",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-reference/parallelogram-area.png",
+      "sha256": "b1f22c294e69c59e3384dfae84cdab943e823c815bde37f2c16f567bc26f161e",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-reference/polygon-angles.png",
+      "sha256": "8df87790a77396c2a3ee90b46bfffd2ad3f9fd2efb4eddf4f798461174ade3d0",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-reference/pythagoras.png",
+      "sha256": "b61a60bbd77cb991199b3bed38d56f4dee600ee99ca60f1ffbcab040bf981668",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-reference/rhombus-area.png",
+      "sha256": "f3692cf58074d536fe29e6ddbd40cc179333acf49685569fa555c17b0eb11027",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-reference/sine-cosine.png",
+      "sha256": "51dc6b4fb22db7f9bce6bd7c966becf6dbcd76523ca67f14172918a7a26f2217",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-reference/source-demo-2027.pdf",
+      "sha256": "4fb94e18640856608a733d2c8a8f028fc2e4964e9b98606cc5a5c5ca00869a44",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-reference/trapezoid-area.png",
+      "sha256": "4bfb4444141bb28ca1871d43d7ad61375659a8c0813dadeac52a0e76580a14f5",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-reference/triangle-area.png",
+      "sha256": "e3674f50b19f0ee66a3d58ae60a6977f90ef92f25505fa0ac72fce735d52173d",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-reference/trig-values.png",
+      "sha256": "d6f8ab7df6cba87030a67df61a17d7bbced590320b0bc64c9851ce7354ba7ce6",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-textbook-data.js",
+      "sha256": "6f06eca52445add68c5158bdd2019f93c748114fd2363f61953e81ca98e675a4",
+      "dependencies": [
+        "trainers/task19-textbook/atanasyan-parallel-third.png",
+        "trainers/task19-textbook/merzlyak-parallel-third.png"
+      ]
+    },
+    {
+      "path": "trainers/task19-textbook-reference.js",
+      "sha256": "a4df354b6ef353a77a54201362882c97b95f0fce05b54f8586e79105f7e145ab",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-textbook/atanasyan-parallel-third.png",
+      "sha256": "fae64a45bab806469f728e8031cdba1482edddce8b95d4aab3a15ef8fb668b8d",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-textbook/merzlyak-parallel-third.png",
+      "sha256": "2612335291710d4a97d4421efa7edd597ff02f3b5097345d2039ea55ed0989a7",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-trainer.html",
+      "sha256": "2a1c63c365b7c4b28ffde79188f7f72eb01d3bd35ce05b6615058be5eacf4ac2",
+      "dependencies": [
+        "trainers/task19-models-circles.js",
+        "trainers/task19-models-lines-polygons.js",
+        "trainers/task19-models-triangles.js",
+        "trainers/task19-reference.js",
+        "trainers/task19-textbook-data.js",
+        "trainers/task19-textbook-reference.js",
+        "trainers/task19-visual-app.js",
+        "trainers/task19-visual-data.js",
+        "trainers/task19-visual-models.js",
+        "trainers/task19-visual.css"
+      ],
+      "canonical": "https://mathexam.space/trainers/task19-trainer.html"
+    },
+    {
+      "path": "trainers/task19-visual-app.js",
+      "sha256": "faeb8852e17d059d96f08b5cedfa7b49e2fc2b3c60b6964aa9794732ef166929",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-visual-data.js",
+      "sha256": "ca9392ce1ef31c9c14bb14bf25aae6c1628244d811905cae58acd27bed9f40e0",
+      "dependencies": []
+    },
+    {
+      "path": "trainers/task19-visual-models.js",
+      "sha256": "b13c2222815b6ca175fc04ba20989ceff825a6d72e066f577a2cbcc34a3584b7",
+      "dependencies": [
+        "trainers/task19-models-circles.js",
+        "trainers/task19-models-lines-polygons.js",
+        "trainers/task19-models-triangles.js"
+      ]
+    },
+    {
+      "path": "trainers/task19-visual.css",
+      "sha256": "79e8e3ad6b665a0460b7ad93619f64906a5695e12ab2eaa2469cc5c8491fd2ae",
+      "dependencies": []
+    }
+  ],
+  "generatorInputs": [
+    {
+      "path": "scripts/build-oge-book-edition.py",
+      "sha256": "bca35a3fabea70fed5ddf20d39be80505964b18697bdd9972960899d89b9b9de"
+    },
+    {
+      "path": "scripts/oge-book-edition/urls.json",
+      "sha256": "023c3a8d40c9ca45e704a96a90d143c4adffccff638c27ac3e2627ba86d9bfee"
+    },
+    {
+      "path": "scripts/oge-book-edition/bootstrap.js",
+      "sha256": "13acadae0381a9c393c0b53d77d1ae3e2e440d8a143aeee090d197af75f40d81"
+    },
+    {
+      "path": "scripts/oge-book-edition/edition.css",
+      "sha256": "396e6db6df4c98840db2940e112e5378ff39c6173dd90a9056b17057f6f77a58"
+    }
+  ],
+  "files": [
+    {
+      "path": "b/oge26-1/01/index.html",
+      "bytes": 780,
+      "sha256": "f1b5e708a319acdd0e43e365b634e8ccffcd7619f6ae8a64c407b576d9a0e220"
+    },
+    {
+      "path": "b/oge26-1/02/index.html",
+      "bytes": 940,
+      "sha256": "aaacf0503e67f03fac814c5025079056b98909922e32406501b68aec5d474c51"
+    },
+    {
+      "path": "b/oge26-1/03/index.html",
+      "bytes": 988,
+      "sha256": "1d9663ca80bc1b3c10d02b68a6c5fea7285fac3f3348597086cbe1e165dacfb5"
+    },
+    {
+      "path": "b/oge26-1/04/index.html",
+      "bytes": 996,
+      "sha256": "fb31de089aac526b523103957869fe376bdebc1974ae081bfc1a83bab566f5f9"
+    },
+    {
+      "path": "b/oge26-1/05/index.html",
+      "bytes": 1040,
+      "sha256": "2a88e2fe17b6293bb35d5b3ed518670568337bb737a73ef365617cbcb99fc6fb"
+    },
+    {
+      "path": "b/oge26-1/06/index.html",
+      "bytes": 996,
+      "sha256": "35297341416421181d06088175e22d244e27ac8553071571173505b43d879014"
+    },
+    {
+      "path": "b/oge26-1/07/index.html",
+      "bytes": 968,
+      "sha256": "b9c9503907621925657f43481e32ea649e7854cb0a6c75c4998854a53f42b672"
+    },
+    {
+      "path": "b/oge26-1/08/index.html",
+      "bytes": 1004,
+      "sha256": "4d55b7358fd9f59604756c7a8ebd973046833fd9e7bf94aeddef62665afdf445"
+    },
+    {
+      "path": "b/oge26-1/09/index.html",
+      "bytes": 996,
+      "sha256": "42eb6b98c6ffb30f4dedf549ec467f9a4531156ee0cca8906cea9f4ce7cfd699"
+    },
+    {
+      "path": "b/oge26-1/10/index.html",
+      "bytes": 1004,
+      "sha256": "e774ad7328d40dd5041ab3b474c429e569b0d39a117b97cd5d71e6cdb3f4c301"
+    },
+    {
+      "path": "b/oge26-1/11/index.html",
+      "bytes": 980,
+      "sha256": "203061de041742b6fcf47d3a6b9d4dcb0a6bb25429ede80270808d7de24e3fdc"
+    },
+    {
+      "path": "b/oge26-1/12/index.html",
+      "bytes": 984,
+      "sha256": "379b60bdf5aa1b467613498bb56c8e7d654971e52d8e22c96f2551626e8d211b"
+    },
+    {
+      "path": "b/oge26-1/13/index.html",
+      "bytes": 976,
+      "sha256": "b09f6616e93fb51e5df9c9c9363cd909a8700c285ba03c91904bdc31b41a97ef"
+    },
+    {
+      "path": "b/oge26-1/14/index.html",
+      "bytes": 860,
+      "sha256": "ed90c320c740b224fb9ac23b96cd0ba5a72fa201f1e9cf0fb4c2b9a0a9381348"
+    },
+    {
+      "path": "b/oge26-1/15/index.html",
+      "bytes": 960,
+      "sha256": "7ede2bbabd1e02812c4f20c91367fb90ed2571a75300408de0fb552d37b7b70e"
+    },
+    {
+      "path": "b/oge26-1/16/index.html",
+      "bytes": 988,
+      "sha256": "078a3568ca7fc2534c4fc5793689e26eeb32e83f403288c735017df03535d544"
+    },
+    {
+      "path": "b/oge26-1/17/index.html",
+      "bytes": 944,
+      "sha256": "220fa8352d6515647df19bf19a7ac245ef0ceb6fb936678e4bd67377abdb9fbd"
+    },
+    {
+      "path": "b/oge26-1/18/index.html",
+      "bytes": 972,
+      "sha256": "ce144d5c1a4ceb807c85b2819347454bc9e975b09a3a19fb06fbb61c54477ad7"
+    },
+    {
+      "path": "b/oge26-1/19/index.html",
+      "bytes": 956,
+      "sha256": "3f1aa36944acddeb3e136e8d2015b721849bf92f8523b0488db170fa59c7a23d"
+    },
+    {
+      "path": "b/oge26-1/20/index.html",
+      "bytes": 1100,
+      "sha256": "bf25c5d7f6fdb003cc13871ba1755703157583c03295c0a05d04bc3d26414206"
+    },
+    {
+      "path": "b/oge26-1/21/index.html",
+      "bytes": 1100,
+      "sha256": "cd5e28ee9e39ee491acd861633d9241f21db3f2ad298c66477068160f26a49ac"
+    },
+    {
+      "path": "b/oge26-1/22/index.html",
+      "bytes": 1072,
+      "sha256": "db4b71ee64d4f2d11bcdeb26131b74d4f1591e6863976d5792129473c55b7b59"
+    },
+    {
+      "path": "b/oge26-1/23/index.html",
+      "bytes": 1060,
+      "sha256": "a23428fb3cf4946309941b21e8b5f88f1052febe51a658a57c24baefd6710c0e"
+    },
+    {
+      "path": "b/oge26-1/24/index.html",
+      "bytes": 1060,
+      "sha256": "3a17b275ac66e77584dfef51e878e17af7b4d1952b095dba5e5a0c8e1ff71e54"
+    },
+    {
+      "path": "b/oge26-1/25/index.html",
+      "bytes": 1068,
+      "sha256": "4f6749bc87b983bc8665a2deabed9343ad2c731acb93a4053b7637713cbfbc79"
+    },
+    {
+      "path": "b/oge26-1/26/index.html",
+      "bytes": 1124,
+      "sha256": "ae1d4a79a1ca49838ec1ca6252813f8d9735ed8e4cab50fa07942340bc2503df"
+    },
+    {
+      "path": "b/oge26-1/27/index.html",
+      "bytes": 1096,
+      "sha256": "1e1ab647a6ae4e07679ae0616da533519eea188ec012529462fc23e488cca677"
+    },
+    {
+      "path": "b/oge26-1/28/index.html",
+      "bytes": 1068,
+      "sha256": "f626c34e6e370537c52fe2604a9c12dbf8485daa65ad87d6310081e0dbfdb6a7"
+    },
+    {
+      "path": "b/oge26-1/29/index.html",
+      "bytes": 1088,
+      "sha256": "d9ffb8ed3125c8074532ea4ebbf81334751c692d2f17d32b45ae94ffec86e954"
+    },
+    {
+      "path": "b/oge26-1/30/index.html",
+      "bytes": 1068,
+      "sha256": "687c9a1410d50113911653e061e4cee812fbfd33ead2d1fe4d9a12969695ed3c"
+    },
+    {
+      "path": "b/oge26-1/31/index.html",
+      "bytes": 1088,
+      "sha256": "250c46b84144c99f6dbb8a9084ea188838fe4ff1a5298e09fdaa81643be818f8"
+    },
+    {
+      "path": "b/oge26-1/32/index.html",
+      "bytes": 1096,
+      "sha256": "874e5813381fc4e013f15d069c8e9a074d95dac94cabcb818407701c3eda4c7c"
+    },
+    {
+      "path": "b/oge26-1/33/index.html",
+      "bytes": 1060,
+      "sha256": "6169e550c297dcf32ef66bd169045c459349cc2355cbb8473a2e1a23e37410e7"
+    },
+    {
+      "path": "b/oge26-1/34/index.html",
+      "bytes": 1064,
+      "sha256": "dabbca83b052924b8620c528c27f988098c517da95daff0942e73a3f7a34ec6d"
+    },
+    {
+      "path": "b/oge26-1/35/index.html",
+      "bytes": 1056,
+      "sha256": "98661cad3f8df53a93d81f16114223cbab9cf3688d37cd737018a48d32c80569"
+    },
+    {
+      "path": "b/oge26-1/36/index.html",
+      "bytes": 1100,
+      "sha256": "53c2be801c81081c67380412ca987d78710b7d33f7d653c6e01256be04076eba"
+    },
+    {
+      "path": "b/oge26-1/37/index.html",
+      "bytes": 1060,
+      "sha256": "5ba591dbc315aa47274bc7edcb6d74bb5524fd052f0ffc451ed7b95609515278"
+    },
+    {
+      "path": "b/oge26-1/38/index.html",
+      "bytes": 1040,
+      "sha256": "fb752fb1e66615d51a6fa893573b3037cc79f4bd0b5b60bfa40e802130ad93d3"
+    },
+    {
+      "path": "b/oge26-1/39/index.html",
+      "bytes": 964,
+      "sha256": "13698011bc4d8373c449957853fdede70fbaf2a43c3349dbf6567878dcdfd24b"
+    },
+    {
+      "path": "b/oge26-1/40/index.html",
+      "bytes": 960,
+      "sha256": "3ed4151ba1e25a0c0b91fd2c4a3d86d9e560681222fb00bc1b3239a390040bc7"
+    },
+    {
+      "path": "b/oge26-1/41/index.html",
+      "bytes": 956,
+      "sha256": "d71083439a9780f90f41250558a9d08248e8e3097794bdfdc3e0fd3420a157cd"
+    },
+    {
+      "path": "b/oge26-1/42/index.html",
+      "bytes": 908,
+      "sha256": "0f4570eef8e6e145f221f93e51f962c4698a187351fd0b4d7d04c98439fe7730"
+    },
+    {
+      "path": "b/oge26-1/43/index.html",
+      "bytes": 984,
+      "sha256": "8061339c45f10b83f6712f1d1731f734edf3caeadf94a9a62e041da13214d9f0"
+    },
+    {
+      "path": "b/oge26-1/44/index.html",
+      "bytes": 1020,
+      "sha256": "d822b1d1bf76146f98a237a9f886d2a775b12070dcd8a5895d81a92a69ce6797"
+    },
+    {
+      "path": "b/oge26-1/45/index.html",
+      "bytes": 1024,
+      "sha256": "de72e8140bcadc15fff97856516ff157e9a3421cb340ea954a056c5ca691f877"
+    },
+    {
+      "path": "b/oge26-1/46/index.html",
+      "bytes": 988,
+      "sha256": "40857665a086da759c4e200509d1863301255b38c23966904178fc2d120e0e70"
+    },
+    {
+      "path": "b/oge26-1/47/index.html",
+      "bytes": 1036,
+      "sha256": "098d6c4c5e749fc6753ec5514f316aa0454edd640de13961304b8e4a653714ef"
+    },
+    {
+      "path": "b/oge26-1/48/index.html",
+      "bytes": 968,
+      "sha256": "a9c97265abb056de4a4a7f124c34cdcf447851eeba553c8b870388cdff805f2a"
+    },
+    {
+      "path": "b/oge26-1/49/index.html",
+      "bytes": 912,
+      "sha256": "d601ad373e977d2ab26c9dc7c9dada8ee3e7ca400916a4901a4e99cd1f276a3c"
+    },
+    {
+      "path": "b/oge26-1/50/index.html",
+      "bytes": 920,
+      "sha256": "11898922d721f241ddbe7837ef6d3a748a013d9870621d71a419b9320fb66efc"
+    },
+    {
+      "path": "b/oge26-1/51/index.html",
+      "bytes": 948,
+      "sha256": "8442279bab3846fbc055e8033efe1195812086c2d780daeb591af115f187a986"
+    },
+    {
+      "path": "b/oge26-1/52/index.html",
+      "bytes": 860,
+      "sha256": "40915c90e3ed7b4f3af4166884302f85600ad7dca15870921ebba0b599506cc8"
+    },
+    {
+      "path": "b/oge26-1/53/index.html",
+      "bytes": 924,
+      "sha256": "57823e53b8a331310922c93b1c4eda2eedd30760b479ef665b18fce9891dfffc"
+    },
+    {
+      "path": "b/oge26-1/54/index.html",
+      "bytes": 936,
+      "sha256": "108443871acff8b831d8e5fa661a231244a8b420ede0a6df922607c12f689496"
+    },
+    {
+      "path": "b/oge26-1/55/index.html",
+      "bytes": 944,
+      "sha256": "4209400f885863b3c354c05435a29e9270b62ce02de422e78e8eb55e686c2bdc"
+    },
+    {
+      "path": "b/oge26-1/56/index.html",
+      "bytes": 928,
+      "sha256": "4546fb87d6b689d4d0aa7d2e0107caf11f44d7b387f886fb00d3ac7f4e5bc15c"
+    },
+    {
+      "path": "b/oge26-1/57/index.html",
+      "bytes": 928,
+      "sha256": "57b059fd475c92d3c43fd5f006b3395cc0ec60ec939135e0429c9c082f847a92"
+    },
+    {
+      "path": "b/oge26-1/58/index.html",
+      "bytes": 904,
+      "sha256": "f199a56fdff2227a0527728116e28e7e23f4e53345cf13a8fc493754c6ec48df"
+    },
+    {
+      "path": "b/oge26-1/59/index.html",
+      "bytes": 936,
+      "sha256": "d4365e36594778a35a5f7dc596c8981c278b27cf365ae7f2156797285102e631"
+    },
+    {
+      "path": "b/oge26-1/60/index.html",
+      "bytes": 896,
+      "sha256": "fa1459cc7bcc5eb7aca8a6db0f7ee1665703ef89e62f53d9ea9d4e39f70593fd"
+    },
+    {
+      "path": "b/oge26-1/61/index.html",
+      "bytes": 916,
+      "sha256": "e46bfdf9153e66fcd4bdaedf32573d885c5de1b665ec50e62d4463945f403316"
+    },
+    {
+      "path": "b/oge26-1/62/index.html",
+      "bytes": 932,
+      "sha256": "1922bb8130bb2fccbb49a4149371078f0c29b55b28feea7351765e14ecba5288"
+    },
+    {
+      "path": "b/oge26-1/63/index.html",
+      "bytes": 944,
+      "sha256": "7f924f41f10c0ef19f4a41e95cd3f09f7c9c9fa31d7904af84ac4bdef9dcaee3"
+    },
+    {
+      "path": "b/oge26-1/64/index.html",
+      "bytes": 964,
+      "sha256": "8f34c3837481c2692dd446c6bab32f1763b6c8f01b027e3906ebf272ed267b7b"
+    },
+    {
+      "path": "b/oge26-1/65/index.html",
+      "bytes": 904,
+      "sha256": "b76da962fd726c0eee1e3b898c3634dcbb626c8776f6dec6512804b39ea5eab8"
+    },
+    {
+      "path": "b/oge26-1/66/index.html",
+      "bytes": 912,
+      "sha256": "b71b19494590c715181793afe7e8ddd6729c1adfadcc16721888e842f33d279c"
+    },
+    {
+      "path": "b/oge26-1/67/index.html",
+      "bytes": 912,
+      "sha256": "326090238bb7cb1aca5c12ce85d956047d541d1c5f7a66add2790938f06a6422"
+    },
+    {
+      "path": "b/oge26-1/68/index.html",
+      "bytes": 920,
+      "sha256": "72c725d00f33214c30a032debf6bcc29f64d5cc59b18b1539861c6f8320a93f1"
+    },
+    {
+      "path": "b/oge26-1/69/index.html",
+      "bytes": 924,
+      "sha256": "c7a53cd5e7b80ec98a9307ced36331b12a01f2dad34b659ff142e9cdd974407a"
+    },
+    {
+      "path": "b/oge26-1/70/index.html",
+      "bytes": 912,
+      "sha256": "ef50206580c7d03e0f0aea50d300f68fe08cd2dfcde180f51b4079d7378120ff"
+    },
+    {
+      "path": "b/oge26-1/71/index.html",
+      "bytes": 892,
+      "sha256": "70f01d3cc04abd0a887deb2f1c44b148e9ee4be2d7506a99e60390c4ca21b3e5"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/_edition/bootstrap.js",
+      "bytes": 13413,
+      "sha256": "aa441b5f9e8c41742f6ce00a785e9ca770acaf91146055c27e8fdab54e489c2b"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/_edition/edition.css",
+      "bytes": 582,
+      "sha256": "396e6db6df4c98840db2940e112e5378ff39c6173dd90a9056b17057f6f77a58"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/assets/lesson-contacts.css",
+      "bytes": 2696,
+      "sha256": "48e902fe7a0bc413894828cdb23d0fe46c2c3237f573d84f66b795af08402e7d"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/assets/site.css",
+      "bytes": 8187,
+      "sha256": "2f33aeb278f1f637ee03551ea6900ec15fdc6e468f8fbdf66421132b2a185d5f"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/index.html",
+      "bytes": 19503,
+      "sha256": "b715d0e5bff5bc9bf379a6be6a099ddfd3cf78d7fab55a0b54088cef26a31dcf"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/oge/geometry/task-15-external-angle.html",
+      "bytes": 8879,
+      "sha256": "b1872eeeeef2cd480e09c79df3c389d35c2447153811685822605816fbcd8865"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/board-bridge.js",
+      "bytes": 12753,
+      "sha256": "87f68ed7e0daf4826907c54947b50071772bd63c77da724376821f1dcfe584d1"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/percent-table-trainer.html",
+      "bytes": 123554,
+      "sha256": "6cf8de246ea98963f64b17e8dd00bb6893607df2c17e1cc636d9a164f5aced6d"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practical-discovery.js",
+      "bytes": 58138,
+      "sha256": "cf3f659aa12e92e2282f4d45727f3acdf33b8499bd67c925e8854a181ae6f0fe"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practical-minimal.css",
+      "bytes": 12663,
+      "sha256": "0b8ed5ba4f9c828cb7175afe924cd0390bf72a32ea9b82f0915edb7ce33a9035"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practical-minimal.js",
+      "bytes": 27285,
+      "sha256": "a07f447463a4b6d3820a91efb45a83d77188791797f35ec3df3a2bbe0a4e8cca"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practical-variant-buildings.js",
+      "bytes": 23375,
+      "sha256": "e417db2795b8c89654011875c5d8e8b9e23fa80ad119fa4f6651b439d784445b"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practical-variant-everyday.js",
+      "bytes": 18448,
+      "sha256": "1a8f0dd74d5aa50aa9c5e6b8b05071dfb3bd4b0ca96812d3211ebae3480e0502"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practical-variant-roads.js",
+      "bytes": 23566,
+      "sha256": "4f2a718159f9a695f312b5309144daa80d80a0888e4623129d11caf562dbdec9"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practical-variant.css",
+      "bytes": 7535,
+      "sha256": "67791e2f903ed33ed6e4250c9922433391c261468b53396638ef25fff28b59cc"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practical-variant.js",
+      "bytes": 9763,
+      "sha256": "14730c6bee1fb9a7b4b34082565711c60869d8d49ea6b631477d9c1faf32a6e0"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-apartments.html",
+      "bytes": 67644,
+      "sha256": "2b304244a679f55747cdf8a04a5bca1ad5d348b88c34b0c5dfc389a7bdb14830"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html",
+      "bytes": 66068,
+      "sha256": "cbe71563edef568c08d02789de9fea3dac922ead3f71d58014e576cfce522c35"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-land-plots.html",
+      "bytes": 33838,
+      "sha256": "eeeff05fe7a54f6884c4da11a7b53c6daf65f2397c23f656d85549331d224c77"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-map.html",
+      "bytes": 30530,
+      "sha256": "0c4842a781ed73b7a0eaa5f9cf7da0ee92e3ec56bd6fa666d1970b8b06ab2363"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html",
+      "bytes": 66076,
+      "sha256": "e8e0769a7c5f639246d247f523aa23200d2eb225908a0a96f7da095fd8c55410"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-roads-grid.html",
+      "bytes": 108618,
+      "sha256": "0fc1a961f5bac19cfcdd6d98e1c79c3508b59b2bd1087ff95edcd5626130791e"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-roads-schema.html",
+      "bytes": 62760,
+      "sha256": "7a814432ce0748d546dc959e151233f96b8cd98d81c7b07d6bd8bc2427657a69"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-stoves.html",
+      "bytes": 83921,
+      "sha256": "07107c0f5f09c5482279923be39782cd9199dd62445b81498caaebe3338d2708"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-tariffs.html",
+      "bytes": 32681,
+      "sha256": "0df61c02d91b4f60d3489e387dce93502b0735cb65ad42e5faac01722ec529f2"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-tires.html",
+      "bytes": 164812,
+      "sha256": "f472645cb06dadeee68b61d30b4ae54cc691674fb60ce1f9814975df5bb4b2fc"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/progress.js",
+      "bytes": 1453,
+      "sha256": "92aaadd89bb01a96b6dc96444012e11d479447881ea302146238020068c9a8b2"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/tire-3d-labels.css",
+      "bytes": 2224,
+      "sha256": "e9f5e0b3e9fe3b3f05a26b839a91195ae4fd287132adb3499c7b616c89ea4707"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/tire-3d.js",
+      "bytes": 17826,
+      "sha256": "511167734dadd7620c0b085c4894e161ab623a3b6bf04de000b87d16e6d8b5a5"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/tire-learning-flow.css",
+      "bytes": 7469,
+      "sha256": "d804ca73d2bd23f3877f528739b606d3809d016ae24cf5fb3a1581d6fc5fb277"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/tire-learning-flow.js",
+      "bytes": 13669,
+      "sha256": "80984e4a30a0e09b568ea8d492ee650030e5b5ca4d30e7df76c5a9588ed51176"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/tire-structure-quiz.css",
+      "bytes": 2298,
+      "sha256": "fc945039fdf27fbf8a48985fd1ea5d6c65870b70bbd44b4da7fcd85f4cbf06fa"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/tire-structure-quiz.js",
+      "bytes": 12098,
+      "sha256": "d8a1dc1e3907ee88fc17b48169c362748f1234289a90f8b5bbe2e0530afd17cc"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/tire-variant-layout.css",
+      "bytes": 7075,
+      "sha256": "8c4b39e0d52c9f1d0794ef41c4e7261aa99c928a25d6486149b646c7a4c198bf"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/tire-variant-layout.js",
+      "bytes": 11485,
+      "sha256": "a5d0cdb0b60ecb9e22fedab87679fb1b7f66bc06b927403e33e565de006e7809"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/arithmetic-route.js",
+      "bytes": 11199,
+      "sha256": "58da2902e5f5dd84fe9b77538de8fca926d1777ee38f973af2e6981a22e9f5b3"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/basics-help.css",
+      "bytes": 4078,
+      "sha256": "db64e836a1bd3ea158ed7a0cf184e5e80d11dea77fbeecab4f4a1cdfb9913cfa"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/basics-help.js",
+      "bytes": 33600,
+      "sha256": "bdd412d6c3ea23e9b5406f37861d2b3fdae8b343a1cb76ae45ffd21b91bcf81d"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/basics-standalone.css",
+      "bytes": 4800,
+      "sha256": "83a3ec853a96264894099a7d3ad180263814f1349333d5631211627f24b0cc6d"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/basics-standalone.js",
+      "bytes": 9203,
+      "sha256": "6c424d4717fc3142f48e87ccc358d3581c1a72e24a632141212cdca060f55199"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/decimal-add-subtract.html",
+      "bytes": 47753,
+      "sha256": "b4facf7d1df3fab8e1265dc138e4fd8e747ac2a0e5f4e44c7cc95492878c7c3f"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/fraction-common-denominator.html",
+      "bytes": 48686,
+      "sha256": "6d7c3e25ca262e8e4780afe5b57086d01ed37910e1203b748cac1a7bc80b72c3"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/fraction-meaning.html",
+      "bytes": 49725,
+      "sha256": "e579af102bdf0bab83392096900dffd609b40a7cd6384a821589db07590defa6"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/index.html",
+      "bytes": 33752,
+      "sha256": "8e247013cede90dff53133626245fad7f321d7b73389a04e8b91afb175d344fd"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/learning-loader.js",
+      "bytes": 1484,
+      "sha256": "3d96d44b4e29397763dcfbad9f0c2a6df7757ad4eabd7e5453a4a2571cb35722"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division.html",
+      "bytes": 48055,
+      "sha256": "bac7dd7f54d5f46f68f421bb71992ae0fe405051df5f8eb7ed58d3275b05f3cf"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html",
+      "bytes": 46465,
+      "sha256": "5978cf84e1ae9c35b6cbd21646cd35cef4d751cf5b3b0b1a45191da021ca901d"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/column-multiplication-two-digit.html",
+      "bytes": 45878,
+      "sha256": "b9133bc9d62044a53fe62bb179814b2a8b4c79a3033c395d34e22b76484418d6"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/decimal-division-natural.html",
+      "bytes": 47730,
+      "sha256": "2bee4ef123a297f5ba0e881a6d7ab27c1ca42ff4fb9386b7bc22e3926e46896b"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/decimal-divisor-shift.html",
+      "bytes": 52748,
+      "sha256": "82728127a0465a30b4240f828392c35ccf6e767411714dd2b7eb8e37ed0ec83e"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/decimal-shift.css",
+      "bytes": 3094,
+      "sha256": "ea75ffa330d15b3d09ec7b7603a87d4f8b5aaf4bb6324385a86fce7d01455d81"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/decimal-shift.js",
+      "bytes": 11526,
+      "sha256": "b00f912078aa33ba0435ad50fb6dd9645e90efc8b3b947069288a804ae6affe6"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/division-append-zeros.html",
+      "bytes": 47789,
+      "sha256": "7d3698398939d45c80bf6d2574e314c366d0356c66e4d2f830077db1ea31e13e"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/division-guided-core.js",
+      "bytes": 15419,
+      "sha256": "4ec6a38fd9fd589532a88347976183b55b207067e2c3476f159bc149365aa3a0"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/division-guided.css",
+      "bytes": 15440,
+      "sha256": "ae4f782eb2bdc87d6c8c556d22913f2e8223d450d7aee7a84ca286f48a3f39a5"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/division-guided.js",
+      "bytes": 46475,
+      "sha256": "3f21ce17e5a876481bfed83d2baf82abb51f35c292464b5bbebee694268fcf50"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/division-lab-core.js",
+      "bytes": 13325,
+      "sha256": "4a73c42fcd963a5cbd42b094bcc167ff4c5e1df9feae32294646e50a40cb2f4e"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/division-with-remainder.html",
+      "bytes": 47128,
+      "sha256": "4fed1ba46b0b90a85ff5e51588c0157f55e50a9acd4856a83acd75b0062c017d"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/index.html",
+      "bytes": 18163,
+      "sha256": "df4daa9915bdb6a80b8fa2d74665e29a836e1bec2f9d081393532ddc6a0f3342"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html",
+      "bytes": 38292,
+      "sha256": "a99ea41a8d753f0610780f0876a4b940a15baa5a96722b9cc0803e46dd2eb65c"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-mixed-checkpoint.html",
+      "bytes": 64779,
+      "sha256": "baf8d98a1ed21c38205e74034f2ca40827be2013db0b9bcb636f0c80c754deba"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-one-digit.html",
+      "bytes": 47848,
+      "sha256": "a0ca25ac00da331ac5aa372218ba9e0a8d1d860c2b6aceb1b287fa13a41cd0d7"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-quotient-digit.html",
+      "bytes": 48309,
+      "sha256": "f32e21c2eb0bdb8374f60d26d4dd3d579e6b0cf24cb123d5bf5bbc0103800acc"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-two-digit.html",
+      "bytes": 47762,
+      "sha256": "b243e47639643054f7d5d3b54e27282402df415f924e42124d0100c22af286f7"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-with-remainder.html",
+      "bytes": 47337,
+      "sha256": "ec2dbe0466ed359c8371dc4c3e9721a1b5a0f1d8482c6905ac1bc7962204003e"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-zero-in-quotient.html",
+      "bytes": 47580,
+      "sha256": "097e276e4ff47ed8f006522100abb71b44c55449a3d13ffe387005c5c3394368"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-ladder.html",
+      "bytes": 46157,
+      "sha256": "33102c4a39931bfca5f1d18ce85a4afbcbd29a38e929b7ae66931dedf09b17ba"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-meaning.html",
+      "bytes": 49473,
+      "sha256": "2d0446dfe13c759f7b3f11b052545fc8536691e68da39760c235c7aab381df84"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-mixed.html",
+      "bytes": 48028,
+      "sha256": "c4fe622fa825335df5563d4f467e37b73329d648ff18896b09d0ffa906fdb63c"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-pythagoras-table.html",
+      "bytes": 47382,
+      "sha256": "6dba874522b00c2efe637c16348582cc8af61812653795e9f5808371ef6fcdff"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-refresh.css",
+      "bytes": 3398,
+      "sha256": "b69ddd0448f1ff5737038707cffa2f55e32751a45e42c49513880d26ed324579"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-refresh.js",
+      "bytes": 7624,
+      "sha256": "499316978e5582a818f0292808aaae9876307f294c1b36c08abe564fc5242ebb"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-tricks.html",
+      "bytes": 46839,
+      "sha256": "b825121050a6690e6e2c3d01e30d59a430c67a0229b7f2227510eb2d7494ce3e"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/tabular-division.html",
+      "bytes": 46164,
+      "sha256": "3de4ddafd57ed0ad107cdcb79650c2985380f3c354c5af2e22fea66fadb73b94"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/navigation-minimal.css",
+      "bytes": 5378,
+      "sha256": "353aebce0ea32f21ac8f9cf8ce214379e8254f86641df1904688a363a143d881"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/navigation-minimal.js",
+      "bytes": 4928,
+      "sha256": "709f8b2c0c56d70bea4ce13e2657a0dad2f727212f5bb98977bbe9a2e4b14fe3"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/negative-add-subtract.html",
+      "bytes": 47027,
+      "sha256": "a4999bd7afb6f783b3e0f770da57517a573cc2f89dc605cf9b2e48990ee6c845"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/negative-number-line.html",
+      "bytes": 48892,
+      "sha256": "98d1fa07b97a591d4cc005e49fa66c0eaae83e22637799fd4d450d905d83b440"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/order-of-operations.html",
+      "bytes": 48867,
+      "sha256": "5e52e5815fe985e54b08d385c0954156770c2159164ec0c69a0497a55dca43c0"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/percentages/index.html",
+      "bytes": 19391,
+      "sha256": "77d7411a103e014b76591c4eea4084118d8fb8528bc39453730b48da2e3d7361"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/percentages/percent-change.html",
+      "bytes": 46831,
+      "sha256": "d66df83cdf3826634c16ff25fe3a5b1e867345698aeb516ce05eab51e92a82ea"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/percentages/percent-choose-question.html",
+      "bytes": 48435,
+      "sha256": "092d103e0c90b5462eebea86042dbba544b75c1bdf96df07763eb5b91a2f1c4f"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/percentages/percent-final-checkpoint.html",
+      "bytes": 43545,
+      "sha256": "0e606e9f5e23ec71599bb12936fcb486a89f9938a6632197bc53320d6b5bbc39"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/percentages/percent-meaning.html",
+      "bytes": 42530,
+      "sha256": "2d3319799b944f1e24e0e8d49240d9067b9bc539c8f221503fbda392915fd2c5"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/percentages/percent-of-number-and-whole.html",
+      "bytes": 41646,
+      "sha256": "620b7d3156f2522af0950e770b70fa76c0fc6f064231e3b5783928491605a277"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/percentages/proportion.html",
+      "bytes": 47750,
+      "sha256": "8504e7e043ab3ee6a70f0bdcb8787ac1ed171baba89cfd089c45f9204db11c78"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/rounding.html",
+      "bytes": 48945,
+      "sha256": "e2af98ac650d343b3dc7b03df927f92b23c7056ecbdee3432cc88d1817615312"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/units-area.html",
+      "bytes": 47897,
+      "sha256": "0b653f4fbec9f22d18a49bd71c24647bd28f49e045417c53e1597a61d7f28b23"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-basics/units-length-time.html",
+      "bytes": 47574,
+      "sha256": "7cdab699be72560235fc1d96d11b2f1dd3a1337e91ae4b4f8966db6bfbdf6ca5"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-course-algebra-reference.js",
+      "bytes": 1236,
+      "sha256": "6f810456e0e82e666b78b1e9fd2360dbf66f5a856a522ae4e90e9c8dbcc498fe"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-course-algebra.css",
+      "bytes": 5103,
+      "sha256": "7114dc768374abd392c564b431d1175b5eba23b0f350f40cf7846c8d175fd336"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-course-algebra.js",
+      "bytes": 32587,
+      "sha256": "94c827cc5fc6cf669f56aadb38a1a6f445709cadafdb37bc789c8793d3cd2fc2"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-course-geometry.css",
+      "bytes": 4371,
+      "sha256": "e5a62cb5ec55ebf4260265a1ea7c3ded7ca1a7dfee702e1bcc5966c98434a147"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-course-geometry.js",
+      "bytes": 41340,
+      "sha256": "19da14e77dc2d4d133686c1df5e9ea6e3a125cf7a0124913ba90262cc8a82b77"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-course-proof.css",
+      "bytes": 2814,
+      "sha256": "c081763b475d9f166a2da0ec44da07b467ade96f106fdf26aca13c433bef755a"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-course-proof.js",
+      "bytes": 28152,
+      "sha256": "c1650122b7b3126f672d8a777696c61d3769aefe5823b2e65f91c235500baf95"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-course-reference-entry.js",
+      "bytes": 1605,
+      "sha256": "d3f5c3e6306420bd5fa65c2ab2b7124de37fbd61938add865707343a3a39cee1"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-course-reference.css",
+      "bytes": 1366,
+      "sha256": "3f3b81b46495b47ec9251b7e60cec70507ab7dc5ad121d9beb1d7582d7fec35c"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-course-reference.js",
+      "bytes": 15297,
+      "sha256": "268bf26a87c6c4dd6b64668ab9100197077bc66cfcd5d47f9ed970b79e7a443e"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-course-reference/identities.png",
+      "bytes": 5265,
+      "sha256": "ffdb0ca08e10919c57374759ce07809c96769adec0e006ee49243871beb8d274"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-course-reference/parabola-vertex.png",
+      "bytes": 1312,
+      "sha256": "6da6bbe2ec224c86f6f67d12cc8651d4b57a6df54146f397de0c36ffe08d9efa"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-course-reference/quadratic-roots.png",
+      "bytes": 3315,
+      "sha256": "4ddb3b97a6714686ec65f8007d7e96dbdaaf7130900696fffbd6fa6d138a2960"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-course/index.html",
+      "bytes": 24783,
+      "sha256": "a1d15da57c43ee68e95c16db95ac14d6597949bd418809dd9d822b4acb4747f5"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-task10-probability.html",
+      "bytes": 118728,
+      "sha256": "4abf48e94ca3a90547672195b25fcef322c9c8f03285ba1ea1316d4cb36f6f2a"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-task11-graphs-trainer.html",
+      "bytes": 337634,
+      "sha256": "33006d57fcaaccbc624c3049e24ae3860185d386b96a119713bec69ea537a594"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-task12-formulas-trainer.html",
+      "bytes": 157602,
+      "sha256": "1114558df2cd94216579d97a0eebf1b89d650bf2122a1710b1dffd83e882fd51"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-task13-inequalities.html",
+      "bytes": 1838,
+      "sha256": "ebfb79d2649e0749659b48c95e5aa972861760f1d4ec67e2772269dadb31eef2"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-task14-progressions.html",
+      "bytes": 197796,
+      "sha256": "b05d03dbadcb6354cfd65dc710ccebaee8dab63b1a591c021b32667395c851e8"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-task16-circle.html",
+      "bytes": 170333,
+      "sha256": "6d0bda652057b9ca3ac7f6c8674e7bd2a69724a95d56e635e4f4a4785e709086"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-task17-quadrilaterals.html",
+      "bytes": 160443,
+      "sha256": "1b03808a6ef305fc37da85da32e9b7c904149f1f3a106f6c95721be16e5b59d6"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-task18-grid.html",
+      "bytes": 118478,
+      "sha256": "96465d3b2970b063f772093d01b08c3050892469599178b321d82190f3a1d2f8"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-task20-equations.html",
+      "bytes": 169762,
+      "sha256": "5819bf32f5288883b2204f1433d53a93d3d2abe217917e237c79d8331fbc3a59"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-task21-word-problems.html",
+      "bytes": 177143,
+      "sha256": "e08d2ee78ac03ee9c4c59258b14ae7727af1c5ca6bf0a2513b7f365f822be741"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-task22-functions-graphs.html",
+      "bytes": 103523,
+      "sha256": "b59a9b89baa72f11f4ee6650033c8e8a0a09ad811a21fb9929cb57ec001164e6"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-task23-geometry-calculations.html",
+      "bytes": 196817,
+      "sha256": "1c913cdf39c59def314b658a09349cdede18aaf688bf7fbc89f1f18d536ea218"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-task24-proofs.html",
+      "bytes": 166103,
+      "sha256": "8c74404ed5f6876a1bcd9ac42f30b1b809a5ab6d30de5bf0cd1982cd311b02ee"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-task25-geometry.html",
+      "bytes": 187942,
+      "sha256": "a816e456b956bb5f7d250be26a85ed2a3007ab5ef63f3a53089764f69cf1f4bb"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-task6-fractions.html",
+      "bytes": 150893,
+      "sha256": "c2d10a08895d31acc8ad6849cf3f09c17e855afac71a9918440057c4e4d61593"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-task7-number-line.html",
+      "bytes": 218466,
+      "sha256": "b27621fd011a4efa0a7fefc7d3eb6cc892c3b4a684c7450b7fc16288cdeaff78"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-task8-powers-roots.html",
+      "bytes": 139481,
+      "sha256": "abddc315ad63e72092f39b3bf7b38cf8c72c346ab7a75ef65689a2f2fc05d4b3"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge-task9-equations.html",
+      "bytes": 258604,
+      "sha256": "1f12ff682c2ca824420909d358da692f8bc24fee79728df6159dfcc78196fb68"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/oge13-inequalities-series.html",
+      "bytes": 83418,
+      "sha256": "15fcce43cdb6e81494b50cd8a0573ad7a727934cce551328dd03421dd2de9847"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-models-circles.js",
+      "bytes": 17959,
+      "sha256": "869a071ff25c8bfcf1e1f5ef8ab92d74fdbc2c1c0f6164a305baf7d763b8d593"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-models-lines-polygons.js",
+      "bytes": 29132,
+      "sha256": "7f8d26ca1fe9f27e0be3ee4063c61820e5ea1566f9484aa29fc49008572fe438"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-models-triangles.js",
+      "bytes": 33553,
+      "sha256": "2c4cc3247a5e5621f941c0b15da4c03bc918399471882dd0b63e227b7d975789"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-reference.js",
+      "bytes": 8741,
+      "sha256": "1c6c66e8458fd4229d26ed9b5434a4a847c6688e1d366259debf7dcadd21d922"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-reference/areas.png",
+      "bytes": 30810,
+      "sha256": "d62ce63f213473a71781256dac90341e006f985add20ba5f3592ea69abb0eb42"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-reference/circle.png",
+      "bytes": 8508,
+      "sha256": "de3feb9d37e09cc50b83ffa4bf02dead71eb33e1f818aec31ae552e9794628bc"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-reference/equilateral-triangle.png",
+      "bytes": 21344,
+      "sha256": "94693cf5266433bf4032decae4f324dcd0701c4a0aec67b70efb92a8ab355029"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-reference/fipi-oge-2027-page-03.png",
+      "bytes": 109788,
+      "sha256": "b5f6fc6778dadf1bc55da37a1c3cb5fa36424df24bcf81d9b1428eef6375a37b"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-reference/fipi-oge-2027-page-04.png",
+      "bytes": 103001,
+      "sha256": "0ac5b32d00377aa613e58ae10de717fde2e3c0e2965be795be8851a79b449a54"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-reference/fipi-oge-2027-page-05.png",
+      "bytes": 104875,
+      "sha256": "3ef258209fbbb051494b6c95cf6570c3949b4be6c4168a2bd705ddad0384f5b0"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-reference/fipi-oge-2027-page-06.png",
+      "bytes": 91391,
+      "sha256": "a06b1fab39a08a2ffb1d3367e1ed1f8db5d608f0204396b2ee9fff316df60f58"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-reference/midlines.png",
+      "bytes": 19951,
+      "sha256": "668088a8f4372842ec3f12f84eb53205e8febf6c07f9bbeaa7009fae5db07377"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-reference/parallelogram-area.png",
+      "bytes": 6119,
+      "sha256": "b1f22c294e69c59e3384dfae84cdab943e823c815bde37f2c16f567bc26f161e"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-reference/polygon-angles.png",
+      "bytes": 4805,
+      "sha256": "8df87790a77396c2a3ee90b46bfffd2ad3f9fd2efb4eddf4f798461174ade3d0"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-reference/pythagoras.png",
+      "bytes": 17091,
+      "sha256": "b61a60bbd77cb991199b3bed38d56f4dee600ee99ca60f1ffbcab040bf981668"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-reference/rhombus-area.png",
+      "bytes": 10399,
+      "sha256": "f3692cf58074d536fe29e6ddbd40cc179333acf49685569fa555c17b0eb11027"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-reference/sine-cosine.png",
+      "bytes": 30064,
+      "sha256": "51dc6b4fb22db7f9bce6bd7c966becf6dbcd76523ca67f14172918a7a26f2217"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-reference/source-demo-2027.pdf",
+      "bytes": 665400,
+      "sha256": "4fb94e18640856608a733d2c8a8f028fc2e4964e9b98606cc5a5c5ca00869a44"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-reference/trapezoid-area.png",
+      "bytes": 4833,
+      "sha256": "4bfb4444141bb28ca1871d43d7ad61375659a8c0813dadeac52a0e76580a14f5"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-reference/triangle-area.png",
+      "bytes": 6813,
+      "sha256": "e3674f50b19f0ee66a3d58ae60a6977f90ef92f25505fa0ac72fce735d52173d"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-reference/trig-values.png",
+      "bytes": 20776,
+      "sha256": "d6f8ab7df6cba87030a67df61a17d7bbced590320b0bc64c9851ce7354ba7ce6"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-textbook-data.js",
+      "bytes": 77782,
+      "sha256": "69e540c8ca792aa83a764a2fdd90366e0004c3fb33534d40513cfd3a6c2798d2"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-textbook-reference.js",
+      "bytes": 5813,
+      "sha256": "267697d650d7bd03abd4b01e97374f1403bb8339b5dcf3c5d1b01963e8797b99"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-textbook/atanasyan-parallel-third.png",
+      "bytes": 9145,
+      "sha256": "fae64a45bab806469f728e8031cdba1482edddce8b95d4aab3a15ef8fb668b8d"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-textbook/merzlyak-parallel-third.png",
+      "bytes": 30369,
+      "sha256": "2612335291710d4a97d4421efa7edd597ff02f3b5097345d2039ea55ed0989a7"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-trainer.html",
+      "bytes": 5761,
+      "sha256": "76a5eec1249a8b4e020c6dd9fe59d178aa8797208aacb5b703f5a4a3dca5ef46"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-visual-app.js",
+      "bytes": 16794,
+      "sha256": "faeb8852e17d059d96f08b5cedfa7b49e2fc2b3c60b6964aa9794732ef166929"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-visual-data.js",
+      "bytes": 270924,
+      "sha256": "ca9392ce1ef31c9c14bb14bf25aae6c1628244d811905cae58acd27bed9f40e0"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-visual-models.js",
+      "bytes": 37433,
+      "sha256": "b13c2222815b6ca175fc04ba20989ceff825a6d72e066f577a2cbcc34a3584b7"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/trainers/task19-visual.css",
+      "bytes": 8431,
+      "sha256": "79e8e3ad6b665a0460b7ad93619f64906a5695e12ab2eaa2469cc5c8491fd2ae"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/url-map.json",
+      "bytes": 20691,
+      "sha256": "023c3a8d40c9ca45e704a96a90d143c4adffccff638c27ac3e2627ba86d9bfee"
+    }
+  ],
+  "verificationLimit": "Hashes and closure do not establish learner completion; see the separate per-page audit registry."
+}

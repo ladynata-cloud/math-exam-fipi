@@ -5,6 +5,7 @@ import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
+import bookCorrections from './oge-book-exam-corrections.cjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const trainerPath = 'trainers/oge-task6-fractions.html';
@@ -488,7 +489,7 @@ test('summary gives disjoint counts for current order and all-skipped truth', ()
     { first: 0, retry: 0, revealed: 0, skipped: 0, unseen: 0, independent: 0, total: 0 });
 });
 
-test('trainer remains offline, dependency-free and without storage APIs or dynamic code evaluation', () => {
+test('trainer remains offline and dependency-free; only the exact reviewed local progress adapter uses storage', () => {
   sourceRejects(/<script\b[^>]*\bsrc\s*=/i);
   // Current main already carries canonical SEO metadata. It does not load a
   // resource; every other remote link (stylesheet, preload, etc.) stays banned.
@@ -500,7 +501,9 @@ test('trainer remains offline, dependency-free and without storage APIs or dynam
     assert.ok(baseline.includes(tag), 'Canonical metadata must already exist in the reviewed base');
   }
   sourceRejects(/@import\b|url\(\s*["']?(?:https?:)?\/\//i);
-  scriptRejects(/\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|sendBeacon|localStorage|sessionStorage|indexedDB)\b/);
+  scriptRejects(/\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|sendBeacon|sessionStorage|indexedDB)\b/);
+  const historical=bookCorrections.restoreHistoricalBytes(trainerPath,html);
+  assert.doesNotMatch(historical,/\blocalStorage\b/,'Only the exact reviewed adapter may use localStorage');
   scriptRejects(/\beval\s*\(|\bnew\s+Function\b|\bimport\s*(?:\(|["'{*])/);
   scriptRejects(/document\.cookie|navigator\.serviceWorker/);
 });
@@ -514,7 +517,7 @@ test('format contract, accessible navigation and disclosure exist in source', ()
   sourceMatches(/focus-visible/);
   sourceMatches(/<select\b[^>]*id=["'][^"']+["']/);
   sourceMatches(/Перейти к задаче/);
-  sourceMatches(/Прогресс хранится только до обновления страницы/);
+  sourceMatches(/Прогресс сохраняется в этом браузере после обновления страницы/);
   sourceMatches(/Смена раздела или режима/);
   sourceMatches(/Раздел завершён/);
   sourceRejects(/Раздел пройден|с подсказкой/i);

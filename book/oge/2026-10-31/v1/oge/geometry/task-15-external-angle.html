@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="utf-8">
+<meta name="robots" content="noindex,follow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<link rel="stylesheet" href="/book/oge/2026-10-31/v1/_edition/edition.css">
+<script src="/book/oge/2026-10-31/v1/_edition/bootstrap.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ОГЭ, задание 15: внешний угол треугольника | MathExam</title>
+    <meta name="description" content="Разбор задания 15 ОГЭ: нахождение внешнего угла треугольника. Подробное решение, формула, типичная ошибка и наглядный чертёж.">
+<link rel="canonical" href="https://mathexam.space/oge/geometry/task-15-external-angle.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ОГЭ, задание 15: внешний угол треугольника | MathExam">
+<meta property="og:description" content="Разбор задания 15 ОГЭ: нахождение внешнего угла треугольника. Подробное решение, формула, типичная ошибка и наглядный чертёж.">
+<meta property="og:url" content="https://mathexam.space/book/oge/2026-10-31/v1/oge/geometry/task-15-external-angle.html">
+<meta property="og:site_name" content="MathExam">
+<meta property="og:locale" content="ru_RU">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ОГЭ, задание 15: внешний угол треугольника | MathExam">
+<meta name="twitter:description" content="Разбор задания 15 ОГЭ: нахождение внешнего угла треугольника. Подробное решение, формула, типичная ошибка и наглядный чертёж.">
+<style>
+:root{--ink:#202820;--muted:#626b63;--accent:#216342;--line:#dbe1da}*{box-sizing:border-box}body{margin:0;background:#f6f7f5;color:var(--ink);font:18px/1.8 system-ui,-apple-system,Segoe UI,sans-serif}main{max-width:820px;margin:auto;padding:28px 20px 64px}header{display:flex;align-items:baseline;justify-content:space-between;gap:18px;margin-bottom:26px}header p{font-size:15px;color:var(--muted);margin:0}h1{font-size:24px;line-height:1.4;margin:0}h2{font-size:21px;line-height:1.5;margin:0 0 24px}.task{background:#fff;border:1px solid var(--line);border-radius:16px;padding:32px}.task>p{margin:0 0 28px}.hint>summary{display:inline-block;border:1px solid var(--line);border-radius:8px;padding:10px 18px;color:var(--accent);font-weight:500}.hint[open]>summary{margin-bottom:22px}summary{min-height:46px;cursor:pointer;color:var(--accent);list-style:none}summary::-webkit-details-marker{display:none}summary:focus-visible,a:focus-visible{outline:3px solid #78a98c;outline-offset:3px}.hint-body{background:#f2f6f0;border-radius:12px;padding:24px}.geometry-figure{display:block;width:100%;height:auto;background:white;border-radius:10px}.diagram{margin:0 0 22px}.diagram figcaption{font-size:16px;line-height:1.8;margin-top:20px}.hint-body p{margin:20px 0}.formula{font-size:24px;font-family:Georgia,serif;margin:24px 0}.solution{margin-top:28px}.solution>summary{border-top:1px solid var(--line);padding-top:18px}.solution li{margin-bottom:18px}.answer{color:var(--accent);font-weight:650}.note{margin-top:30px;border-top:1px solid var(--line);padding-top:18px}#settings{border-top:1px solid var(--line);margin-top:26px;padding-top:18px}nav{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px}a{color:var(--accent);padding:8px 0;min-height:44px}footer{font-size:14px;color:var(--muted);line-height:1.8;margin-top:22px}@media(max-width:560px){main{padding:18px 12px 44px}header{display:block}header p{margin-bottom:10px}h1{font-size:21px}.task{padding:24px 18px}.hint-body{padding:18px 10px}.geometry-figure .fig-angle{font-size:24px}.geometry-figure .fig-sum{font-size:21px}.formula{font-size:22px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+<link rel="stylesheet" href="/book/oge/2026-10-31/v1/trainers/oge-course-reference.css">
+<link rel="stylesheet" href="/book/oge/2026-10-31/v1/trainers/oge-course-geometry.css">
+</head>
+
+<body data-oge-geometry="15">
+<main>
+<header><p>ОГЭ №15 · пример с разбором</p><h1>Внешний угол</h1></header>
+<article class="task" aria-labelledby="taskHeading">
+<h2 id="taskHeading">Найди угол</h2>
+<p id="condition">В треугольнике ABC угол C равен 142°. Найдите внешний угол при вершине C. Ответ дайте в градусах.</p>
+<details class="hint" id="hintPanel"><summary>Хочешь подсказку?</summary><div class="hint-body">
+<figure class="diagram">
+<svg class="geometry-figure" viewBox="0 0 440 230" role="img" aria-labelledby="fig15-title fig15-desc" xmlns="http://www.w3.org/2000/svg">
+<title id="fig15-title">Внутренний угол C равен 142°, внешний угол нужно найти</title>
+<desc id="fig15-desc">Сторона AC продолжена за C до D. Внутренний угол ACB и внешний угол BCD составляют развёрнутый угол.</desc>
+<line x1="240" y1="170" x2="400" y2="170" stroke="#626b63" stroke-width="2" stroke-dasharray="6 5"/>
+<polygon points="40,170 374,65 240,170" fill="#e0edda" stroke="#202820" stroke-width="2.5" stroke-linejoin="round"/>
+<path d="M210,170 A30,30 0 0 1 263.6,151.5" fill="none" stroke="#845c12" stroke-width="2.5"/>
+<path d="M262,170 A22,22 0 0 0 257.3,156.5" fill="none" stroke="#216342" stroke-width="2.5"/>
+<text class="fig-angle" x="242" y="125" font-size="23" font-weight="700" fill="#845c12" text-anchor="middle">142°</text>
+<text class="fig-angle" x="292" y="162" font-size="23" font-weight="700" fill="#216342">?</text>
+<g font-size="23" font-weight="600" fill="#202820"><text x="28" y="195">A</text><text x="380" y="58">B</text><text x="232" y="198">C</text><text x="404" y="195">D</text></g>
+<text class="fig-sum" x="220" y="225" font-size="20" fill="#626b63" text-anchor="middle">∠ACB + ∠BCD = 180°</text>
+</svg>
+<figcaption>Сторону AC продолжили за точку C. Два отмеченных угла вместе составляют развёрнутый угол.</figcaption>
+</figure>
+<p>Сколько градусов осталось от 180°, если один из углов равен 142°?</p>
+<div class="formula">142° + ? = 180°</div>
+<details class="solution" id="solutionDetails"><summary>Посмотреть решение</summary>
+<ol><li>Внешний угол при вершине C смежный с внутренним углом при этой же вершине.</li><li>Сумма смежных углов равна 180°.</li><li>Вычитаем известный угол: <span class="formula">180° − 142° = 38°</span>.</li></ol>
+<p class="answer">Ответ: 38°.</p>
+<div class="note"><p>Не перепутай внутренний и внешний углы: число 142° дано для внутреннего. Он тупой, поэтому смежный с ним внешний угол должен быть острым.</p><p>Для проверки продолжи AC за C: искомый угол находится между CB и CD.</p></div>
+</details>
+</div></details>
+</article>
+<details id="settings"><summary>Другие задания · об этом примере</summary>
+<nav aria-label="Другие задания"><a href="/book/oge/2026-10-31/v1/trainers/oge-task14-progressions.html">← Задание 14</a><a href="https://mathexam.space/book/oge/2026-10-31/v1/oge/">К заданиям ОГЭ</a><a href="/book/oge/2026-10-31/v1/trainers/oge-task16-circle.html">Задание 16 →</a></nav>
+<footer>MathExam · Один пример с разбором. Тип задания — из открытого банка ФИПИ; чертёж построен по условию.</footer>
+</details>
+</main>
+<script src="/book/oge/2026-10-31/v1/trainers/task19-textbook-data.js"></script>
+<script src="/book/oge/2026-10-31/v1/trainers/task19-reference.js"></script>
+<script src="/book/oge/2026-10-31/v1/trainers/oge-course-reference.js"></script>
+<script src="/book/oge/2026-10-31/v1/trainers/oge-course-geometry.js"></script>
+</body>
+</html>

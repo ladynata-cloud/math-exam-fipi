@@ -1,0 +1,1549 @@
+{
+  "schemaVersion": 1,
+  "assembledAt": "2026-10-31T05:16:20.143749+00:00",
+  "publication": "UNPUBLISHED_CANDIDATE",
+  "releaseGate": "INCOMPLETE",
+  "base": "139b944a70f2e8ba4d340d152d08807fad03e5da",
+  "branch": "audit/oge-book-edition-20261031",
+  "headBinding": "Exact final commit and CI/external-review provenance are recorded in the Draft PR; this file is part of that commit.",
+  "definition": "Complete means the recorded applicable learner scenario at 320/390/1280 CSS px, plus the recorded finite assessment where provided. It does not enumerate every bank item, mode or random seed and does not claim real-pupil, physical-camera or production release verification.",
+  "counts": {
+    "pages": 71,
+    "qr": 34,
+    "completeTrainers": 65,
+    "navigationChecked": 6,
+    "requiresTesting": 0,
+    "recordedCases": 426
+  },
+  "sourceInventory": "source-inventory.json",
+  "registerDataSha256": "e1bdabd96f40e8f170cb8b893f3c24e8c098257f5820182ee0ae565b33dfc263",
+  "package": {
+    "manifest": "book/oge/2026-10-31/v1/manifest.json",
+    "manifestSha256": "14c663bab07b3c360d0328d7d44c87995871f6bd586c9a4233b1ee51f791b4d8",
+    "entries": 71,
+    "sourceFiles": 150,
+    "totalFiles": 225,
+    "totalBytes": 8388747,
+    "runtime": {
+      "status": "PASS",
+      "checkedAt": "2026-10-31T05:12:58.538020+00:00",
+      "manifestSha256": "14c663bab07b3c360d0328d7d44c87995871f6bd586c9a4233b1ee51f791b4d8",
+      "runtimeFile": "package-runtime-storage-review/runtime.json",
+      "runtimeSha256": "060a1df1c7fe3e5660a3bf7653e59f66da16930ec1dd9d3733353b92b385c8ab",
+      "testScript": "tools/book-edition/runtime.browser.cjs",
+      "testScriptSha256": "f46a8f181a81c77c22ad884efe0bd3889f4fe6305eb07c7cfd01067bb0c509d1",
+      "entryViewportChecks": 142,
+      "entryCount": 71,
+      "widths": [
+        320,
+        1280
+      ],
+      "boundaryChecks": 10,
+      "pageErrors": 0,
+      "horizontalOverflowCases": 0,
+      "manifestPayloadsRehashed": 224,
+      "directCurrentRun": true,
+      "note": "All runtime cases were rerun on this exact manifest. No older runtime result is promoted by inference. Learner-scenario evidence remains separate."
+    }
+  },
+  "verification": {
+    "livePages": {
+      "path": "artifacts/book-audit-live/report.json",
+      "sha256": "97719a50676a82204b106fbf33fd8ecf7e8ce7c1f978f1368ffc2afc9e6ac193",
+      "status": "PASS",
+      "count": 71,
+      "http200": 71,
+      "exactBaseBytes": 71,
+      "base": "139b944a70f2e8ba4d340d152d08807fad03e5da",
+      "checkedAt": "2026-10-31T04:25:39.638259+00:00"
+    },
+    "liveDependencies": {
+      "path": "artifacts/book-audit-live/dependencies.json",
+      "sha256": "4536784ab8981a8515151b58f798725ad876de4b24b45c6825217346e3c809d2",
+      "status": "PASS",
+      "count": 158,
+      "http200": 158,
+      "exactBaseBytes": 158,
+      "base": "139b944a70f2e8ba4d340d152d08807fad03e5da",
+      "checkedAt": "2026-10-31T04:43:08.978727+00:00",
+      "inventory": {
+        "path": "dependency-inventory.json",
+        "sha256": "f1401186e43a8662a5e54ae35287570d9235594d73a29c2abf340d3222708eb2",
+        "status": "PASS"
+      }
+    },
+    "documents": {
+      "path": "docs/reports/oge-book-20261031/document-check.json",
+      "sha256": "eb101efda8f37f5eeefac5ce2b5b7ea14211197eb8732b8e5f3f2d4778ee15bc",
+      "status": "PASS",
+      "pages": 72,
+      "uniqueUrls": 71,
+      "docxQr": 34,
+      "pdfQr": 34,
+      "docxSha256": "f9b74c21cdadc7df16512bf4e6b086f77a053312ae237251803f9593c733d1bc",
+      "pdfSha256": "71b53a84a35a4f3895593319b88beea87155e30bb98384b7bca8aa5b7d0dcb15"
+    },
+    "documentRegressions": {
+      "path": "document-check-regressions.json",
+      "sha256": "a1a73a637dbd9fde8dd5f5f714242697575ba8ba30beb58a5b64dfcbd7c9d882",
+      "status": "PASS",
+      "cases": 4,
+      "rejected": 4
+    },
+    "visualLayout": {
+      "status": "PASS",
+      "pages": 72,
+      "evidence": [
+        {
+          "path": "visual-review-01-24.json",
+          "sha256": "1d6874c271bd6a4a3e896f40f16def959369df579f02325451d92cb743a96016",
+          "status": "PASS"
+        },
+        {
+          "path": "visual-review-25-48.json",
+          "sha256": "b09157ffa95edf51574bc9e54975211911a08961159cb640ef224a4b3f92c8f4",
+          "status": "PASS"
+        },
+        {
+          "path": "visual-review-49-72.json",
+          "sha256": "cd7dd11d0533bbe64f2abc928594cefeefd93f53da6a3292d221853abab24b5b",
+          "status": "PASS"
+        }
+      ],
+      "problems": []
+    }
+  },
+  "mathematics": {
+    "reviewedIds": [
+      "03",
+      "04",
+      "06",
+      "08",
+      "09",
+      "10",
+      "12",
+      "54",
+      "55",
+      "57",
+      "58",
+      "59",
+      "60",
+      "63",
+      "65",
+      "66",
+      "67",
+      "68",
+      "71"
+    ],
+    "widths": [
+      320,
+      390,
+      1280
+    ],
+    "totals": {
+      "PASS": 790,
+      "PENDING": 0,
+      "FAIL": 0
+    },
+    "scope": "Only the exact recorded prompt/expected/width/prefix/report combinations listed here. Does not approve all modes, generators, future questions, or automatically assess student written proofs.",
+    "summarySha256": "29eb4b848a16ebfe0546b36fd3a69cef9b208411fc816024900b678ac099e780",
+    "detailedReviewSha256": "9d894f71ee214b44ce3983ff87358d87a18ae8a12bc7eb930f5e66c9e449f48a",
+    "independentFixtureSha256": "3fdc3ee71b68d44bf4bf03e05054fe801ebdf3322f1d60340f7afe4f921c6baa"
+  },
+  "tests": {
+    "basicsRegression": {
+      "pass": 27,
+      "fail": 0
+    },
+    "examCorrectionRegression": {
+      "pass": 28,
+      "fail": 0
+    },
+    "examCombinedRegression": {
+      "total": 113,
+      "pass": 112,
+      "fail": 1,
+      "failure": "Historical task6 path allowlist against df63bacb2f82acf5f8543297c372b414925d6113, reproduced on unchanged base; not weakened.",
+      "baselineEvidence": {
+        "method": "Replay exact unchanged allowed-path predicate from the approved-base Git blob against oldScope-to-approvedBase Git tree diff, with no untracked files; not a full baseline suite run.",
+        "changedPaths": 3586,
+        "outsideAllowlist": 3579,
+        "sha256": "8a1430a8393eefe889f6c5f6a0e1427fb864650e2310ba4ff1534430be35baa7"
+      }
+    },
+    "packageNegative": {
+      "pass": 8,
+      "fail": 0
+    },
+    "collectorNegative": {
+      "pass": 26,
+      "fail": 0
+    },
+    "documentNegative": {
+      "pass": 4,
+      "fail": 0
+    },
+    "additionalHistoricalFailure": "tools/division-lab.test.cjs expects the previous lab runtime; reproduced on unchanged base and left unchanged."
+  },
+  "internalCrossReview": {
+    "externalProviderVerdict": false,
+    "sourcePersistenceReview": {
+      "cases": 3,
+      "pass": 3,
+      "evidenceSha256": "ff13e98d23423343e8f56640fd6a7314804f89cd9be88c5c3b34f64aea811bc9"
+    },
+    "finalEvidenceReview": {
+      "cases": 426,
+      "observedResourceBindings": 3309,
+      "missingRunnerSnapshots": 0,
+      "evidenceSha256": "10aca78d62c23c230fb2a0d18abe6568f15496fd74b988903cf01d9b96ca5936"
+    }
+  },
+  "externalReview": {
+    "status": "See exact-head Draft PR workflow result; no approval is claimed by this report."
+  },
+  "evidence": [
+    {
+      "id": "basics-source",
+      "path": "artifacts/book-audit-basics/source/report.json",
+      "sha256": "9fa1358b67717ac9eb4e523e3c42dfeaf6d83c7752f8fa6a3e296351d1772c08",
+      "cases": 120,
+      "generatedAt": "2026-10-31T05:10:59.481Z",
+      "testScriptSha256": "7ff3ecc14cfc55c510241484adc764fb27b4c4a128d37adaf817651628da37e1"
+    },
+    {
+      "id": "basics-frozen",
+      "path": "artifacts/book-audit-basics/frozen/report.json",
+      "sha256": "395cc7860ec23bbf1d0f27427c546bab402c4da23e223030cdbd32f5ec880ca8",
+      "cases": 120,
+      "generatedAt": "2026-10-31T05:10:57.487Z",
+      "testScriptSha256": "7ff3ecc14cfc55c510241484adc764fb27b4c4a128d37adaf817651628da37e1"
+    },
+    {
+      "id": "exam-source",
+      "path": "artifacts/book-audit-exam/source/results.json",
+      "sha256": "39982ad94391ba89bbbff22d687d504590e4a7335bf63ff288fc30ac025f13e8",
+      "cases": 93,
+      "generatedAt": "2026-10-31T05:12:42.957279+00:00",
+      "testScriptSha256": null
+    },
+    {
+      "id": "exam-frozen",
+      "path": "artifacts/book-audit-exam/frozen/results.json",
+      "sha256": "c502906c9db8474d449c9d75abf1e6347adceabc9bf84f29b3820e60af1c8496",
+      "cases": 93,
+      "generatedAt": "2026-10-31T05:12:43.312216+00:00",
+      "testScriptSha256": null
+    },
+    {
+      "id": "independent-math",
+      "path": "independent-math-review.json",
+      "sha256": "9d894f71ee214b44ce3983ff87358d87a18ae8a12bc7eb930f5e66c9e449f48a",
+      "records": 790
+    }
+  ],
+  "pages": [
+    {
+      "id": "01",
+      "sourceUrl": "https://mathexam.space/",
+      "bookUrl": "https://mathexam.space/b/oge26-1/01/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/",
+      "title": "MathExam — подготовка к ОГЭ по математике шаг за шагом",
+      "kind": "navigation",
+      "pdfPages": [
+        1,
+        2,
+        3
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "NA",
+      "fullStatus": "NAVIGATION_CHECKED",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "02",
+      "sourceUrl": "https://mathexam.space/oge/geometry/task-15-external-angle.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/02/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/oge/geometry/task-15-external-angle.html",
+      "title": "ОГЭ, задание 15: внешний угол треугольника | MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        49
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "03",
+      "sourceUrl": "https://mathexam.space/trainers/oge-1-5-trainers/percent-table-trainer.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/03/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/percent-table-trainer.html",
+      "title": "Проценты без паники · обучающий тренажёр ОГЭ",
+      "kind": "trainer",
+      "pdfPages": [
+        11
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "04",
+      "sourceUrl": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-apartments.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/04/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-apartments.html",
+      "title": "Квартира · план · задания 1–5 ОГЭ · тренажёр",
+      "kind": "trainer",
+      "pdfPages": [
+        24
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "05",
+      "sourceUrl": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/05/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html",
+      "title": "Входная диагностика ОГЭ-2027 · задания 1–5",
+      "kind": "trainer",
+      "pdfPages": [
+        12,
+        13
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "06",
+      "sourceUrl": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-land-plots.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/06/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-land-plots.html",
+      "title": "Участок · тренажёр 1–5 · ОГЭ",
+      "kind": "trainer",
+      "pdfPages": [
+        22
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "07",
+      "sourceUrl": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-map.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/07/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-map.html",
+      "title": "ОГЭ, задания 1–5: практические задачи и диагностика | MathExam",
+      "kind": "navigation",
+      "pdfPages": [
+        13
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "NA",
+      "fullStatus": "NAVIGATION_CHECKED",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "08",
+      "sourceUrl": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/08/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html",
+      "title": "Форматы бумаги А0–А6 · задания 1–5 · ОГЭ",
+      "kind": "trainer",
+      "pdfPages": [
+        27
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "09",
+      "sourceUrl": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-roads-grid.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/09/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-roads-grid.html",
+      "title": "Дороги по клеткам · тренажёр 1–5 (ОГЭ 2027)",
+      "kind": "trainer",
+      "pdfPages": [
+        16
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "10",
+      "sourceUrl": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-roads-schema.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/10/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-roads-schema.html",
+      "title": "Тренажёр ОГЭ · Задания 1–5 «Дороги» (Антоновка → Богданово)",
+      "kind": "trainer",
+      "pdfPages": [
+        18
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "11",
+      "sourceUrl": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-stoves.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/11/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-stoves.html",
+      "title": "Печки · тренажёр 1–5",
+      "kind": "trainer",
+      "pdfPages": [
+        21
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "12",
+      "sourceUrl": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-tariffs.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/12/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-tariffs.html",
+      "title": "Тарифы · тренажёр 1–5 · ОГЭ",
+      "kind": "trainer",
+      "pdfPages": [
+        25
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "13",
+      "sourceUrl": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-tires.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/13/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-tires.html",
+      "title": "Шины · тренажёр 1–5 (весь банк ФИПИ)",
+      "kind": "trainer",
+      "pdfPages": [
+        19
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "14",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/",
+      "bookUrl": "https://mathexam.space/b/oge26-1/14/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/",
+      "title": "ПредОГЭ: арифметика, дроби и проценты по шагам | MathExam",
+      "kind": "navigation",
+      "pdfPages": [
+        8
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "NA",
+      "fullStatus": "NAVIGATION_CHECKED",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "15",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/decimal-add-subtract.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/15/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/decimal-add-subtract.html",
+      "title": "Десятичные дроби: сложение и вычитание · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        8
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "16",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/fraction-common-denominator.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/16/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/fraction-common-denominator.html",
+      "title": "Дроби: общий знаменатель и сложение · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        10
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "17",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/fraction-meaning.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/17/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/fraction-meaning.html",
+      "title": "Дробь: часть, целое и равные записи · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        10,
+        12
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "18",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/18/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division.html",
+      "title": "Умножение и деление: одна семья действий · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        9
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "19",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/",
+      "bookUrl": "https://mathexam.space/b/oge26-1/19/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/",
+      "title": "Умножение и деление: линия тренажёров · MathExam",
+      "kind": "navigation",
+      "pdfPages": [
+        9,
+        12
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "NA",
+      "fullStatus": "NAVIGATION_CHECKED",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "20",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/20/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html",
+      "title": "Умножение столбиком на одну цифру — по разрядам · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        9
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "21",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/column-multiplication-two-digit.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/21/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/column-multiplication-two-digit.html",
+      "title": "Умножение столбиком на двузначное число — два произведения · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        9
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "22",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/decimal-division-natural.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/22/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/decimal-division-natural.html",
+      "title": "Десятичная дробь ÷ натуральное число · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        9
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "23",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/decimal-divisor-shift.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/23/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/decimal-divisor-shift.html",
+      "title": "Десятичная дробь ÷ десятичную · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        9
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "24",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/division-append-zeros.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/24/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/division-append-zeros.html",
+      "title": "Деление не нацело: дописываем нули · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        9
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "25",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/division-with-remainder.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/25/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/division-with-remainder.html",
+      "title": "Деление с остатком: частное, остаток и проверка · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        9
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "26",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/26/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html",
+      "title": "Деление уголком (столбиком) — пошаговый тренажёр | MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        9
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "27",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-mixed-checkpoint.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/27/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-mixed-checkpoint.html",
+      "title": "Смешанная проверка: деление уголком · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        9
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "28",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-one-digit.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/28/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-one-digit.html",
+      "title": "Деление уголком на одну цифру — пошагово · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        9
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "29",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-quotient-digit.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/29/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-quotient-digit.html",
+      "title": "Цифра частного и линейка кратных · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        9
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "30",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-two-digit.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/30/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-two-digit.html",
+      "title": "Деление уголком на двузначный делитель · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        9
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "31",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-with-remainder.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/31/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-with-remainder.html",
+      "title": "Деление уголком с остатком · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        9
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "32",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-zero-in-quotient.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/32/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-zero-in-quotient.html",
+      "title": "Нули в частном — не теряем разряд · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        9
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "33",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-ladder.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/33/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-ladder.html",
+      "title": "Таблица умножения: лесенка одной таблицы · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        9
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "34",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-meaning.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/34/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-meaning.html",
+      "title": "Умножение: смысл, группы и прямоугольные ряды · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        9
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "35",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-mixed.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/35/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-mixed.html",
+      "title": "Таблица умножения вперемешку и неизвестный множитель · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        9
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "36",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-pythagoras-table.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/36/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-pythagoras-table.html",
+      "title": "Таблица Пифагора: находим произведение по строке и столбцу · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        9
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "37",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-tricks.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/37/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-tricks.html",
+      "title": "Таблица умножения: понятные приёмы вместо угадывания · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        9
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "38",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/multiplication-division/tabular-division.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/38/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/tabular-division.html",
+      "title": "Табличное деление: умножение наоборот · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        9
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "39",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/negative-add-subtract.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/39/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/negative-add-subtract.html",
+      "title": "Отрицательные числа: сложение и вычитание · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        10
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "40",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/negative-number-line.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/40/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/negative-number-line.html",
+      "title": "Отрицательные числа на прямой · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        10,
+        12
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "41",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/order-of-operations.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/41/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/order-of-operations.html",
+      "title": "Порядок действий без путаницы · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        8,
+        12
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "42",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/percentages/",
+      "bookUrl": "https://mathexam.space/b/oge26-1/42/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/percentages/",
+      "title": "Проценты и пропорции: пошаговые тренажёры | MathExam",
+      "kind": "navigation",
+      "pdfPages": [
+        11
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "NA",
+      "fullStatus": "NAVIGATION_CHECKED",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "43",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/percentages/percent-change.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/43/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/percentages/percent-change.html",
+      "title": "Увеличение, уменьшение и изменение · Математический ликбез",
+      "kind": "trainer",
+      "pdfPages": [
+        11
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "44",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/percentages/percent-choose-question.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/44/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/percentages/percent-choose-question.html",
+      "title": "Что спрашивают в задаче · Математический ликбез",
+      "kind": "trainer",
+      "pdfPages": [
+        11,
+        12
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "45",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/percentages/percent-final-checkpoint.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/45/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/percentages/percent-final-checkpoint.html",
+      "title": "Итоговая проверка по процентам · Математический ликбез",
+      "kind": "trainer",
+      "pdfPages": [
+        11
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "46",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/percentages/percent-meaning.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/46/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/percentages/percent-meaning.html",
+      "title": "100%, 1% и доля · Математический ликбез",
+      "kind": "trainer",
+      "pdfPages": [
+        11
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "47",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/percentages/percent-of-number-and-whole.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/47/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/percentages/percent-of-number-and-whole.html",
+      "title": "Три вопроса о проценте · Математический ликбез",
+      "kind": "trainer",
+      "pdfPages": [
+        11
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "48",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/percentages/proportion.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/48/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/percentages/proportion.html",
+      "title": "Пропорция · Математический ликбез",
+      "kind": "trainer",
+      "pdfPages": [
+        11
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "49",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/rounding.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/49/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/rounding.html",
+      "title": "Округление: четыре шага и упаковки · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        10,
+        12
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "50",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/units-area.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/50/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/units-area.html",
+      "title": "Квадратные единицы без ловушек · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        10
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "51",
+      "sourceUrl": "https://mathexam.space/trainers/oge-basics/units-length-time.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/51/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-basics/units-length-time.html",
+      "title": "Единицы длины и времени · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        10
+      ],
+      "qrCount": 0,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "52",
+      "sourceUrl": "https://mathexam.space/trainers/oge-course/",
+      "bookUrl": "https://mathexam.space/b/oge26-1/52/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-course/",
+      "title": "Курс подготовки к ОГЭ по математике: тренажёры 1-25 | MathExam",
+      "kind": "navigation",
+      "pdfPages": [
+        72
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "NA",
+      "fullStatus": "NAVIGATION_CHECKED",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "53",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task10-probability.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/53/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task10-probability.html",
+      "title": "ОГЭ. Задание 10: вероятность — тренажёр",
+      "kind": "trainer",
+      "pdfPages": [
+        35
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "54",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task11-graphs-trainer.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/54/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task11-graphs-trainer.html",
+      "title": "ОГЭ №11 — графики функций с наглядной подсказкой · MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        37
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "55",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task12-formulas-trainer.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/55/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task12-formulas-trainer.html",
+      "title": "ОГЭ, задание 12 — расчёты по формулам. Тренажёр",
+      "kind": "trainer",
+      "pdfPages": [
+        38
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "56",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task13-inequalities.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/56/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task13-inequalities.html",
+      "title": "ОГЭ №13: неравенства — тренажёр с подсказками | MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        43
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "57",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task14-progressions.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/57/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task14-progressions.html",
+      "title": "ОГЭ №14. Прогрессии: формулы и здравый смысл",
+      "kind": "trainer",
+      "pdfPages": [
+        47
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "58",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task16-circle.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/58/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task16-circle.html",
+      "title": "ОГЭ, задание 16: окружность — тренажёр | MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        50
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "59",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task17-quadrilaterals.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/59/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task17-quadrilaterals.html",
+      "title": "ОГЭ №17 — Четырёхугольники · тренажёр",
+      "kind": "trainer",
+      "pdfPages": [
+        52
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "60",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task18-grid.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/60/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task18-grid.html",
+      "title": "ОГЭ, задание 18: фигуры на клетчатой бумаге | MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        53
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "61",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task20-equations.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/61/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task20-equations.html",
+      "title": "Задание 20 ОГЭ — тренажёр",
+      "kind": "trainer",
+      "pdfPages": [
+        56
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "62",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task21-word-problems.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/62/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task21-word-problems.html",
+      "title": "ОГЭ · Задание 21 · Текстовые задачи — тренажёр",
+      "kind": "trainer",
+      "pdfPages": [
+        58
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "63",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task22-functions-graphs.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/63/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task22-functions-graphs.html",
+      "title": "ОГЭ · Задание 22 — Графики функций",
+      "kind": "trainer",
+      "pdfPages": [
+        59
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "64",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task23-geometry-calculations.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/64/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task23-geometry-calculations.html",
+      "title": "ОГЭ · Задание 23 — Геометрические задачи на вычисление",
+      "kind": "trainer",
+      "pdfPages": [
+        61
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "65",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task24-proofs.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/65/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task24-proofs.html",
+      "title": "ОГЭ · Задание 24 — задачи на доказательство",
+      "kind": "trainer",
+      "pdfPages": [
+        62
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "66",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task25-geometry.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/66/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task25-geometry.html",
+      "title": "ОГЭ · Задание 25 — геометрия повышенной сложности",
+      "kind": "trainer",
+      "pdfPages": [
+        64
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "67",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task6-fractions.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/67/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task6-fractions.html",
+      "title": "ОГЭ, задание 6: действия с дробями — тренажёр | MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        29
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "68",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task7-number-line.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/68/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task7-number-line.html",
+      "title": "Задание 7 ОГЭ. Координатная прямая — тренажёр",
+      "kind": "trainer",
+      "pdfPages": [
+        30
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "69",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task8-powers-roots.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/69/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task8-powers-roots.html",
+      "title": "Задание 8 ОГЭ — степени и корни",
+      "kind": "trainer",
+      "pdfPages": [
+        32
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "70",
+      "sourceUrl": "https://mathexam.space/trainers/oge-task9-equations.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/70/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task9-equations.html",
+      "title": "ОГЭ, задание 9: уравнения по шагам — тренажёр | MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        33
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    },
+    {
+      "id": "71",
+      "sourceUrl": "https://mathexam.space/trainers/task19-trainer.html",
+      "bookUrl": "https://mathexam.space/b/oge26-1/71/",
+      "frozenUrl": "https://mathexam.space/book/oge/2026-10-31/v1/trainers/task19-trainer.html",
+      "title": "ОГЭ №19: геометрические утверждения — тренажёр | MathExam",
+      "kind": "trainer",
+      "pdfPages": [
+        54
+      ],
+      "qrCount": 1,
+      "sourceStatus": "PASS",
+      "frozenStatus": "PASS",
+      "mathematics": "PASS",
+      "fullStatus": "RECORDED_SCENARIO_COMPLETE",
+      "pending": [],
+      "caseCount": 6
+    }
+  ],
+  "releaseOpenItems": [
+    "Accept ADR0012 for the reviewed implementation.",
+    "Resolve the two historical gate contracts without weakening their intended invariants.",
+    "Obtain the required exact-head external review.",
+    "Owner decides the diagnostic 2026/2027 book caption.",
+    "Test a physical QR print/camera and real mobile browsers.",
+    "Separate merge/deployment authorization; then verify71 deployed redirects and package bytes before book distribution."
+  ],
+  "notRun": [
+    "New book URLs in production (not deployed).",
+    "Physical phones/iOS Safari/Firefox/on-screen keyboard.",
+    "Physical printed QR scanning.",
+    "Real-pupil learning evaluation.",
+    "Exhaustive combinations of every generator/mode/seed."
+  ]
+}

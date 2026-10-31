@@ -1,5 +1,29 @@
 # MathExam project status
 
+## Prepared: audited OGE book edition, 2026-10-31
+
+- [Task](tasks/OGE_BOOK_EDITION_AUDIT_20261031.md), `NEW_ARCHETYPE`; base
+  `139b944a70f2e8ba4d340d152d08807fad03e5da`, branch
+  `audit/oge-book-edition-20261031`. [Report](reports/oge-book-20261031/README.md).
+- The current PDF/DOCX contain the same 71 URLs and 34 placed QR codes as the
+  earlier register. Live HTML and 158 dependencies match the named base.
+- Recorded learner coverage is 65 trainers plus six navigation pages at
+  320/390/1280 px in source and fixed copies: 426 cases. Required finite
+  assessments and browser-local retained outcomes have separate evidence.
+  This does not enumerate every random task or certify real-pupil outcomes.
+- Minimal mathematical-feedback, mobile and persistence repairs are included.
+  Original public addresses are retained. Separate fixed copies under
+  `/book/oge/2026-10-31/v1/` and `/b/oge26-1/` remain unpublished candidates,
+  with matching candidate PDF/DOCX and 34 QR codes.
+- [ADR 0012](adr/0012-fixed-oge-book-editions.md) is Proposed. The overall gate
+  remains `INCOMPLETE`: two historical tests also fail on the unchanged base;
+  exact-head external review and production release are recorded separately
+  in the PR. No merge, auto-merge or deployment is authorized by this task.
+- Next: (1) review the concrete candidate and decide ADR acceptance;
+  (2) resolve the historical gate contract and the book's 2026/2027 diagnostic
+  caption, then test a physical QR print; (3) after separate release permission,
+  verify all deployed aliases and bytes before distributing the new book.
+
 ## Prepared: Vilenkin 6 source clarity and revised cabinet course
 
 - [Task](tasks/VILENKIN6_CLARITY_CABINET_20261030.md), HIGH; branch
@@ -172,8 +196,8 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
   `fix/atanasyan-hidden-lines-20261030`.
 - Covers every published card in Atanasyan 10–11 (554), Merzlyak 10 base (989)
   and Shestakov–Yashchenko (543), plus the spatial workshop and both spatial
-  atlases. Prepared cone PR374 is a separate compatibility check and remains
-  unpublished pending the visibility correction and its own release decision.
+  atlases. Cone PR374 was subsequently merged on 2026-10-31; its release
+  reconciliation is recorded in the cone entry below.
 - Coverage audit additionally found active independent Atanasyan-EGE,
   profile-EGE SVG/task14, two Three.js banks and basic-EGE spatial renderers.
   These also fall under the owner's all-courses request. Their source and
@@ -192,11 +216,12 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
   The preparation details above describe the retained implementation scope.
 - Production reconciliation: cylinder PR372 was published as
   `6b25302788f36d92723e487e92afa7044ced3ad3`; the later main commit is the
-  separate grade 7–9 chapter VI release. The published stereometry course still
-  has 554 cards. Cone PR374 head `065c2a294faf0f3b505eb53a2c8ac4f55621e313`
-  contains 594 candidate cards and is not merged.
+  separate grade 7–9 chapter VI release. Cone PR374 subsequently merged as
+  `139b944a70f2e8ba4d340d152d08807fad03e5da`; its release record reports
+  594 published cards. The earlier 554-card observation describes the
+  pre-cone checkpoint, not the current repository state.
 
-## Prepared: Atanasyan 10–11, complete cone paragraph
+## Merged and release recorded: Atanasyan 10–11, complete cone paragraph
 
 
 - [Task](tasks/ATANASYAN_CONE_346_371.md), HIGH, explicitly continued by the
@@ -212,8 +237,13 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
   records 52 passed local checks, preserved historical fixtures and resolved
   failures. [Visual evidence](reviews/ATANASYAN_CONE_VISUAL.json) records the
   exact new-card browser run and independent image review separately.
-- Final committed-source CI and release status belong in the PR. This entry is
-  preparation, not a claim that the cone paragraph has been deployed.
+- [PR374](https://github.com/ladynata-cloud/math-exam-fipi/pull/374) merged as
+  `139b944a70f2e8ba4d340d152d08807fad03e5da`, sole parent
+  `c9bf66e2d95f48db0134d43cc590da89f8bc3053`. Primary GitHub metadata and
+  local Git confirm the merge. The PR release record reports successful Pages
+  run 41143302786, 48 matching production files and the 594-card live course.
+  This 2026-10-31 reconciliation does not claim a fresh full cone browser audit;
+  the current OGE-book task checks its own 71 destinations separately.
 - Next numbered paragraph: chapter IV §3 «Сфера», beginning with exercise 372.
   Later source positions remain inventoried and visibly pending.
 
@@ -2928,7 +2958,7 @@ final exact-head CI and deployment verification; see PR266 for current evidence.
   limitations were disclosed. Progress is browser-local; no synchronized-board
   or cloud learner-storage claim is made. Final evidence is in PR #319.
 
-## Revalidated candidate: clearer arithmetic entry and division (PR #377)
+## Merged and live OGE entry rechecked: clearer arithmetic and division (PR #377)
 
 - [Task](tasks/ARITHMETIC_CLARITY_FIRST_RELEASE.md), MEDIUM. Original base
   `6fb959fc0130a0bb8842601d19297e305ac91ac0`; revalidation base on 2026-10-30:
@@ -2950,7 +2980,13 @@ final exact-head CI and deployment verification; see PR266 for current evidence.
   exact-head CI and independent focused review are recorded in the
   [revalidation report](reports/ARITHMETIC_CLARITY_REVALIDATION_20261030.md)
   and [PR #377](https://github.com/ladynata-cloud/math-exam-fipi/pull/377).
-- This is a prepared release, not a publication claim. Separate exact-base/head
-  merge authorization and live post-deployment verification remain required.
-  No common engine, storage migration, board protocol or server change belongs
-  to this candidate.
+- [PR377](https://github.com/ladynata-cloud/math-exam-fipi/pull/377) merged as
+  `c9bf66e2d95f48db0134d43cc590da89f8bc3053`, sole parent
+  `3411acd7df5ebfbd4179cce85c2300c59677ddf7`. Primary GitHub metadata and
+  local Git confirm the merge. Its release record reports successful Pages
+  run 41127694381 and post-merge arithmetic/classroom gates.
+- Fresh OGE-book availability checks on 2026-10-31 found all 71 referenced HTML
+  pages byte-identical to task base `139b944a70f2e8ba4d340d152d08807fad03e5da`,
+  including the released arithmetic entries. Learner-flow evidence for the
+  book is recorded separately in the current book task. No common engine,
+  storage migration, board protocol or server change belongs to PR377.

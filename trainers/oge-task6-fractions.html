@@ -37,7 +37,7 @@ details#settings{margin-top:24px;border-top:1px solid var(--line);padding:18px 2
 <details id="settings"><summary>Выбрать тему · мои результаты</summary>
 <div class="chips" id="chips" role="group" aria-label="Разделы"></div>
 <div class="rowopts"><label class="toggle"><input type="checkbox" id="shuffle">Вперемешку</label><span id="counter"></span></div>
-<p class="session-note" id="sessionNote">Прогресс хранится только до обновления страницы. Смена раздела или режима «вперемешку» начинает текущий раздел заново.</p>
+<p class="session-note" id="sessionNote">Прогресс сохраняется в этом браузере после обновления страницы. Смена раздела или режима «вперемешку» начинает текущий раздел заново.</p>
 <div class="stats" id="stats"></div>
 <div class="task-navigation"><label for="taskJump">Перейти к задаче</label><select id="taskJump" aria-describedby="taskLegend"></select></div>
 <p class="legend" id="taskLegend">✓ с первой · ↻ после ошибок · 👁 ответ показан · — пропущено · ○ ещё не пройдено</p>
@@ -71,6 +71,27 @@ const FORMAT_MESSAGES = {
 let cat='bank', order=[], pos=0, shuffle=false;
 let records={}, streak=0, answeredCur=false;
 let hintSessions={};
+const PROGRESS_KEY='mathExam.oge6.practice.v1';
+function saveProgress(){
+  try{localStorage.setItem(PROGRESS_KEY,JSON.stringify({v:1,cat,order,pos,shuffle,records,streak}));}catch(e){}
+}
+function restoreProgress(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'null');
+    if(!saved||saved.v!==1||!CATS.some(c=>c[0]===saved.cat)||!Array.isArray(saved.order)||!saved.order.length)return false;
+    const expected=TASKS.map((task,index)=>saved.cat==='all'||task.cat===saved.cat?index:null).filter(index=>index!==null);
+    if(saved.order.length!==expected.length||new Set(saved.order).size!==expected.length||!saved.order.every(index=>expected.includes(index)))return false;
+    if(!Number.isInteger(saved.pos)||saved.pos<0||saved.pos>saved.order.length)return false;
+    const kept={};
+    if(saved.records&&typeof saved.records==='object')for(const [key,value] of Object.entries(saved.records)){
+      if(!expected.includes(Number(key))||!value||!Number.isSafeInteger(value.wrongAttempts)||value.wrongAttempts<0)continue;
+      if(value.status!==null&&!['solved-first','solved-retry','revealed','skipped'].includes(value.status))continue;
+      kept[key]={wrongAttempts:value.wrongAttempts,answerWasRevealed:value.answerWasRevealed===true,status:value.status,lastInput:String(value.lastInput||'').slice(0,128)};
+    }
+    cat=saved.cat;order=saved.order;pos=saved.pos;shuffle=saved.shuffle===true;records=kept;streak=Number.isSafeInteger(saved.streak)&&saved.streak>=0?saved.streak:0;
+    return true;
+  }catch(e){return false;}
+}
 const $=id=>document.getElementById(id);
 const isIndependent=status=>status==='solved-first'||status==='solved-retry';
 function createRecord(){ return {wrongAttempts:0,answerWasRevealed:false,status:null}; }
@@ -112,6 +133,7 @@ function applyCurrent(kind){
   records[order[pos]]=result.record;
   if(result.resetStreak) streak=0;
   if(result.independentCredit) streak++;
+  saveProgress();
   return result;
 }
 function parseInput(raw){
@@ -147,7 +169,7 @@ function buildChips(){
 function startSet(){
   order=[];TASKS.forEach((task,index)=>{if(cat==='all'||task.cat===cat)order.push(index);});
   if(shuffle)for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
-  pos=0;records={};hintSessions={};streak=0;buildChips();renderTask();
+  pos=0;records={};hintSessions={};streak=0;saveProgress();buildChips();renderTask();
 }
 function catLabel(key){return (CATS.find(item=>item[0]===key)||['',''])[1];}
 function statusLabel(record){return STATUS_TEXT[record?.status]||'○ ещё не пройдено';}
@@ -172,7 +194,7 @@ function renderTask(){
   $('check').onclick=()=>answeredCur?next():check();$('reveal').onclick=reveal;
   $('skip').onclick=()=>{applyCurrent('skip');next();};
   $('hintToggle').onclick=()=>{const open=$('hintPanel').hidden;hintSession().open=open;$('hintPanel').hidden=!open;$('hintToggle').setAttribute('aria-expanded',String(open));if(open)renderHint();};
-  $('previous').disabled=pos===0;$('previous').onclick=()=>{if(pos>0){pos--;renderTask();}};
+  $('previous').disabled=pos===0;$('previous').onclick=()=>{if(pos>0){pos--;saveProgress();renderTask();}};
   $('stepHelpToggle').onclick=()=>{const state=hintStepState();state.labOpen=!state.labOpen;renderStepLab();};
   $('stepCheck').onclick=checkHintStep;
   $('stepAnswer').onkeydown=event=>{if(event.key==='Enter'&&!event.isComposing){event.preventDefault();if(!event.repeat)checkHintStep();}};
@@ -254,7 +276,7 @@ function finishAnswer(){
   // the key that checked the answer cannot activate a newly focused button.
   $('ans').readOnly=true;$('reveal').hidden=true;$('skip').hidden=true;$('ans').focus();
 }
-function next(){pos++;renderTask();}
+function next(){pos++;saveProgress();renderTask();}
 function renderStats(){
   const count=summarizeRecords(order,records);
   $('counter').textContent='самостоятельно '+count.independent+' · ответ показан '+count.revealed+' · пропущено '+count.skipped+' · из '+count.total;
@@ -732,8 +754,8 @@ function renderStepLab(){
 
 // Initialize trainer
 $('shuffle').onchange=event=>{shuffle=event.target.checked;startSet();};
-$('taskJump').onchange=event=>{pos=Number(event.target.value);renderTask();};
-buildChips();startSet();
+$('taskJump').onchange=event=>{pos=Number(event.target.value);saveProgress();renderTask();};
+if(restoreProgress()){$('shuffle').checked=shuffle;buildChips();renderTask();}else{buildChips();startSet();}
 </script>
 </body>
 </html>

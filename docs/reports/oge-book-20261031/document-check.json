@@ -1,0 +1,2036 @@
+{
+  "status": "passed",
+  "scope": "placed targets and image decoding; not physical camera scanning",
+  "checked_at_utc": "2026-10-31T04:45:26.368633+00:00",
+  "source_docx_sha256": "ae696ec1274ceb2963f3498ea38ca9f2edd79b2a73083166cdbf5c9bf705d1bf",
+  "source_inventory_sha256": "d58bffcf7172056a6760354753256a3260eb20cb5b65b8525ea303eca9da48d4",
+  "mapping_sha256": "023c3a8d40c9ca45e704a96a90d143c4adffccff638c27ac3e2627ba86d9bfee",
+  "docx_name": "Kurs_molodogo_OGEshnika_MathExam_book_v1_candidate.docx",
+  "docx_sha256": "f9b74c21cdadc7df16512bf4e6b086f77a053312ae237251803f9593c733d1bc",
+  "pdf_name": "Kurs_molodogo_OGEshnika_MathExam_book_v1_candidate.pdf",
+  "pdf_sha256": "71b53a84a35a4f3895593319b88beea87155e30bb98384b7bca8aa5b7d0dcb15",
+  "pages": 72,
+  "unique_urls": 71,
+  "docx_hyperlink_placements": 79,
+  "pdf_hyperlink_annotations": 79,
+  "docx_placed_qr": 34,
+  "pdf_placed_qr": 34,
+  "all_non_url_text_unchanged": true,
+  "all_non_qr_images_unchanged": true,
+  "all_qr_source_placements_match": true,
+  "all_docx_link_source_placements_match": true,
+  "visible_url_occurrences_checked": 37,
+  "docx_qr": [
+    {
+      "paragraph": 64,
+      "drawing_index": 1,
+      "rid": "rId112",
+      "media": "word/media/image48.png",
+      "url": "https://mathexam.space/b/oge26-1/14/",
+      "expected_url": "https://mathexam.space/b/oge26-1/14/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 73,
+      "drawing_index": 1,
+      "rid": "rId116",
+      "media": "word/media/image49.png",
+      "url": "https://mathexam.space/b/oge26-1/19/",
+      "expected_url": "https://mathexam.space/b/oge26-1/19/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 130,
+      "drawing_index": 1,
+      "rid": "rId145",
+      "media": "word/media/image50.png",
+      "url": "https://mathexam.space/b/oge26-1/42/",
+      "expected_url": "https://mathexam.space/b/oge26-1/42/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 169,
+      "drawing_index": 1,
+      "rid": "rId108",
+      "media": "word/media/image46.png",
+      "url": "https://mathexam.space/b/oge26-1/05/",
+      "expected_url": "https://mathexam.space/b/oge26-1/05/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 171,
+      "drawing_index": 1,
+      "rid": "rId110",
+      "media": "word/media/image47.png",
+      "url": "https://mathexam.space/b/oge26-1/07/",
+      "expected_url": "https://mathexam.space/b/oge26-1/07/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 259,
+      "drawing_index": 1,
+      "rid": "rId85",
+      "media": "word/media/image30.png",
+      "url": "https://mathexam.space/b/oge26-1/09/",
+      "expected_url": "https://mathexam.space/b/oge26-1/09/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 290,
+      "drawing_index": 1,
+      "rid": "rId88",
+      "media": "word/media/image32.png",
+      "url": "https://mathexam.space/b/oge26-1/10/",
+      "expected_url": "https://mathexam.space/b/oge26-1/10/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 341,
+      "drawing_index": 1,
+      "rid": "rId91",
+      "media": "word/media/image34.png",
+      "url": "https://mathexam.space/b/oge26-1/13/",
+      "expected_url": "https://mathexam.space/b/oge26-1/13/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 387,
+      "drawing_index": 1,
+      "rid": "rId94",
+      "media": "word/media/image36.png",
+      "url": "https://mathexam.space/b/oge26-1/11/",
+      "expected_url": "https://mathexam.space/b/oge26-1/11/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 411,
+      "drawing_index": 1,
+      "rid": "rId97",
+      "media": "word/media/image38.png",
+      "url": "https://mathexam.space/b/oge26-1/06/",
+      "expected_url": "https://mathexam.space/b/oge26-1/06/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 475,
+      "drawing_index": 1,
+      "rid": "rId100",
+      "media": "word/media/image41.png",
+      "url": "https://mathexam.space/b/oge26-1/04/",
+      "expected_url": "https://mathexam.space/b/oge26-1/04/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 501,
+      "drawing_index": 1,
+      "rid": "rId103",
+      "media": "word/media/image43.png",
+      "url": "https://mathexam.space/b/oge26-1/12/",
+      "expected_url": "https://mathexam.space/b/oge26-1/12/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 542,
+      "drawing_index": 1,
+      "rid": "rId106",
+      "media": "word/media/image45.png",
+      "url": "https://mathexam.space/b/oge26-1/08/",
+      "expected_url": "https://mathexam.space/b/oge26-1/08/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 593,
+      "drawing_index": 1,
+      "rid": "rId77",
+      "media": "word/media/image23.png",
+      "url": "https://mathexam.space/b/oge26-1/67/",
+      "expected_url": "https://mathexam.space/b/oge26-1/67/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 627,
+      "drawing_index": 1,
+      "rid": "rId76",
+      "media": "word/media/image22.png",
+      "url": "https://mathexam.space/b/oge26-1/68/",
+      "expected_url": "https://mathexam.space/b/oge26-1/68/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 662,
+      "drawing_index": 1,
+      "rid": "rId75",
+      "media": "word/media/image20.png",
+      "url": "https://mathexam.space/b/oge26-1/69/",
+      "expected_url": "https://mathexam.space/b/oge26-1/69/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 704,
+      "drawing_index": 1,
+      "rid": "rId74",
+      "media": "word/media/image19.png",
+      "url": "https://mathexam.space/b/oge26-1/70/",
+      "expected_url": "https://mathexam.space/b/oge26-1/70/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 740,
+      "drawing_index": 1,
+      "rid": "rId73",
+      "media": "word/media/image18.png",
+      "url": "https://mathexam.space/b/oge26-1/53/",
+      "expected_url": "https://mathexam.space/b/oge26-1/53/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 774,
+      "drawing_index": 1,
+      "rid": "rId72",
+      "media": "word/media/image17.png",
+      "url": "https://mathexam.space/b/oge26-1/54/",
+      "expected_url": "https://mathexam.space/b/oge26-1/54/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 806,
+      "drawing_index": 1,
+      "rid": "rId71",
+      "media": "word/media/image16.png",
+      "url": "https://mathexam.space/b/oge26-1/55/",
+      "expected_url": "https://mathexam.space/b/oge26-1/55/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 889,
+      "drawing_index": 1,
+      "rid": "rId70",
+      "media": "word/media/image15.png",
+      "url": "https://mathexam.space/b/oge26-1/56/",
+      "expected_url": "https://mathexam.space/b/oge26-1/56/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 946,
+      "drawing_index": 1,
+      "rid": "rId69",
+      "media": "word/media/image14.png",
+      "url": "https://mathexam.space/b/oge26-1/57/",
+      "expected_url": "https://mathexam.space/b/oge26-1/57/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 976,
+      "drawing_index": 1,
+      "rid": "rId68",
+      "media": "word/media/image13.png",
+      "url": "https://mathexam.space/b/oge26-1/02/",
+      "expected_url": "https://mathexam.space/b/oge26-1/02/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 1002,
+      "drawing_index": 1,
+      "rid": "rId67",
+      "media": "word/media/image12.png",
+      "url": "https://mathexam.space/b/oge26-1/58/",
+      "expected_url": "https://mathexam.space/b/oge26-1/58/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 1029,
+      "drawing_index": 1,
+      "rid": "rId66",
+      "media": "word/media/image11.png",
+      "url": "https://mathexam.space/b/oge26-1/59/",
+      "expected_url": "https://mathexam.space/b/oge26-1/59/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 1055,
+      "drawing_index": 1,
+      "rid": "rId65",
+      "media": "word/media/image10.png",
+      "url": "https://mathexam.space/b/oge26-1/60/",
+      "expected_url": "https://mathexam.space/b/oge26-1/60/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 1080,
+      "drawing_index": 1,
+      "rid": "rId64",
+      "media": "word/media/image8.png",
+      "url": "https://mathexam.space/b/oge26-1/71/",
+      "expected_url": "https://mathexam.space/b/oge26-1/71/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 1111,
+      "drawing_index": 1,
+      "rid": "rId63",
+      "media": "word/media/image7.png",
+      "url": "https://mathexam.space/b/oge26-1/61/",
+      "expected_url": "https://mathexam.space/b/oge26-1/61/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 1140,
+      "drawing_index": 1,
+      "rid": "rId62",
+      "media": "word/media/image6.png",
+      "url": "https://mathexam.space/b/oge26-1/62/",
+      "expected_url": "https://mathexam.space/b/oge26-1/62/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 1167,
+      "drawing_index": 1,
+      "rid": "rId61",
+      "media": "word/media/image5.png",
+      "url": "https://mathexam.space/b/oge26-1/63/",
+      "expected_url": "https://mathexam.space/b/oge26-1/63/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 1194,
+      "drawing_index": 1,
+      "rid": "rId60",
+      "media": "word/media/image4.png",
+      "url": "https://mathexam.space/b/oge26-1/64/",
+      "expected_url": "https://mathexam.space/b/oge26-1/64/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 1221,
+      "drawing_index": 1,
+      "rid": "rId59",
+      "media": "word/media/image3.png",
+      "url": "https://mathexam.space/b/oge26-1/65/",
+      "expected_url": "https://mathexam.space/b/oge26-1/65/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 1251,
+      "drawing_index": 1,
+      "rid": "rId58",
+      "media": "word/media/image2.png",
+      "url": "https://mathexam.space/b/oge26-1/66/",
+      "expected_url": "https://mathexam.space/b/oge26-1/66/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 1393,
+      "drawing_index": 1,
+      "rid": "rId29",
+      "media": "word/media/image1.png",
+      "url": "https://mathexam.space/b/oge26-1/52/",
+      "expected_url": "https://mathexam.space/b/oge26-1/52/",
+      "source_placement_matches": true
+    }
+  ],
+  "pdf_qr": [
+    {
+      "page": 8,
+      "url": "https://mathexam.space/b/oge26-1/14/",
+      "rect": [
+        263.45001220703125,
+        259.0007629394531,
+        331.8500061035156,
+        327.4007568359375
+      ],
+      "printed_width_mm": 24.13,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 8,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/14/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 9,
+      "url": "https://mathexam.space/b/oge26-1/19/",
+      "rect": [
+        263.45001220703125,
+        164.65078735351562,
+        331.8500061035156,
+        233.05078125
+      ],
+      "printed_width_mm": 24.13,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 9,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/19/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 11,
+      "url": "https://mathexam.space/b/oge26-1/42/",
+      "rect": [
+        263.45001220703125,
+        164.65078735351562,
+        331.8500061035156,
+        233.05078125
+      ],
+      "printed_width_mm": 24.13,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 11,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/42/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 13,
+      "url": "https://mathexam.space/b/oge26-1/05/",
+      "rect": [
+        267.79998779296875,
+        215.45074462890625,
+        327.54998779296875,
+        275.20074462890625
+      ],
+      "printed_width_mm": 21.08,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 13,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/05/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 13,
+      "url": "https://mathexam.space/b/oge26-1/07/",
+      "rect": [
+        267.79998779296875,
+        336.60076904296875,
+        327.54998779296875,
+        396.35076904296875
+      ],
+      "printed_width_mm": 21.08,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 13,
+      "source_order": 2,
+      "expected_url": "https://mathexam.space/b/oge26-1/07/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 16,
+      "url": "https://mathexam.space/b/oge26-1/09/",
+      "rect": [
+        412.8500061035156,
+        412.1507873535156,
+        459.6499938964844,
+        458.9507751464844
+      ],
+      "printed_width_mm": 16.51,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 16,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/09/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 18,
+      "url": "https://mathexam.space/b/oge26-1/10/",
+      "rect": [
+        412.8500061035156,
+        388.6507873535156,
+        459.6499938964844,
+        435.4507751464844
+      ],
+      "printed_width_mm": 16.51,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 18,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/10/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 19,
+      "url": "https://mathexam.space/b/oge26-1/13/",
+      "rect": [
+        412.8500061035156,
+        498.15081787109375,
+        459.6499938964844,
+        544.9508056640625
+      ],
+      "printed_width_mm": 16.51,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 19,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/13/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 21,
+      "url": "https://mathexam.space/b/oge26-1/11/",
+      "rect": [
+        412.8500061035156,
+        383.50079345703125,
+        459.6499938964844,
+        430.30078125
+      ],
+      "printed_width_mm": 16.51,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 21,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/11/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 22,
+      "url": "https://mathexam.space/b/oge26-1/06/",
+      "rect": [
+        412.8500061035156,
+        654.4507446289062,
+        459.6499938964844,
+        701.250732421875
+      ],
+      "printed_width_mm": 16.51,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 22,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/06/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 24,
+      "url": "https://mathexam.space/b/oge26-1/04/",
+      "rect": [
+        412.8500061035156,
+        242.3507537841797,
+        459.6499938964844,
+        289.1507568359375
+      ],
+      "printed_width_mm": 16.51,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 24,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/04/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 25,
+      "url": "https://mathexam.space/b/oge26-1/12/",
+      "rect": [
+        412.8500061035156,
+        328.50079345703125,
+        459.6499938964844,
+        375.30078125
+      ],
+      "printed_width_mm": 16.51,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 25,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/12/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 27,
+      "url": "https://mathexam.space/b/oge26-1/08/",
+      "rect": [
+        412.8500061035156,
+        106.60075378417969,
+        459.6499938964844,
+        153.4007568359375
+      ],
+      "printed_width_mm": 16.51,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 27,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/08/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 29,
+      "url": "https://mathexam.space/b/oge26-1/67/",
+      "rect": [
+        267.8999938964844,
+        197.45079040527344,
+        327.4499816894531,
+        257.00079345703125
+      ],
+      "printed_width_mm": 21.01,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 29,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/67/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 30,
+      "url": "https://mathexam.space/b/oge26-1/68/",
+      "rect": [
+        267.8999938964844,
+        491.05078125,
+        327.4499816894531,
+        550.6007690429688
+      ],
+      "printed_width_mm": 21.01,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 30,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/68/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 32,
+      "url": "https://mathexam.space/b/oge26-1/69/",
+      "rect": [
+        267.8999938964844,
+        147.20079040527344,
+        327.4499816894531,
+        206.75079345703125
+      ],
+      "printed_width_mm": 21.01,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 32,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/69/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 33,
+      "url": "https://mathexam.space/b/oge26-1/70/",
+      "rect": [
+        267.8999938964844,
+        690.55078125,
+        327.4499816894531,
+        750.1007690429688
+      ],
+      "printed_width_mm": 21.01,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 33,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/70/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 35,
+      "url": "https://mathexam.space/b/oge26-1/53/",
+      "rect": [
+        267.8999938964844,
+        421.4507751464844,
+        327.4499816894531,
+        481.0007629394531
+      ],
+      "printed_width_mm": 21.01,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 35,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/53/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 37,
+      "url": "https://mathexam.space/b/oge26-1/54/",
+      "rect": [
+        267.8999938964844,
+        322.10076904296875,
+        327.4499816894531,
+        381.6507568359375
+      ],
+      "printed_width_mm": 21.01,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 37,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/54/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 38,
+      "url": "https://mathexam.space/b/oge26-1/55/",
+      "rect": [
+        267.8999938964844,
+        635.1508178710938,
+        327.4499816894531,
+        694.7008056640625
+      ],
+      "printed_width_mm": 21.01,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 38,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/55/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 43,
+      "url": "https://mathexam.space/b/oge26-1/56/",
+      "rect": [
+        267.8999938964844,
+        448.7007751464844,
+        327.4499816894531,
+        508.2507629394531
+      ],
+      "printed_width_mm": 21.01,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 43,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/56/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 47,
+      "url": "https://mathexam.space/b/oge26-1/57/",
+      "rect": [
+        267.8999938964844,
+        147.20079040527344,
+        327.4499816894531,
+        206.75079345703125
+      ],
+      "printed_width_mm": 21.01,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 47,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/57/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 49,
+      "url": "https://mathexam.space/b/oge26-1/02/",
+      "rect": [
+        267.8999938964844,
+        313.4507751464844,
+        327.4499816894531,
+        373.0007629394531
+      ],
+      "printed_width_mm": 21.01,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 49,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/02/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 50,
+      "url": "https://mathexam.space/b/oge26-1/58/",
+      "rect": [
+        267.8999938964844,
+        606.4008178710938,
+        327.4499816894531,
+        665.9508056640625
+      ],
+      "printed_width_mm": 21.01,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 50,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/58/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 52,
+      "url": "https://mathexam.space/b/oge26-1/59/",
+      "rect": [
+        267.8999938964844,
+        292.30078125,
+        327.4499816894531,
+        351.85076904296875
+      ],
+      "printed_width_mm": 21.01,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 52,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/59/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 53,
+      "url": "https://mathexam.space/b/oge26-1/60/",
+      "rect": [
+        267.8999938964844,
+        686.05078125,
+        327.4499816894531,
+        745.6007690429688
+      ],
+      "printed_width_mm": 21.01,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 53,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/60/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 54,
+      "url": "https://mathexam.space/b/oge26-1/71/",
+      "rect": [
+        267.8999938964844,
+        710.2507934570312,
+        327.4499816894531,
+        769.80078125
+      ],
+      "printed_width_mm": 21.01,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 54,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/71/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 56,
+      "url": "https://mathexam.space/b/oge26-1/61/",
+      "rect": [
+        267.8999938964844,
+        429.4007873535156,
+        327.4499816894531,
+        488.9507751464844
+      ],
+      "printed_width_mm": 21.01,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 56,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/61/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 58,
+      "url": "https://mathexam.space/b/oge26-1/62/",
+      "rect": [
+        267.8999938964844,
+        95.75077819824219,
+        327.4499816894531,
+        155.30078125
+      ],
+      "printed_width_mm": 21.01,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 58,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/62/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 59,
+      "url": "https://mathexam.space/b/oge26-1/63/",
+      "rect": [
+        267.8999938964844,
+        607.6508178710938,
+        327.4499816894531,
+        667.2008056640625
+      ],
+      "printed_width_mm": 21.01,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 59,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/63/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 61,
+      "url": "https://mathexam.space/b/oge26-1/64/",
+      "rect": [
+        267.8999938964844,
+        256.2008056640625,
+        327.4499816894531,
+        315.75079345703125
+      ],
+      "printed_width_mm": 21.01,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 61,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/64/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 62,
+      "url": "https://mathexam.space/b/oge26-1/65/",
+      "rect": [
+        267.8999938964844,
+        613.4008178710938,
+        327.4499816894531,
+        672.9508056640625
+      ],
+      "printed_width_mm": 21.01,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 62,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/65/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 64,
+      "url": "https://mathexam.space/b/oge26-1/66/",
+      "rect": [
+        267.8999938964844,
+        458.35076904296875,
+        327.4499816894531,
+        517.9007568359375
+      ],
+      "printed_width_mm": 21.01,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 64,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/66/",
+      "source_placement_matches": true
+    },
+    {
+      "page": 72,
+      "url": "https://mathexam.space/b/oge26-1/52/",
+      "rect": [
+        252.3000030517578,
+        460.6507568359375,
+        343.0,
+        551.3507690429688
+      ],
+      "printed_width_mm": 32.0,
+      "same_page_link": true,
+      "rendered_crop_decode_dpi": {
+        "150": true,
+        "300": true
+      },
+      "source_page": 72,
+      "source_order": 1,
+      "expected_url": "https://mathexam.space/b/oge26-1/52/",
+      "source_placement_matches": true
+    }
+  ],
+  "pdf_links": [
+    {
+      "page": 2,
+      "url": "https://mathexam.space/b/oge26-1/01/"
+    },
+    {
+      "page": 3,
+      "url": "https://mathexam.space/b/oge26-1/01/"
+    },
+    {
+      "page": 8,
+      "url": "https://mathexam.space/b/oge26-1/14/"
+    },
+    {
+      "page": 8,
+      "url": "https://mathexam.space/b/oge26-1/15/"
+    },
+    {
+      "page": 8,
+      "url": "https://mathexam.space/b/oge26-1/41/"
+    },
+    {
+      "page": 9,
+      "url": "https://mathexam.space/b/oge26-1/18/"
+    },
+    {
+      "page": 9,
+      "url": "https://mathexam.space/b/oge26-1/23/"
+    },
+    {
+      "page": 9,
+      "url": "https://mathexam.space/b/oge26-1/24/"
+    },
+    {
+      "page": 9,
+      "url": "https://mathexam.space/b/oge26-1/22/"
+    },
+    {
+      "page": 9,
+      "url": "https://mathexam.space/b/oge26-1/30/"
+    },
+    {
+      "page": 9,
+      "url": "https://mathexam.space/b/oge26-1/32/"
+    },
+    {
+      "page": 9,
+      "url": "https://mathexam.space/b/oge26-1/31/"
+    },
+    {
+      "page": 9,
+      "url": "https://mathexam.space/b/oge26-1/28/"
+    },
+    {
+      "page": 9,
+      "url": "https://mathexam.space/b/oge26-1/29/"
+    },
+    {
+      "page": 9,
+      "url": "https://mathexam.space/b/oge26-1/27/"
+    },
+    {
+      "page": 9,
+      "url": "https://mathexam.space/b/oge26-1/26/"
+    },
+    {
+      "page": 9,
+      "url": "https://mathexam.space/b/oge26-1/25/"
+    },
+    {
+      "page": 9,
+      "url": "https://mathexam.space/b/oge26-1/21/"
+    },
+    {
+      "page": 9,
+      "url": "https://mathexam.space/b/oge26-1/20/"
+    },
+    {
+      "page": 9,
+      "url": "https://mathexam.space/b/oge26-1/38/"
+    },
+    {
+      "page": 9,
+      "url": "https://mathexam.space/b/oge26-1/35/"
+    },
+    {
+      "page": 9,
+      "url": "https://mathexam.space/b/oge26-1/36/"
+    },
+    {
+      "page": 9,
+      "url": "https://mathexam.space/b/oge26-1/37/"
+    },
+    {
+      "page": 9,
+      "url": "https://mathexam.space/b/oge26-1/33/"
+    },
+    {
+      "page": 9,
+      "url": "https://mathexam.space/b/oge26-1/34/"
+    },
+    {
+      "page": 9,
+      "url": "https://mathexam.space/b/oge26-1/19/"
+    },
+    {
+      "page": 10,
+      "url": "https://mathexam.space/b/oge26-1/50/"
+    },
+    {
+      "page": 10,
+      "url": "https://mathexam.space/b/oge26-1/51/"
+    },
+    {
+      "page": 10,
+      "url": "https://mathexam.space/b/oge26-1/49/"
+    },
+    {
+      "page": 10,
+      "url": "https://mathexam.space/b/oge26-1/39/"
+    },
+    {
+      "page": 10,
+      "url": "https://mathexam.space/b/oge26-1/40/"
+    },
+    {
+      "page": 10,
+      "url": "https://mathexam.space/b/oge26-1/16/"
+    },
+    {
+      "page": 10,
+      "url": "https://mathexam.space/b/oge26-1/17/"
+    },
+    {
+      "page": 11,
+      "url": "https://mathexam.space/b/oge26-1/03/"
+    },
+    {
+      "page": 11,
+      "url": "https://mathexam.space/b/oge26-1/45/"
+    },
+    {
+      "page": 11,
+      "url": "https://mathexam.space/b/oge26-1/48/"
+    },
+    {
+      "page": 11,
+      "url": "https://mathexam.space/b/oge26-1/43/"
+    },
+    {
+      "page": 11,
+      "url": "https://mathexam.space/b/oge26-1/44/"
+    },
+    {
+      "page": 11,
+      "url": "https://mathexam.space/b/oge26-1/47/"
+    },
+    {
+      "page": 11,
+      "url": "https://mathexam.space/b/oge26-1/46/"
+    },
+    {
+      "page": 11,
+      "url": "https://mathexam.space/b/oge26-1/42/"
+    },
+    {
+      "page": 12,
+      "url": "https://mathexam.space/b/oge26-1/05/"
+    },
+    {
+      "page": 12,
+      "url": "https://mathexam.space/b/oge26-1/44/"
+    },
+    {
+      "page": 12,
+      "url": "https://mathexam.space/b/oge26-1/49/"
+    },
+    {
+      "page": 12,
+      "url": "https://mathexam.space/b/oge26-1/40/"
+    },
+    {
+      "page": 12,
+      "url": "https://mathexam.space/b/oge26-1/17/"
+    },
+    {
+      "page": 12,
+      "url": "https://mathexam.space/b/oge26-1/19/"
+    },
+    {
+      "page": 12,
+      "url": "https://mathexam.space/b/oge26-1/41/"
+    },
+    {
+      "page": 13,
+      "url": "https://mathexam.space/b/oge26-1/07/"
+    },
+    {
+      "page": 13,
+      "url": "https://mathexam.space/b/oge26-1/05/"
+    },
+    {
+      "page": 16,
+      "url": "https://mathexam.space/b/oge26-1/09/"
+    },
+    {
+      "page": 18,
+      "url": "https://mathexam.space/b/oge26-1/10/"
+    },
+    {
+      "page": 19,
+      "url": "https://mathexam.space/b/oge26-1/13/"
+    },
+    {
+      "page": 21,
+      "url": "https://mathexam.space/b/oge26-1/11/"
+    },
+    {
+      "page": 22,
+      "url": "https://mathexam.space/b/oge26-1/06/"
+    },
+    {
+      "page": 24,
+      "url": "https://mathexam.space/b/oge26-1/04/"
+    },
+    {
+      "page": 25,
+      "url": "https://mathexam.space/b/oge26-1/12/"
+    },
+    {
+      "page": 27,
+      "url": "https://mathexam.space/b/oge26-1/08/"
+    },
+    {
+      "page": 29,
+      "url": "https://mathexam.space/b/oge26-1/67/"
+    },
+    {
+      "page": 30,
+      "url": "https://mathexam.space/b/oge26-1/68/"
+    },
+    {
+      "page": 32,
+      "url": "https://mathexam.space/b/oge26-1/69/"
+    },
+    {
+      "page": 33,
+      "url": "https://mathexam.space/b/oge26-1/70/"
+    },
+    {
+      "page": 35,
+      "url": "https://mathexam.space/b/oge26-1/53/"
+    },
+    {
+      "page": 37,
+      "url": "https://mathexam.space/b/oge26-1/54/"
+    },
+    {
+      "page": 38,
+      "url": "https://mathexam.space/b/oge26-1/55/"
+    },
+    {
+      "page": 43,
+      "url": "https://mathexam.space/b/oge26-1/56/"
+    },
+    {
+      "page": 47,
+      "url": "https://mathexam.space/b/oge26-1/57/"
+    },
+    {
+      "page": 49,
+      "url": "https://mathexam.space/b/oge26-1/02/"
+    },
+    {
+      "page": 50,
+      "url": "https://mathexam.space/b/oge26-1/58/"
+    },
+    {
+      "page": 52,
+      "url": "https://mathexam.space/b/oge26-1/59/"
+    },
+    {
+      "page": 53,
+      "url": "https://mathexam.space/b/oge26-1/60/"
+    },
+    {
+      "page": 54,
+      "url": "https://mathexam.space/b/oge26-1/71/"
+    },
+    {
+      "page": 56,
+      "url": "https://mathexam.space/b/oge26-1/61/"
+    },
+    {
+      "page": 58,
+      "url": "https://mathexam.space/b/oge26-1/62/"
+    },
+    {
+      "page": 59,
+      "url": "https://mathexam.space/b/oge26-1/63/"
+    },
+    {
+      "page": 61,
+      "url": "https://mathexam.space/b/oge26-1/64/"
+    },
+    {
+      "page": 62,
+      "url": "https://mathexam.space/b/oge26-1/65/"
+    },
+    {
+      "page": 64,
+      "url": "https://mathexam.space/b/oge26-1/66/"
+    },
+    {
+      "page": 72,
+      "url": "https://mathexam.space/b/oge26-1/52/"
+    }
+  ],
+  "docx_link_placements": [
+    {
+      "paragraph": 4,
+      "hyperlink_index": 1,
+      "rid": "rId30",
+      "url": "https://mathexam.space/b/oge26-1/01/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 23,
+      "hyperlink_index": 1,
+      "rid": "rId30",
+      "url": "https://mathexam.space/b/oge26-1/01/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 63,
+      "hyperlink_index": 1,
+      "rid": "rId111",
+      "url": "https://mathexam.space/b/oge26-1/14/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 68,
+      "hyperlink_index": 1,
+      "rid": "rId113",
+      "url": "https://mathexam.space/b/oge26-1/41/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 69,
+      "hyperlink_index": 1,
+      "rid": "rId114",
+      "url": "https://mathexam.space/b/oge26-1/15/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 72,
+      "hyperlink_index": 1,
+      "rid": "rId115",
+      "url": "https://mathexam.space/b/oge26-1/19/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 77,
+      "hyperlink_index": 1,
+      "rid": "rId117",
+      "url": "https://mathexam.space/b/oge26-1/34/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 79,
+      "hyperlink_index": 1,
+      "rid": "rId118",
+      "url": "https://mathexam.space/b/oge26-1/33/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 79,
+      "hyperlink_index": 2,
+      "rid": "rId119",
+      "url": "https://mathexam.space/b/oge26-1/37/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 79,
+      "hyperlink_index": 3,
+      "rid": "rId120",
+      "url": "https://mathexam.space/b/oge26-1/36/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 81,
+      "hyperlink_index": 1,
+      "rid": "rId121",
+      "url": "https://mathexam.space/b/oge26-1/35/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 83,
+      "hyperlink_index": 1,
+      "rid": "rId122",
+      "url": "https://mathexam.space/b/oge26-1/38/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 85,
+      "hyperlink_index": 1,
+      "rid": "rId123",
+      "url": "https://mathexam.space/b/oge26-1/20/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 85,
+      "hyperlink_index": 2,
+      "rid": "rId124",
+      "url": "https://mathexam.space/b/oge26-1/21/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 87,
+      "hyperlink_index": 1,
+      "rid": "rId125",
+      "url": "https://mathexam.space/b/oge26-1/25/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 89,
+      "hyperlink_index": 1,
+      "rid": "rId126",
+      "url": "https://mathexam.space/b/oge26-1/26/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 91,
+      "hyperlink_index": 1,
+      "rid": "rId127",
+      "url": "https://mathexam.space/b/oge26-1/27/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 97,
+      "hyperlink_index": 1,
+      "rid": "rId128",
+      "url": "https://mathexam.space/b/oge26-1/29/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 99,
+      "hyperlink_index": 1,
+      "rid": "rId129",
+      "url": "https://mathexam.space/b/oge26-1/28/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 101,
+      "hyperlink_index": 1,
+      "rid": "rId130",
+      "url": "https://mathexam.space/b/oge26-1/31/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 103,
+      "hyperlink_index": 1,
+      "rid": "rId131",
+      "url": "https://mathexam.space/b/oge26-1/32/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 105,
+      "hyperlink_index": 1,
+      "rid": "rId132",
+      "url": "https://mathexam.space/b/oge26-1/30/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 107,
+      "hyperlink_index": 1,
+      "rid": "rId133",
+      "url": "https://mathexam.space/b/oge26-1/22/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 109,
+      "hyperlink_index": 1,
+      "rid": "rId134",
+      "url": "https://mathexam.space/b/oge26-1/24/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 111,
+      "hyperlink_index": 1,
+      "rid": "rId135",
+      "url": "https://mathexam.space/b/oge26-1/23/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 113,
+      "hyperlink_index": 1,
+      "rid": "rId136",
+      "url": "https://mathexam.space/b/oge26-1/18/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 116,
+      "hyperlink_index": 1,
+      "rid": "rId137",
+      "url": "https://mathexam.space/b/oge26-1/17/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 117,
+      "hyperlink_index": 1,
+      "rid": "rId138",
+      "url": "https://mathexam.space/b/oge26-1/16/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 120,
+      "hyperlink_index": 1,
+      "rid": "rId139",
+      "url": "https://mathexam.space/b/oge26-1/40/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 121,
+      "hyperlink_index": 1,
+      "rid": "rId140",
+      "url": "https://mathexam.space/b/oge26-1/39/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 124,
+      "hyperlink_index": 1,
+      "rid": "rId141",
+      "url": "https://mathexam.space/b/oge26-1/49/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 125,
+      "hyperlink_index": 1,
+      "rid": "rId142",
+      "url": "https://mathexam.space/b/oge26-1/51/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 126,
+      "hyperlink_index": 1,
+      "rid": "rId143",
+      "url": "https://mathexam.space/b/oge26-1/50/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 129,
+      "hyperlink_index": 1,
+      "rid": "rId144",
+      "url": "https://mathexam.space/b/oge26-1/42/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 134,
+      "hyperlink_index": 1,
+      "rid": "rId146",
+      "url": "https://mathexam.space/b/oge26-1/46/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 136,
+      "hyperlink_index": 1,
+      "rid": "rId147",
+      "url": "https://mathexam.space/b/oge26-1/47/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 138,
+      "hyperlink_index": 1,
+      "rid": "rId148",
+      "url": "https://mathexam.space/b/oge26-1/44/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 140,
+      "hyperlink_index": 1,
+      "rid": "rId149",
+      "url": "https://mathexam.space/b/oge26-1/43/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 142,
+      "hyperlink_index": 1,
+      "rid": "rId150",
+      "url": "https://mathexam.space/b/oge26-1/48/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 144,
+      "hyperlink_index": 1,
+      "rid": "rId151",
+      "url": "https://mathexam.space/b/oge26-1/45/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 146,
+      "hyperlink_index": 1,
+      "rid": "rId152",
+      "url": "https://mathexam.space/b/oge26-1/03/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 151,
+      "hyperlink_index": 1,
+      "rid": "rId113",
+      "url": "https://mathexam.space/b/oge26-1/41/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 153,
+      "hyperlink_index": 1,
+      "rid": "rId115",
+      "url": "https://mathexam.space/b/oge26-1/19/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 155,
+      "hyperlink_index": 1,
+      "rid": "rId137",
+      "url": "https://mathexam.space/b/oge26-1/17/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 157,
+      "hyperlink_index": 1,
+      "rid": "rId139",
+      "url": "https://mathexam.space/b/oge26-1/40/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 159,
+      "hyperlink_index": 1,
+      "rid": "rId141",
+      "url": "https://mathexam.space/b/oge26-1/49/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 161,
+      "hyperlink_index": 1,
+      "rid": "rId148",
+      "url": "https://mathexam.space/b/oge26-1/44/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 163,
+      "hyperlink_index": 1,
+      "rid": "rId107",
+      "url": "https://mathexam.space/b/oge26-1/05/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 168,
+      "hyperlink_index": 1,
+      "rid": "rId107",
+      "url": "https://mathexam.space/b/oge26-1/05/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 170,
+      "hyperlink_index": 1,
+      "rid": "rId109",
+      "url": "https://mathexam.space/b/oge26-1/07/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 258,
+      "hyperlink_index": 1,
+      "rid": "rId84",
+      "url": "https://mathexam.space/b/oge26-1/09/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 289,
+      "hyperlink_index": 1,
+      "rid": "rId87",
+      "url": "https://mathexam.space/b/oge26-1/10/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 340,
+      "hyperlink_index": 1,
+      "rid": "rId90",
+      "url": "https://mathexam.space/b/oge26-1/13/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 386,
+      "hyperlink_index": 1,
+      "rid": "rId93",
+      "url": "https://mathexam.space/b/oge26-1/11/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 410,
+      "hyperlink_index": 1,
+      "rid": "rId96",
+      "url": "https://mathexam.space/b/oge26-1/06/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 474,
+      "hyperlink_index": 1,
+      "rid": "rId99",
+      "url": "https://mathexam.space/b/oge26-1/04/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 500,
+      "hyperlink_index": 1,
+      "rid": "rId102",
+      "url": "https://mathexam.space/b/oge26-1/12/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 541,
+      "hyperlink_index": 1,
+      "rid": "rId105",
+      "url": "https://mathexam.space/b/oge26-1/08/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 592,
+      "hyperlink_index": 1,
+      "rid": "rId37",
+      "url": "https://mathexam.space/b/oge26-1/67/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 626,
+      "hyperlink_index": 1,
+      "rid": "rId38",
+      "url": "https://mathexam.space/b/oge26-1/68/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 661,
+      "hyperlink_index": 1,
+      "rid": "rId39",
+      "url": "https://mathexam.space/b/oge26-1/69/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 703,
+      "hyperlink_index": 1,
+      "rid": "rId40",
+      "url": "https://mathexam.space/b/oge26-1/70/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 739,
+      "hyperlink_index": 1,
+      "rid": "rId41",
+      "url": "https://mathexam.space/b/oge26-1/53/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 773,
+      "hyperlink_index": 1,
+      "rid": "rId42",
+      "url": "https://mathexam.space/b/oge26-1/54/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 805,
+      "hyperlink_index": 1,
+      "rid": "rId43",
+      "url": "https://mathexam.space/b/oge26-1/55/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 888,
+      "hyperlink_index": 1,
+      "rid": "rId44",
+      "url": "https://mathexam.space/b/oge26-1/56/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 945,
+      "hyperlink_index": 1,
+      "rid": "rId45",
+      "url": "https://mathexam.space/b/oge26-1/57/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 975,
+      "hyperlink_index": 1,
+      "rid": "rId46",
+      "url": "https://mathexam.space/b/oge26-1/02/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 1001,
+      "hyperlink_index": 1,
+      "rid": "rId47",
+      "url": "https://mathexam.space/b/oge26-1/58/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 1028,
+      "hyperlink_index": 1,
+      "rid": "rId48",
+      "url": "https://mathexam.space/b/oge26-1/59/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 1054,
+      "hyperlink_index": 1,
+      "rid": "rId49",
+      "url": "https://mathexam.space/b/oge26-1/60/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 1079,
+      "hyperlink_index": 1,
+      "rid": "rId50",
+      "url": "https://mathexam.space/b/oge26-1/71/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 1110,
+      "hyperlink_index": 1,
+      "rid": "rId51",
+      "url": "https://mathexam.space/b/oge26-1/61/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 1139,
+      "hyperlink_index": 1,
+      "rid": "rId52",
+      "url": "https://mathexam.space/b/oge26-1/62/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 1166,
+      "hyperlink_index": 1,
+      "rid": "rId53",
+      "url": "https://mathexam.space/b/oge26-1/63/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 1193,
+      "hyperlink_index": 1,
+      "rid": "rId54",
+      "url": "https://mathexam.space/b/oge26-1/64/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 1220,
+      "hyperlink_index": 1,
+      "rid": "rId55",
+      "url": "https://mathexam.space/b/oge26-1/65/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 1250,
+      "hyperlink_index": 1,
+      "rid": "rId56",
+      "url": "https://mathexam.space/b/oge26-1/66/",
+      "source_placement_matches": true
+    },
+    {
+      "paragraph": 1392,
+      "hyperlink_index": 1,
+      "rid": "rId57",
+      "url": "https://mathexam.space/b/oge26-1/52/",
+      "source_placement_matches": true
+    }
+  ],
+  "docx_visible_urls": [
+    {
+      "paragraph": 4,
+      "url": "https://mathexam.space/b/oge26-1/01/"
+    },
+    {
+      "paragraph": 23,
+      "url": "https://mathexam.space/b/oge26-1/01/"
+    },
+    {
+      "paragraph": 36,
+      "url": "https://mathexam.space/b/oge26-1/52/"
+    },
+    {
+      "paragraph": 63,
+      "url": "https://mathexam.space/b/oge26-1/14/"
+    },
+    {
+      "paragraph": 72,
+      "url": "https://mathexam.space/b/oge26-1/19/"
+    },
+    {
+      "paragraph": 129,
+      "url": "https://mathexam.space/b/oge26-1/42/"
+    },
+    {
+      "paragraph": 168,
+      "url": "https://mathexam.space/b/oge26-1/05/"
+    },
+    {
+      "paragraph": 170,
+      "url": "https://mathexam.space/b/oge26-1/07/"
+    },
+    {
+      "paragraph": 258,
+      "url": "https://mathexam.space/b/oge26-1/09/"
+    },
+    {
+      "paragraph": 289,
+      "url": "https://mathexam.space/b/oge26-1/10/"
+    },
+    {
+      "paragraph": 340,
+      "url": "https://mathexam.space/b/oge26-1/13/"
+    },
+    {
+      "paragraph": 386,
+      "url": "https://mathexam.space/b/oge26-1/11/"
+    },
+    {
+      "paragraph": 410,
+      "url": "https://mathexam.space/b/oge26-1/06/"
+    },
+    {
+      "paragraph": 474,
+      "url": "https://mathexam.space/b/oge26-1/04/"
+    },
+    {
+      "paragraph": 500,
+      "url": "https://mathexam.space/b/oge26-1/12/"
+    },
+    {
+      "paragraph": 541,
+      "url": "https://mathexam.space/b/oge26-1/08/"
+    },
+    {
+      "paragraph": 592,
+      "url": "https://mathexam.space/b/oge26-1/67/"
+    },
+    {
+      "paragraph": 626,
+      "url": "https://mathexam.space/b/oge26-1/68/"
+    },
+    {
+      "paragraph": 661,
+      "url": "https://mathexam.space/b/oge26-1/69/"
+    },
+    {
+      "paragraph": 703,
+      "url": "https://mathexam.space/b/oge26-1/70/"
+    },
+    {
+      "paragraph": 739,
+      "url": "https://mathexam.space/b/oge26-1/53/"
+    },
+    {
+      "paragraph": 773,
+      "url": "https://mathexam.space/b/oge26-1/54/"
+    },
+    {
+      "paragraph": 805,
+      "url": "https://mathexam.space/b/oge26-1/55/"
+    },
+    {
+      "paragraph": 888,
+      "url": "https://mathexam.space/b/oge26-1/56/"
+    },
+    {
+      "paragraph": 945,
+      "url": "https://mathexam.space/b/oge26-1/57/"
+    },
+    {
+      "paragraph": 975,
+      "url": "https://mathexam.space/b/oge26-1/02/"
+    },
+    {
+      "paragraph": 1001,
+      "url": "https://mathexam.space/b/oge26-1/58/"
+    },
+    {
+      "paragraph": 1028,
+      "url": "https://mathexam.space/b/oge26-1/59/"
+    },
+    {
+      "paragraph": 1054,
+      "url": "https://mathexam.space/b/oge26-1/60/"
+    },
+    {
+      "paragraph": 1079,
+      "url": "https://mathexam.space/b/oge26-1/71/"
+    },
+    {
+      "paragraph": 1110,
+      "url": "https://mathexam.space/b/oge26-1/61/"
+    },
+    {
+      "paragraph": 1139,
+      "url": "https://mathexam.space/b/oge26-1/62/"
+    },
+    {
+      "paragraph": 1166,
+      "url": "https://mathexam.space/b/oge26-1/63/"
+    },
+    {
+      "paragraph": 1193,
+      "url": "https://mathexam.space/b/oge26-1/64/"
+    },
+    {
+      "paragraph": 1220,
+      "url": "https://mathexam.space/b/oge26-1/65/"
+    },
+    {
+      "paragraph": 1250,
+      "url": "https://mathexam.space/b/oge26-1/66/"
+    },
+    {
+      "paragraph": 1392,
+      "url": "https://mathexam.space/b/oge26-1/52/"
+    }
+  ]
+}

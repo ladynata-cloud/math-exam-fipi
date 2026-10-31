@@ -1408,6 +1408,8 @@ function renderStep(mod,host,preset,onNew,onReveal){
 function renderMarathon(mod,host){
   host.innerHTML='';
   const score={solved:0,tries:0},results=el('details','minimal-results');results.appendChild(el('summary',null,'Мои результаты · подтипы'));
+  const progressKey='mathExam.oge22.practice.v1';
+  try{const saved=JSON.parse(localStorage.getItem(progressKey)||'{}')[mod.id];if(saved)for(const k of ['solved','tries'])if(Number.isSafeInteger(saved[k])&&saved[k]>=0)score[k]=saved[k];}catch(e){}
   const scoreEl=el('div','score');results.appendChild(scoreEl);
   let subFilter=null;const subs=mod.subs||[{k:null,l:'Все'}];
   if(subs.length>1){const chipRow=el('div','sub-chips');subs.forEach(s=>{const c=el('button','chip'+(s.k===subFilter?' chip-on':''),s.l);c.type='button';c.onclick=()=>{subFilter=s.k;[...chipRow.querySelectorAll('.chip')].forEach(x=>x.classList.remove('chip-on'));c.classList.add('chip-on');newProblem();};chipRow.appendChild(c);});results.appendChild(chipRow);}
@@ -1421,7 +1423,16 @@ function renderMarathon(mod,host){
   const row=el('div','btn-row');host.appendChild(row);const retryRow=el('div','btn-row');host.appendChild(retryRow);
   host.appendChild(el('p','minimal-proof-note','Проверяется ответ. Построение графика и развёрнутое решение выполни в тетради.'));host.appendChild(results);
   let problem,input,peeked,solvedThis=false,helpBuilt=false,stepsBuilt=false;
-  function updScore(){scoreEl.innerHTML=`Решено: <b>${score.solved}</b> · попыток: ${score.tries}`;}
+  function updScore(){
+    scoreEl.innerHTML=`Решено: <b>${score.solved}</b> · попыток: ${score.tries}`;
+    try{
+      let all={};
+      try{all=JSON.parse(localStorage.getItem(progressKey)||'{}');}catch(e){}
+      if(!all||typeof all!=='object'||Array.isArray(all))all={};
+      all[mod.id]={solved:score.solved,tries:score.tries};
+      localStorage.setItem(progressKey,JSON.stringify(all));
+    }catch(e){}
+  }
   function makeInput(){ansHost.innerHTML='';if(mod.answerKind==='atoms'){input=makeAnswerBuilder();ansHost.appendChild(el('div','ans-lab','Ответ:'));ansHost.appendChild(input.el);}else{input=makeValueList(problem.varname);ansHost.appendChild(input.el);}}
   function grade(){if(mod.answerKind==='atoms'){const at=input.getAtoms();if(at===null||at.length===0)return null;return setsEqual(at,problem.atoms);}const vs=input.getVals();if(vs===null||vs.length===0)return null;return valsEqual(vs,problem.vals);}
   function newProblem(){problem=genProblemFiltered(mod,subFilter);host.__problem=problem;peeked=false;solvedThis=false;checkButton.disabled=false;helpBuilt=false;stepsBuilt=false;stmt.innerHTML=statementHtml(problem);makeInput();fb.className='fb';fb.textContent='';retryRow.innerHTML='';helpPanel.hidden=true;hint.setAttribute('aria-expanded','false');solDetails.open=false;stepsHost.innerHTML='';stepsBtn.hidden=false;}
