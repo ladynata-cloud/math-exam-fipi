@@ -156,6 +156,11 @@ without changing existing tasks or invalidating saved attempts.
   integration findings: canonical asset references in seven board wrappers and
   an aggregate browser inventory missing the finance module. The follow-up
   synchronizes those dependencies while retaining the exact equality gates.
+- Replacement-head CI additionally found an event-order gap in an unchanged
+  expressions-board test: editing began before the dialog close event restored
+  focus. The test-only follow-up adds a bounded event/focus prerequisite and
+  preserves all original input/synchronization assertions; production and
+  protocol files remain unchanged.
 - Verification and focused review: `docs/reports/EGE_P13_FINANCE_LESSON_20261101.md`.
 - Tests passed, failed and not run: recorded separately in that report.
 - Scope deviations: none; owner's task-specific Claude refusal is recorded above.

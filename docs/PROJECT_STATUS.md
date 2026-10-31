@@ -17,6 +17,9 @@
   its published head and CI outcome. Initial CI found canonical asset drift in
   seven board wrappers and an outdated aggregate test inventory; the bounded
   follow-up synchronizes them while preserving the existing assertions.
+- A subsequent expressions-board gate now explicitly awaits dialog closure and
+  focus restoration before editing. The bounded test-only correction preserves
+  all original input/synchronization assertions; final CI is tracked in the PR.
 - No merge, auto-merge or production deployment is authorized or claimed for
   this task.
 

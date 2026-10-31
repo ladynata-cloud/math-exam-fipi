@@ -256,7 +256,19 @@ async function ownership(teacher, student, studentControls) {
   await previousFrame.waitForFunction(count => window.__profileGateApplied > count, appliedBefore, { polling: 50 });
   assert.deepEqual(await snapshot(nextFrame), before, 'control handoff preserves current work');
   await synchronized(nextFrame, previousFrame, 'control handoff publication and observer apply');
+  // Dialog.close() queues a separate close event. Its existing workspace
+  // listener restores focus to openShare; that must finish before an iframe
+  // fill can focus its input and send Delete (the empty-fill keyboard action).
+  await teacher.evaluate(() => {
+    window.__profileGateShareCloseCompleted = false;
+    document.querySelector('#sharePanel').addEventListener('close', () => {
+      window.__profileGateShareCloseCompleted = true;
+    }, { once: true });
+  });
   await teacher.locator('#sharePanel [data-close-panel]').click();
+  await teacher.waitForFunction(() => window.__profileGateShareCloseCompleted === true, null, { polling: 50, timeout: 10000 });
+  assert.equal(await teacher.evaluate(() => !document.querySelector('#sharePanel').open &&
+    document.activeElement === document.querySelector('#openShare')), true, 'share dialog close and focus restoration finish before further editing');
 }
 
 async function run(browser, siteOrigin, boardOrigin, failures) {

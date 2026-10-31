@@ -300,3 +300,38 @@ independent read-only follow-up review confirmed exact order/cache queries for
 changes to the old eight data modules, state, adapter, bridge or server files.
 `git diff --check` passes. Replacement-head CI is recorded in the current PR
 verdict; initial failed runs remain part of the evidence history.
+
+## Board-gate event-order follow-up
+
+On replacement head `3bb83e637e2e541af1b4386274a5f3900e06dbe5`, all four
+other workflows passed, and the main learning-start job passed its financial
+mathematics and finance browser steps. Its expressions-board job failed the
+strict empty-angle-input assertion after a control handoff
+([run41229304755](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41229304755)).
+That CI failure remains recorded; it is not replaced by a local PASS.
+
+The unchanged gate passed once on the original base and once on the candidate
+with Playwright1.62.1 and Chromium140. Those runs do not prove absence of a
+race or classify the CI151 failure as inherited. A diagnostic trace did show
+the relevant event ordering: iframe focus began, then the queued dialog `close`
+event restored focus to the parent button. Playwright's empty fill uses a
+keyboard Delete, so that unawaited focus return can interrupt the action.
+The exact CI151 failing interleaving was not reproduced locally.
+
+The follow-up changes only twelve lines in the test's `ownership()` helper.
+It registers a one-time listener before the real close-button click, waits for
+the concrete close event with a bounded timeout, then asserts that the dialog
+is closed and focus has returned to its opener. All original empty-input,
+validation, same-node, observer and handoff assertions remain. There is no
+fixed sleep, retry, synthetic value repair or production/protocol modification.
+
+The corrected `PROFILE_EXPRESSIONS_BOARD_BROWSER_OK` gate passed once locally,
+including empty input, recovery, grant/revoke, reload, late join, no echo and
+personal-storage isolation. Independent read-only review confirmed the exact
+12-line scope and the stronger event/focus prerequisite. The reviewed test
+SHA256 is `8dccc7dea6262f485ba42e5e39c869e27ff22e2bd3a407a1a7e61a7b1b8a7848`.
+
+The local attempt to install CI's Chromium151.0.7922.34 returned an invalid or
+truncated archive; TLS/trust configuration was unchanged. Final verification
+on that pinned browser is therefore performed by GitHub CI for the next head.
+The report's financial content and core runtime hashes remain unchanged.
