@@ -173,6 +173,44 @@ class EvidenceTests(unittest.TestCase):
                                         {'sourceBase': 'f' * 40})
         self.assertTrue(all(item['status'] == 'NOT_RUN' for item in result.values()))
 
+    def test_v1_paths_keep_the_historical_defaults(self):
+        paths = C.edition_paths(self.root)
+        self.assertEqual(paths['mapping'], self.root / 'scripts/oge-book-edition/urls.json')
+        self.assertEqual(paths['manifest'], self.root / 'book/oge/2026-10-31/v1/manifest.json')
+        self.assertEqual(paths['documents'], self.root / 'docs/reports/oge-book-20261031/document-check.json')
+        self.assertEqual(paths['work'], self.root.parent / 'book-audit-work')
+        self.assertEqual(paths['output'], self.root.parent / 'outputs/oge-book-20261031')
+        self.assertEqual(paths['frozen_directory'], 'frozen')
+
+    def test_v2_requires_separate_explicit_work_and_does_not_select_v1_evidence(self):
+        with self.assertRaisesRegex(ValueError, '--work-dir'):
+            C.edition_paths(self.root, 'v2')
+        with self.assertRaisesRegex(ValueError, 'Unsupported'):
+            C.edition_paths(self.root, 'v3', self.root.parent / 'next')
+        work = self.root.parent / 'separate-v2-work'
+        paths = C.edition_paths(self.root, 'v2', work)
+        self.assertEqual(paths['mapping'], self.root / 'book/oge/2026-10-31/v2/url-map.json')
+        self.assertEqual(paths['manifest'], self.root / 'book/oge/2026-10-31/v2/manifest.json')
+        self.assertEqual(paths['documents'], work / 'document-check.json')
+        self.assertEqual(paths['output'], work / 'deliverables')
+        self.assertEqual(paths['render'], work / 'render-book-v2')
+        self.assertEqual(paths['frozen_directory'], 'frozen-v2')
+        result = C.collect_verification(self.root, [{'sourceUrl': 'https://mathexam.space/'}],
+                                        {'sources': [{'name': 'original.docx', 'sha256': 'e' * 64}]},
+                                        {'sourceBase': 'f' * 40}, 'v2', work)
+        self.assertTrue(all(item['status'] == 'NOT_RUN' for item in result.values()))
+
+    def test_v1_frozen_record_is_not_valid_v2_learner_evidence(self):
+        report = copy.deepcopy(self.report)
+        report['prefix'] = self.prefix
+        report['dependencyEscapes'] = []
+        report['actions'].append({'action': 'immutable-dependencies', 'status': 'PASS'})
+        self.prefix = '/book/oge/2026-10-31/v2'
+        case = self.case(report, version='frozen')
+        self.assertNotEqual(case['status'], 'PASS')
+        self.assertIn('Recorded route/prefix does not match the mapped book target.',
+                      case['provenanceProblems'])
+
     def test_document_caption_evidence_requires_the_exact_approved_delta(self):
         original = {'all_non_url_text_unchanged': True}
         self.assertTrue(C.document_text_evidence_valid(original))

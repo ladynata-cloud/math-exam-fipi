@@ -11,6 +11,15 @@ from fractions import Fraction
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 IDS = {'03','04','06','08','09','10','12','54','55','57','58','59','60','63','65','66','67','68','71'}
 BOOK_BANNER = 'Книжная редакция · 31.10.2026 · v1. Результаты хранятся отдельно в этом браузере. Состав редакции'
+VARIANT_PREFIXES = {
+    'source': '',
+    'frozen': '/book/oge/2026-10-31/v1',
+    'frozen-v2': '/book/oge/2026-10-31/v2',
+}
+BOOK_BANNERS = {
+    VARIANT_PREFIXES['frozen']: BOOK_BANNER,
+    VARIANT_PREFIXES['frozen-v2']: BOOK_BANNER.replace(' · v1.', ' · v2.'),
+}
 
 def digest(data):
     return hashlib.sha256(data if isinstance(data, bytes) else data.encode()).hexdigest()
@@ -86,8 +95,10 @@ def exact_reviewed_context(record, oracle, fixtures):
     if fixture is None:return False
     text = record['initialVisibleText']
     if record['prefix']:
-        if text.startswith(BOOK_BANNER+' '):text = text[len(BOOK_BANNER)+1:]
-        elif text.endswith(' '+BOOK_BANNER):text = text[:-len(BOOK_BANNER)-1]
+        banner = BOOK_BANNERS.get(record['prefix'])
+        if banner is None:return False
+        if text.startswith(banner+' '):text = text[len(banner)+1:]
+        elif text.endswith(' '+banner):text = text[:-len(banner)-1]
         else:return False
     item={'prompt':oracle['prompt'], 'expected':oracle['expected']}
     if record['id']=='67':
@@ -332,10 +343,11 @@ def main():
     parser.add_argument('--fixture',default='tools/fixtures/oge-book-exam-math.json')
     parser.add_argument('--output',default='artifacts/book-audit-exam/independent-math-review.json')
     parser.add_argument('--summary-output',default='artifacts/book-audit-exam/independent-math-summary.json')
-    parser.add_argument('--variants',nargs='+',choices=['source','frozen'],default=['source','frozen'])
+    parser.add_argument('--variants',nargs='+',choices=list(VARIANT_PREFIXES),default=['source','frozen'])
     parser.add_argument('--widths',nargs='+',type=int,default=[320,390,1280])
     parser.add_argument('--allow-pending',action='store_true',help='Exploratory local use only; CI must omit this flag.')
     args=parser.parse_args();root=args.root.resolve()
+    if len(args.variants)!=len(set(args.variants)):raise ValueError('Duplicate report variant')
     def path(name):
         result=(root/name).resolve()
         result.relative_to(root)  # Reports and recorded paths must be portable within the repo.
@@ -348,10 +360,12 @@ def main():
         aggregate=path(args.reports_root)/variant/'results.json'
         data=json.loads(aggregate.read_text())
         if data.get('schemaVersion')!=2:raise ValueError('Expected exam report schemaVersion 2')
+        if data.get('prefix')!=VARIANT_PREFIXES[variant]:raise ValueError('Report variant/prefix mismatch')
         inputs.append({'reportFile':str(aggregate.relative_to(root)),'reportSha256':digest(aggregate.read_bytes()),
                        'testScriptSha256':data['testScriptSha256'],'generatedAt':data.get('generatedAt')})
         found=set()
         for r in data['reports']:
+            if r.get('prefix')!=VARIANT_PREFIXES[variant]:raise ValueError('Individual report variant/prefix mismatch')
             if r['width'] not in args.widths:continue
             for i,o in enumerate(r.get('oracles',[])):
                 if r['id'] not in IDS and 'source-derived' in o.get('method',''):
@@ -403,7 +417,7 @@ def main():
     thin.update({'detailedReviewFile':str(output.relative_to(root)),'detailedReviewSha256':digest(output.read_bytes()),
       'pending':[{'id':x['id'],'width':x['width'],'prefix':x['prefix'],'reason':x['reason']}for x in records if x['verdict']!='PASS'],
       'unreviewedSourceDerivedOracles':unreviewed,
-      'reproduce':'python tools/oge-book-exam-math.py (after both browser suites have produced source/frozen individual and aggregate reports)'})
+      'reproduce':'python tools/oge-book-exam-math.py --variants '+' '.join(args.variants)+' (after the selected browser suites have produced individual and aggregate reports)'})
     thin_output=path(args.summary_output);thin_output.parent.mkdir(parents=True,exist_ok=True)
     thin_output.write_text(json.dumps(thin,ensure_ascii=False,indent=2)+'\n')
     print(json.dumps({'totals':totals,'missingReports':sum(len(c['missingReports'])for c in coverage),

@@ -1,0 +1,303 @@
+{
+  "schemaVersion": 1,
+  "task": "OGE_BOOK_EDITION_V2_DALI_20261031",
+  "recordedAt": "2026-10-31T14:21:12.046225+00:00",
+  "base": "4a90592077934d9a6d8a617b4afa50938798efb2",
+  "localExecutionHead": "4a90592077934d9a6d8a617b4afa50938798efb2",
+  "executionIdentity": "Uncommitted scoped worktree based on the named base; tested bytes are bound below. The published head and its CI are recorded separately in the Draft PR and final archive.",
+  "reviewLevel": "MEDIUM",
+  "localPreparation": "PASS",
+  "exactHeadCI": "PENDING_PUBLICATION",
+  "preparationGate": "PENDING_EXACT_HEAD_CI",
+  "productionV2": "NOT_RUN_UNPUBLISHED",
+  "distributionGate": "INCOMPLETE",
+  "scenarios": [
+    {
+      "variant": "source",
+      "family": "basics",
+      "pass": 120,
+      "report": {
+        "archivePath": "scenarios/basics/source/report.json",
+        "sha256": "6c047648fbf2569cd3b4b0ea0689eb2bf8ed599390948c5f9c9f92c9e75f3eb8",
+        "bytes": 821167
+      }
+    },
+    {
+      "variant": "source",
+      "family": "exam",
+      "pass": 93,
+      "report": {
+        "archivePath": "scenarios/exam/source/results.json",
+        "sha256": "3f03f0572a0bffc0f44b0c764396b6355d4cf9c8832a03ea74e3932c4fc74665",
+        "bytes": 2829200
+      }
+    },
+    {
+      "variant": "frozen-v2",
+      "family": "basics",
+      "pass": 120,
+      "report": {
+        "archivePath": "scenarios/basics/frozen-v2/report.json",
+        "sha256": "595a7ce11ff7b5e5bc0d4d51fc464052bb8c518c7e73ea48c4d271d7831caef4",
+        "bytes": 883293
+      }
+    },
+    {
+      "variant": "frozen-v2",
+      "family": "exam",
+      "pass": 93,
+      "report": {
+        "archivePath": "scenarios/exam/frozen-v2/results.json",
+        "sha256": "92fc40f8cf525b2a83b1b1f00f06851739f01b48345fdfe929384de051e4d2f0",
+        "bytes": 2958093
+      }
+    }
+  ],
+  "mathematics": {
+    "pass": 790,
+    "fail": 0,
+    "pending": 0,
+    "evidence": {
+      "archivePath": "mathematics/v2-independent-math-review.json",
+      "sha256": "b9b785d9865b3477596b3f99e426c6452a2888cceee2790a9e3a92dd3fe0f9cd",
+      "bytes": 996101
+    }
+  },
+  "runtime": {
+    "v1": {
+      "status": "PASS",
+      "entries": 142,
+      "boundary": 10,
+      "crossEdition": 3,
+      "browser": "140.0.7339.16",
+      "imageReadinessControls": {
+        "pass": true,
+        "closedBrokenNotVisible": true,
+        "openedBrokenRejected": true,
+        "visibleDecodedAccepted": true,
+        "entryTimeoutMs": 15000
+      },
+      "evidence": {
+        "archivePath": "runtime/v1.json",
+        "sha256": "35aaad83cfec7e14610ad2144d53cc439da3b4edb6c421eeab8f7de59ca2f9b3",
+        "bytes": 180444
+      }
+    },
+    "v2": {
+      "status": "PASS",
+      "entries": 142,
+      "boundary": 10,
+      "crossEdition": 3,
+      "browser": "140.0.7339.16",
+      "imageReadinessControls": {
+        "pass": true,
+        "closedBrokenNotVisible": true,
+        "openedBrokenRejected": true,
+        "visibleDecodedAccepted": true,
+        "entryTimeoutMs": 15000
+      },
+      "evidence": {
+        "archivePath": "runtime/v2.json",
+        "sha256": "eb1a33380f756695af651800cf8f46ab3855b2e48f0997bd4b3a34251f8c0c9b",
+        "bytes": 180444
+      }
+    }
+  },
+  "otherChecks": {
+    "generator": 6,
+    "integrity": 16,
+    "delivery": 14,
+    "collector": 31,
+    "task6AndScope": 48,
+    "sourceCorrectionsAndArithmetic": 58,
+    "documentNegativeControls": 12,
+    "daliMandatoryBaselineControls": 6,
+    "daliPositiveStages": 18,
+    "localHTTPByteChecks": 367,
+    "publishedV1FilesUnchanged": 225,
+    "baseVerifier": "PASS",
+    "currentVerifier": "PASS",
+    "deterministicV2Reproduction": "PASS"
+  },
+  "documents": {
+    "status": "PASS",
+    "pages": 72,
+    "uniqueDestinations": 71,
+    "hyperlinkPlacements": 79,
+    "qrPerFormat": 34,
+    "diagnosticYear": 2027,
+    "actualPagesVisuallyReviewed": 72,
+    "evidence": {
+      "archivePath": "documents/document-review-final.json",
+      "sha256": "dfa02dfb1bfe8423be19afcc86d46245ac30bb29ea3139d421413ec528f8f873",
+      "bytes": 29984
+    }
+  },
+  "internalReview": {
+    "status": "PASS",
+    "closedFindings": 4,
+    "openMaterialFindings": 0,
+    "evidence": {
+      "archivePath": "dali/package-focused-review.json",
+      "sha256": "7d7e2c5a933c3bb11c93208027f4b6104304eff302a747c836ad1911c58fc641",
+      "bytes": 16102
+    }
+  },
+  "externalReview": "NOT_RUN_BY_OWNER_REQUEST",
+  "historicalFailures": [
+    {
+      "gate": "published-v1-live-runtime",
+      "result": "FAIL",
+      "detail": "PR387 release: 141/142 entries and 10/10 boundary checks; literal DALI HTTP404 at entry54,320px. All225 published files remain unchanged."
+    },
+    {
+      "gate": "fresh-legacy-v1-learner",
+      "result": "FAIL",
+      "detail": "120 basics and92 exam cases passed; entry54,320px failed with the same literal DALI HTTP404. A subsequent passing package sweep does not erase this failure."
+    },
+    {
+      "gate": "initial-new-image-readiness",
+      "result": "FAIL_RETAINED",
+      "detail": "A closed-details lazy image had an intersecting rectangle without being rendered. Native visibility now precedes the unchanged15s readiness check; broken-visible and decoded-positive controls retain strict failure behavior."
+    },
+    {
+      "gate": "initial-cross-edition-clear-observation",
+      "result": "FAIL_RETAINED",
+      "cause": "UNKNOWN",
+      "detail": "Ten instrumented probes did not show a post-clear writer. The final test asserts immediate null/zero length in the clearing tab, then the exact native deletion event before cross-tab reads. A deliberate no-op removal is rejected. Product storage code is unchanged."
+    },
+    {
+      "gate": "initial-math-payload-binding",
+      "result": "PENDING_RETAINED",
+      "detail": "The first v2 calculation had787PASS and3PENDING until the Task6 visible image and exact payload were reviewed and bound; final result790PASS."
+    }
+  ],
+  "notRun": [
+    "v2 merge/deployment/production requests",
+    "physical phones and printed QR",
+    "iOS/Safari/Firefox",
+    "screen keyboard",
+    "pupil trials",
+    "external provider review"
+  ],
+  "scopeDeviations": [],
+  "fileHashes": [
+    {
+      "path": ".github/workflows/book-edition.yml",
+      "sha256": "52c3958af8f7232643a469fe022c68178740d220bc6c1084a475d451b617c6cd"
+    },
+    {
+      "path": "scripts/build-oge-book-edition.py",
+      "sha256": "0b09ec1a0e75ced2f800322f5e703dc030c083f92660fc8050e841e7f12ddb61"
+    },
+    {
+      "path": "scripts/oge-book-edition/bootstrap.js",
+      "sha256": "276654f08d4a5a48d6660990143a9867bc9304c351208367cc738d6dd40de265"
+    },
+    {
+      "path": "tools/book-edition/runtime.browser.cjs",
+      "sha256": "3e76f8f6b982d47cd6d1d661264265bf56ee09aa5123457745168e364f7fbdc2"
+    },
+    {
+      "path": "tools/book-edition/verify.py",
+      "sha256": "6d428287d4f1576335db2aaec13092cddf7cd07d46f385d3a309c514d4ca2f47"
+    },
+    {
+      "path": "tools/book-edition/test_package.py",
+      "sha256": "58397c54ed91ca9350a75c2f7b780ed15c7d25721590ab65daa61a5d88d3cae3"
+    },
+    {
+      "path": "tools/book-edition/test_generator.py",
+      "sha256": "f1f8a0b8d64831fb456c9098f660baa82153bc1b89e8c1c150a2d7813a9b9aac"
+    },
+    {
+      "path": "tools/book-edition/test_deployed.py",
+      "sha256": "7f5d48e27ea2a8ad24652cbe7813468e1dc7c9c255e5c26b91eea8c730c56212"
+    },
+    {
+      "path": "tools/oge-book-dali-images.browser.cjs",
+      "sha256": "d3bfd0084a0ee1001152af170a8560389eab148add27aa4bc73d811807b3d420"
+    },
+    {
+      "path": "tools/oge-book-exam-math.py",
+      "sha256": "cf7986cf05bb5c713b4b8b95e72dec11d01c1d53947f3eeb4727f2af93afd7f5"
+    },
+    {
+      "path": "tools/fixtures/oge-book-exam-math.json",
+      "sha256": "6132c3a403155ed160c428e5d677520f5d2ff775ba8535e40962b442fac3cba7"
+    },
+    {
+      "path": "tools/oge-book-document-links.py",
+      "sha256": "03b0aedd01df54ce6e785e0e9dbd5255fc063736cb5dfcf3047c81c2bcbc613c"
+    },
+    {
+      "path": "tools/oge-book-collect-results.py",
+      "sha256": "857906509cf2f3d98bf64d3728a52cf0b102de6a617e393788de467866c4170a"
+    },
+    {
+      "path": "tools/oge-book-collect-results.test.py",
+      "sha256": "25eb33d62511a668178ddd82a77ec9f275a350f1cd9d79aac296e32da0c3c5dd"
+    },
+    {
+      "path": "tools/oge-book-register.mjs",
+      "sha256": "8759490ec2dad85b44ddaafd6501575f2b4d9bbf28e7a530ab0ef209dab5fb72"
+    },
+    {
+      "path": "trainers/oge-task11-graphs-trainer.html",
+      "sha256": "f2c220f02095aeb7ad4590e492c4df12d232bf1a0640f8a036474fced6bfb495"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/manifest.json",
+      "sha256": "5254e9bba16f4891f2b32ce879d5a81a0eac7a3c5ef69b246d55ff27e7e18b61"
+    },
+    {
+      "path": "book/oge/2026-10-31/v2/manifest.json",
+      "sha256": "cb6ddf53121a767d531339769992a6743d10ccf435240e3d0e38e8ab5acb8b63"
+    }
+  ],
+  "evidence": [
+    {
+      "archivePath": "package/final-local-validation/validation-after-runtime-fix.json",
+      "sha256": "b897460369cb35fc0397a331d9d7f422f822c6cf23dfbf9e283751847e8df72f",
+      "bytes": 8118
+    },
+    {
+      "archivePath": "verification/package-semantic-final.json",
+      "sha256": "b94236c76bb6f308d52b3a8f2260502fd828a2ebe360934eb9c55b3f93a718d2",
+      "bytes": 57420
+    },
+    {
+      "archivePath": "verification/v2-local-delivery.json",
+      "sha256": "43e0b68f650e7a1d970114017abcbc93c4111e940cb057dcf35162604144aa0c",
+      "bytes": 245217
+    },
+    {
+      "archivePath": "dali/source/results.json",
+      "sha256": "ed2ac813b4603ac415286d25878e1075dcb5463402f4776d468a6513b48ba6c3",
+      "bytes": 43819
+    },
+    {
+      "archivePath": "dali/frozen-v2/results.json",
+      "sha256": "e309e12d526cfa34c7f6125bf2bf7eb8889762b6f005f9471e68d63c8de2967b",
+      "bytes": 43934
+    }
+  ],
+  "nextDecision": "Inspect the new Draft PR and exact-head CI, then give separate merge/deployment authorization for its current base and head if accepted.",
+  "register": {
+    "status": "PASS",
+    "worksheets": 5,
+    "cells": 11494,
+    "formulas": 4,
+    "scenarios": 426,
+    "destinations": 71,
+    "qr": 34,
+    "layoutAndNativeFeatures": "PRESERVED",
+    "xlsxSha256": "aa3262d59981190ae9fe27be307a8aa2c202fb9abe1aed4437bdb7dfcb378c31",
+    "evidence": {
+      "archivePath": "documents/register-review/final-review.json",
+      "sha256": "06127b89e3f5ae142096902460f950e1de0a1e0b06117e4e7390dbff14971b01"
+    },
+    "CIAtExport": "PENDING_PUBLICATION",
+    "distributionGate": "INCOMPLETE"
+  }
+}
