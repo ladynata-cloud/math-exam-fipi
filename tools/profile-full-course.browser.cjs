@@ -8,7 +8,7 @@ const http = require('node:http');
 const path = require('node:path');
 const {chromium} = require('playwright');
 const oldLessons = ['geometry', 'algebra', 'stereo'].flatMap(name => require('../ege-profil/start/' + name + '-data'));
-const addedLessons = ['probability', 'equations', 'functions', 'applied'].flatMap(name => require('../ege-profil/start/' + name + '-data'));
+const addedLessons = ['probability', 'equations', 'functions', 'applied', 'finance'].flatMap(name => require('../ege-profil/start/' + name + '-data'));
 const prerequisiteLessons = require('../ege-profil/start/readiness-data');
 const lessons = [...oldLessons, ...addedLessons, ...prerequisiteLessons];
 const KEY = 'mathexam.profileStart2027.v1';
@@ -95,11 +95,20 @@ const server = http.createServer((req, res) => {
       await target.locator('#answer-form').waitFor();
     }
     async function validModel(target, task) {
-      const svg = target.locator('#task-model svg').first();
-      await svg.waitFor();
-      const markup = await svg.evaluate(el => el.outerHTML);
-      assert(!/(?:NaN|undefined|Infinity)/.test(markup), 'Non-finite model: '+task.id);
-      assert(await target.locator('#task-model').innerText(), 'Model has readable explanation: '+task.id);
+      if (task.finance?.schema === 1) {
+        const model = target.locator('#task-model');
+        await model.locator('.finance-cell').first().waitFor();
+        assert(await model.locator('[data-column]').count() >= 4, 'Financial row has distinct accounting columns: '+task.id);
+        assert((await model.innerText()).trim(), 'Financial model has readable labels and units: '+task.id);
+        assert(!/(?:NaN|undefined|Infinity)/.test(await model.innerText()), 'Finite financial model: '+task.id);
+        assert(await model.locator('[data-row]').count() > 0, 'Actual financial rows are rendered: '+task.id);
+      } else {
+        const svg = target.locator('#task-model svg').first();
+        await svg.waitFor();
+        const markup = await svg.evaluate(el => el.outerHTML);
+        assert(!/(?:NaN|undefined|Infinity)/.test(markup), 'Non-finite model: '+task.id);
+        assert(await target.locator('#task-model').innerText(), 'Model has readable explanation: '+task.id);
+      }
     }
 
     // All thirteen cards lead to their own real topics and a fresh independent task.

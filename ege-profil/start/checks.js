@@ -16,6 +16,17 @@ function number(input){
  function sum(){let v=product();while(tokens[i]==='+'||tokens[i]==='-'){const op=tokens[i++],b=product();v=op==='+'?v+b:v-b;}return v;}
  try{const v=sum();return i===tokens.length&&Number.isFinite(v)?v:NaN;}catch(_){return NaN;}
 }
-function check(expected,input,choices){if(String(input).trim()==='')return false;if(choices&&typeof expected==='string')return String(input).trim()===expected;const a=typeof expected==='number'?expected:number(expected),b=number(input);return Number.isFinite(a)&&Number.isFinite(b)&&Math.abs(a-b)<=1e-7*Math.max(1,Math.abs(a));}
+function check(expected,input,choices,options){
+ if(String(input).trim()==='')return false;
+ if(choices&&typeof expected==='string')return String(input).trim()===expected;
+ const a=typeof expected==='number'?expected:number(expected),b=number(input);
+ if(!Number.isFinite(a)||!Number.isFinite(b))return false;
+ // New financial tasks opt in: a whole number of periods cannot be a
+ // nearby decimal, and a large rouble amount must not accept a kopeck error.
+ // Existing tasks keep their original tolerance and parsing behaviour.
+ if(options?.domain==='integer'&&!Number.isInteger(b))return false;
+ const tolerance=options?.strictNumeric?Math.max(1e-9,8*Number.EPSILON*Math.abs(a)):1e-7*Math.max(1,Math.abs(a));
+ return Math.abs(a-b)<=tolerance;
+}
 const api={number,check};root.ProfileCheck=api;if(typeof module!=='undefined')module.exports=api;
 })(globalThis);

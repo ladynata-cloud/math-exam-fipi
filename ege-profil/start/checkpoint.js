@@ -124,7 +124,7 @@ function create(lessons,storage,learningState){
   // The UI validates the numeric parser before calling submit. A false result
   // is a real first attempt and is not replaceable by retries or help.
   let correct;
-  try{correct=checkFn(shown.task.answer,answer);}catch(_){return shown;}
+  try{correct=checkFn(shown.task.answer,answer,shown.task.choices,shown.task);}catch(_){return shown;}
   if(!bool(correct))return shown;
   const item=data.round.items[data.round.index];
   item.draft=answer;item.correct=correct;item.submitted=true;write();return view();

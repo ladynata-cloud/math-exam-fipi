@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict');
 const D=require('../ege-profil/start/readiness');
 const C=require('../ege-profil/start/checks');
-const lessons=['geometry','stereo','algebra','probability','equations','functions','applied','readiness'].flatMap(x=>require('../ege-profil/start/'+x+'-data'));
+const lessons=['geometry','stereo','algebra','probability','equations','functions','applied', 'finance','readiness'].flatMap(x=>require('../ege-profil/start/'+x+'-data'));
 const ids=new Set(lessons.map(l=>l.id));
 // Independent calculations for the public placement questions, not copied keys.
 const oracle={signs:-(3**2),fractions:(3/4)/(1/2),roots:Math.sqrt(25)/Math.sqrt(36),equations:12/3+2,coordinates:-2,triangle:4/5,powers:1/(2*2*2),quadratic:(5+Math.sqrt(25-24))/2,circle:-3/5,radians:240/180,exact:2*Math.sin(Math.PI/6),cosine:-Math.sqrt(1-(3/5)**2)};

@@ -280,7 +280,7 @@ test('unavailable storage uses a recoverable in-memory round',()=>{
 });
 
 test('real course pools cover all 13 numbers and exclude foundational lessons',()=>{
- const real=['geometry','stereo','algebra','probability','equations','functions','applied','readiness'].flatMap(x=>require('../ege-profil/start/'+x+'-data'));
+ const real=['geometry','stereo','algebra','probability','equations','functions','applied', 'finance','readiness'].flatMap(x=>require('../ege-profil/start/'+x+'-data'));
  const {checkpoint:c,state}=setup(memory(),real);c.startRound();const taskIds=[];
  for(let i=0;i<13;i++){
   const cur=c.current();assert.equal(cur.number,Checkpoint.ORDER[i]);assert.equal(cur.lesson.position,cur.number);

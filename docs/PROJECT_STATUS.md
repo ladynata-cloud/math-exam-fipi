@@ -1,24 +1,41 @@
 # MathExam project status
 
-## Locally prepared: corrected fixed OGE book edition v2, 2026-10-31
+## Prepared: financial models for profile task 13
 
-- [Task](tasks/OGE_BOOK_EDITION_V2_DALI_20261031.md), `MEDIUM`; owner START,
-  base `4a90592077934d9a6d8a617b4afa50938798efb2`, branch
-  `fix/oge-book-dali-v2-20261031`.
-- The literal DALI image request is corrected in the public Task11 trainer.
-  `/book/oge/2026-10-31/v2/` and `/b/oge26-2/` have new matching PDF/DOCX,
-  34 QR and 71 addresses. All 225 published v1 files remain byte-identical.
-- The bounded work uses Accepted [ADR0012](adr/0012-fixed-oge-book-editions.md).
-  Existing learning engines, portrait JPEG, book wording and the 2027 caption
-  remain fixed. [Local verification](reports/oge-book-v2-20261031/README.md)
-  records 426 source/v2 learner cases, 790 independent math comparisons,
-  142+10+3 v2 runtime checks and independent internal focused review, all PASS.
-  The earlier v1 failure is retained; exact-head CI is recorded in the Draft PR.
-- V2 is unpublished. This START permits a new Draft PR, not its merge,
-  auto-merge or deployment. No external-provider review is requested or claimed.
-- Next: (1) inspect the new candidate and exact-head CI; (2) after separate owner
-  release permission, verify the new live bytes/aliases and physical QR/devices
-  before distributing the book.
+- [Task](tasks/EGE_P13_FINANCE_LESSON_20261101.md), `MEDIUM`; current-task
+  owner START and task-specific decision declining external Claude consultation.
+- Base `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`; branch
+  `task/ege-p13-finance-lesson-2026-11-01`.
+- Thirteen new lessons / 78 independently written problems extend the existing
+  18 financial tasks. Earned ledger cells, units, partial payment windows,
+  two-stage loans and deposits use the existing step/model/state contracts.
+- Implementation and focused internal review are complete. The local
+  [report](reports/EGE_P13_FINANCE_LESSON_20261101.md) records 78 independent
+  mathematical oracles, 156 finance browser journeys, 26 existing unit files
+  and affected course/browser/package gates passing.
+- The Draft PR records its published head and CI outcome. No merge, auto-merge
+  or production deployment is authorized or claimed for this task.
+
+## Published; production browser gate incomplete: fixed OGE book edition v2
+
+- [PR388](https://github.com/ladynata-cloud/math-exam-fipi/pull/388) was merged
+  on 2026-10-31 as `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`, with sole parent
+  `4a90592077934d9a6d8a617b4afa50938798efb2`. The release record confirms separate
+  owner permission and exact identity with reviewed head
+  `0aedd01941096636ae75f05bbc8147de937e2db2`.
+- [Pages41221711224](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41221711224)
+  successfully deployed that SHA. The public edition is
+  `/book/oge/2026-10-31/v2/`; all 225 published v1 files remain unchanged.
+- The PR release record reports `POST_DEPLOY_HTTP_OK`, 367/367 production
+  byte/alias/target comparisons. It separately reports a blocked production
+  browser gate: the test browser rejected the environment TLS chain before
+  content checks. Limited Opera observations do not replace that full gate.
+- Distribution remains **INCOMPLETE**. No trust-store change or TLS bypass was
+  performed. The PR records the precise remaining owner/environment decision.
+- This reconciliation follows primary PR metadata and its release evidence;
+  it does not claim that the finance task reran the historical book runtime
+  gate. The [preparation task](tasks/OGE_BOOK_EDITION_V2_DALI_20261031.md) and
+  [local report](reports/oge-book-v2-20261031/README.md) remain historical records.
 
 ## Published with an open distribution gate: OGE book edition v1
 
