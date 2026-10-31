@@ -53,13 +53,13 @@ class GateTests(unittest.TestCase):
         self.assertEqual(result["editions"][0]["entries"], 71)
 
     def test_byte_mutation_is_detected(self):
-        file = self.root / PREFIX / "_edition/edition.css"
+        file = self.root / PREFIX / "edition-assets/edition.css"
         file.write_bytes(file.read_bytes() + b"/* change */")
         with self.assertRaisesRegex(verify.InvalidEdition, "Size mismatch|Hash mismatch"):
             verify.inspect(self.root, MANIFEST)
 
     def test_rehashing_cannot_rewrite_old_edition(self):
-        name = PREFIX + "_edition/edition.css"
+        name = PREFIX + "edition-assets/edition.css"
         file = self.root / name
         file.write_bytes(file.read_bytes() + b"/* same-manifest forgery */")
         self.update_record(name)
@@ -98,6 +98,49 @@ class GateTests(unittest.TestCase):
         self.update_record(name)
         with self.assertRaisesRegex(verify.InvalidEdition, "Alias points"):
             verify.inspect(self.root, MANIFEST)
+
+    def test_rehashed_old_underscore_asset_layout_is_rejected(self):
+        # Reproduce the real release defect: all files and hashes are valid,
+        # yet default Jekyll omits the startup/storage boundary and its CSS.
+        manifest_path = self.root / MANIFEST
+        manifest = json.loads(manifest_path.read_text())
+        for name in ("bootstrap.js", "edition.css"):
+            old = self.root / PREFIX / "_edition" / name
+            old.parent.mkdir(parents=True, exist_ok=True)
+            (self.root / PREFIX / "edition-assets" / name).rename(old)
+        for record in manifest["files"]:
+            record["path"] = record["path"].replace(PREFIX + "edition-assets/", PREFIX + "_edition/")
+            file = self.root / record["path"]
+            if file.suffix == ".html":
+                file.write_bytes(file.read_bytes().replace(
+                    ("/" + PREFIX + "edition-assets/").encode(),
+                    ("/" + PREFIX + "_edition/").encode()))
+            data = file.read_bytes()
+            record.update(bytes=len(data), sha256=hashlib.sha256(data).hexdigest())
+        manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
+        with self.assertRaisesRegex(verify.InvalidEdition, "Jekyll-hidden package path: .*_edition/"):
+            verify.inspect(self.root, MANIFEST)
+
+    def test_rehashed_jekyll_hidden_components_are_rejected(self):
+        manifest_path = self.root / MANIFEST
+        original = manifest_path.read_bytes()
+        hidden_names = ["_runtime/payload.js", "assets/.hidden/payload.js",
+                        "assets/#draft/payload.js", "assets/runtime.js~",
+                        "assets/node_modules/runtime.js", "assets/vendor/runtime.js"]
+        for hidden in hidden_names:
+            with self.subTest(path=hidden):
+                name = PREFIX + hidden
+                file = self.root / name
+                file.parent.mkdir(parents=True, exist_ok=True)
+                file.write_text("A valid manifest hash cannot make this path publishable.")
+                self.update_record(name)
+                try:
+                    with self.assertRaisesRegex(verify.InvalidEdition, "Jekyll-hidden package path") as caught:
+                        verify.inspect(self.root, MANIFEST)
+                    self.assertIn(name, str(caught.exception))
+                finally:
+                    file.unlink()
+                    manifest_path.write_bytes(original)
 
     def test_new_version_path_does_not_modify_old_version(self):
         new = self.root / "book/oge/2026-11-01/v1/example.txt"

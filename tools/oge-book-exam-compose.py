@@ -10,6 +10,7 @@ import datetime
 import hashlib
 import json
 import shutil
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -86,12 +87,21 @@ def compose(version, runs):
                 shutil.copyfile(image, target)
         (output / f'{ident}-{width}.json').write_text(json.dumps(row, ensure_ascii=False, indent=2) + '\n')
         reports.append(row)
-    bases = {r['base'] for r in reports}
-    assert len(bases) == 1
+    # The raw runner's legacy 'base' field captures git HEAD at execution.
+    # Commits created during the task can differ without changing tested bytes;
+    # never relabel those raw heads or omit the per-resource identity checks.
+    checkout_heads = sorted({r['base'] for r in reports})
+    current_head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
+    for head in checkout_heads:
+        subprocess.run(['git', 'merge-base', '--is-ancestor', head, current_head], cwd=ROOT, check=True)
+    common_base = subprocess.check_output(['git', 'merge-base', '--octopus', *checkout_heads], cwd=ROOT, text=True).strip() if len(checkout_heads) > 1 else checkout_heads[0]
+    script_shas = sorted({r['testScriptSha256'] for r in reports})
     report = {'schemaVersion': 2, 'generatedAt': datetime.datetime.now(datetime.timezone.utc).isoformat(),
-              'base': bases.pop(), 'prefix': reports[0]['prefix'], 'widths': sorted(WIDTHS),
-              'testScriptSha256': None,
-              'testScriptSha256s': sorted({r['testScriptSha256'] for r in reports}),
+              'base': common_base, 'recordedCheckoutHeads': checkout_heads,
+              'baseSemantics': 'Common ancestor of recorded checkout HEADs; these are launch anchors, not claims that a committed tree was tested. Each record retains its raw base field and every actual response payload is matched to current bytes.',
+              'prefix': reports[0]['prefix'], 'widths': sorted(WIDTHS),
+              'testScriptSha256': script_shas[0] if len(script_shas) == 1 else None,
+              'testScriptSha256s': script_shas,
               'composition': {'method': 'Latest targeted case replaces the matching id/width; every retained byte is reverified. Raw runs remain immutable.',
                               'script': Path(__file__).relative_to(ROOT).as_posix(),
                               'scriptSha256': sha_bytes(Path(__file__).read_bytes()),
@@ -104,5 +114,5 @@ def compose(version, runs):
 
 
 if __name__ == '__main__':
-    compose('source', ['source-seeded-baseline', 'source-targeted', 'source-task6-html', 'source-storage-review-final'])
-    compose('frozen', ['frozen-seeded-baseline', 'frozen-targeted', 'frozen-storage-review-final'])
+    compose('source', ['source-seeded-baseline', 'source-targeted', 'source-task6-html', 'source-storage-review-final', 'source-tire-image-fix', 'source-map-tire-image-fix'])
+    compose('frozen', ['frozen-jekyll-final', 'frozen-tire-image-fix', 'frozen-map-tire-image-fix'])

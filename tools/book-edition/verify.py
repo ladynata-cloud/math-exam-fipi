@@ -52,6 +52,20 @@ def relative_file(path):
     return path.lstrip("/") + ("index.html" if path.endswith("/") else "")
 
 
+def require_pages_path(name):
+    """Keep every package component publishable by default GitHub Pages/Jekyll.
+
+    This package must not rely on global include/nojekyll exceptions. Reject
+    the documented hidden-name patterns and dependency directories anywhere
+    in its own namespace, including inside otherwise ordinary directories.
+    https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/about-github-pages-and-jekyll
+    """
+    hidden = [part for part in Path(name).parts
+              if part.startswith(("_", ".", "#")) or part.endswith("~")
+              or part in {"node_modules", "vendor"}]
+    require(not hidden, "Jekyll-hidden package path: " + name)
+
+
 def inspect(root, manifest_path):
     manifest = json.loads((root / manifest_path).read_text())
     prefix, alias = manifest["prefix"], manifest["aliasPrefix"]
@@ -61,6 +75,8 @@ def inspect(root, manifest_path):
     files = manifest["files"]
     require(len({f["path"] for f in files}) == len(files), "Duplicate output path")
     expected = {f["path"] for f in files} | {manifest_path}
+    for name in sorted(expected):
+        require_pages_path(name)
     actual = {p.relative_to(root).as_posix() for d in [prefix, alias] for p in (root / d).rglob("*") if p.is_file()}
     require(actual == expected, "Missing or extra edition file: " + repr(sorted(actual ^ expected)))
     for record in files:
@@ -87,7 +103,7 @@ def inspect(root, manifest_path):
         require(not parser.base, "A base tag could escape the frozen dependency namespace")
         require(parser.robots and "noindex" in parser.robots.lower(), "Book copies must remain outside search indexing: " + name)
         if name.startswith(prefix):
-            require(parser.scripts and parser.scripts[0] == "/" + prefix + "_edition/bootstrap.js", "Storage boundary must run before source scripts: " + name)
+            require(parser.scripts and parser.scripts[0] == "/" + prefix + "edition-assets/bootstrap.js", "Storage boundary must run before source scripts: " + name)
             require(parser.csp and "connect-src 'none'" in parser.csp and "font-src 'self'" in parser.csp, "Missing fixed-edition network policy: " + name)
             require(parser.canonical and parser.canonical.startswith(origin + "/") and not parser.canonical.startswith(origin + "/" + prefix), "Original public canonical must be retained: " + name)
             require(parser.canonical == source_canonicals.get(name[len(prefix):]), "Canonical differs from recorded source: " + name)

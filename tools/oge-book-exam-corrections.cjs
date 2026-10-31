@@ -1,7 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict');
 
-// Exact inverse of the book-audit persistence fix and its truthful disclosure.
+// Exact inverse of reviewed persistence, disclosure and image-construction fixes.
 // Historical engine/bank hashes stay unchanged. Only the explicitly reviewed
 // fragments below may be reversed; unknown or modified fragments are rejected.
 const corrections=Object.freeze({
@@ -61,6 +61,31 @@ const corrections=Object.freeze({
       {
         "before": "  function updScore(){scoreEl.innerHTML=`Решено: <b>${score.solved}</b> · попыток: ${score.tries}`;}\n",
         "after": "  function updScore(){\n    scoreEl.innerHTML=`Решено: <b>${score.solved}</b> · попыток: ${score.tries}`;\n    try{\n      let all={};\n      try{all=JSON.parse(localStorage.getItem(progressKey)||'{}');}catch(e){}\n      if(!all||typeof all!=='object'||Array.isArray(all))all={};\n      all[mod.id]={solved:score.solved,tries:score.tries};\n      localStorage.setItem(progressKey,JSON.stringify(all));\n    }catch(e){}\n  }\n"
+      }
+    ]
+  },
+  "trainers/oge-1-5-trainers/practice-1-5-tires.html": {
+    "historicalSha256": "73773a765b524fe5fd358e8a6fa352012ec070e88e294090cbe6b9e53613dd2d",
+    "fragments": [
+      {
+        "before": "\n\n",
+        "after": "\n\n// Set image URLs on actual nodes, so HTML preload scanning cannot request\n// JavaScript template placeholders before the inline engine has rendered them.\nfunction setTireFigureSources(section){\n  const sources={marking:RIS1,dimensions:RIS2};\n  section.querySelectorAll('img[data-tire-figure]').forEach(image=>{\n    image.src=sources[image.dataset.tireFigure];\n  });\n}\n\n"
+      },
+      {
+        "before": "      <figure class=\"fig\"><img src=\"${RIS1}\" alt=\"шина с маркировкой 195/65 R15\"><figcaption>Рис. 1 — пример: маркировка 195/65 R15 на боковине</figcaption></figure>\n      <figure class=\"fig\"><img src=\"${RIS2}\" alt=\"схема размеров шины: D, d, H, B\"><figcaption>Рис. 2 — из чего складывается колесо</figcaption></figure>\n",
+        "after": "      <figure class=\"fig\"><img data-tire-figure=\"marking\" alt=\"шина с маркировкой 195/65 R15\"><figcaption>Рис. 1 — пример: маркировка 195/65 R15 на боковине</figcaption></figure>\n      <figure class=\"fig\"><img data-tire-figure=\"dimensions\" alt=\"схема размеров шины: D, d, H, B\"><figcaption>Рис. 2 — из чего складывается колесо</figcaption></figure>\n"
+      },
+      {
+        "before": "  if(VD.v.sourceKind==='author-analogue') renderCrossSection(document.getElementById('author-wheel'),f);\n",
+        "after": "  setTireFigureSources(sec);\n  if(VD.v.sourceKind==='author-analogue') renderCrossSection(document.getElementById('author-wheel'),f);\n"
+      },
+      {
+        "before": "    ${VD.v.sourceKind==='author-analogue' ? `<div class=\"schema-ref\"><div class=\"sr-text\">Сверху боковина <b>H</b>, посередине диск <b>d</b>, снизу ещё боковина <b>H</b>. Поэтому <b>D = H + d + H = 2H + d</b>. Ниже — авторская схема с размерами заводского колеса.</div></div>` : `<div class=\"schema-ref\"><img src=\"${RIS2}\" alt=\"схема шины из условия\"><div class=\"sr-text\">Как на схеме из условия (Рис. 2): сверху боковина <b>H</b>, посередине диск <b>d</b>, снизу ещё боковина <b>H</b>. Сложи их по высоте — получишь полный диаметр: <b>D = H + d + H = 2H + d</b>. Ниже — то же самое, но с числами твоей шины.</div></div>`}\n",
+        "after": "    ${VD.v.sourceKind==='author-analogue' ? `<div class=\"schema-ref\"><div class=\"sr-text\">Сверху боковина <b>H</b>, посередине диск <b>d</b>, снизу ещё боковина <b>H</b>. Поэтому <b>D = H + d + H = 2H + d</b>. Ниже — авторская схема с размерами заводского колеса.</div></div>` : `<div class=\"schema-ref\"><img data-tire-figure=\"dimensions\" alt=\"схема шины из условия\"><div class=\"sr-text\">Как на схеме из условия (Рис. 2): сверху боковина <b>H</b>, посередине диск <b>d</b>, снизу ещё боковина <b>H</b>. Сложи их по высоте — получишь полный диаметр: <b>D = H + d + H = 2H + d</b>. Ниже — то же самое, но с числами твоей шины.</div></div>`}\n"
+      },
+      {
+        "before": "  // wire cells\n",
+        "after": "  setTireFigureSources(sec);\n  // wire cells\n"
       }
     ]
   }

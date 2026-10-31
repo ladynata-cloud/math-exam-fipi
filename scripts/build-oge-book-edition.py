@@ -212,8 +212,8 @@ def rewrite(source, text, paths):
         head = ('\n<meta name="robots" content="noindex,follow">\n'
                 '<meta name="referrer" content="strict-origin-when-cross-origin">\n'
                 '<meta http-equiv="Content-Security-Policy" content="default-src \'self\' data: blob:; script-src \'self\' \'unsafe-inline\'; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data: blob:; font-src \'self\'; connect-src \'none\'; object-src \'none\'; base-uri \'none\'; form-action \'none\'">\n'
-                '<link rel="stylesheet" href="/' + PREFIX + '_edition/edition.css">\n'
-                '<script src="/' + PREFIX + '_edition/bootstrap.js"></script>\n')
+                '<link rel="stylesheet" href="/' + PREFIX + 'edition-assets/edition.css">\n'
+                '<script src="/' + PREFIX + 'edition-assets/bootstrap.js"></script>\n')
         if not re.search(r"<head\b[^>]*>", text, re.I):
             raise ValueError("Expected HTML head: " + source)
         text = re.sub(r"<head\b[^>]*>", lambda m: m[0] + head, text, count=1, flags=re.I)
@@ -267,8 +267,8 @@ def build():
         output[PREFIX + source] = rewrite(source, info["text"], paths).encode() if info["text"] is not None else info["raw"]
     config = {"edition": EDITION, "path": "/" + PREFIX, "aliasPath": "/" + ALIAS,
               "publicOrigin": PUBLIC, "paths": ["/" + p for p in sorted(paths)] + ["/manifest.json", "/url-map.json"]}
-    output[PREFIX + "_edition/bootstrap.js"] = (DATA / "bootstrap.js").read_text().replace("__BOOK_CONFIG__", json.dumps(config, ensure_ascii=False, separators=(",", ":"))).encode()
-    output[PREFIX + "_edition/edition.css"] = (DATA / "edition.css").read_bytes()
+    output[PREFIX + "edition-assets/bootstrap.js"] = (DATA / "bootstrap.js").read_text().replace("__BOOK_CONFIG__", json.dumps(config, ensure_ascii=False, separators=(",", ":"))).encode()
+    output[PREFIX + "edition-assets/edition.css"] = (DATA / "edition.css").read_bytes()
     output[PREFIX + "url-map.json"] = encoded(rows)
     for row in rows:
         output[ALIAS + row["id"] + "/index.html"] = alias_page(row)

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "assembledAt": "2026-10-31T05:16:20.143749+00:00",
+  "assembledAt": "2026-10-31T06:08:38.980293+00:00",
   "publication": "UNPUBLISHED_CANDIDATE",
   "releaseGate": "INCOMPLETE",
   "base": "139b944a70f2e8ba4d340d152d08807fad03e5da",
@@ -16,22 +16,23 @@
     "recordedCases": 426
   },
   "sourceInventory": "source-inventory.json",
-  "registerDataSha256": "e1bdabd96f40e8f170cb8b893f3c24e8c098257f5820182ee0ae565b33dfc263",
+  "registerDataSha256": "37b0adb8f02da796f0f535f923ebf07e2d85292513e352b29027be846dceaf7d",
   "package": {
     "manifest": "book/oge/2026-10-31/v1/manifest.json",
-    "manifestSha256": "14c663bab07b3c360d0328d7d44c87995871f6bd586c9a4233b1ee51f791b4d8",
+    "manifestSha256": "5254e9bba16f4891f2b32ce879d5a81a0eac7a3c5ef69b246d55ff27e7e18b61",
     "entries": 71,
     "sourceFiles": 150,
     "totalFiles": 225,
-    "totalBytes": 8388747,
+    "totalBytes": 8390096,
     "runtime": {
+      "checkedAt": "2026-10-31T06:02:27.893376+00:00",
       "status": "PASS",
-      "checkedAt": "2026-10-31T05:12:58.538020+00:00",
-      "manifestSha256": "14c663bab07b3c360d0328d7d44c87995871f6bd586c9a4233b1ee51f791b4d8",
-      "runtimeFile": "package-runtime-storage-review/runtime.json",
-      "runtimeSha256": "060a1df1c7fe3e5660a3bf7653e59f66da16930ec1dd9d3733353b92b385c8ab",
+      "manifestSha256": "5254e9bba16f4891f2b32ce879d5a81a0eac7a3c5ef69b246d55ff27e7e18b61",
+      "runtimeFile": "package-runtime-tire-preload-fix/runtime.json",
+      "runtimeSha256": "f0062a4a4f45b5689e316a3b446cfdcddf3a30e18a933fb4bbc17fd20fe204e0",
       "testScript": "tools/book-edition/runtime.browser.cjs",
       "testScriptSha256": "f46a8f181a81c77c22ad884efe0bd3889f4fe6305eb07c7cfd01067bb0c509d1",
+      "runnerSnapshot": "package-runtime-tire-preload-fix/runner-used.cjs",
       "entryViewportChecks": 142,
       "entryCount": 71,
       "widths": [
@@ -41,9 +42,29 @@
       "boundaryChecks": 10,
       "pageErrors": 0,
       "horizontalOverflowCases": 0,
+      "everyEntryRequestedRelocatedBootstrapAndCss": true,
+      "oldUnderscoreAssetRequests": 0,
       "manifestPayloadsRehashed": 224,
       "directCurrentRun": true,
-      "note": "All runtime cases were rerun on this exact manifest. No older runtime result is promoted by inference. Learner-scenario evidence remains separate."
+      "actualLocalJekyllBuildPerformed": false,
+      "hostingVerification": "All actual package paths separately pass the default GitHub Pages/Jekyll exclusion guard. Browser run uses local static test server; no full Jekyll build is claimed.",
+      "limitation": "This entry/runtime/boundary run is separate from the full learner and image-timing scenarios."
+    },
+    "runtimeVerificationEvidence": {
+      "path": "package-runtime-tire-preload-fix/verification.json",
+      "sha256": "89ad59f91952167dc1c00ddca71d8dad4f757bc325a5ad389c44055628f340a2"
+    },
+    "gates": {
+      "status": "PASS",
+      "negativeRegressionTests": 10,
+      "evidence": {
+        "path": "package-tire-preload-fix-gates.json",
+        "sha256": "21a321a1d22fa947001fd08b9719f574179ec0622b5dd5a377ca259647b1cca3"
+      }
+    },
+    "finalPackageEvidence": {
+      "path": "package-tire-preload-fix-verification.json",
+      "sha256": "ee959d8a2c79545e82174c9e90811ba547497480e8deadb57493729d487e3197"
     }
   },
   "verification": {
@@ -146,9 +167,17 @@
       "FAIL": 0
     },
     "scope": "Only the exact recorded prompt/expected/width/prefix/report combinations listed here. Does not approve all modes, generators, future questions, or automatically assess student written proofs.",
-    "summarySha256": "29eb4b848a16ebfe0546b36fd3a69cef9b208411fc816024900b678ac099e780",
-    "detailedReviewSha256": "9d894f71ee214b44ce3983ff87358d87a18ae8a12bc7eb930f5e66c9e449f48a",
-    "independentFixtureSha256": "3fdc3ee71b68d44bf4bf03e05054fe801ebdf3322f1d60340f7afe4f921c6baa"
+    "summarySha256": "669e363c3da57eb515c471a0578fb32a422754c5b90cfb8a2419d25c721c4186",
+    "detailedReviewSha256": "84b723c51e70174dc80e43ae18fa6a5eddd67025cac5f491bd56b7b4ede59a99",
+    "independentFixtureSha256": "8fd1b4ec0fa6630864ea1cd14448e78557af029d5d3be3f8dbd6be3a2659ad29",
+    "fixtureHostingPathCorrection": {
+      "path": "math-jekyll-asset-path-proof.json",
+      "sha256": "067afb982e267a517a794a650da1614a6b900c218c3212251a6585676217ee28"
+    },
+    "fixtureHostingPathRootReview": {
+      "path": "jekyll-math-fixture-root-review.json",
+      "sha256": "f2c759d0b877ddd4a049ded7e106c43d21d406090e2ae73ca85db464ac9b8a69"
+    }
   },
   "tests": {
     "basicsRegression": {
@@ -156,24 +185,36 @@
       "fail": 0
     },
     "examCorrectionRegression": {
-      "pass": 28,
-      "fail": 0
+      "pass": 30,
+      "fail": 0,
+      "evidence": {
+        "path": "artifacts/book-audit-exam/source-regression-tire-final.log",
+        "sha256": "db918817df82395e4c8f15b1ea091521fff8b48e4ffffaf38cfa98bd4db71a45"
+      }
     },
     "examCombinedRegression": {
-      "total": 113,
-      "pass": 112,
+      "total": 115,
+      "pass": 114,
       "fail": 1,
-      "failure": "Historical task6 path allowlist against df63bacb2f82acf5f8543297c372b414925d6113, reproduced on unchanged base; not weakened.",
+      "failure": "Unchanged historical task6 global path allowlist against df63bacb; exact approved-base predicate replay is documented separately, not a full original baseline-suite run.",
       "baselineEvidence": {
         "method": "Replay exact unchanged allowed-path predicate from the approved-base Git blob against oldScope-to-approvedBase Git tree diff, with no untracked files; not a full baseline suite run.",
         "changedPaths": 3586,
         "outsideAllowlist": 3579,
         "sha256": "8a1430a8393eefe889f6c5f6a0e1427fb864650e2310ba4ff1534430be35baa7"
+      },
+      "evidence": {
+        "path": "artifacts/book-audit-exam/source-regression-tire-final.log",
+        "sha256": "db918817df82395e4c8f15b1ea091521fff8b48e4ffffaf38cfa98bd4db71a45"
       }
     },
     "packageNegative": {
-      "pass": 8,
-      "fail": 0
+      "pass": 10,
+      "fail": 0,
+      "evidence": {
+        "path": "package-tire-preload-fix-gates.json",
+        "sha256": "21a321a1d22fa947001fd08b9719f574179ec0622b5dd5a377ca259647b1cca3"
+      }
     },
     "collectorNegative": {
       "pass": 26,
@@ -183,7 +224,39 @@
       "pass": 4,
       "fail": 0
     },
-    "additionalHistoricalFailure": "tools/division-lab.test.cjs expects the previous lab runtime; reproduced on unchanged base and left unchanged."
+    "additionalHistoricalFailure": "tools/division-lab.test.cjs expects the previous lab runtime; reproduced on unchanged base and left unchanged.",
+    "tireRegression": {
+      "pass": 29,
+      "fail": 0,
+      "evidence": {
+        "path": "artifacts/book-audit-exam/tire-source-regression.log",
+        "sha256": "8e85a5824a7e40e9f871ad039484f3d45bde51591b3b40b9cf4d4403af156b5e"
+      }
+    },
+    "tireImageBrowser": {
+      "pass": 6,
+      "fail": 0,
+      "stages": 18,
+      "scope": "Source/frozen at 320/390/1280, three image stages under the recorded delivery-timing fixture; not every browser or network timing.",
+      "evidence": [
+        {
+          "path": "artifacts/book-audit-exam/tire-images-source/results.json",
+          "sha256": "4858d00e48b16dcc87a680a5ee48080a2e1a95f935a3c17e4e4acbec7b59fdd1"
+        },
+        {
+          "path": "artifacts/book-audit-exam/tire-images-frozen/results.json",
+          "sha256": "f7381ae9fbc1dd1febdb51e4fcde33c356d36099df2e969f7e67f48e83905c47"
+        }
+      ],
+      "independentNegativeAndPositiveControl": {
+        "path": "tire-preload-independent-before-after.json",
+        "sha256": "2aa983c4fdef2a3c103364049df136d0be2dc1ece9ed9b2eaf859f625d8908de"
+      }
+    },
+    "examFinalHandoff": {
+      "path": "artifacts/book-audit-exam/tire-image-final-handoff.json",
+      "sha256": "4b602aba13c2e135124be4f68f0f169536508bb975e3e37051d9ce225174980f"
+    }
   },
   "internalCrossReview": {
     "externalProviderVerdict": false,
@@ -194,9 +267,9 @@
     },
     "finalEvidenceReview": {
       "cases": 426,
-      "observedResourceBindings": 3309,
+      "observedResourceBindings": 3310,
       "missingRunnerSnapshots": 0,
-      "evidenceSha256": "10aca78d62c23c230fb2a0d18abe6568f15496fd74b988903cf01d9b96ca5936"
+      "evidenceSha256": "655641b5517ebc79225ae60f57a6a4da2c740f73cdec3522ce7e35378e8dfe01"
     }
   },
   "externalReview": {
@@ -214,31 +287,31 @@
     {
       "id": "basics-frozen",
       "path": "artifacts/book-audit-basics/frozen/report.json",
-      "sha256": "395cc7860ec23bbf1d0f27427c546bab402c4da23e223030cdbd32f5ec880ca8",
+      "sha256": "1d09c563249da64761c85b92f442e8fddb92de0d6e09b5d0c6cd8d47b6ed396d",
       "cases": 120,
-      "generatedAt": "2026-10-31T05:10:57.487Z",
+      "generatedAt": "2026-10-31T05:52:07.924Z",
       "testScriptSha256": "7ff3ecc14cfc55c510241484adc764fb27b4c4a128d37adaf817651628da37e1"
     },
     {
       "id": "exam-source",
       "path": "artifacts/book-audit-exam/source/results.json",
-      "sha256": "39982ad94391ba89bbbff22d687d504590e4a7335bf63ff288fc30ac025f13e8",
+      "sha256": "f745670edec83e53a8ebed614e31fb84ab0c531e6f82c937b3da8bcc698803ab",
       "cases": 93,
-      "generatedAt": "2026-10-31T05:12:42.957279+00:00",
+      "generatedAt": "2026-10-31T06:06:30.188921+00:00",
       "testScriptSha256": null
     },
     {
       "id": "exam-frozen",
       "path": "artifacts/book-audit-exam/frozen/results.json",
-      "sha256": "c502906c9db8474d449c9d75abf1e6347adceabc9bf84f29b3820e60af1c8496",
+      "sha256": "66a2964213d6da744cc988b01345c1509d3054cfe20fecd7919706bcb2dd597c",
       "cases": 93,
-      "generatedAt": "2026-10-31T05:12:43.312216+00:00",
-      "testScriptSha256": null
+      "generatedAt": "2026-10-31T06:06:30.558987+00:00",
+      "testScriptSha256": "08294c205685e0ea79018b646e6a2b843c8cdc093269682840de5076a440ee69"
     },
     {
       "id": "independent-math",
       "path": "independent-math-review.json",
-      "sha256": "9d894f71ee214b44ce3983ff87358d87a18ae8a12bc7eb930f5e66c9e449f48a",
+      "sha256": "84b723c51e70174dc80e43ae18fa6a5eddd67025cac5f491bd56b7b4ede59a99",
       "records": 790
     }
   ],
@@ -1544,6 +1617,45 @@
     "Physical phones/iOS Safari/Firefox/on-screen keyboard.",
     "Physical printed QR scanning.",
     "Real-pupil learning evaluation.",
-    "Exhaustive combinations of every generator/mode/seed."
-  ]
+    "Exhaustive combinations of every generator/mode/seed.",
+    "Actual local Jekyll build (Ruby/container tooling unavailable); no new production deployment performed."
+  ],
+  "hostingCompatibility": {
+    "observedProductionPipeline": "GitHub Pages Jekyll; underscore-leading internal asset directory was excluded.",
+    "correction": "Only the internal edition runtime directory changed from _edition/ to edition-assets/; book entry and QR URLs remain unchanged.",
+    "primaryHostingEvidence": {
+      "path": "hosting-jekyll-evidence.json",
+      "sha256": "ab255db84660ebfb5b68f33fa338d43e1e8c063983cc0262e7305bce22987c18"
+    },
+    "relocationProofForInitialHostingCorrection": {
+      "path": "jekyll-package-relocation-proof.json",
+      "sha256": "af79160c4774a103c4dae7f99645e1469c783b30fe46a4103dc7784ca0fb799f"
+    },
+    "currentPackageDefaultJekyllPathGuard": "PASS",
+    "actualLocalJekyllBuild": "NOT_RUN",
+    "actualNewProductionDeployment": "NOT_RUN",
+    "additionalEvidence": [
+      {
+        "path": "package-tire-preload-fix-proof.json",
+        "sha256": "a854afff08319c10e2aa90020b758828179547819be685fb1c374784d0837e8d"
+      },
+      {
+        "path": "basics-jekyll-tire-payload-proof.json",
+        "sha256": "9915f3b866aa335d0d468c06ed52ea42aa2c0aa2e06be0cf596137c3a4d2354d"
+      },
+      {
+        "path": "tire-preload-source-independent-review.json",
+        "sha256": "65ace8fe587849965ae591b0216c68fc2ae8a022a9cdaab7763842dd572a1ad1"
+      },
+      {
+        "path": "tire-preload-independent-before-after.json",
+        "sha256": "2aa983c4fdef2a3c103364049df136d0be2dc1ece9ed9b2eaf859f625d8908de"
+      },
+      {
+        "path": "jekyll-final-resource-binding-delta.json",
+        "sha256": "b04e955686b56c3c941c9cc94ca08e209d70f32e7fc2e5922eed673ed3d61f35"
+      }
+    ],
+    "limit": "The actual Jekyll build and deployed immutable-address byte checks remain release steps; local static browser success is not a deployment claim."
+  }
 }

@@ -652,7 +652,7 @@
     },
     {
       "path": "trainers/oge-1-5-trainers/practice-1-5-tires.html",
-      "sha256": "73773a765b524fe5fd358e8a6fa352012ec070e88e294090cbe6b9e53613dd2d",
+      "sha256": "03e111b67d5903d4bc6c5b75f9dc32ddf18a60d6b299b40658cdc15115f6b7da",
       "dependencies": [
         "trainers/oge-1-5-trainers/practical-discovery.js",
         "trainers/oge-1-5-trainers/practical-minimal.css",
@@ -1599,7 +1599,7 @@
   "generatorInputs": [
     {
       "path": "scripts/build-oge-book-edition.py",
-      "sha256": "bca35a3fabea70fed5ddf20d39be80505964b18697bdd9972960899d89b9b9de"
+      "sha256": "66be340391849e36568e8a487d62b852e7adacb3d96df9ad3838dcbba7a70e57"
     },
     {
       "path": "scripts/oge-book-edition/urls.json",
@@ -1971,16 +1971,6 @@
       "sha256": "70f01d3cc04abd0a887deb2f1c44b148e9ee4be2d7506a99e60390c4ca21b3e5"
     },
     {
-      "path": "book/oge/2026-10-31/v1/_edition/bootstrap.js",
-      "bytes": 13413,
-      "sha256": "aa441b5f9e8c41742f6ce00a785e9ca770acaf91146055c27e8fdab54e489c2b"
-    },
-    {
-      "path": "book/oge/2026-10-31/v1/_edition/edition.css",
-      "bytes": 582,
-      "sha256": "396e6db6df4c98840db2940e112e5378ff39c6173dd90a9056b17057f6f77a58"
-    },
-    {
       "path": "book/oge/2026-10-31/v1/assets/lesson-contacts.css",
       "bytes": 2696,
       "sha256": "48e902fe7a0bc413894828cdb23d0fe46c2c3237f573d84f66b795af08402e7d"
@@ -1991,14 +1981,24 @@
       "sha256": "2f33aeb278f1f637ee03551ea6900ec15fdc6e468f8fbdf66421132b2a185d5f"
     },
     {
+      "path": "book/oge/2026-10-31/v1/edition-assets/bootstrap.js",
+      "bytes": 13413,
+      "sha256": "aa441b5f9e8c41742f6ce00a785e9ca770acaf91146055c27e8fdab54e489c2b"
+    },
+    {
+      "path": "book/oge/2026-10-31/v1/edition-assets/edition.css",
+      "bytes": 582,
+      "sha256": "396e6db6df4c98840db2940e112e5378ff39c6173dd90a9056b17057f6f77a58"
+    },
+    {
       "path": "book/oge/2026-10-31/v1/index.html",
-      "bytes": 19503,
-      "sha256": "b715d0e5bff5bc9bf379a6be6a099ddfd3cf78d7fab55a0b54088cef26a31dcf"
+      "bytes": 19515,
+      "sha256": "44c7acd4d46010c24b3f817e5280c75b38a9fc840e2dffabd7894790c274f7b3"
     },
     {
       "path": "book/oge/2026-10-31/v1/oge/geometry/task-15-external-angle.html",
-      "bytes": 8879,
-      "sha256": "b1872eeeeef2cd480e09c79df3c389d35c2447153811685822605816fbcd8865"
+      "bytes": 8891,
+      "sha256": "dc28ec87bf3dd8457f4686695bda46ec37a0dfd6460571ce24923835e1b14e40"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/board-bridge.js",
@@ -2007,8 +2007,8 @@
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/percent-table-trainer.html",
-      "bytes": 123554,
-      "sha256": "6cf8de246ea98963f64b17e8dd00bb6893607df2c17e1cc636d9a164f5aced6d"
+      "bytes": 123566,
+      "sha256": "9dffbb0ebace5d9b9569b0104d82fae48c19bb69e4f246f096b95702433485e5"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practical-discovery.js",
@@ -2052,53 +2052,53 @@
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-apartments.html",
-      "bytes": 67644,
-      "sha256": "2b304244a679f55747cdf8a04a5bca1ad5d348b88c34b0c5dfc389a7bdb14830"
+      "bytes": 67656,
+      "sha256": "232519f1a98b29fd8674d3569d9bfdc56ce3eceebe2aa008949e0e0121f2cd03"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html",
-      "bytes": 66068,
-      "sha256": "cbe71563edef568c08d02789de9fea3dac922ead3f71d58014e576cfce522c35"
+      "bytes": 66080,
+      "sha256": "4b806637a3671048ed54320254435c7c944a1550bc842b0713b854d6e0e1990c"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-land-plots.html",
-      "bytes": 33838,
-      "sha256": "eeeff05fe7a54f6884c4da11a7b53c6daf65f2397c23f656d85549331d224c77"
+      "bytes": 33850,
+      "sha256": "0637a5d98c1ad29395c34a72e8a8d7fa193350244e8661aabc5157606f8e1f10"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-map.html",
-      "bytes": 30530,
-      "sha256": "0c4842a781ed73b7a0eaa5f9cf7da0ee92e3ec56bd6fa666d1970b8b06ab2363"
+      "bytes": 30542,
+      "sha256": "f10f3e36ecec402b999238bd8805b72b6b32703a121b3ee1092addb1cc9a1b5d"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html",
-      "bytes": 66076,
-      "sha256": "e8e0769a7c5f639246d247f523aa23200d2eb225908a0a96f7da095fd8c55410"
+      "bytes": 66088,
+      "sha256": "f9b5a42716a9ec8e34154d97a4af14d6753416c71d4e9285b0fdf8ff10c32f25"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-roads-grid.html",
-      "bytes": 108618,
-      "sha256": "0fc1a961f5bac19cfcdd6d98e1c79c3508b59b2bd1087ff95edcd5626130791e"
+      "bytes": 108630,
+      "sha256": "41c44d152d5c100365f61327abbf35057b500fa713314eaa3e90901c8ccdbd02"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-roads-schema.html",
-      "bytes": 62760,
-      "sha256": "7a814432ce0748d546dc959e151233f96b8cd98d81c7b07d6bd8bc2427657a69"
+      "bytes": 62772,
+      "sha256": "3f5c124af093ec39ed90ea8987ea8fc48122b1e1d0554f9cb766e3739ab1acb2"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-stoves.html",
-      "bytes": 83921,
-      "sha256": "07107c0f5f09c5482279923be39782cd9199dd62445b81498caaebe3338d2708"
+      "bytes": 83933,
+      "sha256": "e39ab0dc54723fcd0f7d230fd88dd2c7684b673aa6dc0bf1940dd4e21f04e1c5"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-tariffs.html",
-      "bytes": 32681,
-      "sha256": "0df61c02d91b4f60d3489e387dce93502b0735cb65ad42e5faac01722ec529f2"
+      "bytes": 32693,
+      "sha256": "6f14ff9788e03595c7374a77bb2c1af1bc3c54e197827c225be8f64cbafeecba"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/practice-1-5-tires.html",
-      "bytes": 164812,
-      "sha256": "f472645cb06dadeee68b61d30b4ae54cc691674fb60ce1f9814975df5bb4b2fc"
+      "bytes": 165297,
+      "sha256": "f8cfadb270d063fc13234d4c27389bcf72f4239379b9821427f0610695ae18e5"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-1-5-trainers/progress.js",
@@ -2172,23 +2172,23 @@
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/decimal-add-subtract.html",
-      "bytes": 47753,
-      "sha256": "b4facf7d1df3fab8e1265dc138e4fd8e747ac2a0e5f4e44c7cc95492878c7c3f"
+      "bytes": 47765,
+      "sha256": "95177862b4e68113ffcd3234946fd3e4a930ea8a99a3aa53c80e892878b8ce58"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/fraction-common-denominator.html",
-      "bytes": 48686,
-      "sha256": "6d7c3e25ca262e8e4780afe5b57086d01ed37910e1203b748cac1a7bc80b72c3"
+      "bytes": 48698,
+      "sha256": "a2acd5e40d73abe861f06d7724d3295586a7c020d70257b03d5eaa4120f74d8f"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/fraction-meaning.html",
-      "bytes": 49725,
-      "sha256": "e579af102bdf0bab83392096900dffd609b40a7cd6384a821589db07590defa6"
+      "bytes": 49737,
+      "sha256": "b2659cf248daaed55dce8df92e87ec1749765e31bbb582ba92ffd1b9e393e7df"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/index.html",
-      "bytes": 33752,
-      "sha256": "8e247013cede90dff53133626245fad7f321d7b73389a04e8b91afb175d344fd"
+      "bytes": 33764,
+      "sha256": "b3602cce3e1b7e50c6c7cba4a905da666931ede80c88417f0fe544522355ed5d"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/learning-loader.js",
@@ -2197,28 +2197,28 @@
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division.html",
-      "bytes": 48055,
-      "sha256": "bac7dd7f54d5f46f68f421bb71992ae0fe405051df5f8eb7ed58d3275b05f3cf"
+      "bytes": 48067,
+      "sha256": "537f6bdbabf71a95caa933323e822dcaa8ba0a74efe8ae276b5b2c1c5ed98334"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html",
-      "bytes": 46465,
-      "sha256": "5978cf84e1ae9c35b6cbd21646cd35cef4d751cf5b3b0b1a45191da021ca901d"
+      "bytes": 46477,
+      "sha256": "74dfd80945218e62c65fa2918ce3361e69e0f6e4ccca9cb06ac9a1075624ec57"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/column-multiplication-two-digit.html",
-      "bytes": 45878,
-      "sha256": "b9133bc9d62044a53fe62bb179814b2a8b4c79a3033c395d34e22b76484418d6"
+      "bytes": 45890,
+      "sha256": "bf359bfc63b99a1e3f25791201beeb31f5a7f275ad5627c4bebf635085d93051"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/decimal-division-natural.html",
-      "bytes": 47730,
-      "sha256": "2bee4ef123a297f5ba0e881a6d7ab27c1ca42ff4fb9386b7bc22e3926e46896b"
+      "bytes": 47742,
+      "sha256": "1de6b868cb68d00e761947d2a4a382b7f77dba4d6f946b863170cfee02b586ec"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/decimal-divisor-shift.html",
-      "bytes": 52748,
-      "sha256": "82728127a0465a30b4240f828392c35ccf6e767411714dd2b7eb8e37ed0ec83e"
+      "bytes": 52760,
+      "sha256": "b5fd9206631cf062ccdb48cdb3f3f3b85107cd002b51ee3de6b273d7f1fa9a3c"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/decimal-shift.css",
@@ -2232,8 +2232,8 @@
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/division-append-zeros.html",
-      "bytes": 47789,
-      "sha256": "7d3698398939d45c80bf6d2574e314c366d0356c66e4d2f830077db1ea31e13e"
+      "bytes": 47801,
+      "sha256": "c08d46cf42c9960942969632a71a558df43f406abfa00eaed37fcb1886220bf2"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/division-guided-core.js",
@@ -2257,68 +2257,68 @@
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/division-with-remainder.html",
-      "bytes": 47128,
-      "sha256": "4fed1ba46b0b90a85ff5e51588c0157f55e50a9acd4856a83acd75b0062c017d"
+      "bytes": 47140,
+      "sha256": "284de6520707fe1fc44eeddfc1e80597c146fdd80a59272c1707e0a02462ff46"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/index.html",
-      "bytes": 18163,
-      "sha256": "df4daa9915bdb6a80b8fa2d74665e29a836e1bec2f9d081393532ddc6a0f3342"
+      "bytes": 18175,
+      "sha256": "b3e3ee9e4c6b156af3a0ea13fd4d1942b45ef356d3d6d2f45ae374a36072d36b"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html",
-      "bytes": 38292,
-      "sha256": "a99ea41a8d753f0610780f0876a4b940a15baa5a96722b9cc0803e46dd2eb65c"
+      "bytes": 38304,
+      "sha256": "ae4c65e5c978253baccdbfe7fc40e43d454eba8882f9d6242662ab4849d9c1ff"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-mixed-checkpoint.html",
-      "bytes": 64779,
-      "sha256": "baf8d98a1ed21c38205e74034f2ca40827be2013db0b9bcb636f0c80c754deba"
+      "bytes": 64791,
+      "sha256": "edf9a987d1c1793a047a4dd816faed0bd82c314566a87dd031af6eb356ad80f8"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-one-digit.html",
-      "bytes": 47848,
-      "sha256": "a0ca25ac00da331ac5aa372218ba9e0a8d1d860c2b6aceb1b287fa13a41cd0d7"
+      "bytes": 47860,
+      "sha256": "0b757344c6ee4c93e4db3eea81548d46333734d9b7c1cf9d0e7199c7315fc8a0"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-quotient-digit.html",
-      "bytes": 48309,
-      "sha256": "f32e21c2eb0bdb8374f60d26d4dd3d579e6b0cf24cb123d5bf5bbc0103800acc"
+      "bytes": 48321,
+      "sha256": "e1e18cc2d43f013e24cf8c80b440ae5ecdecf64823085083204831843d2f5e79"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-two-digit.html",
-      "bytes": 47762,
-      "sha256": "b243e47639643054f7d5d3b54e27282402df415f924e42124d0100c22af286f7"
+      "bytes": 47774,
+      "sha256": "bf0d8fdd952318e6f32eaa2e5ec920cefe894d674028ada657bdbb771c036ee1"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-with-remainder.html",
-      "bytes": 47337,
-      "sha256": "ec2dbe0466ed359c8371dc4c3e9721a1b5a0f1d8482c6905ac1bc7962204003e"
+      "bytes": 47349,
+      "sha256": "57337b25feb244377ba62354605d60b0ab932f08936f545bf4a3a2c9f9c0b906"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/long-division-zero-in-quotient.html",
-      "bytes": 47580,
-      "sha256": "097e276e4ff47ed8f006522100abb71b44c55449a3d13ffe387005c5c3394368"
+      "bytes": 47592,
+      "sha256": "5dc55c2aa099ea03bfe67188d410db6d1c255b2914b79da192f28a0f231b9e35"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-ladder.html",
-      "bytes": 46157,
-      "sha256": "33102c4a39931bfca5f1d18ce85a4afbcbd29a38e929b7ae66931dedf09b17ba"
+      "bytes": 46169,
+      "sha256": "2f7a763352a69a17d96f0e2eba3024f07b14a6ec208efd557ecd6afb06ae9d5a"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-meaning.html",
-      "bytes": 49473,
-      "sha256": "2d0446dfe13c759f7b3f11b052545fc8536691e68da39760c235c7aab381df84"
+      "bytes": 49485,
+      "sha256": "cd44f1beab9e699a44d9d271c828a6de9aa6b7d4a0f5038e156289be99f70eac"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-mixed.html",
-      "bytes": 48028,
-      "sha256": "c4fe622fa825335df5563d4f467e37b73329d648ff18896b09d0ffa906fdb63c"
+      "bytes": 48040,
+      "sha256": "bf0b17fa80c35771ecb58c125a638aba9ceb5ef6cf41cf4978f08418acbcd62d"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-pythagoras-table.html",
-      "bytes": 47382,
-      "sha256": "6dba874522b00c2efe637c16348582cc8af61812653795e9f5808371ef6fcdff"
+      "bytes": 47394,
+      "sha256": "6a5ef7b83dbab4f144da86553204c1e491a31e76b95287ed4691b54c6dc9ce29"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-refresh.css",
@@ -2332,13 +2332,13 @@
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/multiplication-tricks.html",
-      "bytes": 46839,
-      "sha256": "b825121050a6690e6e2c3d01e30d59a430c67a0229b7f2227510eb2d7494ce3e"
+      "bytes": 46851,
+      "sha256": "c32b68b73adfe0a61d88a27621a5ebbdba16f865a513696bd475623993a6fcd4"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/multiplication-division/tabular-division.html",
-      "bytes": 46164,
-      "sha256": "3de4ddafd57ed0ad107cdcb79650c2985380f3c354c5af2e22fea66fadb73b94"
+      "bytes": 46176,
+      "sha256": "ea34f6ebfb7fcb672b237247479e2a5b56957609178dfdb833217e9eecb5b031"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/navigation-minimal.css",
@@ -2352,68 +2352,68 @@
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/negative-add-subtract.html",
-      "bytes": 47027,
-      "sha256": "a4999bd7afb6f783b3e0f770da57517a573cc2f89dc605cf9b2e48990ee6c845"
+      "bytes": 47039,
+      "sha256": "3e29cf579b31db692e2f1fb70ac51ab6777f882510b9219eac81382ec496f0b7"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/negative-number-line.html",
-      "bytes": 48892,
-      "sha256": "98d1fa07b97a591d4cc005e49fa66c0eaae83e22637799fd4d450d905d83b440"
+      "bytes": 48904,
+      "sha256": "f1681b36baffc792b2716edc6f43bb41ff5e02179593bec7c0e51eda4b0cdc8c"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/order-of-operations.html",
-      "bytes": 48867,
-      "sha256": "5e52e5815fe985e54b08d385c0954156770c2159164ec0c69a0497a55dca43c0"
+      "bytes": 48879,
+      "sha256": "635b277c82d8cfe848cbb7939d2e8dae0132694cd655803c2bd7760892d1e474"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/percentages/index.html",
-      "bytes": 19391,
-      "sha256": "77d7411a103e014b76591c4eea4084118d8fb8528bc39453730b48da2e3d7361"
+      "bytes": 19403,
+      "sha256": "7e53c8fefb4eab75ee6effcdcd1e08b9e2c67e8173a8ece97bab3298e059a05b"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/percentages/percent-change.html",
-      "bytes": 46831,
-      "sha256": "d66df83cdf3826634c16ff25fe3a5b1e867345698aeb516ce05eab51e92a82ea"
+      "bytes": 46843,
+      "sha256": "2769c9df344bb1ac36e0fa2786fddeacc7fc25a92719f6c1d02cdc556b50802b"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/percentages/percent-choose-question.html",
-      "bytes": 48435,
-      "sha256": "092d103e0c90b5462eebea86042dbba544b75c1bdf96df07763eb5b91a2f1c4f"
+      "bytes": 48447,
+      "sha256": "3619b2376e43794e69e7bf34631c5329cbef6791c5d6748e5b891daaf4dfbe97"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/percentages/percent-final-checkpoint.html",
-      "bytes": 43545,
-      "sha256": "0e606e9f5e23ec71599bb12936fcb486a89f9938a6632197bc53320d6b5bbc39"
+      "bytes": 43557,
+      "sha256": "cc1aca5cc9b606fbda9b159174d68f0d2bf7651b565572a96d5ef47c6c38aa83"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/percentages/percent-meaning.html",
-      "bytes": 42530,
-      "sha256": "2d3319799b944f1e24e0e8d49240d9067b9bc539c8f221503fbda392915fd2c5"
+      "bytes": 42542,
+      "sha256": "1b30b768ddde742bba1251ee2561dacfe6c6bbc1e7ee283ae67ad8c9060bb976"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/percentages/percent-of-number-and-whole.html",
-      "bytes": 41646,
-      "sha256": "620b7d3156f2522af0950e770b70fa76c0fc6f064231e3b5783928491605a277"
+      "bytes": 41658,
+      "sha256": "f944f35a2351cd7471f5d53ad473f17b9e737b10b24bfd5dda340616041921a6"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/percentages/proportion.html",
-      "bytes": 47750,
-      "sha256": "8504e7e043ab3ee6a70f0bdcb8787ac1ed171baba89cfd089c45f9204db11c78"
+      "bytes": 47762,
+      "sha256": "9f4792e54f6c03ab9c541a5f007d624abe955307bb683def5221708cf1e1f494"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/rounding.html",
-      "bytes": 48945,
-      "sha256": "e2af98ac650d343b3dc7b03df927f92b23c7056ecbdee3432cc88d1817615312"
+      "bytes": 48957,
+      "sha256": "6bd20b27f103b02c7ae39a62591f37cde7fa6fa8a6340974fd7a81c1727889fe"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/units-area.html",
-      "bytes": 47897,
-      "sha256": "0b653f4fbec9f22d18a49bd71c24647bd28f49e045417c53e1597a61d7f28b23"
+      "bytes": 47909,
+      "sha256": "7b3ed4c065554803988cd27dd67c73c8b94e4ac2ab344367abbcfd2da1e3f7c9"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-basics/units-length-time.html",
-      "bytes": 47574,
-      "sha256": "7cdab699be72560235fc1d96d11b2f1dd3a1337e91ae4b4f8966db6bfbdf6ca5"
+      "bytes": 47586,
+      "sha256": "6296eb55fd7c7e2a08b6a2d589889927ffb58e587602dde1a283eb58d387fb08"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-course-algebra-reference.js",
@@ -2482,103 +2482,103 @@
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-course/index.html",
-      "bytes": 24783,
-      "sha256": "a1d15da57c43ee68e95c16db95ac14d6597949bd418809dd9d822b4acb4747f5"
+      "bytes": 24795,
+      "sha256": "d1ca7eace9a19a3c4826c34f53daddb49b64d23bf3b55896fd819949dbb45e11"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-task10-probability.html",
-      "bytes": 118728,
-      "sha256": "4abf48e94ca3a90547672195b25fcef322c9c8f03285ba1ea1316d4cb36f6f2a"
+      "bytes": 118740,
+      "sha256": "7e0d260ba764909bc7c148549127613cfac5969598f9038a46ba1555f90e4f77"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-task11-graphs-trainer.html",
-      "bytes": 337634,
-      "sha256": "33006d57fcaaccbc624c3049e24ae3860185d386b96a119713bec69ea537a594"
+      "bytes": 337646,
+      "sha256": "84e27ca2bd18773a2959a36765018cf0fb7eab2883fd7edc443efcde66a335ac"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-task12-formulas-trainer.html",
-      "bytes": 157602,
-      "sha256": "1114558df2cd94216579d97a0eebf1b89d650bf2122a1710b1dffd83e882fd51"
+      "bytes": 157614,
+      "sha256": "c1a9ea83bae1245590a3264afe4114a55b6c8b52a3fa8f2e44e56a4d2e40576d"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-task13-inequalities.html",
-      "bytes": 1838,
-      "sha256": "ebfb79d2649e0749659b48c95e5aa972861760f1d4ec67e2772269dadb31eef2"
+      "bytes": 1850,
+      "sha256": "149738c5755359d3cbb3b9f107951b3a445e431619e1647179fc0bd6b118f151"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-task14-progressions.html",
-      "bytes": 197796,
-      "sha256": "b05d03dbadcb6354cfd65dc710ccebaee8dab63b1a591c021b32667395c851e8"
+      "bytes": 197808,
+      "sha256": "184854100d466b77c894a01d46595cc5d2f46f0af8e295d43574e656b94b8fde"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-task16-circle.html",
-      "bytes": 170333,
-      "sha256": "6d0bda652057b9ca3ac7f6c8674e7bd2a69724a95d56e635e4f4a4785e709086"
+      "bytes": 170345,
+      "sha256": "fa2915ffe55188e9416bbbf726af5c3f7602345251592341aaca950aa3be9e53"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-task17-quadrilaterals.html",
-      "bytes": 160443,
-      "sha256": "1b03808a6ef305fc37da85da32e9b7c904149f1f3a106f6c95721be16e5b59d6"
+      "bytes": 160455,
+      "sha256": "0954a615758c8655ec10aa8b957708aa051c3b96f6fcbde880d6c342c26d83b7"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-task18-grid.html",
-      "bytes": 118478,
-      "sha256": "96465d3b2970b063f772093d01b08c3050892469599178b321d82190f3a1d2f8"
+      "bytes": 118490,
+      "sha256": "c49cd419f9b9d8ae4f74c7d98b3208c51020ae82e7fe7e8df5cd20d8bb91f338"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-task20-equations.html",
-      "bytes": 169762,
-      "sha256": "5819bf32f5288883b2204f1433d53a93d3d2abe217917e237c79d8331fbc3a59"
+      "bytes": 169774,
+      "sha256": "cba41bd3a4a5989d5859cfbaa825f4280370771583aa57282ba06bd1827edb96"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-task21-word-problems.html",
-      "bytes": 177143,
-      "sha256": "e08d2ee78ac03ee9c4c59258b14ae7727af1c5ca6bf0a2513b7f365f822be741"
+      "bytes": 177155,
+      "sha256": "6360173254b525c343d4ae37f43c6f041c284c68754b97751d796af832d66ca2"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-task22-functions-graphs.html",
-      "bytes": 103523,
-      "sha256": "b59a9b89baa72f11f4ee6650033c8e8a0a09ad811a21fb9929cb57ec001164e6"
+      "bytes": 103535,
+      "sha256": "60f99c8ed0444a628df8f7498f17d5a23d4ea2c8f6747ef5ef0aa38acb291535"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-task23-geometry-calculations.html",
-      "bytes": 196817,
-      "sha256": "1c913cdf39c59def314b658a09349cdede18aaf688bf7fbc89f1f18d536ea218"
+      "bytes": 196829,
+      "sha256": "78bc542cda7feb825dba826785a94010819ae72bf160af1038dc05a8da0b589c"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-task24-proofs.html",
-      "bytes": 166103,
-      "sha256": "8c74404ed5f6876a1bcd9ac42f30b1b809a5ab6d30de5bf0cd1982cd311b02ee"
+      "bytes": 166115,
+      "sha256": "fddd5e1fbf4cfec4bf97911ab68cb82f75c92e775cba7efc761ee6917b3d3751"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-task25-geometry.html",
-      "bytes": 187942,
-      "sha256": "a816e456b956bb5f7d250be26a85ed2a3007ab5ef63f3a53089764f69cf1f4bb"
+      "bytes": 187954,
+      "sha256": "3be5aa31d53ae664047bf3914d807b2374f8e4eec1467542de6b90f290154d64"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-task6-fractions.html",
-      "bytes": 150893,
-      "sha256": "c2d10a08895d31acc8ad6849cf3f09c17e855afac71a9918440057c4e4d61593"
+      "bytes": 150905,
+      "sha256": "bd1e6a750efd6eb12199e1c6f42d58be4101f943031a06691205de608718e733"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-task7-number-line.html",
-      "bytes": 218466,
-      "sha256": "b27621fd011a4efa0a7fefc7d3eb6cc892c3b4a684c7450b7fc16288cdeaff78"
+      "bytes": 218478,
+      "sha256": "15d9be9b758c4d93d6dc064fa20e577fad871b71f25be72e7e162f2bda714ae6"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-task8-powers-roots.html",
-      "bytes": 139481,
-      "sha256": "abddc315ad63e72092f39b3bf7b38cf8c72c346ab7a75ef65689a2f2fc05d4b3"
+      "bytes": 139493,
+      "sha256": "42807210ce5db38f48d66cb272e25d56ea0fe6ddd5c9eaaef0e17463466ebbb0"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge-task9-equations.html",
-      "bytes": 258604,
-      "sha256": "1f12ff682c2ca824420909d358da692f8bc24fee79728df6159dfcc78196fb68"
+      "bytes": 258616,
+      "sha256": "6de3761a3358e37e4e91a203d3ca96654e4e843dabd5411d73f2dabe2004060d"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/oge13-inequalities-series.html",
-      "bytes": 83418,
-      "sha256": "15fcce43cdb6e81494b50cd8a0573ad7a727934cce551328dd03421dd2de9847"
+      "bytes": 83430,
+      "sha256": "3dfe970fa89ed01ccadcaa95a7c6b705fb3d72c8f666306d62eca0ea7b992b8b"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/task19-models-circles.js",
@@ -2707,8 +2707,8 @@
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/task19-trainer.html",
-      "bytes": 5761,
-      "sha256": "76a5eec1249a8b4e020c6dd9fe59d178aa8797208aacb5b703f5a4a3dca5ef46"
+      "bytes": 5773,
+      "sha256": "9c60648548c18c51cd12da8d974c34c4c7d429147e3eb1ea83308aaac2f56709"
     },
     {
       "path": "book/oge/2026-10-31/v1/trainers/task19-visual-app.js",

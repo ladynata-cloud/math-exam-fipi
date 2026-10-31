@@ -49,6 +49,10 @@ jobs:
           echo "NODE_PATH=$RUNNER_TEMP/book-browser/node_modules" >> "$GITHUB_ENV"
       - name: Fixed aliases, dependency requests, and separate retained results
         run: node tools/book-edition/runtime.browser.cjs
+      - name: Tire figures under chunked HTML and delayed scripts
+        run: |
+          node tools/oge-book-tire-images.browser.cjs
+          BOOK_PREFIX=/book/oge/2026-10-31/v1 node tools/oge-book-tire-images.browser.cjs
       - name: Independent mathematical corrections and preserved historical engines
         run: node --test tools/oge-book-corrections.test.cjs tools/oge-book-exam-corrections.test.cjs tools/oge-basics-inventory.test.cjs tools/oge-basics-standalone.test.cjs tools/oge-basics-help.test.cjs tools/oge-basics-percentages-contextual.test.cjs tools/division-guided.test.cjs tools/arithmetic-url-contract.test.cjs
       - name: Complete recorded learner scenarios on source and fixed copies

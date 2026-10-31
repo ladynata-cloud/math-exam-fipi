@@ -821,6 +821,15 @@ function navRow(prevIdx,prevText,nextIdx,nextText){
   </div>`;
 }
 
+// Set image URLs on actual nodes, so HTML preload scanning cannot request
+// JavaScript template placeholders before the inline engine has rendered them.
+function setTireFigureSources(section){
+  const sources={marking:RIS1,dimensions:RIS2};
+  section.querySelectorAll('img[data-tire-figure]').forEach(image=>{
+    image.src=sources[image.dataset.tireFigure];
+  });
+}
+
 /* ===== RENDER: STEP 1 — MARKING ===== */
 function renderMarking(){
   const f=VD.factory, sec=document.getElementById('section-0');
@@ -835,8 +844,8 @@ function renderMarking(){
       <span class="seg hl-B">${f.B}</span><span class="sep">/</span><span class="seg hl-p">${f.p}</span><span class="seg hl-R">R</span><span class="seg hl-d">${f.d}</span>
     </div><div class="marking-label">маркировка заводской шины</div></div>
     ${VD.v.sourceKind==='author-analogue' ? `<figure class="fig"><svg class="wheel author-wheel" id="author-wheel" viewBox="0 0 600 380" role="img" aria-label="Диаметр заводского колеса: две боковины и диск"></svg><figcaption>Авторская схема MathExam: D = H + d + H</figcaption></figure>` : `<div class="figures">
-      <figure class="fig"><img src="${RIS1}" alt="шина с маркировкой 195/65 R15"><figcaption>Рис. 1 — пример: маркировка 195/65 R15 на боковине</figcaption></figure>
-      <figure class="fig"><img src="${RIS2}" alt="схема размеров шины: D, d, H, B"><figcaption>Рис. 2 — из чего складывается колесо</figcaption></figure>
+      <figure class="fig"><img data-tire-figure="marking" alt="шина с маркировкой 195/65 R15"><figcaption>Рис. 1 — пример: маркировка 195/65 R15 на боковине</figcaption></figure>
+      <figure class="fig"><img data-tire-figure="dimensions" alt="схема размеров шины: D, d, H, B"><figcaption>Рис. 2 — из чего складывается колесо</figcaption></figure>
     </div>`}
     <div class="dim-legend">
       <div class="dl-title">${VD.v.sourceKind==='author-analogue'?'четыре размера колеса':'разберём Рис. 2 — четыре размера'}</div>
@@ -870,6 +879,7 @@ function renderMarking(){
     </div>
     ${navRow(null,'',1,'Собрать таблицу варианта')}
   </div>`;
+  setTireFigureSources(sec);
   if(VD.v.sourceKind==='author-analogue') renderCrossSection(document.getElementById('author-wheel'),f);
   // wire marking quizzes
   QUIZDONE={B:false,p:false,Rd:false};
@@ -935,7 +945,7 @@ function renderTable(){
       <b>Таблица собрана!</b> Все диаметры посчитаны и продублированы в панель «Твоя таблица» справа. Теперь переходи к задачам — ответы читаются прямо из неё.
     </div>
 
-    ${VD.v.sourceKind==='author-analogue' ? `<div class="schema-ref"><div class="sr-text">Сверху боковина <b>H</b>, посередине диск <b>d</b>, снизу ещё боковина <b>H</b>. Поэтому <b>D = H + d + H = 2H + d</b>. Ниже — авторская схема с размерами заводского колеса.</div></div>` : `<div class="schema-ref"><img src="${RIS2}" alt="схема шины из условия"><div class="sr-text">Как на схеме из условия (Рис. 2): сверху боковина <b>H</b>, посередине диск <b>d</b>, снизу ещё боковина <b>H</b>. Сложи их по высоте — получишь полный диаметр: <b>D = H + d + H = 2H + d</b>. Ниже — то же самое, но с числами твоей шины.</div></div>`}
+    ${VD.v.sourceKind==='author-analogue' ? `<div class="schema-ref"><div class="sr-text">Сверху боковина <b>H</b>, посередине диск <b>d</b>, снизу ещё боковина <b>H</b>. Поэтому <b>D = H + d + H = 2H + d</b>. Ниже — авторская схема с размерами заводского колеса.</div></div>` : `<div class="schema-ref"><img data-tire-figure="dimensions" alt="схема шины из условия"><div class="sr-text">Как на схеме из условия (Рис. 2): сверху боковина <b>H</b>, посередине диск <b>d</b>, снизу ещё боковина <b>H</b>. Сложи их по высоте — получишь полный диаметр: <b>D = H + d + H = 2H + d</b>. Ниже — то же самое, но с числами твоей шины.</div></div>`}
     <div class="wheel-svg-wrap"><svg class="wheel" viewBox="0 0 600 380" id="cross-svg" preserveAspectRatio="xMidYMid meet"></svg></div>
     <div class="d-box">D = H + d<sub style="font-size:.7em">мм</sub> + H = 2H + d<sub style="font-size:.7em">мм</sub><small>сверху боковина H, диск d, снизу ещё боковина H — поэтому 2H</small></div>
 
@@ -946,6 +956,7 @@ function renderTable(){
     </div>
     ${navRow(0,'Маркировка',2,'Задача 1')}
   </div>`;
+  setTireFigureSources(sec);
   // wire cells
   sec.querySelectorAll('.calc-cell').forEach(inp=>{
     inp.addEventListener('blur',()=>checkCalcCell(inp));
