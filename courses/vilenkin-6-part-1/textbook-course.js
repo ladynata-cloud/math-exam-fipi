@@ -17,6 +17,7 @@
     if(managed&&link.getAttribute('href')==='#'){
       link.dataset.managedCourseCatalog='';
       link.setAttribute('aria-label','Все темы курса в кабинете');
+      link.setAttribute('aria-disabled',String(managedReadonly||!managedReady));
       link.addEventListener('click',event=>{
         event.preventDefault();
         if(viewIsCurrent(epoch,hash))managedNotify({kind:'navigate',details:{target:'vilenkin-textbook-catalog'},state:managedSnapshot()});
@@ -230,13 +231,14 @@
   function managedAccess(value){
     managedReadonly=!!value;main.inert=managedReadonly||!managedReady;
     document.body.dataset.managedReadonly=String(managedReadonly);
+    main.querySelectorAll('[data-managed-course-catalog]').forEach(link=>link.setAttribute('aria-disabled',String(managedReadonly||!managedReady)));
   }
   function initManaged(){
     document.body.classList.add('managed');
     main.innerHTML='<h1>Задание из учебника</h1><p role="status">Открываем сохранённую работу из кабинета…</p>';
     document.querySelector('.site-header nav')?.replaceChildren();
     const brand=document.querySelector('.site-header .brand');if(brand)brand.removeAttribute('href');
-    const note=document.createElement('p');note.className='managed-course-note';note.textContent='Ответы, шаги и подсказки сохраняются в этой работе. Нажми «Все темы», чтобы вернуться в каталог курса.';main.before(note);
+    const note=document.createElement('p');note.className='managed-course-note';note.textContent='Работа сохраняется в кабинете. Вернуться к каталогу можно по ссылке «Все темы курса» над заданием.';main.before(note);
     announceStorage(true);managedAccess(true);
     if(!window.MathExamLearning?.enabled||!window.VilenkinTextbookLearning?.createFactory){
       main.innerHTML='<h1>Открой задание из кабинета</h1><p>Связь с кабинетом не установлена. Сохранённые работы остаются на сервере.</p>';return;

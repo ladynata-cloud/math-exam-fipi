@@ -23,6 +23,11 @@ published head and later exact-head CI; this document does not claim a release.
   existing authenticated frame navigation event. A pending/rejected save blocks
   leaving and shows the existing message. After saving, clicking again returns
   safely; the same task and draft can be resumed.
+- A real “Все темы курса” link above the task also works for teachers and
+  read-only history views. It uses the existing cabinet catalogue route and
+  save guard, without changing answers, control, history or attempt counts.
+  The protected inner breadcrumb is visibly disabled in read-only mode; the
+  banner points to the available cabinet link above it.
 - Fraction tasks expose the existing factorization-based LCM trainer beside
   answer/help controls. The label explicitly says it is a separate example.
   Opening it records use of help, preserves the current fractions and draft,
@@ -57,14 +62,14 @@ entry to the existing LCM trainer within this presentation/navigation scope.
 | Existing textbook backend and source-help backend | 15 + 10 cases PASS |
 | Source inventory and catalog generation | PASS: 24 units, 194 cards, 615 steps, 25 figure uses; generated catalog exact |
 | Full existing textbook DOM | PASS: 194 views, 25 source figures, 30 recorded learner journeys |
-| New browser course/UI gate | `VILENKIN_COURSE_UI_BROWSER_OK`: 8 grouped checks, 320/390/1280 × 900 |
+| New browser course/UI gate | `VILENKIN_COURSE_UI_BROWSER_OK`: 10 grouped checks, 320/390/1280 × 900, including teacher/read-only/history catalogue return |
 | Existing source-helper browser regression | 7 grouped checks PASS: delayed ACK, permissions, reload, exam race and post-result credit |
 | Syntax, bounded diff, whitespace and source identity | PASS |
 
-The Node runner reports file-level aggregates when invoked in separate test
-processes; counts above name the individual registered cases. The helper's
-additional fourteenth case was rerun after the visual status correction. The
-final integrated browser run binds the actual final files by SHA256.
+The continuation ran the 44 focused and 25 backend cases with
+`--test-isolation=none`: 69 individually reported passes, zero failures or
+skips. The 44 focused cases were rerun after the final accessibility/caption
+correction. The integrated browser run binds the final files by SHA256.
 
 Browser tests use local HTTP origins, real API/SQLite and synthetic accounts.
 External traffic is blocked. The final UI run records zero external requests,
@@ -74,8 +79,8 @@ records. No TLS verification was disabled.
 ### Browser and image evidence
 
 The [browser result](vilenkin-course-navigation-20261101/browser-result.json)
-binds 12 exact images and all 12 relevant source files with SHA256. The harness
-compares source hashes at start/end. All 12 final images received actual visual
+binds 14 exact images and all 12 relevant source files with SHA256. The harness
+compares source hashes at start/end. All 14 final images received actual visual
 inspection; root additionally inspected course, topic, task helper and fraction
 practice views. Earlier development captures and a failed test screenshot are
 not included in this final image registry.
@@ -86,6 +91,8 @@ not included in this final image registry.
 - [Course helper](vilenkin-course-navigation-20261101/course-helper-390.png)
 - [Task helper](vilenkin-course-navigation-20261101/task-helper-320.png)
 - [Fraction task and LCM practice](vilenkin-course-navigation-20261101/fraction-practice-1280.png)
+- [320 px return from history](vilenkin-course-navigation-20261101/history-catalog-return-320.png)
+- [Teacher catalogue return](vilenkin-course-navigation-20261101/teacher-catalog-return-1280.png)
 
 The fixed launcher can overlap the edge of a partially visible card at the
 bottom while scrolling. Every final action can scroll clear of it; the browser
@@ -111,6 +118,38 @@ MEDIUM presentation/navigation scope; PR389's exception is not reused.
 3. The first harness assumed every typed answer lived in the final draft field.
    Guided examples correctly save the current step draft. The test was corrected
    to check the active mode; no product data-loss issue was found or hidden.
+4. Continuation review found that the original return handled pupils but
+   explicitly ignored an editable teacher. Read-only/history views also had
+   no catalogue exit outside the protected frame. The cabinet link now uses
+   the existing teacher-capable `#vilenkin-textbook` route; the inner link also
+   accepts the already-owned editable teacher event. No frame/read-only guard
+   or mutation contract was weakened. Independent focused review of the final
+   navigation and accessibility changes found no remaining blocker.
+
+## Continuation evidence
+
+The existing PR392 branch was recovered after the prior conversation ended.
+The new checks use Chromium 140.0.7339.16, Playwright 1.62.1 and Node 24.22.1
+with real local API/SQLite and synthetic accounts; this is not a pupil trial.
+The original CI runtime is separately recorded by GitHub.
+
+The extended browser scenarios verify a held save, history return and exact
+resume, stale detached links, a teacher observing read-only work, and an
+editable teacher's inner breadcrumb. They compare complete saved attempts and
+history and assert no navigation writes or duplicate attempts. The original
+source-helper browser checks were also rerun. A temporary save-notice toast
+is allowed to clear normally before the history screenshot.
+
+The teacher catalogue remains the existing general catalogue. Returning there
+does not preselect a pupil for a later assignment. History and read-only
+trainers remain inert; their available exit is the cabinet link above them.
+
+Before this continuation, all 15 workflows for the original head
+`f5d20e57483069612d7c4c31390c4b8e4c38eeb5` completed: 13 successful and two
+unchanged geometry-source failures. Those results are historical evidence,
+not checks on a later head. Fresh HTTPS checks confirmed the live cabinet and
+public course still served the previous navigation code. Both publication
+surfaces must receive their new resources during a later authorized release.
 
 ## Remaining checks and release
 
@@ -132,7 +171,7 @@ PR: Draft PR URL and published head recorded after this local report
 Base: a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3
 Head: Exact published identity recorded in the Draft PR
 Gate: VILENKIN_COURSE_NAVIGATION_OK locally; CI/release separate
-Tests: 44 focused cases; 25 backend; 194 views/30 journeys; 8+7 browser groups
+Tests: 44 focused cases; 25 backend; 194 managed identities; 10+7 browser groups; 14 inspected screenshots
 Failures: No remaining local product finding; corrected review/harness findings above
 Not run: Production, real pupil changes, physical/other-browser trials, external review
 Scope deviations: None; direct owner follow-ups are included in this UI correction

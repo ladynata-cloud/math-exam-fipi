@@ -80,11 +80,12 @@ async function insideViewport(locator, viewport, label) {
     browser = await chromium.launch({headless: true, executablePath: process.env.CHROMIUM_EXECUTABLE_PATH,
       args: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-background-networking']});
     const context = await browser.newContext({viewport: {width: 1280, height: 900}, locale: 'ru-RU'});
-    await context.route('**/*', route => {
+    const localOnly = route => {
       const url = new URL(route.request().url());
       if ([origin, trainerOrigin].includes(url.origin) || ['data:', 'blob:', 'about:'].includes(url.protocol)) return route.continue();
       blockedExternal.push(url.origin + url.pathname); return route.abort();
-    });
+    };
+    await context.route('**/*', localOnly);
     page = await context.newPage(); page.setDefaultTimeout(15000);
     page.on('pageerror', error => errors.push(error.message));
     page.on('request', request => requests.push({url: request.url(), method: request.method()}));
@@ -98,8 +99,8 @@ async function insideViewport(locator, viewport, label) {
     const browsingStart = requests.length;
     const mutations = since => requests.slice(since).filter(request => new URL(request.url).pathname.startsWith('/api/learning/')
       && !['GET', 'HEAD', 'OPTIONS'].includes(request.method));
-    const take = async name => {
-      const file = name + '.png'; await page.screenshot({path: path.join(evidence, file), fullPage: false});
+    const take = async (name, targetPage = page) => {
+      const file = name + '.png'; await targetPage.screenshot({path: path.join(evidence, file), fullPage: false});
       images.push({file, sha256: crypto.createHash('sha256').update(fs.readFileSync(path.join(evidence, file))).digest('hex')});
     };
     const openCourse = async () => {
@@ -244,16 +245,47 @@ async function insideViewport(locator, viewport, label) {
       assert.match(await page.locator('#toast').innerText(), /дождитесь сохранения/);
       assert.equal(new URLSearchParams(new URL(page.url()).hash.slice(1)).get('attempt'), attemptId,
         'All topics cannot leave while a draft is still pending');
+      await page.locator('#workspace-vilenkin-catalog').click();
+      assert.equal(new URLSearchParams(new URL(page.url()).hash.slice(1)).get('attempt'), attemptId,
+        'The cabinet catalogue link keeps the same pending-save guard');
       assert.equal(currentDraft(), '37', 'The held input has not yet reached the server');
     } finally {
       releaseInput();
     }
     await until(() => currentDraft() === '41', 'held draft is saved after release');
     await until(async () => await page.locator('#save-state').textContent() === 'Все изменения сохранены', 'held draft acknowledgement');
-    await frame.locator('[data-managed-course-catalog]').click();
+    await page.locator('#workspace-vilenkin-catalog').click();
     await page.locator('[data-vilenkin-textbook-course]').waitFor();
     assert.equal(new URL(page.url()).hash, '#vilenkin-textbook');
-    checks.push('All topics waits for a held draft save, then returns to the cabinet without losing the newly saved input');
+    checks.push('Both catalogue links wait for a held draft save; the shell return preserves the newly saved input');
+
+    await until(() => page.locator('[data-vilenkin-textbook-start]').isEnabled(), 'resume before history navigation');
+    await page.locator('[data-vilenkin-textbook-start]').click(); await ready();
+    const beforeHistoryReturn = JSON.stringify(store.getAttempt(student, attemptId));
+    const historyBeforeReturn = JSON.stringify(store.history(student, attemptId));
+    await page.locator('#show-history').click();
+    await page.locator('#history-bar').waitFor();
+    await frame.locator('body[data-managed-readonly="true"]').waitFor();
+    assert.equal(await frame.locator('#main').evaluate(node => node.inert), true, 'History keeps the trainer inert');
+    const catalogueReturn = page.locator('#workspace-vilenkin-catalog');
+    assert.equal(await catalogueReturn.getAttribute('href'), '#vilenkin-textbook', 'The shell has a real course link');
+    await page.locator('#toast').waitFor({state: 'hidden'});
+    await page.evaluate(() => scrollTo(0, 0));
+    await insideViewport(catalogueReturn, {width: 320, height: 900}, 'Catalogue return outside the read-only history');
+    await take('history-catalog-return-320');
+    const staleCatalogueLink = await catalogueReturn.elementHandle();
+    const historyReturnRequests = requests.length;
+    await catalogueReturn.click();
+    await page.locator('[data-vilenkin-textbook-course]').waitFor();
+    await until(() => page.locator('[data-vilenkin-textbook-start]').isEnabled(), 'course returned from history');
+    assert.deepEqual(mutations(historyReturnRequests), [], 'Leaving history only browses the catalogue');
+    assert.equal(JSON.stringify(store.getAttempt(student, attemptId)), beforeHistoryReturn, 'History return preserves the exact saved attempt');
+    assert.equal(JSON.stringify(store.history(student, attemptId)), historyBeforeReturn, 'History return adds no saved event');
+    await page.locator('[data-vilenkin-textbook-start]').click(); await ready();
+    assert.equal(new URLSearchParams(new URL(page.url()).hash.slice(1)).get('attempt'), attemptId);
+    assert.equal(await frame.locator('#answer').inputValue(), '41');
+    assert.equal(store.listAttempts(student).length, before.attempts + 1, 'History return and resume create no duplicate work');
+    checks.push('Pupil history remains read-only; its visible 320px shell link returns to the course and resumes the exact saved attempt without writes');
 
     await page.setViewportSize({width: 1280, height: 900}); await openCourse();
     const fraction = catalog.find(row => row.contentId === 'v6-book-2-134-в');
@@ -262,6 +294,12 @@ async function insideViewport(locator, viewport, label) {
     await fractionUnit.locator('summary').click();
     await fractionUnit.locator('[data-vilenkin-textbook-open="' + fraction.id + '"]').click(); await ready();
     const fractionId = new URLSearchParams(new URL(page.url()).hash.slice(1)).get('attempt');
+    const staleRequests = requests.length;
+    await staleCatalogueLink.evaluate(link => link.click());
+    assert.equal(new URLSearchParams(new URL(page.url()).hash.slice(1)).get('attempt'), fractionId,
+      'A detached catalogue control cannot leave a later task');
+    assert.deepEqual(mutations(staleRequests), [], 'A stale navigation control never writes work');
+    await staleCatalogueLink.dispose();
     const fractionBefore = store.getAttempt(student, fractionId);
     const practice = frame.locator('.work .help-actions [data-v6-practice="lcm"]');
     await practice.waitFor();
@@ -286,6 +324,55 @@ async function insideViewport(locator, viewport, label) {
     await popup.close();
     assert.equal(new URLSearchParams(new URL(page.url()).hash.slice(1)).get('attempt'), fractionId);
     checks.push('The concrete fraction task offers a separate LCM trainer; popup is noopener, help is recorded, original condition/answer/status stay intact');
+
+    const teacherContext = await browser.newContext({viewport: {width: 1280, height: 900}, locale: 'ru-RU'});
+    await teacherContext.route('**/*', localOnly);
+    const teacherPage = await teacherContext.newPage(); teacherPage.setDefaultTimeout(15000);
+    teacherPage.on('pageerror', error => errors.push(error.message));
+    teacherPage.on('request', request => requests.push({url: request.url(), method: request.method()}));
+    await teacherPage.goto(origin + '/learning/?role=teacher#home');
+    await teacherPage.locator('#auth-form [name=login]').fill(teacher.login);
+    await teacherPage.locator('#auth-form [name=password]').fill(password);
+    await teacherPage.locator('#auth-form [type=submit]').click();
+    await until(() => teacherPage.evaluate(() => window.LearningApp?.account()?.role === 'teacher'), 'synthetic teacher login');
+    await teacherPage.locator('#auth-progress').waitFor({state: 'hidden'});
+    await teacherPage.evaluate(id => LearningApp.navigate('attempt=' + id), attemptId);
+    let teacherFrame = teacherPage.frameLocator('#trainer-host iframe');
+    await teacherFrame.locator('body[data-managed-readonly="true"]').waitFor();
+    assert.equal(await teacherFrame.locator('#main').evaluate(node => node.inert), true, 'Teacher viewing retains the inert pupil work');
+    assert.equal(await teacherPage.locator('#workspace-vilenkin-catalog').getAttribute('href'), '#vilenkin-textbook');
+    await teacherPage.evaluate(() => scrollTo(0, 0));
+    await insideViewport(teacherPage.locator('#workspace-vilenkin-catalog'), {width: 1280, height: 900}, 'Teacher catalogue return');
+    await take('teacher-catalog-return-1280', teacherPage);
+    const teacherViewAttempt = JSON.stringify(store.getAttempt(student, attemptId));
+    const teacherViewHistory = JSON.stringify(store.history(student, attemptId));
+    const teacherReturnRequests = requests.length;
+    await teacherPage.locator('#workspace-vilenkin-catalog').click();
+    await teacherPage.locator('[data-vilenkin-textbook-course]').waitFor();
+    assert.equal(await teacherPage.locator('[data-vilenkin-textbook-open]').count(), catalog.length, 'Teacher reaches the actual textbook catalogue');
+    assert.deepEqual(mutations(teacherReturnRequests), [], 'Teacher catalogue navigation never transfers control or creates work');
+    assert.equal(JSON.stringify(store.getAttempt(student, attemptId)), teacherViewAttempt);
+    assert.equal(JSON.stringify(store.history(student, attemptId)), teacherViewHistory);
+    await teacherPage.goBack();
+    teacherFrame = teacherPage.frameLocator('#trainer-host iframe');
+    await teacherFrame.locator('body[data-managed-readonly="true"]').waitFor();
+    assert.equal(await teacherFrame.locator('#answer').inputValue(), '41', 'Teacher returns to the same saved draft');
+    // Taking control is an explicit fixture action. Navigation is measured only
+    // after that acknowledgement and must not cause any further write.
+    await teacherPage.locator('#trainer-control').click();
+    await teacherFrame.locator('body[data-managed-readonly="false"]').waitFor();
+    await until(() => store.getAttempt(student, attemptId).controller === 'teacher', 'teacher control acknowledged');
+    const teacherControlledAttempt = JSON.stringify(store.getAttempt(student, attemptId));
+    const teacherControlledHistory = JSON.stringify(store.history(student, attemptId));
+    const teacherControlledRequests = requests.length;
+    await teacherFrame.locator('[data-managed-course-catalog]').click();
+    await teacherPage.locator('[data-vilenkin-textbook-course]').waitFor();
+    assert.deepEqual(mutations(teacherControlledRequests), [], 'Editable teacher breadcrumb is also only navigation');
+    assert.equal(JSON.stringify(store.getAttempt(student, attemptId)), teacherControlledAttempt);
+    assert.equal(JSON.stringify(store.history(student, attemptId)), teacherControlledHistory);
+    assert.equal(store.listAttempts(student).length, before.attempts + 2, 'Teacher browsing does not create another attempt');
+    await teacherContext.close();
+    checks.push('Teacher read-only shell return and controlled-task breadcrumb open the real catalogue without changing work, control, history or attempt count');
 
     assert.equal(JSON.stringify(store.studentProfile(teacher, student.id)), before.profile);
     assert.equal(JSON.stringify(store.getAttempt(student, legacy.id)), before.legacy);

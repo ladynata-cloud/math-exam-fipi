@@ -46,6 +46,10 @@ existing learning material and every saved task identity.
   inside saved tasks, using one bottom-right launcher with accessible controls.
 - Restore the managed task’s “Все темы” link to the cabinet catalogue using
   the existing bridge navigation event and save guard.
+- Provide a real cabinet-owned “Все темы курса” link above the task for
+  teachers and read-only/history views as well as pupils. Keep the existing
+  frame mutation guards, saved-work identities and pending/rejected-save
+  protection; browsing the catalogue creates no work and transfers no control.
 - Expose the existing LCM practice trainer beside fraction-task controls,
   explicitly labelled as a separate example, with existing help provenance.
 - Focused DOM/browser regression, visual review, task/report/status documents
@@ -70,6 +74,8 @@ existing learning material and every saved task identity.
 - [x] 320/390/1280 px views fit, keyboard controls work, panels can close and
   focused/last-page actions remain reachable above the dock.
 - [x] Existing task source data, legacy modules and saved identities are exact.
+- [x] Catalogue return remains available outside the protected frame in
+  teacher and history views, without changing the saved attempt or controller.
 
 ## Checks and gates
 

@@ -11,7 +11,9 @@
   Navigation help is available on course pages; saved-task help retains its
   existing source-confirmation and access checks.
 - Managed “Все темы” returns to the cabinet catalogue through the existing
-  authenticated frame bridge, after the current work is saved. A contextual
+  authenticated frame bridge, after the current work is saved. A cabinet-owned
+  “Все темы курса” link also works while a teacher views a pupil's work or a
+  pupil reads history, keeping all frame mutation guards intact. A contextual
   link in fraction tasks opens the existing step-by-step LCM trainer on a
   separate example; it does not implement a new 75/30 worksheet.
 - All 194 original cards, 615 authored steps, 27 legacy modules, source hashes,

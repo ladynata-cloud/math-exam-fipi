@@ -6,3 +6,4 @@
 [data-managed-course-catalog]{display:inline-flex;align-items:center;min-height:44px;padding:8px 14px;border:1px solid #b6d4c2;border-radius:9px;background:#eaf5ee;color:#176a48;font-weight:700;text-decoration:none}
 [data-managed-course-catalog]:hover{background:#dbefdf}
 [data-managed-course-catalog]:focus-visible{outline:3px solid #176a48;outline-offset:3px}
+[data-managed-course-catalog][aria-disabled="true"]{opacity:.5;cursor:default}
