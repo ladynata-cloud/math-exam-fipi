@@ -114,7 +114,13 @@ for (const name of ['index.html', 'lesson.html']) {
   assert.match(html, /<html lang="ru"/);
   for (const [, url] of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
     if (/^(?:https?:|#)/.test(url)) continue;
-    assert.ok(fs.existsSync(path.resolve(directory, url.split(/[?#]/)[0])), name + ': broken asset ' + url);
+    const resource = new URL(url, 'https://mathexam.space/ege-profil/atanasyan-10-11/' + name);
+    assert.equal(resource.origin, 'https://mathexam.space', name + ': local asset must be same-origin');
+    const pathname = decodeURIComponent(resource.pathname);
+    assert(!/[\\\0]/.test(pathname), name + ': invalid local asset path');
+    const filename = path.resolve(root, '.' + pathname);
+    assert(filename.startsWith(root + path.sep), name + ': local asset must stay inside the site');
+    assert.ok(fs.existsSync(filename), name + ': broken asset ' + url);
     links++;
   }
   if (name === 'lesson.html') assert.equal((html.match(/guided-lesson\.js/g) || []).length, 1);

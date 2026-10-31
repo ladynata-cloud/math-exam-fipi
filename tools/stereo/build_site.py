@@ -1,4 +1,5 @@
 import json
+import runpy
 from pathlib import Path
 R=Path(__file__).resolve().parents[2];D=R/'stereo-course';A=D/'assets'
 c=json.loads((D/'data/course.json').read_text());p=json.loads((D/'data/proofs.json').read_text())
@@ -8,5 +9,9 @@ for u in c['units']:
 scripts='<script>window.STEREO_COURSE='+json.dumps(c,ensure_ascii=False).replace('<','\\u003c')+';window.STEREO_PROOFS='+json.dumps(p,ensure_ascii=False).replace('<','\\u003c')+';</script>'
 for name in ['space.js','viewer.js','task-scene-viewer.js','task-scenes.js','task-proof-scenes.js','answer.js','tasks.js','store.js','math-text.js','app.js']:scripts+='<script>'+(A/name).read_text().replace('</script','<\\/script')+'</script>'
 html='<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Атанасян 10–11 · Пространственная мастерская</title><link rel="canonical" href="https://mathexam.space/stereo-course/"><style>'+(A/'style.css').read_text()+(A/'task-scenes.css').read_text()+'</style></head><body><header class="topbar"><button id="home" class="brand">MathExam / Стереометрия</button><nav class="toplinks"><a href="textbook/">Задачи учебника</a><a href="../ege-profil/start/index.html">Профильный ЕГЭ</a><a href="../geometry-course/index.html">Геометрия 7–9</a><button id="export-progress">Скачать прогресс</button></nav></header><div class="container"><p id="storage-notice" class="warning" role="alert" hidden></p><main id="app"></main><footer>Авторские объяснения и задачи по темам учебника Атанасяна и др., 10–11 классы, 2024. Исследование модели помогает построить догадку; общее доказательство требует рассуждения. Сохраните файл прогресса для переноса на другое устройство.</footer></div>'+scripts+'</body></html>'
+# The public build includes the same optional navigator as other online pages.
+# All course content and its original inline programs remain generated here.
+helper=runpy.run_path(str(R/'tools/public-assistant-coverage.py'),run_name='public_helper_markup')
+html=html.replace('</head>',helper['BLOCK'].decode()+'</head>',1)
 (D/'index.html').write_text(html)
 print('Built single-file course:',len(c['units']),'units;',len(p),'argument chains;',len(html.encode()),'bytes')

@@ -27,7 +27,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Fetch the reviewed bank and scope baseline
-        run: git fetch --no-tags --depth=1 origin 4b56350c35a67e41add8f2b25cf2bf7d73d1f71f df63bacb2f82acf5f8543297c372b414925d6113
+        run: git fetch --no-tags --depth=1 origin 4b56350c35a67e41add8f2b25cf2bf7d73d1f71f df63bacb2f82acf5f8543297c372b414925d6113 813fdcc129b27e71cc83ebaa80bd590cf1d1f1f1
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24.21.0'

@@ -1,5 +1,48 @@
 # MathExam project status
 
+## Prepared: public MaxExam navigation chat, current-main integration
+
+- [Draft PR #385](https://github.com/ladynata-cloud/math-exam-fipi/pull/385)
+  continues superseded [PR #361](https://github.com/ladynata-cloud/math-exam-fipi/pull/361),
+  [HIGH task](tasks/MATHEXAM_PUBLIC_ASSISTANT_V1.md), branch
+  `feat/public-assistant-main-20261031`; reconciled base
+  `139b944a70f2e8ba4d340d152d08807fad03e5da`. Original preparation used
+  `c9bf66e2d95f48db0134d43cc590da89f8bc3053`.
+- Reconciled on 2026-10-31 (Asia/Novosibirsk): current main includes #358, #369,
+  #376, #368, #378, #380, #382, #377 and #374. The preceding division/arithmetic
+  candidate is merged by #377; the published Atanasyan 10–11 §2 Cone from #374
+  is retained. These publication facts supersede older prepared-state snapshots
+  below, without claiming unrelated backend rollouts.
+- The owner authorized a normal merge of the new main into this PR branch,
+  preserving both histories, plus scope rebinding and task-document updates.
+  The merge is clean; task and scope name the same base. Fresh local
+  navigation31, admission9, browser16 and
+  sitemap12 checks pass, including the strict new-base HTML/scope proof and
+  composed Cone/content guards. Exact final-head cloud outcomes and branch
+  update are recorded separately in the current PR handoff.
+  This authorization does not release PR #385 into main or production.
+- The later instruction to fix the errors authorizes a bounded source-provenance
+  repair, two source-course browser-fixture corrections and the bounded
+  operations-receipt privacy test correction. All 255 first-steps cards and
+  original exact-byte oracles are preserved; only source/knowledge fingerprints
+  and their strict dependent pins change. The task and scope enumerate the nine
+  additional paths. The unrelated dialogue/provider work in #375 remains separate.
+- Public navigator is being validated on 595 pages. All 832 existing HTML files
+  preserve their base bytes outside the exact inclusion. The two protected
+  textbook shells and two existing task-helper pages remain unchanged.
+- The catalogue has 134 verified entries. Additional checks cover numbered exam
+  requests, current prime-table/Ichenskaya routes and actual division/Vilenkin
+  draft preservation. Concurrent fixture and source-placement guard corrections
+  are retained without replacing them or changing protected course/review hashes.
+- No model is connected. This is a prepared navigation release, not a production
+  claim or an external-review approval. Exact evidence is in the
+  [integration report](reports/MATHEXAM_PUBLIC_ASSISTANT_INTEGRATION_20261031.md)
+  and the replacement Draft PR linked there.
+- Next three actions: finish the repaired current-head gates and retain the
+  historical layout observations separately;
+  obtain HIGH external review or a reasoned owner exception and exact release
+  decision; verify the authorized deployment on the public site.
+
 ## Prepared: Vilenkin 6 source clarity and revised cabinet course
 
 - [Task](tasks/VILENKIN6_CLARITY_CABINET_20261030.md), HIGH; branch

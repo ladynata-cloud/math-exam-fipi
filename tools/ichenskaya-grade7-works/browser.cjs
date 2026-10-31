@@ -15,11 +15,12 @@ const cases = ['ichenskaya-7-sr-01-v1-task-01', 'ichenskaya-7-sr-07-v1-task-02',
   'ichenskaya-7-sr-10-v1-task-01', 'ichenskaya-7-kr-02-v2-task-03', 'ichenskaya-7-sr-13-v1-task-02',
   'ichenskaya-7-sr-16-v2-task-02', 'ichenskaya-7-kr-06-v2-task-04'];
 const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml' };
+const publicAssistantAssets = new Set(['/assets/assistant/data.js', '/assets/assistant/widget.js', '/assets/assistant/widget.css']);
 const server = http.createServer((request, response) => {
   let pathname;
   try { pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname); }
   catch (_) { response.writeHead(400).end(); return; }
-  if (!/^\/(?:learning|geometry-course|ege-baza\/path)\//.test(pathname) || pathname.split('/').some(part => part.startsWith('.'))) { response.writeHead(404).end(); return; }
+  if ((!/^\/(?:learning|geometry-course|ege-baza\/path)\//.test(pathname) && !publicAssistantAssets.has(pathname)) || pathname.split('/').some(part => part.startsWith('.'))) { response.writeHead(404).end(); return; }
   const file = path.resolve(root, '.' + pathname + (pathname.endsWith('/') ? 'index.html' : ''));
   if (!file.startsWith(root + path.sep)) { response.writeHead(403).end(); return; }
   fs.readFile(file, (error, bytes) => { if (error) { response.writeHead(404).end(); return; }
@@ -28,6 +29,25 @@ const server = http.createServer((request, response) => {
 const result = { public: [], native: [], courseSwitches: [], teacherPreview: null, screenshots: [], pageErrors: [], unexpectedRequests: [], externalRequests: [] };
 let browser;
 const normalize = value => value.replace(/\s+/g, ' ').trim();
+async function assertPublicNavigator(page) {
+  const host = page.locator('#maxexam-public-assistant');
+  const launcher = host.locator('.launcher');
+  await launcher.waitFor();
+  assert.equal(await host.count(), 1, 'The public course loads exactly one real navigator');
+  await page.waitForFunction(() => document.querySelector('#maxexam-public-assistant')?.shadowRoot?.querySelector('link[rel="stylesheet"]')?.sheet);
+  assert.equal(await launcher.evaluate(node => getComputedStyle(node).position), 'fixed', 'Navigator stylesheet must actually load');
+  const dialog = page.getByRole('dialog', { name: 'MaxExam 0.0', exact: true });
+  assert.equal(await launcher.getAttribute('aria-expanded'), 'false');
+  assert.equal(await dialog.isVisible(), false);
+  await launcher.click();
+  await dialog.waitFor();
+  assert.equal(await launcher.getAttribute('aria-expanded'), 'true');
+  assert((await host.locator('.log').innerText()).trim().length > 0, 'Real catalogue welcome must render');
+  await host.getByRole('button', { name: 'Закрыть помощника', exact: true }).click();
+  await dialog.waitFor({ state: 'hidden' });
+  assert.equal(await launcher.getAttribute('aria-expanded'), 'false');
+  return { loaded: true, styled: true, opened: true, closed: true };
+}
 async function ready(page, id) {
   await page.locator('[data-full-condition]').waitFor(); await page.locator('[data-course-model] .planar-svg').waitFor();
   const lesson = lessons.get(id), label = (lesson.source.collection === 'sr' ? 'С-' : 'К-') + lesson.source.work
@@ -63,7 +83,9 @@ async function selectFromHome(page, id) {
 async function reopen(page, id) { await page.getByRole('button', { name: '← Все разделы курса', exact: true }).click(); await selectFromHome(page, id); }
 async function journey(page, id, width, mode) {
   const lesson = lessons.get(id), draft = 'Моё решение: ' + id + '. Записываю данные и обоснование.', step = 'Мой первый шаг: называю известные элементы.';
-  await ready(page, id); await page.locator('[data-final-answer]').fill(draft);
+  await ready(page, id);
+  const publicNavigator = mode === 'public' ? await assertPublicNavigator(page) : null;
+  await page.locator('[data-final-answer]').fill(draft);
   await page.locator('[data-guided-help] > summary').click(); await page.locator('[data-next-step]').click();
   await page.locator('#afs-step-0').fill(step); await page.locator('[data-step-explanation="0"] > summary').click();
   await page.locator('[data-step-reason="0"] > summary').click();
@@ -88,7 +110,7 @@ async function journey(page, id, width, mode) {
   assert.equal(await page.locator('[data-step-explanation="0"]').getAttribute('open'), '');
   assert.equal(await page.locator('[data-step-reason="0"]').getAttribute('open'), '');
   assert.match(await page.locator('[data-assistance-status]').innerText(), /использована помощь/);
-  return { id, width, steps: lesson.steps.length, retainedDraft: true, retainedStep: true, retainedHelp: true, drawing };
+  return { id, width, publicNavigator, steps: lesson.steps.length, retainedDraft: true, retainedStep: true, retainedHelp: true, drawing };
 }
 async function pageFor(origin, width) {
   const context = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: 'reduce' }), page = await context.newPage();

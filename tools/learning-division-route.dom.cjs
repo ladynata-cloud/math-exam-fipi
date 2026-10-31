@@ -14,6 +14,15 @@ const resources=N.tracks.flatMap(track=>(track.supplementGroups||[]).flatMap(gro
 const allStages=N.tracks.flatMap(track=>track.stages);
 const findButton=(f,id)=>[...f.host.querySelectorAll('[data-division-stage]')].find(button=>button.dataset.divisionStage===id);
 const read=file=>fs.readFileSync(path.join(repo,file),'utf8');
+function resourceFile(href,page){
+ const origin='https://mathexam.space',url=new URL(href,new URL('/'+page,origin));
+ assert.equal(url.origin,origin,'Only same-origin course resources are allowed');
+ const pathname=decodeURIComponent(url.pathname);
+ assert(!/[\\\0]/.test(pathname),'Invalid local resource path');
+ const file=path.resolve(repo,'.'+pathname);
+ assert(file.startsWith(repo+path.sep),'Resource must stay inside the published site');
+ return file;
+}
 const flush=()=>new Promise(resolve=>setImmediate(resolve));
 function fixture(role='student',api=async()=>({progress:[]})){
  const dom=new JSDOM('<main id="host"></main>',{url:'https://example.test/learning/#division-course',runScripts:'outside-only'});
@@ -166,17 +175,30 @@ test('preparation map preserves old IDs while new course and wrappers share the 
   assert.equal(dom.window.document.querySelector('#learning-remediation-root'),null,'Public root must not duplicate the managed loader root');
   for(const node of dom.window.document.querySelectorAll('script[src],link[rel="stylesheet"]')){
    const url=node.getAttribute('src')||node.getAttribute('href');
-   assert(fs.existsSync(path.resolve(repo,path.dirname(file),url.split('?')[0])),url);
+   assert(fs.existsSync(resourceFile(url,file)),url);
   }
   dom.window.close();
  }
  for(const file of ['learning/index.html','foundations/index.html']){
   const html=read(file);assert(html.indexOf('division-course-map.js')>=0&&html.indexOf('division-course-map.js')<html.indexOf('preparation-map.js'),file+' loads course metadata before map');
+  if(file==='learning/index.html')assert(!html.includes('/assets/assistant/'),'The public helper must not be added to the cabinet');
  }
  const dom=new JSDOM('',{runScripts:'outside-only'}),w=dom.window;
  w.eval(read('learning/division-course-map.js'));w.eval(read('learning/route.js'));
  assert.doesNotThrow(()=>w.LearningRoute.prerequisites({id:'oge-basics:fraction-meaning',contentId:'fraction-meaning',family:'remediation'},{get:()=>null}));
  dom.window.close();
+});
+
+test('resource URLs use the site root and still reject missing, foreign and private-helper inclusions',()=>{
+ const page='trainers/oge-basics/multiplication-division/course-digit-choice.html';
+ assert.equal(resourceFile('/assets/assistant/data.js?v=public-assistant-20261031',page),path.join(repo,'assets/assistant/data.js'));
+ assert.equal(resourceFile('../navigation-minimal.js?v=20261020',page),path.join(repo,'trainers/oge-basics/navigation-minimal.js'));
+ assert(fs.existsSync(resourceFile('/assets/assistant/widget.js',page)));
+ assert(!fs.existsSync(resourceFile('/assets/assistant/missing-url-regression.js',page)),'Unknown resources must not be ignored');
+ assert.throws(()=>resourceFile('https://example.invalid/script.js',page),/same-origin/);
+ assert.throws(()=>resourceFile('//example.invalid/script.js',page),/same-origin/);
+ assert.throws(()=>resourceFile('/assets/%00script.js',page),/Invalid/);
+ for(const file of ['learning/index.html','trainers/trainer-board.html'])assert(!read(file).includes('/assets/assistant/'),file+' stays outside public helper inclusion');
 });
 
 

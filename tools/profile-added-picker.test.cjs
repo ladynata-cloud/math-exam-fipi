@@ -8,6 +8,10 @@ const vm = require('node:vm');
 
 const root = path.resolve(__dirname, '..');
 const sourcePath = '/ege-profil/start/index.html';
+const publicAssistantScripts = [
+  '/assets/assistant/data.js?v=public-assistant-20261031',
+  '/assets/assistant/widget.js?v=public-assistant-20261031'
+];
 const courses = [
   { number: 1, marker: 'planimetry', ids: ['geo-angles', 'geo-right', 'geo-similarity', 'geo-area', 'geo-quadrilaterals', 'geo-circle'] },
   { number: 2, marker: 'vectors', ids: ['vec-coordinates', 'vec-length', 'vec-operations', 'vec-dot'] },
@@ -103,8 +107,14 @@ for (const course of courses) {
     const bridge = '/trainers/board-bridge.js';
     const adapter = '/ege-profil/start/board-session.js?v=20261024-added-board';
     const wrapperScripts = scripts(wrapper);
+    const canonicalScripts = scripts(canonical);
+    assert.deepEqual(canonicalScripts.filter(src => src.startsWith('/assets/assistant/')), publicAssistantScripts,
+      'Only the exact public navigation scripts are included on the canonical page');
+    assert.deepEqual(wrapperScripts.filter(src => src.startsWith('/assets/assistant/')), [],
+      'Board wrappers must not include the public navigation helper');
     assert.deepEqual(wrapperScripts.filter(src => src !== bridge && src !== adapter),
-      scripts(canonical).filter(src => !src.startsWith('../learning/')).map(src => '/ege-profil/start/' + src));
+      canonicalScripts.filter(src => !src.startsWith('../learning/') && !publicAssistantScripts.includes(src))
+        .map(src => '/ege-profil/start/' + src));
     const app = wrapperScripts.findIndex(src => src.startsWith('/ege-profil/start/app.js?'));
     assert.deepEqual(wrapperScripts.slice(app - 2, app), [bridge, adapter]);
     assert.match(wrapper, new RegExp('<body data-profile-board="' + course.marker + '">'));

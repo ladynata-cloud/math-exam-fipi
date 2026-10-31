@@ -14,6 +14,18 @@ const key = id => 'mathExamBasics.divisionCourse.v1.' + id;
 const historyKey = id => 'mathExamBasics.divisionCourse.history.v1.' + id;
 const tick = () => new Promise(resolve => setImmediate(resolve));
 
+function localScriptFilename(src, pageURL) {
+  const page = new URL(pageURL);
+  const resource = new URL(src, page);
+  assert.equal(resource.origin, page.origin, 'Wrapper dependencies must be same-origin site resources');
+  const pathname = decodeURIComponent(resource.pathname);
+  assert(!/[\\\0]/.test(pathname), 'Invalid local wrapper dependency path');
+  const filename = path.resolve(repo, '.' + pathname);
+  assert(filename.startsWith(repo + path.sep), 'Wrapper dependencies must stay inside the site');
+  assert(fs.existsSync(filename) && fs.statSync(filename).isFile(), 'Every declared wrapper dependency must be a local file: ' + src);
+  return filename;
+}
+
 function legacyRecord(id, seed, steps = 0) {
   const { taskSpec, state } = contracts.create(id, seed, { generatorVersion: 1 });
   state.answers = taskSpec.steps.slice(0, steps).map(step => String(step.answer));
@@ -47,7 +59,7 @@ function mount(t, id, initial = {}, { failWrites = false, failHistoryWrites = fa
         register(adapter);
       };
     }
-    window.eval(fs.readFileSync(path.resolve(repo, path.dirname(relative), src), 'utf8'));
+    window.eval(fs.readFileSync(localScriptFilename(script.getAttribute('src'), window.location.href), 'utf8'));
   }
   assert(bridge); assert.deepEqual(errors, []);
   window.document.getElementById('practice').click();
@@ -72,6 +84,23 @@ function mount(t, id, initial = {}, { failWrites = false, failHistoryWrites = fa
   return { window, records, writes, state, spec, answer, finish, next,
     notice: () => window.document.querySelector('.course-local-notice').textContent };
 }
+
+test('public wrapper scripts resolve like browser URLs while rejecting foreign, missing and escaping resources', () => {
+  const pageURL = 'https://example.test/trainers/oge-basics/multiplication-division/course-estimate.html';
+  const expected = path.join(repo, 'trainers/oge-basics/learning-contracts.js');
+  assert.equal(localScriptFilename('../learning-contracts.js?version20261031#fixture', pageURL), expected);
+  assert.equal(localScriptFilename('/trainers/oge-basics/learning-contracts.js?version20261031', pageURL), expected);
+  for (const src of ['https://other.test/script.js', '//other.test/script.js', 'http://example.test/script.js', 'https://example.test:8443/script.js']) {
+    assert.throws(() => localScriptFilename(src, pageURL), /same-origin/);
+  }
+  assert.throws(() => localScriptFilename('/%2e%2e%2foutside.js', pageURL), /inside the site/);
+  for (const src of ['/assets/%5cscript.js', '/assets/%00script.js']) {
+    assert.throws(() => localScriptFilename(src, pageURL), /Invalid local/);
+  }
+  for (const src of ['/assets/missing-continuation-fixture.js', '/assets/']) {
+    assert.throws(() => localScriptFilename(src, pageURL), /must be a local file/);
+  }
+});
 
 test('repeat skips an identical condition and keeps solved history before saving the fresh example', async t => {
   const id = 'multiplication-division/course-column-three-by-one';

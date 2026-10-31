@@ -2,11 +2,29 @@
 // Run with jsdom available (the ege-profil package declares it).
 const {JSDOM}=require('jsdom'),fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'..');
+function scriptFile(src,pageUrl){
+ const url=new URL(src,pageUrl);
+ assert.equal(url.origin,'https://mathexam.space','Only same-origin learner scripts are allowed');
+ const pathname=decodeURIComponent(url.pathname);
+ assert(!/[\\\0]/.test(pathname),'Invalid local script path');
+ const file=path.resolve(root,'.'+pathname);
+ assert(file.startsWith(root+path.sep),'Script must stay inside the published site');
+ return file;
+}
+for(const area of ['circle','start']){
+ const page='https://mathexam.space/ege-profil/'+area+'/index.html';
+ assert.equal(scriptFile('app.js?v=1',page),path.join(root,'ege-profil',area,'app.js'));
+ assert.equal(scriptFile('/assets/assistant/data.js?v=public-assistant-20261031',page),path.join(root,'assets/assistant/data.js'));
+ assert.throws(()=>scriptFile('https://example.invalid/script.js',page),/same-origin/);
+ assert.throws(()=>scriptFile('//example.invalid/script.js',page),/same-origin/);
+ assert.throws(()=>scriptFile('/assets/%00script.js',page),/Invalid/);
+ assert.throws(()=>fs.readFileSync(scriptFile('/assets/assistant/missing-url-regression.js',page),'utf8'),{code:'ENOENT'});
+}
 function open(area,hash){
  const file=path.join(root,'ege-profil',area,'index.html');
  const dom=new JSDOM(fs.readFileSync(file,'utf8'),{url:'https://mathexam.space/ege-profil/'+area+'/index.html#'+hash,runScripts:'outside-only',pretendToBeVisual:true});
  dom.window.scrollTo=()=>{};
- for(const script of dom.window.document.querySelectorAll('script[src]'))dom.window.eval(fs.readFileSync(path.resolve(path.dirname(file),script.getAttribute('src').split(/[?#]/)[0]),'utf8'));
+ for(const script of dom.window.document.querySelectorAll('script[src]'))dom.window.eval(fs.readFileSync(scriptFile(script.getAttribute('src'),dom.window.location.href),'utf8'));
  return dom;
 }
 function submit(dom,value){const w=dom.window,d=w.document;d.querySelector('#answer-form input[type=text]').value=value;d.querySelector('#answer-form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));return d.querySelector('#feedback').textContent;}

@@ -1,0 +1,84 @@
+name: MathExam public navigation helper
+
+on:
+  pull_request:
+    paths:
+      - '**/*.html'
+      - 'assets/assistant/**'
+      - 'tools/public-assistant*'
+      - 'tools/seo-*'
+      - 'tools/build-sitemap.py'
+      - 'sitemap.xml'
+      - 'courses/catalog.json'
+      - 'downloads/trainers-manifest.json'
+      - 'learning/catalog.js'
+      - 'school/peterson6/*.js'
+      - 'school/app.js'
+      - 'learning/division-course-map.js'
+      - 'ege-profil/atanasyan-10-11/course.js'
+      - 'ege-profil/start/geometry-data.js'
+      - 'ege-profil/start/stereo-data.js'
+      - 'ege-profil/tests/links-test.js'
+      - 'ege-baza/course-definitions.js'
+      - 'soviet-math/arithmetic-practice.js'
+      - 'trainers/oge-basics/multiplication-division/division-diagnostic-core.js'
+      - '.github/workflows/public-assistant.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: public-assistant-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  public-assistant:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Checked routes, privacy and static-page coverage
+        run: |
+          node tools/public-assistant-data.test.cjs
+          python3 tools/public-assistant-coverage.test.py
+          python3 tools/public-assistant-coverage.py --check
+          python3 tools/seo-sitemap.test.py
+          python3 tools/build-sitemap.py --check
+          python3 tools/seo-check.py
+          git diff --check
+      - name: Initial inclusion preserves every existing HTML byte
+        if: github.event_name == 'pull_request'
+        env:
+          PUBLIC_HELPER_BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if ! git cat-file -e "$PUBLIC_HELPER_BASE:assets/assistant/widget.js" 2>/dev/null; then
+            python3 tools/public-assistant-coverage.py --check --base "$PUBLIC_HELPER_BASE"
+          fi
+      - name: Install pinned browser and catalog QA runtime
+        run: |
+          npm install --prefix "$RUNNER_TEMP/public-helper-browser" --no-audit --no-fund --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          node "$RUNNER_TEMP/public-helper-browser/node_modules/playwright/cli.js" install --with-deps chromium
+      - name: Real public-page journeys and unchanged catalogue destinations
+        env:
+          NODE_PATH: ${{ runner.temp }}/public-helper-browser/node_modules
+          PUBLIC_ASSISTANT_SCREENSHOT_DIR: /tmp/public-helper-screenshots
+        run: |
+          node tools/seo-catalog.test.cjs
+          node tools/public-assistant-browser.test.cjs
+      - name: Prepared public navigator gate
+        run: echo MATHEXAM_PUBLIC_ASSISTANT_PREPARED_OK
+      - name: Public navigator visual evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: public-navigator-screenshots
+          path: /tmp/public-helper-screenshots
+          if-no-files-found: warn
+          retention-days: 7

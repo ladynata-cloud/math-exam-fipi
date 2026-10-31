@@ -2,6 +2,16 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),test=require('node:test');
 const {JSDOM,VirtualConsole}=require('jsdom');
 const root=path.resolve(__dirname,'..'),extra=require('../soviet-math/arithmetic-practice.js');
+function localScriptFilename(src,pageURL){
+ const page=new URL(pageURL),resource=new URL(src,page);
+ assert.equal(resource.origin,page.origin,'Wrapper dependencies must be same-origin site resources');
+ const pathname=decodeURIComponent(resource.pathname);
+ assert(!/[\\\0]/.test(pathname),'Invalid local wrapper dependency path');
+ const filename=path.resolve(root,'.'+pathname);
+ assert(filename.startsWith(root+path.sep),'Wrapper dependencies must stay inside the site');
+ assert(fs.existsSync(filename)&&fs.statSync(filename).isFile(),'Every declared wrapper dependency must be a local file: '+src);
+ return filename;
+}
 function mount(t,file,query='',storage={},managedEnvelope){
  const errors=[],vc=new VirtualConsole();vc.on('jsdomError',e=>errors.push(e));
  const dom=new JSDOM(fs.readFileSync(path.join(root,file),'utf8'),{url:'https://example.test/'+file+query,runScripts:'outside-only',virtualConsole:vc});
@@ -10,11 +20,22 @@ function mount(t,file,query='',storage={},managedEnvelope){
  const gradient={addColorStop(){}};const ctx=new Proxy({measureText:s=>({width:String(s).length*10}),createLinearGradient:()=>gradient,createRadialGradient:()=>gradient},{get:(o,k)=>k in o?o[k]:()=>{}});w.HTMLCanvasElement.prototype.getContext=()=>ctx;
  for(const [key,value] of Object.entries(storage))w.localStorage.setItem(key,value);
  let adapter;if(managedEnvelope)w.MathExamLearning={register:a=>{adapter=a;}};
- for(const script of [...w.document.scripts]){const src=script.getAttribute('src');if(src){if(/^https?:/.test(src)||managedEnvelope&&src.includes('learning-bridge.js'))continue;w.eval(fs.readFileSync(path.resolve(root,path.dirname(file),src.split('?')[0]),'utf8'));}else if(script.textContent.trim())w.eval(script.textContent);}
+ for(const script of [...w.document.scripts]){const src=script.getAttribute('src');if(src){const filename=localScriptFilename(src,w.location.href);if(managedEnvelope&&src.includes('learning-bridge.js'))continue;w.eval(fs.readFileSync(filename,'utf8'));}else if(script.textContent.trim())w.eval(script.textContent);}
  if(managedEnvelope){assert(adapter);adapter.applyState(w.JSON.parse(JSON.stringify({...managedEnvelope,readOnly:false})));}
  assert.deepEqual(errors,[]);t.after(()=>w.close());return {w,d:w.document,errors};
 }
 const enter=(f,selector,value)=>{const input=f.d.querySelector(selector);input.value=String(value);input.dispatchEvent(new f.w.Event('input',{bubbles:true}));};
+
+test('supplement scripts accept relative and root-relative assets without foreign or invalid resources',()=>{
+ const pageURL='https://example.test/soviet-math/arithmetic-practice.html';
+ const expected=path.join(root,'soviet-math/arithmetic-practice.js');
+ assert.equal(localScriptFilename('arithmetic-practice.js?version20261031#fixture',pageURL),expected);
+ assert.equal(localScriptFilename('/soviet-math/arithmetic-practice.js?version20261031',pageURL),expected);
+ for(const src of ['https://other.test/script.js','//other.test/script.js','http://example.test/script.js','https://example.test:8443/script.js'])assert.throws(()=>localScriptFilename(src,pageURL),/same-origin/);
+ assert.throws(()=>localScriptFilename('/%2e%2e%2foutside.js',pageURL),/inside the site/);
+ for(const src of ['/assets/%5cscript.js','/assets/%00script.js'])assert.throws(()=>localScriptFilename(src,pageURL),/Invalid local/);
+ for(const src of ['/assets/missing-supplement-fixture.js','/assets/'])assert.throws(()=>localScriptFilename(src,pageURL),/must be a local file/);
+});
 
 test('all nine linked arithmetic levels respect their URL and keep generating at the selected level',t=>{
  for(const level of ['t2a','t2b','t2c','n2d','t2e','n2e','n3c','n4b','n5c']){

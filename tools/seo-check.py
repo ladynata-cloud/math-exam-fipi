@@ -63,6 +63,8 @@ class Page(HTMLParser):
 
     def handle_starttag(self, tag, pairs):
         attrs = dict(pairs)
+        if tag == "script" and len(attrs) != len(pairs):
+            raise ValueError("script attributes must not repeat")
         if tag == "head":
             self._in_head = True
         if "id" in attrs:
@@ -112,6 +114,26 @@ def is_lesson_funnel(script):
     # scripts prohibited on static topic explanations.
     attrs, text = script
     return attrs == {"defer": None, "src": "/assets/lesson-funnel.js?v=20261026"} and not text.strip()
+
+
+PUBLIC_ASSISTANT_SCRIPTS = (
+    "/assets/assistant/data.js?v=public-assistant-20261031",
+    "/assets/assistant/widget.js?v=public-assistant-20261031",
+)
+
+
+def is_public_assistant(script):
+    attrs, text = script
+    return any(attrs == {"defer": None, "src": src} for src in PUBLIC_ASSISTANT_SCRIPTS) and not text.strip()
+
+
+def static_topic_scripts_allowed(scripts):
+    # The page's explanations still come from static HTML. This approved
+    # navigator is isolated; no generic executable-script exception is added.
+    helpers = [attrs["src"] for attrs, text in scripts if is_public_assistant((attrs, text))]
+    return (all(is_lesson_funnel(s) or is_public_assistant(s) for s in scripts)
+            and sum(is_lesson_funnel(s) for s in scripts) <= 1
+            and helpers in ([], list(PUBLIC_ASSISTANT_SCRIPTS)))
 
 
 def public_url(path):
@@ -207,8 +229,8 @@ def run(base=None):
         if relative in TOPICS:
             require(page.h1 == 1, label + "one H1")
             require(len(page.ids) == len(set(page.ids)), label + "duplicate DOM IDs")
-            require(len(page.scripts) <= 1 and all(is_lesson_funnel(s) for s in page.scripts),
-                    label + "explanation must remain static; only the optional deferred funnel observer is allowed")
+            require(static_topic_scripts_allowed(page.scripts),
+                    label + "explanation must remain static; only the exact deferred funnel and navigation helpers are allowed")
             require(page.schemas, label + "missing breadcrumbs")
             graph = page.schemas[0]["@graph"]
             crumb = next(node for node in graph if node.get("@type") == "BreadcrumbList")
@@ -249,9 +271,9 @@ def run(base=None):
                     for ident in ("countCards", "countSections"):
                         old_count = re.search(rf'<b id="{ident}">[^<]+', old).group()
                         preserved = re.sub(rf'<b id="{ident}">[^<]+', old_count, preserved, count=1)
-            without_funnel = lambda scripts: [s for s in scripts if not is_lesson_funnel(s)]
-            require(without_funnel(before.scripts) == without_funnel(Page(script_text).scripts),
-                    label + "executable scripts changed outside scoped catalog/funnel additions")
+            without_navigation = lambda scripts: [s for s in scripts if not (is_lesson_funnel(s) or is_public_assistant(s))]
+            require(without_navigation(before.scripts) == without_navigation(Page(script_text).scripts),
+                    label + "executable scripts changed outside scoped catalog/navigation additions")
             require(before.styles == page.styles, label + "existing styles changed")
             require(before.style_links == page.style_links, label + "existing stylesheet links changed")
             for key in ("robots", "googlebot", "yandex", "viewport"):

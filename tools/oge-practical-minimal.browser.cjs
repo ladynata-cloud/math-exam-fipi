@@ -21,7 +21,14 @@ async function hitTargets(page,label){
   const target=targets.nth(i);
   await target.evaluate(el=>el.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'}));
   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
-  const hit=await target.evaluate(el=>{const r=el.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2,top=document.elementFromPoint(x,y);return{ok:!!top&&(top===el||el.contains(top)),target:el.id||el.textContent.trim().slice(0,65)||el.tagName,interceptor:top?top.tagName+'.'+top.className:'outside viewport'};});
+  const hit=await target.evaluate(el=>{
+   const r=el.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;
+   let top=document.elementFromPoint(x,y);
+   // Playwright includes controls in open shadow roots. Follow the same roots
+   // when hit-testing, so a control's own host is not a false obstruction.
+   while(top?.shadowRoot){const inner=top.shadowRoot.elementFromPoint(x,y);if(!inner||inner===top)break;top=inner;}
+   return{ok:!!top&&(top===el||el.contains(top)),target:el.id||el.textContent.trim().slice(0,65)||el.tagName,interceptor:top?top.tagName+'.'+top.className:'outside viewport'};
+  });
   assert.ok(hit.ok,label+': action is covered '+JSON.stringify(hit));
  }
 }
