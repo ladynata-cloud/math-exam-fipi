@@ -1,5 +1,6 @@
 'use strict';
 const retainedEngine=require('./oge-practical-retained-engine.cjs');
+const {restoreHistoricalBytes}=require('./oge-book-exam-corrections.cjs');
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),vm=require('node:vm');
 const {JSDOM,ResourceLoader,VirtualConsole}=require('jsdom');
 const root=path.resolve(__dirname,'..'),dir=path.join(root,'trainers/oge-1-5-trainers');
@@ -46,7 +47,14 @@ const ENGINE_HASHES={
   "practice-1-5-routes-checkpoint-2026.html": "31eb349079b5af06df5df88f2d8c88c3836b59997bcaefcb7c5ca7d631dc6c85"
 };
 test('all inline engines match their reviewed snapshots outside explicit UI normalizations',()=>{
- for(const name of files){const scripts=inline(fs.readFileSync(path.join(dir,name),'utf8'));scripts.forEach((s,i)=>new vm.Script(s,{filename:name+':'+i}));const normalized=normalize(name,scripts.join('\n'));assert.equal(crypto.createHash('sha256').update(normalized).digest('hex'),ENGINE_HASHES[name],name);}
+ for(const name of files){
+  const html=fs.readFileSync(path.join(dir,name),'utf8');
+  inline(html).forEach((s,i)=>new vm.Script(s,{filename:name+':'+i}));
+  // Reverse only exact reviewed book corrections; historical hashes stay pinned.
+  const historical=restoreHistoricalBytes('trainers/oge-1-5-trainers/'+name,html);
+  const normalized=normalize(name,inline(historical).join('\n'));
+  assert.equal(crypto.createHash('sha256').update(normalized).digest('hex'),ENGINE_HASHES[name],name);
+ }
  new vm.Script(fs.readFileSync(path.join(dir,'practical-minimal.js'),'utf8'));
 });
 class Local extends ResourceLoader{fetch(url){const u=new URL(url);if(u.origin!=='https://mathexam.space')return null;for(const base of [root,fallback]){const f=path.join(base,u.pathname);if(fs.existsSync(f)&&fs.statSync(f).isFile())return Promise.resolve(fs.readFileSync(f));}return null;}}

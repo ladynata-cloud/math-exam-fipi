@@ -1,0 +1,1130 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="utf-8">
+<meta name="robots" content="noindex,follow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<link rel="stylesheet" href="/book/oge/2026-10-31/v1/edition-assets/edition.css">
+<script src="/book/oge/2026-10-31/v1/edition-assets/bootstrap.js"></script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ОГЭ · Задание 24 — задачи на доказательство</title>
+<link rel="canonical" href="https://mathexam.space/trainers/oge-task24-proofs.html">
+<style>
+:root{--bg:#e8e4db;--paper:#fffdf7;--ink:#1a1a2e;--blue:#2d70b3;--ok:#16a34a;--err:#dc2626;
+--warn:#c2410c;--amber:#d97706;--pull:#7c3aed;--pink:#db2777;--teal:#0d9488;--line:#e7e1d2;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+background:var(--bg);color:var(--ink);line-height:1.5;padding:14px}
+.app{max-width:1000px;margin:0 auto;background:var(--paper);border-radius:18px;
+box-shadow:0 10px 34px rgba(26,26,46,.14);overflow:hidden}
+.head{background:var(--ink);color:#f5f3ee;padding:16px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.head h1{font-size:18px;margin:0;font-weight:800;letter-spacing:.2px}
+.head .sub{font-size:12.5px;opacity:.72;margin-top:2px}
+.head .crumbs{display:inline-block;color:#f2b134;font-size:13px;font-weight:700;text-decoration:none;margin-bottom:3px}
+.head .crumbs:hover{text-decoration:underline}
+.head .badge{margin-left:auto;background:rgba(255,255,255,.12);border-radius:999px;
+padding:5px 13px;font-size:12.5px;font-weight:700}
+.tabs{display:flex;gap:4px;padding:10px 14px 0;flex-wrap:wrap;background:var(--paper)}
+.tab{border:none;background:#efeadf;color:#5b5647;font-weight:700;font-size:13.5px;
+padding:9px 15px;border-radius:11px 11px 0 0;cursor:pointer}
+.tab.on{background:var(--ink);color:#fff}
+.wrap{padding:16px 20px 22px}
+.success{display:none;background:#e8f6ec;border:1.5px solid var(--ok);color:#14682f;
+border-radius:12px;padding:11px 14px;margin-bottom:14px;font-weight:700;font-size:14px}
+.success.show{display:block}
+
+/* --- меню разделов --- */
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:640px){.menu{grid-template-columns:1fr}}
+.mcard{border:1.5px solid var(--line);border-radius:14px;padding:14px 15px;cursor:pointer;
+background:#fffefb;transition:.12s;position:relative}
+.mcard:hover{border-color:var(--blue);transform:translateY(-1px)}
+.mcard h3{margin:0 0 4px;font-size:15px}
+.mcard .cnt{font-size:12.5px;color:#7a7565}
+.mcard .chips{margin-top:9px;display:flex;flex-wrap:wrap;gap:5px}
+.chip{font-size:11.5px;background:#f0ece2;border-radius:999px;padding:3px 9px;color:#5b5647}
+.chip.done{background:#dcf0e2;color:#14682f}
+.lead{font-size:13.5px;color:#4a4636;margin:2px 0 16px}
+.lead b{color:var(--ink)}
+
+/* --- рабочая область задачи --- */
+.taskhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.taskhead .tt{font-size:16px;font-weight:800}
+.taskhead .code{font-size:11.5px;color:#8a8474;background:#f2eee4;border-radius:999px;padding:2px 9px}
+.taskhead .pos{margin-left:auto;font-size:12.5px;color:#8a8474}
+.grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:18px;margin-top:12px}
+@media(max-width:820px){.grid{grid-template-columns:1fr}}
+.figbox{background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:8px}
+.figbox svg{display:block;width:100%;height:auto}
+.cap{min-height:20px;text-align:center;font-size:13px;color:#4a4636;margin:6px 6px 2px;font-weight:600}
+.cap.done{color:var(--ok)}
+.givens{background:#fffbeb;border:1.5px solid #fcd34d;border-radius:12px;padding:11px 13px;font-size:13.5px;margin-bottom:12px}
+.givens .g1{margin-bottom:5px}.givens b{color:#7a4d09}
+.aim{background:var(--ink);color:#fff;border-radius:11px;padding:9px 13px;font-size:14px;font-weight:700;margin-bottom:12px}
+.aim.win{background:#14682f}
+.chain{margin:0 0 12px;padding:0}
+.citem{position:relative;padding:9px 12px 9px 40px;margin-bottom:7px;
+border-radius:11px;background:#f4faf5;border:1.5px solid #cfe9d6;font-size:13.5px}
+.citem .cnum{position:absolute;left:10px;top:9px;width:22px;height:22px;
+border-radius:50%;background:var(--ok);color:#fff;font-size:12.5px;font-weight:800;
+display:flex;align-items:center;justify-content:center}
+.citem .why{display:block;margin-top:5px;font-size:12.5px;color:#4a6b52;line-height:1.5}
+.pdiv{font-size:11.5px;font-weight:800;color:#5b5647;text-transform:uppercase;letter-spacing:.4px;
+margin:10px 0 6px;padding-left:2px;border-left:3px solid var(--ok);padding-left:8px}
+.phasehdr{background:#eef4fb;border:1.5px solid #cddff0;color:#215a8c;border-radius:10px;
+padding:7px 12px;font-size:13px;font-weight:800;margin:2px 0 8px}
+.phasedone{background:#e8f6ec;border:1.5px solid var(--ok);color:#14682f;border-radius:10px;
+padding:6px 12px;font-size:12.5px;font-weight:700;margin-bottom:8px}
+.qed{background:#14682f;color:#fff;border-radius:11px;padding:10px 13px;font-weight:700;font-size:14px;margin-bottom:12px;display:none}
+.qed.show{display:block}
+.pooltitle{font-size:12.5px;color:#8a8474;font-weight:700;margin:2px 0 8px;text-transform:uppercase;letter-spacing:.4px}
+.poolhint{text-transform:none;letter-spacing:0;font-weight:600;color:#b08a3a;font-size:12px}
+.hinthelp{font-size:12px;color:#7a7565;background:#f6f2e8;border-radius:9px;padding:7px 11px;margin:2px 0 8px;line-height:1.5}
+.hinthelp b{color:#5b5647}
+.pool{display:flex;flex-direction:column;gap:8px}
+.justbox{background:#f4f0fb;border:1.6px solid #d3c2ee;border-radius:13px;padding:12px 13px;margin-bottom:10px}
+.justclaim{font-size:14px;font-weight:700;color:#1a1a2e;display:flex;align-items:center;margin-bottom:8px}
+.jnum{width:22px;height:22px;border-radius:50%;background:var(--ok);color:#fff;font-size:12.5px;font-weight:800;
+display:inline-flex;align-items:center;justify-content:center;margin-right:8px;flex:none}
+.justq{font-size:13px;color:#6b28c9;font-weight:700;margin-bottom:8px}
+.justpool{display:flex;flex-direction:column;gap:7px}
+.jchip{text-align:left;border:1.6px solid #cbb8ea;background:#fffefb;border-radius:10px;padding:9px 12px;
+font-size:13.5px;cursor:pointer;transition:.1s;line-height:1.45}
+.jchip:hover{border-color:var(--pull)}
+.jchip.dead{background:#fbecec;border-color:#f0b6b6;color:#9a4a4a;cursor:default}
+.jchip .jx{color:#b53838;font-weight:700;font-size:12px}
+/* Справочник — карта листа */
+.zonedetail{background:#eef4fb;border:1.5px solid #cddff0;border-radius:11px;padding:11px 13px;font-size:13.5px;color:#25303a;margin-bottom:14px}
+.zd-name{font-size:15px;margin-bottom:4px}
+.zd-note{color:#4a5560;font-size:13px;margin-bottom:8px;line-height:1.5}
+.zd-lab{color:#8a8474;font-weight:700;font-size:12.5px}
+.tchip{display:inline-block;background:#fffefb;border:1.5px solid #cddff0;border-radius:8px;padding:4px 9px;margin:3px 4px 0 0;font-size:12.5px;cursor:pointer;transition:.1s}
+.tchip:hover{border-color:#2d70b3;background:#eaf2fb}
+.tchip.mini{padding:3px 8px;font-size:12px}
+.notonsheet{background:#fdf3f0;border:1.6px solid #f0c9bd;border-radius:13px;padding:13px 15px}
+.notonsheet h4{margin:0 0 4px;color:#b23a1a;font-size:15px}
+.nos-sub{margin:0 0 10px;font-size:13px;color:#7a5548;line-height:1.5}
+.nosrow{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;padding:7px 0;border-top:1px solid #f2d6cc}
+.nosrow:first-of-type{border-top:none}
+.nosg{flex:1 1 240px;font-size:13.5px;font-weight:600;color:#25303a}
+.noschips{display:flex;flex-wrap:wrap}
+.sheetplate{border-radius:10px;padding:8px 12px;font-size:13px;margin-bottom:10px;line-height:1.5}
+.sheetplate.has{background:#eef7f0;border:1.5px solid #bfe3c8;color:#256b39}
+.sheetplate.none{background:#f6f2e8;border:1.5px solid #e2d6bd;color:#7a6f54}
+.sp-ic{margin-right:2px}
+.sp-go{border:1.4px solid #2d70b3;background:#fff;color:#215a8c;border-radius:8px;padding:3px 9px;font-size:12px;cursor:pointer;margin-left:4px;font-weight:700}
+.sp-go:hover{background:#eaf2fb}
+.card{text-align:left;border:1.6px solid #d9d3c6;background:#fffefb;border-radius:11px;
+padding:10px 12px;font-size:13.5px;cursor:pointer;transition:.1s;line-height:1.45}
+.card:hover{border-color:var(--blue)}
+.card.dead{background:#fbecec;border-color:#f0b6b6;color:#9a4a4a;cursor:pointer;position:relative}
+.card.dead .dmsg{display:block;margin-top:6px;font-size:12px;color:#a33;line-height:1.45}
+.card.early{border-color:#e0a0a0;background:#fdf4f4}
+.card.hintglow{border-color:var(--amber);box-shadow:0 0 0 3px rgba(217,119,6,.18)}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.shake{animation:shake .34s}
+.diag{display:none;background:#fbecec;border:1.5px solid #f0b6b6;color:#9a3b3b;border-radius:11px;
+padding:9px 12px;font-size:13px;margin-bottom:10px}
+.diag.show{display:block}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.btn{border:none;border-radius:11px;padding:9px 15px;font-weight:700;font-size:13.5px;cursor:pointer}
+.btn.ghost{background:#efeadf;color:#5b5647}
+.btn.amber{background:#fef3e2;color:#9a5a09;border:1.5px solid #f2c98a}
+.btn.pull{background:#f1e9fc;color:#6b28c9;border:1.5px solid #cbb0f0}
+.btn.dark{background:var(--ink);color:#fff}
+.btn.blue{background:var(--blue);color:#fff}
+.btn:disabled{opacity:.45;cursor:default}
+.law{background:#fffbeb;border:1.5px solid #fcd34d;border-radius:13px;padding:13px 15px;margin-top:6px;display:none}
+.law.show{display:block}.law h4{margin:0 0 6px;color:#7a4d09;font-size:13px;text-transform:uppercase;letter-spacing:.4px}
+.law p{margin:0;font-size:14px}
+.blank{margin-top:8px;border:1.5px solid #cddff0;border-radius:12px;background:#f7fafd;overflow:hidden}
+.blank summary{cursor:pointer;padding:10px 13px;font-weight:700;font-size:13.5px;color:#215a8c;list-style:none}
+.blank summary::-webkit-details-marker{display:none}
+.blank summary::before{content:'▸ ';color:#2d70b3}
+.blank[open] summary::before{content:'▾ '}
+.blanktext{padding:2px 15px 13px;font-size:13.5px;line-height:1.75;color:#25303a;font-family:Georgia,"Times New Roman",serif}
+
+/* --- пульс подсветки --- */
+@keyframes pul{0%,100%{opacity:.55}50%{opacity:1}}
+.lit{animation:pul 1.1s ease-in-out infinite}
+
+/* --- арсенал --- */
+.arsgrp{margin-bottom:6px}
+.arsgrp h3{font-size:13.5px;margin:16px 0 8px;color:#5b5647;border-bottom:1.5px solid var(--line);padding-bottom:5px}
+.arscard{border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;margin-bottom:9px;background:#fffefb}
+.arscard .an{font-weight:700;font-size:13.8px;display:flex;align-items:flex-start;gap:8px}
+.arscard .tag{font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;white-space:nowrap;margin-left:auto}
+.tag.no{background:#fdeaea;color:#b53838}
+.tag.yes{background:#e5f3ea;color:#1a7a3d}
+.tag.part{background:#fef1e0;color:#9a5a09}
+.arscard .anote{font-size:12.8px;color:#5b5647;margin-top:5px}
+.arscard .chips{margin-top:8px}
+.chip.jump{cursor:pointer;background:#e8f0f8;color:#215a8c}
+.chip.jump:hover{background:#d5e6f4}
+.arsnote{font-size:12.5px;color:#6b6555;background:#f6f2e8;border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.arsnote b{color:var(--ink)}
+
+/* --- итоги зачёта --- */
+.fin{text-align:center;padding:8px 0}
+.fin .score{font-size:40px;font-weight:800;margin:6px 0}
+.dots{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin:12px 0}
+.dot{width:15px;height:15px;border-radius:50%}
+.dot.g{background:var(--ok)}.dot.y{background:var(--amber)}.dot.r{background:var(--err)}
+.route{text-align:left;background:#f6f2e8;border-radius:12px;padding:12px 14px;margin:14px 0;font-size:13.5px}
+.route h4{margin:0 0 6px;font-size:13px}
+.qbar{height:7px;background:#eee7d9;border-radius:6px;overflow:hidden;margin:10px 0}
+.qbar>i{display:block;height:100%;background:var(--blue);width:0;transition:.25s}
+.hidden{display:none!important}
+.back{color:#c9c4b8;text-decoration:none;font-size:12.5px}
+.back:hover{color:#fff}
+/* доступность (канон): цели касания не ниже 44 px; пояснение «О прогрессе» */
+button,select,input:not([type=checkbox]):not([type=radio]):not([type=range]){min-height:44px}
+a.crumbs{display:inline-flex;align-items:center;min-height:44px}
+.pnote{margin:8px 0 10px;font-size:13.5px;line-height:1.5;color:#4a5560}
+.pnote summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:600}
+.pnote div{padding:2px 0 8px}
+span.tchip,span.chip.jump{display:inline-flex;align-items:center;min-height:44px}
+.sr-live{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+<style>
+/* Course presentation: original mathematics, progress and exam contracts stay below. */
+:root{--cream:#f6f7f5;--bg:#f6f7f5;--paper:#fff;--ink:#202820;--muted:#626b63;--blue:#216342;--accent:#216342;--green:#216342;--line:#dbe1da}
+body.minimal-course{background:#f6f7f5;color:#202820;font:18px/1.7 system-ui,-apple-system,"Segoe UI",sans-serif}.minimal-course .app,.minimal-course>.wrap{max-width:1000px;margin:auto;padding:24px 18px 56px;background:transparent;box-shadow:none;border:0}.minimal-course>.wrap>.app{padding:0}.minimal-course .head{margin-bottom:24px;padding:0;border:0;background:transparent;box-shadow:none}.minimal-course .head,.minimal-course .head h1{color:#202820}.minimal-course h1{font-family:inherit;font-size:24px;line-height:1.4;margin:10px 0}.minimal-course .crumbs{font-size:15px;color:#216342}.minimal-course #main,.minimal-course #view{padding:0;background:transparent}.minimal-course .grid,.minimal-course .row{gap:24px}.minimal-course .task,.minimal-course .card,.minimal-course .givens,.minimal-course .q-text,.minimal-course .cond,.minimal-course .qtext{font-size:18px;line-height:1.8}.minimal-course .task,.minimal-course .card,.minimal-course .givens{background:#fff;border-color:#dbe1da;border-radius:12px;box-shadow:none}.minimal-course .grid{padding:24px;background:#fff;border:1px solid #dbe1da;border-radius:14px}.minimal-course .grid .task{padding:0;border:0}.minimal-course .fig,.minimal-course .figbox,.minimal-course .figwrap,.minimal-course .fig-wrap{max-width:100%;background:#fff;box-shadow:none}.minimal-course svg{max-width:100%;height:auto}.minimal-course button,.minimal-course input,.minimal-course select,.minimal-course summary{min-height:44px;font-family:inherit}.minimal-course button{font-size:16px;border-radius:8px}.minimal-course button.primary,.minimal-course .btn.primary,.minimal-course .btn.blue,.minimal-course .btn.dark,.minimal-course button.act,.minimal-course button.blue,.minimal-course #check{background:#216342;color:white;border-color:#216342}.minimal-course input{font-size:20px;max-width:100%}.minimal-course .ansrow,.minimal-course .ans-row,.minimal-course .controls{gap:12px;margin-top:24px;flex-wrap:wrap}.minimal-course .minimal-settings{margin-top:28px;border-top:1px solid #dbe1da;padding-top:18px;font-size:16px}.minimal-course summary{cursor:pointer;color:#216342}.minimal-course .minimal-settings .tabs{margin:18px 0;padding:0;flex-wrap:wrap;display:flex;background:transparent;border:0}.minimal-course .minimal-settings .sub{font-size:15px;margin:16px 0}.minimal-course .minimal-settings .stats{justify-content:flex-start}.minimal-course .minimal-settings .stat{font-size:14px}.minimal-course .minimal-task-settings{margin:20px 0}.minimal-course .minimal-hint{margin:20px 0;padding:20px;background:#eef5ed;border:1px solid #dbe7da;border-radius:12px}.minimal-course .minimal-hint-toggle{display:block;background:white;color:#216342;border:1px solid #b8cbbb;margin:22px 0 16px;min-height:46px;padding:10px 16px}.minimal-course .minimal-hint p{margin:0 0 18px}.minimal-course .minimal-hint .hintbox,.minimal-course .minimal-hint .guidebox{margin:0}.minimal-course .minimal-hint .row,.minimal-course .minimal-hint .bar{gap:12px}.minimal-course [hidden]{display:none!important}.minimal-course button:focus-visible,.minimal-course input:focus-visible,.minimal-course select:focus-visible,.minimal-course summary:focus-visible,.minimal-course a:focus-visible{outline:3px solid #77a488;outline-offset:3px}.minimal-course .minimal-part2-note{font-size:15px;color:#626b63;line-height:1.7;margin:18px 0}.minimal-course .pool{gap:12px}.minimal-course .pool .card{padding:16px;font-size:17px}.minimal-course .chain .citem{margin-bottom:18px}.minimal-course .step,.minimal-course .gsteps>li{line-height:1.8;margin-bottom:18px}.minimal-course .guidehead{font-size:16px}.minimal-course .minimal-hint-toggle[aria-expanded=true]{background:#edf4ea}.minimal-course .minimal-help-actions{margin-top:20px}.minimal-course .minimal-help-actions>button{margin:12px 8px 0 0}
+.minimal-course .proof-fraction{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.15;margin:0 .16em;font-size:.95em}.minimal-course .proof-fraction>span:first-child{border-bottom:1.5px solid currentColor;padding:0 .22em .12em}.minimal-course .proof-fraction>span:last-child{padding:.12em .22em 0}
+@media(max-width:600px){.minimal-course .app,.minimal-course>.wrap{padding:18px 12px 40px}.minimal-course .grid{padding:18px 14px;grid-template-columns:1fr}.minimal-course .row{flex-wrap:wrap}.minimal-course .col{min-width:0;width:100%}.minimal-course h1{font-size:21px}.minimal-course .minimal-hint{padding:16px 12px}.minimal-course .task,.minimal-course .card,.minimal-course .givens{font-size:17px}.minimal-course .tabs{gap:8px}}
+@media(prefers-reduced-motion:reduce){.minimal-course *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+<link rel="stylesheet" href="/book/oge/2026-10-31/v1/trainers/oge-course-reference.css">
+<link rel="stylesheet" href="/book/oge/2026-10-31/v1/trainers/oge-course-proof.css">
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <a class="crumbs" href="https://mathexam.space/book/oge/2026-10-31/v1/oge/">← Курс ОГЭ</a>
+      <h1>ОГЭ · Задание 24 — задачи на доказательство</h1>
+      <div class="sub">20 типов · конструктор доказательства · собери цепочку и обходи ловушки</div>
+    </div>
+    <span class="badge" id="badge">Разбор</span>
+  </div>
+  <div class="tabs" id="tabs"></div>
+  <div class="wrap">
+    <div class="success" id="succ" role="status" aria-live="polite"></div>
+    <div class="sr-live" id="live" role="status" aria-live="polite"></div>
+    <div id="view"></div>
+  </div>
+</div>
+
+<script>
+const DATA = {"figs": {"f1": {"vb": [380, 300], "pts": {"A": [60, 250], "B": [220.6, 160], "C": [280.6, 160], "D": [300, 250]}, "poly": [["A", "B", "C", "D"]], "seg": [["B", "D"]], "lab": {"A": [-14, 6], "B": [-16, -4], "C": [8, -4], "D": [10, 6]}, "para": [[["B", "C"], ["A", "D"]]]}, "f2": {"vb": [420, 290], "pts": {"A": [70, 240], "B": [150, 110], "C": [360, 110], "D": [280, 240], "O": [215, 175], "K": [175, 110], "M": [255, 240]}, "poly": [["A", "B", "C", "D"]], "seg": [["A", "C"], ["B", "D"], ["K", "M"]], "dot": ["O", "K", "M"], "lab": {"A": [-14, 8], "B": [-6, -6], "C": [10, -6], "D": [10, 8], "O": [8, -6], "K": [-2, -8], "M": [-2, 16]}}, "f3": {"vb": [430, 250], "pts": {"A": [80, 90], "B": [320, 90], "C": [380, 193.9], "D": [140, 193.9], "L": [200, 90]}, "poly": [["A", "B", "C", "D"]], "seg": [["D", "L"], ["C", "L"]], "dot": ["L"], "lab": {"A": [-14, -4], "B": [8, -4], "C": [10, 10], "D": [-16, 10], "L": [-4, -10]}, "tick": [[["A", "L"], 1], [["A", "D"], 1], [["B", "L"], 2], [["B", "C"], 2]]}, "f4": {"vb": [430, 250], "pts": {"A": [80, 90], "B": [320, 90], "C": [380, 193.9], "D": [140, 193.9], "L": [200, 90]}, "poly": [["A", "B", "C", "D"]], "seg": [["C", "L"]], "dot": ["L"], "lab": {"A": [-14, -4], "B": [8, -4], "C": [10, 10], "D": [-16, 10], "L": [-4, -10]}, "tick": [[["B", "L"], 1], [["B", "C"], 1]]}, "f5": {"vb": [440, 270], "pts": {"A": [70, 230], "B": [370, 230], "C": [343, 110], "D": [97, 110], "K": [220, 110], "Hab": [220, 230], "Had": [102.9, 83.7], "Hbc": [337.1, 83.7]}, "poly": [["A", "B", "C", "D"]], "seg": [["A", "K"], ["B", "K"]], "thin": [["K", "Hab"], ["K", "Had"], ["K", "Hbc"]], "ext": [["D", "Had"], ["C", "Hbc"]], "right": [["Hab", "K", "A"], ["Had", "K", "D"], ["Hbc", "K", "C"]], "dot": ["K"], "lab": {"A": [-14, 8], "B": [10, 8], "C": [10, -4], "D": [-16, -4], "K": [-2, -10]}}, "f6": {"vb": [440, 290], "pts": {"A": [70, 240], "B": [140, 110], "C": [300, 110], "D": [370, 240], "E": [230, 175], "m1": [105, 175], "m2": [335, 175]}, "poly": [["A", "B", "C", "D"]], "seg": [["m1", "m2"], ["B", "E"], ["E", "C"], ["A", "E"], ["E", "D"]], "segstyle": {"m1m2": "mid"}, "dot": ["E"], "lab": {"A": [-14, 8], "B": [-14, -4], "C": [10, -4], "D": [10, 8], "E": [-2, -10]}, "para": [[["B", "C"], ["A", "D"]]]}, "f7": {"vb": [440, 290], "pts": {"A": [70, 240], "B": [150, 110], "C": [390, 110], "D": [310, 240], "E": [230, 180]}, "poly": [["A", "B", "C", "D"]], "seg": [["B", "E"], ["E", "C"], ["A", "E"], ["E", "D"]], "dot": ["E"], "lab": {"A": [-14, 8], "B": [-6, -6], "C": [10, -6], "D": [10, 8], "E": [6, -8]}}, "f8": {"vb": [420, 290], "pts": {"A": [70, 240], "B": [150, 110], "C": [290, 110], "D": [370, 240], "E": [110, 175]}, "poly": [["A", "B", "C", "D"]], "seg": [["E", "C"], ["E", "D"]], "dot": ["E"], "lab": {"A": [-14, 8], "B": [-6, -8], "C": [8, -8], "D": [10, 8], "E": [-16, 2]}, "tick": [[["A", "E"], 1], [["E", "B"], 1]], "para": [[["B", "C"], ["A", "D"]]]}, "f9": {"vb": [440, 290], "pts": {"A": [70, 240], "B": [140, 110], "C": [300, 110], "D": [370, 240], "O": [220, 155.2]}, "poly": [["A", "B", "C", "D"]], "seg": [["A", "C"], ["B", "D"]], "dot": ["O"], "lab": {"A": [-14, 8], "B": [-14, -4], "C": [10, -4], "D": [10, 8], "O": [-2, 16]}, "para": [[["B", "C"], ["A", "D"]]]}, "f10": {"vb": [360, 300], "pts": {"A": [107.2, 119.0], "B": [179.0, 47.2], "C": [311.9, 82.9], "D": [116.1, 220.0], "K": [99.1, 25.8]}, "circ": [{"c": [220, 160], "r": 120}], "poly": [["A", "B", "C", "D"]], "ext": [["A", "K"], ["B", "K"]], "dot": ["K"], "lab": {"A": [-16, 2], "B": [-6, -8], "C": [10, 2], "D": [-16, 8], "K": [-4, -8]}}, "f11": {"vb": [400, 300], "pts": {"A": [111.7, 179.1], "B": [182.4, 56.6], "C": [290.7, 75.7], "D": [200.9, 268.3]}, "poly": [["A", "B", "C", "D"]], "seg": [["A", "C"], ["B", "D"]], "circ_hidden": [{"c": [220, 160], "r": 110}], "lab": {"A": [-16, 2], "B": [-4, -8], "C": [10, 2], "D": [-2, 16]}}, "f12": {"vb": [440, 410], "pts": {"A": [70, 250], "B": [370, 250], "C": [230, 70], "A1": [256.9, 104.6], "B1": [202.4, 101.0]}, "poly": [["A", "B", "C"]], "seg": [["A", "A1"], ["B", "B1"]], "circ_hidden": [{"c": [220, 250], "r": 150}], "right": [["A1", "A", "B"], ["B1", "B", "A"]], "dot": ["A1", "B1"], "lab": {"A": [-14, 10], "B": [10, 10], "C": [-2, -10], "A1": [6, -12], "B1": [-20, -6]}}, "f13": {"vb": [440, 290], "pts": {"A": [60, 250], "B": [380, 250], "C": [250, 205], "A1": [94.2, 151.1], "B1": [363.0, 178.2]}, "poly": [["A", "B", "C"]], "seg": [["A", "A1"], ["B", "B1"]], "ext": [["B", "A1"], ["A", "B1"]], "right": [["A1", "A", "C"], ["B1", "B", "C"]], "dot": ["A1", "B1"], "lab": {"A": [-14, 10], "B": [10, 10], "C": [-2, 18], "A1": [-6, -10], "B1": [8, -4]}}, "f14": {"vb": [420, 300], "pts": {"I": [268, 168], "J": [184, 168], "A": [151.8, 138.0], "B": [151.8, 198.0], "X": [151.8, 168.0]}, "circ": [{"c": [268, 168], "r": 120}, {"c": [184, 168], "r": 44}], "seg": [["A", "B"], ["I", "J"]], "dot": ["I", "J"], "right": [["X", "A", "I"]], "tick": [[["I", "A"], 1], [["I", "B"], 1], [["J", "A"], 2], [["J", "B"], 2]], "lab": {"I": [10, 4], "J": [-6, -10], "A": [-16, -2], "B": [-16, 6]}}, "f15": {"vb": [440, 300], "pts": {"P": [120, 170], "Q": [340, 170], "T": [253.9, 170], "M": [156.6, 110.3], "N": [316.5, 208.4]}, "circ": [{"c": [120, 170], "r": 70}, {"c": [340, 170], "r": 45}], "seg": [["P", "Q"], ["M", "N"], ["P", "M"], ["Q", "N"]], "dot": ["P", "Q", "T", "M", "N"], "right": [["M", "P", "T"], ["N", "Q", "T"]], "lab": {"P": [-6, 16], "Q": [8, 16], "T": [-2, 18], "M": [-16, -2], "N": [8, 4]}}, "f16": {"vb": [380, 360], "pts": {"A": [340, 180], "B": [265, 50.1], "C": [115, 50.1], "D": [40, 180], "E": [115, 309.9], "F": [265, 309.9]}, "poly": [["A", "B", "C", "D", "E", "F"]], "seg": [["A", "C"], ["C", "E"], ["E", "A"]], "lab": {"A": [12, 5], "B": [10, -8], "C": [-18, -8], "D": [-20, 5], "E": [-20, 16], "F": [10, 16]}}, "f17": {"vb": [380, 360], "pts": {"A": [340, 180], "B": [265, 50.1], "C": [115, 50.1], "D": [40, 180], "E": [115, 309.9], "F": [265, 309.9], "O": [190, 180]}, "poly": [["A", "B", "C", "D", "E", "F"]], "seg": [["A", "D"], ["O", "B"]], "dot": ["O"], "lab": {"A": [12, 5], "B": [10, -8], "C": [-18, -8], "D": [-20, 5], "E": [-20, 16], "F": [10, 16], "O": [6, -10]}}, "f18": {"vb": [380, 360], "pts": {"A": [340, 180], "B": [265, 50.1], "C": [115, 50.1], "D": [40, 180], "E": [115, 309.9], "F": [265, 309.9], "O": [190, 180]}, "poly": [["A", "B", "C", "D", "E", "F"]], "seg": [["C", "E"], ["F", "B"], ["B", "E"], ["C", "F"]], "dot": ["O"], "lab": {"A": [12, 5], "B": [10, -8], "C": [-18, -8], "D": [-20, 5], "E": [-20, 16], "F": [10, 16], "O": [6, -10]}}, "f19": {"vb": [380, 360], "pts": {"A": [340, 180], "B": [265, 50.1], "C": [115, 50.1], "D": [40, 180], "E": [115, 309.9], "F": [265, 309.9], "O": [190, 180]}, "poly": [["A", "B", "C", "D", "E", "F"]], "seg": [["A", "D"], ["B", "D"]], "dot": ["O"], "right": [["B", "A", "D"]], "lab": {"A": [12, 5], "B": [10, -8], "C": [-18, -8], "D": [-20, 5], "E": [-20, 16], "F": [10, 16], "O": [6, -10]}}, "f20": {"vb": [380, 360], "pts": {"A": [340, 180], "B": [265, 50.1], "C": [115, 50.1], "D": [40, 180], "E": [115, 309.9], "F": [265, 309.9]}, "poly": [["A", "B", "C", "D", "E", "F"]], "seg": [["A", "C"]], "right": [["C", "A", "D"]], "lab": {"A": [12, 5], "B": [10, -8], "C": [-18, -8], "D": [-20, 5], "E": [-20, 16], "F": [10, 16]}}}, "tasks": [{"id": "t1", "theme": "Подобие", "fig": "f1", "code": "подобие · трапеция", "title": "Подобие треугольников в трапеции", "given": "Трапеция <b>ABCD</b>, основания <b>BC = 6</b> и <b>AD = 24</b>, диагональ <b>BD = 12</b>.", "prove": "Треугольники <b>CBD</b> и <b>BDA</b> подобны.", "steps": [{"k": "s", "t": "BC ∥ AD — основания трапеции; BD — секущая.", "lit": {"seg": [["B", "C"], ["A", "D"], ["B", "D"]]}, "why": "Параллельность оснований — по определению трапеции. Секущая BD связывает две пары углов."}, {"k": "s", "t": "∠CBD = ∠BDA — накрест лежащие при BC ∥ AD и секущей BD.", "lit": {"ang": [["B", "C", "D"], ["D", "B", "A"]]}, "why": "Именно эти углы — соответственные вершины будущего подобия: угол при B в △CBD и при D в △BDA.", "jc": "alt", "claim": "∠CBD = ∠BDA"}, {"k": "s", "t": "CB / BD = 6/12 = 1/2 и BD / DA = 12/24 = 1/2, значит CB/BD = BD/DA.", "lit": {"seg": [["C", "B"], ["B", "D"], ["D", "A"]]}, "why": "Проверяем стороны, прилежащие к равным углам. Здесь BD² = 144 = 6·24 = BC·AD — это и даёт пропорцию."}, {"k": "s", "t": "△CBD ∼ △BDA по двум сторонам и углу между ними.", "lit": {"poly": [["C", "B", "D"], ["B", "D", "A"]]}, "why": "Признак подобия: две стороны пропорциональны и углы между ними равны. Соответствие C↔B, B↔D, D↔A.", "jc": "sas_sim", "claim": "△CBD ∼ △BDA"}], "traps": [{"k": "x", "t": "∠BCD = ∠ADC — как углы трапеции.", "msg": "Это односторонние углы при BC ∥ AD — они дают в сумме 180°, а не равны. Ловушка «похоже, но не равно»."}, {"k": "x", "t": "△CBD ∼ △BDA по трём углам (все углы равны).", "msg": "Равенство всех углов ещё нужно обосновать. У нас есть один равный угол и пропорция сторон — это признак по двум сторонам и углу."}, {"k": "x", "t": "CB/AD = BD/BD.", "msg": "Стороны подобраны не по соответствию. Пропорцию берут для сторон, прилежащих к равному углу: CB/BD = BD/DA."}], "law": "Если в трапеции BD² = BC·AD, то диагональ BD «разрезает» её на подобные треугольники: угол даёт параллельность оснований, пропорцию — само равенство BD² = BC·AD."}, {"id": "t10", "theme": "Подобие", "fig": "f10", "code": "подобие · вписанный", "title": "Продолжения сторон вписанного четырёхугольника", "given": "Около <b>ABCD</b> описана окружность; продолжения сторон <b>AD</b> и <b>BC</b> пересекаются в точке <b>K</b>.", "prove": "Треугольники <b>KAB</b> и <b>KCD</b> подобны.", "steps": [{"k": "s", "t": "∠K — общий угол треугольников KAB и KCD.", "lit": {"ang": [["K", "A", "B"]], "pt": ["K"]}, "why": "K лежит на обеих прямых, поэтому ∠AKB и ∠DKC — это один и тот же угол между секущими."}, {"k": "s", "t": "∠BAD + ∠BCD = 180° — сумма противоположных углов вписанного четырёхугольника.", "lit": {"ang": [["A", "B", "D"]], "poly": [["A", "B", "C", "D"]]}, "why": "Ключевое свойство вписанного четырёхугольника — этого факта на листе справочных материалов нет, его надо помнить.", "jc": "cyclic", "claim": "∠BAD + ∠BCD = 180°"}, {"k": "s", "t": "∠KAB = 180° − ∠BAD (смежные, т.к. K, A, D на одной прямой), значит ∠KAB = ∠BCD.", "lit": {"ang": [["A", "K", "B"]], "seg": [["A", "D"]]}, "why": "Внешний угол вписанного четырёхугольника равен внутреннему углу при противоположной вершине."}, {"k": "s", "t": "∠KCD = ∠BCD (луч CK совпадает с лучом CB), значит ∠KAB = ∠KCD.", "lit": {"ang": [["C", "K", "D"]], "seg": [["B", "C"]]}, "why": "Точки K, B, C на одной прямой, поэтому угол ∠KCD — тот же, что ∠BCD. Так замыкаем: ∠KAB = ∠KCD."}, {"k": "s", "t": "△KAB ∼ △KCD по двум углам.", "lit": {"poly": [["K", "A", "B"], ["K", "C", "D"]]}, "why": "Общий ∠K и равные ∠KAB = ∠KCD дают подобие по двум углам.", "jc": "aa", "claim": "△KAB ∼ △KCD"}], "traps": [{"k": "x", "t": "KA·KD = KB·KC, отсюда KA/KC = KB/KD.", "msg": "Верное равенство, но это «степень точки» — вне программы ОГЭ и требует отдельного доказательства. Идём через углы вписанного четырёхугольника."}, {"k": "x", "t": "∠KAB = ∠BAD.", "msg": "Это смежные углы (K, A, D на одной прямой) — они дают 180°, а не равны."}], "phases": [{"name": "Внешний угол = внутреннему", "s": [0, 1, 2], "x": [1]}, {"name": "Замыкаем углы и подобие", "s": [3, 4], "x": [0]}], "law": "Внешний угол вписанного четырёхугольника равен внутреннему углу при противоположной вершине. Поэтому две секущие из внешней точки высекают пару подобных треугольников."}, {"id": "t13", "theme": "Подобие", "fig": "f13", "code": "подобие · высоты", "title": "Две высоты тупоугольного треугольника", "given": "В треугольнике <b>ABC</b> с тупым углом <b>ACB</b> проведены высоты <b>AA₁</b> и <b>BB₁</b>.", "prove": "Треугольники <b>A₁CB₁</b> и <b>ACB</b> подобны.", "steps": [{"k": "s", "t": "AA₁ ⊥ BC и BB₁ ⊥ AC — высоты треугольника.", "lit": {"seg": [["A", "A1"], ["B", "B1"]]}, "why": "По определению высота перпендикулярна прямой, содержащей сторону."}, {"k": "s", "t": "Угол C тупой, поэтому A₁ лежит на продолжении BC за точку C, а B₁ — на продолжении AC за точку C.", "lit": {"pt": ["A1", "B1"]}, "why": "В тупоугольном треугольнике основания высот из острых углов уходят за вершину тупого угла."}, {"k": "s", "t": "∠A₁CB₁ = ∠ACB — вертикальные углы.", "lit": {"ang": [["C", "A1", "B1"], ["C", "A", "B"]]}, "why": "Лучи CA₁ и CB противоположны, CB₁ и CA противоположны, поэтому углы между ними равны.", "jc": "vert", "claim": "∠A₁CB₁ = ∠ACB"}, {"k": "s", "t": "В прямоугольных △CAA₁ и △CBB₁: ∠CA₁A = ∠CB₁B = 90°, а ∠A₁CA = ∠B₁CB (оба смежны с ∠ACB).", "lit": {"poly": [["C", "A", "A1"], ["C", "B", "B1"]]}, "why": "Прямые углы — у оснований высот; ∠A₁CA и ∠B₁CB равны как смежные с одним и тем же ∠ACB."}, {"k": "s", "t": "Значит △CAA₁ ∼ △CBB₁ (по двум углам).", "lit": {"poly": [["C", "A", "A1"], ["C", "B", "B1"]]}, "why": "Два равных угла — признак подобия треугольников.", "jc": "aa", "claim": "△CAA₁ ∼ △CBB₁"}, {"k": "s", "t": "Из подобия CA₁/CB₁ = CA/CB, откуда CA₁/CA = CB₁/CB.", "lit": {"seg": [["C", "A1"], ["C", "B1"], ["C", "A"], ["C", "B"]]}, "why": "Переставляем пропорцию: стороны при вершине C у треугольников A₁CB₁ и ACB пропорциональны."}, {"k": "s", "t": "△A₁CB₁ ∼ △ACB — по двум сторонам и углу между ними.", "lit": {"poly": [["A1", "C", "B1"], ["A", "C", "B"]]}, "why": "Угол при C равен (вертикальные), стороны CA₁, CB₁ пропорциональны CA, CB — признак «две стороны и угол».", "jc": "sas_sim", "claim": "△A₁CB₁ ∼ △ACB"}], "traps": [{"k": "x", "t": "∠A₁CB₁ = ∠ACB — это один и тот же угол.", "msg": "Нет: A₁ и B₁ лежат по другую сторону от C. Это вертикальные углы, а не один угол."}, {"k": "x", "t": "△A₁CB₁ ∼ △ACB по трём углам.", "msg": "Равенство остальных углов ещё нужно получить. Мы обосновали один угол и пропорцию сторон — этого достаточно по признаку «две стороны и угол»."}], "phases": [{"name": "Где основания высот", "s": [0, 1], "x": []}, {"name": "Пара подобных прямоугольных", "s": [2, 3, 4], "x": [0]}, {"name": "Итоговое подобие", "s": [5, 6], "x": [1]}], "law": "Основания двух высот и вершина тупого угла образуют треугольник, подобный исходному: угол при вершине — вертикальный, а стороны пропорциональны из пары подобных прямоугольных треугольников."}, {"id": "t15", "theme": "Подобие", "fig": "f15", "code": "подобие · касательная", "title": "Внутренняя касательная двух окружностей", "given": "Окружности с центрами <b>P</b> и <b>Q</b> не пересекаются и лежат вне друг друга. Внутренняя общая касательная касается их в точках <b>M</b> и <b>N</b> и делит отрезок центров: <b>PT : TQ = a : b</b>.", "prove": "Диаметры окружностей относятся как <b>a : b</b>.", "steps": [{"k": "s", "t": "PM ⊥ MN и QN ⊥ MN — радиус в точку касания перпендикулярен касательной.", "lit": {"seg": [["P", "M"], ["Q", "N"]], "ang": [["M", "P", "N"], ["N", "Q", "M"]]}, "why": "Свойство касательной: радиус, проведённый в точку касания, ей перпендикулярен.", "jc": "tang", "claim": "PM ⊥ MN и QN ⊥ MN"}, {"k": "s", "t": "Прямоугольные △PMT и △QNT: ∠PMT = ∠QNT = 90° и ∠PTM = ∠QTN (вертикальные) → △PMT ∼ △QNT.", "lit": {"poly": [["P", "M", "T"], ["Q", "N", "T"]], "ang": [["T", "P", "M"], ["T", "Q", "N"]]}, "why": "Касательная внутренняя, поэтому она пересекает PQ между окружностями — при T возникают вертикальные углы.", "jc": "aa", "claim": "△PMT ∼ △QNT"}, {"k": "s", "t": "Из подобия: PM / QN = PT / TQ = a : b.", "lit": {"seg": [["P", "M"], ["Q", "N"], ["P", "T"], ["T", "Q"]]}, "why": "Отношение радиусов равно отношению, в котором касательная делит линию центров."}, {"k": "s", "t": "Диаметры: 2·PM : 2·QN = PM : QN = a : b.", "lit": {"poly": [["P", "M", "T"], ["Q", "N", "T"]]}, "why": "Диаметр вдвое больше радиуса, множитель 2 сокращается — отношение диаметров такое же."}], "traps": [{"k": "x", "t": "PM ∥ QN, поэтому подобных треугольников нет.", "msg": "PM ∥ QN верно: оба радиуса перпендикулярны MN. Но из параллельности не следует отсутствие подобия. Прямые углы при M и N и вертикальные углы при T дают подобие треугольников PMT и QNT."}, {"k": "x", "t": "PM / QN = PT / TQ сразу, без прямых углов.", "msg": "Пропорция сторон следует из подобия треугольников, а оно опирается на прямые углы PM⊥MN, QN⊥MN. Их нельзя пропускать."}], "law": "Радиусы в точки касания перпендикулярны касательной, поэтому внутренняя касательная делит линию центров в отношении радиусов (а значит, и диаметров)."}, {"id": "t2", "theme": "Параллелограмм", "fig": "f2", "code": "равенство · параллелограмм", "title": "Прямая через точку пересечения диагоналей", "given": "В параллелограмме <b>ABCD</b> через точку <b>O</b> пересечения диагоналей проведена прямая, пересекающая <b>BC</b> в точке <b>K</b> и <b>AD</b> в точке <b>M</b>.", "prove": "Отрезки <b>BK</b> и <b>DM</b> равны.", "steps": [{"k": "s", "t": "BO = DO — диагонали параллелограмма точкой пересечения делятся пополам.", "lit": {"seg": [["B", "O"], ["D", "O"]], "pt": ["O"]}, "why": "Свойство параллелограмма: точка O — середина каждой диагонали.", "jc": "diagpar", "claim": "BO = DO"}, {"k": "s", "t": "∠KBO = ∠MDO — накрест лежащие при BC ∥ AD и секущей BD.", "lit": {"ang": [["B", "K", "O"], ["D", "M", "O"]], "seg": [["B", "C"], ["A", "D"]]}, "why": "BC ∥ AD как противоположные стороны параллелограмма; BD — секущая.", "jc": "alt", "claim": "∠KBO = ∠MDO"}, {"k": "s", "t": "∠BOK = ∠DOM — вертикальные углы.", "lit": {"ang": [["O", "B", "K"], ["O", "D", "M"]]}, "why": "Прямая KM и диагональ BD пересекаются в O, образуя вертикальные углы.", "jc": "vert", "claim": "∠BOK = ∠DOM"}, {"k": "s", "t": "△BOK = △DOM по стороне и двум прилежащим углам.", "lit": {"poly": [["B", "O", "K"], ["D", "O", "M"]]}, "why": "BO = DO и два прилежащих угла равны — второй признак равенства треугольников.", "jc": "asa", "claim": "△BOK = △DOM"}, {"k": "s", "t": "BK = DM — соответствующие стороны равных треугольников.", "lit": {"seg": [["B", "K"], ["D", "M"]]}, "why": "В равных треугольниках против равных элементов лежат равные стороны."}], "traps": [{"k": "x", "t": "BK = DM по симметрии параллелограмма.", "msg": "«По симметрии» — не доказательство. Нужно указать равные треугольники и признак."}, {"k": "x", "t": "△BOK = △DOM по двум сторонам (BO = DO, OK = OM).", "msg": "Равенство OK = OM само ещё не доказано — вышел бы круг. Используем сторону BO=DO и два прилежащих угла."}, {"k": "x", "t": "∠OBK = ∠ODM — как противоположные углы параллелограмма.", "msg": "Это накрест лежащие углы при секущей BD, а не углы параллелограмма. Причина другая."}], "phases": [{"name": "Собираем равные элементы", "s": [0, 1, 2], "x": [2]}, {"name": "Равные треугольники → вывод", "s": [3, 4], "x": [0, 1]}], "law": "Точка пересечения диагоналей делит любую проходящую через неё хорду параллелограмма пополам — это равенство равных треугольников по стороне и двум углам."}, {"id": "t3", "theme": "Параллелограмм", "fig": "f3", "code": "биссектриса · параллелограмм", "title": "Биссектрисы двух углов сходятся на стороне", "given": "Биссектрисы углов <b>C</b> и <b>D</b> параллелограмма <b>ABCD</b> пересекаются в точке <b>L</b>, лежащей на стороне <b>AB</b>.", "prove": "<b>L</b> — середина <b>AB</b>.", "steps": [{"k": "s", "t": "DL — биссектриса ∠ADC, значит ∠ADL = ∠LDC.", "lit": {"ang": [["D", "A", "L"], ["D", "L", "C"]], "seg": [["D", "L"]]}, "why": "По определению биссектрисы угол ADC делится пополам."}, {"k": "s", "t": "AB ∥ DC, секущая DL, значит ∠LDC = ∠DLA (накрест лежащие).", "lit": {"ang": [["D", "L", "C"], ["L", "D", "A"]], "seg": [["A", "B"], ["D", "C"]]}, "why": "L на прямой AB, а AB ∥ DC; DL — секущая.", "jc": "alt", "claim": "∠LDC = ∠DLA"}, {"k": "s", "t": "∠ADL = ∠DLA → △ADL равнобедренный → AL = AD.", "lit": {"poly": [["A", "D", "L"]], "tick": [["A", "L"], ["A", "D"]]}, "why": "Два угла треугольника ADL равны, значит против них — равные стороны AL и AD.", "jc": "isoc", "claim": "AL = AD"}, {"k": "s", "t": "Аналогично из биссектрисы ∠C: BL = BC.", "lit": {"poly": [["B", "C", "L"]], "tick": [["B", "L"], ["B", "C"]]}, "why": "Те же рассуждения для биссектрисы CL и стороны BL: треугольник BCL равнобедренный."}, {"k": "s", "t": "AD = BC (противоположные стороны параллелограмма), значит AL = BL — L середина AB.", "lit": {"seg": [["A", "L"], ["B", "L"]]}, "why": "AL = AD = BC = BL, поэтому L делит AB пополам."}], "traps": [{"k": "x", "t": "L — середина AB, так как биссектрисы симметричны.", "msg": "Это и есть то, что требуется доказать. Нельзя брать вывод за посылку."}, {"k": "x", "t": "∠ADL = ∠DLA — вертикальные углы.", "msg": "Эти углы не вертикальные. Накрест лежащие углы при AB ∥ DC и секущей DL — это ∠LDC и ∠DLA. А ∠ADL = ∠LDC по определению биссектрисы DL, поэтому ∠ADL = ∠DLA."}], "phases": [{"name": "Треугольник ADL равнобедренный", "s": [0, 1, 2], "x": [1]}, {"name": "Вторая сторона и вывод", "s": [3, 4], "x": [0]}], "law": "Биссектриса угла параллелограмма отсекает равнобедренный треугольник (угол = накрест лежащему). Отсюда AL = AD, BL = BC, а равные боковые стороны дают середину."}, {"id": "t4", "theme": "Параллелограмм", "fig": "f4", "code": "биссектриса · параллелограмм", "title": "Середина стороны, вдвое большей соседней", "given": "Сторона <b>AB</b> параллелограмма <b>ABCD</b> вдвое больше стороны <b>BC</b>. Точка <b>L</b> — середина <b>AB</b>.", "prove": "<b>CL</b> — биссектриса угла <b>BCD</b>.", "steps": [{"k": "s", "t": "L — середина AB, поэтому BL = AB/2 = BC.", "lit": {"seg": [["B", "L"], ["B", "C"]], "tick": [["B", "L"], ["B", "C"]]}, "why": "Дано AB = 2·BC, а BL = половина AB — значит BL = BC."}, {"k": "s", "t": "△BCL равнобедренный (BL = BC) → ∠BCL = ∠BLC.", "lit": {"poly": [["B", "C", "L"]], "ang": [["C", "B", "L"], ["L", "B", "C"]]}, "why": "В равнобедренном треугольнике углы при основании равны.", "jc": "isoc_ang", "claim": "∠BCL = ∠BLC"}, {"k": "s", "t": "AB ∥ CD, секущая CL, значит ∠BLC = ∠LCD (накрест лежащие).", "lit": {"ang": [["L", "B", "C"], ["C", "L", "D"]], "seg": [["A", "B"], ["C", "D"]]}, "why": "L на прямой AB, AB ∥ CD; CL — секущая.", "jc": "alt", "claim": "∠BLC = ∠LCD"}, {"k": "s", "t": "∠BCL = ∠BLC = ∠LCD → CL делит ∠BCD пополам.", "lit": {"ang": [["C", "B", "L"], ["C", "L", "D"]]}, "why": "Цепочка равенств замыкается: угол BCL равен углу LCD, то есть CL — биссектриса."}], "traps": [{"k": "x", "t": "△BCL равнобедренный, потому что BC = CL.", "msg": "Равенство BC = CL не дано и не доказано. Равны BL и BC (BL — половина AB = BC)."}, {"k": "x", "t": "CL — биссектриса, потому что L середина.", "msg": "Середина сама по себе биссектрисы не даёт. Нужен равнобедренный треугольник и накрест лежащие углы."}], "law": "Если сторона вдвое больше соседней, её середина «включает» равнобедренный треугольник, и отрезок к вершине оказывается биссектрисой (угол при основании = накрест лежащему)."}, {"id": "t5", "theme": "Параллелограмм", "fig": "f5", "code": "биссектрисы · трапеция", "title": "Точка, равноудалённая от трёх прямых", "given": "Биссектрисы углов <b>A</b> и <b>B</b> трапеции <b>ABCD</b> пересекаются в точке <b>K</b>, лежащей на стороне <b>CD</b>.", "prove": "Точка <b>K</b> равноудалена от прямых <b>AB</b>, <b>BC</b> и <b>AD</b>.", "steps": [{"k": "s", "t": "K лежит на биссектрисе угла A → K равноудалена от сторон AB и AD.", "lit": {"seg": [["A", "K"], ["K", "Had"], ["K", "Hab"]], "ang": [["A", "B", "K"]]}, "why": "Свойство биссектрисы угла: каждая её точка равноудалена от сторон угла (здесь от AB и AD).", "jc": "bisec", "claim": "K равноудалена от AB и AD"}, {"k": "s", "t": "K лежит на биссектрисе угла B → K равноудалена от сторон AB и BC.", "lit": {"seg": [["B", "K"], ["K", "Hbc"], ["K", "Hab"]], "ang": [["B", "A", "K"]]}, "why": "Та же теорема о биссектрисе для угла B: расстояния до AB и BC равны."}, {"k": "s", "t": "Значит, расстояния до AD, AB и BC равны между собой — K равноудалена от AB, BC и AD.", "lit": {"seg": [["K", "Had"], ["K", "Hab"], ["K", "Hbc"]], "tick": [["K", "Had"], ["K", "Hab"], ["K", "Hbc"]]}, "why": "Оба расстояния равны расстоянию до AB, а через него — и друг другу."}], "traps": [{"k": "x", "t": "K равноудалена и от прямой CD.", "msg": "Из данных это не следует: K на биссектрисах углов A и B, а не C и D. Про CD ничего не доказано."}, {"k": "x", "t": "K — середина CD, отсюда равные расстояния.", "msg": "Положение K на CD и равные расстояния — из свойства биссектрисы, а не из «середины». Середина здесь ни при чём."}], "law": "Точка на биссектрисе угла равноудалена от его сторон. Пересечение двух биссектрис равноудалено сразу от трёх прямых — общей стороны и двух других."}, {"id": "t7", "theme": "Площади", "fig": "f7", "code": "площади · параллелограмм", "title": "Точка внутри параллелограмма", "given": "Внутри параллелограмма <b>ABCD</b> выбрана точка <b>E</b>.", "prove": "Сумма площадей треугольников <b>BEC</b> и <b>AED</b> равна половине площади параллелограмма.", "steps": [{"k": "s", "t": "BC ∥ AD; пусть h — расстояние между ними (высота параллелограмма), BC = AD = a.", "lit": {"seg": [["B", "C"], ["A", "D"]], "poly": [["A", "B", "C", "D"]]}, "why": "Стороны BC и AD параллельны и равны — это основания обоих треугольников."}, {"k": "s", "t": "Пусть h₁ — расстояние от E до BC, h₂ — от E до AD. Точка E между прямыми, поэтому h₁ + h₂ = h.", "lit": {"pt": ["E"], "seg": [["B", "C"], ["A", "D"]]}, "why": "Высоты треугольников из общей точки E в сумме дают всю ширину полосы между BC и AD."}, {"k": "s", "t": "S(BEC) = ½·a·h₁, S(AED) = ½·a·h₂.", "lit": {"poly": [["B", "E", "C"], ["A", "E", "D"]]}, "why": "Площадь треугольника — половина произведения основания на высоту (эта формула есть на листе).", "jc": "area", "claim": "S(BEC) = ½·a·h₁"}, {"k": "s", "t": "S(BEC) + S(AED) = ½·a·(h₁+h₂) = ½·a·h = ½ S(параллелограмма).", "lit": {"poly": [["B", "E", "C"], ["A", "E", "D"]]}, "why": "a·h — площадь параллелограмма; половина от неё и есть искомая сумма. Ответ не зависит от положения E."}], "traps": [{"k": "x", "t": "h₁ + h₂ = 2h.", "msg": "Высоты складываются в одну ширину полосы между BC и AD, то есть h₁ + h₂ = h, а не 2h."}, {"k": "x", "t": "S(BEC) = ½·BE·EC.", "msg": "Это была бы формула через две стороны и угол. Здесь удобнее основание BC = a и высота h₁ от E."}], "law": "Для точки внутри параллелограмма высоты двух «противоположных» треугольников складываются в высоту фигуры, поэтому сумма их площадей — ровно половина площади параллелограмма при любом положении точки."}, {"id": "t6", "theme": "Площади", "fig": "f6", "code": "площади · трапеция", "title": "Точка на средней линии трапеции", "given": "На средней линии трапеции <b>ABCD</b> (основания <b>AD</b> и <b>BC</b>) выбрана точка <b>E</b>.", "prove": "Сумма площадей треугольников <b>BEC</b> и <b>AED</b> равна половине площади трапеции.", "steps": [{"k": "s", "t": "Средняя линия равноудалена от оснований: расстояние до BC и до AD равно h/2, где h — высота трапеции.", "lit": {"seg": [["m1", "m2"]]}, "why": "Средняя линия проходит посередине между основаниями — этот факт надо помнить, на листе его нет."}, {"k": "s", "t": "E — на средней линии, поэтому высота △BEC (из E к BC) и высота △AED (из E к AD) обе равны h/2.", "lit": {"pt": ["E"], "seg": [["B", "C"], ["A", "D"]]}, "why": "Расстояние от любой точки средней линии до каждого основания одно и то же — h/2."}, {"k": "s", "t": "S(BEC) = ½·BC·(h/2), S(AED) = ½·AD·(h/2).", "lit": {"poly": [["B", "E", "C"], ["A", "E", "D"]]}, "why": "Основания — BC и AD, высоты — по h/2.", "jc": "area", "claim": "S(BEC) = ½·BC·(h/2)"}, {"k": "s", "t": "S(BEC) + S(AED) = (BC + AD)·h/4 = ½·[(BC+AD)/2·h] = ½ S(трапеции).", "lit": {"poly": [["B", "E", "C"], ["A", "E", "D"]]}, "why": "½(BC+AD)·h — площадь трапеции; её половина и получается. От выбора точки E ответ не зависит."}], "traps": [{"k": "x", "t": "Высота от E до основания равна h.", "msg": "E на средней линии, а она посередине: расстояние до каждого основания h/2, а не h."}, {"k": "x", "t": "S(BEC) = ½·BC·h.", "msg": "Взята полная высота трапеции. Высота треугольника из точки средней линии — только h/2."}], "law": "Любая точка средней линии отстоит от обоих оснований на h/2, поэтому сумма площадей двух треугольников на основаниях равна половине площади трапеции."}, {"id": "t8", "theme": "Площади", "fig": "f8", "code": "площади · трапеция", "title": "Середина боковой стороны трапеции", "given": "Точка <b>E</b> — середина боковой стороны <b>AB</b> трапеции <b>ABCD</b> (основания <b>AD</b> и <b>BC</b>).", "prove": "Площадь треугольника <b>ECD</b> равна половине площади трапеции.", "steps": [{"k": "s", "t": "Отрезки EC и ED разбивают трапецию на три треугольника: AED, ECD и EBC.", "lit": {"seg": [["E", "C"], ["E", "D"]], "poly": [["A", "E", "D"], ["E", "C", "D"], ["E", "B", "C"]]}, "why": "S(трапеции) = S(AED) + S(ECD) + S(EBC). Найдём две «угловые» площади."}, {"k": "s", "t": "E — середина AB, поэтому расстояние от E до AD равно h/2 (A на AD, B на расстоянии h).", "lit": {"pt": ["E"], "seg": [["A", "D"]]}, "why": "Середина отрезка AB отстоит от прямой AD на среднее между 0 (в A) и h (в B), то есть на h/2."}, {"k": "s", "t": "Так же расстояние от E до BC равно h/2. Значит S(AED)=½·AD·(h/2), S(EBC)=½·BC·(h/2).", "lit": {"poly": [["A", "E", "D"], ["E", "B", "C"]], "seg": [["B", "C"]]}, "why": "Симметрично: E отстоит от BC тоже на h/2.", "jc": "area", "claim": "S(AED) = ½·AD·(h/2)"}, {"k": "s", "t": "S(AED)+S(EBC) = (AD+BC)·h/4 = ½ S(трапеции).", "lit": {"poly": [["A", "E", "D"], ["E", "B", "C"]]}, "why": "Сумма угловых треугольников — ровно половина площади трапеции."}, {"k": "s", "t": "S(ECD) = S(трапеции) − ½ S(трапеции) = ½ S(трапеции).", "lit": {"poly": [["E", "C", "D"]]}, "why": "Оставшийся средний треугольник забирает вторую половину площади."}], "traps": [{"k": "x", "t": "S(ECD) = ½·CD·h.", "msg": "CD — боковая сторона, а не основание с высотой h. Идём через разбиение на три треугольника."}, {"k": "x", "t": "Расстояние от E до AD равно h.", "msg": "E — середина бока: до AD расстояние h/2 (среднее между 0 и h), а не h."}], "law": "Середина боковой стороны отстоит от обоих оснований на h/2. Два угловых треугольника забирают половину площади, значит на средний треугольник ECD приходится ровно вторая половина."}, {"id": "t9", "theme": "Площади", "fig": "f9", "code": "площади · трапеция", "title": "Треугольники при диагоналях трапеции", "given": "В трапеции <b>ABCD</b> (основания <b>AD</b> и <b>BC</b>) диагонали пересекаются в точке <b>O</b>.", "prove": "Площади треугольников <b>AOB</b> и <b>COD</b> равны.", "steps": [{"k": "s", "t": "△ABD и △ACD имеют общее основание AD; вершины B и C лежат на прямой BC ∥ AD, поэтому высоты равны.", "lit": {"seg": [["A", "D"], ["B", "C"]], "poly": [["A", "B", "D"], ["A", "C", "D"]]}, "why": "Расстояние от B и от C до прямой AD одно и то же — это высота трапеции."}, {"k": "s", "t": "Значит S(ABD) = S(ACD) (равные основание и высота).", "lit": {"poly": [["A", "B", "D"], ["A", "C", "D"]]}, "why": "Площади треугольников с равными основанием и высотой равны.", "jc": "sameB", "claim": "S(ABD) = S(ACD)"}, {"k": "s", "t": "S(ABD) = S(AOB) + S(AOD); S(ACD) = S(COD) + S(AOD) — общий треугольник AOD.", "lit": {"poly": [["A", "O", "B"], ["C", "O", "D"], ["A", "O", "D"]], "pt": ["O"]}, "why": "Каждый из больших треугольников распадается на нужный и общий AOD."}, {"k": "s", "t": "Вычитаем общий S(AOD): S(AOB) = S(COD).", "lit": {"poly": [["A", "O", "B"], ["C", "O", "D"]]}, "why": "Из равных площадей отнимаем одну и ту же — получаем равенство искомых."}], "traps": [{"k": "x", "t": "△AOB = △COD — равные треугольники.", "msg": "Равенство треугольников из условия не следует. Равные площади сами по себе не означают равенство сторон и углов. Здесь доказываем равновеликость через общее основание и общую часть AOD."}, {"k": "x", "t": "S(AOB) = S(COD), потому что AO = OC.", "msg": "В трапеции O не делит диагонали пополам (это верно лишь для параллелограмма). Причина — общий треугольник AOD."}], "law": "Треугольники ABD и ACD равновелики (общее основание AD, равные высоты). Убрав общую часть AOD, получаем равные площади «боковых» треугольников AOB и COD."}, {"id": "t12", "theme": "Окружность", "fig": "f12", "code": "вписанные углы · высоты", "title": "Две высоты остроугольного треугольника", "given": "В остроугольном треугольнике <b>ABC</b> проведены высоты <b>AA₁</b> и <b>BB₁</b>.", "prove": "Углы <b>AA₁B₁</b> и <b>ABB₁</b> равны.", "steps": [{"k": "s", "t": "AA₁ ⊥ BC и BB₁ ⊥ AC, поэтому ∠AA₁B = 90° и ∠AB₁B = 90°.", "lit": {"ang": [["A1", "A", "B"], ["B1", "B", "A"]]}, "why": "Основания высот дают прямые углы у отрезка AB."}, {"k": "s", "t": "Точки A₁ и B₁ видят отрезок AB под прямым углом → лежат на окружности с диаметром AB.", "lit": {"pt": ["A1", "B1"], "seg": [["A", "B"]], "showcirc": 1}, "why": "Геометрическое место точек, из которых отрезок виден под 90°, — окружность с этим отрезком-диаметром. Значит A, B, A₁, B₁ на одной окружности.", "jc": "diamlocus", "claim": "A₁ и B₁ лежат на окружности с диаметром AB"}, {"k": "s", "t": "∠AA₁B₁ и ∠ABB₁ — вписанные, опираются на одну дугу AB₁ → равны.", "lit": {"ang": [["A1", "A", "B1"], ["B", "A", "B1"]]}, "why": "Вписанные углы, опирающиеся на одну и ту же дугу, равны.", "jc": "insc", "claim": "∠AA₁B₁ = ∠ABB₁"}], "traps": [{"k": "x", "t": "∠AA₁B₁ = ∠ABB₁, потому что треугольники AA₁B₁ и ABB₁ равны.", "msg": "Равенство этих треугольников не обосновано. Работает окружность с диаметром AB и вписанные углы."}, {"k": "x", "t": "Прямые углы ∠AA₁B и ∠AB₁B сразу дают равенство искомых углов.", "msg": "Сами по себе прямые углы равенства не дают. Нужен переход к окружности и вписанным углам."}], "law": "Основания двух высот и две вершины лежат на окружности с диаметром AB (прямой угол «видит» диаметр). Дальше работают вписанные углы на общую дугу."}, {"id": "t11", "theme": "Окружность", "fig": "f11", "code": "вписанные углы · четырёхугольник", "title": "Равные углы в выпуклом четырёхугольнике", "given": "В выпуклом четырёхугольнике <b>ABCD</b> углы <b>CDB</b> и <b>CAB</b> равны.", "prove": "Углы <b>BCA</b> и <b>BDA</b> тоже равны.", "steps": [{"k": "s", "t": "∠CAB = ∠CDB (дано): отрезок BC виден из точек A и D под равными углами, и A, D — по одну сторону от BC.", "lit": {"ang": [["A", "C", "B"], ["D", "C", "B"]], "seg": [["B", "C"]]}, "why": "Это условие «одинакового угла зрения» на отрезок BC из двух точек."}, {"k": "s", "t": "Значит, точки A, B, C, D лежат на одной окружности.", "lit": {"poly": [["A", "B", "C", "D"]], "showcirc": 1}, "why": "Если отрезок виден из двух точек (по одну сторону) под равными углами, эти точки лежат на одной окружности — обратная теорема о вписанном угле.", "jc": "insc_conv", "claim": "A, B, C, D лежат на одной окружности"}, {"k": "s", "t": "∠BCA и ∠BDA — вписанные, опираются на одну дугу AB → равны.", "lit": {"ang": [["C", "B", "A"], ["D", "B", "A"]]}, "why": "Теперь A, B, C, D на окружности; углы BCA и BDA опираются на дугу AB, значит равны.", "jc": "insc", "claim": "∠BCA = ∠BDA"}], "traps": [{"k": "x", "t": "Докажем равенство напрямую через равные треугольники.", "msg": "Подходящих равных треугольников здесь нет. Ключ — что четыре точки оказываются на одной окружности."}, {"k": "x", "t": "∠BCA = ∠BDA — вертикальные углы.", "msg": "Они не вертикальные. Равенство — из того, что углы вписанные и опираются на одну дугу."}], "law": "Равные углы, под которыми виден один отрезок из двух точек по одну сторону, означают, что все точки на одной окружности. А там уже работают вписанные углы на общую дугу."}, {"id": "t14", "theme": "Окружность", "fig": "f14", "code": "радиусы · окружности", "title": "Линия центров и общая хорда", "given": "Окружности с центрами <b>I</b> и <b>J</b> пересекаются в точках <b>A</b> и <b>B</b>; центры лежат по одну сторону от прямой <b>AB</b>.", "prove": "Прямые <b>AB</b> и <b>IJ</b> перпендикулярны.", "steps": [{"k": "s", "t": "IA = IB — радиусы окружности с центром I.", "lit": {"seg": [["I", "A"], ["I", "B"]], "tick": [["I", "A"], ["I", "B"]]}, "why": "A и B лежат на окружности с центром I, поэтому IA и IB — её радиусы."}, {"k": "s", "t": "JA = JB — радиусы окружности с центром J.", "lit": {"seg": [["J", "A"], ["J", "B"]], "tick": [["J", "A"], ["J", "B"]]}, "why": "A и B лежат и на окружности с центром J."}, {"k": "s", "t": "I и J равноудалены от A и B → оба лежат на серединном перпендикуляре к AB.", "lit": {"pt": ["I", "J"], "seg": [["A", "B"]]}, "why": "Точка, равноудалённая от концов отрезка, лежит на его серединном перпендикуляре.", "jc": "perpbis", "claim": "I и J лежат на серединном перпендикуляре к AB"}, {"k": "s", "t": "Через две точки проходит единственная прямая → IJ — серединный перпендикуляр к AB → IJ ⊥ AB.", "lit": {"seg": [["I", "J"], ["A", "B"]], "ang": [["X", "A", "I"]]}, "why": "Раз обе точки I и J на серединном перпендикуляре, то прямая IJ и есть он — значит перпендикулярна AB."}], "traps": [{"k": "x", "t": "IJ ⊥ AB, потому что I и J — центры окружностей.", "msg": "«Центры» сами по себе перпендикулярности не дают. Нужен серединный перпендикуляр к общей хорде."}, {"k": "x", "t": "AB = IJ.", "msg": "Никакого равенства длин здесь нет — речь только о перпендикулярности."}], "law": "Оба центра равноудалены от концов общей хорды, поэтому линия центров — это серединный перпендикуляр к хорде, а он ей перпендикулярен."}, {"id": "t16", "theme": "Правильные многоугольники", "fig": "f16", "code": "многоугольники · равные треугольники", "title": "Равносторонний треугольник в шестиугольнике", "given": "<b>ABCDEF</b> — правильный шестиугольник.", "prove": "Треугольник <b>ACE</b> — равносторонний.", "steps": [{"k": "s", "t": "У правильного шестиугольника все стороны равны, а все углы равны 120°: AB=BC=CD=DE=EF=FA и ∠B=∠D=∠F=120°.", "lit": {"poly": [["A", "B", "C", "D", "E", "F"]]}, "why": "Определение правильного многоугольника: равны все стороны и все углы. Угол правильного шестиугольника равен 180°·(6−2)/6 = 120°."}, {"k": "s", "t": "Треугольники ABC, CDE, EFA равны по двум сторонам и углу между ними (AB=CD=EF, BC=DE=FA, ∠B=∠D=∠F).", "lit": {"poly": [["A", "B", "C"], ["C", "D", "E"], ["E", "F", "A"]]}, "why": "Это три «угловых» треугольника, отсекаемых от шестиугольника. Первый признак равенства через равные стороны и угол 120° между ними.", "jc": "sas_eq", "claim": "△ABC = △CDE = △EFA"}, {"k": "s", "t": "Значит AC = CE = EA — соответственные стороны равных треугольников.", "lit": {"seg": [["A", "C"], ["C", "E"], ["E", "A"]]}, "why": "В равных треугольниках против равных углов лежат равные стороны."}, {"k": "s", "t": "Три стороны треугольника ACE равны → он равносторонний.", "lit": {"poly": [["A", "C", "E"]]}, "why": "Треугольник с тремя равными сторонами равносторонний по определению."}], "traps": [{"k": "x", "t": "△ACE равносторонний, потому что шестиугольник правильный.", "msg": "Правильность нужно использовать через равные треугольники ABC, CDE, EFA, а не ссылаться на неё голословно."}, {"k": "x", "t": "AC = CE = EA как диагонали правильного шестиугольника.", "msg": "Не все диагонали шестиугольника равны — есть короткие и длинные. Равенство именно этих трёх следует из равных треугольников."}], "law": "Вершины правильного шестиугольника «через одну» образуют равносторонний треугольник: три угловых треугольника равны по двум сторонам и углу 120°, значит равны и отсекаемые диагонали."}, {"id": "t17", "theme": "Правильные многоугольники", "fig": "f17", "code": "многоугольники · сторона и радиус", "title": "Большая диагональ вдвое больше стороны", "given": "<b>ABCDEF</b> — правильный шестиугольник с центром <b>O</b>.", "prove": "<b>AD</b> = 2·<b>AB</b>.", "steps": [{"k": "s", "t": "O — центр правильного шестиугольника; OA = OB = радиусы описанной окружности, а большая диагональ AD проходит через O.", "lit": {"pt": ["O"], "seg": [["O", "A"], ["O", "B"]]}, "why": "Правильный многоугольник вписан в окружность с центром в его центре; противоположные вершины соединяет диаметр."}, {"k": "s", "t": "Центральный угол ∠AOB = 360°/6 = 60°.", "lit": {"ang": [["O", "A", "B"]]}, "why": "Стороны правильного n-угольника видны из центра под углом 360°/n; для шестиугольника это 60°.", "jc": "central", "claim": "∠AOB = 60°"}, {"k": "s", "t": "Треугольник AOB: OA = OB и ∠AOB = 60° → равносторонний → AB = OA.", "lit": {"poly": [["A", "O", "B"]]}, "why": "Равнобедренный треугольник с углом 60° при вершине оказывается равносторонним, поэтому сторона шестиугольника равна радиусу."}, {"k": "s", "t": "AD = AO + OD; O — середина диагонали AD, поэтому OD = OA. Значит AD = 2·OA.", "lit": {"seg": [["A", "O"], ["O", "D"]]}, "why": "Большая диагональ состоит из двух радиусов, сходящихся в центре."}, {"k": "s", "t": "Итак, AD = 2·OA = 2·AB.", "lit": {"seg": [["A", "D"], ["A", "B"]]}, "why": "OA = AB (доказано выше), поэтому диагональ вдвое больше стороны."}], "traps": [{"k": "x", "t": "AD = 2·AB, потому что вершина D противоположна A.", "msg": "Противоположность вершин сама по себе длину не задаёт. Нужно, что сторона равна радиусу и что AD — это два радиуса."}, {"k": "x", "t": "AB = OA, потому что AB — это радиус.", "msg": "AB — сторона, а не радиус. Их равенство — следствие того, что треугольник AOB равносторонний (угол 60° при равных радиусах)."}], "phases": [{"name": "Сторона равна радиусу", "s": [0, 1, 2], "x": [1]}, {"name": "Диагональ — два радиуса", "s": [3, 4], "x": [0]}], "law": "В правильном шестиугольнике сторона равна радиусу описанной окружности (центральный треугольник равносторонний), поэтому большая диагональ равна двум радиусам — вдвое больше стороны."}, {"id": "t18", "theme": "Правильные многоугольники", "fig": "f18", "code": "многоугольники · прямоугольник", "title": "Прямоугольник на диагоналях шестиугольника", "given": "<b>ABCDEF</b> — правильный шестиугольник с центром <b>O</b>.", "prove": "Четырёхугольник <b>BCEF</b> — прямоугольник.", "steps": [{"k": "s", "t": "Шестиугольник вписан в окружность с центром O. Диагонали BE и CF — большие, каждая проходит через центр O, то есть является диаметром. Поэтому O — середина и BE, и CF.", "lit": {"seg": [["B", "E"], ["C", "F"]], "pt": ["O"]}, "why": "Большие диагонали правильного шестиугольника проходят через центр и являются диаметрами описанной окружности."}, {"k": "s", "t": "BE и CF — диаметры одной окружности → они равны: BE = CF.", "lit": {"seg": [["B", "E"], ["C", "F"]]}, "why": "Все диаметры одной окружности равны (по 2 радиуса)."}, {"k": "s", "t": "В четырёхугольнике BCEF диагонали BE и CF равны и точкой O делятся пополам.", "lit": {"poly": [["B", "C", "E", "F"]]}, "why": "BE и CF — именно диагонали четырёхугольника BCEF (соединяют противоположные вершины)."}, {"k": "s", "t": "Четырёхугольник, диагонали которого равны и делятся точкой пересечения пополам, — прямоугольник; значит, BCEF — прямоугольник.", "lit": {"poly": [["B", "C", "E", "F"]]}, "why": "Признак прямоугольника: равные диагонали, делящиеся точкой пересечения пополам.", "jc": "rectdiag", "claim": "BCEF — прямоугольник"}], "traps": [{"k": "x", "t": "BCEF — прямоугольник, потому что у шестиугольника прямые углы.", "msg": "Углы правильного шестиугольника равны 120°, а не 90°. Прямые углы возникают в BCEF как следствие равных диагоналей, делящихся пополам."}, {"k": "x", "t": "Диагонали BCEF делятся пополам, значит BCEF — прямоугольник.", "msg": "Только деления пополам мало — так получается параллелограмм. Для прямоугольника нужно ещё равенство диагоналей."}], "law": "Две пары противоположных вершин правильного шестиугольника дают диагонали-диаметры: они равны и делятся центром пополам, поэтому четырёхугольник на них — прямоугольник."}, {"id": "t19", "theme": "Правильные многоугольники", "fig": "f19", "code": "многоугольники · угол на диаметре", "title": "Прямоугольный треугольник в шестиугольнике", "given": "<b>ABCDEF</b> — правильный шестиугольник с центром <b>O</b>.", "prove": "Треугольник <b>ABD</b> прямоугольный (∠<b>ABD</b> = 90°).", "steps": [{"k": "s", "t": "Шестиугольник вписан в окружность с центром O. Диагональ AD — большая, проходит через центр O, поэтому AD — диаметр этой окружности.", "lit": {"seg": [["A", "D"]], "pt": ["O"]}, "why": "Большая диагональ соединяет противоположные вершины и проходит через центр — это диаметр."}, {"k": "s", "t": "Вершина B лежит на той же окружности.", "lit": {"pt": ["B"]}, "why": "Все вершины правильного многоугольника лежат на описанной окружности."}, {"k": "s", "t": "Вписанный угол ∠ABD опирается на диаметр AD → ∠ABD = 90°.", "lit": {"ang": [["B", "A", "D"]]}, "why": "Вписанный угол, опирающийся на диаметр, — прямой (опирается на дугу в 180°).", "jc": "diam", "claim": "∠ABD = 90°"}, {"k": "s", "t": "Значит треугольник ABD прямоугольный.", "lit": {"poly": [["A", "B", "D"]]}, "why": "Треугольник с прямым углом при вершине B — прямоугольный."}], "traps": [{"k": "x", "t": "∠ABD = 90°, потому что это угол правильного шестиугольника.", "msg": "Угол шестиугольника при вершине B — это ∠ABC = 120°. Прямой угол ∠ABD получается из того, что AD — диаметр."}, {"k": "x", "t": "∠ABD = 90°, потому что AD — самая длинная диагональ.", "msg": "Длина сама по себе прямого угла не даёт. Важно, что AD — диаметр, а B лежит на окружности."}], "law": "Большая диагональ правильного шестиугольника — диаметр описанной окружности, поэтому из любой другой вершины она видна под прямым углом (вписанный угол на диаметр)."}, {"id": "t20", "theme": "Правильные многоугольники", "fig": "f20", "code": "многоугольники · счёт углов", "title": "Диагональ, перпендикулярная стороне", "given": "<b>ABCDEF</b> — правильный шестиугольник.", "prove": "Диагональ <b>AC</b> перпендикулярна стороне <b>CD</b>.", "steps": [{"k": "s", "t": "Треугольник ABC равнобедренный: AB = BC (стороны шестиугольника), угол при вершине ∠ABC = 120°.", "lit": {"poly": [["A", "B", "C"]], "ang": [["B", "A", "C"]]}, "why": "Две соседние стороны шестиугольника равны, а угол между ними — угол шестиугольника, 120°."}, {"k": "s", "t": "Углы при основании равны: ∠BCA = (180° − 120°)/2 = 30°.", "lit": {"ang": [["B", "C", "A"]]}, "why": "В равнобедренном треугольнике углы при основании равны, а сумма углов треугольника 180°.", "jc": "isoc_ang", "claim": "∠BCA = 30°"}, {"k": "s", "t": "Угол шестиугольника ∠BCD = 120°.", "lit": {"ang": [["B", "C", "D"]]}, "why": "Внутренний угол правильного шестиугольника при вершине C.", "jc": "hexang", "claim": "∠BCD = 120°"}, {"k": "s", "t": "∠ACD = ∠BCD − ∠BCA = 120° − 30° = 90°, значит AC ⊥ CD.", "lit": {"ang": [["A", "C", "D"]]}, "why": "Луч CA лежит внутри угла BCD, поэтому из всего угла вычитаем часть ∠BCA."}], "traps": [{"k": "x", "t": "AC ⊥ CD, потому что AC — диагональ, а CD — сторона.", "msg": "Само по себе «диагональ и сторона» перпендикулярности не даёт. Нужен счёт углов: 120° − 30° = 90°."}, {"k": "x", "t": "∠BCA = 60°, как половина угла шестиугольника.", "msg": "Угол при основании равнобедренного треугольника ABC равен (180°−120°)/2 = 30°, а не половине 120°."}], "law": "В правильном шестиугольнике короткая диагональ отсекает равнобедренный треугольник с углами 30° при основании; вычитая их из угла 120°, получаем прямой угол между диагональю и стороной."}], "arsenal": [{"g": "Углы и параллельные", "name": "Накрест лежащие углы при параллельных прямых равны", "sheet": "нет", "note": "Секущая двух параллельных даёт равные накрест лежащие углы. Рабочая лошадка трапеций и параллелограммов.", "tasks": ["t1", "t2", "t3", "t4"]}, {"g": "Углы и параллельные", "name": "Вертикальные углы равны", "sheet": "нет", "note": "Две пересекающиеся прямые дают пары равных вертикальных углов.", "tasks": ["t2", "t13", "t15"]}, {"g": "Треугольники", "name": "Признаки подобия: по двум углам · по двум сторонам и углу", "sheet": "нет", "note": "Основной инструмент задач на подобие. На листе справочных материалов признаков подобия нет.", "tasks": ["t1", "t10", "t13", "t15"]}, {"g": "Треугольники", "name": "Второй признак равенства (сторона и два прилежащих угла)", "sheet": "нет", "note": "Даёт равенство отрезков через равные треугольники.", "tasks": ["t2"]}, {"g": "Треугольники", "name": "Признак равнобедренного: равные углы → равные стороны", "sheet": "нет", "note": "Если два угла треугольника равны, против них — равные стороны.", "tasks": ["t3", "t4"]}, {"g": "Треугольники", "name": "Равные основание и высота → равные площади", "sheet": "нет", "note": "Треугольники с общим основанием и вершинами на прямой, параллельной ему, равновелики.", "tasks": ["t9"]}, {"g": "Параллелограмм", "name": "Диагонали параллелограмма делятся точкой пересечения пополам", "sheet": "нет", "note": "Точка O — середина каждой диагонали. Осторожно: в трапеции это НЕ так.", "tasks": ["t2"]}, {"g": "Биссектриса", "name": "Точка биссектрисы равноудалена от сторон угла", "sheet": "нет", "note": "Пересечение двух биссектрис равноудалено сразу от трёх прямых.", "tasks": ["t5"]}, {"g": "Площади", "name": "Площадь треугольника = ½ · основание · высота", "sheet": "есть", "note": "Есть на листе. В задачах на площадь удобно брать сторону-основание и высоту от точки.", "tasks": ["t6", "t7", "t8", "t9"]}, {"g": "Площади", "name": "Площадь трапеции = ½ (a+b)·h; параллелограмма = a·h", "sheet": "есть", "note": "Есть на листе. К ним сводится половина площади в ответе.", "tasks": ["t6", "t7", "t8"]}, {"g": "Площади", "name": "Средняя линия трапеции проходит посередине (на h/2 от оснований)", "sheet": "частично", "note": "Формула средней линии на листе есть, но «посередине» (равные h/2) надо помнить.", "tasks": ["t6"]}, {"g": "Окружность", "name": "Сумма противоположных углов вписанного четырёхугольника = 180°", "sheet": "нет", "note": "Отсюда — «внешний угол равен внутреннему при противоположной вершине».", "tasks": ["t10"]}, {"g": "Окружность", "name": "Вписанные углы, опирающиеся на одну дугу, равны", "sheet": "нет", "note": "Главный переход в задачах про окружность.", "tasks": ["t11", "t12"]}, {"g": "Окружность", "name": "Прямой угол «видит» диаметр (окружность на диаметре)", "sheet": "нет", "note": "ГМТ точек, из которых отрезок виден под 90°, — окружность с этим отрезком-диаметром. В правильном шестиугольнике большая диагональ — диаметр.", "tasks": ["t12", "t19"]}, {"g": "Правильные многоугольники", "name": "Угол правильного n-угольника = 180°·(n−2)/n (у шестиугольника 120°)", "sheet": "нет", "note": "Основа счёта углов в правильных многоугольниках. На листе этой формулы нет.", "tasks": ["t16", "t19", "t20"]}, {"g": "Правильные многоугольники", "name": "Сторона правильного шестиугольника равна радиусу описанной окружности", "sheet": "нет", "note": "Центральный треугольник со стороной и двумя радиусами равносторонний (угол 60°), поэтому сторона = радиус.", "tasks": ["t17"]}, {"g": "Правильные многоугольники", "name": "Равные диагонали, делящиеся точкой пересечения пополам → прямоугольник", "sheet": "нет", "note": "Признак прямоугольника через диагонали. Только деление пополам даёт лишь параллелограмм.", "tasks": ["t18"]}, {"g": "Окружность", "name": "Обратная теорема о вписанном угле", "sheet": "нет", "note": "Равный угол зрения на отрезок из двух точек по одну сторону → точки на одной окружности.", "tasks": ["t11"]}, {"g": "Окружность", "name": "Радиус в точку касания перпендикулярен касательной", "sheet": "нет", "note": "Ключ к задачам с касательными.", "tasks": ["t15"]}, {"g": "Окружность", "name": "Серединный перпендикуляр: точка равноудалена от концов", "sheet": "нет", "note": "Оба центра равноудалены от концов общей хорды → линия центров ⊥ хорде.", "tasks": ["t14"]}], "themes": [{"name": "Подобие треугольников", "tasks": ["t1", "t10", "t13", "t15"]}, {"name": "Параллелограмм и трапеция", "tasks": ["t2", "t3", "t4", "t5"]}, {"name": "Площади", "tasks": ["t7", "t6", "t8", "t9"]}, {"name": "Углы и окружность", "tasks": ["t12", "t11", "t14"]}, {"name": "Правильные многоугольники", "tasks": ["t16", "t17", "t18", "t19", "t20"]}], "justbank": {"alt": {"ok": "накрест лежащие углы при параллельных", "no": ["соответственные углы", "односторонние углы", "вертикальные углы"]}, "vert": {"ok": "вертикальные углы", "no": ["накрест лежащие углы", "смежные углы", "соответственные углы"]}, "diagpar": {"ok": "диагонали параллелограмма точкой пересечения делятся пополам", "no": ["диагонали параллелограмма равны", "диагонали параллелограмма перпендикулярны", "диагонали делят углы пополам"]}, "asa": {"ok": "второй признак равенства: сторона и два прилежащих угла", "no": ["первый признак: две стороны и угол между ними", "третий признак: три стороны", "признак подобия по двум углам"]}, "sas_eq": {"ok": "первый признак равенства: две стороны и угол между ними", "no": ["второй признак: сторона и два прилежащих угла", "третий признак: три стороны", "подобие по двум сторонам и углу"]}, "aa": {"ok": "подобие по двум углам", "no": ["подобие по двум сторонам и углу", "подобие по трём сторонам", "равенство треугольников по двум углам"]}, "sas_sim": {"ok": "подобие по двум сторонам и углу между ними", "no": ["подобие по двум углам", "подобие по трём сторонам", "первый признак равенства треугольников"]}, "isoc": {"ok": "в равнобедренном треугольнике против равных углов лежат равные стороны", "no": ["против равных сторон лежат равные углы", "средняя линия параллельна основанию", "теорема Пифагора"]}, "isoc_ang": {"ok": "в равнобедренном треугольнике углы при основании равны", "no": ["внешний угол равен сумме двух внутренних", "сумма углов треугольника равна 180°", "вертикальные углы равны"]}, "area": {"ok": "площадь треугольника равна половине произведения основания на высоту", "no": ["площадь равна произведению сторон", "площадь равна половине произведения диагоналей", "площадь находят по формуле Герона"]}, "cyclic": {"ok": "сумма противоположных углов вписанного четырёхугольника равна 180°", "no": ["вписанный угол равен половине дуги", "сумма углов четырёхугольника равна 360°", "центральный угол равен дуге"]}, "insc": {"ok": "вписанные углы, опирающиеся на одну дугу, равны", "no": ["центральный угол вдвое больше вписанного", "вертикальные углы равны", "накрест лежащие углы равны"]}, "insc_conv": {"ok": "если отрезок виден из двух точек (по одну сторону) под равными углами, точки лежат на одной окружности", "no": ["вписанный угол на диаметр равен 90°", "центральный угол равен дуге", "признак подобия треугольников"]}, "diam": {"ok": "вписанный угол, опирающийся на диаметр, — прямой", "no": ["вписанный угол равен половине дуги", "центральный угол равен дуге", "радиус перпендикулярен касательной"]}, "diamlocus": {"ok": "точки, из которых отрезок виден под прямым углом, лежат на окружности с этим диаметром", "no": ["вписанный угол вдвое меньше центрального", "через любые три точки проходит окружность", "серединный перпендикуляр к хорде проходит через центр"]}, "tang": {"ok": "радиус, проведённый в точку касания, перпендикулярен касательной", "no": ["касательная равна секущей из той же точки", "диаметр перпендикулярен любой хорде", "вписанный угол опирается на диаметр"]}, "perpbis": {"ok": "точка, равноудалённая от концов отрезка, лежит на его серединном перпендикуляре", "no": ["точка биссектрисы равноудалена от сторон угла", "серединный перпендикуляр делит отрезок пополам", "центр окружности лежит на хорде"]}, "bisec": {"ok": "каждая точка биссектрисы угла равноудалена от его сторон", "no": ["точка серединного перпендикуляра равноудалена от концов отрезка", "биссектриса делит противоположную сторону в отношении прилежащих", "медиана делит сторону пополам"]}, "sameB": {"ok": "треугольники с равными основанием и высотой равновелики", "no": ["треугольники с равными сторонами равны", "подобные треугольники равновелики", "равные площади означают равные треугольники"]}, "central": {"ok": "центральный угол правильного n-угольника равен 360°/n", "no": ["внешний угол равен 360°/n", "вписанный угол равен 180°/n", "внутренний угол равен 360°/n"]}, "rectdiag": {"ok": "если диагонали равны и делятся точкой пересечения пополам — это прямоугольник", "no": ["если диагонали перпендикулярны — это ромб", "если диагонали делятся пополам — это параллелограмм", "если все стороны равны — это квадрат"]}, "hexang": {"ok": "внутренний угол правильного шестиугольника равен 120°", "no": ["внешний угол шестиугольника равен 120°", "центральный угол шестиугольника равен 120°", "сумма углов шестиугольника равна 120°"]}}, "sheet": {"zones": [{"id": "sum", "name": "Сумма углов выпуклого n-угольника", "formula": "180°·(n − 2)", "box": [0.02, 0.018, 0.44, 0.082], "tasks": ["t16", "t20"], "note": "Отсюда угол правильного шестиугольника: 180°·(6 − 2)/6 = 120°."}, {"id": "triarea", "name": "Площадь треугольника", "formula": "S = ½ · a · hₐ", "box": [0.72, 0.088, 0.985, 0.29], "tasks": ["t6", "t7", "t8", "t9"], "note": "Треугольники с равными основанием и высотой равновелики — на этом держатся все задачи на площади."}, {"id": "traparea", "name": "Площадь трапеции", "formula": "S = (a + b)/2 · h", "box": [0.53, 0.3, 0.735, 0.5], "tasks": ["t6", "t8"], "note": "Сумму площадей треугольников сравниваем с площадью трапеции."}], "notOnSheet": [{"g": "Признаки равенства треугольников", "tasks": ["t2", "t16"]}, {"g": "Признаки подобия треугольников", "tasks": ["t1", "t10", "t13", "t15"]}, {"g": "Углы при параллельных: накрест лежащие и соответственные", "tasks": ["t1", "t2", "t3", "t4"]}, {"g": "Свойства параллелограмма: диагонали, стороны, углы", "tasks": ["t2", "t3", "t4", "t7"]}, {"g": "Равнобедренный треугольник: углы при основании и равные стороны", "tasks": ["t3", "t4", "t20"]}, {"g": "Вписанные углы, угол на диаметр, вписанный четырёхугольник", "tasks": ["t10", "t11", "t12", "t19"]}, {"g": "Касательная перпендикулярна радиусу", "tasks": ["t15"]}, {"g": "Равноудалённость: биссектриса и серединный перпендикуляр", "tasks": ["t5", "t14"]}, {"g": "Признак прямоугольника по диагоналям", "tasks": ["t18"]}, {"g": "Свойства правильного шестиугольника: сторона = радиус, большие диагонали — диаметры", "tasks": ["t16", "t17", "t18", "t19"]}]}};
+const FIGS=DATA.figs, TASKS=DATA.tasks, ARSENAL=DATA.arsenal, THEMES=DATA.themes, JUSTBANK=DATA.justbank, SHEET=DATA.sheet;
+/*__SHEET_MAP_START__*/
+/* Лист справочных материалов ОГЭ по математике, раздел «Геометрия», — текстом,
+   без сканов (решение F5 делегата владельца). Блок побайтно одинаков в
+   тренажёрах 16, 17, 18, 23, 24, 25; копии сверяет гейт
+   tools/oge-geometry-contract.test.mjs. Состав листа меняется по годам:
+   перед новым учебным годом сверить с демоверсией ФИПИ этого года. */
+const SHEET_MAP={
+  caption:'Лист справочных материалов ОГЭ, раздел «Геометрия», — по демоверсии ФИПИ 2026 (стр. 5–6). Состав листа меняется по годам: сверяйте с демоверсией своего года.',
+  items:[
+    {id:'polyAngles',t:'Сумма углов выпуклого n-угольника',f:'180°·(n − 2)'},
+    {id:'midline',t:'Средняя линия треугольника и трапеции',f:'треугольник: MN ∥ AC, MN = AC/2<br>трапеция (BC ∥ AD): MN ∥ AD, MN = (BC + AD)/2'},
+    {id:'eqTri',t:'Правильный треугольник: описанная и вписанная окружности',f:'R = a√3/3, &nbsp;r = a√3/6<br>h = a√3/2, &nbsp;S = a<sup>2</sup>√3/4'},
+    {id:'sinLaw',t:'Теорема синусов',f:'a/sin A = b/sin B = c/sin C = 2R,<br>R — радиус описанной окружности'},
+    {id:'cosLaw',t:'Теорема косинусов',f:'c<sup>2</sup> = a<sup>2</sup> + b<sup>2</sup> − 2ab·cos C'},
+    {id:'circle',t:'Длина окружности и площадь круга',f:'C = 2πr, &nbsp;S = πr<sup>2</sup>'},
+    {id:'sPar',t:'Площадь параллелограмма',f:'S = a·h<sub>a</sub>, &nbsp;S = ab·sin γ'},
+    {id:'sTri',t:'Площадь треугольника',f:'S = ½·a·h<sub>a</sub>, &nbsp;S = ½·ab·sin γ'},
+    {id:'sTrap',t:'Площадь трапеции',f:'S = (a + b)/2 · h'},
+    {id:'sRhomb',t:'Площадь ромба',f:'S = ½·d<sub>1</sub>·d<sub>2</sub>, d<sub>1</sub>, d<sub>2</sub> — диагонали'},
+    {id:'rightTri',t:'Прямоугольный треугольник',f:'sin α = a/c, &nbsp;cos α = b/c, &nbsp;tg α = a/b<br>(c — гипотенуза, a — катет против угла α)'},
+    {id:'pyth',t:'Теорема Пифагора',f:'a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup>'},
+    {id:'trigId',t:'Основное тригонометрическое тождество',f:'sin<sup>2</sup>α + cos<sup>2</sup>α = 1'},
+    {id:'trigTable',t:'Некоторые значения sin, cos, tg',f:'<div class="sm-tabwrap"><table class="sm-tab"><tr><th>α</th><th>0°</th><th>30°</th><th>45°</th><th>60°</th><th>90°</th><th>180°</th><th>270°</th><th>360°</th></tr>'
+      +'<tr><th>sin α</th><td>0</td><td>1/2</td><td>√2/2</td><td>√3/2</td><td>1</td><td>0</td><td>−1</td><td>0</td></tr>'
+      +'<tr><th>cos α</th><td>1</td><td>√3/2</td><td>√2/2</td><td>1/2</td><td>0</td><td>−1</td><td>0</td><td>1</td></tr>'
+      +'<tr><th>tg α</th><td>0</td><td>√3/3</td><td>1</td><td>√3</td><td>—</td><td>0</td><td>—</td><td>0</td></tr></table></div>'}
+  ]
+};
+const SHEET_MAP_CSS='.sm{margin:10px 0 14px}.sm-cap{font-size:13px;color:#555;margin:0 0 10px;line-height:1.45}'
+  +'.sm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}'
+  +'.sm-item{border:1px solid #d9d4c7;border-radius:10px;padding:10px 12px;background:#fff;font-size:14px;line-height:1.45;color:#1f2430;min-width:0}'
+  +'.sm-item.sm-used{border-color:#8fb3d9;background:#f5f9ff}.sm-item.sm-open{outline:3px solid #2d70b3;outline-offset:1px}'
+  +'.sm-t{font-weight:700;margin-bottom:4px}.sm-b{display:inline-block;min-width:22px;padding:0 6px;border-radius:11px;background:#2d70b3;color:#fff;font-size:12px;text-align:center}'
+  +'.sm-f{font-family:Georgia,"Times New Roman",serif;font-size:15px}.sm-na{font-size:12.5px;color:#6b6b6b;margin-top:6px}'
+  +'.sm-go{margin-top:8px;min-height:44px;padding:8px 12px;border-radius:9px;border:1px solid #2d70b3;background:#fff;color:#1d4f86;font:inherit;font-weight:600;cursor:pointer}'
+  +'.sm-go:focus-visible{outline:3px solid #f2b134;outline-offset:2px}.sm-tabwrap{overflow-x:auto;margin-top:4px}'
+  +'.sm-tab{border-collapse:collapse;font-size:13px;font-family:inherit}.sm-tab th,.sm-tab td{border:1px solid #cfc8b8;padding:3px 6px;text-align:center;white-space:nowrap;font-weight:400}'
+  +'.sm-tab th{background:#f3f0e8}@media (max-width:420px){.sm-grid{grid-template-columns:1fr}}@media print{.sm-go{display:none}}';
+/* Карта листа HTML-строкой. o.go(id) — атрибуты кнопки «задачи блока» или null
+   (блок в этом задании не нужен); o.label(id) — надпись кнопки; o.badge(id) —
+   число на значке; o.extra(id) — HTML под формулой (заметка, ссылки на типы);
+   o.open — id выделенного блока; o.unused — подпись блока, который не нужен
+   (пустая строка — без подписи). */
+function sheetMapHTML(o){
+  o=o||{};
+  try{
+    if(!document.getElementById('sm-css')){const st=document.createElement('style');st.id='sm-css';st.textContent=SHEET_MAP_CSS;document.head.appendChild(st);}
+  }catch(e){}
+  let h='<div class="sm"><p class="sm-cap">'+SHEET_MAP.caption+'</p><div class="sm-grid">';
+  SHEET_MAP.items.forEach(function(it){
+    const go=o.go?o.go(it.id):null, b=o.badge?o.badge(it.id):null, ex=o.extra?o.extra(it.id):'';
+    h+='<div class="sm-item'+(go||ex?' sm-used':'')+(o.open===it.id?' sm-open':'')+'" id="sm-'+it.id+'">'
+      +'<div class="sm-t">'+it.t+(b!=null&&b!==''?' <span class="sm-b">'+b+'</span>':'')+'</div>'
+      +'<div class="sm-f">'+it.f+'</div>'+(ex||'')
+      +(go?'<button type="button" class="sm-go" '+go+'>'+(o.label?o.label(it.id):'Задачи этого блока')+'</button>'
+        :(ex||o.unused===''?'':'<div class="sm-na">'+(o.unused||'в этом задании не встречается')+'</div>'))
+      +'</div>';
+  });
+  return h+'</div></div>';
+}
+/*__SHEET_MAP_END__*/
+/* зоны листа из DATA.sheet (задачи и пояснения) -> блоки общей карты */
+const ZONE_SHEET={sum:'polyAngles',triarea:'sTri',traparea:'sTrap'};
+const byId={}; TASKS.forEach(t=>byId[t.id]=t);
+const TID='oge24-dokazatelstva';
+
+/* ================= Контракт прогресса курса ОГЭ =================
+   docs/OGE_PROGRESS_CONTRACT.md, разделы 3–5: ядро записи, журнал ошибок,
+   режим повтора. Тела функций — как в контракте; обёрнуты в CP, чтобы не
+   столкнуться с именами тренажёра. Пишется только своя ветка all[TID] и
+   свои записи журнала, после свежего чтения ключа — две вкладки не
+   затирают друг друга. В ?selftest=1 ничего не пишется. */
+const TYPE_IDS=["t1","t10","t13","t15","t2","t3","t4","t5","t7","t6","t8","t9","t12","t11","t14","t16","t17","t18","t19","t20"];
+const QUIZ_TOTAL=5;   // размер зачёта
+const PASS_AT=4;       // зачёт сдан при 4 из 5
+const CP=(function(){
+  var KEY="mathExamCourseProgress.v1";
+  var RO=/[?&]selftest=1/.test(location.search||"");
+  function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
+  function num(v){ return (typeof v === "number" && isFinite(v) && v > 0) ? Math.floor(v) : 0; }
+  function readAll(){
+    try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(o) ? o : {}; }
+    catch (e) { return {}; }
+  }
+  /* меняет только свою ветку: читает ключ заново прямо перед записью */
+  function saveRec(fn){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var rec = isObj(all[TID]) ? all[TID] : {};
+      if (!isObj(rec.solvedByType)) rec.solvedByType = {};
+      rec.v = 1;
+      fn(rec);
+      rec.updatedAt = Date.now();
+      all[TID] = rec;
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (e) {}
+  }
+  function solvedOne(type){ saveRec(function(rec){ rec.solvedByType[type] = num(rec.solvedByType[type]) + 1; }); }
+  function finishQuiz(score, total){
+    saveRec(function(rec){
+      rec.runs = num(rec.runs) + 1;
+      rec.total = total;
+      if (score > num(rec.best)) rec.best = score;
+      if (score >= PASS_AT) rec.passed = true;
+    });
+  }
+  /* журнал: промах открывает тип, три верных подряд закрывают;
+     верный ответ по типу без промахов записи не заводит */
+  function mlog(type, ok){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var key = TID + "|" + type;
+      if (ok && !(isObj(all.mistakes) && isObj(all.mistakes[key]))) return;
+      if (!isObj(all.mistakes)) all.mistakes = {};
+      var e = isObj(all.mistakes[key]) ? all.mistakes[key] : (all.mistakes[key] = { w:0, r:0 });
+      if (ok) { if (num(e.w)) e.r = num(e.r) + 1; }
+      else { e.w = num(e.w) + 1; e.r = 0; e.lastWrong = Date.now(); }
+      e.last = Date.now();
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (err) {}
+  }
+  /* режим повтора: только открытые типы этого тренажёра */
+  function openTypes(){
+    var mk = readAll().mistakes, pre = TID + "|", res = [];
+    if (!isObj(mk)) return res;
+    for (var k in mk) if (Object.prototype.hasOwnProperty.call(mk, k) && k.indexOf(pre) === 0){
+      var t = k.slice(pre.length), e = mk[k];
+      if (isObj(e) && num(e.w) > 0 && num(e.r) < 3 && TYPE_IDS.indexOf(t) >= 0) res.push(t);
+    }
+    return res;
+  }
+  /* запись старой версии (без updatedAt: её писал код до контракта) могла
+     нести passed при любом результате зачёта — один раз пересчитываем
+     passed по сохранённому best; дальше запись несёт updatedAt и больше
+     не трогается */
+  function migrate(bestNorm){
+    if (RO) return;
+    var r = readAll()[TID];
+    if (!isObj(r) || typeof r.updatedAt === "number") return;
+    var b = bestNorm(r);
+    saveRec(function(rec){
+      rec.best = b;
+      rec.passed = b >= PASS_AT;
+      if (b > 0 || num(rec.runs) > 0) rec.total = QUIZ_TOTAL;
+    });
+  }
+  var REVIEW = /[?&]mode=review(&|$)/.test(location.search || "");
+  return { RO:RO, REVIEW:REVIEW, isObj:isObj, num:num, readAll:readAll, saveRec:saveRec,
+    solvedOne:solvedOne, finishQuiz:finishQuiz, mlog:mlog, openTypes:openTypes, migrate:migrate };
+})();
+
+
+/* ---------- прогресс ---------- */
+/* ключ mathExamCourseProgress.v1; старые поля записи (журнал событий, отметки
+   решённых) пишутся через CP.saveRec — со свежим чтением ключа; STORE[TID] —
+   их копия для экрана */
+function loadRec(){
+  const r=CP.readAll()[TID], o=CP.isObj(r)?r:{};
+  return {runs:CP.num(o.runs), best:CP.num(o.best), passed:o.passed===true,
+    events:Array.isArray(o.events)?o.events.filter(CP.isObj):[], solved:CP.isObj(o.solved)?o.solved:{}};
+}
+CP.migrate(r=>Math.floor(CP.num(r.best)*QUIZ_TOTAL/100));   // до контракта best хранился в процентах
+const STORE={}; STORE[TID]=loadRec();
+function upd(fn){CP.saveRec(fn);STORE[TID]=loadRec();}
+function rec(o){const e=Object.assign({t:Date.now()},o);
+  upd(r=>{r.events=(Array.isArray(r.events)?r.events:[]).concat([e]).slice(-300);});}
+function markSolved(id){upd(r=>{r.solved=CP.isObj(r.solved)?r.solved:{};r.solved[id]=true;});}
+/* журнал: один вердикт на задачу — первый промах (ловушка, ранний шаг, неверное
+   обоснование) открывает тип */
+function missOnce(){if(!ST.missed){ST.missed=true;CP.mlog(curTask().id,false);}}
+
+/* ================= SVG рендер ================= */
+function P(fig,n){return fig.pts[n];}
+function ptsStr(fig,names){return names.map(n=>{const p=P(fig,n);return p[0]+','+p[1];}).join(' ');}
+function arcPath(V,A,B,r){
+  const a1=Math.atan2(A[1]-V[1],A[0]-V[0]), a2=Math.atan2(B[1]-V[1],B[0]-V[0]);
+  let d=a2-a1; while(d<=-Math.PI)d+=2*Math.PI; while(d>Math.PI)d-=2*Math.PI;
+  const sw=d>0?1:0;
+  const sx=V[0]+r*Math.cos(a1), sy=V[1]+r*Math.sin(a1);
+  const ex=V[0]+r*Math.cos(a2), ey=V[1]+r*Math.sin(a2);
+  return `M ${sx.toFixed(1)} ${sy.toFixed(1)} A ${r} ${r} 0 0 ${sw} ${ex.toFixed(1)} ${ey.toFixed(1)}`;
+}
+function rightMark(V,A,B,s){
+  const u1=unit(V,A), u2=unit(V,B);
+  const p1=[V[0]+s*u1[0],V[1]+s*u1[1]];
+  const p2=[V[0]+s*(u1[0]+u2[0]),V[1]+s*(u1[1]+u2[1])];
+  const p3=[V[0]+s*u2[0],V[1]+s*u2[1]];
+  return `${p1[0].toFixed(1)},${p1[1].toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)} ${p3[0].toFixed(1)},${p3[1].toFixed(1)}`;
+}
+function unit(A,B){const dx=B[0]-A[0],dy=B[1]-A[1],L=Math.hypot(dx,dy)||1;return [dx/L,dy/L];}
+function tickMarks(A,B,n,col){
+  const mx=(A[0]+B[0])/2, my=(A[1]+B[1])/2;
+  const u=unit(A,B), perp=[-u[1],u[0]]; let s='';
+  const gap=5, len=6;
+  for(let i=0;i<n;i++){
+    const off=(i-(n-1)/2)*gap;
+    const cx=mx+u[0]*off, cy=my+u[1]*off;
+    s+=`<line x1="${(cx-perp[0]*len).toFixed(1)}" y1="${(cy-perp[1]*len).toFixed(1)}" x2="${(cx+perp[0]*len).toFixed(1)}" y2="${(cy+perp[1]*len).toFixed(1)}" stroke="${col}" stroke-width="2"/>`;
+  }
+  return s;
+}
+function renderFig(figName, lit, revealCirc){
+  const fig=FIGS[figName]; const vb=fig.vb; let s='';
+  s+=`<svg viewBox="0 0 ${vb[0]} ${vb[1]}" xmlns="http://www.w3.org/2000/svg">`;
+  // окружности (постоянные)
+  (fig.circ||[]).forEach(c=>{s+=`<circle cx="${c.c[0]}" cy="${c.c[1]}" r="${c.r}" fill="rgba(45,112,179,.04)" stroke="#8a8474" stroke-width="1.6"/>`;});
+  // скрытая окружность-«озарение»
+  if(revealCirc)(fig.circ_hidden||[]).forEach(c=>{s+=`<circle cx="${c.c[0]}" cy="${c.c[1]}" r="${c.r}" fill="none" stroke="${'#2d70b3'}" stroke-width="1.6" stroke-dasharray="6 5" class="lit"/>`;});
+  // основные многоугольники
+  (fig.poly||[]).forEach(pl=>{s+=`<polygon points="${ptsStr(fig,pl)}" fill="rgba(45,112,179,.055)" stroke="#1a1a2e" stroke-width="2"/>`;});
+  // продолжения (пунктир)
+  (fig.ext||[]).forEach(e=>{const A=P(fig,e[0]),B=P(fig,e[1]);s+=`<line x1="${A[0]}" y1="${A[1]}" x2="${B[0]}" y2="${B[1]}" stroke="#8a8474" stroke-width="1.6" stroke-dasharray="6 5"/>`;});
+  // тонкие отрезки-расстояния (перпендикуляры)
+  (fig.thin||[]).forEach(e=>{const A=P(fig,e[0]),B=P(fig,e[1]);s+=`<line x1="${A[0]}" y1="${A[1]}" x2="${B[0]}" y2="${B[1]}" stroke="#1a1a2e" stroke-width="1.4"/>`;});
+  // базовые отрезки
+  (fig.seg||[]).forEach(e=>{const A=P(fig,e[0]),B=P(fig,e[1]);
+    const mid=(fig.segstyle&&fig.segstyle[e[0]+e[1]]==='mid');
+    s+=`<line x1="${A[0]}" y1="${A[1]}" x2="${B[0]}" y2="${B[1]}" stroke="${mid?'#0d9488':'#1a1a2e'}" stroke-width="${mid?1.8:1.8}" ${mid?'stroke-dasharray="7 5"':''}/>`;});
+  // метки равенства сторон (tick)
+  (fig.tick||[]).forEach(tk=>{const A=P(fig,tk[0][0]),B=P(fig,tk[0][1]);s+=tickMarks(A,B,tk[1],'#1a1a2e');});
+  // прямые углы
+  (fig.right||[]).forEach(r=>{s+=`<polyline points="${rightMark(P(fig,r[0]),P(fig,r[1]),P(fig,r[2]),12)}" fill="none" stroke="#1a1a2e" stroke-width="1.6"/>`;});
+
+  // ---- ПОДСВЕТКА текущего шага ----
+  if(lit){
+    (lit.showcirc?(fig.circ_hidden||[]):[]).forEach(()=>{}); // окружность уже показана через revealCirc
+    (lit.seg||[]).forEach(e=>{const A=P(fig,e[0]),B=P(fig,e[1]);
+      s+=`<line x1="${A[0]}" y1="${A[1]}" x2="${B[0]}" y2="${B[1]}" stroke="#2d70b3" stroke-width="4.4" stroke-linecap="round" class="lit"/>`;});
+    (lit.tick||[]).forEach(e=>{const A=P(fig,e[0]),B=P(fig,e[1]);s+=tickMarks(A,B,1,'#2d70b3');});
+    (lit.poly||[]).forEach(pl=>{s+=`<polygon points="${ptsStr(fig,pl)}" fill="rgba(45,112,179,.14)" stroke="#2d70b3" stroke-width="3" class="lit"/>`;});
+    (lit.ang||[]).forEach((a,i)=>{const V=P(fig,a[0]),A=P(fig,a[1]),B=P(fig,a[2]);
+      const r=20+i*7;
+      s+=`<path d="${arcPath(V,A,B,r)}" fill="none" stroke="#d97706" stroke-width="3.4" stroke-linecap="round" class="lit"/>`;});
+    (lit.pt||[]).forEach(n=>{const p=P(fig,n);s+=`<circle cx="${p[0]}" cy="${p[1]}" r="9" fill="none" stroke="#7c3aed" stroke-width="2.6" class="lit"/>`;});
+  }
+  // точки + подписи (верхним слоем)
+  const drawPt=(n)=>{const p=P(fig,n);s+=`<circle cx="${p[0]}" cy="${p[1]}" r="3.8" fill="#1a1a2e"/>`;
+    const off=(fig.lab&&fig.lab[n])||[8,-6];
+    s+=`<text x="${(p[0]+off[0]).toFixed(1)}" y="${(p[1]+off[1]).toFixed(1)}" font-size="15" font-weight="800" fill="#1a1a2e" stroke="rgba(250,248,242,.92)" stroke-width="3.2" paint-order="stroke">${lbl(n)}</text>`;};
+  // вершины многоугольников
+  const shown=new Set();
+  (fig.poly||[]).forEach(pl=>pl.forEach(n=>{if(!shown.has(n)){shown.add(n);}}));
+  // центры и спец-точки
+  (fig.circ||[]).forEach(()=>{});
+  Object.keys(fig.pts).forEach(n=>{ if(n.length>2)return; // служебные (Hab,Had,Hbc,m1,m2,X) не подписываем
+    if(!fig.lab||!(n in fig.lab)) return; shown.add(n);});
+  shown.forEach(drawPt);
+  s+='</svg>';
+  return s;
+}
+function lbl(n){ // A1 -> A₁
+  return n.replace(/([A-Z])1/,'$1₁');
+}
+
+/* ================= состояние задачи ================= */
+let ST=null; // {mode, queue, qi, placed, dead:Set, err, hints, revealed, pool, solvedNow, results:[]}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function loadTask(){
+  const t=byId[ST.queue[ST.qi]];
+  ST.placed=0; ST.dead=new Set(); ST.early=new Set(); ST.err=0; ST.hints=0; ST.revealed=false; ST.solvedNow=false; ST.gaveUp=false; ST.glows=0; ST.placedByHint=0; ST.missed=false; ST.phase=0; ST.awaitJust=null; ST.justPool=null; ST.justDead=new Set();
+  const items=[];
+  t.steps.forEach((_,i)=>items.push({type:'s',i}));
+  t.traps.forEach((_,i)=>items.push({type:'x',i}));
+  ST.pool=shuffle(items);
+  rec({e:'task_start',task:t.id,mode:ST.mode});
+  renderTask();
+}
+function curTask(){return byId[ST.queue[ST.qi]];}
+function activeLit(){const t=curTask();return ST.placed>0?t.steps[ST.placed-1].lit:null;}
+function phasesOf(t){ if(t.phases)return t.phases; return [{name:'',s:t.steps.map((_,i)=>i),x:t.traps.map((_,i)=>i)}]; }
+function phaseOfStep(t,i){ const ph=phasesOf(t); for(let k=0;k<ph.length;k++) if(ph[k].s.indexOf(i)>=0) return k; return 0; }
+function advancePhaseIfDone(){ // если все шаги текущей фазы поставлены и есть следующая — перейти
+  const t=curTask(), phs=phasesOf(t);
+  if(ST.placed>=t.steps.length) return false;
+  const cur=phs[ST.phase];
+  if(cur.s.every(si=>si<ST.placed) && ST.phase<phs.length-1){ ST.phase++; return true; }
+  return false;
+}
+
+const PNOTE24='<details class="pnote"><summary>О прогрессе: подсказки ничего не отнимают</summary><div>Баллов и «звёздочек» здесь нет. Доказательство засчитывается как собранное самостоятельно, если обошлось без «Сдаюсь» и «Поставить шаг», а подсветка («Подсказать») понадобилась не больше одного раза; ошибка, исправленная самостоятельно, этому не мешает. Иначе задача отмечается «решение показано» — к ней стоит вернуться. Ошибки попадают в «Работу над ошибками» курса; тип уходит оттуда после трёх задач подряд, решённых без промаха.</div></details>';
+/* короткое сообщение для экранного диктора */
+function announce(msg){const el=document.getElementById('live');if(el)el.textContent=msg;}
+function pickCard(item){
+  const t=curTask();
+  if(ST.solvedNow)return;
+  if(ST.awaitJust!=null)return; // идёт выбор обоснования
+  if(item.type==='s'){
+    if(item.i===ST.placed){
+      const st=t.steps[item.i];
+      if(ST.mode==='justify' && st.jc){ enterJust(item.i); renderTask(); return; } // сначала обоснование
+      if(st.lit&&st.lit.showcirc)ST.revealed=true;
+      ST.early.delete(item.i);
+      ST.placed++;
+      rec({e:'step',task:t.id,step:item.i});
+      announce('Верно: шаг '+ST.placed+' из '+t.steps.length+'.');
+      if(ST.placed===t.steps.length){ onSolved(); renderTask(); return; }
+      if(advancePhaseIfDone()){ renderTask({phaseDone:true}); return; }
+      renderTask();
+    } else {
+      const isNew=!ST.early.has(item.i);
+      ST.early.add(item.i);
+      if(isNew){ST.err++;missOnce();}
+      rec({e:'early',task:t.id,step:item.i});
+      announce('Этот шаг верный, но не сейчас — сначала предыдущий.');
+      renderTask({shakeKey:'s'+item.i, diag:'Этот шаг верный, но не сейчас — сначала предыдущий. Он помечен: выбери его щелчком, когда дойдёт очередь.'});
+    }
+  } else {
+    const isNew=!ST.dead.has(item.i);
+    ST.dead.add(item.i);
+    if(isNew){ST.err++;missOnce();}
+    rec({e:'distractor',task:t.id,pick:item.i});
+    announce('Неверно: '+stripTags(t.traps[item.i].msg));
+    renderTask({shakeKey:'x'+item.i});
+  }
+}
+function enterJust(i){
+  const st=curTask().steps[i], bank=JUSTBANK[st.jc];
+  ST.awaitJust=i;
+  ST.justPool=shuffle([{ok:true,txt:bank.ok}].concat(bank.no.map(w=>({ok:false,txt:w}))));
+  ST.justDead=new Set();
+}
+function pickJust(idx){
+  if(ST.awaitJust==null||ST.solvedNow)return;
+  const opt=ST.justPool[idx];
+  if(opt.ok){ resolveJust(); }
+  else { if(!ST.justDead.has(idx)){ST.err++;missOnce();} ST.justDead.add(idx); rec({e:'just_wrong',task:curTask().id,step:ST.awaitJust,pick:idx}); renderTask({shakeJust:idx}); }
+}
+function resolveJust(){
+  const t=curTask(), i=ST.awaitJust;
+  ST.awaitJust=null; ST.justPool=null; ST.justDead=new Set();
+  const st=t.steps[i];
+  if(st.lit&&st.lit.showcirc)ST.revealed=true;
+  ST.early.delete(i);
+  ST.placed++;
+  rec({e:'step',task:t.id,step:i});
+  if(ST.placed===t.steps.length){ onSolved(); renderTask(); return; }
+  if(advancePhaseIfDone()){ renderTask({phaseDone:true}); return; }
+  renderTask();
+}
+function onSolved(){
+  ST.solvedNow=true;
+  const t=curTask();
+  /* собрано самостоятельно: без «Сдаюсь», без «Поставить шаг» и не больше одной
+     подсветки (решение F8 делегата владельца); только такая задача «решена» */
+  const self=selfSolved(ST);
+  if(self){markSolved(t.id);CP.solvedOne(t.id);if(!ST.missed)CP.mlog(t.id,true);}
+  let grade='g';
+  if(!self||ST.err>=2)grade='r';
+  else if(ST.err>=1||ST.hints>=1)grade='y';
+  ST.results.push({id:t.id,grade:grade,self:self,err:ST.err});
+  rec({e:'solved',task:t.id,mistakes:ST.err,hints:ST.hints,via:ST.gaveUp?'surrender':(ST.placedByHint?'placed':'self')});
+}
+function useHint(){
+  if(ST.solvedNow)return;
+  ST.hints++; ST.glows++;   // подсветка — подсказка, но вторая уже означает сборку не самостоятельно
+  if(ST.mode==='justify'&&ST.awaitJust!=null){ rec({e:'hint_just',task:curTask().id}); renderTask({hintJust:true}); return; }
+  rec({e:'hint_glow',task:curTask().id,step:ST.placed});
+  renderTask({hint:true});
+}
+function hintPlace(){
+  if(ST.solvedNow)return;
+  const t=curTask();
+  if(ST.mode==='justify'&&ST.awaitJust!=null){ ST.hints++; ST.placedByHint++; resolveJust(); return; } // авто-обоснование — показ
+  const willFinish=(ST.placed===t.steps.length-1);
+  const st=t.steps[ST.placed];
+  ST.hints++; ST.placedByHint++;   // шаг поставил тренажёр — это показ, а не подсказка
+  if(willFinish)ST.gaveUp=true;
+  if(ST.mode==='justify'&&st.jc){ enterJust(ST.placed); renderTask(); return; } // сначала обоснование
+  if(st.lit&&st.lit.showcirc)ST.revealed=true;
+  ST.placed++;
+  rec({e:'hint_place',task:t.id,step:ST.placed-1,last:willFinish});
+  if(ST.placed===t.steps.length)onSolved();
+  else advancePhaseIfDone();
+  renderTask();
+}
+function surrender(){
+  const t=curTask();
+  ST.gaveUp=true; ST.awaitJust=null; ST.justPool=null;
+  // достроить всё доказательство
+  while(ST.placed<t.steps.length){const st=t.steps[ST.placed];if(st.lit&&st.lit.showcirc)ST.revealed=true;ST.placed++;}
+  ST.phase=phasesOf(t).length-1;
+  onSolved(); // gaveUp → красная оценка
+  renderTask();
+}
+function nextTask(){
+  ST.qi++;
+  if(ST.qi>=ST.queue.length){ if(ST.mode==='exam') finishExam(); else backToMenu(); }
+  else loadTask();
+}
+
+/* ================= экраны ================= */
+const view=()=>document.getElementById('view');
+const badge=()=>document.getElementById('badge');
+
+function renderTabs(){
+  const tabs=[['study','Разбор'],['train','Тренировка'],['recall','По памяти'],['justify','Обоснуй'],['exam','Зачёт'],['sheet','Справочник'],['arsenal','Арсенал']];
+  const el=document.getElementById('tabs');el.innerHTML='';
+  tabs.forEach(([k,name])=>{const b=document.createElement('button');b.className='tab'+((ST&&ST.mode===k)||(!ST&&k==='study')?' on':'');
+    b.textContent=name;b.onclick=()=>switchMode(k);el.appendChild(b);});
+}
+function switchMode(k){
+  document.getElementById('succ').className='success';
+  if(k==='sheet'){ST={mode:'sheet'};badge().textContent='Справочник';renderTabs();renderSheet();return;}
+  if(k==='arsenal'){ST={mode:'arsenal'};badge().textContent='Арсенал';renderTabs();renderArsenal();return;}
+  ST={mode:k,results:[]};
+  badge().textContent={study:'Разбор',train:'Тренировка',recall:'По памяти',justify:'Обоснуй',exam:'Зачёт'}[k];
+  renderTabs();
+  if(k==='study')menuStudy();
+  else if(k==='train')menuTrain();
+  else if(k==='recall')menuRecall();
+  else if(k==='justify')menuJustify();
+  else menuExam();
+}
+function backToMenu(){
+  if(ST.mode==='study')menuStudy();
+  else if(ST.mode==='train')menuTrain();
+  else if(ST.mode==='recall')menuRecall();
+  else if(ST.mode==='justify')menuJustify();
+  else menuExam();
+}
+
+/* --- меню Разбор --- */
+function menuStudy(){
+  ST.results=[];
+  let h='<p class="lead">Тип 24 — <b>доказательство</b>. Ответ здесь не число, а <b>цепочка рассуждений</b>. Выбери задачу, собери доказательство из карточек по порядку и обходи ловушки. Каждый верный шаг подсвечивается на чертеже, а рядом видно, <b>почему</b> он работает.</p>';
+  THEMES.forEach(th=>{
+    h+=`<h3 style="font-size:14px;margin:16px 0 8px;color:#5b5647">${th.name}</h3><div class="menu">`;
+    th.tasks.forEach(id=>{const t=byId[id];const done=STORE[TID].solved&&STORE[TID].solved[id];
+      h+=`<div class="mcard" onclick="startStudy('${id}')"><h3>${t.title}${done?' ✓':''}</h3>
+      <div class="cnt">${t.code}</div>
+      <div class="cnt" style="margin-top:6px">${t.given}</div></div>`;});
+    h+='</div>';
+  });
+  view().innerHTML=h;
+}
+function startStudy(id){ST={mode:'study',queue:[id],qi:0,results:[]};loadTask();}
+
+/* --- меню Тренировка --- */
+function menuTrain(){
+  ST.results=[];
+  let h='<p class="lead">Собирай доказательства подряд. Ловушки и «рано» считаются как промахи; после разбора можно перейти к следующей задаче. Подсказки доступны, но лучше сначала подумать.</p>'+PNOTE24+'<div class="menu">';
+  h+=`<div class="mcard" onclick="startTrain('all')"><h3>Все 20 типов вперемешку</h3><div class="cnt">полный прогон случайным порядком</div></div>`;
+  THEMES.forEach((th,idx)=>{h+=`<div class="mcard" onclick="startTrain(${idx})"><h3>${th.name}</h3><div class="cnt">${th.tasks.length} задач(и)</div>
+    <div class="chips">${th.tasks.map(id=>`<span class="chip ${STORE[TID].solved&&STORE[TID].solved[id]?'done':''}">${byId[id].code.split(' · ')[0]}</span>`).join('')}</div></div>`;});
+  h+='</div>';
+  view().innerHTML=h;
+}
+function startTrain(which){
+  let q;
+  if(which==='all')q=shuffle(TASKS.map(t=>t.id));
+  else q=shuffle(THEMES[which].tasks.slice());
+  ST={mode:'train',queue:q,qi:0,results:[]};loadTask();
+}
+/* --- меню «По памяти» --- */
+function menuRecall(){
+  ST.results=[];
+  let h='<p class="lead">Ступень к письму: на карточках-шагах <b>скрыто обоснование</b> — видно только само утверждение, а «почему» держишь в голове. Ловушки показаны целиком (по ним видно, что не так). Собери доказательство, опираясь на память, а не на подсказку в тексте.</p><div class="menu">';
+  h+=`<div class="mcard" onclick="startMode('recall','all')"><h3>Все 20 типов вперемешку</h3><div class="cnt">обоснования скрыты</div></div>`;
+  THEMES.forEach((th,idx)=>{h+=`<div class="mcard" onclick="startMode('recall',${idx})"><h3>${th.name}</h3><div class="cnt">${th.tasks.length} задач(и)</div></div>`;});
+  h+='</div>';
+  view().innerHTML=h;
+}
+/* --- меню «Обоснуй» --- */
+function menuJustify(){
+  ST.results=[];
+  let h='<p class="lead">Здесь доказательство собирается в <b>два хода</b>: сначала выбираешь утверждение, а потом отдельно — верное <b>обоснование</b> (накрест лежащие? соответственные? вертикальные?). Это ровно тот навык, за который на ОГЭ ставят баллы и где чаще всего их теряют.</p><div class="menu">';
+  h+=`<div class="mcard" onclick="startMode('justify','all')"><h3>Все 20 типов вперемешку</h3><div class="cnt">утверждение + обоснование</div></div>`;
+  THEMES.forEach((th,idx)=>{h+=`<div class="mcard" onclick="startMode('justify',${idx})"><h3>${th.name}</h3><div class="cnt">${th.tasks.length} задач(и)</div></div>`;});
+  h+='</div>';
+  view().innerHTML=h;
+}
+function startMode(mode,which){
+  let q;
+  if(which==='all')q=shuffle(TASKS.map(t=>t.id));
+  else q=shuffle(THEMES[which].tasks.slice());
+  ST={mode:mode,queue:q,qi:0,results:[]};loadTask();
+}
+
+/* --- меню Зачёт --- */
+function menuExam(){
+  ST.results=[];
+  let h='<p class="lead">Зачёт: по одной задаче из каждой темы (квота по темам, а не случайно), режим экзамена — <b>без подсказок</b>. Каждый неверный клик — промах. В конце — счёт, «светофор» и маршрут повторения слабых мест.</p>';
+  // топ слабых мест по журналу
+  const weak=weakTop();
+  if(weak.length){h+=`<div class="arsnote"><b>Твои слабые места</b> (по прошлым прогонам): ${weak.map(w=>byId[w].title).join(' · ')}. В зачёте они попадутся в первую очередь.</div>`;}
+  const nq=THEMES.length, nw=(nq%10===1&&nq%100!==11)?'задача':((nq%10>=2&&nq%10<=4&&(nq%100<10||nq%100>=20))?'задачи':'задач');
+  h+=`<div class="menu"><div class="mcard" onclick="startExam()"><h3>Начать зачёт · ${nq} ${nw}</h3><div class="cnt">по одной из каждой темы</div></div></div>`;
+  view().innerHTML=h;
+}
+function weakTop(){
+  const ev=(STORE[TID].events||[]).filter(e=>e.e==='solved');
+  const score={};
+  ev.forEach(e=>{score[e.task]=(score[e.task]||0)+(e.mistakes||0)+(e.hints||0)+(e.via==='surrender'?3:0);});
+  return Object.keys(score).filter(k=>score[k]>0).sort((a,b)=>score[b]-score[a]).slice(0,3);
+}
+function startExam(){
+  const weak=new Set(weakTop());
+  const q=THEMES.map(th=>{
+    const w=th.tasks.filter(id=>weak.has(id));
+    const pickFrom=w.length?w:th.tasks;
+    return pickFrom[Math.floor(Math.random()*pickFrom.length)];
+  });
+  ST={mode:'exam',queue:q,qi:0,results:[]};
+  rec({e:'start',mode:'exam'});
+  loadTask();
+}
+function finishExam(){
+  const total=ST.results.length;
+  const good=ST.results.filter(r=>r.grade==='g').length;
+  /* счёт зачёта: доказательства, собранные самостоятельно, с не больше чем одним
+     промахом (зелёные и жёлтые — целиком: подсказки ничего не отнимают) */
+  const score=ST.results.filter(r=>r.self&&r.err<=1).length;
+  CP.finishQuiz(score,total);   // passed — только при PASS_AT из total и не снимается
+  rec({e:'finish',score:score,total:total});
+  const succ=document.getElementById('succ');succ.className='success show';
+  succ.textContent=score>=PASS_AT
+    ?`Зачёт сдан: ${score} из ${total} (нужно ${PASS_AT}); без единого промаха — ${good}.`
+    :`Зачёт пока не сдан: ${score} из ${total}, нужно ${PASS_AT}. Повторите задачи из списка ниже.`;
+  const weakIds=ST.results.filter(r=>r.grade!=='g').map(r=>r.id);
+  let h='<div class="fin"><div style="font-size:14px;color:#8a8474">Итог зачёта</div>';
+  h+=`<div class="score">${score} / ${total}</div><div class="dots">${ST.results.map(r=>`<span class="dot ${r.grade}"></span>`).join('')}</div>`;
+  h+=`<div style="font-size:12.5px;color:#8a8474">🟢 без промахов · 🟠 один промах или подсказка · 🔴 больше промахов или шаг поставлен тренажёром${STORE[TID].best?` · лучший зачёт ${STORE[TID].best} из ${total}`:''}</div>`;
+  if(weakIds.length){h+=`<div class="route"><h4>Что повторить</h4>${weakIds.map(id=>`• ${byId[id].title} <span class="chip jump" onclick="switchMode('study');setTimeout(()=>startStudy('${id}'),0)">разобрать →</span>`).join('<br>')}</div>`;}
+  else{h+='<div class="route"><h4>Чисто!</h4>Все доказательства собраны без единого промаха. Можно идти на настоящий экзамен.</div>';}
+  h+=`<div class="bar" style="justify-content:center"><button class="btn dark" onclick="switchMode('exam')">Пройти ещё раз</button></div></div>`;
+  view().innerHTML=h;
+}
+
+/* --- экран задачи --- */
+function renderTask(opts){
+  opts=opts||{};
+  const t=curTask();
+  const lit=activeLit();
+  const phs=phasesOf(t);
+  const showWhy=(ST.mode!=='exam'||ST.solvedNow);
+  const h=[];
+  // заголовок
+  if(ST.review)h.push('<div class="arsnote" role="status"><b>Работа над ошибками:</b> задачи только из открытых в журнале. Задача закрывается тремя сборками подряд без промаха.</div>');
+  h.push(`<div class="taskhead"><span class="tt">${t.title}</span><span class="code">${t.code}</span>`);
+  if(ST.queue.length>1)h.push(`<span class="pos">${ST.qi+1} / ${ST.queue.length}</span>`);
+  h.push('</div>');
+  h.push('<div class="grid">');
+  // левая колонка — чертёж
+  h.push('<div><div class="figbox">'+renderFig(t.fig,lit,ST.revealed)+'</div>');
+  const capText = ST.solvedNow?'▮ Что и требовалось доказать':(ST.placed>0?stripTags(t.steps[ST.placed-1].t):'Собери доказательство по шагам →');
+  h.push(`<div class="cap${ST.solvedNow?' done':''}">${capText}</div></div>`);
+  // правая колонка
+  h.push('<div>');
+  h.push(`<div class="givens"><div class="g1"><b>Дано.</b> ${t.given}</div><div><b>Доказать.</b> ${t.prove}</div></div>`);
+  if(ST.mode!=='exam'){
+    const tz=SHEET.zones.filter(z=>z.tasks.indexOf(t.id)>=0);
+    if(tz.length)h.push(`<div class="sheetplate has"><span class="sp-ic">📋</span> С листа справочных материалов: ${tz.map(z=>'<b>'+z.formula+'</b>').join(', ')} <button class="sp-go" onclick="openSheetZone('${tz[0].id}')">показать на листе →</button></div>`);
+    else h.push('<div class="sheetplate none"><span class="sp-ic">📋</span> На листе для этой задачи ничего нет — все теоремы держим в голове.</div>');
+  }
+  h.push(`<div class="aim${ST.solvedNow?' win':''}">${ST.solvedNow?'Доказано ✓':'Доказываем: '+stripTags(t.prove)}</div>`);
+  // цепочка собранного (с разделителями фаз)
+  if(ST.placed>0){h.push('<div class="chain">');
+    let shp=-1;
+    for(let i=0;i<ST.placed;i++){
+      if(phs.length>1){const pk=phaseOfStep(t,i); if(pk!==shp){shp=pk; if(phs[pk].name)h.push(`<div class="pdiv">${phs[pk].name}</div>`);}}
+      h.push(`<div class="citem"><span class="cnum">${i+1}</span><div class="ctext">${t.steps[i].t}${showWhy?`<span class="why">${t.steps[i].why}</span>`:''}</div></div>`);
+    }
+    h.push('</div>');}
+  // диагностика (при промахе)
+  if(opts.diag)h.push(`<div class="diag show">${opts.diag}</div>`);
+  // qed
+  if(ST.solvedNow)h.push('<div class="qed show">▮ Доказательство собрано полностью.</div>');
+  // подшаг обоснования (режим «Обоснуй»)
+  if(!ST.solvedNow && ST.mode==='justify' && ST.awaitJust!=null){
+    const st=t.steps[ST.awaitJust];
+    h.push('<div class="justbox">');
+    h.push(`<div class="justclaim"><span class="jnum">${ST.awaitJust+1}</span>${st.claim||claimOf(st.t)}</div>`);
+    h.push('<div class="justq">Почему это верно? Выбери обоснование:</div><div class="justpool">');
+    ST.justPool.forEach((o,idx)=>{
+      const dead=ST.justDead.has(idx);
+      const shakeCls=(opts.shakeJust===idx)?' shake':'';
+      const glow=(opts.hintJust&&o.ok)?' hintglow':'';
+      h.push(`<button class="jchip${dead?' dead':''}${shakeCls}${glow}" ${dead?'':`onclick="pickJust(${idx})"`}>${o.txt}${dead?' <span class="jx">✗ не то</span>':''}</button>`);
+    });
+    h.push('</div></div>');
+  }
+  // пул карточек (только текущая фаза)
+  else if(!ST.solvedNow){
+    const cur=phs[ST.phase];
+    if(opts.phaseDone)h.push('<div class="phasedone">✓ Фаза пройдена — продолжаем</div>');
+    if(phs.length>1)h.push(`<div class="phasehdr">Фаза ${ST.phase+1} из ${phs.length}${cur.name?' · '+cur.name:''}</div>`);
+    h.push('<div class="pooltitle">Карточки — выбирай по порядку <span class="poolhint">среди них есть лишние — их не бери</span></div><div class="pool">');
+    ST.pool.forEach(item=>{
+      const inPhase=(item.type==='s')?cur.s.indexOf(item.i)>=0:cur.x.indexOf(item.i)>=0;
+      if(!inPhase)return;
+      if(item.type==='s'){
+        if(item.i<ST.placed)return; // уже поставлен
+        const st=t.steps[item.i];
+        const shakeCls=(opts.shakeKey==='s'+item.i)?' shake':'';
+        const glow=(opts.hint&&item.i===ST.placed)?' hintglow':'';
+        const earlyCls=(ST.early.has(item.i)&&item.i>ST.placed)?' early':'';
+        const label=(ST.mode==='recall'||ST.mode==='justify')?(st.claim||claimOf(st.t)):st.t;
+        h.push(`<button class="card${earlyCls}${shakeCls}${glow}" onclick="pickCard({type:'s',i:${item.i}})">${label}</button>`);
+      } else {
+        const tr=t.traps[item.i];
+        const dead=ST.dead.has(item.i);
+        const shakeCls=(opts.shakeKey==='x'+item.i)?' shake':'';
+        h.push(`<button class="card${dead?' dead':''}${shakeCls}" onclick="pickCard({type:'x',i:${item.i}})">${tr.t}${dead?`<span class="dmsg">✗ ${tr.msg}</span>`:''}</button>`);
+      }
+    });
+    h.push('</div>');
+  }
+  // закон + управление
+  if(ST.solvedNow){
+    h.push(`<div class="law show"><h4>Приём этого типа</h4><p>${t.law}</p></div>`);
+    h.push(`<details class="blank"><summary>📝 Как это записать на бланке ОГЭ</summary><div class="blanktext">${genBlank(t)}</div></details>`);
+  }
+  if(!ST.solvedNow && ST.mode!=='exam')h.push('<div class="hinthelp">🪜 <b>Подсказать</b> — подсветит нужную карточку · ⬇ <b>Поставить шаг</b> — поставит её за тебя</div>');
+  h.push('<div class="bar">');
+  if(!ST.solvedNow){
+    if(ST.mode!=='exam'){h.push('<button class="btn amber" onclick="useHint()">🪜 Подсказать</button>');
+      h.push('<button class="btn pull" onclick="hintPlace()">⬇ Поставить шаг</button>');
+      h.push('<button class="btn ghost" onclick="surrender()">Сдаюсь — доказательство</button>');}
+    h.push('<button class="btn ghost" onclick="restartTask()">↺ Сначала</button>');
+  }else{
+    if(ST.mode==='exam'){h.push('<button class="btn dark" onclick="nextTask()">'+(ST.qi+1<ST.queue.length?'Следующая →':'Итоги зачёта →')+'</button>');}
+    else{
+      if(ST.qi+1<ST.queue.length)h.push('<button class="btn dark" onclick="nextTask()">Следующая →</button>');
+      h.push('<button class="btn blue" onclick="trainThis()">Тренировать этот тип →</button>');
+      h.push('<button class="btn ghost" onclick="backToMenu()">← К списку</button>');
+    }
+  }
+  h.push('</div></div></div>');
+  view().innerHTML=h.join('');
+}
+/* «Сначала» в зачёте раскладывает карточки заново, но промахи и подсказки задачи сохраняет */
+function restartTask(){
+  const keep={err:ST.err,hints:ST.hints,missed:ST.missed,glows:ST.glows,placedByHint:ST.placedByHint};
+  loadTask();
+  /* та же задача: вердикт журнала и показанные шаги сохраняются */
+  ST.missed=keep.missed; ST.glows=keep.glows; ST.placedByHint=keep.placedByHint;
+  if(ST.mode==='exam'){ST.err=keep.err;ST.hints=keep.hints;}
+  renderTask();
+}
+function trainThis(){const id=curTask().id;ST={mode:'train',queue:shuffle([id,id]).slice(0,1),qi:0,results:[]};
+  badge().textContent='Тренировка';renderTabs();loadTask();}
+
+/* --- Арсенал --- */
+function renderArsenal(){
+  document.getElementById('succ').className='success';
+  const groups={};
+  ARSENAL.forEach(a=>{(groups[a.g]=groups[a.g]||[]).push(a);});
+  let h='<p class="lead">Доказательства опираются на <b>теоремы</b>, а лист справочных материалов ОГЭ — это <b>формулы</b>. Поэтому большинства нужных фактов на листе <b>нет</b> — их надо помнить. Ниже — арсенал приёмов задания 24 с пометкой «есть/нет на листе» и задачами, где приём работает.</p>';
+  h+='<div class="arsnote">🟩 <b>есть на листе</b> — можно подсмотреть на экзамене · 🟥 <b>нет на листе</b> — держим в голове · 🟧 <b>частично</b> — формула есть, а нюанс надо помнить.</div>';
+  Object.keys(groups).forEach(g=>{
+    h+=`<div class="arsgrp"><h3>${g}</h3>`;
+    groups[g].forEach(a=>{
+      const tag=a.sheet==='есть'?'<span class="tag yes">на листе</span>':a.sheet==='частично'?'<span class="tag part">частично</span>':'<span class="tag no">не на листе</span>';
+      h+=`<div class="arscard"><div class="an">${a.name}${tag}</div><div class="anote">${a.note}</div>
+      <div class="chips">${a.tasks.map(id=>`<span class="chip jump" onclick="switchMode('study');setTimeout(()=>startStudy('${id}'),0)">${byId[id].title}</span>`).join('')}</div></div>`;
+    });
+    h+='</div>';
+  });
+  view().innerHTML=h;
+}
+
+/* --- Справочник: карта листа --- */
+let flashZone=null;
+function jumpChip(id){return `<span class="tchip" onclick="switchMode('study');setTimeout(()=>startStudy('${id}'),0)">${byId[id].code.split(' · ')[0]} — ${byId[id].title}</span>`;}
+function zoneDetailHtml(zid){
+  const z=SHEET.zones.find(x=>x.id===zid); if(!z)return 'Выбери зону с формулой на листе.';
+  return `<div class="zd-name">${z.name}: <b>${z.formula}</b></div><div class="zd-note">${z.note}</div>
+    <div class="zd-tasks"><span class="zd-lab">Работает в задачах:</span> ${z.tasks.map(jumpChip).join('')}</div>`;
+}
+function selZone(zid){
+  document.getElementById('zonedetail').innerHTML=zoneDetailHtml(zid);
+  var its=document.querySelectorAll('.sm-item'); for(var i=0;i<its.length;i++)its[i].classList.toggle('sm-open',its[i].id==='sm-'+ZONE_SHEET[zid]);
+}
+function renderSheet(){
+  document.getElementById('succ').className='success';
+  const h=[];
+  h.push('<p class="lead">Лист справочных материалов, которым можно пользоваться на экзамене. Нажми «Задачи этого блока» у формулы — увидишь, в каких задачах №24 она работает. <b>Важно:</b> задание 24 почти целиком опирается на теоремы, которых на листе <b>нет</b> — их держим в голове (список ниже).</p>');
+  const zoneOf=id=>SHEET.zones.find(x=>ZONE_SHEET[x.id]===id);
+  h.push(sheetMapHTML({go:id=>{const z=zoneOf(id);return z?'data-z="'+z.id+'" onclick="selZone(\''+z.id+'\')"':null;},
+    label:id=>'Задачи этого блока ('+zoneOf(id).tasks.length+')', open:flashZone?ZONE_SHEET[flashZone]:null}));
+  h.push('<div id="zonedetail" class="zonedetail">'+(flashZone?zoneDetailHtml(flashZone):'Выбери зону с формулой на листе — покажу привязку к задачам.')+'</div>');
+  h.push('<div class="notonsheet"><h4>⚠️ Чего на листе нет — держим в голове</h4><p class="nos-sub">На эти теоремы опирается большинство доказательств №24, а на листе их не найти. Нажми задачу, чтобы открыть её разбор.</p>');
+  SHEET.notOnSheet.forEach(n=>{
+    h.push(`<div class="nosrow"><div class="nosg">${n.g}</div><div class="noschips">${n.tasks.map(id=>`<span class="tchip mini" onclick="switchMode('study');setTimeout(()=>startStudy('${id}'),0)">${byId[id].code.split(' · ')[0]}</span>`).join('')}</div></div>`);
+  });
+  h.push('</div>');
+  view().innerHTML=h.join('');
+  flashZone=null;
+}
+function openSheetZone(zid){ flashZone=zid; ST={mode:'sheet'}; badge().textContent='Справочник'; renderTabs(); renderSheet(); }
+
+/* --- утилиты --- */
+function stripTags(s){return s.replace(/<[^>]+>/g,'');}
+/* правило F8 делегата владельца: доказательство «собрано самостоятельно» — без «Сдаюсь»,
+   без «Поставить шаг» и не больше одной подсветки */
+function selfSolved(st){return !st.gaveUp&&!st.placedByHint&&st.glows<=1;}
+
+/*__SELFTEST_KIT_START__*/
+/* Общие проверки режима ?selftest=1 (канон CLAUDE.md, решение F4 делегата
+   владельца). Блок побайтно одинаков в тренажёрах 16, 17, 18, 23, 24, 25;
+   копии сверяет гейт tools/oge-geometry-contract.test.mjs. Каждая проверка
+   дописывает ошибки в массив errs; прогресс ученика не трогается. */
+const STK={
+  /* чертёж: нет NaN/undefined/Infinity, все точки внутри viewBox (допуск tol) */
+  svg:function(svg,tag,errs,tol){
+    if(tol==null)tol=0.5;
+    if(typeof svg!=='string'||svg.indexOf('<svg')<0){errs.push(tag+': нет чертежа');return;}
+    if(/NaN|undefined|Infinity/.test(svg))errs.push(tag+': в чертеже NaN/undefined/Infinity');
+    const vb=/viewBox="\s*(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)\s*"/.exec(svg);
+    if(!vb){errs.push(tag+': у чертежа нет viewBox');return;}
+    const X0=+vb[1]-tol,Y0=+vb[2]-tol,X1=+vb[1]+(+vb[3])+tol,Y1=+vb[2]+(+vb[4])+tol;
+    let out=0,first='';
+    const at=function(x,y,what){if(!(x>=X0&&x<=X1&&y>=Y0&&y<=Y1)){out++;if(!first)first=what+' ('+Math.round(x)+'; '+Math.round(y)+')';}};
+    const num=function(a,n){const m=new RegExp('\\s'+n+'="(-?[\\d.]+(?:e-?\\d+)?)"').exec(a);return m?+m[1]:null;};
+    const re=/<(\w+)(\s[^>]*)?>/g;let m;
+    while((m=re.exec(svg))){
+      const el=m[1],a=m[2]||'';
+      if(el==='svg')continue;
+      [['x','y'],['x1','y1'],['x2','y2'],['cx','cy']].forEach(function(p){const x=num(a,p[0]),y=num(a,p[1]);if(x!=null&&y!=null)at(x,y,el);});
+      if(el==='rect'){const x=num(a,'x')||0,y=num(a,'y')||0,w=num(a,'width'),h=num(a,'height');if(w!=null&&h!=null)at(x+w,y+h,'rect');}
+      if(el==='circle'){const x=num(a,'cx'),y=num(a,'cy'),r=num(a,'r');if(x!=null&&y!=null&&r!=null){at(x-r,y,'circle');at(x+r,y,'circle');at(x,y-r,'circle');at(x,y+r,'circle');}}
+      const pts=/\spoints="([^"]*)"/.exec(a);
+      if(pts){const v=pts[1].trim().split(/[\s,]+/).map(Number);for(let i=0;i+1<v.length;i+=2)at(v[i],v[i+1],el);}
+      const d=/\sd="([^"]*)"/.exec(a);
+      if(d){/* конечные точки команд пути; относительные — от текущей точки */
+        const tok=d[1].match(/[MLHVCSQTAZmlhvcsqtaz]|-?(?:\d+\.?\d*|\.\d+)(?:e-?\d+)?/g)||[];
+        const need={M:2,L:2,H:1,V:1,C:6,S:4,Q:4,T:2,A:7,Z:0};
+        let cx=0,cy=0,cmd='',i=0;
+        while(i<tok.length){
+          if(/[a-z]/i.test(tok[i])){cmd=tok[i++];if(/z/i.test(cmd))continue;}
+          const n=need[cmd.toUpperCase()],rel=cmd!==cmd.toUpperCase();
+          if(!n||i+n>tok.length)break;
+          const v=tok.slice(i,i+n).map(Number);i+=n;
+          const U=cmd.toUpperCase();
+          if(U==='H'){cx=rel?cx+v[0]:v[0];}
+          else if(U==='V'){cy=rel?cy+v[0]:v[0];}
+          else{const ex=v[n-2],ey=v[n-1];cx=rel?cx+ex:ex;cy=rel?cy+ey:ey;}
+          at(cx,cy,'path');
+          if(U==='M')cmd=rel?'l':'L';
+        }
+      }
+    }
+    if(out)errs.push(tag+': за рамкой viewBox '+out+' точек, первая — '+first);
+  },
+  /* текст задачи и решения: нет null, undefined, NaN, Infinity и «1√» */
+  text:function(html,tag,errs){
+    const t=String(html).replace(/<[^>]*>/g,' ');
+    const m=/\bnull\b|\bundefined\b|\bNaN\b|Infinity|(^|[^\d,.])1√/.exec(t);
+    if(m)errs.push(tag+': в тексте «'+m[0].trim()+'»');
+  },
+  /* последний шаг разбора содержит проверяемый ответ хотя бы в одной записи */
+  last:function(step,forms,tag,errs){
+    const t=String(step==null?'':step).replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/\s+/g,' ');
+    const norm=function(f){return String(f).replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();};
+    if(!forms.some(function(f){return f!=null&&norm(f)!==''&&t.indexOf(norm(f))>=0;}))
+      errs.push(tag+': последний шаг не содержит ответ ('+forms.filter(function(f){return f!=null;}).join(' / ')+')');
+  },
+  /* ловушки {v, e, m}: ни одна не принимается как ответ, разные сообщения не ловят одно число */
+  traps:function(list,tag,errs,isAns){
+    (list||[]).forEach(function(t,i){
+      if(!isFinite(t.v)){errs.push(tag+': ловушка — не число');return;}
+      if(isAns(t.v))errs.push(tag+': ловушка '+t.v+' совпадает с ответом');
+      for(let j=i+1;j<list.length;j++){const u=list[j];
+        if(u.m!==t.m&&Math.abs(t.v-u.v)<=(t.e||0)+(u.e||0))errs.push(tag+': ловушки '+t.v+' и '+u.v+' ловят одно число');}
+    });
+  },
+  /* итог в консоль: маркер <ИМЯ>_SELFTEST_OK или _FAIL с числом ошибок */
+  done:function(name,errs){
+    if(typeof console==='undefined')return;
+    if(!errs.length){console.log(name+'_SELFTEST_OK');return;}
+    console.log(name+'_SELFTEST_FAIL '+errs.length);
+    errs.slice(0,30).forEach(function(e){console.log('  '+e);});
+  }
+};
+/*__SELFTEST_KIT_END__*/
+/* --- самопроверка (?selftest=1): чертежи, тексты, карточки-ловушки, правило F8 --- */
+function selftest(){
+  const errs=[];
+  const labels=s=>stripTags(s).match(/[A-Z][A-Z₀-₉]*/g)||[];
+  TASKS.forEach(t=>{const tag=t.id;
+    if(!FIGS[t.fig]){errs.push(tag+': нет чертежа '+t.fig);return;}
+    STK.svg(renderFig(t.fig,null,true),tag,errs);
+    t.steps.forEach((st,i)=>{if(st.lit)STK.svg(renderFig(t.fig,st.lit,true),tag+' шаг '+(i+1),errs);});
+    STK.text([t.given,t.prove].concat(t.steps.map(s=>s.t+' '+(s.why||'')),t.traps.map(x=>x.t+' '+x.msg)).join(' '),tag,errs);
+    /* последний шаг называет доказываемое: хотя бы одно обозначение из «Доказать» */
+    const need=labels(t.prove),last=stripTags(t.steps[t.steps.length-1].t);
+    if(need.length&&!need.some(l=>last.indexOf(l)>=0))errs.push(tag+': последний шаг не называет доказываемое ('+need.join(', ')+')');
+    /* карточки-ловушки: не совпадают с шагами и между собой, у каждой есть пояснение */
+    const seen=new Set(t.steps.map(s=>stripTags(s.t)));
+    t.traps.forEach(x=>{const k=stripTags(x.t);if(seen.has(k))errs.push(tag+': карточка-ловушка повторяет шаг или другую ловушку');seen.add(k);
+      if(!x.msg)errs.push(tag+': у ловушки нет пояснения');});
+  });
+  [[{gaveUp:false,placedByHint:0,glows:0},true],[{gaveUp:false,placedByHint:0,glows:1},true],[{gaveUp:false,placedByHint:0,glows:2},false],
+   [{gaveUp:false,placedByHint:1,glows:0},false],[{gaveUp:true,placedByHint:0,glows:0},false]]
+    .forEach(([st,want])=>{if(selfSolved(st)!==want)errs.push('F8: '+JSON.stringify(st)+' даёт '+!want);});
+  if(THEMES.length!==QUIZ_TOTAL)errs.push('зачёт: тем '+THEMES.length+' ≠ '+QUIZ_TOTAL);
+  if(TASKS.length!==TYPE_IDS.length||TASKS.some(t=>TYPE_IDS.indexOf(t.id)<0))errs.push('TYPE_IDS не совпадает с задачами');
+  Object.keys(ZONE_SHEET).forEach(z=>{if(!SHEET_MAP.items.some(x=>x.id===ZONE_SHEET[z]))errs.push('лист: нет блока '+ZONE_SHEET[z]);
+    if(!SHEET.zones.some(x=>x.id===z))errs.push('лист: нет зоны '+z);});
+  return errs;
+}
+function claimOf(txt){const i=txt.indexOf(' — ');return i>0?txt.slice(0,i):txt;}
+function justOf(txt){const i=txt.indexOf(' — ');return i>0?txt.slice(i+3):'';}
+function genBlank(t){
+  let s='<b>Доказательство.</b><br>';
+  t.steps.forEach((st,i)=>{s+=(i+1)+') '+stripTags(st.t)+'<br>';});
+  s+='Что и требовалось доказать. ▮';
+  return s;
+}
+
+/* --- старт --- */
+renderTabs();
+if(CP.RO){   // ?selftest=1 — самопроверка; прогресс ученика не трогается
+  const e=selftest();STK.done('OGE24',e);
+  view().innerHTML='<p class="lead"><b>'+(e.length?'САМОПРОВЕРКА: ошибок '+e.length:'САМОПРОВЕРКА ПРОЙДЕНА')+'</b></p>'+
+    e.slice(0,60).map(x=>'<div class="nos-sub">'+stripTags(x)+'</div>').join('');
+}
+else if(CP.REVIEW){   // ?mode=review — работа над ошибками: только открытые задачи журнала
+  const open=CP.openTypes().filter(id=>byId[id]);
+  if(open.length){ST={mode:'train',queue:shuffle(open),qi:0,results:[],review:true};badge().textContent='Работа над ошибками';renderTabs();loadTask();}
+  else{switchMode('train');const s=document.getElementById('succ');s.className='success show';s.textContent='Открытых задач в журнале ошибок нет — обычная тренировка.';}
+}
+else switchMode('study');
+
+/* Minimal course shell. Moves live controls, retaining their original handlers. */
+const MinimalGeometry=(()=>{
+  const q=s=>document.querySelector(s);
+  function shell(mainSelector,title){
+    document.body.classList.add('minimal-course');
+    const main=q(mainSelector);if(!main)return null;
+    if(q('.head h1'))q('.head h1').textContent=title;
+    let settings=q('#courseSettings');
+    if(!settings){
+      settings=document.createElement('details');settings.id='courseSettings';settings.className='minimal-settings';
+      const summary=document.createElement('summary');summary.textContent='Выбрать тему · мои результаты';settings.appendChild(summary);
+      let target=main.closest('.wrap')||main;if(target.querySelector('.head'))target=main;target.insertAdjacentElement('afterend',settings);
+      const content=document.createElement('div');content.className='minimal-navigation';settings.appendChild(content);
+      document.querySelectorAll('.head .sub,.head .stats,.head .badge,.head #badge,.tabs').forEach(node=>content.appendChild(node));
+      const footer=q('body>.wrap>.note');if(footer)content.appendChild(footer);
+    }
+    return settings;
+  }
+  function secondary(main,selectors){
+    const settings=q('#courseSettings');if(!settings||!main)return;
+    let box=settings.querySelector('.minimal-task-settings');
+    if(!box){box=document.createElement('div');box.className='minimal-task-settings';settings.appendChild(box);}
+    box.replaceChildren();
+    selectors.forEach(selector=>main.querySelectorAll(selector).forEach(node=>box.appendChild(node)));
+  }
+  function hint(anchor,content,open=false){
+    const button=document.createElement('button');button.type='button';button.className='minimal-hint-toggle';button.id='courseHintToggle';button.textContent='Хочешь подсказку?';button.setAttribute('aria-expanded',String(open));button.setAttribute('aria-controls','courseHintPanel');
+    const panel=document.createElement('section');panel.id='courseHintPanel';panel.className='minimal-hint';panel.setAttribute('aria-label','Подсказка');panel.hidden=!open;
+    if(typeof content==='string')panel.innerHTML=content;else if(content)panel.appendChild(content);
+    anchor.insertAdjacentElement('afterend',button);button.insertAdjacentElement('afterend',panel);
+    button.onclick=()=>{panel.hidden=!panel.hidden;button.setAttribute('aria-expanded',String(!panel.hidden));};
+    return {button,panel};
+  }
+  function disclosure(panel,nodes){
+    const details=document.createElement('details');details.className='minimal-help-actions';const summary=document.createElement('summary');summary.textContent='Разобрать решение';details.appendChild(summary);
+    nodes.filter(Boolean).forEach(node=>details.appendChild(node));if(details.children.length>1)panel.appendChild(details);return details;
+  }
+  function part2(anchor){const note=document.createElement('p');note.className='minimal-part2-note';note.textContent='На ОГЭ нужно записать полное решение с обоснованием.';anchor.appendChild(note);}
+  return {shell,secondary,hint,disclosure,part2};
+})();
+if(!CP.RO && document.documentElement.nodeType===1){
+  MinimalGeometry.shell('#view','ОГЭ №24 · Доказательства');
+  function displayProofFractions(root){
+    // Presentation only: proof IDs, click handlers and source statements stay untouched.
+    root.querySelectorAll('.pool .card,.chain .ctext,.blanktext').forEach(container=>{
+      const walker=document.createTreeWalker(container,NodeFilter.SHOW_TEXT);const nodes=[];let node;
+      while((node=walker.nextNode()))if(!node.parentElement.closest('.proof-fraction,svg,script,style'))nodes.push(node);
+      nodes.forEach(text=>{
+        const pattern=/(^|[^\w√.,/])([−-]?\d+(?:[.,]\d+)?)\s*\/\s*([−-]?\d+(?:[.,]\d+)?)(?![\w/]|[.,]\d)/g;
+        const source=text.nodeValue;let match,last=0;const fragment=document.createDocumentFragment();let changed=false;
+        while((match=pattern.exec(source))){
+          changed=true;fragment.appendChild(document.createTextNode(source.slice(last,match.index)+match[1]));
+          const fraction=document.createElement('span');fraction.className='proof-fraction';fraction.setAttribute('role','math');fraction.setAttribute('aria-label',match[2]+' делить на '+match[3]);
+          for(const value of [match[2],match[3]]){const part=document.createElement('span');part.textContent=value;part.setAttribute('aria-hidden','true');fraction.appendChild(part);}
+          fragment.appendChild(fraction);last=pattern.lastIndex;
+        }
+        if(changed){fragment.appendChild(document.createTextNode(source.slice(last)));text.replaceWith(fragment);}
+      });
+    });
+  }
+  const originalRenderTask=renderTask;let previousProofState=null,previousProofIndex=-1;
+  renderTask=function(opts){const oldPanel=document.getElementById('courseHintPanel');const keepOpen=previousProofState===ST&&previousProofIndex===ST.qi&&oldPanel&&!oldPanel.hidden;originalRenderTask(opts);previousProofState=ST;previousProofIndex=ST.qi;const main=document.getElementById('view');displayProofFractions(main);
+    MinimalGeometry.secondary(main,[':scope > .taskhead']);
+    if(ST.mode==='exam'||ST.solvedNow)return;
+    const given=main.querySelector('.givens');if(!given)return;
+    const help=MinimalGeometry.hint(given,'<p>Собирай рассуждение по порядку. Верный шаг останется в доказательстве и подсветится на чертеже.</p>',!!keepOpen);
+    const plate=main.querySelector('.sheetplate');if(plate)help.panel.appendChild(plate);
+    const hinthelp=main.querySelector('.hinthelp');if(hinthelp)help.panel.appendChild(hinthelp);
+    main.querySelectorAll('button[onclick="useHint()"],button[onclick="hintPlace()"],button[onclick="surrender()"]').forEach(b=>help.panel.appendChild(b));
+    MinimalGeometry.part2(main);
+  };
+  if(!CP.REVIEW)startTrain('all');else if(!ST.queue)startTrain('all');else renderTask();
+}
+</script>
+<script src="/book/oge/2026-10-31/v1/trainers/task19-textbook-data.js"></script>
+<script src="/book/oge/2026-10-31/v1/trainers/task19-reference.js"></script>
+<script src="/book/oge/2026-10-31/v1/trainers/oge-course-reference.js"></script>
+<script src="/book/oge/2026-10-31/v1/trainers/oge-course-proof.js"></script>
+</body>
+</html>
