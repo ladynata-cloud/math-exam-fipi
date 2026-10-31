@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
-  "reviewedAt": "2026-10-30T22:10:04Z",
-  "registeredAt": "2026-10-30T22:10:04Z",
-  "scope": "Introduction and chapters I–III plus chapter IV paragraphs 1–2 Cylinder and Cone: main exercises 1–371, theory 1–42 and 40 earlier chapter self-check questions. Chapter IV paragraph 3 and main exercises 372 onward remain pending. Not the complete book.",
+  "reviewedAt": "2026-10-31T01:04:51.530Z",
+  "registeredAt": "2026-10-31T01:05:36.250Z",
+  "scope": "Introduction and chapters I–III plus all three paragraphs of chapter IV: main exercises 1–395, theory 1–51 and 40 earlier chapter self-check questions. Chapter IV self-checks/additional exercises396 onward and later chapters remain pending. Not the complete book.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -928,6 +928,62 @@
       ],
       "evidence": "docs/reviews/ATANASYAN_CONE_CONTENT.json",
       "mathematicalReport": "docs/reviews/ATANASYAN_CONE_CONTENT.json"
+    },
+    {
+      "reviewer": "Codex independent source, mathematics and written-pedagogy panel: visual_middle, visual_late, release_audit; no reviewed-candidate lesson authorship",
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "sourceBundleSHA256": "c7a7223f22a96656fdc80354dc68194378b3d73a2a3a8aa89fb50ad3dd73ac5d",
+      "scope": "All 46 sphere cards: complete theory 43–51 and every printed part of exercises 372–395. The independent panel reviewed 192 justified steps and 197 model states, including the corrected second-Dandelin-sphere proof in point 51. Responsive images and exact-head CI are separate evidence.",
+      "cardIds": [
+        "ex-main-0372-a",
+        "ex-main-0372-b",
+        "ex-main-0373-a",
+        "ex-main-0373-b",
+        "ex-main-0373-c",
+        "ex-main-0373-d",
+        "ex-main-0374",
+        "ex-main-0375",
+        "ex-main-0376",
+        "ex-main-0377",
+        "ex-main-0378",
+        "ex-main-0379",
+        "ex-main-0380",
+        "ex-main-0381-a",
+        "ex-main-0381-b",
+        "ex-main-0381-c",
+        "ex-main-0381-d",
+        "ex-main-0382-a",
+        "ex-main-0382-b",
+        "ex-main-0383-a",
+        "ex-main-0383-b",
+        "ex-main-0384-a",
+        "ex-main-0384-b",
+        "ex-main-0385",
+        "ex-main-0386",
+        "ex-main-0387",
+        "ex-main-0388-a",
+        "ex-main-0388-b",
+        "ex-main-0388-c",
+        "ex-main-0388-d",
+        "ex-main-0389",
+        "ex-main-0390",
+        "ex-main-0391",
+        "ex-main-0392",
+        "ex-main-0393",
+        "ex-main-0394",
+        "ex-main-0395",
+        "theory-043",
+        "theory-044",
+        "theory-045",
+        "theory-046",
+        "theory-047",
+        "theory-048",
+        "theory-049",
+        "theory-050",
+        "theory-051"
+      ],
+      "evidence": "docs/reviews/ATANASYAN_SPHERE_CONTENT.json",
+      "mathematicalReport": "docs/reviews/ATANASYAN_SPHERE_CONTENT.json"
     }
   ],
   "cards": [
@@ -3306,6 +3362,190 @@
     {
       "id": "theory-042",
       "sha256": "9bc1315bac8fdcd8bc4ef7bd1bf6e1c4e624b99aaf782a4a69fd26b3c27c0590"
+    },
+    {
+      "id": "ex-main-0372-a",
+      "sha256": "1ad09a81a1fd65e013e326acf2b017d0bc1dac39b7fd7020d93971932c87a8ce"
+    },
+    {
+      "id": "ex-main-0372-b",
+      "sha256": "85f44158f197cd7f29633e9ec23a4235469473a39750392fda9e512d7be462ad"
+    },
+    {
+      "id": "ex-main-0373-a",
+      "sha256": "2440cbab6d2b829a4c15c1c991c5c47390d18ff3e7f5417e0b62aba04da56853"
+    },
+    {
+      "id": "ex-main-0373-b",
+      "sha256": "2032d2ccaea5d49d5f149de08bf8f4976687cf753bc11e5f8544314ef5bbb253"
+    },
+    {
+      "id": "ex-main-0373-c",
+      "sha256": "b64e276b7d4c3d4f3ac1776bb415fcdd6fe0ee93b2460c126e4e8906b004ad13"
+    },
+    {
+      "id": "ex-main-0373-d",
+      "sha256": "332a645918163697eed47da04bc4118457ff500ef3604b80c305b96d48d30f6e"
+    },
+    {
+      "id": "ex-main-0374",
+      "sha256": "625419d434fbbec451f9bd8cea70a6083a7fd9f693a175db791526cae459f365"
+    },
+    {
+      "id": "ex-main-0375",
+      "sha256": "de4d15277b02d479f21851ff822e91f6264dc3ddbd50eac81fcccd58fbba81d3"
+    },
+    {
+      "id": "ex-main-0376",
+      "sha256": "75a5838fe916de30ad592d5d1c8c23f9fd5373f27656bab06fbc4b9e10957eff"
+    },
+    {
+      "id": "ex-main-0377",
+      "sha256": "03c09aa22dc57dba2ea2bd87e16bbb4f0c15d8a0cef66b3af49fb6dc5b244689"
+    },
+    {
+      "id": "ex-main-0378",
+      "sha256": "89e49c8a03e1c98fbcc6da5f9b7fb0f03e4062e77c777941b837546e762aaa7b"
+    },
+    {
+      "id": "ex-main-0379",
+      "sha256": "17ad04b8e411dc60413f99a7676dfe21a1bc508370cb76e6822b332f19b5fe4a"
+    },
+    {
+      "id": "ex-main-0380",
+      "sha256": "43fbb861680ec109a318efccb133a394629e313988a40f1ab4aa0a20fae20a7a"
+    },
+    {
+      "id": "ex-main-0381-a",
+      "sha256": "f1452fa3932d16c795d44d2520c6b498176f78e7978479e362da073af5ed43cf"
+    },
+    {
+      "id": "ex-main-0381-b",
+      "sha256": "125c355d91bbf6feb2746df57bb267ec83b0103012075f253f726efe9b6a5025"
+    },
+    {
+      "id": "ex-main-0381-c",
+      "sha256": "c4f045317836fa07fbf820e7deecf793c94af5cfb340286d27cc6dcd553ca477"
+    },
+    {
+      "id": "ex-main-0381-d",
+      "sha256": "5870f4d454eaab30c9660ddf054f40a9776cf3c4d527899cdfaf34070854c6e7"
+    },
+    {
+      "id": "ex-main-0382-a",
+      "sha256": "877cf17ab8368cc032c54d82d291ceb94ce22bff16d0117a5a4cce751952be63"
+    },
+    {
+      "id": "ex-main-0382-b",
+      "sha256": "fe5e3e21f4dede18c10f46e37a0a7f8c31e188ecb0dedafae5c6bd33af70bdaf"
+    },
+    {
+      "id": "ex-main-0383-a",
+      "sha256": "3554effccebb9ddfc15b52ab2cc249c77b3d5ee5010d3dd4e81f1d64759d3c5f"
+    },
+    {
+      "id": "ex-main-0383-b",
+      "sha256": "558423244127741bdbcfbb924192994f24f1f9156aff4da51f59ea6316f5abbf"
+    },
+    {
+      "id": "ex-main-0384-a",
+      "sha256": "92a6349ad28736856e929be1d960e793d5309c125cdadf0064f822fe16234e5e"
+    },
+    {
+      "id": "ex-main-0384-b",
+      "sha256": "d05783f1aa19348e4e4dbd0185a14ef58914cae310ebe535d36671ca0ad8c279"
+    },
+    {
+      "id": "ex-main-0385",
+      "sha256": "31a4d43f4f593e9426a2208232d45aace1e458cacf3750d80df66be5c320d5aa"
+    },
+    {
+      "id": "ex-main-0386",
+      "sha256": "78dcb806987d5c2fb0b60b866bd4cab691ab8ad329da37771cd89a438b31c0db"
+    },
+    {
+      "id": "ex-main-0387",
+      "sha256": "ab274648efdb732f6b0b7e4722c10d6dbd6b8ba05883e88e2a3655ffcff634a3"
+    },
+    {
+      "id": "ex-main-0388-a",
+      "sha256": "afd2256dc32e89715422c153988df8e5d481976c3431bdf34c546ec534dfe357"
+    },
+    {
+      "id": "ex-main-0388-b",
+      "sha256": "3963e430b2f9c8c203d8d6a1715e12e3bfe9b2d94f5da5c61d9f99818a644891"
+    },
+    {
+      "id": "ex-main-0388-c",
+      "sha256": "1c8e4eb07a17620761b2bb8e07df72a526fd6003b5c841349bd2373575950ec1"
+    },
+    {
+      "id": "ex-main-0388-d",
+      "sha256": "70523f7cbe80d38ae157a154c6fb52f44ad9d2ed86584b89636b2ee62fca9c26"
+    },
+    {
+      "id": "ex-main-0389",
+      "sha256": "eed78bd1cd8fe15cb22da234af24c4f1715d7a6681654985871b56c1606728cf"
+    },
+    {
+      "id": "ex-main-0390",
+      "sha256": "bc995a6033b682eaa8e8d71f3b9a435a4d8f7dd4fe6e7e18d7a18a690bdc2979"
+    },
+    {
+      "id": "ex-main-0391",
+      "sha256": "deb8a63719596fa0aa27072e7fd4489cb6185f2f2d7ec9891385cba06ec2bb47"
+    },
+    {
+      "id": "ex-main-0392",
+      "sha256": "4043a52777b8ab5b54d00bab076164db12398de6df4281555a2bf4609a518079"
+    },
+    {
+      "id": "ex-main-0393",
+      "sha256": "466e26a93dffbae51991fb0e8e15dd0f7e547baf9f609c32844ec6443245ce3d"
+    },
+    {
+      "id": "ex-main-0394",
+      "sha256": "9d81167bd37b0b793028fea5b0c1a332e7d5d9151aab9100e38ee4d76090fd6a"
+    },
+    {
+      "id": "ex-main-0395",
+      "sha256": "bc6b0a53ae0e0956b1410aa187cab54cae13e19a05ff995e5ba772faf09c2128"
+    },
+    {
+      "id": "theory-043",
+      "sha256": "fe4555e09936b030c8253cc10908371d8a5ca2a00963eae3e8db28a07ede9222"
+    },
+    {
+      "id": "theory-044",
+      "sha256": "64c5868d72bda87cd45ee7d3d87afb6be9c9e8e4827f43145baf7208d06d990b"
+    },
+    {
+      "id": "theory-045",
+      "sha256": "d98769728ce2b4877441f3276f584a5c587f1fa078d5555f6629dfbe453431db"
+    },
+    {
+      "id": "theory-046",
+      "sha256": "add3ad0c44969b653eabb62aef67bbb03372716e4721ec9e76ec0dc44950524e"
+    },
+    {
+      "id": "theory-047",
+      "sha256": "ad19789df92d1c5af16c89893ea27673e08a72504c42908b894a5fc869bb3957"
+    },
+    {
+      "id": "theory-048",
+      "sha256": "023d11cd813205941d2d3fb9e4289fec084735feeb16b96f57243e43ca0c31d4"
+    },
+    {
+      "id": "theory-049",
+      "sha256": "9ec735716f16899833be02b07980d7228fd736390ce2f1534fa95e5cd9a3cdcb"
+    },
+    {
+      "id": "theory-050",
+      "sha256": "fa9492544daac88093f84efc52748ed5568dea4a2a39a47d23db523fc26ccc2e"
+    },
+    {
+      "id": "theory-051",
+      "sha256": "a7e5f4a85bd60135b5c2a1843ac8b0815010aa287f717ee94b68182b7f8bf6bc"
     }
   ]
 }
