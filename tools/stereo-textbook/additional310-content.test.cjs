@@ -59,7 +59,7 @@ const corruptCases = new Map(screenshots);
 corruptCases.set([...corruptCases.keys()][0], 'changed-historical-case');
 assert.throws(() => baseline.previousCases(corruptCases), /all 1188 prior browser cases/);
 const rawPrevious = fs.readdirSync(dir)
-  .filter(name => name.endsWith('.json') && !ids.has(name.slice(0, -5)) && !later.ids.has(name.slice(0, -5)))
+  .filter(name => name.endsWith('.json') && !require('./cone-baseline.cjs').ids.has(name.slice(0, -5)) && !ids.has(name.slice(0, -5)) && !later.ids.has(name.slice(0, -5)))
   .sort().map(name => [name, hash(fs.readFileSync(path.join(dir, name)))]);
 assert.equal(rawPrevious.length, 507);
 assert.equal(sha(rawPrevious), published.rawLessonManifestSHA256, 'all 507 prior authored files byte-identical');
