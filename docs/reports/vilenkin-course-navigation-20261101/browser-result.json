@@ -1,0 +1,87 @@
+{
+  "result": "VILENKIN_COURSE_UI_BROWSER_OK",
+  "tasks": 194,
+  "checks": [
+    "At 1280px: first-screen course/start; bottom-right helper; keyboard topic entry; no overflow or writes",
+    "At 390px: first-screen course/start; bottom-right helper; keyboard topic entry; no overflow or writes",
+    "At 320px: first-screen course/start; bottom-right helper; keyboard topic entry; no overflow or writes",
+    "Primary start creates exactly one owned task; All topics returns to the cabinet; Continue and reload keep its id, draft, version and history",
+    "Catalog navigation switches to source-bound task help; acknowledged hint saves provenance and preserves draft",
+    "All topics waits for a held draft save, then returns to the cabinet without losing the newly saved input",
+    "The concrete fraction task offers a separate LCM trainer; popup is noopener, help is recorded, original condition/answer/status stay intact",
+    "Profile, legacy work, and other pupil work unchanged; no external provider calls or browser errors"
+  ],
+  "images": [
+    {
+      "file": "course-1280.png",
+      "sha256": "dc3e43749974e64e391f41e48aa4b8c0709101be918df808cc138b1f2b4db602"
+    },
+    {
+      "file": "course-helper-1280.png",
+      "sha256": "b5674f079349a8e1c5b3ca80a40b50bfa3153a761b97842a1a64a3f12c6ba9aa"
+    },
+    {
+      "file": "topic-1280.png",
+      "sha256": "a768457d2762ae651b8664785db07473a8cca1d9f59cb698ac96c4e6f47d9151"
+    },
+    {
+      "file": "course-390.png",
+      "sha256": "a8171aad7f39b1577076d23bb74ac74c05351c0bfc80239ed545925e01120ce4"
+    },
+    {
+      "file": "course-helper-390.png",
+      "sha256": "e0933e47497da007f490e173ebe4b06c6e57ff67ce78f3f3d6b58a41b734213e"
+    },
+    {
+      "file": "topic-390.png",
+      "sha256": "ab8d27bb4f2a32e97b23f430387b942d34b215de6627620d27eebd2ef0349ce4"
+    },
+    {
+      "file": "course-320.png",
+      "sha256": "5ee151b06943f53f9f2bccb7a4998e8a423b3af89d918a1cd376afda217f6bdd"
+    },
+    {
+      "file": "course-helper-320.png",
+      "sha256": "9b9d33898efdc6021668e06c604784ce6f8078736f4cb2a5580911514cf9c843"
+    },
+    {
+      "file": "topic-320.png",
+      "sha256": "ca8ec3a93ef2a23f8094e72c8f577bb19187a38af256e989e5aad20050efc9af"
+    },
+    {
+      "file": "task-helper-1280.png",
+      "sha256": "d336404119e74f00c6d3c46d95f712ec93f0eafb2d10bc77f63990f6b77dcfa9"
+    },
+    {
+      "file": "task-helper-320.png",
+      "sha256": "3b542dc46178c7ce2e8eb3fcb43a6212410e4bcb2fa0afd0f05ed079e6a894b9"
+    },
+    {
+      "file": "fraction-practice-1280.png",
+      "sha256": "cdbc024f5f0049fb86fe56ee1491e289923e54ff3932088175880a3b52710f2c"
+    }
+  ],
+  "sourceSha256": {
+    "learning/app.js": "a0025221b5b4b7513b6ffddcedc318faa44d69c11f264e1d4a3c621d2b6a3a31",
+    "learning/index.html": "c25b7bf6af11f05198c3811ec37126378111009a44ca9741c2454a5c7476369b",
+    "learning/assistant.css": "870b95cf73646a43280988ac8b795aa51b245e0a20ce142b0b8ee689227c285a",
+    "learning/vilenkin6-textbook-course.js": "ddbf348709562f73b6234568a96396ba6d01a982bad306a201b8d15d3eaae4e7",
+    "learning/vilenkin6-textbook-course.css": "ff2383fbec15548e0748e97cc4ae3a2e6a4151d242fe3f7730aa2c21f3fad240",
+    "learning/vilenkin6-textbook-helper.js": "3ff126a2104147c3c7a1f76d7f67438bd637f9e0ff390018440b0881f7a2c075",
+    "learning/trainer-frame.js": "3fcacc6f766e3f31cd9276d4b7002cdb458cc1cf4638f5c32bc7b1d64eea40b9",
+    "courses/vilenkin-6-part-1/textbook-course.js": "78d7aac5c81c8828a37f23c9e2b62e2b7e3312cb3372cb93979511de88b6dea9",
+    "courses/vilenkin-6-part-1/textbook-course.css": "c775f66b7a1beb17941cd367c25b926e1f36b250fa91275afea2a4970ec6fbe9",
+    "courses/vilenkin-6-part-1/textbook.html": "0b1f8653272dc0d92935efe44dee3918815b62f07d8fce5006cd23167f53293e",
+    "courses/vilenkin-6-part-1/textbook-support.js": "4874b9f7873219020b772bf3983075b7b3493cb52ee3efbad18763595f8ea2ba",
+    "courses/vilenkin-6-part-1/textbook-support.css": "bc84db07e4677de89acbb6be995bf7ae0d19b3833efbeb95915a0aa3ab91b127"
+  },
+  "viewportWidths": [
+    320,
+    390,
+    1280
+  ],
+  "errors": [],
+  "externalRequestsAllowed": 0,
+  "blockedExternalRequests": 0,
+  "providerCalls": 0
+}

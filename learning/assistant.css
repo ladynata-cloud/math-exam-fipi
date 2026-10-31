@@ -47,3 +47,11 @@
 @media(max-width:600px){.cabinet-assistant-dock{right:10px;bottom:max(10px,env(safe-area-inset-bottom));width:calc(100vw - 20px)}.cabinet-assistant-dock>.cabinet-assistant{padding:0 14px 14px;max-height:min(620px,calc(100dvh - 130px))}.cabinet-assistant-dock-header{margin:0 -14px 12px;padding:12px 14px}.cabinet-assistant-dock .cabinet-assistant-dock-header h2{font-size:1rem}.cabinet-assistant-launcher{min-height:44px;padding:10px 17px}}
 
 .cabinet-assistant-dock>.cabinet-assistant-launcher{background:#176c52;color:#fff;border-color:#176c52}.cabinet-assistant-dock .cabinet-assistant button.primary{background:#26734d;color:#fff;border-color:#26734d}
+
+body.vilenkin-helper-visible .content-column{padding-bottom:calc(110px + env(safe-area-inset-bottom))}
+.vilenkin-helper-dock>.cabinet-assistant-launcher{align-items:center;gap:10px;min-height:54px;padding:10px 18px;border-radius:18px;box-shadow:0 6px 22px #16372540}
+.vilenkin-helper-icon{display:grid;place-items:center;flex:0 0 28px;width:28px;height:28px;border:2px solid currentColor;border-radius:50% 50% 50% 6px;font-size:1.05rem;line-height:1;font-weight:800}
+.vilenkin-helper-directions{padding-left:22px;margin:0 0 18px}
+.vilenkin-helper-directions li+li{margin-top:9px}
+.vilenkin-course-helper .cabinet-assistant-actions button{justify-content:flex-start;text-align:left}
+@media(max-width:600px){.vilenkin-helper-dock>.cabinet-assistant-launcher{min-height:52px;padding:9px 15px}.vilenkin-helper-dock>.cabinet-assistant{max-height:calc(100dvh - 106px - env(safe-area-inset-bottom))}}

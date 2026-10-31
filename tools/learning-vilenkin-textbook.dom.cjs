@@ -41,3 +41,31 @@ test('an explicit fresh-current action leaves the saved attempt available for hi
  const row=definitions[0],opened=[],f=fixture(t,{progress:[{trainerId:row.trainerId,contentId:row.contentId,latest:{id:'historical_source'}}],open:(id,options)=>opened.push({id,options})});await tick();
  f.host.querySelector('[data-vilenkin-textbook-fresh="'+row.id+'"]').click();await tick();assert.deepEqual(JSON.parse(JSON.stringify(opened)),[{id:row.id,options:{fresh:true,sourceAttemptId:'historical_source'}}]);f.button(row.id).click();assert.deepEqual(f.routes,['attempt=historical_source']);
 });
+
+test('primary course action starts once across both buttons and resumes an unfinished saved task',async t=>{
+ const opening=pending(),f=fixture(t,{open:()=>opening.promise});
+ const start=f.host.querySelector('[data-vilenkin-textbook-start]');assert(start.disabled);await tick();
+ start.click();f.button(definitions[0].id).click();assert.deepEqual(f.calls,[definitions[0].id]);opening.resolve();await tick();
+ const [done,unfinished]=definitions,g=fixture(t,{progress:[
+  {trainerId:done.trainerId,contentId:done.contentId,completed:true,latest:{id:'finished',outcome:'independent'}},
+  {trainerId:unfinished.trainerId,contentId:unfinished.contentId,completed:false,latest:{id:'unfinished',outcome:'started'}}
+ ]});await tick();
+ const resume=g.host.querySelector('[data-vilenkin-textbook-start]');assert.match(resume.textContent,/Продолжить/);resume.click();
+ assert.deepEqual(g.routes,['attempt=unfinished']);assert.equal(g.calls.length,0);
+});
+
+test('topic selection and completed-course action only reveal navigation, with truthful progress',async t=>{
+ const f=fixture(t,{progress:definitions.map((row,i)=>({trainerId:row.trainerId,contentId:row.contentId,completed:true,latest:{id:'done_'+i,outcome:'independent'}}))});await tick();
+ const summary=f.host.querySelector('[data-vilenkin-textbook-unit] > summary');
+ f.host.querySelector('[data-vilenkin-textbook-choose-topic]').click();assert.equal(f.w.document.activeElement,summary);
+ f.host.querySelector('[data-vilenkin-textbook-start]').click();assert.equal(f.w.document.activeElement,summary);
+ assert.equal(f.calls.length,0);assert.equal(f.routes.length,0);assert.equal(f.host.querySelector('[data-v6-progress-bar]').value,definitions.length);
+ assert.equal(f.host.querySelector('[data-v6-completed]').textContent,String(definitions.length));
+});
+
+test('an unfinished repeat remains resumable even when earlier work completed every task',async t=>{
+ const row=definitions[1],f=fixture(t,{progress:definitions.map((item,i)=>({trainerId:item.trainerId,contentId:item.contentId,completed:true,latest:{id:i===1?'unfinished_repeat':'finished_'+i,outcome:i===1?'started':'independent'}}))});await tick();
+ assert.match(f.button(row.id).textContent,/Продолжить/);assert.equal(f.host.querySelector('[data-vilenkin-textbook-status="'+row.id+'"]').dataset.state,'started');
+ f.host.querySelector('[data-vilenkin-textbook-start]').click();assert.deepEqual(f.routes,['attempt=unfinished_repeat']);assert.equal(f.calls.length,0);
+ assert.equal(f.host.querySelector('[data-v6-progress-bar]').value,definitions.length,'Prior achievements remain in aggregate progress');
+});

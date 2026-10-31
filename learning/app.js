@@ -791,7 +791,7 @@ async function nextDivisionTask(){
   if(opened)divisionNextRequests.delete(key);
  }finally{request.pending=false;recover();}
 }
-function trainerChange(change){const a=activeAttempt,{kind,details,state}=change;if(workspace&&a&&(kind==='newtask'||kind==='new-task')&&a.trainerId==='oge-basics'&&(a.taskSpec?.family==='division'||a.taskSpec?.family==='multiplication'||!!window.ArithmeticCourse?.trackFor(a.contentId))){nextDivisionTask();return;}if(!workspace||workspace.history||!owns(a))return;if(kind==='newtask'||kind==='new-task'){if(teacher()){toast('Чтобы выдать новый вариант, выберите задание на урок.');return;}if(queuedFor(a.id).length){toast('Сначала дождитесь сохранения текущей работы.');return;}const context=new URLSearchParams(activeRoute());openContent(itemFor(a).id,{fresh:true,sourceAttemptId:a.id,returnTo:context.get('returnTo'),topicId:context.get('topic')});return;}const type=kind==='check'?'check':kind==='hint'?'hint':kind==='reference'?'reference':'state';const payload=type==='state'?{state}:type==='check'?{state,details}:type==='hint'?{state,...(Number.isInteger(details.step)?{step:details.step}:{})}:{id:String(details.id||'reference')};action(a.id,type,payload);}
+function trainerChange(change){const a=activeAttempt,{kind,details,state}=change;if(workspace&&a&&(kind==='newtask'||kind==='new-task')&&a.trainerId==='oge-basics'&&(a.taskSpec?.family==='division'||a.taskSpec?.family==='multiplication'||!!window.ArithmeticCourse?.trackFor(a.contentId))){nextDivisionTask();return;}if(!workspace||workspace.history||!owns(a))return;if(kind==='navigate'&&details?.target==='vilenkin-textbook-catalog'&&a.trainerId==='vilenkin6-textbook'){if(!teacher()&&canLeaveAttempt())navigate('vilenkin-textbook');return;}if(kind==='newtask'||kind==='new-task'){if(teacher()){toast('Чтобы выдать новый вариант, выберите задание на урок.');return;}if(queuedFor(a.id).length){toast('Сначала дождитесь сохранения текущей работы.');return;}const context=new URLSearchParams(activeRoute());openContent(itemFor(a).id,{fresh:true,sourceAttemptId:a.id,returnTo:context.get('returnTo'),topicId:context.get('topic')});return;}const type=kind==='check'?'check':kind==='hint'?'hint':kind==='reference'?'reference':'state';const payload=type==='state'?{state}:type==='check'?{state,details}:type==='hint'?{state,...(Number.isInteger(details.step)?{step:details.step}:{})}:{id:String(details.id||'reference')};action(a.id,type,payload);}
 function updateMultiplicationSupport(attempt,editable){
  const host=$('route-support');if(!host)return;
  let panel=$('multiplication-step-support');
@@ -830,7 +830,8 @@ function mountCabinetAssistant(page,params,serial){
  if(params.has('run')||params.has('preview')||hasNativeCourseRoute(params)||hasPetersonCourseRoute(params))return;
  const actor=account.id,revision=authRevision,isTeacher=teacher(),studentId=isTeacher&&page==='student'?params.get('student'):null;
  if(isTeacher&&!studentId)return;
- if(!isTeacher&&!['home','route','course','attempt','assignment','lesson'].includes(page))return;
+ const vilenkinNavigation=!isTeacher&&!activeAttempt&&attachedCourse()?.id==='vilenkin6-textbook'&&['home','route','course','vilenkin-textbook','history'].includes(page)&&window.VilenkinTextbookHelper?.mountNavigation;
+ if(!isTeacher&&!vilenkinNavigation&&!['home','route','course','attempt','assignment','lesson'].includes(page))return;
  const assignment=params.has('assignment')?assignments.find(item=>item.id===params.get('assignment')):null;
  const attemptId=!isTeacher?(activeAttempt?.id||assignment?.attempt?.id):null;
  const route=activeRoute(),same=()=>account?.id===actor&&authRevision===revision&&routeNumber===serial&&activeRoute()===route;
@@ -856,6 +857,21 @@ function mountCabinetAssistant(page,params,serial){
      return result.help;
     }finally{if(workspace===initialWorkspace){initialWorkspace.sourceHelpBusy=false;updateWorkspace();}}
    }});
+  return;
+ }
+ if(vilenkinNavigation){
+  const canNavigate=()=>same()&&!identityLocked&&!authMutationBusy&&!quickLoginBusy;
+  assistantDispose=VilenkinTextbookHelper.mountNavigation(host,{isCurrent:canNavigate,
+   showCourse:target=>{
+    if(!canNavigate())return;
+    const course=main.querySelector('[data-vilenkin-textbook-course]');
+    if(!course){navigate('vilenkin-textbook');return;}
+    const control=course.querySelector(target==='topics'?'[data-vilenkin-textbook-unit] > summary':'[data-vilenkin-textbook-start]')||course;
+    if(!control.hasAttribute('tabindex')&&!/^(BUTTON|A|SUMMARY)$/.test(control.tagName))control.tabIndex=-1;
+    control.scrollIntoView({block:'center'});control.focus({preventScroll:true});
+   },
+   showHistory:()=>{if(canNavigate())navigate('history');}
+  });
   return;
  }
  const legacy=!isTeacher&&activeAttempt?.trainerId==='ege-path'&&activeAttempt.taskSpec?.task?.model?.kind==='grade7-construction';

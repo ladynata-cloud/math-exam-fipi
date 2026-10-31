@@ -48,6 +48,7 @@ jobs:
           python3 tools/vilenkin6-course/coverage-inventory.test.py
           node tools/learning-vilenkin-textbook.browser.cjs
           node tools/learning-vilenkin-helper.browser.cjs
+          node tools/learning-vilenkin-course-ui.browser.cjs
           node tools/vilenkin6-course/textbook-support-browser.cjs
           node tools/vilenkin6-course/check.cjs
           node tools/vilenkin6-course/dom.cjs

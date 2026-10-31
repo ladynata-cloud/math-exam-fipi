@@ -64,6 +64,20 @@ test('unverified source identity or forged completion fails closed during restor
  await f.hydrate(bad,a.state);assert.equal(f.messages.at(-1).message.payload.error,'RESTORE_FAILED');assert.equal(f.w.document.body.dataset.managedReadonly,'true');
 });
 
+test('All topics requests the owning catalogue without changing the task or accepting stale controls',async t=>{
+ const f=await fixture(t),a=C.create(tasks[0].id,31);await f.hydrate(a.taskSpec,a.state);
+ f.input('unfinished');const saved=copy(f.changes().at(-1).state);
+ const link=f.w.document.querySelector('[data-managed-course-catalog]');assert(link);assert.equal(link.getAttribute('href'),'#');
+ link.click();const change=f.changes().at(-1);
+ assert.equal(change.kind,'navigate');assert.deepEqual(change.details,{target:'vilenkin-textbook-catalog'});
+ assert.deepEqual(change.state,saved);assert.equal(f.w.location.hash,a.state.route);
+ const count=f.changes().length,b=C.create(tasks[1].id,32);await f.hydrate(b.taskSpec,b.state);
+ link.click();assert.equal(f.changes().length,count,'Detached catalogue link cannot leave the next task');
+ await f.hydrate(b.taskSpec,b.state,true);
+ f.w.document.querySelector('[data-managed-course-catalog]').click();assert.equal(f.changes().length,count,'Read-only bridge retains its navigation guard');
+ assert.equal(f.storageReads(),0);
+});
+
 test('manual criteria checked out of order serialize with false entries and restore after JSON round trip',async t=>{
  const f=await fixture(t),task=tasks.find(x=>x.role!=='learn'&&x.answerType==='self-check'&&x.selfCheck?.length>1),a=C.create(task.id,46);await f.hydrate(a.taskSpec,a.state);
  f.submit();let incomplete=f.changes().at(-1);assert.equal(incomplete.kind,'input');assert.equal(incomplete.state.task.status,'');C.normalize(a.taskSpec,incomplete.state,a.state);

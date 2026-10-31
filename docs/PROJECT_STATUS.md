@@ -1,5 +1,27 @@
 # MathExam project status
 
+## Prepared: Vilenkin 6 course navigation and visible helper, 2026-11-01
+
+- [Task](tasks/VILENKIN_COURSE_NAVIGATION_20261101.md), MEDIUM; owner directly
+  requested the course-interface correction and a bottom-right helper.
+  Base `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`, branch
+  `fix/vilenkin-course-navigation-20261101`.
+- The course has distinct topic cards, visible Start/Continue/task actions,
+  truthful aggregate progress and continuation of the latest unfinished work.
+  Navigation help is available on course pages; saved-task help retains its
+  existing source-confirmation and access checks.
+- Managed “Все темы” returns to the cabinet catalogue through the existing
+  authenticated frame bridge, after the current work is saved. A contextual
+  link in fraction tasks opens the existing step-by-step LCM trainer on a
+  separate example; it does not implement a new 75/30 worksheet.
+- All 194 original cards, 615 authored steps, 27 legacy modules, source hashes,
+  identities and server contracts remain unchanged. No real profile was read
+  or modified. [Preparation report](reports/VILENKIN_COURSE_NAVIGATION_20261101.md)
+  records local/browser/internal-review evidence and remaining release work.
+- PR389 and PR391 remain separate pending tasks; neither is incorporated here.
+  This UI candidate is not merged or deployed. Exact-head CI and any release
+  decision belong to the Draft PR, after its creation.
+
 ## Locally prepared: corrected fixed OGE book edition v2, 2026-10-31
 
 - [Task](tasks/OGE_BOOK_EDITION_V2_DALI_20261031.md), `MEDIUM`; owner START,
@@ -50,7 +72,7 @@
   with no provider verdict. Physical phones/printed QR, iOS/Safari/Firefox,
   screen keyboard and pupil trials were not performed.
 
-## Prepared: Vilenkin 6 source clarity and revised cabinet course
+## Merged: Vilenkin 6 source clarity and revised cabinet course
 
 - [Task](tasks/VILENKIN6_CLARITY_CABINET_20261030.md), HIGH; branch
   `fix/vilenkin6-clarity-cabinet-20261030`, original candidate base
@@ -58,7 +80,10 @@
 - 24 units, 194 source-selected cards, 615 steps; exact source captions,
   prime table through 1000, elementary/grade-five refreshers and optional hints.
 - Separate per-task cloud attempts preserve the prior 27-module course and its
-  work. Assignment to a real cabinet and production deployment are not done.
+  work. Reconciliation on 2026-11-01 confirms [PR378](https://github.com/ladynata-cloud/math-exam-fipi/pull/378)
+  merged as `7547ea565871e09ee02b632761f27bc088bd5c8a`; the owner's current
+  screenshots show the 194-card course in the live cabinet. This is not a new
+  independent certification of the hosting deployment or a real-profile edit.
 - [Review report](reports/VILENKIN6_CLARITY_CABINET_20261030.md) separates source,
   mathematics, saved-work and browser evidence. External review is unavailable,
   not approved. Release requires the scoped exact-head decision.
