@@ -158,6 +158,48 @@ coordinates, results, screenshots and the reviewed files by SHA-256.
 - These are Chromium desktop/emulated-width checks. Physical phones, mobile
   keyboards, Safari, Firefox and a real pupil trial were not performed.
 
+## Initial CI findings
+
+The first published head, `e21a4e4385c2559cc29fe283d06a34cc5a4905c2`, passed
+the Vilenkin cloud and publication workflows, including the new browser gate.
+The unified backend suite also passed 358/358 tests. Its later sealed-catalog
+integration gate had not yet included the 44 author cards and therefore failed
+with 238 actual versus 194 expected textbook-family IDs.
+
+That gate is corrected within this task: the original 194 source IDs still
+have their own exact comparison, while the 44 author IDs have a separate exact
+group with source/author separation and no invented page. The full catalog
+partition remains exhaustive. The corrected
+`GRADE7_GEOMETRY_REBUILD_INTEGRATION_OK` passes locally with 616 identities,
+676 unchanged legacy cases and 62 reshuffle-identity checks. No runtime or
+content changed for this CI correction. The Draft PR records the new head's CI.
+An independent internal review of this gate correction found no weakened
+assertion: misclassification, missing/duplicate IDs and unaccounted catalog
+entries still fail. The separate immutable-base oracle checks the full source
+records and bytes, beyond this integration gate's ID comparisons.
+
+Two further CI failures reproduce on the unmodified base:
+
+- [Ichenskaya source/proof workflow](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41225257001),
+  job 124607951523.
+- [Atanasyan first-steps workflow](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41225256968),
+  job 124607951726.
+
+Both stop in `tools/atanasyan-first-steps/build.py --check` with
+`Canonical source SHA256 changed; audit the source before updating this route`.
+The builder still pins
+`bcd2aba64872aabcfd763448d9e3223ae90bb40a780091dd5922059c14583d81`, while
+`geometry-course/textbook/data/course.json` is
+`af1e3a373745d3a66e3e6f71b14d02de4cd81f0c688a8929c0475277cc22b574`.
+Both files are byte-identical between the task base and candidate; the builder
+itself hashes to `f4e6d4460089d1c156a3c815ed43ce1b838229d138e6469955624f0c60caff7f`.
+The primary executor reproduced the failure and exact base comparison.
+
+These source audits are outside the approved LCM scope. Their expected hashes
+were not relaxed or silently changed. **Overall CI is not reported green**;
+the Draft PR remains open for a separate owner decision on these existing
+source-audit failures as well as external review and release authorization.
+
 ## Review and production boundaries
 
 The curriculum agent independently reviewed the UI/integration, including the
@@ -204,9 +246,9 @@ Base: a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3
 Head: Exact committed head in Draft PR; reviewed file hashes in browser-result.json
 Gate: GRADE6_LCM_MULTI_PREPARATION_OK (local preparation only)
 Tests: Relevant local mathematical, identity, source, DOM, SQLite and browser gates PASS
-Failures: No open local product failures; corrected attempts and environment failures above
+Failures: Local LCM checks pass; two pre-existing geometry source-audit CI failures remain; initial catalog gate corrected
 Not run: External review, release, real cabinet assignment and physical-device/pupil trial
 Scope deviations: None; author-only layout corrections use existing handlers and APIs
-Recommendation: Review the concrete candidate; retain Draft status until release conditions are met
-Next user decision: External-review route or explicit exception, then separate base/head release authorization and owner sign-in
+Recommendation: Retain Draft status; resolve the recorded CI and release conditions
+Next user decision: Existing source-audit failures and external-review route/exception, then separate release authorization and sign-in
 ```

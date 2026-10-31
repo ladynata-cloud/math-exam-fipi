@@ -18,6 +18,12 @@
   condition/input visibility and unobstructed actions at 320/390/1280 px.
   No actual pupil profile has been changed. External design/result review is
   unavailable and is not approved or waived.
+- Initial exact-head CI passes the Vilenkin cloud/publication workflows. The
+  global catalog partition was extended to check original 194 and author 44
+  separately after its first CI failure. Two unrelated source-audit workflows
+  reproduce an unchanged Atanasyan base hash mismatch; the report records
+  these failures. Overall CI is not claimed green and those source pins are
+  not changed in the LCM task.
 - Next: complete exact-head technical/review evidence, obtain the separate
   release decision, then verify the intended existing cabinet after owner
   sign-in and publication. No other learner's route is in scope.
