@@ -15,12 +15,18 @@
   below, without claiming unrelated backend rollouts.
 - The owner authorized a normal merge of the new main into this PR branch,
   preserving both histories, plus scope rebinding and task-document updates.
-  The merge is clean; task and scope now name the same base with the unchanged
-  allowed-file list. Fresh local navigation31, admission9, browser16 and
+  The merge is clean; task and scope name the same base. Fresh local
+  navigation31, admission9, browser16 and
   sitemap12 checks pass, including the strict new-base HTML/scope proof and
   composed Cone/content guards. Exact final-head cloud outcomes and branch
   update are recorded separately in the current PR handoff.
   This authorization does not release PR #385 into main or production.
+- The later instruction to fix the errors authorizes a bounded source-provenance
+  repair, two source-course browser-fixture corrections and the bounded
+  operations-receipt privacy test correction. All 255 first-steps cards and
+  original exact-byte oracles are preserved; only source/knowledge fingerprints
+  and their strict dependent pins change. The task and scope enumerate the nine
+  additional paths. The unrelated dialogue/provider work in #375 remains separate.
 - Public navigator is being validated on 595 pages. All 832 existing HTML files
   preserve their base bytes outside the exact inclusion. The two protected
   textbook shells and two existing task-helper pages remain unchanged.
@@ -32,8 +38,8 @@
   claim or an external-review approval. Exact evidence is in the
   [integration report](reports/MATHEXAM_PUBLIC_ASSISTANT_INTEGRATION_20261031.md)
   and the replacement Draft PR linked there.
-- Next three actions: reconcile current-head CI and the inherited source/layout
-  conditions, including the separate proposed source-pin correction in PR #375;
+- Next three actions: finish the repaired current-head gates and retain the
+  historical layout observations separately;
   obtain HIGH external review or a reasoned owner exception and exact release
   decision; verify the authorized deployment on the public site.
 

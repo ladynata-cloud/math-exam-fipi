@@ -24,11 +24,12 @@ const cases = [
   'atanasyan-7-9-main-160-part-2'
 ];
 const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon' };
+const publicAssistantAssets = new Set(['/assets/assistant/data.js', '/assets/assistant/widget.js', '/assets/assistant/widget.css']);
 const server = http.createServer((request, response) => {
   let pathname;
   try { pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname); }
   catch (_) { response.writeHead(400).end(); return; }
-  if (!/^\/(?:learning|geometry-course|ege-baza\/path)\//.test(pathname) || pathname.split('/').some(part => part.startsWith('.'))) {
+  if ((!/^\/(?:learning|geometry-course|ege-baza\/path)\//.test(pathname) && !publicAssistantAssets.has(pathname)) || pathname.split('/').some(part => part.startsWith('.'))) {
     response.writeHead(404).end(); return;
   }
   const file = path.resolve(repo, '.' + pathname + (pathname.endsWith('/') ? 'index.html' : ''));
@@ -42,6 +43,25 @@ const server = http.createServer((request, response) => {
 const result = { viewportJourneys: [], nativeJourneys: [], teacherPreview: null, screenshots: [], pageErrors: [], unexpectedRequests: [], externalRequests: [] };
 let browser;
 
+async function assertPublicNavigator(page) {
+  const host = page.locator('#maxexam-public-assistant');
+  const launcher = host.locator('.launcher');
+  await launcher.waitFor();
+  assert.equal(await host.count(), 1, 'The public course loads exactly one real navigator');
+  await page.waitForFunction(() => document.querySelector('#maxexam-public-assistant')?.shadowRoot?.querySelector('link[rel="stylesheet"]')?.sheet);
+  assert.equal(await launcher.evaluate(node => getComputedStyle(node).position), 'fixed', 'Navigator stylesheet must actually load');
+  const dialog = page.getByRole('dialog', { name: 'MaxExam 0.0', exact: true });
+  assert.equal(await launcher.getAttribute('aria-expanded'), 'false');
+  assert.equal(await dialog.isVisible(), false);
+  await launcher.click();
+  await dialog.waitFor();
+  assert.equal(await launcher.getAttribute('aria-expanded'), 'true');
+  assert((await host.locator('.log').innerText()).trim().length > 0, 'Real catalogue welcome must render');
+  await host.getByRole('button', { name: 'Закрыть помощника', exact: true }).click();
+  await dialog.waitFor({ state: 'hidden' });
+  assert.equal(await launcher.getAttribute('aria-expanded'), 'false');
+  return { loaded: true, styled: true, opened: true, closed: true };
+}
 async function assertReady(page, id) {
   await page.locator('[data-full-condition]').waitFor();
   await page.locator('[data-final-answer]').waitFor();
@@ -89,6 +109,7 @@ async function exerciseJourney(page, id, { prefix, width, native = false } = {})
   const draft = 'Моя проверочная запись к №' + lesson.source.exercise + ': сначала записываю данные и цель.';
   const firstStep = 'Мой первый шаг: выделяю известные элементы и нужное построение.';
   await assertReady(page, id);
+  const publicNavigator = native ? null : await assertPublicNavigator(page);
   await page.locator('[data-final-answer]').fill(draft);
   await page.locator('[data-guided-help] > summary').click();
   await page.locator('[data-next-step]').click();
@@ -134,7 +155,7 @@ async function exerciseJourney(page, id, { prefix, width, native = false } = {})
   assert.match(await page.locator('[data-assistance-status]').innerText(), /использована помощь/);
   assert.equal(await page.locator('[data-step-explanation="0"]').getAttribute('open'), '');
   assert.equal(await page.locator('[data-step-reason="0"]').getAttribute('open'), '');
-  return { id, viewport: width, native, steps: lesson.steps.length, retainedDraft: true, retainedStep: true, retainedAssistance: true, retainedExplanation: true, geometry };
+  return { id, viewport: width, native, publicNavigator, steps: lesson.steps.length, retainedDraft: true, retainedStep: true, retainedAssistance: true, retainedExplanation: true, geometry };
 }
 async function makePage(origin, viewport) {
   const context = await browser.newContext({ viewport: { width: viewport, height: 900 }, reducedMotion: 'reduce' });

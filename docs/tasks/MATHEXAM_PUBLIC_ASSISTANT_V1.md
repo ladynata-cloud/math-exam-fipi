@@ -36,6 +36,16 @@ it does not authorize PR #385 to merge into `main`, auto-merge, deployment or an
 external-review exception. The separate exact-base/head release decision remains
 required by repository policy.
 
+The subsequent direct instruction, "fix the errors and continue", authorizes
+repair of the confirmed current-head CI blockers in this same task. The bounded
+amendment audits and imports only the six-file source-provenance repair already
+prepared in PR #375, plus two source-course browser fixtures that must serve the
+actual public navigator and the narrowly scoped operations-receipt privacy test
+that also failed on the preceding head. This does not import the dialogue/provider
+changes from that PR or grant release permission. The nine exact additional paths
+are listed below and in the scope manifest; the existing base and strict guards
+remain.
+
 Main already contains the assistant/cabinet foundation (#358), task helpers
 (#369), stereometry hidden-edge fixes (#376), public entry fixes (#368), updated
 Vilenkin courses/help (#378/#380), Atanasyan chapter VIII (#382), improved
@@ -53,7 +63,20 @@ records fresh evidence and the remaining release conditions.
   exact two-script inclusion and narrow fixture/generator compatibility changes.
 - Reconcile the existing PR #385 branch with the authorized current main by a
   normal merge, preserve both histories, rebind the existing scope manifest and
-  update task records without widening its allowed-file list or product scope.
+  update task records. That reconciliation retained its original allowed-file
+  list; the later authorized blocker repair adds only the nine paths below.
+- Repair the stale canonical-source pin after independently proving that all
+  255 selected cards, catalogue entries, ordering, revisions, sections, display
+  overrides and historical exact-byte oracles are unchanged. Regenerate only
+  source-provenance fingerprints and update their exact dependent test pins.
+- Strengthen the two affected browser fixtures to serve only the three exact
+  public-helper assets and exercise real public pages with the navigator loaded,
+  retaining all original source, geometry, saved-work and cabinet assertions.
+- Repair the operations-receipt privacy oracle's treatment of coincidental
+  four-digit PIN substrings in typed opaque metadata, retaining credential-key
+  and payload checks, exact DTO-path/database-identity validation, deliberate leak
+  controls and actual issuance isolation. Keep the optional browser artifact
+  readiness selector specific to the intended open route library.
 - Update verified material routes and clarify ambiguous course/grade requests.
 - Preserve numbered exam intent through clarification, and avoid substituting
   elementary arithmetic for advanced mathematical objects. Include the current
@@ -82,14 +105,32 @@ records fresh evidence and the remaining release conditions.
 ### Files and boundaries retained
 
 Every one of the 832 existing HTML files must match the base byte-for-byte after
-removal of the exact inclusion. All existing course data, scripts, storage keys,
-review records and frozen baselines are retained. Two review-bound textbook
+removal of the exact inclusion. All teaching content, runtime scripts, storage
+keys, review records and frozen baselines are retained. The narrow provenance
+exception changes only the selected course's `source.sha256` and its helper
+snapshot's `sourceSha256` / `courseSha256`, with matching strict test pins.
+Two review-bound textbook
 shells remain unchanged: `geometry-course/textbook/index.html` and
 `stereo-course/textbook/index.html`. They remain valid navigation destinations.
 
 `school/peterson6/index.html` and `trainers/maxim-peterson6/index.html` retain their
 published task-aware helpers without a duplicate public launcher. Private,
 board/source/archive/export/redirect pages remain outside public admission.
+
+The authorized blocker repair may additionally touch only:
+
+- `tools/atanasyan-first-steps/build.py`
+- `learning/atanasyan-first-steps/course.json`
+- `assistant-service/knowledge/atanasyan-first-steps.json`
+- `tools/atanasyan-first-steps/source.test.cjs`
+- `tools/ichenskaya-grade7-works/source.test.cjs`
+- `assistant-service/test/course-context.test.js`
+- `tools/atanasyan-first-steps/browser.cjs`
+- `tools/ichenskaya-grade7-works/browser.cjs`
+- `tools/learning-free-route.browser.cjs`
+
+These paths do not authorize changes to server/runtime behavior, learning
+content, credential/provider configuration or existing historical oracles.
 
 ## Acceptance criteria
 
@@ -116,6 +157,13 @@ of the reconciled head is recorded separately in the integration report and PR.
 - SEO/sitemap/catalogue, existing arithmetic/OGE/profile fixture and browser gates.
 - Unchanged protected shells; stereo generator and offline Pogorelov reproduction.
 - Syntax and `git diff --check`; cloud checks must match the final PR head.
+- Both bounded-course builders and source tests, the independent Ichenskaya
+  mathematics audit, full canonical textbook reproduction, both helper knowledge
+  projections, retained-work/cabinet tests and forged-source context negatives.
+- Full first-steps and Ichenskaya public/native/teacher browser journeys, with
+  the real public helper assets available rather than silently returning 404.
+- Full synthetic free-route browser, typed receipt validation, positive leak
+  injections and unchanged receipt snapshots around credential issuance.
 - Four additional narrow fixture corrections cover URL loading in public
   continuation/arithmetic and exact T14 inclusion normalization. Original UI and
   geometry hashes remain fixed; negative controls reject unrelated changes.
@@ -142,6 +190,10 @@ helpers and mistaken public admission. Exact page proof, isolated styles/keys,
 strict links and real page journeys bound these risks. Rollback removes only
 the exact marked inclusion from admitted pages and reruns coverage/SEO/browser
 checks; it does not delete learner work or assistant-service accounting data.
+The provenance repair keeps the course and helper knowledge fingerprints paired.
+Any release or rollback of that pair must keep cabinet/helper packaging aligned;
+the existing context handshake rejects mismatches. The canonical textbook and
+all teaching/learner identities remain unchanged by the repair.
 
 ## Permissions
 
@@ -149,6 +201,9 @@ checks; it does not delete learner work or assistant-service accounting data.
 - Normal merge of main into the existing PR branch with both histories retained,
   scope rebinding, task-document updates, validation, continuation commits and push: explicitly
   authorized by the owner on 2026-10-31.
+- Confirmed CI-blocker repair, the nine narrowly enumerated repair paths,
+  validation, commits and push: authorized by the subsequent direct instruction
+  to fix the errors and continue. This is not a HIGH-review exception.
 - Existing public-source inspection and synthetic local/browser checks: yes.
 - Provider credentials/calls, external messages and new paid infrastructure: no.
 - PR #385 merge into `main`, auto-merge and deployment: pending separate current
@@ -162,7 +217,9 @@ The history-preserving reconciliation commit
 `40a43c89d0f3c8738aa15ede96dd43ee5ceece70` and
 `139b944a70f2e8ba4d340d152d08807fad03e5da`, with clean merged tree
 `69aac2c41c036793408248dba09ac95e39a47446`. The scope manifest uses the second
-parent as its base, retaining the existing allowed-file list and strict guards.
+parent as its base. That reconciliation retained the existing allowed-file list;
+the subsequently authorized blocker repair adds only the nine enumerated paths
+while retaining the same strict base, placement and scope guards.
 Fresh local navigator, scope, browser, SEO and composed-course checks are recorded
 in the integration report. Exact final head, branch update and fresh cloud
 outcomes are recorded separately in the current PR handoff.

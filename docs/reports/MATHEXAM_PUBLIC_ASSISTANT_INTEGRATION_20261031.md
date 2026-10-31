@@ -11,7 +11,139 @@
 - Replacement Draft PR: [#385](https://github.com/ladynata-cloud/math-exam-fipi/pull/385).
 - Exact final head and complete current-head CI: recorded in that PR's handoff.
 
-## Authorized current-main reconciliation — 2026-10-31
+## Authorized CI-blocker repair — current continuation
+
+The owner's subsequent direct instruction, "fix the errors and continue",
+authorizes this bounded repair on PR #385 after the reconciliation head
+`fe8bb84856bd20797e97da99198bfe186d6492f0`. The base remains
+`139b944a70f2e8ba4d340d152d08807fad03e5da`; the normal merge and both histories
+are retained. The scope amendment lists exactly nine additional source/test
+paths. Together with four existing scope/task/report/status paths, they are the
+only files changed by this continuation. The full PR delta is now 650 paths.
+This permission does not include PR-to-main merge, deployment, model/provider
+activation or an exception from HIGH external review.
+
+### Canonical-source provenance and exact content preservation
+
+The two failed source-course workflows on the reconciliation head reached the
+same strict, obsolete full-textbook source pin. The current canonical textbook
+had expanded while all 255 selected first-steps cards and their identities were
+unchanged. The repair imports only the audited six-file provenance subset from
+PR #375, not its dialogue/service changes. The builder still checks an exact
+whole-source hash and the existing independent selection/historical oracles.
+
+- Canonical source SHA256:
+  `af1e3a373745d3a66e3e6f71b14d02de4cd81f0c688a8929c0475277cc22b574`.
+- The generated first-steps course changes only `source.sha256`; its SHA256 is
+  `0a55791957f465cf6f9c3736fe41ca8a4fb110601bbcf9c4e9843e38a3f5a0fe`.
+- Its helper knowledge changes only `sourceSha256` and `courseSha256`; its
+  SHA256 is `755cd5c4593594f296cb1a7e03af5ad29ba5413104561522901918f31c418013`.
+- All selected cards, catalogue records, order, revisions, storage identities,
+  sections, display overrides and teaching content remain exact. Restoring just
+  those provenance fields reproduces the previous course and helper bytes.
+- The selected-content oracle remains
+  `175e92c3dc4476da7148b4e8c2d2e305d7cd322c55d6d5db1290cc98a1004318`;
+  the historical course and helper exact-byte oracles remain
+  `551c433a5332dba52779e74f7e6f95289c3915bdc55da3f7c0ed71d0b7e651a3`
+  and `2b69a93b35d05dda1ae195cd5cf0ea2482dbd7064e82d7736750afcbdce024aa`.
+- Both bounded builders and both helper knowledge projections pass. Combined
+  source/state/runtime/cabinet tests pass **24/24**; helper context tests pass
+  **6/6**; Ichenskaya's independent mathematics audit passes **332 checks**.
+  Full canonical textbook reproduction preserves **1,247 cards** and review
+  hashes. Seven independent mutation probes still reject source bytes, content,
+  sections, display overrides, catalogue, IDs and revision changes.
+
+The canonical textbook itself and all production runtime/server code are
+unchanged. Future textbook expansion still requires a new provenance audit;
+this correction does not replace the strict source pin with a permissive check.
+Course and helper fingerprints must remain paired in any later deployment or
+rollback; the existing context handshake fails closed on a mismatch.
+
+### Real public helper in both source-course browsers
+
+The two local fixture servers previously returned 404 for public-helper assets,
+so their original journeys did not establish compatibility with a loaded
+navigator. They now admit only its three exact assets (`data.js`, `widget.js`
+and `widget.css` under `assets/assistant/`). Original path containment, external
+request interception and all source/geometry/draft/cabinet checks are retained.
+Every public journey asserts one real styled helper, default-closed state,
+successful open/catalogue/close interaction, then runs its original course
+checks. The new helper interaction occurs before entering the new course draft;
+it is not evidence of a conversation after filling that draft.
+
+- First steps: **12 public + 12 native journeys**, plus readonly teacher preview.
+- Ichenskaya: **16 public + 16 native journeys**, two retained course switches
+  and readonly teacher preview.
+- Both complete strengthened runs pass with **zero browser page errors,
+  external requests or unexpected requests**. They produce 27 and 39 screenshot
+  artifacts respectively. Playwright **1.55.0**, Chromium **140.0.7339.16** and
+  jsdom **26.1.0** match the pinned browser dependencies; local Node **24.22.1**
+  differs from CI's **24.21.0**.
+
+### Operations-receipt privacy oracle
+
+The preceding head's Unified learning run
+[41158197500](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41158197500)
+failed at the free-route check that searched the entire serialized receipt for a
+four-digit test PIN. That fixture is byte-identical on main and the preceding
+head. The log does not identify the matching field, so it proves neither a real
+credential leak nor a particular UUID collision. A deterministic synthetic
+opaque-identifier/hash example reproduces a false positive in the old oracle.
+
+The repair validates the exact operation-row schema, typed root metadata and
+credential-free result payload, with deliberately injected leaks and before/after
+receipt snapshots around actual synthetic credential issuance. Independent
+review rejected an initial candidate which exempted arbitrary nested `id` fields
+by name/format: injected secrets under task data could then pass. The final
+guard exempts only precise DTO paths whose values match independently queried
+database identity columns. No identity field inside arbitrary `taskSpec` or
+`state` data receives an exemption. Two legitimate collision controls pass;
+12 injected payload leaks/forgeries, three malformed metadata values and an
+unexpected credential column are rejected. Credential-like keys remain forbidden
+regardless of their values. No production credential/storage code is changed.
+
+The complete artifact-enabled free-route browser passes
+`LEARNING_FREE_ROUTE_BROWSER_OK`: teacher-created credentials, isolated own plan,
+unordered route, nested prerequisite return after reload, unchanged task/draft,
+submission without false success, welcome, paper homework and exact topic-guide
+entry without extra attempts. Browser page errors and nonlocal requests are
+both empty. An initial artifact-enabled attempt reached the privacy guard but
+failed because `.route-grid` matched two elements. The corrected exact selector,
+`[data-route-library][open] > .route-grid`, preserves the intended readiness check;
+the complete rerun also saves the mobile and desktop screenshots successfully.
+The final independent review passes the fixture's self-controls, nine additional
+adversarial probes and two valid-collision controls. It confirms exact path/value
+binding, unknown-identity rejection, preserved readiness and no exemption for
+arbitrary nested identifiers. This is internal review, not external HIGH approval.
+
+### Repeated navigator and scope checks
+
+The full public-navigator browser passes **16/16 groups**, including 15 current
+entry/viewport combinations, division/Vilenkin retained work and reload, keyboard
+and mobile controls, existing helpers, private/iframe suppression and bounded
+local-only conversation. Navigation data is **31/31**, admission/placement
+**9/9**, sitemap **12/12**, and generated sitemap **531 URLs**. SEO retains
+**30 entrances, 203 links, 560 canonical declarations and seven redirects**;
+all 531 sitemap pages are self-canonical, with **71 nonempty catalogue
+destinations** available without JavaScript. Synthetic data only; zero model
+calls. The general browser uses Playwright **1.62.1**, Chrome **151.0.7922.34**,
+jsdom **26.1.0** and Node **24.22.1**.
+
+All **832 original HTML files** remain exact after removal of the approved
+inclusion; the same **595 pages** receive it. Navigator runtime, page manifest,
+all 66 non-status upstream Cone paths and unrelated project-status sections are
+preserved. The existing strict scope/placement guards enforce the explicit
+nine-path amendment; their code is unchanged. Fresh final-head cloud results
+belong in the PR handoff, not a self-referential documentation commit.
+
+The completed independent source/browser reviews are internal evidence, not an
+external HIGH verdict. Historical local layout observations below remain
+recorded failures; no unrelated CSS or assertion was changed. External HIGH
+review, exact-base/head release authorization, real-pupil/provider checks and
+deployment remain outstanding. Historical sections below describe prior states;
+their source-pin blocker is superseded only by this explicitly authorized repair.
+
+## Authorized current-main reconciliation — historical stage, 2026-10-31
 
 The owner's direct instruction authorizes a normal history-preserving merge of
 the new `main` into the existing PR #385 branch, rebinding the task scope and
@@ -132,7 +264,8 @@ helper page is outside the sitemap. The 67 extra eligible public documents are
 recorded in `tools/public-assistant-pages.json` with discovery sources.
 
 All 832 existing HTML files match base after removing the exact block. Existing
-URLs, canonical/SEO metadata, lesson contents and course data are retained.
+URLs, canonical/SEO metadata and lesson contents are retained. The later narrow
+course/helper provenance exception is documented above.
 Protected textbooks remain link destinations. Private cabinets/board wrappers,
 archives, sources, exports and redirects are excluded. The existing Peterson
 and practice helpers retain their original interface and assistance accounting.
@@ -404,3 +537,6 @@ not deployment of this candidate.
 Remove the exact marked inclusion from the manifest pages; verify original HTML
 blobs and rerun coverage, SEO and affected browser checks. No learner storage or
 assistant-service ledger migration/deletion belongs to this UI rollback.
+Keep the course/helper provenance pair aligned if reverting the separately
+documented source-pin repair; revert its strict dependent pins together and
+re-run both source builders and helper-context checks.
