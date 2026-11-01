@@ -65,6 +65,7 @@ async function saved(page) {
 async function navigate(page, route) {
   await page.evaluate(route => LearningApp.navigate(route), route);
   if (route === 'route') {
+    if (await page.locator('[data-program-course=school7] [data-program-open]').count()) await page.locator('[data-program-course=school7] [data-program-open]').click();
     await page.locator('[data-route-library]').waitFor();
     if (await page.locator('.mw-dialog[open]').count()) await page.locator('[data-mw-close]').click();
     if (!await page.locator('[data-route-library]').evaluate(node => node.open)) await page.locator('[data-route-library] > summary').click();
@@ -140,6 +141,10 @@ async function main() {
     await teacher.page.locator('#student-form [name=name]').fill('Ученица проверки');
     await teacher.page.locator('#student-form [name=login]').fill(PUPIL_LOGIN);
     await teacher.page.locator('#student-form [name=password]').fill(PUPIL_PASSWORD);
+    await teacher.page.locator('#student-form [name=grade]').selectOption('7');
+    await teacher.page.locator('#student-form [data-onboarding-next]').click();
+    await teacher.page.locator('#student-form [name=courseIds][value=school7]').check();
+    await teacher.page.locator('#student-form [data-onboarding-next]').click();
     await teacher.page.locator('#student-form [type=submit]').click();
     await teacher.page.locator('#access-password').waitFor();
     assert.equal(await teacher.page.locator('#access-login').inputValue(), PUPIL_LOGIN);
@@ -164,7 +169,11 @@ async function main() {
     const student = await open({ width: 390, height: 844 });
     await login(student.page, origin, PUPIL_LOGIN, PUPIL_PASSWORD);
     assert.equal((await api(student.page, '/session')).account.id, pupil.id);
-    // Welcome and video assertions are added below once the module is mounted.
+    // The multi-course home stays clear; the existing introduction belongs
+    // to the selected school course and retains its original full coverage.
+    await student.page.locator('[data-program-course=school7] [data-program-open]').waitFor();
+    assert.equal(await student.page.locator('.mw-dialog').count(), 0);
+    await student.page.locator('[data-program-course=school7] [data-program-open]').click();
     await verifyWelcome(student.page, store, pupil.id);
     await navigate(student.page, 'route');
     await student.page.locator('[data-route-item="path:practice-temperature"]').waitFor();

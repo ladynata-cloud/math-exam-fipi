@@ -191,7 +191,9 @@
   function maybeOpen(account) {
     if (account?.role !== 'student' || seenThisVisit || readSeen() || modal) return false;
     const route = location.hash.slice(1).split(/[?&=]/)[0];
-    if (route && route !== 'home' && route !== 'route') return false;
+    const schoolProgram = route === 'program-course'
+      && new URLSearchParams(location.hash.slice(1)).get('program-course') === 'school7';
+    if (route && route !== 'home' && route !== 'route' && !schoolProgram) return false;
     return open();
   }
   function openVideo(key, requestedKind = 'math') {
