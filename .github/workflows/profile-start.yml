@@ -47,6 +47,14 @@ jobs:
         run: node --test tools/atanasyan-profile15-a.test.cjs tools/atanasyan-profile15-b.test.cjs && node tools/atanasyan-profile15.test.cjs && node tools/atanasyan-profile15-model.test.cjs && node tools/atanasyan-profile15.browser.cjs
       - name: Existing profile regression
         run: npm --prefix ege-profil test
+      - name: Preserve finance viewport evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: profile-finance-viewports
+          path: /tmp/profile-finance-shots
+          if-no-files-found: warn
+          retention-days: 14
   expressions-board:
     runs-on: ubuntu-latest
     timeout-minutes: 15

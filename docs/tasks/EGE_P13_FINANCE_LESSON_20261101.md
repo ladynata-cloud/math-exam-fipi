@@ -185,3 +185,13 @@ Scope deviations:
 Recommendation:
 Next user decision:
 ```
+
+## Release continuation, 2026-11-01
+
+The owner explicitly requested compatibility verification and, if necessary,
+careful branch integration with current main, retaining mathematical content,
+existing courses and saved work. This authorizes the ordinary history-preserving
+main integration for PR390. Current integration base is
+`3918c1645709fc8e7a92f026646d6e42fe0d6712`. The Claude waiver is reaffirmed.
+The request makes production merge conditional on existing release permission;
+no separate exact-new-head publication authorization has yet been supplied.

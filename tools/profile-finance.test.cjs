@@ -308,3 +308,14 @@ test('financial model disclosure records help first, ignores stale actions, and 
     }
   }finally{w.close();}
 });
+
+
+test('finance sources distinguish draft 2027 numbering from historical practice',()=>{
+  for(const lesson of lessons) for(const link of lesson.links||[]) {
+    if(link.href.includes('/2027/')) assert.match(link.title,/проект/iu);
+    if(link.href.includes('2026')) assert.match(link.title,/2026/);
+  }
+  const app=fs.readFileSync(path.join(directory,'app.js'),'utf8');
+  assert.match(app,/проекту ЕГЭ 2027/);
+  assert.match(app,/их включение не означает, что каждый такой тип обязателен/);
+});

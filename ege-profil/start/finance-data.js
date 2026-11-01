@@ -21850,7 +21850,7 @@
     },
     "links": [
       {
-        "title": "ФИПИ: демоверсия ЕГЭ-2027, профильная математика (ZIP)",
+        "title": "ФИПИ: проект демоверсии ЕГЭ-2027, профильная математика (ZIP)",
         "href": "https://doc.fipi.ru/ege/demoversii-specifikacii-kodifikatory/2027/ma_11_2027.zip"
       }
     ],
