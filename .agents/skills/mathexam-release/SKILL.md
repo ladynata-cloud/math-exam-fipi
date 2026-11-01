@@ -1,129 +1,82 @@
 ---
 name: mathexam-release
-description: Verify an exact MathExam PR head, external-review provenance when required, final gates, controlled merge authorization, deployment authorization, and post-merge production evidence.
+description: Verify and publish an approved MathExam PR under the owner's standing release authorization, with exact candidate checks, base-drift revalidation and production evidence.
 ---
 
 # MathExam release workflow
 
-Use this skill only after a PR exists. A completed PR workflow, valid review, or
-passing gate does not authorize merge or deployment.
+Use after a PR exists. Read the current
+[standing owner authorization](../../../docs/OWNER_RELEASE_AUTHORIZATION.md),
+`AGENTS.md`, review policy, task specification and unresolved review threads.
+The owner authorized publication of requested/approved work on 2026-11-02
+without per-PR confirmation or mandatory external audit. Do not request those
+permissions again. Honor later explicit task-specific restrictions.
 
 ## Required inputs
 
-- PR and repository identity;
-- expected base and head commits;
-- task specification and review level;
-- current review and check results;
-- separate explicit owner authorization for merge;
-- separate explicit owner authorization for deployment when deployment is in
-  scope.
+- Repository, PR, approved scope and declared review level.
+- Validated base/head and applicable test/check results.
+- Authorization source: standing policy or a later narrower owner instruction.
+- Deployment target, rollback plan and specified post-release checks.
 
-## Pre-merge verification
+## Candidate and review
 
-1. Read `AGENTS.md`, `docs/PROJECT_STATUS.md`, `docs/REVIEW_POLICY.md`, the task
-   specification, PR body, accepted ADRs, and unresolved review threads.
-2. Record the authorized base SHA from the current owner's merge authorization.
-   Query the authoritative current remote `main` SHA; do not treat a possibly
-   stale local tracking ref as current evidence.
-3. Compare current remote `main` with the authorized base immediately before
-   any merge operation. `mergeable=true` does not replace this check.
-4. Verify that the PR base and head match the release request and that the diff
-   contains only approved scope.
-5. Verify every required check on the exact head. Record passes, failures, and
-   not-run checks separately. Rerun the final local or remote gate when the
-   evidence is stale or tied to another commit.
-6. Apply the declared review level. Claude is not required for every `SMALL` PR.
-7. When external review is required or claimed, verify provider, PR, base SHA,
-   head SHA, verdict, and a verifiable source or timestamp. Copied approval text
-   is not evidence.
-8. Ensure remote handoffs were sanitized and contain no secret values,
-   authentication material, private documents, personal data, or
-   machine-specific absolute paths.
-9. Present the standard executive status and obtain separate explicit owner
-   authorization for the current PR and exact head before merge.
+1. Verify the actual diff contains only approved scope and preserves unrelated
+   work. Distinguish accepted ADRs from proposals.
+2. Complete risk-appropriate mathematical, technical and interaction review.
+   Run applicable local tests and required CI on the actual candidate. Report
+   failures and not-run checks separately; do not weaken gates to obtain a pass.
+3. External consultation/audit is optional unless specifically requested by the
+   owner for this task. Do not treat an unavailable provider as a blocker under
+   the standing policy, and do not claim an external review happened.
+4. For a requested external review, verify provider, PR/base/head, verdict and
+   source/timestamp. Sanitize and minimize all external handoffs.
+5. Record the release decision and evidence. A ready, in-scope candidate can
+   proceed under standing permission without another owner confirmation.
 
-## Base drift: mandatory stop and revalidation
+## Main or head movement
 
-If current remote `main` differs from the authorized base, stop before merge and
-mark the prior owner authorization invalid. Do not update, merge, rebase, reset,
-or otherwise repair the branch automatically.
+Immediately before a merge, obtain authoritative remote `main` and PR head.
+Compare them with the validated pair; cached refs and `mergeable=true` are not
+substitutes. If either changed, stop the stale merge attempt and revalidate:
 
-After the stop:
+1. Classify concurrent commits by provenance and impact on this task.
+2. Construct a read-only virtual merge using `git merge-tree` or equivalent.
+3. Rerun affected gates on the composition and record its base/head/diff.
+4. If clean and in scope, continue under standing authorization. If branch
+   synchronization is needed, use an ordinary history-preserving merge, resolve
+   routine conflicts without losing approved work and validate the new head.
+5. An unresolved product conflict, uncertain provenance, unexplained file,
+   material scope expansion or a later owner release hold remains a blocker.
+   Ask only for the actual unresolved decision, not repeated blanket consent.
 
-1. classify every concurrent `main` commit by provenance; do not assume that a
-   commit is authorized merely because it is on `main`;
-2. construct a read-only virtual merge on the new `main` using `git merge-tree`
-   or an equivalent non-mutating operation;
-3. record a clean merge or conflict without changing the worktree, index,
-   branch, PR, or remote refs;
-4. rerun the applicable gates against the virtual composed result;
-5. report the new base, unchanged reviewed head, changed-file delta, failures,
-   and not-run checks;
-6. require a new explicit owner merge authorization bound to the new base and
-   exact head.
-
-A clean virtual merge does not revive the old authorization. A virtual conflict
-remains blocked until the owner approves a separately scoped resolution task.
-The required scenario expectations are committed in
+For an unchanged patch rebased by composition onto newer main, verify its exact
+file set, affected-file blobs, stable patch ID and absence of extra files.
+Full-tree equality with the old head is inappropriate when main added unrelated
+changes. For a reviewed conflict resolution, verify the newly tested delta
+instead of asserting that it is the original patch. See
 [BASE_DRIFT_SCENARIOS.json](BASE_DRIFT_SCENARIOS.json).
 
-## Controlled merge
+## Controlled merge and publication
 
-1. Requery current remote `main` and recheck the exact head, required checks,
-   review state, and merge permission immediately before the operation. Any new
-   base drift restarts the mandatory stop and reauthorization cycle.
-2. Use an authenticated built-in GitHub integration, or GitHub CLI when it is
-   available and authenticated. If neither is available, stop without merging.
-3. Use only the merge method authorized by the owner and repository policy.
-   Never use force, reset, rebase, admin override, disabled TLS verification, or
-   weakened checks to complete a release.
-4. If the authorized base is unchanged, verify full-tree identity between the
-   reviewed head and the expected squash-merge tree.
-5. If the base previously drifted and the owner authorized the new base after
-   revalidation, do not compare the composed `main` tree with the old reviewed
-   head tree. Before merge, verify the new-base-to-virtual-merge delta:
-   - changed files exactly match the reviewed patch;
-   - affected-file blobs match the reviewed result;
-   - reviewed and virtual deltas have the same stable patch ID from
-     `git patch-id --stable`;
-   - no extra file appears in the merge delta.
-6. After merge, verify that the merge parent is the newly authorized base and
-   repeat the changed-file, blob, stable-patch-ID, and no-extra-file checks on
-   the actual parent-to-merge delta.
-7. Capture the resulting production `main` commit and merge evidence.
+1. Requery main/head and required checks immediately before the operation.
+   Any movement restarts candidate validation.
+2. Use the authenticated GitHub integration or an authenticated CLI. Prefer
+   squash-merge with the expected head SHA. No force, reset, rebase, admin
+   override, disabled TLS or weakened tests/branch protection.
+3. Verify the actual merge parent equals the validated base and the actual
+   tree/delta equals the tested composition, with no extra files or lost work.
+4. Publish through the established deployment path for the approved task.
+   Confirm the deployed commit and complete the post-release/site checks.
+5. On failure, stop further rollout, preserve evidence and follow the scoped
+   rollback plan. Do not improvise destructive recovery.
+6. Reconcile project status with verified production evidence within the task
+   or next approved task. Avoid recursive status-only PRs.
 
-## Deployment and post-merge gate
+## Report
 
-1. Deploy only when deployment is explicitly authorized and belongs to the
-   release scope. Merge authorization alone is insufficient.
-2. Verify that deployment uses the merged production commit, then run the
-   specified post-merge or production gate.
-3. On failure, stop further rollout, preserve evidence, and follow the approved
-   rollback plan; do not improvise destructive recovery.
-4. Reconcile `docs/PROJECT_STATUS.md` with production `main`, current stage,
-   open PR, last confirmed gate, blockers, and next three actions within the
-   approved release scope or at the start of the next approved task. Do not
-   create an automatic status-only PR; require an explicit owner decision or a
-   real operational need, and never create a recursive status-only PR merely to
-   record the preceding status merge.
-5. Report the merge, deployment, post-merge gate, failures, rollback state, and
-   next owner decision.
-
-## Required base-drift report fields
-
-After any owner merge authorization, report these fields separately even when
-no drift occurred:
-
-```text
-Authorized base:
-Actual current main:
-Base drift detected:
-Authorization valid/invalid:
-Virtual merge result:
-Rerun gates:
-New owner authorization required:
-```
-
-Recommend GitHub branch protection or a merge queue when they are not already
-configured, but never change repository settings without separate owner scope
-and authorization.
+Record authorization source, validated base/head, actual pre-merge main/head,
+base drift and revalidation, gates, failed/not-run checks, merge commit,
+deployment evidence, live verification, rollback state and remaining decisions.
+When the standing policy applies and checks pass, state that no further owner
+publication authorization is required.
