@@ -17,6 +17,28 @@ try {
   }
 }
 
+// Capture only synthetic localhost tests. Closing context flushes videos even
+// when an assertion fails. No production cookies, prompts or keys are recorded.
+let evidenceIndex = 0;
+async function evidencePage(t, browser, options) {
+  const root = process.env.BROWSER_ARTIFACT_DIR;
+  assert.ok(!root || !process.env.LIVE_ASSISTANT_PILOT_KEY, 'Evidence may contain only synthetic local-demo data.');
+  const dir = root ? path.join(root, String(++evidenceIndex)) : null;
+  if (dir) fs.mkdirSync(dir, { recursive: true });
+  const context = await browser.newContext({ ...options, ...(dir ? { recordVideo: { dir } } : {}) });
+  if (dir) await context.tracing.start({ screenshots: true, snapshots: true, sources: false });
+  const page = await context.newPage();
+  t.after(async () => {
+    try {
+      if (dir) {
+        await page.screenshot({ path: path.join(dir, 'final.png'), fullPage: true }).catch(() => {});
+        await context.tracing.stop({ path: path.join(dir, 'trace.zip') });
+      }
+    } finally { await context.close(); await browser.close(); }
+  });
+  return page;
+}
+
 async function fixture(t, options = {}) {
   const calls = [];
   const csrf = 'test-only-csrf-marker';
@@ -41,6 +63,7 @@ async function fixture(t, options = {}) {
       res.writeHead(code, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', ...headers });
       res.end(JSON.stringify(data));
     };
+    if (req.url === '/api/version') return send(200, { ok: true, sourceCommit: 'a'.repeat(40), changes: ['<img src=x onerror=window.injected=1>'] });
     if (req.url === '/api/status') return send(200, {
       ok: true, mode: options.api ? 'api' : 'offline', externalEnabled: Boolean(options.api),
       providerLabel: 'Тестовый провайдер', localDemo: !options.key,
@@ -79,9 +102,7 @@ async function fixture(t, options = {}) {
   t.after(() => new Promise(resolve => server.close(resolve)));
   const browser = await chromium.launch({ headless: true,
     ...(process.env.CHROMIUM_EXECUTABLE_PATH ? { executablePath: process.env.CHROMIUM_EXECUTABLE_PATH } : {}) });
-  t.after(() => browser.close());
-  const context = await browser.newContext({ viewport: options.viewport || { width: 1280, height: 920 } });
-  const page = await context.newPage();
+  const page = await evidencePage(t, browser, { viewport: options.viewport || { width: 1280, height: 920 } });
   const origin = `http://127.0.0.1:${server.address().port}`;
   const unexpectedRequests = [];
   page.on('request', req => { if (!req.url().startsWith(`${origin}/`)) unexpectedRequests.push(req.url()); });
@@ -90,6 +111,8 @@ async function fixture(t, options = {}) {
   if (options.key) await page.locator('#pilot-key').fill(options.key);
   await page.locator('#access-button').click();
   await page.locator('#workspace').waitFor({ state: 'visible' });
+  assert.match(await page.locator('#release-label').textContent(), /aaaaaaa/);
+  assert.equal(await page.locator('#release-changes img').count(), 0);
   return { page, calls, origin, unexpectedRequests };
 }
 
@@ -199,8 +222,7 @@ test('live isolated service: offline mathematical learner flow on desktop and mo
   assert.ok(['127.0.0.1', 'localhost'].includes(url.hostname), 'Live checks run only against a local test service.');
   const browser = await chromium.launch({ headless: true,
     ...(process.env.CHROMIUM_EXECUTABLE_PATH ? { executablePath: process.env.CHROMIUM_EXECUTABLE_PATH } : {}) });
-  t.after(() => browser.close());
-  const page = await browser.newPage({ viewport: { width: 1280, height: 920 } });
+  const page = await evidencePage(t, browser, { viewport: { width: 1280, height: 920 } });
   const externalRequests = [];
   page.on('request', req => { if (!req.url().startsWith(`${url.origin}/`)) externalRequests.push(req.url()); });
   await page.goto(url.href);
@@ -308,8 +330,7 @@ test('live numeric notation: mixed operands, equation correction and repeating a
   assert.ok(['127.0.0.1', 'localhost'].includes(url.hostname));
   const browser = await chromium.launch({ headless: true,
     ...(process.env.CHROMIUM_EXECUTABLE_PATH ? { executablePath: process.env.CHROMIUM_EXECUTABLE_PATH } : {}) });
-  t.after(() => browser.close());
-  const page = await browser.newPage({ viewport: { width: 390, height: 900 } });
+  const page = await evidencePage(t, browser, { viewport: { width: 390, height: 900 } });
   await page.goto(url.href);
   await page.waitForFunction(() => !document.getElementById('access-button').disabled);
   if (await page.locator('#pilot-key-field').isVisible()) {
@@ -364,8 +385,7 @@ test('live extended mathematics: intermediate equality and percentage meanings',
   assert.ok(['127.0.0.1', 'localhost'].includes(url.hostname));
   const browser = await chromium.launch({ headless: true,
     ...(process.env.CHROMIUM_EXECUTABLE_PATH ? { executablePath: process.env.CHROMIUM_EXECUTABLE_PATH } : {}) });
-  t.after(() => browser.close());
-  const page = await browser.newPage({ viewport: { width: 390, height: 900 } });
+  const page = await evidencePage(t, browser, { viewport: { width: 390, height: 900 } });
   await page.goto(url.href);
   await page.waitForFunction(() => !document.getElementById('access-button').disabled);
   if (await page.locator('#pilot-key-field').isVisible()) {
@@ -410,8 +430,7 @@ test('live clarification, original-operand visuals and optional reinforcement pr
   assert.ok(['127.0.0.1', 'localhost'].includes(url.hostname));
   const browser = await chromium.launch({ headless: true,
     ...(process.env.CHROMIUM_EXECUTABLE_PATH ? { executablePath: process.env.CHROMIUM_EXECUTABLE_PATH } : {}) });
-  t.after(() => browser.close());
-  const page = await browser.newPage({ viewport: { width: 390, height: 900 } });
+  const page = await evidencePage(t, browser, { viewport: { width: 390, height: 900 } });
   const external = [], errors = [], asks = [];
   page.on('request', req => {
     if (!req.url().startsWith(`${url.origin}/`)) external.push(req.url());

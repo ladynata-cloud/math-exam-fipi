@@ -2,6 +2,15 @@
 import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
 
 (() => {
+  fetch('/api/version', { credentials: 'omit', cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(version => {
+    if (!version || !/^[a-f0-9]{40}$/.test(version.sourceCommit || '')) return;
+    document.getElementById('release-label').textContent = `Версия ${version.sourceCommit.slice(0, 7)} · Что нового`;
+    for (const text of (version.changes || []).slice(0, 10)) {
+      if (typeof text !== 'string') continue;
+      const item = document.createElement('li'); item.textContent = text.slice(0, 200); document.getElementById('release-changes').append(item);
+    }
+    document.getElementById('release-info').hidden = false;
+  }).catch(() => {});
   const $ = (id) => document.getElementById(id);
   const elements = Object.fromEntries([
     'mode-badge', 'mode-description', 'page-message', 'access-panel', 'access-form',
