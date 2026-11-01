@@ -55,12 +55,23 @@ function parseAttempt(attempt) {
   return fraction ? rat(BigInt(fraction[1]), BigInt(fraction[2])) : parseDecimal(text);
 }
 
-function attemptMessage(attempt, expected) {
+export function mistakeFeedback(value, expected, mistakes = [], simpler = false) {
+  const equal = (a, b) => a.n * b.d === b.n * a.d;
+  // A matching wrong value is evidence for a possible error, not its cause.
+  // Correct/equivalent answers always win when candidate formulas coincide.
+  if (!value || !expected || equal(value, expected)) return '';
+  const mistake = mistakes.find(item => equal(value, item.value));
+  return mistake ? (simpler ? mistake.shortText : mistake.text) : '';
+}
+
+function attemptMessage(attempt, solved, simpler) {
   const value = parseAttempt(attempt);
+  const { expected, mistakes } = solved;
   if (!value || !expected) return '';
   return value.n === expected.n && value.d === expected.d
     ? 'Твоё число подходит. Теперь проверь его подстановкой или обратным действием.'
-    : 'Пока получилось другое число. Проверь каждое действие по подсказке; можно запросить полное объяснение.';
+    : mistakeFeedback(value, expected, mistakes, simpler)
+      || 'Пока получилось другое число. Проверь каждое действие по подсказке; можно запросить полное объяснение.';
 }
 
 function solveLinear(question) {
@@ -122,7 +133,15 @@ function solveLinear(question) {
     ],
     steps,
     check: `Подстановка: ${a} · (${rtext(expected)}) + ${signed(b)} = ${c}. Обе части равны.`,
-    expected
+    expected,
+    mistakes: [
+      { value: rat(c + b, a),
+        text: 'Похоже, отдельное слагаемое убрано действием с неверным знаком. Прибавление отменяют вычитанием, а вычитание — прибавлением; действие выполняют в обеих частях.',
+        shortText: 'Похоже, перепутан знак действия. Убирай отдельное слагаемое обратным действием в обеих частях.' },
+      { value: rat(difference),
+        text: 'Похоже, найдено значение слагаемого с x, а не самого x. Чтобы найти x, раздели обе части на ненулевой множитель перед ним.',
+        shortText: 'Похоже, ещё осталось деление на число перед x. Раздели обе части.' }
+    ]
   };
 }
 
@@ -159,7 +178,18 @@ function solveFractions(question) {
       `Сокращаем ${numerator}/${common}, если это возможно. Ответ: ${rtext(expected)}.`
     ],
     check: 'При сложении или вычитании мы изменяли числители одинаковых долей. Значение каждой дроби при приведении к общему знаменателю сохранилось.',
-    expected
+    expected,
+    mistakes: [
+      { value: rat(a + (minus ? -c : c), b + d),
+        text: 'Похоже, знаменатели сложены вместе с числителями. Знаменатель задаёт размер долей: сначала сделай доли одинаковыми, затем меняй только числители.',
+        shortText: 'Похоже, сложены знаменатели. Сначала сделай доли одинаковыми; знаменатели складывать не нужно.' },
+      ...(minus && b !== d ? [{ value: rat(a - c, b - d),
+        text: 'Похоже, вычтены и числители, и знаменатели. Сначала приведи дроби к одному знаменателю, затем вычитай только числители.',
+        shortText: 'Похоже, вычтены знаменатели. Сначала нужен один общий знаменатель.' }] : []),
+      { value: rat(a + (minus ? -c : c), common),
+        text: 'Похоже, знаменатель изменён, а числители оставлены прежними. При приведении дроби к общему знаменателю умножай её числитель и знаменатель на одно и то же число.',
+        shortText: 'Похоже, забыто изменение числителя. Умножай верх и низ дроби на одно и то же число.' }
+    ]
   };
 }
 
@@ -211,50 +241,74 @@ function primeFactors(number) {
 
 export function solveCommon(question) {
   const text = normalized(question).replace(/^найди(?:те)?\s+/, '').replace(/\.$/, '');
-  const match = /^(нод|нок)\s*(?:\(\s*(\d{1,6})\s*[,;]\s*(\d{1,6})\s*\)|(\d{1,6})\s*(?:и|,|;)\s*(\d{1,6}))$/.exec(text);
+  const match = /^(нод|нок)\s*(?:\(([^()]+)\)|([^()]+))$/.exec(text);
   if (!match) return null;
-  const a = BigInt(match[2] || match[4]); const b = BigInt(match[3] || match[5]);
-  if (a === 0n || b === 0n) return null;
-  const isGcd = match[1] === 'нод'; const common = gcd(a, b);
-  const result = isGcd ? common : a / common * b; const expected = rat(result);
-  const factorsA = primeFactors(a); const factorsB = primeFactors(b);
-  const choices = [...new Set([...factorsA, ...factorsB])].sort((x, y) => x < y ? -1 : x > y ? 1 : 0);
+  const list = (match[2] || match[3]).trim();
+  // Mixed separators require a space after commas: 1,5 и 12 could be a
+  // decimal, whereas 1, 5 и 12 is an explicit integer list. Parentheses retain
+  // established comma-only NOD(a,b) notation. No free prose or digit extraction.
+  if (!/^\d{1,6}(?:\s*[,;и]\s*\d{1,6}){1,4}$/.test(list)) return null;
+  const parts = list.split(/\s*[,;и]\s*/);
+  if (/,(?!\s)/.test(list) && ((!match[2] && parts.length > 2) || /[;и]/.test(list))) return null;
+  const numbers = parts.map(BigInt);
+  if (numbers.some(value => value === 0n)) return null;
+  const isGcd = match[1] === 'нод';
+  const divisor = numbers.reduce((a, b) => gcd(a, b));
+  const multiple = numbers.reduce((a, b) => a / gcd(a, b) * b);
+  const result = isGcd ? divisor : multiple;
+  // Preserve the previous two-input result envelope and attempt parser bounds.
+  if (result > 999999999999n) return null;
+  const expected = rat(result), decompositions = numbers.map(primeFactors);
+  const choices = [...new Set(decompositions.flat())].sort((x, y) => x < y ? -1 : x > y ? 1 : 0);
   const chosen = choices.flatMap(prime => Array((isGcd ? Math.min : Math.max)(
-    factorsA.filter(x => x === prime).length, factorsB.filter(x => x === prime).length)).fill(prime));
+    ...decompositions.map(factors => factors.filter(value => value === prime).length))).fill(prime));
   const product = values => values.length ? values.join(' · ') : '1';
+  const both = numbers.length === 2;
+  const everyNumber = both ? 'оба исходных числа' : 'все исходные числа';
+  const everyDecomposition = both ? 'обоих разложениях' : 'каждом разложении';
   return {
     title: isGcd ? 'Находим НОД' : 'Находим НОК',
-    text: isGcd ? 'Ищем самое большое число, на которое оба исходных числа делятся без остатка.'
-      : 'Ищем самое маленькое положительное число, которое само делится на оба исходных числа без остатка.',
+    text: isGcd ? `Ищем самое большое число, на которое ${everyNumber} делятся без остатка.`
+      : `Ищем самое маленькое положительное число, которое само делится на ${everyNumber} без остатка.`,
     hints: [
-      isGcd ? 'Проверь направление деления: оба исходных числа должны делиться на твой ответ.'
+      isGcd ? `Проверь направление деления: ${everyNumber} должны делиться на твой ответ.`
         : 'Проверь направление деления: твой ответ должен делиться на каждое исходное число.',
       'Разложи каждое число в произведение простых чисел. Все повторения оставляй в записи.',
-      isGcd ? 'Возьми простые числа, встречающиеся в обоих разложениях, с меньшим числом повторений.'
-        : 'Возьми все простые числа, которые встретились хотя бы в одном разложении, с большим числом повторений.',
-      isGcd ? 'Перемножь выбранные числа. Если общих простых чисел нет, ответ будет 1.'
-        : 'Перемножь выбранные числа. Если одно исходное число равно 1, оно не добавляет простых чисел в произведение.',
-      isGcd ? 'Раздели каждое исходное число на свой результат. Оба раза должно получиться целое число.'
-        : 'Раздели свой ответ на каждое исходное число: оба раза должен получиться целый результат.'
+      isGcd ? `Возьми простые числа, встречающиеся в ${everyDecomposition}, с наименьшим числом повторений.`
+        : 'Возьми все простые числа, которые встретились хотя бы в одном разложении, с наибольшим числом повторений.',
+      isGcd ? 'Перемножь выбранные числа. Если общих простых чисел нет, подумай, на какое число делится любое натуральное число.'
+        : 'Перемножь выбранные числа. Исходное число 1 не добавляет простых чисел в произведение.',
+      isGcd ? 'Раздели каждое исходное число на свой результат. Каждый раз должно получиться целое число.'
+        : 'Раздели свой ответ на каждое исходное число: каждый раз должен получиться целый результат.'
     ],
     shortHints: [
-      isGcd ? 'Оба исходных числа должны делиться на твой ответ.' : 'Твой ответ должен делиться на оба исходных числа.',
+      isGcd ? 'Каждое исходное число должно делиться на твой ответ.' : 'Твой ответ должен делиться на каждое исходное число.',
       'Запиши каждое число как произведение простых чисел.',
-      isGcd ? 'Возьми общие простые числа с меньшим числом повторений.' : 'Возьми все простые числа с большим числом повторений.',
-      isGcd ? 'Перемножь выбранное; если общих чисел нет, НОД равен 1.' : 'Перемножь выбранные простые числа.',
+      isGcd ? 'Возьми общие для всех разложений простые числа с наименьшим числом повторений.' : 'Возьми все простые числа с наибольшим числом повторений.',
+      'Перемножь выбранные простые числа.',
       isGcd ? 'Раздели исходные числа на свой ответ: остатка быть не должно.' : 'Раздели свой ответ на исходные числа: остатка быть не должно.'
     ],
     steps: [
-      `${a} = ${product(factorsA)}; ${b} = ${product(factorsB)}.`,
+      numbers.map((value, i) => `${value} = ${product(decompositions[i])}`).join('; ') + '.',
       chosen.length === 0 ? (isGcd ? 'Общих простых чисел в разложениях нет. В этом случае НОД равен 1.'
-        : 'Оба исходных числа равны 1. В этом случае НОК равен 1.')
-        : isGcd ? `Берём общие простые числа с меньшим числом повторений: ${product(chosen)}.`
-          : `Берём все встречающиеся простые числа с большим числом повторений: ${product(chosen)}.`,
-      `Ответ: ${isGcd ? 'НОД' : 'НОК'}(${a}, ${b}) = ${result}.`
+        : 'Все исходные числа равны 1. В этом случае НОК равен 1.')
+        : isGcd ? `Берём общие для всех разложений простые числа с наименьшим числом повторений: ${product(chosen)}.`
+          : `Берём все встречающиеся простые числа с наибольшим числом повторений: ${product(chosen)}.`,
+      `Ответ: ${isGcd ? 'НОД' : 'НОК'}(${numbers.join(', ')}) = ${result}.`
     ],
-    check: isGcd ? `${a} / ${result} = ${a / result}; ${b} / ${result} = ${b / result}. Остатка нет.`
-      : `${result} / ${a} = ${result / a}; ${result} / ${b} = ${result / b}. Остатка нет.`,
-    expected
+    check: numbers.map(value => isGcd ? `${value} / ${result} = ${value / result}`
+      : `${result} / ${value} = ${result / value}`).join('; ') + '. Остатка нет.',
+    expected,
+    mistakes: [
+      { value: rat(isGcd ? multiple : divisor),
+        text: isGcd ? 'Похоже, найден НОК вместо НОД. Для НОД каждое исходное число должно делиться на искомое число.'
+          : 'Похоже, найден НОД вместо НОК. Для НОК искомое число должно делиться на каждое исходное число.',
+        shortText: isGcd ? 'Похоже, перепутаны НОД и НОК. Исходные числа делим на ответ.'
+          : 'Похоже, перепутаны НОК и НОД. Ответ делим на исходные числа.' },
+      ...(!isGcd ? [{ value: rat(numbers.reduce((a, b) => a * b)),
+        text: 'Похоже, перемножены все исходные числа. Такое число делится на каждое из них, но здесь оно не наименьшее. В разложениях бери наибольшее число повторений каждого простого числа, не складывай повторения.',
+        shortText: 'Похоже, просто перемножены исходные числа. Проверь повторяющиеся простые числа: нужны не все повторения вместе.' }] : [])
+    ]
   };
 }
 
@@ -354,7 +408,7 @@ export function answerOffline(input, cards = getBuiltinKnowledge()) {
   const sources = selected.map(card => ({ id: card.id, title: card.title, url: card.source.url }));
   const solved = SOLVERS[safe.topic]?.(safe.question);
   if (solved) {
-    const feedback = attemptMessage(safe.attempt, solved.expected);
+    const feedback = attemptMessage(safe.attempt, solved, safe.simpler);
     const complete = safe.mode === 'explain';
     return {
       title: solved.title,

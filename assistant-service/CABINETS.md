@@ -13,7 +13,7 @@ external model has been called. Merge and deployment require separate decisions.
 | `peterson-decimals` | Eight topics: place value, comparison, rounding, addition/subtraction, multiplication, division, powers of ten and ordinary/decimal fractions | Exact rational arithmetic for supported signed finite-decimal inputs, exact fractional results and repeating-decimal output; division by zero is rejected |
 | `triangle-congruence` | Four topics: SAS, ASA, SSS and corresponding vertices / choice of criterion | Explicit premises and justification; rejects the idea that AAA or arbitrary SSA proves congruence |
 | `atanasyan-first-steps` | Two separate sources: Atanasyan tasks 1–160 (232 exercise cards and 23 theory cards) and Ichenskaya grade-seven independent/test works (110 task cards) | Source-based prompts, reasons and explanations for the selected course/task/step; an explicitly requested full solution remains subject to teacher review |
-| `vilenkin-grade6` | Two topics: NOD (greatest common divisor) and NOK (least common multiple), linked to existing grade 6 trainers | Prime-factor explanations and exact integer checks for two positive integers up to six digits; no automatic textbook-number lookup |
+| `vilenkin-grade6` | Two topics: NOD (greatest common divisor) and NOK (least common multiple), linked to existing grade 6 trainers | Prime-factor explanations and exact checks for 2–5 positive integers up to six digits, with results at most 999999999999; no automatic textbook-number lookup |
 
 The fourth profile is an additive option for the
 [first-steps course task](../docs/tasks/ATANASYAN_FIRST_STEPS_CABINET.md).

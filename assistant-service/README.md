@@ -54,10 +54,15 @@ the current session. “Удалить мой сеанс” clears the session a
 | Linear equations | `3x + 5 = 20` | Bounded integer-coefficient equations of the supported linear form, including zero-coefficient cases |
 | Fractions | `1/2 + 1/3` | Addition or subtraction of two supported ordinary fractions |
 | Percentages | `15% от 240` | Finding a percentage of a number; arbitrary increase/decrease word problems are outside the exact solver |
-| GCD / LCM | `НОК 12 и 18` | Two bounded positive integers |
+| GCD / LCM | `НОК 12, 18 и 30` | Two to five positive integers, each at most 999999; result at most 999999999999 |
 | Rounding | `Округли 9,96 до десятых` | Supported decimal numbers and named place values, including negative values and carries |
 | Pythagorean theorem | `Как отличить гипотенузу от катетов?` | General concept guidance; arbitrary numerical geometry is not verified |
 | Plane sections | `Как начать строить сечение по трём точкам?` | General construction principles; no generated diagram or verified arbitrary construction |
+
+Recognizable wrong numeric attempts receive tentative feedback for fractions,
+linear equations, decimal arithmetic and confusion between GCD/LCM. Correct
+and equivalent answers take precedence; unknown mistakes keep generic guidance.
+No final answer is added to hint mode and the deterministic path uses no model.
 
 The exact supported grammar is in [tutor.js](src/tutor.js), with positive,
 negative and ambiguous cases in the [evaluation corpus](evaluation/cases.json).

@@ -206,6 +206,38 @@ test('live isolated service: offline mathematical learner flow on desktop and mo
   await page.setViewportSize({ width: 390, height: 844 });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true);
   if (process.env.BROWSER_SCREENSHOT_DIR) await page.screenshot({ path: path.join(process.env.BROWSER_SCREENSHOT_DIR, 'assistant-mobile.png'), fullPage: true });
+  // Exercise the actual local solver through the unchanged browser/API contract.
+  // A fresh synthetic session keeps each journey within the existing rate limit.
+  await page.locator('#forget-button').click();
+  await page.locator('#access-panel').waitFor({ state: 'visible' });
+  assert.equal(await page.locator('.answer-card').count(), 0);
+  await page.locator('#access-button').click();
+  await page.locator('#workspace').waitFor({ state: 'visible' });
+  for (const [topic, question, attempt, reason, expected] of [
+    ['fractions', '1/2 + 1/3', '2/5', /знаменател/, '5/6'],
+    ['gcd-lcm', 'НОК 12, 18 и 30', '6', /Похоже/, '180'],
+    ['gcd-lcm', 'НОК 12, 18, 30 и 42', '6', /Похоже/, '1260'],
+    ['gcd-lcm', 'НОК 12, 18, 30, 42 и 60', '6', /Похоже/, '1260']
+  ]) {
+    await page.locator('#topic').selectOption(topic);
+    await page.locator('#question').fill(question);
+    await page.locator('#attempt').fill(attempt);
+    await page.locator('#ask-button').click();
+    await page.waitForFunction(() => document.querySelectorAll('.answer-card').length === 1);
+    const first = await page.locator('.answer-card').textContent();
+    assert.match(first, reason); assert(!first.includes(expected));
+    assert.equal(await page.locator('.answer-steps li').count(), 1);
+    await page.locator('#explain-button').click();
+    await page.waitForFunction(() => document.querySelectorAll('.answer-card').length === 2);
+    assert.match(await page.locator('.answer-card').last().textContent(), new RegExp(expected));
+    assert.equal(await page.locator('.answer-card').first().textContent(), first);
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true);
+  }
+  for (const width of [320, 390, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true);
+    if (process.env.BROWSER_SCREENSHOT_DIR) await page.screenshot({ path: path.join(process.env.BROWSER_SCREENSHOT_DIR, `assistant-local-lcm-${width}.png`), fullPage: true });
+  }
   await page.locator('#forget-button').click();
   await page.locator('#access-panel').waitFor({ state: 'visible' });
   assert.equal(await page.locator('.answer-card').count(), 0);
