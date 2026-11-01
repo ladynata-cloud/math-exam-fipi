@@ -1,6 +1,7 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const {JSDOM,ResourceLoader,VirtualConsole}=require('jsdom');
+const {restoreHistoricalBytes}=require('./oge-book-exam-corrections.cjs');
 const root=path.resolve(__dirname,'..');
 const files={7:'number-line',8:'powers-roots',10:'probability',12:'formulas-trainer',14:'progressions',20:'equations',21:'word-problems',22:'functions-graphs'};
 const cards={7:'#marTask',8:'#marGrid>.mtask:not([hidden])',10:'#mar-root>.card',12:'#taskArea>.card',14:'#m-task>.card',20:'#body .qbox',21:'#content>.card',22:'.panel:not(.hidden) .mode-host[data-mode="marathon"]'};
@@ -52,7 +53,8 @@ const inlineHashes={
 };
 test('all eight original inline engines retain their published snapshots outside approved season labels',()=>{
  for(const [n,suffix]of Object.entries(files)){
-  const html=fs.readFileSync(path.join(root,'trainers/oge-task'+n+'-'+suffix+'.html'),'utf8');
+  const file='trainers/oge-task'+n+'-'+suffix+'.html';
+  const html=restoreHistoricalBytes(file,fs.readFileSync(path.join(root,file),'utf8'));
   let scripts=[...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].filter(x=>!(/\bsrc\s*=/.test(x[1]))).map(x=>x[2]).join('\n');
   // The 2027 copy update changes these two displayed sentences only.
   // Keep the historical full-engine digest, including all mathematics and grading.

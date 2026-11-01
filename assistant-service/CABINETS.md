@@ -13,6 +13,7 @@ external model has been called. Merge and deployment require separate decisions.
 | `peterson-decimals` | Eight topics: place value, comparison, rounding, addition/subtraction, multiplication, division, powers of ten and ordinary/decimal fractions | Exact rational arithmetic for supported signed finite-decimal inputs, exact fractional results and repeating-decimal output; division by zero is rejected |
 | `triangle-congruence` | Four topics: SAS, ASA, SSS and corresponding vertices / choice of criterion | Explicit premises and justification; rejects the idea that AAA or arbitrary SSA proves congruence |
 | `atanasyan-first-steps` | Two separate sources: Atanasyan tasks 1–160 (232 exercise cards and 23 theory cards) and Ichenskaya grade-seven independent/test works (110 task cards) | Source-based prompts, reasons and explanations for the selected course/task/step; an explicitly requested full solution remains subject to teacher review |
+| `vilenkin-grade6` | Two topics: NOD (greatest common divisor) and NOK (least common multiple), linked to existing grade 6 trainers | Prime-factor explanations and exact integer checks for two positive integers up to six digits; no automatic textbook-number lookup |
 
 The fourth profile is an additive option for the
 [first-steps course task](../docs/tasks/ATANASYAN_FIRST_STEPS_CABINET.md).
@@ -44,7 +45,7 @@ subsequent wording in the current one-hour assistant session; they do not certif
 or rewrite shared mathematics. A model answer is never automatically promoted to
 reviewed knowledge.
 
-The original 17 cabinet topics and the two source-course entries are versioned,
+The original 17 cabinet topics, two source-course entries and two NOD/NOK topics are versioned,
 checked source cards in
 [`src/cabinet-topics.js`](src/cabinet-topics.js). Changes to these cards need
 mathematical review and a normal repository change. The standalone assistant's
@@ -86,6 +87,40 @@ Visible conversation text stays in page memory. Account changes, relevant route
 changes and page exit dispose it and abort pending UI requests. No helper text
 is put in browser persistent storage. A response arriving after account,
 permission or task revocation is withheld by the server as well.
+
+### Bounded follow-up questions (prepared extension)
+
+The [grade 6 dialogue task](../docs/tasks/MATHEXAM_ASSISTANT_GRADE6_DIALOGUE_V1.md)
+adds follow-ups to ordinary mathematical questions when external inference is
+already enabled and the pupil explicitly acknowledges that individual transfer.
+It does not activate a provider or change any pupil's saved profile.
+
+The UI sends only a parent answer ID and a new question (up to 400 characters),
+along with the unchanged root problem. It cannot submit a transcript or roles.
+The gateway keeps up to three previous successful exchanges in process memory,
+for at most 15 minutes from the first answer, at most 60 entries total.
+Follow-ups cannot extend that deadline. The complete dialogue
+snapshot, including the new question, is limited to 3500 UTF-8 bytes. Oldest
+exchanges are dropped to fit; an oversized newest answer cannot be continued.
+No text is truncated into a misleading partial explanation.
+
+The cache binds to account, login session, settings version, profile, topic,
+condition and attempt. Only the latest successful answer can continue its chain.
+Expired or changed context requires a new initial hint. Server restart forgets
+context but preserves the durable usage and replay ledgers. Page exit removes
+visible text and its continuation handle; server memory independently expires.
+
+Each follow-up consumes the existing request quota and monetary reservation;
+there is no retry or provider escalation. Privacy checks also cover earlier
+answers, which remain untrusted model data. A provider failure explicitly says
+that the follow-up was not answered and shows material for the original task.
+Geometry source-course and local task explanations retain their existing paths.
+No dialogue is written to SQLite, browser storage or a training dataset.
+
+Deployment must update the cabinet and helper catalogs together. Their exact
+catalog handshake intentionally fails closed if versions differ. Live model
+terms, age eligibility, processing conditions, response quality and budget
+approval remain prerequisites for actual pupil-facing external inference.
 
 ## Task context and assistance
 

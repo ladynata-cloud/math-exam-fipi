@@ -1,5 +1,15 @@
 # Atanasyan: complete sphere paragraph, exercises 372–395
 
+## Release continuation — 2026-11-02
+
+The owner now explicitly requests resuming PR #386, resolving current-main
+incompatibilities, repeating the necessary checks and then merging and publishing
+the Sphere section. This current instruction supersedes the preparation-only
+permission boundaries in the historical execution record below. Preserve the
+existing 46 cards, all prior material and learner work. The only integration
+conflict is in the project journal; product files are unchanged. See the
+[continuation record](../reviews/ATANASYAN_SPHERE_RELEASE_20261102.md).
+
 ## Identity
 
 - Task: ATANASYAN_SPHERE_372_395.

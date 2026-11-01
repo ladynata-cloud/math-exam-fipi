@@ -1,0 +1,23 @@
+{
+  "base": "a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3",
+  "count": 194,
+  "manifestSha256": "ee00eadc6ecf88a9e46b06154ecc68c60a0c8a3e97bae293f4745d85c70b8091",
+  "sourceFiles": [
+    {
+      "file": "courses/vilenkin-6-part-1/textbook-data/units-A.json",
+      "sha256": "7e5538b27c4c6b72b5d9f2d6600a8569397db387836ff4aefbb594dc2513f5e2"
+    },
+    {
+      "file": "courses/vilenkin-6-part-1/textbook-data/units-B.json",
+      "sha256": "3ac7e7da0cde2668ba680c93c3d8d3475cac9c6f5f8821e76529821d9c64ca6e"
+    },
+    {
+      "file": "courses/vilenkin-6-part-1/textbook-data/units-C.json",
+      "sha256": "b25ee6d369a35b567fd64065c3e7780a9a06d2aebe5eea77980306329ca3e943"
+    },
+    {
+      "file": "courses/vilenkin-6-part-1/textbook-data/units-D.json",
+      "sha256": "16655c9558ebea1b9f797b6a8527470388887f25682acdf9ab6873c1a951465e"
+    }
+  ]
+}

@@ -1,0 +1,1140 @@
+{
+  "schemaVersion": 1,
+  "edition": "2026-10-31/v1",
+  "sources": [
+    {
+      "name": "Kurs_molodogo_OGEshnika_MathExam.docx",
+      "bytes": 5670523,
+      "sha256": "ae696ec1274ceb2963f3498ea38ca9f2edd79b2a73083166cdbf5c9bf705d1bf"
+    },
+    {
+      "name": "Kurs_molodogo_OGEshnika_MathExam.pdf",
+      "bytes": 4777639,
+      "sha256": "ded18e00b30d78b45ebfdb10efc739eb7ccead5c9b896494214f398cf3d5589f"
+    },
+    {
+      "name": "Proverka_knigi_i_spisok_trenazherov.xlsx",
+      "bytes": 32538,
+      "sha256": "de1a1cec2ebaf467b4684895a0ae5bc05f5ddda1e244a9282f719a90cb776757"
+    }
+  ],
+  "summary": {
+    "pdf_pages": 72,
+    "pdf_link_annotations": 90,
+    "pdf_unique_link_targets": 71,
+    "pdf_text_url_matches": 38,
+    "pdf_embedded_unique_images": 62,
+    "pdf_qr_placements": 34,
+    "pdf_qr_unique_payloads": 34,
+    "pdf_qr_unique_image_xrefs": 34,
+    "docx_hyperlink_placements": 79,
+    "docx_hyperlink_unique_targets": 71,
+    "docx_text_url_matches": 37,
+    "docx_external_relationships": 77,
+    "docx_image_files": 78,
+    "docx_image_placements": 62,
+    "docx_qr_image_files_total": 39,
+    "docx_qr_placements": 34,
+    "docx_qr_unique_payloads": 34,
+    "docx_qr_used_image_files": 34,
+    "unique_book_urls_union": 71,
+    "prior_registry_unique_urls_normalized": 71,
+    "added_urls_vs_prior": [],
+    "removed_urls_vs_prior": [],
+    "only_in_pdf": [],
+    "only_in_docx": [],
+    "pdf_qr_not_linked": [],
+    "docx_unused_external_targets": [
+      "https://mathexam.space/trainers/arifmetika.html",
+      "https://mathexam.space/trainers/drobi-oge-trainer.html",
+      "https://mathexam.space/trainers/negative-numbers.html",
+      "https://mathexam.space/trainers/oge-1-5-trainers/",
+      "https://mathexam.space/trainers/rounding-stepwise.html"
+    ],
+    "pdf_text_wrapped_reconstructed": 10,
+    "pdf_text_targets_not_in_annotations": [],
+    "docx_text_targets_not_in_hyperlinks": [],
+    "docx_qr_nearest_link_matches": 34,
+    "pdf_qr_same_page_link_matches": 34,
+    "qr_payload_sets_identical": true,
+    "qr_min_printed_width_mm": 16.51,
+    "qr_max_printed_width_mm": 32.0,
+    "qr_decoding_scope": "All embedded QR image bytes decoded with zxing-cpp 3.1.1; QR/link placements checked. Physical printed-book camera scanning is not tested."
+  },
+  "urls": [
+    {
+      "id": "BOOK-001",
+      "url": "https://mathexam.space/",
+      "pdf_pages": [
+        1,
+        2,
+        3
+      ],
+      "pdf_link_count": 3,
+      "docx_link_count": 2,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        2
+      ],
+      "topic": ""
+    },
+    {
+      "id": "BOOK-002",
+      "url": "https://mathexam.space/oge/geometry/task-15-external-angle.html",
+      "pdf_pages": [
+        49
+      ],
+      "pdf_link_count": 2,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        62
+      ],
+      "topic": "Задание 15. Треугольники: находим неизвестный угол или сторону"
+    },
+    {
+      "id": "BOOK-003",
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/percent-table-trainer.html",
+      "pdf_pages": [
+        11
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        42
+      ],
+      "topic": "6. Проценты и пропорции"
+    },
+    {
+      "id": "BOOK-004",
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-apartments.html",
+      "pdf_pages": [
+        24
+      ],
+      "pdf_link_count": 2,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        50
+      ],
+      "topic": "Сюжет 6. Квартиры"
+    },
+    {
+      "id": "BOOK-005",
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html",
+      "pdf_pages": [
+        12,
+        13
+      ],
+      "pdf_link_count": 2,
+      "docx_link_count": 2,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        43
+      ],
+      "topic": "Как выбрать, с чего начать"
+    },
+    {
+      "id": "BOOK-006",
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-land-plots.html",
+      "pdf_pages": [
+        22
+      ],
+      "pdf_link_count": 2,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        49
+      ],
+      "topic": "Сюжет 5. Участки"
+    },
+    {
+      "id": "BOOK-007",
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-map.html",
+      "pdf_pages": [
+        13
+      ],
+      "pdf_link_count": 2,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        44
+      ],
+      "topic": "Перед стартом: диагностика и карта тренажёров"
+    },
+    {
+      "id": "BOOK-008",
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html",
+      "pdf_pages": [
+        27
+      ],
+      "pdf_link_count": 2,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        52
+      ],
+      "topic": "Сюжет 8. Листы"
+    },
+    {
+      "id": "BOOK-009",
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-roads-grid.html",
+      "pdf_pages": [
+        16
+      ],
+      "pdf_link_count": 2,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        45
+      ],
+      "topic": "Сюжет 1. Дороги по клеткам"
+    },
+    {
+      "id": "BOOK-010",
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-roads-schema.html",
+      "pdf_pages": [
+        18
+      ],
+      "pdf_link_count": 2,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        46
+      ],
+      "topic": "Сюжет 2. Дороги без клеток"
+    },
+    {
+      "id": "BOOK-011",
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-stoves.html",
+      "pdf_pages": [
+        21
+      ],
+      "pdf_link_count": 2,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        48
+      ],
+      "topic": "Сюжет 4. Печки"
+    },
+    {
+      "id": "BOOK-012",
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-tariffs.html",
+      "pdf_pages": [
+        25
+      ],
+      "pdf_link_count": 2,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        51
+      ],
+      "topic": "Сюжет 7. Тарифы"
+    },
+    {
+      "id": "BOOK-013",
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-tires.html",
+      "pdf_pages": [
+        19
+      ],
+      "pdf_link_count": 2,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        47
+      ],
+      "topic": "Сюжет 3. Шины"
+    },
+    {
+      "id": "BOOK-014",
+      "url": "https://mathexam.space/trainers/oge-basics/",
+      "pdf_pages": [
+        8
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        4
+      ],
+      "topic": "Математический ликбез: закрыть пробелы до ОГЭ"
+    },
+    {
+      "id": "BOOK-015",
+      "url": "https://mathexam.space/trainers/oge-basics/decimal-add-subtract.html",
+      "pdf_pages": [
+        8
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        6
+      ],
+      "topic": "1. Арифметика и десятичные числа"
+    },
+    {
+      "id": "BOOK-016",
+      "url": "https://mathexam.space/trainers/oge-basics/fraction-common-denominator.html",
+      "pdf_pages": [
+        10
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        29
+      ],
+      "topic": "3. Обыкновенные дроби"
+    },
+    {
+      "id": "BOOK-017",
+      "url": "https://mathexam.space/trainers/oge-basics/fraction-meaning.html",
+      "pdf_pages": [
+        10,
+        12
+      ],
+      "pdf_link_count": 2,
+      "docx_link_count": 2,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        28
+      ],
+      "topic": "3. Обыкновенные дроби"
+    },
+    {
+      "id": "BOOK-018",
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division.html",
+      "pdf_pages": [
+        9
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        27
+      ],
+      "topic": "2. Умножение и деление — по атомам"
+    },
+    {
+      "id": "BOOK-019",
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/",
+      "pdf_pages": [
+        9,
+        12
+      ],
+      "pdf_link_count": 2,
+      "docx_link_count": 2,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        7
+      ],
+      "topic": "2. Умножение и деление — по атомам"
+    },
+    {
+      "id": "BOOK-020",
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html",
+      "pdf_pages": [
+        9
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        14
+      ],
+      "topic": "2. Умножение и деление — по атомам"
+    },
+    {
+      "id": "BOOK-021",
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/column-multiplication-two-digit.html",
+      "pdf_pages": [
+        9
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        15
+      ],
+      "topic": "2. Умножение и деление — по атомам"
+    },
+    {
+      "id": "BOOK-022",
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/decimal-division-natural.html",
+      "pdf_pages": [
+        9
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        24
+      ],
+      "topic": "2. Умножение и деление — по атомам"
+    },
+    {
+      "id": "BOOK-023",
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/decimal-divisor-shift.html",
+      "pdf_pages": [
+        9
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        26
+      ],
+      "topic": "2. Умножение и деление — по атомам"
+    },
+    {
+      "id": "BOOK-024",
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/division-append-zeros.html",
+      "pdf_pages": [
+        9
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        25
+      ],
+      "topic": "2. Умножение и деление — по атомам"
+    },
+    {
+      "id": "BOOK-025",
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/division-with-remainder.html",
+      "pdf_pages": [
+        9
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        16
+      ],
+      "topic": "2. Умножение и деление — по атомам"
+    },
+    {
+      "id": "BOOK-026",
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html",
+      "pdf_pages": [
+        9
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        17
+      ],
+      "topic": "2. Умножение и деление — по атомам"
+    },
+    {
+      "id": "BOOK-027",
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-mixed-checkpoint.html",
+      "pdf_pages": [
+        9
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        18
+      ],
+      "topic": "2. Умножение и деление — по атомам"
+    },
+    {
+      "id": "BOOK-028",
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-one-digit.html",
+      "pdf_pages": [
+        9
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        20
+      ],
+      "topic": "2. Умножение и деление — по атомам"
+    },
+    {
+      "id": "BOOK-029",
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-quotient-digit.html",
+      "pdf_pages": [
+        9
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        19
+      ],
+      "topic": "2. Умножение и деление — по атомам"
+    },
+    {
+      "id": "BOOK-030",
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-two-digit.html",
+      "pdf_pages": [
+        9
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        23
+      ],
+      "topic": "2. Умножение и деление — по атомам"
+    },
+    {
+      "id": "BOOK-031",
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-with-remainder.html",
+      "pdf_pages": [
+        9
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        21
+      ],
+      "topic": "2. Умножение и деление — по атомам"
+    },
+    {
+      "id": "BOOK-032",
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-zero-in-quotient.html",
+      "pdf_pages": [
+        9
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        22
+      ],
+      "topic": "2. Умножение и деление — по атомам"
+    },
+    {
+      "id": "BOOK-033",
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-ladder.html",
+      "pdf_pages": [
+        9
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        9
+      ],
+      "topic": "2. Умножение и деление — по атомам"
+    },
+    {
+      "id": "BOOK-034",
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-meaning.html",
+      "pdf_pages": [
+        9
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        8
+      ],
+      "topic": "2. Умножение и деление — по атомам"
+    },
+    {
+      "id": "BOOK-035",
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-mixed.html",
+      "pdf_pages": [
+        9
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        12
+      ],
+      "topic": "2. Умножение и деление — по атомам"
+    },
+    {
+      "id": "BOOK-036",
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-pythagoras-table.html",
+      "pdf_pages": [
+        9
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        11
+      ],
+      "topic": "2. Умножение и деление — по атомам"
+    },
+    {
+      "id": "BOOK-037",
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-tricks.html",
+      "pdf_pages": [
+        9
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        10
+      ],
+      "topic": "2. Умножение и деление — по атомам"
+    },
+    {
+      "id": "BOOK-038",
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/tabular-division.html",
+      "pdf_pages": [
+        9
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        13
+      ],
+      "topic": "2. Умножение и деление — по атомам"
+    },
+    {
+      "id": "BOOK-039",
+      "url": "https://mathexam.space/trainers/oge-basics/negative-add-subtract.html",
+      "pdf_pages": [
+        10
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        31
+      ],
+      "topic": "4. Отрицательные числа"
+    },
+    {
+      "id": "BOOK-040",
+      "url": "https://mathexam.space/trainers/oge-basics/negative-number-line.html",
+      "pdf_pages": [
+        10,
+        12
+      ],
+      "pdf_link_count": 2,
+      "docx_link_count": 2,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        30
+      ],
+      "topic": "4. Отрицательные числа"
+    },
+    {
+      "id": "BOOK-041",
+      "url": "https://mathexam.space/trainers/oge-basics/order-of-operations.html",
+      "pdf_pages": [
+        8,
+        12
+      ],
+      "pdf_link_count": 2,
+      "docx_link_count": 2,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        5
+      ],
+      "topic": "1. Арифметика и десятичные числа"
+    },
+    {
+      "id": "BOOK-042",
+      "url": "https://mathexam.space/trainers/oge-basics/percentages/",
+      "pdf_pages": [
+        11
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        35
+      ],
+      "topic": "6. Проценты и пропорции"
+    },
+    {
+      "id": "BOOK-043",
+      "url": "https://mathexam.space/trainers/oge-basics/percentages/percent-change.html",
+      "pdf_pages": [
+        11
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        39
+      ],
+      "topic": "6. Проценты и пропорции"
+    },
+    {
+      "id": "BOOK-044",
+      "url": "https://mathexam.space/trainers/oge-basics/percentages/percent-choose-question.html",
+      "pdf_pages": [
+        11,
+        12
+      ],
+      "pdf_link_count": 2,
+      "docx_link_count": 2,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        38
+      ],
+      "topic": "6. Проценты и пропорции"
+    },
+    {
+      "id": "BOOK-045",
+      "url": "https://mathexam.space/trainers/oge-basics/percentages/percent-final-checkpoint.html",
+      "pdf_pages": [
+        11
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        41
+      ],
+      "topic": "6. Проценты и пропорции"
+    },
+    {
+      "id": "BOOK-046",
+      "url": "https://mathexam.space/trainers/oge-basics/percentages/percent-meaning.html",
+      "pdf_pages": [
+        11
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        36
+      ],
+      "topic": "6. Проценты и пропорции"
+    },
+    {
+      "id": "BOOK-047",
+      "url": "https://mathexam.space/trainers/oge-basics/percentages/percent-of-number-and-whole.html",
+      "pdf_pages": [
+        11
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        37
+      ],
+      "topic": "6. Проценты и пропорции"
+    },
+    {
+      "id": "BOOK-048",
+      "url": "https://mathexam.space/trainers/oge-basics/percentages/proportion.html",
+      "pdf_pages": [
+        11
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        40
+      ],
+      "topic": "6. Проценты и пропорции"
+    },
+    {
+      "id": "BOOK-049",
+      "url": "https://mathexam.space/trainers/oge-basics/rounding.html",
+      "pdf_pages": [
+        10,
+        12
+      ],
+      "pdf_link_count": 2,
+      "docx_link_count": 2,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        32
+      ],
+      "topic": "5. Округление и единицы измерения"
+    },
+    {
+      "id": "BOOK-050",
+      "url": "https://mathexam.space/trainers/oge-basics/units-area.html",
+      "pdf_pages": [
+        10
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        34
+      ],
+      "topic": "5. Округление и единицы измерения"
+    },
+    {
+      "id": "BOOK-051",
+      "url": "https://mathexam.space/trainers/oge-basics/units-length-time.html",
+      "pdf_pages": [
+        10
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 0,
+      "docx_qr_count": 0,
+      "prior_registry_rows": [
+        33
+      ],
+      "topic": "5. Округление и единицы измерения"
+    },
+    {
+      "id": "BOOK-052",
+      "url": "https://mathexam.space/trainers/oge-course/",
+      "pdf_pages": [
+        72
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        3
+      ],
+      "topic": "Заключение, или Честное признание напоследок"
+    },
+    {
+      "id": "BOOK-053",
+      "url": "https://mathexam.space/trainers/oge-task10-probability.html",
+      "pdf_pages": [
+        35
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        57
+      ],
+      "topic": "Задание 10. Орёл, решка и здравый смысл"
+    },
+    {
+      "id": "BOOK-054",
+      "url": "https://mathexam.space/trainers/oge-task11-graphs-trainer.html",
+      "pdf_pages": [
+        37
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        58
+      ],
+      "topic": "Задание 11. Опознание параболы"
+    },
+    {
+      "id": "BOOK-055",
+      "url": "https://mathexam.space/trainers/oge-task12-formulas-trainer.html",
+      "pdf_pages": [
+        38
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        59
+      ],
+      "topic": "Задание 12. Формулы: подставь и не сломай"
+    },
+    {
+      "id": "BOOK-056",
+      "url": "https://mathexam.space/trainers/oge-task13-inequalities.html",
+      "pdf_pages": [
+        43
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        60
+      ],
+      "topic": "Задание 13. Неравенства: крокодил открывает пасть к большему числу"
+    },
+    {
+      "id": "BOOK-057",
+      "url": "https://mathexam.space/trainers/oge-task14-progressions.html",
+      "pdf_pages": [
+        47
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        61
+      ],
+      "topic": "Задание 14. Марш прогрессий"
+    },
+    {
+      "id": "BOOK-058",
+      "url": "https://mathexam.space/trainers/oge-task16-circle.html",
+      "pdf_pages": [
+        50
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        63
+      ],
+      "topic": "Задание 16. Окружность: круглая, но с подвохом"
+    },
+    {
+      "id": "BOOK-059",
+      "url": "https://mathexam.space/trainers/oge-task17-quadrilaterals.html",
+      "pdf_pages": [
+        52
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        64
+      ],
+      "topic": "Задание 17. Семейные разборки четырёхугольников"
+    },
+    {
+      "id": "BOOK-060",
+      "url": "https://mathexam.space/trainers/oge-task18-grid.html",
+      "pdf_pages": [
+        53
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        65
+      ],
+      "topic": "Задание 18. Клеточка — твой лучший друг"
+    },
+    {
+      "id": "BOOK-061",
+      "url": "https://mathexam.space/trainers/oge-task20-equations.html",
+      "pdf_pages": [
+        56
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        67
+      ],
+      "topic": "Задание 20. Уравнение с характером"
+    },
+    {
+      "id": "BOOK-062",
+      "url": "https://mathexam.space/trainers/oge-task21-word-problems.html",
+      "pdf_pages": [
+        58
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        68
+      ],
+      "topic": "Задание 21. Задача, притворяющаяся текстом"
+    },
+    {
+      "id": "BOOK-063",
+      "url": "https://mathexam.space/trainers/oge-task22-functions-graphs.html",
+      "pdf_pages": [
+        59
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        69
+      ],
+      "topic": "Задание 22. Нарисуй, но с умом"
+    },
+    {
+      "id": "BOOK-064",
+      "url": "https://mathexam.space/trainers/oge-task23-geometry-calculations.html",
+      "pdf_pages": [
+        61
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        70
+      ],
+      "topic": "Задание 23. Геометрия с числами"
+    },
+    {
+      "id": "BOOK-065",
+      "url": "https://mathexam.space/trainers/oge-task24-proofs.html",
+      "pdf_pages": [
+        62
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        71
+      ],
+      "topic": "Задание 24. Докажи!"
+    },
+    {
+      "id": "BOOK-066",
+      "url": "https://mathexam.space/trainers/oge-task25-geometry.html",
+      "pdf_pages": [
+        64
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        72
+      ],
+      "topic": "Задание 25. Геометрическая задача повышенной сложности"
+    },
+    {
+      "id": "BOOK-067",
+      "url": "https://mathexam.space/trainers/oge-task6-fractions.html",
+      "pdf_pages": [
+        29
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        53
+      ],
+      "topic": "Задание 6. Дроби наносят ответный удар"
+    },
+    {
+      "id": "BOOK-068",
+      "url": "https://mathexam.space/trainers/oge-task7-number-line.html",
+      "pdf_pages": [
+        30
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        54
+      ],
+      "topic": "Задание 7. Координатная прямая: ты где?"
+    },
+    {
+      "id": "BOOK-069",
+      "url": "https://mathexam.space/trainers/oge-task8-powers-roots.html",
+      "pdf_pages": [
+        32
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        55
+      ],
+      "topic": "Задание 8. Степени и корни: качалка для чисел"
+    },
+    {
+      "id": "BOOK-070",
+      "url": "https://mathexam.space/trainers/oge-task9-equations.html",
+      "pdf_pages": [
+        33
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        56
+      ],
+      "topic": "Задание 9. Икс не прячется. Он ждёт"
+    },
+    {
+      "id": "BOOK-071",
+      "url": "https://mathexam.space/trainers/task19-trainer.html",
+      "pdf_pages": [
+        54
+      ],
+      "pdf_link_count": 1,
+      "docx_link_count": 1,
+      "pdf_qr_count": 1,
+      "docx_qr_count": 1,
+      "prior_registry_rows": [
+        66
+      ],
+      "topic": "Задание 19. Правда или ловушка"
+    }
+  ]
+}

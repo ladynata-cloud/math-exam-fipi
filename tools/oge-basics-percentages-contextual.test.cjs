@@ -4,6 +4,7 @@ const {createHash} = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const test = require('node:test');
+const {restoreHistoricalBytes} = require('./oge-book-corrections.cjs');
 const root = path.resolve(__dirname, '..');
 const fixture = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures/oge-basics-percentages-contextual-shell.json')));
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
@@ -34,12 +35,12 @@ function assertPreservedTrainer(html, file) {
   const addition = `<link rel="canonical" href="https://mathexam.space/${file.path}">\n`;
   assert.equal(html.split(addition).length, 2, file.path + ': one exact HTTPS self-canonical');
   assert(html.indexOf(addition) < html.indexOf('</head>'), file.path + ': canonical remains in head');
-  // Only this literal, reviewed metadata addition is permitted. Retain the
-  // historical whole-document hashes, including all scripts, styles and body.
-  assert.equal(sha(html.replace(addition, '')), file.baseSha256, file.path);
+  // Retain the historical whole-document hashes. The book audit also fixes one
+  // demonstrated decrease equation; only that exact literal is reversed here.
+  assert.equal(sha(restoreHistoricalBytes(file.path, html.replace(addition, ''))), file.baseSha256, file.path);
 }
 
-test('six percentage sources retain their original bytes after one exact head canonical', () => {
+test('six percentage sources retain historical bytes after exact canonical and decrease correction', () => {
   assert.equal(fixture.schemaVersion, 1);
   assert.equal(fixture.baseSha, '59ca8d215312831a21494e3b67099b30b1e6013d');
   assert.equal(fixture.files.length, 7);

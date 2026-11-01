@@ -1,6 +1,271 @@
 # MathExam project status
 
-## Prepared: Vilenkin 6 source clarity and revised cabinet course
+## Current preparation: assistant dialogue integration, 2026-11-02
+
+- Continuing [PR375](https://github.com/ladynata-cloud/math-exam-fipi/pull/375)
+  against `6b9c327f2ca438cb7e7620ef302876de467fac19`, preserving published
+  course navigation, LCM hints, source provenance and unrelated content.
+- The same root task and bounded previous exchanges support follow-up
+  questions; fresh external acknowledgement and teacher/budget controls remain.
+  Source-only textbook helpers keep their separate existing behavior.
+- Fresh local helper 131/131, cabinet 369/369 and assistant DOM 40/40 checks
+  pass, together with dialogue/cabinet/mobile integration and current Vilenkin
+  navigation/LCM browser gates. No external model calls or learner changes.
+- [Task](tasks/MATHEXAM_ASSISTANT_GRADE6_DIALOGUE_V1.md) and
+  [verification](reports/MATHEXAM_ASSISTANT_DIALOGUE_REVALIDATION_20261102.md).
+  Exact published head and final CI are recorded in the Draft PR. Independent
+  and external HIGH review remain release gates; no merge/deployment approval
+  is inferred from the owner's continuation request.
+- Separate OpenAI adapter [PR399](https://github.com/ladynata-cloud/math-exam-fipi/pull/399)
+  remains a Draft and is not included or enabled by this dialogue task.
+
+## Current: finance deposit explanation correction, 2026-11-01
+
+- [Task](tasks/EGE_P13_FINANCE_STEP_HINTS_20261101.md), SMALL; the owner explicitly
+  granted START for a separate corrective PR with the prepared explanations
+  and independent exact-step test. Branch:
+  `fix/profile-finance-step-hints-2026-11-01`.
+- Verified base: `b779c500194daadf7f6418a9ad2923b3d537a690`, the published PR390
+  squash. No previous branch is merged, rebased or overwritten by this task.
+- Scope: 24 hints / 24 explanations in four existing deposit tasks, two
+  project-2027 provenance labels, an independent 442-step / 78-answer oracle
+  and its additive CI invocation. Questions, answers, IDs, ledger and storage
+  remain unchanged. [Verification](reports/EGE_P13_FINANCE_STEP_HINTS_20261101.md).
+- Next: publish the single corrective Draft PR, verify all applicable exact-head
+  CI, and obtain separate exact-base/head merge and publication authorization.
+  The current task does not itself authorize production release.
+
+## Published: financial course extension, PR390
+
+- [PR390](https://github.com/ladynata-cloud/math-exam-fipi/pull/390) was
+  squash-merged on 2026-11-01 at 13:18:07 UTC as
+  `b779c500194daadf7f6418a9ad2923b3d537a690`, sole parent
+  `3918c1645709fc8e7a92f026646d6e42fe0d6712`, from reviewed head
+  `9873e5010560d67b72d6e72afac303fcd1b67970`. The complete released tree
+  `d6936b1502ebfe90e2c18ef3be542b04f60dd0ec` matches that head exactly.
+- Its release record confirms separate owner authorization, six successful
+  head workflows, four successful postmerge workflows and successful
+  [Pages delivery](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41310597920).
+- The [live finance catalogue](https://mathexam.space/ege-profil/start/#exam/13)
+  contains 16 lessons / 96 tasks; the main course contains 81 / 486. The
+  project-2027 caption and historical-2026 distinction are already published.
+- The prior same-day verification independently confirmed public HTTPS asset
+  identity, live catalogue/source UI and all 78 answers / 442 intermediate
+  values. Existing student records were not opened or changed. Full isolated
+  learner journeys belong to the exact-head CI evidence, not live pupil tests.
+- The current corrective task addresses the remaining first-year deposit-hint
+  ambiguity. Those prepared text changes and the independent Python test were
+  not included in PR390. Earlier preparation/pending-release records below
+  are historical and do not supersede this release identity.
+
+## Historical: finance revalidation before PR390 publication, 2026-11-01
+
+- PR390 is integrated with main `3918c1645709fc8e7a92f026646d6e42fe0d6712`
+  under the owner’s explicit current request to reconcile branches.
+- Concurrent PR391 (source provenance), PR393 (showcase) and PR395 (LCM and
+  cabinet navigation) are confirmed merged by GitHub. Their runtime files
+  are retained exactly. Earlier preparation entries below are historical.
+- Only PROJECT_STATUS conflicted; both records were retained. The finance
+  source link now explicitly says project/draft 2027, with a regression check.
+- Revalidation evidence: [report](reports/EGE_P13_FINANCE_REVALIDATION_20261101.md).
+  Separate exact-base/head production release authorization remains pending.
+
+## Historical: preparation of financial models for profile task 13
+
+- [Task](tasks/EGE_P13_FINANCE_LESSON_20261101.md), `MEDIUM`; current-task
+  owner START and task-specific decision declining external Claude consultation.
+- Base `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`; branch
+  `task/ege-p13-finance-lesson-2026-11-01`.
+- Thirteen new lessons / 78 independently written problems extend the existing
+  18 financial tasks. Earned ledger cells, units, partial payment windows,
+  two-stage loans and deposits use the existing step/model/state contracts.
+- Implementation and focused internal review are complete. The local
+  [report](reports/EGE_P13_FINANCE_LESSON_20261101.md) records 78 independent
+  mathematical oracles, 156 finance browser journeys, 26 existing unit files
+  and affected course/browser/package gates passing.
+- [Draft PR390](https://github.com/ladynata-cloud/math-exam-fipi/pull/390) records
+  its published head and CI outcome. Initial CI found canonical asset drift in
+  seven board wrappers and an outdated aggregate test inventory; the bounded
+  follow-up synchronizes them while preserving the existing assertions.
+- A subsequent expressions-board gate now explicitly awaits dialog closure and
+  focus restoration before editing. The bounded test-only correction preserves
+  all original input/synchronization assertions; final CI is tracked in the PR.
+- No merge, auto-merge or production deployment is authorized or claimed for
+  this task.
+
+## Published; production browser gate incomplete: fixed OGE book edition v2
+
+- [PR388](https://github.com/ladynata-cloud/math-exam-fipi/pull/388) was merged
+  on 2026-10-31 as `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`, with sole parent
+  `4a90592077934d9a6d8a617b4afa50938798efb2`. The release record confirms separate
+  owner permission and exact identity with reviewed head
+  `0aedd01941096636ae75f05bbc8147de937e2db2`.
+- [Pages41221711224](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41221711224)
+  successfully deployed that SHA. The public edition is
+  `/book/oge/2026-10-31/v2/`; all 225 published v1 files remain unchanged.
+- The PR release record reports `POST_DEPLOY_HTTP_OK`, 367/367 production
+  byte/alias/target comparisons. It separately reports a blocked production
+  browser gate: the test browser rejected the environment TLS chain before
+  content checks. Limited Opera observations do not replace that full gate.
+- Distribution remains **INCOMPLETE**. No trust-store change or TLS bypass was
+  performed. The PR records the precise remaining owner/environment decision.
+- This reconciliation follows primary PR metadata and its release evidence;
+  it does not claim that the finance task reran the historical book runtime
+  gate. The [preparation task](tasks/OGE_BOOK_EDITION_V2_DALI_20261031.md) and
+  [local report](reports/oge-book-v2-20261031/README.md) remain historical records.
+## Merged and release recorded: combined grade-six LCM course and navigation, 2026-11-01
+
+- Owner directly requested [one compatible release candidate](tasks/GRADE6_LCM_NAVIGATION_INTEGRATION_20261101.md)
+  combining PR389 and PR392 on main `37718f1c0138ba031314b8f4716b73c9d963bc81`.
+  Review level HIGH; branch `feat/grade6-lcm-course-integration-20261101`.
+- Inputs are PR389 head `a14fed1152a0dbfdca07775dd891ba3af00a2e30` and
+  PR392 head `5568a093d7ffb3e587d5dba145071c8cde206e70`. Their branches
+  remain unchanged. One composed candidate avoids incompatible intermediate
+  course and navigation states.
+- Preserve 44 author cards / 203 steps, both LCM methods, original source
+  identities and saved work. Resolve the hidden author-task return, static
+  helper override, author labels and newest unfinished continuation.
+  Explicit current-form/frame scrolling keeps long mobile steps usable.
+- [Verification](reports/GRADE6_LCM_NAVIGATION_INTEGRATION_20261101.md)
+  binds the final source, synthetic pupil journey, inspected images and gates.
+  Earlier reports below remain historical source-candidate evidence.
+- PR391 is already published and retained as the base. Public/cabinet baseline
+  byte checks are recorded in this task's report; no second PR391 release,
+  real-profile change or new production deployment is claimed here.
+- [PR395](https://github.com/ladynata-cloud/math-exam-fipi/pull/395) was
+  squash-merged on 2026-11-01 as `3918c1645709fc8e7a92f026646d6e42fe0d6712`,
+  sole parent `2a9e70be5f7648d9fb41ad22236eeab35bf205d0`, from reviewed
+  head `e95af0f570bf430ac90f6019f08e33a511771b2d`. Its current release
+  record confirms separate owner authorization, the task-specific HIGH
+  external-review exception, matching 116-path delta and production tree.
+- The PR records successful Pages and existing Amvera delivery, all nine
+  postmerge workflows/14 checks, and public learner checks. The private
+  saved-work inspection remains separately blocked by automatic permission
+  review and is not counted as passed. This reconciliation reads the release
+  evidence; it does not rerun or claim access to any real pupil records.
+- Source PR389/PR392 are historical inputs to this combined release and must
+  not be independently merged as a duplicate delivery.
+
+## Original prepared candidate: Vilenkin 6 navigation, PR392
+
+- [Task](tasks/VILENKIN_COURSE_NAVIGATION_20261101.md), MEDIUM; owner directly
+  requested the course-interface correction and a bottom-right helper.
+  Original base `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`, branch
+  `fix/vilenkin-course-navigation-20261101`.
+- The course has distinct topic cards, visible Start/Continue/task actions,
+  truthful aggregate progress and continuation of the latest unfinished work.
+  Navigation help is available on course pages; saved-task help retains its
+  existing source-confirmation and access checks.
+- Managed “Все темы” returns to the cabinet catalogue through the existing
+  authenticated frame bridge, after the current work is saved. A cabinet-owned
+  “Все темы курса” link also works while a teacher views a pupil's work or a
+  pupil reads history, keeping all frame mutation guards intact. A contextual
+  link in fraction tasks opens the existing step-by-step LCM trainer on a
+  separate example; it does not implement a new 75/30 worksheet.
+- All 194 original cards, 615 authored steps, 27 legacy modules, source hashes,
+  identities and server contracts remain unchanged. No real profile was read
+  or modified. [Preparation report](reports/VILENKIN_COURSE_NAVIGATION_20261101.md)
+  records local/browser/internal-review evidence and remaining release work.
+- The owner authorized ordinary integration of released PR391 into this
+  existing branch after coordinated publication, including the status-only
+  conflict resolution. Integration base:
+  `37718f1c0138ba031314b8f4716b73c9d963bc81`; the original task history
+  is retained. Integration head: recorded in the existing PR392 publication record to avoid a self-referential SHA in this commit.
+- Candidate checks and identity: fresh virtual candidate PASS (69+24+119 Node cases, 9 source commands,
+  navigation/helper and both geometry browser suites); actual integrated
+  product/test identity matches. Exact-head CI is recorded in PR392.
+- PR389 remains a separate pending task. PR392 is not merged into main or
+  deployed; its exact-base/head release remains a separate owner decision.
+
+## Original prepared candidate: grade-six multi-number LCM, PR389
+
+- Owner START covers [this task](tasks/GRADE6_LCM_MULTI_CABINET.md), HIGH,
+  base `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`, branch
+  `feat/grade6-lcm-multi-20261031` and a Draft PR; no merge or deployment.
+- One explicitly authored supplement adds 3 worked examples and 16 practice
+  conditions through both successive pair LCMs and prime factorizations,
+  followed by 6 fresh checks: 44 cards / 203 steps. The existing 194 source
+  cards and their identities, 378 other catalog rows and 27 legacy modules
+  remain intact. The existing saved-work contract is used without a migration.
+- [Verification](reports/GRADE6_LCM_MULTI_CABINET_20261101.md) distinguishes
+  local technical preparation from production and real cabinet assignment.
+  `GRADE6_LCM_MULTI_PREPARATION_OK`: arithmetic, immutable base, retained-work,
+  source and relevant DOM/browser regression pass. The new real two-origin
+  browser gate preserves 194 saved synthetic attempts and checks mobile
+  condition/input visibility and unobstructed actions at 320/390/1280 px.
+  No actual pupil profile has been changed. External design/result review is
+  unavailable. The owner subsequently waived external review for the original
+  named PR389 version, as recorded in that PR; this is not a standing waiver
+  or approval of the combined candidate.
+- The 2026-11-01 continuation adds the agreed missing-factor explanation and
+  quick review/return controls for the original prime-factor, GCD and LCM
+  sections. Fresh local checks pass: 58 focused tests, 36 backend tests and
+  12 two-origin browser checks; all 14 current screenshots were inspected.
+  The original 194 cards and saved synthetic attempts remain unchanged.
+- Initial exact-head CI passes the Vilenkin cloud/publication workflows. The
+  global catalog partition was extended to check original 194 and author 44
+  separately after its first CI failure. Two unrelated source-audit workflows
+  reproduce an unchanged Atanasyan base hash mismatch; the report records
+  these failures. Overall CI is not claimed green and those source pins are
+  not changed in the LCM task.
+- Next: complete exact-head technical/review evidence, obtain the separate
+  release decision, then verify the intended existing cabinet after owner
+  sign-in and publication. No other learner's route is in scope.
+
+## Merged: corrected fixed OGE book edition v2, 2026-10-31
+
+- [Task](tasks/OGE_BOOK_EDITION_V2_DALI_20261031.md), `MEDIUM`; owner START,
+  base `4a90592077934d9a6d8a617b4afa50938798efb2`, branch
+  `fix/oge-book-dali-v2-20261031`.
+- The literal DALI image request is corrected in the public Task11 trainer.
+  `/book/oge/2026-10-31/v2/` and `/b/oge26-2/` have new matching PDF/DOCX,
+  34 QR and 71 addresses. All 225 published v1 files remain byte-identical.
+- The bounded work uses Accepted [ADR0012](adr/0012-fixed-oge-book-editions.md).
+  Existing learning engines, portrait JPEG, book wording and the 2027 caption
+  remain fixed. [Local verification](reports/oge-book-v2-20261031/README.md)
+  records 426 source/v2 learner cases, 790 independent math comparisons,
+  142+10+3 v2 runtime checks and independent internal focused review, all PASS.
+  The earlier v1 failure is retained; exact-head CI is recorded in the Draft PR.
+- [PR388](https://github.com/ladynata-cloud/math-exam-fipi/pull/388) was merged
+  on 2026-10-31 as `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`, from reviewed
+  head `0aedd01941096636ae75f05bbc8147de937e2db2`. Primary PR metadata was
+  reconciled when starting the LCM task. The earlier local report is a
+  preparation record; this reconciliation does not independently recertify
+  v2 production bytes, physical QR/devices or its distribution gate.
+- Release evidence and any remaining distribution checks belong in PR388;
+  they are outside the new LCM task. No external-provider verdict is claimed.
+
+## Published with an open distribution gate: OGE book edition v1
+
+- [PR387](https://github.com/ladynata-cloud/math-exam-fipi/pull/387) was merged
+  on 2026-10-31 as `4a90592077934d9a6d8a617b4afa50938798efb2`, sole parent
+  `139b944a70f2e8ba4d340d152d08807fad03e5da`. The reviewed head
+  `4b77e8cadbac230671b697db7209c6e763081b0e` and squash merge have identical
+  full trees and288-path deltas. Separate owner release permission was used;
+  the authoritative main SHA matched that authorized base immediately before merge.
+- [Pages41196769978](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41196769978)
+  and postmerge EGE41196770721 passed for that exact merge. All367 production
+  comparisons passed:225 package-file checks,71 aliases and71 targets, exact
+  sizes/SHA256 and no HTTP redirect. This establishes delivery, not runtime quality.
+- Exact-head preparation CI passed9/9 workflows,426 recorded learner cases
+  and790 independent mathematical comparisons. The same71 addresses,34 QR,
+  72 pages and approved2027 diagnostic caption are in the candidate documents.
+- The final live Chromium140 run covered142 entry/width pairs and10 isolation
+  checks. It passed141/142 and10/10, with one real HTTP404 for entry54 at320px:
+  the literal image path `'+DALI_PORTRAIT_DATA+'`. Fifteen actual screenshot
+  inspections passed within their recorded states. The runtime gate is FAIL
+  and the distribution gate remains **INCOMPLETE**. Focused passing probes do
+  not close the repeatedly observed request failure.
+- The original [task](tasks/OGE_BOOK_EDITION_AUDIT_20261031.md) and
+  [preparation report](reports/oge-book-20261031/README.md) are historical
+  preparation records. The merged PR records production evidence and the open
+  finding. Published `/book/oge/2026-10-31/v1/` and `/b/oge26-1/` are immutable;
+  a correction must use a new edition rather than alter the printed destination.
+- External review was `NOT_RUN_BY_OWNER_REQUEST` for the PR387 continuation,
+  with no provider verdict. Physical phones/printed QR, iOS/Safari/Firefox,
+  screen keyboard and pupil trials were not performed.
+
+## Published source assets: Vilenkin 6 source clarity and revised cabinet course
 
 - [Task](tasks/VILENKIN6_CLARITY_CABINET_20261030.md), HIGH; branch
   `fix/vilenkin6-clarity-cabinet-20261030`, original candidate base
@@ -8,10 +273,17 @@
 - 24 units, 194 source-selected cards, 615 steps; exact source captions,
   prime table through 1000, elementary/grade-five refreshers and optional hints.
 - Separate per-task cloud attempts preserve the prior 27-module course and its
-  work. Assignment to a real cabinet and production deployment are not done.
+  work. [PR378](https://github.com/ladynata-cloud/math-exam-fipi/pull/378) is
+  merged as `7547ea565871e09ee02b632761f27bc088bd5c8a`. During LCM preparation,
+  HTTPS checks of the live textbook catalog and `units-B.json` returned 200
+  and exact base bytes. This confirms those source assets, not a new complete
+  production regression or assignment to any specific learner's cabinet.
+  Owner-provided screenshots in the navigation task also show the 194-card
+  course in the live cabinet; they do not independently certify the hosting
+  deployment or constitute a real-profile edit.
 - [Review report](reports/VILENKIN6_CLARITY_CABINET_20261030.md) separates source,
-  mathematics, saved-work and browser evidence. External review is unavailable,
-  not approved. Release requires the scoped exact-head decision.
+  mathematics, saved-work and browser evidence. The historical preparation
+  report records unavailable external review; it is not a waiver for new work.
 - Full-book goal remains open: only numbers 2.97 and 2.134 have explicit complete
   subpart proofs; the [coverage audit](vilenkin6-source-coverage-audit-2026-10-29.md)
   and [expansion plan](vilenkin6-expansion-plan-2026-10-30.md) enumerate the gaps.
@@ -45,7 +317,7 @@
   this code task. No hosting or search-account settings are changed here.
   Private search metrics are not in this repository.
 
-## Prepared and reviewed: Atanasyan chapter VIII, similar triangles, 640–736
+## Published source bundle: Atanasyan chapter VIII, similar triangles, 640–736
 
 - [Task](tasks/ATANASYAN_7_9_CHAPTER_VIII.md), HIGH; continuing owner permission
   includes publication after the concrete result passes review and checks.
@@ -67,9 +339,14 @@
   extend the runtime inventory; application HTML/JS/CSS are unchanged.
 - Earlier drawing defects and two interrupted execution sessions are recorded
   honestly. No failed or incomplete run is used as the full-course pass.
-- Last live verification still confirms1083 cards. Reviewed public-entry checks,
-  exact-head CI and publication are separate from this local preparation record.
-  Completed release evidence will be recorded in the PR; no status-only PR is needed.
+- Source reconciliation at 2026-10-31 18:47 UTC returned HTTP 200 for the
+  public canonical JSON: all1247 cards and exact current-main bytes, SHA256
+  `af1e3a373745d3a66e3e6f71b14d02de4cd81f0c688a8929c0475277cc22b574`.
+  This confirms publication of the source bundle; it does not recertify every
+  deployed runtime, browser journey or original release decision. At that
+  pre-repair check, the linked 255-card native course retained the older
+  whole-bundle provenance pin; the separately published repair recorded below
+  has now corrected that metadata discrepancy.
 - Next source chapter: IX. The complete textbook is not yet finished.
 
 ## Published: Atanasyan chapter VII, area, 541–639
@@ -172,8 +449,8 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
   `fix/atanasyan-hidden-lines-20261030`.
 - Covers every published card in Atanasyan 10–11 (554), Merzlyak 10 base (989)
   and Shestakov–Yashchenko (543), plus the spatial workshop and both spatial
-  atlases. Cone PR374 was a separate compatibility check during this release;
-  its subsequent publication is reconciled in the cone entry below.
+  atlases. Cone PR374 was subsequently merged on 2026-10-31; its release
+  reconciliation is recorded in the cone entry below.
 - Coverage audit additionally found active independent Atanasyan-EGE,
   profile-EGE SVG/task14, two Three.js banks and basic-EGE spatial renderers.
   These also fall under the owner's all-courses request. Their source and
@@ -192,8 +469,10 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
   The preparation details above describe the retained implementation scope.
 - Production reconciliation: cylinder PR372 was published as
   `6b25302788f36d92723e487e92afa7044ced3ad3`; the later main commit is the
-  separate grade 7–9 chapter VI release. At that checkpoint the stereometry
-  course had 554 cards. Cone PR374 has since been published as recorded below.
+  separate grade 7–9 chapter VI release. Cone PR374 subsequently merged as
+  `139b944a70f2e8ba4d340d152d08807fad03e5da`; its release record reports
+  594 published cards. The earlier 554-card observation describes the
+  pre-cone checkpoint, not the current repository state.
 
 ## In progress: Atanasyan 10–11, complete sphere paragraph
 
@@ -216,7 +495,7 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
   This entry does not claim publication. Merge and deployment need separate
   owner authorization after the concrete reviewed result is ready.
 
-## Published: Atanasyan 10–11, complete cone paragraph
+## Merged and release recorded: Atanasyan 10–11, complete cone paragraph
 
 
 - [Task](tasks/ATANASYAN_CONE_346_371.md), HIGH, explicitly continued by the
@@ -245,6 +524,13 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
   `2f129a9bab292fae765c674268448895d0419e70e0fd4fd30120fcae53569bc1`.
   Completed release evidence is retained in the PR; this continuation reconciles
   the status without a separate status-only PR.
+- [PR374](https://github.com/ladynata-cloud/math-exam-fipi/pull/374) merged as
+  `139b944a70f2e8ba4d340d152d08807fad03e5da`, sole parent
+  `c9bf66e2d95f48db0134d43cc590da89f8bc3053`. Primary GitHub metadata and
+  local Git confirm the merge. The PR release record reports successful Pages
+  run 41143302786, 48 matching production files and the 594-card live course.
+  This 2026-10-31 reconciliation does not claim a fresh full cone browser audit;
+  the current OGE-book task checks its own 71 destinations separately.
 - Next numbered paragraph: chapter IV §3 «Сфера», beginning with exercise 372.
   Later source positions remain inventoried and visibly pending.
 
@@ -2959,7 +3245,7 @@ final exact-head CI and deployment verification; see PR266 for current evidence.
   limitations were disclosed. Progress is browser-local; no synchronized-board
   or cloud learner-storage claim is made. Final evidence is in PR #319.
 
-## Revalidated candidate: clearer arithmetic entry and division (PR #377)
+## Merged and live OGE entry rechecked: clearer arithmetic and division (PR #377)
 
 - [Task](tasks/ARITHMETIC_CLARITY_FIRST_RELEASE.md), MEDIUM. Original base
   `6fb959fc0130a0bb8842601d19297e305ac91ac0`; revalidation base on 2026-10-30:
@@ -2981,7 +3267,115 @@ final exact-head CI and deployment verification; see PR266 for current evidence.
   exact-head CI and independent focused review are recorded in the
   [revalidation report](reports/ARITHMETIC_CLARITY_REVALIDATION_20261030.md)
   and [PR #377](https://github.com/ladynata-cloud/math-exam-fipi/pull/377).
-- This is a prepared release, not a publication claim. Separate exact-base/head
-  merge authorization and live post-deployment verification remain required.
-  No common engine, storage migration, board protocol or server change belongs
-  to this candidate.
+- [PR377](https://github.com/ladynata-cloud/math-exam-fipi/pull/377) merged as
+  `c9bf66e2d95f48db0134d43cc590da89f8bc3053`, sole parent
+  `3411acd7df5ebfbd4179cce85c2300c59677ddf7`. Primary GitHub metadata and
+  local Git confirm the merge. Its release record reports successful Pages
+  run 41127694381 and post-merge arithmetic/classroom gates.
+- Fresh OGE-book availability checks on 2026-10-31 found all 71 referenced HTML
+  pages byte-identical to task base `139b944a70f2e8ba4d340d152d08807fad03e5da`,
+  including the released arithmetic entries. Learner-flow evidence for the
+  book is recorded separately in the current book task. No common engine,
+  storage migration, board protocol or server change belongs to PR377.
+
+
+## Merged and release recorded: geometry source provenance synchronization, 2026-11-01
+
+- [Task](tasks/GEOMETRY_SOURCE_PROVENANCE_20261101.md), `MEDIUM`; owner directly
+  approved a separate repair, based on
+  `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`, branch
+  `fix/geometry-source-provenance-20261101`. The owner separately authorized
+  squash merge and coordinated publication of reviewed head
+  `7a4c049c3c58827774921e51d47b82bdd20219b8`.
+- [PR391](https://github.com/ladynata-cloud/math-exam-fipi/pull/391) was
+  squash-merged as `37718f1c0138ba031314b8f4716b73c9d963bc81`, with
+  sole parent `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`; its full
+  tree equals the reviewed repair.
+- [Pages41248923855](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41248923855)
+  succeeded for that merge. Read-only HTTPS checks on 2026-10-31 at
+  22:38:30 UTC confirmed the matching public and cabinet bounded-course
+  bytes, SHA256 `0a55791957f465cf6f9c3736fe41ca8a4fb110601bbcf9c4e9843e38a3f5a0fe`,
+  and the unchanged 1247-card canonical source.
+- Matching assistant package verification: Amvera package `69afae86d08c0e6c3041a29646e1845704951f43` has a successful build, is marked used, and is running with one replica; its sole changed knowledge snapshot is 448638 bytes with SHA256 `755cd5c4593594f296cb1a7e03af5ad29ba5413104561522901918f31c418013`.
+- The bounded patch updates the audited canonical-source pin, one native-course
+  provenance field and two assistant-snapshot metadata fields, plus dependent
+  current-artifact test pins. Historical fingerprints and all705 original and
+  255 selected cards remain intact; no runtime, storage or teaching change.
+- [Verification](reports/GEOMETRY_SOURCE_PROVENANCE_20261101.md) records source,
+  preserved-work and helper compatibility checks. Exact-head CI and the
+  independent review are reported in PR391. No real cabinet
+  profile has been accessed or changed by this repair.
+- Cabinet/public course and assistant knowledge must be released and rolled
+  back as matching packages. Their existing revision fence rejects a mixed
+  deployment; lesson IDs/revisions and saved-work keys do not change.
+- The owner separately waived external review for the presented PR389 because
+  its provider is unavailable and independent checks were completed. That
+  decision is recorded in PR389 metadata, without an external-provider verdict,
+  and does not apply to other tasks or waive its two recorded CI failures.
+- Both geometry workflows checkout the PR head explicitly. Although this
+  repair is now merged, rerunning unchanged PR389 head
+  `a14fed1152a0dbfdca07775dd891ba3af00a2e30` would retain its old pins. Read-only
+  composed validation is evidence for the next integration decision; it does
+  not change that head, its CI, or its separate release permissions.
+
+- Reconciled at the start of the public showcase task on 2026-11-01:
+  [PR391](https://github.com/ladynata-cloud/math-exam-fipi/pull/391) is merged as
+  `37718f1c0138ba031314b8f4716b73c9d963bc81`. Its final release record reports
+  successful Pages and coordinated source delivery. A fresh normal-TLS public
+  request confirmed the bounded-course SHA256
+  `0a55791957f465cf6f9c3736fe41ca8a4fb110601bbcf9c4e9843e38a3f5a0fe`.
+  The preparation bullets above remain historical; this reconciliation does
+  not repeat authenticated cabinet/helper or pupil-session verification.
+
+## Merged and release recorded: public lesson showcase for Avito visitors
+
+- [Task](tasks/AVITO_SHOWCASE_20261101.md), MEDIUM; current direct owner request
+  to implement, check and prepare GitHub changes, then agree publication.
+  Base `37718f1c0138ba031314b8f4716b73c9d963bc81`, branch
+  `feat/avito-showcase-20261101`.
+- The existing `/lessons/` becomes a complete public introduction to individual
+  lessons for grades 5–11, OGE and both EGE levels. Three direction anchors,
+  four selected examples and existing personal Telegram/VK/email contacts form
+  a bounded route. The homepage hero points visitors to that route.
+- [Verification](reports/AVITO_SHOWCASE_20261101.md) separates responsive landing
+  checks, complete selected learner paths, production resource identity and
+  the isolated browser's TLS limitation. No trainer engine, course content,
+  cabinet, saved-work contract or analytics behavior is changed.
+- Exact-head CI and independent focused review belong to the Draft PR record.
+  This entry records preparation, not publication; separate owner approval
+  is required before merge or deployment.
+- [PR393](https://github.com/ladynata-cloud/math-exam-fipi/pull/393) was
+  squash-merged as `2a9e70be5f7648d9fb41ad22236eeab35bf205d0` on 2026-11-01,
+  sole parent `37718f1c0138ba031314b8f4716b73c9d963bc81`. Its production
+  record supersedes the preparation-only statements above: Pages and
+  postmerge gates passed, 70/70 HTTPS resources matched, and live
+  320/391/1280px navigation checks passed. This is evidence reconciliation
+  within the corrective finance task, not a repeated publication or contact message.
+
+## Historical preparation: grade 6 assistant follow-up questions, 2026-10-31
+
+- [Task](tasks/MATHEXAM_ASSISTANT_GRADE6_DIALOGUE_V1.md), HIGH;
+  Vilenkin NOD/NOK profile and bounded contextual questions beside existing
+  Peterson decimal support. [Validation report](reports/MATHEXAM_ASSISTANT_GRADE6_DIALOGUE_20261030.md).
+- Context is bound to the learner's login and original task; expires 15 minutes
+  after the first answer, is memory-only and never becomes a training dataset.
+- This is a tested candidate, not a live provider activation or deployment.
+  Existing pupils' settings and production data were not modified. External
+  exact-head review, provider eligibility/evaluation and owner release decisions
+  remain separate requirements.
+
+
+## Assistant dialogue revalidation — 2026-10-31
+
+- PR375 is reconciled with current published main `c9bf66e2` including PR380.
+  The shared stylesheet retains both saved-source help and follow-up controls.
+- Independent review found a pending-answer control race. Both server and UI
+  now withhold the answer after teacher control is taken; allowance accounting
+  and existing assessment/session/privacy protections remain intact.
+- The inherited Atanasyan/Ichenskaya source pin is refreshed only after proving
+  unchanged selected teaching records and retaining the original content
+  oracles. Merzlyak's old engine guard is already repaired by published PR376.
+- Free dialogue retains entered task context; automatic saved Vilenkin and
+  embedded Peterson help remain separate source-based paths. No paid model or
+  real learner setting is enabled. Full evidence and remaining release gates:
+  [revalidation report](reports/MATHEXAM_ASSISTANT_DIALOGUE_REVALIDATION_20261031.md).

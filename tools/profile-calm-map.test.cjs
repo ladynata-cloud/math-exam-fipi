@@ -4,14 +4,14 @@ const assert=require('node:assert/strict');
 const vm=require('node:vm');
 const fs=require('node:fs');
 const path=require('node:path');
-const sources=['geometry','algebra','stereo','probability','equations','functions','applied','readiness'];
+const sources=['geometry','algebra','stereo','probability','equations','functions','applied', 'finance','readiness'];
 const lessons=sources.flatMap(name=>require('../ege-profil/start/'+name+'-data.js'));
 const byId=new Map(lessons.map(l=>[l.id,l]));
 const map=require('../ege-profil/start/calm-data.js');
 const ids=values=>values.slice().sort();
 
 test('map covers every current numeric position and every topic exactly once',()=>{
-  assert.equal(lessons.length,68,'current course inventory; update consciously when banks change');
+  assert.equal(lessons.length,81,'current course inventory; update consciously when banks change');
   assert.equal(byId.size,lessons.length,'lesson IDs must be unique');
   assert.deepEqual(map.exams.map(e=>e.number),Array.from({length:13},(_,i)=>i+1));
   const mapped=map.exams.flatMap(e=>e.lessonIds);

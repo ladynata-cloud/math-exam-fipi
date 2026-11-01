@@ -1,0 +1,656 @@
+{
+  "result": "SOURCE_PRESERVATION_OK",
+  "base": "37718f1c0138ba031314b8f4716b73c9d963bc81",
+  "inputs": [
+    {
+      "head": "a14fed1152a0dbfdca07775dd891ba3af00a2e30",
+      "patchBase": "a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3",
+      "changedPaths": [
+        ".github/workflows/vilenkin6-cloud.yml",
+        "board-server/test/learning-vilenkin-textbook.test.js",
+        "courses/vilenkin-6-part-1/textbook-course.css",
+        "courses/vilenkin-6-part-1/textbook-course.js",
+        "courses/vilenkin-6-part-1/textbook-data/supplement-lcm-multi.json",
+        "courses/vilenkin-6-part-1/textbook-learning-contracts.js",
+        "courses/vilenkin-6-part-1/textbook-source-labels.js",
+        "courses/vilenkin-6-part-1/textbook.html",
+        "docs/PROJECT_STATUS.md",
+        "docs/reports/GRADE6_LCM_MULTI_CABINET_20261101.md",
+        "docs/reports/grade6-lcm-multi/browser-result.json",
+        "docs/reports/grade6-lcm-multi/chain-first-screen-1280.png",
+        "docs/reports/grade6-lcm-multi/chain-first-screen-320.png",
+        "docs/reports/grade6-lcm-multi/chain-first-screen-390.png",
+        "docs/reports/grade6-lcm-multi/course-examples-1280.png",
+        "docs/reports/grade6-lcm-multi/course-examples-320.png",
+        "docs/reports/grade6-lcm-multi/course-examples-390.png",
+        "docs/reports/grade6-lcm-multi/course-review-1280.png",
+        "docs/reports/grade6-lcm-multi/course-review-320.png",
+        "docs/reports/grade6-lcm-multi/course-review-390.png",
+        "docs/reports/grade6-lcm-multi/factors-after-three-steps-320.png",
+        "docs/reports/grade6-lcm-multi/factors-after-three-steps-390.png",
+        "docs/reports/grade6-lcm-multi/factors-first-screen-1280.png",
+        "docs/reports/grade6-lcm-multi/factors-first-screen-320.png",
+        "docs/reports/grade6-lcm-multi/factors-first-screen-390.png",
+        "docs/tasks/GRADE6_LCM_MULTI_CABINET.md",
+        "learning/app.js",
+        "learning/attached-course.js",
+        "learning/catalog.js",
+        "learning/index.html",
+        "learning/style.css",
+        "learning/vilenkin6-textbook-catalog.js",
+        "learning/vilenkin6-textbook-course.js",
+        "tools/grade7-geometry-rebuild.integration.cjs",
+        "tools/learning-lcm-multi.browser.cjs",
+        "tools/learning-vilenkin-textbook.dom.cjs",
+        "tools/vilenkin6-course/build-textbook-catalog.cjs",
+        "tools/vilenkin6-course/lcm-multi-base.json",
+        "tools/vilenkin6-course/lcm-multi.test.cjs",
+        "tools/vilenkin6-course/textbook-managed-dom.cjs"
+      ]
+    },
+    {
+      "head": "5568a093d7ffb3e587d5dba145071c8cde206e70",
+      "patchBase": "37718f1c0138ba031314b8f4716b73c9d963bc81",
+      "changedPaths": [
+        ".github/workflows/vilenkin6-cloud.yml",
+        "courses/vilenkin-6-part-1/textbook-course.css",
+        "courses/vilenkin-6-part-1/textbook-course.js",
+        "courses/vilenkin-6-part-1/textbook-support.css",
+        "courses/vilenkin-6-part-1/textbook-support.js",
+        "courses/vilenkin-6-part-1/textbook.html",
+        "docs/PROJECT_STATUS.md",
+        "docs/reports/VILENKIN_COURSE_NAVIGATION_20261101.md",
+        "docs/reports/vilenkin-course-navigation-20261101/browser-result.json",
+        "docs/reports/vilenkin-course-navigation-20261101/course-1280.png",
+        "docs/reports/vilenkin-course-navigation-20261101/course-320.png",
+        "docs/reports/vilenkin-course-navigation-20261101/course-390.png",
+        "docs/reports/vilenkin-course-navigation-20261101/course-helper-1280.png",
+        "docs/reports/vilenkin-course-navigation-20261101/course-helper-320.png",
+        "docs/reports/vilenkin-course-navigation-20261101/course-helper-390.png",
+        "docs/reports/vilenkin-course-navigation-20261101/fraction-practice-1280.png",
+        "docs/reports/vilenkin-course-navigation-20261101/history-catalog-return-320.png",
+        "docs/reports/vilenkin-course-navigation-20261101/task-helper-1280.png",
+        "docs/reports/vilenkin-course-navigation-20261101/task-helper-320.png",
+        "docs/reports/vilenkin-course-navigation-20261101/teacher-catalog-return-1280.png",
+        "docs/reports/vilenkin-course-navigation-20261101/topic-1280.png",
+        "docs/reports/vilenkin-course-navigation-20261101/topic-320.png",
+        "docs/reports/vilenkin-course-navigation-20261101/topic-390.png",
+        "docs/tasks/VILENKIN_COURSE_NAVIGATION_20261101.md",
+        "learning/app.js",
+        "learning/assistant.css",
+        "learning/index.html",
+        "learning/vilenkin6-textbook-course.css",
+        "learning/vilenkin6-textbook-course.js",
+        "learning/vilenkin6-textbook-helper.js",
+        "tools/learning-vilenkin-course-ui.browser.cjs",
+        "tools/learning-vilenkin-helper.test.cjs",
+        "tools/learning-vilenkin-textbook.dom.cjs",
+        "tools/vilenkin6-course/textbook-integrated-support.test.cjs",
+        "tools/vilenkin6-course/textbook-managed-dom.cjs"
+      ]
+    }
+  ],
+  "overlap": [
+    ".github/workflows/vilenkin6-cloud.yml",
+    "courses/vilenkin-6-part-1/textbook-course.css",
+    "courses/vilenkin-6-part-1/textbook-course.js",
+    "courses/vilenkin-6-part-1/textbook.html",
+    "docs/PROJECT_STATUS.md",
+    "learning/app.js",
+    "learning/index.html",
+    "learning/vilenkin6-textbook-course.js",
+    "tools/learning-vilenkin-textbook.dom.cjs",
+    "tools/vilenkin6-course/textbook-managed-dom.cjs"
+  ],
+  "unionCount": 65,
+  "union": [
+    {
+      "file": ".github/workflows/vilenkin6-cloud.yml",
+      "sha256": "0fa5571b577ed0142a1969ce99c8e7a7e32b440d907711cfeffeed106d124211",
+      "sameAsSources": [],
+      "integratedModification": true
+    },
+    {
+      "file": "board-server/test/learning-vilenkin-textbook.test.js",
+      "sha256": "ee3d2a01b5065667b45c9f14e5035f25624ace725a5c186ba7aaba21c20a71dd",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "courses/vilenkin-6-part-1/textbook-course.css",
+      "sha256": "22117806e8547c27471e53542a64d879e601ffbd00b9f21957dc5313d4e9eaed",
+      "sameAsSources": [],
+      "integratedModification": true
+    },
+    {
+      "file": "courses/vilenkin-6-part-1/textbook-course.js",
+      "sha256": "09449719cea8d4708cf030e0d72fd5b0a70c20fbc6a5fef0f685cc6a19aa10ce",
+      "sameAsSources": [],
+      "integratedModification": true
+    },
+    {
+      "file": "courses/vilenkin-6-part-1/textbook-data/supplement-lcm-multi.json",
+      "sha256": "2d5a4afaea50e855d8df63d53337a5f0211c0d51c55eacb926d7af57140eeee1",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "courses/vilenkin-6-part-1/textbook-learning-contracts.js",
+      "sha256": "52d94141ba0be881a00c5eb37f50aa95b9a5c175441f9955be7b60a1c3487ce9",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "courses/vilenkin-6-part-1/textbook-source-labels.js",
+      "sha256": "17bff05c56f9b075f2d171230f80b31f3e4f93858e856029e10868f10ba1174a",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "courses/vilenkin-6-part-1/textbook-support.css",
+      "sha256": "bc84db07e4677de89acbb6be995bf7ae0d19b3833efbeb95915a0aa3ab91b127",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "courses/vilenkin-6-part-1/textbook-support.js",
+      "sha256": "4874b9f7873219020b772bf3983075b7b3493cb52ee3efbad18763595f8ea2ba",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "courses/vilenkin-6-part-1/textbook.html",
+      "sha256": "80e82db7d3da2939a3122fa1688d5c14059a6a5c5d699c35316c2d4b1b2d09dd",
+      "sameAsSources": [],
+      "integratedModification": true
+    },
+    {
+      "file": "docs/PROJECT_STATUS.md",
+      "sha256": "e51b8895cb1a055e8478fea97ab7998a884a3a7995edbc48ae4e6bd3609728ca",
+      "sameAsSources": [],
+      "integratedModification": true
+    },
+    {
+      "file": "docs/reports/GRADE6_LCM_MULTI_CABINET_20261101.md",
+      "sha256": "f514684e8269be694e62eecee6925afd9c880ba62767c9549b38eb21413c714e",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/VILENKIN_COURSE_NAVIGATION_20261101.md",
+      "sha256": "d017c4604b8d38a17a5a3a187f19b8f627de623baa13b0db1a56cdf44d6c366f",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/grade6-lcm-multi/browser-result.json",
+      "sha256": "d9ae028d4a698fe80260d4d5e4d48d7de3a225a0b8ba0b9cd87f9b8ca6332eb0",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/grade6-lcm-multi/chain-first-screen-1280.png",
+      "sha256": "ade1bf3d20071333196d35b1ac2ce391bcce036f3a6490f6ee7b06869c643d6f",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/grade6-lcm-multi/chain-first-screen-320.png",
+      "sha256": "45bb59298ab1d8acfb437f3925ccff0695bce9c7a8bdeb8d42a94e36fb2cd041",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/grade6-lcm-multi/chain-first-screen-390.png",
+      "sha256": "4144aa290b21ee9fa7fa6c10ae349ac7b5e38d23c83a94ad1f25e16c254a596b",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/grade6-lcm-multi/course-examples-1280.png",
+      "sha256": "19c2087664665c9d9790197c5ab5801fcbff82dfcd6f25399ad1fcc9c3d440ba",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/grade6-lcm-multi/course-examples-320.png",
+      "sha256": "06e775645795047d4c385ab3734dd96cd282a81c1aa123fc071c4d1180ebcfe4",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/grade6-lcm-multi/course-examples-390.png",
+      "sha256": "cb9c160608aa55196912d69a0c212b287427f1912d4ae36f4b09efdc48c8434e",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/grade6-lcm-multi/course-review-1280.png",
+      "sha256": "0b1f6118ad2d2775fedc6fd06d47a41d8520eb5ae0dd6e50929d14a677240005",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/grade6-lcm-multi/course-review-320.png",
+      "sha256": "d556071fc3bf10a0e3a038346114fdb0cfd3dddafe03e6f90cec41a138c244bd",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/grade6-lcm-multi/course-review-390.png",
+      "sha256": "86d98ba16177baf382d18506b79318719d3d823150628e526792abeb1d3d7b86",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/grade6-lcm-multi/factors-after-three-steps-320.png",
+      "sha256": "1a1595d5d622a62c4f5abd6bf1292448577cd8625f9401556d5d5254a79ce187",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/grade6-lcm-multi/factors-after-three-steps-390.png",
+      "sha256": "e778e20dfef718dffbc7906fa205211214443d6af37289745eaf55e3b349b1a4",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/grade6-lcm-multi/factors-first-screen-1280.png",
+      "sha256": "acc812a46bcd1d9c340f790d58d2618c7aa3a49038afcd5e59350bb78b23fce5",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/grade6-lcm-multi/factors-first-screen-320.png",
+      "sha256": "6300572bff86512db5dd803a534df304f48610d315049e424f9969529eb2ddad",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/grade6-lcm-multi/factors-first-screen-390.png",
+      "sha256": "ef8c017301e5041072ef3d3c20f2c145962c55010f52f1a136e3830c00a5e0be",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/vilenkin-course-navigation-20261101/browser-result.json",
+      "sha256": "3f86fca1b8c24128fae830d0698564558196a4ebfe45386f9f55bcd2f7b8aa4a",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/vilenkin-course-navigation-20261101/course-1280.png",
+      "sha256": "dc3e43749974e64e391f41e48aa4b8c0709101be918df808cc138b1f2b4db602",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/vilenkin-course-navigation-20261101/course-320.png",
+      "sha256": "5ee151b06943f53f9f2bccb7a4998e8a423b3af89d918a1cd376afda217f6bdd",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/vilenkin-course-navigation-20261101/course-390.png",
+      "sha256": "a8171aad7f39b1577076d23bb74ac74c05351c0bfc80239ed545925e01120ce4",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/vilenkin-course-navigation-20261101/course-helper-1280.png",
+      "sha256": "b5674f079349a8e1c5b3ca80a40b50bfa3153a761b97842a1a64a3f12c6ba9aa",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/vilenkin-course-navigation-20261101/course-helper-320.png",
+      "sha256": "9b9d33898efdc6021668e06c604784ce6f8078736f4cb2a5580911514cf9c843",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/vilenkin-course-navigation-20261101/course-helper-390.png",
+      "sha256": "e0933e47497da007f490e173ebe4b06c6e57ff67ce78f3f3d6b58a41b734213e",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/vilenkin-course-navigation-20261101/fraction-practice-1280.png",
+      "sha256": "cdbc024f5f0049fb86fe56ee1491e289923e54ff3932088175880a3b52710f2c",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/vilenkin-course-navigation-20261101/history-catalog-return-320.png",
+      "sha256": "477ce3e926077f2c45ad4a0e358359ab5546f799da624d8abb383c4de1a40e5d",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/vilenkin-course-navigation-20261101/task-helper-1280.png",
+      "sha256": "be1e22ad3d88e04b739ed1e9fd5e97d702830db6f2a4af3befc2ff616f6cb40c",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/vilenkin-course-navigation-20261101/task-helper-320.png",
+      "sha256": "bcc55feba454904bb10de1b0d6f8abb347ebf6805887f7c6f5265cc3f7da9abc",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/vilenkin-course-navigation-20261101/teacher-catalog-return-1280.png",
+      "sha256": "f901badeaab17d2252a6fefbca1e30450509503c0e9eaf6da226f73df604f95a",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/vilenkin-course-navigation-20261101/topic-1280.png",
+      "sha256": "0acba62861724360177fc31b2ce17bc9923b81fd472da3577f849edd6522b98e",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/vilenkin-course-navigation-20261101/topic-320.png",
+      "sha256": "7f4813ca9fd8e8a13178a3b8b6bb8a406bf5bbebb406ba41fa92da83b85f109b",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/reports/vilenkin-course-navigation-20261101/topic-390.png",
+      "sha256": "79b290fc26bec6b7d290d5cd4cd3d82e09c979e76382cc8c76910aa7a55621a0",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/tasks/GRADE6_LCM_MULTI_CABINET.md",
+      "sha256": "6760cb2de0c6dd3ac4aebff9429b884f69d3e4f6dbf48613fa87e0560ca9c7c7",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "docs/tasks/VILENKIN_COURSE_NAVIGATION_20261101.md",
+      "sha256": "9b74288fcb6316e528a0cca91a2f64d7d05239bfbd1b89bee5bfb5afdbbf897f",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "learning/app.js",
+      "sha256": "342a0eaffee5e6d6df7947f1990271219e088506b18b13e48e15601f7d512694",
+      "sameAsSources": [],
+      "integratedModification": true
+    },
+    {
+      "file": "learning/assistant.css",
+      "sha256": "870b95cf73646a43280988ac8b795aa51b245e0a20ce142b0b8ee689227c285a",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "learning/attached-course.js",
+      "sha256": "21b0024b0910d5bd937a25b16aab7e174d84d10d5695a2668edf78dee3b0392f",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "learning/catalog.js",
+      "sha256": "36d65fed06c4bdf77e1af1bce612db2261e80a64d362a16119c9ad79fc6f672b",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "learning/index.html",
+      "sha256": "bd6c9d249160267b103b604989a45d39ff727b3ed0697b80df7376adbb2f9d4d",
+      "sameAsSources": [],
+      "integratedModification": true
+    },
+    {
+      "file": "learning/style.css",
+      "sha256": "9029926d27c3ba96b58b072ee7a65349c988fc03cc84effacec70130cea55be8",
+      "sameAsSources": [],
+      "integratedModification": true
+    },
+    {
+      "file": "learning/vilenkin6-textbook-catalog.js",
+      "sha256": "88e3020a5545b28a3d16bde317c3011dd5fe30650d1873879c951149594ab023",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "learning/vilenkin6-textbook-course.css",
+      "sha256": "cc44204b676455133e00f97b99ac60565e6d12d8e0b88ecb1c82c31719078709",
+      "sameAsSources": [],
+      "integratedModification": true
+    },
+    {
+      "file": "learning/vilenkin6-textbook-course.js",
+      "sha256": "e00e837ad6b5b07b7f29ca902b0bf0b6a02c870f0883305f66306ba36cc55a3d",
+      "sameAsSources": [],
+      "integratedModification": true
+    },
+    {
+      "file": "learning/vilenkin6-textbook-helper.js",
+      "sha256": "3ff126a2104147c3c7a1f76d7f67438bd637f9e0ff390018440b0881f7a2c075",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "tools/grade7-geometry-rebuild.integration.cjs",
+      "sha256": "2674c76bee86d165fd23588c6354ff42b4d2d4ed0748f94144d655c67b2e55f1",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "tools/learning-lcm-multi.browser.cjs",
+      "sha256": "cca7d65ed7e777eb6d1a900009866e58d96a97d60108556b560df08a59fa350e",
+      "sameAsSources": [],
+      "integratedModification": true
+    },
+    {
+      "file": "tools/learning-vilenkin-course-ui.browser.cjs",
+      "sha256": "8840651398b3b56b43e324869bd1997941c307862fe3ca302e2cdbe2d76e1234",
+      "sameAsSources": [],
+      "integratedModification": true
+    },
+    {
+      "file": "tools/learning-vilenkin-helper.test.cjs",
+      "sha256": "ea03999e03ffd0a1297327e82c800c84ae08091e3bc61cabf8075921eeb5bc03",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "tools/learning-vilenkin-textbook.dom.cjs",
+      "sha256": "1d4c2ab7cbb40307b41663da9223baac1d5720abc7a82eff72037cadb2e152bb",
+      "sameAsSources": [],
+      "integratedModification": true
+    },
+    {
+      "file": "tools/vilenkin6-course/build-textbook-catalog.cjs",
+      "sha256": "3556aab09b41da1b11ad992fe85291beb948104e94dd746acbdbc4ec233ed92f",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "tools/vilenkin6-course/lcm-multi-base.json",
+      "sha256": "571d6a8250232e7edf7c707077150c862aec95cf1cee475b58a0539151b34332",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "tools/vilenkin6-course/lcm-multi.test.cjs",
+      "sha256": "c570cec578bfdb1da791999159e5797030cd0cdd46feab4d7ed14afdc26cf978",
+      "sameAsSources": [
+        "pr389"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "tools/vilenkin6-course/textbook-integrated-support.test.cjs",
+      "sha256": "2d4b4fbf1fbf68076f800249bd46656207467aa0bc8c65d15bcc219518faaed1",
+      "sameAsSources": [
+        "pr392"
+      ],
+      "integratedModification": false
+    },
+    {
+      "file": "tools/vilenkin6-course/textbook-managed-dom.cjs",
+      "sha256": "a9c55893f2e19bb9e6c3f9df1933f8e42f75612992821325c55f6a2d2ef28afd",
+      "sameAsSources": [],
+      "integratedModification": true
+    }
+  ],
+  "authorCards": 44,
+  "authorSteps": 203,
+  "authorSourceSha256": "2d5a4afaea50e855d8df63d53337a5f0211c0d51c55eacb926d7af57140eeee1",
+  "authorSourceMatchesPR389": true,
+  "preservedBaseFiles": [
+    {
+      "file": "courses/vilenkin-6-part-1/textbook-data/units-A.json",
+      "sha256": "7e5538b27c4c6b72b5d9f2d6600a8569397db387836ff4aefbb594dc2513f5e2",
+      "sameAsBase": true
+    },
+    {
+      "file": "courses/vilenkin-6-part-1/textbook-data/units-B.json",
+      "sha256": "3ac7e7da0cde2668ba680c93c3d8d3475cac9c6f5f8821e76529821d9c64ca6e",
+      "sameAsBase": true
+    },
+    {
+      "file": "courses/vilenkin-6-part-1/textbook-data/units-C.json",
+      "sha256": "b25ee6d369a35b567fd64065c3e7780a9a06d2aebe5eea77980306329ca3e943",
+      "sameAsBase": true
+    },
+    {
+      "file": "courses/vilenkin-6-part-1/textbook-data/units-D.json",
+      "sha256": "16655c9558ebea1b9f797b6a8527470388887f25682acdf9ab6873c1a951465e",
+      "sameAsBase": true
+    },
+    {
+      "file": "courses/vilenkin-6-part-1/textbook-data/source-catalog.json",
+      "sha256": "d9fb4edd8d5e3ff2a0f69be97e2ea120822b0d70eb83dc02c483b617e45654b8",
+      "sameAsBase": true
+    },
+    {
+      "file": "courses/vilenkin-6-part-1/textbook-data/coverage.json",
+      "sha256": "eb7edcb1ac245ca645a535c131b46baf022d152804fa9693365a771e4c40c71e",
+      "sameAsBase": true
+    },
+    {
+      "file": "courses/vilenkin-6-part-1/textbook-data/full-exercise-verifications.json",
+      "sha256": "fdeb0cbf6b983ab28913c55d6a483fbbbd807d08b94fae5949fd280f39eb9750",
+      "sameAsBase": true
+    },
+    {
+      "file": "courses/vilenkin-6-part-1/offline.html",
+      "sha256": "67d1cdf25f2ef982a71696dbf642a1195c538b485240fc009d2abd06ec02508f",
+      "sameAsBase": true
+    },
+    {
+      "file": "learning/atanasyan-first-steps/course.json",
+      "sha256": "0a55791957f465cf6f9c3736fe41ca8a4fb110601bbcf9c4e9843e38a3f5a0fe",
+      "sameAsBase": true
+    },
+    {
+      "file": "assistant-service/knowledge/atanasyan-first-steps.json",
+      "sha256": "755cd5c4593594f296cb1a7e03af5ad29ba5413104561522901918f31c418013",
+      "sameAsBase": true
+    }
+  ]
+}
