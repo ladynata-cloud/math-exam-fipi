@@ -1,0 +1,39 @@
+{
+  "result": "LEARNING_ONBOARDING_BROWSER_OK",
+  "checks": [
+    "Three-step keyboard-accessible setup, input errors and back navigation; atomic two-course save; double-submit and lost-acknowledgement retry create exactly one pupil",
+    "Ready link/login/PIN use the existing account; preview retains teacher session and creates no pupil work",
+    "Both selected course destinations work; textbook draft reloads and actual answer is server-graded; foundations keeps a separate saved draft",
+    "Concurrent program edit is rejected; comparison/reload preserves the draft and current focus; explicit save retains account, credentials, assignments and all earlier work/history",
+    "Fresh login with unchanged code restores the edited program, completed result and removed-course saved work",
+    "Real HTTP server and SQLite restart preserve program/work; the second synthetic pupil remains byte-for-byte unchanged",
+    "Synthetic persisted pagehide clears a pending PIN/form; late committed response cannot reopen credentials; pageshow revalidates the teacher and finds one account"
+  ],
+  "images": [
+    "setup-details-320.png",
+    "setup-details-390.png",
+    "setup-details-1280.png",
+    "setup-courses-320.png",
+    "setup-courses-390.png",
+    "setup-courses-1280.png",
+    "setup-confirmation-320.png",
+    "setup-confirmation-390.png",
+    "setup-confirmation-1280.png",
+    "teacher-preview-320.png",
+    "teacher-preview-390.png",
+    "teacher-preview-1280.png",
+    "pupil-courses-320.png",
+    "pupil-courses-390.png",
+    "pupil-courses-1280.png"
+  ],
+  "viewportWidths": [
+    320,
+    390,
+    1280
+  ],
+  "browserVersion": "140.0.7339.16",
+  "syntheticOnly": true,
+  "publicRequestsAllowed": 0,
+  "blockedExternalRequests": 0,
+  "errors": []
+}

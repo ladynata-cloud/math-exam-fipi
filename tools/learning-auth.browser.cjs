@@ -133,7 +133,13 @@ async function pupilCopyChecks(page, context, origin, login, password) {
   await assertAccessRemains(page, login, password);
   await context.clearPermissions();
   const client = await context.newCDPSession(page);
-  await client.send('Browser.setPermission', { permission: { name: 'clipboard-write' }, setting: 'denied', origin });
+  const { targetInfo } = await client.send('Target.getTargetInfo');
+  // Browser permissions target the default context unless the fixture's
+  // isolated context is explicit. Deny both clipboard-write variants there.
+  for (const allowWithoutSanitization of [true, false]) {
+    await client.send('Browser.setPermission', { permission: { name: 'clipboard-write', allowWithoutSanitization },
+      setting: 'denied', origin, browserContextId: targetInfo.browserContextId });
+  }
   await page.locator('#copy-access').click();
   await page.locator('#access-copy-text').waitFor({ state: 'visible' });
   assert.equal(await page.locator('#access-copy-text').inputValue(), expected);
@@ -624,20 +630,24 @@ async function loginBusyChecks(browser, origin, { role, login, password }) {
       const password = chosenPassword || generatedPassword, login = 'fixture_short_pupil_' + index;
       await page.locator('#student-form [name=name]').fill('Ученик короткого пароля ' + index);
       await page.locator('#student-form [name=login]').fill(login);
+      await page.locator('#student-form [name=grade]').selectOption('7');
       if (index === 0) {
         const beforeShortStudent = mutations.length;
         await input.fill('042');
-        await page.locator('#student-form [type=submit]').click();
+        await page.locator('#student-form [data-onboarding-next]').click();
         assert.equal(await input.evaluate(node => node.validity.valid), false);
         assert.equal(mutations.length, beforeShortStudent, 'The student form blocks a three-digit code');
         await page.locator('#student-form').evaluate(form => { form.noValidate = true; });
-        await page.locator('#student-form [type=submit]').click();
+        await page.locator('#student-form [data-onboarding-next]').click();
         await page.waitForFunction(() => document.querySelector('#student-form .form-error')?.textContent.includes('ровно 4 цифры'));
         assert.equal(mutations.length, beforeShortStudent, 'The local code guard also works without native validation');
         assert.equal(!!store.accountByLogin(login), false, 'Invalid input leaves no partial pupil account');
         await page.locator('#student-form').evaluate(form => { form.noValidate = false; });
       }
       await input.fill(password);
+      await page.locator('#student-form [data-onboarding-next]').click();
+      await page.locator('#student-form [name=courseIds][value=school7]').check();
+      await page.locator('#student-form [data-onboarding-next]').click();
       const created = page.waitForResponse(response => response.url().endsWith('/api/learning/teacher/students')
         && response.request().method() === 'POST');
       await page.locator('#student-form [type=submit]').click();
@@ -790,7 +800,8 @@ async function loginBusyChecks(browser, origin, { role, login, password }) {
       await page.locator('#auth-form [name=login]').fill(pupilCredentials.login);
       await page.locator('#auth-form [name=password]').fill(pupilCredentials.password);
       assert.equal((await submit(page, 'login')).status(), 200, 'The issued four-digit password can log in');
-      await page.getByRole('heading', { name: 'Мой маршрут', exact: true }).waitFor();
+      await page.getByRole('heading', { name: 'Мои курсы', exact: true }).waitFor();
+      await page.locator('[data-program-course=school7] [data-program-open]').waitFor();
       assert.equal(await page.evaluate(() => LearningApp.account().login), pupilCredentials.login);
       assert.equal(await page.evaluate(() => LearningApp.account().role), 'student');
       assert.equal(await page.locator('[data-nav=security]').count(), 0, 'A pupil never receives the teacher security page');
@@ -808,7 +819,7 @@ async function loginBusyChecks(browser, origin, { role, login, password }) {
     assert.equal(await page.locator('#auth-form [name=confirm]').getAttribute('minlength'), '4');
     await setPassword(page, invitedPassword);
     assert.equal((await submit(page, 'activate')).status(), 200);
-    await page.locator('#logout').waitFor();
+    await page.locator('#home-welcome,[data-route-welcome]').first().waitFor();
     assert.equal(await page.evaluate(() => LearningApp.account().id), pupil.student.id);
     assert.equal(await page.locator('#recovery-codes').count(), 0, 'Pupil activation does not issue teacher recovery codes');
     await privateState(page, [pupil.invitationToken, invitedPassword]);
@@ -818,7 +829,7 @@ async function loginBusyChecks(browser, origin, { role, login, password }) {
     await page.locator('#auth-form [name=login]').fill('fixture_auth_pupil');
     await page.locator('#auth-form [name=password]').fill(invitedPassword);
     assert.equal((await submit(page, 'login')).status(), 200);
-    await page.locator('#logout').waitFor();
+    await page.locator('#home-welcome,[data-route-welcome]').first().waitFor();
     assert.equal(await page.evaluate(() => LearningApp.account().id), pupil.student.id);
     if (await page.locator('[data-mw-close]').count()) await page.locator('[data-mw-close]').click();
     await page.locator('#logout').click();
