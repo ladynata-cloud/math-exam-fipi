@@ -1,4 +1,5 @@
 'use strict';
+import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
 
 (() => {
   const $ = (id) => document.getElementById(id);
@@ -8,7 +9,7 @@
     'question-form', 'topic', 'sample-button', 'question', 'attempt', 'external-choice',
     'external-consent', 'external-consent-label', 'ask-button', 'empty-state',
     'answer-list', 'answer-actions', 'next-button', 'explain-button', 'answer-message',
-    'forget-button', 'answer-title',
+    'forget-button', 'answer-title', 'task-help', 'topic-help',
   ].map((id) => [id, $(id)]));
   const state = {
     csrf: '', status: null, topics: [], busy: false, level: 0,
@@ -42,6 +43,7 @@
     for (const button of document.querySelectorAll('.feedback-button')) {
       button.disabled = busy || button.dataset.feedbackLocked === 'true';
     }
+    for (const control of document.querySelectorAll('.learning-aid-control')) control.disabled = busy;
     elements['workspace'].setAttribute('aria-busy', String(busy));
   }
 
@@ -91,6 +93,8 @@
     state.activeRequest = null;
     state.csrf = '';
     state.topics = [];
+    elements['topic-help'].replaceChildren();
+    elements['task-help'].open = false;
     elements['topic'].replaceChildren();
     elements['question'].value = '';
     elements['attempt'].value = '';
@@ -107,6 +111,140 @@
     return JSON.stringify([
       elements['topic'].value, elements['question'].value.trim(),
     ]);
+  }
+
+  function chooseExample(topic, question) {
+    if (state.busy) return;
+    elements['topic'].value = topic;
+    elements['question'].value = question;
+    elements['attempt'].value = '';
+    elements['external-consent'].checked = false;
+    elements['ask-button'].textContent = 'Дай первый шаг';
+    updateTopicHelp();
+    elements['question'].focus();
+    message('page-message', 'Пример готов. Нажми «Дай первый шаг», чтобы начать.');
+  }
+
+  function appendHelp(container, topic) {
+    const help = topicHelp(topic);
+    if (help.examples.length) container.append(node('p', '', 'Нажми на пример записи, чтобы попробовать его:'));
+    const examples = node('div', 'example-options');
+    for (const question of help.examples) {
+      const button = node('button', 'button button-secondary learning-aid-control', question);
+      button.type = 'button';
+      button.addEventListener('click', () => chooseExample(topic, question));
+      examples.append(button);
+    }
+    container.append(examples);
+    if (help.resource) {
+      const link = node('a', 'learning-resource', help.resource.title);
+      link.href = help.resource.url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+      container.append(link);
+    }
+  }
+
+  function updateTopicHelp() {
+    elements['topic-help'].replaceChildren();
+    appendHelp(elements['topic-help'], elements['topic'].value);
+  }
+
+  function svgNode(tag, attributes = {}) {
+    const result = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    for (const [name, value] of Object.entries(attributes)) result.setAttribute(name, String(value));
+    return result;
+  }
+
+  function appendVisual(card, task) {
+    const visual = visualFor(task.topic, task.question);
+    if (!visual) return;
+    const button = node('button', 'button button-secondary learning-aid-control', 'Показать наглядно');
+    button.type = 'button'; button.setAttribute('aria-expanded', 'false');
+    const panel = node('div', 'learning-visual'); panel.hidden = true;
+    const picture = (label, height = 40) => {
+      panel.append(node('p', 'visual-label', label));
+      const svg = svgNode('svg', { viewBox: `0 0 360 ${height}`, role: 'img', 'aria-label': label });
+      panel.append(svg); return svg;
+    };
+    if (visual.kind === 'fraction-bars') {
+      for (const { n, d, label } of visual.operands) {
+        const svg = picture(`${label}: одно целое — одна полоска`, 34 * visual.units);
+        for (let unit = 0; unit < visual.units; unit++) for (let part = 0; part < d; part++) {
+          svg.append(svgNode('rect', { x: 2 + part * 352 / d, y: 2 + unit * 34, width: 352 / d, height: 26,
+            class: unit * d + part < n ? 'visual-filled' : 'visual-empty' }));
+        }
+      }
+    } else if (visual.kind === 'number-line') {
+      for (const { n, d, label } of visual.operands) {
+        const svg = picture(`${label} на числовой прямой`, 60);
+        svg.append(svgNode('line', { x1: 24, y1: 20, x2: 336, y2: 20, class: 'visual-line' }));
+        for (let tick = -3; tick <= 3; tick++) {
+          const x = 180 + tick * 52;
+          svg.append(svgNode('line', { x1: x, y1: 14, x2: x, y2: 26, class: 'visual-line' }));
+          const text = svgNode('text', { x, y: 48, 'text-anchor': 'middle' }); text.textContent = String(tick); svg.append(text);
+        }
+        svg.append(svgNode('circle', { cx: 180 + (n / d) * 52, cy: 20, r: 6, class: 'visual-point' }));
+      }
+    } else {
+      const svg = picture(`${visual.percent}% исходного целого`);
+      svg.append(svgNode('rect', { x: 2, y: 2, width: 352, height: 28, class: 'visual-empty' }));
+      if (visual.percent) svg.append(svgNode('rect', { x: 2, y: 2, width: 352 * visual.percent / 100, height: 28, class: 'visual-filled' }));
+    }
+    panel.append(node('p', 'visual-caption', visual.caption));
+    button.addEventListener('click', () => {
+      panel.hidden = !panel.hidden;
+      button.setAttribute('aria-expanded', String(!panel.hidden));
+      button.textContent = panel.hidden ? 'Показать наглядно' : 'Скрыть рисунок';
+    });
+    card.append(button, panel);
+  }
+
+  function appendPractice(card, task) {
+    const practice = practiceFor(task.topic, task.question);
+    if (!practice) return;
+    const button = node('button', 'button button-secondary learning-aid-control practice-toggle', 'Попробовать похожий пример');
+    button.type = 'button'; button.setAttribute('aria-expanded', 'false');
+    const form = node('form', 'practice-form'); form.hidden = true;
+    const label = node('label', '', 'Твой ответ');
+    const input = node('input', 'learning-aid-control');
+    input.type = 'text'; input.maxLength = 300; input.required = true; input.autocomplete = 'off';
+    label.append(input);
+    const submit = node('button', 'button button-primary learning-aid-control', 'Проверить пример');
+    submit.type = 'submit';
+    const result = node('p', 'practice-result'); result.setAttribute('aria-live', 'polite');
+    form.append(node('h4', '', 'Один пример для закрепления'), node('p', 'practice-question', practice.question), label, submit, result);
+    button.addEventListener('click', () => {
+      form.hidden = !form.hidden; button.setAttribute('aria-expanded', String(!form.hidden));
+      button.textContent = form.hidden ? 'Попробовать похожий пример' : 'Скрыть похожий пример';
+      if (!form.hidden) input.focus();
+    });
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (state.busy || !state.csrf || !form.reportValidity()) return;
+      const generation = state.generation;
+      const controller = new AbortController(); state.activeRequest = controller;
+      const timeout = setTimeout(() => controller.abort(), 45000);
+      setBusy(true); result.textContent = 'Проверяем пример…';
+      try {
+        const response = await request('/api/ask', { method: 'POST', csrf: true, signal: controller.signal,
+          body: { ...practice, attempt: input.value.trim(), hintLevel: 1, mode: 'hint', externalConsent: false, requestId: crypto.randomUUID() } });
+        if (generation !== state.generation) return;
+        const answer = response.answer;
+        if (answer?.verification !== 'deterministic' || typeof answer.text !== 'string') throw new Error('Unverified practice');
+        result.textContent = [answer.text, Array.isArray(answer.steps) ? answer.steps[0] : ''].filter(value => typeof value === 'string').join(' ');
+      } catch (error) {
+        if (generation !== state.generation) return;
+        result.textContent = errorText(error);
+        if (error.status === 401 || error.status === 403) {
+          state.csrf = ''; elements['access-panel'].hidden = false; elements['forget-button'].hidden = true;
+          message('page-message', 'Сеанс закончился или не подтверждён. Войди заново, чтобы продолжить.', true);
+        }
+      }
+      finally {
+        clearTimeout(timeout);
+        if (generation === state.generation) { state.activeRequest = null; setBusy(false); }
+      }
+    });
+    card.append(button, form);
   }
 
   function appendSources(card, sources) {
@@ -168,7 +306,7 @@
     card.append(feedback);
   }
 
-  function renderAnswer(answer, mode, level, notice) {
+  function renderAnswer(answer, mode, level, notice, task) {
     const card = node('article', 'answer-card');
     card.tabIndex = -1;
     const kicker = node('div', 'answer-kicker');
@@ -197,6 +335,14 @@
     }
     if (typeof notice === 'string' && notice) card.append(node('p', 'answer-notice', notice));
     if (answer.verification === 'model-unverified') card.append(node('p', 'answer-notice', 'Модель может ошибиться или открыть лишние шаги. Этот ответ не становится частью проверенной базы знаний автоматически.'));
+    if (answer.verification === 'deterministic') {
+      appendVisual(card, task);
+      if (answer.complete) appendPractice(card, task);
+    } else if (answer.verification === 'needs-teacher') {
+      const help = node('details', 'task-help');
+      help.append(node('summary', '', 'Выбрать пример записи или материал'));
+      appendHelp(help, task.topic); card.append(help);
+    }
     appendSources(card, answer.sources);
     appendFeedback(card, answer.id);
     elements['answer-list'].append(card);
@@ -208,6 +354,7 @@
   async function ask(mode, requestedLevel) {
     if (state.busy || !state.csrf || !elements['question-form'].reportValidity()) return;
     const signature = taskSignature();
+    const task = { topic: elements['topic'].value, question: elements['question'].value.trim() };
     const newTask = signature !== state.signature;
     const level = mode === 'explain' ? 5 : newTask ? 1 : requestedLevel;
     if (level < 1 || level > 5) return;
@@ -236,11 +383,11 @@
       state.signature = signature;
       state.level = level;
       state.complete = Boolean(result.answer.complete) || mode === 'explain';
-      renderAnswer(result.answer, mode, level, result.notice);
+      renderAnswer(result.answer, mode, level, result.notice, task);
       elements['answer-actions'].hidden = state.complete;
       elements['ask-button'].textContent = 'Начать разбор заново';
       message('answer-message', result.answer.verification === 'needs-teacher' ?
-        'Это общие правила, а решение твоей задачи ещё не проверено. Возьми встроенный пример или обратись к учителю.' :
+        'Решение пока не проверено. Уточни условие или открой примеры записи и материалы по теме.' :
         state.complete ? 'Разбор открыт. Можно вернуться к любому шагу или начать новую задачу.' :
         level >= 5 ? 'Все небольшие подсказки открыты. При желании посмотри полный разбор.' : 'Попробуй выполнить этот шаг. Если нужно — попроси ещё одну подсказку.');
     } catch (error) {
@@ -281,6 +428,7 @@
         return option;
       }));
       clearAnswers();
+      updateTopicHelp();
       elements['access-panel'].hidden = true;
       elements['workspace'].hidden = false;
       elements['forget-button'].hidden = false;
@@ -310,6 +458,7 @@
   });
   for (const field of ['topic', 'question', 'attempt']) elements[field].addEventListener('input', () => {
     elements['external-consent'].checked = false;
+    if (field === 'topic') updateTopicHelp();
     if (taskSignature() !== state.signature) elements['ask-button'].textContent = 'Дай первый шаг';
   });
 

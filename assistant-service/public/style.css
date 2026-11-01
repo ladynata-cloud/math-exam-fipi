@@ -47,7 +47,7 @@ h1 { font-size: clamp(34px, 3.4vw, 47px); line-height: 1.18; letter-spacing: -.0
 .access-form { max-width: 390px; width: 100%; justify-self: end; }
 .field { margin-bottom: 20px; }
 .field label { display: block; font-weight: 650; font-size: 15px; margin-bottom: 8px; color: var(--ink); }
-input[type="password"], select, textarea { width: 100%; border: 1px solid #bfcfbe; background: white; border-radius: 9px; padding: 11px 12px; color: var(--ink); min-height: 48px; }
+input[type="password"], input[type="text"], select, textarea { width: 100%; min-width: 0; border: 1px solid #bfcfbe; background: white; border-radius: 9px; padding: 11px 12px; color: var(--ink); min-height: 48px; }
 textarea { display: block; resize: vertical; line-height: 1.6; min-height: 92px; }
 textarea::placeholder { color: #748378; opacity: 1; }
 select { padding-right: 28px; }
@@ -146,3 +146,24 @@ select { padding-right: 28px; }
   .privacy-panel .button { margin-top: 16px; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+.task-help { margin: 14px 0 22px; font-size: 16px; overflow-wrap: anywhere; }
+.task-help summary { color: var(--green); cursor: pointer; font-weight: 650; padding: 8px 0; }
+.task-help p { margin: 12px 0; }
+.example-options { display: grid; gap: 10px; }
+.example-options .button { text-align: left; white-space: normal; overflow-wrap: anywhere; font-size: 16px; }
+.learning-resource { display: inline-block; margin-top: 15px; font-size: 16px; }
+.learning-visual, .practice-form { background: #f4f8ed; border: 1px solid #d5dfd0; border-radius: 10px; padding: 16px; margin: 14px 0; }
+.learning-visual svg { display: block; width: 100%; max-width: 420px; height: auto; }
+.learning-visual text { fill: #274c2b; font: 30px sans-serif; }
+.visual-filled { fill: #78ac64; stroke: #315b30; stroke-width: 1; }
+.visual-empty { fill: white; stroke: #315b30; stroke-width: 1; }
+.visual-line { stroke: #315b30; stroke-width: 2; }
+.visual-point { fill: #194c28; }
+.visual-label, .visual-caption, .practice-result { font-size: 16px; line-height: 1.65; }
+.visual-label { margin-bottom: 8px; }
+.practice-toggle { margin-top: 12px; }
+.practice-form h4 { font-size: 19px; margin: 0 0 10px; }
+.practice-question { font-size: 20px; font-weight: 650; }
+.practice-form label { display: block; margin-bottom: 14px; }
+.practice-form input { margin-top: 8px; }
+.practice-result:empty { display: none; }

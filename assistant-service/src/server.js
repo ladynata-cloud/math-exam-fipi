@@ -13,7 +13,8 @@ import { createCabinetBridge, executeAssistantAnswer } from './cabinet-bridge.js
 const PUBLIC = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../public');
 const ASSETS = new Map([
   ['/', ['index.html', 'text/html; charset=utf-8']], ['/app.js', ['app.js', 'text/javascript; charset=utf-8']],
-  ['/style.css', ['style.css', 'text/css; charset=utf-8']]
+  ['/style.css', ['style.css', 'text/css; charset=utf-8']],
+  ['/learning-aids.js', ['learning-aids.js', 'text/javascript; charset=utf-8']]
 ]);
 const COMMON_HEADERS = {
   'Cache-Control': 'no-store', 'Pragma': 'no-cache', 'Referrer-Policy': 'no-referrer', 'X-Content-Type-Options': 'nosniff',

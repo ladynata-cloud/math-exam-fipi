@@ -42,6 +42,23 @@ Keep actual credentials and database files out of Git.
 
 ### Try the learner flow
 
+The standalone page has collapsed topic examples and links to existing practice
+materials. Narrowly recognized incomplete questions ask for the missing part
+(e.g. `15% от`, `2x+3=` or `1/2 +`) rather than pretending to check an answer.
+Complete unsupported problems keep an honest coverage warning and an actionable
+example/resource route; arbitrary word problems are not newly supported.
+
+“Показать наглядно” optionally displays the original fractions (bars, or a signed
+number line) or a percentage of the original whole. It does not reveal the
+computed answer. Fraction drawings require two written fraction/mixed operands,
+denominators <=12 and magnitudes <=3; percentage bars require 0–100% with at most
+two decimal places. Unsupported pictures are omitted, not approximated.
+After a deterministic complete explanation, “Попробовать похожий пример” opens
+one curated exercise of the same family. Checking uses the existing authenticated
+API and quota, always with externalConsent=false, and leaves the main dialogue
+untouched. Opening examples/pictures/exercises makes no inference request. These
+teaching aids introduce no persistent browser storage or cabinet contract change.
+
 Choose a topic, use its example, and request the first step. Further hints appear
 one at a time while earlier steps remain visible. “Показать весь разбор” explicitly
 opens the complete explanation. A numeric attempt can be compared with the exact

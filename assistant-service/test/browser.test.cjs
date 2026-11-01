@@ -23,6 +23,7 @@ async function fixture(t, options = {}) {
   const files = {
     '/': ['index.html', 'text/html; charset=utf-8'],
     '/app.js': ['app.js', 'text/javascript; charset=utf-8'],
+    '/learning-aids.js': ['learning-aids.js', 'text/javascript; charset=utf-8'],
     '/style.css': ['style.css', 'text/css; charset=utf-8'],
   };
   const server = http.createServer(async (req, res) => {
@@ -57,6 +58,7 @@ async function fixture(t, options = {}) {
     });
     if (req.url === '/api/feedback') return send(200, { ok: true });
     if (req.url === '/api/ask') {
+      if (options.practiceError && body.question === '4x + 3 = 19') return send(options.practiceError, { ok: false, error: 'PRIVATE_SERVER_DETAIL_DO_NOT_RENDER' });
       if (options.askError) return send(options.askError, { ok: false, error: 'PRIVATE_SERVER_DETAIL_DO_NOT_RENDER' });
       return send(200, { ok: true, answer: {
         id: `answer-${calls.filter(call => call.path === '/api/ask').length}`,
@@ -92,6 +94,32 @@ async function fixture(t, options = {}) {
 }
 
 const skip = !chromium ? 'Playwright is not installed; browser validation has not run.' : false;
+
+test('practice is optional, never inherits provider consent, and safely handles limit/session failures', { skip }, async t => {
+  for (const status of [429, 401]) await t.test(String(status), async t => {
+    const { page, calls } = await fixture(t, { api: true, practiceError: status });
+    await page.locator('#sample-button').click();
+    await page.locator('#ask-button').click();
+    await page.locator('.answer-card').waitFor();
+    assert.equal(await page.locator('.practice-toggle').count(), 0);
+    await page.locator('#explain-button').click();
+    await page.locator('.practice-toggle').waitFor();
+    const previous = await page.locator('.answer-card').first().textContent();
+    const before = calls.filter(c => c.path === '/api/ask').length;
+    await page.locator('.practice-toggle').click();
+    assert.equal(calls.filter(c => c.path === '/api/ask').length, before);
+    await page.locator('#external-consent').check();
+    await page.locator('.practice-form input').fill('4');
+    await page.getByRole('button', { name: 'Проверить пример', exact: true }).click();
+    await page.waitForFunction(() => document.querySelector('.practice-result').textContent !== 'Проверяем пример…');
+    assert.equal(calls.filter(c => c.path === '/api/ask').at(-1).body.externalConsent, false);
+    assert.match(await page.locator('.practice-result').textContent(), status === 429 ? /лимит/ : /сеанс/);
+    assert.doesNotMatch(await page.locator('.practice-result').textContent(), /PRIVATE_SERVER/);
+    assert.equal(await page.locator('.answer-card').first().textContent(), previous);
+    assert.equal(await page.locator('.answer-card').count(), 2);
+    if (status === 401) assert.equal(await page.locator('#access-panel').isVisible(), true);
+  });
+});
 
 test('learner opens one hint, gives feedback, preserves earlier steps, explicitly requests full answer, and deletes session', { skip }, async t => {
   const { page, calls, origin, unexpectedRequests } = await fixture(t);
@@ -373,4 +401,101 @@ test('live extended mathematics: intermediate equality and percentage meanings',
     if (process.env.BROWSER_SCREENSHOT_DIR) await page.screenshot({ path: path.join(process.env.BROWSER_SCREENSHOT_DIR, `assistant-extended-${width}.png`), fullPage: true });
   }
   await page.locator('#forget-button').click(); await page.locator('#access-panel').waitFor({ state: 'visible' });
+});
+
+test('live clarification, original-operand visuals and optional reinforcement preserve the dialogue', {
+  skip: skip || (!process.env.LIVE_ASSISTANT_URL && 'Set LIVE_ASSISTANT_URL for the real local service.'),
+}, async t => {
+  const url = new URL(process.env.LIVE_ASSISTANT_URL);
+  assert.ok(['127.0.0.1', 'localhost'].includes(url.hostname));
+  const browser = await chromium.launch({ headless: true,
+    ...(process.env.CHROMIUM_EXECUTABLE_PATH ? { executablePath: process.env.CHROMIUM_EXECUTABLE_PATH } : {}) });
+  t.after(() => browser.close());
+  const page = await browser.newPage({ viewport: { width: 390, height: 900 } });
+  const external = [], errors = [], asks = [];
+  page.on('request', req => {
+    if (!req.url().startsWith(`${url.origin}/`)) external.push(req.url());
+    if (req.url().endsWith('/api/ask')) asks.push(req.postDataJSON());
+  });
+  page.on('pageerror', error => errors.push(error.message));
+  page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+  await page.goto(url.href);
+  await page.waitForFunction(() => !document.getElementById('access-button').disabled);
+  if (await page.locator('#pilot-key-field').isVisible()) await page.locator('#pilot-key').fill(process.env.LIVE_ASSISTANT_PILOT_KEY);
+  await page.locator('#access-button').click();
+  await page.locator('#workspace').waitFor({ state: 'visible' });
+  assert.equal(await page.locator('#task-help').getAttribute('open'), null);
+  const send = async button => {
+    const response = page.waitForResponse(r => r.url().endsWith('/api/ask') && r.request().method() === 'POST');
+    await button.click(); assert.equal((await response).status(), 200);
+    await page.waitForFunction(() => document.getElementById('workspace').getAttribute('aria-busy') === 'false');
+  };
+  await page.locator('#topic').selectOption('fractions');
+  await page.locator('#question').fill('1 1/2 +');
+  await send(page.locator('#ask-button'));
+  assert.match(await page.locator('.answer-text').textContent(), /второе число/);
+  assert.equal(await page.locator('.learning-visual').count(), 0);
+  await page.locator('#question').fill('1 1/2 + 1/2');
+  await send(page.locator('#ask-button'));
+  assert.equal(await page.locator('.learning-visual').isVisible(), false);
+  assert.equal(await page.locator('.practice-toggle').count(), 0);
+  const beforePicture = asks.length;
+  await page.getByRole('button', { name: 'Показать наглядно', exact: true }).click();
+  assert.equal(asks.length, beforePicture);
+  assert.equal(await page.locator('.learning-visual svg').count(), 2);
+  assert.equal(await page.locator('.learning-visual svg').first().locator('.visual-filled').count(), 3);
+  assert.equal(await page.locator('.learning-visual svg').last().locator('.visual-filled').count(), 1);
+  assert.doesNotMatch(await page.locator('.answer-steps').textContent(), /Ответ: 2/);
+  const originalHint = await page.locator('.answer-card').first().textContent();
+  await send(page.locator('#explain-button'));
+  assert.equal(await page.locator('.practice-form').isVisible(), false);
+  const beforePractice = asks.length;
+  await page.locator('.practice-toggle').click();
+  assert.equal(asks.length, beforePractice);
+  assert.match(await page.locator('.practice-question').textContent(), /1 1\/3 \+ 1\/6/);
+  await page.locator('.practice-form input').fill('1/2');
+  await send(page.getByRole('button', { name: 'Проверить пример', exact: true }));
+  assert.match(await page.locator('.practice-result').textContent(), /другое число/);
+  await page.locator('.practice-form input').fill('1 1/2');
+  await send(page.getByRole('button', { name: 'Проверить пример', exact: true }));
+  assert.match(await page.locator('.practice-result').textContent(), /Твоё число подходит/);
+  assert.equal(await page.locator('.answer-card').count(), 2);
+  assert.equal(await page.locator('.answer-card').first().textContent(), originalHint);
+  assert.equal(await page.locator('#question').inputValue(), '1 1/2 + 1/2');
+  for (const width of [320, 390, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    if (process.env.BROWSER_SCREENSHOT_DIR) await page.locator('.answer-panel').screenshot({ path: path.join(process.env.BROWSER_SCREENSHOT_DIR, `assistant-learning-support-${width}.png`) });
+  }
+  // An already rendered visual remains bound to its original question snapshot.
+  await page.locator('#question').fill('-1 1/2 + 1/2');
+  assert.equal(await page.locator('.learning-visual svg').first().locator('.visual-filled').count(), 3);
+  await send(page.locator('#ask-button'));
+  await page.getByRole('button', { name: 'Показать наглядно', exact: true }).click();
+  assert.equal(await page.locator('.visual-point').first().getAttribute('cx'), '102');
+  await page.locator('#topic').selectOption('percentages');
+  await page.locator('#question').fill('Уменьши 240 на 15%');
+  await send(page.locator('#ask-button'));
+  await page.getByRole('button', { name: 'Показать наглядно', exact: true }).click();
+  assert.equal(await page.locator('.learning-visual .visual-filled').getAttribute('width'), '52.8');
+  assert.doesNotMatch(await page.locator('.learning-visual').textContent(), /204/);
+  await page.locator('#question').fill('Реши задачу про проценты и покупку');
+  await send(page.locator('#ask-button'));
+  await page.locator('.answer-card summary').click();
+  assert.equal(await page.locator('.answer-card .learning-resource').getAttribute('href'), 'https://mathexam.space/trainers/oge-basics/percentages/index.html');
+  await page.locator('.answer-card').getByRole('button', { name: '15% от 240', exact: true }).click();
+  assert.equal(await page.locator('#question').inputValue(), '15% от 240');
+  assert.equal(await page.locator('#attempt').inputValue(), '');
+  assert.equal(await page.locator('#external-consent').isChecked(), false);
+  await send(page.locator('#ask-button'));
+  assert.match(await page.locator('.verification').textContent(), /Вычисления проверены/);
+  assert(asks.every(body => body.externalConsent === false));
+  assert.equal(new Set(asks.map(body => body.requestId)).size, asks.length);
+  assert.deepEqual(await page.evaluate(() => [localStorage.length, sessionStorage.length]), [0, 0]);
+  await page.locator('#forget-button').click();
+  await page.locator('#access-panel').waitFor({ state: 'visible' });
+  assert.equal(await page.locator('.practice-form').count(), 0);
+  assert.equal(await page.locator('.learning-visual').count(), 0);
+  assert.equal(await page.locator('#topic-help').textContent(), '');
+  assert.deepEqual(external, []); assert.deepEqual(errors, []);
 });

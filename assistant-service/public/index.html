@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer">
   <title>Математика по шагам — MathExam</title>
   <link rel="stylesheet" href="/style.css">
-  <script src="/app.js" defer></script>
+  <script type="module" src="/app.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Перейти к задаче</a>
@@ -57,6 +57,10 @@
             <select id="topic" name="topic" required></select>
           </div>
           <button id="sample-button" class="button button-sample" type="button">Взять пример для проверки</button>
+          <details class="task-help" id="task-help">
+            <summary>Как записать задачу и где потренироваться</summary>
+            <div id="topic-help"></div>
+          </details>
           <div class="field">
             <label for="question">Что нужно разобрать?</label>
             <textarea id="question" name="question" rows="4" maxlength="1000" required placeholder="Например: 3x + 5 = 20" aria-describedby="question-help"></textarea>
