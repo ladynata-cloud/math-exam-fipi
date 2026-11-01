@@ -1,0 +1,18 @@
+'use strict';
+const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http');
+const root=path.resolve(__dirname,'..');
+const server=http.createServer((req,res)=>{let f=path.join(root,new URL(req.url,'http://local').pathname);if(fs.existsSync(f)&&fs.statSync(f).isDirectory())f=path.join(f,'index.html');if(!f.startsWith(root+path.sep)||!fs.existsSync(f))return res.writeHead(404).end();res.setHeader('Content-Type',({'.js':'text/javascript','.css':'text/css','.html':'text/html'})[path.extname(f)]||'application/octet-stream');fs.createReadStream(f).pipe(res);});
+(async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));let browser;try{
+ browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_EXECUTABLE_PATH});const base='http://127.0.0.1:'+server.address().port;
+ for(const width of [1280,375]){const context=await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce'}),p=await context.newPage(),errors=[];context.on('page',page=>page.on('pageerror',e=>errors.push(e.message)));p.on('pageerror',e=>errors.push(e.message));
+ await p.goto(base+'/ege-baza/reference/');await p.locator('a.exam-source-link').click();assert(p.url().endsWith('/exam.html'));
+ for(const section of ['plane','solid','trig','functions','algebra']){await p.locator('#exam-sections a[href="#'+section+'"]').click();assert.equal(await p.locator('.exam-pin-list[open]').count(),0);assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'page fits viewport '+width+' '+section);}
+ // One precise pin, actual generated statement, preserved reference tab and answer.
+ await p.goto(base+'/ege-baza/reference/exam.html#trapezoid');await p.locator('#trapezoid summary').click();const popup=context.waitForEvent('page');await p.locator('#trapezoid a[data-pin-id="quadrilateral"]').click();const task=await popup;await task.waitForLoadState();assert(task.url().endsWith('#lesson=quadrilateral'));
+ const q=await task.locator('p.task').innerText(),numbers=q.match(/\d+/g).map(Number),answer=String((numbers[0]+numbers[1])*numbers[2]/2);
+ assert.equal(await task.locator('.ref-help[open]').count(),0);await task.locator('#answer').fill(answer);await task.locator('.ref-help>summary').click();assert.equal(await task.locator('.ref-rule[open]').count(),0);await task.locator('.ref-rule>summary').first().click();
+ const newSheet=context.waitForEvent('page');await task.getByRole('link',{name:'Формулы экзаменационного листа ↗'}).click();const sheet=await newSheet;await sheet.waitForLoadState();assert(sheet.url().endsWith('/exam.html'));await sheet.close();
+ await task.bringToFront();assert.equal(await task.locator('#answer').inputValue(),answer);await task.reload();assert.equal(await task.locator('#answer').inputValue(),answer);assert.equal(await task.locator('p.task').innerText(),q);await task.locator('#answerForm button[type="submit"]').click();assert.match(await task.locator('#feedback').innerText(),/Верно/);await task.reload();assert.equal(await task.locator('#answer').inputValue(),answer);assert.match(await task.locator('#feedback').innerText(),/Верно/);
+ await p.bringToFront();assert(await p.locator('#trapezoid .ref-pin').first().isVisible());assert.equal(errors.length,0,errors.join('\n'));await context.close();}
+ console.log('EXAM_REFERENCE_BROWSER_PASS: desktop + 375px, sections, overflow, closed pins/rules, exact task popup, return, draft and checked answer across reloads.');
+ }finally{if(browser)await browser.close();server.close();}})().catch(e=>{console.error(e);process.exitCode=1;});

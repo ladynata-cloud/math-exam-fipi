@@ -47,7 +47,7 @@
     const id=item.dataset.sheetId;
     if(!filled){
      const from=options.lessonId||'';
-     item.querySelector('.ref-rule-body').innerHTML=card(id,{showPins:options.showPins===true,externalLinks:options.externalLinks})+(options.externalLinks===false?'':`<p class="ref-full-link"><a href="${E(sheetHref(id,options.referenceBase,from))}" target="_blank" rel="noopener">Открыть лист с тренажёрами ↗</a><span class="ref-small"> В новой вкладке; задача останется здесь.</span></p>`);
+     item.querySelector('.ref-rule-body').innerHTML=card(id,{showPins:options.showPins===true,externalLinks:options.externalLinks})+(options.externalLinks===false?'':`<p class="ref-full-link"><a href="${E(sheetHref(id,options.referenceBase,from))}" target="_blank" rel="noopener">Открыть лист с тренажёрами ↗</a><span class="ref-small"> В новой вкладке; задача останется здесь.</span><a href="${E(new URL('exam.html',new URL(options.referenceBase||'/ege-baza/reference/',root.document.baseURI)).href)}" target="_blank" rel="noopener">Формулы экзаменационного листа ↗</a></p>`);
      filled=true;
     }
     options.onReveal?.(id);
