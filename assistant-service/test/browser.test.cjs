@@ -233,10 +233,38 @@ test('live isolated service: offline mathematical learner flow on desktop and mo
     assert.equal(await page.locator('.answer-card').first().textContent(), first);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true);
   }
+  // A separate synthetic learner keeps this independent journey below the
+  // unchanged ten-requests-per-minute session limit.
+  await page.locator('#forget-button').click();
+  await page.locator('#access-panel').waitFor({ state: 'visible' });
+  await page.locator('#access-button').click();
+  await page.locator('#workspace').waitFor({ state: 'visible' });
+  for (const [question, attempt, expected, forbidden] of [
+    ['1/2 + 1/1', '1 1/2', /Твоё число подходит/, /Похоже/],
+    ['-1/2 - 1/1', '-1\u00a01/2', /Твоё число подходит/, /Похоже/],
+    ['7/2 + 2/1', '1 1/2', /другое число/, /Твоё число подходит/],
+    ['10/1 + 2/1', '1 2', /Такую запись ответа здесь не проверяю/, /Твоё число подходит|Похоже/],
+    ['1/2 + 1/1', '1, 5', /Такую запись ответа здесь не проверяю/, /Твоё число подходит|Похоже/]
+  ]) {
+    await page.locator('#topic').selectOption('fractions');
+    await page.locator('#question').fill(question);
+    await page.locator('#attempt').fill(attempt);
+    const responsePromise = page.waitForResponse(r => r.url().endsWith('/api/ask') && r.request().method() === 'POST');
+    await page.locator('#ask-button').click();
+    assert.equal((await responsePromise).status(), 200);
+    // The previous answer remains visible while a new response is in flight.
+    // One card alone cannot distinguish that old response from this new one.
+    await page.waitForFunction(() => document.getElementById('workspace').getAttribute('aria-busy') === 'false'
+      && document.querySelectorAll('.answer-card').length === 1);
+    const answer = await page.locator('.answer-card').textContent();
+    assert.match(answer, expected); assert.doesNotMatch(answer, forbidden);
+    assert.equal(await page.locator('.answer-steps li').count(), 1);
+    assert.equal(await page.locator('#attempt').inputValue(), attempt);
+  }
   for (const width of [320, 390, 1280]) {
     await page.setViewportSize({ width, height: 900 });
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true);
-    if (process.env.BROWSER_SCREENSHOT_DIR) await page.screenshot({ path: path.join(process.env.BROWSER_SCREENSHOT_DIR, `assistant-local-lcm-${width}.png`), fullPage: true });
+    if (process.env.BROWSER_SCREENSHOT_DIR) await page.screenshot({ path: path.join(process.env.BROWSER_SCREENSHOT_DIR, `assistant-answer-input-${width}.png`), fullPage: true });
   }
   await page.locator('#forget-button').click();
   await page.locator('#access-panel').waitFor({ state: 'visible' });
