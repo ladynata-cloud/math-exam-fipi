@@ -13,8 +13,8 @@ const server=http.createServer((req,res)=>{
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
  const evidence={completed:false,widths:[320,390,1280],journeys:[],views:[],screenshots:[],expansions:[],errors:[],cardHashes:{}};
  let browser;
- async function capture(page,filename,selector){
-  const file=path.join(out,filename);if(selector)await page.locator(selector).screenshot({path:file});else await page.screenshot({path:file,fullPage:true});
+ async function capture(page,filename,selector,fullPage=true){
+  const file=path.join(out,filename);if(selector)await page.locator(selector).screenshot({path:file});else await page.screenshot({path:file,fullPage});
   evidence.screenshots.push({file:filename,sha256:crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex')});
  }
  async function layout(page,id,stage){
@@ -50,7 +50,7 @@ const server=http.createServer((req,res)=>{
     await page.getByRole('button',{name:'Развернуть рисунок',exact:true}).click();
     assert.equal(await page.getByRole('dialog',{name:'Увеличенный рисунок задачи'}).count(),1);
     const expanded=await page.locator('#model .am-expanded').boundingBox();assert(expanded.x<=1&&expanded.y<=1&&expanded.width>=width-1,'figure expands to viewport');
-    if(i===0)await capture(page,`${width}-expanded.png`);
+    if(i===0)await capture(page,`${width}-expanded.png`,null,false);
     await page.getByRole('button',{name:'Закрыть рисунок',exact:true}).click();
     assert.equal(await page.getByRole('dialog').count(),0);evidence.expansions.push({id,width});
     for(const name of Object.keys(card.visualization.model.views)){
