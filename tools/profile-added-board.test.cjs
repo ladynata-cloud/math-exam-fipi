@@ -17,7 +17,7 @@ const courses = [
 ];
 
 function fixture(key, options = {}) {
-  const adapter = boards[key], html = readFileSync(resolve(ROOT, '.' + adapter.path), 'utf8');
+  const adapter = key === 'expressions' ? boards : boards[key], html = readFileSync(resolve(ROOT, '.' + adapter.path), 'utf8');
   const dom = new JSDOM(html, {
     url: 'https://local.example' + (options.path || adapter.path) + adapter.defaultRoute,
     runScripts: 'outside-only', pretendToBeVisual: true
@@ -113,6 +113,45 @@ function fixture(key, options = {}) {
   }
   return { dom, w, api, adapter, registration, accesses, actions, state, apply, valid, query, navigate, roundtrip, draft, submit, currentTask, selectTask };
 }
+
+test('optional recovery, checkpoint and mistake records preserve old room snapshots and strict task scope', async () => {
+  for (const course of [...courses, { key: 'stereometry', entry: 'stereo-box' }, { key: 'expressions', entry: 'expr-powers' }]) {
+    const f = fixture(course.key);
+    try {
+      const old = f.state();
+      for (const key of ['theory', 'startHelp', 'resources']) delete old.view.details[key];
+      assert.equal(f.valid(old), true, course.key + ': earlier disclosure shape remains valid');
+      f.apply(old);
+      const next = f.state(), lesson = f.w.ProfileLessons.find(l => l.id === course.entry);
+      const record = next.progress.records[lesson.id], controls = lesson.tasks.slice(-3);
+      record.recovered = controls.slice(0, 2).map(t => t.id);
+      record.checkpointIndependent = [controls[2].id];
+      record.mistakes = [lesson.tasks[0].id, controls[0].id];
+      assert.equal(f.valid(next), true, course.key + ': bounded additive fields accepted');
+      f.apply(next);
+      assert.deepEqual(f.state().progress.records[lesson.id], copy(record));
+      f.roundtrip(course.key + ': progress extensions');
+      for (const change of [
+        r => { r.recovered = [lesson.tasks[0].id]; },
+        r => { r.checkpointIndependent = [controls[0].id, controls[0].id]; },
+        r => { r.mistakes = ['unrelated-task']; },
+        r => { r.recovered = true; },
+        r => { r.unapproved = []; }
+      ]) {
+        const bad = copy(next); change(bad.progress.records[lesson.id]);
+        assert.equal(f.valid(bad), false, course.key + ': malformed/foreign progress rejected');
+      }
+      await f.navigate('#lesson/' + lesson.id);
+      const theory = f.query('details.theory'); assert.equal(theory.open, false);
+      theory.open = true;
+      f.roundtrip(course.key + ': requested theory remains open');
+      await f.navigate('#calm/' + f.adapter.defaultRoute.split('/').at(-1));
+      const guide = f.query('.calm-start-help'); assert.equal(guide.open, false); guide.open = true;
+      const resources = f.query('.course-resources'); if (resources) resources.open = true;
+      f.roundtrip(course.key + ': requested catalogue help/resources remain open');
+    } finally { f.w.close(); }
+  }
+});
 
 test('five fixed adapters accept only their own exact routes and retain the published №3/№8 APIs', () => {
   for (const course of courses) {

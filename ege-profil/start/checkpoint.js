@@ -16,6 +16,7 @@ function create(lessons,storage,learningState){
   const ids=new Set();
   const items=round.items.map((item,index)=>{
    if(!item||item.number!==ORDER[index]||!text(item.draft)||!['submitted','correct','assisted','unavailable'].every(key=>bool(item[key])))throw Error('item');
+   if(Object.prototype.hasOwnProperty.call(item,'familiar')&&item.familiar!==false)throw Error('familiar condition');
    const clean={number:item.number,lessonId:item.lessonId,taskId:item.taskId,draft:item.draft,submitted:item.submitted,correct:item.correct,assisted:item.assisted,unavailable:item.unavailable};
    if(item.taskId===null&&item.lessonId===null){
     if(item.submitted||item.correct||item.assisted||item.draft)throw Error('empty item');
@@ -54,7 +55,7 @@ function create(lessons,storage,learningState){
     if(raw){storageProblem(value,'Сохранение проверки удалено в другом окне. Текущая работа осталась на этой странице; скачайте её перед закрытием.');return false;}
     return true;
    }
-   data=decode(value);raw=value;return true;
+   data=decode(value);raw=value;syncCredits();return true;
   }catch(_){let value;try{value=storage.getItem(KEY);}catch(_){}storageProblem(value);return false;}
  }
  function write(){
@@ -93,7 +94,7 @@ function create(lessons,storage,learningState){
    return;
   }
   // ProfileState.persist merges seen task IDs from other tabs before selection.
-  // No ProfileState.finish call: these results never promote lesson mastery.
+  // Exposure stays shared; a correct first answer is credited to its lesson.
   try{learningState.persist();}catch(_){}
   const found=pools.get(item.number).find(({task})=>!learningState.data.seen[task.id]);
   if(found){
@@ -127,7 +128,7 @@ function create(lessons,storage,learningState){
   try{correct=checkFn(shown.task.answer,answer,shown.task.choices,shown.task);}catch(_){return shown;}
   if(!bool(correct))return shown;
   const item=data.round.items[data.round.index];
-  item.draft=answer;item.correct=correct;item.submitted=true;write();return view();
+  item.draft=answer;item.correct=correct;item.submitted=true;write();syncCredits();return view();
  }
  function help(expectedToken){
   if(!prepare(expectedToken))return current();
@@ -173,6 +174,10 @@ function create(lessons,storage,learningState){
   const items=round?.items||[];
   return {attempted:items.filter(i=>i.submitted).length,independent:items.filter(i=>i.submitted&&i.correct&&!i.assisted&&!i.unavailable).length,assisted:items.filter(i=>i.assisted).length,unavailable:items.filter(i=>i.unavailable).length,total:ORDER.length};
  }
+ // v1 has always reserved unseen task IDs and prevented a second submission.
+ // Its validated submitted/correct/assisted flags therefore retain enough
+ // evidence to recover old first-attempt successes without relabelling repeats.
+ function syncCredits(){if(typeof learningState.creditCheckpoint!=='function')return;for(const round of [...data.history,data.round].filter(Boolean))for(const item of round.items)if(item.submitted&&item.correct&&!item.assisted&&!item.unavailable){const task=known.get(item.lessonId)?.tasks.find(t=>t.id===item.taskId);if(task&&root.ProfileCheck?.check(task.answer,item.draft,task.choices,task))learningState.creditCheckpoint(item);}}
  function snapshot(){read();return {...clone(data),summary:summary(data.round)};}
  read();
  return {KEY,startRound,current,submit,help,next,persistDraft,snapshot,get warning(){return warning||learningState.warning||'';},get original(){return blocked?raw:'';},export(){return {kind:'mathexam-profile-checkpoint',exportedAt:new Date().toISOString(),storage:'local-browser',...snapshot()};}};

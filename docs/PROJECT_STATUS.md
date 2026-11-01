@@ -1,6 +1,62 @@
 # MathExam project status
 
-## Prepared for review: Peterson 6 equations and unknowns, 2026-11-02
+## Release authorized: profile first-part trainer repairs, PR397, 2026-11-02
+
+- Owner directly requested correction of the complete first-part audit, accurate
+  trainer links, particular attention to geometry 1/2/3 and construction, and
+  reference material only on request. [Task](tasks/PROFILE_TRAINER_REPAIR_20261101.md),
+  HIGH; branch `fix/profile-trainers-audit-20261101`.
+- Base `6b9c327f2ca438cb7e7620ef302876de467fac19` includes PR396, which GitHub
+  confirms merged on 2026-11-01 at 13:54:32 UTC. Its 50 text corrections and
+  exact financial oracle are retained. The published PR396 record below remains;
+  this task does not repeat that release.
+- Correct old answer keys/checkers, idempotent assessment and requested help;
+  preserve existing work while repairing checkpoint mastery and adding a
+  separately identified familiar-task recovery route. Precise topic links and
+  read-only complete teacher reports connect the existing materials.
+- [Verification](reports/PROFILE_TRAINER_REPAIR_20261101.md) and
+  [PR397](https://github.com/ladynata-cloud/math-exam-fipi/pull/397)
+  record local/CI/browser evidence and independent reviews. No new main-course
+  tasks or task IDs are introduced; no real pupil state is changed.
+- On 2026-11-02 the owner explicitly authorized preserving both status entries,
+  merging main `059ee8c9f5baeb0b333c96d9b8516edb570666b2` into this branch with
+  history retained, and then squash-merge, publication and public-site checks
+  after successful checks of the updated branch. The owner granted a current
+  PR397-specific external HIGH-review exception based on the completed checks.
+  This is an owner exception, not an external reviewer verdict.
+- After the final guard detected published PR400, the owner explicitly renewed
+  permission on 2026-11-02: merge main
+  `5bbfe3a4615b6410dacf7f1344aa57b909a986ef` into head
+  `0d8988a6168bbd69694f4bd5724397ee04f4e946`, retain all three task records,
+  then squash-merge, publish and check the site after successful updated-head
+  checks. The existing PR397-specific HIGH exception remains recorded.
+- The read-only composed runtime passed 340/340 profile tests, the 78-task /
+  442-step exact finance oracle, 60 main geometry journeys / 54 viewport checks
+  and the progress/reload/read-only report browser gate. All six workflows on
+  the preceding integrated head also passed. New exact-head CI is still required.
+- Trainer/runtime bytes are unchanged from reviewed head
+  `d1291ca1214f8a96f7f0de5e613161e6d4eecc5a`; only this conflict and the
+  verification report were adjusted. Next: exact-head CI, authorized release,
+  then public asset/learner checks. Final release identity is recorded in PR397;
+  this pre-release entry does not claim deployment has already completed.
+
+## Published: Peterson 6 equations and unknowns, PR400, 2026-11-02
+
+- [PR400](https://github.com/ladynata-cloud/math-exam-fipi/pull/400) was
+  squash-merged as `5bbfe3a4615b6410dacf7f1344aa57b909a986ef`, sole parent
+  `059ee8c9f5baeb0b333c96d9b8516edb570666b2`, from reviewed head
+  `375637628af67c88c1801926dbdcf5bda90ffca5`.
+- Its primary release record confirms explicit owner publication authorization
+  and a PR400-specific external-review exception, all 22 head workflows and
+  all 16 postmerge workflows successful, including
+  [Pages41344202489](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41344202489).
+- Public delivery passed 19 exact HTTP checks, the Peterson1.1.0 registry/health
+  gate and a synthetic live equation-method journey. All 38 non-status PR400
+  blobs are retained exactly by this integration, including its three PDFs.
+- The preparation record below is historical; its pending-review and
+  pending-publication statements do not supersede the completed release above.
+
+### Retained PR400 preparation record (historical)
 
 - [Task](tasks/PETERSON6_EQUATION_METHOD.md), HIGH; explicit current-task START.
   Branch `task/peterson6-equation-method-20261102`, original implementation base

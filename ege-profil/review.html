@@ -57,7 +57,7 @@
   <a class="back" href="index.html">← Курс</a>
   <p class="eyebrow">журнал курса · обновляется сам</p>
   <h1>Работа над ошибками</h1>
-  <p class="lede">Тренажёры запоминают каждый промах. Тип задачи считается закрытым, когда после последней ошибки набраны три верных ответа этого же типа. Здесь — всё, что пока открыто.</p>
+  <p class="lede">Основной курс сохраняет задачи, в которых были ошибки, и показывает последующее закрепление. В прежних подборках тип закрывается тремя верными ответами подряд.</p>
 
   <div class="card" id="summaryCard"></div>
   <div class="card" id="openCard" style="display:none">
@@ -74,9 +74,20 @@
     <p class="small muted">Эти типы были ошибочными, но добиты тремя верными подряд. Новый промах вернёт их наверх.</p>
     <div id="closedList"></div>
   </div>
-  <p><button class="btn ghost" id="clearBtn">Очистить журнал ошибок</button></p>
+  <section class="card" id="profileCourseMistakes"></section>
+  <p><button class="btn ghost" id="clearBtn">Очистить журнал старых подборок</button></p>
 </div>
 
+<script src="start/geometry-data.js"></script>
+<script src="start/stereo-data.js"></script>
+<script src="start/algebra-data.js"></script>
+<script src="start/probability-data.js"></script>
+<script src="start/equations-data.js"></script>
+<script src="start/functions-data.js"></script>
+<script src="start/applied-data.js"></script>
+<script src="start/finance-data.js"></script>
+<script src="start/readiness-data.js"></script>
+<script src="progress-code.js"></script>
 <script src="registry.js"></script>
 
 <script>
@@ -112,21 +123,24 @@
       '</div>';
   }
 
+  var courseReport=PROGRESS_CODE.fullReport(null,window.ProfileLessons);
+  var hasCourseErrors=PROGRESS_CODE.profileRows(courseReport).some(function(row){return row.mistakes>0;});
+  PROGRESS_CODE.renderProfileReport(document.getElementById("profileCourseMistakes"),courseReport,{mistakesOnly:true});
   var all = readAll();
   var mk = all.mistakes;
   var open = RV.open(mk), closed = RV.closed(mk);
 
   var sc = document.getElementById("summaryCard");
   if (!open.length && !closed.length){
-    sc.innerHTML = '<h2>Журнал пока пуст</h2>' +
+    sc.innerHTML = '<h2>'+(hasCourseErrors?'В прежних подборках ошибок пока нет':'Журнал пока пуст')+'</h2>' +
       '<p>Ошибки появятся здесь сами: тренажёры записывают каждый промах в тренировках и зачётах. ' +
       'Начните с любого тренажёра или напишите <a href="exam/full-exam.html">пробный экзамен</a> — он покажет, какие линии проседают.</p>';
   } else {
-    sc.innerHTML = '<p class="bigcount">' + open.length + '<span class="muted" style="font-size:18px"> к повтору</span>' +
+    sc.innerHTML = '<h2>Ошибки прежних подборок</h2><p class="bigcount">' + open.length + '<span class="muted" style="font-size:18px"> к повтору</span>' +
       ' · <span class="okline">' + closed.length + '</span><span class="muted" style="font-size:18px"> закрыто</span></p>' +
       (open.length
         ? '<p class="small muted">Начинайте сверху — это самые свежие промахи. Три верных ответа того же типа закрывают строку.</p>'
-        : '<p class="okline">Все известные ошибки закрыты. Новые промахи снова появятся здесь.</p>');
+        : '<p class="okline">Ошибки прежних подборок закрыты. Новые промахи в этих подборках снова появятся здесь.</p>');
   }
 
   if (open.length){
@@ -159,13 +173,13 @@
     var MAXP = { 1:1,2:1,3:1,4:1,5:1,6:1,7:1,8:1,9:1,10:1,11:1,12:1, 13:2, 14:3, 15:2, 16:2, 17:3, 18:4, 19:4 };
     var LINE_TRAINER = {
       1:"trainers/planimetry-t1.html", 2:"trainers/vectors-t2.html", 3:"trainers/stereo/index.html",
-      4:"trainers/probability-t45.html", 5:"trainers/probability-t45.html",
-      6:"trainers/trigonometry.html", 7:"trainers/trigonometry.html", 8:"trainers/derivative-t8.html",
-      9:"trainers/applied-t910.html", 10:"trainers/applied-t910.html",
-      11:"trainers/functions-t1112.html", 12:"trainers/functions-t1112.html",
-      13:"trainers/trigonometry.html", 14:"trainers/stereo-t14.html", 15:"trainers/inequalities.html",
-      16:"trainers/finance.html", 17:"trainers/planimetry-t17.html",
-      18:"trainers/parameters-t18.html", 19:"trainers/numbers-t19.html"
+      4:"trainers/probability-t45.html?topic=basic", 5:"trainers/probability-t45.html?topic=compound",
+      6:"trainers/trigonometry.html?topic=equations", 7:"trainers/trigonometry.html?topic=values", 8:"trainers/derivative-t8.html",
+      9:"trainers/applied-t910.html?topic=formulas", 10:"trainers/applied-t910.html?topic=text",
+      11:"trainers/functions-t1112.html?topic=graphs", 12:"trainers/functions-t1112.html?topic=extrema",
+      13:"trainers/trigonometry.html", 14:"trainers/stereo-t14.html?topic=basic", 15:"trainers/inequalities.html?topic=compound",
+      16:"trainers/finance.html?topic=equations", 17:"trainers/planimetry-t17.html?topic=values",
+      18:"trainers/parameters-t18.html", 19:"trainers/numbers-t19.html?topic=formulas"
     };
     var lost = [];
     for (var i = 1; i <= 19; i++){
@@ -188,7 +202,7 @@
   }
 
   document.getElementById("clearBtn").addEventListener("click", function(){
-    if (!confirm("Стереть весь журнал ошибок? Прогресс тренажёров и результаты пробников останутся.")) return;
+    if (!confirm("Стереть журнал ошибок старых подборок? История основного курса останется. Прогресс тренажёров и результаты пробников останутся.")) return;
     var a = readAll();
     delete a.mistakes;
     try{ localStorage.setItem(KEY, JSON.stringify(a)); }catch(e){}

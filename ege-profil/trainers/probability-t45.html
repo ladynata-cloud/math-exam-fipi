@@ -85,7 +85,7 @@
   .ladder-note{margin:0 0 4px}
   .ladder-done{margin:8px 0 10px;font-weight:600;color:var(--ink-strong)}
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261010-unified"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261101-trainer-repair"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
 </head>
 <body>
 <div class="wrap">
@@ -582,13 +582,15 @@ var PR = (function(){
   }
   function parse(s){
     if (s == null) return NaN;
-    s = String(s).trim().replace(",", ".").replace("−", "-").replace(/\s+/g, "").replace("%","");
-    return s ? Number(s) : NaN;
+    s = String(s).trim().replace(/,/g, ".").replace(/−/g, "-");
+    if (!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(s)) return NaN;
+    var value = Number(s);
+    return Number.isFinite(value) ? value : NaN;
   }
   function check(input, t){
     var v = parse(input);
     if (isNaN(v)) return false;
-    if (t.round === 2) return Math.abs(v - t.answer) <= 0.005 + 1e-9;
+    if (t.round === 2) return Math.abs(v - shown(t)) < 1e-9;
     return Math.abs(v - t.answer) < 1e-6;
   }
   function shown(t){ return t.round === 2 ? Math.round(t.answer*100)/100 : t.answer; }
@@ -596,6 +598,7 @@ var PR = (function(){
      допуска, иначе общие случаи (проценты, значение вне [0;1], округление);
      null — ничего адресного сказать нельзя. Ответ не выдаёт. */
   function diagnose(input, t){
+    if (/%/.test(String(input))) return "Вероятность записывают десятичной дробью без знака процента: переведите проценты в доли.";
     var v = parse(input);
     if (isNaN(v)) return null;
     var a = t.answer, pctTol = t.round === 2 ? 0.5 : 0.05;
@@ -613,6 +616,7 @@ var PR = (function(){
     /* ответ меньше сотой (например, 0,008), записанный в процентах, тоже лежит в [0; 1] */
     if (Math.abs(v - a*100) <= pctTol) return PCT;
     if (t.round !== 2 && Math.abs(v - a) <= 0.005 + 1e-9) return "Ход решения верный, но вы округлили: в условии округления нет — запишите точное значение.";
+    if (t.round === 2 && Math.abs(v - a) <= 0.005 + 1e-9) return "В условии требуется округлить до сотых: оставьте два знака после запятой, учитывая следующий знак.";
     if (t.round === 2 && Math.abs(v - a) <= 0.05 && Math.abs(Math.round(v*10)/10 - v) < 1e-9) return "Округлять нужно до сотых (два знака после запятой), а не до десятых.";
     return null;
   }
@@ -742,12 +746,13 @@ if (typeof module !== "undefined") module.exports = PR;
   /* ---------- тренажёр ----------
      Лестница попыток. Первая ошибка — адресная диагностика по типичной
      неверной величине (ловушки генератора) или что перепроверить, ответ не
-     показывается, вторая попытка. Вторая ошибка — лестница разбора; итоговое
+     показывается, вторая попытка. Разбор открывается по запросу; итоговое
      число появляется только на её последней ступени. Промах пишется в журнал
      один раз на задачу, при первой ошибке. Задача, разобранная до ответа
      (revealed), в счёт решённых не идёт и тип в журнале не закрывает —
      ученику это сказано. Подсказки и ступени ничего не отнимают. */
-  var mode = "mix", D = null, streak = 0;
+  var requestedTopic = new URLSearchParams(location.search).get("topic");
+  var mode = requestedTopic === "basic" ? "t4" : requestedTopic === "compound" ? "t5" : "mix", D = null, streak = 0;
   var TS = { tries:0, done:false, missed:false, revealed:false };
   var chips = document.getElementById("modeChips");
   [["mix","вперемешку"],["t4","задание 4"],["t5","задание 5"],["err","ошибки"]].forEach(function(m){
@@ -830,15 +835,16 @@ if (typeof module !== "undefined") module.exports = PR;
     var fb = document.getElementById("dFb");
     var raw = document.getElementById("dAnswer").value;
     if (isNaN(PR.parse(raw))){
-      fb.className = "feedback on hint"; fb.textContent = "Впишите ответ десятичной дробью: например, 0,25.";
+      fb.className = "feedback on hint"; fb.textContent = PR.diagnose(raw, D) || "Впишите ответ десятичной дробью: например, 0,25.";
       return;
     }
     if (PR.check(raw, D)){
       fb.className = "feedback on ok";
       if (TS.done){ fb.textContent = "Верно."; return; }   /* повторное нажатие не удваивает счёт */
       TS.done = true;
-      if (TS.revealed){
-        fb.textContent = "Верно: " + PR.dec(PR.shown(D)) + ". Ответ был открыт в разборе — эта задача в счёт решённых не идёт. Возьмите другую задачу.";
+      if (TS.revealed||TS.courseHelpUsed){
+        streak=0;
+        fb.textContent = "Верно: " + PR.dec(PR.shown(D)) + (TS.courseHelpUsed?". Использована помощь — самостоятельное решение не подтверждено.":". Ответ был открыт в разборе — эта задача в счёт решённых не идёт.") + " Возьмите другую задачу.";
         refreshStats();
         return;
       }
@@ -866,8 +872,7 @@ if (typeof module !== "undefined") module.exports = PR;
       fb.textContent = "Пока неверно. " + (diag || D.nudge) + " Попробуйте ещё раз — это ничего не отнимает.";
       return;
     }
-    fb.textContent = "Снова неверно. " + (diag ? diag + " " : "") + "Ниже — разбор по шагам: пройдите его до конца, ответ будет на последней ступени.";
-    openLadder();
+    fb.textContent = "Снова неверно. " + (diag ? diag + " " : "") + "Попробуйте ещё раз или откройте разбор кнопкой «Разбор по шагам».";
   });
   document.getElementById("dAnswer").addEventListener("keydown", function(e){ if (e.key === "Enter") document.getElementById("dCheck").click(); });
   document.getElementById("dSol").addEventListener("click", openLadder);
@@ -886,6 +891,7 @@ if (typeof module !== "undefined") module.exports = PR;
     }
   }
   function zNext(){
+    Z.courseHelpUsed=false; Z.accepting=true;
     Z.cur = PR.task(Z.plan[Z.i]);
     document.getElementById("zTag").textContent = (Z.i + 1) + " из 10 · задание " + Z.cur.line;
     document.getElementById("zText").textContent = Z.cur.text;
@@ -902,13 +908,15 @@ if (typeof module !== "undefined") module.exports = PR;
     zDots(); zNext();
   });
   document.getElementById("zCheck").addEventListener("click", function(){
-    if (!Z.active) return;
+    if (!Z.active||!Z.accepting) return;
     if (isNaN(PR.parse(document.getElementById("zAnswer").value))) return;
-    var ok = PR.check(document.getElementById("zAnswer").value, Z.cur);
-    mlog(Z.cur.type, ok);
+    var correct = PR.check(document.getElementById("zAnswer").value, Z.cur);
+    var ok = correct&&!Z.courseHelpUsed;
+    Z.accepting=false;
+    if(!Z.courseHelpUsed||!correct)mlog(Z.cur.type, correct);
     var fb = document.getElementById("zFb");
     fb.className = "feedback on " + (ok ? "ok" : "bad");
-    fb.textContent = ok ? "Верно." : "Неверно: " + PR.dec(PR.shown(Z.cur)) + ".";
+    fb.textContent = correct&&Z.courseHelpUsed ? "Верно с помощью. В самостоятельный зачёт ответ не входит." : ok ? "Верно." : "Неверно: " + PR.dec(PR.shown(Z.cur)) + ".";
     Z.marks.push(ok); if (ok) Z.score++;
     Z.i++; zDots();
     if (Z.i >= 10){
@@ -927,6 +935,12 @@ if (typeof module !== "undefined") module.exports = PR;
   });
   document.getElementById("zAnswer").addEventListener("keydown", function(e){ if (e.key === "Enter") document.getElementById("zCheck").click(); });
   zDots();
+  document.addEventListener('profile-course-help-requested',function(){
+    const tab=document.querySelector('.tab[aria-selected="true"]');
+    if(tab?.dataset.view==='exam'&&Z.active&&Z.accepting)Z.courseHelpUsed=true;
+    else if(tab?.dataset.view==='drill'&&D&&!TS.done)TS.courseHelpUsed=true;
+  });
+  if(requestedTopic==='basic'||requestedTopic==='compound')document.querySelector('.tab[data-view="drill"]').click();
   if (/mode=review/.test(location.search)){
     var tbR = document.querySelector('.tab[data-view="drill"]');
     if (tbR) tbR.click();

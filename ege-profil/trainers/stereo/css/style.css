@@ -167,6 +167,32 @@ b.rose { color:var(--rose); }
 /* кнопки и поле ответа — не ниже 44 px (попадание пальцем) */
 .btn, .answer-row input { min-height:44px; }
 .btn.sq { min-width:44px; }
+/* Keep the current condition, model and answer together on a narrow screen.
+   display:contents preserves the panel nodes and their event listeners. */
+@media(max-width:820px) {
+  .app { display:grid; grid-template-columns:minmax(0,1fr); gap:12px; padding:16px 0 24px; min-height:0; }
+  .panel { display:contents; }
+  .panel > * { min-width:0; max-width:calc(100% - 28px); margin:0 14px; }
+  .panel > .head { order:0; }
+  .panel > .subtitle { order:1; }
+  .panel > .nav-toggle { order:2; width:auto; }
+  .panel > .nav-panel { order:3; }
+  .panel > .prob-card { order:4; }
+  .stage { order:5; display:flex; flex-direction:column; min-width:0; min-height:0; }
+  #viewport { position:relative; inset:auto; flex:none; height:min(52vh,420px); min-height:280px; }
+  .legend { position:static; padding:8px 14px; gap:6px 14px; }
+  .legend-help { margin-left:0; }
+  .panel > .answer-row { order:6; }
+  .panel > .feedback { order:7; }
+  .panel > .actions { order:8; }
+  .panel > .hint-box { order:9; }
+  .panel > .sol-box { order:10; }
+  .panel > .measures { order:11; }
+  .panel > .nav-btns { order:12; }
+  .panel > .progress-mail-card { order:13; }
+  .head .title { min-width:0; }
+  .head .score { flex-shrink:0; }
+}
 .btn:focus-visible, .card:focus-visible, a:focus-visible, .answer-row input:focus-visible, .nav-dot:focus-visible {
   outline:3px solid var(--blue); outline-offset:2px;
 }

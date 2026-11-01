@@ -18,7 +18,9 @@ function readPage(file){
   const html = fs.readFileSync(full, 'utf8');
   return html.replace(/<script src="([^"]+)"><\/script>/g, (whole, src) => {
     if (/^(https?:)?\/\//.test(src)) return whole;
-    const code = fs.readFileSync(path.join(dir, src), 'utf8');
+    // Cache-version queries are URL metadata, not part of a local filename.
+    // Keep the original URL below so the link gate still checks its target.
+    const code = fs.readFileSync(path.join(dir, src.split(/[?#]/)[0]), 'utf8');
     return '<script data-inlined-from="' + src + '">\n' + code + '\n</script>';
   });
 }

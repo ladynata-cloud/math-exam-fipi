@@ -21,6 +21,8 @@
   .wrap{max-width:960px;margin:0 auto;padding:28px 20px 60px}
   a{color:var(--ink)}
   a:focus-visible,button:focus-visible,textarea:focus-visible{outline:3px solid rgba(30,58,159,.4);outline-offset:2px;border-radius:4px}
+  .full-report-file{max-width:100%;box-sizing:border-box}
+  #fullReportFile{display:block;width:100%;max-width:100%;box-sizing:border-box;margin-top:8px}
   .skip{position:absolute;left:-9999px}
   .skip:focus{position:static;display:inline-flex;align-items:center;min-height:44px;margin-bottom:8px}
   .back{font:600 13px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-decoration:none;color:var(--muted)}
@@ -109,6 +111,7 @@
   <div class="card nocode">
     <h2>Код ученика</h2>
     <p class="small muted">Вставьте строку, которая начинается с <span class="tid">MEP1.</span> — сводка ниже переключится на просмотр. Пока вы только смотрите, в этом браузере ничего не меняется.</p>
+    <p><label class="btn ghost full-report-file">Открыть полный отчёт <input type="file" id="fullReportFile" accept=".json,application/json"></label></p><p class="small muted">JSON из основного курса открывается только для просмотра. Он включает новые решения, повторы, смешанную проверку и сохранённые подборки.</p>
     <textarea class="codebox" id="inBox" rows="4" placeholder="MEP1.…" aria-label="Код прогресса ученика"></textarea>
     <p class="codeactions">
       <button class="btn" id="showBtn" type="button">Показать прогресс</button>
@@ -122,15 +125,25 @@
   <div class="card" id="summary">
     <h2>Сводка</h2>
     <p class="small muted" id="sourceLine"></p>
+    <section id="profileCourseReport"></section>
     <div id="cards"></div>
-    <p class="small muted" id="foot">Тренажёры со своим ключом хранения (стереометрия в 3D, тригонометрия, «сумма и разность синусов», тренажёр варианта) в код прогресса не входят и здесь не показаны — их прогресс виден только внутри самих тренажёров.</p>
+    <p class="small muted" id="foot">Тренажёры со своим ключом хранения (стереометрия в 3D, тригонометрия, «сумма и разность синусов», тренажёр варианта) в старый код MEP1 не входят. Их сохранения включены в отдельный полный отчёт; они также видны в этом браузере.</p>
   </div>
 </div>
 
+<script src="start/geometry-data.js"></script>
+<script src="start/stereo-data.js"></script>
+<script src="start/algebra-data.js"></script>
+<script src="start/probability-data.js"></script>
+<script src="start/equations-data.js"></script>
+<script src="start/functions-data.js"></script>
+<script src="start/applied-data.js"></script>
+<script src="start/finance-data.js"></script>
+<script src="start/readiness-data.js"></script>
 <script src="registry.js"></script>
 <script src="progress-adapters.js"></script>
 <script src="qr.js"></script>
-<script src="progress-code.js"></script>
+<script src="progress-code.js?v=20261101-trainer-repair"></script>
 <script src="board-mirror.js"></script>
 
 <script>
@@ -145,7 +158,7 @@
 
   /* ---------- сводка ---------- */
   /* view === null — этот браузер; иначе объект прогресса ученика. */
-  var view = null;
+  var view = null, fullView = null;
 
   function typesHtml(journal){
     var rows = [], i, it, meta;
@@ -186,12 +199,13 @@
       );
     }
     host.innerHTML = html.join("");
-    PROGRESS.apply(host, view ? PROGRESS.snapshotStore(view) : PROGRESS.liveStore());
+    PROGRESS.apply(host, view ? PROGRESS.snapshotStore(view, fullView && fullView.side) : PROGRESS.liveStore());
+    PROGRESS_CODE.renderProfileReport($('#profileCourseReport'),fullView || (view ? {course:null,lessons:[],warnings:['Код MEP1 не содержит основной курс. Попросите ученика скачать полный отчёт из раздела «Мой прогресс».']} : PROGRESS_CODE.fullReport(null,window.ProfileLessons)));
 
     /* имя ученика — только строка и только как текст */
     var who = (RV.isObj(all.student) && typeof all.student.name === "string") ? all.student.name : "";
     $("#sourceLine").textContent = (view
-      ? "Показан прогресс из вставленного кода. В этом браузере ничего не изменено."
+      ? (fullView ? "Показан полный отчёт из файла. В этом браузере ничего не изменено." : "Показан прогресс из вставленного кода. В этом браузере ничего не изменено.")
       : "Показан прогресс этого браузера.") + (who ? " Ученик: " + who + "." : "");
     $("#mineBtn").hidden = !view;
   }
@@ -211,6 +225,12 @@
     });
   }
 
+  $('#fullReportFile').addEventListener('change',function(){
+    var file=this.files&&this.files[0];if(!file)return;
+    if(file.size>2*1024*1024){say('Файл отчёта слишком большой.',true);return;}
+    file.text().then(function(raw){var report=PROGRESS_CODE.validateFullReport(JSON.parse(raw));fullView=report;view=report.legacy;renderCards();say('Полный отчёт открыт только для просмотра. Сохранения этого браузера не изменены.');}).catch(function(err){say(err.message||'Не удалось прочитать отчёт.',true);});
+  });
+
   /* сколько испорченного нашлось в журнале кода — для сообщения */
   function junkNote(c, verb){
     if (c.branch) return " Журнал ошибок в коде испорчен и " + (verb ? "не загружен." : "не показан.");
@@ -220,7 +240,7 @@
 
   $("#showBtn").addEventListener("click", function(){
     withCode(function(obj){
-      view = obj;
+      fullView = null;view = obj;
       renderCards();
       say("Код прочитан. Это просмотр: прогресс в этом браузере не тронут." + junkNote(RV.cleanJournal(obj), false));
     });
@@ -233,7 +253,7 @@
         /* данные ученика — как есть; из журнала уходят только записи-мусор */
         var c = RV.cleanJournal(obj);
         PROGRESS_CODE.loadInto(c.obj);
-        view = null;
+        fullView = null;view = null;
         renderCards();
         $("#restoreBtn").hidden = false;
         say("Прогресс загружен. Прежний сохранён в резервной копии." + junkNote(c, true));
@@ -247,7 +267,7 @@
     if (!confirm("Вернуть прогресс из резервной копии? Загруженный сейчас прогресс будет заменён.")) return;
     try{
       PROGRESS_CODE.restoreBackup();
-      view = null;
+      fullView = null;view = null;
       renderCards();
       say("Прежний прогресс возвращён.");
     }catch(err){
@@ -256,7 +276,7 @@
   });
 
   $("#mineBtn").addEventListener("click", function(){
-    view = null;
+    fullView = null;view = null;
     renderCards();
     say("");
   });

@@ -103,10 +103,12 @@ function fmtLen(x) {
 
 /* «2,5» → 2.5; поддерживает простые дроби «3/4» */
 function parseAns(v) {
-  const s = String(v).replace(",", ".").replace(/\s/g, "");
-  const m = s.match(/^(-?\d+(?:\.\d+)?)\/(-?\d+(?:\.\d+)?)$/);
-  if (m) { const d = parseFloat(m[2]); return d ? parseFloat(m[1]) / d : NaN; }
-  return parseFloat(s);
+  const s = String(v == null ? "" : v).trim().replace(/−/g, "-").replace(/,/g, ".");
+  const m = s.match(/^([+-]?(?:\d+(?:\.\d*)?|\.\d+))(?:\s*\/\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+)))?$/);
+  if (!m) return NaN;
+  const denominator = m[2] === undefined ? 1 : Number(m[2]);
+  const value = Number(m[1]) / denominator;
+  return denominator !== 0 && Number.isFinite(value) ? value : NaN;
 }
 
 /* спрайт-подпись на канвасе */

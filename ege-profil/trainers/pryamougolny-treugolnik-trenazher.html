@@ -248,8 +248,16 @@
     .step .dot{width:1.9rem; height:1.9rem; font-size:.85rem}
     ol.ladder::before{left:.9rem}
   }
+
+  .trainer-reference{margin:6px 0 12px;min-width:0;max-width:100%}
+  .trainer-reference>summary{cursor:pointer;min-height:44px;padding:8px 0;font-size:16px;line-height:1.5;font-weight:650}
+  .trainer-reference[open]>summary{margin-bottom:6px}
+  .seg{flex-wrap:wrap;max-width:100%}
+  .seg button{flex:1 1 auto;min-width:0}
+  .wrap,header.top>div,.controls>div{min-width:0;max-width:100%}
+  html.board .trainer-reference{display:none}
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261010-unified"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261101-trainer-repair"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
 </head>
 <body>
 <div class="wrap">
@@ -259,7 +267,7 @@
       <a class="brand" href="https://mathexam.space"><span class="sigma">∑</span> mathexam.space</a>
       <a class="crumbs" href="../index.html">← Курс профильного ЕГЭ</a>
       <h1 class="title">Прямоугольный треугольник: sin, cos, tg</h1>
-      <p class="sub">Сначала разминка — что такое синус, косинус и тангенс, потом задачи: сторона и отношение, высота на гипотенузу, площадь, углы биссектрисы и медианы, треугольник 30°-60°-90°. Числа, буквы и чертёж — каждый раз новые.</p>
+      <details class="trainer-reference"><summary>О тренажёре</summary><p class="sub">Сначала разминка — что такое синус, косинус и тангенс, потом задачи: сторона и отношение, высота на гипотенузу, площадь, углы биссектрисы и медианы, треугольник 30°-60°-90°. Числа, буквы и чертёж — каждый раз новые.</p></details>
     </div>
     <div class="topbtns">
       <button class="btn primary" id="teacherBtn" title="Собрать код прогресса для кабинета учителя">Сдать учителю</button>
@@ -288,7 +296,7 @@
       </div>
     </div>
   </div>
-  <p class="modehelp" id="modeHelp"></p>
+  <details class="trainer-reference"><summary>Как работать в этом режиме</summary><p class="modehelp" id="modeHelp"></p></details>
 
   <div id="live" class="sr-only" aria-live="polite"></div>
   <main id="taskArea" tabindex="-1"></main>
@@ -305,9 +313,7 @@
     <p class="small tp-status" id="tpStatus" role="status" aria-live="polite"></p>
   </section>
 
-  <footer>
-    Тренажёр отрабатывает базовые задачи на прямоугольный треугольник: определения синуса/косинуса/тангенса, теорему Пифагора, свойства высоты на гипотенузу, площадь и углы между высотой, биссектрисой и медианой из вершины прямого угла. Буквы вершин, числа и чертёж создаются заново каждый раз, поэтому вариантов бесконечно много. Прогресс сохраняется в браузере этого устройства. Кнопка «Сдать учителю» собирает код прогресса для «Кабинета учителя» курса — данные никуда не отправляются. © mathexam.space
-  </footer>
+  <footer><details class="trainer-reference"><summary>О темах и сохранении прогресса</summary><p>Тренажёр отрабатывает базовые задачи на прямоугольный треугольник: определения синуса/косинуса/тангенса, теорему Пифагора, свойства высоты на гипотенузу, площадь и углы между высотой, биссектрисой и медианой из вершины прямого угла. Буквы вершин, числа и чертёж создаются заново каждый раз, поэтому вариантов бесконечно много. Прогресс сохраняется в браузере этого устройства. Кнопка «Сдать учителю» собирает код прогресса для «Кабинета учителя» курса — данные никуда не отправляются. © mathexam.space</p></details></footer>
 </div>
 
 <script>
@@ -2217,6 +2223,7 @@ const state = {
   review: false, reviewEmpty: false, picked: [], tapAngle: null, tapLine: null, soloHinted: false
 };
 let stats = loadStats();
+document.addEventListener('profile-course-help-requested',()=>{if(state.task&&!state.finished&&state.mode==='solo')state.courseHelpUsed=true;});
 
 /* ---------- хранение: единый ключ курса + журнал ошибок ----------
    Прогресс лежит в mathExamCourseProgress.v1 под TID — его видят главная
@@ -2259,7 +2266,7 @@ function mlog(type, okFlag){
   } catch (e){}
 }
 function logOutcome(okFlag){
-  if (state.mode !== 'solo') return;
+  if (state.mode !== 'solo' || (okFlag && state.courseHelpUsed)) return;
   const ty = state.task && state.task.type;
   if (ty) mlog(ty, okFlag);
 }
@@ -2283,6 +2290,7 @@ function reviewTask(){
 function tstat(t){ return stats.topics[t] || (stats.topics[t] = { steps: 0, solved: 0, correct: 0, streak: 0, best: 0, hinted: 0 }); }
 
 function resetStepState(){
+  state.courseHelpUsed=false;
   state.picked = [];
   state.tapAngle = null; state.tapLine = null; state.soloHinted = false;
   state.stepIdx = 0; state.stepFails = []; state.stepRevealed = []; state.stepFb = null; state.stepWrongOpts = [];
@@ -2555,7 +2563,7 @@ function actionsHtml(task){
 }
 function memoHtml(T, task){
   const rows = T.memo.map(([k, v]) => `<div class="memo-row"><span class="k">${M(k)}</span><span class="v">${M(v)}</span></div>`).join('');
-  return `<details class="memo" ${state.mode === 'learn' ? 'open' : ''}><summary>Памятка${T.trap ? ' и ловушка' : ''}</summary><div class="memo-body">${rows}${T.trap ? `<div class="trapbox"><b>Ловушка:</b><span>${M(T.trap)}</span></div>` : ''}</div></details>`;
+  return `<details class="memo"><summary>Памятка${T.trap ? ' и ловушка' : ''}</summary><div class="memo-body">${rows}${T.trap ? `<div class="trapbox"><b>Ловушка:</b><span>${M(T.trap)}</span></div>` : ''}</div></details>`;
 }
 function renderTask(){
   const task = state.task, T = TOPICS[state.topic];
@@ -2734,7 +2742,11 @@ function creditSolo(s, fails, hinted){
 function soloOutcome(correct){
   const s = tstat(state.topic);
   if (correct){
-    if (!state.counted){ state.counted = true; creditSolo(s, state.soloFails, state.soloHinted); }
+    if (!state.counted){
+      state.counted = true;
+      creditSolo(s, state.courseHelpUsed ? Math.max(1,state.soloFails) : state.soloFails, state.soloHinted||state.courseHelpUsed);
+      if(state.courseHelpUsed)s.streak=0;
+    }
   } else if (!state.counted && state.soloFails === 1){ s.streak = 0; }
   saveStats();
 }
@@ -2753,7 +2765,7 @@ function soloFailed(msgHtml){
 }
 function soloSolved(){
   state.finished = true; soloOutcome(true); logOutcome(true);
-  state.soloFb = { type: 'ok', html: `${pick(PRAISE, RNG)}${state.soloFails ? ' Со второй попытки, но верно.' : ''}` };
+  state.soloFb = { type: 'ok', html: state.courseHelpUsed?'Верно с помощью. Школьная тема была открыта; самостоятельная серия не увеличивается.':`${pick(PRAISE, RNG)}${state.soloFails ? ' Со второй попытки, но верно.' : ''}` };
   announce(state.soloFb.html);
   render();
 }

@@ -225,7 +225,8 @@ test('large money and whole-period checks reject near answers while accepting ex
   for(const question of integers){assert.equal(Check.check(question.answer,String(question.answer+1e-8),question.choices,question),false);assert.equal(Check.check(question.answer,String(question.answer+0.1),question.choices,question),false);}
   const fractions=tasks.flatMap(t=>t.steps).filter(s=>!finiteDecimal(s.answerExact));assert(fractions.length>0);
   for(const question of fractions)assert(Check.check(question.answer,question.answerExact,question.choices,question));
-  assert(Check.check(10000000,'10000000.5'),'Existing relative tolerance stays unchanged without opt-in metadata');
+  assert(Check.check(10000000,'10000000'),'An exact large legacy answer remains accepted');
+  assert(!Check.check(10000000,'10000000.5'),'Large legacy amounts no longer accept a half-rouble error');
   assert(Check.check(9,'9.00000001'),'Existing integer-looking questions remain backward compatible without domain metadata');
 });
 

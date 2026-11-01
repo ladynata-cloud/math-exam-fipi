@@ -325,7 +325,10 @@ const server = http.createServer((req, res) => {
     const downloading = page.waitForEvent('download');
     await page.locator('#export').click();
     const downloaded = await downloading;
-    const report = JSON.parse(fs.readFileSync(await downloaded.path(), 'utf8'));
+    const envelope = JSON.parse(fs.readFileSync(await downloaded.path(), 'utf8'));
+    assert.equal(envelope.kind,'mathexam-profile-full-report');
+    assert.equal(envelope.version,1);
+    const report=envelope.course;
     assert.equal(report.storage, 'local-browser');
     assert(report.records['geo-right'].guided.includes('geo-right-hypotenuse'));
     assert(report.records[solidLesson.id].guided.length > 0);

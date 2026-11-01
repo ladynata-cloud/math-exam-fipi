@@ -23,9 +23,10 @@ function check(expected,input,choices,options){
  if(!Number.isFinite(a)||!Number.isFinite(b))return false;
  // New financial tasks opt in: a whole number of periods cannot be a
  // nearby decimal, and a large rouble amount must not accept a kopeck error.
- // Existing tasks keep their original tolerance and parsing behaviour.
+ // Keep an absolute tolerance for ordinary tasks, too: a large answer must
+ // not admit a larger mathematical error merely because of its magnitude.
  if(options?.domain==='integer'&&!Number.isInteger(b))return false;
- const tolerance=options?.strictNumeric?Math.max(1e-9,8*Number.EPSILON*Math.abs(a)):1e-7*Math.max(1,Math.abs(a));
+ const tolerance=options?.strictNumeric?Math.max(1e-9,8*Number.EPSILON*Math.abs(a)):1e-7;
  return Math.abs(a-b)<=tolerance;
 }
 const api={number,check};root.ProfileCheck=api;if(typeof module!=='undefined')module.exports=api;
