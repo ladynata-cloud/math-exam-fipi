@@ -3,23 +3,42 @@ import { pricesFresh } from './config.js';
 import { buildMessages, validateModelAnswer } from './tutor.js';
 import { containsSensitiveText } from './privacy.js';
 
+function openaiResponseFormat(mode) {
+  const boundedText = maxLength => ({ type: 'string', minLength: 1, maxLength });
+  return { type: 'json_schema', json_schema: { name: 'math_helper_answer', strict: true,
+    schema: { type: 'object', additionalProperties: false,
+      properties: { title: boundedText(160), text: boundedText(1800),
+        steps: { type: 'array', minItems: 1, maxItems: mode === 'hint' ? 1 : 5, items: boundedText(600) },
+        check: boundedText(600) },
+      required: ['title', 'text', 'steps', 'check'] } } };
+}
+
 export function prepareRequest(config, input, cards, now = Date.now(), messageBuilder = buildMessages) {
   requireValue(config.mode === 'api' && pricesFresh(config, now), 'PROVIDER_DISABLED', 503);
   // The alternate builder is selected by trusted application code for the
   // cabinet's fixed profiles. No HTTP field can provide a builder or prompt.
   requireValue(typeof messageBuilder === 'function', 'PROMPT_INVALID');
   const messages = messageBuilder(input, cards);
+  const responseFormat = config.provider === 'openai' ? openaiResponseFormat(input.mode) : { type: 'json_object' };
   // For the allowlisted byte-based tokenizers: count every UTF-8 byte as a
-  // token, plus a deliberately large framing margin. This is conservative,
-  // not an invoice or a promise about arbitrary providers/tokenizers.
-  const inputBound = Buffer.byteLength(JSON.stringify(messages), 'utf8') + 1024;
+  // token, including OpenAI's schema, plus a deliberately large framing margin.
+  // This is conservative, not an invoice or a promise about arbitrary providers.
+  const schemaBytes = config.provider === 'openai' ? Buffer.byteLength(JSON.stringify(responseFormat), 'utf8') : 0;
+  const inputBound = Buffer.byteLength(JSON.stringify(messages), 'utf8') + schemaBytes + 1024;
   requireValue(inputBound <= config.maxInputTokens, 'PROMPT_LIMIT', 413);
   const numerator = BigInt(inputBound) * BigInt(config.inputPriceMicros)
     + BigInt(config.maxOutputTokens) * BigInt(config.outputPriceMicros);
   const reservedMicros = Number((numerator + 999999n) / 1000000n);
   const body = { model: config.model, messages, max_tokens: config.maxOutputTokens, stream: false,
-    response_format: { type: 'json_object' } };
+    response_format: responseFormat };
   if (config.provider === 'deepseek') body.thinking = { type: 'disabled' };
+  if (config.provider === 'openai') {
+    delete body.max_tokens;
+    body.max_completion_tokens = config.maxOutputTokens;
+    body.reasoning_effort = 'none';
+    body.service_tier = 'default';
+    body.store = false;
+  }
   return { body, inputBound, reservedMicros };
 }
 
@@ -64,6 +83,10 @@ export async function callProvider({ config, prepared, input, cards, fetchImpl =
       });
       requireValue(response.ok, 'PROVIDER_UNAVAILABLE', 502);
       const data = await boundedJson(response, config.maxResponseBytes);
+      // An unexpected model or processing tier invalidates our cost contract.
+      // The existing durable circuit stops subsequent paid requests on this error.
+      if (config.provider === 'openai') requireValue(data.model === config.model
+        && data.service_tier === 'default', 'PROVIDER_USAGE_CONTRACT', 502);
       const usage = data?.usage;
       requireValue(usage && Number.isSafeInteger(usage.prompt_tokens) && usage.prompt_tokens > 0
         && usage.prompt_tokens <= prepared.inputBound && Number.isSafeInteger(usage.completion_tokens)
@@ -75,6 +98,7 @@ export async function callProvider({ config, prepared, input, cards, fetchImpl =
       requireValue(Array.isArray(choices) && choices.length === 1 && choices[0].finish_reason === 'stop'
         && !choices[0].message?.tool_calls && !choices[0].message?.function_call, 'PROVIDER_RESPONSE_INVALID', 502);
       const message = choices[0].message;
+      requireValue(!message?.refusal, 'PROVIDER_RESPONSE_INVALID', 502);
       // Never expose or store hidden reasoning. Non-empty reasoning despite the
       // non-thinking contract is a stop condition requiring operator review.
       requireValue(!message.reasoning_content && !(usage.completion_tokens_details?.reasoning_tokens > 0), 'PROVIDER_USAGE_CONTRACT', 502);
@@ -99,7 +123,8 @@ export async function callProvider({ config, prepared, input, cards, fetchImpl =
         // A bounded provider label is useful for synthetic evaluation provenance;
         // it is not a weight hash or a guarantee that an alias is immutable.
         reportedModel: typeof data.model === 'string' && /^[A-Za-z0-9._:-]{1,120}$/.test(data.model)
-          && !containsSensitiveText(data.model) && !credentials.some(value => data.model.includes(value)) ? data.model : null
+          && ((config.provider === 'openai' && data.model === config.model) || !containsSensitiveText(data.model))
+          && !credentials.some(value => data.model.includes(value)) ? data.model : null
       };
     })();
     return await Promise.race([work, deadline]);

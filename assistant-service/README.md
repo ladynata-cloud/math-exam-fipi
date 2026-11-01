@@ -222,10 +222,10 @@ and provider-side spending controls after the release gates are completed.
 | --- | --- |
 | `ASSISTANT_EXTERNAL_ENABLED` | Exact `1`, explicit server-side enablement |
 | `ASSISTANT_PROVIDER_DATA_REVIEWED` | Exact `1`, only after the owner reviews actual processing, retention and other applicable provider conditions |
-| `ASSISTANT_PROVIDER` | `deepseek` or `amvera` |
-| `ASSISTANT_MODEL` | `deepseek-flash` for DeepSeek; `qwen3_30b` or `qwen3_235b` for Amvera |
+| `ASSISTANT_PROVIDER` | `deepseek`, `amvera` or `openai` |
+| `ASSISTANT_MODEL` | `deepseek-flash` for DeepSeek; `qwen3_30b` or `qwen3_235b` for Amvera; pinned `gpt-5.4-mini-2026-03-17` for OpenAI |
 | `ASSISTANT_API_KEY` | Hosting secret, 16–2048 printable non-whitespace ASCII characters |
-| `ASSISTANT_CURRENCY` | `USD` for DeepSeek; `RUB` for Amvera |
+| `ASSISTANT_CURRENCY` | `USD` for DeepSeek/OpenAI; `RUB` for Amvera |
 | `ASSISTANT_INPUT_PER_MILLION` | Positive currency units per **1,000,000 input tokens**, including the applicable peak/cache-miss rate |
 | `ASSISTANT_OUTPUT_PER_MILLION` | Positive currency units per **1,000,000 output tokens** |
 | `ASSISTANT_DAILY_BUDGET` | Explicit positive currency amount for the UTC day |
@@ -239,10 +239,22 @@ database records its accounting currency and rejects a different currency;
 changing providers does not erase existing reservations.
 
 The allowlist contains only
-`https://api.deepseek.com/chat/completions` and
-`https://inference.waw0.amvera.ru/v1/chat/completions`. There is no configurable
+`https://api.deepseek.com/chat/completions`,
+`https://inference.waw0.amvera.ru/v1/chat/completions` and
+`https://api.openai.com/v1/chat/completions`. There is no configurable
 arbitrary URL. Redirects, tool calls, automatic retries and automatic provider
 switching are disabled. DeepSeek requests explicitly disable thinking mode.
+
+The additive [OpenAI adapter](OPENAI.md) also defaults off. Its strict schema
+requests exactly four bounded fields and one step per hint (up to five in an
+explicit explanation); local output validation still applies. It explicitly uses
+standard pricing, `reasoning_effort=none`, `store=false` and a completion-token
+limit. Model/tier drift trips the existing durable circuit; refusal/truncation
+is not a valid explanation. The verified standard GPT-5.4 mini planning floors
+are **USD 0.75 input / 4.50 output per million tokens**, checked 2026-11-02
+(Asia/Novosibirsk). Cached prices and promotional credits do not lower them.
+`store=false` does not establish zero provider retention. The historical
+DeepSeek evaluation campaign remains unchanged and cannot authorize OpenAI.
 
 The [official DeepSeek pricing](https://api-docs.deepseek.com/quick_start/pricing/)
 checked on 2026-10-27 gave peak uncached input/output prices of **USD 0.30 / 1.20
@@ -277,7 +289,8 @@ guidance without a second provider call.
 These are enforceable **local reservation limits**. An invoice upper bound still
 depends on the provider honoring the reviewed tokenizer, `max_tokens`, reasoning,
 usage and pricing contract. The input estimate counts every serialized UTF-8 byte
-plus a 1024-token framing margin; it is not a provider invoice. An observed usage
+of the messages and, for OpenAI, the strict JSON schema, plus a 1024-token
+framing margin; it is not a provider invoice. An observed usage
 or reasoning-contract violation opens a durable circuit and blocks later paid
 calls. It cannot undo the first violating charge. A timeout or abort cannot
 guarantee that upstream billing stopped. Provider-side limits and an authorized
