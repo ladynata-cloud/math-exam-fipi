@@ -68,7 +68,9 @@ published PR head, not inferred from local service tests.
 The continuation retains the existing PR401 implementation and adds two
 regression groups to its existing test file. No second implementation or PR
 was published. All runtime files are byte-identical to reviewed candidate
-`0a8fca108d1c8fb623be4452445e9cdc7e48a34b`; only tests and this report changed.
+`0a8fca108d1c8fb623be4452445e9cdc7e48a34b`; only tests and documentation changed.
+The README and cabinet capability table now describe the implemented 2–5
+number scope and numeric bounds instead of the obsolete two-number limit.
 
 The 256 signed fraction cases check correct-answer precedence when a common
 wrong-operation pattern coincides with the actual result, including zero and
@@ -80,8 +82,8 @@ integer oracle. This adds 306 cases to the existing 3,875-list NOD/NOK oracle.
 The complete current-head suite passes 140/140. The isolated OpenAI composition
 passes 154/154 with all original tests retained; this is compatibility evidence,
 not a live provider test or permission to activate PR399. The existing browser
-startup restriction below was not retried locally. Previous CI run 41344559666
-belongs to the old head; the updated PR records new exact-head CI separately.
+startup restriction below was not retried locally. Previous CI runs 41344559666 and 41345313197
+belong to earlier heads; the updated PR records final exact-head CI separately.
 
 ## Review, limits and release boundary
 
