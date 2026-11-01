@@ -55,6 +55,11 @@ The original source pages and their extracted text are not included here.
   the existing `task-scene` wrapper class. Restoring it fixes the narrow expand
   button and the full-screen figure layout. Browser checks now exercise all
   39 expand/close journeys and verify unclipped control text.
+- Author inspection of the completed run found that the default camera hid
+  the horizontal component in question 3б. The lower chord was reflected to
+  the opposite side; the nearest pair and proof coordinates were updated
+  together. The same correct distance now has a visibly sloped connecting
+  segment. This is a clarity correction, not a change to the mathematical answer.
 - Fresh CI browser results and actual image inspection are recorded on the
   exact-head Draft PR. The browser plan covers 39 card/width journeys,
   135 model states and 216 images at 320/390/1280 pixels; planned counts are

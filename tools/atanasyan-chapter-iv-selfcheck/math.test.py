@@ -25,9 +25,9 @@ for s in ['03-a','03-b','03-c']:
  assert p['A'][2]==p['B'][2]==0 and p['C'][2]==p['D'][2]==3
  assert norm2(cross(sub(p['B'],p['A']),sub(p['D'],p['C'])))>0
 p=points('03-a');near(distance(p['M'],p['N']),3)
-p=points('03-b');near(distance(p['B'],p['D'])**2,9+2*(1.8-math.sqrt(.76))**2);assert distance(p['B'],p['D'])>3
+p=points('03-b');near(distance(p['B'],p['C'])**2,9+2*(1.8-math.sqrt(.76))**2);assert distance(p['B'],p['C'])>3
 # The endpoint pair is the minimum: x-gap and y-gap have these separate lower bounds.
-assert p['A'][0]==p['B'][0]>max(p['C'][0],p['D'][0]);assert min(p['C'][1],p['D'][1])>max(p['A'][1],p['B'][1])
+assert p['A'][0]==p['B'][0]<min(p['C'][0],p['D'][0]);assert min(p['C'][1],p['D'][1])>max(p['A'][1],p['B'][1])
 p=points('03-c');near(distance(p['P'],p['Q'])**2,9+distance(p['P'],p['H'])**2)
 p=points('04');r1=distance(p['O1'],p['A1']);r2=distance(p['O2'],p['A2']);h1=distance(p['O1'],p['T1']);h2=distance(p['O2'],p['T2'])
 near(r2,2*r1);near(h1,2*h2);near(r1*h1,r2*h2);assert 2*math.pi*(r2*h2+r2*r2)>2*math.pi*(r1*h1+r1*r1)
