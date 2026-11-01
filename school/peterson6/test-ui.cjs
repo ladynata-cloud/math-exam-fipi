@@ -32,10 +32,24 @@ nav('#home');input('#exercise-number','177');submit('#number-form');assert(d.que
 nav('#progress');assert(d.querySelector('.progress-table'));assert(d.querySelector('#import-file'));
 let practices=0;
 for(const s of w.PetersonMath.skills)for(let level=1;level<=3;level++){
- nav('#practice/'+s.id+'/'+level);assert(d.querySelector('#final-answer'));click('[data-action="guided"]');assert(d.querySelector('[data-step-input="0"]'));click('[data-action="step-hint"]');click('[data-action="reveal"]');assert(d.querySelectorAll('.help').length>=2);practices++;
+ nav('#practice/'+s.id+'/'+level);assert(d.querySelector('#final-answer'));click('[data-action="guided"]');assert(d.querySelector('[data-step-input="0"], [data-action="step-choice"][data-step="0"]'));click('[data-action="step-hint"]');click('[data-action="reveal"]');assert(d.querySelectorAll('.help').length>=2);practices++;
 }
+let equationTasks=0,equationSteps=0;
+for(const l of w.PetersonCourse.lessons)for(const [i,t]of l.tasks.entries())if(t.methodVersion===2){
+ nav('#lesson/'+l.id+'/'+i);click('[data-action="guided"]');
+ for(const [j,q]of t.steps.entries()){
+  if(q.kind==='choice')click('[data-action="step-choice"][data-step="'+j+'"][data-choice="'+q.choices.indexOf(q.answer)+'"]');
+  else input('[data-step-input="'+j+'"]',q.answerFormat==='decimal'?w.PetersonMath.decimal(q.answer):q.answer);
+  submit('[data-step-form="'+j+'"]');assert.equal(state().tasks[t.id].step,j+1,t.id+' step '+j);
+  assert.equal(d.querySelectorAll('.step.completed').length,j+1,'all completed steps remain visible');equationSteps++;
+ }
+ if(t.kind==='choice')click('[data-choice="'+t.choices.indexOf(t.answer)+'"]');
+ else input('#final-answer',t.answerFormat==='decimal'?w.PetersonMath.decimal(t.answer):t.answer);
+ submit('#answer-form');assert(state().tasks[t.id].correct,t.id+' final');assert(!state().tasks[t.id].independent,t.id+' guided is assisted');equationTasks++;
+}
+assert.equal(equationTasks,98);assert.equal(equationSteps,491);
 assert.equal(errors.length,0,errors.join('\n'));
-console.log(JSON.stringify({ok:true,renderedTasks:rendered,practiceScreens:practices,flows:'answer check, format constraint, guided steps, persistent detour + return, notebook, choice, number search, progress, skip link',visualBrowserQA:false}));
+console.log(JSON.stringify({ok:true,renderedTasks:rendered,practiceScreens:practices,equationTasks,equationSteps,flows:'answer check, format constraint, guided number/choice steps, persistent detour + return, notebook, choice, number search, progress, skip link',visualBrowserQA:false}));
 dom.window.close();
 }
 run().catch(e=>{console.error(e);dom.window.close();process.exitCode=1;});

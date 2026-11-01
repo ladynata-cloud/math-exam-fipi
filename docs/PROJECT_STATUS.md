@@ -1,6 +1,23 @@
 # MathExam project status
 
-## Current: finance deposit explanation correction, 2026-11-01
+## Prepared for review: Peterson 6 equations and unknowns, 2026-11-02
+
+- [Task](tasks/PETERSON6_EQUATION_METHOD.md), HIGH; explicit current-task START.
+  Branch `task/peterson6-equation-method-20261102`, verified base
+  `6b9c327f2ca438cb7e7620ef302876de467fac19`.
+- Implemented 98 main-course word problems, 22 generated line families and
+  13 textbook word examples, plus three printable documents. Original
+  conditions, source identities and learner work are preserved.
+  [Verification](reports/PETERSON6_EQUATION_METHOD.md): local gate PASS,
+  two independent internal reviews READY; exact-head CI belongs in the Draft PR.
+- Original 303 uses unknown speed that cancels; its speed is not invented.
+  Logic and pure calculation retain their distinct teaching goals.
+- PR355/PR367 are inventoried unpublished sources, not included or resumed here.
+- Claude consultation is unavailable; no external verdict or current waiver
+  is claimed. Exact evidence and the remaining release decision belong in
+  this task's report and Draft PR. No merge or deployment is authorized.
+
+## Published: finance deposit explanation correction, 2026-11-01
 
 - [Task](tasks/EGE_P13_FINANCE_STEP_HINTS_20261101.md), SMALL; the owner explicitly
   granted START for a separate corrective PR with the prepared explanations
@@ -12,9 +29,13 @@
   project-2027 provenance labels, an independent 442-step / 78-answer oracle
   and its additive CI invocation. Questions, answers, IDs, ledger and storage
   remain unchanged. [Verification](reports/EGE_P13_FINANCE_STEP_HINTS_20261101.md).
-- Next: publish the single corrective Draft PR, verify all applicable exact-head
-  CI, and obtain separate exact-base/head merge and publication authorization.
-  The current task does not itself authorize production release.
+- Reconciled at the start of the Peterson equation-method task: [PR396](https://github.com/ladynata-cloud/math-exam-fipi/pull/396)
+  is merged as `6b9c327f2ca438cb7e7620ef302876de467fac19`. Its primary release
+  record reports eleven exact public asset checks and the independent finance
+  oracle passing. All three workflows on that squash, including
+  [Pages41313521051](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41313521051),
+  are confirmed successful. This reconciliation does not claim a new finance
+  browser audit or access to any pupil records.
 
 ## Published: financial course extension, PR390
 
@@ -34,9 +55,8 @@
   identity, live catalogue/source UI and all 78 answers / 442 intermediate
   values. Existing student records were not opened or changed. Full isolated
   learner journeys belong to the exact-head CI evidence, not live pupil tests.
-- The current corrective task addresses the remaining first-year deposit-hint
-  ambiguity. Those prepared text changes and the independent Python test were
-  not included in PR390. Earlier preparation/pending-release records below
+- The later corrective PR396 addressed the first-year deposit-hint ambiguity;
+  its changes and independent Python test were not included in PR390. Earlier preparation/pending-release records below
   are historical and do not supersede this release identity.
 
 ## Historical: finance revalidation before PR390 publication, 2026-11-01

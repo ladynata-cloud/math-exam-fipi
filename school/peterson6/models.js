@@ -225,7 +225,7 @@
     return { getState: () => ({ a, b }), applyState(value) { a = value.a; b = value.b; columns.set(a); rows.set(b); draw(); } };
   }
   function river(host) {
-    const ui = basics(host, 'Течение помогает и мешает', 'Измени скорость лодки и течения. Сравни две скорости относительно берега.');
+    const ui = basics(host, 'Течение помогает и мешает', 'Пусть x — собственная скорость лодки. Измени данные и сравни, как записываются скорости относительно берега.');
     let own = 10, current = 2;
     const ownControl = slider(ui.controls, 'Собственная скорость лодки, км/ч', 6, 20, own, 1, v => { own = v; draw(); });
     const currentControl = slider(ui.controls, 'Скорость течения, км/ч', 0, 5, current, 0.5, v => { current = v; draw(); });
@@ -240,7 +240,7 @@
       if (current) s.append(svg('rect', { x: start + (own - current) * scale, y: 129, width: current * scale, height: 34, fill: '#fff6dd', stroke: '#bd8425', 'stroke-dasharray': '5 4', rx: 4 }));
       textSvg(s, 295, 214, 'Жёлтое: течение прибавили или вычли.', { 'font-size': 16 });
       ui.visual.replaceChildren(s);
-      ui.result.replaceChildren(el('p', 'pm-equation', number(own) + ' + ' + number(current) + ' = ' + number(own + current) + ' км/ч'), el('p', 'pm-equation', number(own) + ' − ' + number(current) + ' = ' + number(own - current) + ' км/ч'), el('p', '', 'Разность: ' + number(own + current) + ' − ' + number(own - current) + ' = ' + number(2 * current) + ' = 2 · ' + number(current) + ' км/ч.'), el('p', 'pm-note', 'В одном случае течение прибавили, в другом вычли. Поэтому разность равна двум скоростям течения. Плот плывёт со скоростью самого течения.'));
+      ui.result.replaceChildren(el('p', '', 'Неизвестная x — собственная скорость, км/ч.'), el('p', 'pm-equation', 'x + ' + number(current) + ' = ' + number(own + current)), el('p', 'pm-equation', 'x − ' + number(current) + ' = ' + number(own - current)), el('p', '', 'В каждом уравнении x = ' + number(own) + '. Проверка по течению: ' + number(own) + ' + ' + number(current) + ' = ' + number(own + current) + ' км/ч.'), el('p', '', 'Разность: ' + number(own + current) + ' − ' + number(own - current) + ' = ' + number(2 * current) + ' = 2 · ' + number(current) + ' км/ч.'), el('p', 'pm-note', 'В одном случае течение прибавили, в другом вычли. Поэтому разность равна двум скоростям течения. Плот плывёт со скоростью самого течения.'));
     }
     draw();
     return { getState: () => ({ own, current }), applyState(value) { own = value.own; current = value.current; ownControl.set(own); currentControl.set(current); draw(); } };
@@ -269,7 +269,7 @@
         textSvg(s, 87 + i * 170, 280, String(amount), { 'font-size': 24, 'font-weight': 'bold' });
       });
       ui.visual.replaceChildren(s);
-      ui.result.replaceChildren(el('p', 'pm-equation', piles.join(' + ') + ' = 15'), el('p', '', 'Среднее: 15 : 3 = 5 кружков.'), el('p', 'pm-note', piles.every(n => n === 5) ? 'Получилось поровну! В каждой коробке по 5. Сумма осталась 15.' : 'Сумма остаётся 15, среднее остаётся 5. Постарайся получить по 5 в каждой коробке.'));
+      ui.result.replaceChildren(el('p', '', 'Пусть x — среднее число кружков в одной коробке. Три одинаковых количества дают прежнюю сумму.'), el('p', 'pm-equation', '3x = ' + piles.join(' + ') + ' = 15'), el('p', 'pm-equation', 'x = 15 : 3 = 5'), el('p', '', 'Проверка: 3 · 5 = 15 кружков.'), el('p', 'pm-note', piles.every(n => n === 5) ? 'Получилось поровну! В каждой коробке по 5. Сумма осталась 15.' : 'Сумма остаётся 15, среднее остаётся 5. Постарайся получить по 5 в каждой коробке.'));
     }
     draw();
     return {
@@ -297,7 +297,11 @@
         const card = el('div', 'pm-percent-card'); card.append(s); grids.append(card);
       }
       ui.visual.replaceChildren(grids);
-      ui.result.replaceChildren(el('p', 'pm-equation', '1% = ' + whole + ' : 100 = ' + number(whole / 100)), el('p', 'pm-equation', p + '% = ' + number(whole / 100) + ' · ' + p + ' = ' + number(whole * p / 100)), el('p', 'pm-note', p > 100 ? 'Здесь нужно больше одного целого: ' + p + '% — это 100% и ещё ' + (p - 100) + '%.' : 'Каждая клетка — одна сотая выбранного целого. Она равна 1%, а не обязательно одному предмету.'));
+      const relation = el('p', 'pm-equation');
+      relation.append(fraction('x', whole), el('span', '', '='), fraction(p, 100));
+      const solution = el('p', 'pm-equation');
+      solution.append(el('span', '', 'x = ' + whole + ' ·'), fraction(p, 100), el('span', '', '= ' + number(whole * p / 100)));
+      ui.result.replaceChildren(el('p', '', 'Пусть x — количество, составляющее ' + p + '% от ' + whole + '. Отношение части к целому равно числу процентов, делённому на 100.'), relation, solution, el('p', '', 'Проверка: ' + number(whole * p / 100) + ' : ' + whole + ' = ' + number(p / 100) + '.'), el('p', 'pm-note', p > 100 ? 'Здесь нужно больше одного целого: ' + p + '% — это 100% и ещё ' + (p - 100) + '%.' : 'Каждая клетка — одна сотая выбранного целого. Она равна 1%, а не обязательно одному предмету.'));
     }
     draw();
     return { getState: () => ({ whole, p }), applyState(value) { whole = value.whole; p = value.p; wholeControl.set(whole); percentControl.set(p); draw(); } };
@@ -324,7 +328,7 @@
       }
       table.append(head, body); ui.visual.replaceChildren(table);
       const simple = initial * (1 + years * rate / 100);
-      ui.result.replaceChildren(el('p', '', 'Простой рост: каждый год прибавляется ' + number(initial * rate / 100) + '. Через ' + years + ' лет: ' + number(simple) + '.'), el('p', '', 'Сложный рост: каждый год умножаем предыдущий результат на ' + number(1 + rate / 100) + '. Через ' + years + ' лет: ' + number(compound) + '.'), el('p', 'pm-note', 'Значения показаны с округлением до сотых; промежуточные вычисления сохраняются без такого округления. При положительном росте со второго года правила дают разные результаты.'));
+      ui.result.replaceChildren(el('p', '', 'В каждом случае x — количество через ' + years + ' лет.'), el('p', '', 'Простой рост: каждый год прибавляется ' + number(initial * rate / 100) + '.'), el('p', 'pm-equation', 'x = ' + number(initial) + ' + ' + number(initial * rate / 100) + ' · ' + years + ' = ' + number(simple)), el('p', '', 'Сложный рост: каждый год умножаем предыдущий результат на ' + number(1 + rate / 100) + '.'), el('p', 'pm-equation', 'x = ' + number(initial) + ' · ' + Array(years).fill('(' + number(1 + rate / 100) + ')').join(' · ') + ' = ' + number(compound)), el('p', 'pm-note', 'Проверь результат по последней строке таблицы. Значения показаны с округлением до сотых; промежуточные вычисления сохраняются без такого округления. При положительном росте со второго года правила дают разные результаты.'));
     }
     draw();
     return { getState: () => ({ initial, rate, years }), applyState(value) { initial = value.initial; rate = value.rate; years = value.years; initialControl.set(initial); rateControl.set(rate); yearsControl.set(years); draw(); } };

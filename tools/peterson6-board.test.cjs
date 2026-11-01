@@ -111,7 +111,7 @@ function fixture(options = {}) {
 test('only exact wrapper path and marker enable the isolated shared runtime', () => {
   const f = fixture();
   try {
-    assert(f.api); assert.equal(f.registration.id, 'peterson6'); assert.equal(f.registration.version, '1.0.0');
+    assert(f.api); assert.equal(f.registration.id, 'peterson6'); assert.equal(f.registration.version, '1.1.0');
     assert.equal(f.registration.stateSchemaVersion, 1); assert.equal(f.registration.parentOrigin, 'https://local.example');
     assert.match(f.d.querySelector('footer').textContent, /без зачёта в личный прогресс/);
     assert.equal(Object.keys(f.state().work.tasks).length, 0, 'home does not transmit all 224 untouched records');
