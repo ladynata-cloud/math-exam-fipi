@@ -14,7 +14,7 @@ const server=http.createServer((req,res)=>{try{let p=path.resolve(root,'.'+decod
    await context.route('**/*',r=>new URL(r.request().url()).origin===origin?r.continue():r.abort());
    const page=await context.newPage();page.setDefaultTimeout(15000);page.on('pageerror',e=>errors.push({url:page.url(),message:e.message}));
    const go=async file=>{await page.goto(origin+'/ege-profil/trainers/'+file);await page.locator('#profile-course-nav').waitFor();};
-   const shot=async label=>{assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),label+' fits '+width);await page.screenshot({path:path.join(shots,width+'-'+label+'.png'),fullPage:true});screens++;};
+   const shot=async(label,fullPage=true)=>{assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),label+' fits '+width);await page.screenshot({path:path.join(shots,width+'-'+label+'.png'),fullPage,animations:'disabled'});screens++;};
    await go('functions-t1112.html?topic=graphs');
    assert.equal(await page.locator('#modeChips [aria-pressed=true]').innerText(),'графики');
    await page.locator('#dAnswer').fill('17');await page.locator('#dSol').click();assert.equal(await page.locator('#dAnswer').inputValue(),'17');await shot('functions-practice');
@@ -22,6 +22,9 @@ const server=http.createServer((req,res)=>{try{let p=path.resolve(root,'.'+decod
    await page.locator('#sk').press('Home');for(let i=0;i<6;i++)await page.locator('#sk').press('ArrowRight');assert.equal(await page.locator('#skv').innerText(),'0');assert.equal(await page.locator('#heroFig [data-hole]').count(),1);await shot('functions-zero-model');
    await go('derivative-t8.html');await page.locator('[data-view=train]').click();assert.equal(await page.locator('details[open]').count(),0);await shot('derivative');
    await go('trigonometry.html?topic=equations');await page.locator('.ep-view.on[data-view=eq]').waitFor();await shot('trigonometry');
+   assert.equal(await page.locator('.course-back').isVisible(),false,'shared navigation replaces the overlapping floating return link');
+   if(width<=600)assert.equal(await page.locator('nav.tabs').evaluate(n=>getComputedStyle(n).position),'static','mobile menu scrolls away instead of covering the task');
+   await page.locator('.ep-view.on').scrollIntoViewIfNeeded();await shot('trigonometry-scrolled',false);
    await go('trig-sum-to-product.html');
    await page.locator('[data-mode=practice]').click();await page.locator('[data-mode=learn]').click();await page.locator('[data-mode=practice]').click();
    // The eyebrow is displayed in uppercase by CSS. Read this card's DOM text,

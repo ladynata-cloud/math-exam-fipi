@@ -32,6 +32,8 @@ body #ege :is(.ep-intro,.ep-theory .body,.ep-step .q,.ep-opt,.ep-hint,.ep-reveal
 body #ege :is(.ep-btn,.ep-goto,.ep-seg button){font-size:18px;line-height:1.4;min-height:44px;white-space:normal}
 body #ege .ep-theory table{font-size:16px;line-height:1.6}
 body .course-back{font-size:16px!important;line-height:1.4!important;max-width:calc(100% - 28px)}
+/* The shared course navigation replaces the duplicate floating return link. */
+body.profile-course-page .course-back{display:none!important}
 body .site-header .brand span{font-size:16px;line-height:1.5}
 body :is(.dot,.earned-number,.nav-dot,.wno,.wt-n,.pick-n,.atom .an):not(svg *){font-size:16px;line-height:1.4;min-width:28px;min-height:28px}
 #profile-course-nav{font-size:18px;line-height:1.6}

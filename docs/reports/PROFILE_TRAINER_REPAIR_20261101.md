@@ -80,7 +80,7 @@ journeys additionally test mobile reload and read-only teacher import. Inspect
 these artifacts before declaring visual verification completed.
 
 Local headless-shell evidence after the browser corrections includes 60 main
-geometry journeys with all 54 first-screen checks, 24 repaired learning-page
+geometry journeys with all 54 first-screen checks, 27 repaired learning-page
 screens, 12 financial table screens, 44 foundation-help roundtrips across all
 20 banks, 84 readable-help journeys, 42 earned-solution journeys, 341 learner
 robot checks and 192 calm-learner checks. Existing start, first-three,
@@ -122,6 +122,11 @@ Old browser scenarios now explicitly open the requested example, and verify
 the complete report envelope before retaining their former course assertions.
 The trig trap scenario reads the heading's text content rather than its
 CSS-transformed uppercase rendering, and additionally answers the second trap.
+An additional scrolled mobile capture exposed a tall sticky trig menu covering
+the task. On narrow screens it now scrolls with the page; shared navigation
+replaces the overlapping floating return link, and mode labels no longer break
+inside words. The browser gate checks this scrolled state and captures finite
+animations at their completed state for reliable visual inspection.
 
 The local added-board run passed four complete trainer families and the fifth
 family's topic navigation, then reached its unchanged 240-second watchdog while
