@@ -1,6 +1,6 @@
 FROM node:24.21.0-alpine
 WORKDIR /app/assistant-service
-COPY --chown=node:node assistant-service/package.json ./
+COPY --chown=node:node assistant-service/package.json assistant-service/release.json ./
 COPY --chown=node:node assistant-service/src/ ./src/
 COPY --chown=node:node assistant-service/knowledge/ ./knowledge/
 COPY --chown=node:node assistant-service/public/ ./public/

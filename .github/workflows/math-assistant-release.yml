@@ -1,0 +1,93 @@
+name: MathExam assistant — prepare or publish exact source
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: Exact 40-character GitHub source commit (must be on main)
+        required: true
+      action:
+        type: choice
+        options: [prepare, publish]
+        default: prepare
+        required: true
+        description: Prepare artifact, or publish/rollback code using provisioned production credentials
+      baseline:
+        description: Exact currently deployed GitHub source commit (publish only)
+      deployment:
+        description: Exact current Amvera master commit (publish only)
+permissions:
+  contents: read
+concurrency:
+  group: math-assistant-production-release
+  cancel-in-progress: false
+jobs:
+  prepare:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Validate source ancestry and prepare immutable package
+        env:
+          SOURCE: ${{ inputs.source }}
+        run: |
+          [[ "$SOURCE" =~ ^[a-f0-9]{40}$ ]] || exit 1
+          git merge-base --is-ancestor "$SOURCE" origin/main
+          node assistant-service/scripts/release-package.mjs "$SOURCE" "$RUNNER_TEMP/assistant-release"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: assistant-release-${{ inputs.source }}
+          path: ${{ runner.temp }}/assistant-release
+          retention-days: 14
+          if-no-files-found: error
+  publish:
+    needs: prepare
+    if: inputs.action == 'publish'
+    environment: assistant-production
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Publish exact source through verified SSH identity
+        env:
+          SOURCE: ${{ inputs.source }}
+          BASELINE: ${{ inputs.baseline }}
+          DEPLOYMENT: ${{ inputs.deployment }}
+          DEPLOY_KEY: ${{ secrets.ASSISTANT_AMVERA_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.ASSISTANT_AMVERA_KNOWN_HOSTS }}
+        run: |
+          [[ "$SOURCE" =~ ^[a-f0-9]{40}$ && "$BASELINE" =~ ^[a-f0-9]{40}$ && "$DEPLOYMENT" =~ ^[a-f0-9]{40}$ ]] || exit 1
+          test -n "$DEPLOY_KEY" && test -n "$KNOWN_HOSTS"
+          git merge-base --is-ancestor "$SOURCE" origin/main
+          git merge-base --is-ancestor "$BASELINE" origin/main
+          umask 077
+          keyfile="$RUNNER_TEMP/assistant-deploy-key"
+          hostfile="$RUNNER_TEMP/assistant-known-hosts"
+          trap 'rm -f "$keyfile" "$hostfile"' EXIT
+          printf '%s\n' "$DEPLOY_KEY" > "$keyfile"
+          printf '%s\n' "$KNOWN_HOSTS" > "$hostfile"
+          unset DEPLOY_KEY KNOWN_HOSTS
+          export GIT_SSH_COMMAND="ssh -i $keyfile -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$hostfile"
+          node assistant-service/scripts/publish-package.mjs "$SOURCE" "$BASELINE" "$DEPLOYMENT" > "$RUNNER_TEMP/assistant-publish-receipt.json"
+      - name: Verify production health and exact version
+        env:
+          SOURCE: ${{ inputs.source }}
+        run: node assistant-service/scripts/verify-release.mjs "$SOURCE"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: assistant-publish-receipt
+          path: ${{ runner.temp }}/assistant-publish-receipt.json
+          retention-days: 30

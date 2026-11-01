@@ -3592,3 +3592,18 @@ final exact-head CI and deployment verification; see PR266 for current evidence.
   embedded Peterson help remain separate source-based paths. No paid model or
   real learner setting is enabled. Full evidence and remaining release gates:
   [revalidation report](reports/MATHEXAM_ASSISTANT_DIALOGUE_REVALIDATION_20261031.md).
+
+## Assistant 100-item cloud program — 2026-11-02
+
+The owner requested both 50-item lists, all 100 changes, using cloud execution.
+The numbered [program register](assistant-program/README.md) keeps implementation,
+validation and publication separate. [Items 1–5](tasks/MATHEXAM_ASSISTANT_CLOUD_FOUNDATION_20261102.md)
+prepare source-only delivery/rollback, ephemeral preview evidence, version UI and
+CI artifacts. [Validation](reports/MATHEXAM_ASSISTANT_CLOUD_FOUNDATION_20261102.md)
+records 173 service checks and 10 browser scenarios; production activation and
+cloud hosting access are pending; standing publication permission applies.
+
+Prior ten improvements are complete: GitHub `8307f6aa20651303f5f94b70ae28503832778af5`,
+Amvera `3cc22e01fecad97d4d8aaa79876d2f9a7bcbe810`; the recorded check at
+2026-11-01T22:18:38Z confirmed offline private mode and exact public assets. This
+reconciles prior production evidence; it is not a new deployment claim.

@@ -45,6 +45,14 @@ test('private API denies unauthenticated access; static assets carry CSP and noi
   for (const url of ['/src/config.js', '/knowledge/core.json', '/data/assistant.sqlite', '/.env', '/?key=secret']) assert.equal((await fx.client(url)).response.status, 404);
   assert.equal((await fx.client('/api/status', { headers: { Host: 'evil.example' } })).response.status, 403);
 });
+test('public version is host guarded, uncached, contains no private configuration', async t => {
+  const fx = await start(t);
+  const result = await fx.client('/api/version');
+  assert.equal(result.response.status, 200);
+  assert.equal(result.response.headers.get('cache-control'), 'no-store');
+  assert.deepEqual(Object.keys(result.data).sort(), ['changes', 'label', 'ok', 'sourceCommit']);
+  assert.equal((await fx.client('/api/version', { headers: { Host: 'evil.example' } })).response.status, 403);
+});
 test('origin and CSRF reject cross-site writes and guessed keys before any work', async t => {
   const fx = await start(t, { api: true });
   const bad = await fx.client('/api/session', { method: 'POST', body: { pilotKey: 'wrong' } }); assert.equal(bad.response.status, 401);
