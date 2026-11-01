@@ -39,8 +39,9 @@ const server=http.createServer((req,res)=>{
     assert.equal(await page.locator('#steps article').count(),0);assert.equal(await page.locator('#help').getAttribute('open'),null);
     assert.equal((await page.locator('#condition').textContent()).replace(/\s+/g,''),card.statement.text.replace(/\s+/g,''));
     assert.equal(await page.locator('#model svg').getAttribute('role'),'img');
-    const box=await page.locator('#model svg').boundingBox();assert(box.y<900&&box.y+box.height<900,`${id}: condition and complete figure on first screen at ${width}`);
-    await layout(page,id,'initial');await capture(page,`${width}-${id}-initial.png`);
+    await capture(page,`${width}-${id}-initial.png`);
+    const box=await page.locator('#model svg').boundingBox();assert(box.y<900&&box.y+box.height<900,`${id}: condition and complete figure on first screen at ${width}: ${JSON.stringify(box)}`);
+    await layout(page,id,'initial');
     await page.locator('#work').fill('Проверочная запись 123');
     const initial=await page.locator('#model svg').innerHTML();await page.getByRole('button',{name:'Повернуть вправо',exact:true}).click();
     assert.notEqual(await page.locator('#model svg').innerHTML(),initial);await page.getByRole('button',{name:'Вернуть исходный вид',exact:true}).click();

@@ -47,6 +47,10 @@ The original source pages and their extracted text are not included here.
 - PASS: JavaScript syntax and whitespace checks.
 - Local browser attempt did not run: the pinned Playwright Chromium executable
   is unavailable. No TLS, sandbox or launch-security bypass was used.
+- The initial CI browser run found a real first-screen failure in question 4
+  at 320 px. Its condition was shortened without removing the size ratios,
+  whole-surface coverage or equal thin-layer assumption. The first-screen
+  assertion remains unchanged; final evidence requires a fresh completed run.
 - Fresh CI browser results and actual image inspection are recorded on the
   exact-head Draft PR. The browser plan covers 39 card/width journeys,
   135 model states and 213 images at 320/390/1280 pixels; planned counts are
