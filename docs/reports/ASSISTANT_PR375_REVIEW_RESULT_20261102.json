@@ -1,0 +1,14 @@
+{
+  "provider": "Anthropic",
+  "requested_model": "claude-opus-4-7",
+  "pr": "https://github.com/ladynata-cloud/math-exam-fipi/pull/375",
+  "base_sha": "6b9c327f2ca438cb7e7620ef302876de467fac19",
+  "head_sha": "8c7c3db3a308da61619b63b129e7333292406cd6",
+  "status": "NOT_COMPLETED",
+  "reviewed_at": "2026-11-01T18:30:23.960709+00:00",
+  "run_url": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41336928818",
+  "runner_commit": "bd8552e7a6bbfee04ee8fc2fa3a5487c070b145e",
+  "requests_attempted": 1,
+  "http_status": 400,
+  "reason": "Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."
+}
