@@ -83,9 +83,10 @@ may be ignored by the previous version. No server data migration is introduced.
 Branch, local edits/commits, push and a Draft PR are within the current direct
 request. Merge, auto-merge and production release require separate exact-base/
 head permission under AGENTS.md. Physical devices and real pupil records are not
-part of synthetic testing. Local Chromium launch is blocked by the environment
-(`socket() Operation not permitted`); browser gates must run in CI and their
-artifacts must be inspected before claiming completed visual verification.
+part of synthetic testing. The full local Chromium executable initially failed
+with `socket() Operation not permitted`; the installed headless shell then ran
+the unchanged browser runner successfully. Final gates still run in CI and
+their actual screenshot artifacts are inspected before visual sign-off.
 
 ## Execution record
 

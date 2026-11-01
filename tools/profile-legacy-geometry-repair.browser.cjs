@@ -17,9 +17,11 @@ const server=http.createServer((req,res)=>{
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
   const origin='http://127.0.0.1:'+server.address().port;
   let browser,checks=0,pages=0;
+  const layoutFailures=[],failureShots=new Set();
   try {
     browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_EXECUTABLE_PATH,args:['--no-sandbox','--enable-unsafe-swiftshader']});
     fs.mkdirSync(shots,{recursive:true});
+    fs.writeFileSync(path.join(shots,'layout-failures.json'),'[]');
     for(const width of [320,390,1280]){
       const context=await browser.newContext({viewport:{width,height:900},hasTouch:width<600});
       await context.route('**/*',route=>new URL(route.request().url()).origin===origin?route.continue():route.abort());
@@ -32,8 +34,17 @@ const server=http.createServer((req,res)=>{
         pages++;
       }
       async function fits(label){
-        const result=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth,svgs:[...document.querySelectorAll('svg')].filter(svg=>svg.getBoundingClientRect().width>0).map(svg=>svg.outerHTML)}));
-        assert(result.scroll<=result.width+1,label+': horizontal overflow '+JSON.stringify({width:result.width,scroll:result.scroll}));
+        const result=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth,svgs:[...document.querySelectorAll('svg')].filter(svg=>svg.getBoundingClientRect().width>0).map(svg=>svg.outerHTML),offenders:[...document.querySelectorAll('body *')].filter(node=>{const r=node.getBoundingClientRect();return r.width>0&&r.height>0&&(r.right>innerWidth+1||r.left< -1);}).slice(0,30).map(node=>({tag:node.tagName,id:node.id,class:typeof node.className==='string'?node.className:'',text:node.textContent.trim().slice(0,100),rect:{left:node.getBoundingClientRect().left,right:node.getBoundingClientRect().right,width:node.getBoundingClientRect().width},display:getComputedStyle(node).display,minWidth:getComputedStyle(node).minWidth}))}));
+        if(result.scroll>result.width+1){
+          const failure={label,url:page.url(),width:result.width,scroll:result.scroll,offenders:result.offenders};
+          layoutFailures.push(failure);
+          const key=width+'-'+new URL(page.url()).pathname.replace(/[^a-z0-9]+/gi,'-');
+          if(!failureShots.has(key)){
+            failureShots.add(key);
+            await page.screenshot({path:path.join(shots,'overflow-'+key+'.png'),fullPage:true});
+          }
+          fs.writeFileSync(path.join(shots,'layout-failures.json'),JSON.stringify(layoutFailures,null,2));
+        }
         result.svgs.forEach(svg=>assert.doesNotMatch(svg,/NaN|Infinity|undefined/,label+': finite diagram'));
         checks++;
       }
@@ -61,6 +72,26 @@ const server=http.createServer((req,res)=>{
       await fits('planimetry construction'); await shot('planimetry-construction');
       await page.locator('#constructLink').click();
       assert.equal(await page.evaluate(()=>__dbg().state.t.cDone),true);
+      // Exercise actual pointer movement, not the fallback construction button.
+      await page.evaluate(()=>{openGuided(1);choicePick(__dbg().state.recogCi);});
+      async function dragConstruction(to){
+        await page.locator('#cv').scrollIntoViewIfNeeded();
+        const rect=await page.locator('#cv').boundingBox();
+        const from=await page.evaluate(()=>({x:__dbg().state.t.hx,y:__dbg().state.t.hy}));
+        const screen=point=>({x:rect.x+point.x*rect.width/640,y:rect.y+point.y*rect.height/460});
+        const start=screen(from),end=screen(to);
+        await page.mouse.move(start.x,start.y);await page.mouse.down();
+        await page.mouse.move(end.x,end.y,{steps:8});await page.mouse.up();
+      }
+      const B=await page.evaluate(()=>__dbg().state.t.tri.B);
+      const midway={x:Math.min(620,B.x+30),y:Math.min(425,B.y+40)};
+      await dragConstruction(midway);
+      const retained=await page.evaluate(()=>({x:__dbg().state.t.hx,y:__dbg().state.t.hy,condition:document.getElementById('taskText').textContent,done:__dbg().state.t.cDone}));
+      assert.equal(retained.done,false);assert(Math.abs(retained.x-midway.x)<1&&Math.abs(retained.y-midway.y)<1,'pointer moves the actual construction point');
+      await requestCourseHelp();
+      assert.deepEqual(await page.evaluate(()=>({x:__dbg().state.t.hx,y:__dbg().state.t.hy,condition:document.getElementById('taskText').textContent,done:__dbg().state.t.cDone})),retained,'same point and condition after a help detour');
+      await dragConstruction({x:Math.min(625,B.x+32),y:B.y});
+      assert.equal(await page.evaluate(()=>__dbg().state.t.cDone),true,'actual drag onto AB beyond B completes construction');
 
       await visit('pryamougolny-treugolnik-trenazher.html#t1');
       for(let topic=0;topic<6;topic++){
@@ -74,6 +105,7 @@ const server=http.createServer((req,res)=>{
       await page.locator('details.memo summary').click(); await shot('right-triangle');
 
       await visit('planimetry-yashchenko-t1.html');
+      await page.locator('.topic-picker>summary').click();
       const groups={tri:['t1','t4','t6','t8','t10','t12'],par:['t2','t3','t18'],trap:['t7','t15','t16','t17'],circ:['t5','t9','t11','t13','t14','t19']};
       for(const [group,types] of Object.entries(groups)){
         await page.locator('#groups [data-group="'+group+'"]').click();
@@ -83,7 +115,8 @@ const server=http.createServer((req,res)=>{
           await fits('Yashchenko planimetry '+type);
         }
       }
-      await shot('planimetry-yashchenko');
+      await page.locator('.topic-picker>summary').click();
+      await fits('Yashchenko planimetry current task');await shot('planimetry-yashchenko');
 
       await visit('vectors-t2.html');
       assert.equal(await page.locator('details.box').evaluate(node=>node.open),false);
@@ -105,11 +138,13 @@ const server=http.createServer((req,res)=>{
       await page.locator('#solBtn').click(); assert(await page.locator('#solution').isVisible());
 
       await visit('vectors-yashchenko-t2.html');
+      await page.locator('.topic-picker>summary').click();
       for(let i=1;i<=7;i++){
         await page.locator('#types [data-type="v'+i+'"]').click();
         await fits('Yashchenko vectors v'+i);
       }
-      assert(await page.locator('#taskArea .figwrap svg').isVisible());await shot('vectors-grid');
+      await page.locator('.topic-picker>summary').click();
+      assert(await page.locator('#taskArea .figwrap svg').isVisible());await fits('Yashchenko vectors current task');await shot('vectors-grid');
 
       await visit('stereo/index.html');await fits('stereo catalogue');
       assert.equal(await page.locator('#cards .card').count(),11);
@@ -118,15 +153,32 @@ const server=http.createServer((req,res)=>{
         await visit('stereo/trainer.html?topic='+encodeURIComponent(topic));
         await page.locator('#viewport canvas').waitFor();
         assert(await page.locator('#viewport canvas').isVisible());
-        assert(await page.locator('#btnConstruct').isVisible(),'construction for '+topic);
+        const example=await page.evaluate(topic=>{
+          const list=PROBLEMS.filter(p=>(p.topic||'Параллелепипед')===topic);
+          const index=list.findIndex(p=>p.construct);
+          return {index,task:list[Math.max(0,index)]};
+        },topic);
+        if(example.index>0){
+          await page.locator('#navToggle').click();
+          await page.locator('#navBody .nav-dot').nth(example.index).click();
+        }
+        assert.equal(await page.locator('#btnConstruct').isVisible(),example.index>=0,'construction visibility matches the authored task in '+topic);
+        assert(await page.locator('#btnRotate').isVisible());assert(await page.locator('#btnHome').isVisible());
         const condition=await page.locator('#probCond').innerText();
-        await page.locator('#btnConstruct').click();
-        assert.equal(await page.locator('#btnConstruct').evaluate(node=>node.classList.contains('on')),true);
+        if(example.index>=0){
+          await page.locator('#btnConstruct').click();
+          assert.equal(await page.locator('#btnConstruct').evaluate(node=>node.classList.contains('on')),true);
+        }
         assert.equal(await page.locator('#probCond').innerText(),condition);
+        if(width<=820){
+          const order=await page.evaluate(()=>({condition:document.querySelector('.prob-card').getBoundingClientRect().bottom,model:document.querySelector('.stage').getBoundingClientRect(),answer:document.querySelector('.answer-row').getBoundingClientRect().top,report:document.querySelector('.progress-mail-card')?.getBoundingClientRect().top}));
+          assert(order.model.top>=order.condition&&order.answer>=order.model.bottom,'mobile order is condition, model, answer');
+          if(order.report!==undefined)assert(order.report>order.answer,'teacher report follows the active task');
+        }
         await fits('stereo '+topic);
         if(topic==='Параллелепипед'){
           await shot('stereo-construction');
-          const task=await page.evaluate(()=>PROBLEMS.find(p=>(p.topic||'Параллелепипед')==='Параллелепипед'));
+          const task=example.task;
           await page.locator('#answer').fill(String(task.ans));
           await requestCourseHelp();
           assert.equal(await page.locator('#answer').inputValue(),String(task.ans),'external help preserves the draft');
@@ -135,7 +187,7 @@ const server=http.createServer((req,res)=>{
           const result=await page.evaluate(id=>JSON.parse(localStorage.getItem('stereo3.status'))[id],task.id);
           assert.equal(result.assisted,true);assert.notEqual(result.st,'ok','supported answer is not an independent success');
         }
-        await page.locator('#btnConstruct').click();
+        if(example.index>=0)await page.locator('#btnConstruct').click();
         await page.locator('#btnHome').click();
       }
 
@@ -154,6 +206,7 @@ const server=http.createServer((req,res)=>{
       assert.deepEqual(errors,[],'no browser errors at width '+width);
       await context.close();
     }
+    assert.deepEqual(layoutFailures,[],'all layouts must fit; screenshots and DOM offenders are in '+shots);
     console.log('PROFILE_LEGACY_GEOMETRY_REPAIR_BROWSER_OK',JSON.stringify({widths:[320,390,1280],banks:7,pages,checks,shots}));
   }finally{if(browser)await browser.close();server.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;server.close();});

@@ -301,7 +301,7 @@ var PROGRESS_CODE = (function(){
       var independent=strings(r.independent).filter(function(id){return independentIds.includes(id);}), recovered=strings(r.recovered).filter(function(id){return independentIds.includes(id);}), mistakes=strings(r.mistakes).filter(function(id){return taskIds.includes(id);});
       Object.keys(sessions).forEach(function(key){var s=sessions[key];if(key.split(':')[0]===id&&isObj(s)&&s.wrong===true&&taskIds.includes(s.taskId)&&!mistakes.includes(s.taskId))mistakes.push(s.taskId);});
       return {id:id,title:l.title,position:l.position,guided:strings(r.guided).filter(function(id){return taskIds.includes(id);}).length,independent:independent.length,recovered:recovered.length,
-        mistakes:mistakes.length,attempts:typeof r.attempts==='number'&&Number.isFinite(r.attempts)?Math.max(0,Math.floor(r.attempts)):0,
+        mistakes:mistakes.length,started:Object.keys(sessions).some(function(key){return key.split(':')[0]===id&&isObj(sessions[key])&&taskIds.includes(sessions[key].taskId);}),attempts:typeof r.attempts==='number'&&Number.isFinite(r.attempts)?Math.max(0,Math.floor(r.attempts)):0,
         status:independent.length>=2?'Две новые задачи самостоятельно':new Set(independent.concat(recovered)).size>=2?'Закреплено на знакомых задачах':'Продолжить практику'};
     });
   }
@@ -311,13 +311,16 @@ var PROGRESS_CODE = (function(){
     function text(tag,value,parent){var e=d.createElement(tag);e.textContent=value;(parent||host).appendChild(e);return e;}
     text('h2',options.mistakesOnly?'Ошибки основного курса №1–13':'Основной курс №1–13 и школьные основы');
     text('p',options.mistakesOnly?'Сохранены условия, в которых были ошибки. Отметка о закреплении учитывает последующую практику; прежние ошибки остаются в истории.':'Новые самостоятельные решения и чистые повторы показаны отдельно. Это локальные учебные результаты, не прогноз балла ЕГЭ.');
-    if(!rows.length)text('p',options.mistakesOnly?'Сохранённых ошибок основного курса пока нет.':'В этом отчёте ещё нет работы в основном курсе.');
-    rows.forEach(function(row){
-      var item=text('details',''),summary=text('summary',row.title+' — '+row.status,item);
+    var begun=options.mistakesOnly?rows:rows.filter(function(row){return row.started||row.attempts||row.guided||row.independent||row.recovered||row.mistakes;}),remaining=rows.filter(function(row){return !begun.includes(row);});
+    if(!begun.length)text('p',options.mistakesOnly?'Сохранённых ошибок основного курса пока нет.':'В этом отчёте ещё нет работы в основном курсе.');
+    function renderRow(row,parent){
+      var item=text('details','',parent),summary=text('summary',row.title+' — '+row.status,item);
       summary.style.cursor='pointer';
       text('p','С опорой: '+row.guided+'. Новые самостоятельно: '+row.independent+'. Знакомые без ошибок и подсказок: '+row.recovered+'. Завершённых попыток: '+row.attempts+'. Условий с ошибками в истории: '+row.mistakes+'.',item);
       var a=text('a','Открыть тему',item);a.href='/ege-profil/start/index.html#lesson/'+row.id;
-    });
+    }
+    begun.forEach(function(row){renderRow(row,host);});
+    if(remaining.length){var other=text('details','');other.className='profile-other-topics';text('summary','Остальные темы ('+remaining.length+')',other);remaining.forEach(function(row){renderRow(row,other);});}
     if(!options.mistakesOnly){
       var checkpoint=isObj(report.checkpoint)?report.checkpoint:{},round=checkpoint.round;
       if(isObj(round)&&Array.isArray(round.items)){

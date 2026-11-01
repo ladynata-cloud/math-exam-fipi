@@ -212,3 +212,29 @@ test('requested common foundation stays assisted after closing it and preserves 
     } finally {p.close();}
   }
 });
+
+test('finance keeps task choice and derived tables requested while essential given balances stay visible', async () => {
+  const p=await page('finance'),{w}=p;
+  try {
+    assert.equal(w.document.querySelector('#taskChooser').open,false);
+    w.document.querySelector('#taskChooser>summary').click();
+    const type=Array.from(w.document.querySelectorAll('#taskTypes button')).find(el=>el.textContent.includes('Пени за задержку'));
+    type.click();
+    assert.equal(w.document.querySelector('#taskChooser').open,false);
+    assert.match(w.document.querySelector('#selectedTaskType').textContent,/Пени/);
+    assert.equal(w.document.querySelector('.model-details').open,false);
+    assert.equal(w.document.querySelector('.stats-details').open,false);
+    w.document.querySelector('.model-details>summary').click();
+    assert.equal(progress(w).stats.helpedTasks.I1,true);
+    input(w,'finalAnswerInput',375.1);w.handleFinalAnswer();
+    assert.equal(w.document.querySelector('.model-details').open,true,'requested model remains available after checking');
+    assert.equal(progress(w).stats.assistedTasks.I1,true);
+    w.selectTask('D1');
+    const given=w.document.querySelector('.condition-card table');
+    assert(given);assert.equal(given.querySelectorAll('th').length,3);
+    assert.deepEqual(Array.from(given.querySelectorAll('tbody tr'),row=>Array.from(row.cells,cell=>cell.textContent)),[['1','900','700'],['2','700','400'],['3','400','0']]);
+    assert.equal(w.document.querySelector('.model-details').open,false);
+    assert.match(w.document.querySelector('.task-goal').textContent,/2-й декабрь/);
+    assert.equal(progress(w).stats.helpedTasks.D1,undefined);
+  } finally {p.close();}
+});

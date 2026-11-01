@@ -52,13 +52,13 @@ is still required. Internal review is not represented as a Claude verdict.
 
 ## Reproducible checks
 
-Preparation results: the fresh full profile Node run passed **337/337** tests;
+Preparation results: the fresh full profile Node run passed **340/340** tests;
 the exact financial oracle passed **78/78 final and 442/442 intermediate**
 answers. All nine main-course data modules are byte-identical to the base.
 The 39 focused link/wrapper checks passed after asset synchronization. The
 stereo source/parity suite passed 23 gates; probability and old planimetry
 self-tests covered 26,000 and 3,200 generated tasks without a mismatch. These
-are mathematical/DOM results, not a claim of locally executed browser checks.
+are mathematical/DOM results. Subsequent browser evidence is recorded below.
 
 - `node --test tools/profile-*.test.cjs`
 - `python3 tools/profile-finance-exact-steps.py`
@@ -68,22 +68,42 @@ are mathematical/DOM results, not a claim of locally executed browser checks.
 - `node tools/profile-progress-repair.browser.cjs`
 - `node tools/profile-legacy-geometry-repair.browser.cjs`
 - `node tools/profile-legacy-learning-repair.browser.cjs`
+- `node tools/profile-legacy-applied-repair.browser.cjs`
 - Existing course, earned-solution, help, geometry, financial and seven-board
   learner journeys in the unchanged existing workflow jobs.
 - `git diff --check`; validate exact changed-file set, asset parity and preserved
   main-course mathematical banks against the named base.
 
-The new Actions job retains actual screenshots from the four browser gates.
+The new Actions job retains actual screenshots from the five browser gates.
 Widths are 320/390/1280 for geometry and legacy learning pages; progress/report
 journeys additionally test mobile reload and read-only teacher import. Inspect
 these artifacts before declaring visual verification completed.
 
+Local headless-shell evidence after the browser corrections includes 60 main
+geometry journeys with all 54 first-screen checks, 24 repaired learning-page
+screens, 12 financial table screens, 44 foundation-help roundtrips across all
+20 banks, 84 readable-help journeys, 42 earned-solution journeys, 341 learner
+robot checks and 192 calm-learner checks. Existing start, first-three,
+full-course, readiness and exam-first browser gates also passed. The financial
+course gate passed 78 guided and 78 independent tasks, 546 accepted answers,
+28 reloads and 10,056 model-cell checks at 320/1280 pixels. Actual representative
+screenshots were visually inspected, including the condition/drawing viewport,
+requested financial ledger, diagnostics and read-only reports.
+The final seven-bank geometry browser gate passed 54 page states and 183
+checks at 320/390/1280 px. It actually drags a construction point, retains that
+point through a foundation-help detour, and completes the construction. Mobile
+stereometry keeps condition, drawing and answer in that order; construction
+availability is checked against the authored task rather than assumed for
+every solid. The full legacy package passed again after these changes.
+
 ## Failures and limits
 
-Local Chromium cannot start because the execution environment denies its
-singleton socket. Browser checks therefore run in GitHub Actions, not by
-disabling sandbox/TLS checks. No physical-device, Safari/Firefox or real-pupil
-pilot is claimed. Existing tests that expected automatically disclosed help
+The initial full Chromium executable could not start because the environment
+denied its singleton socket. The installed Chromium headless shell subsequently
+ran the same Playwright gates successfully with the existing executable-path
+option; no permissions, sandbox policy or TLS settings were changed. GitHub
+Actions also runs its pinned Chromium version. No physical-device,
+Safari/Firefox or real-pupil pilot is claimed. Existing tests that expected automatically disclosed help
 are updated to assert it remains hidden, explicitly request it, and retain all
 their subsequent mathematical/help/history assertions.
 
@@ -92,6 +112,22 @@ adding the complete report dependency; the wrappers and version assertions were
 synchronized. A legacy probability test expected automatic help after errors;
 it now explicitly requests help and asserts the new closed state first. Neither
 case was bypassed or removed. Fresh results supersede these initial runs.
+
+The initial PR browser run additionally exposed a 32 px bottom overflow in the
+first main geometry drawing at 320 px and horizontal overflow in the legacy
+vector controls. Mobile spacing and flexible tracks were corrected without
+reducing figure/readability assertions. Actual screenshots also motivated
+shorter course navigation and requested disclosure of secondary explanations.
+Old browser scenarios now explicitly open the requested example, and verify
+the complete report envelope before retaining their former course assertions.
+The trig trap scenario reads the heading's text content rather than its
+CSS-transformed uppercase rendering, and additionally answers the second trap.
+
+The local added-board run passed four complete trainer families and the fifth
+family's topic navigation, then reached its unchanged 240-second watchdog while
+other browser suites were running. This partial run is not a passing verdict;
+the isolated exact-head CI job must pass before final handoff. No watchdog,
+mathematical assertion, mobile dimension or board gate was weakened.
 
 ## Release and rollback
 

@@ -38,6 +38,11 @@ body :is(.dot,.earned-number,.nav-dot,.wno,.wt-n,.pick-n,.atom .an):not(svg *){f
 #profile-course-nav a{display:inline-flex;align-items:center;min-height:44px;max-width:100%;overflow-wrap:anywhere}
 #profile-course-nav button,#profile-course-support button{font-size:18px}
 #profile-course-support p{font-size:18px;line-height:1.65}
+@media(max-width:500px){
+  #profile-course-nav{gap:4px 12px;padding:6px 12px;margin-bottom:8px;justify-content:flex-start}
+  #profile-course-nav>span{display:flex;align-items:center;flex-wrap:wrap;gap:4px;min-width:0}
+  #profile-course-nav>#profile-course-help{flex-basis:100%;padding:6px 12px;text-align:left}
+}
 /* Older banks use the same kinds of captions under their original names. */
 body :is(.badge,.intro,.mdesc,.mbest,.desc,.tk,.rgTag,.hub-total,.card-count,.brand-title,.hero-kicker,.hero-stat,.stars,.subtitle,.prob-meta,.nav-topic,.sol-title,.measures-title,.refpin,.refgroup h3,.sec-title,.srv-label,.collab-hint,.pad-hint,.stepDone .rnote,.stat .l,.stat span,.stat-cell .lbl,.opt .letter,.brand p,.tcard h4,.nav-item,.ctl label,.ctrl label,.sl label):not(svg *){font-size:16px;line-height:1.6;overflow-wrap:anywhere}
 body :is(.clink,.btn-ghost,.acts button,.rchips button,.modeSwitch button,.mode-switch button,.segb,.writeup summary):not(svg *){font-size:18px;line-height:1.4;min-height:44px;white-space:normal;max-width:100%}

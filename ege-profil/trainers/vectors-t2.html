@@ -87,8 +87,9 @@
   .tab:focus-visible{outline:3px solid var(--accent-soft);outline-offset:2px}
 
   /* ---------- Layout ---------- */
-  .grid{display:grid;grid-template-columns:1.45fr .92fr;gap:18px;align-items:start}
-  @media (max-width:880px){ .grid{grid-template-columns:1fr} }
+  .grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,.92fr);gap:18px;align-items:start}
+  .grid>*{min-width:0}
+  @media (max-width:880px){ .grid{grid-template-columns:minmax(0,1fr)} }
 
   .card{
     background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
@@ -98,7 +99,7 @@
   @media (max-width:520px){ .pad{padding:16px} }
 
   /* ---------- Problem card ---------- */
-  .qhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+  .qhead{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
   .chip{
     display:inline-flex;align-items:center;gap:8px;
     font-size:12.5px;font-weight:600;color:var(--accent-ink);
@@ -212,7 +213,7 @@
 
   /* ---------- Sidebar ---------- */
   .side{display:flex;flex-direction:column;gap:16px}
-  .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-2);
+  .stat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line-2);
     border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--line-2)}
   .stat{background:var(--paper);padding:13px 12px;text-align:center}
   .stat .v{font-family:var(--mono);font-size:23px;font-weight:700;color:var(--ink);line-height:1;font-variant-numeric:tabular-nums}
@@ -324,7 +325,8 @@
   #netStatus{display:inline-flex;align-items:center}
 
   /* ---- пошаговый режим ---- */
-  .modeSwitch{display:flex;border:1.5px solid var(--line);border-radius:10px;overflow:hidden;margin-left:auto}
+  .modeSwitch{display:flex;flex-wrap:wrap;max-width:100%;min-width:0;border:1.5px solid var(--line);border-radius:10px;overflow:hidden;margin-left:auto}
+  .modeSwitch button{flex:1 1 auto;min-width:0}
   .modeSwitch button{border:0;background:#fff;padding:7px 12px;font:600 12.5px/1 var(--ui);color:var(--muted);cursor:pointer;transition:background .15s}
   .modeSwitch button.on{background:var(--accent);color:#fff}
   .modeSwitch button:not(.on):hover{background:#f2f6fd}
@@ -380,8 +382,18 @@
   .termCard{margin-top:8px;padding:9px 12px;border:1px solid #e9dcae;border-radius:10px;background:#fffbea;
     font-size:13px;line-height:1.55;color:#4b4636;animation:fadeIn .18s ease}
   @keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
+  .wrap,.card,.side,.stepCard,.choices,.choice,.stepRow,.verdict>span{min-width:0;max-width:100%}
+  .choices button,.prompt,.stepDone,.solution,.cheat,.writeup{max-width:100%;overflow-wrap:anywhere}
+  .trainer-reference>summary{cursor:pointer;min-height:44px;padding:8px 0;font-size:16px;line-height:1.5;font-weight:650}
+  @media(max-width:520px){
+    .wrap{padding:18px 12px 40px}
+    .qhead>.chip{flex-basis:100%}
+    .qhead>.modeSwitch{flex:1 1 180px;margin-left:0}
+    .stepRow .ans{max-width:100%;min-width:0}
+    .stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261101-trainer-repair"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
 </head>
 <body>
 <div class="wrap">
@@ -389,7 +401,7 @@
     <p style="margin:0 0 10px"><a href="../index.html" style="font:600 13px/1 var(--mono);text-decoration:none;color:var(--muted)">← Курс</a></p>
     <p class="eyebrow">ЕГЭ · математика, профиль · задание 2</p>
     <h1>Тренажёр по векторам</h1>
-    <p class="sub">Каждая задача создаётся заново — решайте сколько угодно, проверяйте ответ и разбирайте решение по шагам. Ответы всегда целые числа или конечные десятичные дроби, как в первой части экзамена.</p>
+    <details class="trainer-reference"><summary>О тренажёре</summary><p class="sub">Каждая задача создаётся заново — решайте сколько угодно, проверяйте ответ и разбирайте решение по шагам. Ответы всегда целые числа или конечные десятичные дроби, как в первой части экзамена.</p></details>
   </header>
 
   <div class="tabs" role="tablist" aria-label="Тип задания">

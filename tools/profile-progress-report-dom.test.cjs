@@ -32,13 +32,25 @@ test('a complete guided solution preserves all accepted steps; reasons and resul
  assert.equal(d.querySelectorAll('#result-solution [data-solution-step]').length,count);assert.equal(w.localStorage.getItem(KEY),saved,'requesting all explanations changes no completed work');w.close();
 });
 
+test('clean familiar feedback distinguishes recovery from a corrected mistake without claiming a new success',()=>{
+ const lesson=require('../ege-profil/start/probability-data.js').find(l=>l.id==='prob-count');
+ for(const wrong of [false,true]){
+  const seed={version:1,records:{},seen:Object.fromEntries(lesson.tasks.slice(-3).map(t=>[t.id,1])),sessions:{}},dom=start('practice/prob-count/independent',[[KEY,JSON.stringify(seed)]]),w=dom.window,d=w.document;
+  const taskId=JSON.parse(w.localStorage.getItem(KEY)).sessions['prob-count:independent'].taskId,task=lesson.tasks.find(t=>t.id===taskId);
+  const submit=value=>{input(w,value);d.getElementById('answer-form').dispatchEvent(new w.Event('submit',{cancelable:true}));};
+  if(wrong)submit(task.answer+17);submit(task.answer);d.getElementById('next').click();
+  const lead=d.querySelector('.result-panel .lead').textContent,record=JSON.parse(w.localStorage.getItem(KEY)).records[lesson.id];
+  assert.equal(/Повтор решён без подсказок/.test(lead),!wrong);assert.match(lead,/повтор знакомой задачи/);assert.equal(record.independent.length,0);assert.equal((record.recovered||[]).length,wrong?0:1);w.close();
+ }
+});
+
 test('teacher full-file import is read-only and review includes retained course mistakes without touching legacy errors',async()=>{
  const errors=[],boot=makeBoot(errors),l=require('../ege-profil/start/probability-data.js')[0];
  const course={version:1,records:{[l.id]:{guided:[],independent:[],recovered:l.tasks.slice(-3,-1).map(t=>t.id),mistakes:[l.tasks[3].id],attempts:4}},seen:{},sessions:{}};
  const legacy='{"student":{"name":"Keep learner"},"mistakes":{"existing":true}}',seed=w=>{w.localStorage.setItem(KEY,JSON.stringify(course));w.localStorage.setItem('mathExamCourseProgress.v1',legacy);};
  let w=boot('teacher.html',seed);const before=JSON.stringify(storage(w)),report=w.PROGRESS_CODE.fullReport(null,w.ProfileLessons);report.legacy.student.name='Imported learner';
  const file=w.document.getElementById('fullReportFile');Object.defineProperty(file,'files',{value:[{size:1000,text:()=>Promise.resolve(JSON.stringify(report))}]});file.dispatchEvent(new w.Event('change'));await flush();
- assert.match(w.document.getElementById('inStatus').textContent,/Полный отчёт открыт/);assert.match(w.document.getElementById('profileCourseReport').textContent,/Закреплено на знакомых задачах/);assert.match(w.document.getElementById('sourceLine').textContent,/Imported learner/);assert.equal(JSON.stringify(storage(w)),before);
+ assert.match(w.document.getElementById('inStatus').textContent,/Полный отчёт открыт/);assert.match(w.document.getElementById('profileCourseReport').textContent,/Закреплено на знакомых задачах/);assert.match(w.document.getElementById('sourceLine').textContent,/Imported learner/);const remaining=w.document.querySelector('#profileCourseReport > .profile-other-topics');assert(remaining&&!remaining.open,'unstarted topics are collapsed');assert.equal(remaining.querySelectorAll(':scope > details').length,w.ProfileLessons.length-1);assert.equal(w.document.querySelectorAll('#profileCourseReport > details:not(.profile-other-topics)').length,1,'the worked topic stays visible');assert.equal(JSON.stringify(storage(w)),before);
  w.document.getElementById('mineBtn').click();assert.match(w.document.getElementById('sourceLine').textContent,/Keep learner/);assert.equal(JSON.stringify(storage(w)),before);w.close();
- w=boot('review.html',seed);assert.match(w.document.getElementById('profileCourseMistakes').textContent,/Закреплено на знакомых задачах/);assert.equal(w.localStorage.getItem('mathExamCourseProgress.v1'),legacy);w.close();assert.deepEqual(errors,[]);
+ w=boot('review.html',seed);assert.match(w.document.getElementById('profileCourseMistakes').textContent,/Закреплено на знакомых задачах/);assert.match(w.document.querySelector('#summaryCard h2').textContent,/В прежних подборках ошибок пока нет/);assert.equal(w.localStorage.getItem('mathExamCourseProgress.v1'),legacy);w.close();assert.deepEqual(errors,[]);
 });

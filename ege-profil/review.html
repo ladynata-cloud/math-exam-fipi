@@ -57,7 +57,7 @@
   <a class="back" href="index.html">← Курс</a>
   <p class="eyebrow">журнал курса · обновляется сам</p>
   <h1>Работа над ошибками</h1>
-  <p class="lede">Тренажёры запоминают каждый промах. Тип задачи считается закрытым, когда после последней ошибки набраны три верных ответа этого же типа. Здесь — всё, что пока открыто.</p>
+  <p class="lede">Основной курс сохраняет задачи, в которых были ошибки, и показывает последующее закрепление. В прежних подборках тип закрывается тремя верными ответами подряд.</p>
 
   <div class="card" id="summaryCard"></div>
   <div class="card" id="openCard" style="display:none">
@@ -123,22 +123,24 @@
       '</div>';
   }
 
-  PROGRESS_CODE.renderProfileReport(document.getElementById("profileCourseMistakes"),PROGRESS_CODE.fullReport(null,window.ProfileLessons),{mistakesOnly:true});
+  var courseReport=PROGRESS_CODE.fullReport(null,window.ProfileLessons);
+  var hasCourseErrors=PROGRESS_CODE.profileRows(courseReport).some(function(row){return row.mistakes>0;});
+  PROGRESS_CODE.renderProfileReport(document.getElementById("profileCourseMistakes"),courseReport,{mistakesOnly:true});
   var all = readAll();
   var mk = all.mistakes;
   var open = RV.open(mk), closed = RV.closed(mk);
 
   var sc = document.getElementById("summaryCard");
   if (!open.length && !closed.length){
-    sc.innerHTML = '<h2>Журнал пока пуст</h2>' +
+    sc.innerHTML = '<h2>'+(hasCourseErrors?'В прежних подборках ошибок пока нет':'Журнал пока пуст')+'</h2>' +
       '<p>Ошибки появятся здесь сами: тренажёры записывают каждый промах в тренировках и зачётах. ' +
       'Начните с любого тренажёра или напишите <a href="exam/full-exam.html">пробный экзамен</a> — он покажет, какие линии проседают.</p>';
   } else {
-    sc.innerHTML = '<p class="bigcount">' + open.length + '<span class="muted" style="font-size:18px"> к повтору</span>' +
+    sc.innerHTML = '<h2>Ошибки прежних подборок</h2><p class="bigcount">' + open.length + '<span class="muted" style="font-size:18px"> к повтору</span>' +
       ' · <span class="okline">' + closed.length + '</span><span class="muted" style="font-size:18px"> закрыто</span></p>' +
       (open.length
         ? '<p class="small muted">Начинайте сверху — это самые свежие промахи. Три верных ответа того же типа закрывают строку.</p>'
-        : '<p class="okline">Все известные ошибки закрыты. Новые промахи снова появятся здесь.</p>');
+        : '<p class="okline">Ошибки прежних подборок закрыты. Новые промахи в этих подборках снова появятся здесь.</p>');
   }
 
   if (open.length){

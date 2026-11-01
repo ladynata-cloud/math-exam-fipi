@@ -24,11 +24,22 @@ const server=http.createServer((req,res)=>{try{let p=path.resolve(root,'.'+decod
    await go('trigonometry.html?topic=equations');await page.locator('.ep-view.on[data-view=eq]').waitFor();await shot('trigonometry');
    await go('trig-sum-to-product.html');
    await page.locator('[data-mode=practice]').click();await page.locator('[data-mode=learn]').click();await page.locator('[data-mode=practice]').click();
-   await page.locator('#trap-c [data-i="0"]').click();await page.waitForFunction(()=>document.body.innerText.includes('Ловушка 2 / 10'));
+   // The eyebrow is displayed in uppercase by CSS. Read this card's DOM text,
+   // not case-sensitive body.innerText (which applies text-transform).
+   const waitForTrap=number=>page.waitForFunction(n=>{
+    const card=document.querySelector('#trap-c')?.closest('section');
+    return card?.querySelector('.onb-eyebrow')?.textContent.trim()==='Ловушка '+n+' / 10';
+   },number);
+   await page.locator('#trap-c .choice').filter({hasText:'забыли минус перед 2'}).click();await waitForTrap(2);
+   assert.equal(await page.locator('#trap-c .choice').count(),3);
+   assert.equal(await page.locator('#trap-c button:disabled').count(),0);
+   // A second real answer proves that the newly rendered card has handlers.
+   await page.locator('#trap-c .choice').filter({hasText:'забыли коэффициент 2'}).click();await waitForTrap(3);
    assert.equal(await page.locator('#trap-c .choice').count(),3);await shot('trig-next-trap');
    await go('applied-t910.html?topic=text');assert.equal(await page.locator('#modeChips [aria-pressed=true]').innerText(),'текстовые задачи');assert.equal(await page.locator('details[open]').count(),0);await shot('applied-text');
    await go('finance.html');
    for(const [type,wrong,correct,label] of [['Две фазы погашения','300','500','finance-L1'],['Пени за задержку','352,9','375,1','finance-I1']]){
+    await page.locator('#taskChooser>summary').click();
     await page.locator('#taskTypes button').filter({hasText:type}).click();assert.equal(await page.locator('details[open]').count(),0);
     await page.locator('#finalAnswerInput').fill(wrong);await page.locator('.final-answer-row button').click();
     await page.locator('.final-box>.feedback.warn').waitFor();assert.equal(await page.locator('#finalAnswerInput').count(),1);

@@ -700,7 +700,7 @@ sub{font-size:.7em; vertical-align:sub}
   font-family:var(--serif);
 }
 
-.fade-in{animation: fadeIn .3s ease-out}
+.fade-in{animation:none}
 @keyframes fadeIn{
   from{opacity:0; transform:translateY(4px)}
   to{opacity:1; transform:translateY(0)}
@@ -722,7 +722,33 @@ sub{font-size:.7em; vertical-align:sub}
   .mode-switch{margin-left:0}
 }
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261101-trainer-repair"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
+<style id="finance-readable-layout">
+  /* Keep this local override after shared trainer styles. Financial ledgers
+     need readable columns rather than the generic fixed-layout small table. */
+  body #mainArea,body #mainArea>section,body #mainArea .card,body #mainArea .card-body{min-width:0;max-width:100%;box-sizing:border-box}
+  body #mainArea .fin-table-wrap{max-width:100%;overflow-x:auto;overscroll-behavior-inline:contain;margin:0;outline-offset:2px}
+  body #mainArea table.fin-table{width:max-content;min-width:100%;table-layout:auto}
+  body #mainArea table.fin-table :is(th,td){min-width:7rem;max-width:16rem;overflow-wrap:normal;word-break:normal;white-space:normal;hyphens:none;padding:10px 12px}
+  body #mainArea table.fin-table :is(th,td):first-child{min-width:5rem}
+  body #mainArea .table-scroll-note{font:16px/1.5 var(--sans);color:var(--muted);margin:0 0 10px}
+  #taskChooser{max-width:1344px;margin:auto}
+  #taskChooser>summary{min-height:44px;cursor:pointer;font-size:18px;line-height:1.5;padding:8px 0;color:var(--primary-deep);font-weight:600}
+  #taskChooser>summary:focus-visible{outline:3px solid var(--primary);outline-offset:3px}
+  #taskChooser .task-types-inner{padding-top:12px}
+  #mainArea .model-details>summary{font-size:18px;line-height:1.5}
+  #mainArea .stats-details{margin-top:16px}
+  #mainArea .stats-details>summary{cursor:pointer;min-height:44px;font-size:16px;line-height:1.5;padding:10px 0;color:var(--muted)}
+  @media(max-width:1080px){
+    #mainArea{display:flex;flex-direction:column}
+    #mainArea>.left-col,#mainArea>.right-col{display:contents}
+    #mainArea .condition-card,#mainArea .given-model{order:0;width:100%}
+    #mainArea .steps-card{order:1;width:100%}
+    #mainArea .final-box{order:2;width:100%}
+    #mainArea .model-details{order:3;width:100%}
+    #mainArea .data-card{order:4;width:100%}
+  }
+</style>
 </head>
 <body>
 
@@ -742,10 +768,13 @@ sub{font-size:.7em; vertical-align:sub}
 </header>
 
 <nav class="task-types">
+  <details id="taskChooser">
+  <summary>Выбрать тему · <span id="selectedTaskType">Вклады и сравнение</span></summary>
   <div class="task-types-inner" id="taskTypes">
     <span class="types-label">Тип задачи:</span>
     <!-- кнопки вставляются скриптом -->
   </div>
+  </details>
 </nav>
 
 <main id="mainArea">
@@ -782,6 +811,7 @@ const STATE = {
   currentStepIdx: 0,
   stepStates: {},                 // {stepIdx: {answered, correct, attempts, hintUsed}}
   tableReveals: {},               // {rowIdx-colIdx: true} — какие ячейки таблицы раскрыты
+  modelOpen: false,
   finalAnswerGiven: false,
   finalAnswerCorrect: false,
   finalAnswerAttempts: 0,
@@ -2110,6 +2140,8 @@ function renderTypePanel(){
   // оставляем только лейбл
   wrap.querySelectorAll('.type-btn').forEach(b => b.remove());
   const stats = getStats();
+  const currentType = TASK_TYPES.find(t => t.id === getTask(STATE.currentTaskId)?.typeId);
+  document.getElementById('selectedTaskType').textContent = currentType?.label || 'Выберите тип задачи';
   for (const t of TASK_TYPES){
     const tasksOfType = getTasksByType(t.id);
     if (tasksOfType.length === 0) continue;
@@ -2122,9 +2154,11 @@ function renderTypePanel(){
         const cur = STATE.currentTaskId && getTask(STATE.currentTaskId).typeId === t.id
                      ? tasksOfType.findIndex(x => x.id === STATE.currentTaskId) : -1;
         const next = (cur + 1) % tasksOfType.length;
+        document.getElementById('taskChooser').open = false;
         selectTask(tasksOfType[next].id);
       }
     });
+    btn.setAttribute('aria-pressed', String(getTask(STATE.currentTaskId)?.typeId === t.id));
     btn.appendChild(document.createTextNode(t.label + ' '));
     const badge = el('span', {class:'badge'}, String(tasksOfType.length));
     btn.appendChild(badge);
@@ -2140,6 +2174,7 @@ function selectTask(taskId){
   STATE.currentStepIdx = 0;
   STATE.stepStates = {};
   STATE.tableReveals = {};
+  STATE.modelOpen = false;
   STATE.finalAnswerGiven = false;
   STATE.finalAnswerCorrect = false;
   STATE.finalAnswerAttempts = 0;
@@ -2182,7 +2217,7 @@ function renderLeft(){
   const task = getTask(STATE.currentTaskId);
 
   /* — карточка «Условие» — */
-  const condCard = el('div', {class:'card fade-in'});
+  const condCard = el('div', {class:'card fade-in condition-card'});
   const condHead = el('div', {class:'card-header'});
   condHead.appendChild(el('h3', null, 'Условие'));
   const diffPill = el('span', {class:'pill'}, task.difficulty);
@@ -2192,12 +2227,17 @@ function renderLeft(){
   condBody.appendChild(el('h2', {class:'task-title'}, task.title));
   condBody.appendChild(el('p', {class:'task-subtitle'}, 'Финансовая математика, нестандартная схема'));
   condBody.appendChild(el('div', {class:'task-statement', html: task.statement}));
+  if (['D1','D2'].includes(task.id)){
+    condBody.appendChild(el('p', {class:'task-goal'}, 'Нужно найти: ' + task.finalAnswer.label + ' (' + task.finalAnswer.unit + ').'));
+    condBody.appendChild(el('h3', null, 'Остатки долга из условия'));
+    condBody.appendChild(buildTable(task, true));
+  }
   condCard.appendChild(condBody);
   left.appendChild(condCard);
 
   /* — карточка «Данные и обозначения» — */
   if (task.data && task.data.length){
-    const dataCard = el('details', {class:'card fade-in requested-help'});
+    const dataCard = el('details', {class:'card fade-in requested-help data-card'});
     const dh = el('summary', {class:'card-header', onclick: () => { if (!dataCard.open) markAssisted(task.id); }}, 'Данные и обозначения');
     dataCard.addEventListener('toggle', () => { if (dataCard.open) markAssisted(task.id); });
     dataCard.appendChild(dh);
@@ -2214,7 +2254,7 @@ function renderLeft(){
 
   /* — карточка «График» (если есть) — */
   if (task.graph === 'shares-chart'){
-    const chartCard = el('div', {class:'card fade-in'});
+    const chartCard = el('div', {class:'card fade-in given-model'});
     const ch = el('div', {class:'card-header'});
     ch.appendChild(el('h3', null, 'График цены акции'));
     chartCard.appendChild(ch);
@@ -2227,11 +2267,22 @@ function renderLeft(){
 
   /* — карточка «Таблица» — */
   if (task.table){
-    const tCard = el('div', {class:'card fade-in'});
-    const th = el('div', {class:'card-header'});
-    th.appendChild(el('h3', null, task.table.title || 'Таблица движения'));
+    const tCard = el('details', {class:'card requested-help model-details'});
+    tCard.open = STATE.modelOpen;
+    const th = el('summary', {class:'card-header', onclick:()=>{
+      STATE.modelOpen = !tCard.open;
+      th.textContent = STATE.modelOpen ? 'Свернуть таблицу расчётов' : 'Показать таблицу расчётов';
+      if (STATE.modelOpen) markAssisted(task.id);
+    }}, STATE.modelOpen ? 'Свернуть таблицу расчётов' : 'Показать таблицу расчётов');
+    tCard.addEventListener('toggle',()=>{
+      if (!tCard.isConnected || STATE.currentTaskId !== task.id) return;
+      STATE.modelOpen = tCard.open;
+      th.textContent = tCard.open ? 'Свернуть таблицу расчётов' : 'Показать таблицу расчётов';
+      if (tCard.open) markAssisted(task.id);
+    });
     tCard.appendChild(th);
     const tb = el('div', {class:'card-body'});
+    tb.appendChild(el('h3', null, task.table.title || 'Таблица движения'));
     tb.appendChild(buildTable(task));
     tCard.appendChild(tb);
     left.appendChild(tCard);
@@ -2285,7 +2336,10 @@ function renderLeft(){
   sg.appendChild(makeStat('Подсказок', stats.hints || 0));
   sg.appendChild(makeStat('Самостоятельно', Object.keys(stats.independentTasks).length));
   sg.appendChild(makeStat('С помощью', Object.keys(stats.assistedTasks).length));
-  finalCard.appendChild(sg);
+  const statsDetails=el('details', {class:'stats-details'});
+  statsDetails.appendChild(el('summary', null, 'Мои результаты'));
+  statsDetails.appendChild(sg);
+  finalCard.appendChild(statsDetails);
 
   left.appendChild(finalCard);
 }
@@ -2307,12 +2361,16 @@ function revealFinalEq(){
 }
 
 /* ---------- ТАБЛИЦА (с раскрытием по шагам) ---------- */
-function buildTable(task){
-  const wrap = el('div', {class:'fin-table-wrap'});
+function buildTable(task, givenOnly=false){
+  const host = el('div', {class:'financial-model'});
+  const noteId = 'table-scroll-note-' + (givenOnly?'given':'work');
+  host.appendChild(el('p', {class:'table-scroll-note', id:noteId}, 'Все столбцы доступны: листайте таблицу вправо и влево ↔'));
+  const wrap = el('div', {class:'fin-table-wrap', tabindex:'0', role:'region', 'aria-label':givenOnly?'Остатки долга из условия':'Таблица расчётов', 'aria-describedby':noteId});
   const tab = el('table', {class:'fin-table'});
   const thead = el('thead');
   const trh = el('tr');
-  for (const c of task.table.columns) trh.appendChild(el('th', null, c));
+  const columns = givenOnly?[0,1,4]:task.table.columns.map((_,i)=>i);
+  for (const i of columns) trh.appendChild(el('th', {scope:'col'}, task.table.columns[i]));
   thead.appendChild(trh);
   tab.appendChild(thead);
   const tbody = el('tbody');
@@ -2320,6 +2378,7 @@ function buildTable(task){
   task.table.rows.forEach((row, ri) => {
     const tr = el('tr');
     row.forEach((cell, ci) => {
+      if (!columns.includes(ci)) return;
       const isHidden = hidden.has(`${ri}-${ci}`);
       const revealed = STATE.tableReveals[`${ri}-${ci}`];
       const cls = isHidden ? (revealed ? 'revealed' : 'hidden-cell') : '';
@@ -2329,7 +2388,8 @@ function buildTable(task){
   });
   tab.appendChild(tbody);
   wrap.appendChild(tab);
-  return wrap;
+  host.appendChild(wrap);
+  return host;
 }
 
 /* ---------- ГРАФИК АКЦИЙ (SVG) ---------- */
@@ -2390,7 +2450,7 @@ function renderRight(){
   const task = getTask(STATE.currentTaskId);
 
   /* — карточка прогресса по шагам — */
-  const card = el('div', {class:'card fade-in'});
+  const card = el('div', {class:'card fade-in steps-card'});
   const head = el('div', {class:'card-header'});
   head.appendChild(el('h3', null, STATE.mode === 'teacher' ? 'Полное решение' : 'Пошаговое решение'));
   card.appendChild(head);

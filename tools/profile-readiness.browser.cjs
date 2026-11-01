@@ -162,7 +162,10 @@ const server = http.createServer((req,res) => {
     await noviceContext.close();
     await page.goto(base+'#progress');await page.locator('#export').waitFor();
     const downloaded=page.waitForEvent('download');await page.locator('#export').click();
-    const report=JSON.parse(fs.readFileSync(await(await downloaded).path(),'utf8'));
+    const envelope=JSON.parse(fs.readFileSync(await(await downloaded).path(),'utf8'));
+    assert.equal(envelope.kind,'mathexam-profile-full-report');
+    assert.equal(envelope.version,1);
+    const report=envelope.course;
     for(const l of lessons)assert.equal(report.records[l.id].independent.length,3);
     assert.deepEqual(errors,[]);
     console.log(JSON.stringify({gate:'PROFILE_READINESS_BROWSER_OK',tasks:taskCount,checkedAnswers:answerCount,diagnosticProfiles:3,responsive:[360,1280],acceptedStepReload:true,completedTaskReload:true,wrongAnswerRecovery:true,export:true,errors}));

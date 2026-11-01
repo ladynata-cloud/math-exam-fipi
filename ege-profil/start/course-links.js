@@ -65,7 +65,7 @@
     if(!b||document.getElementById('profile-course-nav'))return;
     document.body.classList.add('profile-course-page');
     const nav=document.createElement('nav');nav.id='profile-course-nav';nav.setAttribute('aria-label','Навигация единого курса');
-    nav.innerHTML='<a href="'+entry+'#calm">← Все задания: №1–13 и №16</a><span>'+b.numbers.map(n=>'<a href="'+entry+(n===16?'#exam/':'#calm/')+n+'">Темы №'+n+'</a>').join(' · ')+'</span><button type="button" id="profile-course-help">Вспомнить основу</button>';
+    nav.innerHTML='<a href="'+entry+'#calm" aria-label="Все задания курса: №1–13 и №16">← Курс</a><span>'+b.numbers.map(n=>'<a href="'+entry+(n===16?'#exam/':'#calm/')+n+'">Темы №'+n+'</a>').join(' · ')+'</span><button type="button" id="profile-course-help">Вспомнить основу</button>';
     document.body.prepend(nav);
     // This trainer's formerly fixed teacher switch would cover the new help
     // button on desktop. Retain the same node and handlers in the navigation.

@@ -105,8 +105,16 @@
     header.top{grid-template-columns:1fr}
     .wrap{padding:18px 12px 48px}
   }
+
+  .trainer-reference{margin:6px 0 12px;min-width:0;max-width:100%}
+  .trainer-reference>summary{cursor:pointer;min-height:44px;padding:8px 0;font-size:16px;line-height:1.5;font-weight:650}
+  .trainer-reference[open]>summary{margin-bottom:6px}
+  .seg{flex-wrap:wrap;max-width:100%}
+  .seg button{flex:1 1 auto;min-width:0}
+  .wrap,header.top>div,.controls>div{min-width:0;max-width:100%}
+  html.board .trainer-reference:not(.topic-picker){display:none}
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261101-trainer-repair"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
 </head>
 <body>
 <div class="wrap">
@@ -114,7 +122,7 @@
   <header class="top">
     <div>
       <h1>Планиметрия: задание 1</h1>
-      <p class="sub">Девятнадцать типов из сборника Ященко-2026 в четырёх темах: треугольники, параллелограмм и ромб, трапеции, окружность. Ответ — число; после проверки открывается разбор по шагам.</p>
+      <details class="trainer-reference"><summary>О тренажёре</summary><p class="sub">Девятнадцать типов из сборника Ященко-2026 в четырёх темах: треугольники, параллелограмм и ромб, трапеции, окружность. Ответ — число; после проверки открывается разбор по шагам.</p></details>
     </div>
     <div class="boardtools">
       <button class="btn" id="boardBtn" aria-pressed="false" title="Крупный шрифт для показа на доске">Режим доски</button>
@@ -123,8 +131,10 @@
     </div>
   </header>
 
+  <details class="trainer-reference topic-picker"><summary>Выбрать тему и тип</summary>
   <div class="panel" id="groups" role="tablist" aria-label="Темы"></div>
   <div class="panel" id="types" role="tablist" aria-label="Типы задач"></div>
+  </details>
   <div class="panel">
     <div class="seg" id="modeSeg" role="tablist" aria-label="Режим">
       <button data-mode="learn" aria-pressed="false">Разбор</button>
@@ -132,7 +142,7 @@
       <button data-mode="exam" aria-pressed="false">Зачёт</button>
     </div>
   </div>
-  <p id="modeHelp"></p>
+  <details class="trainer-reference"><summary>Как работать в этом режиме</summary><p id="modeHelp"></p></details>
 
   <div id="taskArea"></div>
 </div>

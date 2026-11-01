@@ -410,6 +410,8 @@ async function familyCoverage(teacherSession, studentSession, config, t, s) {
 async function exampleAndResult(t, s, config) {
   stage(config.id + ': authored example and completed independent result');
   await overview(t, config); await t.locator('a[href="#lesson/' + config.entry + '"]').click();
+  await t.locator('details.theory > summary').click();
+  assert.equal((await synchronized(t, s, 'requested reference before worked example')).view.details.theory, true);
   await t.locator('a[href="#example/' + config.entry + '"]').click(); await t.locator('#example-solution').waitFor();
   assert.equal((await snapshot(t)).view.solution.count, 1);
   await t.locator('#example-next').click(); assert.equal((await snapshot(t)).view.solution.count, 2);

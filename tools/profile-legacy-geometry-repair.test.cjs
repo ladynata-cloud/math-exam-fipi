@@ -215,6 +215,23 @@ test('probability only opens the explanation ladder when the pupil requests it',
 
 const requestCourseHelp=w=>w.document.dispatchEvent(new w.CustomEvent('profile-course-help-requested',{detail:{path:w.location.pathname,lessonId:'bridge-triangle'}}));
 
+test('secondary references and type pickers start closed and do not remount the current exercise',()=>{
+  for(const file of ['planimetry-t1.html','vectors-t2.html','pryamougolny-treugolnik-trenazher.html','planimetry-yashchenko-t1.html','vectors-yashchenko-t2.html']){
+    const {dom,document:d,window:w}=boot(file,file==='pryamougolny-treugolnik-trenazher.html'?'#t1':'');
+    try{
+      if(file==='planimetry-t1.html')w.openGuided(1);
+      const nodes=[...d.querySelectorAll('canvas,#taskArea,#taskText,#prompt')];
+      for(const details of d.querySelectorAll('details.trainer-reference')){
+        assert.equal(details.open,false,file+' reference starts closed');
+        details.querySelector('summary').click();assert.equal(details.open,true);
+        details.querySelector('summary').click();assert.equal(details.open,false);
+      }
+      assert.ok(nodes.every(node=>node.isConnected),file+' task nodes retained');
+      for(const node of d.querySelectorAll('#cv,#taskText,#prompt,#taskArea'))assert.equal(node.closest('details.trainer-reference'),null,file+' task is not reference content');
+    }finally{dom.window.close();}
+  }
+});
+
 test('external course help prevents independent credit in old planimetry and vectors', () => {
   const plan=boot('planimetry-t1.html');
   try {

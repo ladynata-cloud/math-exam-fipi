@@ -14,7 +14,8 @@
   preserve existing work while repairing checkpoint mastery and adding a
   separately identified familiar-task recovery route. Precise topic links and
   read-only complete teacher reports connect the existing materials.
-- [Verification](reports/PROFILE_TRAINER_REPAIR_20261101.md) and the Draft PR
+- [Verification](reports/PROFILE_TRAINER_REPAIR_20261101.md) and
+  [Draft PR397](https://github.com/ladynata-cloud/math-exam-fipi/pull/397)
   record local/CI/browser evidence and independent reviews. No new main-course
   tasks or task IDs are introduced; no real pupil state is changed.
 - Merge/publication remain separate decisions for the exact base/head. HIGH

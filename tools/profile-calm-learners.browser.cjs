@@ -176,6 +176,7 @@ async function exampleLearner(page, out, p) {
   await toggleCalm(page, out, 'independent');
   check(out, 'calm-setting-alone-is-not-help', !(await session(page, p.lesson, 'independent')).assisted);
   await page.locator('main a[href="#lesson/' + p.lesson + '"]').first().click();
+  await page.locator('details.theory > summary').click();
   await page.locator('main a[href="#example/' + p.lesson + '"]').first().click(); await page.locator('#worked-example').waitFor();
   check(out, 'worked-example-opens-one-step', await page.locator('#worked-example [data-example-step]').count() === 1);
   const exampleHistory = await page.locator('#worked-example [data-example-step]').allInnerTexts();
@@ -267,9 +268,18 @@ async function transferLearner(page, out, p) {
   const summary = { attempted: entries.filter(item => item.submitted).length, independent: entries.filter(item => item.submitted && item.correct && !item.assisted && !item.unavailable).length,
     assisted: entries.filter(item => item.assisted).length, unavailable: entries.filter(item => item.unavailable).length, total: entries.length };
   check(out, 'strict-score-is-twelve-of-thirteen', same(summary, p.expectedResult), summary, p.expectedResult);
-  check(out, 'strict-result-does-not-inflate-lesson-records', same(earned(beforeRecords), earned((await saved(page)).records)), earned((await saved(page)).records), earned(beforeRecords));
+  const expectedRecords=JSON.parse(JSON.stringify(beforeRecords));
+  for(const item of entries)if(item.submitted&&item.correct&&!item.assisted&&!item.unavailable){
+    const row=expectedRecords[item.lessonId]||(expectedRecords[item.lessonId]={guided:[],independent:[],attempts:0});
+    if(!row.independent.includes(item.taskId)){row.independent.push(item.taskId);row.attempts++;}
+  }
+  const afterRecords=(await saved(page)).records;
+  check(out, 'strict-result-credits-only-fresh-unassisted-successes', same(earned(expectedRecords),earned(afterRecords)),earned(afterRecords),earned(expectedRecords));
+  check(out, 'strict-result-preserves-checkpoint-provenance', entries.every(item=>(afterRecords[item.lessonId]?.checkpointIndependent||[]).includes(item.taskId)===(item.submitted&&item.correct&&!item.assisted&&!item.unavailable)));
+
   await page.reload(); await page.locator(UI.checkpoint.result).waitFor();
   check(out, 'completed-checkpoint-reload-idempotent', same(final, await saved(page, CHECKPOINT_KEY)));
+  check(out, 'checkpoint-credit-reload-idempotent',same(earned(afterRecords),earned((await saved(page)).records)));
   out.strictSummary = summary;
 }
 async function checkpointHelpProtocol(browser, base) {

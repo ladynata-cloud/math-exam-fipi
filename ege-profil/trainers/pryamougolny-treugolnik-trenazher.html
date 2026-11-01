@@ -248,8 +248,16 @@
     .step .dot{width:1.9rem; height:1.9rem; font-size:.85rem}
     ol.ladder::before{left:.9rem}
   }
+
+  .trainer-reference{margin:6px 0 12px;min-width:0;max-width:100%}
+  .trainer-reference>summary{cursor:pointer;min-height:44px;padding:8px 0;font-size:16px;line-height:1.5;font-weight:650}
+  .trainer-reference[open]>summary{margin-bottom:6px}
+  .seg{flex-wrap:wrap;max-width:100%}
+  .seg button{flex:1 1 auto;min-width:0}
+  .wrap,header.top>div,.controls>div{min-width:0;max-width:100%}
+  html.board .trainer-reference{display:none}
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261101-trainer-repair"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
 </head>
 <body>
 <div class="wrap">
@@ -259,7 +267,7 @@
       <a class="brand" href="https://mathexam.space"><span class="sigma">∑</span> mathexam.space</a>
       <a class="crumbs" href="../index.html">← Курс профильного ЕГЭ</a>
       <h1 class="title">Прямоугольный треугольник: sin, cos, tg</h1>
-      <p class="sub">Сначала разминка — что такое синус, косинус и тангенс, потом задачи: сторона и отношение, высота на гипотенузу, площадь, углы биссектрисы и медианы, треугольник 30°-60°-90°. Числа, буквы и чертёж — каждый раз новые.</p>
+      <details class="trainer-reference"><summary>О тренажёре</summary><p class="sub">Сначала разминка — что такое синус, косинус и тангенс, потом задачи: сторона и отношение, высота на гипотенузу, площадь, углы биссектрисы и медианы, треугольник 30°-60°-90°. Числа, буквы и чертёж — каждый раз новые.</p></details>
     </div>
     <div class="topbtns">
       <button class="btn primary" id="teacherBtn" title="Собрать код прогресса для кабинета учителя">Сдать учителю</button>
@@ -288,7 +296,7 @@
       </div>
     </div>
   </div>
-  <p class="modehelp" id="modeHelp"></p>
+  <details class="trainer-reference"><summary>Как работать в этом режиме</summary><p class="modehelp" id="modeHelp"></p></details>
 
   <div id="live" class="sr-only" aria-live="polite"></div>
   <main id="taskArea" tabindex="-1"></main>
@@ -305,9 +313,7 @@
     <p class="small tp-status" id="tpStatus" role="status" aria-live="polite"></p>
   </section>
 
-  <footer>
-    Тренажёр отрабатывает базовые задачи на прямоугольный треугольник: определения синуса/косинуса/тангенса, теорему Пифагора, свойства высоты на гипотенузу, площадь и углы между высотой, биссектрисой и медианой из вершины прямого угла. Буквы вершин, числа и чертёж создаются заново каждый раз, поэтому вариантов бесконечно много. Прогресс сохраняется в браузере этого устройства. Кнопка «Сдать учителю» собирает код прогресса для «Кабинета учителя» курса — данные никуда не отправляются. © mathexam.space
-  </footer>
+  <footer><details class="trainer-reference"><summary>О темах и сохранении прогресса</summary><p>Тренажёр отрабатывает базовые задачи на прямоугольный треугольник: определения синуса/косинуса/тангенса, теорему Пифагора, свойства высоты на гипотенузу, площадь и углы между высотой, биссектрисой и медианой из вершины прямого угла. Буквы вершин, числа и чертёж создаются заново каждый раз, поэтому вариантов бесконечно много. Прогресс сохраняется в браузере этого устройства. Кнопка «Сдать учителю» собирает код прогресса для «Кабинета учителя» курса — данные никуда не отправляются. © mathexam.space</p></details></footer>
 </div>
 
 <script>

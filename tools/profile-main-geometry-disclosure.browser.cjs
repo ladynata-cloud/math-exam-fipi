@@ -35,14 +35,18 @@ const server=http.createServer((req,res)=>{
         assert.equal(initial.familiar,false,id+': fresh independent attempt');
         assert.equal(initial.assisted,false,id+': references have not been opened');
         const model=page.locator('#task-model'),svg=model.locator('svg').first(),hint=page.locator('#hint'),help=page.locator('#hint-box');
+        // Keep visual evidence even if the first-screen geometry assertion fails.
+        if(shotLessons.has(id)){await page.screenshot({path:path.join(SHOTS,id+'-'+width+'.png'),fullPage:false});screenshots++;}
         assert(await svg.isVisible(),id+': diagram visible');assert.equal(await help.isVisible(),false);
         const condition=await page.locator('.condition-panel .task-condition').boundingBox();
         const rect=await svg.boundingBox();assert(rect&&rect.width>=200,id+': useful diagram width at '+width);
+        if(!(condition&&condition.y>=0&&condition.y+condition.height<=rect.y+1&&rect.y>=0&&rect.y+rect.height<=900)){
+          await page.screenshot({path:path.join(SHOTS,id+'-'+width+'-failure.png'),fullPage:true});
+        }
         assert(condition&&condition.y>=0&&condition.y+condition.height<=rect.y+1,id+': authored condition visible before diagram at '+width);
         assert(rect.y>=0&&rect.y+rect.height<=900,id+': complete diagram on first screen at '+width+' '+JSON.stringify(rect));
         assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),id+': no overflow at '+width);
         firstScreenChecks++;
-        if(shotLessons.has(id)){await page.screenshot({path:path.join(SHOTS,id+'-'+width+'.png'),fullPage:false});screenshots++;}
         await page.locator('#answer').fill('31/7');
         const before=await page.evaluate(({KEY,id})=>{window.answerWitness=document.getElementById('answer');window.modelWitness=document.getElementById('task-model');const s=JSON.parse(localStorage.getItem(KEY)).sessions[id+':independent'];return {taskId:s.taskId,step:s.step,answers:s.answers,draft:s.draft};},{KEY,id});
         await hint.focus();await page.keyboard.press('Enter');await help.waitFor({state:'visible'});
