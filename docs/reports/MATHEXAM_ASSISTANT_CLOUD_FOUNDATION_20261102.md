@@ -16,10 +16,16 @@ The 100-item register is in `docs/assistant-program/progress.json`.
 
 Not run locally: Docker (unavailable in this runtime), GitHub Actions for this
 new head, real Amvera transport/deployment/rollback, permanent hosted preview,
-external independent release review. Existing production remains the prior
+external provider review (not performed under the active standing owner policy). Existing production remains the prior
 PR405–407 package; none of these new changes is reported as deployed.
 
 Local publication/rollback tests used temporary bare Git repositories and
 synthetic data. They establish the code behavior, not Amvera access or a live
 rollback. Cloud credentials must be provisioned before the publication workflow
-can be activated. Review and release decisions remain separate from coding.
+can be activated. The standing authorization covers release after technical checks; no further publication permission is pending.
+
+PR409 initial head f89da2a was based on 8307f6a. Main advanced through unrelated
+PR398 and governance PR408 to 441069556e65fddf0f0485533f746d080b025114.
+The virtual merge was clean (tree 3fbc5c445650f2754e23a7ce0e3da6073e9bbfaa).
+An ordinary merge preserved both changes; only this task's authorization text
+was then reconciled with the new project-wide policy. No runtime conflict.

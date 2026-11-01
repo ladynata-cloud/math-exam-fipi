@@ -249,6 +249,10 @@ svg .cellgrid{stroke:#dbe2ee;stroke-width:1}
 @media print{header.top,.blank,.foot,.acts,.note{display:none!important}
  .wrap{display:block;padding:0}.card{border:0}.body{display:block}.right{border:0}}
 </style>
+<link rel="stylesheet" href="../../ege-baza/reference/style.css?v=20261101">
+<script src="../../ege-baza/reference/data.js?v=20261101"></script>
+<script src="../../ege-baza/reference/legacy-map.js?v=20261101"></script>
+<script src="../../ege-baza/reference/ui.js?v=20261101"></script>
 </head>
 <body>
 <a class="skip" href="#main">Перейти к заданию</a>
@@ -1749,10 +1753,46 @@ function answerBlock(t,r){
   <p class="fmt" id="fmt">${fmt}</p>`;
 }
 
+let referenceTaskBlocked=false;
+function openReferenceTask(){
+ const match=location.hash.match(/^#task=(p\d+[a-z])$/),t=match&&TASKS.find(item=>item.id===match[1]);
+ referenceTaskBlocked=false;
+ if(!t)return false;
+ // An exact learning link must never replace an unfinished assembled variant.
+ if(state.mode==='variant'&&state.built?.some(id=>!state.recs[id]?.done)){
+  referenceTaskBlocked=true;return false;
+ }
+ if(urlLesson&&!LESSONS.find(item=>item.n===urlLesson).positions.includes(t.pos))return false;
+ if(!urlLesson)state.lesson=null;
+ state.mode='pos';state.pos=t.pos;state.cur['p'+t.pos]=byPos(t.pos).indexOf(t);
+ return true;
+}
+function attachTaskReference(t,r){
+ if(state.mode!=='pos'||!window.EgeReferenceUI)return;
+ const sheetIds=window.EgeReferenceLegacy?.taskSheets[t.id];if(!sheetIds?.length)return;
+ const host=document.createElement('div');host.className='legacy-reference';
+ document.querySelector('#host .right')?.append(host);
+ window.EgeReferenceUI.attach(host,{sheetIds,referenceBase:'../../ege-baza/reference/',returnHref:location.pathname+location.search+'#task='+t.id,showPins:false,onReveal:()=>{
+  if(r.done||state.mode!=='pos'||current().task?.id!==t.id)return;
+  r.hints=Math.max(1,r.hints||0);
+  save();
+ }});
+}
 function render(){
  renderBlank();
+ if(referenceTaskBlocked){
+  $('host').innerHTML='<section class="card"><div class="head"><h3>Сначала заверши текущий вариант</h3><p>Задание из справочника откроется после проверки. Все записанные ответы и состав варианта сохранены.</p><button class="primary" id="reference-resume">Вернуться к варианту</button></div></section>';
+  $('reference-resume').onclick=()=>{history.replaceState(null,'',location.pathname+location.search);referenceTaskBlocked=false;render();$('main').focus();};
+  return;
+ }
  const {list,idx,task:t}=current();
  if(!t){$('host').innerHTML='';return;}
+ // Keep an existing exact-task link aligned with ordinary Next/Back/catalogue
+ // navigation. A newly assembled variant must not reload the old pinned task.
+ if(location.hash.startsWith('#task=')){
+  const hash=state.mode==='pos'?'#task='+t.id:'';
+  if(hash!==location.hash)history.replaceState(history.state,'',location.pathname+location.search+hash);
+ }
  const r=rec(t.id), P=POSITIONS[t.pos-1];
  const fig=figureHTML(t), lab=labHTML(t);
  const left=(fig||lab)?fig+lab:`<p class="nofig">В этом задании чертёж не нужен: всё, что требуется, есть в условии.</p>`;
@@ -1820,6 +1860,7 @@ function render(){
   </div>
  </article>`;
  const ai=$('ans'); if(ai&&r.msgType==='no') ai.setAttribute('aria-invalid','true');
+ attachTaskReference(t,r);
 }
 
 function shownAnswer(t,r){
@@ -2129,7 +2170,13 @@ const REFERENCE=`
 <p class="muted" style="margin-top:10px">На экзамене справочные материалы выдаются вместе с бланком. Здесь приведён их краткий пересказ.</p>
 </div>`;
 
+openReferenceTask();
 render();
+window.addEventListener('hashchange',()=>{
+ if(!location.hash.startsWith('#task='))return;
+ if(openReferenceTask())save();
+ render();$('main').focus();
+});
 if(!canSave) $('warn').hidden=false;
 
 /* Отладочный доступ для смоук-тестов (Node/jsdom, консоль браузера). */

@@ -27,10 +27,11 @@ rollback cases, real HTTP/version/UI and existing service/source gates.
 
 ## Review and permissions
 
-Implementation, task branches, tests, commits and Draft PR are authorized.
-HIGH release needs independent review or a current scoped owner exception;
-preceding ten-item waiver is not recorded as a review of this new release path.
-Hosting integration requires provisioned cloud credentials and verified host
-identity. Prepare reviewable code first; identify exact remaining access/release
-requirements without blocking independent program work. Final gate distinguishes
-prepared workflow from activated production delivery. Roll back code only.
+Implementation and controlled publication are authorized by the owner request
+and `docs/OWNER_RELEASE_AUTHORIZATION.md` (PR408, current main 4410695). External
+review is not performed under that standing decision; no repeated release
+confirmation is needed. Risk-appropriate technical checks remain required.
+Hosting integration still needs provisioned cloud credentials and verified host
+identity. The concurrent PR398 changes only unrelated EGE resources, and PR408
+updates governance. Their clean virtual composition was verified before ordinary
+history-preserving branch synchronization. No other product scope was added.

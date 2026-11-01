@@ -1,5 +1,19 @@
 # MathExam project status
 
+## Published: pinned reference sheets, PR398, 2026-11-02
+
+- PR398 merged as `86edc03e88df972ed3eebcd293238a9e10b3b87d`, parent
+  `8307f6aa20651303f5f94b70ae28503832778af5`, verified tree `17aff0d7f09da3a168b5356e4c6234deba7f5663`.
+- Six exact-head workflows, 21 composed regression groups and 60 synthetic
+  cabinet-persistence assertions passed. All four postmerge workflows passed,
+  including Pages run 41360591505. The public reference route renders 31 sheets:
+  https://mathexam.space/ege-baza/reference/ .
+- Owner also granted [standing publication permission](OWNER_RELEASE_AUTHORIZATION.md)
+  for approved work after checks, without mandatory external audit. Older
+  task-specific permission-pending entries below are historical.
+- New owner clarification: additionally pin the exam reference materials from
+  the supplied StatGrad 2015 PDF; retain the published expanded reference.
+
 ## In preparation: optional assistant learning support, 2026-11-02
 
 - Final improvements 7–10 of the authorized package: specific missing-condition
@@ -3587,7 +3601,7 @@ validation and publication separate. [Items 1–5](tasks/MATHEXAM_ASSISTANT_CLOU
 prepare source-only delivery/rollback, ephemeral preview evidence, version UI and
 CI artifacts. [Validation](reports/MATHEXAM_ASSISTANT_CLOUD_FOUNDATION_20261102.md)
 records 173 service checks and 10 browser scenarios; production activation and
-independent HIGH release review are pending.
+cloud hosting access are pending; standing publication permission applies.
 
 Prior ten improvements are complete: GitHub `8307f6aa20651303f5f94b70ae28503832778af5`,
 Amvera `3cc22e01fecad97d4d8aaa79876d2f9a7bcbe810`; the recorded check at

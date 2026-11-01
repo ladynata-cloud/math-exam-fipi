@@ -30,10 +30,11 @@ Build and test with synthetic identities and bounded mathematical formats.
 
 ADR0011 remains the current architecture. Opt-in cabinet persistence/editor
 extensions require an explicit reviewed design; do not quietly store raw pupil
-conversations under the old no-retention promise. Record package-specific review
-requirements and their actual evidence; do not manufacture a review or silently
-extend the preceding ten-item waiver to new HIGH changes. Prepare concrete work
-before raising a release/access blocker. Do not weaken a gate to finish a count.
+conversations under the old no-retention promise. Apply the active project-wide standing publication authorization in
+`docs/OWNER_RELEASE_AUTHORIZATION.md` (PR408). External review is optional and
+not performed. Continue controlled releases after the required technical checks;
+do not request repeated publication permission. Prepare concrete work before
+raising a real access blocker. Do not weaken a gate to finish a count.
 
 ## Confirmed preceding release
 
