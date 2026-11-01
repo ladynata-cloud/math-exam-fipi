@@ -63,6 +63,16 @@ published PR head, not inferred from local service tests.
 
 ## Review, limits and release boundary
 
+- PR375 was confirmed merged by GitHub at 2026-11-01 18:42:23 UTC as
+  `059ee8c9f5baeb0b333c96d9b8516edb570666b2`; this check establishes repository
+  state, not a new production audit.
+- During publication of Draft PR401, PR400 advanced main to
+  `5bbfe3a4615b6410dacf7f1344aa57b909a986ef`. A read-only merge identified
+  only a `PROJECT_STATUS.md` conflict; no assistant runtime files overlapped.
+  PR400 already reconciles PR375 in that shared status file. The redundant
+  status edit from this task was withdrawn, preserving the upstream record
+  in the resulting composition. This report retains this task's evidence.
+  No merge, rebase or history rewrite of the task branch is needed.
 - Source review checked rational equality, sign handling, zero divisors,
   coinciding mistake patterns, large outputs, decimal/list ambiguity and
   retention of the existing hint/full contract. A numeric attempt only supports
