@@ -3,7 +3,7 @@
 ## Prepared for review: Peterson 6 equations and unknowns, 2026-11-02
 
 - [Task](tasks/PETERSON6_EQUATION_METHOD.md), HIGH; explicit current-task START.
-  Branch `task/peterson6-equation-method-20261102`, verified base
+  Branch `task/peterson6-equation-method-20261102`, original implementation base
   `6b9c327f2ca438cb7e7620ef302876de467fac19`.
 - Implemented 98 main-course word problems, 22 generated line families and
   13 textbook word examples, plus three printable documents. Original
@@ -15,7 +15,51 @@
 - PR355/PR367 are inventoried unpublished sources, not included or resumed here.
 - Claude consultation is unavailable; no external verdict or current waiver
   is claimed. Exact evidence and the remaining release decision belong in
-  this task's report and Draft PR. No merge or deployment is authorized.
+  this task's report and Draft PR. Production merge and deployment remain separate owner decisions.
+
+- On 2026-11-02 the owner explicitly authorized reconciling the sole
+  `PROJECT_STATUS.md` conflict with main
+  `059ee8c9f5baeb0b333c96d9b8516edb570666b2`, preserving both task records,
+  and preparing the existing PR400 for publication. This permits task-branch
+  reconciliation; it does not authorize merging PR400 into main or deployment.
+- The read-only composed runtime passed the repeated course, saved-work,
+  helper, cabinet and board gates. All runtime, test and PDF blobs retain
+  the reviewed implementations. The updated candidate identity and exact-head
+  CI must be recorded in PR400 after publication of its task branch.
+
+## Published: assistant dialogue integration, PR375, 2026-11-02
+
+- [PR375](https://github.com/ladynata-cloud/math-exam-fipi/pull/375) was
+  squash-merged as `059ee8c9f5baeb0b333c96d9b8516edb570666b2`, with parent
+  `6b9c327f2ca438cb7e7620ef302876de467fac19`, from reviewed candidate
+  `8c7c3db3a308da61619b63b129e7333292406cd6`.
+- [Pages41337980680](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41337980680)
+  completed successfully for that production SHA. Read-only HTTP verification
+  also matched the five checked public Peterson/cabinet assets to that main.
+- The PR release record documents explicit owner release authorization and
+  a task-specific external-review exception for PR375 after the unavailable
+  provider response. That exception does not apply to PR400 or future work.
+- The preparation record below is retained as historical evidence; its pending
+  release statements do not supersede the release evidence above.
+
+### Retained PR375 preparation record (historical)
+
+- Continuing [PR375](https://github.com/ladynata-cloud/math-exam-fipi/pull/375)
+  against `6b9c327f2ca438cb7e7620ef302876de467fac19`, preserving published
+  course navigation, LCM hints, source provenance and unrelated content.
+- The same root task and bounded previous exchanges support follow-up
+  questions; fresh external acknowledgement and teacher/budget controls remain.
+  Source-only textbook helpers keep their separate existing behavior.
+- Fresh local helper 131/131, cabinet 369/369 and assistant DOM 40/40 checks
+  pass, together with dialogue/cabinet/mobile integration and current Vilenkin
+  navigation/LCM browser gates. No external model calls or learner changes.
+- [Task](tasks/MATHEXAM_ASSISTANT_GRADE6_DIALOGUE_V1.md) and
+  [verification](reports/MATHEXAM_ASSISTANT_DIALOGUE_REVALIDATION_20261102.md).
+  Exact published head and final CI are recorded in the Draft PR. Independent
+  and external HIGH review remain release gates; no merge/deployment approval
+  is inferred from the owner's continuation request.
+- Separate OpenAI adapter [PR399](https://github.com/ladynata-cloud/math-exam-fipi/pull/399)
+  remains a Draft and is not included or enabled by this dialogue task.
 
 ## Published: finance deposit explanation correction, 2026-11-01
 
@@ -3318,3 +3362,31 @@ final exact-head CI and deployment verification; see PR266 for current evidence.
   postmerge gates passed, 70/70 HTTPS resources matched, and live
   320/391/1280px navigation checks passed. This is evidence reconciliation
   within the corrective finance task, not a repeated publication or contact message.
+
+## Historical preparation: grade 6 assistant follow-up questions, 2026-10-31
+
+- [Task](tasks/MATHEXAM_ASSISTANT_GRADE6_DIALOGUE_V1.md), HIGH;
+  Vilenkin NOD/NOK profile and bounded contextual questions beside existing
+  Peterson decimal support. [Validation report](reports/MATHEXAM_ASSISTANT_GRADE6_DIALOGUE_20261030.md).
+- Context is bound to the learner's login and original task; expires 15 minutes
+  after the first answer, is memory-only and never becomes a training dataset.
+- This is a tested candidate, not a live provider activation or deployment.
+  Existing pupils' settings and production data were not modified. External
+  exact-head review, provider eligibility/evaluation and owner release decisions
+  remain separate requirements.
+
+
+## Assistant dialogue revalidation — 2026-10-31
+
+- PR375 is reconciled with current published main `c9bf66e2` including PR380.
+  The shared stylesheet retains both saved-source help and follow-up controls.
+- Independent review found a pending-answer control race. Both server and UI
+  now withhold the answer after teacher control is taken; allowance accounting
+  and existing assessment/session/privacy protections remain intact.
+- The inherited Atanasyan/Ichenskaya source pin is refreshed only after proving
+  unchanged selected teaching records and retaining the original content
+  oracles. Merzlyak's old engine guard is already repaired by published PR376.
+- Free dialogue retains entered task context; automatic saved Vilenkin and
+  embedded Peterson help remain separate source-based paths. No paid model or
+  real learner setting is enabled. Full evidence and remaining release gates:
+  [revalidation report](reports/MATHEXAM_ASSISTANT_DIALOGUE_REVALIDATION_20261031.md).

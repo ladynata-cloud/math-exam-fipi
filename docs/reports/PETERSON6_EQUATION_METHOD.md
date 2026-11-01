@@ -1,14 +1,15 @@
 # Peterson 6: unknowns and equations — verification
 
 Task: [PETERSON6_EQUATION_METHOD](../tasks/PETERSON6_EQUATION_METHOD.md).
-Base: `6b9c327f2ca438cb7e7620ef302876de467fac19`.
+Original implementation base: `6b9c327f2ca438cb7e7620ef302876de467fac19`.
+Approved reconciliation base: `059ee8c9f5baeb0b333c96d9b8516edb570666b2`.
 Branch: `task/peterson6-equation-method-20261102`.
 Review level: HIGH. Current owner START authorizes implementation and a Draft PR;
 merge and deployment remain separate decisions.
 
 ## Result
 
-The published course's applicable word problems now teach the unknown, a
+The prepared trainer teaches the applicable word problems through the unknown, a
 relationship or equation, the calculation and a check against the condition.
 Conditions, final answers, task IDs, source references and preparation goals
 are preserved. Earlier unfinished and completed work retains its original
@@ -152,3 +153,52 @@ were included in repository handoffs.
 | Maxim_Peterson6_Novye_shpargalki.pdf | `f2c09b630fa1e75d668ed444a9f62312e469896c5f739d4815274409a4b3bb0d` |
 | Peterson6_Domashnyaya_rabota.pdf | `a23bb853105355256c53122b1de56fd158b3fdab8af1d36a1f8063d4544551b9` |
 | Peterson6_Procenty_340.pdf (unchanged) | `50836e2d50498170b7830cd88356a56359fc5f58bcf6649dd16a88d0931de358` |
+
+## Read-only integration revalidation and authorized reconciliation, 2026-11-02
+
+The owner approved reconciling the sole status-document conflict and preparing
+PR400 for publication after reviewing the following base-drift evidence. This
+is authorization for the task branch, not production merge or deployment.
+
+- Original PR head: `84945da0d9fc9eac10d42d089798f53a27c97b99`.
+- Current main: `059ee8c9f5baeb0b333c96d9b8516edb570666b2`.
+- Concurrent commit provenance: published PR375 (assistant dialogue), with
+  successful Pages41337980680. Its task-specific review exception is not reused.
+- The read-only virtual merge tree is
+  `002383f74525747c403daecf4a91ca93f537fe5d`. Only
+  `docs/PROJECT_STATUS.md` conflicts; the runtime files do not overlap.
+- The virtual delta retains the original 39 paths, with no extra or missing
+  path. Every non-conflicting PR400 blob matches its reviewed head; every
+  upstream-only blob matches current main. Documentation reconciliation keeps
+  both task records and the already verified PR396 release record.
+- The previous 23/23 successful CI runs belong to head `84945da0`. They are prior
+  evidence, not new-head CI. Record the new candidate and final workflow URLs
+  in PR400 after the authorized task-branch update.
+
+### Executed tests of the composed runtime
+
+- Main course: 13 commands covering syntax/build/content/math/state/models and
+  UI coverage of 224 cards, 60 practice screens and 98 revised tasks/491 steps;
+  equation-state gate 25/25; board model gate PASS.
+- Separate line: 15/15 baseline and 10/10 equation/state checks, including
+  2304 independent mathematical cases across all 22 word families.
+- Main equation browser: 30 journeys/132 accepted steps; separate-line browser:
+  9 journeys/42 steps, both at 320/390/1280 px.
+- Cabinet/helper/board DOM and registry contracts PASS; registry 32/32.
+  Real-SDK board gate passed 9/9 in an isolated unchanged rerun.
+- Helper browser 63 checks, cabinet pair 10 checks and actual local board/server
+  coverage of 14 lessons/60 practice screens PASS, including retained work,
+  reload, late join, control transfer and personal-storage isolation.
+- Updated assistant/cabinet target tests 61/61 PASS. PDF exact-rational preflight
+  retained 20 homework items, 16 word problems and 3 meeting variants.
+- Initial scratch failures were recorded: two missing assistant-service source
+  files were materialized from the exact virtual tree. One SDK notification
+  assertion failed during a parallel run and passed unchanged in isolation.
+  Redundant aggregate-runner failures were superseded by successful direct
+  registry and board runs. No test assertion or TLS control was weakened.
+
+These checks were executed on the read-only composed runtime before the
+owner's reconciliation authorization. The subsequent documentation-only
+reconciliation must preserve that runtime byte for byte. No current-task
+external-review waiver or Claude verdict is claimed. The board 1.1.0 old-room
+boundary and personal saved-work preservation described above still apply.

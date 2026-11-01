@@ -6,7 +6,8 @@
 - Owner: repository owner
 - Date: 2026-11-02 (Asia/Novosibirsk)
 - Base branch: main
-- Base SHA: `6b9c327f2ca438cb7e7620ef302876de467fac19`
+- Implementation base SHA: `6b9c327f2ca438cb7e7620ef302876de467fac19`
+- Approved reconciliation base: `059ee8c9f5baeb0b333c96d9b8516edb570666b2`
 - Planned and actual branch: `task/peterson6-equation-method-20261102`
 - Review level: HIGH (retained learner work across a content revision)
 - Related architecture: existing course, choice/number steps and board projection.
@@ -24,7 +25,7 @@ school method requested by the owner.
 
 - The owner explicitly gave START for this task in the current conversation
   after the source audit and concrete scope were presented.
-- Current main contains 14 topics / 224 cards / 333 original steps and 20
+- The implementation base contains 14 topics / 224 cards / 333 original steps and 20
   arithmetic practice skills. The separate line contains 13 modules,
   27 source entries (26 unique subparts), 22 generated word-problem families
   and four printable PDFs. The 13 conversion subparts retain their purpose.
@@ -64,7 +65,7 @@ school method requested by the owner.
 - PR355/PR367 implementation, release or branch reconciliation.
 - Other courses, actual pupil records or assignments, credentials, authentication,
   billing, hosting configuration or paid external inference activation.
-- Merge, auto-merge and deployment.
+- Production merge, auto-merge and deployment.
 
 ## Acceptance criteria
 
@@ -122,7 +123,11 @@ school method requested by the owner.
 
 - START in current task conversation: yes.
 - Branch, local commits, push and one Draft PR: yes under the repository workflow.
-- Merge, auto-merge and deployment: no; separate owner authorization required.
+- Current owner continuation on 2026-11-02: reconcile the sole project-status document
+  conflict with the approved main, preserve both project records, and prepare
+  the same PR400 for publication. Task-branch reconciliation is authorized.
+- Production merge, auto-merge and deployment: no; separate owner authorization
+  is required for the final base and head.
 - External-review waiver: not granted for this task.
 
 ## Execution record
@@ -136,6 +141,18 @@ school method requested by the owner.
 - Final local gate: `PETERSON6_EQUATION_METHOD_LOCAL_OK`.
 - Board content 1.1.0 explicitly rejects older room snapshots; personal saved
   work supports both teaching versions. No old-room migration is claimed.
+
+## Authorized documentation reconciliation, 2026-11-02
+
+- Previous PR400 head: `84945da0d9fc9eac10d42d089798f53a27c97b99`.
+- New main: `059ee8c9f5baeb0b333c96d9b8516edb570666b2`, the published PR375.
+- The read-only virtual merge has only a `docs/PROJECT_STATUS.md` conflict.
+  The owner subsequently approved resolving this conflict while retaining both
+  records and preparing the trainer for publication.
+- Keep the tested trainer, PDF and upstream runtime blobs unchanged. Update
+  only the status/task/verification evidence needed for this reconciliation.
+- Record the final branch head and new CI in the existing PR. Do not infer an
+  external-review waiver, production merge or deployment permission.
 
 ## Required handoff
 
