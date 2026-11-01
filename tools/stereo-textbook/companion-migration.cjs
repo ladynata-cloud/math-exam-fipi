@@ -11,6 +11,7 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '../..');
 const manifest = require('./companion-migration.json');
 const visibility = require('./visibility-migration.cjs');
+const sphereSchema = require('./sphere-schema-migration.cjs');
 const approved = {
   'stereo-course/textbook/assets/engine.js': '3b2f3c3fae68a9c8e6f532d32a19df1fb1c5749b60253c75d9241ff639066ad4',
   'stereo-course/textbook/assets/style.css': '268af771d4e1fe44d69fddb966f5a4bf2e5d6febc2102425675b0ba8aca92740',
@@ -22,6 +23,10 @@ function assertHistoricalFile(file, expected, read = name => fs.readFileSync(pat
   assert.equal(manifest.schemaVersion, 1);
   assert.equal(manifest.base, 'fa8d1b7ced31a5941ad52d8a21a48b63daaa84a8');
   assert.deepEqual(Object.keys(manifest.files).sort(), Object.keys(approved).sort(), 'only three approved companion UI paths');
+  if (Object.hasOwn(sphereSchema.originals, file)) {
+    sphereSchema.assertSphereSchemaMigration(file, expected, read);
+    return;
+  }
   if (Object.hasOwn(visibility.originals, file)) {
     visibility.assertVisibilityMigration(file, expected, read);
     return;

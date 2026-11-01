@@ -5,6 +5,25 @@ const root=path.resolve(__dirname,'../..'),raw=fs.readFileSync(path.join(root,'s
 const metadata={commit:'a'.repeat(40),authoredFileSha256:sha,bundleFileSha256:sha,separateAuthorBundle:false},options={...metadata,count:4};let checks=0;
 const test=(name,fn)=>{fn();checks++;};
 const reject=(name,mutate,pattern)=>test(name,()=>{const items=structuredClone(fixtures);mutate(items);assert.throws(()=>combine(items,lessons,options),pattern);});
+test('sphere capture addition preserves all 1685 historical cases in order',()=>{
+ const entries=[...cases],historical=entries.filter(([,name])=>!name.startsWith('sphere-'));
+ assert.equal(historical.length,1685);
+ assert.equal(crypto.createHash('sha256').update(JSON.stringify(historical)).digest('hex'),'970c43fdbcf70f22e90f3803d6463d8367185cdde9ad8613b39af5c6dc43f092');
+ assert.deepEqual(entries.slice(0,1685),historical,'historical entries remain the exact leading sequence');
+ const sphere=entries.slice(1685);assert.equal(sphere.length,255);assert(sphere.every(([,name])=>name.startsWith('sphere-')));
+ const byId=new Map(lessons.map(lesson=>[lesson.id,lesson]));
+ const expectedIds=lessons.filter(lesson=>lesson.source.collection==='main'&&Number(lesson.source.exercise)>=372&&Number(lesson.source.exercise)<=395||lesson.source.collection==='theory'&&Number(lesson.source.point)>=43&&Number(lesson.source.point)<=51).map(lesson=>lesson.id).sort();
+ assert.equal(expectedIds.length,46);assert.deepEqual([...new Set(sphere.map(([key])=>key.split('|')[0]))].sort(),expectedIds);
+ for(const id of expectedIds){
+  const lesson=byId.get(id),stages=new Set(sphere.filter(([key])=>key.startsWith(id+'|')).map(([key])=>key.split('|')[1]));
+  assert(stages.has('condition'),id+' initial condition capture');assert(stages.has(lesson.steps.at(-1).id),id+' fully revealed proof capture');
+  const displayed=new Set(['neutral']);for(const stage of stages){const item=stage.startsWith('help:')?lesson.help.find(help=>help.id===stage.slice(5)):lesson.steps.find(step=>step.id===stage);if(item)displayed.add(item.view||'neutral');}
+  assert.deepEqual([...displayed].sort(),Object.keys(lesson.visualization.model.views).sort(),id+' every authored model view has an actual screenshot case');
+ }
+ for(const id of ['theory-049','theory-050','theory-051','ex-main-0387','ex-main-0393','ex-main-0394','ex-main-0381-a','ex-main-0381-b','ex-main-0381-c','ex-main-0381-d']){
+  const lesson=byId.get(id);for(const step of lesson.steps)assert(cases.has(id+'|'+step.id),id+' complete difficult proof');for(const help of lesson.help)assert(cases.has(id+'|help:'+help.id),id+' focused optional explanation');
+ }
+});
 function fixture(plan){
  // Deliberately synthetic collector fixture, never browser or visual evidence.
  return {schemaVersion:SCHEMA,completed:true,authoredCards:lessons.length,...metadata,shard:{count:plan.count,index:plan.index,assignedIds:plan.assignedIds},widths:[320,1280],runtimeCoverage:{available:lessons.length},cards:structuredClone(plan.cards),screenshots:plan.screenshots.map(({id,stage,width,file})=>({id,width,stage,file})),expansionScreenshots:structuredClone(plan.expansionScreenshots),errors:[],

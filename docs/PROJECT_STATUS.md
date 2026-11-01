@@ -519,6 +519,27 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
   594 published cards. The earlier 554-card observation describes the
   pre-cone checkpoint, not the current repository state.
 
+## In progress: Atanasyan 10–11, complete sphere paragraph
+
+- [Draft PR386](https://github.com/ladynata-cloud/math-exam-fipi/pull/386);
+  [task](tasks/ATANASYAN_SPHERE_372_395.md), HIGH; the owner continued after
+  publication of cone PR374. Base `139b944a70f2e8ba4d340d152d08807fad03e5da`;
+  branch `content/atanasyan-sphere-372-395-20261031`.
+- Complete chapter IV §3: theory 43–51 and all 37 printed parts of exercises
+  372–395. The 46 new cards have independent source, mathematical,
+  coordinate and written-pedagogy review, including the completed second-sphere
+  proof in point 51. The candidate has 640 cards; publication remains pending.
+- The source inventory now includes both 382а and 382б. Point 46 honestly
+  defers the area-formula proof to point 62; starred points 47–51 include
+  converses, boundary cases and both branches of a double-cone hyperbola.
+- All 594 published lesson files and retained-work identities are frozen.
+  The existing renderer's analytic sphere descriptor is admitted by one
+  optional schema field, with exact historical-schema migration checks.
+  No engine, renderer, style, builder or learner-data migration is introduced.
+- Full gates, independent rendered-image review and exact-head CI are pending.
+  This entry does not claim publication. Merge and deployment need separate
+  owner authorization after the concrete reviewed result is ready.
+
 ## Merged and release recorded: Atanasyan 10–11, complete cone paragraph
 
 
@@ -527,7 +548,7 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
 - Complete chapter IV §2: theory 40–42 and exercises 346–371 with every printed
   subpart. The 40 new cards preserve the existing task, chapter and paragraph
   captions, optional theory/help, exact diagrams and retained learner work.
-- Candidate: 594 cards, 2300 justified steps and 2399 model states; main
+- Published: 594 cards, 2300 justified steps and 2399 model states; main
   exercises 1–371 and theory points 1–42. All 554 published lesson files and
   the runtime/schema/storage contracts remain unchanged.
 - Independent [source, proof and coordinate review](reviews/ATANASYAN_CONE_CONTENT.json)
@@ -535,6 +556,19 @@ Updated: 2026-10-28 (Asia/Novosibirsk)
   records 52 passed local checks, preserved historical fixtures and resolved
   failures. [Visual evidence](reviews/ATANASYAN_CONE_VISUAL.json) records the
   exact new-card browser run and independent image review separately.
+- [PR374](https://github.com/ladynata-cloud/math-exam-fipi/pull/374) was separately
+  authorized and squash-merged as `139b944a70f2e8ba4d340d152d08807fad03e5da`,
+  sole parent `c9bf66e2d95f48db0134d43cc590da89f8bc3053`. Reviewed head
+  `07153dc5795bb0b055c5cbdc2307af6d698a9c20` has the same full tree as the merge.
+  The exact 67-path delta and stable patch identity were verified.
+- All 19 premerge checks passed. Exact-merge Pages
+  [41143302786](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41143302786)
+  and postmerge [41143303245](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41143303245)
+  succeeded. All 48 checked public files matched their production blobs.
+  Published bundle SHA256:
+  `2f129a9bab292fae765c674268448895d0419e70e0fd4fd30120fcae53569bc1`.
+  Completed release evidence is retained in the PR; this continuation reconciles
+  the status without a separate status-only PR.
 - [PR374](https://github.com/ladynata-cloud/math-exam-fipi/pull/374) merged as
   `139b944a70f2e8ba4d340d152d08807fad03e5da`, sole parent
   `c9bf66e2d95f48db0134d43cc590da89f8bc3053`. Primary GitHub metadata and
