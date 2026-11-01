@@ -1,91 +1,108 @@
-# OpenAI helper preparation evidence
+# Prepared OpenAI helper adapter and strict answer contract
 
-Date: 2026-11-02 (Asia/Novosibirsk).
-Task: [MATHEXAM_ASSISTANT_OPENAI_20261102](../tasks/MATHEXAM_ASSISTANT_OPENAI_20261102.md).
-Base: `6b9c327f2ca438cb7e7620ef302876de467fac19`, main after PR396.
-Branch: `feat/assistant-openai-adapter-20261102`. Review level: HIGH.
+Date: 2026-11-02 (Asia/Novosibirsk). Task:
+[MATHEXAM_ASSISTANT_OPENAI_20261102](../tasks/MATHEXAM_ASSISTANT_OPENAI_20261102.md).
+Branch: `feat/assistant-openai-adapter-20261102`; [Draft PR399](https://github.com/ladynata-cloud/math-exam-fipi/pull/399).
+Original base: `6b9c327f2ca438cb7e7620ef302876de467fac19`. Review: HIGH.
 
 ## Result
 
-The independent assistant now has an optional, default-off OpenAI adapter.
-Only `gpt-5.4-mini-2026-03-17` at the fixed official Chat Completions endpoint
-is admitted. Standard uncached rates, output/input bounds and the existing
-durable ledger limit requests. Storage and reasoning are explicitly disabled
-in requests. Unexpected returned model/tier or usage disables further paid
-requests through the existing persistent circuit.
+The default-off OpenAI adapter uses only `gpt-5.4-mini-2026-03-17` at the fixed
+Chat Completions endpoint. The continuation adds strict JSON Schema with four
+required fields, bounded strings, exactly one hint step or up to five explicit
+explanation steps. Local output, refusal, privacy and hint validators still
+apply; structured output does not certify mathematical correctness.
 
-The change does not update pupil settings, deploy a model, repair/merge the
-dialogue PR375, publish the public navigator PR385, or train Qwen. Current
-source already contains source-based helpers; OpenAI support is an additional
-backend option, not proof of a new live pupil conversation.
+The input bound now includes serialized schema bytes before the 16,000-token
+ceiling and integer cost reservation. A request affordable under the former
+message-only estimate but exceeding its budget with the schema is rejected
+before transport. DeepSeek/Amvera keep their existing format and accounting.
+Standard uncached prices, store=false, reasoning_effort=none, default tier,
+model/tier verification, no retries and the durable circuit remain.
 
-## Local verification
+PR375 was separately published as `059ee8c9f5baeb0b333c96d9b8516edb570666b2`.
+The [immutable release record](https://github.com/ladynata-cloud/math-exam-fipi/blob/d060c99a7fcd19db2f68a494d2ca5350ef4b1e71/docs/reports/ASSISTANT_PR375_RELEASE_20261102.md)
+and current main establish that baseline. PROJECT_STATUS is reconciled within
+this task. No pupil settings, hosting, keys, curriculum or production runtime
+were changed in this continuation. External inference remains off.
+
+## Verification
+
+Node 24.22.1. All model transports were synthetic; real local HTTP, input
+validation, SQLite storage, reservation and replay handling were exercised.
 
 | Check | Result |
 | --- | --- |
-| Full `npm --prefix assistant-service test` | 129 passed, 0 failed, 0 skipped |
-| New OpenAI tests within that suite | 10 groups passed |
-| `build-course-knowledge.cjs --check` | ATANASYAN_ASSISTANT_SOURCE_OK and ICHENSKAYA_ASSISTANT_SOURCE_OK |
-| Changed JS syntax | PASS, config/provider/OpenAI tests |
-| Whitespace and exact task scope | PASS |
-| Paid provider requests | 0 |
-| Real pupil data or settings | 0 accessed/changed |
+| Full PR399 assistant suite | 133 passed, 0 failed, 0 skipped |
+| OpenAI groups within that suite | 14 passed |
+| Full isolated composition with published PR375 | 145 repository tests + 1 temporary dialogue probe passed, 0 failed/skipped |
+| Both course knowledge reproduction checks | ATANASYAN_ASSISTANT_SOURCE_OK; ICHENSKAYA_ASSISTANT_SOURCE_OK |
+| Changed JavaScript syntax and whitespace | PASS |
+| Scope | Original eight allowed files; two runtime files |
+| Paid model requests; real pupil records accessed | 0; 0 |
 
-Node 24.22.1. Model transport was injected with synthetic responses; HTTP
-bridge, input validation, service logic and SQLite accounting were real local
-components. Tests exercise a successful response, missing activation decisions,
-wrong model/currency/prices, refusal, truncation, tool calls, hidden reasoning,
-over-answering, malformed/oversized responses, timeout, wrong model/tier/usage,
-no-consent/offline paths, exact free decimal calculations, reservation before
-transport, identity exclusion, request replay after restart, budget exhaustion
-and a persistent usage circuit after restart.
+New regressions verify actual outbound schema fields and mode bounds, UTF-8
+context and schema accounting, exactly-at-limit acceptance and one-byte-over
+rejection, legacy provider compatibility, malformed or unsafe output despite
+a schema request, and a real HTTP budget denial including schema cost.
+Existing tests retain consent, free exact arithmetic, reservation before
+transport, secret/identity exclusion, restart replay, model/tier drift,
+refusal/truncation, timeout, no retries and persistent circuit coverage.
 
-Two initial findings were resolved before the final run:
+For compatibility, assistant-service was extracted from immutable current main,
+then overlaid with only this task's config, provider and OpenAI test files.
+Unchanged source/course links resolved to the original repository paths. The
+extra temporary HTTP probe first obtained a free deterministic decimal result,
+then sent an opted-in follow-up through OpenAI with the original task and prior
+explanation. It verified strict schema, the complete reservation before fetch,
+identity exclusion, no conversation text in SQLite and replay rejection after
+restart. The probe is composition evidence, not part of the 133-test head gate.
 
-- The privacy filter rejected the date inside the known model snapshot when
-  recording optional model provenance. Only the exact configured/allowlisted
-  OpenAI model receives the metadata exception; answer text, unknown model
-  strings and credentials retain filtering. The new transport test checks the
-  returned provenance, and the existing credential-echo test still passes.
-- A full-suite link test initially failed because the isolated sparse checkout
-  omitted original trainer/Peterson files. The original paths were populated
-  and the entire unchanged gate rerun successfully. No test was weakened.
+The first composition run found one missing original course link in the sparse
+checkout (`courses/vilenkin-6-part-1`). Restoring that unchanged original path
+and rerunning the entire composed suite yielded the 146 passing checks above.
+No test or assertion was weakened. Original preparation findings (allowlisted
+model-date metadata filtering and sparse trainer links) remain fixed.
 
-Focused self-review found no remaining issue in the bounded diff. This is not
-independent/external HIGH approval. No independent reviewer was used and no
-external model review or live teaching-quality claim is made.
+The status update is placed in an unchanged document section so the existing
+main preparation record is preserved by the ordinary three-way merge. The new
+published record explicitly supersedes it. No main merge, rebase, force push or
+branch-history repair was performed. Exact-head CI status, the tested tree and
+publication SHA are recorded in the PR after publication, avoiding a recursive
+report-only commit. The earlier CI run 41330891306 applies only to the previous
+head and is not evidence for this continuation.
 
-## Limits and next release conditions
+## Review, limits and rollback
 
-Local Docker/browser suites were not run: Docker is unavailable and there is
-no UI change. The existing assistant CI includes its browser/container gates;
-their exact-head results belong in the PR once complete. No live provider call,
-credit lookup, provider account change or production verification was performed.
+Focused self-review found no outstanding defect in the bounded change. This
+is not independent/external HIGH review, which remains outstanding; the PR375
+owner exception does not apply. Local Docker/browser checks were not run;
+GitHub's existing workflow covers contracts, desktop/mobile flow, production
+image and durable restart. There is no UI modification in this task.
 
-[Primary-source operator notes](../../assistant-service/OPENAI.md) record the
-documented model contract, standard USD rates, supported-country limitation and
-child-data/retention prerequisites. The chosen model is an evaluation candidate;
-Russian pedagogical quality, account eligibility, actual token/latency behavior
-and intended deployment access remain unmeasured. In particular store=false
-is not a ZDR claim, and the adapter does not resolve geographic eligibility.
+No live provider call, credit lookup, account change or new deployment was
+performed. [Operator notes](../../assistant-service/OPENAI.md) retain primary
+references and account/geography/child-data prerequisites. Live teaching
+quality, account eligibility and real latency/usage remain unmeasured;
+store=false is not a ZDR claim. Existing DeepSeek campaign authorization does
+not authorize OpenAI calls.
 
-Rollback: retain offline mode or disable external inference, preserve both
-ledgers, and revert the additive adapter normally. There is no migration or
-change to learner storage. Existing DeepSeek evaluation approval cannot be
-reused for OpenAI.
+Rollback: keep or return external inference to disabled and preserve both
+ledgers; revert the additive code normally if required. There is no migration
+or learner-storage change.
 
 ```text
 EXECUTIVE STATUS
 
 Task: MATHEXAM_ASSISTANT_OPENAI_20261102
-PR: Draft created from this branch; exact remote head recorded in PR
-Base: 6b9c327f2ca438cb7e7620ef302876de467fac19
-Head: exact committed head recorded in PR
+PR: 399, existing Draft
+Base: 6b9c327f2ca438cb7e7620ef302876de467fac19; compatibility main 059ee8c9f5baeb0b333c96d9b8516edb570666b2
+Head: exact publication SHA and tree recorded in PR
 Gate: MATHEXAM_ASSISTANT_OPENAI_PREPARED_OK (local)
-Tests: 129/129, source checks, syntax, scope and whitespace
-Failures: none remaining in final local run
+Tests: 133 head; 145 composed repository tests + 1 temporary HTTP dialogue probe; source checks, syntax, scope, whitespace
+Failures: none remaining in final local runs
 Not run: local Docker/browser, independent/external HIGH review, live model, deployment
-Scope deviations: none
-Recommendation: keep default-off; review the bounded adapter before any activation
-Next user decision: no additional decision needed to prepare the Draft; release and live pilot remain separate
+Scope deviations: none; same eight allowed files
+Recommendation: retain default-off; complete review before release/activation
+Next user decision: none for this Draft continuation; release/live pilot remain separate
 ```

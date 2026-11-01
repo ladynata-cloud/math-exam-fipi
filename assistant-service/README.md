@@ -245,7 +245,9 @@ The allowlist contains only
 arbitrary URL. Redirects, tool calls, automatic retries and automatic provider
 switching are disabled. DeepSeek requests explicitly disable thinking mode.
 
-The additive [OpenAI adapter](OPENAI.md) also defaults off. It explicitly uses
+The additive [OpenAI adapter](OPENAI.md) also defaults off. Its strict schema
+requests exactly four bounded fields and one step per hint (up to five in an
+explicit explanation); local output validation still applies. It explicitly uses
 standard pricing, `reasoning_effort=none`, `store=false` and a completion-token
 limit. Model/tier drift trips the existing durable circuit; refusal/truncation
 is not a valid explanation. The verified standard GPT-5.4 mini planning floors
@@ -287,7 +289,8 @@ guidance without a second provider call.
 These are enforceable **local reservation limits**. An invoice upper bound still
 depends on the provider honoring the reviewed tokenizer, `max_tokens`, reasoning,
 usage and pricing contract. The input estimate counts every serialized UTF-8 byte
-plus a 1024-token framing margin; it is not a provider invoice. An observed usage
+of the messages and, for OpenAI, the strict JSON schema, plus a 1024-token
+framing margin; it is not a provider invoice. An observed usage
 or reasoning-contract violation opens a durable circuit and blocks later paid
 calls. It cannot undo the first violating charge. A timeout or abort cannot
 guarantee that upstream billing stopped. Provider-side limits and an authorized

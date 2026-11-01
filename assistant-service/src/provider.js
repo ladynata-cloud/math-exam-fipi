@@ -3,22 +3,34 @@ import { pricesFresh } from './config.js';
 import { buildMessages, validateModelAnswer } from './tutor.js';
 import { containsSensitiveText } from './privacy.js';
 
+function openaiResponseFormat(mode) {
+  const boundedText = maxLength => ({ type: 'string', minLength: 1, maxLength });
+  return { type: 'json_schema', json_schema: { name: 'math_helper_answer', strict: true,
+    schema: { type: 'object', additionalProperties: false,
+      properties: { title: boundedText(160), text: boundedText(1800),
+        steps: { type: 'array', minItems: 1, maxItems: mode === 'hint' ? 1 : 5, items: boundedText(600) },
+        check: boundedText(600) },
+      required: ['title', 'text', 'steps', 'check'] } } };
+}
+
 export function prepareRequest(config, input, cards, now = Date.now(), messageBuilder = buildMessages) {
   requireValue(config.mode === 'api' && pricesFresh(config, now), 'PROVIDER_DISABLED', 503);
   // The alternate builder is selected by trusted application code for the
   // cabinet's fixed profiles. No HTTP field can provide a builder or prompt.
   requireValue(typeof messageBuilder === 'function', 'PROMPT_INVALID');
   const messages = messageBuilder(input, cards);
+  const responseFormat = config.provider === 'openai' ? openaiResponseFormat(input.mode) : { type: 'json_object' };
   // For the allowlisted byte-based tokenizers: count every UTF-8 byte as a
-  // token, plus a deliberately large framing margin. This is conservative,
-  // not an invoice or a promise about arbitrary providers/tokenizers.
-  const inputBound = Buffer.byteLength(JSON.stringify(messages), 'utf8') + 1024;
+  // token, including OpenAI's schema, plus a deliberately large framing margin.
+  // This is conservative, not an invoice or a promise about arbitrary providers.
+  const schemaBytes = config.provider === 'openai' ? Buffer.byteLength(JSON.stringify(responseFormat), 'utf8') : 0;
+  const inputBound = Buffer.byteLength(JSON.stringify(messages), 'utf8') + schemaBytes + 1024;
   requireValue(inputBound <= config.maxInputTokens, 'PROMPT_LIMIT', 413);
   const numerator = BigInt(inputBound) * BigInt(config.inputPriceMicros)
     + BigInt(config.maxOutputTokens) * BigInt(config.outputPriceMicros);
   const reservedMicros = Number((numerator + 999999n) / 1000000n);
   const body = { model: config.model, messages, max_tokens: config.maxOutputTokens, stream: false,
-    response_format: { type: 'json_object' } };
+    response_format: responseFormat };
   if (config.provider === 'deepseek') body.thinking = { type: 'disabled' };
   if (config.provider === 'openai') {
     delete body.max_tokens;

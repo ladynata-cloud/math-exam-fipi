@@ -59,7 +59,8 @@ test('OpenAI sends one bounded standard-tier request with storage and reasoning 
     assert.deepEqual(Object.keys(body).sort(), ['max_completion_tokens', 'messages', 'model', 'reasoning_effort', 'response_format', 'service_tier', 'store', 'stream'].sort());
     assert.equal(body.model, MODEL); assert.equal(body.store, false); assert.equal(body.stream, false);
     assert.equal(body.reasoning_effort, 'none'); assert.equal(body.service_tier, 'default');
-    assert.equal(body.max_completion_tokens, 500); assert.equal(body.response_format.type, 'json_object');
+    assert.equal(body.max_completion_tokens, 500); assert.equal(body.response_format.type, 'json_schema');
+    assert.equal(body.response_format.json_schema.strict, true);
     for (const value of [fx.config.apiKey, fx.config.pilotKey, fx.input.requestId]) assert(!options.body.includes(value));
     // Independent integer oracle, including a full, uncached input allowance.
     assert.equal(fx.prepared.reservedMicros, Math.ceil((fx.prepared.inputBound * 750000 + 500 * 4500000) / 1000000));
@@ -67,6 +68,64 @@ test('OpenAI sends one bounded standard-tier request with storage and reasoning 
   });
   assert.equal(calls, 1); assert.equal(result.reportedModel, MODEL);
   assert.equal(result.answer.verification, 'model-unverified'); assert.equal(result.answer.complete, false);
+});
+
+test('OpenAI constrains hints to one step and explanations to five steps with four bounded fields', async t => {
+  const fx = preparedFixture(t);
+  for (const mode of ['hint', 'explain']) {
+    const input = { ...fx.input, mode };
+    const prepared = prepareRequest(fx.config, input, fx.cards, NOW);
+    const result = await call({ ...fx, input, prepared }, async (_url, options) => {
+      const { json_schema: format } = JSON.parse(options.body).response_format;
+      assert.equal(format.name, 'math_helper_answer'); assert.equal(format.strict, true);
+      assert.equal(format.schema.type, 'object'); assert.equal(format.schema.additionalProperties, false);
+      assert.deepEqual(format.schema.required.slice().sort(), ['check', 'steps', 'text', 'title']);
+      assert.deepEqual(Object.keys(format.schema.properties).sort(), ['check', 'steps', 'text', 'title']);
+      for (const [key, limit] of [['title', 160], ['text', 1800], ['check', 600]]) {
+        assert.deepEqual(format.schema.properties[key], { type: 'string', minLength: 1, maxLength: limit });
+      }
+      assert.deepEqual(format.schema.properties.steps, { type: 'array', minItems: 1,
+        maxItems: mode === 'hint' ? 1 : 5, items: { type: 'string', minLength: 1, maxLength: 600 } });
+      return response();
+    });
+    assert.equal(result.answer.complete, mode === 'explain');
+  }
+});
+
+test('OpenAI counts schema and UTF-8 follow-up context before enforcing the input and money bounds', t => {
+  const fx = preparedFixture(t);
+  const messages = [{ role: 'system', content: 'Математика' }, { role: 'user', content: 'Почему нужны десятые?' }];
+  const prepared = prepareRequest(fx.config, fx.input, fx.cards, NOW, () => messages);
+  const schemaBytes = Buffer.byteLength(JSON.stringify(prepared.body.response_format), 'utf8');
+  const expectedBound = Buffer.byteLength(JSON.stringify(messages), 'utf8') + schemaBytes + 1024;
+  assert.equal(prepared.inputBound, expectedBound);
+  assert.equal(prepared.reservedMicros, Math.ceil((expectedBound * 750000 + 500 * 4500000) / 1000000));
+  const emptyMessages = [{ role: 'user', content: '' }];
+  const padding = fx.config.maxInputTokens - schemaBytes - 1024 - Buffer.byteLength(JSON.stringify(emptyMessages));
+  const atLimit = [{ role: 'user', content: 'x'.repeat(padding) }];
+  assert.equal(prepareRequest(fx.config, fx.input, fx.cards, NOW, () => atLimit).inputBound, 16000);
+  atLimit[0].content += 'x';
+  assert.throws(() => prepareRequest(fx.config, fx.input, fx.cards, NOW, () => atLimit), /PROMPT_LIMIT/);
+  const legacy = fixture(t, { api: true });
+  const legacyPrepared = prepareRequest(legacy.config, fx.input, fx.cards, NOW, () => messages);
+  assert.deepEqual(legacyPrepared.body.response_format, { type: 'json_object' });
+  assert.equal(legacyPrepared.inputBound, expectedBound - schemaBytes);
+});
+
+test('OpenAI structured output still passes local shape, content and hint validation', async t => {
+  const fx = preparedFixture(t);
+  const answer = { title: 'Шаг', text: 'Сравни слагаемые.', steps: ['Назови разряд.'], check: 'Что получилось?' };
+  for (const content of [{ ...answer, extra: 'unexpected' }, { ...answer, title: undefined },
+    { ...answer, title: 'x'.repeat(161) }, { ...answer, text: 'x'.repeat(1801) }, { ...answer, check: 'x'.repeat(601) },
+    { ...answer, steps: [] }, { ...answer, steps: ['x'.repeat(601)] }, { ...answer, steps: Array(6).fill('Шаг') },
+    { ...answer, text: '   ' }, { ...answer, text: '<script>alert(1)</script>' },
+    { ...answer, steps: ['Первый шаг', 'Второй шаг'] }]) {
+    let calls = 0;
+    await assert.rejects(call(fx, async () => { calls++; return response({ choices: [
+      { finish_reason: 'stop', message: { content: JSON.stringify(content) } }
+    ] }); }), /PROVIDER_(RESPONSE_INVALID|HINT_CONTRACT)/);
+    assert.equal(calls, 1);
+  }
 });
 
 test('OpenAI rejects model/tier drift and malformed or excess usage without retrying', async t => {
@@ -174,6 +233,27 @@ test('OpenAI cabinet reserves before transport, strips identity and retains repl
   await fx.restart();
   assert.equal((await fx.ask(input)).status, 409); assert.equal(calls, 1);
   assert.equal(fx.app.store.summary().day.reserved_micros, reserved);
+});
+
+test('OpenAI cabinet budget includes the schema before allowing a provider call', async t => {
+  let calls = 0, oldBoundMicros, actualBoundMicros;
+  const measured = await bridgeFixture(t, { fetchImpl: async (_url, options) => {
+    calls++;
+    const body = JSON.parse(options.body);
+    const messageBytes = Buffer.byteLength(JSON.stringify(body.messages));
+    const schemaBytes = Buffer.byteLength(JSON.stringify(body.response_format));
+    oldBoundMicros = Math.ceil(((messageBytes + 1024) * 750000 + 500 * 4500000) / 1000000);
+    actualBoundMicros = Math.ceil(((messageBytes + schemaBytes + 1024) * 750000 + 500 * 4500000) / 1000000);
+    assert.equal(measured.app.store.summary().day.reserved_micros, actualBoundMicros);
+    return response();
+  } });
+  assert.equal((await measured.ask(cabinetQuestion())).data.mode, 'api');
+  assert(actualBoundMicros > oldBoundMicros);
+  const blocked = await bridgeFixture(t, { env: { ASSISTANT_DAILY_BUDGET: (oldBoundMicros / 1000000).toFixed(6) },
+    fetchImpl: async () => { calls++; return response(); } });
+  assert.equal((await blocked.ask(cabinetQuestion())).data.mode, 'offline');
+  assert.equal(calls, 1); assert.equal(blocked.app.store.summary().day.api_requests, 0);
+  assert.equal(blocked.app.store.summary().day.reserved_micros, 0);
 });
 
 test('OpenAI model/tier accounting drift trips the durable circuit and survives restart', async t => {

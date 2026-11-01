@@ -1,23 +1,5 @@
 # MathExam project status
 
-## Prepared: optional OpenAI helper adapter, 2026-11-02
-
-- [Task](tasks/MATHEXAM_ASSISTANT_OPENAI_20261102.md), HIGH, starts from main
-  `6b9c327f2ca438cb7e7620ef302876de467fac19` (merged PR396). Current GitHub
-  metadata confirms PR380 is merged; PR375 (dialogue) and PR385 (public
-  navigator) remain unmerged Drafts with conflicts. This does not claim a new
-  live site/helper verification or supersede their historical evidence.
-- Adds the missing OpenAI provider option with a pinned GPT-5.4 mini snapshot,
-  conservative standard-price accounting, explicit storage/reasoning controls
-  and model/tier drift protection. Offline remains the default.
-- Full assistant suite: 129/129; both source knowledge checks pass. Ten new
-  synthetic provider/HTTP groups include real SQLite restart and replay tests.
-  [Report](reports/MATHEXAM_ASSISTANT_OPENAI_20261102.md).
-- No model calls, keys, pupil settings, production release, Qwen training or
-  spending. HIGH review and live provider eligibility/quality remain open;
-  [operator notes](../assistant-service/OPENAI.md) distinguish implementation
-  readiness from permission and feasibility of pupil deployment.
-
 ## Current: finance deposit explanation correction, 2026-11-01
 
 - [Task](tasks/EGE_P13_FINANCE_STEP_HINTS_20261101.md), SMALL; the owner explicitly
@@ -33,6 +15,34 @@
 - Next: publish the single corrective Draft PR, verify all applicable exact-head
   CI, and obtain separate exact-base/head merge and publication authorization.
   The current task does not itself authorize production release.
+
+## Published: assistant follow-up foundation, PR375, 2026-11-02
+
+- This published record supersedes earlier PR375 preparation/Draft entries.
+- PR375 was merged as `059ee8c9f5baeb0b333c96d9b8516edb570666b2` and delivered
+  to Pages, the existing cabinet and the separate assistant application.
+- Bounded follow-up context and grade-six Vilenkin NOD/NOK help are published.
+  External inference remains off; this is not an active paid pupil dialogue.
+- The [immutable release record](https://github.com/ladynata-cloud/math-exam-fipi/blob/d060c99a7fcd19db2f68a494d2ca5350ef4b1e71/docs/reports/ASSISTANT_PR375_RELEASE_20261102.md)
+  records 540 local tests, 18 head and 9 postmerge workflows, served asset
+  identity and both deployment health checks. Its explicit review exception
+  applies only to PR375. Earlier preparation entries are historical.
+
+## Prepared: optional OpenAI helper adapter, PR399, 2026-11-02
+
+- [Task](tasks/MATHEXAM_ASSISTANT_OPENAI_20261102.md), HIGH; original base
+  `6b9c327f2ca438cb7e7620ef302876de467fac19`. Continues the same Draft PR399;
+  current main is the separately published PR375 release above.
+- Fixed GPT-5.4 mini snapshot, strict four-field answer schema, one step per
+  hint, conservative accounting including schema bytes and model/tier drift
+  protection. Offline remains the default.
+- Full assistant suite: 133/133, including 14 OpenAI groups; both source
+  knowledge checks pass. Composition with published dialogue is verified
+  separately in the [report](reports/MATHEXAM_ASSISTANT_OPENAI_20261102.md).
+- No model calls, keys, pupil settings, new production release, Qwen training
+  or spending. HIGH review and live provider eligibility/quality remain open;
+  [operator notes](../assistant-service/OPENAI.md) distinguish implementation
+  readiness from permission and feasibility of pupil deployment.
 
 ## Published: financial course extension, PR390
 

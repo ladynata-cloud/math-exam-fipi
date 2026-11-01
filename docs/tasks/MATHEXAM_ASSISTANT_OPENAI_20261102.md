@@ -13,13 +13,22 @@
   commits and a Draft PR. It does not authorize merge, deployment, paid calls,
   changing real pupil settings, or a review exception.
 
-## Goal and verified starting point
+## Continuation after PR375 publication
 
-Prepare the missing OpenAI option in the existing private helper. Source help
-is already implemented; PR380 is merged. PR375 (follow-up dialogue) and PR385
-(public navigation) are still unmerged Drafts. This task neither duplicates
-their changes nor claims those features are published. Current main supports
-DeepSeek and Amvera but has no OpenAI adapter.
+The owner asked to continue this same task. PR399 remains the single Draft.
+PR375 was separately released as `059ee8c9f5baeb0b333c96d9b8516edb570666b2`.
+This continuation adds strict structured output and includes its schema in the
+existing conservative reservation. Verify compatibility on an isolated
+composition with current main; do not change the published dialogue runtime.
+The earlier PR375 review exception applies only to that release.
+
+## Goal and original verified starting point
+
+At the original base, source help was already implemented and PR380 merged;
+PR375 (follow-up dialogue) and PR385 (public navigation) were unmerged Drafts.
+The task adds OpenAI to the existing DeepSeek and Amvera provider boundary.
+The continuation above records PR375 publication separately; its implementation
+is not duplicated in this task.
 
 ## Scope
 
@@ -44,6 +53,9 @@ trainer design consultation is not applicable.
 - Only the documented pinned model/endpoint and explicit USD rates are allowed.
 - Request has store=false, reasoning_effort=none, service_tier=default and
   max_completion_tokens; no tools, retries, identifiers or answer keys.
+- OpenAI requests strict JSON Schema: four required fields, existing text
+  bounds, one hint step or up to five explanation steps, no extra properties.
+- Serialized schema bytes count towards the input ceiling and money reservation.
 - Invalid/refused/truncated/over-budget replies never become verified help.
 - Synthetic cabinet HTTP tests cover consent, exact free calculations,
   reservation before transport, replay after restart and persistent circuit.
