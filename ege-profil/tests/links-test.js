@@ -30,7 +30,9 @@ function note(href, where, base){
   if (/^(https?:|mailto:|tel:|javascript:|data:|#)/i.test(href)) return;
   const clean = href.split('#')[0].split('?')[0];
   if (!clean) return;
-  const target = path.posix.normalize(path.posix.join(base || '', clean));
+  // A leading slash is relative to the site/repository root, one level above
+  // this course. Resolve it as a browser does rather than duplicating ege-profil.
+  const target = path.posix.normalize(clean.startsWith('/') ? '..' + clean : path.posix.join(base || '', clean));
   if (!seen.has(target)) seen.set(target, new Set());
   seen.get(target).add(where);
 }

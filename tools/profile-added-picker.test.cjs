@@ -101,7 +101,7 @@ for (const course of courses) {
     const wrapper = fs.readFileSync(path.join(root, wrapperPath), 'utf8');
     const canonical = fs.readFileSync(path.join(root, sourcePath), 'utf8');
     const bridge = '/trainers/board-bridge.js';
-    const adapter = '/ege-profil/start/board-session.js?v=20261024-added-board';
+    const adapter = '/ege-profil/start/board-session.js?v=20261101-trainer-repair';
     const wrapperScripts = scripts(wrapper);
     assert.deepEqual(wrapperScripts.filter(src => src !== bridge && src !== adapter),
       scripts(canonical).filter(src => !src.startsWith('../learning/')).map(src => '/ege-profil/start/' + src));

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Задания 11–12 · Графики и наибольшее значение</title>
+<title>№9 и №12 курса · Графики функций и экстремумы</title>
 <link rel="canonical" href="https://mathexam.space/ege-profil/trainers/functions-t1112.html">
 <style>
   :root{
@@ -78,14 +78,14 @@
   .view{display:none}
   .view.on{display:block}
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261010-unified"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
 </head>
 <body>
 <div class="wrap">
   <a class="back" href="../index.html">← Курс</a>
-  <p class="eyebrow">задания 11 и 12 · краткий ответ · 2 балла</p>
+  <p class="eyebrow">№9 и №12 курса · графики функций и экстремумы</p>
   <h1>Графики и наибольшее значение</h1>
-  <p class="lede">Одиннадцатое задание читают по картинке: подставить две узловые точки и найти коэффициенты. Двенадцатое считают производной: критические точки плюс концы отрезка — и ни одного лишнего действия.</p>
+  <p class="lede">Восстановите функцию по графику. Отдельный режим поможет потренировать поиск наибольшего и наименьшего значения.</p>
 
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" aria-selected="true" data-view="idea">Идея</button>
@@ -97,7 +97,7 @@
   <section class="view on" id="view-idea">
     <div class="card">
       <h2>Что делает каждый коэффициент</h2>
-      <p>Гипербола <span class="mono">y = k/(x + a) + b</span> — самая частая картинка одиннадцатого задания. Подвигайте ползунки: <b>a</b> двигает вертикальную асимптоту, <b>b</b> — горизонтальную, знак <b>k</b> решает, в каких четвертях лежат ветви.</p>
+      <p>Двигайте ползунки и наблюдайте график <span class="mono">y = k/(x + a) + b</span>.</p>
       <div class="sliders">
         <div class="sl"><label for="sk">k =</label><input type="range" id="sk" min="-6" max="6" step="1" value="4"><span class="mono" id="skv"></span></div>
         <div class="sl"><label for="sa">a =</label><input type="range" id="sa" min="-4" max="4" step="1" value="1"><span class="mono" id="sav"></span></div>
@@ -105,13 +105,13 @@
       </div>
       <div class="figure" id="heroFig"></div>
       <p class="liveinfo" id="heroInfo"></p>
-      <p class="small muted" style="margin-top:10px">Асимптоты видны на картинке сразу — они дают <b>a</b> и <b>b</b> бесплатно. Остаётся одна неизвестная <b>k</b>: подставьте любую точку с целыми координатами, через которую проходит график.</p>
+      <details class="support"><summary>Как читать коэффициенты и асимптоты</summary><p>При k ≠ 0 параметр <b>a</b> задаёт вертикальную асимптоту x = −a, <b>b</b> — горизонтальную y = b. Знак <b>k</b> меняет расположение ветвей. Чтобы найти k, подставьте координаты точки графика. При k = 0 получаем y = b с исключённой точкой x = −a, а не гиперболу.</p></details>
     </div>
     <div class="card">
       <h2>Две разные работы</h2>
-      <details class="support"><summary>Задание 11 — читаем график</summary><p>Вид функции написан в условии, неизвестны только коэффициенты. Найдите на картинке точки, где график проходит ровно через узел клетки, подставьте их координаты и решите систему. Двух точек хватает почти всегда; для параболы берут вершину и ещё одну точку.</p></details>
-      <details class="support"><summary>Задание 12 — считаем производную</summary><p>Схема одна и та же: найти производную, приравнять к нулю, отобрать корни из отрезка, посчитать значения в этих корнях и на концах отрезка, выбрать нужное. Если спрашивают точку максимума или минимума, значения считать вообще не нужно — достаточно знака производной.</p></details>
-      <details class="support"><summary>Частые потери</summary><p>В 11-м — перепутанный знак у сдвига: график сдвинут вправо на 3 означает <span class="mono">(x − 3)</span> в формуле. В 12-м — забытые концы отрезка и корни производной, не попавшие в отрезок. И там и там ответ обязан быть числом, а не выражением.</p></details>
+      <details class="support"><summary>№12 курса — читаем график</summary><p>Вид функции написан в условии, неизвестны только коэффициенты. Найдите на картинке точки, где график проходит ровно через узел клетки, подставьте их координаты и решите систему. Для параболы берут вершину и ещё одну точку.</p></details>
+      <details class="support"><summary>№9 курса — экстремумы и производная</summary><p>Найдите критические точки внутри отрезка, вычислите значения функции в них и на концах отрезка и сравните. Если спрашивают точку максимума или минимума, исследуйте смену знака производной. Учитывайте область определения функции.</p></details>
+      <details class="support"><summary>Частые потери</summary><p>В графике легко перепутать знак сдвига: вправо на 3 означает <span class="mono">(x − 3)</span> в формуле. В задаче на экстремумы проверьте концы отрезка и положение критических точек.</p></details>
     </div>
   </section>
 
@@ -203,7 +203,7 @@ var FN = (function(){
     cand.sort(function(){ return Math.random() - 0.5; });
     var p1 = cand[0], p2 = cand[1], q = cand[2];
     return { line:11, type:"hyp",
-      formula:"f(x) = k/(" + xterm(a) + ")",
+      formula:"f(x) = k/(x + a)",
       fn:function(x){ return k/(x + a); },
       asym:{ v:-a, h:0 },
       pts:[p1, p2],
@@ -223,7 +223,7 @@ var FN = (function(){
     var x0 = pick([6,7,8,-6,-7,-8]);
     var ans = a*(x0-p)*(x0-p) + q;
     return { line:11, type:"parab",
-      formula:"f(x) = a(" + xterm(-p) + ")² " + (q < 0 ? "− " + (-q) : "+ " + q),
+      formula:"f(x) = a(x − p)² + q",
       fn:function(x){ return a*(x-p)*(x-p) + q; },
       pts:[[p,q], cand[0], cand[cand.length-1]],
       text:"На рисунке изображён график функции f(x) = a(x − p)² + q.",
@@ -237,7 +237,7 @@ var FN = (function(){
     if (b === 3) x0 = 3;
     var ans = Math.pow(b,x0) + c;
     return { line:11, type:"exp",
-      formula:"f(x) = bˣ " + (c < 0 ? "− " + (-c) : "+ " + c),
+      formula:"f(x) = bˣ + c",
       fn:function(x){ return Math.pow(b,x) + c; },
       asym:{ h:c },
       pts:[[0, 1+c],[1, b+c],[2, b*b+c]].filter(function(p){ return Math.abs(p[1]) <= 4.5; }),
@@ -261,7 +261,7 @@ var FN = (function(){
     }
     if (!big) return g11log();
     return { line:11, type:"log",
-      formula:"f(x) = log" + (b === 2 ? "₂" : "₃") + "(" + xterm(a) + ")",
+      formula:"f(x) = log_b(x + a)",
       fn:function(x){ return x + a > 0 ? Math.log(x+a)/Math.log(b) : NaN; },
       asym:{ v:-a },
       pts:pts.slice(0,3),
@@ -285,7 +285,7 @@ var FN = (function(){
     }
     if (!big) return g11sqrt();
     return { line:11, type:"sqrt",
-      formula:"f(x) = √(" + xterm(p) + ")" + (q < 0 ? " − " + (-q) : q > 0 ? " + " + q : ""),
+      formula:"f(x) = √(x + p) + q",
       fn:function(x){ return x + p >= 0 ? Math.sqrt(x+p) + q : NaN; },
       pts:pts.slice(0,3),
       text:"На рисунке изображён график функции f(x) = √(x + p) + q.",
@@ -442,6 +442,9 @@ if (typeof module !== "undefined") module.exports = FN;
     (t.pts || []).forEach(function(p){
       svg.appendChild(el("circle", { cx:toX(p[0]), cy:toY(p[1]), r:4.5, fill:"#C22F2A" }));
     });
+    (t.holes || []).forEach(function(p){
+      svg.appendChild(el("circle", { cx:toX(p[0]), cy:toY(p[1]), r:5, fill:"#fff", stroke:"#1E3A9F", "stroke-width":2, "data-hole":"true" }));
+    });
     return svg;
   }
 
@@ -477,6 +480,7 @@ if (typeof module !== "undefined") module.exports = FN;
 
   document.querySelectorAll(".tab").forEach(function(tab){
     tab.addEventListener("click", function(){
+      if (tab.dataset.view === "idea") noteHelp();
       document.querySelectorAll(".tab").forEach(function(x){ x.setAttribute("aria-selected", x === tab ? "true" : "false"); });
       document.querySelectorAll(".view").forEach(function(v){ v.classList.remove("on"); });
       document.getElementById("view-" + tab.dataset.view).classList.add("on");
@@ -485,7 +489,7 @@ if (typeof module !== "undefined") module.exports = FN;
 
   /* ---------- герой ---------- */
   function hero(){
-    var k = +document.getElementById("sk").value || 1;
+    var k = Number(document.getElementById("sk").value);
     var a = +document.getElementById("sa").value;
     var b = +document.getElementById("sb").value;
     document.getElementById("skv").textContent = k;
@@ -493,18 +497,25 @@ if (typeof module !== "undefined") module.exports = FN;
     document.getElementById("sbv").textContent = b;
     var fig = document.getElementById("heroFig");
     fig.innerHTML = "";
-    fig.appendChild(plot({ fn:function(x){ return k/(x+a) + b; }, asym:{ v:-a, h:b }, pts:[] }));
+    fig.appendChild(plot({ fn:function(x){ return x === -a ? NaN : k/(x+a) + b; }, asym:k === 0 ? null : { v:-a, h:b }, holes:k === 0 ? [[-a,b]] : [], pts:[] }));
     document.getElementById("heroInfo").textContent =
       "f(x) = " + k + "/(x " + (a < 0 ? "− " + (-a) : "+ " + a) + ") " + (b < 0 ? "− " + (-b) : "+ " + b) +
-      "   ·   асимптоты: x = " + (-a) + ", y = " + b;
+      (k === 0 ? "   ·   y = " + b + ", x ≠ " + (-a) + " — прямая с исключённой точкой" : "   ·   асимптоты: x = " + (-a) + ", y = " + b);
   }
   ["sk","sa","sb"].forEach(function(id){ document.getElementById(id).addEventListener("input", hero); });
   hero();
 
   /* ---------- тренажёр ---------- */
-  var mode = "mix", D = null, streak = 0;
+  var topic = new URLSearchParams(location.search).get("topic");
+  var mode = topic === "graphs" ? "t11" : topic === "extrema" ? "t12" : "mix";
+  var D = null, streak = 0, dAnswered = false, dAssisted = false, dMistakes = 0, drillTimer = null;
+  function noteHelp(){
+    if (D && !dAnswered){ dAssisted = true; streak = 0; refreshStats(); }
+    if (Z && Z.active) Z.helped = true;
+  }
+  document.addEventListener("profile-course-help-requested", noteHelp);
   var chips = document.getElementById("modeChips");
-  [["mix","вперемешку"],["t11","задание 11"],["t12","задание 12"]].forEach(function(m){
+  [["mix","вперемешку"],["t11","графики"],["t12","экстремумы"]].forEach(function(m){
     var b = document.createElement("button");
     b.textContent = m[1];
     b.setAttribute("aria-pressed", m[0] === mode ? "true" : "false");
@@ -522,7 +533,7 @@ if (typeof module !== "undefined") module.exports = FN;
     document.getElementById("stStreak").textContent = streak;
   }
   function show(t, ids){
-    document.getElementById(ids.tag).textContent = ids.prefix + "задание " + t.line;
+    document.getElementById(ids.tag).textContent = ids.prefix + (t.line === 11 ? "№12 курса · график функции" : "№9 курса · экстремумы");
     document.getElementById(ids.text).textContent = t.text || "";
     document.getElementById(ids.text).style.display = t.text ? "block" : "none";
     document.getElementById(ids.formula).textContent = t.formula;
@@ -532,29 +543,43 @@ if (typeof module !== "undefined") module.exports = FN;
     if (t.line === 11) fig.appendChild(plot(t));
   }
   function newTask(){
+    clearTimeout(drillTimer); drillTimer = null;
+    dAnswered = false; dAssisted = false; dMistakes = 0;
     D = FN.task(mode);
     show(D, { tag:"dTag", text:"dText", formula:"dFormula", ask:"dAsk", fig:"dFig", prefix:"" });
     document.getElementById("dAnswer").value = "";
+    document.getElementById("dAnswer").disabled = false;
+    document.getElementById("dCheck").disabled = false;
     document.getElementById("dFb").className = "feedback";
     refreshStats();
   }
   document.getElementById("dCheck").addEventListener("click", function(){
+    if (dAnswered) return;
     if (isNaN(FN.parse(document.getElementById("dAnswer").value))) return;
     var fb = document.getElementById("dFb");
     if (FN.check(document.getElementById("dAnswer").value, D)){
-      fb.className = "feedback on ok"; fb.textContent = "Верно.";
-      streak++;
-      save(function(s){ if (D.line === 11) s.solved11 = (s.solved11||0) + 1; else s.solved12 = (s.solved12||0) + 1; });
+      dAnswered = true;
+      document.getElementById("dCheck").disabled = true;
+      document.getElementById("dAnswer").disabled = true;
+      fb.className = "feedback on ok";
+      fb.textContent = dAssisted ? "Разобрано с помощью. Закрепите на новой задаче самостоятельно." : "Верно.";
+      if (!dAssisted){
+        streak++;
+        save(function(s){ if (D.line === 11) s.solved11 = (s.solved11||0) + 1; else s.solved12 = (s.solved12||0) + 1; });
+      }
       refreshStats();
-      setTimeout(newTask, 950);
+      drillTimer = setTimeout(newTask, dAssisted ? 2000 : 950);
     } else {
       fb.className = "feedback on bad";
-      fb.textContent = "Неверно. Правильный ответ: " + D.answer + ". Посмотрите разбор.";
+      dMistakes++;
+      fb.textContent = dMistakes < 2 ? "Пока неверно. Проверьте вычисления и попробуйте ещё раз." : "Пока неверно. Можно открыть «Разбор», затем закрепить способ на новой задаче.";
       streak = 0; refreshStats();
     }
   });
   document.getElementById("dAnswer").addEventListener("keydown", function(e){ if (e.key === "Enter") document.getElementById("dCheck").click(); });
   document.getElementById("dSol").addEventListener("click", function(){
+    noteHelp();
+    clearTimeout(drillTimer); drillTimer = null;
     var fb = document.getElementById("dFb");
     fb.className = "feedback on hint"; fb.textContent = D.sol;
   });
@@ -562,7 +587,7 @@ if (typeof module !== "undefined") module.exports = FN;
   newTask();
 
   /* ---------- зачёт ---------- */
-  var Z = { active:false, i:0, score:0, marks:[], plan:[], cur:null };
+  var Z = { active:false, i:0, score:0, marks:[], plan:[], cur:null, waiting:false, helped:false }, examTimer = null;
   function zDots(){
     var host = document.getElementById("zDots");
     host.innerHTML = "";
@@ -573,45 +598,62 @@ if (typeof module !== "undefined") module.exports = FN;
     }
   }
   function zNext(){
+    examTimer = null;
+    if (!Z.active) return;
+    Z.waiting = false;
     Z.cur = FN.task(Z.plan[Z.i]);
     show(Z.cur, { tag:"zTag", text:"zText", formula:"zFormula", ask:"zAsk", fig:"zFig", prefix:(Z.i+1) + " из 10 · " });
     document.getElementById("zAnswer").value = "";
+    document.getElementById("zAnswer").disabled = false;
+    document.getElementById("zCheck").disabled = false;
     document.getElementById("zFb").className = "feedback";
     document.getElementById("zAnswer").focus();
   }
   document.getElementById("zStart").addEventListener("click", function(){
+    clearTimeout(examTimer); examTimer = null;
     var plan = ["t11","t11","t11","t11","t11","t12","t12","t12","t12","t12"].sort(function(){ return Math.random() - 0.5; });
-    Z = { active:true, i:0, score:0, marks:[], plan:plan, cur:null };
+    Z = { active:true, i:0, score:0, marks:[], plan:plan, cur:null, waiting:false, helped:false };
     save(function(s){ s.runs = (s.runs || 0) + 1; });
     document.getElementById("zDone").style.display = "none";
     document.getElementById("zBox").style.display = "block";
     zDots(); zNext();
   });
   document.getElementById("zCheck").addEventListener("click", function(){
-    if (!Z.active) return;
+    if (!Z.active || Z.waiting) return;
     if (isNaN(FN.parse(document.getElementById("zAnswer").value))) return;
     var ok = FN.check(document.getElementById("zAnswer").value, Z.cur);
+    Z.waiting = true;
+    document.getElementById("zAnswer").disabled = true;
+    document.getElementById("zCheck").disabled = true;
     var fb = document.getElementById("zFb");
     fb.className = "feedback on " + (ok ? "ok" : "bad");
-    fb.textContent = ok ? "Верно." : "Неверно: " + Z.cur.answer + ".";
+    fb.textContent = ok ? "Верно." : "Ответ принят. После зачёта можно вернуться к тренировке.";
     Z.marks.push(ok); if (ok) Z.score++;
     Z.i++; zDots();
     if (Z.i >= 10){
       Z.active = false;
-      var passed = Z.score >= 8;
+      var passed = Z.score >= 8 && !Z.helped;
       document.getElementById("zBox").style.display = "none";
       document.getElementById("zDone").style.display = "block";
       document.getElementById("zScore").textContent = Z.score + " / 10";
-      document.getElementById("zVerdict").textContent = passed
+      document.getElementById("zVerdict").textContent = Z.helped
+        ? "Решено с помощью. Для самостоятельного зачёта начните новую попытку."
+        : passed
         ? "Зачёт сдан: и чтение графика, и производная работают."
         : "Зачёт не сдан: нужно 8 из 10. Разберите промахи в тренажёре и вернитесь.";
-      save(function(s){ s.best = Math.max(s.best || 0, Z.score); if (passed) s.passed = true; });
+      save(function(s){
+        if (Z.helped) s.assistedExamBest = Math.max(s.assistedExamBest || 0, Z.score);
+        else s.best = Math.max(s.best || 0, Z.score);
+        if (passed) s.passed = true;
+      });
     } else {
-      setTimeout(zNext, 900);
+      var round = Z;
+      examTimer = setTimeout(function(){ if (Z === round) zNext(); }, 900);
     }
   });
   document.getElementById("zAnswer").addEventListener("keydown", function(e){ if (e.key === "Enter") document.getElementById("zCheck").click(); });
   zDots();
+  if (topic === "graphs" || topic === "extrema") document.querySelector('[data-view="drill"]').click();
 })();
 </script>
 </body>

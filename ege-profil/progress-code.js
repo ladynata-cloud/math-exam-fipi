@@ -253,7 +253,85 @@ var PROGRESS_CODE = (function(){
     return { panel:panel, box:box, button:openBtn };
   }
 
+  /* A separate read-only report. MEP1 import/backup remains unchanged. */
+  var SIDE_KEYS = ['stereo3.status', 'ep_progress_v1', 'trig-stp-trainer-v2', 'profile-ege-course-v1'];
+  function fullReport(course, lessons, storage){
+    var warnings = [];
+    try{ storage = storage || localStorage; }catch(e){ storage = null; }
+    function readReportKey(key){
+      try{ var raw = storage && storage.getItem(key); return raw ? JSON.parse(raw) : null; }
+      catch(e){ warnings.push('Не удалось прочитать сохранение: ' + key); return null; }
+    }
+    return {
+      kind:'mathexam-profile-full-report', version:1, exportedAt:new Date().toISOString(),
+      course:course || readReportKey('mathexam.profileStart2027.v1'),
+      lessons:(lessons || []).map(function(l){ return {id:l.id,title:l.title,position:l.position,taskIds:(l.tasks||[]).map(function(t){return t.id;}),independentTaskIds:(l.tasks||[]).slice(-3).map(function(t){return t.id;})}; }),
+      checkpoint:readReportKey('mathexam.profileCheckpoint.v1'),
+      diagnostic:readReportKey('mathexam.profileReadinessDiagnostic.v1'),
+      legacy:readReportKey(KEY) || {},
+      side:Object.fromEntries(SIDE_KEYS.map(function(key){ return [key,readReportKey(key)]; })),
+      warnings:warnings
+    };
+  }
+  function validateFullReport(value){
+    if(!isObj(value) || value.kind!=='mathexam-profile-full-report' || value.version!==1 ||
+       !Array.isArray(value.lessons) || value.lessons.length>200 || !isObj(value.legacy) || !isObj(value.side))
+      throw new Error('Это не полный отчёт курса MathExam версии 1.');
+    if(value.course!==null && (!isObj(value.course) || value.course.version!==1 || !isObj(value.course.records) || !isObj(value.course.sessions)))
+      throw new Error('В отчёте повреждены результаты основного курса.');
+    var ids = new Set();
+    value.lessons.forEach(function(l){
+      if(!isObj(l) || typeof l.id!=='string' || !/^[a-z0-9-]{1,100}$/.test(l.id) || ids.has(l.id) || typeof l.title!=='string' || l.title.length>250 ||
+         !(typeof l.position==='number' && Number.isFinite(l.position) || typeof l.position==='string' && l.position.length<=100))
+        throw new Error('В отчёте повреждён список тем.');
+      for(var kind of ['taskIds','independentTaskIds'])if(!Array.isArray(l[kind])||l[kind].length>100||l[kind].some(function(id){return typeof id!=='string'||!/^[a-z0-9-]{1,200}$/.test(id);}))throw new Error('В отчёте повреждены условия тем.');
+      ids.add(l.id);
+    });
+    return value;
+  }
+  function profileRows(report){
+    var course = isObj(report.course) ? report.course : {}, records = isObj(course.records) ? course.records : {};
+    var sessions = isObj(course.sessions) ? course.sessions : {};
+    var metadata = new Map((report.lessons || []).map(function(l){return [l.id,l];}));
+    var ids = Array.from(metadata.keys()); // Opaque work is retained in the file, never counted as verified course work.
+    function strings(value){return Array.isArray(value)?Array.from(new Set(value.filter(function(id){return typeof id==='string'&&id.length<=200;}))):[];}
+    return ids.filter(function(id){return /^[a-z0-9-]{1,100}$/.test(id);}).map(function(id){
+      var l=metadata.get(id)||{id:id,title:id,position:''},r=isObj(records[id])?records[id]:{};
+      var taskIds=l.taskIds||[],independentIds=l.independentTaskIds||[];
+      var independent=strings(r.independent).filter(function(id){return independentIds.includes(id);}), recovered=strings(r.recovered).filter(function(id){return independentIds.includes(id);}), mistakes=strings(r.mistakes).filter(function(id){return taskIds.includes(id);});
+      Object.keys(sessions).forEach(function(key){var s=sessions[key];if(key.split(':')[0]===id&&isObj(s)&&s.wrong===true&&taskIds.includes(s.taskId)&&!mistakes.includes(s.taskId))mistakes.push(s.taskId);});
+      return {id:id,title:l.title,position:l.position,guided:strings(r.guided).filter(function(id){return taskIds.includes(id);}).length,independent:independent.length,recovered:recovered.length,
+        mistakes:mistakes.length,attempts:typeof r.attempts==='number'&&Number.isFinite(r.attempts)?Math.max(0,Math.floor(r.attempts)):0,
+        status:independent.length>=2?'Две новые задачи самостоятельно':new Set(independent.concat(recovered)).size>=2?'Закреплено на знакомых задачах':'Продолжить практику'};
+    });
+  }
+  function renderProfileReport(host, report, options){
+    options=options||{};host.replaceChildren();var d=host.ownerDocument,rows=profileRows(report);
+    if(options.mistakesOnly)rows=rows.filter(function(row){return row.mistakes>0;});
+    function text(tag,value,parent){var e=d.createElement(tag);e.textContent=value;(parent||host).appendChild(e);return e;}
+    text('h2',options.mistakesOnly?'Ошибки основного курса №1–13':'Основной курс №1–13 и школьные основы');
+    text('p',options.mistakesOnly?'Сохранены условия, в которых были ошибки. Отметка о закреплении учитывает последующую практику; прежние ошибки остаются в истории.':'Новые самостоятельные решения и чистые повторы показаны отдельно. Это локальные учебные результаты, не прогноз балла ЕГЭ.');
+    if(!rows.length)text('p',options.mistakesOnly?'Сохранённых ошибок основного курса пока нет.':'В этом отчёте ещё нет работы в основном курсе.');
+    rows.forEach(function(row){
+      var item=text('details',''),summary=text('summary',row.title+' — '+row.status,item);
+      summary.style.cursor='pointer';
+      text('p','С опорой: '+row.guided+'. Новые самостоятельно: '+row.independent+'. Знакомые без ошибок и подсказок: '+row.recovered+'. Завершённых попыток: '+row.attempts+'. Условий с ошибками в истории: '+row.mistakes+'.',item);
+      var a=text('a','Открыть тему',item);a.href='/ege-profil/start/index.html#lesson/'+row.id;
+    });
+    if(!options.mistakesOnly){
+      var checkpoint=isObj(report.checkpoint)?report.checkpoint:{},round=checkpoint.round;
+      if(isObj(round)&&Array.isArray(round.items)){
+        var submitted=round.items.filter(function(i){return isObj(i)&&i.submitted===true;}),independent=submitted.filter(function(i){return i.correct===true&&i.assisted===false;});
+        text('p','Последняя смешанная проверка: отвечено '+submitted.length+' из 13; без ошибок и помощи '+independent.length+'. '+(round.complete?'Круг завершён.':'Можно продолжить.'));
+      }
+      var diagnostic=report.diagnostic;
+      if(isObj(diagnostic)&&isObj(diagnostic.results))text('p','Проверка школьной основы: отвечено '+Object.keys(diagnostic.results).length+' из 12; верно '+Object.values(diagnostic.results).filter(function(v){return v===true;}).length+'.');
+    }
+    (Array.isArray(report.warnings)?report.warnings:[]).forEach(function(warning){if(typeof warning==='string')text('p',warning);});
+  }
+
   return { KEY:KEY, BACKUP:BACKUP, PREFIX:PREFIX,
+           fullReport:fullReport, validateFullReport:validateFullReport, profileRows:profileRows, renderProfileReport:renderProfileReport,
            encode:encode, decode:decode, readLive:readLive,
            loadInto:loadInto, hasBackup:hasBackup, restoreBackup:restoreBackup,
            hasCompression:hasCompression, mount:mount };

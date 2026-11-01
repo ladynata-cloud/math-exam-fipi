@@ -421,7 +421,9 @@ async function exampleAndResult(t, s, config) {
   const result = await synchronized(t, s, 'completed task and result model');
   assert.equal(result.progress.sessions[config.entry + ':independent'].done, true);
   assert.equal(result.progress.records[config.entry].independent.length, 0, 'assisted work is not awarded a new independent success');
-  assert.equal(await t.locator('#result-solution [data-solution-step]').count(), 1, 'result initially reveals only the first authored solution step');
+  assert.equal(await t.locator('#result-solution [data-solution-step]').count(), 0, 'result explanation waits for a request');
+  await t.locator('#result-solution [data-solution-open]').click(); await synchronized(t, s, 'requested result explanation');
+  assert.equal(await t.locator('#result-solution [data-solution-step]').count(), 1, 'request reveals only the first authored solution step');
   await t.locator('#result-solution [data-solution-next]').click(); await synchronized(t, s, 'completed result next explanation');
 }
 async function run(browser, siteOrigin, boardOrigin) {

@@ -345,7 +345,7 @@
 /* ===== EP:CSS END ===== */
 
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261010-unified"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
 </head>
 <body>
 <div class="wrap">
@@ -355,13 +355,13 @@
     <h1 class="title">Тригонометрия:<br><span class="a">треугольник</span> → <span class="b">окружность</span></h1>
     <p class="sub">Откуда взялись синус и косинус, что они когда-то измеряли, при чём тут число π — и зачем угол превратили в число <span class="mono">t</span>.</p>
 <details class="kim-ref" style="margin:16px 0;border:1.5px dashed #C22F2A;border-radius:10px;background:rgba(255,255,255,.85);padding:0 16px;max-width:660px;">
-  <summary style="cursor:pointer;padding:11px 0;font-weight:800;color:#16307F;">Справочные материалы КИМ — этот листок выдают на экзамене</summary>
+  <summary style="cursor:pointer;padding:11px 0;font-weight:800;color:#16307F;">Учебная справка: формулы сложения и двойного угла</summary>
   <div style="padding:2px 0 13px;font-size:16.5px;line-height:1.85;color:#2A2F38;">
     <div>sin 2α = 2 sin α · cos α</div>
     <div>cos 2α = cos²α − sin²α</div>
     <div>sin (α + β) = sin α · cos β + cos α · sin β</div>
     <div>cos (α + β) = cos α · cos β − sin α · sin β</div>
-    <p style="margin:10px 0 0;font-size:13.5px;line-height:1.6;color:#67707E;">Из этих четырёх выводится многое: замените β на −β — получите формулы разности (sin меняет знак, cos — нет); подставьте sin²α = 1 − cos²α в cos 2α — выйдет cos 2α = 1 − 2sin²α = 2cos²α − 1, а отсюда — понижение степени. Наизусть остаются: основное тождество sin²α + cos²α = 1, табличные значения и формулы приведения — их листок не выдаёт.</p>
+    <p style="margin:10px 0 0;font-size:13.5px;line-height:1.6;color:#67707E;">Из этих четырёх выводится многое: замените β на −β — получите формулы разности (sin меняет знак, cos — нет); подставьте sin²α = 1 − cos²α в cos 2α — выйдет cos 2α = 1 − 2sin²α = 2cos²α − 1, а отсюда — понижение степени. Также полезны основное тождество sin²α + cos²α = 1, табличные значения и формулы приведения. Это учебная справка, а не утверждение о составе справочных материалов ЕГЭ-2027.</p>
   </div>
 </details>
 
@@ -699,6 +699,7 @@
         <div class="qtext" id="qText">Загрузка…</div>
         <div class="answers" id="qAnswers"></div>
         <div class="feedback" id="qFeedback"></div>
+        <button class="btn" id="qSolution" type="button" hidden>Показать разбор</button>
       </div>
       <div style="display:flex;justify-content:flex-end;margin-top:16px">
         <button class="btn primary" id="qNext" style="display:none">Следующий вопрос →</button>
@@ -711,7 +712,7 @@
   <div class="card lg">
     <div class="sec-head">
       <div class="ico" style="background:#FEF3C7">🎯</div>
-      <div><h2>ЕГЭ-практикум</h2><p>Семь навыков: от таблицы и радианов до уравнений и прикладных задач типов 6, 7, 9</p></div>
+      <div><h2>ЕГЭ-практикум</h2><p>Семь навыков: таблица, радианы, четверти, приведение, тождества, уравнения и задачи с треугольником</p></div>
     </div>
     <p class="ep-intro">Это не контрольная, а тренировка с разбором: каждую задачу решаем <b>по шагам</b> — тренажёр спрашивает ровно то, о чём вы должны спросить себя сами. Четыре навыка — прямо из ЕГЭ (таблица, тождество, уравнение, опора), три — фундамент из школьной программы (радианы, четверти, приведение). Когда шаги станут привычными, переходите на вкладку <b>«Экзамен»</b>: там только условие и поле ответа.</p>
     <div class="ep-chips" id="epChips" aria-label="Прогресс по навыкам"></div>
@@ -749,7 +750,7 @@
             <tr><th>cos</th><td class="c">1</td><td class="c">√3/2</td><td class="c">√2/2</td><td class="c">1/2</td><td class="c">0</td></tr>
             <tr><th>tg</th><td class="t">0</td><td class="t">√3/3</td><td class="t">1</td><td class="t">√3</td><td class="t">—</td></tr>
           </table>
-          <p>В задачах типа 7 нужно только подставить значения и аккуратно посчитать. Если в выражении два одинаковых корня — коэффициенты при них складываются, а корень выносится за скобку.</p>
+          <p>В этих вычислительных задачах нужно подставить табличные значения и аккуратно посчитать. Если в выражении два одинаковых корня — коэффициенты при них складываются, а корень выносится за скобку.</p>
         </div>
       </details>
       <div class="ep-ghost" data-track="table"></div>
@@ -858,7 +859,7 @@
       <details class="ep-theory">
         <summary>Шпаргалка: опора, лестница, столб — всё это гипотенуза</summary>
         <div class="body">
-          <p>В прикладных задачах типа 9 наклонная опора — это <b>гипотенуза</b> прямоугольного треугольника. Дальше 8 класс:</p>
+          <p>В задачах с наклонной опорой она — это <b>гипотенуза</b> прямоугольного треугольника. Дальше 8 класс:</p>
           <p style="font-family:'JetBrains Mono',monospace;font-weight:700">высота = L · sin α &nbsp;&nbsp;·&nbsp;&nbsp; расстояние по земле = L · cos α</p>
           <p>Мнемоника: <b>синус</b> поднимает <b>вверх</b> (противолежащий катет), <b>косинус</b> стелется <b>по земле</b> (прилежащий). После подстановки табличного значения сократите дробь: 6·√2/2 — это 3√2, а не «шесть корней из двух пополам». На «Профиле» бывает наоборот: дана высота — найдите длину (деление вместо умножения).</p>
           <button class="ep-goto" data-goto="g8" type="button">Вспомнить определения: вкладка «Треугольник» →</button>
@@ -1506,15 +1507,21 @@ specials.forEach(s=>s.t=s.deg*PI/180);
     $('qText').innerHTML=q.text;
     const box=$('qAnswers');box.innerHTML='';
     q.answers.forEach(a=>{const b=document.createElement('button');b.className='ans';b.innerHTML='<span class="mono2">'+a.html+'</span>';b.addEventListener('click',()=>choose(b,a,q));box.appendChild(b);});
-    $('qFeedback').textContent='';$('qFeedback').className='feedback';$('qNext').style.display='none';
+    $('qFeedback').textContent='';$('qFeedback').className='feedback';$('qNext').style.display='none';$('qSolution').hidden=true;
   }
   function choose(btn,a,q){
     if(answered)return;answered=true;total++;
     const all=[...$('qAnswers').children];all.forEach(x=>x.disabled=true);
     if(a.correct){right++;streak++;btn.classList.add('correct');$('qFeedback').className='feedback ok';$('qFeedback').textContent='✓ Верно! '+q.explain;}
-    else{streak=0;btn.classList.add('wrong');all.forEach((x,i)=>{if(q.answers[i].correct)x.classList.add('correct');});$('qFeedback').className='feedback no';$('qFeedback').textContent='✗ '+q.explain;}
+    else{streak=0;btn.classList.add('wrong');$('qFeedback').className='feedback no';$('qFeedback').textContent='Пока неверно. Разбор можно открыть по кнопке.';$('qSolution').hidden=false;}
     $('qRight').textContent=right;$('qTotal').textContent=total;$('qStreak').textContent=streak;$('qNext').style.display='';
   }
+  $('qSolution').addEventListener('click',()=>{
+    if(!answered||!current)return;
+    [...$('qAnswers').children].forEach((b,i)=>{if(current.answers[i].correct)b.classList.add('correct');});
+    $('qFeedback').textContent=current.explain;
+    $('qSolution').hidden=true;
+  });
   $('qNext').addEventListener('click',()=>render(genFor(filter)));
   document.querySelectorAll('#qFilter button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#qFilter button').forEach(x=>x.classList.toggle('on',x===b));filter=b.dataset.f;render(genFor(filter));}));
   render(genFor('all'));
@@ -2364,11 +2371,14 @@ if (typeof module !== "undefined") module.exports = EP_ARCHIVE;
   };
 
   /* ---------- пошаговый режим ---------- */
+  const guidedSessions = new WeakMap();
   function startGuided(track, host, preset, opts) {
     opts = opts || {};
     host.innerHTML = '';
     const t = preset || GEN[track](state.level);
     let mistakes = 0, revealed = false;
+    const guided = { helped: false, finished: false };
+    guidedSessions.set(host, guided);
 
     const cond = el('div', 'ep-cond');
     cond.textContent = t.cond;
@@ -2401,8 +2411,12 @@ if (typeof module !== "undefined") module.exports = EP_ARCHIVE;
       const box = el('div', 'ep-step');
       box.append(el('p', 'q', s.q));
       const hint = el('div', 'ep-hint', 'Подсказка: ' + s.hint);
+      const hintButton = el('button', 'ep-btn ghost sm', 'Подсказка');
+      hintButton.type = 'button';
+      hintButton.addEventListener('click', () => hint.classList.toggle('on'));
       let fails = 0;
       let advanced = false;
+      let revealOffered = false;
       const next = () => {
         if (advanced) return;
         advanced = true;
@@ -2422,6 +2436,14 @@ if (typeof module !== "undefined") module.exports = EP_ARCHIVE;
         box.append(r);
         go.focus();
       };
+      const offerReveal = (action) => {
+        if (fails < 2 || revealOffered) return;
+        revealOffered = true;
+        const b = el('button', 'ep-btn ghost sm', 'Показать ответ шага');
+        b.type = 'button';
+        b.addEventListener('click', () => { if (advanced) return; b.disabled = true; action(); });
+        box.append(b);
+      };
 
       if (s.type === 'choice') {
         const row = el('div', 'ep-opts');
@@ -2436,19 +2458,18 @@ if (typeof module !== "undefined") module.exports = EP_ARCHIVE;
             } else {
               b.classList.add('no'); b.disabled = true;
               mistakes++; fails++;
-              hint.classList.add('on');
-              if (fails >= 2) {
+              offerReveal(() => {
                 row.querySelectorAll('.ep-opt').forEach(x => {
                   x.disabled = true;
                   if (x.textContent === s.ok) x.classList.add('ok');
                 });
                 revealBlock(s.ok);
-              }
+              });
             }
           });
           row.append(b);
         });
-        box.append(row, hint);
+        box.append(row, hintButton, hint);
       } else {
         const row = el('div', 'ep-inrow');
         const inp = el('input');
@@ -2459,7 +2480,7 @@ if (typeof module !== "undefined") module.exports = EP_ARCHIVE;
         const btn = el('button', 'ep-btn', 'Проверить');
         btn.type = 'button';
         row.append(inp, btn, makeSymRow(inp));
-        box.append(row, hint);
+        box.append(row, hintButton, hint);
         const check = () => {
           const v = parseAns(inp.value);
           inp.classList.remove('ok', 'no');
@@ -2468,13 +2489,12 @@ if (typeof module !== "undefined") module.exports = EP_ARCHIVE;
             next();
           } else {
             inp.classList.add('no'); mistakes++; fails++;
-            hint.classList.add('on');
             if (almost(v, s.val)) hint.textContent = 'Подсказка: похоже на округление — введите точное значение, с корнем, дробью или π.';
-            if (fails >= 2) {
+            offerReveal(() => {
               inp.value = s.canon; inp.disabled = true; btn.disabled = true;
               inp.classList.remove('no'); inp.classList.add('ok');
               revealBlock(s.canon);
-            }
+            });
           }
         };
         btn.addEventListener('click', check);
@@ -2485,6 +2505,7 @@ if (typeof module !== "undefined") module.exports = EP_ARCHIVE;
     }
 
     function finish() {
+      guided.finished = true;
       const d = el('div', 'ep-done');
       const left = el('span');
       left.append('Готово! Ответ: ');
@@ -2498,8 +2519,8 @@ if (typeof module !== "undefined") module.exports = EP_ARCHIVE;
         host.append(d);
         return;
       }
-      const clean = !revealed && mistakes <= 1;
-      left.append(revealed ? ' · разобрано вместе — ещё одна такая же, и закрепим?'
+      const clean = !revealed && !guided.helped && mistakes <= 1;
+      left.append(revealed || guided.helped ? ' · разобрано с помощью — решите следующую задачу самостоятельно'
         : mistakes === 0 ? ' · чистое решение, +1 к навыку'
         : mistakes === 1 ? ' · решено! Одна помарка не в счёт — +1 к навыку'
         : ' · решено с несколькими попытками — прогресс идёт за уверенные решения');
@@ -2522,7 +2543,13 @@ if (typeof module !== "undefined") module.exports = EP_ARCHIVE;
   }
 
   /* ---------- экзаменационный режим ---------- */
-  const exam = { t: null, judged: false, lastArch: -1, mode: 'flow', series: null };
+  const exam = { t: null, judged: false, revealed: false, lastArch: -1, mode: 'flow', series: null };
+  document.addEventListener('profile-course-help-requested', () => {
+    const host = root.querySelector('.ep-view.on .ep-ghost');
+    const guided = host && guidedSessions.get(host);
+    if (guided && !guided.finished) guided.helped = true;
+    if (exam.t && !exam.judged) exam.revealed = true;
+  });
   function newSeries() { exam.series = { i: 0, ok: 0, wrongs: [] }; }
   function nextExam() {
     if (exam.mode === 'series' && exam.series && exam.series.i >= 10) { renderSummary(); return; }
@@ -2540,7 +2567,7 @@ if (typeof module !== "undefined") module.exports = EP_ARCHIVE;
       const g = GEN[EPCore.rnd(Object.keys(TRACKS))](state.level);
       exam.t = { cond: g.cond, ans: g.ans, num: g.num, sol: g.sol, kind: g.kind, track: g.track, src: 'генератор', full: g.steps ? g : null };
     }
-    exam.judged = false;
+    exam.judged = false; exam.revealed = false;
     const cond = $('#epExCond');
     cond.textContent = exam.t.cond;
     cond.append(el('span', 'ep-badge' + (exam.t.src === 'генератор' ? ' gen' : ''), exam.t.src === 'архив' ? 'из архива' : 'сгенерировано'));
@@ -2586,7 +2613,8 @@ if (typeof module !== "undefined") module.exports = EP_ARCHIVE;
     state.exam.n++;
     const bt = state.byTrack[exam.t.track] = state.byTrack[exam.t.track] || { n: 0, ok: 0 };
     bt.n++;
-    if (correct) {
+    const independent = correct && !exam.revealed;
+    if (independent) {
       state.exam.ok++; bt.ok++; state.exam.streak++;
       state.exam.best = Math.max(state.exam.best, state.exam.streak);
       inp.classList.add('ok');
@@ -2596,14 +2624,15 @@ if (typeof module !== "undefined") module.exports = EP_ARCHIVE;
     } else {
       state.exam.streak = 0;
       inp.classList.add('no');
-      fb.textContent = 'Неверно. Правильный ответ: ' + exam.t.ans + '.';
-      fb.className = 'ep-feedback no';
+      fb.textContent = correct ? 'Верно с помощью разбора. Для самостоятельного результата решите следующую задачу.' : 'Пока неверно. Решение или пошаговый разбор можно открыть по кнопке.';
+      if (correct) { inp.classList.remove('no'); inp.classList.add('ok'); fb.className = 'ep-feedback ok'; }
+      if (!correct) fb.className = 'ep-feedback no';
     }
     if (exam.t.full) $('#epExWalkBtn').style.display = '';
     if (exam.mode === 'series') {
       exam.series.i++;
-      if (correct) exam.series.ok++;
-      else exam.series.wrongs.push({ t: exam.t, given: inp.value });
+      if (independent) exam.series.ok++;
+      else exam.series.wrongs.push({ t: exam.t, given: inp.value, assisted: correct && exam.revealed });
       if (exam.series.i >= 10) fb.textContent += ' Серия закончена — жмите «Далее».';
     }
     inp.disabled = true; $('#epExCheck').disabled = true;
@@ -2618,11 +2647,11 @@ if (typeof module !== "undefined") module.exports = EP_ARCHIVE;
     box.innerHTML = '';
     box.append(el('p', 'ep-sum-head', `Серия закончена: ${s.ok} из 10 верно.`));
     if (s.wrongs.length) {
-      box.append(el('p', null, 'Где были ошибки:'));
+      box.append(el('p', null, 'Что повторить самостоятельно:'));
       s.wrongs.forEach(w => {
         const item = el('div', 'ep-sum-item');
         item.append(el('div', 'ep-sum-cond', w.t.cond));
-        item.append(el('div', 'ep-sum-ans', `Ваш ответ: ${w.given || '—'} · верный: ${w.t.ans}`));
+        item.append(el('div', 'ep-sum-ans', `Ваш ответ: ${w.given || '—'} · верный: ${w.t.ans}${w.assisted ? ' · с помощью разбора' : ''}`));
         if (w.t.full) {
           const b = el('button', 'ep-btn ghost sm', 'Разобрать по шагам');
           b.type = 'button';
@@ -2667,7 +2696,7 @@ if (typeof module !== "undefined") module.exports = EP_ARCHIVE;
     const lines = [
       'ЕГЭ-практикум · сводка · ' + d.toLocaleDateString('ru-RU') + ', ' + d.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }),
       'Уровень: ' + (state.level === 'pro' ? 'Профиль' : 'База'),
-      'Навыки (решения без ошибок, цель ' + GOAL + '): ' +
+      'Навыки (самостоятельные решения с не более чем одной помаркой, цель ' + GOAL + '): ' +
         Object.entries(TRACKS).map(([k, n]) => `${n} ${Math.min(state.xp[k], GOAL)}/${GOAL}${state.xp[k] >= GOAL ? ' ✓' : ''}`).join(' · '),
       'Экзамен: решено ' + state.exam.n + ', верно ' + state.exam.ok +
         (state.exam.n ? ' (' + Math.round(100 * state.exam.ok / state.exam.n) + '%)' : '') +
@@ -2779,9 +2808,11 @@ if (typeof module !== "undefined") module.exports = EP_ARCHIVE;
     const sb = $('#epExSolBox');
     sb.textContent = exam.t ? exam.t.sol : '';
     sb.classList.toggle('on');
+    if (sb.classList.contains('on') && !exam.judged) exam.revealed = true;
   });
   $('#epExWalkBtn').addEventListener('click', () => {
     if (!exam.t || !exam.t.full) return;
+    if (!exam.judged) exam.revealed = true;
     startGuided(exam.t.track, $('#epExWalk'), exam.t.full, { walk: true, noXP: true });
   });
 
@@ -2789,8 +2820,13 @@ if (typeof module !== "undefined") module.exports = EP_ARCHIVE;
   renderChips();
   renderLevel();
   renderExamStats();
+  const entryTrack = { equations: 'eq', values: 'table' }[new URLSearchParams(location.search).get('topic')];
+  if (entryTrack) {
+    if (typeof window.showPanel === 'function') window.showPanel('ege');
+    seg.querySelector('[data-v="' + entryTrack + '"]').click();
+  }
   const first = root.querySelector('.ep-view.on .ep-ghost');
-  if (first) { first.dataset.started = '1'; startGuided(first.dataset.track, first); }
+  if (first && !first.dataset.started) { first.dataset.started = '1'; startGuided(first.dataset.track, first); }
 })();
 /* ===== EP:JS END ===== */
 

@@ -159,7 +159,7 @@
     .bar{position:sticky;bottom:0;z-index:5;box-shadow:0 -4px 14px rgba(26,26,46,.08)}
   }
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261010-unified"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
 </head>
 <body>
 <div class="app">
@@ -278,7 +278,7 @@ function shuffle(arr){
   return a;
 }
 let EQ_SPY=null;   /* селфтест: перехват eq(v, ловушка) внутри diag, см. runSelfTest */
-const eq=(a,b)=>{ if(EQ_SPY)EQ_SPY(a,b); return Math.abs(a-b)<0.01; };
+const eq=(a,b)=>{ if(EQ_SPY)EQ_SPY(a,b); return Math.abs(a-b)<1e-6; };
 const D2R=Math.PI/180;
 
 /* журнал прогресса */
@@ -1437,7 +1437,7 @@ function setBar(view){
   $('modeBadge').textContent=names[view]||'Типы';
   $('refBtn').className='btn-ghost btn-dyn'+(view!=='exam'?' show':'');
   $('skipBtn').className='btn-ghost btn-dyn'+(view==='demo'?' show':'');
-  $('hintBtn').className='btn-warn btn-dyn'+(view==='solo'?' show':'');
+  $('hintBtn').className='btn-warn btn-dyn'+(view==='solo'||view==='guided'?' show':'');
   $('solBtn').className='btn-warn btn-dyn';
   $('bridgeBtn').className='btn-warn btn-dyn';
   $('nextBtn').classList.remove('show');
@@ -1559,6 +1559,7 @@ function openGuided(i){
   journal('start',{scope:'guided', type:i});
 }
 function newGuidedTask(){
+  state.courseHelpUsed=false;
   const type = state.mixed ? pickWeighted() : state.typeIdx;
   const t=genOne(type);
   state.t=t; state.done=false;
@@ -1592,7 +1593,8 @@ function renderPhase(){
   state.tries=0; state.choiceBtns=[];
   $('stepBox').className='card stepbox show';
   $('choiceWrap').innerHTML='';
-  $('constructLink').className='clink';
+  $('constructLink').className='clink show';
+  $('constructLink').textContent='Показать этот шаг';
   $('inputRow').className='row';
   $('ansInput').value=''; $('ansInput').disabled=false; $('checkBtn').disabled=false;
   if(p.k==='recog'){
@@ -1606,6 +1608,7 @@ function renderPhase(){
     const B=state.t.tri.B;
     state.t.hx=Math.min(W-30,B.x+46); state.t.hy=Math.min(H-30,B.y+64);
     $('stepQ').innerHTML=termify(c.text);
+    $('constructLink').textContent='не получается — показать построение';
     $('constructLink').className='clink show';
   } else {
     const s=p.s;
@@ -1646,21 +1649,7 @@ function choicePick(j){
   state.tries++; state.errsTask++;
   bumpTypeStat(state.t.typeIdx, isRecog?{err:1,recogErr:1}:{err:1});
   journal(isRecog?'recog_wrong':'step_wrong',{task:state.i+1});
-  if(state.tries===1){
-    showMsg('warn', isRecog
-      ? '💡 Смотри на то, что именно ДАНО в условии, а не на способ решения.'
-      : '💡 '+p.s.tip);
-    return;
-  }
-  state.reveals++;
-  journal('step_reveal',{task:state.i+1});
-  if(!isRecog) unlockChip(p.i);
-  let revText;
-  if(isRecog){
-    $('taskHead').textContent=TYPE_META[state.t.typeIdx].name+' · задача '+(state.i+1)+' из '+state.N;
-    revText='Верный приём: «'+RECOG[state.t.typeIdx].key+'». Как узнать: '+RECOG[state.t.typeIdx].cue;
-  } else revText='Верный вариант: «'+p.s.opts[ci]+'». Идём дальше.';
-  advancePhase('warn', revText);
+  showMsg('warn','Пока неверно. Попробуй ещё раз или нажми «Подсказка».');
 }
 function numSubmit(val){
   if(state.view!=='guided'||state.done) return false;
@@ -1676,13 +1665,26 @@ function numSubmit(val){
   state.tries++; state.errsTask++;
   bumpTypeStat(state.t.typeIdx,{err:1});
   journal('step_wrong',{task:state.i+1, val:val});
-  if(state.tries===1){ showMsg('warn','💡 '+s.tip); return false; }
+  showMsg('warn','Пока неверно. Попробуй ещё раз или нажми «Подсказка».');
+  return false;
+}
+function revealGuidedStep(){
+  if(state.view!=='guided'||state.done||state.finished)return;
+  const p=state.phases[state.pi];
+  if(!p)return;
+  if(p.k==='construct'){constructDone(true);return;}
   state.reveals++;
   if(state.pi===state.phases.length-1) state.finalRevealed=true;
   journal('step_reveal',{task:state.i+1});
+  if(p.k==='recog'){
+    $('taskHead').textContent=TYPE_META[state.t.typeIdx].name+' · задача '+(state.i+1)+' из '+state.N;
+    advancePhase('warn','Верный приём: «'+RECOG[state.t.typeIdx].key+'». Как узнать: '+RECOG[state.t.typeIdx].cue);
+    return;
+  }
   unlockChip(p.i);
-  advancePhase('warn','Верное значение: <b>'+s.ans+'</b>. Не застреваем — идём дальше.');
-  return false;
+  advancePhase('warn',p.s.t==='choice'
+    ? 'Верный вариант: «'+p.s.opts[p.s.ci]+'». Идём дальше.'
+    : 'Верное значение: <b>'+p.s.ans+'</b>. Идём дальше.');
 }
 function constructDone(shown){
   const t=state.t;
@@ -1697,7 +1699,7 @@ function constructDone(shown){
 }
 function finishGuidedTask(){
   state.done=true;
-  const clean = state.reveals===0;
+  const clean = state.reveals===0&&!state.courseHelpUsed;
   const dotc = state.finalRevealed ? 'r' : ((state.errsTask===0&&clean)?'g':'y');
   state.results.push(dotc);
   if(dotc==='g') state.streak++; else state.streak=0;
@@ -1736,6 +1738,7 @@ function openSolo(i){
   journal('start',{scope:'solo', type:i});
 }
 function newSoloTask(){
+  state.courseHelpUsed=false;
   const t=genOne(state.typeIdx);
   state.t=t; state.done=false;
   state.mistakes=0; state.hints=0;
@@ -1814,6 +1817,13 @@ function bridgeToGuided(){
   showMsg('info','Разберём этот же чертёж по шагам — каждый ход твой.');
 }
 function giveHint(){
+  if(state.view==='guided'&&!state.done&&!state.finished){
+    const p=state.phases[state.pi];
+    if(!p)return;
+    const tip=p.k==='recog'?'Смотри на то, что именно ДАНО в условии, а не на способ решения.':p.k==='construct'?CONSTRUCT[state.t.typeIdx].text:p.s.tip;
+    showMsg('warn','💡 '+tip);
+    return;
+  }
   if(state.view!=='solo'||state.done||state.finished) return;
   if(state.hints===0){ state.hints=1; journal('hint',{task:state.i+1}); }
   showMsg('warn','💡 '+state.t.hint);
@@ -1833,6 +1843,7 @@ function openExam(){
   journal('start',{scope:'exam'});
 }
 function newExamTask(){
+  state.courseHelpUsed=false;
   const t=genOne(state.examList[state.i]);
   state.t=t; state.done=false;
   state.chipMax=0; state.hl=null;
@@ -1850,16 +1861,17 @@ function examSubmit(val){
   if(state.done||state.finished) return false;
   if(!isFinite(val)){ showMsg('warn','Введи число.'); return false; }
   const t=state.t;
-  const okAns=eq(val,t.answer);
+  const mathematicallyCorrect=eq(val,t.answer);
+  const okAns=mathematicallyCorrect&&!state.courseHelpUsed;
   state.done=true;
   $('ansInput').disabled=true; $('checkBtn').disabled=true;
-  state.results.push(okAns?'g':'r');
+  state.results.push(okAns?'g':mathematicallyCorrect?'y':'r');
   if(!okAns) state.failedTypes.push(t.typeIdx);
-  showMsg(okAns?'ok':'err', okAns?'✓ Принято.':'✗ Неверно. Разбор — в маршруте после зачёта.');
+  showMsg(okAns?'ok':'warn', state.courseHelpUsed&&mathematicallyCorrect?'Ответ верный с помощью. В самостоятельный зачёт эта задача не входит.':okAns?'✓ Принято.':'✗ Неверно. Разбор — в маршруте после зачёта.');
   $('nextBtn').textContent = state.i===state.N-1 ? 'К итогам →' : 'Следующая →';
   $('nextBtn').classList.add('show');
   renderProgress();
-  journal(okAns?'exam_ok':'exam_wrong',{task:state.i+1, type:t.typeIdx});
+  journal(okAns?'exam_ok':mathematicallyCorrect?'exam_assisted':'exam_wrong',{task:state.i+1, type:t.typeIdx});
   return okAns;
 }
 
@@ -2057,8 +2069,16 @@ if(SELFTEST_MODE){
 }
 
 /* ===================== события UI ===================== */
+function parseAnswer(raw){
+  const s=String(raw==null?'':raw).trim().replace(/−/g,'-').replace(/,/g,'.');
+  const m=s.match(/^([+-]?(?:\d+(?:\.\d*)?|\.\d+))(?:\s*\/\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+)))?$/);
+  if(!m)return NaN;
+  const denominator=m[2]===undefined?1:Number(m[2]);
+  const value=Number(m[1])/denominator;
+  return denominator!==0&&Number.isFinite(value)?value:NaN;
+}
 function submitInput(){
-  const val=parseFloat(String($('ansInput').value).replace(',','.'));
+  const val=parseAnswer($('ansInput').value);
   if(state.view==='guided') numSubmit(val);
   else if(state.view==='solo') checkSolo(val);
   else if(state.view==='exam') examSubmit(val);
@@ -2081,7 +2101,7 @@ $('hubBtn').addEventListener('click', goHub);
 $('againBtn').addEventListener('click', retrain);
 $('refBtn').addEventListener('click', function(){ openRef(state.t?state.t.typeIdx:null); });
 $('refClose').addEventListener('click', function(){ $('refPanel').classList.remove('show'); });
-$('constructLink').addEventListener('click', function(){ constructDone(true); });
+$('constructLink').addEventListener('click', revealGuidedStep);
 
 /* построение: указатель на холсте */
 let cvDrag=false;
@@ -2143,6 +2163,11 @@ globalThis.__dbg=function(){return {state:state, TEMPLATES:TEMPLATES, genOne:gen
   buildPhases:buildPhases, fitTriangle:fitTriangle, rightTri:rightTri};};
 
 /* ===================== старт ===================== */
+document.addEventListener('profile-course-help-requested',function(){
+  if(state.finished||state.done||!state.t||!['guided','solo','exam'].includes(state.view))return;
+  state.courseHelpUsed=true;
+  if(state.view==='solo')state.hints=Math.max(state.hints,1);
+});
 goHub();
 function loop(){
   if(!state.finished){

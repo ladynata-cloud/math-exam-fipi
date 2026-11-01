@@ -249,7 +249,7 @@
     ol.ladder::before{left:.9rem}
   }
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261010-unified"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
 </head>
 <body>
 <div class="wrap">
@@ -2217,6 +2217,7 @@ const state = {
   review: false, reviewEmpty: false, picked: [], tapAngle: null, tapLine: null, soloHinted: false
 };
 let stats = loadStats();
+document.addEventListener('profile-course-help-requested',()=>{if(state.task&&!state.finished&&state.mode==='solo')state.courseHelpUsed=true;});
 
 /* ---------- хранение: единый ключ курса + журнал ошибок ----------
    Прогресс лежит в mathExamCourseProgress.v1 под TID — его видят главная
@@ -2259,7 +2260,7 @@ function mlog(type, okFlag){
   } catch (e){}
 }
 function logOutcome(okFlag){
-  if (state.mode !== 'solo') return;
+  if (state.mode !== 'solo' || (okFlag && state.courseHelpUsed)) return;
   const ty = state.task && state.task.type;
   if (ty) mlog(ty, okFlag);
 }
@@ -2283,6 +2284,7 @@ function reviewTask(){
 function tstat(t){ return stats.topics[t] || (stats.topics[t] = { steps: 0, solved: 0, correct: 0, streak: 0, best: 0, hinted: 0 }); }
 
 function resetStepState(){
+  state.courseHelpUsed=false;
   state.picked = [];
   state.tapAngle = null; state.tapLine = null; state.soloHinted = false;
   state.stepIdx = 0; state.stepFails = []; state.stepRevealed = []; state.stepFb = null; state.stepWrongOpts = [];
@@ -2555,7 +2557,7 @@ function actionsHtml(task){
 }
 function memoHtml(T, task){
   const rows = T.memo.map(([k, v]) => `<div class="memo-row"><span class="k">${M(k)}</span><span class="v">${M(v)}</span></div>`).join('');
-  return `<details class="memo" ${state.mode === 'learn' ? 'open' : ''}><summary>Памятка${T.trap ? ' и ловушка' : ''}</summary><div class="memo-body">${rows}${T.trap ? `<div class="trapbox"><b>Ловушка:</b><span>${M(T.trap)}</span></div>` : ''}</div></details>`;
+  return `<details class="memo"><summary>Памятка${T.trap ? ' и ловушка' : ''}</summary><div class="memo-body">${rows}${T.trap ? `<div class="trapbox"><b>Ловушка:</b><span>${M(T.trap)}</span></div>` : ''}</div></details>`;
 }
 function renderTask(){
   const task = state.task, T = TOPICS[state.topic];
@@ -2734,7 +2736,11 @@ function creditSolo(s, fails, hinted){
 function soloOutcome(correct){
   const s = tstat(state.topic);
   if (correct){
-    if (!state.counted){ state.counted = true; creditSolo(s, state.soloFails, state.soloHinted); }
+    if (!state.counted){
+      state.counted = true;
+      creditSolo(s, state.courseHelpUsed ? Math.max(1,state.soloFails) : state.soloFails, state.soloHinted||state.courseHelpUsed);
+      if(state.courseHelpUsed)s.streak=0;
+    }
   } else if (!state.counted && state.soloFails === 1){ s.streak = 0; }
   saveStats();
 }
@@ -2753,7 +2759,7 @@ function soloFailed(msgHtml){
 }
 function soloSolved(){
   state.finished = true; soloOutcome(true); logOutcome(true);
-  state.soloFb = { type: 'ok', html: `${pick(PRAISE, RNG)}${state.soloFails ? ' Со второй попытки, но верно.' : ''}` };
+  state.soloFb = { type: 'ok', html: state.courseHelpUsed?'Верно с помощью. Школьная тема была открыта; самостоятельная серия не увеличивается.':`${pick(PRAISE, RNG)}${state.soloFails ? ' Со второй попытки, но верно.' : ''}` };
   announce(state.soloFb.html);
   render();
 }

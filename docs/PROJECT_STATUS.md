@@ -1,6 +1,26 @@
 # MathExam project status
 
-## Current: finance deposit explanation correction, 2026-11-01
+## Current: profile first-part trainer repairs, 2026-11-01
+
+- Owner directly requested correction of the complete first-part audit, accurate
+  trainer links, particular attention to geometry 1/2/3 and construction, and
+  reference material only on request. [Task](tasks/PROFILE_TRAINER_REPAIR_20261101.md),
+  HIGH; branch `fix/profile-trainers-audit-20261101`.
+- Base `6b9c327f2ca438cb7e7620ef302876de467fac19` includes PR396, which GitHub
+  confirms merged on 2026-11-01 at 13:54:32 UTC. Its 50 text corrections and
+  exact financial oracle are retained. The preceding preparation entry below
+  is historical; this task does not repeat that release.
+- Correct old answer keys/checkers, idempotent assessment and requested help;
+  preserve existing work while repairing checkpoint mastery and adding a
+  separately identified familiar-task recovery route. Precise topic links and
+  read-only complete teacher reports connect the existing materials.
+- [Verification](reports/PROFILE_TRAINER_REPAIR_20261101.md) and the Draft PR
+  record local/CI/browser evidence and independent reviews. No new main-course
+  tasks or task IDs are introduced; no real pupil state is changed.
+- Merge/publication remain separate decisions for the exact base/head. HIGH
+  external review is not completed; no earlier task exception is reused.
+
+## Historical preparation: finance deposit explanation correction, PR396
 
 - [Task](tasks/EGE_P13_FINANCE_STEP_HINTS_20261101.md), SMALL; the owner explicitly
   granted START for a separate corrective PR with the prepared explanations

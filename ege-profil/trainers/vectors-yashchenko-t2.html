@@ -108,7 +108,7 @@
     .wrap{padding:18px 12px 48px}
   }
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261010-unified"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
 </head>
 <body>
 <div class="wrap">
@@ -766,7 +766,13 @@ const state = {
   z: null            // зачёт: { plan:[], i, marks:[], tasks:[], answers:[], done }
 };
 
+document.addEventListener('profile-course-help-requested',()=>{
+  if(state.mode==='exam'){
+    const z=state.z;if(z&&!z.done){(z.assisted||(z.assisted=[]))[z.i]=true;}
+  }else if(state.mode==='train'&&state.task&&!state.finished)state.courseHelpUsed=true;
+});
 function newTask(){
+  state.courseHelpUsed=false;
   state.fails = 0; state.finished = false; state.counted = false; state.showSteps = false; state.fb = null;
   if (state.review){
     const open = openTypes();
@@ -885,7 +891,7 @@ function renderExamResult(){
   const score = z.marks.filter(Boolean).length;
   const misses = z.plan.map((id, k) => ({ id, k, t: z.tasks[k], given: z.answers[k], ok: z.marks[k] })).filter(x => !x.ok);
   const missHtml = misses.length
-    ? misses.map(m => `<details class="zmiss"><summary>${esc(SHORT[m.id])}: ваш ответ ${m.given === '' ? '—' : esc(m.given)}, верный ${YB2.num(m.t.ans)}</summary><p class="q" style="margin-top:10px">${m.t.text}</p>${figHtml(m.t)}${stepsHtml(m.t)}</details>`).join('')
+    ? misses.map(m => `<details class="zmiss"><summary>${esc(SHORT[m.id])}${z.assisted?.[m.k]?' · использована помощь, без самостоятельного зачёта':''}: ваш ответ ${m.given === '' ? '—' : esc(m.given)}, верный ${YB2.num(m.t.ans)}</summary><p class="q" style="margin-top:10px">${m.t.text}</p>${figHtml(m.t)}${stepsHtml(m.t)}</details>`).join('')
     : `<p class="q" style="color:var(--ok);font-weight:700">Все семь — верно. Это и есть зачёт.</p>`;
   $('#taskArea').innerHTML = `<article class="card">
     ${zDots()}
@@ -919,11 +925,12 @@ function checkTrain(){
     state.finished = true;
     if (!state.counted){
       state.counted = true; s.solved++;
-      if (state.fails === 0){ s.correct++; s.streak++; s.best = Math.max(s.best, s.streak); }
+      if (state.fails === 0&&!state.courseHelpUsed){ s.correct++; s.streak++; s.best = Math.max(s.best, s.streak); }
+      if(state.courseHelpUsed)s.streak=0;
       saveStats();
     }
-    if (state.mode === 'train') mlog(t.id, true);
-    state.fb = { type: 'ok', html: `${PRAISE[Math.floor(Math.random() * PRAISE.length)]}${state.fails ? ' Со второй попытки, но верно.' : ''}` };
+    if (state.mode === 'train'&&!state.courseHelpUsed) mlog(t.id, true);
+    state.fb = { type: 'ok', html: state.courseHelpUsed?'Верно с помощью. В самостоятельную серию этот ответ не входит.':`${PRAISE[Math.floor(Math.random() * PRAISE.length)]}${state.fails ? ' Со второй попытки, но верно.' : ''}` };
     return render();
   }
   state.fails++;
@@ -943,9 +950,10 @@ function examCheck(){
   const inp = $('#taskArea input.num');
   const x = parseNum(inp.value);
   if (isNaN(x)){ state.fb = { type: 'hint', html: 'Введите число — иначе ответ не засчитается.' }; return renderExam(); }
-  const okAns = Math.abs(x - t.ans) < EPS;
+  const mathematicallyCorrect = Math.abs(x - t.ans) < EPS;
+  const okAns = mathematicallyCorrect&&!z.assisted?.[z.i];
   z.marks[z.i] = okAns; z.answers[z.i] = inp.value.trim();
-  mlog(t.id, okAns);
+  if(!z.assisted?.[z.i]||!mathematicallyCorrect)mlog(t.id, mathematicallyCorrect);
   const s = tstat(t.id); s.solved++; if (okAns){ s.correct++; } else { s.streak = 0; }
   state.fb = null;
   z.i++;

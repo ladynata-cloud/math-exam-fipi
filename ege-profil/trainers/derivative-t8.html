@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Задание 8 · Производная по графику</title>
+<title>Задание 9 · Производная по графику</title>
 <link rel="canonical" href="https://mathexam.space/ege-profil/trainers/derivative-t8.html">
 <style>
   :root{
@@ -82,14 +82,14 @@
   .ladder-note{margin:0 0 4px}
   .ladder-done{margin:8px 0 10px;font-weight:600;color:var(--ink-strong)}
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261010-unified"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
 </head>
 <body>
 <div class="wrap">
   <a class="back" href="../index.html">← Курс</a>
-  <p class="eyebrow">задание 8 · краткий ответ · производная и первообразная</p>
+  <p class="eyebrow">задание 9 курса · краткий ответ · производная и первообразная</p>
   <h1>Производная по графику</h1>
-  <p class="lede">Половина ошибок в задании 8 — не про математику, а про невнимательность: перепутали, что на рисунке — функция или её производная. Здесь это доводится до автоматизма.</p>
+  <p class="lede">Сначала определите, что изображено на рисунке: функция или её производная. Затем связывайте наклон, знак производной и точки экстремума.</p>
 
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" aria-selected="true" data-view="idea">Идея</button>
@@ -106,17 +106,17 @@
       <div class="row"><label for="heroX" class="mono small">x₀</label><input type="range" id="heroX" min="-2.2" max="2.2" step="0.05" value="-1.6"><span id="heroInfo" class="mono small"></span></div>
       <div class="figure" id="heroFig"></div>
     </div>
-    <div class="card">
-      <h2>Четыре опоры + первообразная</h2>
+    <details class="card" id="derivativeReference">
+      <summary>Справка: знак производной, касательная и первообразная</summary>
       <div class="rules">
-        <div class="rule"><b>Знак → наклон.</b> f возрастает ⇔ f′ &gt; 0; убывает ⇔ f′ &lt; 0. Целые точки промежутков возрастания — это точки, где f′ положительна.</div>
+        <div class="rule"><b>Знак → наклон.</b> Если f′ &gt; 0 на интервале, f возрастает; если f′ &lt; 0, убывает. Обратное утверждение со строгим знаком неверно: f(x) = x³ возрастает на всей числовой прямой, хотя f′(0) = 0. Отдельный нуль производной без смены знака не разбивает промежуток монотонности.</div>
         <div class="rule"><b>Смена знака → экстремум.</b> Максимум f там, где f′ меняет «+» на «−»; минимум — где «−» на «+». Ноль без смены знака — не экстремум.</div>
         <div class="rule"><b>Касательная = число.</b> f′(x₀) — угловой коэффициент касательной: k = Δy / Δx по клеткам. Вниз — значит отрицательный.</div>
         <div class="rule"><b>Параллельность.</b> Касательная параллельна прямой y = kx + b ⇔ f′(x) = k. Считаем, сколько раз график f′ пересекает уровень k.</div>
         <div class="rule"><b>Первообразная.</b> F′ = f: для пары «F и f» работают те же правила, сдвинутые на строку. F возрастает там, где f &gt; 0; экстремумы F — в нулях f со сменой знака.</div>
         <div class="rule"><b>Физический смысл.</b> Скорость — производная координаты: v(t) = x′(t). «Найдите скорость» — продифференцируй и подставь.</div>
       </div>
-    </div>
+    </details>
   </section>
 
   <!-- РАСПОЗНАВАНИЕ -->
@@ -136,7 +136,7 @@
   <section class="view" id="view-train">
     <div class="pillrow" id="trackChips"></div>
     <div class="card">
-      <p class="small mono muted" id="trackRule"></p>
+      <details class="track-support"><summary>Опора для этого типа задач</summary><p class="small mono muted" id="trackRule"></p></details>
       <p id="taskText" style="font-size:17px"></p>
       <div class="figure" id="taskFig"></div>
       <div class="row">
@@ -437,7 +437,7 @@ if (typeof module !== "undefined") module.exports = T8;
     wrap.appendChild(p1.svg); wrap.appendChild(p2.svg);
     heroFig.innerHTML = ""; heroFig.appendChild(wrap);
     var info = document.getElementById("heroInfo");
-    var st = k > 0.02 ? "f возрастает, f′ > 0" : k < -0.02 ? "f убывает, f′ < 0" : "вершина: f′ = 0";
+    var st = k > 0.02 ? "f возрастает, f′ > 0" : k < -0.02 ? "f убывает, f′ < 0" : "касательная горизонтальна: f′ = 0";
     info.textContent = "f′(x₀) = " + T8.fmt(k) + " · " + st;
   }
   var heroX = document.getElementById("heroX");
@@ -680,7 +680,7 @@ if (typeof module !== "undefined") module.exports = T8;
           params: { vals: g.vals.slice(), marks: marks.slice(), mode: mode },
           steps: [
             { q: "Что изображено на рисунке? Что означает значение производной в точке геометрически?",
-              a: "Дан график самой функции f. Значение f′(x₀) — это угловой коэффициент касательной в точке x₀: где график поднимается круче, производная больше; где график идёт вниз, производная отрицательна; в вершинах она равна нулю." },
+              a: "Дан график самой функции f. Значение f′(x₀) — это угловой коэффициент касательной в точке x₀: где график поднимается круче, производная больше; где график идёт вниз, производная отрицательна; при горизонтальной касательной она равна нулю; такая точка не обязательно является экстремумом." },
             { q: "Разберите отмеченные точки: в каких функция возрастает, в каких убывает?",
               a: sortLine },
             { q: "В какой точке производная наибольшая?",
@@ -702,7 +702,7 @@ if (typeof module !== "undefined") module.exports = T8;
         params: { vals: g.vals.slice(), marks: marks.slice(), mode: mode },
         steps: [
           { q: "Что изображено на рисунке? Как по графику функции судить о знаке её производной?",
-            a: "Дан график самой функции f. Производная положительна там, где f возрастает (график идёт вверх слева направо), отрицательна — где убывает, и равна нулю в вершинах, где касательная горизонтальна." },
+            a: "Дан график самой функции f. Смотрим на наклон касательной в отмеченной точке: вверх — производная положительна, вниз — отрицательна, горизонтально — равна нулю. Горизонтальная касательная возможна и без экстремума." },
           { q: "Разберите отмеченные точки: в каких график идёт вверх, в каких — вниз?",
             a: sortLine },
           { q: "Сколько точек, в которых производная " + (neg ? "отрицательна" : "положительна") + "?",
@@ -785,7 +785,7 @@ if (typeof module !== "undefined") module.exports = T8;
         termRules.push("(" + d + ")′ = 0");
         var subst = "3·" + t0 + "²" + (b2 ? (b2 > 0 ? " + " : " − ") + Math.abs(2*b2) + "·" + t0 : "") + (c ? (c > 0 ? " + " : " − ") + Math.abs(c) : "");
         return {
-          text: "Материальная точка движется прямолинейно по закону x(t) = " + law + ", где x — расстояние в метрах, t — время в секундах. Найдите её скорость (в м/с) в момент t = " + t0 + " с.",
+          text: "Материальная точка движется прямолинейно по закону x(t) = " + law + ", где x — координата в метрах, t — время в секундах. Найдите её скорость (в м/с) в момент t = " + t0 + " с.",
           draw: function(host){ host.innerHTML = ""; },
           answer: v,
           hint: "Скорость — производная координаты: v(t) = x′(t) = " + vt + ".",
@@ -919,10 +919,10 @@ if (typeof module !== "undefined") module.exports = T8;
      итогового числа (revealed). Подсказка и промежуточные ступени ничего
      не отнимают; задача, разобранная до ответа, в счёт решённых не идёт —
      ответ был виден. */
-  var TS = { track:null, done:false, missed:false, revealed:false };
+  var TS = { track:null, done:false, missed:false, revealed:false, helped:false };
   function newTask(){
     currentTask = GEN[currentTrack]();
-    TS = { track:currentTrack, done:false, missed:false, revealed:false };
+    TS = { track:currentTrack, done:false, missed:false, revealed:false, helped:false };
     document.getElementById("trackRule").textContent = "Опора: " + TRACKS.find(function(t){return t.id===currentTrack;}).rule;
     document.getElementById("taskText").textContent = currentTask.text;
     currentTask.draw(document.getElementById("taskFig"));
@@ -983,6 +983,7 @@ if (typeof module !== "undefined") module.exports = T8;
       if (!TS.done){
         TS.done = true;
         if (TS.revealed) msg += " Ответ был открыт в разборе — эта задача в счёт решённых не идёт.";
+        else if (TS.helped) msg += " Решено с помощью повторения. Для самостоятельного зачёта возьмите другую задачу.";
         else {
           var total = saveSolved(TS.track);
           mlog(TS.track, true);
@@ -992,7 +993,7 @@ if (typeof module !== "undefined") module.exports = T8;
       fb.textContent = msg;
     } else {
       /* промах записывается один раз на задачу и только пока ответ не был виден */
-      if (!TS.missed && !TS.done && !TS.revealed){ TS.missed = true; mlog(TS.track, false); }
+      if (!TS.missed && !TS.done && !TS.revealed && !TS.helped){ TS.missed = true; mlog(TS.track, false); }
       if (TS.revealed){   /* разбор окончен, «Ответ: X.» уже на экране — звать в разбор бессмысленно */
         fb.textContent = "Неверно. Ответ уже открыт на последней ступени разбора — сверьте запись числа (знак и запятая в дроби).";
         return;
@@ -1014,14 +1015,14 @@ if (typeof module !== "undefined") module.exports = T8;
 
   /* ---------- распознавание ---------- */
   var RECOG = [
-    { t:"На рисунке изображён график функции y = f(x). Найдите количество точек, в которых производная функции равна нулю.", g:"f", plan:"Нули производной — это вершины графика f: точки, где касательная горизонтальна." },
+    { t:"На рисунке изображён график функции y = f(x). Найдите количество точек, в которых производная функции равна нулю.", g:"f", plan:"Ищем точки с горизонтальной касательной к графику f. Они не обязательно являются вершинами: например, у f(x) = x³ такая точка x = 0." },
     { t:"На рисунке изображён график y = f′(x) — производной функции f. Найдите количество точек максимума функции f.", g:"fp", plan:"Считаем нули f′, где знак меняется с «+» на «−»." },
     { t:"На рисунке изображён график функции y = f(x), отмечено семь точек. В скольких из них производная положительна?", g:"f", plan:"Отбираем точки на участках, где график идёт вверх." },
-    { t:"На рисунке изображён график y = f′(x). Найдите количество целых точек, входящих в промежутки возрастания функции f.", g:"fp", plan:"Считаем целые точки, где график f′ выше оси x." },
+    { t:"На рисунке изображён график y = f′(x). Найдите количество целых точек, входящих в промежутки возрастания функции f.", g:"fp", plan:"Сначала находим промежутки возрастания по знаку f′, затем считаем целые точки внутри них. Изолированный нуль без смены знака не исключаем." },
     { t:"На рисунке изображена касательная к графику y = f(x) в точке x₀. Найдите f′(x₀).", g:"f", plan:"f′(x₀) = угловой коэффициент касательной: Δy / Δx по клеткам." },
     { t:"На рисунке изображён график y = f′(x). Найдите количество точек, в которых касательная к графику y = f(x) параллельна прямой y = −2x + 3.", g:"fp", plan:"Считаем решения f′(x) = −2: пересечения графика с уровнем y = −2." },
-    { t:"На рисунке изображён график функции y = F(x) — одной из первообразных функции f. Найдите количество решений уравнения f(x) = 0.", g:"F", plan:"f = F′, значит нули f — это вершины графика F." },
-    { t:"На рисунке изображён график функции y = f(x). F — первообразная f. Найдите количество целых точек в промежутках возрастания F.", g:"f", plan:"F возрастает там, где f > 0: считаем целые точки выше оси." },
+    { t:"На рисунке изображён график функции y = F(x) — одной из первообразных функции f. Найдите количество решений уравнения f(x) = 0.", g:"F", plan:"f = F′, значит ищем точки с горизонтальной касательной к графику F; экстремум в них не обязателен." },
+    { t:"На рисунке изображён график функции y = f(x). F — первообразная f. Найдите количество целых точек в промежутках возрастания F.", g:"f", plan:"Находим промежутки возрастания F по знаку F′ = f и считаем целые точки внутри них; отдельный нуль без смены знака не разбивает промежуток." },
     { t:"На рисунке изображён график y = f′(x). Найдите точку минимума функции f.", g:"fp", plan:"Ищем ноль f′ со сменой знака с «−» на «+»." },
     { t:"Материальная точка движется по закону x(t) = t³ − 4t² + 7t. Найдите скорость в момент t = 3 с.", g:"formula", plan:"Дифференцируем: v(t) = x′(t), подставляем t = 3." }
   ];
@@ -1082,6 +1083,11 @@ if (typeof module !== "undefined") module.exports = T8;
   /* ---------- зачёт ---------- */
   var EX = { i:0, score:0, task:null, active:false };
   var EXPOOL = ["extrema","onemax","intpoints","marked","tangent","parallel","physics","antider","extrema","parallel"];
+  var examTimer = null;
+  document.addEventListener('profile-course-help-requested', function(){
+    if (!TS.done) TS.helped = true;
+    if (EX.active && !EX.busy) EX.helped = true;
+  });
   function examDots(){
     var host = document.getElementById("examDots"); host.innerHTML = "";
     for (var i = 0; i < 10; i++){
@@ -1093,12 +1099,14 @@ if (typeof module !== "undefined") module.exports = T8;
   function examTask(){
     EX.task = GEN[EXPOOL[EX.i]]();
     EX.busy = false;
+    EX.helped = false;
     document.getElementById("examText").textContent = (EX.i + 1) + " из 10. " + EX.task.text;
     EX.task.draw(document.getElementById("examFig"));
     document.getElementById("examAnswer").value = "";
     var f = document.getElementById("examFb"); f.className = "feedback";
   }
   document.getElementById("examStart").addEventListener("click", function(){
+    clearTimeout(examTimer); examTimer = null;
     EX = { i:0, score:0, task:null, active:true, marks:[] };
     bumpStat({ runs: 1 });
     EXPOOL.sort(function(){ return Math.random() - 0.5; });
@@ -1111,31 +1119,33 @@ if (typeof module !== "undefined") module.exports = T8;
     EX.busy = true;
     var raw = document.getElementById("examAnswer").value;
     var ok = T8.eq(raw, EX.task.answer);
+    var independent = ok && !EX.helped;
     /* зачёт тоже ведёт журнал ошибок; пустой ответ — пропуск, а не промах типа */
-    if (ok || !isNaN(T8.parseAns(raw))) mlog(EXPOOL[EX.i], ok);
-    EX.marks.push(ok);
-    if (ok) EX.score++;
+    if (!EX.helped && (ok || !isNaN(T8.parseAns(raw)))) mlog(EXPOOL[EX.i], ok);
+    EX.marks.push(independent);
+    if (independent) EX.score++;
     var f = document.getElementById("examFb");
     f.className = "feedback on " + (ok ? "ok" : "bad");
-    f.textContent = ok ? "Верно." : "Неверно. Правильный ответ: " + T8.fmt(EX.task.answer);
+    f.textContent = ok ? (EX.helped ? "Верно с помощью повторения. Эта задача не добавляет балл за самостоятельное решение." : "Верно.") : "Пока неверно. После зачёта можно разобрать этот тип задач в тренажёре.";
     EX.i++;
     examDots();
     if (EX.i >= 10){
       EX.active = false;
-      setTimeout(function(){
+      var passed = EX.score >= 8;
+      /* The result is earned now; a restart must not cancel its persistence. */
+      bumpStat({ best: EX.score });
+      if (passed) bumpStat({ passed: true });
+      examTimer = setTimeout(function(){
+        examTimer = null;
         document.getElementById("examLive").style.display = "none";
         document.getElementById("examDone").style.display = "block";
         document.getElementById("examScore").textContent = EX.score + " / 10";
-        var passed = EX.score >= 8;
         document.getElementById("examVerdict").textContent = passed
-          ? "Зачёт сдан. Задание 8 читается уверенно."
+          ? "Зачёт сдан. Задание 9 курса читается уверенно."
           : "Зачёт не сдан: нужно 8 верных. Вернитесь в «Распознавание» и слабые треки.";
-        /* сданный однажды зачёт не стирается следующей неудачной попыткой */
-        bumpStat({ best: EX.score });
-        if (passed) bumpStat({ passed: true });
       }, 650);
     } else {
-      setTimeout(examTask, 700);
+      examTimer = setTimeout(function(){ examTimer = null; examTask(); }, 700);
     }
   });
   document.getElementById("examAnswer").addEventListener("keydown", function(e){ if (e.key === "Enter") document.getElementById("examCheck").click(); });

@@ -158,6 +158,32 @@ body{overflow-wrap:anywhere}.model-panel input[type=range]{margin-inline:0}.circ
 .task-foundation summary,.task-foundation details summary{cursor:pointer;min-height:44px;font-size:18px;font-weight:650;padding:9px 0}
 .task-foundation>div,.task-foundation details{font-size:19px;line-height:1.75;margin-top:12px;overflow-wrap:anywhere}
 .task-foundation details{border-left:3px solid #b3d5bf;padding-left:16px}
+.calm-start-help>summary,.calm-check-guide>summary,details.theory>summary{cursor:pointer;min-height:44px;padding:8px 0;font-size:18px;font-weight:650}
+.calm-start-help[open]>summary,.calm-check-guide[open]>summary,details.theory[open]>summary{margin-bottom:12px}
+.calm-check-guide{margin:0 0 16px}
+/* Keep the task drawing in view; reference material opens below it. */
+body:has(.focused-practice) .topbar{padding-block:12px;gap:12px}
+body:has(.focused-practice) main{padding-top:18px}
+body:has(.focused-practice) .breadcrumb{margin-bottom:14px}
+.focused-practice #task-model>.profile-task-model>.profile-task-svg,
+.focused-practice #task-model .task-vector-drawing>svg,
+.focused-practice #task-model .stereo-task-model>[data-stereo-view]{max-height:360px}
+.practice-head{margin-bottom:18px;gap:12px}
+.practice-head .eyebrow{margin-bottom:8px}
+.practice-head h1{margin-bottom:12px}
+@media(max-width:600px){
+ body:has(.focused-practice) .topbar{padding:10px 14px;gap:8px 12px}
+ body:has(.focused-practice) .topbar .brand{font-size:17px}
+ body:has(.focused-practice) .topbar .brand small{font-size:14px}
+ body:has(.focused-practice) .topbar nav{gap:12px;align-items:center}
+ body:has(.focused-practice) #calm-toggle{min-height:44px;padding:7px 12px}
+ body:has(.focused-practice) main{padding:14px 12px 40px}
+ .practice-head .text-link{display:inline-block;margin:0 12px 10px 0}
+ .practice-head #pause-practice{min-height:44px;padding:7px 12px}
+ .practice-head h1{font-size:24px}
+ .focused-practice .panel{padding:17px 12px}
+ .condition-panel .task-condition{margin-bottom:12px}
+}
 .task-panel .answer-label,.choices legend{font-size:18px;line-height:1.6;margin-bottom:10px}
 #hint-credit:empty{display:none}#hint-credit{margin:16px 0 0}
 @media(max-width:600px){.task-help-entry .hint-box{padding:17px 14px}.task-help-entry .short-hint{font-size:19px}}

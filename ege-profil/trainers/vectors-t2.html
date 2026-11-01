@@ -381,7 +381,7 @@
     font-size:13px;line-height:1.55;color:#4b4636;animation:fadeIn .18s ease}
   @keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261010-unified"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
 </head>
 <body>
 <div class="wrap">
@@ -449,7 +449,7 @@
         <div class="stat"><div class="v" id="stTime">—</div><div class="l">Ср. время</div></div>
       </div>
 
-      <details class="box" open>
+      <details class="box">
         <summary><span class="sec-title">Шпаргалка</span><span class="caret" aria-hidden="true">▾</span></summary>
         <div class="body">
           <div class="cheat">
@@ -1473,7 +1473,8 @@ POOLS.mix=[...POOLS.coords, ...POOLS.dot, ...POOLS.shapes, ...POOLS.angle];
 const el=id=>document.getElementById(id);
 let mode="coords";
 let uiMode="step"; // "step" | "fast"
-let cur=null, answered=false, solOpenedFirst=false, qIndex=0, startedAt=0;
+let cur=null, answered=false, solOpenedFirst=false, courseHelpUsed=false, fastMistakes=0, qIndex=0, startedAt=0;
+document.addEventListener('profile-course-help-requested',()=>{if(cur&&!answered)courseHelpUsed=true;});
 let sp=null; // состояние шагов: {idx, errs, help, log:[]}
 const stats={solved:0,right:0,streak:0,best:0,timeSum:0,timeCount:0};
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
@@ -1484,7 +1485,7 @@ function newProblem(){
   const last=cur?cur.sub+"|"+cur.answer:"";
   do{g=pick(pool);p=g();guard++;}while(guard<8&&(p.sub+"|"+p.answer)===last);
   p._gen=g.name;
-  cur=p; answered=false; solOpenedFirst=false; qIndex++;
+  cur=p; answered=false; solOpenedFirst=false; courseHelpUsed=false; fastMistakes=0; qIndex++;
   startedAt=performance.now();
   el("subLabel").textContent=p.sub;
   el("qno").innerHTML="№&nbsp;"+qIndex;
@@ -1628,22 +1629,18 @@ function renderStep(){
     h+=`<div class="stepCard recog"><div class="sq"><span class="rgTag">распознавание</span>С чего начать? Определи приём:</div>
         <div class="choices">${opts.map(o=>`<button type="button" data-ok="${o.ok?1:0}">${o.h}</button>`).join("")}</div>
         <div class="stepRow" style="margin-top:8px"><button class="hintBtn" id="stepHint" type="button">💡 Подсказка</button></div>
-        <div class="hintBox" id="hintBox">Смотрите только на то, <b>что дано</b> в условии, — приём подскажет само условие. Решать пока не нужно.</div></div>`;
+        <div class="hintBox" id="hintBox">Смотрите только на то, <b>что дано</b> в условии, — приём подскажет само условие. Решать пока не нужно.<div class="stepRow"><button class="hintBtn" id="stepReveal" type="button">Показать приём</button></div></div><div id="stepFeedback" role="status"></div></div>`;
     box.innerHTML=h;
     termify(box);
     el("stepHint").addEventListener("click",()=>el("hintBox").classList.add("show"));
+    el("stepReveal").addEventListener("click",()=>finishRecog(R.key,true));
     box.querySelectorAll(".choices button").forEach(b=>{
       b.addEventListener("click",()=>{
         if(b.dataset.ok==="1"){ b.classList.add("rightOpt"); finishRecog(b.textContent,false); }
         else{
           sp.errs++;
           b.classList.add("wrongOpt","anim-shake"); b.disabled=true;
-          el("hintBox").classList.add("show");
-          if(sp.errs>=2){
-            const okb=[...box.querySelectorAll(".choices button")].find(x=>x.dataset.ok==="1");
-            okb.classList.add("rightOpt");
-            setTimeout(()=>finishRecog(okb.textContent,true),350);
-          }
+          el("stepFeedback").textContent="Пока неверно. Попробуйте другой приём или откройте подсказку.";
         }
       });
     });
@@ -1663,12 +1660,13 @@ function renderStep(){
       h+=`<div class="choices">${opts.map(o=>`<button type="button" data-ok="${o.ok?1:0}">${o.h}</button>`).join("")}</div>
           <div class="stepRow" style="margin-top:8px"><button class="hintBtn" id="stepHint" type="button">💡 Подсказка</button></div>`;
     }
-    h+=`<div class="hintBox" id="hintBox">${st.hint||"Загляните в шпаргалку справа — там нужная формула."}</div></div>`;
+    h+=`<div class="hintBox" id="hintBox">${st.hint||"Откройте шпаргалку — там нужная формула."}<div class="stepRow"><button class="hintBtn" id="stepReveal" type="button">Показать этот шаг</button></div></div><div id="stepFeedback" role="status"></div></div>`;
   }
   box.innerHTML=h;
   termify(box);
   if(!st)return;
   el("stepHint").addEventListener("click",()=>el("hintBox").classList.add("show"));
+  el("stepReveal").addEventListener("click",()=>completeStep(st,st.t==="n"?fmt(st.a):st.opts.find(o=>o.ok).h,true));
   if(st.t==="n"){
     const inp=el("stepIn");
     el("stepCheck").addEventListener("click",()=>checkStep(st,inp));
@@ -1683,12 +1681,7 @@ function renderStep(){
         } else {
           b.classList.add("wrongOpt","anim-shake"); b.disabled=true;
           sp.errs++;
-          el("hintBox").classList.add("show");
-          if(sp.errs>=2){
-            const okb=[...box.querySelectorAll(".choices button")].find(x=>x.dataset.ok==="1");
-            okb.classList.add("rightOpt");
-            setTimeout(()=>completeStep(st,okb.textContent,true),350);
-          }
+          el("stepFeedback").textContent="Пока неверно. Попробуйте ещё раз или откройте подсказку.";
         }
       });
     });
@@ -1712,9 +1705,8 @@ function checkStep(st,inp){
     inp.classList.add("no","anim-shake");
     setTimeout(()=>inp.classList.remove("anim-shake"),420);
     setTimeout(()=>inp.classList.remove("no"),900);
-    el("hintBox").classList.add("show");
-    if(sp.errs>=2) completeStep(st, fmt(st.a), true);
-    else {inp.select();inp.focus();}
+    el("stepFeedback").textContent="Пока неверно. Попробуйте ещё раз или откройте подсказку.";
+    inp.select();inp.focus();
   }
 }
 function completeStep(st,valTxt,helped){
@@ -1732,8 +1724,9 @@ function finishStepTask(){
   if(cur.figure) drawFig(null,null); // сброс подсветки; чипы остаются
   const dt=(performance.now()-startedAt)/1000;
   const fb=el("feedback");
-  if(solOpenedFirst){
-    fb.innerHTML=`<div class="verdict neutral"><span class="ic">i</span><span>Не засчитано — решение было открыто заранее. Ответ ${fmt(cur.answer)}. Enter — следующая.</span></div>`;
+  if(solOpenedFirst||courseHelpUsed){
+    stats.streak=0; renderStats();
+    fb.innerHTML=`<div class="verdict neutral"><span class="ic">i</span><span>Решено с помощью — ${courseHelpUsed?'открыта школьная тема':'решение было открыто заранее'}. В самостоятельные результаты не входит. Ответ ${fmt(cur.answer)}. Enter — следующая.</span></div>`;
     return;
   }
   stats.solved++; stats.timeSum+=dt; stats.timeCount++;
@@ -1756,9 +1749,10 @@ function writeupHtml(){
 }
 function parseAns(raw){
   if(raw==null)return NaN;
-  let t=raw.toString().trim().replace(/−/g,"-").replace(",",".").replace(/\s+/g,"");
-  if(t==="")return NaN;
-  return Number(t);
+  const t=raw.toString().trim().replace(/−/g,"-").replace(/,/g,".");
+  if(!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(t))return NaN;
+  const value=Number(t);
+  return Number.isFinite(value)?value:NaN;
 }
 function check(){
   if(answered||!cur)return;
@@ -1770,32 +1764,39 @@ function check(){
     el("feedback").innerHTML=`<div class="verdict neutral"><span class="ic">!</span><span>Введите число — целое или десятичную дробь (можно с запятой).</span></div>`;
     return;
   }
-  answered=true;
-  inp.disabled=true; el("checkBtn").disabled=true;
   const correct=Math.abs(val-cur.answer)<1e-6;
   const fb=el("feedback");
   const dt=(performance.now()-startedAt)/1000;
-  if(solOpenedFirst){
+  if(!correct){
+    // Keep the first-attempt statistics, while allowing the pupil to correct
+    // this same task. Repeated submissions must not inflate the task count.
+    if(!solOpenedFirst&&!courseHelpUsed&&fastMistakes===0){
+      stats.solved++; stats.timeSum+=dt; stats.timeCount++; stats.streak=0;
+    }
+    fastMistakes++;
+    inp.classList.remove("ok"); inp.classList.add("no");
+    fb.innerHTML='<div class="verdict bad"><span class="ic">✕</span><span><b>Пока неверно.</b> Проверьте вычисления и попробуйте ещё раз. Если нужна помощь, нажмите «Показать решение».</span></div>';
+    renderStats(); inp.focus();
+    return;
+  }
+  answered=true;
+  inp.disabled=true; el("checkBtn").disabled=true;
+  if(solOpenedFirst||courseHelpUsed){
+    stats.streak=0; renderStats();
+    inp.classList.remove("no");
     inp.classList.add(correct?"ok":"no");
     fb.innerHTML=`<div class="verdict neutral"><span class="ic">i</span>
-      <span>Не засчитано — решение было открыто заранее. Правильный ответ: <span class="corr">${fmt(cur.answer)}</span>.</span></div>`;
+      <span>Верно с помощью — ${courseHelpUsed?'открыта школьная тема':'решение было открыто заранее'}. В самостоятельные результаты не входит. Ответ: <span class="corr">${fmt(cur.answer)}</span>.</span></div>`;
   } else {
-    stats.solved++; stats.timeSum+=dt; stats.timeCount++;
-    if(correct){
+    if(fastMistakes===0){
+      stats.solved++; stats.timeSum+=dt; stats.timeCount++;
       stats.right++; stats.streak++; stats.best=Math.max(stats.best,stats.streak);
-      inp.classList.add("ok");
-      fb.innerHTML=`<div class="verdict good"><span class="ic">✓</span><span><b>Верно!</b> Ответ ${fmt(cur.answer)}.</span></div>`+writeupHtml();
-      termify(fb);
-      const card=el("prompt").closest(".card");
-      card.classList.remove("anim-pop"); void card.offsetWidth; card.classList.add("anim-pop");
-    } else {
-      stats.streak=0;
-      inp.classList.add("no");
-      fb.innerHTML=`<div class="verdict bad"><span class="ic">✕</span>
-        <span><b>Неверно.</b> Правильный ответ: <span class="corr">${fmt(cur.answer)}</span>. Посмотрите решение ниже.</span></div>`;
-      inp.classList.add("anim-shake"); setTimeout(()=>inp.classList.remove("anim-shake"),420);
-      openSolution(true);
     }
+    inp.classList.remove("no"); inp.classList.add("ok");
+    fb.innerHTML=`<div class="verdict good"><span class="ic">✓</span><span><b>Верно${fastMistakes?' после исправления':''}!</b> Ответ ${fmt(cur.answer)}.${fastMistakes?' В статистике сохранена первая попытка.':''}</span></div>`+writeupHtml();
+    termify(fb);
+    const card=el("prompt").closest(".card");
+    card.classList.remove("anim-pop"); void card.offsetWidth; card.classList.add("anim-pop");
     renderStats();
   }
 }
