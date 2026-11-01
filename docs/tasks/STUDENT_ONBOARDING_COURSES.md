@@ -110,7 +110,7 @@ the cabinet backend require a coordinated release after separate approval.
 - Actual branch: `feat/student-onboarding-courses-20261101`
 - Actual base: `37718f1c0138ba031314b8f4716b73c9d963bc81`
 - Head, PR, checks and remaining release gates: recorded in the task report and
-  Draft PR after implementation. No pass is claimed by this specification.
+  Draft PR after implementation; acceptance evidence is in the linked report.
 
 ## Required handoff
 
