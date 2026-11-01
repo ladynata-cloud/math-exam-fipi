@@ -272,3 +272,59 @@ test('live isolated service: offline mathematical learner flow on desktop and mo
   assert.equal(await page.locator('#question').inputValue(), '');
   assert.deepEqual(externalRequests, []);
 });
+
+test('live numeric notation: mixed operands, equation correction and repeating answer', {
+  skip: skip || (!process.env.LIVE_ASSISTANT_URL && 'Set LIVE_ASSISTANT_URL to run against the real local service.'),
+}, async t => {
+  const url = new URL(process.env.LIVE_ASSISTANT_URL);
+  assert.ok(['127.0.0.1', 'localhost'].includes(url.hostname));
+  const browser = await chromium.launch({ headless: true,
+    ...(process.env.CHROMIUM_EXECUTABLE_PATH ? { executablePath: process.env.CHROMIUM_EXECUTABLE_PATH } : {}) });
+  t.after(() => browser.close());
+  const page = await browser.newPage({ viewport: { width: 390, height: 900 } });
+  await page.goto(url.href);
+  await page.waitForFunction(() => !document.getElementById('access-button').disabled);
+  if (await page.locator('#pilot-key-field').isVisible()) {
+    assert.ok(process.env.LIVE_ASSISTANT_PILOT_KEY);
+    await page.locator('#pilot-key').fill(process.env.LIVE_ASSISTANT_PILOT_KEY);
+  }
+  await page.locator('#access-button').click();
+  await page.locator('#workspace').waitFor({ state: 'visible' });
+  const ask = async (topic, question, attempt) => {
+    await page.locator('#topic').selectOption(topic);
+    await page.locator('#question').fill(question);
+    await page.locator('#attempt').fill(attempt);
+    const response = page.waitForResponse(r => r.url().endsWith('/api/ask') && r.request().method() === 'POST');
+    await page.locator('#ask-button').click();
+    assert.equal((await response).status(), 200);
+    await page.waitForFunction(() => document.getElementById('workspace').getAttribute('aria-busy') === 'false'
+      && document.querySelectorAll('.answer-card').length === 1);
+    assert.equal(await page.locator('#question').inputValue(), question);
+    assert.equal(await page.locator('#attempt').inputValue(), attempt);
+    assert.equal(await page.locator('.answer-steps li').count(), 1);
+    return page.locator('.answer-card').textContent();
+  };
+  const mixedHint = await ask('fractions', '1 1/2 + 1/2', '6');
+  assert.doesNotMatch(mixedHint, /Твоё число подходит|Ответ:/);
+  assert.match(mixedHint, /смешанн|целую часть/);
+  const fullResponse = page.waitForResponse(r => r.url().endsWith('/api/ask') && r.request().method() === 'POST');
+  await page.locator('#explain-button').click();
+  assert.equal((await fullResponse).status(), 200);
+  await page.waitForFunction(() => document.querySelectorAll('.answer-card').length === 2);
+  assert.equal(await page.locator('.answer-card').first().textContent(), mixedHint);
+  assert.match(await page.locator('.answer-card').last().textContent(), /Ответ: 2\./);
+  assert.match(await ask('fractions', '1 1/2 + 1/2', '2'), /Твоё число подходит/);
+  const ambiguous = await ask('linear-equations', '1 2x + 5 = 29', '2');
+  assert.match(ambiguous, /цифры одного числа пиши подряд/);
+  assert.doesNotMatch(ambiguous, /Твоё число подходит|Ответ:/);
+  assert.match(await ask('linear-equations', '12x + 5 = 29', '2'), /Твоё число подходит/);
+  assert.match(await ask('fractions', '1/3 + 0/1', '0,(3)'), /Твоё число подходит/);
+  assert.match(await ask('fractions', '-1 1/2 + 1/2', '-1'), /Твоё число подходит/);
+  for (const width of [320, 390, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true);
+    if (process.env.BROWSER_SCREENSHOT_DIR) await page.screenshot({ path: path.join(process.env.BROWSER_SCREENSHOT_DIR, `assistant-notation-${width}.png`), fullPage: true });
+  }
+  await page.locator('#forget-button').click();
+  await page.locator('#access-panel').waitFor({ state: 'visible' });
+});

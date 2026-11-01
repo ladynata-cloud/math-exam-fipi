@@ -1,5 +1,36 @@
 # MathExam project status
 
+## In preparation: three assistant notation improvements, 2026-11-02
+
+- The owner requested all ten proposed assistant improvements and explicitly
+  authorized publication of both the first three and remaining seven after
+  checks, without external review. This is a current-package exception, not a
+  global waiver or permission to activate paid inference.
+- First bounded MEDIUM [task](tasks/MATHEXAM_ASSISTANT_NUMERIC_NOTATION_20261102.md):
+  proper mixed-number operands in fraction addition/subtraction, no silent
+  concatenation of digits in equations, exact repeating-decimal answers.
+  Base is released PR403 `d6773b40fab15d3f7b148bcf512fef8d8cee01b3`.
+- Next scoped stages: broader equations/percentages and intermediate-step
+  feedback; then clarification, optional visuals, reinforcement and useful
+  fallback routes. Exact readiness and release evidence belong in each PR.
+
+## Published: exact mixed-number answers, PR403, 2026-11-02
+
+- [PR403](https://github.com/ladynata-cloud/math-exam-fipi/pull/403) merged as
+  `d6773b40fab15d3f7b148bcf512fef8d8cee01b3`, sole parent authorized base
+  `4afa9caa033c6d861d2a412ad2b9ad2957acb531`; reviewed head `ff71037` and actual
+  merge share tree `0e4f5127982ec125ea3bb3cf69decd7ebd97417a`. No base drift.
+- All 146 service tests and four browser scenarios passed; exact-head
+  CI41350071964 and postmerge Pages41350957101 succeeded.
+- Dedicated helper package `fb8d89e638bad0b6d1d58e0f5ef0fd2a95506a9c` replaced
+  PR401 package `b39e8f42fcfae200ef8a14a9bdd5fe10a638f0d9`, changing exactly two
+  verified runtime files. Amvera confirmed successful build, current use and
+  running 1/1 replica. A transient startup HTTP503 resolved; health/status
+  returned HTTP200 at 2026-11-01T21:17:08Z / 21:17:14Z, external inference OFF.
+- No paid call, real pupil access or authenticated production answer trial.
+  Current release evidence is recorded in the PR body. Earlier preparation
+  entries below are historical.
+
 ## In preparation: assistant mixed-number answers, 2026-11-02
 
 - The owner continued assistant development after PR401. Bounded MEDIUM

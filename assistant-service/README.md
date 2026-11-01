@@ -55,14 +55,29 @@ separate the whole and proper fractional parts. Digit groups are never joined:
 Use `1000` for a whole integer and `5/2` for an improper fraction. Optional
 `Ответ:` and `x =`/`х =` prefixes are accepted. Each integer component has at
 most 12 digits and a decimal at most 6 fractional digits; existing request and
-privacy limits still apply. This extends answer notation, not question formats.
+privacy limits still apply. Repeating decimals such as `0,(3)`, `0.1(6)` and
+`-0,58(3)` are checked exactly too; `0,(9)` equals 1. The parser permits up to
+64 digits across the nonrepeating prefix and period combined. The unchanged
+public privacy filter can reject long digit runs (including long periods);
+use the equivalent ordinary fraction in that case. Do not split a period with
+spaces or enter an approximation as if it were the exact value.
+
+In the standalone Fractions topic, questions may now add/subtract two ordinary
+fractions, whole numbers or proper mixed numbers: `1 1/2 + 1/2`, `2 - -1 1/2`.
+A leading minus applies to the entire mixed number. Each written component is
+at most 10000; numerator of a mixed fractional part must be smaller than its
+nonzero denominator. Only two operands and one addition/subtraction are parsed;
+decimals, parentheses and arbitrary expressions in this question format remain
+unsupported. Full explanation includes the conversion; hints reveal one step.
+Cabinet question formats are unchanged. In linear equations, `1 2x` is ambiguous
+and receives a correction request; `12 x`, `12 * x` and `12x` retain their meaning.
 “Объясни проще” or an incorrect-answer report adjusts subsequent explanations in
 the current session. “Удалить мой сеанс” clears the session and visible work.
 
 | Topic | Example | Current offline scope |
 | --- | --- | --- |
 | Linear equations | `3x + 5 = 20` | Bounded integer-coefficient equations of the supported linear form, including zero-coefficient cases |
-| Fractions | `1/2 + 1/3` | Addition or subtraction of two supported ordinary fractions |
+| Fractions | `1 1/2 + 1/2` | Addition/subtraction of two bounded ordinary fractions, proper mixed numbers or integers |
 | Percentages | `15% от 240` | Finding a percentage of a number; arbitrary increase/decrease word problems are outside the exact solver |
 | GCD / LCM | `НОК 12, 18 и 30` | Two to five positive integers, each at most 999999; result at most 999999999999 |
 | Rounding | `Округли 9,96 до десятых` | Supported decimal numbers and named place values, including negative values and carries |
