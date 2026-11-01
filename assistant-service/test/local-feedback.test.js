@@ -23,6 +23,52 @@ function finalValue(answer) {
   return BigInt(answer.steps.find(step => step.startsWith('Ответ:')).match(/= (\d+)\.$/)[1]);
 }
 
+test('256 signed fraction cases prioritize exact equivalent answers over coinciding denominator-error patterns', () => {
+  let count = 0;
+  for (const a of [-1, 0, 1, 3]) for (const b of [2, 3, 4, 5]) {
+    for (const c of [-2, 0, 1, 2]) for (const d of [2, 3, 4, 5]) {
+      const question = `${a}/${b}+${c}/${d}`, attempt = `${a + c}/${b + d}`;
+      // Independent integer cross-products; no production rational reducer.
+      const isCorrect = (a + c) * b * d === (a * d + c * b) * (b + d);
+      const answer = plain('fractions', question, attempt);
+      valid(answer);
+      assert.equal(/знаменатели сложены/.test(answer.text), !isCorrect, `${question}: ${attempt}`);
+      assert.equal(/число подходит/.test(answer.text), isCorrect, question);
+      const correct = plain('fractions', question, `${a * d + c * b}/${b * d}`);
+      assert.match(correct.text, /число подходит/, question);
+      assert.doesNotMatch(correct.text, /Похоже/, question);
+      count++;
+    }
+  }
+  assert.equal(count, 256);
+});
+
+test('50 signed decimal cases preserve place alignment, trailing zeroes and correct-answer precedence', () => {
+  const parts = value => {
+    const [whole, tail = ''] = value.split(',');
+    return { raw: Number(whole + tail), scale: 10 ** tail.length, places: tail.length };
+  };
+  let count = 0;
+  for (const left of ['0,1', '0,20', '1,25', '2', '-1,5']) {
+    for (const right of ['0,03', '0,4', '2,50', '-3', '0']) for (const op of ['+', '-']) {
+      const a = parts(left), b = parts(right), sign = op === '+' ? 1 : -1;
+      const scale = Math.max(a.scale, b.scale);
+      const correctNumerator = a.raw * scale / a.scale + sign * b.raw * scale / b.scale;
+      const wrongNumerator = a.raw + sign * b.raw;
+      const question = `${left} ${op} ${right}`;
+      const answer = cabinet('decimal-add-subtract', question, `${wrongNumerator}/${scale}`);
+      valid(answer);
+      assert.equal(/без выравнивания разрядов/.test(answer.text),
+        a.places !== b.places && wrongNumerator !== correctNumerator, question);
+      const correct = cabinet('decimal-add-subtract', question, `${correctNumerator}/${scale}`);
+      assert.match(correct.text, /число подходит/, question);
+      assert.doesNotMatch(correct.text, /Похоже/, question);
+      count++;
+    }
+  }
+  assert.equal(count, 50);
+});
+
 test('fraction and equation feedback explains a possible mistake without giving the result', () => {
   const examples = [
     ['fractions', '1/2 + 1/3', '2/5', /знаменател/, '5/6'],

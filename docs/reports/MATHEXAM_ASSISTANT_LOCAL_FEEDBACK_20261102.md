@@ -41,9 +41,11 @@ bounded grammar, not an interpretation of arbitrary textbook prose.
 
 | Check | Evidence |
 | --- | --- |
-| Full local service suite | `npm --prefix assistant-service test`: 138/138 pass, 0 skipped, Node 24.22.1 |
-| New regression groups | 7 groups covering feedback, equivalent correct answers, decimal errors, arithmetic enumeration, grammar/limits, partial hints and real local HTTP |
+| Full local service suite | `npm --prefix assistant-service test`: 140/140 pass, 0 skipped, Node 24.22.1 |
+| New regression groups | 9 groups covering feedback, equivalent correct answers, decimal errors, arithmetic enumeration, grammar/limits, partial hints and real local HTTP |
 | Independent multi-input oracle | All 3,875 ordered lists of length 3–5 with values 1–5; direct enumeration of divisors/multiples, 7,750 mathematical expectations checked through both entrypoints |
+| Signed fraction/decimal feedback | 256 fraction cases with independent cross-products plus 50 decimal place-value cases; exact and equivalent correct answers always win |
+| OpenAI compatibility | 154/154 tests on the isolated composition with PR399 head `7f4c054b9b8fb5b519dcab60e6fa4e461ed7c21f`; only synthetic transports |
 | Existing pair behavior | Original independent 1–20 pair coverage retained; the obsolete unsupported-three-input example is replaced with the new six-input rejection boundary |
 | Source-only courses | `node assistant-service/scripts/build-course-knowledge.cjs --check`: both ATANASYAN and ICHENSKAYA source gates pass |
 | Transport and cost | Synthetic cabinet HTTP with a throwing fetch stub, fake enabled provider configuration and fake consent: 0 transport calls, 0 API requests, 0 reserved micros |
@@ -60,6 +62,26 @@ launch used Playwright 1.62.1 and the installed Chromium executable. The existin
 GitHub workflow uses its pinned Playwright 1.55.0 on Ubuntu 24.04 and also runs
 container restart/source-course checks. Those CI results must be read on the
 published PR head, not inferred from local service tests.
+
+## Additional signed-value verification
+
+The continuation retains the existing PR401 implementation and adds two
+regression groups to its existing test file. No second implementation or PR
+was published. All runtime files are byte-identical to reviewed candidate
+`0a8fca108d1c8fb623be4452445e9cdc7e48a34b`; only tests and this report changed.
+
+The 256 signed fraction cases check correct-answer precedence when a common
+wrong-operation pattern coincides with the actual result, including zero and
+cancellation. Expected values use independent integer cross-products, without
+the production rational reducer. The 50 decimal cases combine both signs,
+addition/subtraction, integers and trailing zeroes with an independent scaled
+integer oracle. This adds 306 cases to the existing 3,875-list NOD/NOK oracle.
+
+The complete current-head suite passes 140/140. The isolated OpenAI composition
+passes 154/154 with all original tests retained; this is compatibility evidence,
+not a live provider test or permission to activate PR399. The existing browser
+startup restriction below was not retried locally. Previous CI run 41344559666
+belongs to the old head; the updated PR records new exact-head CI separately.
 
 ## Review, limits and release boundary
 
@@ -100,7 +122,7 @@ PR: single Draft PR for the named branch; exact identity in GitHub
 Base: 059ee8c9f5baeb0b333c96d9b8516edb570666b2
 Head: published commit recorded in the Draft PR
 Gate: LOCAL_MATH_OK; browser/container CI pending at local report time
-Tests: 138/138; both source projections; independent arithmetic; zero transport
+Tests: 140/140; OpenAI composition 154/154; both source projections; independent arithmetic; zero transport
 Failures: local browser startup blocked by the execution environment
 Not run: live model inference, pupil testing, production deployment
 Scope deviations: none
