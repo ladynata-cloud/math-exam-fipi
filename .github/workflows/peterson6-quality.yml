@@ -44,6 +44,8 @@ jobs:
           node --check school/peterson6/models.js
           node school/peterson6/build.cjs --check
           node school/peterson6/test-content.cjs
+          python3 tools/peterson6-equation-content-oracle.py
+          node tools/peterson6-equation-math.test.cjs
       - name: Exact math, saved state and models
         run: |
           node school/peterson6/test-math.cjs
@@ -52,7 +54,10 @@ jobs:
       - name: Install in-memory DOM for code tests
         run: npm install --prefix "$RUNNER_TEMP/peterson-qa" --no-audit --no-fund jsdom@26.1.0
       - name: Course DOM journeys (not visual browser QA)
-        run: NODE_PATH="$RUNNER_TEMP/peterson-qa/node_modules" node school/peterson6/test-ui.cjs
+        run: |
+          export NODE_PATH="$RUNNER_TEMP/peterson-qa/node_modules"
+          node school/peterson6/test-ui.cjs
+          node school/peterson6/test-equation-state.cjs
   board:
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -77,11 +82,15 @@ jobs:
           node --test tools/peterson6-session.test.cjs tools/peterson6-board.test.cjs tools/peterson6-picker.test.cjs tools/learning-peterson-plan.dom.cjs tools/learning-focus-links.dom.cjs
           node --test board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js
       - name: Synthetic teacher and learner on the real board
-        run: PETERSON6_BOARD_SHOTS="$RUNNER_TEMP/peterson-board-shots" node tools/peterson6-board.browser.cjs
+        run: |
+          PETERSON6_BOARD_SHOTS="$RUNNER_TEMP/peterson-board-shots" node tools/peterson6-board.browser.cjs
+          PETERSON_EQUATION_ARTIFACTS="$RUNNER_TEMP/peterson-equation-shots" node tools/peterson6-equations.browser.cjs
       - name: Retain visual evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: peterson-board-screenshots
-          path: ${{ runner.temp }}/peterson-board-shots
+          path: |
+            ${{ runner.temp }}/peterson-board-shots
+            ${{ runner.temp }}/peterson-equation-shots
           if-no-files-found: ignore

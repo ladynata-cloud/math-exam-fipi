@@ -4,13 +4,15 @@ on:
   pull_request:
     paths:
       - 'trainers/maxim-peterson6/**'
-      - 'tools/maxim-peterson6.test.cjs'
+      - 'tools/maxim-peterson6*.cjs'
+      - 'tools/build-peterson6-equation-pdfs.py'
       - '.github/workflows/maxim-peterson6.yml'
   push:
     branches: [main]
     paths:
       - 'trainers/maxim-peterson6/**'
-      - 'tools/maxim-peterson6.test.cjs'
+      - 'tools/maxim-peterson6*.cjs'
+      - 'tools/build-peterson6-equation-pdfs.py'
       - '.github/workflows/maxim-peterson6.yml'
 
 permissions:
@@ -27,7 +29,11 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24.21.0'
+      - name: Install pinned PDF preflight dependencies
+        run: python3 -m pip install --disable-pip-version-check reportlab==4.4.9 matplotlib==3.10.8 pypdf==6.10.0
       - name: Course mathematics, retained work, progress and portable assets
         run: |
           node tools/maxim-peterson6.test.cjs
+          node tools/maxim-peterson6-equations.test.cjs
+          python3 tools/build-peterson6-equation-pdfs.py --check-only
           git diff --check

@@ -37,6 +37,8 @@ jobs:
           node --check trainers/peterson-assistant.js
           node --test tools/peterson-assistant.test.cjs tools/learning-peterson-pair.dom.cjs tools/learning-peterson-plan.dom.cjs
           node tools/maxim-peterson6.test.cjs
+          node tools/maxim-peterson6-equations.test.cjs
+          node school/peterson6/test-equation-state.cjs
           node school/peterson6/test-state.cjs
           node school/peterson6/test-ui.cjs
           git diff --check
@@ -44,8 +46,10 @@ jobs:
         env:
           PETERSON_HELP_ARTIFACT_DIR: artifacts/peterson-helper/direct
           PETERSON_PAIR_ARTIFACT_DIR: artifacts/peterson-helper/cabinet
+          MAXIM_EQUATION_ARTIFACTS: artifacts/peterson-helper/equations
         run: |
           node tools/peterson-assistant.browser.cjs
+          node tools/maxim-peterson6-equations.browser.cjs
           node tools/learning-peterson-pair.browser.cjs
       - name: Keep visual evidence
         if: always()
