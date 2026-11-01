@@ -4,7 +4,7 @@
  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
  <title>Справочник с тренажёрами · ЕГЭ база · MathExam</title>
  <meta name="description" content="Короткие правила базовой математики, понятные примеры и прикреплённые тренажёры ЕГЭ базы. Открывай только нужную справку.">
- <link rel="stylesheet" href="style.css">
+ <link rel="stylesheet" href="style.css"><link rel="stylesheet" href="exam.css">
  <script defer src="../path/data.js"></script><script defer src="../path/practice.js"></script><script defer src="../path/equation-practice.js"></script>
  <script defer src="data.js"></script><script defer src="legacy-map.js"></script><script defer src="ui.js"></script><script defer src="app.js"></script>
 </head>
@@ -13,6 +13,7 @@
  <header class="ref-header"><a href="../index.html" class="ref-brand">∑ MathExam</a><nav aria-label="Курс"><a href="../index.html">Весь курс</a><a href="../path/index.html#map">Задания 1–21</a><a href="../../foundations/">Базовая математика</a></nav></header>
  <main class="ref-main">
   <div class="ref-intro"><p class="ref-category">ЕГЭ база · Опора для решения</p><h1>Справочник с тренажёрами</h1><p>Открой нужный лист. Булавками к нему прикреплены задачи, в которых пригодится это правило.</p><a id="reference-return" class="ref-return" hidden>← Вернуться к своей задаче</a></div>
+  <a class="exam-source-link" href="exam.html"><strong>Справочные материалы, прилагаемые к ЕГЭ →</strong><span>Формулы и таблицы из PDF 2015 года, с булавками к задачам. Ниже — расширенные пояснения.</span></a>
   <form id="reference-filters" class="ref-filters" role="search"><label for="reference-search">Найти правило<input id="reference-search" type="search" placeholder="Например: дроби, площадь, проценты" autocomplete="off"></label><label for="reference-category">Раздел<select id="reference-category"><option value="">Все разделы</option></select></label></form>
   <p id="reference-status" class="ref-small" role="status" aria-live="polite"></p>
   <div id="reference-content" tabindex="-1"></div>
