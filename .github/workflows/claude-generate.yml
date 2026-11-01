@@ -1,106 +1,40 @@
-name: Claude Generate Draft
-
+name: PR375 independent release review
 on:
   workflow_dispatch:
     inputs:
       prompt:
-        description: "Задание для Claude"
-        required: true
+        description: "Audit label only; reviewed code is fixed in the script"
+        required: false
+        default: "PR375 exact-head release review"
         type: string
       output_path:
-        description: "Куда сохранить результат"
+        description: "Compatibility input; output is always an artifact"
         required: false
-        default: "trainers/drafts/claude_test.html"
+        default: "artifacts/pr375-review"
         type: string
-
 permissions:
-  contents: write
-
+  contents: read
+concurrency:
+  group: pr375-independent-review-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
-  generate:
-    runs-on: ubuntu-latest
-
+  review:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
-          python-version: "3.11"
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install anthropic
-
-      - name: Generate with Claude
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Review exact public source once
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          PROMPT_TEXT: ${{ inputs.prompt }}
-          OUTPUT_PATH: ${{ inputs.output_path }}
-        run: |
-          python <<'PY'
-          import os
-          from pathlib import Path
-          import anthropic
-
-          api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
-          prompt = os.environ.get("PROMPT_TEXT", "").strip()
-          output_path = os.environ.get("OUTPUT_PATH", "").strip()
-
-          if not api_key:
-              raise SystemExit("ANTHROPIC_API_KEY secret is missing")
-
-          if not prompt:
-              raise SystemExit("Prompt is empty")
-
-          if not output_path.startswith("trainers/drafts/"):
-              raise SystemExit("Output path must start with trainers/drafts/")
-
-          client = anthropic.Anthropic(
-              api_key=api_key,
-              timeout=300.0,
-              max_retries=2,
-          )
-
-          message = client.messages.create(
-              model="claude-opus-4-7",
-              max_tokens=2000,
-              messages=[
-                  {
-                      "role": "user",
-                      "content": prompt,
-                  }
-              ],
-          )
-
-          parts = []
-          for block in message.content:
-              if getattr(block, "type", None) == "text":
-                  parts.append(block.text)
-
-          text = "\n".join(parts).strip()
-
-          if not text:
-              raise SystemExit("Claude returned empty response")
-
-          path = Path(output_path)
-          path.parent.mkdir(parents=True, exist_ok=True)
-          path.write_text(text, encoding="utf-8")
-
-          print(f"Saved to {path}")
-          PY
-
-      - name: Commit result
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add trainers/drafts
-
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "Add Claude generated draft"
-            git push
-          fi
+        run: python3 tools/assistant-release-review.py
+      - name: Preserve review provenance
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pr375-independent-review
+          path: artifacts/pr375-review/
+          if-no-files-found: error
+          retention-days: 30
