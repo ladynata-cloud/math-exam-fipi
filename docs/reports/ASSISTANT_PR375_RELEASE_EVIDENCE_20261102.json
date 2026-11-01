@@ -1,0 +1,364 @@
+{
+  "schema": 1,
+  "release": "059ee8c9f5baeb0b333c96d9b8516edb570666b2",
+  "head": "8c7c3db3a308da61619b63b129e7333292406cd6",
+  "head_workflows": [
+    {
+      "id": 41332820950,
+      "name": "College functions trainer",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41332820841,
+      "name": "Public SEO and sitemap",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41332820845,
+      "name": "Peterson cabinet and on-demand helper",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41332820854,
+      "name": "Basic EGE 11 and 13 shared board",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41332820849,
+      "name": "Merzlyak cabinet and shared board",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41332820853,
+      "name": "OGE basics — contextual help and task-first screens",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41332820821,
+      "name": "Cabinet school course navigation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41332820935,
+      "name": "Individual board — writing tools",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41332820834,
+      "name": "Atanasyan first steps — source, work and cabinet",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41332820862,
+      "name": "Grade 6 NOK and NOD trainers",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41332820881,
+      "name": "Peterson 6 part 1 quality",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41332820824,
+      "name": "Atanasyan 92a — cabinet and shared board",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41332820906,
+      "name": "MathExam assistant — private prototype",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41332820823,
+      "name": "Profile 2027 — learning start",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41332820839,
+      "name": "Vilenkin 6 cloud cabinet",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41332820876,
+      "name": "Profile START — five added board trainers",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41332820885,
+      "name": "Ichenskaya grade 7 — source, proofs and retained work",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41332820883,
+      "name": "Unified learning — accounts, classroom and trainers",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "post_workflows": [
+    {
+      "id": 41337980967,
+      "jobs": [
+        {
+          "name": "mathematics-and-board",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 41337980846,
+      "jobs": [
+        {
+          "name": "cabinet-and-board",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 41337980888,
+      "jobs": [
+        {
+          "name": "writing",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 41337980797,
+      "jobs": [
+        {
+          "name": "board",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "course",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 41337980885,
+      "jobs": [
+        {
+          "name": "mathematics-and-journeys",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 41337980838,
+      "jobs": [
+        {
+          "name": "base-stereometry",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 41337980736,
+      "jobs": [
+        {
+          "name": "added-board",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 41337980871,
+      "jobs": [
+        {
+          "name": "expressions-board",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "math-and-browser",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "stereo-board",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 41337980680,
+      "jobs": [
+        {
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "report-build-status",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "deploy",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "url": "https://mathexam.space/learning/index.html",
+      "status": 200,
+      "redirected": false,
+      "bytes": 7825,
+      "match": true,
+      "sha256": "f38460f2727a3bfb82f8a899e13ada16a39305b121d2c963ea7766abbe83cfde"
+    },
+    {
+      "url": "https://mathexam.space/learning/assistant.js",
+      "status": 200,
+      "redirected": false,
+      "bytes": 47008,
+      "match": true,
+      "sha256": "666edb090702f3f8abfcf4f9d892b868a19f473bc5eb4035bd480a60338d7990"
+    },
+    {
+      "url": "https://mathexam.space/learning/assistant.css",
+      "status": 200,
+      "redirected": false,
+      "bytes": 7459,
+      "match": true,
+      "sha256": "b0c4d83ca378ebc1fc2cde264d6dec5a9e03f7823f59c748b68cdf8f15eca1ef"
+    },
+    {
+      "url": "https://mathexam-board-ladynata.msk1.amvera.tech/learning/index.html",
+      "status": 200,
+      "redirected": false,
+      "bytes": 7825,
+      "match": true,
+      "sha256": "f38460f2727a3bfb82f8a899e13ada16a39305b121d2c963ea7766abbe83cfde"
+    },
+    {
+      "url": "https://mathexam-board-ladynata.msk1.amvera.tech/learning/assistant.js",
+      "status": 200,
+      "redirected": false,
+      "bytes": 47008,
+      "match": true,
+      "sha256": "666edb090702f3f8abfcf4f9d892b868a19f473bc5eb4035bd480a60338d7990"
+    },
+    {
+      "url": "https://mathexam-board-ladynata.msk1.amvera.tech/learning/assistant.css",
+      "status": 200,
+      "redirected": false,
+      "bytes": 7459,
+      "match": true,
+      "sha256": "b0c4d83ca378ebc1fc2cde264d6dec5a9e03f7823f59c748b68cdf8f15eca1ef"
+    }
+  ],
+  "health": [
+    {
+      "url": "https://mathexam-assistant-ladynata.msk1.amvera.tech/healthz",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "service": "mathexam-assistant",
+        "mode": "offline"
+      },
+      "checked_at": "2026-11-01T19:33:46.523096+00:00"
+    },
+    {
+      "url": "https://mathexam-board-ladynata.msk1.amvera.tech/healthz",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://mathexam-board-ladynata.msk1.amvera.tech/health",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "rooms": 0,
+        "serverStartedAt": "2026-11-01T18:44:10.757Z",
+        "roomTtlMs": 21600000,
+        "roomCleanupIntervalMs": 300000,
+        "features": {
+          "roomTtlCleanup": true,
+          "progressWorkspaces": true
+        },
+        "registryLoaded": true,
+        "registrySchemaVersion": 1,
+        "registryDigest": "sha256:c48ae13ed51d320293d4bf46f23a57b0fbbf5d4c52567ae6d8c08abea3a0eb8a",
+        "registrySource": "bundled-default",
+        "registryEntryCount": 26,
+        "registryError": null,
+        "progressStoreReady": true,
+        "progressStoreError": null,
+        "progressPersistenceConfirmed": true,
+        "progressAuthorizedTrainerCount": 3,
+        "progressRegistryDigest": "sha256:407d647ec9a765f9d5e50aaec9ef2b04c26c91b397e1ca3039262492f59cadf6"
+      },
+      "checked_at": "2026-11-01T19:34:18.014134+00:00"
+    }
+  ],
+  "helper_files": [
+    {
+      "path": "assistant-service/src/cabinet-bridge.js",
+      "bytes": 9911,
+      "sha256": "a6bcbc1f8f8954dec34a241beef15087c660b2051d07a3907b2c7e55c65a7e50",
+      "blob": "40357d9a855eafa809b85884707577567e468df7"
+    },
+    {
+      "path": "assistant-service/src/cabinet-topics.js",
+      "bytes": 67793,
+      "sha256": "3e2bdc676539bb483448c4cba1cad85ea81b8bc877b8c7b6bf315d05729bf85e",
+      "blob": "8e8bc2c1eb673c6f2c009a022a46da39b5003eac"
+    },
+    {
+      "path": "assistant-service/src/dialogue.js",
+      "bytes": 4073,
+      "sha256": "ea0acb12a82091348dcfd45d879fbf2bf8e88f6273a39fbed399f0ee6597745f",
+      "blob": "2fb37a42cadde84544198ff6b3174d4e769bb9e8"
+    },
+    {
+      "path": "assistant-service/src/tutor.js",
+      "bytes": 32858,
+      "sha256": "43636be521d226fec08a4b2f740db57eb9ade029c6a146992ca233318f6184aa",
+      "blob": "1bf717d8248227e516e953301f6f005ff0323798"
+    }
+  ],
+  "deployments": {
+    "cabinet": "84be27de6fc3d0af9febfa315c0c34152aad6dac",
+    "assistant": "79465769a2881f1f54a536b19eb8b4634a5d4483",
+    "assistant_parent": "69afae86d08c0e6c3041a29646e1845704951f43",
+    "build": "success",
+    "used": true
+  },
+  "review": {
+    "verdict": null,
+    "owner_exception": true,
+    "attempt_run": 41336928818,
+    "reason": "Provider insufficient credit"
+  }
+}
