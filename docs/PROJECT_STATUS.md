@@ -1,5 +1,36 @@
 # MathExam project status
 
+## Preparing: Atanasyan chapter IV self-check, 2026-11-02
+
+- Owner requested continuation after Sphere publication. The next bounded
+  increment covers all ten chapter IV self-check questions in thirteen draft
+  cards, preserving original parts 3а/б/в and 5а/б.
+- [Task](tasks/ATANASYAN_CHAPTER_IV_SELFCHECK.md), HIGH; base
+  `1577c058309f4cc78c21315bf64b0b393751ec2d`; branch
+  `content/atanasyan-chapter-iv-selfcheck-20261102`.
+- [Candidate report](reviews/ATANASYAN_CHAPTER_IV_SELFCHECK_DRAFT.md):
+  31 steps and 45 model states, schema/coordinate/preservation checks passed.
+  Independent review is pending; the isolated editorial preview is not a
+  production course. All 640 published cards and learner-storage contracts
+  remain unchanged. Exact-head browser evidence belongs in the Draft PR.
+
+## Published: Atanasyan Sphere, PR386
+
+- [PR386](https://github.com/ladynata-cloud/math-exam-fipi/pull/386) was merged
+  as `3376ff99926e6e8e9721316f4cac045afc737a0c`, sole parent
+  `5bbfe3a4615b6410dacf7f1344aa57b909a986ef`. The verified tree is
+  `8f12df95753346ddcb53f53157e1b29524066813`.
+- The release record confirms 20 successful premerge checks, 1,280 browser
+  card/width journeys, all six postmerge checks, and successful Pages run
+  [41346143683](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41346143683).
+- Public HTTPS verification matched all 46 new lesson files and nine course
+  assets to the release. The live catalogue showed 640 cards and all 46 Sphere
+  cards; theory 43 help/steps/rotation and exercise 382b opened successfully.
+  Previous 594 cards and saved-work identities were retained exactly.
+- This reconciles the completed preceding release; historical preparation
+  records below remain unchanged. The next self-check increment requires its
+  own independent review and release decision.
+
 ## Release authorized: profile first-part trainer repairs, PR397, 2026-11-02
 
 - Owner directly requested correction of the complete first-part audit, accurate
