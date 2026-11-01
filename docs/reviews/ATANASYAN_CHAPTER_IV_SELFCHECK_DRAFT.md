@@ -51,9 +51,13 @@ The original source pages and their extracted text are not included here.
   at 320 px. Its condition was shortened without removing the size ratios,
   whole-surface coverage or equal thin-layer assumption. The first-screen
   assertion remains unchanged; final evidence requires a fresh completed run.
+- Author inspection of those actual images also found that the preview lacked
+  the existing `task-scene` wrapper class. Restoring it fixes the narrow expand
+  button and the full-screen figure layout. Browser checks now exercise all
+  39 expand/close journeys and verify unclipped control text.
 - Fresh CI browser results and actual image inspection are recorded on the
   exact-head Draft PR. The browser plan covers 39 card/width journeys,
-  135 model states and 213 images at 320/390/1280 pixels; planned counts are
+  135 model states and 216 images at 320/390/1280 pixels; planned counts are
   not represented here as an executed result.
 
 ## Review boundary and remaining integration

@@ -11,7 +11,7 @@ const server=http.createServer((req,res)=>{
 });
 (async()=>{
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
- const evidence={completed:false,widths:[320,390,1280],journeys:[],views:[],screenshots:[],errors:[],cardHashes:{}};
+ const evidence={completed:false,widths:[320,390,1280],journeys:[],views:[],screenshots:[],expansions:[],errors:[],cardHashes:{}};
  let browser;
  async function capture(page,filename,selector){
   const file=path.join(out,filename);if(selector)await page.locator(selector).screenshot({path:file});else await page.screenshot({path:file,fullPage:true});
@@ -45,6 +45,14 @@ const server=http.createServer((req,res)=>{
     await page.locator('#work').fill('Проверочная запись 123');
     const initial=await page.locator('#model svg').innerHTML();await page.getByRole('button',{name:'Повернуть вправо',exact:true}).click();
     assert.notEqual(await page.locator('#model svg').innerHTML(),initial);await page.getByRole('button',{name:'Вернуть исходный вид',exact:true}).click();
+    const controls=await page.locator('#model .am-controls button').evaluateAll(nodes=>nodes.map(n=>({text:n.textContent,overflow:n.scrollWidth-n.clientWidth})));
+    controls.forEach(c=>assert(c.overflow<=1,`${id}: clipped control ${c.text}`));
+    await page.getByRole('button',{name:'Развернуть рисунок',exact:true}).click();
+    assert.equal(await page.getByRole('dialog',{name:'Увеличенный рисунок задачи'}).count(),1);
+    const expanded=await page.locator('#model .am-expanded').boundingBox();assert(expanded.x<=1&&expanded.y<=1&&expanded.width>=width-1,'figure expands to viewport');
+    if(i===0)await capture(page,`${width}-expanded.png`);
+    await page.getByRole('button',{name:'Закрыть рисунок',exact:true}).click();
+    assert.equal(await page.getByRole('dialog').count(),0);evidence.expansions.push({id,width});
     for(const name of Object.keys(card.visualization.model.views)){
      assert(await page.evaluate(name=>selfcheckPreview.mount.setView(name),name));
      assert(!/NaN|Infinity/.test(await page.locator('#model svg').evaluate(n=>n.outerHTML)));
@@ -65,7 +73,7 @@ const server=http.createServer((req,res)=>{
    }
    await context.close();
   }
-  assert.equal(evidence.views.length,135);assert.equal(evidence.journeys.length,39);assert.equal(evidence.screenshots.length,213);assert.deepEqual(evidence.errors,[]);
-  evidence.completed=true;console.log('ATANASYAN_IV_SELFCHECK_BROWSER_OK: 39 journeys; 135 model states; 213 screenshots; 320/390/1280px; no storage writes');
+  assert.equal(evidence.views.length,135);assert.equal(evidence.journeys.length,39);assert.equal(evidence.screenshots.length,216);assert.equal(evidence.expansions.length,39);assert.deepEqual(evidence.errors,[]);
+  evidence.completed=true;console.log('ATANASYAN_IV_SELFCHECK_BROWSER_OK: 39 journeys; 135 model states; 39 expansions; 216 screenshots; 320/390/1280px; no storage writes');
  }finally{fs.writeFileSync(path.join(out,'evidence.json'),JSON.stringify(evidence,null,2));await browser?.close();server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;server.close();});
