@@ -4,6 +4,7 @@ import { requireValue } from './errors.js';
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 export const PROVIDERS = Object.freeze({
+  openai: { url: 'https://api.openai.com/v1/chat/completions', label: 'OpenAI API', models: ['gpt-5.4-mini-2026-03-17'], currency: 'USD' },
   deepseek: { url: 'https://api.deepseek.com/chat/completions', label: 'DeepSeek API', models: ['deepseek-flash'], currency: 'USD' },
   amvera: { url: 'https://inference.waw0.amvera.ru/v1/chat/completions', label: 'Amvera Inference', models: ['qwen3_30b', 'qwen3_235b'], currency: 'RUB' }
 });
@@ -84,6 +85,9 @@ export function loadConfig(env = process.env, now = Date.now()) {
     requireValue(inputPriceMicros > 0 && outputPriceMicros > 0, 'CONFIG_PRICE_REQUIRED');
     // Verified peak cache-miss prices, 2026-10-27. Never budget with discounts.
     if (provider === 'deepseek') requireValue(inputPriceMicros >= 300000 && outputPriceMicros >= 1200000, 'CONFIG_PRICE_BELOW_VERIFIED_CEILING');
+    // Standard, uncached GPT-5.4 mini rates checked 2026-11-02 (Novosibirsk).
+    // No credit balance, cached-input discount or priority tier is assumed.
+    if (provider === 'openai') requireValue(inputPriceMicros >= 750000 && outputPriceMicros >= 4500000, 'CONFIG_PRICE_BELOW_VERIFIED_CEILING');
     const dailyBudgetMicros = moneyMicros(env.ASSISTANT_DAILY_BUDGET);
     const monthlyBudgetMicros = moneyMicros(env.ASSISTANT_MONTHLY_BUDGET);
     requireValue(dailyBudgetMicros > 0 && monthlyBudgetMicros >= dailyBudgetMicros, 'CONFIG_BUDGET_REQUIRED');

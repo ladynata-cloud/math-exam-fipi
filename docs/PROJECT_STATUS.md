@@ -1,5 +1,23 @@
 # MathExam project status
 
+## Prepared: optional OpenAI helper adapter, 2026-11-02
+
+- [Task](tasks/MATHEXAM_ASSISTANT_OPENAI_20261102.md), HIGH, starts from main
+  `6b9c327f2ca438cb7e7620ef302876de467fac19` (merged PR396). Current GitHub
+  metadata confirms PR380 is merged; PR375 (dialogue) and PR385 (public
+  navigator) remain unmerged Drafts with conflicts. This does not claim a new
+  live site/helper verification or supersede their historical evidence.
+- Adds the missing OpenAI provider option with a pinned GPT-5.4 mini snapshot,
+  conservative standard-price accounting, explicit storage/reasoning controls
+  and model/tier drift protection. Offline remains the default.
+- Full assistant suite: 129/129; both source knowledge checks pass. Ten new
+  synthetic provider/HTTP groups include real SQLite restart and replay tests.
+  [Report](reports/MATHEXAM_ASSISTANT_OPENAI_20261102.md).
+- No model calls, keys, pupil settings, production release, Qwen training or
+  spending. HIGH review and live provider eligibility/quality remain open;
+  [operator notes](../assistant-service/OPENAI.md) distinguish implementation
+  readiness from permission and feasibility of pupil deployment.
+
 ## Current: finance deposit explanation correction, 2026-11-01
 
 - [Task](tasks/EGE_P13_FINANCE_STEP_HINTS_20261101.md), SMALL; the owner explicitly
