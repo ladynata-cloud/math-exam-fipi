@@ -3,6 +3,18 @@
 Date: 2026-11-01, Asia/Novosibirsk. Task:
 [GRADE6_LCM_NAVIGATION_INTEGRATION_20261101](../tasks/GRADE6_LCM_NAVIGATION_INTEGRATION_20261101.md).
 
+## Current continuation
+
+The preparation below describes original PR395 head
+`7df31a8363cf07e331e6c2ffe2e059f3032848b9` on base
+`37718f1c0138ba031314b8f4716b73c9d963bc81`. PR393 subsequently advanced main.
+The owner authorized its ordinary merge into this same task branch and the
+single status-heading resolution, with exact cabinet/course preservation.
+See [the revalidation report](GRADE6_LCM_NAVIGATION_REVALIDATION_20261101.md)
+for the new base, owner review exception, fresh gates and dependency bindings.
+The original preparation evidence remains historical evidence; the PR body
+binds the newly published head and its own CI. No production release is claimed.
+
 ## Result and release boundary
 
 One compatible candidate combines the author LCM course and readable cabinet
