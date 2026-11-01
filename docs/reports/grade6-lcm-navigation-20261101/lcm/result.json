@@ -1,0 +1,712 @@
+{
+  "result": "LCM_MULTI_BROWSER_OK",
+  "originalSavedAttempts": 194,
+  "authorTasks": 44,
+  "catalogueTasks": 238,
+  "checks": [
+    "All 44 answers and every intermediate step agree with independent arithmetic; six checks use fresh conditions",
+    "Normal teacher profile form selects the textbook route only for the intended synthetic pupil",
+    "Topic chooser and navigation helper include author LCM; review shortcuts open prime factors, GCD and original LCM exercises and return without changing route or starting work",
+    "Cabinet keeps all 194 textbook tasks and adds separately labelled examples, paired practice methods and six checks",
+    "Both author catalog returns and source help respect pending and genuinely rejected draft saves; saved work is retained",
+    "Delayed initial cabinet data keeps login pending until completion before second-device navigation",
+    "A verified chain step and unfinished next answer survive reload and a separate browser context",
+    "Author methods retain hints, steps and drafts through iframe/shell/history catalog returns; Continue selects newer LCM work over 194 older source attempts",
+    "Switching both methods through course buttons resumes separate saved steps and drafts; both stay supported learning",
+    "Real form submissions verify both methods with three, four and five numbers, one, repeated inputs and answers above 200",
+    "Larger common multiples are rejected without revealing help; six unseen checks distinguish independent from explicitly hinted results",
+    "Repeating a completed check creates a new practiced attempt and preserves its earlier independent result",
+    "Teacher control makes unfinished work read-only; stale input/submit/hint events do not write, and a peer is denied",
+    "Visible author shell returns work for teacher preview, pupil read-only mode and history; controlled teacher breadcrumb also preserves work, control and events",
+    "All 194 source-task saved records, the legacy attempt, the other pupil profile and standalone storage remain unchanged"
+  ],
+  "exercised": [
+    {
+      "id": "v6-author-lcm-example-01-chain",
+      "method": "chain",
+      "numbers": [
+        4,
+        6,
+        8
+      ],
+      "steps": 2
+    },
+    {
+      "id": "v6-author-lcm-example-01-factors",
+      "method": "factors",
+      "numbers": [
+        4,
+        6,
+        8
+      ],
+      "steps": 6
+    },
+    {
+      "id": "v6-author-lcm-practice-12-chain",
+      "method": "chain",
+      "numbers": [
+        6,
+        8,
+        12,
+        18
+      ],
+      "steps": 3
+    },
+    {
+      "id": "v6-author-lcm-practice-13-factors",
+      "method": "factors",
+      "numbers": [
+        8,
+        9,
+        12,
+        15
+      ],
+      "steps": 8
+    },
+    {
+      "id": "v6-author-lcm-practice-14-chain",
+      "method": "chain",
+      "numbers": [
+        4,
+        6,
+        9,
+        10,
+        15
+      ],
+      "steps": 4
+    },
+    {
+      "id": "v6-author-lcm-practice-16-factors",
+      "method": "factors",
+      "numbers": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "steps": 9
+    },
+    {
+      "id": "v6-author-lcm-practice-11-chain",
+      "method": "chain",
+      "numbers": [
+        1,
+        6,
+        8
+      ],
+      "steps": 2
+    },
+    {
+      "id": "v6-author-lcm-practice-11-factors",
+      "method": "factors",
+      "numbers": [
+        1,
+        6,
+        8
+      ],
+      "steps": 6
+    },
+    {
+      "id": "v6-author-lcm-practice-10-chain",
+      "method": "chain",
+      "numbers": [
+        5,
+        5,
+        10
+      ],
+      "steps": 2
+    },
+    {
+      "id": "v6-author-lcm-practice-10-factors",
+      "method": "factors",
+      "numbers": [
+        5,
+        5,
+        10
+      ],
+      "steps": 6
+    }
+  ],
+  "layout": [
+    {
+      "label": "chain-first-screen",
+      "viewport": {
+        "width": 320,
+        "height": 900
+      },
+      "frameBox": {
+        "x": 13,
+        "y": 314.328125,
+        "width": 294,
+        "height": 620
+      },
+      "boxes": {
+        "helper": {
+          "x": 140.734375,
+          "y": 838,
+          "width": 169.265625,
+          "height": 52
+        },
+        "catalog": {
+          "x": 137.203125,
+          "y": 138.90625,
+          "width": 144.515625,
+          "height": 44
+        },
+        ".condition .prompt": {
+          "x": 38,
+          "y": 373.21875,
+          "width": 244,
+          "height": 60
+        },
+        "#answer-form .entry-label": {
+          "x": 38,
+          "y": 587.265625,
+          "width": 244,
+          "height": 86.390625
+        },
+        "#answer": {
+          "x": 38,
+          "y": 681.65625,
+          "width": 244,
+          "height": 54.796875
+        },
+        "#answer-form [type=submit]": {
+          "x": 38,
+          "y": 744.453125,
+          "width": 244,
+          "height": 50.796875
+        }
+      }
+    },
+    {
+      "label": "chain-first-screen",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frameBox": {
+        "x": 13,
+        "y": 314.328125,
+        "width": 364,
+        "height": 620
+      },
+      "boxes": {
+        "helper": {
+          "x": 210.734375,
+          "y": 782,
+          "width": 169.265625,
+          "height": 52
+        },
+        "catalog": {
+          "x": 137.203125,
+          "y": 138.90625,
+          "width": 144.515625,
+          "height": 44
+        },
+        ".condition .prompt": {
+          "x": 38,
+          "y": 373.21875,
+          "width": 314,
+          "height": 60
+        },
+        "#answer-form .entry-label": {
+          "x": 38,
+          "y": 569.078125,
+          "width": 314,
+          "height": 57.59375
+        },
+        "#answer": {
+          "x": 38,
+          "y": 634.671875,
+          "width": 314,
+          "height": 54.796875
+        },
+        "#answer-form [type=submit]": {
+          "x": 38,
+          "y": 697.46875,
+          "width": 314,
+          "height": 50.796875
+        }
+      }
+    },
+    {
+      "label": "chain-first-screen",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "frameBox": {
+        "x": 269.390625,
+        "y": 297.8125,
+        "width": 971.21875,
+        "height": 670
+      },
+      "boxes": {
+        "helper": {
+          "x": 1088.734375,
+          "y": 830,
+          "width": 175.265625,
+          "height": 54
+        },
+        "catalog": {
+          "x": 393.59375,
+          "y": 98,
+          "width": 144.515625,
+          "height": 44
+        },
+        ".condition .prompt": {
+          "x": 322.390625,
+          "y": 508.234375,
+          "width": 384.625,
+          "height": 66
+        },
+        "#answer-form .entry-label": {
+          "x": 781.015625,
+          "y": 510.234375,
+          "width": 406.375,
+          "height": 60.78125
+        },
+        "#answer": {
+          "x": 781.015625,
+          "y": 579.015625,
+          "width": 230,
+          "height": 56.390625
+        },
+        "#answer-form [type=submit]": {
+          "x": 1021.015625,
+          "y": 581.015625,
+          "width": 153.40625,
+          "height": 52.390625
+        }
+      }
+    },
+    {
+      "label": "factors-first-screen",
+      "viewport": {
+        "width": 320,
+        "height": 900
+      },
+      "frameBox": {
+        "x": 13,
+        "y": 314.328125,
+        "width": 294,
+        "height": 620
+      },
+      "boxes": {
+        "helper": {
+          "x": 140.734375,
+          "y": 838,
+          "width": 169.265625,
+          "height": 52
+        },
+        "catalog": {
+          "x": 137.203125,
+          "y": 138.90625,
+          "width": 144.515625,
+          "height": 44
+        },
+        ".condition .prompt": {
+          "x": 38,
+          "y": 373.21875,
+          "width": 244,
+          "height": 90
+        },
+        "#answer-form .entry-label": {
+          "x": 38,
+          "y": 617.265625,
+          "width": 244,
+          "height": 86.390625
+        },
+        "#answer": {
+          "x": 38,
+          "y": 711.65625,
+          "width": 244,
+          "height": 54.796875
+        },
+        "#answer-form [type=submit]": {
+          "x": 38,
+          "y": 774.453125,
+          "width": 244,
+          "height": 50.796875
+        }
+      }
+    },
+    {
+      "label": "factors-first-screen",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frameBox": {
+        "x": 13,
+        "y": 314.328125,
+        "width": 364,
+        "height": 620
+      },
+      "boxes": {
+        "helper": {
+          "x": 210.734375,
+          "y": 782,
+          "width": 169.265625,
+          "height": 52
+        },
+        "catalog": {
+          "x": 137.203125,
+          "y": 138.90625,
+          "width": 144.515625,
+          "height": 44
+        },
+        ".condition .prompt": {
+          "x": 38,
+          "y": 373.21875,
+          "width": 314,
+          "height": 90
+        },
+        "#answer-form .entry-label": {
+          "x": 38,
+          "y": 599.078125,
+          "width": 314,
+          "height": 57.59375
+        },
+        "#answer": {
+          "x": 38,
+          "y": 664.671875,
+          "width": 314,
+          "height": 54.796875
+        },
+        "#answer-form [type=submit]": {
+          "x": 38,
+          "y": 727.46875,
+          "width": 314,
+          "height": 50.796875
+        }
+      }
+    },
+    {
+      "label": "factors-first-screen",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "frameBox": {
+        "x": 269.390625,
+        "y": 297.8125,
+        "width": 971.21875,
+        "height": 670
+      },
+      "boxes": {
+        "helper": {
+          "x": 1088.734375,
+          "y": 830,
+          "width": 175.265625,
+          "height": 54
+        },
+        "catalog": {
+          "x": 393.59375,
+          "y": 98,
+          "width": 144.515625,
+          "height": 44
+        },
+        ".condition .prompt": {
+          "x": 322.390625,
+          "y": 508.234375,
+          "width": 384.625,
+          "height": 99
+        },
+        "#answer-form .entry-label": {
+          "x": 781.015625,
+          "y": 510.234375,
+          "width": 406.375,
+          "height": 60.78125
+        },
+        "#answer": {
+          "x": 781.015625,
+          "y": 579.015625,
+          "width": 230,
+          "height": 56.390625
+        },
+        "#answer-form [type=submit]": {
+          "x": 1021.015625,
+          "y": 581.015625,
+          "width": 153.40625,
+          "height": 52.390625
+        }
+      }
+    },
+    {
+      "label": "factors-after-three-steps",
+      "viewport": {
+        "width": 320,
+        "height": 900
+      },
+      "frameBox": {
+        "x": 13,
+        "y": 140.328125,
+        "width": 294,
+        "height": 620
+      },
+      "boxes": {
+        "helper": {
+          "x": 140.734375,
+          "y": 838,
+          "width": 169.265625,
+          "height": 52
+        },
+        "catalog": {
+          "x": 137.203125,
+          "y": -35.09375,
+          "width": 144.515625,
+          "height": 44
+        },
+        "#answer-form .entry-label": {
+          "x": 38,
+          "y": 244.265625,
+          "width": 244,
+          "height": 259.171875
+        },
+        "#answer": {
+          "x": 38,
+          "y": 511.4375,
+          "width": 244,
+          "height": 54.796875
+        },
+        "#answer-form [type=submit]": {
+          "x": 38,
+          "y": 574.234375,
+          "width": 244,
+          "height": 50.796875
+        }
+      }
+    },
+    {
+      "label": "factors-after-three-steps",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frameBox": {
+        "x": 13,
+        "y": 112.328125,
+        "width": 364,
+        "height": 620
+      },
+      "boxes": {
+        "helper": {
+          "x": 210.734375,
+          "y": 782,
+          "width": 169.265625,
+          "height": 52
+        },
+        "catalog": {
+          "x": 137.203125,
+          "y": -63.09375,
+          "width": 144.515625,
+          "height": 44
+        },
+        "#answer-form .entry-label": {
+          "x": 38,
+          "y": 305.265625,
+          "width": 314,
+          "height": 57.59375
+        },
+        "#answer": {
+          "x": 38,
+          "y": 370.859375,
+          "width": 314,
+          "height": 54.796875
+        },
+        "#answer-form [type=submit]": {
+          "x": 38,
+          "y": 433.65625,
+          "width": 314,
+          "height": 50.796875
+        }
+      }
+    },
+    {
+      "label": "factors-first-multiplicity-step",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frameBox": {
+        "x": 13,
+        "y": 112.328125,
+        "width": 364,
+        "height": 620
+      },
+      "boxes": {
+        "helper": {
+          "x": 210.734375,
+          "y": 782,
+          "width": 169.265625,
+          "height": 52
+        },
+        "catalog": {
+          "x": 137.203125,
+          "y": -63.09375,
+          "width": 144.515625,
+          "height": 44
+        },
+        "#answer-form .entry-label": {
+          "x": 38,
+          "y": 230.265625,
+          "width": 314,
+          "height": 230.375
+        },
+        "#answer": {
+          "x": 38,
+          "y": 468.640625,
+          "width": 314,
+          "height": 54.796875
+        },
+        "#answer-form [type=submit]": {
+          "x": 38,
+          "y": 531.4375,
+          "width": 314,
+          "height": 50.796875
+        }
+      }
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "author-history-catalog-return-320.png",
+      "sha256": "e857bb9cffebf6b53faf05f93604cdbee41cd1e7148da585be7f495b785bcf8a"
+    },
+    {
+      "file": "author-readonly-catalog-return-320.png",
+      "sha256": "8180fa9c8d79d2b6f22d396529633a7990d0639645ddb8c6555f1331cdf269cd"
+    },
+    {
+      "file": "author-teacher-catalog-return-1280.png",
+      "sha256": "8e2fea9fd6565c4d4dab3ef4276cdc56007f2d02f31be348f798687b07c9cc39"
+    },
+    {
+      "file": "chain-first-screen-1280.png",
+      "sha256": "a313a86cf54870736a6a775a08ee8411e1de09ae8c388e9f59003ddf8f8ab369"
+    },
+    {
+      "file": "chain-first-screen-320.png",
+      "sha256": "17202b6459a4f0f71299261e4636deafede4f02125a689e490d8bfb04635041d"
+    },
+    {
+      "file": "chain-first-screen-390.png",
+      "sha256": "0bd6c6aa3baba4082a005eb61b144fa672b9e7b292ad05a4bf4f1d8033ce1aaf"
+    },
+    {
+      "file": "chain-helper-1280.png",
+      "sha256": "b7379ed2d91669ddeb4ca1f5ed98592612735cecf18ce60a11b957a7cee55a37"
+    },
+    {
+      "file": "chain-helper-320.png",
+      "sha256": "4ce86e0c1a896de1261e7a3c099ff8c8e3bf286ceb4b005be044532b8f561b2f"
+    },
+    {
+      "file": "chain-helper-390.png",
+      "sha256": "c52eb10ef1e7ad731110a64b2ee3d58c7cbe518bcde32a0dc3e6d134501e4372"
+    },
+    {
+      "file": "course-examples-1280.png",
+      "sha256": "8c08a86536cff534ae88641d838ff53377cfa828ac20370d1109a6b732ef53a3"
+    },
+    {
+      "file": "course-examples-320.png",
+      "sha256": "dba376a4d9424af5a86ada8bc27beb88b675f6a534b43b13912aa3fcdf6e38db"
+    },
+    {
+      "file": "course-examples-390.png",
+      "sha256": "a55cad3e27a10e96b99e794b1518687455a447be3b5cf4fefd0664be366450ff"
+    },
+    {
+      "file": "course-review-1280.png",
+      "sha256": "ec7ae4e7929d0f7f48a2494e097d7174749e7648f9c8fb351c508b72fb5ceeaa"
+    },
+    {
+      "file": "course-review-320.png",
+      "sha256": "84755dcfef9baae878ad0ae745f3d378802618fd8d2bd8dbf14798c8eb50589e"
+    },
+    {
+      "file": "course-review-390.png",
+      "sha256": "a03009b98f90f555a3f7b18b3e8164dd3b1cbd979dd2d7b270104f156f3215a6"
+    },
+    {
+      "file": "course-topic-entry-1280.png",
+      "sha256": "4139fdba8c0c4a87361f37920713903b225e95ec7dbbeb8255114dc08db4c837"
+    },
+    {
+      "file": "course-topic-entry-320.png",
+      "sha256": "efbee9fb31caff2c60e705146b4b0e5336078671a41ca697ccb18e14c4d71da4"
+    },
+    {
+      "file": "course-topic-entry-390.png",
+      "sha256": "46813acd6541514f9801f190e55c80e3a5494d107b4b675945d7bf2d6d6d7fa8"
+    },
+    {
+      "file": "factors-after-three-steps-320.png",
+      "sha256": "9276444b1c15b4da7eea2f4d8cf20c897c309aeaab4509f70dad066da4acf846"
+    },
+    {
+      "file": "factors-after-three-steps-390.png",
+      "sha256": "db543530506e93b2d8d52a12b6d05c7150e6dbb39819545756a3c153e7d394c9"
+    },
+    {
+      "file": "factors-first-multiplicity-step-390.png",
+      "sha256": "b25fc4dcbceeee16643d88e577acfb44368d0b415d64f22bf59539d4fab4916e"
+    },
+    {
+      "file": "factors-first-screen-1280.png",
+      "sha256": "9d975fbca26de0cb72a1d8d8b4418b055e4e23fc2beb83b88d121e964c29f216"
+    },
+    {
+      "file": "factors-first-screen-320.png",
+      "sha256": "164ad02b44f2587b73b5aca67900014d9289626f0bb1c9e724fbeb3b14c52cfe"
+    },
+    {
+      "file": "factors-first-screen-390.png",
+      "sha256": "29828d661f217cb56a2945acfec3c0c6d2305db62eb6ba2df46b4ee99bd27603"
+    },
+    {
+      "file": "factors-helper-1280.png",
+      "sha256": "73a1d009c16b6fa6c69df6e7db4c7cb082d730f2138cb3a1123c7acd1e20627e"
+    },
+    {
+      "file": "factors-helper-320.png",
+      "sha256": "c093dd693afbf1292c2a8ff22c404c902f2b6413d3ac8a7e96b5455804c3e5b0"
+    },
+    {
+      "file": "factors-helper-390.png",
+      "sha256": "5a01f69f1d0ff147cf5e48849b7fc1312d0564f769703028db63bf36791cf071"
+    }
+  ],
+  "errors": [],
+  "sourceSha256": {
+    "learning/app.js": "342a0eaffee5e6d6df7947f1990271219e088506b18b13e48e15601f7d512694",
+    "learning/index.html": "bd6c9d249160267b103b604989a45d39ff727b3ed0697b80df7376adbb2f9d4d",
+    "learning/style.css": "9029926d27c3ba96b58b072ee7a65349c988fc03cc84effacec70130cea55be8",
+    "learning/assistant.css": "870b95cf73646a43280988ac8b795aa51b245e0a20ce142b0b8ee689227c285a",
+    "learning/vilenkin6-textbook-course.js": "e00e837ad6b5b07b7f29ca902b0bf0b6a02c870f0883305f66306ba36cc55a3d",
+    "learning/vilenkin6-textbook-course.css": "cc44204b676455133e00f97b99ac60565e6d12d8e0b88ecb1c82c31719078709",
+    "learning/vilenkin6-textbook-helper.js": "3ff126a2104147c3c7a1f76d7f67438bd637f9e0ff390018440b0881f7a2c075",
+    "learning/vilenkin6-textbook-catalog.js": "88e3020a5545b28a3d16bde317c3011dd5fe30650d1873879c951149594ab023",
+    "courses/vilenkin-6-part-1/textbook-course.js": "09449719cea8d4708cf030e0d72fd5b0a70c20fbc6a5fef0f685cc6a19aa10ce",
+    "courses/vilenkin-6-part-1/textbook-course.css": "22117806e8547c27471e53542a64d879e601ffbd00b9f21957dc5313d4e9eaed",
+    "courses/vilenkin-6-part-1/textbook-learning-contracts.js": "52d94141ba0be881a00c5eb37f50aa95b9a5c175441f9955be7b60a1c3487ce9",
+    "courses/vilenkin-6-part-1/textbook-data/supplement-lcm-multi.json": "2d5a4afaea50e855d8df63d53337a5f0211c0d51c55eacb926d7af57140eeee1",
+    "tools/learning-lcm-multi.browser.cjs": "cca7d65ed7e777eb6d1a900009866e58d96a97d60108556b560df08a59fa350e"
+  },
+  "viewportWidths": [
+    320,
+    390,
+    1280
+  ],
+  "publicRequestsAllowed": 0,
+  "blockedExternalRequests": 0,
+  "providerCalls": 0,
+  "evidencePackaging": {
+    "changes": "Absolute screenshot paths replaced with basenames and SHA-256 only; all measurements and source bindings retained.",
+    "originalResultSha256": "0f30a3262268a859a9386d6a18ef1d4c2513430666318be60e6c8d333084444d"
+  }
+}

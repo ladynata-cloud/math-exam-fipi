@@ -1,0 +1,245 @@
+{
+  "result": "INDEPENDENT_CODE_AND_VISUAL_REVIEW_PASS",
+  "reviewType": "Independent internal review; not an external-provider verdict",
+  "imageCount": 41,
+  "sets": [
+    {
+      "set": "lcm",
+      "freshFinalInspections": 5,
+      "exactByteCarryForward": 22,
+      "resultOriginalSha256": "0f30a3262268a859a9386d6a18ef1d4c2513430666318be60e6c8d333084444d",
+      "canonicalPngManifestSha256": "11309750b098dad3635f9ae5a68827d0c5f7c4fe42297185a86f248a167ec7cd",
+      "images": [
+        {
+          "file": "author-history-catalog-return-320.png",
+          "sha256": "e857bb9cffebf6b53faf05f93604cdbee41cd1e7148da585be7f495b785bcf8a",
+          "review": "fresh final image inspection"
+        },
+        {
+          "file": "author-readonly-catalog-return-320.png",
+          "sha256": "8180fa9c8d79d2b6f22d396529633a7990d0639645ddb8c6555f1331cdf269cd",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "author-teacher-catalog-return-1280.png",
+          "sha256": "8e2fea9fd6565c4d4dab3ef4276cdc56007f2d02f31be348f798687b07c9cc39",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "chain-first-screen-1280.png",
+          "sha256": "a313a86cf54870736a6a775a08ee8411e1de09ae8c388e9f59003ddf8f8ab369",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "chain-first-screen-320.png",
+          "sha256": "17202b6459a4f0f71299261e4636deafede4f02125a689e490d8bfb04635041d",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "chain-first-screen-390.png",
+          "sha256": "0bd6c6aa3baba4082a005eb61b144fa672b9e7b292ad05a4bf4f1d8033ce1aaf",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "chain-helper-1280.png",
+          "sha256": "b7379ed2d91669ddeb4ca1f5ed98592612735cecf18ce60a11b957a7cee55a37",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "chain-helper-320.png",
+          "sha256": "4ce86e0c1a896de1261e7a3c099ff8c8e3bf286ceb4b005be044532b8f561b2f",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "chain-helper-390.png",
+          "sha256": "c52eb10ef1e7ad731110a64b2ee3d58c7cbe518bcde32a0dc3e6d134501e4372",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "course-examples-1280.png",
+          "sha256": "8c08a86536cff534ae88641d838ff53377cfa828ac20370d1109a6b732ef53a3",
+          "review": "fresh final image inspection"
+        },
+        {
+          "file": "course-examples-320.png",
+          "sha256": "dba376a4d9424af5a86ada8bc27beb88b675f6a534b43b13912aa3fcdf6e38db",
+          "review": "fresh final image inspection"
+        },
+        {
+          "file": "course-examples-390.png",
+          "sha256": "a55cad3e27a10e96b99e794b1518687455a447be3b5cf4fefd0664be366450ff",
+          "review": "fresh final image inspection"
+        },
+        {
+          "file": "course-review-1280.png",
+          "sha256": "ec7ae4e7929d0f7f48a2494e097d7174749e7648f9c8fb351c508b72fb5ceeaa",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "course-review-320.png",
+          "sha256": "84755dcfef9baae878ad0ae745f3d378802618fd8d2bd8dbf14798c8eb50589e",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "course-review-390.png",
+          "sha256": "a03009b98f90f555a3f7b18b3e8164dd3b1cbd979dd2d7b270104f156f3215a6",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "course-topic-entry-1280.png",
+          "sha256": "4139fdba8c0c4a87361f37920713903b225e95ec7dbbeb8255114dc08db4c837",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "course-topic-entry-320.png",
+          "sha256": "efbee9fb31caff2c60e705146b4b0e5336078671a41ca697ccb18e14c4d71da4",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "course-topic-entry-390.png",
+          "sha256": "46813acd6541514f9801f190e55c80e3a5494d107b4b675945d7bf2d6d6d7fa8",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "factors-after-three-steps-320.png",
+          "sha256": "9276444b1c15b4da7eea2f4d8cf20c897c309aeaab4509f70dad066da4acf846",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "factors-after-three-steps-390.png",
+          "sha256": "db543530506e93b2d8d52a12b6d05c7150e6dbb39819545756a3c153e7d394c9",
+          "review": "fresh final image inspection"
+        },
+        {
+          "file": "factors-first-multiplicity-step-390.png",
+          "sha256": "b25fc4dcbceeee16643d88e577acfb44368d0b415d64f22bf59539d4fab4916e",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "factors-first-screen-1280.png",
+          "sha256": "9d975fbca26de0cb72a1d8d8b4418b055e4e23fc2beb83b88d121e964c29f216",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "factors-first-screen-320.png",
+          "sha256": "164ad02b44f2587b73b5aca67900014d9289626f0bb1c9e724fbeb3b14c52cfe",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "factors-first-screen-390.png",
+          "sha256": "29828d661f217cb56a2945acfec3c0c6d2305db62eb6ba2df46b4ee99bd27603",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "factors-helper-1280.png",
+          "sha256": "73a1d009c16b6fa6c69df6e7db4c7cb082d730f2138cb3a1123c7acd1e20627e",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "factors-helper-320.png",
+          "sha256": "c093dd693afbf1292c2a8ff22c404c902f2b6413d3ac8a7e96b5455804c3e5b0",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "factors-helper-390.png",
+          "sha256": "5a01f69f1d0ff147cf5e48849b7fc1312d0564f769703028db63bf36791cf071",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        }
+      ]
+    },
+    {
+      "set": "navigation",
+      "freshFinalInspections": 2,
+      "exactByteCarryForward": 12,
+      "resultOriginalSha256": "bbc408877d0922c12aa0b8ebc34c59e823e37aadd4a9017da4377fc27ecd099b",
+      "canonicalPngManifestSha256": "576f9c706c150e0676d17a1555735494ec594f0a4614f13219ef956fd322ce11",
+      "images": [
+        {
+          "file": "course-1280.png",
+          "sha256": "311f1d772d8d29e11bf762054d944e7cfa4e9deff7ba3dfd958632dba06bafe0",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "course-320.png",
+          "sha256": "add6f17b1e4083cd149ae4b348aafe0ef1ee95c414c9683fa32a1886548e9c44",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "course-390.png",
+          "sha256": "cdb438a481fe676922979242ddbcacf3073141b90a946487bf86847c2ed6b2c9",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "course-helper-1280.png",
+          "sha256": "8dbdc7c338630abfea94de03a2d45a20bc0aa0545c175c845f15dd1196ed7b1d",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "course-helper-320.png",
+          "sha256": "9b9d33898efdc6021668e06c604784ce6f8078736f4cb2a5580911514cf9c843",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "course-helper-390.png",
+          "sha256": "d98fdd5b6d8c8d50606805145d8f9821652ecb7b7473dd0c80c92f7ec0df0898",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "fraction-practice-1280.png",
+          "sha256": "cdbc024f5f0049fb86fe56ee1491e289923e54ff3932088175880a3b52710f2c",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "history-catalog-return-320.png",
+          "sha256": "477ce3e926077f2c45ad4a0e358359ab5546f799da624d8abb383c4de1a40e5d",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "task-helper-1280.png",
+          "sha256": "be1e22ad3d88e04b739ed1e9fd5e97d702830db6f2a4af3befc2ff616f6cb40c",
+          "review": "fresh final image inspection"
+        },
+        {
+          "file": "task-helper-320.png",
+          "sha256": "bcc55feba454904bb10de1b0d6f8abb347ebf6805887f7c6f5265cc3f7da9abc",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "teacher-catalog-return-1280.png",
+          "sha256": "1899399cf69d0a13ea8bd1da5fd0707c5ecebfc84d143a07648678f64b208ce3",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "topic-1280.png",
+          "sha256": "0f6d946e5ba1184e23b01cc12ef0400b786e97aaa0b94324f7f26787e1e3efbe",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        },
+        {
+          "file": "topic-320.png",
+          "sha256": "e11f1a1965fd6c39bbd2d4164225446d88392942c43f085a574184eb71313629",
+          "review": "fresh final image inspection"
+        },
+        {
+          "file": "topic-390.png",
+          "sha256": "1df81d99111f86de9e9b3535d87b4caa98f47fb19778bc653caf5624f5474a14",
+          "review": "exact-byte carry from freshly inspected precontrast image"
+        }
+      ]
+    }
+  ],
+  "observations": [
+    "All41 newly recreated precontrast images were actually inspected; changed final images were inspected again and unchanged images match exact bytes.",
+    "Current long-step question/input/check fit inner and outer viewports in deterministic top-start journeys.",
+    "Author action labels inherit white text on green after the final contrast correction.",
+    "Open helper intentionally overlays the task and can be collapsed.",
+    "Closed launcher can overlap lower text, a transient success toast or a lower item in a tall section crop; arbitrary-position universal non-overlap is not claimed.",
+    "Previous steps are established by state/DOM assertions; not every earlier step appears in current-form screenshots."
+  ],
+  "notClaimed": [
+    "Physical phone or mobile keyboard trial",
+    "Safari/Firefox trial",
+    "Actual pupil trial",
+    "External Claude approval",
+    "Merge/deployment or real-profile changes"
+  ]
+}

@@ -10,11 +10,15 @@ on:
       - 'tools/learning-vilenkin6.dom.cjs'
       - 'tools/learning-vilenkin-textbook.dom.cjs'
       - 'tools/learning-vilenkin-textbook.browser.cjs'
+      - 'tools/learning-lcm-multi.browser.cjs'
+      - 'tools/learning-vilenkin-course-ui.browser.cjs'
       - 'tools/learning-vilenkin-helper.test.cjs'
       - 'tools/learning-vilenkin-helper.browser.cjs'
       - 'tools/learning-number-theory-route.dom.cjs'
       - 'docs/tasks/VILENKIN6_CLOUD_CABINET.md'
       - 'docs/tasks/VILENKIN6_SOURCE_HELPER.md'
+      - 'docs/tasks/GRADE6_LCM_MULTI_CABINET.md'
+      - 'docs/tasks/GRADE6_LCM_NAVIGATION_INTEGRATION_20261101.md'
       - '.github/workflows/vilenkin6-cloud.yml'
 permissions:
   contents: read
@@ -40,6 +44,7 @@ jobs:
         run: |
           node --test board-server/test/learning-vilenkin6.test.js board-server/test/learning-vilenkin-textbook.test.js board-server/test/learning-vilenkin-helper.test.js
           node tools/vilenkin6-course/build-textbook-catalog.cjs --check
+          node --test tools/vilenkin6-course/lcm-multi.test.cjs
           node --test tools/vilenkin6-course/textbook-managed-dom.cjs tools/learning-vilenkin-textbook.dom.cjs tools/learning-number-theory-route.dom.cjs
           node --test tools/learning-vilenkin-helper.test.cjs
           node tools/vilenkin6-course/textbook-dom.cjs
@@ -47,7 +52,9 @@ jobs:
           python3 tools/vilenkin6-course/coverage-inventory.py --check
           python3 tools/vilenkin6-course/coverage-inventory.test.py
           node tools/learning-vilenkin-textbook.browser.cjs
+          LCM_ARTIFACT_DIR=artifacts/learning-lcm-multi node tools/learning-lcm-multi.browser.cjs
           node tools/learning-vilenkin-helper.browser.cjs
+          VILENKIN_UI_EVIDENCE_DIR=artifacts/learning-vilenkin-navigation node tools/learning-vilenkin-course-ui.browser.cjs
           node tools/vilenkin6-course/textbook-support-browser.cjs
           node tools/vilenkin6-course/check.cjs
           node tools/vilenkin6-course/dom.cjs
@@ -57,3 +64,12 @@ jobs:
           python3 tools/vilenkin6-course/build-offline.py
           git diff --exit-code -- courses/vilenkin-6-part-1/offline.html
           git diff --check
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: learning-vilenkin-combined-browser
+          path: |
+            artifacts/learning-lcm-multi
+            artifacts/learning-vilenkin-navigation
+          if-no-files-found: warn
+          retention-days: 14

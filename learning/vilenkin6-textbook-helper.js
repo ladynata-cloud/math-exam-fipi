@@ -5,6 +5,50 @@
   let sequence=0;
   const node=(tag,text,attrs={})=>{const el=document.createElement(tag);if(text!==undefined)el.textContent=text;for(const [key,value]of Object.entries(attrs))el.setAttribute(key,value);return el;};
   const signature=value=>value&&JSON.stringify([value.id,value.contentId,value.sourceRevision,value.step,value.workMode,value.completed]);
+  function launcherFor(id,attribute,label){
+    const launcher=node('button',undefined,{type:'button',class:'cabinet-assistant-launcher','aria-label':label,'aria-controls':id,'aria-expanded':'false',[attribute]:''});
+    launcher.append(node('span','?',{class:'vilenkin-helper-icon','aria-hidden':'true'}),node('span','Помощник'));
+    return launcher;
+  }
+  function showDock(host,panel,launcher){
+    host.replaceChildren(panel,launcher);host.hidden=false;host.classList.add('cabinet-assistant-dock','vilenkin-helper-dock');panel.hidden=true;
+    host.ownerDocument.body.classList.add('vilenkin-helper-visible');
+  }
+  function clearDock(host,panel){
+    // A stale cleanup must not remove a newly mounted course/task helper.
+    if(!host.contains(panel))return;
+    host.replaceChildren();host.hidden=true;host.classList.remove('cabinet-assistant-dock','vilenkin-helper-dock');
+    host.ownerDocument.body.classList.remove('vilenkin-helper-visible');
+  }
+  function mountNavigation(host,context){
+    let alive=true,open=false;
+    const id='vilenkin-course-help-'+(++sequence),panel=node('section',undefined,{class:'panel cabinet-assistant vilenkin-course-helper',role:'dialog','aria-modal':'false','aria-labelledby':id+'-title',id});
+    const current=()=>alive&&host.isConnected&&host.contains(panel)&&context.isCurrent();
+    const header=node('div',undefined,{class:'cabinet-assistant-dock-header'}),close=node('button','Свернуть',{type:'button','aria-label':'Закрыть помощника','data-course-help-close':''});
+    header.append(node('h2','Помощник по курсу',{id:id+'-title'}),close);
+    const intro=node('p','Выбери тему и открой задание. Там я помогу разобрать текущий шаг или всё решение.',{'data-course-help-intro':''});
+    const directions=node('ol',undefined,{class:'vilenkin-helper-directions'});
+    directions.append(node('li','Нажми большую зелёную кнопку, чтобы начать или продолжить работу.'),node('li','Для другой темы открой список разделов и выбери задание.'));
+    const actions=node('div',undefined,{class:'actions cabinet-assistant-actions'});
+    for(const [key,label]of [['start','Показать, с чего начать'],['topics','Выбрать тему'],['history','Сохранённые работы']]){
+      const button=node('button',label,{type:'button','data-course-help-action':key,...(key==='start'?{class:'primary'}:{})});
+      button.addEventListener('click',()=>{
+        if(!current())return;
+        setOpen(false,false);
+        if(key==='history')context.showHistory();else context.showCourse(key);
+      });
+      actions.append(button);
+    }
+    panel.append(header,intro,directions,actions);
+    const launcher=launcherFor(id,'data-course-help-launcher','Помощник по курсу Виленкина');
+    showDock(host,panel,launcher);
+    function setOpen(value,focus=true){if(!current())return;open=value;panel.hidden=!open;launcher.setAttribute('aria-expanded',String(open));if(focus)(open?close:launcher).focus({preventScroll:true});}
+    launcher.addEventListener('click',()=>setOpen(!open));close.addEventListener('click',()=>setOpen(false));
+    const escape=event=>{if(event.target?.closest?.('dialog[open]')&&!host.contains(event.target))return;if(open&&event.key==='Escape'&&current()){event.preventDefault();setOpen(false);}};
+    host.ownerDocument.addEventListener('keydown',escape);
+    function destroy(){if(!alive)return;alive=false;host.ownerDocument.removeEventListener('keydown',escape);clearDock(host,panel);}
+    destroy.open=()=>setOpen(true);destroy.close=()=>setOpen(false);return destroy;
+  }
   function mathText(parent,value){
     // Build text nodes and a fraction bar; authored strings are never HTML.
     let start=0;const pattern=/\[\[([^\[\]\n]+)\/([^\[\]\n]+)\]\]/g;
@@ -17,7 +61,7 @@
   }
   function mount(host,context){
     let alive=true,open=false,busy=false,serial=0,lastSignature='';
-    const current=()=>alive&&host.isConnected&&context.isCurrent();
+    const current=()=>alive&&host.isConnected&&host.contains(panel)&&context.isCurrent();
     const snapshot=()=>{try{return current()?context.snapshot():null;}catch(_){return null;}};
     const permitted=()=>current()&&context.canAsk();
     const id='vilenkin-source-help-'+(++sequence),panel=node('section',undefined,{class:'panel cabinet-assistant vilenkin-source-helper',role:'dialog','aria-modal':'false','aria-labelledby':id+'-title',id});
@@ -29,8 +73,8 @@
       const button=node('button',label,{type:'button','data-source-help':mode,...(mode==='hint'?{class:'primary'}:{})});button.addEventListener('click',()=>ask(mode));actions.append(button);buttons[mode]=button;
     }
     panel.append(header,title,explanation,actions,status,answers);
-    const launcher=node('button','Помощник по заданию',{type:'button',class:'cabinet-assistant-launcher','aria-controls':id,'aria-expanded':'false','data-source-help-launcher':''});
-    host.replaceChildren(panel,launcher);host.hidden=false;host.classList.add('cabinet-assistant-dock');panel.hidden=true;
+    const launcher=launcherFor(id,'data-source-help-launcher','Помощник по заданию');
+    showDock(host,panel,launcher);
     function setOpen(value){if(!current())return;open=value;if(!open)serial++;panel.hidden=!open;launcher.setAttribute('aria-expanded',String(open));(open?close:launcher).focus({preventScroll:true});refresh();}
     launcher.addEventListener('click',()=>setOpen(!open));close.addEventListener('click',()=>setOpen(false));
     const escape=event=>{if(event.target?.closest?.('dialog[open]')&&!host.contains(event.target))return;if(open&&event.key==='Escape'&&current()){event.preventDefault();setOpen(false);}};
@@ -43,7 +87,9 @@
       for(const [mode,button]of Object.entries(buttons)){button.hidden=!!value?.completed&&mode!=='solution';button.disabled=busy||!value||!permitted();}
       buttons.solution.textContent=value?.completed?'Посмотреть решение после ответа':'Показать всё решение';
       buttons.step.textContent=value?.workMode==='independent'?'Разобрать первый шаг':'Разобрать текущий шаг';
-      if(!busy&&!permitted()){answers.replaceChildren();status.textContent='Подсказки доступны после сохранения работы, когда управление у тебя.';}
+      const blockedMessage='Подсказки доступны после сохранения работы, когда управление у тебя.';
+      if(!busy&&!permitted()){answers.replaceChildren();status.textContent=blockedMessage;}
+      else if(!busy&&status.textContent===blockedMessage)status.textContent='';
       explanation.hidden=answers.childElementCount>0;
     }
     async function ask(mode){
@@ -62,8 +108,8 @@
       }catch(_){if(current()&&turn===serial&&open){answers.replaceChildren();status.textContent='Не удалось подтвердить помощь. Проверь сохранение работы и попробуй снова.';}}
       finally{busy=false;if(current()&&turn!==serial)status.textContent='';refresh();}
     }
-    function destroy(){alive=false;serial++;document.removeEventListener('keydown',escape);host.replaceChildren();host.hidden=true;host.classList.remove('cabinet-assistant-dock');}
+    function destroy(){alive=false;serial++;document.removeEventListener('keydown',escape);clearDock(host,panel);}
     destroy.refresh=refresh;destroy.open=()=>setOpen(true);destroy.close=()=>setOpen(false);refresh();return destroy;
   }
-  root.VilenkinTextbookHelper={mount};
+  root.VilenkinTextbookHelper={mount,mountNavigation};
 })(window);

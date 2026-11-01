@@ -35,3 +35,51 @@
 @media(max-width:1150px){.peterson-cabinet-workspace{left:207px;right:12px}}
 @media(max-width:850px){.peterson-cabinet-workspace{top:145px;left:8px;right:8px;bottom:8px}}
 @media(max-width:600px){.peterson-cabinet-toolbar{gap:6px;padding:7px}.peterson-cabinet-toolbar h1{font-size:.84rem;order:-1;flex-basis:100%}.peterson-cabinet-toolbar .button{font-size:.74rem;min-height:34px;padding:5px 8px}.peterson-cabinet-note{font-size:.69rem;padding:5px 8px}}
+
+/* Authored LCM course choices. Existing textbook and pupil surfaces keep their styles. */
+[data-vilenkin-textbook-author] .lcm-stage{margin-top:28px}
+[data-vilenkin-textbook-author] .lcm-group{padding:18px 0;border-top:1px solid var(--line);min-width:0}
+[data-vilenkin-textbook-author] .lcm-group h4{font-size:1.05rem;line-height:1.5;margin:0 0 12px;overflow-wrap:anywhere}
+[data-vilenkin-textbook-author] .lcm-method-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+[data-vilenkin-textbook-author] .lcm-method-options>div{min-width:0}
+[data-vilenkin-textbook-author] .lcm-method-options button{width:100%;min-height:48px;white-space:normal;overflow-wrap:anywhere}
+[data-vilenkin-textbook-author] .lcm-method-options small{display:block;margin-top:6px;font-size:.85rem;line-height:1.5}
+@media(max-width:600px){[data-vilenkin-textbook-author] .lcm-method-options{grid-template-columns:minmax(0,1fr)}}
+
+/* Compact outer chrome only while the authored LCM task is open. */
+.lcm-author-workspace .workspace-heading{margin-bottom:10px}
+.lcm-author-workspace .workspace-heading .back-link{margin-bottom:4px;font-size:.85rem}
+.lcm-author-workspace .workspace-heading .page-heading{margin:4px 0;gap:8px}
+.lcm-author-workspace .workspace-heading h1{font-size:1.25rem;line-height:1.25;margin:5px 0}
+.lcm-author-workspace .workspace-heading .badge{font-size:.65rem;padding:2px 6px}
+.lcm-author-workspace .work-panel-header{padding:8px;display:flex;gap:8px;align-items:center}
+.lcm-author-workspace .work-panel-header h2{display:none}
+.lcm-author-workspace .work-panel-header .segmented{width:100%;justify-content:center}
+.lcm-author-workspace .lcm-workspace-tools{margin-top:18px;padding:16px;background:var(--paper);border:1px solid var(--line);border-radius:12px}
+.lcm-author-workspace .lcm-workspace-tools>summary{cursor:pointer;font-weight:650;line-height:1.5}
+.lcm-author-workspace .lcm-workspace-tools>.actions{margin-top:16px}
+/* Keep both cabinet-owned returns visible above the authored task. */
+.lcm-author-workspace .lcm-workspace-navigation{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.lcm-author-workspace .lcm-workspace-navigation .back-link,.lcm-author-workspace .lcm-workspace-navigation .button{display:inline-flex;align-items:center;min-height:44px;padding:8px 10px;margin:0;font-size:.75rem;border:1px solid var(--line);border-radius:9px;background:var(--paper)}
+/* Preserve space for the fixed helper below the author workspace. */
+body.vilenkin-helper-visible:has([data-lcm-author-workspace]) .content-column{padding-bottom:calc(110px + env(safe-area-inset-bottom))}
+body:has([data-lcm-author-workspace]) .content-column{padding-top:12px}
+@media(max-width:760px){
+ body:has([data-lcm-author-workspace]) .app-header{height:auto;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.65fr);padding:7px 12px;gap:8px}
+ body:has([data-lcm-author-workspace]) .app-header .brand{font-size:1rem;gap:5px}
+ body:has([data-lcm-author-workspace]) .app-header .brand small{display:none}
+ body:has([data-lcm-author-workspace]) .app-header .brand-mark{font-size:1.6rem}
+ body:has([data-lcm-author-workspace]) .app-header .avatar{display:none}
+ body:has([data-lcm-author-workspace]) .account-area{display:grid;grid-template-columns:1fr auto;gap:2px 4px;min-width:0}
+ body:has([data-lcm-author-workspace]) .account-name{grid-column:1 / -1;display:block;font-size:.75rem;line-height:1.3;overflow-wrap:anywhere}
+ body:has([data-lcm-author-workspace]) .account-name small{display:inline;font-size:.7rem;margin-left:5px}
+ body:has([data-lcm-author-workspace]) .account-area button{font-size:.7rem;min-height:32px;padding:4px}
+ body:has([data-lcm-author-workspace]) .sidebar{padding:4px 8px}
+ body:has([data-lcm-author-workspace]) .sidebar nav a{padding:7px 8px;font-size:.75rem}
+ body:has([data-lcm-author-workspace]) .content-column{padding:10px 12px 35px}
+ .lcm-author-workspace .workspace-heading .page-heading{margin:3px 0}
+ .lcm-author-workspace .workspace-heading .badge{display:none}
+ .lcm-author-workspace .workspace-heading h1{font-size:1.15rem}
+ .lcm-author-workspace .workspace-heading p{font-size:.78rem}
+ .lcm-author-workspace .work-panel-header .segmented button{font-size:.75rem;min-height:36px;padding:6px 9px}
+}
