@@ -1,5 +1,60 @@
 # MathExam project status
 
+## Finance release revalidation, 2026-11-01
+
+- PR390 is integrated with main `3918c1645709fc8e7a92f026646d6e42fe0d6712`
+  under the owner’s explicit current request to reconcile branches.
+- Concurrent PR391 (source provenance), PR393 (showcase) and PR395 (LCM and
+  cabinet navigation) are confirmed merged by GitHub. Their runtime files
+  are retained exactly. Earlier preparation entries below are historical.
+- Only PROJECT_STATUS conflicted; both records were retained. The finance
+  source link now explicitly says project/draft 2027, with a regression check.
+- Revalidation evidence: [report](reports/EGE_P13_FINANCE_REVALIDATION_20261101.md).
+  Separate exact-base/head production release authorization remains pending.
+
+## Prepared: financial models for profile task 13
+
+- [Task](tasks/EGE_P13_FINANCE_LESSON_20261101.md), `MEDIUM`; current-task
+  owner START and task-specific decision declining external Claude consultation.
+- Base `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`; branch
+  `task/ege-p13-finance-lesson-2026-11-01`.
+- Thirteen new lessons / 78 independently written problems extend the existing
+  18 financial tasks. Earned ledger cells, units, partial payment windows,
+  two-stage loans and deposits use the existing step/model/state contracts.
+- Implementation and focused internal review are complete. The local
+  [report](reports/EGE_P13_FINANCE_LESSON_20261101.md) records 78 independent
+  mathematical oracles, 156 finance browser journeys, 26 existing unit files
+  and affected course/browser/package gates passing.
+- [Draft PR390](https://github.com/ladynata-cloud/math-exam-fipi/pull/390) records
+  its published head and CI outcome. Initial CI found canonical asset drift in
+  seven board wrappers and an outdated aggregate test inventory; the bounded
+  follow-up synchronizes them while preserving the existing assertions.
+- A subsequent expressions-board gate now explicitly awaits dialog closure and
+  focus restoration before editing. The bounded test-only correction preserves
+  all original input/synchronization assertions; final CI is tracked in the PR.
+- No merge, auto-merge or production deployment is authorized or claimed for
+  this task.
+
+## Published; production browser gate incomplete: fixed OGE book edition v2
+
+- [PR388](https://github.com/ladynata-cloud/math-exam-fipi/pull/388) was merged
+  on 2026-10-31 as `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`, with sole parent
+  `4a90592077934d9a6d8a617b4afa50938798efb2`. The release record confirms separate
+  owner permission and exact identity with reviewed head
+  `0aedd01941096636ae75f05bbc8147de937e2db2`.
+- [Pages41221711224](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41221711224)
+  successfully deployed that SHA. The public edition is
+  `/book/oge/2026-10-31/v2/`; all 225 published v1 files remain unchanged.
+- The PR release record reports `POST_DEPLOY_HTTP_OK`, 367/367 production
+  byte/alias/target comparisons. It separately reports a blocked production
+  browser gate: the test browser rejected the environment TLS chain before
+  content checks. Limited Opera observations do not replace that full gate.
+- Distribution remains **INCOMPLETE**. No trust-store change or TLS bypass was
+  performed. The PR records the precise remaining owner/environment decision.
+- This reconciliation follows primary PR metadata and its release evidence;
+  it does not claim that the finance task reran the historical book runtime
+  gate. The [preparation task](tasks/OGE_BOOK_EDITION_V2_DALI_20261031.md) and
+  [local report](reports/oge-book-v2-20261031/README.md) remain historical records.
 ## Current: combined grade-six LCM course and navigation, 2026-11-01
 
 - Owner directly requested [one compatible release candidate](tasks/GRADE6_LCM_NAVIGATION_INTEGRATION_20261101.md)
