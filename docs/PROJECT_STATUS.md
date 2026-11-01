@@ -3124,7 +3124,7 @@ final exact-head CI and deployment verification; see PR266 for current evidence.
   storage migration, board protocol or server change belongs to PR377.
 
 
-## Merged: geometry source provenance synchronization, 2026-11-01
+## Merged and release recorded: geometry source provenance synchronization, 2026-11-01
 
 - [Task](tasks/GEOMETRY_SOURCE_PROVENANCE_20261101.md), `MEDIUM`; owner directly
   approved a separate repair, based on
@@ -3162,3 +3162,30 @@ final exact-head CI and deployment verification; see PR266 for current evidence.
   `a14fed1152a0dbfdca07775dd891ba3af00a2e30` would retain its old pins. Read-only
   composed validation is evidence for the next integration decision; it does
   not change that head, its CI, or its separate release permissions.
+
+- Reconciled at the start of the public showcase task on 2026-11-01:
+  [PR391](https://github.com/ladynata-cloud/math-exam-fipi/pull/391) is merged as
+  `37718f1c0138ba031314b8f4716b73c9d963bc81`. Its final release record reports
+  successful Pages and coordinated source delivery. A fresh normal-TLS public
+  request confirmed the bounded-course SHA256
+  `0a55791957f465cf6f9c3736fe41ca8a4fb110601bbcf9c4e9843e38a3f5a0fe`.
+  The preparation bullets above remain historical; this reconciliation does
+  not repeat authenticated cabinet/helper or pupil-session verification.
+
+## Prepared: public lesson showcase for Avito visitors
+
+- [Task](tasks/AVITO_SHOWCASE_20261101.md), MEDIUM; current direct owner request
+  to implement, check and prepare GitHub changes, then agree publication.
+  Base `37718f1c0138ba031314b8f4716b73c9d963bc81`, branch
+  `feat/avito-showcase-20261101`.
+- The existing `/lessons/` becomes a complete public introduction to individual
+  lessons for grades 5–11, OGE and both EGE levels. Three direction anchors,
+  four selected examples and existing personal Telegram/VK/email contacts form
+  a bounded route. The homepage hero points visitors to that route.
+- [Verification](reports/AVITO_SHOWCASE_20261101.md) separates responsive landing
+  checks, complete selected learner paths, production resource identity and
+  the isolated browser's TLS limitation. No trainer engine, course content,
+  cabinet, saved-work contract or analytics behavior is changed.
+- Exact-head CI and independent focused review belong to the Draft PR record.
+  This entry records preparation, not publication; separate owner approval
+  is required before merge or deployment.
