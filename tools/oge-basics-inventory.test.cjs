@@ -4,6 +4,7 @@ const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const test = require('node:test');
+const {restoreHistoricalBytes} = require('./oge-book-corrections.cjs');
 const root = path.resolve(__dirname, '..');
 // Captured before the presentation migration; changing the UI must not silently
 // remove a course destination or replace its mathematical/checking engines.
@@ -22,12 +23,13 @@ test('All 70 original course destinations remain available', () => {
   }
 });
 
-test('Task banks, contract checks and arithmetic engines are byte-for-byte preserved', () => {
+test('Task banks and engines preserve historical bytes except two exact book-audit corrections', () => {
   assert.equal(Object.keys(baseline.unchangedContent).length, 6);
   for (const [file, expected] of Object.entries(baseline.unchangedContent)) {
     assert.match(file, /^trainers\/oge-basics\/(?:[a-z0-9-]+\/)*[a-z0-9-]+\.js$/);
     assert.match(expected, /^[a-f0-9]{64}$/);
-    const actual = crypto.createHash('sha256').update(fs.readFileSync(path.join(root, file))).digest('hex');
-    assert.equal(actual, expected, file + ': presentation changes must preserve mathematics and saved-state semantics');
+    const historical = restoreHistoricalBytes(file, fs.readFileSync(path.join(root, file), 'utf8'));
+    const actual = crypto.createHash('sha256').update(historical).digest('hex');
+    assert.equal(actual, expected, file + ': preserve all bytes beyond the two independently tested book-audit mathematical corrections');
   }
 });

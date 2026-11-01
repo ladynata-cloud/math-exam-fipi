@@ -3,16 +3,21 @@
 const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto');
 const root = path.resolve(__dirname, '../..');
 const labels = require(path.join(root, 'courses/vilenkin-6-part-1/textbook-source-labels'));
-const units = ['A', 'B', 'C', 'D'].flatMap(part => JSON.parse(fs.readFileSync(path.join(root, 'courses/vilenkin-6-part-1/textbook-data/units-' + part + '.json')))).sort((a,b)=>a.id-b.id);
+const sourceUnits = ['A', 'B', 'C', 'D'].flatMap(part => JSON.parse(fs.readFileSync(path.join(root, 'courses/vilenkin-6-part-1/textbook-data/units-' + part + '.json')))).sort((a,b)=>a.id-b.id);
+const supplements = JSON.parse(fs.readFileSync(path.join(root, 'courses/vilenkin-6-part-1/textbook-data/supplement-lcm-multi.json')));
+if (sourceUnits.length !== 24 || sourceUnits.some((unit,index)=>unit.id!==index)) throw Error('Original 24 textbook units required');
+if (supplements.length !== 1 || supplements[0].id !== 1008 || supplements[0].kind !== 'author-supplement' || supplements[0].relatedPoint !== 8 || supplements[0].tasks.some(task=>task.source?.kind!=='author')) throw Error('Invalid authored LCM supplement');
+const units = [...sourceUnits, ...supplements];
 const sourceIdentity = (unit, task) => JSON.stringify({unitId:unit.id,id:task.id,role:task.role,source:task.source,prompt:task.prompt,answer:task.answer,answerType:task.answerType||'number',steps:task.steps.map(step=>({prompt:step.prompt,answer:step.answer,answerType:step.answerType||'number',selfCheck:step.selfCheck||null})),selfCheck:task.selfCheck||null});
 const rows = units.flatMap(unit => unit.tasks.map(task => {
-  const source=task.source, hierarchy=labels.hierarchyForPoint(unit.id);
+  const source=task.source, authored=unit.kind==='author-supplement', hierarchy=authored?null:labels.hierarchyForPoint(unit.id);
   return {id:'vilenkin6-textbook:'+task.id,trainerId:'vilenkin6-textbook',contentId:task.id,contentVersion:1,
     title:unit.title+' · '+labels.taskLabel(task),position:null,topicId:'foundation',family:'vilenkin6-textbook',
     grade6:true,trainingOnly:true,unitId:unit.id,unitTitle:unit.title,role:task.role,taskCount:1,answerMode:task.answerType==='self-check'?'manual':'checked',
-    pointId:unit.id,bookPart:hierarchy?.bookPart||1,chapterId:hierarchy?.chapter||null,chapterTitle:hierarchy?.chapterTitle||null,
-    paragraphId:hierarchy?.id||null,paragraphTitle:hierarchy?.title||null,sectionLabel:labels.sectionLabel(unit.id),page:unit.page,endPage:unit.endPage,
+    pointId:authored?null:unit.id,bookPart:authored?null:hierarchy?.bookPart||1,chapterId:hierarchy?.chapter||null,chapterTitle:hierarchy?.chapterTitle||null,
+    paragraphId:hierarchy?.id||null,paragraphTitle:hierarchy?.title||null,sectionLabel:authored?'Авторское дополнение к пункту 8 · НОК трёх и более чисел':labels.sectionLabel(unit.id),page:authored?null:unit.page,endPage:authored?null:unit.endPage,
     sourceRevision:crypto.createHash('sha256').update(sourceIdentity(unit,task)).digest('hex'),source,
+    ...(authored?{unitKind:unit.kind,relatedPoint:unit.relatedPoint,stage:task.stage,groupId:task.groupId,method:task.method,numbers:task.numbers,...(task.alternativeId?{alternativeId:task.alternativeId}:{})}:{}),
     url:'/courses/vilenkin-6-part-1/textbook.html#unit/'+unit.id+'/task/'+encodeURIComponent(task.id)};
 }));
 if(new Set(rows.map(row=>row.id)).size!==rows.length)throw Error('Duplicate textbook identity');

@@ -26,8 +26,8 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
-      - name: Fetch the reviewed bank and scope baseline
-        run: git fetch --no-tags --depth=1 origin 4b56350c35a67e41add8f2b25cf2bf7d73d1f71f df63bacb2f82acf5f8543297c372b414925d6113
+      - name: Fetch the reviewed bank and closed published task range
+        run: git fetch --no-tags --depth=2 origin 4b56350c35a67e41add8f2b25cf2bf7d73d1f71f 813fdcc129b27e71cc83ebaa80bd590cf1d1f1f1
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24.21.0'
@@ -38,7 +38,7 @@ jobs:
           echo "NODE_PATH=$RUNNER_TEMP/task6-browser/node_modules" >> "$GITHUB_ENV"
       - name: Frozen bank, exact arithmetic, learner and hint contracts
         run: |
-          node --test tools/oge-task6-fractions-focused.test.mjs tools/task6-minimal.test.cjs tools/task6-interactive.test.cjs
+          node --test tools/oge-task6-fractions-focused.test.mjs tools/task6-minimal.test.cjs tools/task6-interactive.test.cjs tools/task6-scope.test.cjs
           git diff --check
       - name: Narrow screen, desktop, keyboard, embedding and offline HTML
         env:

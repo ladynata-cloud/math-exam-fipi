@@ -1,4 +1,6 @@
 *.pdf
+!book/oge/2026-10-31/v1/trainers/task19-reference/source-demo-2027.pdf
+!book/oge/2026-10-31/v2/trainers/task19-reference/source-demo-2027.pdf
 node_modules/
 tools/oge_db/input/*.pdf
 tools/trainer-inventory/.output/
@@ -6,3 +8,10 @@ board-server/data/
 
 # Local virtual-classroom reports
 ege-quality-results/
+
+# Reproducible OGE book-audit browser evidence (published as CI artifacts).
+artifacts/book-audit-basics/
+artifacts/book-audit-exam/
+artifacts/book-audit-live/
+artifacts/book-edition/
+artifacts/book-external-review.json

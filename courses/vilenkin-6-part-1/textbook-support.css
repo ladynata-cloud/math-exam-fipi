@@ -26,4 +26,8 @@
 .v6-study-support .v6-support-fraction{display:inline-flex;vertical-align:middle;flex-direction:column;text-align:center;line-height:1.25;margin:0 .2em;font-size:1.1em}
 .v6-study-support .v6-support-fraction>span:first-child{border-bottom:1.5px solid currentColor;padding:0 .2em .12em}
 .v6-study-support .v6-support-fraction>span:last-child{padding:.12em .2em 0}
+.v6-context-practice{flex-basis:100%;min-width:0;margin:8px 0 0;padding:14px;border:1px solid #b8cbbd;border-radius:12px;background:#f4f9f3}
+.v6-context-practice .button-link{display:inline-flex;align-items:center;justify-content:center;max-width:100%;min-height:48px;white-space:normal;overflow-wrap:anywhere;text-align:center;line-height:1.5}
+.v6-context-practice .button-link:focus-visible{outline:3px solid #3b7851;outline-offset:3px}
+.v6-context-practice p{margin:9px 0 0;font-size:15px;line-height:1.55;color:#476050}
 @media(max-width:480px){.v6-study-support{font-size:17px}.v6-study-support summary{padding:13px 14px}.v6-study-support .v6-support-body{padding:3px 14px 16px}.v6-study-support .v6-prime-grid{grid-template-columns:repeat(auto-fit,minmax(2.6em,1fr));gap:5px;font-size:18px}}

@@ -1,0 +1,44 @@
+/* Shared optional help, isolated from existing trainer styles. */
+.bh-help{margin:16px 0;color:#203c2d;font:inherit;max-width:100%;min-width:0}
+.bh-help [hidden]{display:none!important}
+.bh-help button,.bh-help input{font:inherit;box-sizing:border-box}
+.bh-help button{cursor:pointer;border:1px solid #b8cabc;border-radius:10px;background:#fff;color:#28583e;padding:10px 14px;min-height:44px;line-height:1.35;max-width:100%;white-space:normal}
+.bh-help button:disabled{cursor:default;opacity:.55}
+.bh-help button:focus-visible,.bh-help input:focus-visible,.bh-frame:focus-visible{outline:3px solid #80b695;outline-offset:3px}
+.bh-help .bh-toggle{border-color:#8db69b;background:#f5faf6;font-weight:700}
+.bh-help .bh-check{color:#fff;background:#287148;border-color:#287148;font-weight:700}
+.bh-panel{border:1px solid #d0ded3;border-radius:14px;padding:18px;margin-top:14px;background:#fbfdfb;max-width:100%;min-width:0}
+.bh-panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.bh-help .bh-close{font-size:14px;background:transparent;border-color:transparent;padding:6px 8px}
+.bh-small{font-size:14px!important;color:#587260;line-height:1.65;margin:8px 0}
+.bh-navigation{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.bh-body,.bh-frame,.bh-current-hint{min-width:0;max-width:100%}
+.bh-frame h3{font-size:21px;line-height:1.4;margin:8px 0 14px;color:#203c2d}
+.bh-question{font-size:19px;line-height:1.7;margin:14px 0 20px}
+.bh-model{margin:18px 0;max-width:420px}
+.bh-svg{display:block;width:100%;max-width:360px;height:auto;margin:12px 0}
+.bh-svg text{fill:#203c2d;font:17px system-ui,sans-serif}
+.bh-help .bh-model-action{margin:5px 8px 5px 0;font-size:16px}
+.bh-model-caption{font-size:16px;line-height:1.6;margin:8px 0 14px}
+.bh-answer-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:18px 0 10px}
+.bh-help .bh-answer{border:2px solid #b9cfc0;border-radius:10px;padding:10px 12px;color:#203c2d;background:white;width:160px;min-height:46px;max-width:100%;font-size:22px}
+.bh-help .bh-answer[readonly]{background:#edf7ef}
+.bh-feedback{font-size:16px;line-height:1.75;margin:12px 0;min-height:0}
+.bh-feedback.bh-correct{border-left:3px solid #4f9467;padding:9px 12px;background:#edf7ef}
+.bh-prerequisites{margin:22px 0 4px;padding-top:12px;border-top:1px solid #dce6dd;display:flex;align-items:flex-start;flex-direction:column;gap:8px}
+.bh-prerequisites p{font-size:16px;line-height:1.6;margin:0 0 4px}
+.bh-help .bh-deeper{font-weight:650;text-align:left}
+.bh-fraction{display:inline-flex;vertical-align:middle;flex-direction:column;text-align:center;line-height:1.2;margin:0 .2em;font-size:1.15em;min-width:1.1em;color:#203c2d}
+.bh-fraction>span:first-child{border-bottom:1.5px solid currentColor;padding:0 .18em .12em}
+.bh-fraction>span:last-child{padding:.12em .18em 0}
+.bh-expression{font-size:32px;line-height:1.8;letter-spacing:.05em;overflow-wrap:anywhere}
+.bh-expression mark{background:#e4efdf;color:inherit;border-radius:4px;padding:3px 7px}
+.bh-selected-digit{color:#27623d;background:#e4efdf;border-radius:5px;padding:4px 6px}
+.bh-shift,.bh-unit-parts{display:flex;flex-wrap:wrap;gap:14px;font-size:23px;line-height:1.7}
+.bh-shift>span,.bh-unit-parts>span{padding:12px;border:1px solid #c5d7ca;border-radius:8px}
+.bh-trial{display:flex;flex-direction:column;gap:8px;font-size:22px;line-height:1.5}
+.bh-trial>span{font-size:16px}
+.bh-count{display:grid;grid-template-columns:repeat(4,minmax(0,48px));gap:12px;margin:12px 0}
+.bh-help .bh-dot{width:46px;height:46px;min-height:46px;padding:0;border-radius:50%;background:#26815d;border:3px solid #26815d}
+.bh-help .bh-dot[aria-pressed=true]{background:#e8c568;border-color:#b18b26}
+@media(max-width:420px){.bh-panel{padding:13px 10px}.bh-panel-head{gap:6px}.bh-frame h3{font-size:19px}.bh-question{font-size:18px}.bh-answer-row{gap:8px}.bh-help .bh-answer{width:130px}.bh-help button{padding:10px 11px}.bh-navigation{flex-direction:column;align-items:flex-start}.bh-small{font-size:13px!important}.bh-model{margin:14px 0}.bh-count{gap:9px}}

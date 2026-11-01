@@ -1,0 +1,97 @@
+{
+  "result": "VILENKIN_COURSE_UI_BROWSER_OK",
+  "tasks": 238,
+  "checks": [
+    "At 1280px: first-screen course/start; bottom-right helper; keyboard topic entry; no overflow or writes",
+    "At 390px: first-screen course/start; bottom-right helper; keyboard topic entry; no overflow or writes",
+    "At 320px: first-screen course/start; bottom-right helper; keyboard topic entry; no overflow or writes",
+    "Primary start creates exactly one owned task; All topics returns to the cabinet; Continue and reload keep its id, draft, version and history",
+    "Catalog navigation switches to source-bound task help; acknowledged hint saves provenance and preserves draft",
+    "Both catalogue links wait for a held draft save; the shell return preserves the newly saved input",
+    "Pupil history remains read-only; its visible 320px shell link returns to the course and resumes the exact saved attempt without writes",
+    "The concrete fraction task offers a separate LCM trainer; popup is noopener, help is recorded, original condition/answer/status stay intact",
+    "Teacher read-only shell return and controlled-task breadcrumb open the real catalogue without changing work, control, history or attempt count",
+    "Profile, legacy work, and other pupil work unchanged; no external provider calls or browser errors"
+  ],
+  "images": [
+    {
+      "file": "course-1280.png",
+      "sha256": "311f1d772d8d29e11bf762054d944e7cfa4e9deff7ba3dfd958632dba06bafe0"
+    },
+    {
+      "file": "course-helper-1280.png",
+      "sha256": "8dbdc7c338630abfea94de03a2d45a20bc0aa0545c175c845f15dd1196ed7b1d"
+    },
+    {
+      "file": "topic-1280.png",
+      "sha256": "0f6d946e5ba1184e23b01cc12ef0400b786e97aaa0b94324f7f26787e1e3efbe"
+    },
+    {
+      "file": "course-390.png",
+      "sha256": "cdb438a481fe676922979242ddbcacf3073141b90a946487bf86847c2ed6b2c9"
+    },
+    {
+      "file": "course-helper-390.png",
+      "sha256": "d98fdd5b6d8c8d50606805145d8f9821652ecb7b7473dd0c80c92f7ec0df0898"
+    },
+    {
+      "file": "topic-390.png",
+      "sha256": "1df81d99111f86de9e9b3535d87b4caa98f47fb19778bc653caf5624f5474a14"
+    },
+    {
+      "file": "course-320.png",
+      "sha256": "add6f17b1e4083cd149ae4b348aafe0ef1ee95c414c9683fa32a1886548e9c44"
+    },
+    {
+      "file": "course-helper-320.png",
+      "sha256": "9b9d33898efdc6021668e06c604784ce6f8078736f4cb2a5580911514cf9c843"
+    },
+    {
+      "file": "topic-320.png",
+      "sha256": "e11f1a1965fd6c39bbd2d4164225446d88392942c43f085a574184eb71313629"
+    },
+    {
+      "file": "task-helper-1280.png",
+      "sha256": "be1e22ad3d88e04b739ed1e9fd5e97d702830db6f2a4af3befc2ff616f6cb40c"
+    },
+    {
+      "file": "task-helper-320.png",
+      "sha256": "bcc55feba454904bb10de1b0d6f8abb347ebf6805887f7c6f5265cc3f7da9abc"
+    },
+    {
+      "file": "history-catalog-return-320.png",
+      "sha256": "477ce3e926077f2c45ad4a0e358359ab5546f799da624d8abb383c4de1a40e5d"
+    },
+    {
+      "file": "fraction-practice-1280.png",
+      "sha256": "cdbc024f5f0049fb86fe56ee1491e289923e54ff3932088175880a3b52710f2c"
+    },
+    {
+      "file": "teacher-catalog-return-1280.png",
+      "sha256": "1899399cf69d0a13ea8bd1da5fd0707c5ecebfc84d143a07648678f64b208ce3"
+    }
+  ],
+  "sourceSha256": {
+    "learning/app.js": "342a0eaffee5e6d6df7947f1990271219e088506b18b13e48e15601f7d512694",
+    "learning/index.html": "bd6c9d249160267b103b604989a45d39ff727b3ed0697b80df7376adbb2f9d4d",
+    "learning/assistant.css": "870b95cf73646a43280988ac8b795aa51b245e0a20ce142b0b8ee689227c285a",
+    "learning/vilenkin6-textbook-course.js": "e00e837ad6b5b07b7f29ca902b0bf0b6a02c870f0883305f66306ba36cc55a3d",
+    "learning/vilenkin6-textbook-course.css": "cc44204b676455133e00f97b99ac60565e6d12d8e0b88ecb1c82c31719078709",
+    "learning/vilenkin6-textbook-helper.js": "3ff126a2104147c3c7a1f76d7f67438bd637f9e0ff390018440b0881f7a2c075",
+    "learning/trainer-frame.js": "3fcacc6f766e3f31cd9276d4b7002cdb458cc1cf4638f5c32bc7b1d64eea40b9",
+    "courses/vilenkin-6-part-1/textbook-course.js": "09449719cea8d4708cf030e0d72fd5b0a70c20fbc6a5fef0f685cc6a19aa10ce",
+    "courses/vilenkin-6-part-1/textbook-course.css": "22117806e8547c27471e53542a64d879e601ffbd00b9f21957dc5313d4e9eaed",
+    "courses/vilenkin-6-part-1/textbook.html": "80e82db7d3da2939a3122fa1688d5c14059a6a5c5d699c35316c2d4b1b2d09dd",
+    "courses/vilenkin-6-part-1/textbook-support.js": "4874b9f7873219020b772bf3983075b7b3493cb52ee3efbad18763595f8ea2ba",
+    "courses/vilenkin-6-part-1/textbook-support.css": "bc84db07e4677de89acbb6be995bf7ae0d19b3833efbeb95915a0aa3ab91b127"
+  },
+  "viewportWidths": [
+    320,
+    390,
+    1280
+  ],
+  "errors": [],
+  "externalRequestsAllowed": 0,
+  "blockedExternalRequests": 0,
+  "providerCalls": 0
+}

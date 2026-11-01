@@ -9,7 +9,7 @@ const path = require('node:path');
 const { JSDOM } = require('jsdom');
 const Check = require('../ege-profil/start/checks.js');
 const directory = path.resolve(__dirname, '../ege-profil/start');
-const banks = ['geometry', 'stereo', 'algebra', 'probability', 'equations', 'functions', 'applied', 'readiness'];
+const banks = ['geometry', 'stereo', 'algebra', 'probability', 'equations', 'functions', 'applied', 'finance', 'readiness'];
 const lessons = banks.flatMap(name => require(path.join(directory, name + '-data.js')));
 const tasks = lessons.flatMap(lesson => lesson.tasks);
 
@@ -26,16 +26,31 @@ function textOf(line) {
   if (line.proportion) return [...line.proportion.left, ...line.proportion.right].join(' ');
   assert.fail('Unsupported mathematical explanation line: ' + JSON.stringify(line));
 }
-function answerIsPresent(text, answer, label) {
+function mathematicalText(element) {
+  const copy = element.cloneNode(true);
+  for (const fraction of copy.querySelectorAll('.profile-solution-fraction')) {
+    const numerator = fraction.querySelector('.profile-solution-numerator').textContent;
+    const denominator = fraction.querySelector('.profile-solution-denominator').textContent;
+    assert.equal(fraction.getAttribute('aria-label'), 'Дробь: числитель ' + numerator + ', знаменатель ' + denominator);
+    fraction.replaceWith(numerator + '/' + denominator);
+  }
+  return copy.textContent;
+}
+function answerIsPresent(text, answer, label, unit = '') {
   const match = [...text.matchAll(/Ответ:\s*([^\n]+)/gu)].at(-1);
   assert(match, label + ': explicit final answer');
-  assert(Check.check(answer, match[1].trim().replace(/[\u00a0\u202f]/gu, '').replace(/[.。]$/u, '')), label + ': final answer agrees with the checked task: ' + match[1]);
+  let displayed = match[1].trim();
+  if (unit) {
+    assert(displayed.endsWith(' ' + unit), label + ': final answer explicitly retains its unit');
+    displayed = displayed.slice(0, -(unit.length + 1)).trim();
+  }
+  assert(Check.check(answer, displayed.replace(/[\u00a0\u202f]/gu, '').replace(/[.。]$/u, '')), label + ': final answer agrees with the checked task: ' + match[1]);
 }
 
-test('all 408 tasks across all 13 positions have complete, readable worked solutions', () => {
+test('all 486 tasks across all 13 positions have complete, readable worked solutions', () => {
   const f = fixture();
   try {
-    assert.equal(lessons.length, 68); assert.equal(tasks.length, 408);
+    assert.equal(lessons.length, 81); assert.equal(tasks.length, 486);
     for (let position = 1; position <= 13; position++) assert(lessons.some(lesson => lesson.position === position));
     for (const task of tasks) {
       const before = JSON.stringify(task), steps = f.api.steps(task);
@@ -48,7 +63,7 @@ test('all 408 tasks across all 13 positions have complete, readable worked solut
         assert(text.trim().length >= 8, task.id + ': an explanation, not an empty action');
         assert.doesNotMatch(text, /undefined|\bNaN\b|\bInfinity\b|\[object Object\]/u, task.id);
       }
-      answerIsPresent(steps.at(-1).lines.map(textOf).join('\n'), task.answer, task.id);
+      answerIsPresent(steps.at(-1).lines.map(textOf).join('\n'), task.answer, task.id, task.unit);
       // For the general adapter, every authored question, operation and reason
       // must survive. Dedicated geometry explanations have separate math oracles.
       if (!f.w.ProfileSolutionDetails?.[task.id] && !f.w.ProfileRightTrigSteps?.(task)) {
@@ -108,7 +123,7 @@ test('every task reveals only one new step, retains earlier work, and records he
         history.push(visible.at(-1).textContent);
         if (n < expected.length) { next.click(); expectedCount++; }
       }
-      answerIsPresent(panel.querySelector('[data-solution-step]:last-child').lastElementChild.textContent, task.answer, task.id);
+      answerIsPresent(mathematicalText(panel.querySelector('[data-solution-step]:last-child').lastElementChild), task.answer, task.id, task.unit);
       assert(helps >= 1); assert.equal(next.getAttribute('aria-disabled'), 'true');
       next.click(); assert.equal(panel.querySelectorAll('[data-solution-step]').length, expected.length);
       open.click(); assert(panel.hidden); open.click(); assert(!panel.hidden);
@@ -117,7 +132,7 @@ test('every task reveals only one new step, retains earlier work, and records he
       assert.equal(panel.textContent, old, task.id + ': disposed controls cannot change a past solution');
       count++;
     }
-    assert.equal(count, 408);
+    assert.equal(count, 486);
   } finally { f.dom.window.close(); }
 });
 

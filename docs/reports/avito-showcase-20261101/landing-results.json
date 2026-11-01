@@ -1,0 +1,116 @@
+{
+  "widths": [
+    320,
+    390,
+    768,
+    1280
+  ],
+  "cases": [
+    {
+      "width": 320,
+      "result": "PASS",
+      "demoPopups": 4,
+      "contactPopups": 2,
+      "checks": [
+        "first screen",
+        "incoming direction anchors",
+        "direction-to-demo links",
+        "real demo tabs",
+        "booking anchor",
+        "native details",
+        "metadata",
+        "limited link set",
+        "reduced motion"
+      ]
+    },
+    {
+      "width": 390,
+      "result": "PASS",
+      "demoPopups": 4,
+      "contactPopups": 2,
+      "checks": [
+        "first screen",
+        "incoming direction anchors",
+        "direction-to-demo links",
+        "real demo tabs",
+        "booking anchor",
+        "native details",
+        "metadata",
+        "limited link set",
+        "reduced motion"
+      ]
+    },
+    {
+      "width": 768,
+      "result": "PASS",
+      "demoPopups": 4,
+      "contactPopups": 2,
+      "checks": [
+        "first screen",
+        "incoming direction anchors",
+        "direction-to-demo links",
+        "real demo tabs",
+        "booking anchor",
+        "native details",
+        "metadata",
+        "limited link set",
+        "reduced motion"
+      ]
+    },
+    {
+      "width": 1280,
+      "result": "PASS",
+      "demoPopups": 4,
+      "contactPopups": 2,
+      "checks": [
+        "first screen",
+        "incoming direction anchors",
+        "direction-to-demo links",
+        "real demo tabs",
+        "booking anchor",
+        "native details",
+        "metadata",
+        "limited link set",
+        "reduced motion"
+      ]
+    },
+    {
+      "javaScriptEnabled": true,
+      "result": "PASS",
+      "checks": [
+        "skip link",
+        "visible focus",
+        "keyboard booking",
+        "native details",
+        "contact popup",
+        "native demo link"
+      ]
+    },
+    {
+      "javaScriptEnabled": false,
+      "result": "PASS",
+      "checks": [
+        "skip link",
+        "visible focus",
+        "keyboard booking",
+        "native details",
+        "contact popup",
+        "native demo link"
+      ]
+    },
+    {
+      "width": 640,
+      "height": 450,
+      "result": "PASS",
+      "checks": [
+        "200% equivalent desktop reflow",
+        "booking reachable by scrolling"
+      ]
+    }
+  ],
+  "errors": [],
+  "failedRequests": [],
+  "unexpectedExternal": [],
+  "browser": "140.0.7339.16",
+  "source": "local worktree"
+}

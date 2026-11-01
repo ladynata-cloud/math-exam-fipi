@@ -28,9 +28,13 @@ jobs:
       - name: Real browser and board
         run: node tools/profile-route.browser.cjs && node tools/profile-start.browser.cjs && node tools/profile-first-three.browser.cjs && node tools/profile-triangle-explanation.browser.cjs && node tools/board-picker-smoke.cjs
       - name: Full first part and inequality mathematics
-        run: node tools/profile-full-course.test.cjs && node --test tools/profile-probability.test.cjs tools/profile-equations.test.cjs tools/profile-functions.test.cjs tools/profile-applied.test.cjs && node tools/profile-part2-inequalities.test.cjs
+        run: node tools/profile-full-course.test.cjs && node --test tools/profile-probability.test.cjs tools/profile-equations.test.cjs tools/profile-functions.test.cjs tools/profile-applied.test.cjs tools/profile-finance.test.cjs && node tools/profile-part2-inequalities.test.cjs
+      - name: Independent exact financial step answers
+        run: python tools/profile-finance-exact-steps.py
       - name: Full first part and inequality learner journeys
         run: node tools/profile-full-course.browser.cjs && node tools/profile-part2-inequalities.browser.cjs
+      - name: Financial models, earned values and independent practice
+        run: node tools/profile-finance.browser.cjs
       - name: Worked solutions for every task and assisted learner journeys
         run: node --test tools/profile-step-solutions.test.cjs && node tools/profile-step-solutions.browser.cjs
       - name: Readable course labels and direct help links
@@ -45,6 +49,14 @@ jobs:
         run: node --test tools/atanasyan-profile15-a.test.cjs tools/atanasyan-profile15-b.test.cjs && node tools/atanasyan-profile15.test.cjs && node tools/atanasyan-profile15-model.test.cjs && node tools/atanasyan-profile15.browser.cjs
       - name: Existing profile regression
         run: npm --prefix ege-profil test
+      - name: Preserve finance viewport evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: profile-finance-viewports
+          path: /tmp/profile-finance-shots
+          if-no-files-found: warn
+          retention-days: 14
   expressions-board:
     runs-on: ubuntu-latest
     timeout-minutes: 15

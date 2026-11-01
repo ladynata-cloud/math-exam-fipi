@@ -1,0 +1,9 @@
+{
+  "index.html": "af798730f6c1d534dc111a0c21d7bea761d6115e7b21dc9446191aa4c0077512",
+  "lessons/index.html": "054995014ba0c41bce0ae3cd43ce5e3203b6ef991fe3d6604bf64d98cde2ee68",
+  "assets/lesson-showcase.css": "01080c58edb58ef33a80e734d6ebad5d834a87b792fb56784d8a3c81e12c4607",
+  "assets/lesson-funnel.js": "081a2f366388b0a0750fd711959977969832d1331c9c814dca3f1ca55cb260a0",
+  "tools/avito-showcase.browser.cjs": "af4382c989d8db423b5c630b8acd7ed7ef7b5f441d37e0b6dea69d3a7bc06e96",
+  "tools/avito-showcase-demos.browser.cjs": "f9ff3f262fd67ab4873b0eddf7513bd07a82a2c8cb3b4cca712bc3edd2b65c39",
+  ".github/workflows/avito-showcase.yml": "279ad7f69fa9bdd1ce5a09cd82e47338145ee7c49ed93dd7e198365ff39bf579"
+}

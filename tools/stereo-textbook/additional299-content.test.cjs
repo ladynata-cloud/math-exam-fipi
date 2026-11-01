@@ -25,7 +25,7 @@ const corruptCases=new Map(screenshots);corruptCases.set([...corruptCases.keys()
 // The exact additive capture hash is fixed after every new state is authored.
 const CAPTURE_SHA='0ed4a23ada493c744a9514ba5166d669549c51ce03d642d0796085fa3734f9cf';
 assert.equal(sha([...screenshots].filter(([key])=>ids.has(key.split('|')[0]))),CAPTURE_SHA,'exact additive screenshot inventory');
-const rawPrevious=fs.readdirSync(dir).filter(name=>name.endsWith('.json')&&!require('./cylinder-baseline.cjs').ids.has(name.slice(0,-5))&&!ids.has(name.slice(0,-5))&&!later.ids.has(name.slice(0,-5))).sort().map(name=>[name,hash(fs.readFileSync(path.join(dir,name)))]);
+const rawPrevious=fs.readdirSync(dir).filter(name=>name.endsWith('.json')&&!require('./cone-baseline.cjs').ids.has(name.slice(0,-5))&&!require('./cylinder-baseline.cjs').ids.has(name.slice(0,-5))&&!ids.has(name.slice(0,-5))&&!later.ids.has(name.slice(0,-5))).sort().map(name=>[name,hash(fs.readFileSync(path.join(dir,name)))]);
 assert.equal(rawPrevious.length,495);assert.equal(sha(rawPrevious),published.rawLessonManifestSHA256,'all 495 prior authored files byte-identical');
 for(const[file,value]of Object.entries(published.immutableFiles))require('./companion-migration.cjs').assertHistoricalFile(file,value);
 assert.equal(previous.lessons.length,495);assert.equal(previous.catalog.entries.length,1373);

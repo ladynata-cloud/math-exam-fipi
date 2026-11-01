@@ -20,7 +20,7 @@ assert.equal(course.schemaVersion, 1);
 assert.equal(course.id, 'atanasyan-first-steps');
 assert.equal(hash(sourceBytes), 'af1e3a373745d3a66e3e6f71b14d02de4cd81f0c688a8929c0475277cc22b574');
 assert.equal(course.source.sha256, hash(sourceBytes));
-// Chapters VI–VIII extend only the surrounding source bundle. Retain the original
+// Chapters V–VIII extend only the surrounding source bundle. Retain the original
 // selected-content fingerprint and independently restore the old provenance
 // field to verify the exact sealed route bytes, including every card/model.
 assert.equal(course.source.selectionSha256, '175e92c3dc4476da7148b4e8c2d2e305d7cd322c55d6d5db1290cc98a1004318');

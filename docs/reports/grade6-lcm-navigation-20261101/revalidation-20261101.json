@@ -1,0 +1,649 @@
+{
+  "schemaVersion": 1,
+  "task": "GRADE6_LCM_NAVIGATION_INTEGRATION_20261101",
+  "date": "2026-11-01",
+  "timezone": "Asia/Novosibirsk",
+  "originalHead": "7df31a8363cf07e331e6c2ffe2e059f3032848b9",
+  "originalBase": "37718f1c0138ba031314b8f4716b73c9d963bc81",
+  "revalidatedBase": "2a9e70be5f7648d9fb41ad22236eeab35bf205d0",
+  "ordinaryMergeParents": [
+    "7df31a8363cf07e331e6c2ffe2e059f3032848b9",
+    "2a9e70be5f7648d9fb41ad22236eeab35bf205d0"
+  ],
+  "testedVirtualTree": "be313e12f68d1cfd5da0ad6ac999893c798405d4",
+  "resolvedMergeTree": "9a30c346cbe0f56e301e6c0bb5cc0f04801eedc3",
+  "publishedHeadBinding": "PR395 body records final commit/tree, stable patch ID and exact-head CI after publication.",
+  "authorization": {
+    "branchIntegration": "Direct owner approval in the current conversation for ordinary history-preserving merge of the named main into PR395, exact status-heading resolution, unchanged cabinet/course bytes, evidence update and new-head report.",
+    "externalReview": "Direct owner item3 approval for presented implementation because provider unavailable and independent internal checks completed; owner exception, no external verdict.",
+    "productionMerge": "Not authorized for the new head; old-base authorization invalidated.",
+    "deployment": "Not performed; new exact-version release decision required."
+  },
+  "conflictResolution": {
+    "path": "docs/PROJECT_STATUS.md",
+    "hunks": 1,
+    "heading": "## Merged and release recorded: geometry source provenance synchronization, 2026-11-01",
+    "scope": "Remove only conflict markers and alternate heading; retain all other merged content.",
+    "virtualToResolvedChangedFiles": [
+      "docs/PROJECT_STATUS.md"
+    ],
+    "markersAbsent": true
+  },
+  "preservation": {
+    "allVirtualTrackedFilesVerifiedAfterTests": 6097,
+    "unaffectedVirtualEntriesExact": 6096,
+    "nonDocumentSourceBinding": {
+      "files": 5389,
+      "sha256": "943a9bea528dfdf4cd6af470f06d15884ea5e18b114f01f5915f9db5bb8cf46a"
+    },
+    "originalDeltaFiles": 114,
+    "originalNonStatusBlobsExact": 113,
+    "concurrentNonStatusBlobsExact": 15,
+    "runtimeFiles": [
+      {
+        "path": "courses/vilenkin-6-part-1/textbook-course.css",
+        "blob": "351aec5c71ee042ec4519d0fab312887e42370e0",
+        "sha256": "22117806e8547c27471e53542a64d879e601ffbd00b9f21957dc5313d4e9eaed"
+      },
+      {
+        "path": "courses/vilenkin-6-part-1/textbook-course.js",
+        "blob": "d05df4d5791df479135a66bec9663758119da0db",
+        "sha256": "09449719cea8d4708cf030e0d72fd5b0a70c20fbc6a5fef0f685cc6a19aa10ce"
+      },
+      {
+        "path": "courses/vilenkin-6-part-1/textbook-data/supplement-lcm-multi.json",
+        "blob": "d6f38828be97455a39f6d149753ffef1dc1e04ab",
+        "sha256": "2d5a4afaea50e855d8df63d53337a5f0211c0d51c55eacb926d7af57140eeee1"
+      },
+      {
+        "path": "courses/vilenkin-6-part-1/textbook-learning-contracts.js",
+        "blob": "5f6d22e0a1f47b6485e407c9581f56659fd7d861",
+        "sha256": "52d94141ba0be881a00c5eb37f50aa95b9a5c175441f9955be7b60a1c3487ce9"
+      },
+      {
+        "path": "courses/vilenkin-6-part-1/textbook-source-labels.js",
+        "blob": "98ceaeaf0246a91e3a0f6c2c3053c918cb20d727",
+        "sha256": "17bff05c56f9b075f2d171230f80b31f3e4f93858e856029e10868f10ba1174a"
+      },
+      {
+        "path": "courses/vilenkin-6-part-1/textbook-support.css",
+        "blob": "49ab26e39e8839cafefdcad66899656072c1c9bd",
+        "sha256": "bc84db07e4677de89acbb6be995bf7ae0d19b3833efbeb95915a0aa3ab91b127"
+      },
+      {
+        "path": "courses/vilenkin-6-part-1/textbook-support.js",
+        "blob": "1173719af23af91542c92506730357fe59811686",
+        "sha256": "4874b9f7873219020b772bf3983075b7b3493cb52ee3efbad18763595f8ea2ba"
+      },
+      {
+        "path": "courses/vilenkin-6-part-1/textbook.html",
+        "blob": "fe363367f3c9ae5ae746494da3a6bc866b662eb6",
+        "sha256": "80e82db7d3da2939a3122fa1688d5c14059a6a5c5d699c35316c2d4b1b2d09dd"
+      },
+      {
+        "path": "learning/app.js",
+        "blob": "8eccf5b1028a54a65dcff569138cfd67cd82d42b",
+        "sha256": "342a0eaffee5e6d6df7947f1990271219e088506b18b13e48e15601f7d512694"
+      },
+      {
+        "path": "learning/assistant.css",
+        "blob": "d42bd77a36b1a38affdbe5200bef7d9e9eb3cb2d",
+        "sha256": "870b95cf73646a43280988ac8b795aa51b245e0a20ce142b0b8ee689227c285a"
+      },
+      {
+        "path": "learning/attached-course.js",
+        "blob": "aecf720dc18e37c0264456e8746e2bdc15dfc40f",
+        "sha256": "21b0024b0910d5bd937a25b16aab7e174d84d10d5695a2668edf78dee3b0392f"
+      },
+      {
+        "path": "learning/catalog.js",
+        "blob": "c8c5073baefe6733296d7dde3ca8bf02df279d0a",
+        "sha256": "36d65fed06c4bdf77e1af1bce612db2261e80a64d362a16119c9ad79fc6f672b"
+      },
+      {
+        "path": "learning/index.html",
+        "blob": "0adbd3de6eea640cbc6a48e3bf3ed630145c69aa",
+        "sha256": "bd6c9d249160267b103b604989a45d39ff727b3ed0697b80df7376adbb2f9d4d"
+      },
+      {
+        "path": "learning/style.css",
+        "blob": "a7f3bc2b326502953869411dbb5a069f07285095",
+        "sha256": "9029926d27c3ba96b58b072ee7a65349c988fc03cc84effacec70130cea55be8"
+      },
+      {
+        "path": "learning/vilenkin6-textbook-catalog.js",
+        "blob": "dbd183087efb838a5a87453bbdc5bd62b149055b",
+        "sha256": "88e3020a5545b28a3d16bde317c3011dd5fe30650d1873879c951149594ab023"
+      },
+      {
+        "path": "learning/vilenkin6-textbook-course.css",
+        "blob": "98e1ffb5efa377f8b9b1832a5df15aa61ba3a4b2",
+        "sha256": "cc44204b676455133e00f97b99ac60565e6d12d8e0b88ecb1c82c31719078709"
+      },
+      {
+        "path": "learning/vilenkin6-textbook-course.js",
+        "blob": "91dddd7d200e5bc01097b96a64772eaa9645ddd7",
+        "sha256": "e00e837ad6b5b07b7f29ca902b0bf0b6a02c870f0883305f66306ba36cc55a3d"
+      },
+      {
+        "path": "learning/vilenkin6-textbook-helper.js",
+        "blob": "4645569eff752c24343ab0624becc9b6ac65903e",
+        "sha256": "3ff126a2104147c3c7a1f76d7f67438bd637f9e0ff390018440b0881f7a2c075"
+      }
+    ]
+  },
+  "fullVirtualSourceRerun": {
+    "finishedAt": "2026-11-01T04:10:54.075008+00:00",
+    "groupsPassed": 21,
+    "groupsFailed": 0,
+    "uniqueNodeCases": 123,
+    "pythonCases": 10,
+    "checks": [
+      {
+        "check": "catalog",
+        "command": [
+          "node",
+          "tools/vilenkin6-course/build-textbook-catalog.cjs",
+          "--check"
+        ],
+        "exitCode": 0,
+        "seconds": 0.079,
+        "logSha256": "509af2c0d33a74e7cb9d9a3961cbd97dd1f25464063041f588a4118402f78e27"
+      },
+      {
+        "check": "lcm-arithmetic",
+        "command": [
+          "node",
+          "--test",
+          "tools/vilenkin6-course/lcm-multi.test.cjs"
+        ],
+        "exitCode": 0,
+        "seconds": 0.825,
+        "logSha256": "c71995b24e2ef5ac259fab2ad5f78b30ba6a679d2625a4717cbf21eb5dbdc7ae"
+      },
+      {
+        "check": "retained-work-backend",
+        "command": [
+          "node",
+          "--test",
+          "board-server/test/learning-vilenkin6.test.js",
+          "board-server/test/learning-vilenkin-textbook.test.js",
+          "board-server/test/learning-vilenkin-helper.test.js"
+        ],
+        "exitCode": 0,
+        "seconds": 3.772,
+        "logSha256": "fd0b20333026346c10d97cb316436633af49b3c50a45d850f270099572e8cb57"
+      },
+      {
+        "check": "managed-dom-helper",
+        "command": [
+          "node",
+          "--test",
+          "tools/vilenkin6-course/textbook-managed-dom.cjs",
+          "tools/learning-number-theory-route.dom.cjs",
+          "tools/learning-vilenkin-helper.test.cjs"
+        ],
+        "exitCode": 0,
+        "seconds": 16.196,
+        "logSha256": "047a841c183e6bf9745381df847860be6379f7843ff73d862d16eb1e64c681b4"
+      },
+      {
+        "check": "textbook-support",
+        "command": [
+          "node",
+          "--test",
+          "tools/vilenkin6-course/textbook-support.test.cjs",
+          "tools/vilenkin6-course/textbook-source-labels.test.cjs",
+          "tools/vilenkin6-course/textbook-integrated-support.test.cjs",
+          "tools/vilenkin6-course/bridge.test.cjs"
+        ],
+        "exitCode": 0,
+        "seconds": 3.535,
+        "logSha256": "887386077c5f3fd6cb44c662356a78470e5c9c4db2708e3aa9481b8c5846b5d6"
+      },
+      {
+        "check": "source-dom",
+        "command": [
+          "node",
+          "tools/vilenkin6-course/textbook-dom.cjs"
+        ],
+        "exitCode": 0,
+        "seconds": 8.391,
+        "logSha256": "033b170eed4eac237e59c8a979635b63160c349c0fce084078ef87e8f4b7bd40"
+      },
+      {
+        "check": "coverage",
+        "command": [
+          "python3",
+          "tools/vilenkin6-course/coverage-inventory.py",
+          "--check"
+        ],
+        "exitCode": 0,
+        "seconds": 0.183,
+        "logSha256": "ade106743501fbe1897af186714036a077a13e7e4b4c4450c6192cb4b4d2c0c1"
+      },
+      {
+        "check": "coverage-tests",
+        "command": [
+          "python3",
+          "tools/vilenkin6-course/coverage-inventory.test.py"
+        ],
+        "exitCode": 0,
+        "seconds": 0.232,
+        "logSha256": "14008e87ccce243caf89d2b180713127fca10cc6bc408fd98e765d894ed883c6"
+      },
+      {
+        "check": "legacy-math",
+        "command": [
+          "node",
+          "tools/vilenkin6-course/check.cjs"
+        ],
+        "exitCode": 0,
+        "seconds": 0.098,
+        "logSha256": "b21f4ab2239acb23b29283ffd480c3abb5758fc67daf0ad3e801e6e93d6d513d"
+      },
+      {
+        "check": "legacy-dom",
+        "command": [
+          "node",
+          "tools/vilenkin6-course/dom.cjs"
+        ],
+        "exitCode": 0,
+        "seconds": 1.978,
+        "logSha256": "0dd34e6c217a6f8a9f859b4a5492d95e80faf700cf2a1fda4443391167507d52"
+      },
+      {
+        "check": "legacy-managed",
+        "command": [
+          "node",
+          "tools/vilenkin6-course/managed-dom.cjs"
+        ],
+        "exitCode": 0,
+        "seconds": 2.879,
+        "logSha256": "f1c74350182250a54670bbf14c8b60c26ab2b8fd1431f24c2660e12f8f185607"
+      },
+      {
+        "check": "legacy-cabinet",
+        "command": [
+          "node",
+          "tools/learning-vilenkin6.dom.cjs"
+        ],
+        "exitCode": 0,
+        "seconds": 2.627,
+        "logSha256": "ff136fbecac876916a558fc03c27f52573594e0df34ca444be43eb237920d090"
+      },
+      {
+        "check": "catalog-partition",
+        "command": [
+          "node",
+          "tools/grade7-geometry-rebuild.integration.cjs"
+        ],
+        "exitCode": 0,
+        "seconds": 1.221,
+        "logSha256": "1ea020a610163a8cbbf72b38025dc11d6a9a5821d735036e6c724c116b114ac0"
+      },
+      {
+        "check": "geometry-source",
+        "command": [
+          "python3",
+          "tools/atanasyan-first-steps/build.py",
+          "--check"
+        ],
+        "exitCode": 0,
+        "seconds": 0.949,
+        "logSha256": "1812f48b349324e4c0c70a27c69c2dfbbe0bf1f38b8b43c8b76b1cb8078d1080"
+      },
+      {
+        "check": "ichenskaya-source",
+        "command": [
+          "python3",
+          "tools/ichenskaya-grade7-works/build.py",
+          "--check"
+        ],
+        "exitCode": 0,
+        "seconds": 0.155,
+        "logSha256": "3c874c6fbd43dc0bcad4a67fc5654ebc565d74be4459480f86146fb576cfc536"
+      },
+      {
+        "check": "assistant-projection",
+        "command": [
+          "node",
+          "assistant-service/scripts/build-course-knowledge.cjs",
+          "--check"
+        ],
+        "exitCode": 0,
+        "seconds": 0.205,
+        "logSha256": "8d550098fe969ba929e821f7fc1649ad9d1801508a94d75eff1a171028ca4b8e"
+      },
+      {
+        "check": "source-course",
+        "command": [
+          "python3",
+          "tools/geometry-textbook/build_course.py",
+          "--check"
+        ],
+        "exitCode": 0,
+        "seconds": 0.985,
+        "logSha256": "d325a31d98caabb6a820dd75f76f325ec3eb44782e34bebc27c30e8590b3f546"
+      },
+      {
+        "check": "catalogue-dom",
+        "command": [
+          "node",
+          "tools/learning-vilenkin-textbook.dom.cjs"
+        ],
+        "exitCode": 0,
+        "seconds": 142.238,
+        "logSha256": "8af1f89954e8191dfc8f035cb2570e25eea58821eb9011a58c211f3f049936e1"
+      },
+      {
+        "check": "catalog-references",
+        "command": [
+          "node",
+          "tools/learning-catalog-reference-test.cjs"
+        ],
+        "exitCode": 0,
+        "seconds": 0.527,
+        "logSha256": "54f22fd1346404b37f7ba26ac85b1e20fd6d7b50635455255be37acdcae32707"
+      },
+      {
+        "check": "offline-build",
+        "command": [
+          "python3",
+          "tools/vilenkin6-course/build-offline.py"
+        ],
+        "exitCode": 0,
+        "seconds": 0.212,
+        "logSha256": "c088a53cc413004861d8a33ac152847ae6a0d7f3f1946124f47f02999afebcd7"
+      },
+      {
+        "check": "offline-unchanged",
+        "command": [
+          "compare full bytes before/after build and virtual-tree Git blob"
+        ],
+        "exitCode": 0,
+        "beforeSha256": "67d1cdf25f2ef982a71696dbf642a1195c538b485240fc009d2abd06ec02508f",
+        "afterSha256": "67d1cdf25f2ef982a71696dbf642a1195c538b485240fc009d2abd06ec02508f",
+        "treeSha256": "67d1cdf25f2ef982a71696dbf642a1195c538b485240fc009d2abd06ec02508f",
+        "size": 554472
+      }
+    ],
+    "caseCountMethod": "Original commands exit0;11 unchanged files additionally executed directly for100 inner cases, plus8 cabinet and15 catalogue cases.",
+    "rawManifestSha256": "cf390bdf0e808c01436e1df1df800f7562e4150b52300925eafd09232f7e8755"
+  },
+  "fullVirtualBrowserRerun": {
+    "lcm": {
+      "result": "LCM_MULTI_BROWSER_OK",
+      "checks": [
+        "All 44 answers and every intermediate step agree with independent arithmetic; six checks use fresh conditions",
+        "Normal teacher profile form selects the textbook route only for the intended synthetic pupil",
+        "Topic chooser and navigation helper include author LCM; review shortcuts open prime factors, GCD and original LCM exercises and return without changing route or starting work",
+        "Cabinet keeps all 194 textbook tasks and adds separately labelled examples, paired practice methods and six checks",
+        "Both author catalog returns and source help respect pending and genuinely rejected draft saves; saved work is retained",
+        "Delayed initial cabinet data keeps login pending until completion before second-device navigation",
+        "A verified chain step and unfinished next answer survive reload and a separate browser context",
+        "Author methods retain hints, steps and drafts through iframe/shell/history catalog returns; Continue selects newer LCM work over 194 older source attempts",
+        "Switching both methods through course buttons resumes separate saved steps and drafts; both stay supported learning",
+        "Real form submissions verify both methods with three, four and five numbers, one, repeated inputs and answers above 200",
+        "Larger common multiples are rejected without revealing help; six unseen checks distinguish independent from explicitly hinted results",
+        "Repeating a completed check creates a new practiced attempt and preserves its earlier independent result",
+        "Teacher control makes unfinished work read-only; stale input/submit/hint events do not write, and a peer is denied",
+        "Visible author shell returns work for teacher preview, pupil read-only mode and history; controlled teacher breadcrumb also preserves work, control and events",
+        "All 194 source-task saved records, the legacy attempt, the other pupil profile and standalone storage remain unchanged"
+      ],
+      "originalSavedAttempts": 194,
+      "authorTasks": 44,
+      "catalogueTasks": 238,
+      "sourceSha256": {
+        "learning/app.js": "342a0eaffee5e6d6df7947f1990271219e088506b18b13e48e15601f7d512694",
+        "learning/index.html": "bd6c9d249160267b103b604989a45d39ff727b3ed0697b80df7376adbb2f9d4d",
+        "learning/style.css": "9029926d27c3ba96b58b072ee7a65349c988fc03cc84effacec70130cea55be8",
+        "learning/assistant.css": "870b95cf73646a43280988ac8b795aa51b245e0a20ce142b0b8ee689227c285a",
+        "learning/vilenkin6-textbook-course.js": "e00e837ad6b5b07b7f29ca902b0bf0b6a02c870f0883305f66306ba36cc55a3d",
+        "learning/vilenkin6-textbook-course.css": "cc44204b676455133e00f97b99ac60565e6d12d8e0b88ecb1c82c31719078709",
+        "learning/vilenkin6-textbook-helper.js": "3ff126a2104147c3c7a1f76d7f67438bd637f9e0ff390018440b0881f7a2c075",
+        "learning/vilenkin6-textbook-catalog.js": "88e3020a5545b28a3d16bde317c3011dd5fe30650d1873879c951149594ab023",
+        "courses/vilenkin-6-part-1/textbook-course.js": "09449719cea8d4708cf030e0d72fd5b0a70c20fbc6a5fef0f685cc6a19aa10ce",
+        "courses/vilenkin-6-part-1/textbook-course.css": "22117806e8547c27471e53542a64d879e601ffbd00b9f21957dc5313d4e9eaed",
+        "courses/vilenkin-6-part-1/textbook-learning-contracts.js": "52d94141ba0be881a00c5eb37f50aa95b9a5c175441f9955be7b60a1c3487ce9",
+        "courses/vilenkin-6-part-1/textbook-data/supplement-lcm-multi.json": "2d5a4afaea50e855d8df63d53337a5f0211c0d51c55eacb926d7af57140eeee1",
+        "tools/learning-lcm-multi.browser.cjs": "cca7d65ed7e777eb6d1a900009866e58d96a97d60108556b560df08a59fa350e"
+      },
+      "errors": [],
+      "publicRequestsAllowed": 0,
+      "blockedExternalRequests": 0,
+      "providerCalls": 0
+    },
+    "navigation": {
+      "result": "VILENKIN_COURSE_UI_BROWSER_OK",
+      "checks": [
+        "At 1280px: first-screen course/start; bottom-right helper; keyboard topic entry; no overflow or writes",
+        "At 390px: first-screen course/start; bottom-right helper; keyboard topic entry; no overflow or writes",
+        "At 320px: first-screen course/start; bottom-right helper; keyboard topic entry; no overflow or writes",
+        "Primary start creates exactly one owned task; All topics returns to the cabinet; Continue and reload keep its id, draft, version and history",
+        "Catalog navigation switches to source-bound task help; acknowledged hint saves provenance and preserves draft",
+        "Both catalogue links wait for a held draft save; the shell return preserves the newly saved input",
+        "Pupil history remains read-only; its visible 320px shell link returns to the course and resumes the exact saved attempt without writes",
+        "The concrete fraction task offers a separate LCM trainer; popup is noopener, help is recorded, original condition/answer/status stay intact",
+        "Teacher read-only shell return and controlled-task breadcrumb open the real catalogue without changing work, control, history or attempt count",
+        "Profile, legacy work, and other pupil work unchanged; no external provider calls or browser errors"
+      ],
+      "sourceSha256": {
+        "learning/app.js": "342a0eaffee5e6d6df7947f1990271219e088506b18b13e48e15601f7d512694",
+        "learning/index.html": "bd6c9d249160267b103b604989a45d39ff727b3ed0697b80df7376adbb2f9d4d",
+        "learning/assistant.css": "870b95cf73646a43280988ac8b795aa51b245e0a20ce142b0b8ee689227c285a",
+        "learning/vilenkin6-textbook-course.js": "e00e837ad6b5b07b7f29ca902b0bf0b6a02c870f0883305f66306ba36cc55a3d",
+        "learning/vilenkin6-textbook-course.css": "cc44204b676455133e00f97b99ac60565e6d12d8e0b88ecb1c82c31719078709",
+        "learning/vilenkin6-textbook-helper.js": "3ff126a2104147c3c7a1f76d7f67438bd637f9e0ff390018440b0881f7a2c075",
+        "learning/trainer-frame.js": "3fcacc6f766e3f31cd9276d4b7002cdb458cc1cf4638f5c32bc7b1d64eea40b9",
+        "courses/vilenkin-6-part-1/textbook-course.js": "09449719cea8d4708cf030e0d72fd5b0a70c20fbc6a5fef0f685cc6a19aa10ce",
+        "courses/vilenkin-6-part-1/textbook-course.css": "22117806e8547c27471e53542a64d879e601ffbd00b9f21957dc5313d4e9eaed",
+        "courses/vilenkin-6-part-1/textbook.html": "80e82db7d3da2939a3122fa1688d5c14059a6a5c5d699c35316c2d4b1b2d09dd",
+        "courses/vilenkin-6-part-1/textbook-support.js": "4874b9f7873219020b772bf3983075b7b3493cb52ee3efbad18763595f8ea2ba",
+        "courses/vilenkin-6-part-1/textbook-support.css": "bc84db07e4677de89acbb6be995bf7ae0d19b3833efbeb95915a0aa3ab91b127"
+      },
+      "viewportWidths": [
+        320,
+        390,
+        1280
+      ],
+      "errors": [],
+      "externalRequestsAllowed": 0,
+      "blockedExternalRequests": 0,
+      "providerCalls": 0
+    },
+    "originalTextbookGroups": 8,
+    "originalHelperGroups": 7,
+    "expandedSupport": {
+      "gate": "VILENKIN6_EXPANDED_SUPPORT_OK",
+      "status": "PASS",
+      "widths": [
+        320,
+        390,
+        1280
+      ],
+      "primeCount": 168,
+      "flows": [
+        "source caption",
+        "all reference panels expanded",
+        "draft preserved",
+        "no automatic task completion",
+        "help recorded",
+        "practice links isolated",
+        "no horizontal overflow"
+      ]
+    },
+    "runtime": "Chromium140.0.7339.16; Playwright1.62.1; synthetic local origins and SQLite only."
+  },
+  "showcaseRerun": {
+    "checkedAt": "2026-11-01T04:10:24.554392+00:00",
+    "commandsPassed": 7,
+    "pythonTests": 12,
+    "nodeTests": 6,
+    "landingCases": 9,
+    "homepageRepeatedCases": 2,
+    "demoCases": 12,
+    "uniqueBrowserCases": 21,
+    "executedBrowserCases": 23,
+    "browser": "Chromium 140.0.7339.16",
+    "currentProductFailures": []
+  },
+  "targetedVisualReview": {
+    "verdict": "PASS for current question/input/check and tested catalogue/helper actions",
+    "images": [
+      {
+        "name": "factors-after-three-steps-320.png",
+        "sha256": "9276444b1c15b4da7eea2f4d8cf20c897c309aeaab4509f70dad066da4acf846"
+      },
+      {
+        "name": "factors-first-multiplicity-step-390.png",
+        "sha256": "738780feef22e73edc8dff086c2497edb26fe8f9695c5b4e12769e3b0cb3ce83"
+      },
+      {
+        "name": "factors-first-screen-1280.png",
+        "sha256": "9d975fbca26de0cb72a1d8d8b4418b055e4e23fc2beb83b88d121e964c29f216"
+      },
+      {
+        "name": "author-history-catalog-return-320.png",
+        "sha256": "f11ef2a14e9169672220cc2e18b862d6a4fa900684055ecd763573f73d81c3c2"
+      },
+      {
+        "name": "course-topic-entry-390.png",
+        "sha256": "46813acd6541514f9801f190e55c80e3a5494d107b4b675945d7bf2d6d6d7fa8"
+      },
+      {
+        "name": "factors-helper-320.png",
+        "sha256": "c093dd693afbf1292c2a8ff22c404c902f2b6413d3ac8a7e96b5455804c3e5b0"
+      }
+    ],
+    "scope": "Six fresh images; not all41 original images or physical devices.",
+    "knownLimit": "Closed mobile helper can cover lower noncurrent text or part of transient success notification."
+  },
+  "freshAfterResolution": {
+    "finishedAt": "2026-11-01T04:28:28.005463+00:00",
+    "checks": [
+      {
+        "check": "catalog",
+        "command": [
+          "node",
+          "tools/vilenkin6-course/build-textbook-catalog.cjs",
+          "--check"
+        ],
+        "exitCode": 0,
+        "seconds": 0.116,
+        "counts": {},
+        "logSha256": "509af2c0d33a74e7cb9d9a3961cbd97dd1f25464063041f588a4118402f78e27",
+        "summary": [
+          "VILENKIN6_TEXTBOOK_CATALOG_OK: 25 units, 238 exact task identities"
+        ]
+      },
+      {
+        "check": "lcm-arithmetic",
+        "command": [
+          "node",
+          "tools/vilenkin6-course/lcm-multi.test.cjs"
+        ],
+        "exitCode": 0,
+        "seconds": 0.241,
+        "counts": {
+          "tests": 7,
+          "pass": 7,
+          "fail": 0,
+          "skipped": 0,
+          "cancelled": 0
+        },
+        "logSha256": "ce9c9704c1b9f9ab8e0951ac24ced333c73cccf7c1ea311b514e28a7542f9aae",
+        "summary": [
+          "ℹ tests 7",
+          "ℹ suites 0",
+          "ℹ pass 7",
+          "ℹ fail 0",
+          "ℹ cancelled 0",
+          "ℹ skipped 0",
+          "ℹ todo 0",
+          "ℹ duration_ms 81.44523"
+        ]
+      },
+      {
+        "check": "geometry-source",
+        "command": [
+          "python3",
+          "tools/atanasyan-first-steps/build.py",
+          "--check"
+        ],
+        "exitCode": 0,
+        "seconds": 0.548,
+        "counts": {},
+        "logSha256": "1812f48b349324e4c0c70a27c69c2dfbbe0bf1f38b8b43c8b76b1cb8078d1080",
+        "summary": [
+          "{\"gate\": \"ATANASYAN_FIRST_STEPS_SOURCE_OK\", \"checkOnly\": true, \"sourceSha256\": \"af1e3a373745d3a66e3e6f71b14d02de4cd81f0c688a8929c0475277cc22b574\", \"courseSha256\": \"0a55791957f465cf6f9c3736fe41ca8a4fb110601bbcf9c4e9843e38a3f5a0fe\", \"cards\": 255, \"exerciseNumbers\": 160, \"sections\": 12}"
+        ]
+      },
+      {
+        "check": "ichenskaya-source",
+        "command": [
+          "python3",
+          "tools/ichenskaya-grade7-works/build.py",
+          "--check"
+        ],
+        "exitCode": 0,
+        "seconds": 0.111,
+        "counts": {},
+        "logSha256": "3c874c6fbd43dc0bcad4a67fc5654ebc565d74be4459480f86146fb576cfc536",
+        "summary": [
+          "{\"gate\": \"ICHENSKAYA_COURSE_SOURCE_OK\", \"checkOnly\": true, \"courseSha256\": \"2e2a82eb755d92975edb8da78984ea8367c59a223dcd859ce48b6aad18383c57\", \"sourceSha256\": \"f3124410a12eeb8cb79a7282d63b3dc0b106871dc74ded526788ddaee23d877e\", \"manifestSha256\": \"7076005f4811effc4011d716b405aa20793a7882f5b69fa79cf003d583edc4d5\", \"authoredSha256\": \"7ecb1900f9ca6c35b14412c407608f6c71dfcc0ef568135752d45ce5c0f57d74\", \"cards\": 110, \"works\": 23, \"steps\": 360, \"reviewed\": true}"
+        ]
+      },
+      {
+        "check": "assistant-projection",
+        "command": [
+          "node",
+          "assistant-service/scripts/build-course-knowledge.cjs",
+          "--check"
+        ],
+        "exitCode": 0,
+        "seconds": 0.101,
+        "counts": {},
+        "logSha256": "8d550098fe969ba929e821f7fc1649ad9d1801508a94d75eff1a171028ca4b8e",
+        "summary": [
+          "ATANASYAN_ASSISTANT_SOURCE_OK",
+          "ICHENSKAYA_ASSISTANT_SOURCE_OK"
+        ]
+      },
+      {
+        "check": "whitespace",
+        "command": [
+          "git",
+          "diff",
+          "--check",
+          "2a9e70be5f7648d9fb41ad22236eeab35bf205d0",
+          "9a30c346cbe0f56e301e6c0bb5cc0f04801eedc3"
+        ],
+        "exitCode": 0,
+        "seconds": 0.079,
+        "counts": {},
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "summary": []
+      }
+    ],
+    "groupsPassed": 6,
+    "groupsFailed": 0,
+    "nonDocumentWorkingFilesChecked": 5389,
+    "nonDocumentWorkingFilesExact": true,
+    "sourceGateCarry": "Full virtual matrix is retained by exact source/test/data/lockfile/workflow binding; final evidence commit changes docs only."
+  },
+  "environmentFailureHistory": [
+    "Initial loopback EPERM; same browser gates passed after narrow local-runtime escalation.",
+    "Optional single-process expanded-support browser terminated. Matching requested browser archive was invalid. Unchanged gate passed with existing Chromium140 and normal multiprocess launch.",
+    "No TLS bypass, source/test assertion change, reset, rebase or force operation."
+  ],
+  "priorCi": "Original7df head:19 successful workflows;24 successful checks and1 skipped external-review check. New-head CI must be recorded separately.",
+  "limits": [
+    "No production merge or deployment",
+    "No real pupil writes",
+    "No physical phones/keyboards",
+    "No Safari/Firefox",
+    "No external provider review verdict"
+  ],
+  "reviewBoundary": "Final independent review and exact published-head source binding are recorded in PR395 after the evidence-only commit."
+}

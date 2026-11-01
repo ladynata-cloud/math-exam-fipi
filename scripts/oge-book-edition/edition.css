@@ -1,0 +1,4 @@
+.book-edition-note{box-sizing:border-box;max-width:72rem;margin:2rem auto 1rem;padding:1rem 1.25rem;border-top:1px solid #b7d8c6;color:#325443;background:#f1f8f4;font:14px/1.6 system-ui,sans-serif;display:flex;flex-wrap:wrap;gap:.35rem 1rem}
+.book-edition-note a{color:#216441;text-decoration:underline}
+a[data-book-exit]::after{content:" ↗ вне книги";font:600 .75em/1.4 system-ui,sans-serif;white-space:nowrap;color:#74540b}
+@media(max-width:400px){.book-edition-note{margin:1.5rem .25rem .5rem;padding:.75rem;font-size:13px}a[data-book-exit]::after{white-space:normal}}

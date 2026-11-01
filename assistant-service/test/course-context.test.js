@@ -25,7 +25,7 @@ test('independent service packages the exact minimum projection of all 255 revie
   assert.equal(createHash('sha256').update(readFileSync(new URL('../knowledge/atanasyan-first-steps.json', import.meta.url))).digest('hex'),
     '755cd5c4593594f296cb1a7e03af5ad29ba5413104561522901918f31c418013', 'Prepared source matches the audited provenance rebind');
   // Only the two provenance fingerprints changed after the canonical book
-  // gained chapters VI–VIII. Preserve the earlier teaching projection exactly.
+  // gained chapters V–VIII. Preserve the earlier teaching projection exactly.
   const previousProvenance = { ...snapshot, courseSha256: '551c433a5332dba52779e74f7e6f95289c3915bdc55da3f7c0ed71d0b7e651a3', sourceSha256: 'afd4228a2e1444c8fca719fcc2dc0145ca5419354980a33dcadbf637b560325d' };
   assert.equal(createHash('sha256').update(JSON.stringify(previousProvenance, null, 2) + '\n').digest('hex'),
     '2b69a93b35d05dda1ae195cd5cf0ea2482dbd7064e82d7736750afcbdce024aa', 'No reviewed teaching text may change during a provenance rebind');

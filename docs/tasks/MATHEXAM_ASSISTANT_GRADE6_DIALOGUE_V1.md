@@ -105,3 +105,23 @@ Additional acceptance:
   Vilenkin textbook or embedded Peterson source helpers.
 - Exercise browser → cabinet → assistant integration using synthetic accounts
   and in-process mock provider transport, with zero external model calls.
+
+## Current continuation — 2026-11-02
+
+The owner said “давай ты продолжишь” after the status of PR375 and the separate
+OpenAI adapter PR399. Continue this existing dialogue task by reconciling its
+candidate with current main, rerunning relevant gates and updating the same
+Draft PR. Integration base: `6b9c327f2ca438cb7e7620ef302876de467fac19`;
+previous PR375 head: `84664313af0ba374efff38aae1066d9338da8af5`.
+
+Preserve the published Vilenkin navigation/LCM work, current geometry source
+provenance, finance content and all unrelated changes. Resolve status and
+cache-tag conflicts without restoring stale upstream text or changing course
+content. Keep branch history with both parents; no force, reset or rebase.
+The two-service, mobile, teacher-control and free-route regressions remain
+required. Results are in the [current report](../reports/MATHEXAM_ASSISTANT_DIALOGUE_REVALIDATION_20261102.md).
+
+This continuation authorizes preparation and publication of the Draft candidate.
+It supplies no production release, paid inference, learner-setting change or
+review waiver. Previous review evidence is historical, not approval of the new
+head. Independent and external HIGH review remain outstanding for release.

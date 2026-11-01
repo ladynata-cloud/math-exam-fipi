@@ -7,7 +7,7 @@ const {assertHistoricalFile} = require('./companion-migration.cjs');
 const {assertVisibilityMigration, originals} = require('./visibility-migration.cjs');
 const manifest = require('./visibility-migration.json');
 const read = file => fs.readFileSync(path.join(root, file));
-const baselineNames = ['polyhedra-practical', 'additional288', 'additional294', 'additional299', 'additional310', 'cylinder'];
+const baselineNames = ['polyhedra-practical', 'additional288', 'additional294', 'additional299', 'additional310', 'cylinder', 'cone'];
 let rejects = 0;
 function reject(fn, pattern) { assert.throws(fn, pattern); rejects++; }
 for (const [file, original] of Object.entries(originals)) {
@@ -43,4 +43,4 @@ reject(() => assertVisibilityMigration('unlisted.js', original), /only the two n
 const wrongBase = structuredClone(manifest); wrongBase.base = '0'.repeat(40);
 reject(() => assertVisibilityMigration(file, original, read, wrongBase), /6fb959fc/);
 reject(() => assertHistoricalFile('unlisted.js', '0'.repeat(64), () => Buffer.from('arbitrary')), /unchanged runtime\/schema\/builder/);
-console.log('STEREOMETRY_VISIBILITY_MIGRATION_OK: six historical baselines, exact two assets and archived originals; ' + rejects + ' negative controls');
+console.log('STEREOMETRY_VISIBILITY_MIGRATION_OK: seven historical baselines, exact two assets and archived originals; ' + rejects + ' negative controls');

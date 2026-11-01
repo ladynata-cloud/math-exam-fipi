@@ -1,0 +1,44 @@
+/* Scoped presentation; native task maths and completion states remain untouched. */
+.ocg-page .ocg-answer-label{display:block;color:#203c2d;font:600 18px/1.65 system-ui,sans-serif;margin:22px 0 12px;max-width:72ch}
+.ocg-page .ocg-details{margin:18px 0;padding:16px 0;border-top:1px solid #ccd9cf}
+.ocg-page .ocg-details>summary{font:600 18px/1.6 system-ui,sans-serif;min-height:46px;cursor:pointer;color:#216342;padding:6px 0}
+.ocg-page .ocg-details[open]>summary{margin-bottom:18px}
+.ocg-page .ocg-details p{font:18px/1.7 system-ui,sans-serif;margin:16px 0}
+.ocg-page .ocg-note{color:#5a695e;font-size:16px!important}
+.ocg-page .ocg-instruction{font-weight:600!important}
+.ocg-page .ocg-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;margin:22px 0}
+.ocg-page .ocg-control{display:grid;grid-template-columns:1fr auto;gap:10px;font:17px/1.5 system-ui,sans-serif;color:#21392b}
+.ocg-page .ocg-control input{grid-column:1/-1;width:100%;min-height:38px;accent-color:#216342}
+.ocg-page .ocg-control output{font-weight:700}
+.ocg-page .ocg-figure-scroll,.ocg-page .ocg-primary-figure{overflow:auto;max-width:100%;margin:22px 0;overscroll-behavior:contain}
+.ocg-page .ocg-figure{min-width:440px;max-width:620px;margin:auto}
+.ocg-page .ocg-figure svg{display:block;width:100%;height:auto;background:#fff;border:1px solid #d4ded6;border-radius:10px}
+.ocg-page .ocg-figure line{stroke:#216342;stroke-width:2.5;fill:none}
+.ocg-page .ocg-figure text{fill:#203c2d;font:20px system-ui,sans-serif;paint-order:stroke;stroke:white;stroke-width:3px;stroke-linejoin:round}
+.ocg-page .ocg-figure .ocg-shape{fill:#e8f2eb;stroke:#216342;stroke-width:2.5}
+.ocg-page .ocg-figure .ocg-circle{fill:none;stroke:#203c2d;stroke-width:2.5}
+.ocg-page .ocg-figure .ocg-blue{stroke:#245ca6;stroke-width:3}
+.ocg-page .ocg-figure .ocg-dashed{stroke:#8a6029;stroke-dasharray:6 4;stroke-width:2}
+.ocg-page .ocg-figure .ocg-grid{stroke:#d5ded8;stroke-width:1}
+.ocg-page .ocg-figure .ocg-complement{fill:#f7ead5;stroke:#8a6029;stroke-dasharray:6 4;stroke-width:2}
+.ocg-page .ocg-reading{display:block;color:#203c2d;background:#edf5ef;padding:16px;border-radius:8px;font:18px/1.75 system-ui,sans-serif;margin:18px 0}
+.ocg-page .ocg-law{font:18px/1.75 system-ui,sans-serif;margin:18px 0;padding:16px;border-left:3px solid #216342;background:#f3f7f2}
+.ocg-page .ocg-button{font:600 17px/1.5 system-ui,sans-serif;padding:11px 18px;min-height:46px;color:#216342;background:white;border:1px solid #adc6b5;border-radius:8px;cursor:pointer;margin:8px 8px 8px 0;white-space:normal}
+.ocg-page .ocg-button:hover{background:#eaf3ed}
+.ocg-page .ocg-reference-box{margin:20px 0}
+.ocg-page .ocg-lesson-answer input{font:22px/1.5 system-ui,sans-serif;padding:9px 14px;width:170px;border:1px solid #adc6b5;border-radius:8px;margin-right:12px}
+.ocg-page .ocg-feedback{font-size:18px;line-height:1.7}
+.ocg-page .ocg-primary-figure svg{min-width:440px;max-width:100%;height:auto}
+.ocg-page .ocg-primary-figure:focus-visible,.ocg-page .ocg-figure-scroll:focus-visible,.ocg-page .ocg-button:focus-visible,.ocg-page .ocg-details>summary:focus-visible{outline:3px solid #76a889;outline-offset:3px}
+@media(max-width:540px){.ocg-page .ocg-controls{grid-template-columns:1fr}.ocg-page .ocg-primary-figure{margin:16px 0}.ocg-page .ocg-details{padding:12px 0}.ocg-page .ocg-reading{padding:12px}.ocg-page .ocg-details p{font-size:18px}.ocg-page #courseHintPanel{padding-left:12px;padding-right:12px}.ocg-page .ocg-lesson-answer input{display:block;margin-bottom:10px}}
+
+.ocg-page #main .grid>*{min-width:0}.ocg-page .ocg-scroll-note{font:16px/1.6 system-ui,sans-serif;color:#5a695e;margin:0 0 16px}.ocg-page .ocg-primary-figure{min-width:0}
+
+/* Native figures use centered flex layouts: oversized children must start at zero,
+   otherwise their left-hand labels are clipped beyond the reachable scroll area. */
+.ocg-page .ocg-primary-figure{display:block!important;justify-content:flex-start;text-align:left}
+.ocg-page .ocg-primary-figure svg{display:block;margin-inline:auto}
+.ocg-page .ocg-figure-nav{margin:16px 0 0;max-width:100%}
+.ocg-page .ocg-figure-nav .ocg-scroll-note{margin:0;font-size:16px}
+.ocg-page .ocg-figure-nav .ocg-button{margin-top:6px;margin-bottom:0;padding:9px 14px}
+.ocg-page .ocg-figure-nav+.ocg-figure-scroll,.ocg-page .ocg-figure-nav+.ocg-primary-figure{margin-top:10px}
