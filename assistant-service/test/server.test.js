@@ -89,6 +89,31 @@ test('external consent is required and exact arithmetic remains free even with c
   const external = await fx.client('/api/ask', { method: 'POST', body: question({ question: general.question, externalConsent: true }), ...session });
   assert.equal(calls, 1); assert.equal(external.data.answer.verification, 'model-unverified'); assert(fx.app.store.summary().day.reserved_micros > 0);
 });
+test('mixed questions, corrected equations and periodic answers work through HTTP without model calls', async t => {
+  let calls = 0;
+  const fx = await start(t, { api: true, fetchImpl: async () => { calls++; throw Error('UNEXPECTED_MODEL_CALL'); } });
+  const session = await fx.login();
+  for (const [topic, q, attempt, verification, expected] of [
+    ['fractions', '1 1/2 + 1/2', '6', 'deterministic', /другое число/],
+    ['fractions', '1 1/2 + 1/2', '2', 'deterministic', /Твоё число подходит/],
+    ['fractions', '-1\u00a01/2 + 1/2', '-1', 'deterministic', /Твоё число подходит/],
+    ['linear-equations', '1 2x + 5 = 29', '2', 'needs-teacher', /цифры одного числа пиши подряд/],
+    ['linear-equations', '12x + 5 = 29', '2', 'deterministic', /Твоё число подходит/],
+    ['fractions', '1/3 + 0/1', '0,(3)', 'deterministic', /Твоё число подходит/],
+    ['fractions', '1/6 + 0/1', '0,1(6)', 'deterministic', /Твоё число подходит/]
+  ]) {
+    const checked = await fx.client('/api/ask', { method: 'POST', ...session,
+      body: question({ topic, question: q, attempt, externalConsent: verification === 'deterministic' }) });
+    assert.equal(checked.response.status, 200);
+    assert.equal(checked.data.answer.verification, verification); assert.match(checked.data.answer.text, expected);
+    assert.equal(checked.data.answer.steps.length, 1); assert.equal(checked.data.answer.complete, false);
+  }
+  const blocked = await fx.client('/api/ask', { method: 'POST', ...session,
+    body: question({ topic: 'fractions', question: '1/17 + 0/1', attempt: '0,(0588235294117647)' }) });
+  assert.equal(blocked.response.status, 400); assert.equal(blocked.data.error, 'PERSONAL_DATA_REJECTED');
+  assert.equal(calls, 0); assert.equal(fx.app.store.summary().day.api_requests, 0);
+  assert.equal(fx.app.store.summary().day.reserved_micros, 0);
+});
 test('request deduplication, budget exhaustion and failure fallback cannot issue a retry', async t => {
   let calls = 0; const fx = await start(t, { api: true, env: { ASSISTANT_DAILY_API_REQUESTS: '1' }, fetchImpl: async () => { calls++; throw new Error('secret-provider-body'); } });
   const session = await fx.login(), body = question({ question: 'Что означает решить уравнение?', externalConsent: true });

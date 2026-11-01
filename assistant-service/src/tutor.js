@@ -73,6 +73,16 @@ export function parseNumericAttempt(attempt) {
     return rat(BigInt(fraction[2]) * (fraction[1] === '-' ? -1n : 1n),
       denominator * (fraction[3] === '-' ? -1n : 1n));
   }
+  const periodic = new RegExp(`^([+-]?)${space}*(${digits})[.,](\\d{0,64})\\((\\d{1,64})\\)$`).exec(text);
+  if (periodic) {
+    const [, sign, whole, prefix, cycle] = periodic;
+    // Match the bounded repeating notation already shown by cabinet division.
+    // Example: 0,1(6) = (1 * 9 + 6) / (10 * 9), with exact integers.
+    if (prefix.length + cycle.length > 64) return null;
+    const repeatingScale = 10n ** BigInt(cycle.length) - 1n;
+    return rat((BigInt(whole + prefix) * repeatingScale + BigInt(cycle)) * (sign === '-' ? -1n : 1n),
+      10n ** BigInt(prefix.length) * repeatingScale);
+  }
   const decimal = new RegExp(`^([+-]?)${space}*(${digits}(?:[.,]\\d{1,6})?)$`).exec(text);
   return decimal ? parseDecimal(decimal[1] + decimal[2]) : null;
 }
@@ -90,7 +100,7 @@ function attemptMessage(attempt, solved, simpler) {
   const value = parseNumericAttempt(attempt);
   const { expected, mistakes } = solved;
   if (!attempt.trim() || !expected) return '';
-  if (!value) return 'Такую запись ответа здесь не проверяю. Введи число, обыкновенную дробь или смешанное число. Целую и дробную части раздели пробелом.';
+  if (!value) return 'Такую запись ответа здесь не проверяю. Смешанное число записывай как 1 1/2, периодическую дробь — как 0,(3). Цифры внутри целой или дробной части пиши подряд.';
   return value.n === expected.n && value.d === expected.d
     ? 'Твоё число подходит. Теперь проверь его подстановкой или обратным действием.'
     : mistakeFeedback(value, expected, mistakes, simpler)
@@ -98,6 +108,9 @@ function attemptMessage(attempt, solved, simpler) {
 }
 
 function solveLinear(question) {
+  // Formatting spaces around operators are harmless; joining separate digit
+  // groups would choose a different equation on the learner's behalf.
+  if (/\d\s+\d/.test(question)) return null;
   const text = normalized(question).replace(/^(?:реши(?:те|ть)?\s+)?(?:уравнение\s+)?/, '').replaceAll('х', 'x').replace(/\s+/g, '').replace(/\.$/, '');
   const match = /^([+-]?\d{0,5})([·*]?)x([+-]\d{1,6})?=([+-]?\d{1,6})$/.exec(text);
   // The implicit coefficients in x, +x and -x do not license a bare *x or ·x.
@@ -168,33 +181,61 @@ function solveLinear(question) {
   };
 }
 
+const HSPACE = '[ \\t\\u00a0\\u202f]';
+const QUESTION_FRACTION = `\\d{1,5}${HSPACE}*/${HSPACE}*[1-9]\\d{0,4}`;
+const QUESTION_OPERAND = `[+-]?${HSPACE}*(?:(?:\\d{1,5}${HSPACE}+)?${QUESTION_FRACTION}|\\d{1,5})`;
+
+function fractionOperand(text) {
+  const mixedOrFraction = new RegExp(`^([+-]?)${HSPACE}*(?:(\\d{1,5})${HSPACE}+)?(\\d{1,5})${HSPACE}*/${HSPACE}*([1-9]\\d{0,4})$`).exec(text);
+  if (!mixedOrFraction) {
+    const integer = new RegExp(`^([+-]?)${HSPACE}*(\\d{1,5})$`).exec(text);
+    if (!integer || BigInt(integer[2]) > 10000n) return null;
+    return { n: BigInt(integer[2]) * (integer[1] === '-' ? -1n : 1n), d: 1n };
+  }
+  const [, sign, wholeText, numeratorText, denominatorText] = mixedOrFraction;
+  const whole = BigInt(wholeText || '0'), numerator = BigInt(numeratorText), d = BigInt(denominatorText);
+  const mixed = wholeText !== undefined;
+  if ([whole, numerator, d].some(value => value > 10000n) || (mixed && numerator >= d)) return null;
+  const n = (whole * d + numerator) * (sign === '-' ? -1n : 1n);
+  // Keep ordinary fractions unreduced so their existing common-denominator
+  // explanations and mistake feedback retain the original operands.
+  return { n, d, conversion: mixed
+    ? `${text}: ${sign === '-' ? '-' : ''}(${whole} · ${d} + ${numerator}) / ${d} = ${n}/${d}.` : null };
+}
+
 function solveFractions(question) {
-  const text = normalized(question).replace(/^(?:вычисли(?:те|ть)?|реши(?:те|ть)?)\s+/, '').replace(/\s+/g, '').replace(/\.$/, '');
-  const match = /^([+-]?\d{1,5})\/([1-9]\d{0,4})([+-])([+-]?\d{1,5})\/([1-9]\d{0,4})$/.exec(text);
+  const text = normalized(question).replace(/^(?:вычисли(?:те|ть)?|реши(?:те|ть)?)\s+/, '').replace(/\.$/, '').trim();
+  const match = new RegExp(`^(${QUESTION_OPERAND})${HSPACE}*([+-])${HSPACE}*(${QUESTION_OPERAND})$`).exec(text);
   if (!match) return null;
-  const [a, b, c, d] = [match[1], match[2], match[4], match[5]].map(BigInt);
-  if ([abs(a), b, abs(c), d].some(value => value > 10000n)) return null;
-  const minus = match[3] === '-'; const common = b / gcd(b, d) * d;
+  const left = fractionOperand(match[1]), right = fractionOperand(match[3]);
+  if (!left || !right) return null;
+  const { n: a, d: b } = left, { n: c, d } = right;
+  const conversions = [left.conversion, right.conversion].filter(Boolean);
+  const minus = match[2] === '-'; const common = b / gcd(b, d) * d;
   const first = a * (common / b); const second = c * (common / d);
   const numerator = first + (minus ? -second : second); const expected = rat(numerator, common);
   return {
     title: minus ? 'Вычитаем дроби' : 'Складываем дроби',
-    text: 'Сначала сделаем доли одинаковыми по размеру.',
+    text: conversions.length ? 'Сначала запишем смешанные числа неправильными дробями, затем сделаем доли одинаковыми по размеру.'
+      : 'Сначала сделаем доли одинаковыми по размеру.',
     hints: [
-      b === d ? 'Знаменатели уже одинаковые. Доли имеют одинаковый размер.' : 'Знаменатели разные. Сначала нужен один общий знаменатель.',
+      conversions.length ? 'У смешанного числа умножь целую часть на знаменатель и прибавь числитель. Знаменатель сохрани; минус перед числом относится ко всему результату.'
+        : b === d ? 'Знаменатели уже одинаковые. Доли имеют одинаковый размер.' : 'Знаменатели разные. Сначала нужен один общий знаменатель.',
       'Выбери положительное число, которое делится на оба знаменателя без остатка.',
       'Для каждой дроби раздели новый знаменатель на старый. На полученное число умножь числитель и знаменатель.',
       `${minus ? 'Вычти второй числитель из первого' : 'Сложи числители'}. Знаменатель оставь прежним.`,
       'Проверь, можно ли разделить числитель и знаменатель результата на одно и то же число больше 1.'
     ],
     shortHints: [
-      b === d ? 'Знаменатели одинаковые: размер долей уже совпадает.' : 'Посмотри на знаменатели: размер долей пока разный.',
+      conversions.length ? 'Переведи смешанное число в неправильную дробь. Минус перед числом оставь перед всей дробью.'
+        : b === d ? 'Знаменатели одинаковые: размер долей уже совпадает.' : 'Посмотри на знаменатели: размер долей пока разный.',
       'Найди число, которое делится на оба знаменателя без остатка.',
       'Умножай верх и низ каждой дроби на одно и то же число.',
       `${minus ? 'Вычти второй числитель из первого' : 'Сложи числители'}; знаменатель не меняй.`,
       'Попробуй разделить верх и низ ответа на одно и то же число.'
     ],
     steps: [
+      ...(conversions.length ? [conversions.join(' ')] : []),
       `Общий знаменатель: ${common}. Он делится и на ${b}, и на ${d}.`,
       `${a}/${b} = ${first}/${common}; ${c}/${d} = ${second}/${common}.`,
       `Числитель результата: ${first} ${minus ? '−' : '+'} ${signed(second)} = ${numerator}. Знаменатель: ${common}.`,
@@ -445,7 +486,9 @@ export function answerOffline(input, cards = getBuiltinKnowledge()) {
   const complete = safe.mode === 'explain' && theoryOnly && Boolean(card);
   return {
     title: theoryOnly && card ? card.title : 'Для этой задачи нужен отдельный разбор',
-    text: theoryOnly && card ? (safe.simpler ? conciseExplanation(card, safe) : card.explanation)
+    text: safe.topic === 'linear-equations' && /\d\s+\d/.test(safe.question)
+      ? 'В уравнении цифры одного числа пиши подряд. Убери пробел внутри числа или допиши пропущенный знак действия. По неоднозначной записи я не проверяю ответ.'
+      : theoryOnly && card ? (safe.simpler ? conciseExplanation(card, safe) : card.explanation)
       : `Без модельного API я проверяю только ограниченные форматы примеров. ${TOPICS.find(t => t.id === safe.topic).sample ? 'Для этой задачи не буду придумывать непроверенный ответ.' : ''}`,
     steps: card ? (complete ? card.steps : [card.steps[Math.min(safe.hintLevel - 1, card.steps.length - 1)]])
       : ['Покажи условие учителю и уточни, какое правило нужно применить.'],

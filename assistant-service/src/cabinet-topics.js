@@ -215,7 +215,7 @@ function decimalText(value, fixedPlaces) {
 function feedback(attempt, expected, mistakes, simpler) {
   if (!attempt || !expected) return '';
   const parsed = parseNumericAttempt(attempt);
-  if (!parsed) return 'Такую запись ответа здесь не проверяю. Введи число, обыкновенную дробь или смешанное число. Целую и дробную части раздели пробелом.';
+  if (!parsed) return 'Такую запись ответа здесь не проверяю. Смешанное число записывай как 1 1/2, периодическую дробь — как 0,(3). Цифры внутри целой или дробной части пиши подряд.';
   return parsed.n === expected.n && parsed.d === expected.d
     ? 'Твоё число подходит. Проверь ещё способ решения.'
     : mistakeFeedback(parsed, expected, mistakes, simpler) || 'Получилось другое число. Проверь действие по подсказке.';

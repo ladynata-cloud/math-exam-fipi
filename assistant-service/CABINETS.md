@@ -40,7 +40,11 @@ labels. Original explanations are not copied textbook solutions.
 
 Numeric answer feedback uses the [shared answer grammar](README.md#try-the-learner-flow).
 For example, `1 1/2`, `3/2` and `1,5` are equivalent; `1 1/2` is never read as
-`11/2`. Unrecognized spacing or mixed-number notation receives an explicit
+`11/2`. Exact repeating answers such as `0,(3)` and `0,1(6)` are accepted;
+truncated `0,333333` is not equal to `1/3`. The parser allows up to 64 decimal
+tail digits, but the unchanged privacy filter may reject long digit runs;
+enter the equivalent ordinary fraction in that case. Cabinet question formats
+are unchanged. Unrecognized spacing or mixed-number notation receives an explicit
 cannot-check message rather than a correct-answer label. Source-only geometry
 and whole proof/step verification are unchanged.
 
