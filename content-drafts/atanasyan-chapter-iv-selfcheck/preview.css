@@ -30,3 +30,9 @@ a { color: #14613a; text-underline-offset: 3px; }
   #model { padding: 4px; }
   details, article { padding: 12px; }
 }
+
+/* Match the published textbook math-text fraction layout in this isolated reader. */
+.stereo-fraction { display: inline-flex; vertical-align: middle; flex-direction: column; text-align: center; line-height: 1.15; margin: 0 .12em; font-size: .98em; }
+.stereo-numerator { padding: .05em .18em .12em; border-bottom: 1.5px solid currentColor; }
+.stereo-denominator { padding: .12em .18em .05em; }
+.stereo-math-atom, .stereo-mixed-number, .stereo-fraction, .stereo-numerator, .stereo-denominator { white-space: nowrap; overflow-wrap: normal; word-break: normal; hyphens: none; }

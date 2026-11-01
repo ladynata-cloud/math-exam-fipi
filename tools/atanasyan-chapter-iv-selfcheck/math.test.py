@@ -38,6 +38,13 @@ p=points('07');assert norm2(p['A'])<9 and norm2(p['B'])<9;near(norm2(p['C']),9);
 for i in range(101):assert norm2([(1-i/100)*a+i/100*b for a,b in zip(p['A'],p['B'])])<=9
 p=points('08');near(distance(p['A'],p['B']),4);near(distance(p['A'],p['C']),2*math.sqrt(2));near(dot(sub(p['B'],p['A']),sub(p['C'],p['A'])),0)
 radius=get('08')['visualization']['model']['spheres'][0]['radius'];near(radius,math.sqrt(5));near(distance(p['B'],p['C']),2*math.sqrt(6));assert distance(p['B'],p['C'])>2*radius
+# The comparison displays a complete diameter parallel to the hypotenuse.
+near(distance(p['T'],p['T1']),2*radius)
+for a,b,o in zip(p['T'],p['T1'],p['O']):near((a+b)/2,o)
+near(distance(p['T'],p['O']),radius);near(distance(p['T1'],p['O']),radius)
+near(norm2(cross(sub(p['T1'],p['T']),sub(p['C'],p['B']))),0)
+assert get('08')['visualization']['model']['views']['diameter']['segments']==[['B','C'],['T','T1']]
+assert all(k not in get('08')['visualization']['model']['labelNames'] for k in ['T','T1'])
 assert '√5' in get('08')['statement']['text'];assert '2√2' in get('08')['statement']['text']
 assert 'отдельно' in get('08')['visualization']['model']['note']
 ss=get('09')['visualization']['model']['spheres'];assert ss[0]['center']==ss[1]['center'];assert ss[0]['radius']!=ss[1]['radius'];p=points('09');near(distance(p['O'],p['H']),ss[1]['radius'])

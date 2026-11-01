@@ -10,9 +10,12 @@
   `content/atanasyan-chapter-iv-selfcheck-20261102`.
 - [Candidate report](reviews/ATANASYAN_CHAPTER_IV_SELFCHECK_DRAFT.md):
   31 steps and 45 model states, schema/coordinate/preservation checks passed.
-  Independent review is pending; the isolated editorial preview is not a
-  production course. All 640 published cards and learner-storage contracts
-  remain unchanged. Exact-head browser evidence belongs in the Draft PR.
+  [Independent review](reviews/ATANASYAN_CHAPTER_IV_SELFCHECK_INDEPENDENT.md)
+  passed source, proofs and coordinates but found missing fraction styling in
+  the preview. The correction and two small model/copy improvements await
+  fresh CI and focused re-review. All 640 published cards and learner-storage
+  contracts remain unchanged; no production integration has occurred.
+  Exact-head browser and follow-up review evidence belongs in Draft PR402.
 
 ## Published: Atanasyan Sphere, PR386
 

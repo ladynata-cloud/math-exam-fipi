@@ -67,9 +67,18 @@ The original source pages and their extracted text are not included here.
 
 ## Review boundary and remaining integration
 
-These are author checks and algorithmic oracles, not independent content
-review. A separate reviewer has not approved this increment. No external
-provider, physical-device or real-pupil verdict is claimed.
+Author checks and algorithmic oracles are separate from the
+[independent review](ATANASYAN_CHAPTER_IV_SELFCHECK_INDEPENDENT.md), authorized
+by the owner on 2026-11-02. That review passed the source, proofs and coordinates,
+but requested changes because the isolated preview rendered AB/2 as AB2.
+
+The candidate now includes the existing fraction layout rules and browser
+assertions for numerator/denominator positions and the visible bar. Negative
+controls reproduce the missing-style defect. It also shows a full diameter
+parallel to the hypotenuse in question 8 and corrects the case ending in the
+question 3а title. Fresh CI and focused independent re-review of these changes
+are pending; the initial CHANGES_REQUESTED verdict has not been relabelled.
+No paid external-provider, physical-device or real-pupil verdict is claimed.
 
 Before publication: review the exact source, proofs, models and screenshots;
 then integrate the thirteen cards, source-part contracts, review hashes and

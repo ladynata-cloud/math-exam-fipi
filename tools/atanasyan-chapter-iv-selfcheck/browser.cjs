@@ -11,7 +11,7 @@ const server=http.createServer((req,res)=>{
 });
 (async()=>{
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
- const evidence={completed:false,widths:[320,390,1280],journeys:[],views:[],screenshots:[],expansions:[],errors:[],cardHashes:{}};
+ const evidence={completed:false,widths:[320,390,1280],journeys:[],views:[],screenshots:[],expansions:[],fractions:[],fractionNegativeControls:[],errors:[],cardHashes:{}};
  let browser;
  async function capture(page,filename,selector,fullPage=true){
   const file=path.join(out,filename);if(selector)await page.locator(selector).screenshot({path:file});else await page.screenshot({path:file,fullPage});
@@ -24,6 +24,21 @@ const server=http.createServer((req,res)=>{
   });
   assert(data.pageOverflow<=1,`${id} ${stage}: page overflow`);
   for(const b of data.labels) assert(b.x>=-1&&b.y>=-1&&b.x+b.w<=data.width+1&&b.y+b.h<=data.height+1,`${id} ${stage}: label outside figure ${b.label}`);
+ }
+ async function fractions(page){
+  const data=await page.locator('#steps .stereo-fraction').evaluateAll(nodes=>nodes.map(n=>{
+   const top=n.querySelector('.stereo-numerator'),bottom=n.querySelector('.stereo-denominator');
+   const a=top.getBoundingClientRect(),b=bottom.getBoundingClientRect(),style=getComputedStyle(top);
+   return {numerator:top.textContent,denominator:bottom.textContent,topBottom:a.bottom,bottomTop:b.top,topCenter:a.x+a.width/2,bottomCenter:b.x+b.width/2,height:a.height,barWidth:parseFloat(style.borderBottomWidth),barStyle:style.borderBottomStyle,barColor:style.borderBottomColor};
+  }));
+  assert.equal(data.length,3,'Q10: all three AB/2 expressions are rendered as fractions');
+  for(const f of data){
+   assert.equal(f.numerator,'AB');assert.equal(f.denominator,'2');
+   assert(f.height>0&&f.topBottom<=f.bottomTop+.5,'visible numerator above denominator');
+   assert(Math.abs(f.topCenter-f.bottomCenter)<.6,'fraction numerator and denominator centered');
+   assert(f.barWidth>=1&&f.barStyle==='solid'&&!['transparent','rgba(0, 0, 0, 0)'].includes(f.barColor),'visible fraction bar');
+  }
+  return data;
  }
  try {
   browser=await chromium.launch({headless:true});
@@ -65,7 +80,15 @@ const server=http.createServer((req,res)=>{
      await page.locator(`[data-explanation="${card.steps[j].id}"] > summary`).click();
      assert.equal(await page.locator('#work').inputValue(),'Проверочная запись 123');
     }
-    assert(await page.locator('#next').isDisabled());await layout(page,id,'complete');await capture(page,`${width}-${id}-complete.png`);
+    assert(await page.locator('#next').isDisabled());await layout(page,id,'complete');
+    if(id==='ex-selfcheck-iv-10'){
+     const rendered=await fractions(page);evidence.fractions.push({id,width,count:rendered.length});
+     const broken=await page.addStyleTag({content:'.stereo-fraction{display:inline!important}.stereo-numerator{border:0!important;padding:0!important}.stereo-denominator{padding:0!important}'});
+     let rejected=false;try{await fractions(page);}catch{rejected=true;}finally{await broken.evaluate(n=>n.remove());}
+     assert(rejected,'fraction check rejects the independently found missing-style defect');
+     await fractions(page);evidence.fractionNegativeControls.push({width,rejected});
+    }
+    await capture(page,`${width}-${id}-complete.png`);
     const keys=await page.evaluate(()=>({local:Object.keys(localStorage),session:Object.keys(sessionStorage)}));assert.deepEqual(keys,{local:[],session:[]},'editorial preview never writes pupil storage');
     const next=(i+1)%manifest.cards.length;await page.selectOption('#lesson',String(next));await page.selectOption('#lesson',String(i));
     assert.equal(await page.locator('#work').inputValue(),'Проверочная запись 123','in-memory draft survives card selection');
@@ -74,6 +97,7 @@ const server=http.createServer((req,res)=>{
    await context.close();
   }
   assert.equal(evidence.views.length,135);assert.equal(evidence.journeys.length,39);assert.equal(evidence.screenshots.length,216);assert.equal(evidence.expansions.length,39);assert.deepEqual(evidence.errors,[]);
-  evidence.completed=true;console.log('ATANASYAN_IV_SELFCHECK_BROWSER_OK: 39 journeys; 135 model states; 39 expansions; 216 screenshots; 320/390/1280px; no storage writes');
+  assert.equal(evidence.fractions.reduce((n,x)=>n+x.count,0),9);assert.equal(evidence.fractionNegativeControls.length,3);
+  evidence.completed=true;console.log('ATANASYAN_IV_SELFCHECK_BROWSER_OK: 39 journeys; 135 model states; 39 expansions; 216 screenshots; 9 visible fractions and 3 negative controls; 320/390/1280px; no storage writes');
  }finally{fs.writeFileSync(path.join(out,'evidence.json'),JSON.stringify(evidence,null,2));await browser?.close();server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;server.close();});
