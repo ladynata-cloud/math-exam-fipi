@@ -1,5 +1,13 @@
 name: Atanasyan IV — self-check editorial preview
 on:
+  # Keep the isolated candidate verifiable even when GitHub cannot create a PR merge ref.
+  push:
+    branches:
+      - 'content/atanasyan-chapter-iv-selfcheck-20261102'
+    paths:
+      - 'content-drafts/atanasyan-chapter-iv-selfcheck/**'
+      - 'tools/atanasyan-chapter-iv-selfcheck/**'
+      - '.github/workflows/atanasyan-iv-selfcheck.yml'
   pull_request:
     paths:
       - 'content-drafts/atanasyan-chapter-iv-selfcheck/**'
