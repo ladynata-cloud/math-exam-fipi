@@ -3607,3 +3607,14 @@ Prior ten improvements are complete: GitHub `8307f6aa20651303f5f94b70ae285038327
 Amvera `3cc22e01fecad97d4d8aaa79876d2f9a7bcbe810`; the recorded check at
 2026-11-01T22:18:38Z confirmed offline private mode and exact public assets. This
 reconciles prior production evidence; it is not a new deployment claim.
+
+## Assistant dialogue/input package — 2026-11-02
+
+[Items 6–14 and 86–95](tasks/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md)
+add explicit condition preview, bounded topic suggestions, linear solution-line
+checks and retained attempts, optional help, mathematical input/display and
+accessible copy/print/bookmark/navigation controls. [Validation](reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md):
+177 service tests and 11 browser scenarios passed. This is preparation, not a
+production release. No pupil conversation storage or external inference added.
+PR409 infrastructure is merged as 6ee8065 with successful cloud CI; Amvera
+credential provisioning remains pending, not publication authorization.

@@ -8,10 +8,12 @@
       "title": "Публикация в Amvera из облака",
       "acceptance": "Подготовка, проверка и доставка точного GitHub-коммита без локального браузера.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_CLOUD_FOUNDATION_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_CLOUD_FOUNDATION_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/409",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41361562970"
       ]
     },
     {
@@ -19,10 +21,12 @@
       "title": "Возврат к предыдущей рабочей версии",
       "acceptance": "Откат кода обычным новым коммитом, без изменения базы и секретов.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_CLOUD_FOUNDATION_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_CLOUD_FOUNDATION_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/409",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41361562970"
       ]
     },
     {
@@ -30,10 +34,12 @@
       "title": "Отдельная площадка для проверки",
       "acceptance": "Изолированное окружение с синтетическими данными до production.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_CLOUD_FOUNDATION_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_CLOUD_FOUNDATION_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/409",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41361562970"
       ],
       "note": "Ephemeral cloud preview and exportable image prepared; permanent hosted preview needs separate provisioned infrastructure."
     },
@@ -42,10 +48,12 @@
       "title": "Понятный номер версии",
       "acceptance": "Отображение источника сборки и списка изменений.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_CLOUD_FOUNDATION_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_CLOUD_FOUNDATION_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/409",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41361562970"
       ]
     },
     {
@@ -53,92 +61,113 @@
       "title": "Скриншоты и видео проверок",
       "acceptance": "Сохранение браузерных доказательств при ошибке облачного теста.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_CLOUD_FOUNDATION_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_CLOUD_FOUNDATION_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/409",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41361562970"
       ]
     },
     {
       "id": 6,
       "title": "Автоматический выбор темы",
       "acceptance": "Распознавание поддерживаемого математического формата с возможностью исправить тему.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 7,
       "title": "Я понял условие так",
       "acceptance": "Предварительная математическая запись для сверки учеником.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 8,
       "title": "Привычные формулировки",
       "acceptance": "Несколько ограниченных русских формулировок одного типа задачи.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 9,
       "title": "Подсветка непонятного места",
       "acceptance": "Указание позиции отсутствующего знака или неоднозначного фрагмента.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 10,
       "title": "Почему возле каждого шага",
       "acceptance": "Объяснение выбранного действия по запросу.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 11,
       "title": "Проверка понимания перед действием",
       "acceptance": "Вопрос о следующем действии с проверяемыми вариантами.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 12,
       "title": "Подсказка после двух ошибок",
       "acceptance": "Предложение помощи, которое можно отклонить.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 13,
       "title": "Несколько строк решения",
       "acceptance": "Проверка последовательных переходов между строками.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+      ],
+      "note": "Up to six linear equalities; checks solution-set equivalence, not an unstated operation. Other formats explicitly unchecked."
     },
     {
       "id": 14,
       "title": "Исправление предыдущего шага",
       "acceptance": "Редактирование строки без потери остальных подсказок.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 15,
@@ -783,91 +812,112 @@
       "id": 86,
       "title": "Математическая клавиатура",
       "acceptance": "Дробь, степень, корень, модуль и неравенства.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 87,
       "title": "Привычное оформление формул",
       "acceptance": "Вертикальные дроби, показатели и корни.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 88,
       "title": "Словарь по нажатию",
       "acceptance": "Короткие определения возле текста.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 89,
       "title": "Требование к ответу",
       "acceptance": "Точность, приближение, набор корней или промежуток.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 90,
       "title": "Копирование фрагмента",
       "acceptance": "Условие или шаг без интерфейсных надписей.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 91,
       "title": "Печатный лист",
       "acceptance": "Условие, рисунок и выбранные объяснения.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 92,
       "title": "Закладки на шагах",
       "acceptance": "Возврат к отмеченному трудному месту.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+      ],
+      "note": "Bookmarks stay in the current tab and are cleared with the task/session; no hidden browser persistence."
     },
     {
       "id": 93,
       "title": "Размер текста и контраст",
       "acceptance": "Настройка чтения в интерфейсе.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 94,
       "title": "Клавиатура и чтение с экрана",
       "acceptance": "Доступные формулы, кнопки и рисунки.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 95,
       "title": "Переход между частями",
       "acceptance": "Условие, собственное решение и последняя подсказка на телефоне.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 96,

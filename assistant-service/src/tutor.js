@@ -1,4 +1,6 @@
 import { readFileSync } from 'node:fs';
+import { normalizeTask } from '../public/study-tools.js';
+import { checkSolutionLines } from './solution-lines.js';
 import { clarificationFor } from './clarification.js';
 import { solveExtendedLinear, solvePercentProblem, checkLinearStep } from './extended-math.js';
 
@@ -466,7 +468,7 @@ function checkedInput(input) {
     || (input.hintLevel !== undefined && (!Number.isInteger(input.hintLevel) || input.hintLevel < 1 || input.hintLevel > 5))) {
     throw new TypeError('INVALID_TUTOR_INPUT');
   }
-  return { topic: input.topic, question: input.question.trim(), attempt: input.attempt || '',
+  return { topic: input.topic, question: normalizeTask(input.question), attempt: input.attempt || '',
     mode: input.mode || 'hint', hintLevel: input.hintLevel || 1, simpler: input.simpler === true };
 }
 
@@ -475,14 +477,18 @@ export function answerOffline(input, cards = getBuiltinKnowledge()) {
   const sources = selected.map(card => ({ id: card.id, title: card.title, url: card.source.url }));
   const solved = SOLVERS[safe.topic]?.(safe.question);
   if (solved) {
-    const feedback = attemptMessage(safe.attempt, solved, safe.simpler, safe);
+    const sequence = safe.topic === 'linear-equations' && safe.attempt.includes('\n') ? checkSolutionLines(safe.question, safe.attempt) : null;
+    const feedback = sequence ? sequence.text : attemptMessage(safe.attempt, solved, safe.simpler, safe);
+    const value = parseNumericAttempt(solved.answerUnit === 'percent' ? safe.attempt.replace(/\s*%$/, '') : safe.attempt);
+    const singleStep = safe.topic === 'linear-equations' && safe.attempt.includes('=') && !value ? checkSolutionLines(safe.question, safe.attempt) : null;
+    const attemptStatus = !safe.attempt.trim() ? 'none' : sequence?.status || singleStep?.status || (!value || !solved.expected ? 'unsupported' : value.n * solved.expected.d === solved.expected.n * value.d ? 'correct' : 'incorrect');
     const complete = safe.mode === 'explain';
     return {
       title: solved.title,
       text: [safe.simpler ? 'Разберём по одному небольшому действию.' : solved.text, feedback].filter(Boolean).join(' '),
       steps: complete ? solved.steps : [(safe.simpler && solved.shortHints ? solved.shortHints : solved.hints)[safe.hintLevel - 1]],
       check: complete ? solved.check : 'Сделай только этот шаг. Предыдущие подсказки можно оставить перед глазами.',
-      sources, verification: 'deterministic', topic: safe.topic, complete
+      sources, verification: 'deterministic', topic: safe.topic, complete, attemptStatus, attemptKind: sequence || singleStep ? 'step' : 'answer', ...(sequence ? { lineChecks: sequence.lines } : {})
     };
   }
   const card = selected[0]; const theoryOnly = isConceptQuestion(safe);
