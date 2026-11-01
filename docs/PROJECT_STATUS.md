@@ -1,6 +1,45 @@
 # MathExam project status
 
-## Finance release revalidation, 2026-11-01
+## Current: finance deposit explanation correction, 2026-11-01
+
+- [Task](tasks/EGE_P13_FINANCE_STEP_HINTS_20261101.md), SMALL; the owner explicitly
+  granted START for a separate corrective PR with the prepared explanations
+  and independent exact-step test. Branch:
+  `fix/profile-finance-step-hints-2026-11-01`.
+- Verified base: `b779c500194daadf7f6418a9ad2923b3d537a690`, the published PR390
+  squash. No previous branch is merged, rebased or overwritten by this task.
+- Scope: 24 hints / 24 explanations in four existing deposit tasks, two
+  project-2027 provenance labels, an independent 442-step / 78-answer oracle
+  and its additive CI invocation. Questions, answers, IDs, ledger and storage
+  remain unchanged. [Verification](reports/EGE_P13_FINANCE_STEP_HINTS_20261101.md).
+- Next: publish the single corrective Draft PR, verify all applicable exact-head
+  CI, and obtain separate exact-base/head merge and publication authorization.
+  The current task does not itself authorize production release.
+
+## Published: financial course extension, PR390
+
+- [PR390](https://github.com/ladynata-cloud/math-exam-fipi/pull/390) was
+  squash-merged on 2026-11-01 at 13:18:07 UTC as
+  `b779c500194daadf7f6418a9ad2923b3d537a690`, sole parent
+  `3918c1645709fc8e7a92f026646d6e42fe0d6712`, from reviewed head
+  `9873e5010560d67b72d6e72afac303fcd1b67970`. The complete released tree
+  `d6936b1502ebfe90e2c18ef3be542b04f60dd0ec` matches that head exactly.
+- Its release record confirms separate owner authorization, six successful
+  head workflows, four successful postmerge workflows and successful
+  [Pages delivery](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41310597920).
+- The [live finance catalogue](https://mathexam.space/ege-profil/start/#exam/13)
+  contains 16 lessons / 96 tasks; the main course contains 81 / 486. The
+  project-2027 caption and historical-2026 distinction are already published.
+- The prior same-day verification independently confirmed public HTTPS asset
+  identity, live catalogue/source UI and all 78 answers / 442 intermediate
+  values. Existing student records were not opened or changed. Full isolated
+  learner journeys belong to the exact-head CI evidence, not live pupil tests.
+- The current corrective task addresses the remaining first-year deposit-hint
+  ambiguity. Those prepared text changes and the independent Python test were
+  not included in PR390. Earlier preparation/pending-release records below
+  are historical and do not supersede this release identity.
+
+## Historical: finance revalidation before PR390 publication, 2026-11-01
 
 - PR390 is integrated with main `3918c1645709fc8e7a92f026646d6e42fe0d6712`
   under the owner’s explicit current request to reconcile branches.
@@ -12,7 +51,7 @@
 - Revalidation evidence: [report](reports/EGE_P13_FINANCE_REVALIDATION_20261101.md).
   Separate exact-base/head production release authorization remains pending.
 
-## Prepared: financial models for profile task 13
+## Historical: preparation of financial models for profile task 13
 
 - [Task](tasks/EGE_P13_FINANCE_LESSON_20261101.md), `MEDIUM`; current-task
   owner START and task-specific decision declining external Claude consultation.
@@ -55,7 +94,7 @@
   it does not claim that the finance task reran the historical book runtime
   gate. The [preparation task](tasks/OGE_BOOK_EDITION_V2_DALI_20261031.md) and
   [local report](reports/oge-book-v2-20261031/README.md) remain historical records.
-## Current: combined grade-six LCM course and navigation, 2026-11-01
+## Merged and release recorded: combined grade-six LCM course and navigation, 2026-11-01
 
 - Owner directly requested [one compatible release candidate](tasks/GRADE6_LCM_NAVIGATION_INTEGRATION_20261101.md)
   combining PR389 and PR392 on main `37718f1c0138ba031314b8f4716b73c9d963bc81`.
@@ -74,11 +113,19 @@
 - PR391 is already published and retained as the base. Public/cabinet baseline
   byte checks are recorded in this task's report; no second PR391 release,
   real-profile change or new production deployment is claimed here.
-- External review of this HIGH candidate remains required or needs an explicit
-  owner exception; the original PR389 waiver is not a standing one. Merge and
-  deployment await a separate exact-base/head decision under AGENTS.md.
-- Next: exact-head CI in one Draft candidate, the owner's release decision,
-  then live delivery and the intended existing grade-six cabinet verification.
+- [PR395](https://github.com/ladynata-cloud/math-exam-fipi/pull/395) was
+  squash-merged on 2026-11-01 as `3918c1645709fc8e7a92f026646d6e42fe0d6712`,
+  sole parent `2a9e70be5f7648d9fb41ad22236eeab35bf205d0`, from reviewed
+  head `e95af0f570bf430ac90f6019f08e33a511771b2d`. Its current release
+  record confirms separate owner authorization, the task-specific HIGH
+  external-review exception, matching 116-path delta and production tree.
+- The PR records successful Pages and existing Amvera delivery, all nine
+  postmerge workflows/14 checks, and public learner checks. The private
+  saved-work inspection remains separately blocked by automatic permission
+  review and is not counted as passed. This reconciliation reads the release
+  evidence; it does not rerun or claim access to any real pupil records.
+- Source PR389/PR392 are historical inputs to this combined release and must
+  not be independently merged as a duplicate delivery.
 
 ## Original prepared candidate: Vilenkin 6 navigation, PR392
 
@@ -3227,7 +3274,7 @@ final exact-head CI and deployment verification; see PR266 for current evidence.
   The preparation bullets above remain historical; this reconciliation does
   not repeat authenticated cabinet/helper or pupil-session verification.
 
-## Prepared: public lesson showcase for Avito visitors
+## Merged and release recorded: public lesson showcase for Avito visitors
 
 - [Task](tasks/AVITO_SHOWCASE_20261101.md), MEDIUM; current direct owner request
   to implement, check and prepare GitHub changes, then agree publication.
@@ -3244,3 +3291,10 @@ final exact-head CI and deployment verification; see PR266 for current evidence.
 - Exact-head CI and independent focused review belong to the Draft PR record.
   This entry records preparation, not publication; separate owner approval
   is required before merge or deployment.
+- [PR393](https://github.com/ladynata-cloud/math-exam-fipi/pull/393) was
+  squash-merged as `2a9e70be5f7648d9fb41ad22236eeab35bf205d0` on 2026-11-01,
+  sole parent `37718f1c0138ba031314b8f4716b73c9d963bc81`. Its production
+  record supersedes the preparation-only statements above: Pages and
+  postmerge gates passed, 70/70 HTTPS resources matched, and live
+  320/391/1280px navigation checks passed. This is evidence reconciliation
+  within the corrective finance task, not a repeated publication or contact message.

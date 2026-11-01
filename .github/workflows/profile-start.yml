@@ -29,6 +29,8 @@ jobs:
         run: node tools/profile-route.browser.cjs && node tools/profile-start.browser.cjs && node tools/profile-first-three.browser.cjs && node tools/profile-triangle-explanation.browser.cjs && node tools/board-picker-smoke.cjs
       - name: Full first part and inequality mathematics
         run: node tools/profile-full-course.test.cjs && node --test tools/profile-probability.test.cjs tools/profile-equations.test.cjs tools/profile-functions.test.cjs tools/profile-applied.test.cjs tools/profile-finance.test.cjs && node tools/profile-part2-inequalities.test.cjs
+      - name: Independent exact financial step answers
+        run: python tools/profile-finance-exact-steps.py
       - name: Full first part and inequality learner journeys
         run: node tools/profile-full-course.browser.cjs && node tools/profile-part2-inequalities.browser.cjs
       - name: Financial models, earned values and independent practice
