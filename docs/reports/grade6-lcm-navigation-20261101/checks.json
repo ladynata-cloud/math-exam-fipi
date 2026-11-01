@@ -1,0 +1,398 @@
+{
+  "finishedAt": "2026-11-01T03:13:36.953395+00:00",
+  "checks": [
+    {
+      "check": "catalog",
+      "command": [
+        "node",
+        "tools/vilenkin6-course/build-textbook-catalog.cjs",
+        "--check"
+      ],
+      "exitCode": 0,
+      "seconds": 0.16,
+      "summary": [
+        "VILENKIN6_TEXTBOOK_CATALOG_OK: 25 units, 238 exact task identities"
+      ]
+    },
+    {
+      "check": "lcm-arithmetic",
+      "command": [
+        "node",
+        "--test",
+        "tools/vilenkin6-course/lcm-multi.test.cjs"
+      ],
+      "exitCode": 0,
+      "seconds": 0.46,
+      "summary": [
+        "ℹ tests 7",
+        "ℹ suites 0",
+        "ℹ pass 7",
+        "ℹ fail 0",
+        "ℹ cancelled 0",
+        "ℹ skipped 0",
+        "ℹ todo 0",
+        "ℹ duration_ms 321.388712"
+      ]
+    },
+    {
+      "check": "retained-work-backend",
+      "command": [
+        "node",
+        "--test",
+        "board-server/test/learning-vilenkin6.test.js",
+        "board-server/test/learning-vilenkin-textbook.test.js",
+        "board-server/test/learning-vilenkin-helper.test.js"
+      ],
+      "exitCode": 0,
+      "seconds": 1.89,
+      "summary": [
+        "ℹ tests 36",
+        "ℹ suites 0",
+        "ℹ pass 36",
+        "ℹ fail 0",
+        "ℹ cancelled 0",
+        "ℹ skipped 0",
+        "ℹ todo 0",
+        "ℹ duration_ms 1817.007868"
+      ]
+    },
+    {
+      "check": "managed-dom-helper",
+      "command": [
+        "node",
+        "--test",
+        "tools/vilenkin6-course/textbook-managed-dom.cjs",
+        "tools/learning-number-theory-route.dom.cjs",
+        "tools/learning-vilenkin-helper.test.cjs"
+      ],
+      "exitCode": 0,
+      "seconds": 12.68,
+      "summary": [
+        "ℹ tests 34",
+        "ℹ suites 0",
+        "ℹ pass 34",
+        "ℹ fail 0",
+        "ℹ cancelled 0",
+        "ℹ skipped 0",
+        "ℹ todo 0",
+        "ℹ duration_ms 12616.659446"
+      ]
+    },
+    {
+      "check": "textbook-support",
+      "command": [
+        "node",
+        "--test",
+        "tools/vilenkin6-course/textbook-support.test.cjs",
+        "tools/vilenkin6-course/textbook-source-labels.test.cjs",
+        "tools/vilenkin6-course/textbook-integrated-support.test.cjs",
+        "tools/vilenkin6-course/bridge.test.cjs"
+      ],
+      "exitCode": 0,
+      "seconds": 2.2,
+      "summary": [
+        "ℹ tests 23",
+        "ℹ suites 0",
+        "ℹ pass 23",
+        "ℹ fail 0",
+        "ℹ cancelled 0",
+        "ℹ skipped 0",
+        "ℹ todo 0",
+        "ℹ duration_ms 2118.077308"
+      ]
+    },
+    {
+      "check": "source-dom",
+      "command": [
+        "node",
+        "tools/vilenkin6-course/textbook-dom.cjs"
+      ],
+      "exitCode": 0,
+      "seconds": 7.82,
+      "summary": [
+        "{\"ok\":true,\"views\":194,\"sourceFigures\":25,\"journeys\":[\"step-reload\",\"wrong-hint-reload\",\"assisted\",\"independent\",\"repeat\",\"reset\",\"guided\",\"manual\",\"progress\",\"book\",\"corrupt-state\",\"step-reveal-reload\",\"stale-submit\",\"bounded-input\",\"hidden-hint\",\"rules-help\",\"source-help\",\"unit-zero-resume\",\"preserve-unreadable-state\",\"stale-repeat-reset-navigation-continue\",\"reconcile-help-evidence\",\"reconcile-completed-answers\",\"validate-step-prefix\",\"hint-reset-remains-familiar\",\"optional-help-after-two-errors\",\"self-correction-without-help\",\"review-after-completion-reload\",\"stale-post-answer-review\",\"step-specific-errors\",\"bounded-errors-and-valid-review\"]}"
+      ]
+    },
+    {
+      "check": "coverage",
+      "command": [
+        "python3",
+        "tools/vilenkin6-course/coverage-inventory.py",
+        "--check"
+      ],
+      "exitCode": 0,
+      "seconds": 0.13,
+      "summary": [
+        "      \"missing\": 885",
+        "    }",
+        "  },",
+        "  \"wholeCourseComplete\": false,",
+        "  \"allTextbookTasksEnumerated\": false,",
+        "  \"subpartsInventoryComplete\": false,",
+        "  \"unexpandedCheckGroups\": 50",
+        "}"
+      ]
+    },
+    {
+      "check": "coverage-tests",
+      "command": [
+        "python3",
+        "tools/vilenkin6-course/coverage-inventory.test.py"
+      ],
+      "exitCode": 0,
+      "seconds": 0.32,
+      "summary": [
+        "..........",
+        "----------------------------------------------------------------------",
+        "Ran 10 tests in 0.061s",
+        "",
+        "OK"
+      ]
+    },
+    {
+      "check": "legacy-math",
+      "command": [
+        "node",
+        "tools/vilenkin6-course/check.cjs"
+      ],
+      "exitCode": 0,
+      "seconds": 0.1,
+      "summary": [
+        "{\"status\":\"PASS\",\"lessons\":27,\"tasks\":475,\"examples\":81,\"steps\":266,\"originalExercises\":968,\"originalChecks\":30,\"numericInput\":\"exact rational\",\"checks\":\"content schema, unique ids, full original numbering, answer options, references, fraction equality, input rejection\"}"
+      ]
+    },
+    {
+      "check": "legacy-dom",
+      "command": [
+        "node",
+        "tools/vilenkin6-course/dom.cjs"
+      ],
+      "exitCode": 0,
+      "seconds": 1.12,
+      "summary": [
+        "{\"status\":\"PASS\",\"renders\":108,\"models\":27,\"controls\":80,\"flows\":[\"step persistence\",\"help provenance\",\"one score per item\",\"reload recovery\",\"five-item exam\",\"original page link\",\"notes persistence\",\"progress summary\",\"invalid numeric input does not spend an attempt\",\"aided exam and resume\",\"duplicate stale submit\",\"malformed persisted state\",\"malformed import preserves state\",\"malformed hash\",\"bundled offline data\",\"original checks index\",\"visible task question and answer unit\",\"PDF help before new-tab navigation\",\"step reveal preserves draft until explicit continue\",\"bounded answer and note persistence\"],\"visualQA\":\"not run — cloud browser policy blocked access\"}"
+      ]
+    },
+    {
+      "check": "legacy-managed",
+      "command": [
+        "node",
+        "tools/vilenkin6-course/managed-dom.cjs"
+      ],
+      "exitCode": 0,
+      "seconds": 1.44,
+      "summary": [
+        "{\"status\":\"PASS\",\"gate\":\"VILENKIN6_MANAGED_DOM_OK\",\"views\":108,\"models\":27,\"flows\":[\"no local storage access\",\"no hydrate echo\",\"readonly lifecycle\",\"draft and hint restore\",\"retained revealed steps\",\"help dialog restore\",\"module route isolation\",\"no import into cloud\",\"exam feedback deferred to checkpoint\",\"4/5 ending wrong passes\",\"3/5 ending correct fails\",\"aided exam retains draft\",\"model restore\",\"owned notes and search restore\",\"per-note and aggregate multibyte overflow retain copyable text\",\"invalid bridge fails closed\"],\"browserQA\":false}"
+      ]
+    },
+    {
+      "check": "legacy-cabinet",
+      "command": [
+        "node",
+        "tools/learning-vilenkin6.dom.cjs"
+      ],
+      "exitCode": 0,
+      "seconds": 1.5,
+      "summary": [
+        "ℹ tests 8",
+        "ℹ suites 0",
+        "ℹ pass 8",
+        "ℹ fail 0",
+        "ℹ cancelled 0",
+        "ℹ skipped 0",
+        "ℹ todo 0",
+        "ℹ duration_ms 806.733855"
+      ]
+    },
+    {
+      "check": "catalog-partition",
+      "command": [
+        "node",
+        "tools/grade7-geometry-rebuild.integration.cjs"
+      ],
+      "exitCode": 0,
+      "seconds": 1.43,
+      "summary": [
+        "{\"result\":\"GRADE7_GEOMETRY_REBUILD_INTEGRATION_OK\",\"families\":106,\"sections\":17,\"legacyCases\":676,\"catalogIdentities\":616,\"reshuffleIdentities\":62,\"feedback\":\"plain text, own known choices or canonical finite numbers\",\"protocolVersion\":1}"
+      ]
+    },
+    {
+      "check": "geometry-source",
+      "command": [
+        "python3",
+        "tools/atanasyan-first-steps/build.py",
+        "--check"
+      ],
+      "exitCode": 0,
+      "seconds": 0.66,
+      "summary": [
+        "{\"gate\": \"ATANASYAN_FIRST_STEPS_SOURCE_OK\", \"checkOnly\": true, \"sourceSha256\": \"af1e3a373745d3a66e3e6f71b14d02de4cd81f0c688a8929c0475277cc22b574\", \"courseSha256\": \"0a55791957f465cf6f9c3736fe41ca8a4fb110601bbcf9c4e9843e38a3f5a0fe\", \"cards\": 255, \"exerciseNumbers\": 160, \"sections\": 12}"
+      ]
+    },
+    {
+      "check": "ichenskaya-source",
+      "command": [
+        "python3",
+        "tools/ichenskaya-grade7-works/build.py",
+        "--check"
+      ],
+      "exitCode": 0,
+      "seconds": 0.15,
+      "summary": [
+        "{\"gate\": \"ICHENSKAYA_COURSE_SOURCE_OK\", \"checkOnly\": true, \"courseSha256\": \"2e2a82eb755d92975edb8da78984ea8367c59a223dcd859ce48b6aad18383c57\", \"sourceSha256\": \"f3124410a12eeb8cb79a7282d63b3dc0b106871dc74ded526788ddaee23d877e\", \"manifestSha256\": \"7076005f4811effc4011d716b405aa20793a7882f5b69fa79cf003d583edc4d5\", \"authoredSha256\": \"7ecb1900f9ca6c35b14412c407608f6c71dfcc0ef568135752d45ce5c0f57d74\", \"cards\": 110, \"works\": 23, \"steps\": 360, \"reviewed\": true}"
+      ]
+    },
+    {
+      "check": "assistant-projection",
+      "command": [
+        "node",
+        "assistant-service/scripts/build-course-knowledge.cjs",
+        "--check"
+      ],
+      "exitCode": 0,
+      "seconds": 0.11,
+      "summary": [
+        "ATANASYAN_ASSISTANT_SOURCE_OK",
+        "ICHENSKAYA_ASSISTANT_SOURCE_OK"
+      ]
+    },
+    {
+      "check": "source-course",
+      "command": [
+        "python3",
+        "tools/geometry-textbook/build_course.py",
+        "--check"
+      ],
+      "exitCode": 0,
+      "seconds": 1.42,
+      "summary": [
+        "{\"authoredContentSha256\": \"a92b9e1c8d7d06e8a995d805a757690ca56b6b9521e8129b31965b8bd34e07da\", \"publicationReviewMatches\": true, \"implementationSha256\": \"b831d68dbdaaf2e696a99699e228cb646ba03d76c7333f799a9c10e4bb904ad7\", \"implementationFiles\": {\"index.html\": \"098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804\", \"assets/engine.js\": \"85d395dbfb66f8a1409f1d2f930fbb6f742c0085239d34d18ec2a901f3bd6492\", \"assets/planar-viewer.js\": \"0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061\", \"assets/style.css\": \"2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b\", \"assets/math-text.js\": \"8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b\", \"source-inventory.json\": \"de0d2f2c7762df3e9fb0851ad27d1ba82fb826b8b3727c6fc386e462c9433224\", \"assets/board-adapter.js\": \"e1c366fd77f2cc822894be7e21139ce99b9e7b3c568392b122f2a3b386b7545b\"}, \"authoredCards\": 1247, \"numberedExercises\": 736, \"chapters\": [{\"chapter\": 1, \"chapterLabel\": \"I\", \"authoredContentSha256\": \"12525e9093c143c4ee6570a9fea00c7f9ccf15eb0a7ef4ab274cc62a982fa4da\", \"publicationReviewMatches\": true, \"reviewFile\": \"release-review.json\", \"authoredCards\": 173, \"numberedExercises\": 91, \"theoryPoints\": 13, \"selfcheckQuestions\": 26}, {\"chapter\": 2, \"chapterLabel\": \"II\", \"authoredContentSha256\": \"4867af61bb95cd42b259afde9d507c7183d4c2942bceedf25580ecbbae23aab3\", \"publicationReviewMatches\": true, \"reviewFile\": \"release-review-chapter-02.json\", \"authoredCards\": 163, \"numberedExercises\": 99, \"theoryPoints\": 10, \"selfcheckQuestions\": 21}, {\"chapter\": 3, \"chapterLabel\": \"III\", \"authoredContentSha256\": \"d4862c0288793383e7edf9b1989abb9971fcaa6411f3f736cca0eb8f1bb7159e\", \"publicationReviewMatches\": true, \"reviewFile\": \"release-review-chapter-03.json\", \"authoredCards\": 67, \"numberedExercises\": 37, \"theoryPoints\": 7, \"selfcheckQuestions\": 17}, {\"chapter\": 4, \"chapterLabel\": \"IV\", \"authoredContentSha256\": \"d91cd2b399443c8581732596858ec01b8ca58e0cfa57230297154602c1d51bff\", \"publicationReviewMatches\": true, \"reviewFile\": \"release-review-chapter-04.json\", \"authoredCards\": 166, \"numberedExercises\": 103, \"theoryPoints\": 8, \"selfcheckQuestions\": 23}, {\"chapter\": 5, \"chapterLabel\": \"V\", \"authoredContentSha256\": \"b1690b854231ef758b34123a1545ded507800e73b8704833af08d2978cc7276f\", \"publicationReviewMatches\": true, \"reviewFile\": \"release-review-chapter-05.json\", \"authoredCards\": 136, \"numberedExercises\": 82, \"theoryPoints\": 7, \"selfcheckQuestions\": 30}, {\"chapter\": 6, \"chapterLabel\": \"VI\", \"authoredContentSha256\": \"a3c589e661f6cc024516ea5e797c172f0f11cedd6127bb0b5bcd360967a50f64\", \"publicationReviewMatches\": true, \"reviewFile\": \"release-review-chapter-06.json\", \"authoredCards\": 138, \"numberedExercises\": 79, \"theoryPoints\": 8, \"selfcheckQuestions\": 22}, {\"chapter\": 7, \"chapterLabel\": \"VII\", \"authoredContentSha256\": \"a1cfeeeafcd14b8ff5266380883709aec6635e004104f2407afe35c40ae2ac21\", \"publicationReviewMatches\": true, \"reviewFile\": \"release-review-chapter-07.json\", \"authoredCards\": 190, \"numberedExercises\": 99, \"theoryPoints\": 9, \"selfcheckQuestions\": 12}, {\"chapter\": 8, \"chapterLabel\": \"VIII\", \"authoredContentSha256\": \"4a01227216d6bcf57495cd90975350fd7aaa823ef1c5566b1c3335e7f2d6d723\", \"publicationReviewMatches\": true, \"reviewFile\": \"release-review-chapter-08.json\", \"authoredCards\": 164, \"numberedExercises\": 97, \"theoryPoints\": 13, \"selfcheckQuestions\": 18}], \"supplements\": [{\"key\": \"7-advanced\", \"label\": \"7 класс · повышенная трудность\", \"authoredContentSha256\": \"3c73fd47306c858e31c92201d92760a8477a3197295b4d8812c887c43db4078a\", \"publicationReviewMatches\": true, \"reviewFile\": \"release-review-advanced-07.json\", \"authoredCards\": 50, \"numberedExercises\": 49, \"theoryPoints\": 0, \"selfcheckQuestions\": 0}], \"fullTextbookComplete\": false}"
+      ]
+    },
+    {
+      "check": "offline-build",
+      "command": [
+        "python3",
+        "tools/vilenkin6-course/build-offline.py"
+      ],
+      "exitCode": 0,
+      "seconds": 0.09,
+      "summary": [
+        "Offline course bundled: 554472 bytes"
+      ]
+    },
+    {
+      "check": "offline-unchanged",
+      "command": [
+        "git",
+        "diff",
+        "--exit-code",
+        "--",
+        "courses/vilenkin-6-part-1/offline.html"
+      ],
+      "exitCode": 0,
+      "seconds": 0.03,
+      "summary": []
+    }
+  ],
+  "result": "LOCAL_RELEVANT_GATES_PASS",
+  "uniqueNodeCases": 123,
+  "additionalCoverageCases": 10,
+  "finalBrowserResults": {
+    "lcm": "lcm/result.json",
+    "navigation": "navigation/browser-result.json",
+    "functionalGroups": [
+      15,
+      10,
+      8,
+      7
+    ]
+  },
+  "catalogueDom": {
+    "command": [
+      "node",
+      "tools/learning-vilenkin-textbook.dom.cjs"
+    ],
+    "tests": 15,
+    "pass": 15,
+    "fail": 0,
+    "logSha256": "2e23157bd9ebceddb3209736002b4c7e2050e353794c95d8cb21f2044dba78d8",
+    "sourceSha256": "1d4c2ab7cbb40307b41663da9223baac1d5720abc7a82eff72037cadb2e152bb"
+  },
+  "originalBrowserRegressions": [
+    {
+      "check": "textbook-browser",
+      "command": [
+        "node",
+        "tools/learning-vilenkin-textbook.browser.cjs"
+      ],
+      "exitCode": 0,
+      "seconds": 13.31
+    },
+    {
+      "check": "helper-browser",
+      "command": [
+        "node",
+        "tools/learning-vilenkin-helper.browser.cjs"
+      ],
+      "exitCode": 0,
+      "seconds": 9.03
+    },
+    {
+      "check": "support-browser-standard",
+      "command": [
+        "node",
+        "tools/vilenkin6-course/textbook-support-browser.cjs"
+      ],
+      "exitCode": 0,
+      "seconds": 3.31
+    },
+    {
+      "check": "catalog-references",
+      "command": [
+        "node",
+        "tools/learning-catalog-reference-test.cjs"
+      ],
+      "exitCode": 0,
+      "seconds": 0.51
+    }
+  ],
+  "expandedReferenceBrowser": {
+    "gate": "VILENKIN6_EXPANDED_SUPPORT_OK",
+    "status": "PASS",
+    "widths": [
+      320,
+      390,
+      1280
+    ],
+    "primeCount": 168,
+    "flows": [
+      "source caption",
+      "all reference panels expanded",
+      "draft preserved",
+      "no automatic task completion",
+      "help recorded",
+      "practice links isolated",
+      "no horizontal overflow"
+    ]
+  },
+  "workspaceRecovery": {
+    "sourceUnionRestoredFromExactVirtualTree": "5428236d3358dbced6132193a1a52c0703437dec",
+    "exactRecoveredFiles": [
+      "learning/app.js",
+      "courses/vilenkin-6-part-1/textbook-course.js",
+      "learning/index.html",
+      "courses/vilenkin-6-part-1/textbook.html",
+      ".github/workflows/vilenkin6-cloud.yml",
+      "tools/learning-lcm-multi.browser.cjs"
+    ],
+    "freshValidation": "All19 source/static groups,15catalogueDOMcases,combined and original browsers rerun; all41 images freshly inspected before final scoped contrast recheck."
+  },
+  "notRun": [
+    "Exact-head GitHub CI is recorded separately in the Draft PR",
+    "External-provider review",
+    "Merge/deployment",
+    "Real pupil or physical-device trial",
+    "Safari/Firefox/mobile keyboard trial"
+  ]
+}

@@ -1,5 +1,96 @@
 # MathExam project status
 
+## Current: combined grade-six LCM course and navigation, 2026-11-01
+
+- Owner directly requested [one compatible release candidate](tasks/GRADE6_LCM_NAVIGATION_INTEGRATION_20261101.md)
+  combining PR389 and PR392 on main `37718f1c0138ba031314b8f4716b73c9d963bc81`.
+  Review level HIGH; branch `feat/grade6-lcm-course-integration-20261101`.
+- Inputs are PR389 head `a14fed1152a0dbfdca07775dd891ba3af00a2e30` and
+  PR392 head `5568a093d7ffb3e587d5dba145071c8cde206e70`. Their branches
+  remain unchanged. One composed candidate avoids incompatible intermediate
+  course and navigation states.
+- Preserve 44 author cards / 203 steps, both LCM methods, original source
+  identities and saved work. Resolve the hidden author-task return, static
+  helper override, author labels and newest unfinished continuation.
+  Explicit current-form/frame scrolling keeps long mobile steps usable.
+- [Verification](reports/GRADE6_LCM_NAVIGATION_INTEGRATION_20261101.md)
+  binds the final source, synthetic pupil journey, inspected images and gates.
+  Earlier reports below remain historical source-candidate evidence.
+- PR391 is already published and retained as the base. Public/cabinet baseline
+  byte checks are recorded in this task's report; no second PR391 release,
+  real-profile change or new production deployment is claimed here.
+- External review of this HIGH candidate remains required or needs an explicit
+  owner exception; the original PR389 waiver is not a standing one. Merge and
+  deployment await a separate exact-base/head decision under AGENTS.md.
+- Next: exact-head CI in one Draft candidate, the owner's release decision,
+  then live delivery and the intended existing grade-six cabinet verification.
+
+## Original prepared candidate: Vilenkin 6 navigation, PR392
+
+- [Task](tasks/VILENKIN_COURSE_NAVIGATION_20261101.md), MEDIUM; owner directly
+  requested the course-interface correction and a bottom-right helper.
+  Original base `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`, branch
+  `fix/vilenkin-course-navigation-20261101`.
+- The course has distinct topic cards, visible Start/Continue/task actions,
+  truthful aggregate progress and continuation of the latest unfinished work.
+  Navigation help is available on course pages; saved-task help retains its
+  existing source-confirmation and access checks.
+- Managed “Все темы” returns to the cabinet catalogue through the existing
+  authenticated frame bridge, after the current work is saved. A cabinet-owned
+  “Все темы курса” link also works while a teacher views a pupil's work or a
+  pupil reads history, keeping all frame mutation guards intact. A contextual
+  link in fraction tasks opens the existing step-by-step LCM trainer on a
+  separate example; it does not implement a new 75/30 worksheet.
+- All 194 original cards, 615 authored steps, 27 legacy modules, source hashes,
+  identities and server contracts remain unchanged. No real profile was read
+  or modified. [Preparation report](reports/VILENKIN_COURSE_NAVIGATION_20261101.md)
+  records local/browser/internal-review evidence and remaining release work.
+- The owner authorized ordinary integration of released PR391 into this
+  existing branch after coordinated publication, including the status-only
+  conflict resolution. Integration base:
+  `37718f1c0138ba031314b8f4716b73c9d963bc81`; the original task history
+  is retained. Integration head: recorded in the existing PR392 publication record to avoid a self-referential SHA in this commit.
+- Candidate checks and identity: fresh virtual candidate PASS (69+24+119 Node cases, 9 source commands,
+  navigation/helper and both geometry browser suites); actual integrated
+  product/test identity matches. Exact-head CI is recorded in PR392.
+- PR389 remains a separate pending task. PR392 is not merged into main or
+  deployed; its exact-base/head release remains a separate owner decision.
+
+## Original prepared candidate: grade-six multi-number LCM, PR389
+
+- Owner START covers [this task](tasks/GRADE6_LCM_MULTI_CABINET.md), HIGH,
+  base `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`, branch
+  `feat/grade6-lcm-multi-20261031` and a Draft PR; no merge or deployment.
+- One explicitly authored supplement adds 3 worked examples and 16 practice
+  conditions through both successive pair LCMs and prime factorizations,
+  followed by 6 fresh checks: 44 cards / 203 steps. The existing 194 source
+  cards and their identities, 378 other catalog rows and 27 legacy modules
+  remain intact. The existing saved-work contract is used without a migration.
+- [Verification](reports/GRADE6_LCM_MULTI_CABINET_20261101.md) distinguishes
+  local technical preparation from production and real cabinet assignment.
+  `GRADE6_LCM_MULTI_PREPARATION_OK`: arithmetic, immutable base, retained-work,
+  source and relevant DOM/browser regression pass. The new real two-origin
+  browser gate preserves 194 saved synthetic attempts and checks mobile
+  condition/input visibility and unobstructed actions at 320/390/1280 px.
+  No actual pupil profile has been changed. External design/result review is
+  unavailable. The owner subsequently waived external review for the original
+  named PR389 version, as recorded in that PR; this is not a standing waiver
+  or approval of the combined candidate.
+- The 2026-11-01 continuation adds the agreed missing-factor explanation and
+  quick review/return controls for the original prime-factor, GCD and LCM
+  sections. Fresh local checks pass: 58 focused tests, 36 backend tests and
+  12 two-origin browser checks; all 14 current screenshots were inspected.
+  The original 194 cards and saved synthetic attempts remain unchanged.
+- Initial exact-head CI passes the Vilenkin cloud/publication workflows. The
+  global catalog partition was extended to check original 194 and author 44
+  separately after its first CI failure. Two unrelated source-audit workflows
+  reproduce an unchanged Atanasyan base hash mismatch; the report records
+  these failures. Overall CI is not claimed green and those source pins are
+  not changed in the LCM task.
+- Next: complete exact-head technical/review evidence, obtain the separate
+  release decision, then verify the intended existing cabinet after owner
+  sign-in and publication. No other learner's route is in scope.
+
 ## Merged: corrected fixed OGE book edition v2, 2026-10-31
 
 - [Task](tasks/OGE_BOOK_EDITION_V2_DALI_20261031.md), `MEDIUM`; owner START,
@@ -66,6 +157,9 @@
   HTTPS checks of the live textbook catalog and `units-B.json` returned 200
   and exact base bytes. This confirms those source assets, not a new complete
   production regression or assignment to any specific learner's cabinet.
+  Owner-provided screenshots in the navigation task also show the 194-card
+  course in the live cabinet; they do not independently certify the hosting
+  deployment or constitute a real-profile edit.
 - [Review report](reports/VILENKIN6_CLARITY_CABINET_20261030.md) separates source,
   mathematics, saved-work and browser evidence. The historical preparation
   report records unavailable external review; it is not a waiver for new work.
@@ -128,9 +222,10 @@
   public canonical JSON: all1247 cards and exact current-main bytes, SHA256
   `af1e3a373745d3a66e3e6f71b14d02de4cd81f0c688a8929c0475277cc22b574`.
   This confirms publication of the source bundle; it does not recertify every
-  deployed runtime, browser journey or original release decision. The linked
-  255-card native course still has the older whole-bundle provenance pin; the
-  separate bounded repair below addresses that metadata discrepancy.
+  deployed runtime, browser journey or original release decision. At that
+  pre-repair check, the linked 255-card native course retained the older
+  whole-bundle provenance pin; the separately published repair recorded below
+  has now corrected that metadata discrepancy.
 - Next source chapter: IX. The complete textbook is not yet finished.
 
 ## Published: Atanasyan chapter VII, area, 541–639
@@ -3029,20 +3124,31 @@ final exact-head CI and deployment verification; see PR266 for current evidence.
   storage migration, board protocol or server change belongs to PR377.
 
 
-## Prepared: geometry source provenance synchronization, 2026-11-01
+## Merged: geometry source provenance synchronization, 2026-11-01
 
 - [Task](tasks/GEOMETRY_SOURCE_PROVENANCE_20261101.md), `MEDIUM`; owner directly
   approved a separate repair, based on
   `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`, branch
-  `fix/geometry-source-provenance-20261101`. Merge and deployment remain
-  separately authorized actions.
+  `fix/geometry-source-provenance-20261101`. The owner separately authorized
+  squash merge and coordinated publication of reviewed head
+  `7a4c049c3c58827774921e51d47b82bdd20219b8`.
+- [PR391](https://github.com/ladynata-cloud/math-exam-fipi/pull/391) was
+  squash-merged as `37718f1c0138ba031314b8f4716b73c9d963bc81`, with
+  sole parent `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`; its full
+  tree equals the reviewed repair.
+- [Pages41248923855](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41248923855)
+  succeeded for that merge. Read-only HTTPS checks on 2026-10-31 at
+  22:38:30 UTC confirmed the matching public and cabinet bounded-course
+  bytes, SHA256 `0a55791957f465cf6f9c3736fe41ca8a4fb110601bbcf9c4e9843e38a3f5a0fe`,
+  and the unchanged 1247-card canonical source.
+- Matching assistant package verification: Amvera package `69afae86d08c0e6c3041a29646e1845704951f43` has a successful build, is marked used, and is running with one replica; its sole changed knowledge snapshot is 448638 bytes with SHA256 `755cd5c4593594f296cb1a7e03af5ad29ba5413104561522901918f31c418013`.
 - The bounded patch updates the audited canonical-source pin, one native-course
   provenance field and two assistant-snapshot metadata fields, plus dependent
   current-artifact test pins. Historical fingerprints and all705 original and
   255 selected cards remain intact; no runtime, storage or teaching change.
 - [Verification](reports/GEOMETRY_SOURCE_PROVENANCE_20261101.md) records source,
   preserved-work and helper compatibility checks. Exact-head CI and the
-  independent review are reported in the repair Draft PR. No real cabinet
+  independent review are reported in PR391. No real cabinet
   profile has been accessed or changed by this repair.
 - Cabinet/public course and assistant knowledge must be released and rolled
   back as matching packages. Their existing revision fence rejects a mixed
@@ -3051,8 +3157,8 @@ final exact-head CI and deployment verification; see PR266 for current evidence.
   its provider is unavailable and independent checks were completed. That
   decision is recorded in PR389 metadata, without an external-provider verdict,
   and does not apply to other tasks or waive its two recorded CI failures.
-- Both geometry workflows checkout the PR head explicitly. Even after this
-  repair is merged under separate approval, rerunning unchanged PR389 head
+- Both geometry workflows checkout the PR head explicitly. Although this
+  repair is now merged, rerunning unchanged PR389 head
   `a14fed1152a0dbfdca07775dd891ba3af00a2e30` would retain its old pins. Read-only
   composed validation is evidence for the next integration decision; it does
   not change that head, its CI, or its separate release permissions.
