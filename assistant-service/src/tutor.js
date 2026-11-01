@@ -1,11 +1,12 @@
 import { readFileSync } from 'node:fs';
+import { solveExtendedLinear, solvePercentProblem, checkLinearStep } from './extended-math.js';
 
 // Original bounded knowledge; owner acceptance is a rollout gate, not claimed here.
 const BUILTIN = JSON.parse(readFileSync(new URL('../knowledge/core.json', import.meta.url), 'utf8'));
 const TOPICS = [
   { id: 'linear-equations', title: 'Линейные уравнения', sample: '3x + 5 = 20' },
   { id: 'fractions', title: 'Сложение и вычитание дробей', sample: '1/2 + 1/3' },
-  { id: 'percentages', title: 'Проценты от числа', sample: '15% от 240' },
+  { id: 'percentages', title: 'Проценты', sample: '15% от 240' },
   { id: 'gcd-lcm', title: 'НОД и НОК', sample: 'НОК 12 и 18' },
   { id: 'rounding', title: 'Округление', sample: 'Округли 9,96 до десятых' },
   { id: 'pythagoras', title: 'Теорема Пифагора', sample: 'Как отличить гипотенузу от катетов?' },
@@ -96,9 +97,10 @@ export function mistakeFeedback(value, expected, mistakes = [], simpler = false)
   return mistake ? (simpler ? mistake.shortText : mistake.text) : '';
 }
 
-function attemptMessage(attempt, solved, simpler) {
-  const value = parseNumericAttempt(attempt);
+function attemptMessage(attempt, solved, simpler, input) {
+  const value = parseNumericAttempt(solved.answerUnit === 'percent' ? attempt.replace(/\s*%$/, '') : attempt);
   const { expected, mistakes } = solved;
+  if (!value && input.topic === 'linear-equations' && attempt.includes('=')) return checkLinearStep(input.question, attempt);
   if (!attempt.trim() || !expected) return '';
   if (!value) return 'Такую запись ответа здесь не проверяю. Смешанное число записывай как 1 1/2, периодическую дробь — как 0,(3). Цифры внутри целой или дробной части пиши подряд.';
   return value.n === expected.n && value.d === expected.d
@@ -423,8 +425,8 @@ function solveRounding(question) {
   };
 }
 
-const SOLVERS = { 'linear-equations': solveLinear, fractions: solveFractions,
-  percentages: solvePercent, 'gcd-lcm': solveCommon, rounding: solveRounding };
+const SOLVERS = { 'linear-equations': question => solveLinear(question) || solveExtendedLinear(question), fractions: solveFractions,
+  percentages: question => solvePercent(question) || solvePercentProblem(question), 'gcd-lcm': solveCommon, rounding: solveRounding };
 
 const CONCEPT_TERMS = {
   'linear-equations': /уравнени|равенств|неизвестн/,
@@ -472,7 +474,7 @@ export function answerOffline(input, cards = getBuiltinKnowledge()) {
   const sources = selected.map(card => ({ id: card.id, title: card.title, url: card.source.url }));
   const solved = SOLVERS[safe.topic]?.(safe.question);
   if (solved) {
-    const feedback = attemptMessage(safe.attempt, solved, safe.simpler);
+    const feedback = attemptMessage(safe.attempt, solved, safe.simpler, safe);
     const complete = safe.mode === 'explain';
     return {
       title: solved.title,

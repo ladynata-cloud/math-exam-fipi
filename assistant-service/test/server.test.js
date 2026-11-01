@@ -123,6 +123,28 @@ test('request deduplication, budget exhaustion and failure fallback cannot issue
   const second = await fx.client('/api/ask', { method: 'POST', body: question({ question: body.question, externalConsent: true }), ...session });
   assert.equal(second.response.status, 200); assert(second.data.notice); assert.equal(calls, 1); assert.equal(fx.app.store.summary().day.api_requests, 1);
 });
+
+test('extended equations, intermediate steps and percentages stay deterministic through HTTP', async t => {
+  let calls = 0;
+  const fx = await start(t, { api: true, fetchImpl: async () => { calls++; throw Error('UNEXPECTED_MODEL_CALL'); } });
+  const session = await fx.login();
+  for (const [topic, q, attempt, expected] of [
+    ['linear-equations', '2(x+3)=x+9', '2x+6=x+9', /сохраняет решения/],
+    ['linear-equations', '2(x+3)=x+9', '2x+3=x+9', /изменил решения/],
+    ['linear-equations', '0,5x+2=0,25x+5', '12', /Твоё число подходит/],
+    ['percentages', 'Найди число, 15% которого равны 36', '240', /Твоё число подходит/],
+    ['percentages', 'Сколько процентов составляет 30 от 120?', '25%', /Твоё число подходит/],
+    ['percentages', 'Уменьши 240 на 15%', '204', /Твоё число подходит/],
+    ['percentages', 'Увеличь 240 на 15%', '276', /Твоё число подходит/]
+  ]) {
+    const result = await fx.client('/api/ask', { method: 'POST', ...session,
+      body: question({ topic, question: q, attempt, externalConsent: true }) });
+    assert.equal(result.response.status, 200); assert.equal(result.data.answer.verification, 'deterministic');
+    assert.match(result.data.answer.text, expected); assert.equal(result.data.answer.steps.length, 1);
+  }
+  assert.equal(calls, 0); assert.equal(fx.app.store.summary().day.api_requests, 0);
+  assert.equal(fx.app.store.summary().day.reserved_micros, 0);
+});
 test('understated budget prevents the first network call', async t => {
   let calls = 0; const fx = await start(t, { api: true, env: { ASSISTANT_DAILY_BUDGET: '0.000001' }, fetchImpl: async () => { calls++; return modelResponse(); } });
   const session = await fx.login();
