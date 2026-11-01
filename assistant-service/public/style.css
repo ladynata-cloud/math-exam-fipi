@@ -167,3 +167,5 @@ select { padding-right: 28px; }
 .practice-form label { display: block; margin-bottom: 14px; }
 .practice-form input { margin-top: 8px; }
 .practice-result:empty { display: none; }
+
+.release-info { max-width: 78rem; margin: 1rem auto; padding: 0 1.25rem; color: var(--muted, #43534a); }

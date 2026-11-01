@@ -1,0 +1,918 @@
+{
+  "program": "MATHEXAM_ASSISTANT_100_20261102",
+  "ownerRequest": "Выполни все эти изменения облачно; все 100 изменений",
+  "baseline": "8307f6aa20651303f5f94b70ae28503832778af5",
+  "items": [
+    {
+      "id": 1,
+      "title": "Публикация в Amvera из облака",
+      "acceptance": "Подготовка, проверка и доставка точного GitHub-коммита без локального браузера.",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
+      "publication": "pending",
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_CLOUD_FOUNDATION_20261102.md"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Возврат к предыдущей рабочей версии",
+      "acceptance": "Откат кода обычным новым коммитом, без изменения базы и секретов.",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
+      "publication": "pending",
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_CLOUD_FOUNDATION_20261102.md"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Отдельная площадка для проверки",
+      "acceptance": "Изолированное окружение с синтетическими данными до production.",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
+      "publication": "pending",
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_CLOUD_FOUNDATION_20261102.md"
+      ],
+      "note": "Ephemeral cloud preview and exportable image prepared; permanent hosted preview needs separate provisioned infrastructure."
+    },
+    {
+      "id": 4,
+      "title": "Понятный номер версии",
+      "acceptance": "Отображение источника сборки и списка изменений.",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
+      "publication": "pending",
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_CLOUD_FOUNDATION_20261102.md"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Скриншоты и видео проверок",
+      "acceptance": "Сохранение браузерных доказательств при ошибке облачного теста.",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
+      "publication": "pending",
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_CLOUD_FOUNDATION_20261102.md"
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Автоматический выбор темы",
+      "acceptance": "Распознавание поддерживаемого математического формата с возможностью исправить тему.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 7,
+      "title": "Я понял условие так",
+      "acceptance": "Предварительная математическая запись для сверки учеником.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 8,
+      "title": "Привычные формулировки",
+      "acceptance": "Несколько ограниченных русских формулировок одного типа задачи.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 9,
+      "title": "Подсветка непонятного места",
+      "acceptance": "Указание позиции отсутствующего знака или неоднозначного фрагмента.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 10,
+      "title": "Почему возле каждого шага",
+      "acceptance": "Объяснение выбранного действия по запросу.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 11,
+      "title": "Проверка понимания перед действием",
+      "acceptance": "Вопрос о следующем действии с проверяемыми вариантами.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 12,
+      "title": "Подсказка после двух ошибок",
+      "acceptance": "Предложение помощи, которое можно отклонить.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 13,
+      "title": "Несколько строк решения",
+      "acceptance": "Проверка последовательных переходов между строками.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 14,
+      "title": "Исправление предыдущего шага",
+      "acceptance": "Редактирование строки без потери остальных подсказок.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 15,
+      "title": "Продолжение после перезагрузки",
+      "acceptance": "Добровольное сохранение работы в закрытом кабинете и восстановление.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 16,
+      "title": "Умножение и деление дробей",
+      "acceptance": "Смешанные числа, сокращение перед вычислением, проверка деления на ноль.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 17,
+      "title": "Выражения из нескольких действий",
+      "acceptance": "Приоритеты, скобки и проверка промежуточных результатов.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 18,
+      "title": "Сравнение дробей и смешанных чисел",
+      "acceptance": "Точное сравнение и подходящее объяснение.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 19,
+      "title": "Степени с целыми показателями",
+      "acceptance": "Отрицательное основание, нулевой и отрицательный показатели.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 20,
+      "title": "Квадратные корни",
+      "acceptance": "Вынос множителя и точная запись результата.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 21,
+      "title": "Линейные неравенства",
+      "acceptance": "Изменение знака при делении на отрицательное число.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 22,
+      "title": "Квадратные уравнения",
+      "acceptance": "Неполные уравнения, множители и дискриминант.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 23,
+      "title": "Системы двух линейных уравнений",
+      "acceptance": "Подстановка, сложение, отсутствие и бесконечность решений.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 24,
+      "title": "Пропорции",
+      "acceptance": "Отношения и проверка неизвестного.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 25,
+      "title": "Типовые задачи на движение",
+      "acceptance": "Таблица скорости, времени и расстояния.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 26,
+      "title": "Типовые задачи на совместную работу",
+      "acceptance": "Производительность, время и доля работы.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 27,
+      "title": "Типовые задачи на смеси",
+      "acceptance": "Масса смеси и масса вещества.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 28,
+      "title": "Точность округления",
+      "acceptance": "Точный ответ, приближение и допустимая погрешность.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 29,
+      "title": "Дроби, десятичные и проценты",
+      "acceptance": "Перевод между тремя формами одной величины.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 30,
+      "title": "Ответы с единицами",
+      "acceptance": "Равнозначные величины и ошибки в размерности.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 31,
+      "title": "Интерактивные равные дроби",
+      "acceptance": "Изменение числа частей при сохранении величины.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 32,
+      "title": "Действия на числовой прямой",
+      "acceptance": "Последовательные перемещения и отрицательные числа.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 33,
+      "title": "Умножение дробей через площадь",
+      "acceptance": "Пересечение частей прямоугольника.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 34,
+      "title": "Проценты с ползунком",
+      "acceptance": "Изменение выделенной доли целого.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 35,
+      "title": "Уравнение как весы",
+      "acceptance": "Одинаковые действия с обеими частями.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 36,
+      "title": "График линейной функции",
+      "acceptance": "Изменение наклона и положения при смене коэффициентов.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 37,
+      "title": "Неравенство на оси",
+      "acceptance": "Луч, граничная точка и включение границы.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 38,
+      "title": "Координаты точки",
+      "acceptance": "Построение точки и чтение координат.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 39,
+      "title": "Теорема Пифагора с вычислением",
+      "acceptance": "Выделение катетов и гипотенузы в типовых задачах.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 40,
+      "title": "Сечения куба по шагам",
+      "acceptance": "Проверяемые образцы по трём заданным точкам.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 41,
+      "title": "Генератор похожих примеров",
+      "acceptance": "Разнообразные задания с проверенными ответами.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 42,
+      "title": "Изменение сложности",
+      "acceptance": "Упрощение после затруднения и усложнение после успеха.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 43,
+      "title": "Короткая входная диагностика",
+      "acceptance": "Три–пять вопросов для выбора начального навыка.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 44,
+      "title": "Различение типов ошибок",
+      "acceptance": "Вычислительные ошибки и неверное действие в известных случаях.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 45,
+      "title": "Возврат к недостающей основе",
+      "acceptance": "Связь ошибки с упражнением на предпосылку.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 46,
+      "title": "Повторение трудного",
+      "acceptance": "Предложение короткой проверки при следующем входе.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 47,
+      "title": "Итог занятия",
+      "acceptance": "Самостоятельные результаты, помощь и оставшиеся навыки.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 48,
+      "title": "Сводка затруднений учителю",
+      "acceptance": "Повторяющиеся ошибки по темам в закрытом интерфейсе.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 49,
+      "title": "Подбор домашней работы",
+      "acceptance": "Три–пять заданий для предварительного просмотра учителем.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 50,
+      "title": "Редактор объяснений",
+      "acceptance": "Черновик формулировки, свой способ и явное утверждение.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 51,
+      "title": "Упрощение буквенных выражений",
+      "acceptance": "Подобные слагаемые, скобки и проверка каждого преобразования.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 52,
+      "title": "Разложение на множители",
+      "acceptance": "Общий множитель, формулы и группировка.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 53,
+      "title": "Рациональные уравнения",
+      "acceptance": "Ограничения знаменателей и допустимость корней.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 54,
+      "title": "Уравнения с корнями",
+      "acceptance": "Возведение в квадрат и проверка посторонних корней.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 55,
+      "title": "Уравнения с модулем",
+      "acceptance": "Объяснение отдельных случаев решения.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 56,
+      "title": "Квадратные неравенства",
+      "acceptance": "Корни, ветви параболы и промежутки.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 57,
+      "title": "Метод интервалов",
+      "acceptance": "Знаки произведений и дробей, запрещённые точки.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 58,
+      "title": "Показательные уравнения",
+      "acceptance": "Приведение типовых выражений к одному основанию.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 59,
+      "title": "Логарифмические уравнения",
+      "acceptance": "Область допустимых значений и свойства логарифмов.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 60,
+      "title": "Тригонометрические уравнения",
+      "acceptance": "Корни на окружности и отбор на промежутке.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 61,
+      "title": "Арифметическая прогрессия",
+      "acceptance": "Член, номер, разность и сумма.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 62,
+      "title": "Геометрическая прогрессия",
+      "acceptance": "Член, знаменатель и сумма.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 63,
+      "title": "Среднее, медиана и размах",
+      "acceptance": "Вычисления на небольшом наборе чисел.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 64,
+      "title": "Вероятность через перебор",
+      "acceptance": "Полная таблица или дерево равновозможных исходов.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 65,
+      "title": "Функция по таблице",
+      "acceptance": "Значение, аргумент и неоднозначность обратного поиска.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 66,
+      "title": "Углы при параллельных прямых",
+      "acceptance": "Пара углов и основание их связи.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 67,
+      "title": "Углы треугольника",
+      "acceptance": "Неизвестные внутренние и внешние углы.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 68,
+      "title": "Равенство треугольников",
+      "acceptance": "Соответствие сторон и углов перед выбором признака.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 69,
+      "title": "Подобие треугольников",
+      "acceptance": "Соответствие вершин и порядок отношений.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 70,
+      "title": "Центральные и вписанные углы",
+      "acceptance": "Дуга, на которую опирается угол.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 71,
+      "title": "Касательная, радиус и хорда",
+      "acceptance": "Выбор применимого свойства по условиям.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 72,
+      "title": "Площади составных фигур",
+      "acceptance": "Разбиение без пропусков и двойного счёта.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 73,
+      "title": "Векторы на плоскости",
+      "acceptance": "Сложение, координаты и длина.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 74,
+      "title": "Углы в стереометрии",
+      "acceptance": "Выделение искомого плоского угла на модели.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 75,
+      "title": "Объёмы тел",
+      "acceptance": "Призма, пирамида, цилиндр и конус; основание и высота.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 76,
+      "title": "Два способа рядом",
+      "acceptance": "Сравнение корректных решений и удобства способов.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 77,
+      "title": "Решение с пропуском",
+      "acceptance": "Восстановление одной недостающей строки.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 78,
+      "title": "Найди ошибку",
+      "acceptance": "Проверка специально ошибочного короткого решения.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 79,
+      "title": "Порядок шагов",
+      "acceptance": "Сборка решения из перемешанных действий.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 80,
+      "title": "Контрпример",
+      "acceptance": "Опровержение утверждения подходящим примером.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 81,
+      "title": "План без вычислений",
+      "acceptance": "Выбор последовательности действий до расчётов.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 82,
+      "title": "Прикидка",
+      "acceptance": "Знак и примерный размер результата до точного вычисления.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 83,
+      "title": "Смысл результата",
+      "acceptance": "Проверка времени, вероятности и отношений части с целым.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 84,
+      "title": "Собственная задача",
+      "acceptance": "Заполнение шаблона условия для заданного ответа.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 85,
+      "title": "Контрастные пары",
+      "acceptance": "Изменение условия, меняющее способ решения.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 86,
+      "title": "Математическая клавиатура",
+      "acceptance": "Дробь, степень, корень, модуль и неравенства.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 87,
+      "title": "Привычное оформление формул",
+      "acceptance": "Вертикальные дроби, показатели и корни.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 88,
+      "title": "Словарь по нажатию",
+      "acceptance": "Короткие определения возле текста.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 89,
+      "title": "Требование к ответу",
+      "acceptance": "Точность, приближение, набор корней или промежуток.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 90,
+      "title": "Копирование фрагмента",
+      "acceptance": "Условие или шаг без интерфейсных надписей.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 91,
+      "title": "Печатный лист",
+      "acceptance": "Условие, рисунок и выбранные объяснения.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 92,
+      "title": "Закладки на шагах",
+      "acceptance": "Возврат к отмеченному трудному месту.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 93,
+      "title": "Размер текста и контраст",
+      "acceptance": "Настройка чтения в интерфейсе.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 94,
+      "title": "Клавиатура и чтение с экрана",
+      "acceptance": "Доступные формулы, кнопки и рисунки.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 95,
+      "title": "Переход между частями",
+      "acceptance": "Условие, собственное решение и последняя подсказка на телефоне.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 96,
+      "title": "Доступ к полному решению",
+      "acceptance": "Настройка учителем: сразу, после попытки или только подсказки.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 97,
+      "title": "Разрешённые способы",
+      "acceptance": "Объяснение в пределах изученных учеником методов.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 98,
+      "title": "Учительская проба",
+      "acceptance": "Сценарии без изменения прогресса реального ученика.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 99,
+      "title": "Очередь спорных ответов",
+      "acceptance": "Обезличенный воспроизводимый математический пример для проверки.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    },
+    {
+      "id": 100,
+      "title": "Карта возможностей",
+      "acceptance": "Проверяемые типы задач, общие объяснения и границы покрытия.",
+      "implementation": "pending",
+      "validation": "pending",
+      "publication": "pending",
+      "evidence": []
+    }
+  ]
+}

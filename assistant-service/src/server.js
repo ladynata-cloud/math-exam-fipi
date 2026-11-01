@@ -1,4 +1,5 @@
 import http from 'node:http';
+import { readRelease } from './release.js';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -69,6 +70,7 @@ export function createAssistantServer({ config = loadConfig(), clock = Date.now,
         const data = fs.readFileSync(path.join(PUBLIC, filename));
         res.writeHead(200, { ...COMMON_HEADERS, 'Content-Type': type }); res.end(data); return;
       }
+      if (req.method === 'GET' && req.url === '/api/version') { send(res, 200, { ok: true, ...readRelease() }); return; }
       if (req.method === 'GET' && req.url === '/api/status') {
         send(res, 200, { ok: true, mode: config.mode, externalEnabled: config.mode === 'api' && pricesFresh(config, clock()) && !store.meta('provider_circuit'),
           providerLabel: config.providerLabel, localDemo: config.localDemo }); return;
