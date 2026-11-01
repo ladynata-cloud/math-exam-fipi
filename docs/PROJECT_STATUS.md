@@ -1,6 +1,6 @@
 # MathExam project status
 
-## Current: profile first-part trainer repairs, 2026-11-01
+## Release authorized: profile first-part trainer repairs, PR397, 2026-11-02
 
 - Owner directly requested correction of the complete first-part audit, accurate
   trainer links, particular attention to geometry 1/2/3 and construction, and
@@ -18,8 +18,41 @@
   [Draft PR397](https://github.com/ladynata-cloud/math-exam-fipi/pull/397)
   record local/CI/browser evidence and independent reviews. No new main-course
   tasks or task IDs are introduced; no real pupil state is changed.
-- Merge/publication remain separate decisions for the exact base/head. HIGH
-  external review is not completed; no earlier task exception is reused.
+- On 2026-11-02 the owner explicitly authorized preserving both status entries,
+  merging main `059ee8c9f5baeb0b333c96d9b8516edb570666b2` into this branch with
+  history retained, and then squash-merge, publication and public-site checks
+  after successful checks of the updated branch. The owner granted a current
+  PR397-specific external HIGH-review exception based on the completed checks.
+  This is an owner exception, not an external reviewer verdict.
+- Trainer/runtime bytes are unchanged from reviewed head
+  `d1291ca1214f8a96f7f0de5e613161e6d4eecc5a`; only this conflict and the
+  verification report were adjusted. Next: exact-head CI, authorized release,
+  then public asset/learner checks. Final release identity is recorded in PR397;
+  this pre-release entry does not claim deployment has already completed.
+
+## Published: assistant dialogue integration, PR375, 2026-11-02
+
+- [PR375](https://github.com/ladynata-cloud/math-exam-fipi/pull/375) was
+  squash-merged as `059ee8c9f5baeb0b333c96d9b8516edb570666b2`, with parent
+  `6b9c327f2ca438cb7e7620ef302876de467fac19`. Its release record confirms owner
+  authorization, 18 successful head workflows, nine postmerge workflows and
+  [Pages publication](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41337980680).
+  Published course navigation, LCM hints, provenance and unrelated content remain.
+- The same root task and bounded previous exchanges support follow-up
+  questions; fresh external acknowledgement and teacher/budget controls remain.
+  Source-only textbook helpers keep their separate existing behavior.
+- Fresh local helper 131/131, cabinet 369/369 and assistant DOM 40/40 checks
+  pass, together with dialogue/cabinet/mobile integration and current Vilenkin
+  navigation/LCM browser gates. No external model calls or learner changes.
+- [Task](tasks/MATHEXAM_ASSISTANT_GRADE6_DIALOGUE_V1.md) and
+  [verification](reports/MATHEXAM_ASSISTANT_DIALOGUE_REVALIDATION_20261102.md).
+  Final release and deployment identities are recorded in the merged PR.
+  The owner explicitly granted that task's review exception after the provider
+  rejected its review request for insufficient credit. Cabinet and assistant
+  deployment/health checks passed; external inference remains off. That exception
+  does not grant permission for any other task.
+- Separate OpenAI adapter [PR399](https://github.com/ladynata-cloud/math-exam-fipi/pull/399)
+  remains a Draft and is not included or enabled by this dialogue task.
 
 ## Historical preparation: finance deposit explanation correction, PR396
 
@@ -3319,3 +3352,31 @@ final exact-head CI and deployment verification; see PR266 for current evidence.
   postmerge gates passed, 70/70 HTTPS resources matched, and live
   320/391/1280px navigation checks passed. This is evidence reconciliation
   within the corrective finance task, not a repeated publication or contact message.
+
+## Historical preparation: grade 6 assistant follow-up questions, 2026-10-31
+
+- [Task](tasks/MATHEXAM_ASSISTANT_GRADE6_DIALOGUE_V1.md), HIGH;
+  Vilenkin NOD/NOK profile and bounded contextual questions beside existing
+  Peterson decimal support. [Validation report](reports/MATHEXAM_ASSISTANT_GRADE6_DIALOGUE_20261030.md).
+- Context is bound to the learner's login and original task; expires 15 minutes
+  after the first answer, is memory-only and never becomes a training dataset.
+- This is a tested candidate, not a live provider activation or deployment.
+  Existing pupils' settings and production data were not modified. External
+  exact-head review, provider eligibility/evaluation and owner release decisions
+  remain separate requirements.
+
+
+## Assistant dialogue revalidation — 2026-10-31
+
+- PR375 is reconciled with current published main `c9bf66e2` including PR380.
+  The shared stylesheet retains both saved-source help and follow-up controls.
+- Independent review found a pending-answer control race. Both server and UI
+  now withhold the answer after teacher control is taken; allowance accounting
+  and existing assessment/session/privacy protections remain intact.
+- The inherited Atanasyan/Ichenskaya source pin is refreshed only after proving
+  unchanged selected teaching records and retaining the original content
+  oracles. Merzlyak's old engine guard is already repaired by published PR376.
+- Free dialogue retains entered task context; automatic saved Vilenkin and
+  embedded Peterson help remain separate source-based paths. No paid model or
+  real learner setting is enabled. Full evidence and remaining release gates:
+  [revalidation report](reports/MATHEXAM_ASSISTANT_DIALOGUE_REVALIDATION_20261031.md).

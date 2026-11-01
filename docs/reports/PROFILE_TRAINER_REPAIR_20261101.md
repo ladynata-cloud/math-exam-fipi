@@ -141,3 +141,54 @@ separate owner decision must name current base/head. Requery authoritative main
 immediately before any authorized merge; follow the repository drift procedure.
 A bounded revert restores the previous runtime without deleting original work;
 additional recovery/report fields remain readable or safely ignored.
+
+## Authorized release continuation, 2026-11-02
+
+The owner explicitly authorized the following bounded sequence in the current
+conversation: retain both project-status records; merge main
+`059ee8c9f5baeb0b333c96d9b8516edb570666b2` into PR397 while preserving history;
+grant this PR an external HIGH-review exception on the basis of completed
+checks; and, after the updated branch passes checks, squash-merge, publish and
+verify the public site. This task-specific decision supersedes the outstanding
+permission notes above. It is not an external-review verdict or a standing waiver.
+
+The previously reviewed head is
+`d1291ca1214f8a96f7f0de5e613161e6d4eecc5a`. Direct remote-ref verification found
+exactly one concurrent main commit: the authorized, published assistant PR375.
+The read-only virtual merge found a single conflict in `docs/PROJECT_STATUS.md`;
+the other 77 PR files matched the reviewed head exactly and no extra file
+appeared in the 78-file main-to-virtual delta. All ten course-data files matched
+the original base, reviewed head, current main and virtual runtime. The conflict
+resolution retains the profile entry, reconciles the assistant entry with its
+actual publication, and retains the historical PR396 heading. No runtime source,
+task condition, task ID, stored pupil record or deployment configuration changes.
+
+Continued checks reused the existing audit rather than starting it over:
+
+- The six original exact-head workflows were rechecked and all were successful;
+  the actual dedicated audit-job log confirms its mathematical/browser gates.
+- Fresh 66/66 targeted Node/DOM checks passed on the reviewed head and virtual
+  runtime, covering strict answers, repeated clicks/Enter, help evidence,
+  checkpoint recovery, opaque saved fields and read-only teacher reports.
+- The independent Fraction-based oracle passed 78 financial tasks and 442
+  intermediate values again, with zero failures. Legacy L1 gives a=160, b=100,
+  debt=500 and total=2580. Legacy I1 gives payments=1280, penalties=95.1 and
+  overpayment=375.1; the wrong 300 and 352.9 answers are rejected.
+- Virtual-runtime browser checks passed: 60 main geometry journeys and 54
+  first-screen checks at 320/390/1280; progress/diagnostic reload and read-only
+  report roundtrip; seven additional geometry banks with 54 page states and
+  183 checks including pointer construction; 27 legacy learning screens.
+- The existing 72-PNG artifact matched SHA-256
+  `f84c2c91684436f6a337ed4386f3d9476e5ab2a8521fa50a361451a688a6b89f`.
+  Representative main/additional geometry, constructions, finance tables and
+  scrolled trig screenshots were inspected, as were fresh geometry screenshots.
+- `git diff --check` passed for the prepared patch. The history-preserving
+  integration is separately checked for exact source/blob preservation.
+
+Browser verification uses the existing executable-path option and installed
+Chromium headless shell. No assertion, gate, timeout or TLS setting was relaxed.
+No external model verdict, physical-device check or real-pupil pilot is claimed.
+Updated-head CI and production evidence are recorded in PR397 after this
+non-self-referential report is committed. Passing local checks alone is not
+reported as a deployment. Requery main before the authorized squash merge;
+the named authorized base remains `059ee8c9f5baeb0b333c96d9b8516edb570666b2`.

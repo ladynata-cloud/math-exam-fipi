@@ -23,6 +23,41 @@ const PASSWORD = '0753';
 const PUPIL_LOGIN = 'fixture_free_pupil';
 const PUPIL_PASSWORD = '0381';
 const uuid = () => crypto.randomUUID();
+// A four-digit PIN can occur inside a valid UUID or SHA256 by coincidence.
+// Audit payload data and credential keys while validating (not substring-
+// scanning) the explicitly typed opaque identity/hash metadata.
+const opaqueId = /^(?:[A-Za-z0-9_-]{24}|[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})$/i;
+const identityFields = new Set(['id', 'learnerId', 'teacherId', 'attemptId', 'sourceAttemptId', 'assignmentId', 'batchId', 'commonAttemptId']);
+function assertCredentialFreeReceipt(row, secret) {
+  assert.deepEqual(Object.keys(row).sort(), ['actor_id', 'fingerprint', 'op_id', 'result_json']);
+  assert.match(row.actor_id, opaqueId); assert.match(row.op_id, opaqueId);
+  assert.match(row.fingerprint, /^[a-f0-9]{64}$/);
+  function inspect(value, key = '') {
+    assert.equal(key.includes(secret), false, 'Plaintext credential is absent from operation payload keys');
+    assert.doesNotMatch(key, /password|passphrase|credential|token|csrf|recovery.?code|^pin$/i,
+      'Credential fields must never be stored in an operation receipt');
+    if (value === null || value === undefined) return;
+    if (typeof value === 'string') {
+      if (identityFields.has(key) && opaqueId.test(value)) return;
+      assert.equal(value.includes(secret), false, 'Plaintext credential is absent from operation payload data');
+    } else if (Array.isArray(value)) value.forEach(item => inspect(item));
+    else if (typeof value === 'object') for (const [name, child] of Object.entries(value)) inspect(child, name);
+    else assert.equal(String(value).includes(secret), false, 'Plaintext credential is absent from primitive payload data');
+  }
+  inspect(JSON.parse(row.result_json));
+}
+function verifyReceiptPrivacyGuard() {
+  const row = { actor_id: 'A'.repeat(24), op_id: '03810000-0000-4000-8000-000000000001',
+    fingerprint: '0381' + 'a'.repeat(60), result_json: JSON.stringify({ attempt: { id: '0381' + 'B'.repeat(20) }, notice: 'Safe fixture' }) };
+  assert.equal(JSON.stringify(row).includes(PUPIL_PASSWORD), true, 'The old substring guard falsely rejects valid opaque metadata');
+  assertCredentialFreeReceipt(row, PUPIL_PASSWORD);
+  for (const payload of [{ password: PUPIL_PASSWORD }, { [PUPIL_PASSWORD]: 'value' }, { text: 10381 }, { nested: [{ text: 'PIN: ' + PUPIL_PASSWORD }] },
+    { id: PUPIL_PASSWORD }, { nested: { recoveryCode: 'different-credential-value' } }]) {
+    assert.throws(() => assertCredentialFreeReceipt({ ...row, result_json: JSON.stringify(payload) }, PUPIL_PASSWORD));
+  }
+  assert.throws(() => assertCredentialFreeReceipt({ ...row, fingerprint: PUPIL_PASSWORD }, PUPIL_PASSWORD));
+  assert.throws(() => assertCredentialFreeReceipt({ ...row, op_id: PUPIL_PASSWORD }, PUPIL_PASSWORD));
+}
 const serve = async app => { const server = app.listen(0, '127.0.0.1'); await once(server, 'listening'); return server; };
 const originOf = server => 'http://127.0.0.1:' + server.address().port;
 const stop = async server => { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); };
@@ -90,6 +125,7 @@ async function login(page, origin, login, password) {
 }
 
 async function main() {
+  verifyReceiptPrivacyGuard();
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'learning-free-route-'));
   const store = new LearningStore({ filePath: path.join(directory, 'learning.sqlite'), contracts });
   assert.equal(store.available, true, 'Use the supported Node version with SQLite');
@@ -135,6 +171,7 @@ async function main() {
     const teacherSession = await api(teacher.page, '/session');
     const teacherCookie = (await teacher.context.cookies(origin)).find(cookie => cookie.name === 'mathexam_learning_local');
     assert.equal(teacherCookie.httpOnly, true);
+    const receiptsBeforeIssuance = store.rows('SELECT * FROM operations ORDER BY rowid');
     await teacher.page.locator('[data-nav=students]').click();
     await teacher.page.locator('#add-student').click();
     await teacher.page.locator('#student-form [name=name]').fill('Ученица проверки');
@@ -142,6 +179,8 @@ async function main() {
     await teacher.page.locator('#student-form [name=password]').fill(PUPIL_PASSWORD);
     await teacher.page.locator('#student-form [type=submit]').click();
     await teacher.page.locator('#access-password').waitFor();
+    assert.deepEqual(store.rows('SELECT * FROM operations ORDER BY rowid'), receiptsBeforeIssuance,
+      'Issuing a real synthetic pupil credential must not create or modify any operation receipt');
     assert.equal(await teacher.page.locator('#access-login').inputValue(), PUPIL_LOGIN);
     assert.equal(await teacher.page.locator('#access-password').inputValue(), PUPIL_PASSWORD);
     const accessURL = new URL(await teacher.page.locator('#access-link').inputValue());
@@ -237,7 +276,7 @@ async function main() {
       teacherSession.csrfToken, (await api(student.page, '/session')).csrfToken];
     await assertPrivate(teacher.page, secrets); await assertPrivate(student.page, secrets);
     assert.equal(store.db.prepare('SELECT name FROM sqlite_master WHERE type=?').all('table').length > 0, true);
-    for (const row of store.rows('SELECT * FROM operations')) assert.equal(JSON.stringify(row).includes(PUPIL_PASSWORD), false);
+    for (const row of store.rows('SELECT * FROM operations')) assertCredentialFreeReceipt(row, PUPIL_PASSWORD);
     if (process.env.LEARNING_ARTIFACT_DIR) {
       fs.mkdirSync(process.env.LEARNING_ARTIFACT_DIR, { recursive: true });
       await navigate(student.page, 'route'); await student.page.locator('.route-grid').waitFor();
