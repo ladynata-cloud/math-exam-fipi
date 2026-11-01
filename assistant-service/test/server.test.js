@@ -54,6 +54,30 @@ test('origin and CSRF reject cross-site writes and guessed keys before any work'
   }
   assert.equal(fx.app.store.summary().day.requests, 0);
 });
+test('clarification, correction and reinforcement reuse the private API without external calls', async t => {
+  let calls = 0;
+  const fx = await start(t, { api: true, fetchImpl: async () => { calls++; throw Error('UNEXPECTED_MODEL_CALL'); } });
+  const asset = await fx.client('/learning-aids.js');
+  assert.equal(asset.response.status, 200); assert.match(asset.response.headers.get('content-type'), /javascript/);
+  assert.match(asset.response.headers.get('content-security-policy'), /script-src 'self'/);
+  assert.doesNotMatch(asset.data, /test-only|pilotKey/);
+  const session = await fx.login();
+  for (const [topic, q, attempt, verification, text] of [
+    ['percentages', '15% от', '', 'needs-teacher', /От какого числа/],
+    ['percentages', '15% от 240', '36', 'deterministic', /Твоё число подходит/],
+    ['fractions', '1 1/2 +', '', 'needs-teacher', /второе число/],
+    ['fractions', '1 1/2 + 1/2', '2', 'deterministic', /Твоё число подходит/],
+    ['fractions', '1 1/3 + 1/6', '1/2', 'deterministic', /другое число/],
+    ['fractions', '1 1/3 + 1/6', '1 1/2', 'deterministic', /Твоё число подходит/],
+  ]) {
+    const result = await fx.client('/api/ask', { method: 'POST', ...session,
+      body: question({ topic, question: q, attempt, externalConsent: false }) });
+    assert.equal(result.response.status, 200); assert.equal(result.data.answer.verification, verification);
+    assert.match(result.data.answer.text, text);
+  }
+  assert.equal(calls, 0); assert.equal(fx.app.store.summary().day.api_requests, 0);
+  assert.equal(fx.app.store.summary().day.reserved_micros, 0);
+});
 test('offline end-to-end hints, explicit explanation and feedback never call a model', async t => {
   let calls = 0; const fx = await start(t, { fetchImpl: async () => { calls++; throw new Error('UNEXPECTED'); } }); const session = await fx.login();
   const topics = await fx.client('/api/topics', session); assert.equal(topics.data.topics.length, 7);

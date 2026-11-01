@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { clarificationFor } from './clarification.js';
 import { solveExtendedLinear, solvePercentProblem, checkLinearStep } from './extended-math.js';
 
 // Original bounded knowledge; owner acceptance is a rollout gate, not claimed here.
@@ -485,13 +486,20 @@ export function answerOffline(input, cards = getBuiltinKnowledge()) {
     };
   }
   const card = selected[0]; const theoryOnly = isConceptQuestion(safe);
+  const clarification = !theoryOnly && clarificationFor(safe.topic, safe.question);
+  if (clarification) return {
+    title: 'Уточним условие', text: clarification,
+    steps: ['Допиши условие в поле задачи и снова нажми «Дай первый шаг».'],
+    check: 'Пока условие неполное, ответ не проверяю.',
+    sources, verification: 'needs-teacher', topic: safe.topic, complete: false
+  };
   const complete = safe.mode === 'explain' && theoryOnly && Boolean(card);
   return {
     title: theoryOnly && card ? card.title : 'Для этой задачи нужен отдельный разбор',
     text: safe.topic === 'linear-equations' && /\d\s+\d/.test(safe.question)
       ? 'В уравнении цифры одного числа пиши подряд. Убери пробел внутри числа или допиши пропущенный знак действия. По неоднозначной записи я не проверяю ответ.'
       : theoryOnly && card ? (safe.simpler ? conciseExplanation(card, safe) : card.explanation)
-      : `Без модельного API я проверяю только ограниченные форматы примеров. ${TOPICS.find(t => t.id === safe.topic).sample ? 'Для этой задачи не буду придумывать непроверенный ответ.' : ''}`,
+      : 'Эту запись я пока не умею проверять. Можно выбрать пример записи ниже или открыть материал по теме. Общие правила помогут начать, но не заменяют проверку решения.',
     steps: card ? (complete ? card.steps : [card.steps[Math.min(safe.hintLevel - 1, card.steps.length - 1)]])
       : ['Покажи условие учителю и уточни, какое правило нужно применить.'],
     check: card ? (safe.topic === 'sections' ? 'Без чертежа нельзя выбрать конкретный следующий отрезок. ' : '') + card.check
