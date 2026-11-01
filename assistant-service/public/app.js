@@ -1,4 +1,5 @@
 'use strict';
+import { installStudyTools } from './study-ui.js';
 import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
 
 (() => {
@@ -24,6 +25,8 @@ import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
     csrf: '', status: null, topics: [], busy: false, level: 0,
     signature: '', complete: false, generation: 0, activeRequest: null,
   };
+
+  const study = installStudyTools({ elements, node, busy: () => state.busy, nextHint: () => ask('hint', Math.min(state.level + 1, 5)) });
 
   function message(id, text, isError = false) {
     elements[id].textContent = text;
@@ -86,6 +89,7 @@ import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
   }
 
   function clearAnswers() {
+    study.clear();
     state.level = 0;
     state.signature = '';
     state.complete = false;
@@ -108,6 +112,7 @@ import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
     elements['question'].value = '';
     elements['attempt'].value = '';
     elements['pilot-key'].value = '';
+    study.clearSession();
     elements['external-consent'].checked = false;
     elements['workspace'].hidden = true;
     elements['access-panel'].hidden = false;
@@ -155,6 +160,7 @@ import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
   function updateTopicHelp() {
     elements['topic-help'].replaceChildren();
     appendHelp(elements['topic-help'], elements['topic'].value);
+    study.refresh();
   }
 
   function svgNode(tag, attributes = {}) {
@@ -315,7 +321,7 @@ import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
     card.append(feedback);
   }
 
-  function renderAnswer(answer, mode, level, notice, task) {
+  function renderAnswer(answer, mode, level, notice, task, attempt, submittedAttempt) {
     const card = node('article', 'answer-card');
     card.tabIndex = -1;
     const kicker = node('div', 'answer-kicker');
@@ -354,6 +360,7 @@ import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
     }
     appendSources(card, answer.sources);
     appendFeedback(card, answer.id);
+    study.decorate(card, answer, task, attempt, submittedAttempt);
     elements['answer-list'].append(card);
     elements['empty-state'].hidden = true;
     card.focus({preventScroll: true});
@@ -365,6 +372,7 @@ import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
     const signature = taskSignature();
     const task = { topic: elements['topic'].value, question: elements['question'].value.trim() };
     const newTask = signature !== state.signature;
+    const submittedAttempt = elements['attempt'].value.trim();
     const level = mode === 'explain' ? 5 : newTask ? 1 : requestedLevel;
     if (level < 1 || level > 5) return;
     const generation = state.generation;
@@ -388,13 +396,13 @@ import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
       });
       if (generation !== state.generation) return;
       if (!result.answer || typeof result.answer !== 'object') throw new Error('Missing answer');
-      if (newTask || (mode === 'hint' && requestedLevel === 1)) clearAnswers();
+      if (newTask) clearAnswers();
       state.signature = signature;
       state.level = level;
       state.complete = Boolean(result.answer.complete) || mode === 'explain';
-      renderAnswer(result.answer, mode, level, result.notice, task);
+      renderAnswer(result.answer, mode, level, result.notice, task, submittedAttempt, Boolean(submittedAttempt && mode === 'hint' && requestedLevel === 1));
       elements['answer-actions'].hidden = state.complete;
-      elements['ask-button'].textContent = 'Начать разбор заново';
+      elements['ask-button'].textContent = 'Проверить мой шаг';
       message('answer-message', result.answer.verification === 'needs-teacher' ?
         'Решение пока не проверено. Уточни условие или открой примеры записи и материалы по теме.' :
         state.complete ? 'Разбор открыт. Можно вернуться к любому шагу или начать новую задачу.' :
@@ -460,6 +468,7 @@ import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
       elements['question'].value = topic.sample;
       elements['attempt'].value = '';
       elements['external-consent'].checked = false;
+      study.refresh();
       elements['question'].focus();
       message('page-message', 'Пример готов. Нажми «Дай первый шаг», чтобы начать.');
       elements['ask-button'].textContent = 'Дай первый шаг';

@@ -45,6 +45,8 @@ async function fixture(t, options = {}) {
   const files = {
     '/': ['index.html', 'text/html; charset=utf-8'],
     '/app.js': ['app.js', 'text/javascript; charset=utf-8'],
+    '/study-tools.js': ['study-tools.js', 'text/javascript; charset=utf-8'],
+    '/study-ui.js': ['study-ui.js', 'text/javascript; charset=utf-8'],
     '/learning-aids.js': ['learning-aids.js', 'text/javascript; charset=utf-8'],
     '/style.css': ['style.css', 'text/css; charset=utf-8'],
   };
@@ -198,7 +200,7 @@ test('external consent is explicit and resets on a new question; private key and
   assert.equal(await page.evaluate(() => window.injected), undefined);
   await page.locator('#external-consent').check();
   await page.locator('#ask-button').click();
-  await page.waitForFunction(() => document.querySelector('.verification')?.textContent.includes('Ответ модели'));
+  await page.waitForFunction(() => [...document.querySelectorAll('.verification')].at(-1)?.textContent.includes('Ответ модели'));
   assert.equal(calls.filter(call => call.path === '/api/ask')[1].body.externalConsent, true);
   await page.locator('#question').fill('1/2 + 1/3');
   assert.equal(await page.locator('#external-consent').isChecked(), false);
@@ -279,7 +281,7 @@ test('live isolated service: offline mathematical learner flow on desktop and mo
     assert.equal(await page.locator('.answer-steps li').count(), 1);
     await page.locator('#explain-button').click();
     await page.waitForFunction(() => document.querySelectorAll('.answer-card').length === 2);
-    assert.match(await page.locator('.answer-card').last().textContent(), new RegExp(expected));
+    assert.match(await page.locator('.answer-card').last().evaluate(el => { const copy = el.cloneNode(true); copy.querySelectorAll('math').forEach(m => m.replaceWith(m.getAttribute('data-plain'))); return copy.textContent; }), new RegExp(expected));
     assert.equal(await page.locator('.answer-card').first().textContent(), first);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true);
   }
@@ -346,12 +348,11 @@ test('live numeric notation: mixed operands, equation correction and repeating a
     const response = page.waitForResponse(r => r.url().endsWith('/api/ask') && r.request().method() === 'POST');
     await page.locator('#ask-button').click();
     assert.equal((await response).status(), 200);
-    await page.waitForFunction(() => document.getElementById('workspace').getAttribute('aria-busy') === 'false'
-      && document.querySelectorAll('.answer-card').length === 1);
+    await page.waitForFunction(() => document.getElementById('workspace').getAttribute('aria-busy') === 'false');
     assert.equal(await page.locator('#question').inputValue(), question);
     assert.equal(await page.locator('#attempt').inputValue(), attempt);
-    assert.equal(await page.locator('.answer-steps li').count(), 1);
-    return page.locator('.answer-card').textContent();
+    assert.equal(await page.locator('.answer-card').last().locator('.answer-steps li').count(), 1);
+    return page.locator('.answer-card').last().textContent();
   };
   const mixedHint = await ask('fractions', '1 1/2 + 1/2', '6');
   assert.doesNotMatch(mixedHint, /Твоё число подходит|Ответ:/);
@@ -406,10 +407,9 @@ test('live extended mathematics: intermediate equality and percentage meanings',
     await page.locator('#attempt').fill(attempt);
     const response = page.waitForResponse(r => r.url().endsWith('/api/ask') && r.request().method() === 'POST');
     await page.locator('#ask-button').click(); assert.equal((await response).status(), 200);
-    await page.waitForFunction(() => document.getElementById('workspace').getAttribute('aria-busy') === 'false'
-      && document.querySelectorAll('.answer-card').length === 1);
-    assert.match(await page.locator('.answer-card').textContent(), expected);
-    assert.equal(await page.locator('.answer-steps li').count(), 1);
+    await page.waitForFunction(() => document.getElementById('workspace').getAttribute('aria-busy') === 'false');
+    assert.match(await page.locator('.answer-card').last().textContent(), expected);
+    assert.equal(await page.locator('.answer-card').last().locator('.answer-steps li').count(), 1);
     assert.equal(await page.locator('#attempt').inputValue(), attempt);
   }
   await page.locator('#explain-button').click();
@@ -500,7 +500,7 @@ test('live clarification, original-operand visuals and optional reinforcement pr
   assert.doesNotMatch(await page.locator('.learning-visual').textContent(), /204/);
   await page.locator('#question').fill('Реши задачу про проценты и покупку');
   await send(page.locator('#ask-button'));
-  await page.locator('.answer-card summary').click();
+  await page.locator('.answer-card').getByText('Выбрать пример записи или материал', { exact: true }).click();
   assert.equal(await page.locator('.answer-card .learning-resource').getAttribute('href'), 'https://mathexam.space/trainers/oge-basics/percentages/index.html');
   await page.locator('.answer-card').getByRole('button', { name: '15% от 240', exact: true }).click();
   assert.equal(await page.locator('#question').inputValue(), '15% от 240');
@@ -517,4 +517,72 @@ test('live clarification, original-operand visuals and optional reinforcement pr
   assert.equal(await page.locator('.learning-visual').count(), 0);
   assert.equal(await page.locator('#topic-help').textContent(), '');
   assert.deepEqual(external, []); assert.deepEqual(errors, []);
+});
+
+test('live study tools: topic override, formatted preview, editable lines, two-error hint, print and accessibility', {
+  skip: skip || (!process.env.LIVE_ASSISTANT_URL && 'Set LIVE_ASSISTANT_URL for local-only checks.'),
+}, async t => {
+  const url = new URL(process.env.LIVE_ASSISTANT_URL);
+  assert.ok(['127.0.0.1', 'localhost'].includes(url.hostname));
+  const browser = await chromium.launch({ headless: true,
+    ...(process.env.CHROMIUM_EXECUTABLE_PATH ? { executablePath: process.env.CHROMIUM_EXECUTABLE_PATH } : {}) });
+  const page = await evidencePage(t, browser, { viewport: { width: 390, height: 900 } });
+  await page.addInitScript(() => {
+    window.print = () => { window.printed = document.getElementById('print-selection').textContent; };
+    Object.defineProperty(navigator, 'clipboard', { value: { writeText: async text => { window.copied = text; } } });
+  });
+  await page.goto(url.href); await page.waitForFunction(() => !document.getElementById('access-button').disabled);
+  await page.locator('#access-button').click(); await page.locator('#workspace').waitFor({ state: 'visible' });
+  await page.locator('#question').fill('Вычисли: 1/2 + 1/3'); assert.equal(await page.locator('#topic').inputValue(), 'fractions');
+  await page.locator('#condition-preview summary').click();
+  assert.equal(await page.locator('#condition-preview mfrac').count(), 2);
+  await page.getByRole('button', { name: 'Подтвердить эту запись', exact: true }).click();
+  assert.equal(await page.locator('#question').inputValue(), '1/2 + 1/3');
+  await page.getByRole('button', { name: 'Скопировать условие', exact: true }).click();
+  assert.equal(await page.evaluate(() => window.copied), '1/2 + 1/3');
+  await page.locator('#topic').selectOption('linear-equations'); await page.locator('#question').fill('1/2 + 1/3');
+  assert.equal(await page.locator('#topic').inputValue(), 'linear-equations');
+  await page.locator('#question').fill('3x+5=20');
+  const submit = async attempt => {
+    await page.locator('#attempt').fill(attempt);
+    const response = page.waitForResponse(r => r.url().endsWith('/api/ask'));
+    await page.locator('#ask-button').click(); assert.equal((await response).status(), 200);
+    await page.waitForFunction(() => document.getElementById('workspace').getAttribute('aria-busy') === 'false');
+  };
+  await submit('3x=15\nx=15'); const first = await page.locator('.answer-card').first().textContent();
+  assert.equal(await page.locator('.two-errors').isVisible(), false);
+  await submit('3x=15\nx=4');
+  assert.equal(await page.locator('.answer-card').count(), 2);
+  assert.equal(await page.locator('.answer-card').first().textContent(), first);
+  assert.equal(await page.locator('.two-errors').isVisible(), true);
+  assert.equal(await page.locator('.answer-card').filter({ hasText: 'Полный разбор' }).count(), 0);
+  await page.getByRole('button', { name: 'Попробую сам', exact: true }).click();
+  await page.locator('.answer-card').first().getByRole('button', { name: 'Изменить эту попытку', exact: true }).click();
+  assert.equal(await page.locator('#attempt').inputValue(), '3x=15\nx=15');
+  await submit('3x=15\nx=5'); assert.equal(await page.locator('.answer-card').count(), 3);
+  assert.match(await page.locator('.answer-card').last().textContent(), /сохраняют решения/);
+  await page.locator('.answer-card').last().getByText('Почему?', { exact: true }).click();
+  await page.locator('.answer-card').last().getByRole('button', { name: 'Отметить трудный шаг', exact: true }).click();
+  await page.getByText('Мои трудные шаги в этой вкладке', { exact: true }).click();
+  await page.getByRole('button', { name: /^Шаг 3:/ }).click();
+  assert.equal(await page.locator('.answer-card').last().evaluate(el => el === document.activeElement), true);
+  await page.locator('.answer-card').last().getByRole('button', { name: 'Напечатать этот разбор', exact: true }).click();
+  assert.match(await page.evaluate(() => window.printed), /3x\+5=20/);
+  assert.doesNotMatch(await page.evaluate(() => window.printed), /Удалить мой сеанс|Отметить трудный шаг/);
+  await page.getByText('Удобный вид и навигация', { exact: true }).click();
+  await page.getByLabel('Размер текста', { exact: true }).selectOption('largest');
+  await page.getByRole('button', { name: 'Высокий контраст', exact: true }).click();
+  for (const width of [320, 390, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true);
+  }
+  await page.getByRole('button', { name: 'К условию', exact: true }).click();
+  assert.equal(await page.locator('#question').evaluate(el => el === document.activeElement), true);
+  await page.getByText('Математическая клавиатура', { exact: true }).click();
+  await page.locator('#attempt').focus(); await page.getByRole('button', { name: 'Степень ^', exact: true }).click();
+  assert.match(await page.locator('#attempt').inputValue(), /\^$/);
+  assert.deepEqual(await page.evaluate(() => [localStorage.length, sessionStorage.length]), [0, 0]);
+  await page.locator('#forget-button').click(); await page.locator('#access-panel').waitFor({ state: 'visible' });
+  assert.equal(await page.locator('#print-selection').count(), 0);
+  assert.equal(await page.locator('.answer-card').count(), 0);
 });
