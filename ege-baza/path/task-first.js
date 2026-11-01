@@ -103,6 +103,10 @@
   $('#typeSelect').onchange=event=>context.setHash('lesson='+event.target.value);
   $('#new').onclick=()=>fresh(meta.id);
   if($('#moreGuided'))$('#moreGuided').onclick=()=>{const target=meta.id==='equations'?'equations-linear':meta.id;context.setHash('lesson='+target);fresh(target);host.querySelector('#taskHelp>summary')?.click();host.querySelector('#taskSteps>summary')?.click();};
+  if(root.EgeReferenceUI){
+   const ids=root.EgeReferenceData.sheetsForTask?.(t)||root.EgeReferenceUI.forLesson(meta.id);
+   root.EgeReferenceUI.attach(host.querySelector('.task-first-problem'),{sheetIds:ids,lessonId:meta.id,referenceBase:'../reference/',onReveal:markHelp});
+  }
   save();
  }
  root.PathTaskFirst={mount,valid,question};

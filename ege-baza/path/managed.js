@@ -197,6 +197,13 @@
       document.getElementById('note').placeholder = 'Дано… Нужно… Рассмотрим… Так как… Следовательно…';
     }
     if (photoTask() && document.getElementById('new')) document.getElementById('new').textContent = 'Повторить этот рисунок';
+    if (!meta.grade7 && !meta.pre7 && root.EgeReferenceUI) {
+      const ids = root.EgeReferenceData.sheetsForTask?.(task) || root.EgeReferenceUI.forLesson(meta.id);
+      root.EgeReferenceUI.attach(box.querySelector('.panel') || box, {
+        sheetIds: ids, referenceBase: '../reference/',
+        onReveal(id) { if (readonly || applying) return; work.help = true; emit('hint', { level: 1, reference: id }); }
+      });
+    }
     showFeedback(state.view.feedback, state.view.feedbackKind); supportDetails(); setReadOnly(readonly);
   }
   if (!root.MathExamLearning || typeof root.MathExamLearning.register !== 'function') {
