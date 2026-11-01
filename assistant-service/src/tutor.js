@@ -48,11 +48,33 @@ function parseDecimal(text) {
   return rat(BigInt(whole + fractional) * (negative ? -1n : 1n), 10n ** BigInt(fractional.length));
 }
 
-function parseAttempt(attempt) {
-  if (typeof attempt !== 'string') return null;
-  const text = normalized(attempt).replace(/^[xх]\s*=\s*/, '').replace(/\s+/g, '');
-  const fraction = /^([+-]?\d{1,12})\/([1-9]\d{0,11})$/.exec(text);
-  return fraction ? rat(BigInt(fraction[1]), BigInt(fraction[2])) : parseDecimal(text);
+// Spaces separate the whole and fractional parts of a mixed number. Removing
+// them first turns 1 1/2 into 11/2 and can incorrectly praise a learner's answer.
+// Keep one bounded grammar for the standalone and cabinet feedback paths.
+export function parseNumericAttempt(attempt) {
+  if (typeof attempt !== 'string' || attempt.length > 400) return null;
+  const text = normalized(attempt)
+    .replace(/^ответ[ \t\u00a0\u202f]*:[ \t\u00a0\u202f]*/, '')
+    .replace(/^[xх][ \t\u00a0\u202f]*=[ \t\u00a0\u202f]*/, '');
+  const space = '[ \\t\\u00a0\\u202f]';
+  const digits = '\\d{1,12}';
+  const mixed = new RegExp(`^([+-]?)${space}*(${digits})${space}+(${digits})${space}*/${space}*(${digits})$`).exec(text);
+  if (mixed) {
+    const [whole, numerator, denominator] = mixed.slice(2).map(BigInt);
+    // A signed or improper fractional part is ambiguous in school mixed
+    // notation. Ask for a different form instead of choosing an interpretation.
+    if (denominator === 0n || numerator >= denominator) return null;
+    return rat((whole * denominator + numerator) * (mixed[1] === '-' ? -1n : 1n), denominator);
+  }
+  const fraction = new RegExp(`^([+-]?)${space}*(${digits})${space}*/${space}*([+-]?)${space}*(${digits})$`).exec(text);
+  if (fraction) {
+    const denominator = BigInt(fraction[4]);
+    if (denominator === 0n) return null;
+    return rat(BigInt(fraction[2]) * (fraction[1] === '-' ? -1n : 1n),
+      denominator * (fraction[3] === '-' ? -1n : 1n));
+  }
+  const decimal = new RegExp(`^([+-]?)${space}*(${digits}(?:[.,]\\d{1,6})?)$`).exec(text);
+  return decimal ? parseDecimal(decimal[1] + decimal[2]) : null;
 }
 
 export function mistakeFeedback(value, expected, mistakes = [], simpler = false) {
@@ -65,9 +87,10 @@ export function mistakeFeedback(value, expected, mistakes = [], simpler = false)
 }
 
 function attemptMessage(attempt, solved, simpler) {
-  const value = parseAttempt(attempt);
+  const value = parseNumericAttempt(attempt);
   const { expected, mistakes } = solved;
-  if (!value || !expected) return '';
+  if (!attempt.trim() || !expected) return '';
+  if (!value) return 'Такую запись ответа здесь не проверяю. Введи число, обыкновенную дробь или смешанное число. Целую и дробную части раздели пробелом.';
   return value.n === expected.n && value.d === expected.d
     ? 'Твоё число подходит. Теперь проверь его подстановкой или обратным действием.'
     : mistakeFeedback(value, expected, mistakes, simpler)

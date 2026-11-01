@@ -1,6 +1,6 @@
 import { exactKeys, requireValue } from './errors.js';
 import { containsSensitiveText } from './privacy.js';
-import { solveCommon, mistakeFeedback } from './tutor.js';
+import { solveCommon, mistakeFeedback, parseNumericAttempt } from './tutor.js';
 import { COURSE_PROFILE, COURSE_TOPIC, ICHENSKAYA_TOPIC, prepareCourseQuestion, answerCourseOffline } from './course-context.js';
 
 // Original topic notes for bounded cabinet profiles. No pupil identity,
@@ -212,16 +212,10 @@ function decimalText(value, fixedPlaces) {
   }
   return rem ? `${fraction(value)} (точное значение; полная десятичная запись здесь не показана)` : `${sign}${whole},${digits.join('')}`;
 }
-function parsedAttempt(value) {
-  const text = normalize(value).replace(/\s+/g, '').replace(/^ответ:/, '');
-  const f = /^([+-]?\d{1,6})\/([+-]?\d{1,6})$/.exec(text);
-  if (f && BigInt(f[2]) !== 0n) return rat(BigInt(f[1]), BigInt(f[2]));
-  return decimal(text);
-}
 function feedback(attempt, expected, mistakes, simpler) {
   if (!attempt || !expected) return '';
-  const parsed = parsedAttempt(attempt);
-  if (!parsed) return 'Такую запись ответа здесь не проверяю. Можно ввести число или обыкновенную дробь.';
+  const parsed = parseNumericAttempt(attempt);
+  if (!parsed) return 'Такую запись ответа здесь не проверяю. Введи число, обыкновенную дробь или смешанное число. Целую и дробную части раздели пробелом.';
   return parsed.n === expected.n && parsed.d === expected.d
     ? 'Твоё число подходит. Проверь ещё способ решения.'
     : mistakeFeedback(parsed, expected, mistakes, simpler) || 'Получилось другое число. Проверь действие по подсказке.';

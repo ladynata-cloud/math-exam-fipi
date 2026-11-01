@@ -38,6 +38,12 @@ says the external model is not connected. Checked calculation, general reviewed
 guidance, insufficient conditions and unverified model answers have distinct
 labels. Original explanations are not copied textbook solutions.
 
+Numeric answer feedback uses the [shared answer grammar](README.md#try-the-learner-flow).
+For example, `1 1/2`, `3/2` and `1,5` are equivalent; `1 1/2` is never read as
+`11/2`. Unrecognized spacing or mixed-number notation receives an explicit
+cannot-check message rather than a correct-answer label. Source-only geometry
+and whole proof/step verification are unchanged.
+
 Each request gives one next hint, simpler wording, or a full explanation chosen
 by the pupil. Earlier steps stay visible in the current view. Feedback categories
 are helpful, still difficult and possibly incorrect. The last two request simpler

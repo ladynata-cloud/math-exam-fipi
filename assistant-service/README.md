@@ -46,6 +46,16 @@ Choose a topic, use its example, and request the first step. Further hints appea
 one at a time while earlier steps remain visible. “Показать весь разбор” explicitly
 opens the complete explanation. A numeric attempt can be compared with the exact
 answer for supported calculations; this is not a general proof checker.
+Standalone and cabinet numeric feedback share the same bounded answer grammar:
+integers, decimals (comma or dot), fractions such as `3/2`, and mixed numbers
+such as `1 1/2`. A minus before a mixed number applies to the whole value:
+`-1 1/2 = -3/2`. Spaces may surround a slash or sign; ordinary/nonbreaking spaces
+separate the whole and proper fractional parts. Digit groups are never joined:
+`1 2`, `1 000`, `1, 5`, and an ambiguous `1 3/2` are not checked as numbers.
+Use `1000` for a whole integer and `5/2` for an improper fraction. Optional
+`Ответ:` and `x =`/`х =` prefixes are accepted. Each integer component has at
+most 12 digits and a decimal at most 6 fractional digits; existing request and
+privacy limits still apply. This extends answer notation, not question formats.
 “Объясни проще” or an incorrect-answer report adjusts subsequent explanations in
 the current session. “Удалить мой сеанс” clears the session and visible work.
 
