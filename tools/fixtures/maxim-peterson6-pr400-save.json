@@ -1,0 +1,470 @@
+{
+  "synthetic": true,
+  "sourceCommit": "5bbfe3a4615b6410dacf7f1344aa57b909a986ef",
+  "sourceHashes": {
+    "html": "92839b918142595e917e6896f49e59cf550bd3d46bc2bf9a1df6ca32177b9c30",
+    "equations": "7f7478d44fce33e832e21e5cae8cb09abf00a82f2807e14448861363978e852c"
+  },
+  "sourceIdentities": [
+    {
+      "module": "river",
+      "exampleId": "300",
+      "conditionKeySHA256": "b03f4947f112bebe2070f8d407a79102644dce50d177db16cb5a118d702cdf05"
+    },
+    {
+      "module": "percent-tasks",
+      "exampleId": "361-1",
+      "conditionKeySHA256": "5b85fce16aa08459a7a0121ff5c1664074a97066d98122ee388dc15443ce431a"
+    },
+    {
+      "module": "percent-tasks",
+      "exampleId": "369-1",
+      "conditionKeySHA256": "6a4bc665d54de275f2f4368e9a0c5d50d7a79249d5dae0248357a3cce66d7d3b"
+    },
+    {
+      "module": "percent-tasks",
+      "exampleId": "369-2",
+      "conditionKeySHA256": "1997dd4cfd0edbe27f41e49a9bcecbdc7895c84952214a2fbd526d58ec66ffae"
+    },
+    {
+      "module": "percent-tasks",
+      "exampleId": "406-1",
+      "conditionKeySHA256": "d2ec5b34d569bdf22571a368b0b69f4475bfb73cb12f3b01c7118aa63fe88051"
+    },
+    {
+      "module": "meeting",
+      "exampleId": "303",
+      "conditionKeySHA256": "598622e56d69b1633f84d84b9b5fcd8aded7a2d0b729a0253061f379abd9d28c"
+    },
+    {
+      "module": "chase",
+      "exampleId": "304",
+      "conditionKeySHA256": "a18f113279c953495e0855125dca4b2d810ea8b07d10412e94d8f7438897af45"
+    },
+    {
+      "module": "ratio",
+      "exampleId": "303",
+      "conditionKeySHA256": "598622e56d69b1633f84d84b9b5fcd8aded7a2d0b729a0253061f379abd9d28c"
+    },
+    {
+      "module": "ratio",
+      "exampleId": "305",
+      "conditionKeySHA256": "bf648bbff493a117608d67614152c4e98ef606afe1e332716928f3fb2a50cc22"
+    },
+    {
+      "module": "percent-number",
+      "exampleId": "340-1-0",
+      "conditionKeySHA256": "49a20022288acc9a7e43ed280263172bec97fe1a20d1a278a8b807d2ad524666"
+    },
+    {
+      "module": "percent-number",
+      "exampleId": "340-1-1",
+      "conditionKeySHA256": "676c9f2ff836e4018b2fef2e4fe8e314fef7fb62b8a79c224e37862951583927"
+    },
+    {
+      "module": "percent-number",
+      "exampleId": "340-1-2",
+      "conditionKeySHA256": "d81690d87aef372e7ed5e594b6196529addc5830de0d3601829863912785f7f2"
+    },
+    {
+      "module": "percent-number",
+      "exampleId": "340-1-3",
+      "conditionKeySHA256": "c61c2d129ec657e1a8f9eb8c9bc79214aedac6eedd1e284e0a02ab458deecc0d"
+    },
+    {
+      "module": "percent-number",
+      "exampleId": "340-1-4",
+      "conditionKeySHA256": "dfc33a3058cc015a2d850e948403b2da4de525350afd47bb6e85ecdbe0c3a214"
+    },
+    {
+      "module": "percent-number",
+      "exampleId": "340-1-5",
+      "conditionKeySHA256": "7f50874f6767a60cc1e38a9b66f3c796ec4cef783c89139615ca97ae8a62b1ff"
+    },
+    {
+      "module": "number-percent",
+      "exampleId": "340-2-0",
+      "conditionKeySHA256": "ebf0bbbf6828aee2b99b5e48bb55fada99e9880a0e597d437bf3a61d3bed2e59"
+    },
+    {
+      "module": "number-percent",
+      "exampleId": "340-2-1",
+      "conditionKeySHA256": "49b150d5eb6a5e386cde1b9ffc3fe4398c872f1cca1d0d0240491145111ac105"
+    },
+    {
+      "module": "number-percent",
+      "exampleId": "340-2-2",
+      "conditionKeySHA256": "9da421485ff1d5de03b8b934f873a2b945570cabb5ffa7c7a21cfe2a4d95a3f2"
+    },
+    {
+      "module": "number-percent",
+      "exampleId": "340-2-3",
+      "conditionKeySHA256": "698a4c2a48d0af64dd6d6323dc9a7d133a01f5394e0a9195eebe216b27c424c1"
+    },
+    {
+      "module": "number-percent",
+      "exampleId": "340-2-4",
+      "conditionKeySHA256": "6857b7e4954130c44fd6068a67ebec40469a1807cd628cd025ac52588341661b"
+    },
+    {
+      "module": "number-percent",
+      "exampleId": "340-2-5",
+      "conditionKeySHA256": "ce65f26fad5e26e39b0aaa735212bf7a32fd15f6357d510e38cef4c4341aaaf0"
+    },
+    {
+      "module": "number-percent",
+      "exampleId": "340-2-6",
+      "conditionKeySHA256": "1f73a5e68e10196f79c1e192dd7f7d91ad448be40527748d2a7710561f8ddaff"
+    },
+    {
+      "module": "river-units",
+      "exampleId": "223-1",
+      "conditionKeySHA256": "e56410e755e8c8448ddf98da649616b4880a79e0fd92f04de54cbfdfc4ae43e3"
+    },
+    {
+      "module": "river-units",
+      "exampleId": "223-2",
+      "conditionKeySHA256": "d772b53587701d4338a0e044ff7a74ecd8ed2a9b7638337b6155df518edd3096"
+    },
+    {
+      "module": "river-percent",
+      "exampleId": "226",
+      "conditionKeySHA256": "f01708713e86a501ccd732cae04150ccd5546e375083dbf9bb7d083f8b1a4c25"
+    },
+    {
+      "module": "raft-percent",
+      "exampleId": "245",
+      "conditionKeySHA256": "7c1ded57e30d38c1b997bfeef741719d7d716c1f4a0ba0e639d4c9df0d02a509"
+    },
+    {
+      "module": "joint-work",
+      "exampleId": "306",
+      "conditionKeySHA256": "26d7626be25d0f997451af728030bc3634028ae660f6a5dd859b968fa87087d0"
+    }
+  ],
+  "current": {
+    "format": "maxim-peterson6-progress",
+    "version": 2,
+    "createdAt": "2026-11-02T00:00:00.000Z",
+    "updatedAt": "2026-11-02T00:00:11.000Z",
+    "lastModule": "ratio",
+    "metrics": {
+      "schemes": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      },
+      "time": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      },
+      "meeting": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": "2026-11-02T00:00:07.000Z"
+      },
+      "chase": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      },
+      "ratio": {
+        "errors": 0,
+        "hints": 1,
+        "lastDate": "2026-11-02T00:00:11.000Z"
+      },
+      "river": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      },
+      "percent-number": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      },
+      "number-percent": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      },
+      "percent-tasks": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      },
+      "river-units": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      },
+      "river-percent": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      },
+      "raft-percent": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      },
+      "joint-work": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      }
+    },
+    "solutions": [
+      {
+        "key": "[\"equation-method\",2,\"Два поезда выехали одновременно навстречу друг другу из двух городов, расстояние между которыми равно 385 км. Скорость первого поезда в 1,2 раза больше скорости второго. Какое расстояние прошёл первый поезд до встречи?\",[[\"Что обозначим буквой x?\",\"v0\"],[\"x > 0. Как выразить скорость первого поезда?\",\"v0\"],[\"Скорость сближения — x + 1,2x. Введи коэффициент перед x.\",2.2],[\"Как записать связь величин через x?\",\"v0\"],[\"Первый путь: 1,2x · {{frac:175:x}}. Сколько это километров?\",210],[\"Какая проверка подтверждает ответ по условию?\",\"v0\"]]]",
+        "module": "meeting",
+        "level": "standard",
+        "seed": 17,
+        "exampleId": "303",
+        "methodVersion": 2,
+        "startedAt": "2026-11-02T00:00:01.000Z",
+        "solvedAt": "2026-11-02T00:00:07.000Z",
+        "errors": 0,
+        "hints": 0
+      }
+    ],
+    "assistance": [
+      {
+        "key": "[\"equation-method\",2,\"Из одного города одновременно в противоположных направлениях выехали велосипедист и мотоциклист. Скорость велосипедиста в 3 раза меньше скорости мотоциклиста. С какими скоростями они едут, если через 1 ч 20 мин расстояние между ними стало 96 км?\",[[\"Переведи время движения в часы.\",1.3333333333],[\"Что обозначим буквой x?\",\"v0\"],[\"Как выразить скорость мотоциклиста?\",\"v0\"],[\"Как записать связь величин через x?\",\"v0\"],[\"Приведи подобные и умножь на время. Какой коэффициент перед x?\",5.3333333333],[\"Найди x. Введи значение в км/ч.\",18],[\"Найди скорость мотоциклиста.\",54],[\"Какая проверка подтверждает ответ по условию?\",\"v0\"]]]",
+        "module": "ratio",
+        "level": "standard",
+        "seed": 29,
+        "exampleId": "305",
+        "methodVersion": 2,
+        "errors": 0,
+        "hints": 1
+      }
+    ],
+    "sessions": {
+      "meeting": {
+        "module": "meeting",
+        "level": "standard",
+        "seed": 17,
+        "exampleId": "303",
+        "methodVersion": 2,
+        "index": 6,
+        "answers": [
+          "v0",
+          "v0",
+          "2,2",
+          "v0",
+          "210",
+          "v0"
+        ],
+        "errors": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hintUsed": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "hintVisible": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "feedback": "",
+        "createdAt": "2026-11-02T00:00:01.000Z",
+        "updatedAt": "2026-11-02T00:00:07.000Z",
+        "completedAt": "2026-11-02T00:00:07.000Z",
+        "completionKind": "new"
+      },
+      "ratio": {
+        "module": "ratio",
+        "level": "standard",
+        "seed": 29,
+        "exampleId": "305",
+        "methodVersion": 2,
+        "index": 2,
+        "answers": [
+          "1 1/3",
+          "v0",
+          "v0",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "errors": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hintUsed": [
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "hintVisible": [
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "feedback": "",
+        "createdAt": "2026-11-02T00:00:08.000Z",
+        "updatedAt": "2026-11-02T00:00:11.000Z",
+        "completedAt": null,
+        "completionKind": null
+      }
+    },
+    "archivedSessions": []
+  },
+  "legacy": {
+    "format": "maxim-peterson6-progress",
+    "version": 1,
+    "createdAt": "2026-11-02T00:00:12.000Z",
+    "updatedAt": "2026-11-02T00:00:15.000Z",
+    "lastModule": "ratio",
+    "metrics": {
+      "schemes": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      },
+      "time": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      },
+      "meeting": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      },
+      "chase": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      },
+      "ratio": {
+        "errors": 0,
+        "hints": 1,
+        "lastDate": "2026-11-02T00:00:15.000Z"
+      },
+      "river": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      },
+      "percent-number": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      },
+      "number-percent": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      },
+      "percent-tasks": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      },
+      "river-units": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      },
+      "river-percent": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      },
+      "raft-percent": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      },
+      "joint-work": {
+        "errors": 0,
+        "hints": 0,
+        "lastDate": null
+      }
+    },
+    "solutions": [],
+    "assistance": [
+      {
+        "key": "[\"ratio\",\"Два поезда выехали одновременно навстречу друг другу из двух городов, расстояние между которыми равно 385 км. Скорость первого поезда в 1,2 раза больше скорости второго. Какое расстояние прошёл первый поезд до встречи?\",[[\"Одинаковое ли время были в пути поезда?\",\"yes\"],[\"Сколько всего частей приходится на 385 км?\",2.2],[\"Какой путь прошёл второй поезд?\",175],[\"Какой путь прошёл первый поезд?\",210]]]",
+        "module": "ratio",
+        "level": "standard",
+        "seed": 7,
+        "exampleId": "303",
+        "errors": 0,
+        "hints": 1
+      }
+    ],
+    "sessions": {
+      "ratio": {
+        "module": "ratio",
+        "level": "standard",
+        "seed": 7,
+        "exampleId": "303",
+        "index": 1,
+        "answers": [
+          "yes",
+          "2,",
+          "",
+          ""
+        ],
+        "errors": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "hintUsed": [
+          false,
+          true,
+          false,
+          false
+        ],
+        "hintVisible": [
+          false,
+          true,
+          false,
+          false
+        ],
+        "feedback": "",
+        "createdAt": "2026-11-02T00:00:13.000Z",
+        "updatedAt": "2026-11-02T00:00:15.000Z",
+        "completedAt": null,
+        "completionKind": null
+      }
+    }
+  }
+}

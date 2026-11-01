@@ -1,6 +1,50 @@
 # MathExam project status
 
-## Prepared for review: Peterson 6 equations and unknowns, 2026-11-02
+## Prepared correction: Peterson 6 exact exercise entry, 2026-11-02
+
+- [Task](tasks/PETERSON6_EXACT_EXERCISE_ENTRY.md), MEDIUM; bounded continuation
+  after the published equation-method trainer. Branch
+  `fix/peterson6-exact-exercises-20261102`, implementation base
+  `5bbfe3a4615b6410dacf7f1344aa57b909a986ef`.
+- Course number search now points 303 and 305 to their exact existing source
+  exercises. Public links open a separate tab; the cabinet follows the link
+  inside its existing public frame with its original sandbox permissions.
+- Exact routes resume saved work, including archived legacy drafts. The
+  smaller-speed question is clarified through presentation metadata; stored
+  labels, condition keys, mathematical answers and storage formats are unchanged.
+- Actual cabinet browser testing also exposed blocked native form submission.
+  Search and existing answer forms now call their local checks from click/Enter,
+  retaining the cabinet sandbox and the original validation logic.
+- [Verification](reports/PETERSON6_EXACT_EXERCISE_ENTRY.md) records the executed
+  checks, frozen published-save evidence and focused internal review. The
+  Draft PR records its exact head and CI. PR400's release permission and review
+  exception do not authorize this correction's merge or deployment.
+
+## Published: Peterson 6 equations and unknowns, PR400, 2026-11-02
+
+- [PR400](https://github.com/ladynata-cloud/math-exam-fipi/pull/400) was
+  squash-merged as `5bbfe3a4615b6410dacf7f1344aa57b909a986ef`, sole parent
+  `059ee8c9f5baeb0b333c96d9b8516edb570666b2`, from reviewed head
+  `375637628af67c88c1801926dbdcf5bda90ffca5`. Its 39-path delta, touched blobs,
+  full reviewed tree and stable patch identity were verified.
+- All 22 head workflows and all 16 production workflows succeeded.
+  [Pages41344202489](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41344202489)
+  delivered that production commit. All 19 checked public URLs matched the
+  released bytes, and the active backend returned the expected 26-entry
+  registry with Peterson content version 1.1.0.
+- Public live UI checks covered the course, line, a synthetic five-step
+  board-wrapper journey and 320px line layout. A later read-only cabinet asset
+  check matched its public index, app and attachment scripts. No real pupil
+  account or shared classroom was used.
+- The owner explicitly authorized publication and waived unavailable external
+  review for PR400 only. The complete release evidence is retained in that PR.
+  This status reconciliation belongs to the next bounded correction, not a
+  separate status-only PR.
+
+### Retained PR400 preparation record (historical)
+
+The following preparation statements describe the earlier checkpoint. The
+published release record above supersedes their pending release statements.
 
 - [Task](tasks/PETERSON6_EQUATION_METHOD.md), HIGH; explicit current-task START.
   Branch `task/peterson6-equation-method-20261102`, original implementation base

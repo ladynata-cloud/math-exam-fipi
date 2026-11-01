@@ -27,7 +27,7 @@
 <noscript><div class="nojs">Чтобы тренажёры проверяли ответы и создавали новые примеры, включи JavaScript в браузере. Печатные шпаргалки и домашняя работа доступны отдельно.</div></noscript>
 <footer class="footer"><p><strong>Тренажёры К УЧЕБНИКУ Дорофеева и Петерсон · 6 класс.</strong><br>Авторские задания для закрепления тем и примеры из присланных страниц учебника. Источник каждого примера подписан. Связь с номерами учебника указана в темах.</p><p><a href="https://so.11klasov.net/5416-matematika-6-klass-uchebnik-v-3-chastjah-dorofeev-gv-peterson-lg.html" target="_blank" rel="noopener noreferrer">Учебник, указанный в задании</a></p><p id="storage-note">Счётчик решённых примеров сохраняется только в этом браузере.</p><h2 style="font-size:25px;margin-top:25px">Шпаргалки и задания для печати</h2><div id="pdf-downloads" class="downloads"><a href="Peterson6_Procenty_340.pdf" download>Маленькие примеры на проценты · №340 · 2 листа</a><a href="Maxim_Peterson6_Novye_shpargalki.pdf" download>Движение, река, проценты и трубы · 7 листов</a><a href="Peterson6_Shpargalki.pdf" download>Основные шпаргалки · 7 листов</a><a href="Peterson6_Domashnyaya_rabota.pdf" download>Домашняя работа · 8 листов</a></div></footer>
 </div>
-<script src="equation-method.js?v=20261102"></script>
+<script src="equation-method.js?v=20261102-exact-entry"></script>
 <script>
 (function(){
 'use strict';
@@ -293,6 +293,7 @@ function freshProgress(now,version=2){const date=iso(now),metrics={};MODULES.for
 function problemFor(session){const revision=methodVersion(session);return session.exampleId?textbookProblem(session.module,session.exampleId,revision):generate(session.module,session.level,seededRandom(session.seed),revision);}
 function conditionKey(problem){const original=[problem.module,problem.prompt,problem.steps.map(s=>[s.label,s.expected])];return JSON.stringify(problem.method==='equation'?['equation-method',2,problem.prompt,problem.steps.map(s=>[s.label,s.expected])]:original);}
 function isWordProblem(p){return EquationMethod.wordModules.includes(p.module)&&!(p.module==='time'&&['minutes','hours'].includes(p.type));}
+function stepLabel(step){return step.displayLabel||step.label;}
 function methodLabel(record){const p=problemFor(record);return p.method==='equation'?'Через неизвестную':isWordProblem(p)?'Ранее: по действиям':'Подготовка';}
 function touch(progress,module,now){const date=iso(now);progress.updatedAt=date;progress.metrics[module].lastDate=date;progress.lastModule=module;return date;}
 function upgradeProgress(progress){if(progress.version===1){progress.version=2;progress.archivedSessions=[];}}
@@ -416,7 +417,7 @@ function validateProgress(input){
 function dateText(value,utc=false){if(!value)return '—';const d=new Date(value);return utc?d.toLocaleString('ru-RU',{timeZone:'UTC'})+' UTC':d.toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});}
 function reportHTML(progress,now){
  const summary=overallStats(progress),created=iso(now),rows=MODULES.map((m,i)=>{const q=moduleStats(progress,m.id),s=progress.sessions[m.id],p=s?problemFor(s):null;return '<tr><td>'+(i+1)+'. '+e(m.title)+'</td><td>'+e(q.status)+'</td><td>'+q.solved+'</td><td>'+q.independent+'</td><td>'+q.assisted+'</td><td>'+q.errors+'</td><td>'+q.hints+'</td><td>'+e(dateText(q.lastDate,true))+'</td><td>'+(s&&s.index<p.steps.length?s.index+' из '+p.steps.length:'—')+'</td></tr>';}).join('');
- const history=[...progress.solutions].sort((a,b)=>b.solvedAt.localeCompare(a.solvedAt)).map(r=>{const p=problemFor(r),m=MODULES.find(x=>x.id===r.module);return '<article><h3>'+e(m.title)+' · '+e(dateText(r.solvedAt,true))+'</h3><p>'+e(methodLabel(r))+(r.exposed?' · условие разбиралось ранее':'')+'</p><p>'+e(p.prompt)+'</p><p><strong>'+(!r.errors&&!r.hints&&!r.exposed?'Самостоятельно':'С помощью')+'</strong> · ошибок: '+r.errors+' · шагов с подсказкой: '+r.hints+'. '+e(r.exampleId?p.source:'Авторский аналог к теме учебника')+'</p><ol>'+p.steps.map(s=>'<li>'+rich(s.label)+' <strong>'+rich(s.kind==='choice'?s.options.find(x=>x[0]===s.expected)[1]:(s.displayAnswer===undefined?fmt(s.expected):s.displayAnswer)+(s.unit?' '+s.unit:''))+'</strong><br>'+rich(s.explanation)+'</li>').join('')+'</ol></article>';}).join('');
+ const history=[...progress.solutions].sort((a,b)=>b.solvedAt.localeCompare(a.solvedAt)).map(r=>{const p=problemFor(r),m=MODULES.find(x=>x.id===r.module);return '<article><h3>'+e(m.title)+' · '+e(dateText(r.solvedAt,true))+'</h3><p>'+e(methodLabel(r))+(r.exposed?' · условие разбиралось ранее':'')+'</p><p>'+e(p.prompt)+'</p><p><strong>'+(!r.errors&&!r.hints&&!r.exposed?'Самостоятельно':'С помощью')+'</strong> · ошибок: '+r.errors+' · шагов с подсказкой: '+r.hints+'. '+e(r.exampleId?p.source:'Авторский аналог к теме учебника')+'</p><ol>'+p.steps.map(s=>'<li>'+rich(stepLabel(s))+' <strong>'+rich(s.kind==='choice'?s.options.find(x=>x[0]===s.expected)[1]:(s.displayAnswer===undefined?fmt(s.expected):s.displayAnswer)+(s.unit?' '+s.unit:''))+'</strong><br>'+rich(s.explanation)+'</li>').join('')+'</ol></article>';}).join('');
  return '<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Максим · отчёт по математике</title><style>body{font:18px/1.55 system-ui,sans-serif;color:#19352d;max-width:1200px;margin:35px auto;padding:0 20px}h1{line-height:1.2}table{border-collapse:collapse;width:100%;font-size:16px}th,td{border:1px solid #abc3b2;padding:10px;text-align:left;vertical-align:top}th{background:#eaf5ed}article{margin:25px 0;padding:20px;border:1px solid #abc3b2;border-radius:14px;break-inside:avoid}li{margin:12px 0}.equation-fraction{display:inline-flex;vertical-align:middle;flex-direction:column;align-items:stretch;text-align:center;line-height:1.12;margin:0 .12em}.equation-fraction>span{padding:.08em .18em}.equation-fraction>span:first-child{border-bottom:1.5px solid currentColor}.scroll{overflow:auto}@media print{body{font-size:12px;max-width:none;margin:0}table{font-size:10px}article{break-inside:avoid}}</style></head><body><h1>Максим · маршрут по математике</h1><p>Отчёт сформирован '+e(dateText(created,true))+'.</p><p><strong>Готово тем: '+summary.ready+' из '+summary.total+'. Решено разных заданий: '+summary.solved+'. Самостоятельно: '+summary.independent+'. С помощью: '+summary.assisted+'.</strong></p><p>Тема готова после 5 разных решений, из них не менее 3 без ошибок и подсказок. Повтор одного и того же условия не добавляет решение. В текстовых темах готовность учитывает решения через неизвестную. Прежние работы сохранены в истории. Знакомое условие после смены способа не считается новой самостоятельной проверкой. Помощь и ошибки в более ранних незавершённых попытках того же условия тоже учитываются. Ошибки и подсказки учитываются во всех попытках, включая незавершённые и повторные. Подсказка считается один раз на шаг; автоматическая подсказка после двух ошибок тоже учитывается.</p><p>Это выгрузка прогресса из одного браузера. Ничего не отправляется автоматически. Даты в отчёте указаны в UTC.</p><div class="scroll"><table><thead><tr><th>Тема</th><th>Статус</th><th>Разных решений</th><th>Самостоятельно</th><th>С помощью</th><th>Ошибок</th><th>Подсказок</th><th>Последнее действие</th><th>Текущий шаг</th></tr></thead><tbody>'+rows+'</tbody></table></div><h2>История разных решённых заданий</h2>'+(history||'<p>Решений пока нет.</p>')+'<\/body><\/html>';
 }
 
@@ -436,14 +437,15 @@ if(typeof document==='undefined')return;
 const app=document.getElementById('app');let state=null;let saved=freshProgress();let storageAvailable=true;let storageError='';
 const taskHelp=(window.self===window.top||new URLSearchParams(location.search).get('cabinet')==='peterson-helper')?window.PetersonTaskHelp?.mount({getTask:assistantTask}):null;
 function assistantTask(){
- if(!state)return null;let routeId;try{routeId=decodeURIComponent(location.hash.slice(1)).split('?')[0];}catch(_){return null;}
- if(routeId!==state.module)return null;
+ if(!state)return null;const routeInfo=parseLineRoute(location.hash);
+ if(!routeInfo||routeInfo.module!==state.module||routeInfo.exampleId&&routeInfo.exampleId!==state.exampleId)return null;
  const selected=state,p=problemFor(selected),id=conditionKey(p),module=MODULES.find(m=>m.id===selected.module);
  return {id,title:module.title,condition:p.prompt,stepIndex:selected.index,complete:selected.index>=p.steps.length,
-  steps:p.steps.map(step=>({title:step.label,hint:step.hint,explanation:step.explanation,
+  steps:p.steps.map(step=>({title:stepLabel(step),hint:step.hint,explanation:step.explanation,
    answer:step.kind==='choice'?step.options.find(option=>option[0]===step.expected)[1]:(step.displayAnswer===undefined?fmt(step.expected):step.displayAnswer)+(step.unit?' '+step.unit:'')})),
   onHelp(){
-   if(state!==selected||decodeURIComponent(location.hash.slice(1)).split('?')[0]!==selected.module)return false;
+   const currentRoute=parseLineRoute(location.hash);
+   if(state!==selected||!currentRoute||currentRoute.module!==selected.module||currentRoute.exampleId&&currentRoute.exampleId!==selected.exampleId)return false;
    if(selected.index<p.steps.length){const i=selected.index,visible=selected.hintVisible[i];countHint(saved,selected,i);selected.hintVisible[i]=visible;save();renderSteps(false);}
    return true;
   }};
@@ -474,9 +476,24 @@ async function importBackup(event){
 }
 function startNew(id,level,exampleId=null){
  let seed=Math.floor(Math.random()*4294967296);if(!exampleId){const previous=saved.sessions[id]?conditionKey(problemFor(saved.sessions[id])):null;for(let i=0;i<60;i++){const candidate=generate(id,level,seededRandom(seed)),key=conditionKey(candidate);if(key!==previous&&!saved.solutions.some(x=>problemFor(x).prompt===candidate.prompt)&&!saved.assistance.some(x=>problemFor(x).prompt===candidate.prompt))break;seed=Math.floor(Math.random()*4294967296);}}
- state=beginSession(saved,id,level,{seed,exampleId});save();renderExercise();
+ state=beginSession(saved,id,level,{seed,exampleId});save();syncLineRoute();renderExercise();
 }
-function openTopic(id){if(!MODULES.some(m=>m.id===id)){home();return;}if(saved.sessions[id]){state=saved.sessions[id];renderExercise();}else startNew(id,'easy');}
+function syncLineRoute(){
+ const hash='#'+state.module+(state.exampleId?'?example='+encodeURIComponent(state.exampleId):'');
+ if(location.hash!==hash)history.replaceState(history.state,'',hash);
+}
+function openTopic(id,exampleId=null){
+ if(!MODULES.some(m=>m.id===id)){home();return;}
+ const current=saved.sessions[id];
+ if(current&&(!exampleId||current.exampleId===exampleId)){state=current;syncLineRoute();renderExercise();}
+ else{
+  const archived=saved.archivedSessions||[],matches=s=>s.module===id&&s.exampleId===exampleId&&s.completedAt===null;
+  let index=exampleId?archived.findIndex(s=>matches(s)&&methodVersion(s)===2):-1;
+  if(exampleId&&index<0)index=archived.findIndex(matches);
+  if(index>=0){state=resumeArchived(saved,index);save();syncLineRoute();renderExercise();}
+  else startNew(id,exampleId?'standard':'easy',exampleId);
+ }
+}
 function sampleControls(module){const list=SAMPLES[module];return list?'<div class="sample-controls"><label for="sample-select">Задание Петерсона</label><select id="sample-select">'+list.map(x=>'<option value="'+e(x[0])+'"'+(state.exampleId===x[0]?' selected':'')+'>'+e(x[1])+'</option>').join('')+'</select><button class="secondary" id="textbook">Пример из учебника</button></div>':'';}
 function topicPDF(module){return ['percent-number','number-percent'].includes(module)?'Peterson6_Procenty_340.pdf':['river-units','river-percent','raft-percent','joint-work'].includes(module)?'Maxim_Peterson6_Novye_shpargalki.pdf':'Peterson6_Shpargalki.pdf';}
 function renderExercise(){
@@ -487,17 +504,26 @@ function renderExercise(){
 function feedbackText(session,step){if(session.feedback==='empty')return 'Сначала '+(step.kind==='choice'?'выбери':'запиши')+' ответ. Это не считается ошибкой.';if(session.feedback==='invalid')return 'Проверь запись: введи число или дробь, например 0,75 или 3/4. Единица измерения уже указана справа.';if(session.feedback==='wrong')return session.errors[session.index]>=2?'Пока не получилось. Ниже открылась подсказка. Попробуй ещё раз.':'Пока не получилось. Проверь действие и попробуй ещё раз.';return '';}
 function stepContent(step,i){
  const done=i<state.index,p=problemFor(state);let html='<section class="step equation-first'+(done?' done':'')+'" id="step-'+i+'"><div class="step-header">Шаг '+(i+1)+' из '+p.steps.length+(done?' · выполнен':'')+'</div>';
- if(done){const answer=step.kind==='choice'?step.options.find(a=>a[0]===step.expected)[1]:(step.displayAnswer===undefined?fmt(step.expected):step.displayAnswer)+(step.unit?' '+step.unit:'');return html+'<h3>'+rich(step.label)+'</h3><div class="done-answer">✓ '+rich(answer)+'</div><p class="explanation">'+rich(step.explanation)+'</p></section>';}
+ if(done){const answer=step.kind==='choice'?step.options.find(a=>a[0]===step.expected)[1]:(step.displayAnswer===undefined?fmt(step.expected):step.displayAnswer)+(step.unit?' '+step.unit:'');return html+'<h3>'+rich(stepLabel(step))+'</h3><div class="done-answer">✓ '+rich(answer)+'</div><p class="explanation">'+rich(step.explanation)+'</p></section>';}
  html+='<form id="answer-form" novalidate>';
- if(step.kind==='choice'&&step.rich){html+='<fieldset class="equation-options"><legend>'+rich(step.label)+'</legend><input id="answer-input" type="hidden" value="'+e(state.answers[i]||'')+'">'+step.options.map((a,j)=>'<label class="equation-option" for="equation-option-'+j+'"><input type="radio" name="equation-choice" id="equation-option-'+j+'" value="'+e(a[0])+'"'+(state.answers[i]===a[0]?' checked':'')+' aria-describedby="answer-feedback"><span>'+rich(a[1])+'</span></label>').join('')+'</fieldset><div class="answer-row">';}
- else {html+='<label for="answer-input">'+rich(step.label)+'</label><div class="answer-row">';if(step.kind==='choice')html+='<select id="answer-input" aria-describedby="answer-feedback"><option value="">Выбери ответ</option>'+step.options.map(a=>'<option value="'+e(a[0])+'"'+(state.answers[i]===a[0]?' selected':'')+'>'+e(EquationMethod.plain(a[1]))+'</option>').join('')+'</select>';else html+='<input type="text" id="answer-input" inputmode="text" maxlength="128" autocomplete="off" spellcheck="false" aria-describedby="answer-help answer-feedback" value="'+e(state.answers[i]||'')+'" placeholder="Твой ответ"><span class="unit">'+e(step.unit)+'</span>';}
+ if(step.kind==='choice'&&step.rich){html+='<fieldset class="equation-options"><legend>'+rich(stepLabel(step))+'</legend><input id="answer-input" type="hidden" value="'+e(state.answers[i]||'')+'">'+step.options.map((a,j)=>'<label class="equation-option" for="equation-option-'+j+'"><input type="radio" name="equation-choice" id="equation-option-'+j+'" value="'+e(a[0])+'"'+(state.answers[i]===a[0]?' checked':'')+' aria-describedby="answer-feedback"><span>'+rich(a[1])+'</span></label>').join('')+'</fieldset><div class="answer-row">';}
+ else {html+='<label for="answer-input">'+rich(stepLabel(step))+'</label><div class="answer-row">';if(step.kind==='choice')html+='<select id="answer-input" aria-describedby="answer-feedback"><option value="">Выбери ответ</option>'+step.options.map(a=>'<option value="'+e(a[0])+'"'+(state.answers[i]===a[0]?' selected':'')+'>'+e(EquationMethod.plain(a[1]))+'</option>').join('')+'</select>';else html+='<input type="text" id="answer-input" inputmode="text" maxlength="128" autocomplete="off" spellcheck="false" aria-describedby="answer-help answer-feedback" value="'+e(state.answers[i]||'')+'" placeholder="Твой ответ"><span class="unit">'+e(step.unit)+'</span>';}
  html+='<button class="primary" type="submit">Проверить</button></div>';
  if(step.kind==='number')html+='<p class="inputhelp" id="answer-help">Можно вводить 0,75 или 0.75, дробь 3/4, смешанное число 1 1/4.</p>';
  html+='<p id="answer-feedback" class="feedback '+(state.feedback?'error':'')+'" role="status" aria-live="polite">'+e(feedbackText(state,step))+'</p></form><button type="button" class="linklike hint-toggle" id="hint-toggle" aria-expanded="'+state.hintVisible[i]+'" aria-controls="active-hint">'+(state.hintVisible[i]?'Убрать подсказку':'Хочешь подсказку?')+'</button><div class="hint'+(state.hintVisible[i]?'':' hidden')+'" id="active-hint">'+rich(step.hint)+'</div></section>';return html;
 }
 function renderSteps(focus=false){
  const p=problemFor(state),last=Math.min(state.index,p.steps.length-1);document.getElementById('steps').innerHTML=p.steps.slice(0,last+1).map(stepContent).join('');
- if(state.index<p.steps.length){const expectedIndex=state.index,input=document.getElementById('answer-input');input.addEventListener('input',()=>{state.answers[state.index]=input.value;state.updatedAt=touch(saved,state.module);save();});input.addEventListener('change',()=>{state.answers[state.index]=input.value;state.updatedAt=touch(saved,state.module);save();});document.querySelectorAll('[name=equation-choice]').forEach(radio=>radio.addEventListener('change',()=>{input.value=radio.value;input.dispatchEvent(new Event('change',{bubbles:true}));}));document.getElementById('answer-form').addEventListener('submit',ev=>check(ev,expectedIndex));document.getElementById('hint-toggle').addEventListener('click',()=>{state.answers[state.index]=input.value;toggleSessionHint(saved,state.module);save();renderSteps(false);});if(focus){(input.type==='hidden'?document.querySelector('[name=equation-choice]:checked')||document.querySelector('[name=equation-choice]'):input)?.focus();document.getElementById('step-'+state.index)?.scrollIntoView({behavior:'smooth',block:'start'});}document.getElementById('finish').innerHTML='';}
+ if(state.index<p.steps.length){const expectedIndex=state.index,input=document.getElementById('answer-input');input.addEventListener('input',()=>{state.answers[state.index]=input.value;state.updatedAt=touch(saved,state.module);save();});input.addEventListener('change',()=>{state.answers[state.index]=input.value;state.updatedAt=touch(saved,state.module);save();});document.querySelectorAll('[name=equation-choice]').forEach(radio=>radio.addEventListener('change',()=>{input.value=radio.value;input.dispatchEvent(new Event('change',{bubbles:true}));}));
+ // The cabinet sandbox intentionally disallows native form navigation.
+ const form=document.getElementById('answer-form'),selected=state;
+ const submit=ev=>{ev.preventDefault();if(state===selected&&form.isConnected&&app.contains(form))check(ev,expectedIndex);};
+ form.addEventListener('submit',submit);form.querySelector('button[type=submit]').addEventListener('click',submit);
+ form.addEventListener('keydown',ev=>{
+  if(ev.key!=='Enter'||ev.isComposing||ev.keyCode===229||!ev.target.matches('input'))return;
+  ev.preventDefault();if(!ev.repeat&&!ev.altKey&&!ev.ctrlKey&&!ev.metaKey&&!ev.shiftKey)submit(ev);
+ });
+ document.getElementById('hint-toggle').addEventListener('click',()=>{state.answers[state.index]=input.value;toggleSessionHint(saved,state.module);save();renderSteps(false);});if(focus){(input.type==='hidden'?document.querySelector('[name=equation-choice]:checked')||document.querySelector('[name=equation-choice]'):input)?.focus();document.getElementById('step-'+state.index)?.scrollIntoView({behavior:'smooth',block:'start'});}document.getElementById('finish').innerHTML='';}
  else{
   const independent=!saved.assistance.some(r=>r.key===conditionKey(problemFor(state))),q=moduleStats(saved,state.module),after=MODULES[MODULES.findIndex(m=>m.id===state.module)+1];
   document.getElementById('finish').innerHTML='<section class="finish" role="status"><h3>✓ Пример решён!</h3><p>'+(state.completionKind==='repeat'?'Это повтор уже решённого условия, поэтому число разных решений не изменилось.':independent?'Все шаги выполнены без ошибок и подсказок. Добавлено самостоятельное решение.':'Решение добавлено в прогресс как выполненное с помощью. В новом примере попробуй решить самостоятельно.')+'</p><p><strong>'+q.solved+' / 5 разных решений · '+q.independent+' / 3 самостоятельно.</strong>'+(q.ready?' Тема готова!':'')+'</p><p>Все шаги и объяснения остались выше.</p><div class="finish-buttons"><button class="primary" id="next">Следующий пример</button>'+(q.ready&&after?'<a class="button secondary" href="#'+after.id+'">К следующей теме →</a>':'<a class="button secondary" href="#">К маршруту</a>')+'</div></section>';
@@ -506,7 +532,22 @@ function renderSteps(focus=false){
  const bar=document.querySelector('.mini-progress span');if(bar)bar.style.width=(100*state.index/p.steps.length)+'%';document.getElementById('step-count').textContent='Выполнено шагов: '+state.index+' из '+p.steps.length;const stats=document.querySelector('.exercise-stats');if(stats)stats.innerHTML=currentStatsLine(state.module);taskHelp?.sync();
 }
 function check(event,expectedIndex){event.preventDefault();if(!state||state.index!==expectedIndex)return;const input=document.getElementById('answer-input');if(!input)return;const result=submitAnswer(saved,state.module,input.value,expectedIndex);if(result.status==='ignored')return;save();renderSteps(result.status==='correct'||result.status==='complete');if(['wrong','invalid','empty'].includes(result.status))(document.querySelector('[name=equation-choice]:checked')||document.getElementById('answer-input'))?.focus();}
-function route(){let id;try{id=decodeURIComponent(location.hash.slice(1)).split('?')[0];}catch(_){home();return;}if(!id){home();return;}openTopic(id);}
+function parseLineRoute(hash){
+ let text;try{text=decodeURIComponent(hash.replace(/^#/,''));}catch(_){return null;}
+ if(!text)return {module:null,exampleId:null};
+ const parts=text.split('?'),module=parts[0];
+ if(parts.length>2||!MODULES.some(m=>m.id===module))return null;
+ if(parts.length===1)return {module,exampleId:null};
+ const match=/^example=([0-9]+(?:-[0-9]+){0,2})$/.exec(parts[1]);
+ if(!match||!SAMPLES[module]?.some(sample=>sample[0]===match[1]))return null;
+ return {module,exampleId:match[1]};
+}
+function route(){
+ const selected=parseLineRoute(location.hash);
+ if(!selected){state=null;app.innerHTML='<section class="workspace"><h1>Задание по этой ссылке не найдено</h1><p>Открой маршрут и выбери тему или задание из учебника. Начатые работы сохранены.</p><a class="button primary" href="#">К маршруту</a></section>';taskHelp?.sync();return;}
+ if(!selected.module){home();return;}
+ openTopic(selected.module,selected.exampleId);
+}
 window.addEventListener('hashchange',()=>{route();window.scrollTo({top:0,behavior:'instant'});});storageNote();route();
 
 })();

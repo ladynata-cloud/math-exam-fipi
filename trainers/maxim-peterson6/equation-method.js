@@ -120,6 +120,11 @@ function transform(source,helpers){
   if(type==='discount')answer=m.pay;
  }else throw new Error('Нет решения через неизвестную для '+p.module+'/'+t);
  if(!steps.length||!unknown||!equation||!Number.isFinite(answer))throw new Error('Неполное решение '+p.module+'/'+t);
+ // Keep the stored label and choice ordering stable for existing condition keys.
+ if(['ratio-meet','textbook-303','ratio-away','textbook-305'].includes(t)){
+  const unknownStep=t==='ratio-meet'||t==='textbook-303'?0:1;
+  steps[unknownStep].displayLabel='В этом разборе x — меньшая скорость. Чью скорость обозначим буквой x?';
+ }
  p.method='equation';p.methodVersion=2;p.steps=steps;p.methodInfo={unknown,unit,equation,answer};
  if(!['ratio-meet','textbook-303','ratio-away','textbook-305'].includes(t))p.title='Решаем через неизвестную';
  return p;

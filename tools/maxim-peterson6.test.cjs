@@ -111,7 +111,7 @@ test('separate local storage and no network or cabinet bridge dependencies', () 
   assert.match(source, /localStorage\.setItem\(STORAGE_KEY,/);
   const linkedAssets = [...html.matchAll(/<(?:script|link)\b[^>]*(?:\bsrc|\bhref)="([^"]+)"[^>]*>/gi)]
     .map(match => match[1]).filter(url => !url.startsWith('https://'));
-  assert.deepEqual(linkedAssets, ['../peterson-assistant.css?v=20261028', '../peterson-assistant.js?v=20261102-equations', 'equation-method.js?v=20261102']);
+  assert.deepEqual(linkedAssets, ['../peterson-assistant.css?v=20261028', '../peterson-assistant.js?v=20261102-equations', 'equation-method.js?v=20261102-exact-entry']);
   const helper = fs.readFileSync(path.join(root, 'trainers', 'peterson-assistant.js'), 'utf8');
   assert.doesNotMatch(helper, /\b(?:fetch|XMLHttpRequest|WebSocket|EventSource)\s*\(|\.\s*(?:sendBeacon|postMessage)\s*\(|localStorage|sessionStorage/);
   assert.doesNotMatch(source, /\b(?:fetch|XMLHttpRequest|WebSocket|EventSource)\s*\(/);
