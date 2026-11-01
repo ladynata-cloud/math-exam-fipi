@@ -192,3 +192,47 @@ Updated-head CI and production evidence are recorded in PR397 after this
 non-self-referential report is committed. Passing local checks alone is not
 reported as a deployment. Requery main before the authorized squash merge;
 the named authorized base remains `059ee8c9f5baeb0b333c96d9b8516edb570666b2`.
+
+
+## Renewed release authorization after PR400, 2026-11-02
+
+The first authorized integration produced remote head
+`0d8988a6168bbd69694f4bd5724397ee04f4e946` and all six exact-head workflows
+passed. Before squash merge, the direct remote-main guard detected the newly
+published PR400, so no production merge or deployment of PR397 was performed.
+
+The owner has now explicitly authorized history-preserving integration of main
+`5bbfe3a4615b6410dacf7f1344aa57b909a986ef` into that head, preservation of all
+three task records, and squash-merge, publication and public verification after
+successful checks of the updated branch. This is the current authorized base;
+the previous base-specific permission above is historical. The already granted
+PR397-specific external HIGH-review exception remains valid for its unchanged
+trainer code; no external provider verdict is claimed.
+
+PR400's primary release record verifies separate owner permission and release
+provenance. It changed 39 paths; the only overlap with the 78-path PR397 delta
+is PROJECT_STATUS.md. The non-mutating merge had one status conflict. All 77
+other PR397 blobs matched the preceding reviewed head; all 38 other concurrent
+blobs matched the new main. There were no extra paths. All ten start-course
+data modules remain unchanged, preserving the 81-lesson / 486-task main bank.
+The authorized conflict resolution retains the profile record and the published
+assistant and Peterson records, with historical preparation labelled explicitly.
+Only necessary status and verification documentation is adjusted.
+
+Before this renewed authorization, the isolated composed runtime passed:
+
+- 340/340 full profile Node tests, zero failures or skips;
+- 78 financial tasks / 442 intermediate values with the independent exact oracle;
+- 60 main-geometry journeys / 54 first-screen checks across all 18 lessons at
+  320/390/1280 pixels, including retained drafts, models and controls;
+- progress diagnosis/reload, familiar recovery, read-only teacher-report
+  roundtrip and preservation of legacy work.
+
+The first copied-runtime test attempt lacked Git metadata and three tracked-file
+checks failed. Supplying the existing repository metadata for those read-only
+checks fixed the fixture; the complete 340-test run then passed. No assertion,
+production code, timeout, permission or TLS setting was weakened. The completed
+original audit, independent reviews, geometric generations and screenshots are
+reused; this is release continuation, not a restarted audit. Updated exact-head
+CI, merge identity, publication and actual public-site checks will be recorded
+in PR397. This committed preparation report does not preclaim their completion.

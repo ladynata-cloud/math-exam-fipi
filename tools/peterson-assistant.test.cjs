@@ -17,7 +17,7 @@ function course(name, hash) {
   const file=name==='peterson'?'school/peterson6/index.html':'trainers/maxim-peterson6/index.html';
   const dom=fixture(read(file),'https://course.example/'+path.dirname(file)+'/'+hash),w=dom.window;
   if(name==='peterson')for(const part of ['math.js','models.js','data.js','app.js'])w.eval(read('school/peterson6/'+part));
-  else w.eval([...read(file).matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].find(match=>!/\bsrc=/.test(match[1]))[2]);
+  else {w.eval(read('trainers/maxim-peterson6/equation-method.js'));w.eval([...read(file).matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].find(match=>!/\bsrc=/.test(match[1]))[2]);}
   return dom;
 }
 function task(id='one') { return {id,title:'Тест',condition:'<img src=x onerror=alert(1)> {{frac:1:2}}',stepIndex:0,
@@ -51,6 +51,19 @@ test('assistance precedes source disclosure and prior hints remain until task ch
     assert.match(w.document.querySelector('.peterson-help-log').textContent,/Первый совет[\s\S]*Второй совет/);
     click(w,'[data-peterson-help=hint]');assert.equal(before.length,2);
     current=task('two');help.sync();assert.equal(w.document.querySelectorAll('.peterson-help-answer').length,0);
+  }finally{w.close();}
+});
+test('symbolic fractions render safely in conditions and authored help',()=>{
+  const dom=fixture(),w=dom.window;
+  const current={...task(),condition:'Время: {{frac:175:x}}. {{frac:<img src=x>:2,2x}}',steps:[{title:'Путь',hint:'{{frac:385:2,2x}} · 1,2x',explanation:'{{frac:175:x}} · 1,2x = 210',answer:'210'}]};
+  try{
+    w.PetersonTaskHelp.mount({getTask:()=>current});click(w,'.peterson-help-launcher');
+    assert.equal(w.document.querySelectorAll('.peterson-help-condition .peterson-help-fraction').length,2);
+    assert.equal(w.document.querySelector('.peterson-help-condition img'),null);
+    assert.equal(w.document.querySelector('.peterson-help-fraction').getAttribute('aria-label'),'175 делить на x');
+    click(w,'[data-peterson-help=hint]');
+    assert.equal(w.document.querySelector('.peterson-help-answer .peterson-help-fraction').textContent,'3852,2x');
+    assert.doesNotMatch(w.document.querySelector('.peterson-help-answer').textContent,/\{\{frac/);
   }finally{w.close();}
 });
 test('revoked or rejected task marking cannot show an answer; unavailable task clears transcript',()=>{

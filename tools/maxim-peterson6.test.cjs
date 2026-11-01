@@ -18,10 +18,11 @@ const html = fs.readFileSync(path.join(courseDir, 'index.html'), 'utf8');
 const scripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)];
 const inline = scripts.filter(script => !/\bsrc\s*=/i.test(script[1]));
 assert.equal(inline.length, 1, 'Course engine remains one self-contained inline script');
-assert.equal(scripts.length, 2, 'Only the explicit optional local helper is added');
-assert.match(scripts.find(script => /\bsrc\s*=/i.test(script[1]))[1], /^\s+src="\.\.\/peterson-assistant\.js\?v=20261028"$/);
+assert.equal(scripts.length, 3, 'Only the local versioned teaching content and optional helper are loaded');
+assert.match(scripts.find(script => /peterson-assistant\.js/.test(script[1]))[1], /^\s+src="\.\.\/peterson-assistant\.js\?v=20261102-equations"$/);
 const source = inline[0][2];
 const context = {window: {}};
+vm.runInNewContext(fs.readFileSync(path.join(courseDir, 'equation-method.js'), 'utf8'), context);
 vm.runInNewContext(source, context, {filename: 'maxim-peterson6/index.html', timeout: 1500});
 const C = context.window.TrainerCore;
 assert.ok(C, 'The standalone test API must be available without a DOM');
@@ -62,8 +63,8 @@ function solve(progress, module) {
   assert.equal(result.status, 'complete');
   return result;
 }
-function expectedSteps(module, example, values) {
-  const problem = C.textbookProblem(module, example);
+function expectedSteps(module, example, values, legacy=false) {
+  const problem = legacy ? C.legacy.textbookProblem(module, example) : C.textbookProblem(module, example);
   assert.equal(problem.steps.length, values.length, `${module}/${example}: step count`);
   values.forEach((value, index) => {
     const step = problem.steps[index];
@@ -110,7 +111,7 @@ test('separate local storage and no network or cabinet bridge dependencies', () 
   assert.match(source, /localStorage\.setItem\(STORAGE_KEY,/);
   const linkedAssets = [...html.matchAll(/<(?:script|link)\b[^>]*(?:\bsrc|\bhref)="([^"]+)"[^>]*>/gi)]
     .map(match => match[1]).filter(url => !url.startsWith('https://'));
-  assert.deepEqual(linkedAssets, ['../peterson-assistant.css?v=20261028', '../peterson-assistant.js?v=20261028']);
+  assert.deepEqual(linkedAssets, ['../peterson-assistant.css?v=20261028', '../peterson-assistant.js?v=20261102-equations', 'equation-method.js?v=20261102']);
   const helper = fs.readFileSync(path.join(root, 'trainers', 'peterson-assistant.js'), 'utf8');
   assert.doesNotMatch(helper, /\b(?:fetch|XMLHttpRequest|WebSocket|EventSource)\s*\(|\.\s*(?:sendBeacon|postMessage)\s*\(|localStorage|sessionStorage/);
   assert.doesNotMatch(source, /\b(?:fetch|XMLHttpRequest|WebSocket|EventSource)\s*\(/);
@@ -134,7 +135,7 @@ test('13 topics and 27 selectable textbook entries have usable diagrams and sour
   }
 });
 
-test('exact movement, river, joint work and added Peterson answers', () => {
+test('legacy exact movement, river, joint work and added Peterson steps remain readable', () => {
   const cases = [
     ['meeting', '303', ['yes', 2.2, 175, 210]],
     ['ratio', '303', ['yes', 2.2, 175, 210]],
@@ -151,7 +152,7 @@ test('exact movement, river, joint work and added Peterson answers', () => {
     ['percent-tasks', '369-2', [70, .28, 28]],
     ['percent-tasks', '406-1', [.05, 1200, 22800]]
   ];
-  for (const [module, example, values] of cases) expectedSteps(module, example, values);
+  for (const [module, example, values] of cases) expectedSteps(module, example, values, true);
 });
 
 test('all 13 small percent conversions including the mixed fraction retain exact answers', () => {

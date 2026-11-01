@@ -8,14 +8,14 @@
   HIGH; branch `fix/profile-trainers-audit-20261101`.
 - Base `6b9c327f2ca438cb7e7620ef302876de467fac19` includes PR396, which GitHub
   confirms merged on 2026-11-01 at 13:54:32 UTC. Its 50 text corrections and
-  exact financial oracle are retained. The preceding preparation entry below
-  is historical; this task does not repeat that release.
+  exact financial oracle are retained. The published PR396 record below remains;
+  this task does not repeat that release.
 - Correct old answer keys/checkers, idempotent assessment and requested help;
   preserve existing work while repairing checkpoint mastery and adding a
   separately identified familiar-task recovery route. Precise topic links and
   read-only complete teacher reports connect the existing materials.
 - [Verification](reports/PROFILE_TRAINER_REPAIR_20261101.md) and
-  [Draft PR397](https://github.com/ladynata-cloud/math-exam-fipi/pull/397)
+  [PR397](https://github.com/ladynata-cloud/math-exam-fipi/pull/397)
   record local/CI/browser evidence and independent reviews. No new main-course
   tasks or task IDs are introduced; no real pupil state is changed.
 - On 2026-11-02 the owner explicitly authorized preserving both status entries,
@@ -24,20 +24,85 @@
   after successful checks of the updated branch. The owner granted a current
   PR397-specific external HIGH-review exception based on the completed checks.
   This is an owner exception, not an external reviewer verdict.
+- After the final guard detected published PR400, the owner explicitly renewed
+  permission on 2026-11-02: merge main
+  `5bbfe3a4615b6410dacf7f1344aa57b909a986ef` into head
+  `0d8988a6168bbd69694f4bd5724397ee04f4e946`, retain all three task records,
+  then squash-merge, publish and check the site after successful updated-head
+  checks. The existing PR397-specific HIGH exception remains recorded.
+- The read-only composed runtime passed 340/340 profile tests, the 78-task /
+  442-step exact finance oracle, 60 main geometry journeys / 54 viewport checks
+  and the progress/reload/read-only report browser gate. All six workflows on
+  the preceding integrated head also passed. New exact-head CI is still required.
 - Trainer/runtime bytes are unchanged from reviewed head
   `d1291ca1214f8a96f7f0de5e613161e6d4eecc5a`; only this conflict and the
   verification report were adjusted. Next: exact-head CI, authorized release,
   then public asset/learner checks. Final release identity is recorded in PR397;
   this pre-release entry does not claim deployment has already completed.
 
+## Published: Peterson 6 equations and unknowns, PR400, 2026-11-02
+
+- [PR400](https://github.com/ladynata-cloud/math-exam-fipi/pull/400) was
+  squash-merged as `5bbfe3a4615b6410dacf7f1344aa57b909a986ef`, sole parent
+  `059ee8c9f5baeb0b333c96d9b8516edb570666b2`, from reviewed head
+  `375637628af67c88c1801926dbdcf5bda90ffca5`.
+- Its primary release record confirms explicit owner publication authorization
+  and a PR400-specific external-review exception, all 22 head workflows and
+  all 16 postmerge workflows successful, including
+  [Pages41344202489](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41344202489).
+- Public delivery passed 19 exact HTTP checks, the Peterson1.1.0 registry/health
+  gate and a synthetic live equation-method journey. All 38 non-status PR400
+  blobs are retained exactly by this integration, including its three PDFs.
+- The preparation record below is historical; its pending-review and
+  pending-publication statements do not supersede the completed release above.
+
+### Retained PR400 preparation record (historical)
+
+- [Task](tasks/PETERSON6_EQUATION_METHOD.md), HIGH; explicit current-task START.
+  Branch `task/peterson6-equation-method-20261102`, original implementation base
+  `6b9c327f2ca438cb7e7620ef302876de467fac19`.
+- Implemented 98 main-course word problems, 22 generated line families and
+  13 textbook word examples, plus three printable documents. Original
+  conditions, source identities and learner work are preserved.
+  [Verification](reports/PETERSON6_EQUATION_METHOD.md): local gate PASS,
+  two independent internal reviews READY; exact-head CI belongs in the Draft PR.
+- Original 303 uses unknown speed that cancels; its speed is not invented.
+  Logic and pure calculation retain their distinct teaching goals.
+- PR355/PR367 are inventoried unpublished sources, not included or resumed here.
+- Claude consultation is unavailable; no external verdict or current waiver
+  is claimed. Exact evidence and the remaining release decision belong in
+  this task's report and Draft PR. Production merge and deployment remain separate owner decisions.
+
+- On 2026-11-02 the owner explicitly authorized reconciling the sole
+  `PROJECT_STATUS.md` conflict with main
+  `059ee8c9f5baeb0b333c96d9b8516edb570666b2`, preserving both task records,
+  and preparing the existing PR400 for publication. This permits task-branch
+  reconciliation; it does not authorize merging PR400 into main or deployment.
+- The read-only composed runtime passed the repeated course, saved-work,
+  helper, cabinet and board gates. All runtime, test and PDF blobs retain
+  the reviewed implementations. The updated candidate identity and exact-head
+  CI must be recorded in PR400 after publication of its task branch.
+
 ## Published: assistant dialogue integration, PR375, 2026-11-02
 
 - [PR375](https://github.com/ladynata-cloud/math-exam-fipi/pull/375) was
   squash-merged as `059ee8c9f5baeb0b333c96d9b8516edb570666b2`, with parent
-  `6b9c327f2ca438cb7e7620ef302876de467fac19`. Its release record confirms owner
-  authorization, 18 successful head workflows, nine postmerge workflows and
-  [Pages publication](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41337980680).
-  Published course navigation, LCM hints, provenance and unrelated content remain.
+  `6b9c327f2ca438cb7e7620ef302876de467fac19`, from reviewed candidate
+  `8c7c3db3a308da61619b63b129e7333292406cd6`.
+- [Pages41337980680](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41337980680)
+  completed successfully for that production SHA. Read-only HTTP verification
+  also matched the five checked public Peterson/cabinet assets to that main.
+- The PR release record documents explicit owner release authorization and
+  a task-specific external-review exception for PR375 after the unavailable
+  provider response. That exception does not apply to PR400 or future work.
+- The preparation record below is retained as historical evidence; its pending
+  release statements do not supersede the release evidence above.
+
+### Retained PR375 preparation record (historical)
+
+- Continuing [PR375](https://github.com/ladynata-cloud/math-exam-fipi/pull/375)
+  against `6b9c327f2ca438cb7e7620ef302876de467fac19`, preserving published
+  course navigation, LCM hints, source provenance and unrelated content.
 - The same root task and bounded previous exchanges support follow-up
   questions; fresh external acknowledgement and teacher/budget controls remain.
   Source-only textbook helpers keep their separate existing behavior.
@@ -46,15 +111,13 @@
   navigation/LCM browser gates. No external model calls or learner changes.
 - [Task](tasks/MATHEXAM_ASSISTANT_GRADE6_DIALOGUE_V1.md) and
   [verification](reports/MATHEXAM_ASSISTANT_DIALOGUE_REVALIDATION_20261102.md).
-  Final release and deployment identities are recorded in the merged PR.
-  The owner explicitly granted that task's review exception after the provider
-  rejected its review request for insufficient credit. Cabinet and assistant
-  deployment/health checks passed; external inference remains off. That exception
-  does not grant permission for any other task.
+  Exact published head and final CI are recorded in the Draft PR. Independent
+  and external HIGH review remain release gates; no merge/deployment approval
+  is inferred from the owner's continuation request.
 - Separate OpenAI adapter [PR399](https://github.com/ladynata-cloud/math-exam-fipi/pull/399)
   remains a Draft and is not included or enabled by this dialogue task.
 
-## Historical preparation: finance deposit explanation correction, PR396
+## Published: finance deposit explanation correction, 2026-11-01
 
 - [Task](tasks/EGE_P13_FINANCE_STEP_HINTS_20261101.md), SMALL; the owner explicitly
   granted START for a separate corrective PR with the prepared explanations
@@ -66,9 +129,13 @@
   project-2027 provenance labels, an independent 442-step / 78-answer oracle
   and its additive CI invocation. Questions, answers, IDs, ledger and storage
   remain unchanged. [Verification](reports/EGE_P13_FINANCE_STEP_HINTS_20261101.md).
-- Next: publish the single corrective Draft PR, verify all applicable exact-head
-  CI, and obtain separate exact-base/head merge and publication authorization.
-  The current task does not itself authorize production release.
+- Reconciled at the start of the Peterson equation-method task: [PR396](https://github.com/ladynata-cloud/math-exam-fipi/pull/396)
+  is merged as `6b9c327f2ca438cb7e7620ef302876de467fac19`. Its primary release
+  record reports eleven exact public asset checks and the independent finance
+  oracle passing. All three workflows on that squash, including
+  [Pages41313521051](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41313521051),
+  are confirmed successful. This reconciliation does not claim a new finance
+  browser audit or access to any pupil records.
 
 ## Published: financial course extension, PR390
 
@@ -88,9 +155,8 @@
   identity, live catalogue/source UI and all 78 answers / 442 intermediate
   values. Existing student records were not opened or changed. Full isolated
   learner journeys belong to the exact-head CI evidence, not live pupil tests.
-- The current corrective task addresses the remaining first-year deposit-hint
-  ambiguity. Those prepared text changes and the independent Python test were
-  not included in PR390. Earlier preparation/pending-release records below
+- The later corrective PR396 addressed the first-year deposit-hint ambiguity;
+  its changes and independent Python test were not included in PR390. Earlier preparation/pending-release records below
   are historical and do not supersede this release identity.
 
 ## Historical: finance revalidation before PR390 publication, 2026-11-01
