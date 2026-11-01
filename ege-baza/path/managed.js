@@ -199,8 +199,9 @@
     if (photoTask() && document.getElementById('new')) document.getElementById('new').textContent = 'Повторить этот рисунок';
     if (!meta.grade7 && !meta.pre7 && root.EgeReferenceUI) {
       const ids = root.EgeReferenceData.sheetsForTask?.(task) || root.EgeReferenceUI.forLesson(meta.id);
+      // The cabinet sandbox blocks popups: keep reference support inline.
       root.EgeReferenceUI.attach(box.querySelector('.panel') || box, {
-        sheetIds: ids, referenceBase: '../reference/',
+        sheetIds: ids, referenceBase: '../reference/', externalLinks: false,
         onReveal(id) { if (readonly || applying) return; work.help = true; emit('hint', { level: 1, reference: id }); }
       });
     }

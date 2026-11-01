@@ -66,8 +66,10 @@ task IDs, answer keys, schema versions and stored student data do not change.
 Implemented 31 concise sheets, all 107 main-route families and 118 existing
 trainer/lesson/practice destinations. Each practice task has its own mapping;
 reverse pins derive from those same maps. Reference disclosure uses the existing
-assistance flags and leaves the answer/step nodes in place. Saved attempts do
-not offer a misleading public-route return link. Exact legacy task hashes follow
+assistance flags and leaves the answer/step nodes in place. Saved attempts keep the rule, example and optional error inline; outbound
+reference/foundation links are omitted because the cabinet sandbox blocks
+popups. Public tasks retain both links. Sandbox permissions and bridge contracts
+are unchanged. No misleading public-route return link is offered. Exact legacy task hashes follow
 navigation and never replace an unfinished variant.
 
 Local gate: `EGE_BAZA_REFERENCE_PINS_OK`.
@@ -79,7 +81,7 @@ Local gate: `EGE_BAZA_REFERENCE_PINS_OK`.
   `ege-baza-practice.dom.cjs`, and `ege-baza-backup.test.mjs`.
 - Reference coverage: 31 sheets, 107 families, mixed-task filtering, all reverse
   destinations, input/caret/step retention, assistance accounting, 42 exam and
-  diagnostic screens, managed/read-only isolation, invalid hashes/search,
+  diagnostic screens, managed/read-only isolation, blocked-popup prevention, invalid hashes/search,
   keyboard skip link, catalogue title and relevant search ordering.
 - Legacy reference suite: 1409 assertions, 68 exact task links, 10 lessons,
   40 practice tasks, navigation/reload and unfinished-variant protection.

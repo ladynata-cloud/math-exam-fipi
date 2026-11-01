@@ -32,7 +32,7 @@
  function card(id,options={}){
   const s=sheet(id);if(!s)return '';
   const attached=pins(id),shown=attached.slice(0,6),rest=attached.slice(6);
-  return `<article class="ref-sheet" data-sheet-id="${E(s.id)}"><p class="ref-category">${E(s.category)}</p><h2>${E(s.title)}</h2><p class="ref-summary">${math(s.summary)}</p><div class="ref-rule-text"><h3>Правило</h3><p>${math(s.rule)}</p></div><div class="ref-example"><h3>Короткий пример</h3><p>${math(s.example)}</p></div><details class="ref-error"><summary>Где легко ошибиться?</summary><p>${math(s.commonError)}</p></details>${options.showPins!==false?`<section class="ref-pins" aria-label="Тренажёры к этому правилу"><h3>Прикреплённые тренажёры <span class="ref-count">${attached.length}</span></h3><div class="ref-pin-grid">${shown.map(pinMarkup).join('')}</div>${rest.length?`<details class="ref-more"><summary>Ещё ${rest.length} тренажёров</summary><div class="ref-pin-grid">${rest.map(pinMarkup).join('')}</div></details>`:''}</section>`:''}${s.foundation?`<details class="ref-foundation"><summary>Потренировать саму основу</summary><a class="ref-foundation-link" href="${E(safeHref(s.foundation.href))}" target="_blank" rel="noopener">${E(s.foundation.title)} ↗</a><p class="ref-small">Откроется в новой вкладке.</p></details>`:''}</article>`;
+  return `<article class="ref-sheet" data-sheet-id="${E(s.id)}"><p class="ref-category">${E(s.category)}</p><h2>${E(s.title)}</h2><p class="ref-summary">${math(s.summary)}</p><div class="ref-rule-text"><h3>Правило</h3><p>${math(s.rule)}</p></div><div class="ref-example"><h3>Короткий пример</h3><p>${math(s.example)}</p></div><details class="ref-error"><summary>Где легко ошибиться?</summary><p>${math(s.commonError)}</p></details>${options.showPins!==false&&options.externalLinks!==false?`<section class="ref-pins" aria-label="Тренажёры к этому правилу"><h3>Прикреплённые тренажёры <span class="ref-count">${attached.length}</span></h3><div class="ref-pin-grid">${shown.map(pinMarkup).join('')}</div>${rest.length?`<details class="ref-more"><summary>Ещё ${rest.length} тренажёров</summary><div class="ref-pin-grid">${rest.map(pinMarkup).join('')}</div></details>`:''}</section>`:''}${s.foundation&&options.externalLinks!==false?`<details class="ref-foundation"><summary>Потренировать саму основу</summary><a class="ref-foundation-link" href="${E(safeHref(s.foundation.href))}" target="_blank" rel="noopener">${E(s.foundation.title)} ↗</a><p class="ref-small">Откроется в новой вкладке.</p></details>`:''}</article>`;
  }
  function attach(host,options={}){
   if(!host||!data())return null;
@@ -47,7 +47,7 @@
     const id=item.dataset.sheetId;
     if(!filled){
      const from=options.lessonId||'';
-     item.querySelector('.ref-rule-body').innerHTML=card(id,{showPins:options.showPins===true})+`<p class="ref-full-link"><a href="${E(sheetHref(id,options.referenceBase,from))}" target="_blank" rel="noopener">Открыть лист с тренажёрами ↗</a><span class="ref-small"> В новой вкладке; задача останется здесь.</span></p>`;
+     item.querySelector('.ref-rule-body').innerHTML=card(id,{showPins:options.showPins===true,externalLinks:options.externalLinks})+(options.externalLinks===false?'':`<p class="ref-full-link"><a href="${E(sheetHref(id,options.referenceBase,from))}" target="_blank" rel="noopener">Открыть лист с тренажёрами ↗</a><span class="ref-small"> В новой вкладке; задача останется здесь.</span></p>`);
      filled=true;
     }
     options.onReveal?.(id);
