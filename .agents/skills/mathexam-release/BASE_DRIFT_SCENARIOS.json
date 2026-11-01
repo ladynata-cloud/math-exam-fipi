@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "fixture": "mathexam-release-base-drift-merge-guard",
   "symbols": {
     "authorizedBase": "B0",
@@ -9,9 +9,9 @@
     "mergeCommit": "M1"
   },
   "invariants": {
-    "driftAction": "STOP",
-    "staleAuthorization": "invalid",
-    "branchRepair": "forbidden",
+    "driftAction": "STOP_STALE_ATTEMPT_AND_REVALIDATE",
+    "staleAuthorization": "standing_persists_exact_limit_does_not_expand",
+    "branchRepair": "ordinary_history_preserving_merge_with_new_validation",
     "fullTreeIdentity": "base_unchanged_only",
     "driftIdentity": [
       "parent_to_merge_delta",
@@ -33,7 +33,8 @@
         "virtualMerge": "not_required",
         "fullTreeComparison": "allowed",
         "decision": "continue_identity_and_gate_checks"
-      }
+      },
+      "authorizationMode": "standing"
     },
     {
       "id": "base_advanced_before_merge",
@@ -41,10 +42,12 @@
       "actualMain": "B1",
       "expected": {
         "baseDriftDetected": true,
-        "authorization": "invalid",
-        "decision": "STOP",
-        "newOwnerAuthorizationRequired": true
-      }
+        "authorization": "standing",
+        "decision": "revalidate_then_continue_if_in_scope",
+        "newOwnerAuthorizationRequired": false,
+        "rerunGates": "required"
+      },
+      "authorizationMode": "standing"
     },
     {
       "id": "old_authorization_invalidated",
@@ -55,7 +58,8 @@
         "authorization": "invalid",
         "mergeAllowed": false,
         "branchRepair": "forbidden"
-      }
+      },
+      "authorizationMode": "exact"
     },
     {
       "id": "virtual_merge_clean",
@@ -65,8 +69,11 @@
       "expected": {
         "oldAuthorizationRevived": false,
         "rerunGates": "required",
-        "newOwnerAuthorizationRequired": true
-      }
+        "newOwnerAuthorizationRequired": false,
+        "authorization": "standing",
+        "decision": "revalidate_then_continue_if_in_scope"
+      },
+      "authorizationMode": "standing"
     },
     {
       "id": "virtual_merge_conflict",
@@ -75,9 +82,11 @@
       "virtualMerge": "conflict",
       "expected": {
         "mergeAllowed": false,
-        "decision": "STOP",
-        "resolutionTaskRequired": true
-      }
+        "decision": "resolve_routine_conflict_then_validate_new_candidate",
+        "resolutionTaskRequired": false,
+        "unresolvedProductConflict": "ask_owner"
+      },
+      "authorizationMode": "standing"
     },
     {
       "id": "reviewed_patch_cleanly_applies_to_new_base",
@@ -87,18 +96,27 @@
       "expected": {
         "rerunGates": "required",
         "newBaseHeadDiffReport": "required",
-        "newOwnerAuthorizationRequired": true
-      }
+        "newOwnerAuthorizationRequired": false,
+        "authorization": "standing",
+        "decision": "revalidate_then_continue_if_in_scope"
+      },
+      "authorizationMode": "standing"
     },
     {
       "id": "extra_file_in_merge_delta",
       "newlyAuthorizedBase": "B1",
-      "reviewedChangedFiles": ["docs/REVIEW_POLICY.md"],
-      "mergeDeltaFiles": ["docs/REVIEW_POLICY.md", "unexpected.txt"],
+      "reviewedChangedFiles": [
+        "docs/REVIEW_POLICY.md"
+      ],
+      "mergeDeltaFiles": [
+        "docs/REVIEW_POLICY.md",
+        "unexpected.txt"
+      ],
       "expected": {
         "identity": "fail",
         "decision": "STOP"
-      }
+      },
+      "authorizationMode": "standing"
     },
     {
       "id": "identical_blob_and_patch_id",
@@ -108,8 +126,9 @@
       "extraFiles": false,
       "expected": {
         "identity": "pass",
-        "mergeAllowed": "only_with_new_owner_authorization"
-      }
+        "mergeAllowed": "with_standing_permission_and_all_applicable_checks"
+      },
+      "authorizationMode": "standing"
     },
     {
       "id": "different_blob_or_patch_id",
@@ -119,7 +138,8 @@
       "expected": {
         "identity": "fail",
         "decision": "STOP"
-      }
+      },
+      "authorizationMode": "standing"
     },
     {
       "id": "merge_parent_mismatch",
@@ -128,7 +148,8 @@
       "expected": {
         "identity": "fail",
         "decision": "STOP"
-      }
+      },
+      "authorizationMode": "standing"
     },
     {
       "id": "concurrent_commits_unknown_authorization",
@@ -139,7 +160,8 @@
         "includedInOldAuthorization": false,
         "classificationRequired": true,
         "decision": "STOP"
-      }
+      },
+      "authorizationMode": "standing"
     },
     {
       "id": "full_tree_comparison_only_when_base_unchanged",
@@ -150,7 +172,22 @@
         "methodAllowed": false,
         "requiredMethod": "parent_delta_blob_and_stable_patch_id",
         "decision": "STOP"
+      },
+      "authorizationMode": "standing"
+    },
+    {
+      "id": "later_exact_base_limit",
+      "authorizationMode": "exact",
+      "authorizedBase": "B0",
+      "actualMain": "B1",
+      "expected": {
+        "decision": "STOP",
+        "newOwnerAuthorizationRequired": true
       }
     }
-  ]
+  ],
+  "authorizationModes": {
+    "standing": "default under OWNER_RELEASE_AUTHORIZATION.md",
+    "exact": "later explicit task-specific base/head restriction"
+  }
 }

@@ -8,6 +8,7 @@ add local constraints, but they must not weaken this file.
 - [Current project status](docs/PROJECT_STATUS.md)
 - [Roadmap](docs/ROADMAP.md)
 - [Review policy](docs/REVIEW_POLICY.md)
+- [Standing publication authorization](docs/OWNER_RELEASE_AUTHORIZATION.md)
 - [Task specification template](docs/tasks/TASK_TEMPLATE.md)
 - [Trainer Bridge Platform ADR (Proposed)](docs/adr/0001-trainer-bridge-platform.md)
 - [PR workflow skill](.agents/skills/mathexam-pr/SKILL.md)
@@ -63,38 +64,44 @@ agent may:
 5. create logical commits;
 6. push the task branch;
 7. open a Draft PR and complete its body;
-8. report the result and stop before merge.
+8. report the result and continue through the release workflow when the
+   [standing publication authorization](docs/OWNER_RELEASE_AUTHORIZATION.md)
+   applies.
 
-Merge always requires a separate, explicit owner authorization. `START`, task
-approval, review approval, and permission to push or open a PR do not authorize
-merge, auto-merge, or deployment.
+The owner's 2026-11-02 standing decision authorizes publication of requested or
+approved MathExam work after applicable checks, without a fresh confirmation
+for each PR and without mandatory external audit. A later explicit task-specific
+restriction overrides that permission. Task approval still defines scope;
+passing tests alone never authorizes unrelated work.
 
 ### Base-drift merge guard
 
 Immediately before every merge, query the authoritative current remote `main`
-SHA and compare it with the base SHA named in the owner's merge authorization.
+SHA and compare it with the base SHA used for the completed validation.
 A cached local tracking ref is not sufficient when it may be stale, and
 `mergeable=true` does not replace this comparison.
 
-If the SHAs differ, stop before merge. The prior merge authorization is invalid,
-and the executing agent must not update, merge, rebase, reset, or otherwise
-repair the branch automatically. Build a read-only virtual merge on the new
-`main`, rerun the applicable gates, classify the provenance of concurrent
-commits, and report the new base, head, and diff. A new explicit owner merge
-authorization is required.
+If the SHAs differ, stop the stale merge attempt. Build a read-only virtual
+merge on the new `main`, classify concurrent commits, rerun applicable gates
+and record the new base, head and diff. Under the standing authorization, a
+clean in-scope result can proceed without another permission request. Ordinary
+history-preserving branch maintenance and routine conflict resolution are
+allowed, followed by validation of the new candidate. Unexplained changes or
+unresolved product conflicts remain blockers. A later exact-base owner limit
+must be respected rather than widened by this policy.
 
 When the base is unchanged, release verification may compare the full reviewed
-head tree with the expected squash-merge tree. After base drift and a new owner
-authorization, do not compare the composed `main` tree with the old reviewed
-head tree. Verify the newly authorized base-to-merge delta, changed-file set,
+head tree with the expected squash-merge tree. After base drift and revalidation,
+do not compare the composed `main` tree with the old reviewed head tree.
+Verify the newly validated base-to-merge delta, changed-file set,
 affected-file blob identity, stable patch ID, absence of extra files, and that
-the merge parent is the newly authorized base. Follow
+the merge parent is the newly validated base. Follow
 [the review policy](docs/REVIEW_POLICY.md) and
 [the release workflow](.agents/skills/mathexam-release/SKILL.md) for the full
 procedure.
 
 Without separate explicit owner authorization, do not use force operations,
-`reset`, `rebase`, a non-fast-forward merge, admin override, or disabled TLS
+`reset`, `rebase`, admin override, or disabled TLS
 verification. Do not weaken tests, gates, or branch protection to obtain a
 passing result.
 
@@ -102,15 +109,14 @@ passing result.
 
 Every task declares one review level: `SMALL`, `MEDIUM`, `HIGH`, or
 `NEW_ARCHETYPE`. Apply [the review policy](docs/REVIEW_POLICY.md). Claude review
-is not required for every `SMALL` PR.
+is optional under the standing owner policy unless specifically requested.
 
-For a new trainer or a substantial change to its learning sequence or
-interaction, consult Claude before implementation and request a focused review
-of the ready result. Follow the owner's
-[trainer consultation workflow](docs/TRAINER_CLAUDE_CONSULTATION.md). Record
-design advice separately from an exact-head release verdict. Trivial copy and
-mechanical styling fixes do not need a paid consultation. An unavailable API
-must be reported honestly; it is not approval or a standing review waiver.
+For a new trainer or substantial learning-sequence/interaction change, review
+the learning design and ready result. External consultation follows the
+[trainer consultation workflow](docs/TRAINER_CLAUDE_CONSULTATION.md) only when
+requested for that task. The owner's standing waiver removes the external
+audit prerequisite, not mathematics, code review or applicable technical gates.
+Record external work as not performed when no provider review took place.
 
 Remote review handoffs must be sanitized. Include only the minimum diff,
 context, and public or approved repository information needed for review. Never
