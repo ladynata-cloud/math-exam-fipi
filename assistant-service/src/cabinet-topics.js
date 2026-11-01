@@ -1,6 +1,6 @@
 import { exactKeys, requireValue } from './errors.js';
 import { containsSensitiveText } from './privacy.js';
-import { solveCommon } from './tutor.js';
+import { solveCommon, mistakeFeedback } from './tutor.js';
 import { COURSE_PROFILE, COURSE_TOPIC, ICHENSKAYA_TOPIC, prepareCourseQuestion, answerCourseOffline } from './course-context.js';
 
 // Original topic notes for bounded cabinet profiles. No pupil identity,
@@ -218,16 +218,16 @@ function parsedAttempt(value) {
   if (f && BigInt(f[2]) !== 0n) return rat(BigInt(f[1]), BigInt(f[2]));
   return decimal(text);
 }
-function feedback(attempt, expected) {
+function feedback(attempt, expected, mistakes, simpler) {
   if (!attempt || !expected) return '';
   const parsed = parsedAttempt(attempt);
   if (!parsed) return 'Такую запись ответа здесь не проверяю. Можно ввести число или обыкновенную дробь.';
   return parsed.n === expected.n && parsed.d === expected.d
     ? 'Твоё число подходит. Проверь ещё способ решения.'
-    : 'Получилось другое число. Проверь действие по подсказке.';
+    : mistakeFeedback(parsed, expected, mistakes, simpler) || 'Получилось другое число. Проверь действие по подсказке.';
 }
-function calculation(title, expected, steps, hints, shorts, check) {
-  return { title, expected, steps, hints, shorts, check,
+function calculation(title, expected, steps, hints, shorts, check, mistakes = []) {
+  return { title, expected, steps, hints, shorts, check, mistakes,
     text: 'Разберём вычисление по небольшим шагам.' };
 }
 
@@ -254,12 +254,22 @@ function arithmetic(topic, question) {
   if (op === '+' || op === '-') {
     const places = Math.max(a.places, b.places), denominator = 10n ** BigInt(places);
     const first = a.n * denominator / a.d, second = b.n * denominator / b.d;
+    const rawFirst = a.n * 10n ** BigInt(a.places) / a.d;
+    const rawSecond = b.n * 10n ** BigInt(b.places) / b.d;
+    const mistakes = [{ value: rat(rawFirst + (op === '+' ? rawSecond : -rawSecond), denominator),
+      text: 'Похоже, цифры сложены или вычтены без выравнивания разрядов. Запиши запятую под запятой: десятые под десятыми, сотые под сотыми.',
+      shortText: 'Похоже, перепутаны разряды. Запиши запятую под запятой.' }];
+    if (op === '+' && a.places === 1 && b.places === 1 && a.n >= 0n && a.n < a.d && b.n >= 0n && b.n < b.d) {
+      mistakes.push({ value: rat(rawFirst * 10n + rawSecond, 100n),
+        text: 'Похоже, цифры после запятой записаны рядом вместо сложения. Здесь оба числа состоят из десятых: складывай количества одинаковых долей.',
+        shortText: 'Похоже, цифры записаны рядом. Сложи количества десятых.' });
+    }
     return calculation(op === '+' ? 'Складываем десятичные дроби' : 'Вычитаем десятичные дроби', expected,
       [`Запишем оба числа с ${places} цифрами после запятой: ${decimalText(a, places)} и ${decimalText(b, places)}.`,
         `В долях размера 1/${denominator} это ${first} и ${second}. Учитываем знаки чисел.`,
         `Выполняем действие над одинаковыми долями: ${first} ${op === '+' ? '+' : '−'} (${second}) = ${op === '+' ? first + second : first - second}.`, answer],
       card.steps, ['Посмотри на действие и знаки чисел.', 'Запиши запятую под запятой.', 'Допиши нули справа после запятой, если нужно.', 'Складывай или вычитай одинаковые разряды.', 'Проверь обратным действием.'],
-      op === '+' ? 'Если из суммы вычесть второе слагаемое, получится первое.' : 'Если к разности прибавить вычитаемое, получится уменьшаемое.');
+      op === '+' ? 'Если из суммы вычесть второе слагаемое, получится первое.' : 'Если к разности прибавить вычитаемое, получится уменьшаемое.', mistakes);
   }
   if (op === '*') {
     const first = a.n * 10n ** BigInt(a.places) / a.d, second = b.n * 10n ** BigInt(b.places) / b.d;
@@ -268,14 +278,26 @@ function arithmetic(topic, question) {
         `Без запятых получаем: ${first} · (${second}) = ${first * second}.`,
         `Общее число цифр после запятой: ${a.places + b.places}. Делим целое произведение на ${10n ** BigInt(a.places + b.places)}.`, answer],
       card.steps, ['Посчитай цифры после запятой.', 'Умножь числа без запятых.', 'Сложи количества цифр после запятой.', 'Поставь запятую. При необходимости допиши нули.', 'Проверь знак и примерный размер результата.'],
-      'Можно проверить результат через обыкновенные дроби. Если множитель ненулевой, обратная проверка — деление на него.');
+      'Можно проверить результат через обыкновенные дроби. Если множитель ненулевой, обратная проверка — деление на него.',
+      [{ value: rat(first * second),
+        text: 'Похоже, числа перемножены без запятых, а размер долей не восстановлен. Посчитай все цифры после запятой в обоих множителях.',
+        shortText: 'Похоже, забыта запятая. Посчитай цифры после запятой в обоих множителях.' },
+      { value: rat(first * second, 10n ** BigInt(Math.max(a.places, b.places))),
+        text: 'Похоже, учтены цифры после запятой только одного множителя. При умножении количества этих цифр в обоих множителях складывают.',
+        shortText: 'Похоже, учтён только один множитель. Сложи количества цифр после запятой в обоих.' }]);
   }
   const scale = 10n ** BigInt(b.places), scaledA = rat(a.n * scale, a.d), scaledB = b.n * scale / b.d;
   return calculation(topic === 'decimal-powers-ten' ? 'Делим на степень числа 10' : 'Делим десятичные дроби', expected,
     [`Делитель ${match[3]} не равен нулю.`, `Умножаем оба числа на ${scale}: ${decimalText(scaledA)} : (${scaledB}). Частное сохраняется.`,
       `Выполняем деление. Точное значение можно записать дробью: ${fraction(expected)}.`, answer],
     card.steps, ['Проверь, что делитель не ноль.', 'Посчитай цифры после запятой у делителя.', 'Умножь оба числа на одно и то же число 10, 100 или 1000.', 'Раздели. Не обрывай бесконечную запись как будто это точный ответ.', 'Умножь частное на исходный делитель.'],
-    'Произведение точного частного и исходного делителя равно делимому. Цифры в круглых скобках после запятой повторяются бесконечно.');
+    'Произведение точного частного и исходного делителя равно делимому. Цифры в круглых скобках после запятой повторяются бесконечно.',
+    [{ value: rat(expected.n, expected.d * scale),
+      text: 'Похоже, увеличен только делитель. Чтобы частное сохранилось, умножь и делимое, и делитель на одно и то же число.',
+      shortText: 'Похоже, изменён только делитель. Умножай оба числа одинаково.' },
+    { value: rat(expected.n * scale, expected.d),
+      text: 'Похоже, увеличено только делимое. Чтобы частное сохранилось, умножь и делимое, и делитель на одно и то же число.',
+      shortText: 'Похоже, изменено только делимое. Умножай оба числа одинаково.' }]);
 }
 
 function compare(question) {
@@ -423,7 +445,7 @@ export function answerCabinetOffline(input, cards) {
   const common = { topic: safe.topic, sources, sourceIds: selected.map(row => row.id) };
   if (solved) {
     const complete = safe.mode === 'explain';
-    let note = feedback(safe.attempt, solved.expected);
+    let note = feedback(safe.attempt, solved.expected, solved.mistakes, safe.simpler);
     if (solved.comparison && safe.attempt) note = /^[<>=]$/.test(safe.attempt)
       ? safe.attempt === solved.comparison ? 'Знак сравнения подходит.' : 'Проверь знак сравнения по разрядам.'
       : 'Для проверки сравнения введи один знак: <, > или =.';

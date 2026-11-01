@@ -1,6 +1,27 @@
 # MathExam project status
 
-## Current preparation: assistant dialogue integration, 2026-11-02
+## Current preparation: local assistant mistake feedback, 2026-11-02
+
+- [Task](tasks/MATHEXAM_ASSISTANT_LOCAL_FEEDBACK_20261102.md), MEDIUM;
+  base `059ee8c9f5baeb0b333c96d9b8516edb570666b2`, branch
+  `feat/assistant-local-error-feedback-20261102`.
+- Deterministic feedback explains bounded fraction, equation and decimal
+  mistakes; the shared NOD/NOK solver now handles two to five positive integers.
+  Correct equivalent answers take precedence, one hint remains partial and
+  full results require the existing explicit explanation action.
+- Local helper tests 138/138 and both source projections pass. An independent
+  oracle checks 3,875 multi-input lists. Synthetic HTTP makes zero model calls.
+  Local Chromium launch was blocked by the environment; the Draft PR must
+  record the applicable browser/container CI results for its published head.
+  [Verification](reports/MATHEXAM_ASSISTANT_LOCAL_FEEDBACK_20261102.md).
+- GitHub confirms [PR375](https://github.com/ladynata-cloud/math-exam-fipi/pull/375)
+  merged into this base on 2026-11-01 at 18:42:23 UTC. This records repository
+  integration, not a fresh check of production deployment.
+- OpenAI [PR399](https://github.com/ladynata-cloud/math-exam-fipi/pull/399)
+  remains separate. No model calls, pupil access, merge or deployment belong
+  to this preparation.
+
+## Historical preparation: assistant dialogue integration, 2026-11-02
 
 - Continuing [PR375](https://github.com/ladynata-cloud/math-exam-fipi/pull/375)
   against `6b9c327f2ca438cb7e7620ef302876de467fac19`, preserving published
