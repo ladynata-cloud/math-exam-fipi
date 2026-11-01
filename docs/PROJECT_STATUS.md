@@ -1,5 +1,24 @@
 # MathExam project status
 
+## Current preparation: assistant dialogue integration, 2026-11-02
+
+- Continuing [PR375](https://github.com/ladynata-cloud/math-exam-fipi/pull/375)
+  against `6b9c327f2ca438cb7e7620ef302876de467fac19`, preserving published
+  course navigation, LCM hints, source provenance and unrelated content.
+- The same root task and bounded previous exchanges support follow-up
+  questions; fresh external acknowledgement and teacher/budget controls remain.
+  Source-only textbook helpers keep their separate existing behavior.
+- Fresh local helper 131/131, cabinet 369/369 and assistant DOM 40/40 checks
+  pass, together with dialogue/cabinet/mobile integration and current Vilenkin
+  navigation/LCM browser gates. No external model calls or learner changes.
+- [Task](tasks/MATHEXAM_ASSISTANT_GRADE6_DIALOGUE_V1.md) and
+  [verification](reports/MATHEXAM_ASSISTANT_DIALOGUE_REVALIDATION_20261102.md).
+  Exact published head and final CI are recorded in the Draft PR. Independent
+  and external HIGH review remain release gates; no merge/deployment approval
+  is inferred from the owner's continuation request.
+- Separate OpenAI adapter [PR399](https://github.com/ladynata-cloud/math-exam-fipi/pull/399)
+  remains a Draft and is not included or enabled by this dialogue task.
+
 ## Current: finance deposit explanation correction, 2026-11-01
 
 - [Task](tasks/EGE_P13_FINANCE_STEP_HINTS_20261101.md), SMALL; the owner explicitly
@@ -3298,3 +3317,31 @@ final exact-head CI and deployment verification; see PR266 for current evidence.
   postmerge gates passed, 70/70 HTTPS resources matched, and live
   320/391/1280px navigation checks passed. This is evidence reconciliation
   within the corrective finance task, not a repeated publication or contact message.
+
+## Historical preparation: grade 6 assistant follow-up questions, 2026-10-31
+
+- [Task](tasks/MATHEXAM_ASSISTANT_GRADE6_DIALOGUE_V1.md), HIGH;
+  Vilenkin NOD/NOK profile and bounded contextual questions beside existing
+  Peterson decimal support. [Validation report](reports/MATHEXAM_ASSISTANT_GRADE6_DIALOGUE_20261030.md).
+- Context is bound to the learner's login and original task; expires 15 minutes
+  after the first answer, is memory-only and never becomes a training dataset.
+- This is a tested candidate, not a live provider activation or deployment.
+  Existing pupils' settings and production data were not modified. External
+  exact-head review, provider eligibility/evaluation and owner release decisions
+  remain separate requirements.
+
+
+## Assistant dialogue revalidation — 2026-10-31
+
+- PR375 is reconciled with current published main `c9bf66e2` including PR380.
+  The shared stylesheet retains both saved-source help and follow-up controls.
+- Independent review found a pending-answer control race. Both server and UI
+  now withhold the answer after teacher control is taken; allowance accounting
+  and existing assessment/session/privacy protections remain intact.
+- The inherited Atanasyan/Ichenskaya source pin is refreshed only after proving
+  unchanged selected teaching records and retaining the original content
+  oracles. Merzlyak's old engine guard is already repaired by published PR376.
+- Free dialogue retains entered task context; automatic saved Vilenkin and
+  embedded Peterson help remain separate source-based paths. No paid model or
+  real learner setting is enabled. Full evidence and remaining release gates:
+  [revalidation report](reports/MATHEXAM_ASSISTANT_DIALOGUE_REVALIDATION_20261031.md).

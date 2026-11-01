@@ -1,5 +1,5 @@
-/* Cabinet help. Authentication stays in the cabinet API; task text exists only
- * in this document. A closed view never displays a late response. */
+/* Cabinet help. Authentication stays in the cabinet API; visible task text stays
+ * on this page; permitted follow-ups use bounded server memory. A closed view never displays a late response. */
 (function (root) {
   'use strict';
   const sourceProfile = 'atanasyan-first-steps';
@@ -10,6 +10,7 @@
   const profileNames = {
     'oge-geometry': 'ОГЭ · Геометрия',
     'peterson-decimals': '6 класс · Петерсон · Десятичные дроби',
+    'vilenkin-grade6': '6 класс · Виленкин · НОД и НОК',
     'triangle-congruence': 'Атанасян · Признаки равенства треугольников',
     'atanasyan-first-steps': '7 класс · Атанасян и Иченская'
   };
@@ -41,6 +42,7 @@
   };
   function messageFor(error) {
     const code = error?.code || error?.message || '';
+    if (/DIALOGUE_EXPIRED|DIALOGUE_CONTEXT/.test(code)) return 'Контекст уточнения уже недоступен. Попроси новую подсказку к условию, а затем уточни её. Предыдущие ответы остались на странице.';
     if (/PILOT_FULL|PILOT_LIMIT|CAPACITY|MAX_PUPIL/.test(code)) return 'В испытании уже участвуют три кабинета. Сначала отключите помощника у одного участника.';
     if (/DAILY|QUOTA|BUDGET|LIMIT/.test(code)) return 'Сегодняшний лимит подсказок закончился. Можно продолжить по материалам курса или обратиться к преподавателю.';
     if (/CONFLICT|VERSION/.test(code)) return 'Настройки изменились в другом окне. Откройте их снова перед сохранением.';
@@ -278,12 +280,13 @@
       }
       const profileId = status.profile.id;
       let quotaKnown = Number.isInteger(status.remaining);
+      let followUpAnchor = null, taskRevision = 0;
       const section = frame(status.externalEnabled ? 'MaxExam 0.0 · помощник' : 'MaxExam 0.0 · проверенные подсказки');
       section.append(node('p', status.profile.title || profileNames[status.profile.id], { class: 'cabinet-assistant-profile' }));
       const modeNotice = node('p', '', { class: 'cabinet-assistant-mode', 'data-assistant-mode': status.mode || 'unavailable' });
       section.append(modeNotice);
       section.append(node('p', courseMode ? (floating?'Условие уже выбрано. Помощь отмечается в работе; доказательство проверяет преподаватель.':'Помощник знает выбранную задачу и текущий шаг этого курса. Условие переписывать не нужно. Помощь отмечается в твоей работе; доказательство проверяет преподаватель.')
-        : context.attemptId ? 'Помощь относится к открытой работе. После подсказки результат учитывается как выполненный с помощью.' : 'Для задачи из курса, открытого в другой вкладке, впиши условие сюда. Помощник не видит ту вкладку.', { class: 'cabinet-assistant-context' }));
+        : context.attemptId ? 'Проверь тему и впиши условие открытой работы. Уточнения продолжают показанную ниже подсказку. Помощь отмечается в этой работе.' : 'Для задачи из курса, открытого в другой вкладке, впиши условие сюда. Помощник не видит ту вкладку.', { class: 'cabinet-assistant-context' }));
       const form = node('form', null, { class: 'cabinet-assistant-form' });
       const topics = node('select', null, { name: 'assistant-topic' });
       for (const topic of status.profile.topics) topics.append(node('option', topic.title, { value: topic.id }));
@@ -292,7 +295,7 @@
       const example = button('Попробовать пример темы', () => {
         if (busy) return;
         question.value = String(status.profile.topics.find(topic => topic.id === topics.value)?.example || '').slice(0, 1000);
-        attempt.value = ''; question.focus();
+        attempt.value = ''; resetTask(); question.focus();
       }); example.dataset.assistantExample = '';
       if (courseMode) {
         question.required = false;
@@ -303,7 +306,7 @@
       } else form.append(field('Тема', topics), field('Условие задачи или вопрос', question, 'Только математика: без имени, телефона, ссылок и личных сведений.'), example, field('Мой ответ или шаг, если уже пробовал', attempt));
       const consent = node('input', null, { type: 'checkbox', name: 'assistant-external-consent' });
       const consentRow = node('label', null, { class: 'cabinet-assistant-check' });
-      consentRow.append(consent, node('span', 'Разрешаю отправить математическое условие и мой шаг внешней модели для этого объяснения.'));
+      consentRow.append(consent, node('span', 'Разрешаю отправить внешней модели условие, мой шаг и, при уточнении, новый вопрос с несколькими предыдущими сообщениями этого диалога. Только для этого ответа.'));
       const actions = node('div', null, { class: 'actions cabinet-assistant-actions' });
       const hint = node('button', 'Хочу подсказку', { type: 'submit', class: 'primary' });
       const simpler = button('Объясни проще', () => ask('hint', true));
@@ -320,9 +323,23 @@
         announce(message, restored ? 'Состояние помощника обновлено. Условие и предыдущие шаги сохранены на странице.' : 'Не удалось проверить подключение. Условие и предыдущие шаги остались на странице.', !restored);
       });
       const answers = node('div', null, { class: 'cabinet-assistant-answers', 'aria-label': 'Показанные шаги' });
+      const followUpForm = node('form', null, { class: 'cabinet-assistant-follow-up', 'data-assistant-follow-up': '', hidden: '' });
+      const followUpQuestion = node('textarea', null, { name: 'assistant-follow-up', rows: 2, maxlength: 400, autocomplete: 'off', spellcheck: 'false' });
+      const followUpConsent = node('input', null, { type: 'checkbox', name: 'assistant-follow-up-consent' });
+      const followUpConsentRow = node('label', null, { class: 'cabinet-assistant-check' });
+      followUpConsentRow.append(followUpConsent, node('span', 'Разрешаю отправить внешней модели этот вопрос, условие, мой шаг и несколько предыдущих сообщений диалога. Только для этого ответа.'));
+      const followUpSubmit = node('button', 'Задать вопрос', { type: 'submit', class: 'primary' });
+      const freshTask = button('Новая задача', () => { if (!busy) { question.value = ''; attempt.value = ''; resetTask(); question.focus(); } });
+      followUpForm.append(field('Уточнить этот шаг', followUpQuestion, 'Например: «Почему здесь нужно домножить на 10?» Только математика, без личных сведений.'), followUpConsentRow, followUpSubmit,
+        node('p', 'Диалог относится к условию выше. После выхода со страницы начни с новой подсказки.', { class: 'cabinet-assistant-context' }), freshTask);
       section.append(form, quota, message, reconnect, answers);
+      if (!courseMode) section.append(followUpForm);
       appendLinks(section);
       const available = () => status.enabled === true && status.profile?.id === profileId && status.mode !== 'unavailable' && !status.examActive;
+      const taskSignature = () => JSON.stringify([topics.value, question.value.trim(), attempt.value.trim(), context.attemptId || null]);
+      function resetTask() {
+        taskRevision++; followUpAnchor = null; followUpQuestion.value = ''; hintLevel = 0; fingerprint = ''; consent.checked = false; followUpConsent.checked = false; update();
+      }
       let observedCourse = courseMode ? JSON.stringify(courseSnapshot()) : '';
       const update = () => {
         if (courseMode) {
@@ -337,13 +354,20 @@
         if (hintLevel >= (courseMode ? 3 : 8)) hint.disabled = true;
         reconnect.hidden = quotaKnown && available(); reconnect.disabled = busy;
         const externalActive = status.externalEnabled === true && status.profile.id !== sourceProfile;
+        if (!externalActive || (followUpAnchor && (followUpAnchor.signature !== taskSignature() || followUpAnchor.settingsVersion !== status.version))) followUpAnchor = null;
+        followUpForm.hidden = courseMode || !externalActive || !followUpAnchor;
+        followUpQuestion.readOnly = busy;
+        followUpConsent.disabled = busy;
+        if (followUpForm.hidden) followUpConsent.checked = false;
+        followUpSubmit.disabled = busy || !quotaKnown || remaining < 1 || !available() || !followUpAnchor;
+        freshTask.disabled = busy;
         if (externalActive) form.insertBefore(consentRow, actions);
         else { consentRow.remove(); consent.checked = false; }
         section.querySelector('h2').textContent = externalActive ? 'MaxExam 0.0 · помощник' : 'MaxExam 0.0 · проверенные подсказки';
         modeNotice.dataset.assistantMode = status.mode || 'unavailable';
         modeNotice.textContent = status.examActive ? 'Помощник будет доступен после завершения проверочной работы.'
           : !available() ? 'Подключение или настройки помощника изменились. Проверь подключение; условие и предыдущие шаги останутся на странице.'
-            : externalActive ? 'Можно попросить внешнюю модель объяснить шаг. Её ответ может потребовать проверки преподавателем.'
+            : externalActive ? 'Можно попросить внешнюю модель объяснить шаг, а затем задать уточняющий вопрос. Ответ модели может содержать ошибку; сложное место проверь с преподавателем.'
               : courseMode ? (floating?'Подсказки из разбора этой задачи.':'Это подсказки MathExam из проверенного разбора выбранной задачи. Внешняя модель не вызывается.')
                 : 'Внешняя модель не подключена. Проверенные подсказки MathExam помогают повторить правила и разобрать поддерживаемые примеры.';
       };
@@ -357,9 +381,9 @@
           quotaKnown = false; return false;
         }
       }
-      function showAnswer(answer, sourceQuestion, contextMode, capturedCourse, capturedLabel) {
+      function showAnswer(answer, sourceQuestion, contextMode, capturedCourse, capturedLabel, isFollowUp = false) {
         const card = node('article', null, { class: 'cabinet-assistant-answer', 'data-assistant-answer': '' });
-        card.append(node('p', contextMode === 'course-task' && capturedCourse
+        card.append(node('p', isFollowUp ? 'Уточнение: ' + sourceQuestion : contextMode === 'course-task' && capturedCourse
           ? `${capturedLabel} · шаг ${capturedCourse.stepIndex + 1}`
           : contextMode === 'current-task' ? 'Подсказка к текущему заданию кабинета' : 'Задача: ' + sourceQuestion, { class: 'cabinet-assistant-question' }));
         card.append(node('h3', answer.title || 'Следующий шаг'));
@@ -393,7 +417,7 @@
         }
         card.append(feedback, feedbackMessage); answers.append(card);if(floating&&panelOpen&&panel)panel.scrollTop=panel.scrollHeight;
       }
-      async function ask(mode, easier) {
+      async function ask(mode, easier, isFollowUp = false) {
         if (busy || !current() || !quotaKnown || status.remaining < 1 || !available()) return;
         if (context.canAsk && !context.canAsk()) { announce(message, 'Сейчас работа открыта для просмотра. Вернись к текущему решению, чтобы получить подсказку.', true); return; }
         if (!form.reportValidity()) return;
@@ -402,9 +426,19 @@
         const capturedLabel = courseMode ? taskLabel() : '';
         const text = question.value.trim();
         if (!courseMode && !text) { question.focus(); return; }
-        const signature = JSON.stringify([courseMode ? capturedCourse : topics.value, text, attempt.value.trim()]);
+        const capturedTopic = topics.value, capturedAttempt = attempt.value.trim(), capturedTaskRevision = taskRevision;
+        const signature = courseMode ? JSON.stringify([capturedCourse, text, capturedAttempt]) : taskSignature();
+        const followUpText = isFollowUp ? followUpQuestion.value.trim() : '';
+        const parent = isFollowUp ? followUpAnchor : null;
+        if (isFollowUp) {
+          if (courseMode || status.externalEnabled !== true || !parent || parent.signature !== signature) return;
+          if (!followUpText) { followUpQuestion.focus(); return; }
+          if (followUpText.length > 400 || !followUpQuestion.reportValidity()) return;
+          if (!followUpConsent.checked) { announce(message, 'Для уточнения отметь согласие на отправку этого вопроса и контекста внешней модели.', true); followUpConsent.focus(); return; }
+        }
+        const externalConsent = status.profile.id !== sourceProfile && status.externalEnabled === true && (isFollowUp ? followUpConsent.checked : consent.checked);
         const same = signature === fingerprint;
-        const level = easier && same ? Math.max(1, hintLevel) : same ? Math.min(8, hintLevel + 1) : 1;
+        const level = (isFollowUp || easier) && same ? Math.max(1, hintLevel) : same ? Math.min(8, hintLevel + 1) : 1;
         if (!root.crypto?.randomUUID) { announce(message, 'Для помощника нужно защищённое соединение. Открой кабинет по HTTPS.', true); return; }
         busy = true; update(); announce(message, 'Готовим понятный шаг…');
         let sent = false;
@@ -414,6 +448,9 @@
           if (allowed === false || (context.canAsk && !context.canAsk())) {
             announce(message, 'Работа сейчас открыта для просмотра. Подсказка не запрошена.', true); return;
           }
+          if (!courseMode && (capturedTaskRevision !== taskRevision || taskSignature() !== signature)) {
+            announce(message, 'Условие изменилось. Попроси подсказку к новой задаче.', true); return;
+          }
           // A callback may await local persistence. Do not cross to a different
           // task while it is pending; step changes remain labelled by capture.
           sent = true;
@@ -421,31 +458,49 @@
             requestId: root.crypto.randomUUID(), courseContext: capturedCourse, attempt: attempt.value.trim(),
             mode, hintLevel: level, simpler: easier, externalConsent: false
           } : {
-            requestId: root.crypto.randomUUID(), topic: topics.value, question: text, attempt: attempt.value.trim(),
+            requestId: root.crypto.randomUUID(), topic: capturedTopic, question: text, attempt: capturedAttempt,
             mode, hintLevel: level, simpler: easier,
-            externalConsent: status.profile.id !== sourceProfile && status.externalEnabled === true && consent.checked,
+            externalConsent,
+            ...(isFollowUp ? { followUp: { answerId: parent.answerId, question: followUpText } } : {}),
             ...(context.attemptId ? { attemptId: context.attemptId } : {})
           });
           if (!result.answer || typeof result.answer.answerId !== 'string') throw Error('INVALID_RESPONSE');
           if (courseMode && (result.contextMode !== 'course-task'
             || JSON.stringify(result.courseContext) !== JSON.stringify(capturedCourse))) throw Error('INVALID_RESPONSE');
           status.remaining = Number.isInteger(result.remaining) ? result.remaining : Math.max(0, status.remaining - 1);
-          if (!courseMode || JSON.stringify(courseSnapshot()) === JSON.stringify(capturedCourse)) { hintLevel = level; fingerprint = signature; }
+          // Control can change while the service is preparing an explanation.
+          // Keep the spent allowance, but never reveal or anchor a late answer
+          // after the current work has become read-only.
+          if (context.canAsk && !context.canAsk()) {
+            followUpAnchor = null; hintLevel = 0; fingerprint = '';
+            announce(message, 'Управление работой изменилось. Подсказка не показана. Вернись к текущему решению.', true);
+            return;
+          }
+          const stillSameTask = courseMode ? JSON.stringify(courseSnapshot()) === JSON.stringify(capturedCourse)
+            : capturedTaskRevision === taskRevision && taskSignature() === signature;
+          if (stillSameTask) { hintLevel = level; fingerprint = signature; }
           else { hintLevel = 0; fingerprint = ''; }
-          showAnswer(result.answer, text, result.contextMode, capturedCourse, capturedLabel); announce(message, result.notice || 'Подсказка добавлена. Предыдущие шаги остаются ниже.');
+          if (!courseMode) {
+            followUpAnchor = stillSameTask && result.followUpAvailable === true
+              ? { answerId: result.answer.answerId, signature, settingsVersion: status.version } : null;
+            if (isFollowUp && stillSameTask && result.followUpAvailable === true && followUpQuestion.value.trim() === followUpText) followUpQuestion.value = '';
+          }
+          showAnswer(result.answer, isFollowUp ? followUpText : text, result.contextMode, capturedCourse, capturedLabel, isFollowUp); announce(message, result.notice || 'Подсказка добавлена. Предыдущие шаги остаются ниже.');
           context.onAnswer?.(result);
         } catch (error) {
           if (!current()) return;
           if (error.code === 'LEARNING_ACCOUNT_CHANGED') { destroy(); return; }
+          if (/DIALOGUE_EXPIRED|DIALOGUE_CONTEXT/.test(error.code || '')) { followUpAnchor = null; hintLevel = 0; fingerprint = ''; }
           announce(message, messageFor(error), true);
           // An unsuccessful bridge call may still consume its reservation. Read
           // status once; never repeat the model request or discard this view.
           if (sent) await refreshStatus();
-        } finally { if (current()) { busy = false; consent.checked = false; update(); } }
+        } finally { if (current()) { busy = false; consent.checked = false; followUpConsent.checked = false; update(); } }
       }
       form.addEventListener('submit', event => { event.preventDefault(); ask('hint', false); });
-      topics.addEventListener('change', () => { fingerprint = ''; hintLevel = 0; update(); });
-      for (const input of [question, attempt]) input.addEventListener('input', () => { if (!busy) { hintLevel = 0; fingerprint = ''; update(); } });
+      followUpForm.addEventListener('submit', event => { event.preventDefault(); ask('hint', false, true); });
+      topics.addEventListener('change', resetTask);
+      for (const input of [question, attempt]) input.addEventListener('input', resetTask);
       refreshView = update;
       update();
     }

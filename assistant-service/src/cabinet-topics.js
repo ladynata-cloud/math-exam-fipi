@@ -1,8 +1,9 @@
 import { exactKeys, requireValue } from './errors.js';
 import { containsSensitiveText } from './privacy.js';
+import { solveCommon } from './tutor.js';
 import { COURSE_PROFILE, COURSE_TOPIC, ICHENSKAYA_TOPIC, prepareCourseQuestion, answerCourseOffline } from './course-context.js';
 
-// Original topic notes for three bounded cabinet profiles. No pupil identity,
+// Original topic notes for bounded cabinet profiles. No pupil identity,
 // account information, conversation history or textbook answer bank belongs here.
 const SITE = 'https://mathexam.space';
 const PETERSON = `${SITE}/school/peterson6/`;
@@ -85,6 +86,16 @@ rows.push([ICHENSKAYA_TOPIC, 'Иченская · подсказка к выбр
   'Выбери работу, вариант и номер задания. Помощник использует условие и проверенный разбор именно этой карточки.',
   ['Проверь номер работы, вариант и задание.', 'Прочитай условие и найди данные на чертеже.', 'Попробуй обосновать текущий шаг.', 'Если нужно, попроси подсказку к этому шагу.', 'Полный разбор открывай отдельно. Рассуждение проверяет преподаватель.'],
   'Это учебный разбор самостоятельных и контрольных работ. Открытая подсказка не означает независимое решение или выставленную оценку.']);
+rows.push(
+  ['divisibility-gcd', 'Наибольший общий делитель', 'НОД 24 и 36', '/trainers/grade6-nod.html',
+    'НОД двух натуральных чисел — самое большое натуральное число, на которое оба числа делятся без остатка. В разложениях на простые множители берём только общие простые числа с меньшим количеством повторений. Если общих простых множителей нет, НОД равен 1.',
+    ['Проверь направление: оба исходных числа должны делиться на искомое число.', 'Разложи каждое число на простые множители, сохрани все повторения.', 'Выбери общие простые множители с меньшим количеством повторений.', 'Перемножь выбранное; если общих простых множителей нет, запиши 1.', 'Проверь, что каждое исходное число делится на результат без остатка.'],
+    'Общий делитель делит исходные числа. Число 1 не является простым; его разложение не содержит простых множителей.'],
+  ['divisibility-lcm', 'Наименьшее общее кратное', 'НОК 12 и 18', '/trainers/grade6-nok.html',
+    'НОК двух натуральных чисел — самое маленькое положительное число, которое делится на оба исходных числа без остатка. В разложениях берём все встретившиеся простые числа с большим количеством повторений. Повторения одного множителя из двух разложений не складываем.',
+    ['Проверь направление: искомое число должно делиться на оба исходных числа.', 'Разложи каждое число на простые множители, сохрани все повторения.', 'Для каждого простого числа выбери большее количество повторений из двух разложений.', 'Перемножь выбранные множители.', 'Раздели полученное число на каждое исходное: остатка быть не должно.'],
+    'Общее кратное делится на исходные числа. Произведение исходных чисел — общее кратное, но оно не всегда наименьшее.']
+);
 const NOTES = new Map(rows.map(([id, title, example, url, explanation, steps, check]) => [id, {
   id, title, example, card: { id: `cabinet-${id}`, topic: id, title, explanation, steps, check,
     source: { label: 'Авторские объяснения MathExam по теме', url: SITE + url }, version: 1 }
@@ -104,6 +115,12 @@ const profiles = [
     links: [{ title: 'Атанасян · задачи 1–160', url: `${SITE}/geometry-course/first-steps/` },
       { title: 'Иченская · самостоятельные и контрольные', url: `${SITE}/geometry-course/ichenskaya-7-works/` }] }
 ];
+profiles.push({ id: 'vilenkin-grade6', title: 'Виленкин · 6 класс · НОД и НОК',
+  topicIds: ['divisibility-gcd', 'divisibility-lcm'], links: [
+    { title: 'Курс к учебнику Виленкина, 6 класс', url: `${SITE}/courses/vilenkin-6-part-1/` },
+    { title: 'Тренажёр НОД', url: `${SITE}/trainers/grade6-nod.html` },
+    { title: 'Тренажёр НОК', url: `${SITE}/trainers/grade6-nok.html` }
+  ] });
 const PROFILE_MAP = new Map(profiles.map(profile => [profile.id, profile]));
 const clone = value => structuredClone(value);
 
@@ -369,7 +386,9 @@ const conceptTerms = {
   'congruence-sss': /треуголь|признак|сторон|угл/,
   'congruence-match': /треуголь|признак|вершин|соответств|сторон|угл/,
   'atanasyan-course-step': /курс|задач|подсказ|шаг/,
-  'ichenskaya-course-step': /работ|вариант|задан|курс|подсказ|шаг/
+  'ichenskaya-course-step': /работ|вариант|задан|курс|подсказ|шаг/,
+  'divisibility-gcd': /нод|наибольш|общ|делител|прост|множител/,
+  'divisibility-lcm': /нок|наименьш|общ|кратн|прост|множител/
 };
 
 const shorterGeometry = {
@@ -392,6 +411,14 @@ export function answerCabinetOffline(input, cards) {
   if (safe.topic === 'decimal-rounding') solved = rounding(safe.question);
   if (safe.topic === 'decimal-place-value') solved = placeValue(safe.question);
   if (safe.topic === 'decimal-fractions') solved = conversion(safe.question);
+  if (safe.topic === 'divisibility-gcd' || safe.topic === 'divisibility-lcm') {
+    const operation = safe.topic === 'divisibility-gcd' ? 'нод' : 'нок';
+    const text = normalize(safe.question).replace(/^найди(?:те)?\s+/, '');
+    if (text.startsWith(operation)) {
+      const common = solveCommon(safe.question);
+      if (common) solved = { ...common, shorts: common.shortHints };
+    }
+  }
   const sources = selected.map(row => ({ id: row.id, title: row.title, url: row.source.url }));
   const common = { topic: safe.topic, sources, sourceIds: selected.map(row => row.id) };
   if (solved) {
