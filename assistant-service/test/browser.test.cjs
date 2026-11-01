@@ -328,3 +328,49 @@ test('live numeric notation: mixed operands, equation correction and repeating a
   await page.locator('#forget-button').click();
   await page.locator('#access-panel').waitFor({ state: 'visible' });
 });
+
+test('live extended mathematics: intermediate equality and percentage meanings', {
+  skip: skip || (!process.env.LIVE_ASSISTANT_URL && 'Set LIVE_ASSISTANT_URL to run against the real local service.'),
+}, async t => {
+  const url = new URL(process.env.LIVE_ASSISTANT_URL);
+  assert.ok(['127.0.0.1', 'localhost'].includes(url.hostname));
+  const browser = await chromium.launch({ headless: true,
+    ...(process.env.CHROMIUM_EXECUTABLE_PATH ? { executablePath: process.env.CHROMIUM_EXECUTABLE_PATH } : {}) });
+  t.after(() => browser.close());
+  const page = await browser.newPage({ viewport: { width: 390, height: 900 } });
+  await page.goto(url.href);
+  await page.waitForFunction(() => !document.getElementById('access-button').disabled);
+  if (await page.locator('#pilot-key-field').isVisible()) {
+    assert.ok(process.env.LIVE_ASSISTANT_PILOT_KEY);
+    await page.locator('#pilot-key').fill(process.env.LIVE_ASSISTANT_PILOT_KEY);
+  }
+  await page.locator('#access-button').click(); await page.locator('#workspace').waitFor({ state: 'visible' });
+  for (const [topic, question, attempt, expected] of [
+    ['linear-equations', '2(x+3)=x+9', '2x+3=x+9', /изменил решения/],
+    ['linear-equations', '2(x+3)=x+9', '2x+6=x+9', /сохраняет решения/],
+    ['linear-equations', '0,5x+2=0,25x+5', '12', /Твоё число подходит/],
+    ['percentages', '15% числа равны 36', '240', /Твоё число подходит/],
+    ['percentages', '30 от 120 в процентах', '25%', /Твоё число подходит/],
+    ['percentages', 'Уменьши 240 на 15%', '204', /Твоё число подходит/],
+    ['percentages', 'Увеличь 240 на 15%', '276', /Твоё число подходит/]
+  ]) {
+    await page.locator('#topic').selectOption(topic); await page.locator('#question').fill(question);
+    await page.locator('#attempt').fill(attempt);
+    const response = page.waitForResponse(r => r.url().endsWith('/api/ask') && r.request().method() === 'POST');
+    await page.locator('#ask-button').click(); assert.equal((await response).status(), 200);
+    await page.waitForFunction(() => document.getElementById('workspace').getAttribute('aria-busy') === 'false'
+      && document.querySelectorAll('.answer-card').length === 1);
+    assert.match(await page.locator('.answer-card').textContent(), expected);
+    assert.equal(await page.locator('.answer-steps li').count(), 1);
+    assert.equal(await page.locator('#attempt').inputValue(), attempt);
+  }
+  await page.locator('#explain-button').click();
+  await page.waitForFunction(() => document.querySelectorAll('.answer-card').length === 2);
+  assert.match(await page.locator('.answer-card').last().textContent(), /Ответ: 276\./);
+  for (const width of [320, 390, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true);
+    if (process.env.BROWSER_SCREENSHOT_DIR) await page.screenshot({ path: path.join(process.env.BROWSER_SCREENSHOT_DIR, `assistant-extended-${width}.png`), fullPage: true });
+  }
+  await page.locator('#forget-button').click(); await page.locator('#access-panel').waitFor({ state: 'visible' });
+});

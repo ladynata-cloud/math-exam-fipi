@@ -1,5 +1,21 @@
 # MathExam project status
 
+## In preparation: assistant equations, percentages and step checks, 2026-11-02
+
+- Improvements 4–6 of the explicitly authorized ten-item package are scoped in
+  [this MEDIUM task](tasks/MATHEXAM_ASSISTANT_ALGEBRA_PERCENT_20261102.md): bounded
+  affine equations, common percentage question forms, and comparison of a
+  submitted intermediate equality with the original equation's solution set.
+- Base `aa8bfeb7ca052cffcc9915a7b741753b9c033d20` contains merged
+  [PR405](https://github.com/ladynata-cloud/math-exam-fipi/pull/405). Its reviewed
+  head `b12067d`, exact-head CI41353682271 and postmerge Pages41353831640 passed;
+  all ten changed files match tree `b8c8cf1d2bfee0aaa3b481db4ec213072cb191cc`.
+- Deployment of PR405 is pending the completed cumulative package. The live
+  helper remains verified PR403, external inference OFF. Owner granted release
+  permissions and declined external review for both the first three and the
+  remaining seven improvements. No repeated release confirmation is required
+  for this package; checks and accurate deployment evidence remain mandatory.
+
 ## In preparation: three assistant notation improvements, 2026-11-02
 
 - The owner requested all ten proposed assistant improvements and explicitly

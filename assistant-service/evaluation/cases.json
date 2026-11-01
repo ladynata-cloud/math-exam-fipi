@@ -16,7 +16,7 @@
   { "id": "percent-zero", "topic": "percentages", "question": "0% от 240", "answer": "0", "verification": "deterministic" },
   { "id": "percent-over-hundred", "topic": "percentages", "question": "150% от 42", "answer": "63", "verification": "deterministic" },
   { "id": "percent-decimal", "topic": "percentages", "question": "2,5% от 1,2", "answer": "3/100", "verification": "deterministic" },
-  { "id": "percent-change-is-not-part", "topic": "percentages", "question": "Уменьши 240 на 15%", "verification": "needs-teacher" },
+  { "id": "percent-change-is-not-part", "topic": "percentages", "question": "Уменьши 240 на 15%", "answer": "204", "verification": "deterministic" },
   { "id": "gcd-common", "topic": "gcd-lcm", "question": "НОД 12 и 18", "answer": "6", "verification": "deterministic" },
   { "id": "lcm-common", "topic": "gcd-lcm", "question": "НОК 12 и 18", "answer": "36", "verification": "deterministic" },
   { "id": "gcd-coprime", "topic": "gcd-lcm", "question": "НОД(17, 19)", "answer": "1", "verification": "deterministic" },

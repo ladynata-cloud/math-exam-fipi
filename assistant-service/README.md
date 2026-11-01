@@ -76,9 +76,9 @@ the current session. “Удалить мой сеанс” clears the session a
 
 | Topic | Example | Current offline scope |
 | --- | --- | --- |
-| Linear equations | `3x + 5 = 20` | Bounded integer-coefficient equations of the supported linear form, including zero-coefficient cases |
+| Linear equations | `3x + 5 = 20`, `2(x+3)=x+9` | Bounded affine equations: x on both sides, parentheses, finite decimals and constant-denominator fractions; zero/identity/no-solution cases |
 | Fractions | `1 1/2 + 1/2` | Addition/subtraction of two bounded ordinary fractions, proper mixed numbers or integers |
-| Percentages | `15% от 240` | Finding a percentage of a number; arbitrary increase/decrease word problems are outside the exact solver |
+| Percentages | `15% от 240`, `Уменьши 240 на 15%` | Percentage of a number; whole from part/percentage; ratio; single increase/decrease in explicit supported forms |
 | GCD / LCM | `НОК 12, 18 и 30` | Two to five positive integers, each at most 999999; result at most 999999999999 |
 | Rounding | `Округли 9,96 до десятых` | Supported decimal numbers and named place values, including negative values and carries |
 | Pythagorean theorem | `Как отличить гипотенузу от катетов?` | General concept guidance; arbitrary numerical geometry is not verified |
@@ -88,6 +88,26 @@ Recognizable wrong numeric attempts receive tentative feedback for fractions,
 linear equations, decimal arithmetic and confusion between GCD/LCM. Correct
 and equivalent answers take precedence; unknown mistakes keep generic guidance.
 No final answer is added to hint mode and the deterministic path uses no model.
+
+More supported standalone examples: `0,5x+2=0,25x+5`, `(1/2)x+1=3`,
+`x/2+1=3`, `15% числа равны 36`, `Найди число, 15% которого равны 36`,
+`Сколько процентов составляет 30 от 120?`, `30 от 120 в процентах`,
+`Увеличь 240 на 15%`. A percentage-ratio attempt may include `%`; a changed
+amount must be a number, not just the percentage part. Arbitrary word problems
+and successive percentage changes are not inferred from prose.
+
+In an equation's attempt field, a single intermediate equality such as `3x=15`
+can be compared with original `3x+5=20`. Feedback checks whether their exact
+solution sets agree; it does not claim to validate an unseen chain of work.
+Numeric `x=5` keeps the existing final-answer feedback. Unsupported step syntax
+is explicitly unverified. No raw solution steps are newly stored.
+
+Extended equation limits: 240 characters, 80 tokens, nesting depth eight, six
+digits per decimal part, each side's x coefficient magnitude <=10000, reduced
+result numerator/denominator <=12 digits, bounded intermediate rationals.
+No powers, functions, nonlinear products, variable denominators or zero division.
+Write `(1/2)x` or `1/2*x`; ambiguous `1/2x` is rejected. Formatting does not join
+separate digits. Previous simple-equation wording and bounds are retained.
 
 The exact supported grammar is in [tutor.js](src/tutor.js), with positive,
 negative and ambiguous cases in the [evaluation corpus](evaluation/cases.json).
