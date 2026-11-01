@@ -8,7 +8,7 @@ import { loadConfig, pricesFresh } from './config.js';
 import { AssistantError, requireValue, exactKeys } from './errors.js';
 import { AssistantStore, secretEqual, hash } from './store.js';
 import { parseQuestion } from './privacy.js';
-import { listTopics, getBuiltinKnowledge, answerOffline } from './tutor.js';
+import { isProviderTopic, listTopics, getBuiltinKnowledge, answerOffline } from './tutor.js';
 import { createCabinetBridge, executeAssistantAnswer } from './cabinet-bridge.js';
 
 const PUBLIC = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../public');
@@ -117,7 +117,7 @@ export function createAssistantServer({ config = loadConfig(), clock = Date.now,
         const input = { ...parseQuestion(await readBody(req, config.maxBodyBytes), topics.map(topic => topic.id)), simpler: !!session.simpler };
         const cards = store.knowledge(input.topic);
         const offline = answerOffline(input, cards);
-        const result = await executeAssistantAnswer({ config, store, clock, fetchImpl, active, res, session, input, cards, offline });
+        const result = await executeAssistantAnswer({ config, store, clock, fetchImpl, active, res, session, input, cards, offline, externalAllowed: isProviderTopic(input.topic) });
         send(res, 200, result);
         return;
       }

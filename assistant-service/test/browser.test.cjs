@@ -586,3 +586,32 @@ test('live study tools: topic override, formatted preview, editable lines, two-e
   assert.equal(await page.locator('#print-selection').count(), 0);
   assert.equal(await page.locator('.answer-card').count(), 0);
 });
+
+test('live exact math foundations: new topics, fractions, units and polynomial reconstruction', {
+  skip: skip || (!process.env.LIVE_ASSISTANT_URL && 'Set LIVE_ASSISTANT_URL for local-only checks.'),
+}, async t => {
+  const url=new URL(process.env.LIVE_ASSISTANT_URL);assert.ok(['127.0.0.1','localhost'].includes(url.hostname));
+  const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_EXECUTABLE_PATH?{executablePath:process.env.CHROMIUM_EXECUTABLE_PATH}:{})});
+  const page=await evidencePage(t,browser,{viewport:{width:390,height:900}});
+  await page.goto(url.href);await page.waitForFunction(()=>!document.getElementById('access-button').disabled);
+  await page.locator('#access-button').click();await page.locator('#workspace').waitFor({state:'visible'});
+  for(const [topic,q,a] of [
+    ['arithmetic','(1/2+1/3)*6','5'],['arithmetic','(-2)^-3','-1/8'],['arithmetic','√72','6√2'],
+    ['fractions','1/2 : 3/4','2/3'],['comparison','Сравни 1 1/2 и 7/4','<'],
+    ['proportions','x/3=4/6','2'],['conversions','250 см в м','2500 мм'],
+    ['polynomials','Разложи: x^3+2x^2+3x+6','(x+2)*(x^2+3)'],
+    ['arithmetic','1/3; округли до 2 знаков','0,33']
+  ]){
+    await page.locator('#topic').selectOption(topic);await page.locator('#question').fill(q);await page.locator('#attempt').fill(a);
+    const response=page.waitForResponse(r=>r.url().endsWith('/api/ask'));await page.locator('#ask-button').click();
+    const r=await response;assert.equal(r.status(),200,q);const body=await r.json();assert.equal(body.answer.attemptStatus,'correct',q);
+    await page.waitForFunction(()=>document.getElementById('workspace').getAttribute('aria-busy')==='false');
+    assert.equal(await page.locator('.answer-card').count(),1);assert.match(await page.locator('.verification').textContent(),/Вычисления проверены/);
+    assert.equal(await page.locator('#attempt').inputValue(),a);assert.equal(await page.locator('.answer-steps li').count(),1);
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+  }
+  await page.locator('#explain-button').click();await page.waitForFunction(()=>document.querySelectorAll('.answer-card').length===2);
+  assert.match(await page.locator('.answer-card').last().textContent(),/0,33 \(приближённо\)/);
+  for(const width of [320,390,1280]){await page.setViewportSize({width,height:900});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);}
+  if(process.env.BROWSER_SCREENSHOT_DIR){fs.mkdirSync(process.env.BROWSER_SCREENSHOT_DIR,{recursive:true});await page.locator('.answer-panel').screenshot({path:path.join(process.env.BROWSER_SCREENSHOT_DIR,'math-foundations.png')});}
+});

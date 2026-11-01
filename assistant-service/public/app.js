@@ -158,6 +158,7 @@ import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
   }
 
   function updateTopicHelp() {
+    if (state.status) elements['external-choice'].hidden = !state.status.externalEnabled || Boolean(state.topics.find(t => t.id === elements['topic'].value)?.offlineOnly);
     elements['topic-help'].replaceChildren();
     appendHelp(elements['topic-help'], elements['topic'].value);
     study.refresh();
@@ -476,7 +477,7 @@ import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
   });
   for (const field of ['topic', 'question', 'attempt']) elements[field].addEventListener('input', () => {
     elements['external-consent'].checked = false;
-    if (field === 'topic') updateTopicHelp();
+    if (field !== 'attempt') updateTopicHelp();
     if (taskSignature() !== state.signature) elements['ask-button'].textContent = 'Дай первый шаг';
   });
 

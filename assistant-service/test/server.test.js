@@ -88,7 +88,7 @@ test('clarification, correction and reinforcement reuse the private API without 
 });
 test('offline end-to-end hints, explicit explanation and feedback never call a model', async t => {
   let calls = 0; const fx = await start(t, { fetchImpl: async () => { calls++; throw new Error('UNEXPECTED'); } }); const session = await fx.login();
-  const topics = await fx.client('/api/topics', session); assert.equal(topics.data.topics.length, 7);
+  const topics = await fx.client('/api/topics', session); assert.equal(topics.data.topics.length, 12);
   const first = await fx.client('/api/ask', { method: 'POST', body: question(), ...session }); assert.equal(first.response.status, 200);
   assert.equal(first.data.answer.steps.length, 1); assert.equal(first.data.answer.complete, false); assert.equal(first.data.answer.verification, 'deterministic');
   const feedback = await fx.client('/api/feedback', { method: 'POST', body: { answerId: first.data.answer.id, rating: 'unclear' }, ...session }); assert.equal(feedback.response.status, 200);
@@ -203,4 +203,14 @@ test('API price expiry while server runs falls back without external call', asyn
   now += 8 * 86400000; const session = await fx.login();
   const result = await fx.client('/api/ask', { method: 'POST', body: question({ question: 'Что означает решить уравнение?', externalConsent: true }), ...session });
   assert.equal(result.response.status, 200); assert(result.data.notice); assert.equal(calls, 0);
+});
+
+test('new exact arithmetic topics cannot expand the paid provider boundary', async t => {
+  let calls=0;
+  const fx=await start(t,{api:true,fetchImpl:async()=>{calls++;throw Error('UNEXPECTED');}}),session=await fx.login();
+  for(const [topic,q] of [['arithmetic','(1/2+1/3)*6'],['arithmetic','arbitrary unsupported request'],['polynomials','Упрости: x*x']]){
+    const r=await fx.client('/api/ask',{method:'POST',...session,body:question({topic,question:q,externalConsent:true})});
+    assert.equal(r.response.status,200);assert.notEqual(r.data.answer.verification,'model-unverified');
+  }
+  assert.equal(calls,0);assert.equal(fx.app.store.summary().day.api_requests,0);
 });
