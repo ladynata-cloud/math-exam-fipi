@@ -60,10 +60,12 @@ The original source pages and their extracted text are not included here.
   the opposite side; the nearest pair and proof coordinates were updated
   together. The same correct distance now has a visibly sloped connecting
   segment. This is a clarity correction, not a change to the mathematical answer.
-- Fresh CI browser results and actual image inspection are recorded on the
-  exact-head Draft PR. The browser plan covers 39 card/width journeys,
-  135 model states and 216 images at 320/390/1280 pixels; planned counts are
-  not represented here as an executed result.
+- Fresh head-branch CI run 41352063380 passed on
+  `97e0da6bb64fa3dec3f919bd812e6ee2f426696c`: 39 card/width journeys,
+  135 model states, 39 expand/close cycles and 216 actual screenshots at
+  320/390/1280 pixels. All nine fraction displays and three missing-style
+  negative controls passed. Artifact 13100749370 binds the actual card hashes.
+  This was a push-triggered candidate check, not a PR merge-ref check.
 
 ## Review boundary and remaining integration
 
@@ -76,12 +78,23 @@ The candidate now includes the existing fraction layout rules and browser
 assertions for numerator/denominator positions and the visible bar. Negative
 controls reproduce the missing-style defect. It also shows a full diameter
 parallel to the hypotenuse in question 8 and corrects the case ending in the
-question 3а title. Fresh CI and focused independent re-review of these changes
-are pending; the initial CHANGES_REQUESTED verdict has not been relabelled.
-No paid external-provider, physical-device or real-pupil verdict is claimed.
+question 3а title. Fresh CI passed and the independent reviewer confirmed
+all nine rendered fractions, question 8's diameter/neutral views and the
+corrected title on all three widths. The original CHANGES_REQUESTED verdict
+is retained historically; the separate focused PASS is appended in the review.
+All thirty unaffected complete-page images and 132 unaffected drawing crops
+match the preceding evidence. No paid external-provider, physical-device or
+real-pupil verdict is claimed.
 
-Before publication: review the exact source, proofs, models and screenshots;
-then integrate the thirteen cards, source-part contracts, review hashes and
+GitHub currently reports the PR as `mergeable=false` / `dirty` against unchanged
+main `4afa9caa033c6d861d2a412ad2b9ad2957acb531`, while the local read-only virtual
+merge is clean and preserves every task blob. No merge or branch-history repair
+was performed. The same workflow jobs gained a push trigger scoped to this
+exact branch so review evidence could be generated. This does not resolve or
+approve the release merge; production integration and release gates remain.
+
+Before publication: integrate the independently reviewed thirteen cards,
+source-part contracts, review hashes and
 additive historical projections in the same scoped task. The expected total
 after a reviewed integration is 653 cards and 50 complete self-check questions.
 Run the complete course checks on that integrated head, and obtain a separate

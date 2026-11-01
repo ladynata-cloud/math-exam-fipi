@@ -216,3 +216,134 @@ Scope deviations: none by reviewer
 Recommendation: fix B1, apply N1/N2, then focused independent re-review
 Next user decision: none required for the already authorized corrections; no merge approval granted
 ```
+
+
+## Focused follow-up — corrected candidate
+
+**PASS** for the thirteen-card editorial content and preview at the head/tree
+below. **B1, N1 and N2 are resolved.** The original CHANGES_REQUESTED report above
+is preserved verbatim as historical evidence, not relabelled. This follow-up is
+by the same separate Codex review agent, and combines that full review with the
+bounded corrections independently checked here. It is not production
+integration, mergeability, merge or deployment approval.
+
+- Reviewer: separate Codex agent `review_atanasyan_iv`.
+- Follow-up completed (UTC): `2026-11-01T21:32:19Z`.
+- PR: **#402**; authoring base remains
+  `1577c058309f4cc78c21315bf64b0b393751ec2d`.
+- Reviewed GitHub head supplied by the executing agent:
+  `97e0da6bb64fa3dec3f919bd812e6ee2f426696c`.
+- Reviewed tree, independently confirmed locally:
+  `c0ea1edb21fc2c143997b2aaf78e461b8ed9d67d`.
+- Local equivalent HEAD:
+  `b2dd1735a5c5cc6823046f1bea538662b49a148a`.
+- Fresh **head-branch push CI**, not a PR merge-ref run:
+  **41352063380**, job **124984210106**, artifact **13100749370**.
+- Independently recalculated fresh `evidence.json` SHA-256:
+  `34fcaf0e13fe32bff7523e292bdb4f111db57db952a21d967e3c72b0a82e07dc`.
+- All **216 new screenshot hashes** and **13 current raw-card hashes** independently
+  match that manifest. The fresh evidence reports completed=true, 39 journeys,
+  135 states, 39 expansions, no page errors, nine rendered fractions and three
+  rejected missing-style negative controls.
+
+### Exact delta and resolution
+
+The only raw-card changes since the initial review are question 3а's title and
+question 8's diameter points/view. All eleven other card files, including
+question 10, retain their original hashes. Question 8's condition, source,
+help, proof steps and answer are unchanged. The executable preview changes are
+isolated fraction CSS and added browser/math regression checks. The later
+workflow-only commit adds a push trigger for the exact editorial branch and
+the existing three path filters; jobs, test steps and read-only permissions are
+unchanged. The status/author-review documentation and the preserved initial
+independent report do not alter learner content. Production files remain outside
+the delta.
+
+| Finding | Independent follow-up evidence | Result |
+| --- | --- | --- |
+| B1: AB/2 became AB2 | Inspected all three actual fractions in the fresh question 10 completed page at **each** of 320, 390 and 1280 px, using native-width proof crops. All nine now visibly place AB above 2 with a horizontal bar; adjacent equality/inequality and prose remain readable. | **Resolved** |
+| N1: radius highlighted instead of diameter | Recalculated TT₁²=20, OT²=OT₁²=5, midpoint (T+T₁)/2=O and cross(T₁−T,C−B)=0. TT₁ is a complete diameter parallel to BC. Directly inspected fresh diameter and neutral model screenshots at all three widths. Diameter endpoints and highlighted segment are absent initially. | **Resolved** |
+| N2: title case ending | The raw title and all three first-screen images now read «Расстояние между хордами: равно высоте». Figure and condition still fit the tested first 900-pixel viewport. | **Resolved** |
+
+The browser fraction check is meaningful: it checks three exact AB/2 instances,
+nonzero numerator height, numerator above denominator, centered components and
+a visible solid bar. Its negative control temporarily recreates the missing
+styles and must be rejected; the injected style is removed, the passing check
+is repeated, and only then is the completed screenshot captured. The fresh
+artifact records rejection at all three widths. This reviewer inspected the
+assertion and negative-control code; their browser execution is CI evidence,
+not a claimed separate local browser run.
+
+### Focused visual coverage and regression scope
+
+Direct visual follow-up covered **12 fresh source images**: the three question
+10 complete-page proof regions (all nine fractions), question 8's three diameter
+and three neutral model images, and question 3а's three initial page images.
+The question 10 proof crops preserve native text size, including on desktop;
+the title first screens were viewed together as a contact sheet.
+
+To check the shared CSS beyond the corrected cards, the reviewer compared the
+fresh and initial evidence images:
+
+- The **30 complete-page screenshots** for the ten cards other than 3а, 8 and 10
+  are byte-identical. This includes the narrow-width radical formulas in 3б.
+- **132 of 135 model drawing regions** are pixel-identical. Only the intended
+  three question 8 diameter drawings differ. Thus previously reviewed
+  constructions and labels did not change under the shared CSS.
+- The fresh full manifest has 182 byte-identical images and 34 differing images.
+  Extra differences outside the intended card/text changes are below the model
+  drawing regions, in controls or bottom-edge crops; they do not represent
+  additional geometry changes. This follow-up does not claim a second
+  full-resolution manual inspection of all 216 images.
+
+The original review's physical-device, arbitrary-camera, screen-reader and
+viewport-height limitations remain. Mergeability reported by GitHub is separate
+from this content verdict; no remote-main freshness or virtual-merge approval
+was performed by this reviewer.
+
+### Checks and identity
+
+PASS: independent Q8 coordinate/neutral-exposure checks, Q3а title check,
+unchanged-card comparison, source/proof-field comparison for Q8, raw-card and
+image hashes, inspected fraction styles/assertions, supplemental draft and math
+gates, and whitespace checks. No inherited assertion was weakened. The static
+gate still preserves all 640 published cards and leaves all review flags pending.
+There are **no remaining source, mathematics, coordinate or rendered-pedagogy
+blockers** for these thirteen editorial cards at this candidate.
+
+The original raw-card table above remains the mapping for eleven unchanged
+cards. Replace only its 3а and 8 entries with the corrected hashes below.
+Question 10 remains
+`9cf271019723fae4b9f1e48502fb9fe8fa187b96b65fe5eefc90953528ecb1f1`;
+its correction is in preview CSS. The complete six-file executable correction
+set is bound here by exact-byte SHA-256:
+
+| File | Corrected SHA-256 |
+| --- | --- |
+| `content-drafts/atanasyan-chapter-iv-selfcheck/ex-selfcheck-iv-03-a.json` | `fb7c2a9c058c84f767bf4e8bad390dbd6b390aed76810888832db46cb322b782` |
+| `content-drafts/atanasyan-chapter-iv-selfcheck/ex-selfcheck-iv-08.json` | `2f09d9fab3d535e9acbc1520648f02c71b9d5a806e1fe5d360e1c1eb8694f801` |
+| `content-drafts/atanasyan-chapter-iv-selfcheck/preview.css` | `3cc82bbba6e3e40e27694ef8acab03c5968bc80c1b06fbcab31cc02c911e9817` |
+| `tools/atanasyan-chapter-iv-selfcheck/browser.cjs` | `327cddbc0fe52456f5051907868c67f9ee151eea8db9b93cbc739ed279e216cd` |
+| `tools/atanasyan-chapter-iv-selfcheck/math.test.py` | `d0c750068c8eef076bfd44bc8d7fd3a64468c0af4294330160d8bdb92cfbedee` |
+| `.github/workflows/atanasyan-iv-selfcheck.yml` | `8064df77049f27ad0d85000195689b446cfcf6cf07f60078dbc4ed7a457d26a5` |
+
+The initial report bytes, before this append, have SHA-256
+`677addc736a61985a4a712b819845ea9e0d22626730a3b7ac78a2bc2ee185de2`.
+The reviewer changed only this report to record the follow-up. Review-status
+promotion, source contracts, compiled bundle, historical projections and full
+integration/release gates remain the executing agent's separate work.
+
+```text
+Task: ATANASYAN_CHAPTER_IV_SELFCHECK focused independent follow-up
+PR: #402
+Base: 1577c058309f4cc78c21315bf64b0b393751ec2d
+Head: 97e0da6bb64fa3dec3f919bd812e6ee2f426696c
+Tree: c0ea1edb21fc2c143997b2aaf78e461b8ed9d67d
+Gate: PASS — independent editorial source/math/model/pedagogy review
+Tests: bounded diff, Q8 coordinates, all nine actual Q10 fractions, Q3a first screens, hashes, image comparisons, draft/math gates
+Failures: none remaining; historical B1/N1/N2 resolved
+Not run: fresh local browser; production integration/release gates; remote merge freshness
+Scope deviations: none by reviewer
+Recommendation: proceed to separately checked integration of the reviewed card content
+Next user decision: no merge or deployment permission is granted by this content review
+```

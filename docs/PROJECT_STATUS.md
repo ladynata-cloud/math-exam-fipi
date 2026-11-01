@@ -11,11 +11,12 @@
 - [Candidate report](reviews/ATANASYAN_CHAPTER_IV_SELFCHECK_DRAFT.md):
   31 steps and 45 model states, schema/coordinate/preservation checks passed.
   [Independent review](reviews/ATANASYAN_CHAPTER_IV_SELFCHECK_INDEPENDENT.md)
-  passed source, proofs and coordinates but found missing fraction styling in
-  the preview. The correction and two small model/copy improvements await
-  fresh CI and focused re-review. All 640 published cards and learner-storage
-  contracts remain unchanged; no production integration has occurred.
-  Exact-head browser and follow-up review evidence belongs in Draft PR402.
+  found missing fraction styling; the correction and two small model/copy
+  improvements now pass focused independent review and fresh head-branch CI
+  (run 41352063380). All 640 published cards and learner-storage contracts
+  remain unchanged; no production integration has occurred. Draft PR402 records
+  exact-head evidence and the unresolved GitHub mergeability flag, despite a
+  clean local read-only virtual merge. No merge or deployment was performed.
 
 ## Published: Atanasyan Sphere, PR386
 
