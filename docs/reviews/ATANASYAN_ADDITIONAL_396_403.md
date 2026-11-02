@@ -64,6 +64,30 @@ claimed. Exact head/run/artifact identifiers and ready-result visual findings
 will be recorded in the PR after execution. Physical devices, a real-pupil
 pilot and external provider audit are not run.
 
+## First cloud pass and visual correction
+
+Head d87aa8aab4bb784b41f1dab6813a080568160c8b passed focused
+[run41513929840](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41513929840):
+source/build/schema/geometry,2400 mathematics families,6 mathematical negative
+controls,653-card preservation,5 integration negative controls, runtime and
+57 distribution controls;27 browser journeys,120 model states,162 stacked
+fractions and174 screenshots at320/390/1280.
+
+Artifact13173863281 has ZIP SHA256
+51f419de6de04d8f2b5dd9ea6047b81e390f4d0d755799da709465644b80b333.
+Its synthetic merge9697dc7649cc0b7e9cf94e9e53951a3cef719de8 has exactly the
+candidate tree798e046d29f68e0bed165d269300c21a59c72f6d and the recorded base/head
+parents. The complete bundle SHA256 is
+38cf08070b70884539078a74742d6f1947c512f7ce56d6dc907a29abb44f45b8.
+
+Visual inspection covered all40 narrow-screen model states, all nine initial
+pages and final formula/answer areas of399,400б,401,402,403. Geometry, hollow
+cup and stacked fractions were readable. Several long titles broke inside
+words at320px. The titles are shortened in this follow-up while keeping
+conditions, proofs and geometry unchanged. Updated content hashes and bundle
+are deliberate. All applicable Actions must pass again on the new head;
+the preceding pass does not constitute final release validation.
+
 ## Release and rollback
 
 Publication requires successful applicable Actions, a clean scoped diff,
