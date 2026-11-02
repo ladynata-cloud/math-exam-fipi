@@ -57,6 +57,9 @@ async function run(){
    }
    assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem(window.TrainerCore.storageKey)).solutions.length),2);
    await page.evaluate(()=>{
+    // The URL now names the selected source task. Match the legacy fixture
+    // before reload instead of accidentally requesting the preceding №305.
+    history.replaceState(history.state,'','#ratio?example=303');
     const C=window.TrainerCore,p=C.freshProgress('2026-11-02T00:00:00.000Z',1);
     C.beginSession(p,'ratio','standard',{exampleId:'303',methodVersion:1},'2026-11-02T00:00:01.000Z');
     C.submitAnswer(p,'ratio','yes',0,'2026-11-02T00:00:02.000Z');C.toggleSessionHint(p,'ratio','2026-11-02T00:00:03.000Z');
