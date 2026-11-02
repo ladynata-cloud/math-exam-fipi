@@ -59,3 +59,12 @@ body.vilenkin-helper-visible .content-column{padding-bottom:calc(110px + env(saf
 .vilenkin-helper-directions li+li{margin-top:9px}
 .vilenkin-course-helper .cabinet-assistant-actions button{justify-content:flex-start;text-align:left}
 @media(max-width:600px){.vilenkin-helper-dock>.cabinet-assistant-launcher{min-height:52px;padding:9px 15px}.vilenkin-helper-dock>.cabinet-assistant{max-height:calc(100dvh - 106px - env(safe-area-inset-bottom))}}
+
+.assistant-private-practice { margin-top: 1.2rem; border-top: 1px solid #bacdcc; padding-top: 1rem; overflow-wrap: anywhere; }
+.assistant-private-practice summary { cursor: pointer; font-weight: 700; padding: .5rem 0; }
+.assistant-private-practice input:not([type=checkbox]), .assistant-private-practice select, .assistant-private-practice textarea { box-sizing: border-box; width: 100%; max-width: 100%; font: inherit; }
+.assistant-private-practice button { max-width: 100%; white-space: normal; margin: .3rem .3rem .3rem 0; }
+.assistant-practice-field { display: grid; gap: .3rem; margin: .7rem 0; }
+.assistant-private-practice input[type=checkbox] { width: 1.3rem; height: 1.3rem; }
+.assistant-practice-task, .assistant-practice-explanation { padding: .7rem; margin: .7rem 0; border: 1px solid #bacdcc; border-radius: .6rem; }
+.assistant-private-practice :focus-visible { outline: 3px solid #116b71; outline-offset: 3px; }

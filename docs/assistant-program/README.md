@@ -43,3 +43,21 @@ GitHub merge `8307f6aa20651303f5f94b70ae28503832778af5`; Amvera package
 health/status HTTP200, offline, externalEnabled=false; four public asset hashes
 matched the reviewed source. Source: PR407 cumulative release record. These are
 historical release facts, not a newly repeated production check.
+
+## Source handoff
+
+All100 original IDs have prepared implementations; exact validation/release
+results are recorded separately in their PRs. Prepared source is not production
+delivery. The final cabinet and standalone hosting deployments require separate
+cloud access which is not provisioned in this session.
+
+| Package | Original items | Source PR |
+| --- | --- | --- |
+| Cloud delivery |1–5|[409](https://github.com/ladynata-cloud/math-exam-fipi/pull/409)|
+| Dialogue/input |6–14,86–95|[411](https://github.com/ladynata-cloud/math-exam-fipi/pull/411)|
+| Arithmetic/algebra |16–20,24,28–30,51–52|[412](https://github.com/ladynata-cloud/math-exam-fipi/pull/412)|
+| Equations |21–23,53–60|[413](https://github.com/ladynata-cloud/math-exam-fipi/pull/413)|
+| Word problems/data |25–27,61–65|[414](https://github.com/ladynata-cloud/math-exam-fipi/pull/414)|
+| Geometry/models |31–40,66–75|[415](https://github.com/ladynata-cloud/math-exam-fipi/pull/415)|
+| Practice/reasoning |41–45,76–85|[416](https://github.com/ladynata-cloud/math-exam-fipi/pull/416)|
+| Cabinet/teacher/coverage |15,46–50,96–100|[417](https://github.com/ladynata-cloud/math-exam-fipi/pull/417)|

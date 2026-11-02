@@ -1,5 +1,20 @@
 # MathExam project status
 
+## Assistant: all100 items have prepared source, 2026-11-02
+
+- Final11 cabinet/teacher/coverage items prepared:381 board-server tests,216
+  assistant tests,22 assistant browser scenarios and5 private-practice browser
+  scenarios passed. [Evidence](reports/MATHEXAM_ASSISTANT_CABINET_TOOLS_20261102.md).
+- All100 original item IDs now have source implementations with stated bounds.
+  PR416 revised head passed CI41372633907 and merged as dee3875c with
+  verified parentcf7b101/treea11fb75.89 items source-merged/cloud-checked;
+  final PR417 exact-head cloud validation remains pending here. This is not a production-completion claim.
+- Opt-in persistence covers generated private practice only; free-form pupil
+  dialogue remains unretained. Teacher policies are enforced by server endpoints.
+- Amvera hosting identity/verified-host provisioning remains unavailable for
+  helper and native cabinet delivery. Last verified helper release remains
+  source8307f6a/package3cc22e0. Standing publication permission already applies.
+
 ## Assistant: practice and reasoning prepared, 2026-11-02
 
 - PR415 merged after cloud CI41368382607; verified parent8a5b31b/tree8e310ef.
