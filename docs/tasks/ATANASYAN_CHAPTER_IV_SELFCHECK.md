@@ -1,78 +1,54 @@
-# Atanasyan 2024 — chapter IV self-check continuation
+# Atanasyan chapter IV self-check — production integration
 
-## Identity and goal
+## Approved continuation, 2026-11-02 (Asia/Novosibirsk)
 
-- Current owner instruction: «продолжай дальше», following the published Sphere release.
-- Task: ATANASYAN_CHAPTER_IV_SELFCHECK; review level HIGH.
-- Base: `1577c058309f4cc78c21315bf64b0b393751ec2d` (main after PR397).
+The owner explicitly requested continuation of PR402: reuse all thirteen independently
+reviewed cards, integrate them into the current course, verify mobile use and saved
+steps, run GitHub Actions and publish after successful applicable checks.
+Review level: HIGH. Same task, branch and PR402; no new content authoring.
+Standing release authority: [owner policy](../OWNER_RELEASE_AUTHORIZATION.md).
+This current instruction supersedes the historical editorial-only preparation scope.
+
+- Validated integration base: `01e412d4314445366bcd4773a3789129aa7264bd`.
+- Preserved candidate: `cd75819969d48dd6f14a24d89029b9d00507a77a`.
 - Branch: `content/atanasyan-chapter-iv-selfcheck-20261102`.
-- Parent course scope: [TEXTBOOK_ATANASYAN](TEXTBOOK_ATANASYAN.md).
-- Date: 2026-11-02, Asia/Novosibirsk.
+- Source/math/pedagogy verdict: [unchanged independent report](../reviews/ATANASYAN_CHAPTER_IV_SELFCHECK_INDEPENDENT.md), final PASS 2026-11-01T21:33:52Z.
 
-Continue in textbook order with all ten chapter IV self-check questions,
-printed pages 111–112 / PDF pages 113–114. Preserve the original Cyrillic
-parts of questions 3 (а/б/в) and 5 (а/б), giving thirteen focused cards.
-Do not jump to chapter V while chapter IV self-check and additional tasks remain.
+## Scope
 
-## Scope and preservation
+Publish exactly thirteen existing cards covering questions1–10, including Cyrillic
+3а/б/в and5а/б, 31 proof steps and45 model states. Copy the reviewed content exactly;
+change only publication/review metadata. Add ten explicit source-part contracts,
+thirteen content-review hashes, one review batch and the generated course bundle.
+Expected total:653 reviewed cards,50 complete self-check questions.
 
-Author source-bound explanations and original models using the existing lesson
-schema, mathematical text and scene renderer. Keep authored cards in an isolated
-editorial directory until independent review is complete. Provide a runnable
-preview with condition and figure first, optional help, retained explanations,
-contextual theory links and ephemeral answer drafts.
+Preserve all640 historical raw lessons, review records, source identities/revisions,
+renderer, schemas, runtime, styles and learner-storage contracts. Detailed help remains
+optional and proof steps remain visible once revealed. A saved proof is never called
+mathematically certified by the software. Additional exercises396–439, chapterV,
+new account/backend behavior and unrelated UI redesign are outside this task.
 
-All 640 published lesson files, compiled bundle, source index, review registry,
-runtime, styles, saved-work identities and learner records remain unchanged.
-No server, cabinet, assistant or board changes. Additional exercises 396–439,
-chapter V, and production publication are separate work.
+## Verification
 
-## Source and mathematical boundaries
+- Exact independently reviewed candidate hashes, text, source parts and model objects.
+- Frozen640-card source/catalog/registry/raw-file projections with corruption controls.
+- Existing full source/schema/content/mathematics/runtime/model/browser gates.
+- All653 cards in the full browser matrix; all13 additions additionally at320/390/1280,
+  including optional help, rotation/expansion, Q10 fraction bars, saved work and reload.
+- Historical browser cases remain the exact leading sequence; add60 new cases.
+- Requery authoritative main/head immediately before release, revalidate any drift,
+  verify squash parent/tree, established Pages deployment and live course hashes/count.
 
-The supplied 2024 twelfth-edition PDF has SHA-256
-`bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770`.
-The two original pages were visually inspected, including the square roots.
-Question 8 specifies radius **√5 cm**, not 5 cm; the given triangle cannot be
-inscribed in that sphere. Never draw a purported impossible inscribed triangle.
+Gate: `ATANASYAN_IV_SELFCHECK_INTEGRATION_OK` plus successful required CI.
+The prior independent verdict covers unchanged content, not unrun production tests.
+No new paid/external-provider review is required or claimed.
 
-Question 3 concerns bounded chord segments: nonparallel supporting lines can
-intersect outside the disk. Question 4 uses the textbook thin-coating model and
-both bases; the side-only alternative must be distinguished. Questions 2 and 6
-must distinguish a proper section from tangent/point/empty intersections.
-Question 7 is about the solid ball, not only its boundary. Question 10 excludes
-both endpoints and proves both inclusions of the locus.
+## Branch maintenance and rollback
 
-## Checks and review
-
-Check exact source coverage, schema, progressive model states, manual proof
-honesty, contextual links, mathematical parameters and actual coordinates.
-Freeze the complete published baseline. Exercise all thirteen draft cards at
-320/390/1280 px, rotation, help, all steps, draft retention, accessibility labels
-and console errors; preserve actual screenshots for visual inspection.
-
-Author checks and computational oracles are not independent content review.
-Cards retain `in-review` / pending flags until a separate reviewer verifies
-source, mathematics, pedagogy and images. No external-provider verdict is claimed.
-Paid Claude remains deferred for this existing course scope. This adds content
-within the existing interaction pattern, not a new trainer archetype.
-
-Draft readiness marker: `ATANASYAN_IV_SELFCHECK_DRAFT_CHECKS_OK`.
-It is not a production-release gate. A reviewed integration must add the source
-contracts, review hashes, production bundle and append-only historical test
-projections together, then pass the complete course release checks.
-
-## Risk, rollback and permissions
-
-Risks: lost radicals, unbounded-line reasoning applied to chords, ambiguous
-surface coverage, degenerate sections, sphere/ball confusion and early answers.
-Delete/revert only this isolated editorial increment to roll back; no pupil-data
-migration exists. Keep textbook scans and private identifiers outside the repo.
-
-The current instruction authorizes this bounded continuation, local commits,
-push and one Draft PR. The previous release authorization concerned PR386;
-no merge, auto-merge, production deployment, forced history rewrite, paid call,
-TLS bypass or weakening of gates is authorized by this new preparation stage.
-
-Final exact head, checks, remaining review, and next decision are recorded in
-the Draft PR and accompanying report. No independent approval is inferred from
-this task specification.
+Sixteen newer main commits concern assistant work, reference sheets and owner policy.
+The read-only virtual composition conflicts only in PROJECT_STATUS.md. Ordinary merge
+preserves both sets of journal records and every concurrent product file.
+Rollback is an ordinary revert of this scoped additive release; no learner migration,
+delete, force, reset, rebase, TLS bypass or gate weakening is part of the work.
+Physical-device trials and real-pupil use are not claimed. Exact CI/release evidence
+is maintained in PR402 and the [integration report](../reviews/ATANASYAN_CHAPTER_IV_SELFCHECK_INTEGRATION.md).

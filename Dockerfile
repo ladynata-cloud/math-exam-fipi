@@ -8,6 +8,8 @@ RUN npm ci --omit=dev --include=optional
 COPY board-server/ ./
 COPY trainers/board-compat.json /app/trainers/board-compat.json
 COPY learning/ /app/learning/
+COPY assistant-service/package.json /app/assistant-service/package.json
+COPY assistant-service/public/practice-core.js /app/assistant-service/public/practice-core.js
 COPY ege-baza/path/ /app/ege-baza/path/
 COPY trainers/oge-basics/ /app/trainers/oge-basics/
 COPY trainers/motion-grade6/ /app/trainers/motion-grade6/

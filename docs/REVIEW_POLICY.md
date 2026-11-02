@@ -3,6 +3,10 @@
 This policy defines review depth, external-review evidence, and merge boundaries.
 It supplements [AGENTS.md](../AGENTS.md).
 
+The [2026-11-02 owner policy](OWNER_RELEASE_AUTHORIZATION.md) supplies standing
+release authorization for approved work and makes external consultation/audit
+optional. Later explicit task-specific owner restrictions take precedence.
+
 ## Source-of-truth order
 
 Review findings are evaluated in this order:
@@ -30,7 +34,7 @@ comes from code, gates, and production evidence, not an assumed ADR status.
 | --- | --- | --- |
 | `SMALL` | Documentation, templates, isolated low-risk fixes, or mechanical changes with no architecture or runtime-boundary change | Self-review, relevant local checks, `git diff --check`, and a complete Draft PR. External Claude review is optional. |
 | `MEDIUM` | Bounded product behavior across several files, a new integration point within accepted architecture, or a change with recoverable runtime risk | Focused code review, targeted regression tests, and explicit risk and rollback notes. The owner or reviewer may request external review. |
-| `HIGH` | Authentication, authorization, sensitive data, persistence, server contracts, deployment, broad runtime behavior, or difficult rollback | Independent review, full relevant gates, verified rollback plan, and external review unless the owner explicitly waives it with rationale. |
+| `HIGH` | Authentication, authorization, sensitive data, persistence, server contracts, deployment, broad runtime behavior, or difficult rollback | Independent technical review, full relevant gates and verified rollback plan. External provider review is optional under the standing owner decision. |
 | `NEW_ARCHETYPE` | A new trainer pattern, platform primitive, protocol, generator model, or architectural approach not already covered by an accepted ADR | Accepted or updated ADR, prototype evidence, independent review, and explicit owner acceptance of the archetype before rollout. |
 
 If a task fits more than one level, use the highest. Splitting work must not be
@@ -41,15 +45,12 @@ used to lower the real risk level.
 Claude and other external models are optional remote reviewers without access to
 the local disk or worktree. Claude is not required for every `SMALL` PR.
 
-The owner's 2026-10-20 decision additionally requires a focused Claude design
-discussion before creating or substantially redesigning a trainer, followed by
-a review of the ready result. Apply the
-[trainer consultation workflow](TRAINER_CLAUDE_CONSULTATION.md). This does not
-require a consultation for every commit or mechanical correction, nor replace
-the review level, accepted ADR, prototype, tests, or owner release permissions.
-Design advice has its own evidence record; it is never an exact-head release
-approval. A failed request has no review verdict. Earlier task-specific
-exceptions do not waive future required reviews.
+The owner's 2026-11-02 decision supersedes the mandatory external consultation
+part of the 2026-10-20 trainer workflow. Keep the learning-design and ready-result
+review; use the [external consultation workflow](TRAINER_CLAUDE_CONSULTATION.md)
+when the owner specifically requests it. The standing decision, rather than an
+old PR exception or unavailable API, is the source of the waiver. Design advice
+is not an exact-head release approval; failed requests have no review verdict.
 
 All remote handoffs must be sanitized and minimized. Do not send secret values,
 authentication material, private documents, personal data, unrelated source, or
@@ -78,50 +79,57 @@ explicitly accepts a documented exception.
 
 Record passed, failed, and not-run checks separately. Never convert a failure or
 missing check into a pass by wording. Never disable TLS verification, weaken a
-test, use admin override, or perform force, reset, rebase, or non-fast-forward
-merge without separate explicit owner authorization.
+test, use admin override, or perform force, reset or rebase without separate
+explicit owner authorization. Ordinary history-preserving branch synchronization
+is covered by the standing publication policy.
 
-`START`, a valid review, a passing final gate, and permission to push are each
-insufficient to merge. Merge and auto-merge always require a separate explicit
-owner decision for the current PR and head SHA.
+Identify the approved task scope and authorization source. For requested or
+approved MathExam work, the standing policy covers controlled squash-merge,
+publication and post-release verification after successful applicable checks.
+Do not ask for a repeated per-PR permission. Honor later explicit release holds
+and narrower owner instructions; tests alone do not approve unrelated scope.
 
 ## Base-drift merge guard
 
-The owner merge authorization is bound to its named base SHA as well as the PR
-and head SHA. Immediately before merge, obtain the authoritative current remote
-`main` SHA and compare it with that authorized base. Do not rely only on a
-possibly stale local tracking ref. GitHub reporting `mergeable=true` is not a
-substitute for this equality check.
+Immediately before merge, obtain authoritative remote `main` and PR head and
+compare them with the validated pair. Cached refs and `mergeable=true` do not
+substitute for this check. An explicit later exact-base/head owner restriction
+remains binding; the standing authorization otherwise covers routine drift
+revalidation within the approved task.
 
-Any base drift is a hard stop, not a warning:
+Any base drift stops the stale merge attempt:
 
-1. prohibit the merge immediately and mark the old authorization invalid;
-2. do not update, merge, rebase, reset, or otherwise repair the PR branch;
+1. do not merge using stale validation;
+2. preserve the branch while first inspecting the virtual composition;
 3. classify every concurrent `main` commit by provenance; unknown provenance is
-   not silently included in the old authorization;
+   not silently treated as approved scope;
 4. construct a read-only virtual merge on the new `main` and record whether it
    is clean or conflicting;
 5. rerun all applicable gates against the virtual composed result;
-6. issue a new base/head/diff report and obtain a new explicit owner merge
-   authorization.
+6. record the new base/head/diff. Continue under standing permission when the
+   composition is in scope and verified. If needed, synchronize with an ordinary
+   merge, preserve all approved work and validate the new head. Ask only for an
+   unresolved product decision, scope change, or later explicit owner limit.
 
 If the base is unchanged, a full-tree identity comparison between the reviewed
 head and expected squash-merge tree is allowed. If the base advanced and the
-owner later authorizes the new base after the repeated gate, full-tree equality
+agent validates the new base after the repeated gate, full-tree equality
 with the old reviewed head is invalid because the composed tree legitimately
 contains concurrent changes. In that case verify all of the following:
 
-- the parent-to-merge delta is computed from the newly authorized base;
+- the parent-to-merge delta is computed from the newly validated base;
 - the changed-file set exactly matches the reviewed patch and contains no extra
   files;
 - blobs for every patch-touched file match the reviewed result;
 - the stable patch ID from `git patch-id --stable` matches for the reviewed
   patch and the virtual or merged delta;
-- the actual merge parent equals the newly authorized base.
+- the actual merge parent equals the newly validated base.
 
-A clean virtual merge, matching patch ID, or matching blobs establishes
-identity evidence only. None of them revives the invalid authorization. Another
-base movement repeats the hard stop and authorization cycle.
+A clean virtual merge, matching patch ID and blobs establish identity, not new
+scope. The standing owner policy supplies release permission. Another base
+movement repeats validation without automatically requiring new permission.
+For a conflict resolution that changes the patch, review its new file delta
+and rerun affected checks; do not claim it has the old patch's identity.
 
 Repository owners should configure GitHub branch protection or a merge queue to
 reduce this race. This policy does not authorize Codex to change those settings.

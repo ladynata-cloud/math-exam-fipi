@@ -5,12 +5,17 @@ const root = path.resolve(__dirname, '../..'), folder = path.join(root, 'content
 const read = file => JSON.parse(fs.readFileSync(file, 'utf8'));
 const manifest = read(path.join(folder, 'manifest.json')), baseline = read(path.join(__dirname, 'baseline.json'));
 const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
-for (const [file, expected] of Object.entries(baseline.files)) assert.equal(sha(fs.readFileSync(path.join(root, file))), expected, 'published bytes preserved: ' + file);
+const integrated = require('../stereo-textbook/iv-selfcheck-baseline.cjs');
+const projectedPaths = new Set(['stereo-course/textbook/data/course.json', 'stereo-course/textbook/source-index.json', 'tools/stereo-textbook/content-review.json']);
+for (const [file, expected] of Object.entries(baseline.files).filter(([file]) => !projectedPaths.has(file))) assert.equal(sha(fs.readFileSync(path.join(root, file))), expected, 'published bytes preserved: ' + file);
 const expectedIds = ['01','02','03-a','03-b','03-c','04','05-a','05-b','06','07','08','09','10'].map(x => 'ex-selfcheck-iv-' + x);
 assert.deepEqual(manifest.cards, expectedIds); assert.equal(manifest.status, 'in-review');
 assert.deepEqual(fs.readdirSync(folder).filter(x => x.endsWith('.json') && x !== 'manifest.json').sort(), expectedIds.map(x => x + '.json').sort());
 const cards = manifest.cards.map(id => read(path.join(folder, id + '.json')));
-const course = read(path.join(root, 'stereo-course/textbook/data/course.json')), source = read(path.join(root, 'stereo-course/textbook/source-index.json'));
+const actualSource = read(path.join(root, 'stereo-course/textbook/source-index.json'));
+const course = integrated.previousCourse(read(path.join(root, 'stereo-course/textbook/data/course.json')), actualSource);
+const source = integrated.previousIndex(actualSource);
+integrated.previousRegistry(read(path.join(root, 'tools/stereo-textbook/content-review.json')));
 const Ajv = require('ajv/dist/2020'), ajv = new Ajv({allErrors:true, strict:true}); require('ajv-formats')(ajv);
 const validate = ajv.compile(read(path.join(root, 'stereo-course/textbook/schema/lesson.schema.json')));
 const API = require(path.join(root, 'stereo-course/textbook/assets/engine.js'));
@@ -51,4 +56,4 @@ assert.equal(API.inspectBundle(course.catalog, course.lessons).available.size, 6
 assert.equal(steps, manifest.expected.steps); assert.equal(views, manifest.expected.views);
 assert.equal(cards.length, 13); assert.equal(steps, 31); assert.equal(views, 45);
 dom.window.close();
-console.log('ATANASYAN_IV_SELFCHECK_DRAFT_CHECKS_OK: 13 draft cards, 31 steps, 45 reachable models; published 640 unchanged; review remains pending');
+console.log('ATANASYAN_IV_SELFCHECK_DRAFT_CHECKS_OK: 13 draft cards, 31 steps, 45 reachable models; historical 640 preserved; editorial copy remains pending; integrated flags checked separately');

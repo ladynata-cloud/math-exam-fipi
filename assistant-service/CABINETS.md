@@ -13,7 +13,7 @@ external model has been called. Merge and deployment require separate decisions.
 | `peterson-decimals` | Eight topics: place value, comparison, rounding, addition/subtraction, multiplication, division, powers of ten and ordinary/decimal fractions | Exact rational arithmetic for supported signed finite-decimal inputs, exact fractional results and repeating-decimal output; division by zero is rejected |
 | `triangle-congruence` | Four topics: SAS, ASA, SSS and corresponding vertices / choice of criterion | Explicit premises and justification; rejects the idea that AAA or arbitrary SSA proves congruence |
 | `atanasyan-first-steps` | Two separate sources: Atanasyan tasks 1–160 (232 exercise cards and 23 theory cards) and Ichenskaya grade-seven independent/test works (110 task cards) | Source-based prompts, reasons and explanations for the selected course/task/step; an explicitly requested full solution remains subject to teacher review |
-| `vilenkin-grade6` | Two topics: NOD (greatest common divisor) and NOK (least common multiple), linked to existing grade 6 trainers | Prime-factor explanations and exact integer checks for two positive integers up to six digits; no automatic textbook-number lookup |
+| `vilenkin-grade6` | Two topics: NOD (greatest common divisor) and NOK (least common multiple), linked to existing grade 6 trainers | Prime-factor explanations and exact checks for 2–5 positive integers up to six digits, with results at most 999999999999; no automatic textbook-number lookup |
 
 The fourth profile is an additive option for the
 [first-steps course task](../docs/tasks/ATANASYAN_FIRST_STEPS_CABINET.md).
@@ -37,6 +37,16 @@ that separately trained neural-network weights exist. Offline mode explicitly
 says the external model is not connected. Checked calculation, general reviewed
 guidance, insufficient conditions and unverified model answers have distinct
 labels. Original explanations are not copied textbook solutions.
+
+Numeric answer feedback uses the [shared answer grammar](README.md#try-the-learner-flow).
+For example, `1 1/2`, `3/2` and `1,5` are equivalent; `1 1/2` is never read as
+`11/2`. Exact repeating answers such as `0,(3)` and `0,1(6)` are accepted;
+truncated `0,333333` is not equal to `1/3`. The parser allows up to 64 decimal
+tail digits, but the unchanged privacy filter may reject long digit runs;
+enter the equivalent ordinary fraction in that case. Cabinet question formats
+are unchanged. Unrecognized spacing or mixed-number notation receives an explicit
+cannot-check message rather than a correct-answer label. Source-only geometry
+and whole proof/step verification are unchanged.
 
 Each request gives one next hint, simpler wording, or a full explanation chosen
 by the pupil. Earlier steps stay visible in the current view. Feedback categories
@@ -305,3 +315,54 @@ them to regain allowance. Stop the independent assistant application if needed.
 The video worker remains separately controlled. Board and cabinets still share
 one existing process: stopping that process stops cabinets too. This task does
 not claim to have split those two existing components.
+
+## Structured private practice (100-item program, 2026-11-02)
+
+The cabinet adds a separate deterministic practice panel for its already enabled
+accounts. Public helper practice remains memory-only. The cabinet panel defaults
+to session memory (bounded cache,24-hour expiry). Explicit learner opt-in retains
+a generated task descriptor, help/attempt status, adaptive levels and at most100
+categorical task outcomes for30 days after its last update. Raw pupil answers,
+free-form conditions and dialogue are never stored by this feature. The owned
+teacher may view retained summaries and repeated known-error categories; the
+checkbox states this. Turning retention off or explicit erasure deletes this
+practice row and invalidates its in-memory copies, without changing pre-existing
+attempts, request allowances or monetary accounting. A separate authenticated
+erasure control remains available when the teacher disables the helper or an
+assessment is active; it does not require the optional practice module. Expired
+rows are pruned on helper/practice requests, including disabled-helper status
+reads. Cleanup is request-driven, not a separately provisioned scheduler. Cached
+pre-consent work cannot reappear after retained state expires.
+
+A teacher previews3–5 distinct generated problems, selects permitted methods and
+full-solution availability, then explicitly assigns that preview. Previews expire
+after30 minutes; published selections expire after30 days and can be revoked.
+At most20 active selections per learner and1000 retained selections per teacher
+are allowed; this also bounds repeated assign/revoke cycles.
+These policies govern the cabinet's task-specific explanations, not all other
+learning material; formative generated answers are not examination secrets.
+A numerical answer does not prove which method the pupil used. Active assessments
+and disabled helper settings block these endpoints, including direct requests.
+The existing three-account admission rule is unchanged.
+
+The teacher sandbox reads and grades synthetic descriptors with no progress,
+assignment, queue, usage or other learner-table writes. Teacher notes have a
+versioned draft and explicit approval. Editing a draft retains the last approved
+version until a new approval. Approved notes appear as separate teacher text in
+full explanations of that skill across the teacher's owned accounts. They never
+change exact grading, and are withheld when full solutions are disallowed.
+
+A learner may explicitly report a generated problem by category. The queue stores
+only its reproducible descriptor/engine version, reason, workflow status and
+teacher routing; no pupil ID, session, attempted answer or free text. Entries
+expire after30 days. This is data minimization, not a claim of perfect anonymity.
+The teacher can reproduce and mark an entry reviewed, but this neither approves
+new mathematical knowledge nor automatically changes source code.
+
+The board image explicitly includes only the pure shared practice module and its
+ESM package marker. Inference, provider keys and assistant DB remain separate.
+A missing practice module fails its endpoints safely without preventing board
+startup. Deploy cabinet server/image and cabinet static assets through the
+established native path; standalone helper release packaging does not deploy
+these cabinet additions. Additive SQLite tables may remain through source rollback;
+never delete existing accounting data to roll back this feature.

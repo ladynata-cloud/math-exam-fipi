@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - 'board-server/**'
+      - 'assistant-service/public/practice-core.js'
+      - 'assistant-service/package.json'
       - 'learning/**'
       - 'geometry-course/textbook/assets/math-text.js'
       - 'geometry-course/textbook/assets/planar-viewer.js'
@@ -234,6 +236,18 @@ jobs:
           retention-days: 7
       - name: Final whitespace and patch check
         run: git diff --check
+      - name: Private practice, teacher policies and safe notes in real browsers
+        env:
+          BROWSER_SCREENSHOT_DIR: ${{ runner.temp }}/assistant-practice-evidence
+        run: node --test tools/learning-assistant-practice.browser.cjs
+      - name: Private practice synthetic browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: assistant-private-practice
+          path: ${{ runner.temp }}/assistant-practice-evidence
+          retention-days: 7
+          if-no-files-found: ignore
       - name: Cabinet assistant preparation gate
         run: echo MATHEXAM_ASSISTANT_CABINETS_PREPARED_OK
 
@@ -246,6 +260,8 @@ jobs:
           persist-credentials: false
       - name: Build the production Alpine image
         run: docker build --tag mathexam-learning-qa:ci .
+      - name: Shared deterministic practice module is included in the cabinet image
+        run: docker run --rm --entrypoint node mathexam-learning-qa:ci --input-type=module -e 'import {generatePractice,gradePractice} from "../assistant-service/public/practice-core.js"; const d={skill:"fractions",level:2,seed:7}; if(gradePractice(d,generatePractice(d).expected).status!=="correct")process.exit(1);'
       - name: Verify actual SQLite and image codec in the production image
         run: |
           docker run --rm --entrypoint node mathexam-learning-qa:ci -e '

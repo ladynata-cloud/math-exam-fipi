@@ -1,0 +1,19 @@
+export function html(tag,cls='',text=''){const e=document.createElement(tag);if(cls)e.className=cls;e.textContent=text;return e;}
+export function svg(tag,attrs={}){const e=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,String(v));return e;}
+const finite=(x,limit=1000)=>Number.isFinite(x)&&Math.abs(x)<=limit;
+function arcPath(a,sector=false){const rad=n=>n*Math.PI/180,p=n=>[a.x+a.r*Math.cos(rad(n)),a.y+a.r*Math.sin(rad(n))],start=p(a.start),end=p(a.end),delta=a.end-a.start;return `${sector?`M ${a.x} ${a.y} L`:'M'} ${start.join(' ')} A ${a.r} ${a.r} 0 ${Math.abs(delta)>180?1:0} ${delta>0?1:0} ${end.join(' ')}${sector?' Z':''}`;}
+export function appendGeometryFigure(card,figure){
+ if(figure?.kind!=='scene'||typeof figure.caption!=='string'||!Array.isArray(figure.points)||figure.points.length>30||!Array.isArray(figure.edges)||figure.edges.length>40)return;
+ const ps=figure.points;if(!ps.every(p=>typeof p.id==='string'&&p.id.length<20&&typeof p.label==='string'&&p.label.length<100&&finite(p.x)&&finite(p.y)))return;
+ const map=new Map(ps.map(p=>[p.id,p]));const panel=html('details','learning-visual geometry-scene');panel.append(html('summary','','Проверенный чертёж'));
+ const picture=svg('svg',{viewBox:'0 0 400 300',role:'img','aria-label':figure.caption});
+ for(const poly of (figure.polygons||[]).slice(0,4)){if(!Array.isArray(poly)||poly.length>12||!poly.every(id=>map.has(id)))continue;picture.append(svg('polygon',{points:poly.map(id=>`${map.get(id).x},${map.get(id).y}`).join(' '),class:'geometry-fill'}));}
+ for(const c of (figure.circles||[]).slice(0,2))if([c.x,c.y,c.r].every(x=>finite(x))&&c.r>0)picture.append(svg('circle',{cx:c.x,cy:c.y,r:c.r,class:'visual-empty'}));
+ for(const e of figure.edges){const a=map.get(e.from),b=map.get(e.to);if(!a||!b)continue;picture.append(svg('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,class:e.emphasis?'geometry-emphasis':'visual-line'}));if(typeof e.text==='string'&&e.text.length<80){const label=svg('text',{x:(a.x+b.x)/2+8,y:(a.y+b.y)/2-7,'text-anchor':'middle',class:'geometry-label'});label.textContent=e.text;picture.append(label);}}
+ for(const a of (figure.arcs||[]).slice(0,2))if([a.x,a.y,a.r,a.start,a.end].every(x=>finite(x))&&a.r>0&&Math.abs(a.end-a.start)<360){picture.append(svg('path',{d:arcPath(a),class:'geometry-emphasis'}));const middle=(a.start+a.end)/2*Math.PI/180;const text=svg('text',{x:a.x+(a.r+14)*Math.cos(middle),y:a.y+(a.r+14)*Math.sin(middle),'text-anchor':'middle',class:'geometry-label'});text.textContent=typeof a.label==='string'?a.label.slice(0,60):'';picture.append(text);}
+ for(const w of (figure.wedges||[]).slice(0,4))if([w.x,w.y,w.start,w.end].every(x=>finite(x))){const a={...w,r:27};picture.append(svg('path',{d:arcPath(a,true),class:'geometry-fill'}));const mid=(w.start+w.end)/2*Math.PI/180,label=svg('text',{x:w.x+45*Math.cos(mid),y:w.y+45*Math.sin(mid),'text-anchor':'middle',class:'geometry-label'});label.textContent=typeof w.label==='string'?w.label.slice(0,60):'';picture.append(label);}
+ for(const r of (figure.rightAngles||[]).slice(0,4))if([r.x,r.y,r.dx,r.dy].every(x=>finite(x))&&Math.abs(r.dx)===1&&Math.abs(r.dy)===1)picture.append(svg('path',{d:`M ${r.x+12*r.dx} ${r.y} v ${12*r.dy} h ${-12*r.dx}`,class:'visual-line'}));
+ const grouped=[];for(const p of ps){if(!p.label)continue;const same=grouped.find(x=>Math.hypot(x.x-p.x,x.y-p.y)<1);if(same)same.label+=' / '+p.label;else grouped.push({...p});}
+ for(const p of grouped){picture.append(svg('circle',{cx:p.x,cy:p.y,r:3,class:'visual-point'}));const label=svg('text',{x:Math.min(380,Math.max(20,p.x+9)),y:Math.max(18,p.y-10),'text-anchor':'middle',class:'geometry-label'});label.textContent=p.label;picture.append(label);}
+ panel.append(picture,html('p','',figure.caption));card.append(panel);
+}
