@@ -1,5 +1,7 @@
 'use strict';
 import { appendGeometryFigure } from './geometry-figure.js';
+import { installPractice } from './practice-ui.js';
+import { SKILLS } from './practice-core.js';
 import { installVisualLabs } from './visual-labs.js';
 import { installStudyTools } from './study-ui.js';
 import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
@@ -28,6 +30,7 @@ import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
     signature: '', complete: false, generation: 0, activeRequest: null,
   };
 
+  const practice = installPractice(document.querySelector('.task-panel'));
   const labs = installVisualLabs(document.querySelector('.task-panel'));
   const study = installStudyTools({ elements, node, busy: () => state.busy, nextHint: () => ask('hint', Math.min(state.level + 1, 5)) });
 
@@ -115,7 +118,7 @@ import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
     elements['question'].value = '';
     elements['attempt'].value = '';
     elements['pilot-key'].value = '';
-    study.clearSession(); labs.clear();
+    study.clearSession(); labs.clear(); practice.clear();
     elements['external-consent'].checked = false;
     elements['workspace'].hidden = true;
     elements['access-panel'].hidden = false;
@@ -239,6 +242,8 @@ import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
   }
 
   function appendPractice(card, task) {
+    if (Object.hasOwn(SKILLS,task.topic)) { const train=node('button','button button-secondary learning-aid-control','Тренировать этот навык');train.type='button';train.addEventListener('click',()=>practice.openFor(task.topic));card.append(train); }
+
     const practice = practiceFor(task.topic, task.question);
     if (!practice) return;
     const button = node('button', 'button button-secondary learning-aid-control practice-toggle', 'Попробовать похожий пример');

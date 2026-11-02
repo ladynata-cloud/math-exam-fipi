@@ -28,10 +28,13 @@ async function evidencePage(t, browser, options) {
   const context = await browser.newContext({ ...options, ...(dir ? { recordVideo: { dir } } : {}) });
   if (dir) await context.tracing.start({ screenshots: true, snapshots: true, sources: false });
   const page = await context.newPage();
+  // Bound locator/function waits so a stalled runner yields an actionable failure.
+  page.setDefaultTimeout(15000);
+  page.setDefaultNavigationTimeout(15000);
   t.after(async () => {
     try {
       if (dir) {
-        await page.screenshot({ path: path.join(dir, 'final.png'), fullPage: true }).catch(() => {});
+        await page.screenshot({ path: path.join(dir, 'final.png'), fullPage: true, timeout: 5000 }).catch(() => {});
         await context.tracing.stop({ path: path.join(dir, 'trace.zip') });
       }
     } finally { await context.close(); await browser.close(); }
@@ -46,6 +49,8 @@ async function fixture(t, options = {}) {
     '/': ['index.html', 'text/html; charset=utf-8'],
     '/app.js': ['app.js', 'text/javascript; charset=utf-8'],
     '/study-tools.js': ['study-tools.js', 'text/javascript; charset=utf-8'],
+    '/practice-core.js': ['practice-core.js', 'text/javascript; charset=utf-8'],
+    '/practice-ui.js': ['practice-ui.js', 'text/javascript; charset=utf-8'],
     '/geometry-figure.js': ['geometry-figure.js', 'text/javascript; charset=utf-8'],
     '/visual-labs.js': ['visual-labs.js', 'text/javascript; charset=utf-8'],
     '/study-ui.js': ['study-ui.js', 'text/javascript; charset=utf-8'],
@@ -103,7 +108,7 @@ async function fixture(t, options = {}) {
     return send(404, { ok: false });
   });
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
-  t.after(() => new Promise(resolve => server.close(resolve)));
+  t.after(() => { server.closeAllConnections(); return new Promise(resolve => server.close(resolve)); });
   const browser = await chromium.launch({ headless: true,
     ...(process.env.CHROMIUM_EXECUTABLE_PATH ? { executablePath: process.env.CHROMIUM_EXECUTABLE_PATH } : {}) });
   const page = await evidencePage(t, browser, { viewport: options.viewport || { width: 1280, height: 920 } });
@@ -679,4 +684,43 @@ test('interactive models: fractions, signed steps, area, percent, balance, graph
  await choose('coordinates');await page.getByRole('button',{name:'Прочитать точку с рисунка',exact:true}).click();await page.locator('#lab-x').fill('2');await page.locator('#lab-y').fill('-4');await page.getByRole('button',{name:'Проверить координаты',exact:true}).click();assert.match(await read(),/Верно/);
  assert.equal(await page.evaluate(()=>localStorage.length+sessionStorage.length),0);for(const width of [320,390,1280]){await page.setViewportSize({width,height:900});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);}
  if(process.env.BROWSER_SCREENSHOT_DIR){fs.mkdirSync(process.env.BROWSER_SCREENSHOT_DIR,{recursive:true});await page.locator('.visual-labs').screenshot({path:path.join(process.env.BROWSER_SCREENSHOT_DIR,'visual-lab-coordinates.png')});}
+});
+
+async function practiceQuestion(page){return page.locator('.generated-practice-question').evaluate(el=>{const copy=el.cloneNode(true);for(const math of copy.querySelectorAll('math'))math.replaceWith(math.getAttribute('data-plain')||math.textContent);return copy.textContent;});}
+
+function practiceAnswer(question){let m;if((m=/^(\d+)\+(\d+)$/.exec(question)))return String(+m[1]+ +m[2]);if((m=/^(\d+)x\+(\d+)=(\d+)$/.exec(question)))return String((+m[3]- +m[2])/ +m[1]);if((m=/^(\d+)\/(\d+) \+ (\d+)\/(\d+)$/.exec(question)))return `${+m[1]* +m[4]+ +m[3]* +m[2]}/${+m[2]* +m[4]}`;if((m=/^(\d+)% от (\d+)$/.exec(question)))return String(+m[1]* +m[2]/100);throw Error('Unsupported test question: '+question);}
+
+test('practice adapts after distinct independent tasks and counts viewed methods as help', {skip},async t=>{
+ const {page,calls}=await fixture(t,{viewport:{width:390,height:900}});await page.locator('#practice-panel > summary').click();await page.locator('#practice-skill').selectOption('linear-equations');
+ const check=page.getByRole('button',{name:'Проверить упражнение',exact:true});
+ for(let i=0;i<2;i++){const q=await practiceQuestion(page);if(i===0){await page.locator('#practice-answer').fill(practiceAnswer(q)+'%');await check.click();assert.match(await page.locator('.practice-feedback').textContent(),/число или дробь/);}
+ await page.locator('#practice-answer').fill(practiceAnswer(q));await check.click();assert.match(await page.locator('.practice-feedback').textContent(),/Верно/);assert.equal(await check.isDisabled(),true);if(i===0)await page.getByRole('button',{name:'Новый вариант',exact:true}).click();}
+ assert.match(await page.locator('.practice-progress').textContent(),/Две самостоятельные/);await page.getByRole('button',{name:'Новый вариант',exact:true}).click();assert.equal(await page.locator('#practice-level').inputValue(),'2');
+ await page.locator('#practice-skill').selectOption('fractions');await page.locator('#practice-mode').selectOption('methods');assert.equal(await page.locator('.practice-methods section').count(),2);await page.locator('#practice-mode').selectOption('answer');const q=await practiceQuestion(page);await page.locator('#practice-answer').fill(practiceAnswer(q));await check.click();assert.match(await page.locator('.practice-summary').textContent(),/с помощью или после исправления 1/);
+ assert.equal(calls.filter(c=>c.path==='/api/ask').length,0);assert.equal(await page.evaluate(()=>localStorage.length+sessionStorage.length),0);
+});
+
+test('practice reasoning modes work through visible controls and preserve current assistant input', {skip},async t=>{
+ const {page,calls}=await fixture(t,{viewport:{width:390,height:900}});await page.locator('#question').fill('3x+5=20');await page.locator('#practice-panel > summary').click();await page.locator('#practice-skill').selectOption('fractions');await page.locator('#practice-level').selectOption('2');
+ const mode=async m=>page.locator('#practice-mode').selectOption(m),check=async()=>page.getByRole('button',{name:'Проверить упражнение',exact:true}).click();
+ await mode('missing');let q=await practiceQuestion(page),m=/^(\d+)\/(\d+) \+ (\d+)\/(\d+)$/.exec(q),gcd=(a,b)=>b?gcd(b,a%b):a;await page.locator('#practice-answer').fill(String(+m[2]* +m[4]/gcd(+m[2],+m[4])));await check();assert.match(await page.locator('.practice-feedback').textContent(),/верно/);
+ await mode('error');await page.locator('.practice-choice').filter({hasText:'Наименьший общий знаменатель:'}).locator('input').check();await check();assert.match(await page.locator('.practice-feedback').textContent(),/Найдена ошибочная строка/);
+ await mode('order');await page.getByRole('button',{name:'Строку 3 выше',exact:true}).click();await page.getByRole('button',{name:'Строку 2 выше',exact:true}).click();await page.getByRole('button',{name:'Строку 3 выше',exact:true}).click();await check();assert.match(await page.locator('.practice-feedback').textContent(),/восстановлен/);
+ await mode('counterexample');q=await practiceQuestion(page);await page.locator('#practice-answer').fill(q.includes('положительного')?'1/2':q.includes('|x|')?'-1':'2');await check();assert.match(await page.locator('.practice-feedback').textContent(),/опровергает/);
+ await mode('plan');await page.locator('input[name="practice-plan"][value="0"]').check();await check();assert.match(await page.locator('.practice-feedback').textContent(),/План идёт/);
+ await mode('estimate');q=await practiceQuestion(page);m=/^(\d+)\/(\d+) \+ (\d+)\/(\d+)$/.exec(q);await page.locator('#practice-sign').selectOption('positive');await page.locator('#practice-band').selectOption(+m[1]* +m[4]+ +m[3]* +m[2]<+m[2]* +m[4]?'under1':'1to10');await check();assert.match(await page.locator('.practice-feedback').textContent(),/согласуются/);
+ await mode('plausibility');await page.locator('input[name="practice-plausibility"][value="1"]').check();await check();assert.match(await page.locator('.practice-feedback').textContent(),/Гипотенуза длиннее/);
+ await mode('construct');q=await practiceQuestion(page);const target=Number(/x=(-?\d+)/.exec(q)[1]);await page.locator('#practice-answer').fill(`3;2;${3*target+2}`);await check();assert.match(await page.locator('.practice-feedback').textContent(),/единственный корень/);
+ await mode('contrast');await page.locator('#practice-contrast-0').selectOption('common');await page.locator('#practice-contrast-1').selectOption('product');await check();assert.match(await page.locator('.practice-feedback').textContent(),/одинаковые доли/);
+ assert.equal(await page.locator('#question').inputValue(),'3x+5=20');assert.equal(calls.filter(c=>c.path==='/api/ask').length,0);
+ for(const width of [320,390,1280]){await page.setViewportSize({width,height:900});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);}
+ if(process.env.BROWSER_SCREENSHOT_DIR){fs.mkdirSync(process.env.BROWSER_SCREENSHOT_DIR,{recursive:true});await page.locator('#practice-panel').screenshot({path:path.join(process.env.BROWSER_SCREENSHOT_DIR,'practice-reasoning.png')});}
+});
+
+test('four-question diagnostic gives per-skill guidance and prerequisite route retains prior attempt', {skip},async t=>{
+ const {page}=await fixture(t,{viewport:{width:390,height:900}});await page.locator('#practice-panel > summary').click();await page.getByRole('button',{name:'Диагностика: 4 вопроса',exact:true}).click();
+ for(let i=0;i<4;i++){const q=await practiceQuestion(page);await page.locator('#practice-answer').fill(practiceAnswer(q));await page.getByRole('button',{name:'Проверить упражнение',exact:true}).click();await page.getByRole('button',{name:i===3?'Итог диагностики':'Следующий вопрос диагностики',exact:true}).click();}
+ assert.match(await page.locator('.practice-progress').textContent(),/4 из 4/);assert.equal(await page.locator('.practice-stage li').count(),4);assert.match(await page.locator('.practice-stage').textContent(),/предварительный ориентир/);
+ await page.locator('#practice-skill').selectOption('fractions');await page.locator('#practice-level').selectOption('2');const q=await practiceQuestion(page),m=/^(\d+)\/(\d+) \+ (\d+)\/(\d+)$/.exec(q),wrong=`${+m[1]+ +m[3]}/${+m[2]+ +m[4]}`;await page.locator('#practice-answer').fill(wrong);await page.getByRole('button',{name:'Проверить упражнение',exact:true}).click();assert.match(await page.locator('.practice-feedback').textContent(),/знаменатели не складывают/);
+ await page.getByRole('button',{name:'Повторить основу: Дроби',exact:true}).click();assert.equal(await page.locator('#practice-level').inputValue(),'1');await page.getByRole('button',{name:'Вернуться к предыдущей задаче',exact:true}).click();assert.equal(await page.locator('#practice-answer').inputValue(),wrong);assert.equal(await practiceQuestion(page),q);
 });

@@ -396,10 +396,12 @@
       "title": "Интерактивные равные дроби",
       "acceptance": "Изменение числа частей при сохранении величины.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/415",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41368382607"
       ]
     },
     {
@@ -407,10 +409,12 @@
       "title": "Действия на числовой прямой",
       "acceptance": "Последовательные перемещения и отрицательные числа.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/415",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41368382607"
       ]
     },
     {
@@ -418,10 +422,12 @@
       "title": "Умножение дробей через площадь",
       "acceptance": "Пересечение частей прямоугольника.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/415",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41368382607"
       ]
     },
     {
@@ -429,10 +435,12 @@
       "title": "Проценты с ползунком",
       "acceptance": "Изменение выделенной доли целого.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/415",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41368382607"
       ]
     },
     {
@@ -440,10 +448,12 @@
       "title": "Уравнение как весы",
       "acceptance": "Одинаковые действия с обеими частями.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/415",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41368382607"
       ]
     },
     {
@@ -451,10 +461,12 @@
       "title": "График линейной функции",
       "acceptance": "Изменение наклона и положения при смене коэффициентов.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/415",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41368382607"
       ]
     },
     {
@@ -462,10 +474,12 @@
       "title": "Неравенство на оси",
       "acceptance": "Луч, граничная точка и включение границы.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/415",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41368382607"
       ]
     },
     {
@@ -473,10 +487,12 @@
       "title": "Координаты точки",
       "acceptance": "Построение точки и чтение координат.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/415",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41368382607"
       ]
     },
     {
@@ -484,10 +500,12 @@
       "title": "Теорема Пифагора с вычислением",
       "acceptance": "Выделение катетов и гипотенузы в типовых задачах.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/415",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41368382607"
       ]
     },
     {
@@ -495,56 +513,68 @@
       "title": "Сечения куба по шагам",
       "acceptance": "Проверяемые образцы по трём заданным точкам.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/415",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41368382607"
       ]
     },
     {
       "id": 41,
       "title": "Генератор похожих примеров",
       "acceptance": "Разнообразные задания с проверенными ответами.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+      ]
     },
     {
       "id": 42,
       "title": "Изменение сложности",
       "acceptance": "Упрощение после затруднения и усложнение после успеха.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+      ]
     },
     {
       "id": 43,
       "title": "Короткая входная диагностика",
       "acceptance": "Три–пять вопросов для выбора начального навыка.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+      ]
     },
     {
       "id": 44,
       "title": "Различение типов ошибок",
       "acceptance": "Вычислительные ошибки и неверное действие в известных случаях.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+      ]
     },
     {
       "id": 45,
       "title": "Возврат к недостающей основе",
       "acceptance": "Связь ошибки с упражнением на предпосылку.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+      ]
     },
     {
       "id": 46,
@@ -791,10 +821,12 @@
       "title": "Углы при параллельных прямых",
       "acceptance": "Пара углов и основание их связи.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/415",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41368382607"
       ]
     },
     {
@@ -802,10 +834,12 @@
       "title": "Углы треугольника",
       "acceptance": "Неизвестные внутренние и внешние углы.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/415",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41368382607"
       ]
     },
     {
@@ -813,10 +847,12 @@
       "title": "Равенство треугольников",
       "acceptance": "Соответствие сторон и углов перед выбором признака.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/415",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41368382607"
       ]
     },
     {
@@ -824,10 +860,12 @@
       "title": "Подобие треугольников",
       "acceptance": "Соответствие вершин и порядок отношений.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/415",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41368382607"
       ]
     },
     {
@@ -835,10 +873,12 @@
       "title": "Центральные и вписанные углы",
       "acceptance": "Дуга, на которую опирается угол.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/415",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41368382607"
       ]
     },
     {
@@ -846,10 +886,12 @@
       "title": "Касательная, радиус и хорда",
       "acceptance": "Выбор применимого свойства по условиям.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/415",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41368382607"
       ]
     },
     {
@@ -857,10 +899,12 @@
       "title": "Площади составных фигур",
       "acceptance": "Разбиение без пропусков и двойного счёта.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/415",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41368382607"
       ]
     },
     {
@@ -868,10 +912,12 @@
       "title": "Векторы на плоскости",
       "acceptance": "Сложение, координаты и длина.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/415",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41368382607"
       ]
     },
     {
@@ -879,10 +925,12 @@
       "title": "Углы в стереометрии",
       "acceptance": "Выделение искомого плоского угла на модели.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/415",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41368382607"
       ]
     },
     {
@@ -890,101 +938,123 @@
       "title": "Объёмы тел",
       "acceptance": "Призма, пирамида, цилиндр и конус; основание и высота.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/415",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41368382607"
       ]
     },
     {
       "id": 76,
       "title": "Два способа рядом",
       "acceptance": "Сравнение корректных решений и удобства способов.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+      ]
     },
     {
       "id": 77,
       "title": "Решение с пропуском",
       "acceptance": "Восстановление одной недостающей строки.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+      ]
     },
     {
       "id": 78,
       "title": "Найди ошибку",
       "acceptance": "Проверка специально ошибочного короткого решения.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+      ]
     },
     {
       "id": 79,
       "title": "Порядок шагов",
       "acceptance": "Сборка решения из перемешанных действий.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+      ]
     },
     {
       "id": 80,
       "title": "Контрпример",
       "acceptance": "Опровержение утверждения подходящим примером.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+      ]
     },
     {
       "id": 81,
       "title": "План без вычислений",
       "acceptance": "Выбор последовательности действий до расчётов.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+      ]
     },
     {
       "id": 82,
       "title": "Прикидка",
       "acceptance": "Знак и примерный размер результата до точного вычисления.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+      ]
     },
     {
       "id": 83,
       "title": "Смысл результата",
       "acceptance": "Проверка времени, вероятности и отношений части с целым.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+      ]
     },
     {
       "id": 84,
       "title": "Собственная задача",
       "acceptance": "Заполнение шаблона условия для заданного ответа.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+      ]
     },
     {
       "id": 85,
       "title": "Контрастные пары",
       "acceptance": "Изменение условия, меняющее способ решения.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+      ]
     },
     {
       "id": 86,
