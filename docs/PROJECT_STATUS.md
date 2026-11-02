@@ -1,5 +1,18 @@
 # MathExam project status
 
+## Assistant: geometry and8 models prepared, 2026-11-02
+
+- PR409/411/412/413/414 are merged with cloud checks:54 numbered items.
+  PR414 merge8a5b31b has verified parent51da998 and reviewed tree115c38e.
+-20 geometry/model items prepared locally:210 service and18 browser tests
+  passed, plus exact mathematical/diagram invariants. See
+  [evidence](reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md).
+-74 items have prepared code; packages7–8 remain. This is not100 completed
+  and none of the new program is deployed in Amvera. Production remains prior
+  source8307f6a/package3cc22e0; cloud hosting identity/known-host provisioning
+  unavailable. Publication permission is already granted.
+
+
 ## Assistant: word problems and data prepared, 2026-11-02
 
 - PR409/411/412/413 source is merged and cloud-checked:46 numbered items.

@@ -10,6 +10,8 @@ export function inferTopic(value) {
   const q = normalizeTask(value).toLowerCase();
   const dataTopic = {'движение':'motion','навстречу':'motion','вдогонку':'motion','работа':'work-rates','смесь':'mixtures','арифметическая':'arithmetic-progression','геометрическая':'geometric-progression','статистика':'statistics','вероятность':'probability','функция':'function-table'}[q.split(':')[0]];
   if (dataTopic) return dataTopic;
+  const geoTopic={'пифагор':'pythagoras','куб':'sections','параллельные':'parallel-angles','треугольник':'triangle-angles','равенство':'triangle-congruence','подобие':'triangle-similarity','окружность':'circle-angles','касательная':'circle-properties','хорда':'circle-properties','касательная и хорда':'circle-properties','фигура':'composite-areas','вектор':'vectors','векторы':'vectors','угол в кубе':'space-angles','объём':'volumes'}[q.split(':')[0]];
+  if (geoTopic) return geoTopic;
   if (/^(sin|cos|tan)\(/.test(q)) return 'trigonometric-equations';
   if (/^log_/.test(q)) return 'logarithmic-equations';
   if (/^[\d(].*\^.*[xх].*=/.test(q)) return 'exponential-equations';
@@ -43,6 +45,17 @@ export function ambiguity(value, topic) {
   return null;
 }
 export const FORMATS = {
+  'parallel-angles':'Укажи параллельность и вид пары углов; ответ в градусах.',
+  'triangle-angles':'Два внутренних угла заданы. Ответ — внутренний или внешний угол в градусах.',
+  'triangle-congruence':'Сначала соответствие A=D; B=E; C=F; затем ССС, СУС или УСУ.',
+  'triangle-similarity':'Порядок ABC~DEF задаёт соответствие; ответ — длина EF.',
+  'circle-angles':'Укажи дугу и положение вершины вписанного угла. Ответ в градусах.',
+  'circle-properties':'Используй пример с точкой касания или серединой хорды; ответ в градусах.',
+  'composite-areas':'Все длины в одной единице; ответ — площадь в квадратных единицах.',
+  vectors:'Для координат ответ (x;y), для длины — точное число или корень.',
+  'space-angles':'Выбери пример именованных граней куба; ответ в градусах.',
+  volumes:'S — площадь основания, h — перпендикулярная высота, r — радиус. Ответ с π для круглого основания.',
+
   motion: 'Используй пример записи с величинами и единицами. Ответ — число в единице, указанной в разборе.',
   'work-rates': 'Укажи время выполнения одной работы каждым по отдельности. Ответ — время вместе.',
   mixtures: 'Укажи массу и массовый процент каждого из двух растворов. Ответ — процент смеси.',
@@ -73,8 +86,8 @@ export const FORMATS = {
   percentages: 'Число; если ищешь процентную долю, можно дописать знак %. Не округляй без указания.',
   'gcd-lcm': 'Одно натуральное число — НОД или НОК из условия.',
   rounding: 'Число, округлённое до разряда, указанного в условии.',
-  pythagoras: 'Сначала назови известные стороны и единицы длины. Общий вопрос не является числовой задачей.',
-  sections: 'Нужны названия многогранника и точек на его рёбрах. По общему описанию конкретное сечение не проверяется.'
+  pythagoras: 'Используй числовой шаблон: Пифагор: катеты 3 и 4; найти гипотенузу. Ответ — точное число или корень.',
+  sections: 'Куб: M=AB:1/2; N=AD:1/2; P=AA1:1/2. Ответ — координаты всех вершин через |.'
 };
 export const GLOSSARY = {
   'числитель': 'Числитель показывает, сколько равных долей взяли. Он записан над чертой дроби.',

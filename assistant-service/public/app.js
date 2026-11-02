@@ -1,4 +1,6 @@
 'use strict';
+import { appendGeometryFigure } from './geometry-figure.js';
+import { installVisualLabs } from './visual-labs.js';
 import { installStudyTools } from './study-ui.js';
 import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
 
@@ -26,6 +28,7 @@ import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
     signature: '', complete: false, generation: 0, activeRequest: null,
   };
 
+  const labs = installVisualLabs(document.querySelector('.task-panel'));
   const study = installStudyTools({ elements, node, busy: () => state.busy, nextHint: () => ask('hint', Math.min(state.level + 1, 5)) });
 
   function message(id, text, isError = false) {
@@ -112,7 +115,7 @@ import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
     elements['question'].value = '';
     elements['attempt'].value = '';
     elements['pilot-key'].value = '';
-    study.clearSession();
+    study.clearSession(); labs.clear();
     elements['external-consent'].checked = false;
     elements['workspace'].hidden = true;
     elements['access-panel'].hidden = false;
@@ -374,7 +377,7 @@ import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
     if (answer.verification === 'model-unverified') card.append(node('p', 'answer-notice', 'Модель может ошибиться или открыть лишние шаги. Этот ответ не становится частью проверенной базы знаний автоматически.'));
     if (answer.verification === 'deterministic') {
       appendVisual(card, task);
-      if (answer.complete) { appendExactFigure(card, answer.figure); appendDataTable(card, answer.table); }
+      if (answer.complete) { appendExactFigure(card, answer.figure); appendGeometryFigure(card, answer.figure); appendDataTable(card, answer.table); }
       if (answer.complete) appendPractice(card, task);
     } else if (answer.verification === 'needs-teacher') {
       const help = node('details', 'task-help');
