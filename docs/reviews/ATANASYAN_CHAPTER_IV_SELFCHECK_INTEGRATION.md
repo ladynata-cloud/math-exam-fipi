@@ -94,3 +94,20 @@ Virtual merge result: journal-only conflict,resolved preserving both records
 Rerun gates: full applicable integrated course checks
 New owner authorization required: no
 ```
+
+## Cloud-only base-drift revalidation, 2026-11-03 Asia/Novosibirsk
+
+The owner requested that all remaining operations run in the cloud. GitHub main
+advanced to `04b586c1246bf715fdb8c0e165c8bbc6c41748ef` through the independently
+published PR404 (Peterson6 exact exercise entry). Its fifteen non-journal paths
+are disjoint from PR402. The only conflict is the project journal: all47 PR402
+added lines and all25 PR404 added lines are retained, with the common journal
+byte-identical. No course, renderer, schema, persistence or test file is changed
+by this synchronization. The existing Q10 retained-fraction assertion is preserved.
+
+All eight runs for head `73517154e063eae30a1a90a0863a81c4e5f7ede0` passed, including
+the fourteen-job full-course workflow41485128626 and its complete collector.
+That evidence covers the unchanged 653-card product. The synchronized composition
+is sent through fresh GitHub Actions; final candidate/tree and results are in PR402.
+This is an ordinary history-preserving merge, not a force/rebase or a new scope.
+Standing publication permission applies to the revalidated new base.

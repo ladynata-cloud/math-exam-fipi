@@ -47,6 +47,31 @@
   records below remain unchanged. The next self-check increment requires its
   own independent review and release decision.
 
+## Release candidate: Peterson 6 exact exercise entry, PR404, 2026-11-02
+
+- [Task](tasks/PETERSON6_EXACT_EXERCISE_ENTRY.md), MEDIUM; bounded continuation
+  after the published equation-method trainer. Branch
+  `fix/peterson6-exact-exercises-20261102`, implementation base
+  `5bbfe3a4615b6410dacf7f1344aa57b909a986ef`.
+- Course number search now points 303 and 305 to their exact existing source
+  exercises. Public links open a separate tab; the cabinet follows the link
+  inside its existing public frame with its original sandbox permissions.
+- Exact routes resume saved work, including archived legacy drafts. The
+  smaller-speed question is clarified through presentation metadata; stored
+  labels, condition keys, mathematical answers and storage formats are unchanged.
+- Actual cabinet browser testing also exposed blocked native form submission.
+  Search and existing answer forms now call their local checks from click/Enter,
+  retaining the cabinet sandbox and the original validation logic.
+- [Verification](reports/PETERSON6_EXACT_EXERCISE_ENTRY.md) records the executed
+  checks, frozen published-save evidence and focused internal review. The
+  PR records its exact head and CI. The owner explicitly requested this release;
+  [standing permission](OWNER_RELEASE_AUTHORIZATION.md) from PR408 applies.
+- Reconciled current main `01e412d4314445366bcd4773a3789129aa7264bd` with all
+  existing project records preserved. Runtime, source conditions and saved-work
+  identities match the reviewed correction. Updated-head CI and live verification
+  are release gates, not claimed complete in this pre-release commit.
+
+
 ## Assistant: all100 items have prepared source, 2026-11-02
 
 - Final11 cabinet/teacher/coverage items prepared:381 board-server tests,216
