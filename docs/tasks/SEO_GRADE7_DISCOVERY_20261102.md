@@ -56,3 +56,29 @@ migration or cleanup is needed.
 
 Draft PR only. Record exact head and cloud checks in the PR description.
 Merge and deployment are not authorized by this task's explicit restriction.
+
+## Continuation validation, 2026-11-02
+
+- All seven original cloud jobs finished successfully (runs 41372350017,
+  41372350044, 41372350047), including the four previously pending geometry jobs.
+- Current main: `01e412d4314445366bcd4773a3789129aa7264bd`.
+  Its two commits since the original base are assistant changes (#416/#417),
+  disjoint from this patch. Virtual merge is clean, tree
+  `bbad2bca7cf18bae70d974c14de506d06bdb4fdc` before this validation addition.
+- Ordinary branch synchronization preserves both histories; no force or rebase.
+- All 203 existing geometry-catalog anchors and 44 grade-seven anchors retained.
+  Removing only the intended additions yields byte-identical existing files
+  against current main (both catalogs and their generator). All course files,
+  sitemap and learner code remain unchanged.
+- Repeated sitemap suite: 12 passed; sitemap freshness: 531 URLs; public SEO:
+  191 local links, 847 canonical declarations, 151 refresh destinations passed.
+  Catalog parity: 58/12/6 cards, 71 existing destinations passed against current main.
+- Expanded the existing browser navigation test to click both courses from
+  both catalogs at 320/390/1280 pixels with JavaScript enabled and disabled
+  (24 additional scenarios), checking visible link bounds, destination heading
+  and canonical. This targeted test is necessary because the previous browser
+  test only clicked unrelated trainer-catalog destinations.
+- Local browser unavailable: no installed executable; browser CDN download
+  returned an invalid archive. The existing cloud SEO workflow executes the test.
+- Publication still requires the separate owner decision explicitly requested
+  in the continuation. No merge or live patch verification claimed before it.

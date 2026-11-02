@@ -67,10 +67,26 @@ const server = http.createServer((req, res) => {
           }
         }
       }
+      for (const width of [320, 390, 1280]) {
+        await page.setViewportSize({ width, height: 900 });
+        for (const catalog of ['/geometry-course/', '/grade7/']) {
+          for (const target of ['/geometry-course/first-steps/', '/geometry-course/ichenskaya-7-works/']) {
+            await page.goto(origin + catalog);
+            const link = page.locator(`a[href="${catalog === '/grade7/' ? '..' + target : target.replace('/geometry-course/', '')}"]`).first();
+            assert.equal(await link.isVisible(), true, `${catalog}: visible link to ${target}`);
+            await link.scrollIntoViewIfNeeded();
+            const rects = await link.evaluate(a => [...a.getClientRects()].map(r => ({left:r.left, right:r.right, width:r.width, height:r.height})));
+            assert(rects.length && rects.every(r => r.width > 0 && r.height > 0 && r.left >= -1 && r.right <= width + 1), `${catalog}: link fits ${width}px`);
+            await Promise.all([page.waitForURL(url => url.pathname === target), link.click()]);
+            assert((await page.locator('h1').first().innerText()).trim());
+            assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), 'https://mathexam.space' + target);
+          }
+        }
+      }
       assert.deepEqual(errors, [], 'public navigation must not raise JavaScript errors');
       await context.close();
     }
-    console.log('SEO_ENTRYPOINTS_BROWSER_OK: 6 compatibility routes and 30 catalog clicks; 320/390/1280 px; public/embedded NOK/NOD.');
+    console.log('SEO_ENTRYPOINTS_BROWSER_OK: 6 compatibility routes, 30 trainer catalog clicks and 24 grade-seven geometry course clicks; 320/390/1280 px; JavaScript on/off; course link bounds and canonicals; public/embedded NOK/NOD.');
   } finally {
     if (browser) await browser.close();
     await new Promise(resolve => server.close(resolve));
