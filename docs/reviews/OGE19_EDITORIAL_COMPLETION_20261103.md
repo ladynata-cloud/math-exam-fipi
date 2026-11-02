@@ -28,3 +28,7 @@ Focused mathematical/editorial and code self-review completed. No new truth-key 
 Review Site: https://mathexam-oge19-model-review.ladynata3000.chatgpt.site . Its published per-card report records all 234 verdicts and source hashes. Personal browser notes are never marked or overwritten as part of editorial completion.
 
 Authorization: direct owner request to complete and publish, plus docs/OWNER_RELEASE_AUTHORIZATION.md. Guarded squash merge after applicable checks; exact release hashes and Pages verified afterwards. Rollback is a narrow revert and previous Site version, without learner-data migration.
+
+## Main composition for release
+
+The initial candidate a279acd3557bbc6e8b249ec8a2ad62b606f74227 passed all four workflows: Task19 visual hints (41530645408), OGE geometry (41530645425), guided division (41530645421) and sitemap (41530645441). Main then advanced only through the authorized Atanasyan release #422 to 2db15293087190be209dda1db092dd79228c9488. Its 27-path scope and the eight paths of this task are disjoint. This ordinary merge preserves the complete new main tree and the exact source/offline blobs from the checked candidate. The project journal is reconciled to the actual #421/#422 release and Site version 2. Applicable cloud CI reruns on the composed candidate; final guard and publication evidence remain in PR #423.

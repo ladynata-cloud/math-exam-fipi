@@ -20,7 +20,7 @@ async function layout(page,id){
  browser=await chromium.launch({headless:true});
  for(const width of evidence.widths){
   const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage();page.on('pageerror',e=>evidence.errors.push(e.message));
-  await page.goto(base);await page.waitForFunction(()=>window.textbookApp?.coverage.available===653);
+  await page.goto(base);await page.waitForFunction(count=>window.textbookApp?.coverage.available===count,course.lessons.length);
   const old=course.lessons.find(card=>!ids.has(card.id)&&card.answer?.mode==='manual');
   await page.evaluate(id=>textbookApp.open(id),old.id);await page.locator('#final-answer').fill('Старая сохранённая работа');
   const oldBytes=await page.evaluate(key=>localStorage.getItem(key),stateKey(old));
