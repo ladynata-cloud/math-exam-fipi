@@ -201,10 +201,12 @@
       "title": "Умножение и деление дробей",
       "acceptance": "Смешанные числа, сокращение перед вычислением, проверка деления на ноль.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/412",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41364114499"
       ]
     },
     {
@@ -212,10 +214,12 @@
       "title": "Выражения из нескольких действий",
       "acceptance": "Приоритеты, скобки и проверка промежуточных результатов.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/412",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41364114499"
       ]
     },
     {
@@ -223,10 +227,12 @@
       "title": "Сравнение дробей и смешанных чисел",
       "acceptance": "Точное сравнение и подходящее объяснение.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/412",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41364114499"
       ]
     },
     {
@@ -234,10 +240,12 @@
       "title": "Степени с целыми показателями",
       "acceptance": "Отрицательное основание, нулевой и отрицательный показатели.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/412",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41364114499"
       ]
     },
     {
@@ -245,48 +253,58 @@
       "title": "Квадратные корни",
       "acceptance": "Вынос множителя и точная запись результата.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/412",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41364114499"
       ]
     },
     {
       "id": 21,
       "title": "Линейные неравенства",
       "acceptance": "Изменение знака при делении на отрицательное число.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_EQUATIONS_EXPANDED_20261102.md"
+      ]
     },
     {
       "id": 22,
       "title": "Квадратные уравнения",
       "acceptance": "Неполные уравнения, множители и дискриминант.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_EQUATIONS_EXPANDED_20261102.md"
+      ]
     },
     {
       "id": 23,
       "title": "Системы двух линейных уравнений",
       "acceptance": "Подстановка, сложение, отсутствие и бесконечность решений.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_EQUATIONS_EXPANDED_20261102.md"
+      ]
     },
     {
       "id": 24,
       "title": "Пропорции",
       "acceptance": "Отношения и проверка неизвестного.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/412",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41364114499"
       ]
     },
     {
@@ -321,10 +339,12 @@
       "title": "Точность округления",
       "acceptance": "Точный ответ, приближение и допустимая погрешность.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/412",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41364114499"
       ]
     },
     {
@@ -332,10 +352,12 @@
       "title": "Дроби, десятичные и проценты",
       "acceptance": "Перевод между тремя формами одной величины.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/412",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41364114499"
       ]
     },
     {
@@ -343,10 +365,12 @@
       "title": "Ответы с единицами",
       "acceptance": "Равнозначные величины и ошибки в размерности.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/412",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41364114499"
       ]
     },
     {
@@ -534,10 +558,12 @@
       "title": "Упрощение буквенных выражений",
       "acceptance": "Подобные слагаемые, скобки и проверка каждого преобразования.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/412",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41364114499"
       ]
     },
     {
@@ -545,83 +571,101 @@
       "title": "Разложение на множители",
       "acceptance": "Общий множитель, формулы и группировка.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/412",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41364114499"
       ]
     },
     {
       "id": 53,
       "title": "Рациональные уравнения",
       "acceptance": "Ограничения знаменателей и допустимость корней.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_EQUATIONS_EXPANDED_20261102.md"
+      ]
     },
     {
       "id": 54,
       "title": "Уравнения с корнями",
       "acceptance": "Возведение в квадрат и проверка посторонних корней.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_EQUATIONS_EXPANDED_20261102.md"
+      ]
     },
     {
       "id": 55,
       "title": "Уравнения с модулем",
       "acceptance": "Объяснение отдельных случаев решения.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_EQUATIONS_EXPANDED_20261102.md"
+      ]
     },
     {
       "id": 56,
       "title": "Квадратные неравенства",
       "acceptance": "Корни, ветви параболы и промежутки.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_EQUATIONS_EXPANDED_20261102.md"
+      ]
     },
     {
       "id": 57,
       "title": "Метод интервалов",
       "acceptance": "Знаки произведений и дробей, запрещённые точки.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_EQUATIONS_EXPANDED_20261102.md"
+      ]
     },
     {
       "id": 58,
       "title": "Показательные уравнения",
       "acceptance": "Приведение типовых выражений к одному основанию.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_EQUATIONS_EXPANDED_20261102.md"
+      ]
     },
     {
       "id": 59,
       "title": "Логарифмические уравнения",
       "acceptance": "Область допустимых значений и свойства логарифмов.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_EQUATIONS_EXPANDED_20261102.md"
+      ]
     },
     {
       "id": 60,
       "title": "Тригонометрические уравнения",
       "acceptance": "Корни на окружности и отбор на промежутке.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_EQUATIONS_EXPANDED_20261102.md"
+      ]
     },
     {
       "id": 61,

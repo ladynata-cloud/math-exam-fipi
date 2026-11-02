@@ -615,3 +615,22 @@ test('live exact math foundations: new topics, fractions, units and polynomial r
   for(const width of [320,390,1280]){await page.setViewportSize({width,height:900});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);}
   if(process.env.BROWSER_SCREENSHOT_DIR){fs.mkdirSync(process.env.BROWSER_SCREENSHOT_DIR,{recursive:true});await page.locator('.answer-panel').screenshot({path:path.join(process.env.BROWSER_SCREENSHOT_DIR,'math-foundations.png')});}
 });
+
+for(const [group,cases] of Object.entries({
+  algebra:[['quadratic-equations','x²-5x+6=0','2;3'],['inequalities','-2x+3<7','(-2;+∞)'],['linear-systems','x+y=5;2x-y=1','x=2;y=3'],['rational-equations','(x-1)/(x-1)=1','(-∞;1)∪(1;+∞)'],['radical-equations','√(x+2)=x','2'],['absolute-equations','|x-2|=3','-1;5']],
+  domains:[['rational-inequalities','(x-1)/(x+2)>=0','(-∞;-2)∪[1;+∞)'],['exponential-equations','2^(x+1)=8','2'],['logarithmic-equations','log_2(x-1)=3','9'],['trigonometric-equations','sin(x)=1/2; [0;2pi]','pi/6;5pi/6']]
+}))test(`live expanded equations ${group}: exact answers and progressive disclosure`,{skip:skip||(!process.env.LIVE_ASSISTANT_URL&&'Local HTTP fixture required')},async t=>{
+  const url=new URL(process.env.LIVE_ASSISTANT_URL);assert.ok(['127.0.0.1','localhost'].includes(url.hostname));
+  const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_EXECUTABLE_PATH?{executablePath:process.env.CHROMIUM_EXECUTABLE_PATH}:{})});
+  const page=await evidencePage(t,browser,{viewport:{width:390,height:900}});await page.goto(url.href);await page.waitForFunction(()=>!document.getElementById('access-button').disabled);await page.locator('#access-button').click();await page.locator('#workspace').waitFor({state:'visible'});
+  for(const [topic,q,a] of cases){
+    await page.locator('#topic').selectOption(topic);await page.locator('#question').fill(q);await page.locator('#attempt').fill(a);
+    const pending=page.waitForResponse(r=>r.url().endsWith('/api/ask'));await page.locator('#ask-button').click();const response=await pending;assert.equal(response.status(),200,q);const answer=(await response.json()).answer;
+    assert.equal(answer.verification,'deterministic');assert.equal(answer.attemptStatus,'correct',q);assert.equal(answer.figure,undefined);assert.equal(answer.steps.length,1);
+    await page.waitForFunction(()=>document.getElementById('workspace').getAttribute('aria-busy')==='false');assert.equal(await page.locator('#attempt').inputValue(),a);assert.equal(await page.locator('#external-choice').isVisible(),false);
+  }
+  await page.locator('#explain-button').click();await page.waitForFunction(()=>document.querySelectorAll('.answer-card').length===2);
+  if(group==='domains'){await page.getByText('Корни на единичной окружности',{exact:true}).click();assert.equal(await page.locator('.answer-card').last().locator('svg circle.visual-point').count(),2);assert.match(await page.locator('.answer-card').last().textContent(),/π\/6/);}
+  for(const width of [320,390,1280]){await page.setViewportSize({width,height:900});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);}
+  if(process.env.BROWSER_SCREENSHOT_DIR){fs.mkdirSync(process.env.BROWSER_SCREENSHOT_DIR,{recursive:true});await page.locator('.answer-panel').screenshot({path:path.join(process.env.BROWSER_SCREENSHOT_DIR,`expanded-equations-${group}.png`)});}
+});
