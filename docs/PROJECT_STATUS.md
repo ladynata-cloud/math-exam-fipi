@@ -11,11 +11,14 @@
   collection-page pairs, all filters/numbers, 8,736 button measurements and
   sitemap preservation. [Report](reports/OGE_104_CATALOGUE_20261103.md).
 - [Draft PR #421](https://github.com/ladynata-cloud/math-exam-fipi/pull/421)
-  includes a focused cloud gate and exact 331-file inventory. The PR records
+  includes a focused cloud gate and exact 332-file inventory. The PR records
   final head, CI and cloud transport-recovery evidence. An inherited navigation
   assertion was aligned with the published lesson showcase; OGE route checks
   and all existing workflows remain in place.
-  Requested endpoint is publication readiness; merge/deployment not performed.
+  The owner continued after the Draft handoff and requested cloud publication.
+  Standing release authorization applies. The read-only workflow will verify
+  deployed bytes and actual public PDF/browser behavior after the main push;
+  actual merge, Pages and live results are recorded in PR #421.
 
 ## Integrated candidate: chapter IV self-check, PR402, 2026-11-02
 

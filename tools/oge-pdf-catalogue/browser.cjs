@@ -1,11 +1,13 @@
 'use strict';
-// Isolated static-server checks; no accounts, learner data or external requests.
+// Static candidate checks or explicit read-only HTTPS production verification.
+// No accounts, learner data or third-party page requests.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const http = require('node:http');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const { chromium } = require('playwright');
+const { execFileSync } = require('node:child_process');
 const root = path.resolve(__dirname, '../..');
 const destination = '/oge/variants/2027/';
 const output = process.env.QA_OUTPUT_DIR || path.join(root, 'artifacts/oge-pdf-catalogue');
@@ -30,7 +32,10 @@ const server = http.createServer((req, res) => {
   fs.mkdirSync(output, {recursive: true});
   try {
     await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
-    const origin = `http://127.0.0.1:${server.address().port}`;
+    const origin = process.env.QA_ORIGIN || `http://127.0.0.1:${server.address().port}`;
+    assert(!process.env.QA_ORIGIN || origin === 'https://mathexam.space', 'Unexpected production origin');
+    report.origin = origin;
+    report.source_commit = execFileSync('git', ['rev-parse', 'HEAD'], {cwd: root, encoding: 'utf8'}).trim();
     for (const javaScriptEnabled of [true, false]) {
       browser = await chromium.launch({headless: true, ...(process.env.CHROMIUM_EXECUTABLE_PATH ? {executablePath: process.env.CHROMIUM_EXECUTABLE_PATH} : {})});
       report.browser = browser.version();
@@ -126,7 +131,7 @@ const server = http.createServer((req, res) => {
     }
     assert.deepEqual(report.page_errors, []);
     report.status = 'PASS';
-    report.gate = 'OGE_104_CATALOGUE_BROWSER_OK';
+    report.gate = process.env.QA_ORIGIN ? 'OGE_104_CATALOGUE_LIVE_BROWSER_OK' : 'OGE_104_CATALOGUE_BROWSER_OK';
     console.log(JSON.stringify({...report, layouts: `${report.layouts.length} layouts`}));
   } catch (error) {
     report.status = 'FAIL'; report.error = String(error);

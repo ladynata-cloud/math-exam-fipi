@@ -131,3 +131,19 @@ Run `python3 tools/oge-pdf-catalogue/check.py --base <validated-base>` and
 `node tools/oge-pdf-catalogue/browser.cjs`. Optional `--source <archive-directory>`
 adds source-byte and printed-answer comparisons. The author archive is not
 published in this PR. Rollback is an ordinary scoped revert; no state migration.
+
+## Release continuation
+
+The owner continued after the Draft handoff and requested cloud execution.
+[Standing authorization](../OWNER_RELEASE_AUTHORIZATION.md) covers this scoped
+publication after passing checks. The preparation evidence above remains
+historical; actual release base/head, CI, merge, Pages and live results belong
+to PR #421 and MAT-9.
+
+The only follow-up changes are this release record, the task/inventory/status
+notes and read-only QA: the existing workflow now runs on main pushes, waits
+for five published resources to match the checked-out release, and runs the
+same 315-link/14-width browser gate against HTTPS production. It preserves TLS,
+uses no accounts or learner data and cannot deploy or modify site data.
+The final inventory has 332 paths. All product HTML, PDFs and mathematical
+content remain identical to the six-workflow-tested preparation candidate.

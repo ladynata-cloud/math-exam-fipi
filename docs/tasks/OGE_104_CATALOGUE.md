@@ -1,6 +1,27 @@
 # MathExam task specification: OGE_104_CATALOGUE
 
-## Current continuation — 2026-11-03 (Novosibirsk)
+## Release continuation — 2026-11-03 (Novosibirsk)
+
+After the completed Draft PR handoff, the owner said «продолжай» and reiterated
+«делай облачно». Continue this same approved task through publication under
+[standing owner authorization](../OWNER_RELEASE_AUTHORIZATION.md).
+This section supersedes the earlier preparation-only endpoint below.
+No product or mathematical content is added: all 315 original PDFs remain exact.
+
+- Authorization covers ready-for-review, controlled squash merge, established
+  GitHub Pages deployment and live verification after successful cloud checks.
+- Preserve the existing task branch/PR and enforce the current-main/head guard.
+- Extend the existing read-only catalogue workflow to verify the public site
+  after a main push: wait for five exact deployed resources, then check all
+  315 PDF links, filters, search and 14 widths in the cloud browser.
+- The live gate uses ordinary HTTPS validation and no accounts or learner data.
+  It does not change hosting, deployment credentials or branch protection.
+- Record actual base/head, CI, merge/deployment and public verification in
+  PR #421 and MAT-9; reconcile repository release status in the next approved task.
+- External provider review remains not performed under the standing policy.
+  Rollback remains an ordinary scoped revert; no data migration.
+
+## Preparation handoff — 2026-11-03 (Novosibirsk)
 
 This section supersedes the historical execution/permission state below.
 The owner explicitly continued START and requested recovery of the existing
