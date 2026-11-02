@@ -102,7 +102,7 @@ export function installStudyTools({ elements: e, node, nextHint, busy }) {
       document.getElementById('print-selection')?.remove();
       const print = node('section'); print.id = 'print-selection'; print.append(node('h1', '', 'Математика по шагам'));
       for (const text of content.split('\n\n')) { const p = node('p'); appendMath(p, text); print.append(p); }
-      for (const visual of card.querySelectorAll('.learning-visual')) print.append(visual.cloneNode(true));
+      for (const visual of card.querySelectorAll('.learning-visual, .table-scroll')) { const copy=visual.cloneNode(true); copy.hidden=false; if(copy.tagName==='DETAILS')copy.open=true; for(const details of copy.querySelectorAll('details'))details.open=true; print.append(copy); }
       document.body.append(print); window.print();
     }));
     card.append(tools);

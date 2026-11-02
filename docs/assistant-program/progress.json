@@ -318,10 +318,12 @@
       "title": "Типовые задачи на движение",
       "acceptance": "Таблица скорости, времени и расстояния.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_WORD_DATA_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_WORD_DATA_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/414",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41366659653"
       ]
     },
     {
@@ -329,10 +331,12 @@
       "title": "Типовые задачи на совместную работу",
       "acceptance": "Производительность, время и доля работы.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_WORD_DATA_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_WORD_DATA_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/414",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41366659653"
       ]
     },
     {
@@ -340,10 +344,12 @@
       "title": "Типовые задачи на смеси",
       "acceptance": "Масса смеси и масса вещества.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_WORD_DATA_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_WORD_DATA_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/414",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41366659653"
       ]
     },
     {
@@ -389,91 +395,111 @@
       "id": 31,
       "title": "Интерактивные равные дроби",
       "acceptance": "Изменение числа частей при сохранении величины.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+      ]
     },
     {
       "id": 32,
       "title": "Действия на числовой прямой",
       "acceptance": "Последовательные перемещения и отрицательные числа.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+      ]
     },
     {
       "id": 33,
       "title": "Умножение дробей через площадь",
       "acceptance": "Пересечение частей прямоугольника.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+      ]
     },
     {
       "id": 34,
       "title": "Проценты с ползунком",
       "acceptance": "Изменение выделенной доли целого.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+      ]
     },
     {
       "id": 35,
       "title": "Уравнение как весы",
       "acceptance": "Одинаковые действия с обеими частями.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+      ]
     },
     {
       "id": 36,
       "title": "График линейной функции",
       "acceptance": "Изменение наклона и положения при смене коэффициентов.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+      ]
     },
     {
       "id": 37,
       "title": "Неравенство на оси",
       "acceptance": "Луч, граничная точка и включение границы.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+      ]
     },
     {
       "id": 38,
       "title": "Координаты точки",
       "acceptance": "Построение точки и чтение координат.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+      ]
     },
     {
       "id": 39,
       "title": "Теорема Пифагора с вычислением",
       "acceptance": "Выделение катетов и гипотенузы в типовых задачах.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+      ]
     },
     {
       "id": 40,
       "title": "Сечения куба по шагам",
       "acceptance": "Проверяемые образцы по трём заданным точкам.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+      ]
     },
     {
       "id": 41,
@@ -700,10 +726,12 @@
       "title": "Арифметическая прогрессия",
       "acceptance": "Член, номер, разность и сумма.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_WORD_DATA_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_WORD_DATA_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/414",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41366659653"
       ]
     },
     {
@@ -711,10 +739,12 @@
       "title": "Геометрическая прогрессия",
       "acceptance": "Член, знаменатель и сумма.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_WORD_DATA_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_WORD_DATA_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/414",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41366659653"
       ]
     },
     {
@@ -722,10 +752,12 @@
       "title": "Среднее, медиана и размах",
       "acceptance": "Вычисления на небольшом наборе чисел.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_WORD_DATA_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_WORD_DATA_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/414",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41366659653"
       ]
     },
     {
@@ -733,10 +765,12 @@
       "title": "Вероятность через перебор",
       "acceptance": "Полная таблица или дерево равновозможных исходов.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_WORD_DATA_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_WORD_DATA_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/414",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41366659653"
       ]
     },
     {
@@ -744,101 +778,123 @@
       "title": "Функция по таблице",
       "acceptance": "Значение, аргумент и неоднозначность обратного поиска.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_WORD_DATA_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_WORD_DATA_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/414",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41366659653"
       ]
     },
     {
       "id": 66,
       "title": "Углы при параллельных прямых",
       "acceptance": "Пара углов и основание их связи.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+      ]
     },
     {
       "id": 67,
       "title": "Углы треугольника",
       "acceptance": "Неизвестные внутренние и внешние углы.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+      ]
     },
     {
       "id": 68,
       "title": "Равенство треугольников",
       "acceptance": "Соответствие сторон и углов перед выбором признака.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+      ]
     },
     {
       "id": 69,
       "title": "Подобие треугольников",
       "acceptance": "Соответствие вершин и порядок отношений.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+      ]
     },
     {
       "id": 70,
       "title": "Центральные и вписанные углы",
       "acceptance": "Дуга, на которую опирается угол.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+      ]
     },
     {
       "id": 71,
       "title": "Касательная, радиус и хорда",
       "acceptance": "Выбор применимого свойства по условиям.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+      ]
     },
     {
       "id": 72,
       "title": "Площади составных фигур",
       "acceptance": "Разбиение без пропусков и двойного счёта.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+      ]
     },
     {
       "id": 73,
       "title": "Векторы на плоскости",
       "acceptance": "Сложение, координаты и длина.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+      ]
     },
     {
       "id": 74,
       "title": "Углы в стереометрии",
       "acceptance": "Выделение искомого плоского угла на модели.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+      ]
     },
     {
       "id": 75,
       "title": "Объёмы тел",
       "acceptance": "Призма, пирамида, цилиндр и конус; основание и высота.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_GEOMETRY_VISUALS_20261102.md"
+      ]
     },
     {
       "id": 76,

@@ -196,3 +196,24 @@ math { font-size: 1.15em; margin-inline: .13em; }
 .math-table caption { text-align:left; font-weight:600; padding-block:.5rem; }
 .math-table th, .math-table td { border:1px solid #c7d6cd; padding:.5rem; text-align:center; white-space:nowrap; }
 .math-table th { background:#eff5ee; }
+
+.visual-labs { margin-top:1.5rem; border-top:1px solid var(--line); padding-top:1rem; }
+.lab-controls { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.7rem; margin-block:1rem; }
+.lab-controls label { display:flex; flex-direction:column; min-width:0; }
+.lab-controls input { width:100%; min-width:0; }
+.lab-controls output { font-size:.85rem; }
+.lab-actions { display:flex; gap:.5rem; flex-wrap:wrap; }
+.lab-actions button { overflow-wrap:anywhere; }
+.lab-readout { min-height:3em; }
+.lab-drawing svg, .geometry-scene svg { width:100%; height:auto; overflow:visible; }
+.geometry-label { fill:var(--ink); font-size:14px; }
+.geometry-emphasis { stroke:#155e9b; stroke-width:4; fill:none; }
+.geometry-fill { fill:#9ec9e5; fill-opacity:.45; stroke:#155e9b; stroke-width:1.5; }
+.geometry-fill:nth-child(2) { fill:#d8b57b; }
+.lab-grid { stroke:#c4d3c8; stroke-width:1; stroke-dasharray:3 3; }
+.lab-first { fill:#b5d9ee; stroke:#235f7c; }
+.lab-second { fill:#f1d7a6; stroke:#876c31; }
+.lab-overlap { fill:#42735a; stroke:#173f2b; }
+.high-contrast .geometry-emphasis { stroke:#003c82; }
+.high-contrast .lab-grid { stroke:#59645c; }
+@media(max-width:480px) { .lab-controls { grid-template-columns:1fr; } }

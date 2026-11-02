@@ -88,7 +88,7 @@ test('clarification, correction and reinforcement reuse the private API without 
 });
 test('offline end-to-end hints, explicit explanation and feedback never call a model', async t => {
   let calls = 0; const fx = await start(t, { fetchImpl: async () => { calls++; throw new Error('UNEXPECTED'); } }); const session = await fx.login();
-  const topics = await fx.client('/api/topics', session); assert.equal(topics.data.topics.length, 30);
+  const topics = await fx.client('/api/topics', session); assert.equal(topics.data.topics.length, 40);
   const first = await fx.client('/api/ask', { method: 'POST', body: question(), ...session }); assert.equal(first.response.status, 200);
   assert.equal(first.data.answer.steps.length, 1); assert.equal(first.data.answer.complete, false); assert.equal(first.data.answer.verification, 'deterministic');
   const feedback = await fx.client('/api/feedback', { method: 'POST', body: { answerId: first.data.answer.id, rating: 'unclear' }, ...session }); assert.equal(feedback.response.status, 200);

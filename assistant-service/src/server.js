@@ -16,6 +16,8 @@ const ASSETS = new Map([
   ['/', ['index.html', 'text/html; charset=utf-8']], ['/app.js', ['app.js', 'text/javascript; charset=utf-8']],
   ['/style.css', ['style.css', 'text/css; charset=utf-8']],
   ['/study-tools.js', ['study-tools.js', 'text/javascript; charset=utf-8']],
+  ['/geometry-figure.js', ['geometry-figure.js', 'text/javascript; charset=utf-8']],
+  ['/visual-labs.js', ['visual-labs.js', 'text/javascript; charset=utf-8']],
   ['/study-ui.js', ['study-ui.js', 'text/javascript; charset=utf-8']],
   ['/learning-aids.js', ['learning-aids.js', 'text/javascript; charset=utf-8']]
 ]);

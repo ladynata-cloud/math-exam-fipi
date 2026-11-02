@@ -1,0 +1,27 @@
+import {R,add,sub,mul,div,eq,compare,text,numeric} from './math-kernel.js';
+import {result} from './math-foundations.js';
+export const VERTICES={A:[0,0,0],B:[1,0,0],C:[1,1,0],D:[0,1,0],A1:[0,0,1],B1:[1,0,1],C1:[1,1,1],D1:[0,1,1]};
+export const EDGES=[['A','B'],['B','C'],['C','D'],['D','A'],['A1','B1'],['B1','C1'],['C1','D1'],['D1','A1'],['A','A1'],['B','B1'],['C','C1'],['D','D1']];
+export const vectorSub=(a,b)=>a.map((v,i)=>sub(v,b[i]));
+export const dot=(a,b)=>a.reduce((sum,v,i)=>add(sum,mul(v,b[i])),R(0));
+export const cross=(a,b)=>[sub(mul(a[1],b[2]),mul(a[2],b[1])),sub(mul(a[2],b[0]),mul(a[0],b[2])),sub(mul(a[0],b[1]),mul(a[1],b[0]))];
+export const pointEqual=(a,b)=>a.every((x,i)=>eq(x,b[i]));
+const vertices=Object.fromEntries(Object.entries(VERTICES).map(([k,v])=>[k,v.map(x=>R(x))]));
+function hull(points,normal){const drop=normal.findIndex(v=>v.n!==0n),axes=[0,1,2].filter(i=>i!==drop),[x,y]=axes,sorted=[...points].sort((a,b)=>compare(a[x],b[x])||compare(a[y],b[y]));
+ const turn=(a,b,c)=>compare(sub(mul(sub(b[x],a[x]),sub(c[y],a[y])),mul(sub(b[y],a[y]),sub(c[x],a[x]))),R(0));
+ const build=ps=>{const out=[];for(const p of ps){while(out.length>1&&turn(out.at(-2),out.at(-1),p)<=0)out.pop();out.push(p);}return out;};
+ const lower=build(sorted),upper=build([...sorted].reverse());return [...lower.slice(0,-1),...upper.slice(0,-1)];
+}
+export function cubeSection(points){if(points.length!==3)throw Error('THREE_POINTS');const normal=cross(vectorSub(points[1],points[0]),vectorSub(points[2],points[0]));if(normal.every(v=>!v.n))throw Error('COLLINEAR_POINTS');const plane=dot(normal,points[0]),hits=[];
+ const addPoint=p=>{if(!hits.some(x=>pointEqual(x,p)))hits.push(p);};
+ for(const [a,b] of EDGES){const u=vertices[a],v=vertices[b],du=sub(dot(normal,u),plane),dv=sub(dot(normal,v),plane);if(!du.n)addPoint(u);if(!dv.n)addPoint(v);if(du.n*dv.n<0n){const t=div(du,sub(du,dv));addPoint(u.map((x,i)=>add(x,mul(t,sub(v[i],x)))));}}
+ const polygon=hull(hits,normal);if(polygon.length<3||polygon.length>6)throw Error('DEGENERATE_SECTION');return {normal,plane,polygon};
+}
+export const projectCube=p=>({x:90+200*Number(p[0].n)/Number(p[0].d)+70*Number(p[1].n)/Number(p[1].d),y:240-60*Number(p[1].n)/Number(p[1].d)-150*Number(p[2].n)/Number(p[2].d)});
+function readCoordinate(q){if(!/^[+-]?\d{1,6}(?:[.,]\d{1,6})?(?:\/\d{1,6})?$/.test(q.trim()))throw Error('COORDINATE');return numeric(q).value;}
+export function parseSectionPoints(input){const m=/^куб:\s*m=(.+);\s*n=(.+);\s*p=(.+)$/i.exec(input.trim());if(!m)throw Error('SECTION_TEMPLATE');return m.slice(1).map(s=>{const bits=s.split(':');if(bits.length!==2)throw Error('EDGE_POINT');const name=bits[0].trim().toUpperCase(),edge=EDGES.find(([a,b])=>a+b===name||b+a===name);if(!edge)throw Error('EDGE');const [a,b]=edge[0]+edge[1]===name?edge:[...edge].reverse(),t=readCoordinate(bits[1]);if(compare(t,R(0))<0||compare(t,R(1))>0)throw Error('EDGE_FRACTION');return vertices[a].map((x,i)=>add(x,mul(t,sub(vertices[b][i],x))));});}
+export function solveSection(input){try{const initial=parseSectionPoints(input),s=cubeSection(initial),pointText=p=>`(${p.map(text).join('; ')})`,scenePoints=Object.entries(vertices).map(([id,p])=>({id,label:id,...projectCube(p)}));
+ for(let i=0;i<s.polygon.length;i++)scenePoints.push({id:'S'+(i+1),label:'S'+(i+1),...projectCube(s.polygon[i])});
+ const answer=result({title:'Сечение куба заданной плоскостью',rule:'Координаты куба: A=(0;0;0), B=(1;0;0), D=(0;1;0), A1=(0;0;1). Запись AB:1/2 задаёт середину от A к B. Три неколлинеарные точки определяют одну плоскость.',steps:[`Заданные точки: ${initial.map(pointText).join(', ')}.`,`Плоскость: (${text(s.normal[0])})x + (${text(s.normal[1])})y + (${text(s.normal[2])})z = ${text(s.plane)}.`,`Пересекаем плоскость с каждым из 12 рёбер и оставляем только точки отрезков. Получили ${s.polygon.length} вершин.`,...s.polygon.map((p,i)=>`S${i+1}=${pointText(p)}.`),'Соединяем соседние вершины по границе сечения; каждое ребро сечения лежит в одной грани куба.'],format:'Все вершины координатами (x;y;z) через |. Порядок не важен.',verify:a=>{try{const points=a.split('|').map(part=>{if(!/^\s*\([^()]+\)\s*$/.test(part))throw Error('POINT');const coords=part.trim().slice(1,-1).split(';').map(readCoordinate);if(coords.length!==3)throw Error('DIMENSION');return coords;});const unique=points.filter((p,i)=>!points.slice(0,i).some(x=>pointEqual(x,p)));const correct=unique.length===s.polygon.length&&unique.every(p=>s.polygon.some(x=>pointEqual(x,p)));return {status:correct?'correct':'incorrect',text:correct?'Все вершины сечения лежат в заданной плоскости на рёбрах куба.':'Проверь пересечения с рёбрами: нужны все и только вершины сечения.'};}catch{return {status:'unsupported',text:'Запиши координаты, например (1/2;0;0) | (0;1/2;0) | (0;0;1/2).'};}},hints:['Обозначь три заданные точки на указанных рёбрах.','Соедини две точки, лежащие в одной грани; продолжение находится в плоскости этой грани.','Найди пересечения плоскости с соседними рёбрами; за пределами ребра точка не принадлежит кубу.','Продолжай в соседней грани и замкни контур.','Проверь, что все вершины лежат в одной плоскости, а стороны — в гранях куба.']});
+ answer.figure={kind:'scene',caption:'Куб и проверенное сечение. Проекция схематическая; координаты точны.',points:scenePoints,edges:[...EDGES.map(([from,to])=>({from,to})),...s.polygon.map((_,i)=>({from:'S'+(i+1),to:'S'+((i+1)%s.polygon.length+1),emphasis:true}))],polygons:[s.polygon.map((_,i)=>'S'+(i+1))]};return answer;
+ }catch{return null;}}

@@ -1,3 +1,4 @@
+import { GEOMETRY_TOPICS, solveGeometry } from './geometry.js';
 import { DATA_TOPICS, solveWordData } from './word-data.js';
 import { EQUATION_TOPICS, solveExpandedEquation } from './equations-expanded.js';
 import { FOUNDATION_TOPICS, solveFoundation, solveFractionProduct } from './math-foundations.js';
@@ -17,7 +18,7 @@ const TOPICS = [
   { id: 'rounding', title: 'Округление', sample: 'Округли 9,96 до десятых' },
   { id: 'pythagoras', title: 'Теорема Пифагора', sample: 'Как отличить гипотенузу от катетов?' },
   { id: 'sections', title: 'Первые шаги в сечениях', sample: 'Как начать строить сечение по трём точкам?' },
-  ...FOUNDATION_TOPICS, ...EQUATION_TOPICS, ...DATA_TOPICS
+  ...FOUNDATION_TOPICS, ...EQUATION_TOPICS, ...DATA_TOPICS, ...GEOMETRY_TOPICS
 ];
 const PROVIDER_TOPIC_IDS = new Set(['linear-equations', 'fractions', 'percentages', 'gcd-lcm', 'rounding', 'pythagoras', 'sections']);
 export const isProviderTopic = topic => PROVIDER_TOPIC_IDS.has(topic);
@@ -482,7 +483,7 @@ function checkedInput(input) {
 export function answerOffline(input, cards = getBuiltinKnowledge()) {
   const safe = checkedInput(input); const selected = topicCards(safe.topic, cards);
   const sources = selected.map(card => ({ id: card.id, title: card.title, url: card.source.url }));
-  const solved = SOLVERS[safe.topic]?.(safe.question) || solveWordData(safe.topic, safe.question) || solveExpandedEquation(safe.topic, safe.question) || solveFoundation(safe.topic, safe.question) || (safe.topic === 'fractions' ? solveFractionProduct(safe.question) : null);
+  const solved = solveGeometry(safe.topic, safe.question) || SOLVERS[safe.topic]?.(safe.question) || solveWordData(safe.topic, safe.question) || solveExpandedEquation(safe.topic, safe.question) || solveFoundation(safe.topic, safe.question) || (safe.topic === 'fractions' ? solveFractionProduct(safe.question) : null);
   if (solved) {
     const sequence = safe.topic === 'linear-equations' && safe.attempt.includes('\n') ? checkSolutionLines(safe.question, safe.attempt) : null;
     const specific = safe.attempt.trim() && solved.verify ? solved.verify(safe.attempt) : null;

@@ -46,6 +46,8 @@ async function fixture(t, options = {}) {
     '/': ['index.html', 'text/html; charset=utf-8'],
     '/app.js': ['app.js', 'text/javascript; charset=utf-8'],
     '/study-tools.js': ['study-tools.js', 'text/javascript; charset=utf-8'],
+    '/geometry-figure.js': ['geometry-figure.js', 'text/javascript; charset=utf-8'],
+    '/visual-labs.js': ['visual-labs.js', 'text/javascript; charset=utf-8'],
     '/study-ui.js': ['study-ui.js', 'text/javascript; charset=utf-8'],
     '/learning-aids.js': ['learning-aids.js', 'text/javascript; charset=utf-8'],
     '/style.css': ['style.css', 'text/css; charset=utf-8'],
@@ -648,4 +650,33 @@ test('live word problems and data: units, exact progressions and nonunique inver
  assert.match(await page.locator('.answer-card').last().textContent(),/Подходящих столбцов: 2/);
  for(const width of [320,390,1280]){await page.setViewportSize({width,height:900});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);}
  if(process.env.BROWSER_SCREENSHOT_DIR){fs.mkdirSync(process.env.BROWSER_SCREENSHOT_DIR,{recursive:true});await page.locator('.answer-panel').screenshot({path:path.join(process.env.BROWSER_SCREENSHOT_DIR,'word-data-table.png')});}
+});
+
+for(const [group,cases] of Object.entries({
+ angles:[['pythagoras','Пифагор: катеты 3 и 4; найти гипотенузу','5'],['parallel-angles','Параллельные: угол 65°; пара односторонние','115'],['triangle-angles','Треугольник: A=50°; B=60°; найти внешний при C','110'],['triangle-congruence','Равенство: AB=DE; BC=EF; угол B=E','A=D;B=E;C=F;СУС'],['triangle-similarity','Подобие: ABC~DEF; AB=6; DE=3; BC=8; найти EF','4'],['circle-angles','Окружность: дуга AB=100°; найти вписанный угол; C вне дуги AB','50'],['circle-properties','Касательная и хорда: дуга TB=100°; найти угол, соответствующий этой дуге','50']],
+ solids:[['composite-areas','Фигура: прямоугольник 10 на 8; вырез в углу 3 на 2; найти площадь','74'],['vectors','Вектор: A=(1;2); B=(4;6); найти длину AB','5'],['space-angles','Угол в кубе: ABC1D1 с плоскостью ABCD','45'],['volumes','Объём: конус; r=3; h=5','15pi'],['sections','Куб: M=AB:1/2; N=AD:1/2; P=AA1:1/2','(1/2;0;0)|(0;1/2;0)|(0;0;1/2)']]
+}))test(`live geometry ${group}: exact hypotheses, figures and selected print`,{skip:skip||(!process.env.LIVE_ASSISTANT_URL&&'Local fixture required')},async t=>{
+ const url=new URL(process.env.LIVE_ASSISTANT_URL);assert.ok(['127.0.0.1','localhost'].includes(url.hostname));const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_EXECUTABLE_PATH?{executablePath:process.env.CHROMIUM_EXECUTABLE_PATH}:{})});const page=await evidencePage(t,browser,{viewport:{width:390,height:900}});
+ await page.goto(url.href);await page.waitForFunction(()=>!document.getElementById('access-button').disabled);await page.locator('#access-button').click();await page.locator('#workspace').waitFor({state:'visible'});
+ for(const [topic,q,a] of cases){await page.locator('#topic').selectOption(topic);await page.locator('#question').fill(q);await page.locator('#attempt').fill(a);const pending=page.waitForResponse(r=>r.url().endsWith('/api/ask'));await page.locator('#ask-button').click();const response=await pending;assert.equal(response.status(),200,q);const answer=(await response.json()).answer;assert.equal(answer.verification,'deterministic',q);assert.equal(answer.attemptStatus,'correct',q);assert.equal(answer.figure,undefined);await page.waitForFunction(()=>document.getElementById('workspace').getAttribute('aria-busy')==='false');}
+ await page.locator('#explain-button').click();await page.waitForFunction(()=>document.querySelectorAll('.answer-card').length===2);const full=page.locator('.answer-card').last();assert.equal(await full.locator('.geometry-scene').count(),1);
+ await page.evaluate(()=>{window.print=()=>{window.__printInvoked=true;};});await full.getByRole('button',{name:'Напечатать этот разбор',exact:true}).click();assert.equal(await page.locator('#print-selection details[open] svg').count(),1);assert.equal(await page.evaluate(()=>window.__printInvoked),true);
+ await full.getByText('Проверенный чертёж',{exact:true}).click();assert.equal(await full.locator('svg[role="img"]').isVisible(),true);assert(await full.locator('.geometry-emphasis').count()>=2);
+ for(const width of [320,390,1280]){await page.setViewportSize({width,height:900});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);}
+ if(process.env.BROWSER_SCREENSHOT_DIR){fs.mkdirSync(process.env.BROWSER_SCREENSHOT_DIR,{recursive:true});await full.screenshot({path:path.join(process.env.BROWSER_SCREENSHOT_DIR,`geometry-${group}.png`)});}
+});
+
+test('interactive models: fractions, signed steps, area, percent, balance, graph and coordinates with keyboard', {skip},async t=>{
+ const {page}=await fixture(t,{viewport:{width:390,height:900}});
+ await page.locator('.visual-labs > summary').click();const choose=async value=>page.locator('#visual-lab-select').selectOption(value),read=()=>page.locator('.lab-readout').textContent();
+ await page.locator('#lab-n').fill('1');await page.locator('#lab-d').fill('2');await page.locator('#lab-k').fill('3');assert.match(await read(),/1\/2 = 3\/6/);
+ await choose('steps');await page.getByRole('button',{name:'Показать следующий шаг',exact:true}).click();assert.match(await read(),/текущая точка -1/);
+ await choose('area');assert.match(await read(),/6 из 12/);assert.equal(await page.locator('.lab-overlap').count(),6);
+ await choose('percent');await page.locator('#lab-percent').focus();await page.keyboard.press('ArrowRight');assert.match(await read(),/26% от 200 = 52/);
+ await choose('balance');await page.getByRole('button',{name:'Разделить обе части на коэффициент',exact:true}).click();assert.match(await read(),/Сначала/);await page.getByRole('button',{name:'Вычесть слагаемое из обеих частей',exact:true}).click();assert.match(await read(),/3x = 15/);await page.getByRole('button',{name:'Разделить обе части на коэффициент',exact:true}).click();assert.match(await read(),/x = 5/);
+ await choose('graph');await page.locator('#lab-k').focus();await page.keyboard.press('ArrowRight');await page.locator('#lab-b').focus();await page.keyboard.press('End');assert.match(await read(),/y=2x\+\(5\)/);const segment=await page.locator('.lab-drawing .geometry-emphasis').evaluate(el=>[el.getAttribute('x1'),el.getAttribute('y1'),el.getAttribute('x2'),el.getAttribute('y2')]);assert.notDeepEqual(segment.slice(0,2),segment.slice(2));
+ await choose('inequality');await page.locator('#lab-op').selectOption('>');assert.match(await read(),/правее.*исключена/);assert.equal(await page.locator('.lab-drawing circle.visual-empty').count(),1);
+ await choose('coordinates');await page.getByRole('button',{name:'Прочитать точку с рисунка',exact:true}).click();await page.locator('#lab-x').fill('2');await page.locator('#lab-y').fill('-4');await page.getByRole('button',{name:'Проверить координаты',exact:true}).click();assert.match(await read(),/Верно/);
+ assert.equal(await page.evaluate(()=>localStorage.length+sessionStorage.length),0);for(const width of [320,390,1280]){await page.setViewportSize({width,height:900});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);}
+ if(process.env.BROWSER_SCREENSHOT_DIR){fs.mkdirSync(process.env.BROWSER_SCREENSHOT_DIR,{recursive:true});await page.locator('.visual-labs').screenshot({path:path.join(process.env.BROWSER_SCREENSHOT_DIR,'visual-lab-coordinates.png')});}
 });

@@ -1,5 +1,16 @@
 // Pure, bounded teaching aids. No model output, network or browser state here.
 const HELP = {
+  'parallel-angles': { examples: ['Параллельные: угол 65°; пара односторонние','Параллельные: угол 65°; пара накрестлежащие'] },
+  'triangle-angles': { examples: ['Треугольник: A=50°; B=60°; найти C','Треугольник: A=50°; B=60°; найти внешний при C'] },
+  'triangle-congruence': { examples: ['Равенство: AB=DE; BC=EF; угол B=E','Равенство: AB=DE; BC=EF; AC=DF','Равенство: AB=DE; угол A=D; угол B=E'] },
+  'triangle-similarity': { examples: ['Подобие: ABC~DEF; AB=6; DE=3; BC=8; найти EF'] },
+  'circle-angles': { examples: ['Окружность: дуга AB=100°; найти вписанный угол; C вне дуги AB','Окружность: дуга AB=100°; найти центральный угол'] },
+  'circle-properties': { examples: ['Касательная: OT радиус; t касается в T; найти угол OT с t','Хорда: M середина AB; O центр; AB не диаметр; найти угол OM с AB','Касательная и хорда: дуга TB=100°; найти угол, соответствующий этой дуге'] },
+  'composite-areas': { examples: ['Фигура: прямоугольник 10 на 8; вырез в углу 3 на 2; найти площадь'] },
+  vectors: { examples: ['Вектор: A=(1;2); B=(4;6); найти длину AB','Вектор: A=(1;2); B=(4;6); найти AB','Векторы: a=(1;2); b=(-3;4); найти a+b'] },
+  'space-angles': { examples: ['Угол в кубе: AB1 с плоскостью ABCD','Угол в кубе: ABB1A1 с плоскостью ABCD','Угол в кубе: ABC1D1 с плоскостью ABCD'] },
+  volumes: { examples: ['Объём: цилиндр; r=3; h=5','Объём: конус; r=3; h=5','Объём: призма; S=12; h=5','Объём: пирамида; S=12; h=5'] },
+
   motion: { examples: ['Движение: скорость 60 км/ч; время 2 ч; найти путь','Навстречу: расстояние 300 км; первый 60 км/ч; второй 40 км/ч','Вдогонку: отставание 30 км; сзади 60 км/ч; впереди 50 км/ч'] },
   'work-rates': { examples: ['Работа: первый 6 ч; второй 3 ч; найти время вместе'] },
   mixtures: { examples: ['Смесь: 200 г 10%; 300 г 20%; найти концентрацию'] },
@@ -30,8 +41,8 @@ const HELP = {
   percentages: { examples: ['15% от 240', '15% числа равны 36', 'Сколько процентов составляет 30 от 120?', 'Уменьши 240 на 15%'], path: 'trainers/oge-basics/percentages/index.html', title: 'Практика с процентами' },
   'gcd-lcm': { examples: ['НОД 18 и 24', 'НОК 12 и 18'], path: 'trainers/grade6-nod.html', title: 'НОД и делители' },
   rounding: { examples: ['Округли 9,96 до десятых'], path: 'trainers/rounding-stepwise.html', title: 'Округление по шагам' },
-  pythagoras: { examples: ['Как отличить гипотенузу от катетов?'], path: 'geometry-course/atlas/pythagoras.html', title: 'Теорема Пифагора с чертежом' },
-  sections: { examples: ['Как начать строить сечение по трём точкам?'] },
+  pythagoras: { examples: ['Пифагор: катеты 3 и 4; найти гипотенузу', 'Пифагор: гипотенуза 5; катет 3; найти второй катет', 'Как отличить гипотенузу от катетов?'], path: 'geometry-course/atlas/pythagoras.html', title: 'Теорема Пифагора с чертежом' },
+  sections: { examples: ['Куб: M=AB:1/2; N=AD:1/2; P=AA1:1/2', 'Как начать строить сечение по трём точкам?'] },
 };
 export function topicHelp(topic) {
   const item = Object.hasOwn(HELP, topic) ? HELP[topic] : null;
