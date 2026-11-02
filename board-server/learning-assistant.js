@@ -342,6 +342,7 @@ function createLearningAssistantRouter(learning, options = {}) {
     store.run('UPDATE learning_assistant_requests SET feedback=?,updated_at=? WHERE request_key=?',b.rating,store.clock(),answer.request_key);
     res.json({ok:true});
   }));
+  router.use(require('./learning-assistant-practice').createPracticeRouter(learning, { enabled: config.enabled, settings, examActive, recheck }));
   return { router, config, cleanup, catalog };
 }
 

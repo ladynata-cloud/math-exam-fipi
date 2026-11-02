@@ -46,6 +46,7 @@ async function fixture(t, options = {}) {
     '/': ['index.html', 'text/html; charset=utf-8'],
     '/app.js': ['app.js', 'text/javascript; charset=utf-8'],
     '/study-tools.js': ['study-tools.js', 'text/javascript; charset=utf-8'],
+    '/coverage.js': ['coverage.js', 'text/javascript; charset=utf-8'],
     '/practice-core.js': ['practice-core.js', 'text/javascript; charset=utf-8'],
     '/practice-ui.js': ['practice-ui.js', 'text/javascript; charset=utf-8'],
     '/geometry-figure.js': ['geometry-figure.js', 'text/javascript; charset=utf-8'],
@@ -719,4 +720,10 @@ test('four-question diagnostic gives per-skill guidance and prerequisite route r
  assert.match(await page.locator('.practice-progress').textContent(),/4 из 4/);assert.equal(await page.locator('.practice-stage li').count(),4);assert.match(await page.locator('.practice-stage').textContent(),/предварительный ориентир/);
  await page.locator('#practice-skill').selectOption('fractions');await page.locator('#practice-level').selectOption('2');const q=await practiceQuestion(page),m=/^(\d+)\/(\d+) \+ (\d+)\/(\d+)$/.exec(q),wrong=`${+m[1]+ +m[3]}/${+m[2]+ +m[4]}`;await page.locator('#practice-answer').fill(wrong);await page.getByRole('button',{name:'Проверить упражнение',exact:true}).click();assert.match(await page.locator('.practice-feedback').textContent(),/знаменатели не складывают/);
  await page.getByRole('button',{name:'Повторить основу: Дроби',exact:true}).click();assert.equal(await page.locator('#practice-level').inputValue(),'1');await page.getByRole('button',{name:'Вернуться к предыдущей задаче',exact:true}).click();assert.equal(await page.locator('#practice-answer').inputValue(),wrong);assert.equal(await practiceQuestion(page),q);
+});
+
+test('coverage map lists exact topic bounds and opens a supported example without submitting it', {skip},async t=>{
+ const {page,calls}=await fixture(t,{viewport:{width:390,height:900}});await page.locator('.coverage-map > summary').click();const rows=page.locator('.coverage-map > details');assert.equal(await rows.count(),await page.locator("#topic option").count());
+ const row=rows.filter({has:page.locator('summary', {hasText:'Сложение дробей'})});await row.locator('summary').click();assert.match(await row.textContent(),/неоднозначные/i);await row.getByRole('button').click();assert.equal(await page.locator('#topic').inputValue(),'fractions');assert.equal(await page.locator('#question').inputValue(),'1/2 + 1/3');assert.equal(calls.filter(c=>c.path==='/api/ask').length,0);
+ for(const width of [320,390,1280]){await page.setViewportSize({width,height:900});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));}
 });

@@ -236,3 +236,8 @@ math { font-size: 1.15em; margin-inline: .13em; }
 .practice-order li { padding:.4rem; margin-bottom:.4rem; border:1px solid var(--line); }
 .practice-order button { margin-inline:.2rem; padding:.2rem .6rem; }
 @media(max-width:650px){.practice-methods { grid-template-columns:1fr; }}
+
+.coverage-map { margin-block: 1rem; padding: .8rem; border: 1px solid var(--border, #b8ccc1); border-radius: .6rem; }
+.coverage-map details { margin: .6rem 0; }
+.coverage-map button { white-space: normal; overflow-wrap: anywhere; max-width: 100%; text-align: left; }
+.coverage-map summary { cursor: pointer; padding: .3rem 0; }

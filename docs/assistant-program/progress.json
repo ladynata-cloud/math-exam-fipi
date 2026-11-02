@@ -191,10 +191,13 @@
       "id": 15,
       "title": "Продолжение после перезагрузки",
       "acceptance": "Добровольное сохранение работы в закрытом кабинете и восстановление.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_CABINET_TOOLS_20261102.md"
+      ],
+      "note": "Opt-in resume of generated private practice; free-form pupil dialogue is not persisted."
     },
     {
       "id": 16,
@@ -529,7 +532,8 @@
       "validation": "local_passed_cloud_pending",
       "publication": "pending",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/416"
       ]
     },
     {
@@ -540,7 +544,8 @@
       "validation": "local_passed_cloud_pending",
       "publication": "pending",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/416"
       ]
     },
     {
@@ -551,7 +556,8 @@
       "validation": "local_passed_cloud_pending",
       "publication": "pending",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/416"
       ]
     },
     {
@@ -562,7 +568,8 @@
       "validation": "local_passed_cloud_pending",
       "publication": "pending",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/416"
       ]
     },
     {
@@ -573,53 +580,64 @@
       "validation": "local_passed_cloud_pending",
       "publication": "pending",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/416"
       ]
     },
     {
       "id": 46,
       "title": "Повторение трудного",
       "acceptance": "Предложение короткой проверки при следующем входе.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_CABINET_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 47,
       "title": "Итог занятия",
       "acceptance": "Самостоятельные результаты, помощь и оставшиеся навыки.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_CABINET_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 48,
       "title": "Сводка затруднений учителю",
       "acceptance": "Повторяющиеся ошибки по темам в закрытом интерфейсе.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_CABINET_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 49,
       "title": "Подбор домашней работы",
       "acceptance": "Три–пять заданий для предварительного просмотра учителем.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_CABINET_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 50,
       "title": "Редактор объяснений",
       "acceptance": "Черновик формулировки, свой способ и явное утверждение.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_CABINET_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 51,
@@ -954,7 +972,8 @@
       "validation": "local_passed_cloud_pending",
       "publication": "pending",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/416"
       ]
     },
     {
@@ -965,7 +984,8 @@
       "validation": "local_passed_cloud_pending",
       "publication": "pending",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/416"
       ]
     },
     {
@@ -976,7 +996,8 @@
       "validation": "local_passed_cloud_pending",
       "publication": "pending",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/416"
       ]
     },
     {
@@ -987,7 +1008,8 @@
       "validation": "local_passed_cloud_pending",
       "publication": "pending",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/416"
       ]
     },
     {
@@ -998,7 +1020,8 @@
       "validation": "local_passed_cloud_pending",
       "publication": "pending",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/416"
       ]
     },
     {
@@ -1009,7 +1032,8 @@
       "validation": "local_passed_cloud_pending",
       "publication": "pending",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/416"
       ]
     },
     {
@@ -1020,7 +1044,8 @@
       "validation": "local_passed_cloud_pending",
       "publication": "pending",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/416"
       ]
     },
     {
@@ -1031,7 +1056,8 @@
       "validation": "local_passed_cloud_pending",
       "publication": "pending",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/416"
       ]
     },
     {
@@ -1042,7 +1068,8 @@
       "validation": "local_passed_cloud_pending",
       "publication": "pending",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/416"
       ]
     },
     {
@@ -1053,7 +1080,8 @@
       "validation": "local_passed_cloud_pending",
       "publication": "pending",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/416"
       ]
     },
     {
@@ -1191,46 +1219,58 @@
       "id": 96,
       "title": "Доступ к полному решению",
       "acceptance": "Настройка учителем: сразу, после попытки или только подсказки.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_CABINET_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 97,
       "title": "Разрешённые способы",
       "acceptance": "Объяснение в пределах изученных учеником методов.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_CABINET_TOOLS_20261102.md"
+      ],
+      "note": "Allowed explanation methods enforced server-side; final numeric answer cannot prove method use."
     },
     {
       "id": 98,
       "title": "Учительская проба",
       "acceptance": "Сценарии без изменения прогресса реального ученика.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_CABINET_TOOLS_20261102.md"
+      ]
     },
     {
       "id": 99,
       "title": "Очередь спорных ответов",
       "acceptance": "Обезличенный воспроизводимый математический пример для проверки.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_CABINET_TOOLS_20261102.md"
+      ],
+      "note": "Minimal reproducible generated tasks only; no raw pupil text or pupil identity in queue."
     },
     {
       "id": 100,
       "title": "Карта возможностей",
       "acceptance": "Проверяемые типы задач, общие объяснения и границы покрытия.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_CABINET_TOOLS_20261102.md"
+      ]
     }
   ]
 }

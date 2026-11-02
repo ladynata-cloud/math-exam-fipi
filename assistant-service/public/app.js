@@ -1,4 +1,5 @@
 'use strict';
+import { installCoverage } from './coverage.js';
 import { appendGeometryFigure } from './geometry-figure.js';
 import { installPractice } from './practice-ui.js';
 import { SKILLS } from './practice-core.js';
@@ -475,6 +476,7 @@ import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
         option.value = topic.id;
         return option;
       }));
+      installCoverage(document.querySelector('.task-panel'), state.topics, chooseExample);
       clearAnswers();
       updateTopicHelp();
       elements['access-panel'].hidden = true;

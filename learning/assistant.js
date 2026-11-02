@@ -508,6 +508,10 @@
       try {
         status = await request(endpoint);
         if (teacher) renderTeacher(); else renderPupil();
+        if (!courseMode && typeof context.localTask !== 'function' && status.enabled && !status.examActive && root.LearningPractice) {
+          const section = host.querySelector('.cabinet-assistant');
+          if (section) root.LearningPractice.mount(section, {request, endpoint, teacher, current});
+        }
       } catch (error) {
         if (!current() || error.code === 'LEARNING_ACCOUNT_CHANGED') { destroy(); return; }
         // A server without the new route must preserve every existing cabinet.
