@@ -15,8 +15,8 @@ export const div = (a, b) => R(a.n*b.d, a.d*b.n);
 export const eq = (a, b) => a.n*b.d === b.n*a.d;
 export const compare = (a, b) => a.n*b.d < b.n*a.d ? -1 : eq(a, b) ? 0 : 1;
 export const text = a => a.d === 1n ? String(a.n) : `${a.n}/${a.d}`;
-export function decimal(s) {
-  if (!/^[+-]?\d{1,6}(?:[.,]\d{1,6})?$/.test(s)) throw Error('NUMBER_LIMIT');
+export function decimal(s, maxDigits = 6) {
+  if (![6,12].includes(maxDigits) || !new RegExp(`^[+-]?\\d{1,${maxDigits}}(?:[.,]\\d{1,6})?$`).test(s)) throw Error('NUMBER_LIMIT');
   const sign = s.startsWith('-') ? -1n : 1n, [a, b = ''] = s.replace(/^[+-]/, '').replace(',', '.').split('.');
   return R(sign*BigInt(a+b), 10n ** BigInt(b.length));
 }
@@ -51,13 +51,13 @@ export function normalizeExpression(value) {
   if(/\d\s+\d/.test(q)||/\d\s*\/\s*\d\s*x/.test(q))throw Error('AMBIGUOUS_EXPRESSION');
   return q;
 }
-export function polynomial(value, { variables = true } = {}) {
+export function polynomial(value, { variables = true, maxDigits = 6 } = {}) {
   const q=normalizeExpression(value), tokens=[]; let i=0;
   while(i<q.length){if(/\s/.test(q[i])){i++;continue;} const m=/^(?:\d+(?:[.,]\d+)?|[x()+*/^\-])/.exec(q.slice(i));if(!m)throw Error('SYNTAX');tokens.push(m[0]);i+=m[0].length;}
   if(!tokens.length||tokens.length>100)throw Error('TOKEN_LIMIT');
   let at=0,depth=0; const trace=[];
   const record=(a,op,b,r)=>{if(a.length===1&&b.length===1&&r.length===1)trace.push(`${a[0].n<0n?'('+text(a[0])+')':text(a[0])} ${op} ${b[0].n<0n?'('+text(b[0])+')':text(b[0])} = ${text(r[0])}`);return r;};
-  function atom(){const t=tokens[at++];if(t==='('){if(++depth>10)throw Error('DEPTH_LIMIT');const v=sum();if(tokens[at++]!==')')throw Error('PARENTHESIS');depth--;return v;}if(t==='x'&&variables)return [R(0),R(1)];if(t&&/^\d/.test(t))return [decimal(t)];throw Error('ATOM');}
+  function atom(){const t=tokens[at++];if(t==='('){if(++depth>10)throw Error('DEPTH_LIMIT');const v=sum();if(tokens[at++]!==')')throw Error('PARENTHESIS');depth--;return v;}if(t==='x'&&variables)return [R(0),R(1)];if(t&&/^\d/.test(t))return [decimal(t,maxDigits)];throw Error('ATOM');}
   function power(){let v=atom();if(tokens[at]==='^'){at++;const exponent=unary();if(exponent.length!==1||exponent[0].d!==1n||abs(exponent[0].n)>12n)throw Error('EXPONENT_LIMIT');const n=Number(exponent[0].n);if(n===0&&(v.length>1||v[0].n===0n))throw Error('ZERO_POWER_ZERO');let out=[R(1)];if(n<0&&v.length!==1)throw Error('VARIABLE_DENOMINATOR');for(let j=0;j<Math.abs(n);j++)out=pMul(out,v);if(n<0)out=[div(R(1),out[0])];v=record(v,'^',exponent,out);}return v;}
   function unary(){if(tokens[at]==='+'||tokens[at]==='-'){const sign=tokens[at++];const v=unary();return sign==='-'?pNeg(v):v;}return power();}
   function product(){let v=unary();while(at<tokens.length){const t=tokens[at], implicit=t==='('||t==='x';if(!['*','/'].includes(t)&&!implicit)break;if(!implicit)at++;const b=unary();let out;if(t==='/'&&!implicit){if(b.length!==1)throw Error('VARIABLE_DENOMINATOR');out=v.map(c=>div(c,b[0]));}else out=pMul(v,b);v=record(v,t==='/'?'/':'*',b,out);}return v;}

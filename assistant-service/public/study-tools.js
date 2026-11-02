@@ -1,13 +1,24 @@
 // Pure bounded helpers shared with the offline tutor; no storage or network.
 export function normalizeTask(value) {
   if (typeof value !== 'string' || value.length > 1000) return '';
-  return value.normalize('NFKC').trim().replace(/[−–—]/g, '-')
+  return value.replaceAll('²','^2').replaceAll('³','^3').normalize('NFKC').trim().replace(/[−–—]/g, '-')
     .replace(/^(?:пожалуйста[, ]+)?(?:вычисли(?:те|ть)?|посчитай(?:те)?|найди(?:те)?\s+значение\s+выражения)\s*:?\s*/iu, '')
     .replace(/^(?:пожалуйста[, ]+)?(?:реши(?:те|ть)?|найди(?:те)?\s+корень)\s+(?:уравнение\s*)?:?\s*/iu, '')
     .replace(/\s*[.!?]$/, '').trim();
 }
 export function inferTopic(value) {
   const q = normalizeTask(value).toLowerCase();
+  if (/^(sin|cos|tan)\(/.test(q)) return 'trigonometric-equations';
+  if (/^log_/.test(q)) return 'logarithmic-equations';
+  if (/^[\d(].*\^.*[xх].*=/.test(q)) return 'exponential-equations';
+  if (/[<>≤≥]/.test(q)) return /\/\([^)]*[xх]/.test(q) ? 'rational-inequalities' : 'inequalities';
+  if (q.includes('=') && /[xх]/.test(q)) {
+    if (q.includes('|')) return 'absolute-equations';
+    if (/√|sqrt/.test(q)) return 'radical-equations';
+    if (/[yу]/.test(q) && q.includes(';')) return 'linear-systems';
+    if (/\/\([^)]*[xх]/.test(q)) return 'rational-equations';
+    if (/\^2/.test(q)) return 'quadratic-equations';
+  }
   if (/^(?:нод|нок)\s/.test(q)) return 'gcd-lcm';
   if (/^сравни /.test(q)) return 'comparison';
   if (/^(упрости|разложи)/.test(q) && /x|х/.test(q)) return 'polynomials';
@@ -30,6 +41,17 @@ export function ambiguity(value, topic) {
   return null;
 }
 export const FORMATS = {
+  'quadratic-equations': 'Все корни через ;. Точные корни, например (1+√5)/2.',
+  inequalities: 'Промежутки: (-∞; 2] ∪ (3; +∞). Скобки указывают включение границы.',
+  'linear-systems': 'Пара x=2; y=3, либо «нет решений» / «бесконечно много решений».',
+  'rational-equations': 'Все допустимые корни через ;. Исключи нули знаменателей.',
+  'radical-equations': 'Корни через ; после проверки в исходном уравнении.',
+  'absolute-equations': 'Все корни обоих случаев через ;.',
+  'rational-inequalities': 'Объединение промежутков; нули знаменателя всегда выколоты.',
+  'exponential-equations': 'Корни при одинаковом основании либо числовой степени основания.',
+  'logarithmic-equations': 'Корни с положительными аргументами всех логарифмов.',
+  'trigonometric-equations': 'Радианы. Укажи промежуток в условии; ответ pi/6; 5pi/6.',
+
   arithmetic: 'Точное число или упрощённый корень. Для округления допиши: ; округли до 2 знаков.',
   comparison: 'Один знак сравнения: <, > или =.',
   proportions: 'Значение x — точное число или дробь. Знаменатели должны быть ненулевыми.',

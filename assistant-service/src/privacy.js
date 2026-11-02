@@ -11,7 +11,7 @@ export function containsSensitiveText(value) {
 }
 function taskText(value, min, max) {
   requireValue(typeof value === 'string' && value.length >= min && value.length <= max, 'TASK_INVALID');
-  const text = value.normalize('NFKC').trim();
+  const text = value.replaceAll('²','^2').replaceAll('³','^3').normalize('NFKC').trim();
   requireValue(text.length >= min && text.length <= max && !/[\u0000-\u0008\u000b-\u001f\u007f\u202a-\u202e\u2066-\u2069]/u.test(text), 'TASK_INVALID');
   requireValue(!containsSensitiveText(text), 'PERSONAL_DATA_REJECTED');
   return text;

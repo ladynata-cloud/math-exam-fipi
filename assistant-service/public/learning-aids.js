@@ -1,5 +1,16 @@
 // Pure, bounded teaching aids. No model output, network or browser state here.
 const HELP = {
+  'quadratic-equations': { examples: ['x^2-5x+6=0','x^2-2=0','x^2+1=0'] },
+  inequalities: { examples: ['-2x+3<7','x^2-4<=0'] },
+  'linear-systems': { examples: ['x+y=5; 2x-y=1','x+y=2; 2x+2y=4'] },
+  'rational-equations': { examples: ['1/(x-1)=2','(x+1)/(x-1)=2'] },
+  'radical-equations': { examples: ['√(x+2)=x','sqrt(2x+3)=3'] },
+  'absolute-equations': { examples: ['|x-2|=3','|2x+1|=0'] },
+  'rational-inequalities': { examples: ['(x-1)/(x+2)>=0','1/(x-3)<0'] },
+  'exponential-equations': { examples: ['2^(x+1)=8','(1/2)^x=8'] },
+  'logarithmic-equations': { examples: ['log_2(x-1)=3','log_3(x+2)=log_3(2x)'] },
+  'trigonometric-equations': { examples: ['sin(x)=1/2; [0;2pi]','cos(x)=0; (-pi;pi]'] },
+
   arithmetic: { examples: ['(1/2+1/3)*6', '(-2)^-3', '√72', '1/3; округли до 2 знаков'] },
   comparison: { examples: ['Сравни 1 1/2 и 7/4', 'Сравни -1/2 и -1/3'] },
   proportions: { examples: ['x/3 = 4/6', '3/x = 6/4'] },

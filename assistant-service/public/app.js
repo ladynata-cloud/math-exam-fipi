@@ -170,6 +170,17 @@ import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
     return result;
   }
 
+  function appendExactFigure(card, figure) {
+    if (figure?.kind !== 'unit-circle' || !Array.isArray(figure.points) || figure.points.length>32) return;
+    const points=figure.points.filter(p=>typeof p.label==='string' && p.label.length<40 && Number.isFinite(p.x) && Number.isFinite(p.y) && Math.abs(p.x)<=1 && Math.abs(p.y)<=1);
+    const panel=node('details','learning-visual'); panel.append(node('summary','','Корни на единичной окружности'));
+    const label=`Единичная окружность. Выбранные углы: ${points.map(p=>p.label).join('; ') || 'нет'}. Координаты точек на рисунке приблизительные; отбор углов выполнен точно.`;
+    const svg=svgNode('svg',{viewBox:'0 0 360 300',role:'img','aria-label':label});
+    svg.append(svgNode('circle',{cx:180,cy:150,r:108,class:'visual-empty'}),svgNode('line',{x1:42,y1:150,x2:318,y2:150,class:'visual-line'}),svgNode('line',{x1:180,y1:15,x2:180,y2:285,class:'visual-line'}));
+    for(const p of points){svg.append(svgNode('circle',{cx:180+108*p.x,cy:150-108*p.y,r:5,class:'visual-point'}));const text=svgNode('text',{x:180+128*p.x,y:154-128*p.y,'text-anchor':'middle'});text.textContent=p.label;svg.append(text);}
+    panel.append(svg,node('p','',label));card.append(panel);
+  }
+
   function appendVisual(card, task) {
     const visual = visualFor(task.topic, task.question);
     if (!visual) return;
@@ -353,6 +364,7 @@ import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
     if (answer.verification === 'model-unverified') card.append(node('p', 'answer-notice', 'Модель может ошибиться или открыть лишние шаги. Этот ответ не становится частью проверенной базы знаний автоматически.'));
     if (answer.verification === 'deterministic') {
       appendVisual(card, task);
+      if (answer.complete) appendExactFigure(card, answer.figure);
       if (answer.complete) appendPractice(card, task);
     } else if (answer.verification === 'needs-teacher') {
       const help = node('details', 'task-help');
