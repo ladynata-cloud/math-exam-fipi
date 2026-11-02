@@ -1,5 +1,16 @@
 # MathExam project status
 
+## Assistant: practice and reasoning prepared, 2026-11-02
+
+- PR415 merged after cloud CI41368382607; verified parent8a5b31b/tree8e310ef.
+  The first74 numbered items are source-merged and cloud-checked.
+-15 practice/reasoning items prepared;215 service and21 browser tests passed. See
+  [evidence](reports/MATHEXAM_ASSISTANT_PRACTICE_20261102.md).
+-89 items have prepared code; final11 cabinet/teacher items remain. None of
+  the new100 is deployed to Amvera. Production remains source8307f6a/package
+  3cc22e0; cloud hosting identity and verified host provisioning unavailable.
+  Standing publication permission applies; no repeat approval needed.
+
 ## Assistant: geometry and8 models prepared, 2026-11-02
 
 - PR409/411/412/413/414 are merged with cloud checks:54 numbered items.

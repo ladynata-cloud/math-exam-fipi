@@ -217,3 +217,22 @@ math { font-size: 1.15em; margin-inline: .13em; }
 .high-contrast .geometry-emphasis { stroke:#003c82; }
 .high-contrast .lab-grid { stroke:#59645c; }
 @media(max-width:480px) { .lab-controls { grid-template-columns:1fr; } }
+
+.practice-panel { margin-top:1.5rem; padding-top:1rem; border-top:1px solid var(--line); }
+.practice-controls { display:grid; gap:.7rem; margin-block:1rem; }
+.practice-controls label, .practice-stage > label { display:flex; flex-direction:column; }
+.practice-stage > * { max-width:100%; }
+.practice-stage input[type=text] { width:100%; min-width:0; }
+.practice-stage button { margin-block:.4rem; }
+.practice-choice { display:flex; align-items:flex-start; gap:.5rem; margin-block:.6rem; }
+.practice-choice input { flex-shrink:0; margin-top:.4rem; }
+.practice-stage fieldset { min-width:0; padding:.7rem; border:1px solid var(--line); }
+.practice-stage input, .practice-stage select { max-width:100%; }
+.practice-methods { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+.practice-methods ol { padding-left:1.3rem; }
+.practice-methods section { min-width:0; overflow-wrap:anywhere; }
+.practice-feedback { font-weight:600; }
+.practice-progress, .practice-summary { font-size:.9rem; }
+.practice-order li { padding:.4rem; margin-bottom:.4rem; border:1px solid var(--line); }
+.practice-order button { margin-inline:.2rem; padding:.2rem .6rem; }
+@media(max-width:650px){.practice-methods { grid-template-columns:1fr; }}
