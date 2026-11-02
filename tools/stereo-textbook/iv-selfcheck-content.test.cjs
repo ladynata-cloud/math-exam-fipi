@@ -3,9 +3,10 @@ const assert = require('node:assert/strict'), fs = require('node:fs'), path = re
 const root = path.resolve(__dirname, '../..'), baseline = require('./iv-selfcheck-baseline.cjs');
 const {ids, sha, hash, exact, published} = baseline;
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
-const course = read('stereo-course/textbook/data/course.json');
-const index = read('stereo-course/textbook/source-index.json');
-const registry = require('./content-review.json'), cases = require('./browser-cases.cjs');
+const later = require('./additional396-baseline.cjs'), currentIndex = read('stereo-course/textbook/source-index.json');
+const course = later.previousCourse(read('stereo-course/textbook/data/course.json'), currentIndex);
+const index = later.previousIndex(currentIndex);
+const registry = later.previousRegistry(require('./content-review.json')), cases = later.previousCases(require('./browser-cases.cjs'));
 const previous = baseline.previousCourse(course, index);
 baseline.previousIndex(index); baseline.previousRegistry(registry); baseline.previousCases(cases);
 assert.equal(baseline.previousLessonFiles(path.join(root, 'stereo-course/textbook/lessons')).length, 640);

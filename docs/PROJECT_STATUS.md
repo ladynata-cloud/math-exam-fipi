@@ -1,16 +1,35 @@
 # MathExam project status
 
-## Integrated candidate: chapter IV self-check, PR402, 2026-11-02
+## Preparing: additional cylinder exercises396–403, 2026-11-02
 
-- The owner requested production integration and release of the reviewed candidate.
-  All13 original cards are now in the course bundle:653 cards,50 complete self-check
-  questions; source numbers3а/б/в and5а/б retained. No mathematical content rewritten.
-- All640 previous raw cards and existing runtime/storage contracts remain identical.
-  The current candidate adds source contracts, review hashes and append-only browser
-  cases. Saved answers/steps and rejection of corrupt or pending content pass locally.
-- [Integration evidence](reviews/ATANASYAN_CHAPTER_IV_SELFCHECK_INTEGRATION.md).
-  Cloud full-course/mobile checks and actual publication are recorded in PR402.
-  Standing owner publication permission applies; no repeat external audit required.
+- Owner requested the next Atanasyan10–11 increment and cloud execution.
+  Nine cards cover396–403 including400а/б:38 steps and40 model states.
+- [Task](tasks/ATANASYAN_ADDITIONAL_396_403.md), MEDIUM; base
+  ea5b6cb9e931eee63224fbc4c13b2ac43326cc19.
+- [Author review and cloud evidence](reviews/ATANASYAN_ADDITIONAL_396_403.md).
+  Candidate result:662 cards,403 complete main exercises. Cloud CI and visual
+  artifact review are pending at preparation; this is not yet a publication.
+- Existing653 raw cards, shared renderer and saved-work format remain unchanged.
+  Standing release authorization applies after all applicable checks.
+
+## Published: chapter IV self-check, PR402, 2026-11-02
+
+- [PR402](https://github.com/ladynata-cloud/math-exam-fipi/pull/402) merged as
+  ea5b6cb9e931eee63224fbc4c13b2ac43326cc19, sole parent
+  b9ba38b27f5b306f0d81d01c67e0a636e5a06b84; tree
+  2dbca81213348bd0b53e82b6dcfdec1ec9fae01b.
+- All13 reviewed cards were integrated without rewriting their mathematical
+  content:653 published cards and50 complete self-check questions. All640
+  preceding raw lessons and stored-work contracts were preserved.
+- All7 final-head workflows passed. Full course run
+  [41493180126](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41493180126)
+  passed14 jobs:1306 journeys,10356 label states and4004 screenshots.
+- [Pages41498590641](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41498590641)
+  and postmerge Profile2027 run41498592137 passed. Deployment commit matches
+  the merge. Cloud live verification opened all13 new routes, checked√5 in
+  question8, stacked fractions in10 and retained new/old saved work.
+- This reconciles the preceding integrated-candidate entry. Earlier preparation
+  entries below are historical, not current publication blockers.
 
 ## Preparing: Atanasyan chapter IV self-check, 2026-11-02
 
