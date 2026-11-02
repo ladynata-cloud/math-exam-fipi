@@ -2,7 +2,7 @@ name: Temporary OGE19 cloud offline rebuild
 on:
   push:
     branches: ['task/oge19-editorial-completion-20261103']
-    paths: ['trainers/task19-visual-data.js', '.github/workflows/oge19-cloud-prepare.yml']
+    paths: ['trainers/task19-visual-data.js', 'trainers/task19-models-triangles.js', '.github/workflows/oge19-cloud-prepare.yml']
 permissions:
   contents: write
 jobs:

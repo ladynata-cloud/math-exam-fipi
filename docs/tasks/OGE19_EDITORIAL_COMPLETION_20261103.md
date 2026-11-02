@@ -9,13 +9,13 @@ User instruction: «заверши все задания. разрешения �
 
 ## Scope and evidence
 
-Review all 234 existing assertions, explanations and model mappings in the review catalogue; 38 model types. The five source files in the Site snapshot exactly match current main by Git blob SHA. Preserve every statement, ID, answer key, source attribution, geometry engine and learner storage contract.
+Review all 234 existing assertions, explanations and model mappings in the review catalogue; 38 model types. The five source files in the Site snapshot exactly match current main by Git blob SHA. Preserve every statement, ID, answer key, source attribution, geometry calculations and learner storage contract.
 
-Three bounded corrections found during review: reference-030 incorrectly says the adjustable drawing always has cosine 4/5 although its initial B=35°; median_bisects_angle must qualify the median to the base of an isosceles triangle; tan_acute_less_than_1 should open at its explanatory counterexample B=60°. Update their teaching text/default only. Regenerate the existing offline task19 download in cloud. Publish the matching Site review with a separate editorial result; retain personal browser notes unchanged.
+Four bounded corrections found during review: reference-030 incorrectly says the adjustable drawing always has cosine 4/5 although its initial B=35°; median_bisects_angle must qualify the median to the base of an isosceles triangle; tan_acute_less_than_1 should open at its explanatory counterexample B=60°. Update their teaching text/default only. The coincident-center diagram reference-039 had overlapping construction labels; simplify only that rendering to two circles, one displayed radius per circle and a single O = I callout, retaining independently computed measurements. Regenerate the existing offline task19 download in cloud. Publish the matching Site review with a separate editorial result; retain personal browser notes unchanged.
 
 ## Acceptance and checks
 
-- All 234 truth keys and statement texts unchanged; 3 specified records changed.
+- All 234 truth keys and statement texts unchanged; 3 data records changed plus the coincident-center renderer; every numerical construction remains unchanged.
 - Source and offline model bank agree byte for byte.
 - Existing 11 independent coordinate audit tests cover all cards; structural/SVG/state-restoration audit covers 457 controls and 2073 states.
 - Existing Task19 CI, browser journeys and relevant cross-course CI on final candidate.
