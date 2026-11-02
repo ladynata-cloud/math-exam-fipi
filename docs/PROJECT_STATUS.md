@@ -1,5 +1,25 @@
 # MathExam project status
 
+## Recovered: 104 OGE PDF variants, MAT-9, 2026-11-03
+
+- [Task](tasks/OGE_104_CATALOGUE.md), MEDIUM; original START continued by owner.
+  Recovered Git checkpoint `2ef2ec0` and the complete author archive; current
+  validation base `ea5b6cb`. All 315 PDFs retain their original bytes.
+- Catalogue: 104 variants, three files per variant, eight families x13; three
+  complete collections. Font-dependent mobile button overflow corrected.
+- Fresh checks: 315 PDF/hash/HTTP matches, 1,976 printed answers, 1,084 ordered
+  collection-page pairs, all filters/numbers, 8,736 button measurements and
+  sitemap preservation. [Report](reports/OGE_104_CATALOGUE_20261103.md).
+- [Draft PR #421](https://github.com/ladynata-cloud/math-exam-fipi/pull/421)
+  includes a focused cloud gate and exact 332-file inventory. The PR records
+  final head, CI and cloud transport-recovery evidence. An inherited navigation
+  assertion was aligned with the published lesson showcase; OGE route checks
+  and all existing workflows remain in place.
+  The owner continued after the Draft handoff and requested cloud publication.
+  Standing release authorization applies. The read-only workflow will verify
+  deployed bytes and actual public PDF/browser behavior after the main push;
+  actual merge, Pages and live results are recorded in PR #421.
+
 ## Preparing: additional cylinder exercises396–403, 2026-11-02
 
 - Owner requested the next Atanasyan10–11 increment and cloud execution.

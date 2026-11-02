@@ -6,6 +6,13 @@ on:
       - 'stereo-course/assets/**'
       - 'tools/stereo-textbook/**'
       - '.github/workflows/atanasyan-additional396.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'stereo-course/textbook/**'
+      - 'stereo-course/assets/**'
+      - 'tools/stereo-textbook/**'
+      - '.github/workflows/atanasyan-additional396.yml'
 permissions:
   contents: read
 jobs:
@@ -46,11 +53,41 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Every new card and every state on two phones and desktop
         run: node tools/stereo-textbook/additional396.browser.cjs
+      - name: Wait for exact published course bundle
+        if: github.event_name == 'push'
+        run: |
+          python3 - <<'PY'
+          import hashlib, pathlib, time, urllib.request
+          expected = hashlib.sha256(pathlib.Path('stereo-course/textbook/data/course.json').read_bytes()).hexdigest()
+          deadline = time.monotonic() + 480
+          while True:
+              try:
+                  request = urllib.request.Request('https://mathexam.space/stereo-course/textbook/data/course.json', headers={'Cache-Control': 'no-cache'})
+                  with urllib.request.urlopen(request, timeout=30) as response:
+                      assert response.status == 200
+                      actual = hashlib.sha256(response.read()).hexdigest()
+                  if actual == expected:
+                      print('ATANASYAN662_PUBLISHED_BYTES_OK: ' + expected)
+                      break
+              except Exception as error:
+                  print(type(error).__name__ + ': ' + str(error), flush=True)
+              if time.monotonic() >= deadline:
+                  raise RuntimeError('Published course bundle did not match this release')
+              time.sleep(10)
+          PY
+      - name: Verify all nine published cards and saved steps
+        if: github.event_name == 'push'
+        env:
+          ADDITIONAL396_LIVE_URL: https://mathexam.space/stereo-course/textbook/
+          ADDITIONAL396_ARTIFACTS: artifacts/atanasyan-additional396-live
+        run: node tools/stereo-textbook/additional396.browser.cjs
       - name: Preserve actual screenshots and persistence evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: atanasyan-additional396
-          path: artifacts/atanasyan-additional396/
+          path: |
+            artifacts/atanasyan-additional396/
+            artifacts/atanasyan-additional396-live/
           retention-days: 14
           if-no-files-found: error

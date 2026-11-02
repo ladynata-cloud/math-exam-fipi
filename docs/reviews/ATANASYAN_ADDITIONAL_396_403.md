@@ -99,3 +99,28 @@ merge record: authorized base, actual current main, drift, validity, virtual
 composition (if needed), rerun gates and whether a new owner decision is needed.
 Rollback is a normal revert plus checked Pages publication; learner storage
 must not be deleted. No rollback has been performed.
+
+## 2026-11-03 release continuation and integration
+
+The owner explicitly requested completion and publication of all remaining tasks,
+preferably in the cloud. Final original head f0339bb passed all seven workflows.
+Focused artifact13173989793 (SHA256 d5ec575f898351a2f20e89c439256ec6024f1fdcbfc7301def46dcc99d5ca330)
+contains27 successful journeys and120 states with no browser errors. The nine
+corrected mobile headings were inspected at native width; long conditions remain
+complete. Earlier40-state geometry review is retained; no fresh external audit is claimed.
+
+The preceding authorized catalogue PR421 is now squash-merged as
+f054fdcbc233a8bc4752c1abae46b19a4b54cb78. Its332-path delta overlaps this
+27-path task only in PROJECT_STATUS.md. Virtual composition retains the entire
+catalogue addition and the existing chapter-IV publication reconciliation.
+All24 remaining product/test/task blobs are copied by exact Git blob identity;
+only the journal, this report and the read-only cloud workflow are changed.
+The workflow now checks the exact live bundle and repeats all27 browser journeys
+after normal Pages publication. It has contents:read permission and makes no
+hosting or learner-data changes. All applicable CI must rerun on this integration.
+
+Base: f054fdcbc233a8bc4752c1abae46b19a4b54cb78.
+Authorization: standing policy plus explicit current completion/publication request.
+Drift: approved PR421 only; ordinary two-parent integration, no history rewriting.
+Release pending: final CI, fresh remote guard, merge identity, Pages and live gate.
+Final release identities and results will be recorded in PR422.
