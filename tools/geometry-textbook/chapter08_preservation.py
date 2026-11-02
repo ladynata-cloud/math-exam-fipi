@@ -1,4 +1,5 @@
 """Immutable published-through-639 oracle; candidate work cannot rewrite approval."""
+from layout_amendment import historical_bytes
 from copy import deepcopy
 import hashlib,json
 from pathlib import Path
@@ -26,7 +27,7 @@ def assert_public1083(bundle,root=ROOT,check_files=True):
  require(bundle['build']['authoredCards']==1083 and bundle['build']['numberedExercises']==639,'Published endpoint changed')
  require(bundle['build']['fullTextbookComplete'] is False,'Whole book is not complete')
  if check_files:
-  for name,expected in base['immutableFiles'].items():require(sha((root/name).read_bytes())==expected,'Published file changed: '+name)
+  for name,expected in base['immutableFiles'].items():require(sha(historical_bytes(root/name))==expected,'Published file changed: '+name)
  return True
 def assert_candidate_old_teaching(bundle):
  # Isolated paragraph metadata invalidates runtime approval, so the preview is

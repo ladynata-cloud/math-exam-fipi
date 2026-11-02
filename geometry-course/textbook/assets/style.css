@@ -39,3 +39,27 @@ button,summary,small{overflow-wrap:anywhere;hyphens:auto}
 .stereo-math-atom,.stereo-mixed-number{display:inline;white-space:nowrap;overflow-wrap:normal;word-break:normal;hyphens:none}
 .stereo-fraction,.stereo-numerator,.stereo-denominator{white-space:nowrap;overflow-wrap:normal;word-break:normal;hyphens:none}
 button{max-width:100%;white-space:normal}
+
+/* #384: reserve the first viewport for the complete problem and its drawing.
+   Viewer widths, zoom, SVG minimum heights and label sizing stay unchanged. */
+.course-nav:has(+ #textbook-app .textbook-lesson-header){padding-block:.35rem;gap:.2rem 1.5rem}
+.textbook-lesson-header{margin:.35rem 0 .65rem}
+.textbook-lesson-header>button{padding:.4rem .7rem}
+.textbook-lesson-header h1{font-size:1.4rem;margin:.45rem 0 0;line-height:1.25}
+.textbook-lesson-header+.textbook-layout .textbook-main{padding-top:.65rem}
+.textbook-problem>.textbook-condition{margin:0 0 .6rem}
+.textbook-problem>ul{margin:.4rem 0 .6rem;padding-left:1.25rem}
+.textbook-problem li{margin:.35rem 0}
+.textbook-problem>.textbook-goal{margin:.5rem 0 .6rem}
+.textbook-problem+[data-main-model]{margin-top:.35rem}
+.textbook-source .lesson-permalink{margin:0 0 .5rem}
+.textbook-layout [data-main-model] .planar-viewer{display:flex;flex-direction:column}
+.textbook-layout [data-main-model] .planar-viewport{order:-1;max-height:none}
+.textbook-layout [data-main-model] .planar-tools{border-top:1px solid #dce7df;border-bottom:0}
+/* At requested zoom, retain the original inner scroll area. */
+.textbook-layout [data-main-model] .planar-viewer:not(:fullscreen):not(.planar-expanded):has(.planar-tools button[aria-label="Уменьшить чертёж"]:enabled) .planar-viewport{max-height:70vh}
+@media(min-width:851px){
+ .textbook-lesson-header{display:flex;align-items:flex-start;gap:.8rem}
+ .textbook-lesson-header>button{flex-shrink:0}
+ .textbook-lesson-header h1{margin:.3rem 0 0;flex:1}
+}
