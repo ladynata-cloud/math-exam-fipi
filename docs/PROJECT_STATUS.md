@@ -1,5 +1,18 @@
 # MathExam project status
 
+## Assistant: word problems and data prepared, 2026-11-02
+
+- PR409/411/412/413 source is merged and cloud-checked:46 numbered items.
+  PR413 merge51da998 has verified parent7299768 and reviewed tree6e5e218.
+- Eight further items locally prepared:203 service tests,15 browser scenarios
+  and independent mathematics oracles passed. See
+  [evidence](reports/MATHEXAM_ASSISTANT_WORD_DATA_20261102.md).
+- Cumulative54 with prepared code; packages6–8 remain. New100-item code has
+  not been deployed to Amvera: cloud identity/known-host provisioning remains
+  unavailable. Production remains source8307f6a/package3cc22e0 as last verified.
+  Publication permission is standing; no repeat external audit required.
+
+
 ## Assistant 100-item program: equations prepared, 2026-11-02
 
 - Source packages PR409, PR411 and PR412 are merged: 35 numbered items have

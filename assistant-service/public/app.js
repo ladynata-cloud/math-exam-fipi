@@ -170,6 +170,16 @@ import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
     return result;
   }
 
+  function appendDataTable(card, data) {
+    if (!data || typeof data.caption!=='string' || !Array.isArray(data.headers) || !Array.isArray(data.rows) || data.headers.length>13 || data.rows.length>36) return;
+    if (!data.headers.every(x=>typeof x==='string'&&x.length<100) || !data.rows.every(row=>Array.isArray(row)&&row.length===data.headers.length&&row.every(x=>typeof x==='string'&&x.length<100))) return;
+    const panel=node('div','table-scroll');panel.tabIndex=0;panel.setAttribute('role','region');panel.setAttribute('aria-label',data.caption);
+    const table=node('table','math-table'),head=node('thead'),header=node('tr'),body=node('tbody');
+    table.append(node('caption','',data.caption));for(const text of data.headers){const th=node('th','',text);th.scope='col';header.append(th);}head.append(header);
+    for(const row of data.rows){const tr=node('tr');row.forEach((text,i)=>{const cell=node(i===0?'th':'td','',text);if(i===0)cell.scope='row';tr.append(cell);});body.append(tr);}
+    table.append(head,body);panel.append(table);card.append(panel);
+  }
+
   function appendExactFigure(card, figure) {
     if (figure?.kind !== 'unit-circle' || !Array.isArray(figure.points) || figure.points.length>32) return;
     const points=figure.points.filter(p=>typeof p.label==='string' && p.label.length<40 && Number.isFinite(p.x) && Number.isFinite(p.y) && Math.abs(p.x)<=1 && Math.abs(p.y)<=1);
@@ -364,7 +374,7 @@ import { topicHelp, practiceFor, visualFor } from './learning-aids.js';
     if (answer.verification === 'model-unverified') card.append(node('p', 'answer-notice', 'Модель может ошибиться или открыть лишние шаги. Этот ответ не становится частью проверенной базы знаний автоматически.'));
     if (answer.verification === 'deterministic') {
       appendVisual(card, task);
-      if (answer.complete) appendExactFigure(card, answer.figure);
+      if (answer.complete) { appendExactFigure(card, answer.figure); appendDataTable(card, answer.table); }
       if (answer.complete) appendPractice(card, task);
     } else if (answer.verification === 'needs-teacher') {
       const help = node('details', 'task-help');

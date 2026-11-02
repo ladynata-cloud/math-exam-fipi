@@ -190,3 +190,9 @@ math { font-size: 1.15em; margin-inline: .13em; }
   #print-selection .learning-visual { display: block !important; }
   #print-selection svg { max-width: 100%; }
 }
+
+.table-scroll { max-width:100%; overflow-x:auto; margin-block:1rem; }
+.math-table { width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; }
+.math-table caption { text-align:left; font-weight:600; padding-block:.5rem; }
+.math-table th, .math-table td { border:1px solid #c7d6cd; padding:.5rem; text-align:center; white-space:nowrap; }
+.math-table th { background:#eff5ee; }

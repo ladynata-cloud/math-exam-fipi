@@ -634,3 +634,18 @@ for(const [group,cases] of Object.entries({
   for(const width of [320,390,1280]){await page.setViewportSize({width,height:900});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);}
   if(process.env.BROWSER_SCREENSHOT_DIR){fs.mkdirSync(process.env.BROWSER_SCREENSHOT_DIR,{recursive:true});await page.locator('.answer-panel').screenshot({path:path.join(process.env.BROWSER_SCREENSHOT_DIR,`expanded-equations-${group}.png`)});}
 });
+
+test('live word problems and data: units, exact progressions and nonunique inverse table', {skip:skip||(!process.env.LIVE_ASSISTANT_URL&&'Local fixture required')},async t=>{
+ const url=new URL(process.env.LIVE_ASSISTANT_URL);assert.ok(['127.0.0.1','localhost'].includes(url.hostname));
+ const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_EXECUTABLE_PATH?{executablePath:process.env.CHROMIUM_EXECUTABLE_PATH}:{})});const page=await evidencePage(t,browser,{viewport:{width:390,height:900}});
+ await page.goto(url.href);await page.waitForFunction(()=>!document.getElementById('access-button').disabled);await page.locator('#access-button').click();await page.locator('#workspace').waitFor({state:'visible'});
+ for(const [topic,q,a] of [
+  ['motion','Движение: скорость 60 км/ч; время 30 мин; найти путь','30000 м'],['work-rates','Работа: первый 6 ч; второй 3 ч; найти время вместе','2 ч'],['mixtures','Смесь: 200 г 10%; 300 г 20%; найти концентрацию','16%'],
+  ['arithmetic-progression','Арифметическая: a1=3; an=21; d=2; найти n','10'],['geometric-progression','Геометрическая: a1=3; q=1/2; n=4; найти sn','45/8'],['statistics','Статистика: 2; 4; 9; 5; найти медиану','4,5'],
+  ['probability','Вероятность: два кубика; сумма=7','1/6'],['function-table','Функция: x=-2 | -1 | 0 | 1; y=4 | 1 | 0 | 1; найти x при y=1','-1;1']
+ ]){await page.locator('#topic').selectOption(topic);await page.locator('#question').fill(q);await page.locator('#attempt').fill(a);const pending=page.waitForResponse(r=>r.url().endsWith('/api/ask'));await page.locator('#ask-button').click();const response=await pending;assert.equal(response.status(),200,q);const answer=(await response.json()).answer;assert.equal(answer.attemptStatus,'correct',q);assert.equal(answer.table,undefined);await page.waitForFunction(()=>document.getElementById('workspace').getAttribute('aria-busy')==='false');assert.equal(await page.locator('#attempt').inputValue(),a);}
+ await page.locator('#explain-button').click();await page.waitForFunction(()=>document.querySelectorAll('.answer-card').length===2);assert.equal(await page.locator('.math-table th[scope="col"]').count(),5);assert.equal(await page.locator('.math-table th[scope="row"]').count(),1);
+ assert.match(await page.locator('.answer-card').last().textContent(),/Подходящих столбцов: 2/);
+ for(const width of [320,390,1280]){await page.setViewportSize({width,height:900});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);}
+ if(process.env.BROWSER_SCREENSHOT_DIR){fs.mkdirSync(process.env.BROWSER_SCREENSHOT_DIR,{recursive:true});await page.locator('.answer-panel').screenshot({path:path.join(process.env.BROWSER_SCREENSHOT_DIR,'word-data-table.png')});}
+});
