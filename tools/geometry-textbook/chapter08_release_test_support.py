@@ -1,6 +1,7 @@
 """Synthetic-only release fixtures. Never an approval; writes only temp roots."""
 from contextlib import contextmanager
 from pathlib import Path
+from layout_amendment import historical_bytes
 import json,shutil
 import build_course as builder
 from chapter08_extension import (ROOT,PREFIX,FIXTURE,RECEIPT,PREVIOUS_RECEIPT,BINDING,
@@ -22,7 +23,7 @@ def fixture(root):
  course=root/PREFIX;shutil.copytree(ROOT/PREFIX,course)
  base=frozen()
  for name in set(base['immutableFiles'])|{FIXTURE,'tools/geometry-textbook/chapter-08-source-map.json'}:
-  p=root/name;p.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(ROOT/name,p)
+  p=root/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(historical_bytes(ROOT/name))
  # Reconstruct the true previous publication if tests run after promotion.
  inventory_raw=(course/'source-inventory.json').read_bytes()
  if has_viii(inventory_raw):(course/'source-inventory.json').write_bytes(previous_inventory(inventory_raw,ROOT))
