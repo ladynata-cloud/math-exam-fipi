@@ -28,10 +28,13 @@ async function evidencePage(t, browser, options) {
   const context = await browser.newContext({ ...options, ...(dir ? { recordVideo: { dir } } : {}) });
   if (dir) await context.tracing.start({ screenshots: true, snapshots: true, sources: false });
   const page = await context.newPage();
+  // Bound locator/function waits so a stalled runner yields an actionable failure.
+  page.setDefaultTimeout(15000);
+  page.setDefaultNavigationTimeout(15000);
   t.after(async () => {
     try {
       if (dir) {
-        await page.screenshot({ path: path.join(dir, 'final.png'), fullPage: true }).catch(() => {});
+        await page.screenshot({ path: path.join(dir, 'final.png'), fullPage: true, timeout: 5000 }).catch(() => {});
         await context.tracing.stop({ path: path.join(dir, 'trace.zip') });
       }
     } finally { await context.close(); await browser.close(); }
@@ -106,7 +109,7 @@ async function fixture(t, options = {}) {
     return send(404, { ok: false });
   });
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
-  t.after(() => new Promise(resolve => server.close(resolve)));
+  t.after(() => { server.closeAllConnections(); return new Promise(resolve => server.close(resolve)); });
   const browser = await chromium.launch({ headless: true,
     ...(process.env.CHROMIUM_EXECUTABLE_PATH ? { executablePath: process.env.CHROMIUM_EXECUTABLE_PATH } : {}) });
   const page = await evidencePage(t, browser, { viewport: options.viewport || { width: 1280, height: 920 } });
@@ -691,7 +694,8 @@ function practiceAnswer(question){let m;if((m=/^(\d+)\+(\d+)$/.exec(question)))r
 test('practice adapts after distinct independent tasks and counts viewed methods as help', {skip},async t=>{
  const {page,calls}=await fixture(t,{viewport:{width:390,height:900}});await page.locator('#practice-panel > summary').click();await page.locator('#practice-skill').selectOption('linear-equations');
  const check=page.getByRole('button',{name:'Проверить упражнение',exact:true});
- for(let i=0;i<2;i++){const q=await practiceQuestion(page);await page.locator('#practice-answer').fill(practiceAnswer(q));await check.click();assert.match(await page.locator('.practice-feedback').textContent(),/Верно/);assert.equal(await check.isDisabled(),true);if(i===0)await page.getByRole('button',{name:'Новый вариант',exact:true}).click();}
+ for(let i=0;i<2;i++){const q=await practiceQuestion(page);if(i===0){await page.locator('#practice-answer').fill(practiceAnswer(q)+'%');await check.click();assert.match(await page.locator('.practice-feedback').textContent(),/число или дробь/);}
+ await page.locator('#practice-answer').fill(practiceAnswer(q));await check.click();assert.match(await page.locator('.practice-feedback').textContent(),/Верно/);assert.equal(await check.isDisabled(),true);if(i===0)await page.getByRole('button',{name:'Новый вариант',exact:true}).click();}
  assert.match(await page.locator('.practice-progress').textContent(),/Две самостоятельные/);await page.getByRole('button',{name:'Новый вариант',exact:true}).click();assert.equal(await page.locator('#practice-level').inputValue(),'2');
  await page.locator('#practice-skill').selectOption('fractions');await page.locator('#practice-mode').selectOption('methods');assert.equal(await page.locator('.practice-methods section').count(),2);await page.locator('#practice-mode').selectOption('answer');const q=await practiceQuestion(page);await page.locator('#practice-answer').fill(practiceAnswer(q));await check.click();assert.match(await page.locator('.practice-summary').textContent(),/с помощью или после исправления 1/);
  assert.equal(calls.filter(c=>c.path==='/api/ask').length,0);assert.equal(await page.evaluate(()=>localStorage.length+sessionStorage.length),0);

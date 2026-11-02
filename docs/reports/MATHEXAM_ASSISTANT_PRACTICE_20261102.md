@@ -54,3 +54,21 @@ Not run: exact-head cloud, real pupil/AT pilot, Amvera delivery
 Scope deviations: bounded six families/ten activities; methods only where applicable
 Recommendation: cloud CI and controlled merge; continue final11 cabinet items
 Next user decision: none; standing permission applies
+
+## Initial cloud run and bounded retry
+
+CI41370421434 timed out after15 minutes in the existing retained-hints/deletion
+browser scenario, after its two preceding subtests passed. No assertion failure
+was emitted. Artifact13109505882 retained two complete traces/screenshots and an
+unfinalized third video; it does not establish an application defect or prove
+a runner fault. Cloud container gates were skipped, so this run is not a pass.
+The browser harness now sets15-second action/function/navigation waits and a
+5-second final screenshot limit, and explicitly closes fixture HTTP connections
+before closing the server. Assertions and all21 scenarios remain unchanged.
+This prevents an idle connection or unbounded browser wait from consuming the
+entire job and provides a concrete failure on retry. Local full rerun and new
+exact-head cloud result are recorded in the PR; no merge until they pass.
+
+Further review rejected a percent suffix where the generated task asks for a
+number/whole/length, and kept unsupported notation from counting as a failed
+practice attempt. Exact grading and the UI test cover this boundary explicitly.

@@ -2,13 +2,13 @@
 
 ## Assistant: all100 items have prepared source, 2026-11-02
 
-- Final11 cabinet/teacher/coverage items prepared:378 board-server tests,216
+- Final11 cabinet/teacher/coverage items prepared:379 board-server tests,216
   assistant tests,22 assistant browser scenarios and4 private-practice browser
   scenarios passed. [Evidence](reports/MATHEXAM_ASSISTANT_CABINET_TOOLS_20261102.md).
 - All100 original item IDs now have source implementations with stated bounds.
-  PR416 first cloud run timed out in a browser test; investigation/revalidation
-  and final-package cloud validation remain pending here;
-  first74 source-merged. This is not a production-completion claim.
+  PR416 revised head passed CI41372633907 and merged as dee3875c with
+  verified parentcf7b101/treea11fb75.89 items source-merged/cloud-checked;
+  final PR417 exact-head cloud validation remains pending here. This is not a production-completion claim.
 - Opt-in persistence covers generated private practice only; free-form pupil
   dialogue remains unretained. Teacher policies are enforced by server endpoints.
 - Amvera hosting identity/verified-host provisioning remains unavailable for

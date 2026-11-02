@@ -332,6 +332,8 @@ attempts, request allowances or monetary accounting.
 A teacher previews3–5 distinct generated problems, selects permitted methods and
 full-solution availability, then explicitly assigns that preview. Previews expire
 after30 minutes; published selections expire after30 days and can be revoked.
+At most20 active selections per learner and1000 retained selections per teacher
+are allowed; this also bounds repeated assign/revoke cycles.
 These policies govern the cabinet's task-specific explanations, not all other
 learning material; formative generated answers are not examination secrets.
 A numerical answer does not prove which method the pupil used. Active assessments

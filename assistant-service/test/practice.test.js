@@ -18,6 +18,7 @@ test('generated tasks agree with independent math and the main exact tutor acros
 });
 test('known error labels require a matching computed wrong result; unknown failures remain unknown',()=>{
  for(const skill of ['arithmetic','fractions','linear-equations','percentages','pythagoras']){const d=descriptor(skill,2,41),t=generatePractice(d);for(const w of t.wrong){const g=gradePractice(d,w.value);if(g.status==='correct')continue;assert.equal(g.errorType,w.type);assert(g.prerequisite);}}
+ for(const skill of Object.keys(SKILLS)){const d=descriptor(skill,1,4),t=generatePractice(d);assert.equal(gradePractice(d,t.expected+'%').status,'unsupported');}
  const d=descriptor();assert.equal(gradePractice(d,'999999').errorType,'unclassified');assert.equal(gradePractice(d,'не знаю').status,'unsupported');assert.equal(gradePractice(d,null).status,'unsupported');
  assert.equal(gradePractice(descriptor('fractions',1,3),'1/0').status,'unsupported');
 });

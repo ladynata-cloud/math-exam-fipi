@@ -54,7 +54,7 @@ copied module; cloud container gate imports and grades it in the real image.
 
 ## Verification
 
--378 full board-server tests passed;216 full standalone service tests passed.
+-379 full board-server tests passed on the final composition;216 full standalone service tests passed.
 -22 standalone browser tests passed, including coverage controls and no surprise
  submission;40 coverage examples all deterministic/complete.
 -Four real HTTP private-practice browser scenarios passed: opt-in/reload/erase,
@@ -79,8 +79,10 @@ was weakened or external review invented.
 
 ## Delivery and rollback
 
-PR416/package7 initial CI41370421434 timed out in an existing browser scenario; investigation/revalidation pending when this report was written; source89 items
-prepared there,74 merged before it. Final package cloud checks pending. Cloud
+PR416 first run41370421434 timed out in an existing browser scenario; the
+bounded-harness and exact-input revisionf41ce3b passed cloud CI41372633907.
+PR416 merged as dee3875c15bc49ee75d2c22b23fb3b814467c883; parentcf7b101
+and reviewed treea11fb75 are verified.89 items are source-merged/cloud-checked. Final package cloud checks pending. Cloud
 Amvera identity/verified-host provisioning unavailable; helper production remains
 previous source8307f6a/package3cc22e0. Native cabinet additions also require their
 own hosting deployment. Static frontend publication alone cannot establish that
@@ -95,12 +97,31 @@ and CI do not substitute for later hosting/live verification.
 
 Task: final11 cabinet/teacher/coverage items
 PR: attached at publication
-Base: PR416 dependencycd9b19b21f58ef6b56fa45c7b751bd95715ac071; current-main composition recorded in PR
+Base: main dee3875c15bc49ee75d2c22b23fb3b814467c883 after independently checked composition
 Head: exact committed candidate in PR
 Gate: local pass; exact-head cloud pending
-Tests:378 board,216 helper,22 helper browsers,4 private browsers,26 DOM,15 real E2E requests
+Tests:379 board,216 helper,22 helper browsers,4 private browsers,26 DOM,15 real E2E requests
 Failures:none in final completed runs; initial failures above
 Not run: exact-head cloud, real pupil/AT pilot, native/helper Amvera deployment
 Scope deviations: bounded generated practice persistence/disputes, explicitly described
 Recommendation: exact-head CI and controlled merge; provision hosting identity for live delivery
 Next user decision:none for publication; standing permission applies
+
+The first PR417 headfa1f0fc passed16 of18 cloud workflows plus the native
+container job; broad learning/profile runs were still running before final
+composition. These results do not replace exact-final-head checks. Final review
+also made progress retention wording explicit (30 days after last update),
+translated method/queue labels, bounded revoked-homework history, and tested
+its capacity. Final composed counts/results are recorded in the PR.
+
+## Final composition evidence
+
+Applied only package8 delta from original dependencycd9b19b to verified
+maindee3875c in a separate index. Expected tree308f3b0504533cd9a4382213a018765a837f3fc5
+matched the ordinary merge result before this evidence-only documentation edit.
+Squash-history conflicts were restored from that independently composed tree;
+PR416 percent-input and unsupported-attempt fixes were preserved. No reset,
+rebase, force or extra scope. Rechecked379 board tests,216 helper tests,4 private
+browser scenarios and5 affected public browser scenarios; all passed. Source
+gates/diff check passed. All100 registry IDs are exact and all evidence paths exist.
+The final committed tree and exact-head cloud gates are recorded in PR417.

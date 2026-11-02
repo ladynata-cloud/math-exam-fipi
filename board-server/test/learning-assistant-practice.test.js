@@ -70,3 +70,7 @@ test('retention expiry removes generated state and queue but keeps teacher notes
  f.setNow(f.now()+31*86400000);f.api.store.run('UPDATE sessions SET expires_at=?',f.now()+86400000);await p.refresh();assert.equal(p.state.resumeEnabled,false);assert.equal(p.state.task,null);assert.equal(f.api.store.row('SELECT count(*) AS n FROM assistant_practice_disputes').n,0);
 });
 test('disabled global integration exposes neither practice nor teacher tools',async t=>{const f=await fixture(t,{enabled:false});assert.equal((await f.request(f.students[0],route)).status,403);assert.equal((await f.request(f.teacher,f.base)).status,403);});
+test('repeated assignment and revocation cannot grow retained homework beyond its finite cap',async t=>{
+ const f=await fixture(t),pre=await preview(f);f.api.store.transaction(()=>{for(let i=0;i<1000;i++)f.api.store.run('INSERT INTO assistant_practice_homework VALUES(?,?,?,?,?,1)','retained_'+i,f.teacher.account.id,f.students[0].account.id,'{}',f.now());});
+ const result=await f.request(f.teacher,f.base+'/assign',{previewId:pre.previewId});assert.equal(result.status,429);assert.equal(result.body.error,'LEARNING_ASSISTANT_PRACTICE_CAPACITY');assert.equal(f.api.store.row('SELECT count(*) AS n FROM assistant_practice_homework').n,1000);
+});
