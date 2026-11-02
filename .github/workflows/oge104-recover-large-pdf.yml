@@ -1,0 +1,49 @@
+name: Recover exact OGE 104 collection
+on:
+  push:
+    branches: ['task/oge-2027-104-pdf-catalogue']
+    paths:
+      - 'tools/oge-pdf-catalogue/recovery/**'
+      - '.github/workflows/oge104-recover-large-pdf.yml'
+permissions:
+  contents: write
+jobs:
+  restore:
+    if: github.repository == 'ladynata-cloud/math-exam-fipi' && github.ref == 'refs/heads/task/oge-2027-104-pdf-catalogue'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+      - name: Verify chunks and restore unchanged collection
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          parts = [["tools/oge-pdf-catalogue/recovery/collection.part1",8388608,"d21d70b3a6122e109cf2169ebe11c412298fe40c6e6cd8fd9eae05936652edb7"],["tools/oge-pdf-catalogue/recovery/collection.part2",4744158,"6ee9d40b96f9a256e8d88c8f40b8feed5552da3b91c2a8b33e432fd530211159"]]
+          chunks = []
+          for name, size, digest in parts:
+              data = Path(name).read_bytes()
+              assert len(data) == size and hashlib.sha256(data).hexdigest() == digest, name
+              chunks.append(data)
+          data = b''.join(chunks)
+          assert len(data) == 13132766
+          assert hashlib.sha256(data).hexdigest() == 'f1af9b8b335e24fc312232ab3616cfe6a9a297673bfe18235fbad89cbe926789'
+          assert hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest() == '4f49f2c79820b5ba51e586a1c252ab957a44bf74'
+          target = Path('oge/variants/2027/collections/OGE_2027_vse_104_varianta.pdf')
+          assert not target.exists(), 'Never overwrite an existing collection'
+          target.parent.mkdir(parents=True, exist_ok=True)
+          target.write_bytes(data)
+          print('EXACT_COLLECTION_RESTORED: 13132766 bytes, SHA256 verified')
+          PY
+      - name: Commit only recovered PDF and removal of transport chunks
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- oge/variants/2027/collections/OGE_2027_vse_104_varianta.pdf
+          git rm -- tools/oge-pdf-catalogue/recovery/collection.part1 tools/oge-pdf-catalogue/recovery/collection.part2
+          git diff --cached --check
+          git commit -m 'Recover byte-identical OGE 104 collection from verified chunks'
+          git push origin HEAD:refs/heads/task/oge-2027-104-pdf-catalogue
+          git rev-parse HEAD

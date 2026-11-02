@@ -1,5 +1,19 @@
 # MathExam project status
 
+## Recovered: 104 OGE PDF variants, MAT-9, 2026-11-03
+
+- [Task](tasks/OGE_104_CATALOGUE.md), MEDIUM; original START continued by owner.
+  Recovered Git checkpoint `2ef2ec0` and the complete author archive; current
+  validation base `b9ba38b`. All 315 PDFs retain their original bytes.
+- Catalogue: 104 variants, three files per variant, eight families x13; three
+  complete collections. Font-dependent mobile button overflow corrected.
+- Fresh checks: 315 PDF/hash/HTTP matches, 1,976 printed answers, 1,084 ordered
+  collection-page pairs, all filters/numbers, 8,736 button measurements and
+  sitemap preservation. [Report](reports/OGE_104_CATALOGUE_20261103.md).
+- Draft PR preparation includes a focused cloud gate and exact changed-file
+  inventory. The PR records final head, CI and cloud transport-recovery evidence.
+  Requested endpoint is publication readiness; merge/deployment not performed.
+
 ## Geometry first viewport: prepared, issue #384 / MAT-17
 
 - Current public geometry HTML/engine/CSS matched main `01e412d` before this fix.
@@ -3595,11 +3609,24 @@ final exact-head CI and deployment verification; see PR266 for current evidence.
   storage migration, board protocol or server change belongs to PR377.
 
 
+## Merged: geometry source provenance synchronization, 2026-11-01
+
+- [PR391](https://github.com/ladynata-cloud/math-exam-fipi/pull/391) merged
+  on 2026-11-01 (Asia/Novosibirsk) as
+  `37718f1c0138ba031314b8f4716b73c9d963bc81`, sole parent
+  `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`, from reviewed head
+  `7a4c049c3c58827774921e51d47b82bdd20219b8`. Starting OGE_104_CATALOGUE,
+  primary GitHub metadata confirmed the merge and successful Pages run
+  [41248923855](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41248923855)
+  for that exact commit. This bounded reconciliation does not independently
+  recertify live course bytes or coordinated cabinet/assistant delivery.
 ## Merged and release recorded: geometry source provenance synchronization, 2026-11-01
 
 - [Task](tasks/GEOMETRY_SOURCE_PROVENANCE_20261101.md), `MEDIUM`; owner directly
   approved a separate repair, based on
   `a8eb6b26c917c337a3f9672c0b8eb40243f6e6a3`, branch
+  `fix/geometry-source-provenance-20261101`. The preparation required separate
+  merge/deployment authorization; the subsequent Git merge is recorded above.
   `fix/geometry-source-provenance-20261101`. The owner separately authorized
   squash merge and coordinated publication of reviewed head
   `7a4c049c3c58827774921e51d47b82bdd20219b8`.
@@ -3628,6 +3655,8 @@ final exact-head CI and deployment verification; see PR266 for current evidence.
   its provider is unavailable and independent checks were completed. That
   decision is recorded in PR389 metadata, without an external-provider verdict,
   and does not apply to other tasks or waive its two recorded CI failures.
+- Both geometry workflows checkout the PR head explicitly. Following the
+  separately authorized repair merge, rerunning unchanged PR389 head
 - Both geometry workflows checkout the PR head explicitly. Although this
   repair is now merged, rerunning unchanged PR389 head
   `a14fed1152a0dbfdca07775dd891ba3af00a2e30` would retain its old pins. Read-only

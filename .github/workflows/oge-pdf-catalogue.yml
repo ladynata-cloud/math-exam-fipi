@@ -1,0 +1,41 @@
+name: OGE 104 PDF catalogue
+
+on:
+  pull_request:
+    paths:
+      - 'oge/variants/2027/**'
+      - 'tools/oge-pdf-catalogue/**'
+      - '.github/workflows/oge-pdf-catalogue.yml'
+      - 'index.html'
+      - 'oge/index.html'
+      - 'sitemap.xml'
+      - 'tools/seo-public-pages.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  catalogue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: PDF identity, variant pairing and collections
+        run: |
+          python3 -m pip install PyMuPDF==1.26.6
+          python3 tools/oge-pdf-catalogue/check.py --output artifacts/oge-pdf-catalogue/pdf.json
+      - name: All download links, filters, search and mobile buttons
+        run: |
+          npm install --prefix "$RUNNER_TEMP/oge-pdf-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/oge-pdf-qa/node_modules/.bin/playwright" install --with-deps chromium
+          NODE_PATH="$RUNNER_TEMP/oge-pdf-qa/node_modules" node tools/oge-pdf-catalogue/browser.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: oge-104-catalogue-${{ github.sha }}
+          path: artifacts/oge-pdf-catalogue/
+          retention-days: 14
