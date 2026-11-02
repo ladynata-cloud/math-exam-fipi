@@ -1,4 +1,5 @@
 import http from 'node:http';
+import { readRelease } from './release.js';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -7,13 +8,21 @@ import { loadConfig, pricesFresh } from './config.js';
 import { AssistantError, requireValue, exactKeys } from './errors.js';
 import { AssistantStore, secretEqual, hash } from './store.js';
 import { parseQuestion } from './privacy.js';
-import { listTopics, getBuiltinKnowledge, answerOffline } from './tutor.js';
+import { isProviderTopic, listTopics, getBuiltinKnowledge, answerOffline } from './tutor.js';
 import { createCabinetBridge, executeAssistantAnswer } from './cabinet-bridge.js';
 
 const PUBLIC = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../public');
 const ASSETS = new Map([
   ['/', ['index.html', 'text/html; charset=utf-8']], ['/app.js', ['app.js', 'text/javascript; charset=utf-8']],
-  ['/style.css', ['style.css', 'text/css; charset=utf-8']]
+  ['/style.css', ['style.css', 'text/css; charset=utf-8']],
+  ['/study-tools.js', ['study-tools.js', 'text/javascript; charset=utf-8']],
+  ['/coverage.js', ['coverage.js', 'text/javascript; charset=utf-8']],
+  ['/practice-core.js', ['practice-core.js', 'text/javascript; charset=utf-8']],
+  ['/practice-ui.js', ['practice-ui.js', 'text/javascript; charset=utf-8']],
+  ['/geometry-figure.js', ['geometry-figure.js', 'text/javascript; charset=utf-8']],
+  ['/visual-labs.js', ['visual-labs.js', 'text/javascript; charset=utf-8']],
+  ['/study-ui.js', ['study-ui.js', 'text/javascript; charset=utf-8']],
+  ['/learning-aids.js', ['learning-aids.js', 'text/javascript; charset=utf-8']]
 ]);
 const COMMON_HEADERS = {
   'Cache-Control': 'no-store', 'Pragma': 'no-cache', 'Referrer-Policy': 'no-referrer', 'X-Content-Type-Options': 'nosniff',
@@ -68,6 +77,7 @@ export function createAssistantServer({ config = loadConfig(), clock = Date.now,
         const data = fs.readFileSync(path.join(PUBLIC, filename));
         res.writeHead(200, { ...COMMON_HEADERS, 'Content-Type': type }); res.end(data); return;
       }
+      if (req.method === 'GET' && req.url === '/api/version') { send(res, 200, { ok: true, ...readRelease() }); return; }
       if (req.method === 'GET' && req.url === '/api/status') {
         send(res, 200, { ok: true, mode: config.mode, externalEnabled: config.mode === 'api' && pricesFresh(config, clock()) && !store.meta('provider_circuit'),
           providerLabel: config.providerLabel, localDemo: config.localDemo }); return;
@@ -112,7 +122,7 @@ export function createAssistantServer({ config = loadConfig(), clock = Date.now,
         const input = { ...parseQuestion(await readBody(req, config.maxBodyBytes), topics.map(topic => topic.id)), simpler: !!session.simpler };
         const cards = store.knowledge(input.topic);
         const offline = answerOffline(input, cards);
-        const result = await executeAssistantAnswer({ config, store, clock, fetchImpl, active, res, session, input, cards, offline });
+        const result = await executeAssistantAnswer({ config, store, clock, fetchImpl, active, res, session, input, cards, offline, externalAllowed: isProviderTopic(input.topic) });
         send(res, 200, result);
         return;
       }

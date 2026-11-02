@@ -66,7 +66,7 @@ test('hint progression does not reveal final result; full solution is explicit',
 });
 
 test('invalid, mismatched and unsupported numeric tasks are never labelled checked', () => {
-  for (const question of ['НОД 0 и 12', 'НОД -4 и 12', 'НОД 1,5 и 12', 'НОД 12 и 18 и 24', 'НОД 1000000 и 2', 'НОК 12 и 18', 'Задача 12: найди НОД']) {
+  for (const question of ['НОД 0 и 12', 'НОД -4 и 12', 'НОД 1,5 и 12', 'НОД 12 и 18 и 24 и 30 и 36 и 42', 'НОД 1000000 и 2', 'НОК 12 и 18', 'Задача 12: найди НОД']) {
     assert.equal(answer('divisibility-gcd', question).verification, 'needs-teacher', question);
   }
   assert.equal(answer('divisibility-lcm', 'НОД 12 и 18').verification, 'needs-teacher');

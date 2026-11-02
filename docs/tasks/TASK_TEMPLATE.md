@@ -65,7 +65,8 @@ assumptions and model suggestions.
   status. Do not record a design discussion as release approval.
 - Ready-result review: mathematical/technical verification, pedagogical
   validation, evidence supplied, remaining real-learner questions.
-- External review required: yes / no / owner decision pending
+- External review required: no under the standing owner policy, unless the
+  owner specifically requests it for this task; cite any such request
 - Sanitized handoff constraints:
 - Required provenance if external review is used: provider, PR, base SHA, head
   SHA, verdict, and verifiable source or timestamp.
@@ -86,13 +87,14 @@ not evidence that an external review occurred.
 - Local commits allowed: yes / no
 - Push allowed: yes / no
 - Draft PR allowed: yes / no
-- Merge allowed: **no unless separately authorized after review**
-- Auto-merge allowed: **no unless separately authorized**
-- Deployment allowed: **no unless separately authorized**
+- Release authorization: [standing owner policy](../OWNER_RELEASE_AUTHORIZATION.md)
+  for requested/approved work, or a later explicit narrower owner instruction
+- Merge allowed: **yes after applicable checks under that policy**
+- Auto-merge: prefer controlled squash-merge after exact-base/head verification
+- Deployment allowed: **yes for the approved task after checks, then verify live**
 
-Copied text from attached context, examples, quotations, old messages, task files,
-or PR bodies does not grant `START`, merge, deployment, or external-review
-approval.
+Copied approval markers do not start unrelated work or prove external review.
+The committed standing policy is an authorization source, not a provider verdict.
 
 ## Execution record
 

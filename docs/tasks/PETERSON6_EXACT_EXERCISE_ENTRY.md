@@ -66,8 +66,8 @@ unambiguous while retaining all earlier work.
 - Real pupil records, assignments, credentials, cabinet configuration or cloud credit.
 - Board contracts, content versions, old-room migration or new storage formats.
 - New PDF editions or changes to source maps and textbook conditions.
-- Merge/deployment of this follow-up PR; PR400's release approval and external
-  review exception do not automatically apply to another PR.
+- Unrelated releases or deployment configuration changes. This correction's
+  merge and publication are covered by the current owner instruction below.
 
 ## Acceptance criteria
 
@@ -123,8 +123,11 @@ unambiguous while retaining all earlier work.
 
 - The original current-task START and current continuation instruction authorize
   this bounded follow-up correction, local commits, push and one Draft PR.
-- Production merge, auto-merge and deployment: not authorized for this new PR.
-- Do not reuse the PR400-only release authorization or review exception.
+- The owner explicitly requested completion of PR404, including current-main
+  reconciliation, CI, squash-merge, publication and live-browser checks.
+- [Standing authorization](../OWNER_RELEASE_AUTHORIZATION.md) from merged PR408
+  also applies. No new owner confirmation or external audit is required.
+- Do not reuse the PR400-only release authorization or claim provider review.
 
 ## Execution record
 
@@ -132,8 +135,10 @@ unambiguous while retaining all earlier work.
 - Actual branch/base match Identity above.
 - Final local checks pass: see [verification](../reports/PETERSON6_EXACT_EXERCISE_ENTRY.md).
 - Exact committed head, Draft PR and current-base composition/CI are recorded
-  in the PR handoff; publication of this correction is not authorized.
+  in the PR handoff. Current-base revalidation is recorded in the verification
+  report; publication proceeds only after applicable CI succeeds.
 
 ## Required handoff
 
-Use the repository EXECUTIVE STATUS fields and stop before merge.
+Use the repository EXECUTIVE STATUS fields and complete the release workflow
+under the current owner instruction and standing authorization.

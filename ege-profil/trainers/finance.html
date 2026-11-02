@@ -334,7 +334,7 @@ table.fin-table{
 .fin-table tr:last-child td{border-bottom:0}
 .fin-table td.hidden-cell{
   background:repeating-linear-gradient(45deg, #f5f1e6, #f5f1e6 4px, #fbf9f3 4px, #fbf9f3 8px);
-  color:transparent;
+  color:var(--muted);
 }
 .fin-table td.revealed{
   background:var(--ok-soft);
@@ -567,6 +567,9 @@ table.fin-table{
 .feedback.tip{background:var(--accent-soft); color:#5b3a17; border-left:3px solid var(--accent)}
 .feedback.warn{background:var(--warn-soft); color:#5d3514; border-left:3px solid var(--warn)}
 .feedback.explain{background:#f3f0e6; color:var(--ink); border-left:3px solid var(--muted)}
+.requested-help>summary{cursor:pointer;min-height:44px;padding:12px;font-weight:600;overflow-wrap:anywhere}
+.requested-help>div{padding:10px 12px;overflow-wrap:anywhere}
+.requested-help>summary:focus-visible{outline:3px solid var(--primary);outline-offset:2px}
 .feedback strong{color:inherit}
 
 /* ---------- Нижняя зона ---------- */
@@ -697,7 +700,7 @@ sub{font-size:.7em; vertical-align:sub}
   font-family:var(--serif);
 }
 
-.fade-in{animation: fadeIn .3s ease-out}
+.fade-in{animation:none}
 @keyframes fadeIn{
   from{opacity:0; transform:translateY(4px)}
   to{opacity:1; transform:translateY(0)}
@@ -719,7 +722,33 @@ sub{font-size:.7em; vertical-align:sub}
   .mode-switch{margin-left:0}
 }
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261010-unified"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261101-trainer-repair"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
+<style id="finance-readable-layout">
+  /* Keep this local override after shared trainer styles. Financial ledgers
+     need readable columns rather than the generic fixed-layout small table. */
+  body #mainArea,body #mainArea>section,body #mainArea .card,body #mainArea .card-body{min-width:0;max-width:100%;box-sizing:border-box}
+  body #mainArea .fin-table-wrap{max-width:100%;overflow-x:auto;overscroll-behavior-inline:contain;margin:0;outline-offset:2px}
+  body #mainArea table.fin-table{width:max-content;min-width:100%;table-layout:auto}
+  body #mainArea table.fin-table :is(th,td){min-width:7rem;max-width:16rem;overflow-wrap:normal;word-break:normal;white-space:normal;hyphens:none;padding:10px 12px}
+  body #mainArea table.fin-table :is(th,td):first-child{min-width:5rem}
+  body #mainArea .table-scroll-note{font:16px/1.5 var(--sans);color:var(--muted);margin:0 0 10px}
+  #taskChooser{max-width:1344px;margin:auto}
+  #taskChooser>summary{min-height:44px;cursor:pointer;font-size:18px;line-height:1.5;padding:8px 0;color:var(--primary-deep);font-weight:600}
+  #taskChooser>summary:focus-visible{outline:3px solid var(--primary);outline-offset:3px}
+  #taskChooser .task-types-inner{padding-top:12px}
+  #mainArea .model-details>summary{font-size:18px;line-height:1.5}
+  #mainArea .stats-details{margin-top:16px}
+  #mainArea .stats-details>summary{cursor:pointer;min-height:44px;font-size:16px;line-height:1.5;padding:10px 0;color:var(--muted)}
+  @media(max-width:1080px){
+    #mainArea{display:flex;flex-direction:column}
+    #mainArea>.left-col,#mainArea>.right-col{display:contents}
+    #mainArea .condition-card,#mainArea .given-model{order:0;width:100%}
+    #mainArea .steps-card{order:1;width:100%}
+    #mainArea .final-box{order:2;width:100%}
+    #mainArea .model-details{order:3;width:100%}
+    #mainArea .data-card{order:4;width:100%}
+  }
+</style>
 </head>
 <body>
 
@@ -739,10 +768,13 @@ sub{font-size:.7em; vertical-align:sub}
 </header>
 
 <nav class="task-types">
+  <details id="taskChooser">
+  <summary>Выбрать тему · <span id="selectedTaskType">Вклады и сравнение</span></summary>
   <div class="task-types-inner" id="taskTypes">
     <span class="types-label">Тип задачи:</span>
     <!-- кнопки вставляются скриптом -->
   </div>
+  </details>
 </nav>
 
 <main id="mainArea">
@@ -779,6 +811,7 @@ const STATE = {
   currentStepIdx: 0,
   stepStates: {},                 // {stepIdx: {answered, correct, attempts, hintUsed}}
   tableReveals: {},               // {rowIdx-colIdx: true} — какие ячейки таблицы раскрыты
+  modelOpen: false,
   finalAnswerGiven: false,
   finalAnswerCorrect: false,
   finalAnswerAttempts: 0,
@@ -797,6 +830,18 @@ function formatNum(n){
   }
   // дробные — заменяем точку на запятую
   return String(n).replace('.', ',');
+}
+function parseNumericAnswer(raw){
+  const text = String(raw ?? '').trim().replace(/−/g, '-').replace(',', '.');
+  // A complete decimal, with optional correctly grouped thousands. Never read
+  // only a numeric prefix (10/2, 10xyz), concatenate digits, or accept Infinity.
+  if (!/^[+-]?(?:(?:\d+|\d{1,3}(?:[ \u00a0\u202f]\d{3})+)(?:\.\d+)?|\.\d+)$/.test(text)) return NaN;
+  const value = Number(text.replace(/[ \u00a0\u202f]/g, ''));
+  return Number.isFinite(value) ? value : NaN;
+}
+function sameAnswer(value, expected){
+  if (Number.isInteger(expected) && !Number.isInteger(value)) return false;
+  return Number.isFinite(value) && Math.abs(value - expected) <= Math.max(1e-9, 8 * Number.EPSILON * Math.abs(expected));
 }
 
 /* ============================================================
@@ -912,13 +957,13 @@ addTask({
     { kind:'num',
       prompt:'Реши уравнение и найди годовой процент r (в процентах).',
       answer: 10,
-      tolerance: 0.01,
+      tolerance: 0,
       unit:'%',
       hint:'5200y² − 5200y − 572 = 0. Раздели всё на 4: 1300y² − 1300y − 143 = 0. Корни y = 1,1 и y = −0,1. Положительный y = 1,1, значит r = 10%.',
       explain:'5200y² − 5200y = 572, то есть y(y−1) = 572/5200 = 0,11. Подбором y = 1,1, откуда r = 10%.' },
   ],
   finalEquation: `5200·y<sup>2</sup> = 5200·y + 572,&nbsp;&nbsp; y = 1 + <span class="frac"><span>r</span><span>100</span></span>`,
-  finalAnswer: { value: 10, tolerance: 0.01, unit:'%', label:'Годовой процент r' },
+  finalAnswer: { value: 10, tolerance: 0, unit:'%', label:'Годовой процент r' },
   summary: 'Положительный корень уравнения y = 1,1, отсюда r = 10%.',
 });
 
@@ -990,7 +1035,7 @@ addTask({
       hint:'Сначала сократи обе части на S, чтобы избавиться от него.' },
 
     { kind:'choose',
-      prompt:'Посчитаем числа: 1,12<sup>3</sup> ≈ 1,404928, а 1,13<sup>2</sup> = 1,2769. Возьмём r = 10. Что получится?',
+      prompt:'Посчитаем числа: 1,12<sup>3</sup> = 1,404928, а 1,13<sup>2</sup> = 1,2769. Возьмём r = 10. Что получится?',
       options:[
         { html:`<span class="opt-formula">1,2769·1,10 = 1,40459 &lt; 1,404928</span> — недостаточно`,
           correct:true,
@@ -1004,13 +1049,13 @@ addTask({
     { kind:'num',
       prompt:'Найди наименьшее целое r, при котором вклад Б становится выгоднее.',
       answer: 11,
-      tolerance: 0.001,
+      tolerance: 0,
       unit:'%',
       hint:'Проверь r = 11: 1,2769·1,11 = 1,417359 — это уже больше 1,404928. Значит ответ 11.',
       explain:'При r = 11: 1,2769·1,11 = 1,417359 &gt; 1,404928. Это наименьшее целое значение.' },
   ],
-  finalEquation: `1,13<sup>2</sup>·<span class="nowrap">(1 + r/100)</span> &gt; 1,12<sup>3</sup>,&nbsp;&nbsp; r &gt; 9,9…`,
-  finalAnswer: { value: 11, tolerance: 0.001, unit:'%', label:'Минимальное целое r' },
+  finalEquation: `1,13<sup>2</sup>·<span class="nowrap">(1 + r/100)</span> &gt; 1,12<sup>3</sup>,&nbsp;&nbsp; r &gt; 128028/12769 ≈ 10,02647`,
+  finalAnswer: { value: 11, tolerance: 0, unit:'%', label:'Минимальное целое r' },
   summary: 'При r = 10% Б проигрывает (1,40459 &lt; 1,404928). При r = 11% Б побеждает.',
 });
 
@@ -1077,7 +1122,7 @@ addTask({
     { kind:'num',
       prompt:'Если цена продажи 54 ₽ — это 1,125 от цены покупки, какова цена покупки одной акции?',
       answer: 48,
-      tolerance: 0.01,
+      tolerance: 0,
       unit:'₽',
       hint:'54 / 1,125 = ?  Удобно: 54 / 1,125 = 54·8/9 = 48.',
       explain:'54 ÷ 1,125 = 48 рублей за одну акцию.' },
@@ -1085,13 +1130,13 @@ addTask({
     { kind:'num',
       prompt:'Сколько стоил весь пакет из 400 акций при покупке?',
       answer: 19200,
-      tolerance: 1,
+      tolerance: 0,
       unit:'₽',
       hint:'48 ₽ × 400 акций = ?',
       explain:'48 × 400 = 19 200 рублей.' },
   ],
   finalEquation: `Цена покупки за акцию = <span class="frac"><span>54</span><span>1,125</span></span> = 48 ₽,&nbsp;&nbsp; стоимость пакета = 48 · 400`,
-  finalAnswer: { value: 19200, tolerance: 1, unit:'₽', label:'Стоимость пакета при покупке' },
+  finalAnswer: { value: 19200, tolerance: 0, unit:'₽', label:'Стоимость пакета при покупке' },
   summary: 'С графика цена продажи 54 ₽; цена покупки 48 ₽; пакет — 19 200 ₽.',
 });
 
@@ -1180,14 +1225,14 @@ addTask({
     { kind:'num',
       prompt:'Сколько тыс. ₽ нужно заплатить в декабре второго года, чтобы остаток стал 400?',
       answer: 370,
-      tolerance: 0.5,
+      tolerance: 0,
       unit:'тыс. ₽',
       hint:'Платёж = (долг после процентов) − (следующий остаток) = 770 − 400 = ?',
       explain:'770 − 400 = 370 тыс. ₽.',
       reveals:[[1,3]] },
   ],
   finalEquation: `Платёж = долг после % − следующий остаток = 700·1,1 − 400 = 770 − 400`,
-  finalAnswer: { value: 370, tolerance: 0.5, unit:'тыс. ₽', label:'Платёж во 2-й декабрь' },
+  finalAnswer: { value: 370, tolerance: 0, unit:'тыс. ₽', label:'Платёж во 2-й декабрь' },
   summary: 'Год 2: 700 → 770 → платёж 370 → остаток 400. Ответ: 370 тыс. ₽.',
 });
 
@@ -1234,24 +1279,24 @@ addTask({
 
     { kind:'num',
       prompt:'Год 1: после начисления процентов долг равен … тыс. ₽',
-      answer: 960, tolerance: 0.5, unit:'тыс. ₽',
+      answer: 960, tolerance: 0, unit:'тыс. ₽',
       hint:'800 · 1,2 = ?', explain:'800 · 1,2 = 960.',
       reveals:[[0,2]] },
 
     { kind:'num',
       prompt:'Год 2: долг 600 после начисления процентов составит … тыс. ₽',
-      answer: 720, tolerance: 0.5, unit:'тыс. ₽',
+      answer: 720, tolerance: 0, unit:'тыс. ₽',
       hint:'600 · 1,2 = ?', explain:'600 · 1,2 = 720.',
       reveals:[[1,2]] },
 
     { kind:'num',
       prompt:'Сколько тыс. ₽ нужно заплатить в декабре 2-го года, чтобы остаток стал 300?',
-      answer: 420, tolerance: 0.5, unit:'тыс. ₽',
+      answer: 420, tolerance: 0, unit:'тыс. ₽',
       hint:'Платёж = 720 − 300 = ?', explain:'720 − 300 = 420.',
       reveals:[[1,3]] },
   ],
   finalEquation: `Платёж = 600·1,2 − 300 = 720 − 300`,
-  finalAnswer: { value: 420, tolerance: 0.5, unit:'тыс. ₽', label:'Платёж во 2-й декабрь' },
+  finalAnswer: { value: 420, tolerance: 0, unit:'тыс. ₽', label:'Платёж во 2-й декабрь' },
   summary: 'Долг 600 после процентов даёт 720; чтобы получить остаток 300, надо заплатить 420.',
 });
 
@@ -1338,12 +1383,12 @@ addTask({
 
     { kind:'num',
       prompt:'Наименьшее целое S, при котором 1,4641·S + 6,93 > 20.',
-      answer: 9, tolerance: 0.001, unit:'млн ₽',
+      answer: 9, tolerance: 0, unit:'млн ₽',
       hint:'1,4641·S > 13,07 → S > 13,07 / 1,4641 ≈ 8,93. Наименьшее целое — 9.',
       explain:'S > 13,07 / 1,4641 = 8,927… Наименьшее целое S = 9 млн ₽.' },
   ],
   finalEquation: `1,1<sup>4</sup>·S + 3·1,1<sup>2</sup> + 3·1,1 &gt; 20`,
-  finalAnswer: { value: 9, tolerance: 0.001, unit:'млн ₽', label:'Наименьшее S' },
+  finalAnswer: { value: 9, tolerance: 0, unit:'млн ₽', label:'Наименьшее S' },
   summary: 'S > 13,07/1,4641 ≈ 8,93 → наименьшее целое S = 9 млн ₽.',
 });
 
@@ -1417,12 +1462,12 @@ addTask({
 
     { kind:'num',
       prompt:'Подставь X = 300, Y = 417,6, q = 1,2. Найди S (в тыс. ₽).',
-      answer: 700, tolerance: 1, unit:'тыс. ₽',
+      answer: 700, tolerance: 0, unit:'тыс. ₽',
       hint:'1,2³·S − 300·(1,44 + 1,2) − 417,6 = 0  →  1,728·S − 792 = 417,6  →  S = 1209,6 / 1,728 = 700.',
       explain:'1,728·S = 417,6 + 792 = 1209,6  →  S = 700 тыс. ₽.' },
   ],
   finalEquation: `S·q<sup>3</sup> − X(q<sup>2</sup>+q) − Y = 0,&nbsp;&nbsp; X = 300, Y = 417,6, q = 1,2`,
-  finalAnswer: { value: 700, tolerance: 1, unit:'тыс. ₽', label:'Сумма кредита S' },
+  finalAnswer: { value: 700, tolerance: 0, unit:'тыс. ₽', label:'Сумма кредита S' },
   summary: '1,728·S − 792 = 417,6 → S = 1209,6/1,728 = 700.',
 });
 
@@ -1484,12 +1529,12 @@ addTask({
 
     { kind:'num',
       prompt:'Реши и найди X (в тыс. ₽).',
-      answer: 200, tolerance: 1, unit:'тыс. ₽',
+      answer: 200, tolerance: 0, unit:'тыс. ₽',
       hint:'1382,4 − 2,64X − 1254,4 + 2X = 0  →  128 − 0,64X = 0  →  X = 128 / 0,64 = 200.',
       explain:'128 = 0,64·X  →  X = 200 тыс. ₽. Тогда Y = 1254,4 − 400 = 854,4 тыс. ₽.' },
   ],
   finalEquation: `Sq<sup>3</sup> − X(q<sup>2</sup>+q) − Y = 0&nbsp;&nbsp;и&nbsp;&nbsp;2X + Y = 1254,4,&nbsp;&nbsp; S=800, q=1,2`,
-  finalAnswer: { value: 200, tolerance: 1, unit:'тыс. ₽', label:'Платёж X (2027)' },
+  finalAnswer: { value: 200, tolerance: 0, unit:'тыс. ₽', label:'Платёж X (2027)' },
   summary: 'Из системы 0,64·X = 128, поэтому X = 200 тыс. ₽; Y = 854,4 тыс. ₽.',
 });
 
@@ -1571,12 +1616,12 @@ addTask({
 
     { kind:'num',
       prompt:'Решая систему, найдёшь x. А затем общую сумму выплат x + x/2 + x/3 (в рублях).',
-      answer: 594000, tolerance: 10, unit:'₽',
+      answer: 594000, tolerance: 0, unit:'₽',
       hint:'Из первого: S = 121/324 · x · ... Получается x = 324 000 ₽. Тогда x + x/2 + x/3 = 11x/6 = 11·54 000 = 594 000 ₽.',
       explain:'x = 324 000, общая сумма = 11x/6 = 594 000 ₽.' },
   ],
   finalEquation: `Sq<sup>3</sup> − xq<sup>2</sup> − xq/2 − x/3 = 0,&nbsp;&nbsp; x + x/2 + x/3 = S + 149 000`,
-  finalAnswer: { value: 594000, tolerance: 10, unit:'₽', label:'Общая сумма выплат' },
+  finalAnswer: { value: 594000, tolerance: 0, unit:'₽', label:'Общая сумма выплат' },
   summary: 'Из системы x = 324 000 ₽; общая сумма платежей 11x/6 = 594 000 ₽.',
 });
 
@@ -1594,7 +1639,7 @@ addTask({
       <li>с 1-го по 10-е число каждого месяца заёмщик должен вносить платёж так, чтобы остаток уменьшался по таблице: 1000 → 700 → 500 → 300 → 200 → 100 → 0;</li>
       <li>за каждый просроченный день начисляется пеня <em>3 %</em> от текущей выплаты.</li>
     </ul>
-    <p>В феврале выплата была <em>15-го</em> числа (просрочка 5 дней), а в мае — <em>19-го</em> (просрочка 9 дней). Остальные платежи — вовремя.</p>
+    <p>Первое начисление процентов — 25 января, первый платёж — в феврале. В феврале выплата была <em>15-го</em> числа (просрочка 5 дней), а в мае — <em>19-го</em> (просрочка 9 дней). Остальные платежи — вовремя.</p>
     <p><strong>На сколько тыс. ₽ всего заёмщик выплатит больше, чем взял?</strong></p>
   `,
   data: [
@@ -1605,16 +1650,16 @@ addTask({
   ],
   table: {
     title: 'Движение долга по месяцам (тыс. ₽)',
-    columns: ['Месяц', 'Долг 25-го', 'После 10 %', 'Обяз. выплата', 'Пени', 'Долг после'],
+    columns: ['Месяц платежа', 'Долг до начисления', 'После 10 %', 'Обяз. выплата', 'Пени', 'Долг после'],
     rows: [
-      ['Январь',  '1000', '1000·1,1 = 1100', '1100 − 700 = 400',     '0',                                 '700'],
-      ['Февраль', '700',  '770',             '770 − 500 = 270',      '270·5·0,03 = 40,5',                 '500'],
-      ['Март',    '500',  '550',             '550 − 300 = 250',      '0',                                 '300'],
-      ['Апрель',  '300',  '330',             '330 − 200 = 130',      '0',                                 '200'],
-      ['Май',     '200',  '220',             '220 − 100 = 120',      '120·9·0,03 = 32,4',                 '100'],
-      ['Июнь',    '100',  '110',             '110 (последний)',      '0',                                 '0'],
+      ['Февраль',  '1000', '1000·1,1 = 1100', '1100 − 700 = 400',     '400·5·0,03 = 60',                   '700'],
+      ['Март', '700',  '770',             '770 − 500 = 270',      '0',                 '500'],
+      ['Апрель',    '500',  '550',             '550 − 300 = 250',      '0',                                 '300'],
+      ['Май',  '300',  '330',             '330 − 200 = 130',      '130·9·0,03 = 35,1',                 '200'],
+      ['Июнь',     '200',  '220',             '220 − 100 = 120',      '0',                 '100'],
+      ['Июль',    '100',  '110',             '110 (последний)',      '0',                                 '0'],
     ],
-    hiddenCells: [[1,4],[4,4]],
+    hiddenCells: [[0,4],[3,4]],
   },
   steps: [
     { kind:'choose',
@@ -1628,24 +1673,24 @@ addTask({
       hint:'Это часто проверяет внимательность к словам условия.' },
 
     { kind:'num',
-      prompt:'Пени за февраль (тыс. ₽). Выплата 270, просрочка 5 дней.',
-      answer: 40.5, tolerance: 0.01, unit:'тыс. ₽',
-      hint:'270 · 5 · 0,03 = ?',
-      explain:'270 · 5 · 0,03 = 40,5 тыс. ₽.',
-      reveals:[[1,4]] },
+      prompt:'Пени за февраль (тыс. ₽). Выплата 400, просрочка 5 дней.',
+      answer: 60, tolerance: 0, unit:'тыс. ₽',
+      hint:'400 · 5 · 0,03 = ?',
+      explain:'400 · 5 · 0,03 = 60 тыс. ₽.',
+      reveals:[[0,4]] },
 
     { kind:'num',
-      prompt:'Пени за май (тыс. ₽). Выплата 120, просрочка 9 дней.',
-      answer: 32.4, tolerance: 0.01, unit:'тыс. ₽',
-      hint:'120 · 9 · 0,03 = ?',
-      explain:'120 · 9 · 0,03 = 32,4 тыс. ₽.',
-      reveals:[[4,4]] },
+      prompt:'Пени за май (тыс. ₽). Выплата 130, просрочка 9 дней.',
+      answer: 35.1, tolerance: 0, unit:'тыс. ₽',
+      hint:'130 · 9 · 0,03 = ?',
+      explain:'130 · 9 · 0,03 = 35,1 тыс. ₽.',
+      reveals:[[3,4]] },
 
     { kind:'choose',
-      prompt:'Общая сумма выплат (без учёта тела кредита 1000) складывается из:',
+      prompt:'Общая сумма выплат, включая возврат кредита 1000, складывается из:',
       options:[
-        { html:'(400 + 270 + 250 + 130 + 120 + 110) + (40,5 + 32,4) = 1280 + 72,9 = 1352,9', correct:true,
-          explain:'Шесть обязательных выплат (всего 1280 тыс.) + две пени (всего 72,9 тыс.) = 1352,9 тыс. ₽.' },
+        { html:'(400 + 270 + 250 + 130 + 120 + 110) + (60 + 35,1) = 1280 + 95,1 = 1375,1', correct:true,
+          explain:'Шесть обязательных выплат (всего 1280 тыс.) + две пени (всего 95,1 тыс.) = 1375,1 тыс. ₽.' },
         { html:'1000 · 1,1 = 1100', correct:false,
           explain:'Это только один месяц. Нам нужна сумма всех платежей.' },
       ],
@@ -1653,13 +1698,13 @@ addTask({
 
     { kind:'num',
       prompt:'На сколько тыс. ₽ больше заёмщик выплатил, чем взял (1000)?',
-      answer: 352.9, tolerance: 0.5, unit:'тыс. ₽',
-      hint:'1352,9 − 1000 = 352,9.',
-      explain:'Общие выплаты 1352,9 тыс. ₽ минус кредит 1000 тыс. ₽ = 352,9 тыс. ₽.' },
+      answer: 375.1, tolerance: 0, unit:'тыс. ₽',
+      hint:'1375,1 − 1000 = 375,1.',
+      explain:'Общие выплаты 1375,1 тыс. ₽ минус кредит 1000 тыс. ₽ = 375,1 тыс. ₽.' },
   ],
-  finalEquation: `Σ выплат + пени − S = 1352,9 − 1000`,
-  finalAnswer: { value: 352.9, tolerance: 0.5, unit:'тыс. ₽', label:'Переплата сверх кредита' },
-  summary: '6 платежей в сумме 1280 тыс. + пени 72,9 тыс. = 1352,9; переплата сверх кредита = 352,9 тыс. ₽.',
+  finalEquation: `Σ выплат + пени − S = 1375,1 − 1000`,
+  finalAnswer: { value: 375.1, tolerance: 0, unit:'тыс. ₽', label:'Переплата сверх кредита' },
+  summary: '6 платежей в сумме 1280 тыс. + пени 95,1 тыс. = 1375,1; переплата сверх кредита = 375,1 тыс. ₽.',
 });
 
 
@@ -1706,13 +1751,13 @@ addTask({
 
     { kind:'num',
       prompt:'Найди размер ежегодного платежа X в плане №1 (в рублях). Подсказка: q = 1,2.',
-      answer: 172800, tolerance: 50, unit:'₽',
-      hint:'X = S·q³ / (q²+q+1) = 364 000 · 1,728 / 3,64 = 629 ... × ≈ 172 800.',
+      answer: 172800, tolerance: 0, unit:'₽',
+      hint:'X = S·q³ / (q²+q+1) = 364 000 · 1,728 / 3,64 = 628 992 / 3,64 = 172 800.',
       explain:'X = 364 000 · 1,728 / (1,44+1,2+1) = 628 992 / 3,64 = 172 800 ₽.' },
 
     { kind:'num',
       prompt:'Общая сумма выплат по плану №1 за 3 года (в рублях).',
-      answer: 518400, tolerance: 50, unit:'₽',
+      answer: 518400, tolerance: 0, unit:'₽',
       hint:'3 · X = 3 · 172 800 = ?',
       explain:'3 · 172 800 = 518 400 ₽.' },
 
@@ -1727,19 +1772,19 @@ addTask({
       hint:'Это дифференцированный платёж: основная часть фиксированная, проценты тают.' },
 
     { kind:'num',
-      prompt:'Общая сумма выплат по плану №2. Сумма процентов = a·S·(1 + 2/36 + 3/36 + … + 36/36) = a·S·(36+1)·36/(2·36) = a·S·37/2.',
-      answer: 498680, tolerance: 100, unit:'₽',
+      prompt:'Общая сумма выплат по плану №2. Сумма процентов = a·S·(1/36 + 2/36 + 3/36 + … + 36/36) = a·S·(36+1)·36/(2·36) = a·S·37/2.',
+      answer: 498680, tolerance: 0, unit:'₽',
       hint:'Тело = S = 364 000. Проценты = 0,02 · 364 000 · 37/2 = 134 680. Сумма = 364 000 + 134 680 = 498 680 ₽.',
       explain:'364 000 + 134 680 = 498 680 ₽.' },
 
     { kind:'num',
       prompt:'На сколько ₽ план №2 выгоднее плана №1?',
-      answer: 19720, tolerance: 100, unit:'₽',
+      answer: 19720, tolerance: 0, unit:'₽',
       hint:'518 400 − 498 680 = ?',
       explain:'518 400 − 498 680 = 19 720 ₽. План №2 экономит почти 20 тыс. рублей.' },
   ],
   finalEquation: `План 1: 3X = 518 400.&nbsp; План 2: S + a·S·37/2 = 498 680.&nbsp; Δ = 19 720`,
-  finalAnswer: { value: 19720, tolerance: 100, unit:'₽', label:'Выгода более дешёвого плана' },
+  finalAnswer: { value: 19720, tolerance: 0, unit:'₽', label:'Выгода более дешёвого плана' },
   summary: 'План 2 выгоднее на 19 720 ₽.',
 });
 
@@ -1799,19 +1844,19 @@ addTask({
       hint:'В 5-й год сначала долг (1,1S − X), потом умножается на 1,1, потом вычитается X.' },
 
     { kind:'num',
-      prompt:'Выразив X из уравнения: X = 1,1²·S / (1,1+1) = 1,21·S / 2,1 ≈ 0,5762·S. Общая сумма выплат = 3·0,1·S + 2·X. Запиши её через S.',
-      answer: 1.4524, tolerance: 0.01, unit:'·S млн ₽',
-      hint:'3·0,1·S + 2·0,5762·S = 0,3·S + 1,1524·S = 1,4524·S.',
-      explain:'Общие выплаты = 0,3·S + 1,1524·S ≈ 1,4524·S млн ₽.' },
+      prompt:'Выразив X из уравнения: X = 1,1²·S / (1,1+1) = 1,21·S / 2,1 ≈ 0,5762·S. Общая сумма выплат = 3·0,1·S + 2·X. Введи коэффициент при S, округлив до четырёх знаков после запятой.',
+      answer: 1.4524, tolerance: 0, unit:'·S млн ₽',
+      hint:'Сначала найди точный коэффициент 0,3 + 2·1,21/2,1, затем округли итог до четырёх знаков.',
+      explain:'Общие выплаты = (0,3 + 2·1,21/2,1)S = (61/42)S ≈ 1,4524·S млн ₽.' },
 
     { kind:'num',
-      prompt:'Условие: 1,4524·S < 6. Найди наибольшее целое S.',
-      answer: 4, tolerance: 0.01, unit:'млн ₽',
-      hint:'S < 6/1,4524 ≈ 4,131. Наибольшее целое S = 4.',
+      prompt:'Точное условие: (61/42)·S < 6. Найди наибольшее целое S.',
+      answer: 4, tolerance: 0, unit:'млн ₽',
+      hint:'S < 252/61 ≈ 4,131. Наибольшее целое S = 4.',
       explain:'S < 4,131…, поэтому наибольшее целое S = 4 млн ₽.' },
   ],
   finalEquation: `3·0,1·S + 2·X &lt; 6,&nbsp;&nbsp; X = 1,21·S/2,1`,
-  finalAnswer: { value: 4, tolerance: 0.01, unit:'млн ₽', label:'Наибольшее S' },
+  finalAnswer: { value: 4, tolerance: 0, unit:'млн ₽', label:'Наибольшее S' },
   summary: 'Сумма выплат ≈ 1,4524·S. Условие S < 4,13… → S = 4 млн ₽.',
 });
 
@@ -1868,7 +1913,7 @@ addTask({
       hint:'Считаем: между 2025 и 2030 прошло 5 лет (фаза I), между 2030 и 2035 — ещё 5 (фаза II).' },
 
     { kind:'choose',
-      prompt:'Платёж в год k фазы I = (долг до %) − (долг следующего года). Какой формат у этого платежа?',
+      prompt:'Платёж за год покрывает проценты и уменьшает основной долг. Как его найти?',
       options:[
         { html:`<span class="opt-formula">1,2·(долг текущего года) − (долг след. года)</span>`, correct:true,
           explain:'Сначала долг подрос на 20 %, потом из него вычитают, чтобы получить остаток.' },
@@ -1878,20 +1923,20 @@ addTask({
       hint:'Платёж за год = (долг до %) · q − (остаток).' },
 
     { kind:'num',
-      prompt:'Сумма всех 10 платежей = 0,2·(сумма всех «долгов в июле» за 10 лет) + 1300. Это формула: сумма платежей = тело + проценты на «среднюю» сумму долга. Найди a из системы (тыс. ₽).',
-      answer: 200, tolerance: 5, unit:'тыс. ₽',
-      hint:'Из уравнения 2580 = тело + проценты + … получаем a ≈ 200.',
-      explain:'a = 200 тыс. ₽. Тогда b = (1300 − 5·200)/5 = 60.' },
+      prompt:'Сумма выплат равна 2580 тыс. ₽. Используя таблицу остатков за июль 2025–2034 годов и ставку 20%, найди ежегодное уменьшение долга a в первой фазе (тыс. ₽).',
+      answer: 160, tolerance: 0, unit:'тыс. ₽',
+      hint:'За первые пять начислений сумма остатков равна 6500 − 10a. За последние пять — 3(1300 − 5a). Все выплаты равны 1300 + 0,2(10400 − 25a). Приравняй их к 2580.',
+      explain:'2580 = 3380 − 5a, поэтому a = 160 тыс. ₽. Тогда b = (1300 − 5·160)/5 = 100 тыс. ₽.' },
 
     { kind:'num',
       prompt:'Долг в июле 2030 года = 1300 − 5a (тыс. ₽).',
-      answer: 300, tolerance: 5, unit:'тыс. ₽',
-      hint:'1300 − 5·200 = ?',
-      explain:'1300 − 1000 = 300 тыс. ₽.' },
+      answer: 500, tolerance: 0, unit:'тыс. ₽',
+      hint:'1300 − 5·160 = ?',
+      explain:'1300 − 800 = 500 тыс. ₽.' },
   ],
-  finalEquation: `1300 − 5a − 5b = 0;&nbsp; Σ выплат = 2580 → a = 200, b = 60`,
-  finalAnswer: { value: 300, tolerance: 5, unit:'тыс. ₽', label:'Долг в июле 2030' },
-  summary: 'a = 200, b = 60 → долг в 2030 г. = 300 тыс. ₽.',
+  finalEquation: `1300 − 5a − 5b = 0;&nbsp; 2580 = 1300 + 0,2(10400 − 25a) → a = 160, b = 100`,
+  finalAnswer: { value: 500, tolerance: 0, unit:'тыс. ₽', label:'Долг в июле 2030' },
+  summary: 'a = 160, b = 100 → долг в июле 2030 г. = 500 тыс. ₽. Проверка: 1300 + 0,2·6400 = 2580 тыс. ₽.',
 });
 
 /* =============== ЗАДАЧА 14: Пенсионный фонд (Тип M, оптимизация) =============== */
@@ -1899,14 +1944,14 @@ addTask({
   id: 'M1',
   typeId: 'optimization',
   typeLabel: 'Оптимизация: максимум',
-  title: 'При каких r максимум именно в n = 21?',
+  title: 'Правая граница ставок для максимума при n = 21',
   difficulty: 'сложно',
   statement: `
     <p>Пенсионный фонд владеет ценными бумагами стоимостью <em>t<sup>2</sup></em> тыс. ₽ в конце года <em>t</em> (t = 1, 2, …).</p>
     <p>В конце любого года фонд может продать бумаги и положить деньги в банк, где сумма растёт ежегодно на <em>(1 + r)</em>.</p>
-    <p>Если продать в конце года <em>n</em>, то к концу <em>25-го</em> года на счёте будет <em>n<sup>2</sup>·(1+r)<sup>25−n</sup></em> тыс. ₽.</p>
+    <p>Если продать в конце года <em>n</em>, где n — целое от 1 до 25, то к концу <em>25-го</em> года на счёте будет <em>n<sup>2</sup>·(1+r)<sup>25−n</sup></em> тыс. ₽.</p>
     <p>Известно, что максимум этой суммы строго достигается при <em>n = 21</em>.</p>
-    <p><strong>При каких положительных r это возможно?</strong></p>
+    <p><strong>Допустимые положительные r образуют интервал. Найди его правую границу и запиши точной десятичной дробью. Граница в интервал не входит.</strong></p>
   `,
   data: [
     {label:'f(n)', value:'n²·(1+r)^(25−n)'},
@@ -1918,14 +1963,14 @@ addTask({
       prompt:'Условие «максимум именно в n = 21» означает:',
       options:[
         { html:'f(21) &gt; f(20) и f(21) &gt; f(22).', correct:true,
-          explain:'Целочисленный максимум — это просто строгие неравенства с соседями.' },
+          explain:'Здесь отношение f(n+1)/f(n) = ((n+1)/n)²/(1+r) убывает с ростом n. Поэтому последовательность сначала растёт, затем убывает: двух строгих сравнений с соседями достаточно для единственного максимума.' },
         { html:'f′(21) = 0.', correct:false,
           explain:'Это инструмент для непрерывного аргумента. В школьной задаче проще сравнить соседей.' },
       ],
-      hint:'У нас n — целое. Достаточно сравнить со «соседями».' },
+      hint:'Для данной функции отношение соседних членов убывает. Поэтому проверь f(21) > f(20) и f(21) > f(22).' },
 
     { kind:'choose',
-      prompt:'Сравнение f(21) и f(20). Обе содержат (1+r)<sup>4</sup>. После сокращения:',
+      prompt:'Запиши сравнение f(21) и f(20), подставив n в формулу:',
       options:[
         { html:`<span class="opt-formula">21<sup>2</sup>·(1+r)<sup>4</sup> &gt; 20<sup>2</sup>·(1+r)<sup>5</sup></span>`, correct:true,
           explain:'f(21) = 21²·(1+r)⁴, f(20) = 20²·(1+r)⁵.' },
@@ -1965,19 +2010,19 @@ addTask({
       hint:'Вычти 1 из каждой границы и сравнения.' },
 
     { kind:'num',
-      prompt:'Левая граница r (десятичная дробь, с точностью до 0,001).',
-      answer: 0.0975, tolerance: 0.001, unit:'',
-      hint:'43/441 ≈ 0,0975.',
-      explain:'43/441 ≈ 0,09750566… То есть r ≈ 9,75 %.' },
+      prompt:'Округли левую границу r до тысячных (трёх знаков после запятой).',
+      answer: 0.098, tolerance: 0, unit:'',
+      hint:'43/441 = 0,09750566… Посмотри на четвёртый знак после запятой.',
+      explain:'43/441 = 0,09750566… Округление до тысячных даёт 0,098; точная граница по-прежнему 43/441.' },
 
     { kind:'num',
       prompt:'Правая граница r (десятичная дробь).',
-      answer: 0.1025, tolerance: 0.001, unit:'',
+      answer: 0.1025, tolerance: 0, unit:'',
       hint:'41/400 = 0,1025.',
       explain:'41/400 = 0,1025. То есть r ≈ 10,25 %.' },
   ],
   finalEquation: `r ∈ (43/441;&nbsp; 41/400) ≈ (0,0975;&nbsp; 0,1025)`,
-  finalAnswer: { value: 0.1025, tolerance: 0.001, unit:'', label:'Правая граница r' },
+  finalAnswer: { value: 0.1025, tolerance: 0, unit:'', label:'Правая граница r' },
   summary: 'Из неравенств f(21) > f(20) и f(21) > f(22) получаем r ∈ (43/441; 41/400).',
 });
 
@@ -2023,6 +2068,9 @@ function cleanStats(st){
     if (!(typeof st[k] === 'number' && Number.isFinite(st[k]) && st[k] >= 0)) st[k] = 0;
   });
   if (!isPlainObj(st.doneTasks)) st.doneTasks = {};
+  for (const key of ['helpedTasks', 'assistedTasks', 'independentTasks']) {
+    if (!isPlainObj(st[key])) st[key] = {};
+  }
   return st;
 }
 function loadProgress(){
@@ -2046,6 +2094,20 @@ function setStats(stats){
   const p = loadProgress();
   p.stats = stats;
   saveProgress(p);
+}
+function markAssisted(taskId = STATE.currentTaskId){
+  if (!taskId) return;
+  const stats = getStats();
+  stats.helpedTasks[taskId] = true;
+  setStats(stats);
+}
+function explanationPanel(title, html){
+  const taskId = STATE.currentTaskId;
+  const box = el('details', {class:'requested-help'});
+  box.appendChild(el('summary', {onclick: () => { if (!box.open) markAssisted(taskId); }}, title));
+  box.appendChild(el('div', {html}));
+  box.addEventListener('toggle', () => { if (box.open) markAssisted(taskId); });
+  return box;
 }
 
 /* =================================================================
@@ -2078,6 +2140,8 @@ function renderTypePanel(){
   // оставляем только лейбл
   wrap.querySelectorAll('.type-btn').forEach(b => b.remove());
   const stats = getStats();
+  const currentType = TASK_TYPES.find(t => t.id === getTask(STATE.currentTaskId)?.typeId);
+  document.getElementById('selectedTaskType').textContent = currentType?.label || 'Выберите тип задачи';
   for (const t of TASK_TYPES){
     const tasksOfType = getTasksByType(t.id);
     if (tasksOfType.length === 0) continue;
@@ -2090,9 +2154,11 @@ function renderTypePanel(){
         const cur = STATE.currentTaskId && getTask(STATE.currentTaskId).typeId === t.id
                      ? tasksOfType.findIndex(x => x.id === STATE.currentTaskId) : -1;
         const next = (cur + 1) % tasksOfType.length;
+        document.getElementById('taskChooser').open = false;
         selectTask(tasksOfType[next].id);
       }
     });
+    btn.setAttribute('aria-pressed', String(getTask(STATE.currentTaskId)?.typeId === t.id));
     btn.appendChild(document.createTextNode(t.label + ' '));
     const badge = el('span', {class:'badge'}, String(tasksOfType.length));
     btn.appendChild(badge);
@@ -2108,11 +2174,13 @@ function selectTask(taskId){
   STATE.currentStepIdx = 0;
   STATE.stepStates = {};
   STATE.tableReveals = {};
+  STATE.modelOpen = false;
   STATE.finalAnswerGiven = false;
   STATE.finalAnswerCorrect = false;
   STATE.finalAnswerAttempts = 0;
   // в режиме «Учитель» все ячейки раскрыты
   if (STATE.mode === 'teacher'){
+    markAssisted();
     const task = getTask(taskId);
     if (task.table && task.table.hiddenCells){
       for (const [r,c] of task.table.hiddenCells) STATE.tableReveals[`${r}-${c}`] = true;
@@ -2149,7 +2217,7 @@ function renderLeft(){
   const task = getTask(STATE.currentTaskId);
 
   /* — карточка «Условие» — */
-  const condCard = el('div', {class:'card fade-in'});
+  const condCard = el('div', {class:'card fade-in condition-card'});
   const condHead = el('div', {class:'card-header'});
   condHead.appendChild(el('h3', null, 'Условие'));
   const diffPill = el('span', {class:'pill'}, task.difficulty);
@@ -2159,14 +2227,19 @@ function renderLeft(){
   condBody.appendChild(el('h2', {class:'task-title'}, task.title));
   condBody.appendChild(el('p', {class:'task-subtitle'}, 'Финансовая математика, нестандартная схема'));
   condBody.appendChild(el('div', {class:'task-statement', html: task.statement}));
+  if (['D1','D2'].includes(task.id)){
+    condBody.appendChild(el('p', {class:'task-goal'}, 'Нужно найти: ' + task.finalAnswer.label + ' (' + task.finalAnswer.unit + ').'));
+    condBody.appendChild(el('h3', null, 'Остатки долга из условия'));
+    condBody.appendChild(buildTable(task, true));
+  }
   condCard.appendChild(condBody);
   left.appendChild(condCard);
 
   /* — карточка «Данные и обозначения» — */
   if (task.data && task.data.length){
-    const dataCard = el('div', {class:'card fade-in'});
-    const dh = el('div', {class:'card-header'});
-    dh.appendChild(el('h3', null, 'Данные и обозначения'));
+    const dataCard = el('details', {class:'card fade-in requested-help data-card'});
+    const dh = el('summary', {class:'card-header', onclick: () => { if (!dataCard.open) markAssisted(task.id); }}, 'Данные и обозначения');
+    dataCard.addEventListener('toggle', () => { if (dataCard.open) markAssisted(task.id); });
     dataCard.appendChild(dh);
     const dl = el('dl', {class:'data-list'});
     for (const d of task.data){
@@ -2181,7 +2254,7 @@ function renderLeft(){
 
   /* — карточка «График» (если есть) — */
   if (task.graph === 'shares-chart'){
-    const chartCard = el('div', {class:'card fade-in'});
+    const chartCard = el('div', {class:'card fade-in given-model'});
     const ch = el('div', {class:'card-header'});
     ch.appendChild(el('h3', null, 'График цены акции'));
     chartCard.appendChild(ch);
@@ -2194,11 +2267,22 @@ function renderLeft(){
 
   /* — карточка «Таблица» — */
   if (task.table){
-    const tCard = el('div', {class:'card fade-in'});
-    const th = el('div', {class:'card-header'});
-    th.appendChild(el('h3', null, task.table.title || 'Таблица движения'));
+    const tCard = el('details', {class:'card requested-help model-details'});
+    tCard.open = STATE.modelOpen;
+    const th = el('summary', {class:'card-header', onclick:()=>{
+      STATE.modelOpen = !tCard.open;
+      th.textContent = STATE.modelOpen ? 'Свернуть таблицу расчётов' : 'Показать таблицу расчётов';
+      if (STATE.modelOpen) markAssisted(task.id);
+    }}, STATE.modelOpen ? 'Свернуть таблицу расчётов' : 'Показать таблицу расчётов');
+    tCard.addEventListener('toggle',()=>{
+      if (!tCard.isConnected || STATE.currentTaskId !== task.id) return;
+      STATE.modelOpen = tCard.open;
+      th.textContent = tCard.open ? 'Свернуть таблицу расчётов' : 'Показать таблицу расчётов';
+      if (tCard.open) markAssisted(task.id);
+    });
     tCard.appendChild(th);
     const tb = el('div', {class:'card-body'});
+    tb.appendChild(el('h3', null, task.table.title || 'Таблица движения'));
     tb.appendChild(buildTable(task));
     tCard.appendChild(tb);
     left.appendChild(tCard);
@@ -2206,12 +2290,8 @@ function renderLeft(){
 
   /* — итоговое уравнение и ответ внизу левой колонки — */
   const finalCard = el('div', {class:'final-box fade-in'});
-  finalCard.appendChild(el('div', {class:'final-eq-label'}, 'Итоговое уравнение / неравенство'));
-  const eqHtml = task.finalEquation || '';
-  finalCard.appendChild(el('div', {
-    class:'final-eq' + (revealFinalEq() ? '' : ' empty'),
-    html: revealFinalEq() ? eqHtml : 'появится по мере решения шагов'
-  }));
+  finalCard.appendChild(explanationPanel('Итоговое уравнение и разбор',
+    '<div class="final-eq">' + (task.finalEquation || '') + '</div><p>' + (task.summary || '') + '</p>'));
 
   // итоговый ответ
   const ansRow = el('div', {class:'final-answer-row'});
@@ -2241,9 +2321,8 @@ function renderLeft(){
     const fb = el('div', {
       class:'feedback ' + (STATE.finalAnswerCorrect ? 'ok' : 'warn'),
       html: STATE.finalAnswerCorrect
-              ? `<strong>Правильно!</strong> ${task.summary || ''}`
-              : `Не сходится. ${STATE.finalAnswerAttempts >= 2
-                  ? '<strong>Подсказка:</strong> ' + (task.summary || '') : 'Попробуй ещё раз — проверь арифметику и единицы измерения.'}`
+              ? '<strong>Правильно!</strong>' + (statsForCurrentTask().helped ? ' Решено с помощью.' : ' Решено самостоятельно.')
+              : 'Не сходится. Проверь арифметику, единицы и запись числа. Подсказку можно открыть по запросу.'
     });
     finalCard.appendChild(fb);
   }
@@ -2255,10 +2334,16 @@ function renderLeft(){
   sg.appendChild(makeStat('Верных ответов', stats.correct || 0));
   sg.appendChild(makeStat('Всего попыток', stats.attempts || 0));
   sg.appendChild(makeStat('Подсказок', stats.hints || 0));
-  finalCard.appendChild(sg);
+  sg.appendChild(makeStat('Самостоятельно', Object.keys(stats.independentTasks).length));
+  sg.appendChild(makeStat('С помощью', Object.keys(stats.assistedTasks).length));
+  const statsDetails=el('details', {class:'stats-details'});
+  statsDetails.appendChild(el('summary', null, 'Мои результаты'));
+  statsDetails.appendChild(sg);
+  finalCard.appendChild(statsDetails);
 
   left.appendChild(finalCard);
 }
+function statsForCurrentTask(){ return {helped: !!getStats().helpedTasks[STATE.currentTaskId]}; }
 
 function makeStat(lbl, val){
   const c = el('div', {class:'stat-cell'});
@@ -2276,12 +2361,16 @@ function revealFinalEq(){
 }
 
 /* ---------- ТАБЛИЦА (с раскрытием по шагам) ---------- */
-function buildTable(task){
-  const wrap = el('div', {class:'fin-table-wrap'});
+function buildTable(task, givenOnly=false){
+  const host = el('div', {class:'financial-model'});
+  const noteId = 'table-scroll-note-' + (givenOnly?'given':'work');
+  host.appendChild(el('p', {class:'table-scroll-note', id:noteId}, 'Все столбцы доступны: листайте таблицу вправо и влево ↔'));
+  const wrap = el('div', {class:'fin-table-wrap', tabindex:'0', role:'region', 'aria-label':givenOnly?'Остатки долга из условия':'Таблица расчётов', 'aria-describedby':noteId});
   const tab = el('table', {class:'fin-table'});
   const thead = el('thead');
   const trh = el('tr');
-  for (const c of task.table.columns) trh.appendChild(el('th', null, c));
+  const columns = givenOnly?[0,1,4]:task.table.columns.map((_,i)=>i);
+  for (const i of columns) trh.appendChild(el('th', {scope:'col'}, task.table.columns[i]));
   thead.appendChild(trh);
   tab.appendChild(thead);
   const tbody = el('tbody');
@@ -2289,16 +2378,18 @@ function buildTable(task){
   task.table.rows.forEach((row, ri) => {
     const tr = el('tr');
     row.forEach((cell, ci) => {
+      if (!columns.includes(ci)) return;
       const isHidden = hidden.has(`${ri}-${ci}`);
       const revealed = STATE.tableReveals[`${ri}-${ci}`];
       const cls = isHidden ? (revealed ? 'revealed' : 'hidden-cell') : '';
-      tr.appendChild(el('td', {class:cls, html: cell}));
+      tr.appendChild(el('td', {class:cls, html: isHidden && !revealed ? '?' : cell}));
     });
     tbody.appendChild(tr);
   });
   tab.appendChild(tbody);
   wrap.appendChild(tab);
-  return wrap;
+  host.appendChild(wrap);
+  return host;
 }
 
 /* ---------- ГРАФИК АКЦИЙ (SVG) ---------- */
@@ -2359,7 +2450,7 @@ function renderRight(){
   const task = getTask(STATE.currentTaskId);
 
   /* — карточка прогресса по шагам — */
-  const card = el('div', {class:'card fade-in'});
+  const card = el('div', {class:'card fade-in steps-card'});
   const head = el('div', {class:'card-header'});
   head.appendChild(el('h3', null, STATE.mode === 'teacher' ? 'Полное решение' : 'Пошаговое решение'));
   card.appendChild(head);
@@ -2493,6 +2584,10 @@ function renderStep(task, idx){
   if (state.feedback){
     wrap.appendChild(el('div', {class:'feedback ' + state.feedbackKind, html: state.feedback}));
   }
+  if (state.locked && !state.skipped){
+    const explanation = step.kind === 'choose' ? step.options.find(o => o.correct).explain : step.explain;
+    if (explanation) wrap.appendChild(explanationPanel('Почему это верно?', explanation));
+  }
 
   // кнопки действий
   const actions = el('div', {class:'step-actions'});
@@ -2549,7 +2644,7 @@ function handleChoose(idx, oi){
   if (chosen.correct){
     state.locked = true;
     state.correct = true;
-    state.feedback = '<strong>Верно.</strong> ' + (chosen.explain || '');
+    state.feedback = '<strong>Верно.</strong>';
     state.feedbackKind = 'ok';
     bumpStats('correct');
     // раскрытие ячеек
@@ -2557,7 +2652,7 @@ function handleChoose(idx, oi){
       for (const [r,c] of step.reveals) STATE.tableReveals[`${r}-${c}`] = true;
     }
   } else {
-    state.feedback = '<strong>Не совсем.</strong> ' + (chosen.explain || 'Попробуй другой вариант.');
+    state.feedback = '<strong>Не совсем.</strong> Сверь выбранную модель с условием. Подсказку можно открыть отдельно.';
     state.feedbackKind = 'warn';
   }
   renderAll();
@@ -2569,11 +2664,12 @@ function handleNumCheck(idx){
   const state = ensureStepState(idx);
   if (state.locked) return;
   const inp = document.getElementById(`stepInput${idx}`);
-  const raw = (inp.value || '').replace(',', '.').replace(/\s+/g,'').trim();
+  if (!inp) return;
+  const raw = inp.value.trim();
   if (raw === ''){ return; }
-  const val = parseFloat(raw);
+  const val = parseNumericAnswer(raw);
   state.attempts = (state.attempts || 0) + 1;
-  state.lastValue = val;
+  state.lastValue = Number.isFinite(val) ? val : null;
   bumpStats('attempts');
 
   if (!Number.isFinite(val)){
@@ -2584,11 +2680,11 @@ function handleNumCheck(idx){
     return;
   }
 
-  if (Math.abs(val - step.answer) <= (step.tolerance || 0.01)){
+  if (sameAnswer(val, step.answer)){
     state.locked = true;
     state.correct = true;
     state.wrongAttempt = false;
-    state.feedback = '<strong>Верно.</strong> ' + (step.explain || '');
+    state.feedback = '<strong>Верно.</strong>';
     state.feedbackKind = 'ok';
     bumpStats('correct');
     if (step.reveals){
@@ -2596,13 +2692,8 @@ function handleNumCheck(idx){
     }
   } else {
     state.wrongAttempt = true;
-    if (state.attempts >= 2 && step.hint){
-      state.feedback = 'Не сходится. <strong>Подсказка:</strong> ' + step.hint;
-      state.feedbackKind = 'tip';
-    } else {
-      state.feedback = 'Не совсем. Перепроверь арифметику и единицы измерения.';
-      state.feedbackKind = 'warn';
-    }
+    state.feedback = 'Не совсем. Перепроверь арифметику и единицы измерения. Подсказку можно открыть отдельно.';
+    state.feedbackKind = 'warn';
   }
   renderAll();
 }
@@ -2611,6 +2702,8 @@ function handleHint(idx){
   const task = getTask(STATE.currentTaskId);
   const step = task.steps[idx];
   const state = ensureStepState(idx);
+  if (state.hintShown) return;
+  markAssisted();
   state.hintShown = true;
   state.feedback = '<strong>Подсказка.</strong> ' + (step.hint || 'Возвращайся к данным задачи и разбирай по шагам.');
   state.feedbackKind = 'tip';
@@ -2622,6 +2715,8 @@ function handleShowSolution(idx){
   const task = getTask(STATE.currentTaskId);
   const step = task.steps[idx];
   const state = ensureStepState(idx);
+  if (state.locked) return;
+  markAssisted();
   state.locked = true;
   state.skipped = true;
   state.correct = false;     // не считаем верным
@@ -2650,17 +2745,19 @@ function goToStep(i){
 function handleFinalAnswer(){
   const task = getTask(STATE.currentTaskId);
   const inp = document.getElementById('finalAnswerInput');
-  if (!inp) return;
-  const raw = (inp.value || '').replace(',', '.').replace(/\s+/g,'').trim();
+  if (!inp || STATE.finalAnswerCorrect) return;
+  const raw = inp.value.trim();
   if (raw === '') return;
-  const val = parseFloat(raw);
+  const val = parseNumericAnswer(raw);
   STATE.finalAnswerAttempts++;
   STATE.finalAnswerGiven = true;
   bumpStats('attempts');
-  if (Number.isFinite(val) && Math.abs(val - task.finalAnswer.value) <= (task.finalAnswer.tolerance || 0.01)){
+  if (sameAnswer(val, task.finalAnswer.value)){
     STATE.finalAnswerCorrect = true;
     // отмечаем задачу как решённую (один раз)
     const s = getStats();
+    if (s.helpedTasks[task.id]) s.assistedTasks[task.id] = true;
+    else s.independentTasks[task.id] = true;
     if (!s.doneTasks) s.doneTasks = {};
     if (!s.doneTasks[task.id]){
       s.doneTasks[task.id] = true;
@@ -2700,6 +2797,7 @@ function switchMode(mode){
   });
   // в учительском раскрываем всё
   if (mode === 'teacher' && STATE.currentTaskId){
+    markAssisted();
     const task = getTask(STATE.currentTaskId);
     if (task.table && task.table.hiddenCells){
       for (const [r,c] of task.table.hiddenCells) STATE.tableReveals[`${r}-${c}`] = true;
@@ -2716,6 +2814,9 @@ function switchMode(mode){
    ИНИЦИАЛИЗАЦИЯ
    ================================================================= */
 function init(){
+  document.addEventListener('profile-course-help-requested', () => {
+    if (!STATE.finalAnswerCorrect) markAssisted();
+  });
   // восстановим режим
   const p = loadProgress();
   if (p.mode === 'teacher' && !STATE.teacherUnlocked){ p.mode = 'learn'; saveProgress(p); }

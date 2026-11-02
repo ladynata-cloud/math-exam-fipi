@@ -11,6 +11,47 @@ concurrency:
   group: profile-start-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  trainer-audit-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+      - run: npx playwright install --with-deps chromium
+      - name: Audited mathematics, links, honest progress and requested help
+        run: node --test tools/profile-*repair*.test.cjs tools/profile-main-geometry-disclosure.test.cjs tools/profile-progress-report-dom.test.cjs
+      - name: Main geometry, construction and graph controls at 320, 390 and 1280 pixels
+        run: node tools/profile-main-geometry-disclosure.browser.cjs
+      - name: Checkpoint recovery, saved diagnostic and complete read-only teacher report
+        if: always()
+        run: node tools/profile-progress-repair.browser.cjs
+      - name: All additional geometry banks and constructions at three widths
+        if: always()
+        run: node tools/profile-legacy-geometry-repair.browser.cjs
+      - name: Repaired finance, algebra and applied learner screens at three widths
+        if: always()
+        run: node tools/profile-legacy-learning-repair.browser.cjs
+      - name: Financial tables, retained givens and requested references at three widths
+        if: always()
+        run: node tools/profile-legacy-applied-repair.browser.cjs
+      - name: Preserve actual audit viewport evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: profile-trainer-repair-viewports
+          path: |
+            /tmp/profile-main-geometry-disclosure-shots
+            /tmp/profile-progress-repair-shots
+            /tmp/profile-legacy-geometry-shots
+            /tmp/profile-legacy-learning-shots
+            /tmp/profile-finance-layout-shots
+          if-no-files-found: warn
+          retention-days: 14
   math-and-browser:
     runs-on: ubuntu-latest
     timeout-minutes: 20

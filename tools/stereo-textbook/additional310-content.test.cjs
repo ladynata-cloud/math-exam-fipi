@@ -58,7 +58,7 @@ assert.throws(() => baseline.previousIndex(corruptIndex), /exact source index/);
 const corruptCases = new Map(screenshots);
 corruptCases.set([...corruptCases.keys()][0], 'changed-historical-case');
 assert.throws(() => baseline.previousCases(corruptCases), /all 1188 prior browser cases/);
-const rawPrevious = fs.readdirSync(dir)
+const rawPrevious = require('./sphere-baseline.cjs').previousLessonFiles(dir)
   .filter(name => name.endsWith('.json') && !require('./cone-baseline.cjs').ids.has(name.slice(0, -5)) && !ids.has(name.slice(0, -5)) && !later.ids.has(name.slice(0, -5)))
   .sort().map(name => [name, hash(fs.readFileSync(path.join(dir, name)))]);
 assert.equal(rawPrevious.length, 507);

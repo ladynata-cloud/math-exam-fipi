@@ -57,7 +57,7 @@ const CHECKPOINT = {
 const previous = baseline.previousCourse(production, sourceIndex);
 const oldRegistry = baseline.previousRegistry(registry);
 baseline.previousCases(screenshots);
-const rawPrevious = fs.readdirSync(dir).filter(name => name.endsWith('.json') && !later.ids.has(name.slice(0, -5)) && !ids.has(name.slice(0, -5)))
+const rawPrevious = require('./sphere-baseline.cjs').previousLessonFiles(dir).filter(name => name.endsWith('.json') && !later.ids.has(name.slice(0, -5)) && !ids.has(name.slice(0, -5)))
   .sort().map(name => [name, hash(fs.readFileSync(path.join(dir, name)))]);
 assert.equal(rawPrevious.length, 518);
 assert.equal(sha(rawPrevious), published.rawLessonManifestSHA256, 'all 518 prior authored files byte-identical');
@@ -65,7 +65,9 @@ assert.equal(sha(oldRegistry.cards), published.reviewRowsSHA256, 'all 518 prior 
 assert.equal(sha(oldRegistry.batches), published.reviewBatchesSHA256, 'all 27 prior review batches');
 for (const [file, expectedHash] of Object.entries(published.immutableFiles)) {
   const visibility = require('./visibility-migration.cjs');
+  const sphereSchema = require('./sphere-schema-migration.cjs');
   if (Object.hasOwn(visibility.originals, file)) visibility.assertVisibilityMigration(file, expectedHash);
+  else if (Object.hasOwn(sphereSchema.originals, file)) sphereSchema.assertSphereSchemaMigration(file, expectedHash);
   else assert.equal(hash(fs.readFileSync(path.join(root, file))), expectedHash, 'unchanged released runtime/schema/builder: ' + file);
 }
 assert.equal(registry.cards.length, 554);

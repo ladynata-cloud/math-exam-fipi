@@ -1,6 +1,10 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
-const root=path.resolve(__dirname,'../..'),bundle=require(root+'/stereo-course/textbook/data/course.json'),ls=bundle.lessons,book=bundle.catalog.book,API=require(root+'/stereo-course/textbook/assets/engine.js'),Viewer=require(root+'/stereo-course/assets/task-scene-viewer.js'),{JSDOM}=require('jsdom'),crypto=require('node:crypto'),review=require('./content-review.json');
+const root=path.resolve(__dirname,'../..'),sphereBaseline=require('./sphere-baseline.cjs');
+// Retain the exact 594-card regression boundary. The new 640-card release is
+// checked by sphere-content below, after this independently hashed projection.
+const bundle=sphereBaseline.previousCourse(require(root+'/stereo-course/textbook/data/course.json'),require(root+'/stereo-course/textbook/source-index.json'));
+const ls=bundle.lessons,book=bundle.catalog.book,API=require(root+'/stereo-course/textbook/assets/engine.js'),Viewer=require(root+'/stereo-course/assets/task-scene-viewer.js'),{JSDOM}=require('jsdom'),crypto=require('node:crypto'),review=sphereBaseline.previousRegistry(require('./content-review.json'));
 const canonical=x=>Array.isArray(x)?x.map(canonical):x&&typeof x==='object'?Object.fromEntries(Object.keys(x).sort().map(k=>[k,canonical(x[k])])):x;
 assert.equal(review.cards.length,ls.length,'review applies to every published card');
 for(const item of review.cards){const lesson=ls.find(l=>l.id===item.id);assert(lesson,'missing reviewed card '+item.id);const content=structuredClone(lesson);delete content.status;delete content.review;assert.equal(crypto.createHash('sha256').update(JSON.stringify(canonical(content))).digest('hex'),item.sha256,'content changed after independent review: '+item.id);}
@@ -48,4 +52,5 @@ const pyramidEarly=require('./pyramid-ex239-253-content.test.cjs').run(bundle);
 console.log(`ATANASYAN_PYRAMID_EX239_253_CONTENT_OK ${pyramidEarly.cards} cards, ${pyramidEarly.groups} source-derived regression groups`);
 const pyramidRemaining=require('./pyramid-theory32-34-ex254-270-content.test.cjs').run(bundle);
 console.log(`ATANASYAN_PYRAMID_THEORY32_34_EX254_270_CONTENT_OK ${pyramidRemaining.cards} cards, ${pyramidRemaining.groups} source-derived regression groups`);
+require('./sphere-content.test.cjs');
 dom.window.close();console.log(`ATANASYAN_TEXTBOOK_CONTENT_OK ${ls.length} cards, ${steps} justified steps, ${views} views; source identities/theory links/fig8+9 incidences/DOM finite`);

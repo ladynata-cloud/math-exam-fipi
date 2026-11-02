@@ -12,7 +12,7 @@ for (const [file, expected] of Object.entries(baseline.immutableFiles)) {
   assertHistoricalFile(file, expected);
   assert.throws(() => assertHistoricalFile(file, expected, name => name === file
     ? Buffer.concat([read(name), Buffer.from('\nUNREVIEWED CHANGE')]) : read(name)),
-    /exact reviewed companion migration|exact reviewed visibility migration|unchanged runtime\/schema\/builder/);
+    /exact reviewed companion migration|exact reviewed visibility migration|exact additive sphere schema migration|unchanged runtime\/schema\/builder/);
   rejects++;
 }
 for (const [file, row] of Object.entries(manifest.files)) {

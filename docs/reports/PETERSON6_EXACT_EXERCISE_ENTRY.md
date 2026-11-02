@@ -128,8 +128,9 @@ the sphere course and a different section of `PROJECT_STATUS.md`.
 
 The task branch was not rebased, reset or merged with that main. Read-only
 composition, affected-file identity and rerun gate evidence are recorded in the
-Draft PR. Future release authorization must name the current production base
-and this correction's exact head; main must be queried again before merge.
+Draft PR. This paragraph records the original preparation. Current authorization and
+base revalidation below supersede its earlier release boundary; authoritative
+main and head are still queried immediately before merge.
 
 ## Limits, risk and rollback
 
@@ -161,5 +162,63 @@ Failures: none unresolved
 Not run: real-pupil/production-write trials; external provider review (not required)
 Scope deviations: none; cabinet control correction follows the observed entry blocker
 Recommendation: review the complete Draft PR and its current-base evidence
-Next user decision: separate authorization for this PR's merge and deployment
+Next user decision: none under the current owner instruction and standing PR408 policy
 ```
+
+
+## Current-main release revalidation (2026-11-02 owner request)
+
+- Authorized base: current main after revalidation under the explicit PR404
+  completion request and [standing release policy](../OWNER_RELEASE_AUTHORIZATION.md).
+- Actual validation base: `01e412d4314445366bcd4773a3789129aa7264bd`.
+- Original PR head: `5b6889882c57ef171fc485e471594620ea8ca8e4`.
+- Base drift detected: yes, 18 merged changes since implementation base.
+- Authorization valid: yes; no later release hold or exact-base restriction.
+- New owner authorization required: no.
+
+Concurrent commits are the published PR386 sphere, PR397 profile fixes,
+PR401/403/405/406/407 assistant improvements, PR398 reference sheets, PR408
+owner policy, PR409 assistant releases, PR410 exam reference pins and
+PR411–417 assistant additions. Their only overlap with PR404 is
+`docs/PROJECT_STATUS.md`. No Peterson runtime, condition, save-format, fixture,
+helper or board-core file overlaps.
+
+The read-only merge reported one journal conflict. The composed result retains
+all current-main status content byte-for-byte and inserts the PR404 record;
+only that inserted record is updated for current authorization. All other
+original 14 PR404 blobs initially matched the reviewed head exactly. The
+following additional test-fixture repair and documentation updates are explicit:
+
+- `school/peterson6/test-state.cjs`: the minimal DOM mock predates the local form
+  binding and lacked `elements`, `isConnected` and `contains`. The first full
+  gate exposed a TypeError, although the state assertions before UI initialization
+  passed. The mock now represents attached forms and enabled submit controls.
+  All original assertions remain; no runtime behavior or gate is weakened.
+- Task/status/report now cite the current authorization and distinguish this
+  candidate from the original unpublished preparation.
+
+Mathematics was checked directly from the conditions: in 303 the second path is
+385 / 2.2 = 175 km and the first path is 210 km; no numerical speed is implied.
+In 305, 1 h 20 min = 4/3 h, combined speed is 72 km/h, and speeds are 18 and
+54 km/h. All 27 published condition-key hashes and both synthetic save versions
+remain unchanged. No real learner record or account is used.
+
+Local reruns cover course build/content (224 tasks, 497 source numbers), the
+independent 98-task equation oracle, 900 generated equation cases, course
+math/models, all 224 task and 60 practice views, 25 equation-state scenarios,
+8 exact-search/form cases, 10 exact-route/save cases, 15 learning-line checks,
+10 equation groups (2,304 word cases / 22 families) and 9 helper checks.
+The repaired state fixture passes its 20 validation checks, retained-work flows
+and 45 distinct generated examples.
+
+The board notification check initially failed 8/9 at a fixed 75 ms observation;
+an isolated repeat failed on another notification. Diagnostic execution retained
+all assertions and passed 9/9 without needing its additional observation wait.
+The final unmodified board rerun passed 9/9. Updated-head CI is recorded in
+the PR.
+No assertion or production timer was changed to hide this timing sensitivity.
+
+Cloud browser suites, final exact-head CI, merge identity, Pages deployment and
+live checks are recorded in the PR release record after they occur. External
+provider audit is not performed under the current owner policy. Rollback remains
+a scoped code revert with no migration or learner-record deletion.

@@ -81,7 +81,7 @@ test('all 13 numbers are sampled in order with separate immutable first-attempt 
  assert.deepEqual(visited,Checkpoint.ORDER);assert.equal(new Set(visited).size,13);
  const saved=c.snapshot();assert.equal(saved.round.complete,true);assert.equal(saved.round.index,13);
  assert.equal(saved.summary.attempted,13);assert.equal(saved.summary.independent,12);assert.equal(saved.summary.assisted,1);
- assert.equal(saved.history.length,1);assert.deepEqual(state.data.records,{},'checkpoint does not declare lesson mastery');
+ assert.equal(saved.history.length,1);assert.equal(Object.values(state.data.records).filter(r=>r.independent.length===1).length,12,'Fresh unassisted checkpoint answers credit their own lessons');assert(Object.values(state.data.records).every(r=>r.independent.length<2),'One answer alone does not declare mastery');
  assert.equal(c.next().complete,true);assert.equal(c.startRound().complete,true);
  assert.equal(c.startRound(true).task.id,'task-4-5');assert.equal(c.snapshot().history.length,1);
 });
