@@ -327,7 +327,12 @@ free-form conditions and dialogue are never stored by this feature. The owned
 teacher may view retained summaries and repeated known-error categories; the
 checkbox states this. Turning retention off or explicit erasure deletes this
 practice row and invalidates its in-memory copies, without changing pre-existing
-attempts, request allowances or monetary accounting.
+attempts, request allowances or monetary accounting. A separate authenticated
+erasure control remains available when the teacher disables the helper or an
+assessment is active; it does not require the optional practice module. Expired
+rows are pruned on helper/practice requests, including disabled-helper status
+reads. Cleanup is request-driven, not a separately provisioned scheduler. Cached
+pre-consent work cannot reappear after retained state expires.
 
 A teacher previews3–5 distinct generated problems, selects permitted methods and
 full-solution availability, then explicitly assigns that preview. Previews expire

@@ -136,6 +136,7 @@ function createLearningAssistantRouter(learning, options = {}) {
   function cleanup() {
     const now = store.clock(); if (now - lastCleanup < 60000) return; lastCleanup = now;
     store.transaction(() => {
+      require('./learning-assistant-practice').prunePractice(store,now);
       store.run('DELETE FROM learning_assistant_usage WHERE day<?', new Date(now - RETENTION).toISOString().slice(0,10));
       // Preserve unlinkable replay tombstones after the review/feedback window.
       store.run('UPDATE learning_assistant_requests SET learner_id=NULL,profile_id=NULL,topic=NULL,answer_id=NULL,feedback=NULL,verification=NULL WHERE created_at<? AND learner_id IS NOT NULL', now - RETENTION);
@@ -187,6 +188,7 @@ function createLearningAssistantRouter(learning, options = {}) {
       externalAllowed: !!row?.external_allowed, externalAvailable, externalEnabled: !!(enabled && row?.external_allowed && externalAvailable),
       mode: !remote ? 'unavailable' : externalAvailable && row?.external_allowed ? 'api' : 'offline',
       providerLabel: remote?.providerLabel || '', examActive: examActive(id),
+      practiceRetentionEnabled: !!store.row('SELECT learner_id FROM assistant_practice_progress WHERE learner_id=?',id),
       ...(teacher ? { profileCatalog: clone(catalog), configuredError: configError, activeCount: store.row('SELECT COUNT(*) AS n FROM learning_assistant_settings WHERE enabled=1').n } : {}) };
   }
   router.get('/assistant', authMiddleware, handler(async (req,res) => {

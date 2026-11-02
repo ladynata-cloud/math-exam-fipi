@@ -39,8 +39,8 @@ in product and operator documentation rather than implied universal support.
 ## Access and concurrency review
 
 Session/account fence, exact-origin/CSRF/mutation limits, owned teacher and
-three-account helper settings reused. Active assessment blocks all practice
-entry. Awaited module load is followed by current auth/settings recheck; mutation
+three-account helper settings reused. Active assessment blocks mathematical practice entry; authenticated own-data
+erasure remains available. Awaited module load is followed by current auth/settings recheck; mutation
 and save are synchronous in the established single-writer process. Random version
 fences reject stale tabs; current-task IDs reject mismatched submissions; duplicate
 correct answers cannot earn credit again. Retry/help flags prevent independent
@@ -54,10 +54,10 @@ copied module; cloud container gate imports and grades it in the real image.
 
 ## Verification
 
--379 full board-server tests passed on the final composition;216 full standalone service tests passed.
+-381 full board-server tests passed after final privacy review;216 full standalone service tests passed.
 -22 standalone browser tests passed, including coverage controls and no surprise
  submission;40 coverage examples all deterministic/complete.
--Four real HTTP private-practice browser scenarios passed: opt-in/reload/erase,
+-Five real HTTP private-practice browser scenarios passed: opt-in/reload/erase,
  teacher preview/assignment/policy/sandbox/approval/safe rendering, and stale-tab
  draft retention with no cross-task reuse; native assistant integration while the separate hint service is unavailable.320/390/1280 widths; keyboard approval;
  no browser persistent storage. Synthetic screenshots reviewed.
@@ -100,7 +100,7 @@ PR: attached at publication
 Base: main dee3875c15bc49ee75d2c22b23fb3b814467c883 after independently checked composition
 Head: exact committed candidate in PR
 Gate: local pass; exact-head cloud pending
-Tests:379 board,216 helper,22 helper browsers,4 private browsers,26 DOM,15 real E2E requests
+Tests:381 board,216 helper,22 helper browsers,5 private browsers,26 DOM,15 real E2E requests
 Failures:none in final completed runs; initial failures above
 Not run: exact-head cloud, real pupil/AT pilot, native/helper Amvera deployment
 Scope deviations: bounded generated practice persistence/disputes, explicitly described
@@ -125,3 +125,16 @@ rebase, force or extra scope. Rechecked379 board tests,216 helper tests,4 privat
 browser scenarios and5 affected public browser scenarios; all passed. Source
 gates/diff check passed. All100 registry IDs are exact and all evidence paths exist.
 The final committed tree and exact-head cloud gates are recorded in PR417.
+
+## Retention review
+
+Added authenticated, CSRF-protected, idempotent own-progress erasure independent
+of enabled teaching, active assessments and optional module availability. The
+native disabled-helper view offers this control when retained state exists. It
+cannot expose tasks or remove another account's records/ledgers. General helper
+status housekeeping also prunes expired practice rows; cleanup is request-driven.
+Persisting consented state invalidates old ephemeral copies, preventing daily
+read-only visits from resurrecting pre-consent progress after expiry. A31-day
+read-only regression verifies this. Full381 backend tests,42 assistant integration
+tests,5 private browser scenarios and existing26 DOM regressions pass. Helper
+mathematics/source remains the already-checked216-test/22-browser candidate.

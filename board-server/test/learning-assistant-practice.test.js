@@ -43,6 +43,7 @@ test('teacher preview, assignment, methods and solution policy are enforced by d
  assert.equal((await p.act('solution',{taskId:task.id,method:'balance'})).status,403);assert.equal((await p.act('help',{taskId:task.id,method:'inverse'})).status,403);
  const h=await p.act('help',{taskId:task.id,method:'balance'});assert.equal(h.status,200);assert.equal(h.body.explanation.teacherNote,undefined);assert.equal(h.body.explanation.steps.length,1);
  const other=await learner(f,1);assert.equal((await other.act('homework',{homeworkId:id,index:0})).status,404);
+ const payload=f.api.store.row('SELECT payload FROM assistant_practice_homework WHERE id=?',id).payload;for(let i=0;i<21;i++)f.api.store.run('INSERT INTO assistant_practice_homework VALUES(?,?,?,?,?,1)','revoked_'+i,f.teacher.account.id,f.students[0].account.id,payload,f.now()+i);assert.equal((await f.request(f.teacher,f.base)).body.assignments[0].id,id);
  await f.request(f.teacher,f.base+'/revoke',{id});assert.equal((await p.act('answer',{taskId:task.id,answer:'1'})).status,404);await p.refresh();assert.equal(p.state.task,null);
  const bad=await f.request(f.teacher,f.base+'/preview',{skill:'fractions',level:1,count:5,policy:{fullSolution:true,allowedMethods:['balance']}});assert.equal(bad.status,400);
 });
@@ -73,4 +74,19 @@ test('disabled global integration exposes neither practice nor teacher tools',as
 test('repeated assignment and revocation cannot grow retained homework beyond its finite cap',async t=>{
  const f=await fixture(t),pre=await preview(f);f.api.store.transaction(()=>{for(let i=0;i<1000;i++)f.api.store.run('INSERT INTO assistant_practice_homework VALUES(?,?,?,?,?,1)','retained_'+i,f.teacher.account.id,f.students[0].account.id,'{}',f.now());});
  const result=await f.request(f.teacher,f.base+'/assign',{previewId:pre.previewId});assert.equal(result.status,429);assert.equal(result.body.error,'LEARNING_ASSISTANT_PRACTICE_CAPACITY');assert.equal(f.api.store.row('SELECT count(*) AS n FROM assistant_practice_homework').n,1000);
+});
+
+test('own retained data can be erased while teaching is disabled or assessment active without bypassing math access',async t=>{
+ const f=await fixture(t),p=await learner(f);await p.act('resume',{enabled:true});await p.act('new',{skill:'arithmetic',level:1});f.api.store.run('UPDATE learning_assistant_settings SET enabled=0 WHERE learner_id=?',f.students[0].account.id);
+ assert.equal((await f.request(f.students[0],'/assistant')).body.practiceRetentionEnabled,true);assert.equal((await f.request(f.students[0],route)).status,403);
+ assert.equal((await f.request(f.students[0],route+'/retention',{action:'erase'},{'X-CSRF-Token':'wrong'})).status,403);assert.equal((await f.request(f.teacher,route+'/retention',{action:'erase'})).status,403);
+ assert.equal((await f.request(f.students[0],route+'/retention',{action:'erase'})).status,200);assert.equal(f.api.store.row('SELECT count(*) AS n FROM assistant_practice_progress').n,0);
+ f.api.store.run('UPDATE learning_assistant_settings SET enabled=1 WHERE learner_id=?',f.students[0].account.id);await p.refresh();await p.act('resume',{enabled:true});require('../learning-runs').initializeRuns(f.api.store);f.api.store.run("INSERT INTO learning_runs(id,learner_id,teacher_id,kind,questions_json,answers_json,started_at) VALUES('privacy_exam',?,?,'exam','[]','[]',?)",f.students[0].account.id,f.teacher.account.id,f.now());
+ assert.equal((await f.request(f.students[0],route)).status,409);assert.equal((await f.request(f.students[0],route+'/retention',{action:'erase'})).status,200);assert.equal(f.api.store.row('SELECT count(*) AS n FROM assistant_practice_progress').n,0);
+});
+
+test('daily reads cannot resurrect pre-consent memory after persistent progress expires',async t=>{
+ const f=await fixture(t),p=await learner(f),math=await core;await p.act('new',{skill:'arithmetic',level:1});await p.act('answer',{taskId:p.state.task.id,answer:math.generatePractice(p.state.task.descriptor).expected});assert.equal(p.state.summary.independent,1);await p.act('resume',{enabled:true});const start=f.now();
+ for(let day=1;day<=31;day++){f.setNow(start+day*86400000);f.api.store.run('UPDATE sessions SET expires_at=?',f.now()+86400000);await p.refresh();}
+ assert.equal(p.state.resumeEnabled,false);assert.equal(p.state.task,null);assert.equal(p.state.summary.checked,0);
 });

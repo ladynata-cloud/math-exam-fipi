@@ -23,8 +23,10 @@ Teacher authored notes remain separate from deterministic mathematical truth.
 No automatic approval or model training. Keep at most three enabled assistants.
 
 Reuse cabinet session, account fence, exact-origin/CSRF/mutation limits and
-teacher ownership. Every mutation rechecks settings/active assessment after
-async module load, checks current version/task and prevents duplicate credit.
+teacher ownership. Every learning mutation rechecks settings/active assessment after async module
+load, checks current version/task and prevents duplicate credit. Idempotent own
+progress erasure remains available without learning access, using current
+authentication and CSRF; it cannot retrieve mathematics or other accounts.
 Preserve public standalone assistant independence. Shared pure practice module
 is explicitly copied into board image; inference remains independent. Native
 cabinet deploy and helper deploy are separate and require unavailable hosting

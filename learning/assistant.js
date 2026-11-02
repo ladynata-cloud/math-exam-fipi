@@ -508,6 +508,11 @@
       try {
         status = await request(endpoint);
         if (teacher) renderTeacher(); else renderPupil();
+        if (!teacher && (!status.enabled || status.examActive) && status.practiceRetentionEnabled) {
+          const section=host.querySelector('.cabinet-assistant')||frame('Сохранённая тренировка');
+          const privacy=node('details');privacy.append(node('summary','Удалить сохранённую тренировку'),node('p','Удаление доступно и при отключённом помощнике или проверочной работе. Удаляются только данные этой тренировки; основные работы и задания учителя сохраняются.'));
+          const note=node('p','',{role:'status'});const erase=button('Удалить прогресс тренировки',async()=>{erase.disabled=true;try{await request('/assistant/practice/retention',{action:'erase'});if(current()){status.practiceRetentionEnabled=false;note.textContent='Сохранённая тренировка удалена; сохранение выключено.';}}catch(error){if(current()){note.textContent=messageFor(error);erase.disabled=false;}}});privacy.append(erase,note);section.append(privacy);
+        }
         if (!courseMode && typeof context.localTask !== 'function' && status.enabled && !status.examActive && root.LearningPractice) {
           const section = host.querySelector('.cabinet-assistant');
           if (section) root.LearningPractice.mount(section, {request, endpoint, teacher, current});

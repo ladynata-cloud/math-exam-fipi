@@ -9,6 +9,7 @@ const clone=x=>JSON.parse(JSON.stringify(x)),uuid=()=>crypto.randomUUID();
 const DAY=86400000,RETENTION=30*DAY;
 const fail=(ok,code='LEARNING_ASSISTANT_PRACTICE_INVALID',status=400)=>requireValue(ok,code,status);
 const DESCRIPTOR_KEYS=['version','skill','level','seed'];
+function prunePractice(store,now=store.clock()){for(const [table,column]of [['assistant_practice_progress','updated_at'],['assistant_practice_homework','created_at'],['assistant_practice_disputes','created_at']])store.run(`DELETE FROM ${table} WHERE ${column}<?`,now-RETENTION);}
 function createPracticeRouter(learning,access){
  const {store,handler,authMiddleware,mutationMiddleware}=learning,router=express.Router(),memory=new Map(),previews=new Map();
  if(store.available)store.db.exec(`CREATE TABLE IF NOT EXISTS assistant_practice_progress(learner_id TEXT PRIMARY KEY REFERENCES accounts(id),version TEXT NOT NULL,state_json TEXT NOT NULL,updated_at INTEGER NOT NULL);
@@ -17,15 +18,16 @@ function createPracticeRouter(learning,access){
  CREATE TABLE IF NOT EXISTS assistant_practice_disputes(id TEXT PRIMARY KEY,teacher_id TEXT NOT NULL REFERENCES accounts(id),descriptor TEXT NOT NULL,reason TEXT NOT NULL,status TEXT NOT NULL,version INTEGER NOT NULL,created_at INTEGER NOT NULL);`);
  const fresh=()=>({version:uuid(),current:null,events:[],levels:{}});
  function cleanup(){const now=store.clock();for(const [k,v]of memory)if(v.at<now-DAY)memory.delete(k);for(const [k,v]of previews)if(v.at<now-1800000)previews.delete(k);
-  store.run('DELETE FROM assistant_practice_progress WHERE updated_at<?',now-RETENTION);
-  store.run('DELETE FROM assistant_practice_homework WHERE created_at<?',now-RETENTION);
-  store.run('DELETE FROM assistant_practice_disputes WHERE created_at<?',now-RETENTION);
+  prunePractice(store,now);
  }
  function gate(req,id,student=false){if(student)fail(req.learningAuth.role==='student','LEARNING_FORBIDDEN',403);const auth=access.recheck(req,id);fail(access.enabled&&access.settings(id)?.enabled,'LEARNING_ASSISTANT_DISABLED',403);fail(!access.examActive(id),'LEARNING_ASSISTANT_EXAM_ACTIVE',409);return auth;}
  const student=req=>gate(req,req.learningAuth.id,true);
+ function eraseProgress(id){store.run('DELETE FROM assistant_practice_progress WHERE learner_id=?',id);for(const [k,v]of memory)if(v.learner===id)memory.delete(k);}
+ // Erasure is available even when teaching is disabled, an exam is active, or the optional math module is unavailable.
+ router.post('/assistant/practice/retention',authMiddleware,mutationMiddleware,handler((req,res)=>{exactKeys(req.query,[]);exactKeys(req.body,['action'],['action']);fail(req.body.action==='erase');fail(req.learningAuth.role==='student','LEARNING_FORBIDDEN',403);access.recheck(req,req.learningAuth.id);eraseProgress(req.learningAuth.id);res.json({ok:true,resumeEnabled:false});}));
  function cache(req){const k=tokenHash('practice:'+req.learningSessionToken);let v=memory.get(k);if(!v){fail(memory.size<300,'LEARNING_ASSISTANT_PRACTICE_CAPACITY',503);v={learner:req.learningAuth.id,at:store.clock(),session:uuid(),state:fresh()};memory.set(k,v);}v.at=store.clock();return v;}
  function read(req){const m=cache(req),row=store.row('SELECT * FROM assistant_practice_progress WHERE learner_id=?',req.learningAuth.id);return {state:row?JSON.parse(row.state_json):clone(m.state),persist:!!row,session:m.session};}
- function save(req,record){record.state.version=uuid();record.state.events=record.state.events.slice(-100);if(record.persist)store.run('INSERT INTO assistant_practice_progress VALUES(?,?,?,?) ON CONFLICT(learner_id) DO UPDATE SET version=excluded.version,state_json=excluded.state_json,updated_at=excluded.updated_at',req.learningAuth.id,record.state.version,JSON.stringify(record.state),store.clock());else cache(req).state=clone(record.state);}
+ function save(req,record){record.state.version=uuid();record.state.events=record.state.events.slice(-100);if(record.persist){store.run('INSERT INTO assistant_practice_progress VALUES(?,?,?,?) ON CONFLICT(learner_id) DO UPDATE SET version=excluded.version,state_json=excluded.state_json,updated_at=excluded.updated_at',req.learningAuth.id,record.state.version,JSON.stringify(record.state),store.clock());for(const m of memory.values())if(m.learner===req.learningAuth.id)m.state=fresh();}else cache(req).state=clone(record.state);}
  function homework(req,id){const row=store.row('SELECT * FROM assistant_practice_homework WHERE id=? AND learner_id=? AND revoked=0',id,req.learningAuth.id);fail(row&&row.created_at>=store.clock()-RETENTION,'LEARNING_NOT_FOUND',404);return {...row,...JSON.parse(row.payload)};}
  function policyFor(req,current){return current.homeworkId?homework(req,current.homeworkId).policy:{fullSolution:true,allowedMethods:null};}
  function methods(task,policy){return task.methods.filter(m=>!policy.allowedMethods||policy.allowedMethods.includes(m.id));}
@@ -48,8 +50,8 @@ function createPracticeRouter(learning,access){
   const allowed={resume:['enabled'],erase:[],new:['skill','level'],homework:['homeworkId','index'],answer:['taskId','answer'],help:['taskId','method'],solution:['taskId','method'],report:['taskId','reason']};
   fail(Object.hasOwn(allowed,b.action));exactKeys(b,['action','version',...allowed[b.action]],['action','version',...allowed[b.action]]);
   const record=read(req);fail(b.version===record.state.version,'LEARNING_ASSISTANT_VERSION_CONFLICT',409);let result=null,explanation=null;
-  if(b.action==='resume'){fail(typeof b.enabled==='boolean');record.persist=b.enabled;if(!b.enabled){store.run('DELETE FROM assistant_practice_progress WHERE learner_id=?',req.learningAuth.id);for(const [k,v]of memory)if(v.learner===req.learningAuth.id)memory.delete(k);record.state=fresh();}}
-  else if(b.action==='erase'){store.run('DELETE FROM assistant_practice_progress WHERE learner_id=?',req.learningAuth.id);for(const [k,v]of memory)if(v.learner===req.learningAuth.id)memory.delete(k);record.persist=false;record.state=fresh();}
+  if(b.action==='resume'){fail(typeof b.enabled==='boolean');record.persist=b.enabled;if(!b.enabled){eraseProgress(req.learningAuth.id);record.state=fresh();}}
+  else if(b.action==='erase'){eraseProgress(req.learningAuth.id);record.persist=false;record.state=fresh();}
   else if(b.action==='new'||b.action==='homework'){
    let d,homeworkId=null;if(b.action==='homework'){fail(typeof b.homeworkId==='string'&&Number.isInteger(b.index));const h=homework(req,b.homeworkId);fail(b.index>=0&&b.index<h.descriptors.length);d=h.descriptors[b.index];homeworkId=h.id;}
    else {d=descriptor({skill:b.skill,level:b.level,seed:crypto.randomInt(2147483648)},core);if(record.state.levels[d.skill]?.level!==d.level)record.state.levels[d.skill]={level:d.level,streak:0,errors:0};}
@@ -80,7 +82,7 @@ function createPracticeRouter(learning,access){
  router.get(teacherBase,authMiddleware,handler(async(req,res)=>{exactKeys(req.query,[]);const core=await loadCore();teacher(req);cleanup();const row=store.row('SELECT state_json FROM assistant_practice_progress WHERE learner_id=?',req.params.id),state=row?JSON.parse(row.state_json):null,counts={};for(const e of state?.events||[])if(e.errorType&&e.errorType!=='unclassified')counts[e.skill+':'+e.errorType]=(counts[e.skill+':'+e.errorType]||0)+1;
   const notes=store.rows('SELECT skill,version,draft,approved,approved_version FROM assistant_practice_notes WHERE teacher_id=?',req.learningAuth.id);
   const disputes=store.rows('SELECT id,descriptor,reason,status,version FROM assistant_practice_disputes WHERE teacher_id=? ORDER BY created_at DESC LIMIT 100',req.learningAuth.id).map(r=>({...r,descriptor:JSON.parse(r.descriptor)}));
-  const assignments=store.rows('SELECT id,payload,revoked FROM assistant_practice_homework WHERE teacher_id=? AND learner_id=? ORDER BY created_at DESC LIMIT 20',req.learningAuth.id,req.params.id).map(r=>({id:r.id,revoked:!!r.revoked,...JSON.parse(r.payload)}));
+  const assignments=store.rows('SELECT id,payload,revoked FROM assistant_practice_homework WHERE teacher_id=? AND learner_id=? ORDER BY revoked ASC,created_at DESC LIMIT 40',req.learningAuth.id,req.params.id).map(r=>({id:r.id,revoked:!!r.revoked,...JSON.parse(r.payload)}));
   res.json({ok:true,retained:!!row,summary:core.summarizePractice(state?.events||[]),repeatedErrors:Object.entries(counts).filter(([,n])=>n>=2).map(([key,count])=>({key,count})),skills:core.SKILLS,notes,disputes,assignments});
  }));
  router.post(teacherBase+'/preview',authMiddleware,mutationMiddleware,handler(async(req,res)=>{exactKeys(req.query,[]);const core=await loadCore();teacher(req);cleanup();const b=req.body;exactKeys(b,['skill','level','count','policy'],['skill','level','count','policy']);fail(Number.isInteger(b.count)&&b.count>=3&&b.count<=5);const descriptors=[];const seen=new Set();for(let tries=0;descriptors.length<b.count&&tries<200;tries++){const d=descriptor({skill:b.skill,level:b.level,seed:crypto.randomInt(2147483648)},core),q=core.generatePractice(d).question;if(!seen.has(q)){seen.add(q);descriptors.push(d);}}fail(descriptors.length===b.count,'LEARNING_ASSISTANT_VARIANTS_UNAVAILABLE',409);const tasks=descriptors.map(core.generatePractice),p=policy(b.policy,tasks);fail(previews.size<100,'LEARNING_ASSISTANT_PRACTICE_CAPACITY',429);const id=uuid();previews.set(id,{at:store.clock(),teacher:req.learningAuth.id,learner:req.params.id,descriptors,policy:p});res.json({ok:true,previewId:id,tasks,policy:p});}));
@@ -98,4 +100,4 @@ function createPracticeRouter(learning,access){
  router.post(teacherBase+'/dispute',authMiddleware,mutationMiddleware,handler(async(req,res)=>{exactKeys(req.query,[]);await loadCore();teacher(req);const b=req.body;exactKeys(b,['id','version','status'],['id','version','status']);fail(typeof b.id==='string'&&Number.isInteger(b.version)&&['open','reviewed'].includes(b.status));const row=store.row('SELECT version FROM assistant_practice_disputes WHERE id=? AND teacher_id=?',b.id,req.learningAuth.id);fail(row,'LEARNING_NOT_FOUND',404);fail(row.version===b.version,'LEARNING_ASSISTANT_VERSION_CONFLICT',409);store.run('UPDATE assistant_practice_disputes SET status=?,version=version+1 WHERE id=?',b.status,b.id);res.json({ok:true});}));
  return router;
 }
-module.exports={createPracticeRouter};
+module.exports={createPracticeRouter,prunePractice};
