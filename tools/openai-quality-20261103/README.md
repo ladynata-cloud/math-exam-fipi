@@ -17,7 +17,7 @@ Workflow `MathExam OpenAI quality — synthetic preflight` запускаетс�
 арифметику, ошибки формата, передачу контекста, лимиты и сохранение резерва.
 Не получает секретов. Прогон `dry-run` использует заглушки и не оценивает GPT.
 Результаты сохраняются в Actions artifact на 14 дней; постоянный набор находится
-в этой ветке. В архиве исходники уже включены.
+в этой ветке.
 
 Локально/в облачном терминале Node 24 и Python 3, без установки пакетов:
 
@@ -28,9 +28,9 @@ node tools/openai-quality-20261103/evaluate.mjs audit
 node tools/openai-quality-20261103/evaluate.mjs dry-run
 ```
 
-При запуске из checkout указать абсолютные пути к двум снимкам в переменных
+Для запуска из checkout получить две закреплённые версии репозитория и указать абсолютные пути в переменных
 `MATHEXAM_EVAL_CURRENT_ROOT` и `MATHEXAM_EVAL_ADAPTER_ROOT`; структура — как
-в workflow. В архиве используются каталоги `sources/current` и `sources/pr399`.
+в workflow. По умолчанию используются каталоги `sources/current` и `sources/pr399`.
 
 ## Реальная кампания
 

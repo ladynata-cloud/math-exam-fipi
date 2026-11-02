@@ -25,11 +25,11 @@ is proposed while mathematical model quality remains unmeasured.
 
 EXECUTIVE STATUS
 Task: OPENAI_QUALITY_20261103
-PR: see pull request containing this document
+PR: https://github.com/ladynata-cloud/math-exam-fipi/pull/420
 Base: b9ba38b27f5b306f0d81d01c67e0a636e5a06b84
 Head: see pull request metadata
 Gate: PREPARED_ONLY; LIVE_BLOCKED
-Tests: 11 Node groups; 24 reference checks; 32 simulated responses
+Tests: 11 Node groups; 24 reference checks; 32 simulated responses; cloud run 41496295700 PASS
 Failures: no final test failures; semantic and coverage gaps recorded in report
 Not run: real OpenAI calls; independent technical review; pupil/UI pilot
 Scope deviations: none

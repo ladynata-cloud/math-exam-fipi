@@ -86,3 +86,5 @@ OpenAI secrets. Live is disabled in ephemeral CI to avoid losing its lifetime le
 Technical self-review and automated tests are complete; independent technical review,
 live account checks and real model evaluation remain incomplete. Existing external
 waiver is respected; no new external-audit permission is requested.
+
+Cloud evidence: [run 41496295700](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41496295700) passed on implementation head `21b046e741db2cec5483a1d2eab52b4b06e02267`; 11 Node groups, 24 reference checks, 32 simulations. Artifact upload succeeded. This documentation follow-up does not change executable files or the plan digest.
