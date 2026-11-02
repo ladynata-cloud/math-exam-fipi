@@ -1,0 +1,788 @@
+{
+  "version": 2,
+  "id": "mathexam-openai-quality-20261103",
+  "syntheticOnly": true,
+  "dialogs": [
+    {
+      "id": "d01",
+      "grade": "5",
+      "label": "Обыкновенные дроби",
+      "topic": "fractions",
+      "question": "3/4 + 2/3",
+      "profile": null,
+      "turns": [
+        {
+          "mode": "hint",
+          "attempt": "5/7",
+          "hintLevel": 1,
+          "simpler": false,
+          "followUp": null
+        },
+        {
+          "mode": "explain",
+          "attempt": "5/7",
+          "hintLevel": 2,
+          "simpler": true,
+          "followUp": "Почему нельзя сложить верх и низ по отдельности?"
+        }
+      ],
+      "reference": {
+        "answer": "17/12 = 1 5/12",
+        "required": [
+          "Общий знаменатель 12.",
+          "9/12 + 8/12.",
+          "Объяснить, почему знаменатели не складывают."
+        ],
+        "forbidden": [
+          "Одобрять неверную попытку.",
+          "Выдать окончательный ответ в первом ходе.",
+          "Придумывать недостающие данные."
+        ],
+        "rubric": [
+          "math",
+          "clarity",
+          "feedback",
+          "hint",
+          "context",
+          "honesty"
+        ]
+      }
+    },
+    {
+      "id": "d02",
+      "grade": "5",
+      "label": "Округление с переходом через 9",
+      "topic": "rounding",
+      "question": "Округли 9,96 до десятых",
+      "profile": null,
+      "turns": [
+        {
+          "mode": "hint",
+          "attempt": "9,10",
+          "hintLevel": 1,
+          "simpler": false,
+          "followUp": null
+        },
+        {
+          "mode": "explain",
+          "attempt": "9,10",
+          "hintLevel": 2,
+          "simpler": true,
+          "followUp": "Объясни проще, куда делась девятка."
+        }
+      ],
+      "reference": {
+        "answer": "10,0",
+        "required": [
+          "Сотые равны 6.",
+          "Увеличить число десятых с переходом в целую часть.",
+          "Сохранить точность до десятых."
+        ],
+        "forbidden": [
+          "Одобрять неверную попытку.",
+          "Выдать окончательный ответ в первом ходе.",
+          "Придумывать недостающие данные."
+        ],
+        "rubric": [
+          "math",
+          "clarity",
+          "feedback",
+          "hint",
+          "context",
+          "honesty"
+        ]
+      }
+    },
+    {
+      "id": "d03",
+      "grade": "6",
+      "label": "НОК трёх чисел",
+      "topic": "gcd-lcm",
+      "question": "Найди НОК чисел 12, 18 и 30",
+      "profile": null,
+      "turns": [
+        {
+          "mode": "hint",
+          "attempt": "90",
+          "hintLevel": 1,
+          "simpler": false,
+          "followUp": null
+        },
+        {
+          "mode": "explain",
+          "attempt": "90",
+          "hintLevel": 2,
+          "simpler": true,
+          "followUp": "Покажи также способ через НОК двух чисел."
+        }
+      ],
+      "reference": {
+        "answer": "180",
+        "required": [
+          "12=2^2*3; 18=2*3^2; 30=2*3*5.",
+          "180=2^2*3^2*5.",
+          "90 не делится на 12.",
+          "Проверить делимость на все три числа."
+        ],
+        "forbidden": [
+          "Одобрять неверную попытку.",
+          "Выдать окончательный ответ в первом ходе.",
+          "Придумывать недостающие данные."
+        ],
+        "rubric": [
+          "math",
+          "clarity",
+          "feedback",
+          "hint",
+          "context",
+          "honesty"
+        ]
+      }
+    },
+    {
+      "id": "d04",
+      "grade": "7",
+      "label": "Линейное уравнение и знак",
+      "topic": "linear-equations",
+      "question": "-3x + 4 = 19",
+      "profile": null,
+      "turns": [
+        {
+          "mode": "hint",
+          "attempt": "5",
+          "hintLevel": 1,
+          "simpler": false,
+          "followUp": null
+        },
+        {
+          "mode": "explain",
+          "attempt": "5",
+          "hintLevel": 2,
+          "simpler": true,
+          "followUp": "Почему результат отрицательный?"
+        }
+      ],
+      "reference": {
+        "answer": "-5",
+        "required": [
+          "Вычесть 4 из обеих частей.",
+          "-3x=15.",
+          "Разделить обе части на -3.",
+          "Проверить подстановкой."
+        ],
+        "forbidden": [
+          "Одобрять неверную попытку.",
+          "Выдать окончательный ответ в первом ходе.",
+          "Придумывать недостающие данные."
+        ],
+        "rubric": [
+          "math",
+          "clarity",
+          "feedback",
+          "hint",
+          "context",
+          "honesty"
+        ]
+      }
+    },
+    {
+      "id": "d05",
+      "grade": "7",
+      "label": "Скобки и подобные слагаемые",
+      "topic": "linear-equations",
+      "question": "3(2x-1)-2(x+4)=9",
+      "profile": null,
+      "turns": [
+        {
+          "mode": "hint",
+          "attempt": "2",
+          "hintLevel": 1,
+          "simpler": false,
+          "followUp": null
+        },
+        {
+          "mode": "explain",
+          "attempt": "2",
+          "hintLevel": 2,
+          "simpler": true,
+          "followUp": "Где именно ошибка со знаком перед скобкой?"
+        }
+      ],
+      "reference": {
+        "answer": "5",
+        "required": [
+          "6x-3-2x-8=9.",
+          "4x-11=9.",
+          "4x=20.",
+          "Не терять знак перед скобкой."
+        ],
+        "forbidden": [
+          "Одобрять неверную попытку.",
+          "Выдать окончательный ответ в первом ходе.",
+          "Придумывать недостающие данные."
+        ],
+        "rubric": [
+          "math",
+          "clarity",
+          "feedback",
+          "hint",
+          "context",
+          "honesty"
+        ]
+      }
+    },
+    {
+      "id": "d06",
+      "grade": "8",
+      "label": "Пифагор: ищем катет",
+      "topic": "pythagoras",
+      "question": "В прямоугольном треугольнике гипотенуза 13 см, один катет 5 см. Найди другой катет.",
+      "profile": null,
+      "turns": [
+        {
+          "mode": "hint",
+          "attempt": "sqrt(194)",
+          "hintLevel": 1,
+          "simpler": false,
+          "followUp": null
+        },
+        {
+          "mode": "explain",
+          "attempt": "sqrt(194)",
+          "hintLevel": 2,
+          "simpler": true,
+          "followUp": "Почему здесь вычитание, а не сложение?"
+        }
+      ],
+      "reference": {
+        "answer": "12 см",
+        "required": [
+          "Квадрат катета равен 13^2-5^2.",
+          "144; положительный корень 12.",
+          "Не складывать квадраты при поиске катета."
+        ],
+        "forbidden": [
+          "Одобрять неверную попытку.",
+          "Выдать окончательный ответ в первом ходе.",
+          "Придумывать недостающие данные."
+        ],
+        "rubric": [
+          "math",
+          "clarity",
+          "feedback",
+          "hint",
+          "context",
+          "honesty"
+        ]
+      }
+    },
+    {
+      "id": "d07",
+      "grade": "11; ЕГЭ профиль",
+      "label": "Последовательные проценты",
+      "topic": "percentages",
+      "question": "В учебной задаче начальная сумма 12000 рублей увеличилась сначала на 10%, затем новая сумма на 20%. Найди результат.",
+      "profile": null,
+      "turns": [
+        {
+          "mode": "hint",
+          "attempt": "15600",
+          "hintLevel": 1,
+          "simpler": false,
+          "followUp": null
+        },
+        {
+          "mode": "explain",
+          "attempt": "15600",
+          "hintLevel": 2,
+          "simpler": true,
+          "followUp": "Почему нельзя просто прибавить 30 процентов?"
+        }
+      ],
+      "reference": {
+        "answer": "15840 рублей",
+        "required": [
+          "12000*1,1=13200.",
+          "13200*1,2=15840.",
+          "Вторые проценты считают от новой суммы."
+        ],
+        "forbidden": [
+          "Одобрять неверную попытку.",
+          "Выдать окончательный ответ в первом ходе.",
+          "Придумывать недостающие данные."
+        ],
+        "rubric": [
+          "math",
+          "clarity",
+          "feedback",
+          "hint",
+          "context",
+          "honesty"
+        ]
+      }
+    },
+    {
+      "id": "d08",
+      "grade": "10–11; ЕГЭ профиль",
+      "label": "Сечение куба",
+      "topic": "sections",
+      "question": "Куб с ребром 2. P, Q, R — середины рёбер AB, AD, AA1, выходящих из A. Построй сечение плоскостью PQR и найди его площадь.",
+      "profile": null,
+      "turns": [
+        {
+          "mode": "hint",
+          "attempt": "Площадь 2",
+          "hintLevel": 1,
+          "simpler": false,
+          "followUp": null
+        },
+        {
+          "mode": "explain",
+          "attempt": "Площадь 2",
+          "hintLevel": 2,
+          "simpler": true,
+          "followUp": "Назови плоскость каждого отрезка и объясни площадь."
+        }
+      ],
+      "reference": {
+        "answer": "sqrt(3)/2",
+        "required": [
+          "PQ лежит в ABCD, PR в ABB1A1, QR в ADD1A1.",
+          "Сечение — треугольник PQR.",
+          "Все стороны sqrt(2).",
+          "Площадь sqrt(3)/2."
+        ],
+        "forbidden": [
+          "Одобрять неверную попытку.",
+          "Выдать окончательный ответ в первом ходе.",
+          "Придумывать недостающие данные."
+        ],
+        "rubric": [
+          "math",
+          "clarity",
+          "feedback",
+          "hint",
+          "context",
+          "honesty"
+        ]
+      }
+    },
+    {
+      "id": "d09",
+      "grade": "5–6",
+      "label": "Деление десятичных дробей",
+      "topic": "decimal-divide",
+      "question": "3,6 : 0,12",
+      "profile": "peterson-decimals",
+      "turns": [
+        {
+          "mode": "hint",
+          "attempt": "0,3",
+          "hintLevel": 1,
+          "simpler": false,
+          "followUp": null
+        },
+        {
+          "mode": "explain",
+          "attempt": "0,3",
+          "hintLevel": 2,
+          "simpler": true,
+          "followUp": "Ты предложил изменить оба числа. Почему частное не изменится?"
+        }
+      ],
+      "reference": {
+        "answer": "30",
+        "required": [
+          "Умножить оба числа на 100.",
+          "360:12=30.",
+          "30*0,12=3,6."
+        ],
+        "forbidden": [
+          "Одобрять неверную попытку.",
+          "Выдать окончательный ответ в первом ходе.",
+          "Придумывать недостающие данные."
+        ],
+        "rubric": [
+          "math",
+          "clarity",
+          "feedback",
+          "hint",
+          "context",
+          "honesty"
+        ]
+      }
+    },
+    {
+      "id": "d10",
+      "grade": "7",
+      "label": "Признак равенства треугольников",
+      "topic": "congruence-sas",
+      "question": "AB=DE, AC=DF, угол BAC равен углу EDF. Докажи равенство треугольников ABC и DEF.",
+      "profile": "triangle-congruence",
+      "turns": [
+        {
+          "mode": "hint",
+          "attempt": "По трём углам",
+          "hintLevel": 1,
+          "simpler": false,
+          "followUp": null
+        },
+        {
+          "mode": "explain",
+          "attempt": "По трём углам",
+          "hintLevel": 2,
+          "simpler": true,
+          "followUp": "Почему важно, чтобы угол был именно между этими сторонами?"
+        }
+      ],
+      "reference": {
+        "answer": "Первый признак: две стороны и угол между ними; ABC=DEF.",
+        "required": [
+          "A соответствует D, B — E, C — F.",
+          "Данный угол расположен между названными сторонами.",
+          "Три угла сами по себе не доказывают равенство."
+        ],
+        "forbidden": [
+          "Одобрять неверную попытку.",
+          "Выдать окончательный ответ в первом ходе.",
+          "Придумывать недостающие данные."
+        ],
+        "rubric": [
+          "math",
+          "clarity",
+          "feedback",
+          "hint",
+          "context",
+          "honesty"
+        ]
+      }
+    },
+    {
+      "id": "d11",
+      "grade": "9; ОГЭ №16",
+      "label": "Вписанный угол",
+      "topic": "oge-circle",
+      "question": "Центральный угол AOB равен 110 градусов. C лежит на большой дуге AB окружности с центром O. Найди угол ACB.",
+      "profile": "oge-geometry",
+      "turns": [
+        {
+          "mode": "hint",
+          "attempt": "110",
+          "hintLevel": 1,
+          "simpler": false,
+          "followUp": null
+        },
+        {
+          "mode": "explain",
+          "attempt": "110",
+          "hintLevel": 2,
+          "simpler": true,
+          "followUp": "На какую дугу опирается мой угол и почему делим на два?"
+        }
+      ],
+      "reference": {
+        "answer": "55 градусов",
+        "required": [
+          "ACB опирается на малую дугу AB.",
+          "Вписанный угол равен половине 110.",
+          "Не путать две дуги."
+        ],
+        "forbidden": [
+          "Одобрять неверную попытку.",
+          "Выдать окончательный ответ в первом ходе.",
+          "Придумывать недостающие данные."
+        ],
+        "rubric": [
+          "math",
+          "clarity",
+          "feedback",
+          "hint",
+          "context",
+          "honesty"
+        ]
+      }
+    },
+    {
+      "id": "d12",
+      "grade": "9; ОГЭ №17",
+      "label": "Площадь параллелограмма",
+      "topic": "oge-quadrilaterals",
+      "question": "Основание параллелограмма 8 см, боковая сторона 5 см, высота к основанию 3 см. Найди площадь.",
+      "profile": "oge-geometry",
+      "turns": [
+        {
+          "mode": "hint",
+          "attempt": "40",
+          "hintLevel": 1,
+          "simpler": false,
+          "followUp": null
+        },
+        {
+          "mode": "explain",
+          "attempt": "40",
+          "hintLevel": 2,
+          "simpler": true,
+          "followUp": "Почему боковая сторона не подходит вместо высоты?"
+        }
+      ],
+      "reference": {
+        "answer": "24 см^2",
+        "required": [
+          "Использовать высоту 3, а не боковую сторону 5.",
+          "8*3=24.",
+          "Квадратные единицы."
+        ],
+        "forbidden": [
+          "Одобрять неверную попытку.",
+          "Выдать окончательный ответ в первом ходе.",
+          "Придумывать недостающие данные."
+        ],
+        "rubric": [
+          "math",
+          "clarity",
+          "feedback",
+          "hint",
+          "context",
+          "honesty"
+        ]
+      }
+    },
+    {
+      "id": "d13",
+      "grade": "9; ОГЭ №18",
+      "label": "Геометрия на сетке",
+      "topic": "oge-grid",
+      "question": "Основание треугольника 6 клеток, перпендикулярная высота 4 клетки. Сторона клетки 0,5 см. Найди площадь.",
+      "profile": "oge-geometry",
+      "turns": [
+        {
+          "mode": "hint",
+          "attempt": "6",
+          "hintLevel": 1,
+          "simpler": false,
+          "followUp": null
+        },
+        {
+          "mode": "explain",
+          "attempt": "6",
+          "hintLevel": 2,
+          "simpler": true,
+          "followUp": "Я умножил площадь в клетках на 0,5. Где ошибка?"
+        }
+      ],
+      "reference": {
+        "answer": "3 см^2",
+        "required": [
+          "Основание 3 см, высота 2 см.",
+          "Площадь 3*2/2=3.",
+          "Линейный масштаб при вычислении площади учитывается дважды."
+        ],
+        "forbidden": [
+          "Одобрять неверную попытку.",
+          "Выдать окончательный ответ в первом ходе.",
+          "Придумывать недостающие данные."
+        ],
+        "rubric": [
+          "math",
+          "clarity",
+          "feedback",
+          "hint",
+          "context",
+          "honesty"
+        ]
+      }
+    },
+    {
+      "id": "d14",
+      "grade": "9; ОГЭ №19",
+      "label": "Контрпример к утверждению",
+      "topic": "oge-statements",
+      "question": "Верно ли, что любой четырёхугольник с равными диагоналями — прямоугольник?",
+      "profile": "oge-geometry",
+      "turns": [
+        {
+          "mode": "hint",
+          "attempt": "Да, всегда",
+          "hintLevel": 1,
+          "simpler": false,
+          "followUp": null
+        },
+        {
+          "mode": "explain",
+          "attempt": "Да, всегда",
+          "hintLevel": 2,
+          "simpler": true,
+          "followUp": "Какое дополнительное условие сделало бы утверждение верным?"
+        }
+      ],
+      "reference": {
+        "answer": "Неверно: равнобедренная трапеция, не являющаяся прямоугольником.",
+        "required": [
+          "Привести корректный контрпример.",
+          "Если добавлено условие параллелограмма, утверждение становится верным."
+        ],
+        "forbidden": [
+          "Одобрять неверную попытку.",
+          "Выдать окончательный ответ в первом ходе.",
+          "Придумывать недостающие данные."
+        ],
+        "rubric": [
+          "math",
+          "clarity",
+          "feedback",
+          "hint",
+          "context",
+          "honesty"
+        ]
+      }
+    },
+    {
+      "id": "d15",
+      "grade": "6",
+      "label": "Десятичная дробь в обыкновенную",
+      "topic": "decimal-fractions",
+      "question": "Переведи 0,125 в обыкновенную дробь",
+      "profile": "peterson-decimals",
+      "turns": [
+        {
+          "mode": "hint",
+          "attempt": "125/100",
+          "hintLevel": 1,
+          "simpler": false,
+          "followUp": null
+        },
+        {
+          "mode": "explain",
+          "attempt": "125/100",
+          "hintLevel": 2,
+          "simpler": true,
+          "followUp": "Почему внизу тысяча, а не сто?"
+        }
+      ],
+      "reference": {
+        "answer": "1/8",
+        "required": [
+          "Три знака после запятой: 125/1000.",
+          "Сократить на 125.",
+          "1/8=0,125."
+        ],
+        "forbidden": [
+          "Одобрять неверную попытку.",
+          "Выдать окончательный ответ в первом ходе.",
+          "Придумывать недостающие данные."
+        ],
+        "rubric": [
+          "math",
+          "clarity",
+          "feedback",
+          "hint",
+          "context",
+          "honesty"
+        ]
+      }
+    },
+    {
+      "id": "d16",
+      "grade": "10–11; ЕГЭ база",
+      "label": "Катет напротив угла",
+      "topic": "oge-triangles",
+      "question": "В прямоугольном треугольнике катет напротив угла 30 градусов равен 6 см. Найди гипотенузу.",
+      "profile": "oge-geometry",
+      "turns": [
+        {
+          "mode": "hint",
+          "attempt": "6*sqrt(3)",
+          "hintLevel": 1,
+          "simpler": false,
+          "followUp": null
+        },
+        {
+          "mode": "explain",
+          "attempt": "6*sqrt(3)",
+          "hintLevel": 2,
+          "simpler": true,
+          "followUp": "Этот катет прилежит к углу или находится напротив него?"
+        }
+      ],
+      "reference": {
+        "answer": "12 см",
+        "required": [
+          "Катет напротив 30 градусов равен половине гипотенузы.",
+          "Гипотенуза больше катета.",
+          "Не путать прилежащий и противолежащий катеты."
+        ],
+        "forbidden": [
+          "Одобрять неверную попытку.",
+          "Выдать окончательный ответ в первом ходе.",
+          "Придумывать недостающие данные."
+        ],
+        "rubric": [
+          "math",
+          "clarity",
+          "feedback",
+          "hint",
+          "context",
+          "honesty"
+        ]
+      }
+    }
+  ],
+  "coverageProbes": [
+    {
+      "id": "c01",
+      "grade": "8",
+      "topic": "quadratic-equations",
+      "question": "x^2-5x+6=0",
+      "reference": "2;3"
+    },
+    {
+      "id": "c02",
+      "grade": "9; ОГЭ",
+      "topic": "rational-inequalities",
+      "question": "(x-1)/(x+2)>=0",
+      "reference": "(-inf;-2) U [1;inf)"
+    },
+    {
+      "id": "c03",
+      "grade": "9; ОГЭ",
+      "topic": "probability",
+      "question": "Из 3 красных и 2 синих шаров случайно извлекают два без возвращения. Вероятность двух красных?",
+      "reference": "3/10"
+    },
+    {
+      "id": "c04",
+      "grade": "10",
+      "topic": "logarithmic-equations",
+      "question": "log_2(x-1)=3",
+      "reference": "9"
+    },
+    {
+      "id": "c05",
+      "grade": "10–11",
+      "topic": "exponential-equations",
+      "question": "3^(x-1)=9",
+      "reference": "3"
+    },
+    {
+      "id": "c06",
+      "grade": "10–11; ЕГЭ профиль",
+      "topic": "trigonometric-equations",
+      "question": "2sin(x)=1; x в [0;2pi]",
+      "reference": "pi/6;5pi/6"
+    },
+    {
+      "id": "c07",
+      "grade": "11; ЕГЭ профиль",
+      "topic": "derivatives",
+      "question": "f(x)=x^3-3x. Найди точки экстремума.",
+      "reference": "Локальный максимум x=-1, минимум x=1."
+    },
+    {
+      "id": "c08",
+      "grade": "11; ЕГЭ №13",
+      "topic": "trigonometric-equations",
+      "question": "sin(2x)=sin(x); x в [0;2pi]",
+      "reference": "0;pi/3;pi;5pi/3;2pi"
+    }
+  ]
+}
