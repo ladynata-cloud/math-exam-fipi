@@ -1,5 +1,52 @@
 # MathExam project status
 
+## Integrated candidate: chapter IV self-check, PR402, 2026-11-02
+
+- The owner requested production integration and release of the reviewed candidate.
+  All13 original cards are now in the course bundle:653 cards,50 complete self-check
+  questions; source numbers3а/б/в and5а/б retained. No mathematical content rewritten.
+- All640 previous raw cards and existing runtime/storage contracts remain identical.
+  The current candidate adds source contracts, review hashes and append-only browser
+  cases. Saved answers/steps and rejection of corrupt or pending content pass locally.
+- [Integration evidence](reviews/ATANASYAN_CHAPTER_IV_SELFCHECK_INTEGRATION.md).
+  Cloud full-course/mobile checks and actual publication are recorded in PR402.
+  Standing owner publication permission applies; no repeat external audit required.
+
+## Preparing: Atanasyan chapter IV self-check, 2026-11-02
+
+- Owner requested continuation after Sphere publication. The next bounded
+  increment covers all ten chapter IV self-check questions in thirteen draft
+  cards, preserving original parts 3а/б/в and 5а/б.
+- [Task](tasks/ATANASYAN_CHAPTER_IV_SELFCHECK.md), HIGH; base
+  `1577c058309f4cc78c21315bf64b0b393751ec2d`; branch
+  `content/atanasyan-chapter-iv-selfcheck-20261102`.
+- [Candidate report](reviews/ATANASYAN_CHAPTER_IV_SELFCHECK_DRAFT.md):
+  31 steps and 45 model states, schema/coordinate/preservation checks passed.
+  [Independent review](reviews/ATANASYAN_CHAPTER_IV_SELFCHECK_INDEPENDENT.md)
+  found missing fraction styling; the correction and two small model/copy
+  improvements now pass focused independent review and fresh head-branch CI
+  (run 41352063380). All 640 published cards and learner-storage contracts
+  remain unchanged; no production integration has occurred. Draft PR402 records
+  exact-head evidence and the unresolved GitHub mergeability flag, despite a
+  clean local read-only virtual merge. No merge or deployment was performed.
+
+## Published: Atanasyan Sphere, PR386
+
+- [PR386](https://github.com/ladynata-cloud/math-exam-fipi/pull/386) was merged
+  as `3376ff99926e6e8e9721316f4cac045afc737a0c`, sole parent
+  `5bbfe3a4615b6410dacf7f1344aa57b909a986ef`. The verified tree is
+  `8f12df95753346ddcb53f53157e1b29524066813`.
+- The release record confirms 20 successful premerge checks, 1,280 browser
+  card/width journeys, all six postmerge checks, and successful Pages run
+  [41346143683](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41346143683).
+- Public HTTPS verification matched all 46 new lesson files and nine course
+  assets to the release. The live catalogue showed 640 cards and all 46 Sphere
+  cards; theory 43 help/steps/rotation and exercise 382b opened successfully.
+  Previous 594 cards and saved-work identities were retained exactly.
+- This reconciles the completed preceding release; historical preparation
+  records below remain unchanged. The next self-check increment requires its
+  own independent review and release decision.
+
 ## Geometry first viewport: prepared, issue #384 / MAT-17
 
 - Current public geometry HTML/engine/CSS matched main `01e412d` before this fix.

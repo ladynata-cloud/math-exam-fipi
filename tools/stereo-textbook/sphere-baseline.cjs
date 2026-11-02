@@ -6,6 +6,7 @@ const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const published = require('./sphere-baseline.json');
+const later = require('./iv-selfcheck-baseline.cjs');
 const parts = Object.fromEntries(Array.from({length: 24}, (_, i) => [String(i + 372), [null]]));
 for (const number of ['372', '382', '383', '384']) parts[number] = ['а', 'б'];
 for (const number of ['373', '381', '388']) parts[number] = ['а', 'б', 'в', 'г'];
@@ -30,6 +31,7 @@ const exactIds = (actual, expected, label) => {
 };
 
 function previousIndex(sourceIndex) {
+  if (sourceIndex.entries.some(entry => later.target(entry) && Object.hasOwn(entry, 'requiredParts'))) sourceIndex = later.previousIndex(sourceIndex);
   const copy = structuredClone(sourceIndex), entries = copy.entries.filter(target);
   assert.equal(entries.length, 33, 'exact 24 sphere exercises and nine theory points');
   const contracts = entries.filter(entry => Object.hasOwn(entry, 'requiredParts')).length;
@@ -50,6 +52,10 @@ function previousIndex(sourceIndex) {
 }
 
 function previousCourse(course, sourceIndex) {
+  if (course.lessons.some(card => later.ids.has(card.id))) {
+    course = later.previousCourse(course, sourceIndex);
+    sourceIndex = later.previousIndex(sourceIndex);
+  }
   previousIndex(sourceIndex);
   const copy = structuredClone(course), added = copy.lessons.filter(card => ids.has(card.id));
   const hasSphere = added.length > 0;
@@ -88,6 +94,7 @@ function previousCourse(course, sourceIndex) {
 }
 
 function previousRegistry(registry) {
+  if (registry.cards.some(card => later.ids.has(card.id))) registry = later.previousRegistry(registry);
   const added = registry.cards.filter(card => ids.has(card.id));
   assert(registry.batches.length === 29 || registry.batches.length === 30, 'only one sphere review batch may be appended');
   if (registry.batches.length === 30) {
@@ -103,6 +110,7 @@ function previousRegistry(registry) {
 }
 
 function previousCases(cases) {
+  if ([...cases.keys()].some(key => later.ids.has(key.split('|')[0]))) cases = later.previousCases(cases);
   const all = [...cases], rows = all.filter(([key]) => !ids.has(key.split('|')[0]));
   assert.equal(rows.length, 1685, 'all 1685 prior browser cases');
   assert.equal(sha(rows), published.screenshotCasesSHA256, 'all 1685 prior browser cases');
@@ -112,6 +120,7 @@ function previousCases(cases) {
 }
 
 function previousRawLessons(manifest) {
+  manifest = later.previousRawLessons(manifest);
   assert.equal(new Set(manifest.map(([name]) => name)).size, manifest.length, 'unique authored lesson filenames');
   const added = manifest.filter(([name]) => ids.has(name.replace(/\.json$/, '')));
   if (added.length) exactIds(added.map(([name]) => name), [...ids].map(id => id + '.json'), 'all and only 46 sphere authored lesson filenames');

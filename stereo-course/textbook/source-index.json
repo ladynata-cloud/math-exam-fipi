@@ -24699,7 +24699,10 @@
           113,
           114
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-4-02",
@@ -24718,7 +24721,10 @@
           113,
           114
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-4-03",
@@ -24737,7 +24743,12 @@
           113,
           114
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
+      ]
     },
     {
       "id": "source-selfcheck-4-04",
@@ -24756,7 +24767,10 @@
           113,
           114
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-4-05",
@@ -24775,7 +24789,11 @@
           113,
           114
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б"
+      ]
     },
     {
       "id": "source-selfcheck-4-06",
@@ -24794,7 +24812,10 @@
           113,
           114
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-4-07",
@@ -24813,7 +24834,10 @@
           113,
           114
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-4-08",
@@ -24832,7 +24856,10 @@
           113,
           114
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-4-09",
@@ -24851,7 +24878,10 @@
           113,
           114
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-4-10",
@@ -24870,7 +24900,10 @@
           113,
           114
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-5-01",

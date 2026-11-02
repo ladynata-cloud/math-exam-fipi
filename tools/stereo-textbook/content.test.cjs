@@ -53,4 +53,5 @@ console.log(`ATANASYAN_PYRAMID_EX239_253_CONTENT_OK ${pyramidEarly.cards} cards,
 const pyramidRemaining=require('./pyramid-theory32-34-ex254-270-content.test.cjs').run(bundle);
 console.log(`ATANASYAN_PYRAMID_THEORY32_34_EX254_270_CONTENT_OK ${pyramidRemaining.cards} cards, ${pyramidRemaining.groups} source-derived regression groups`);
 require('./sphere-content.test.cjs');
+require('./iv-selfcheck-content.test.cjs');
 dom.window.close();console.log(`ATANASYAN_TEXTBOOK_CONTENT_OK ${ls.length} cards, ${steps} justified steps, ${views} views; source identities/theory links/fig8+9 incidences/DOM finite`);

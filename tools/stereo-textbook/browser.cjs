@@ -32,6 +32,9 @@ const screenshotCases=require('./browser-cases.cjs');
 // line may still break legitimately between operations or adjacent formulas.
 const explanation=stage=>'[data-step="'+stage+'"] > details > p';
 const mathLayoutCases=new Map([
+ ['ex-selfcheck-iv-10|step-1',[{selector:explanation('step-1'),fractions:[['AB','2']]}]],
+ ['ex-selfcheck-iv-10|step-2',[{selector:explanation('step-1'),fractions:[['AB','2']]}]],
+ ['ex-selfcheck-iv-10|step-3',[{selector:explanation('step-3'),fractions:[['AB','2']]}]],
  // Actual294–298 paragraphs: complete radicals and stacked operands at both
  // widths, including their retained appearance on the final solution page.
  ['ex-main-0294|step-6',[{selector:explanation('step-6'),atoms:['√(S₀²−a⁴)','4√(S₀²−a⁴)']}]],
