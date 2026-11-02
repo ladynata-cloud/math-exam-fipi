@@ -6,6 +6,7 @@ const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const published = require('./iv-selfcheck-baseline.json');
+const later = require('./additional396-baseline.cjs');
 const manifest = require('../../content-drafts/atanasyan-chapter-iv-selfcheck/manifest.json');
 const ids = new Set(manifest.cards);
 const canon = value => Array.isArray(value) ? value.map(canon) : value && typeof value === 'object'
@@ -19,6 +20,7 @@ function exact(actual, expected, label) {
   assert.deepEqual([...actual].sort(), [...expected].sort(), label);
 }
 function previousIndex(index) {
+  if (index.entries.some(entry => later.target(entry) && Object.hasOwn(entry, "requiredParts"))) index = later.previousIndex(index);
   const copy = structuredClone(index), entries = copy.entries.filter(target);
   assert.equal(entries.length, 10, 'ten original IV self-check sources');
   const contracts = entries.filter(entry => Object.hasOwn(entry, 'requiredParts')).length;
@@ -32,6 +34,7 @@ function previousIndex(index) {
   return copy;
 }
 function previousCourse(course, index) {
+  if (course.lessons.some(card => later.ids.has(card.id)) || course.catalog.entries.some(card => later.ids.has(card.id))) { course = later.previousCourse(course, index); index = later.previousIndex(index); }
   const added = course.lessons.filter(card => ids.has(card.id));
   if (!added.length && !course.catalog.entries.some(entry => ids.has(entry.id))) return structuredClone(course);
   previousIndex(index);
@@ -56,6 +59,7 @@ function previousCourse(course, index) {
   return copy;
 }
 function previousRegistry(registry) {
+  if (registry.cards.some(card => later.ids.has(card.id))) registry = later.previousRegistry(registry);
   const added = registry.cards.filter(card => ids.has(card.id));
   if (!added.length) return structuredClone(registry);
   exact(added.map(card => card.id), ids, 'thirteen new review rows');
@@ -69,6 +73,7 @@ function previousRegistry(registry) {
   return copy;
 }
 function previousCases(cases) {
+  if ([...cases.keys()].some(key => later.ids.has(key.split("|")[0]))) cases = later.previousCases(cases);
   const all = [...cases], rows = all.filter(([key]) => !ids.has(key.split('|')[0]));
   if (rows.length === all.length) return new Map(rows);
   assert.equal(rows.length, published.screenshotCases, 'all historical browser cases');
@@ -78,6 +83,7 @@ function previousCases(cases) {
   return new Map(rows);
 }
 function previousRawLessons(rows) {
+  if (rows.some(([name]) => later.ids.has(name.replace(/\.json$/, "")))) rows = later.previousRawLessons(rows);
   const added = rows.filter(([name]) => ids.has(name.replace(/\.json$/, '')));
   if (!added.length) return rows;
   exact(added.map(([name]) => name.slice(0,-5)), ids, 'exact thirteen IV lesson filenames');

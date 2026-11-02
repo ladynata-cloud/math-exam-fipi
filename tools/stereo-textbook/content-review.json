@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-02T16:35:39Z",
-  "scope": "Introduction and chapters I–III plus chapter IV paragraphs 1–3 and all ten self-check questions: main exercises 1–395, theory 1–51, 50 complete self-check questions, 653 cards. Additional exercises 396 onward and later chapters remain pending. Not the complete book.",
+  "registeredAt": "2026-11-02T19:40:24.335Z",
+  "scope": "Introduction and chapters I–III plus chapter IV paragraphs 1–3, all ten chapter IV self-check questions and additional cylinder exercises 396–403: 662 reviewed cards; main exercises 1–403 complete; theory points 1–51 complete; 50 complete self-check questions. Exercises 404 onward and later chapters remain pending. Not the complete book.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1007,6 +1007,24 @@
       ],
       "evidence": "docs/reviews/ATANASYAN_CHAPTER_IV_SELFCHECK_INDEPENDENT.md",
       "mathematicalReport": "docs/reviews/ATANASYAN_CHAPTER_IV_SELFCHECK_INDEPENDENT.md"
+    },
+    {
+      "reviewer": "Codex author source, mathematics and learning-design review; no external or independent provider verdict claimed",
+      "reviewedAt": "2026-11-02T19:40:24.335Z",
+      "scope": "Additional cylinder exercises 396–403; nine cards including 400а/б; 38 justified steps and 40 model states. Both orientations in 400б, both roots in 401, five surfaces in 403.",
+      "cardIds": [
+        "ex-main-0396",
+        "ex-main-0397",
+        "ex-main-0398",
+        "ex-main-0399",
+        "ex-main-0400-a",
+        "ex-main-0400-b",
+        "ex-main-0401",
+        "ex-main-0402",
+        "ex-main-0403"
+      ],
+      "evidence": "docs/reviews/ATANASYAN_ADDITIONAL_396_403.md",
+      "mathematicalReport": "tools/stereo-textbook/additional396-math.test.cjs"
     }
   ],
   "cards": [
@@ -3621,6 +3639,42 @@
     {
       "id": "ex-selfcheck-iv-10",
       "sha256": "8543f2ab87e9624d087dd20c57b27214fbf7ce01f72c2a27806b3a2f9b4734c9"
+    },
+    {
+      "id": "ex-main-0396",
+      "sha256": "b3024c75604c51b917f15d89619d29c459e1ed85b253399130ac185fcb76242d"
+    },
+    {
+      "id": "ex-main-0397",
+      "sha256": "a007cfa9c50eaa3196a17bdee3e103d718edddba8925c4061cab63236716a4a9"
+    },
+    {
+      "id": "ex-main-0398",
+      "sha256": "ed57e76945991fc1461d6b8a67415f5e3bbfc618181ba34a84dad8ee91b792b8"
+    },
+    {
+      "id": "ex-main-0399",
+      "sha256": "82b559952bf2bad91f7033a24564470449862df52f7ffb6181c36d0d1d1d2172"
+    },
+    {
+      "id": "ex-main-0400-a",
+      "sha256": "5b153387691c4ef3b7dfd1fe352e53889141f18addd52a1b50f6dcc56b50604b"
+    },
+    {
+      "id": "ex-main-0400-b",
+      "sha256": "61826d70e73c1e2af7869e9d4fb4cb6ab8dfff20a0d9ae4dfbce2089c3bf7393"
+    },
+    {
+      "id": "ex-main-0401",
+      "sha256": "8808b2e1503226d32a82ac7390b8b9f991ac22355dd47d9244bf62335da74c0c"
+    },
+    {
+      "id": "ex-main-0402",
+      "sha256": "737d437b36ff5e8548ac43f353c46755b68748689eb385dd81408728e597a3eb"
+    },
+    {
+      "id": "ex-main-0403",
+      "sha256": "5c846c915ff37cbd5028709a3d8ca457499de139b9c2721e41cf880f46d227e8"
     }
   ]
 }
