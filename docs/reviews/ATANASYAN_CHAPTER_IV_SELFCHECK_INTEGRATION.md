@@ -111,3 +111,27 @@ That evidence covers the unchanged 653-card product. The synchronized compositio
 is sent through fresh GitHub Actions; final candidate/tree and results are in PR402.
 This is an ordinary history-preserving merge, not a force/rebase or a new scope.
 Standing publication permission applies to the revalidated new base.
+
+## Second cloud-only main reconciliation — 2026-11-03
+
+While the full-course run on `6be7c211021597539d4d6d0a2eabef8cb4801546`
+was running, PR419 published geometry 7–9 first-viewport work as
+`b9ba38b27f5b306f0d81d01c67e0a636e5a06b84`, parent `04b586c`.
+Its 18 changed paths are disjoint from this task except the project journal.
+The 17 other paths are retained from the new main tree without alteration;
+the journal keeps our 47-line prefix, its new 11-line prefix, and the exact
+shared previous body. All 52 other task blobs, including every lesson,
+bundle, runtime, schema and test, are unchanged; only this audit report and
+the journal are reconciled. The task delta remains the same 54 paths.
+
+At that point all six other PR workflows passed on `6be7c21`; the full
+source/model job also passed, including 653 authored cards, exact prior640
+preservation, all geometry/runtime contracts and the 4000-image preflight.
+Focused cloud run41490707256 passed 1500 math cases,39 production journeys,
+135 model states,9 fractions and reload/old-record preservation at320/390/1280.
+Its integrated artifact13163363257 has ZIP SHA256
+`9a82701c0abea397a4a6b5e29dcd8606eeaf41da1cd0339945a358dfbb3d48b1`.
+These are evidence for that head, not a claim that the subsequent merge has
+passed. Fresh CI is required after the ordinary two-parent cloud merge.
+The final PR release record supplies authoritative base/head, CI, merge,
+deployment and live verification; standing release permission is unchanged.
