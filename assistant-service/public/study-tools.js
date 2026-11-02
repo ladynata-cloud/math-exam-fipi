@@ -8,6 +8,8 @@ export function normalizeTask(value) {
 }
 export function inferTopic(value) {
   const q = normalizeTask(value).toLowerCase();
+  const dataTopic = {'движение':'motion','навстречу':'motion','вдогонку':'motion','работа':'work-rates','смесь':'mixtures','арифметическая':'arithmetic-progression','геометрическая':'geometric-progression','статистика':'statistics','вероятность':'probability','функция':'function-table'}[q.split(':')[0]];
+  if (dataTopic) return dataTopic;
   if (/^(sin|cos|tan)\(/.test(q)) return 'trigonometric-equations';
   if (/^log_/.test(q)) return 'logarithmic-equations';
   if (/^[\d(].*\^.*[xх].*=/.test(q)) return 'exponential-equations';
@@ -41,6 +43,15 @@ export function ambiguity(value, topic) {
   return null;
 }
 export const FORMATS = {
+  motion: 'Используй пример записи с величинами и единицами. Ответ — число в единице, указанной в разборе.',
+  'work-rates': 'Укажи время выполнения одной работы каждым по отдельности. Ответ — время вместе.',
+  mixtures: 'Укажи массу и массовый процент каждого из двух растворов. Ответ — процент смеси.',
+  'arithmetic-progression': 'Поля a1, d, n, an через ;. Найти an, sn, d или n. Индекс — положительное целое.',
+  'geometric-progression': 'Поля a1, q, n через ;. Найти an или sn; для q нужны a1 и a2.',
+  statistics: 'Наблюдения через ;, затем «найти среднее», «найти медиану» или «найти размах».',
+  probability: 'Выбери шаблон: кубики, монеты или шары. Ответ — точная вероятность от 0 до 1.',
+  'function-table': 'Значения строки разделяй |. В ответе перечисли все подходящие значения через ;.',
+
   'quadratic-equations': 'Все корни через ;. Точные корни, например (1+√5)/2.',
   inequalities: 'Промежутки: (-∞; 2] ∪ (3; +∞). Скобки указывают включение границы.',
   'linear-systems': 'Пара x=2; y=3, либо «нет решений» / «бесконечно много решений».',
