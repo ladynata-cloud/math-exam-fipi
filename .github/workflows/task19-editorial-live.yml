@@ -1,0 +1,41 @@
+name: OGE19 editorial release — published bytes
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'trainers/task19-visual-data.js'
+      - 'trainers/task19-models-triangles.js'
+      - 'downloads/trainers/task19-trainer/**'
+      - '.github/workflows/task19-editorial-live.yml'
+permissions:
+  contents: read
+jobs:
+  published:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Verify exact source and offline bytes after Pages
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,time,urllib.request
+          paths=['trainers/task19-visual-data.js','trainers/task19-models-triangles.js','downloads/trainers/task19-trainer/task19-trainer.html','downloads/trainers/task19-trainer/task19-trainer-package.zip']
+          expected={p:hashlib.sha256(open(p,'rb').read()).hexdigest() for p in paths}
+          deadline=time.monotonic()+480
+          while True:
+              failures=[]
+              for p in paths:
+                  try:
+                      request=urllib.request.Request('https://mathexam.space/'+p,headers={'Cache-Control':'no-cache'})
+                      with urllib.request.urlopen(request,timeout=30) as response:
+                          actual=hashlib.sha256(response.read()).hexdigest()
+                      if actual!=expected[p]: failures.append(p+': content hash differs')
+                  except Exception as error: failures.append(p+': '+str(error))
+              if not failures:
+                  print(json.dumps({'gate':'OGE19_EDITORIAL_PUBLISHED_BYTES_OK','status':'PASS','sha256':expected},ensure_ascii=False))
+                  break
+              if time.monotonic()>=deadline: raise SystemExit(json.dumps(failures))
+              time.sleep(5)
+          PY
