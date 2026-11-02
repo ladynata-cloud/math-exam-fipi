@@ -74,10 +74,12 @@
       "title": "Автоматический выбор темы",
       "acceptance": "Распознавание поддерживаемого математического формата с возможностью исправить тему.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/411",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41363422448"
       ]
     },
     {
@@ -85,10 +87,12 @@
       "title": "Я понял условие так",
       "acceptance": "Предварительная математическая запись для сверки учеником.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/411",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41363422448"
       ]
     },
     {
@@ -96,10 +100,12 @@
       "title": "Привычные формулировки",
       "acceptance": "Несколько ограниченных русских формулировок одного типа задачи.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/411",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41363422448"
       ]
     },
     {
@@ -107,10 +113,12 @@
       "title": "Подсветка непонятного места",
       "acceptance": "Указание позиции отсутствующего знака или неоднозначного фрагмента.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/411",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41363422448"
       ]
     },
     {
@@ -118,10 +126,12 @@
       "title": "Почему возле каждого шага",
       "acceptance": "Объяснение выбранного действия по запросу.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/411",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41363422448"
       ]
     },
     {
@@ -129,10 +139,12 @@
       "title": "Проверка понимания перед действием",
       "acceptance": "Вопрос о следующем действии с проверяемыми вариантами.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/411",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41363422448"
       ]
     },
     {
@@ -140,10 +152,12 @@
       "title": "Подсказка после двух ошибок",
       "acceptance": "Предложение помощи, которое можно отклонить.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/411",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41363422448"
       ]
     },
     {
@@ -151,10 +165,12 @@
       "title": "Несколько строк решения",
       "acceptance": "Проверка последовательных переходов между строками.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/411",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41363422448"
       ],
       "note": "Up to six linear equalities; checks solution-set equivalence, not an unstated operation. Other formats explicitly unchecked."
     },
@@ -163,10 +179,12 @@
       "title": "Исправление предыдущего шага",
       "acceptance": "Редактирование строки без потери остальных подсказок.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/411",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41363422448"
       ]
     },
     {
@@ -182,46 +200,56 @@
       "id": 16,
       "title": "Умножение и деление дробей",
       "acceptance": "Смешанные числа, сокращение перед вычислением, проверка деления на ноль.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md"
+      ]
     },
     {
       "id": 17,
       "title": "Выражения из нескольких действий",
       "acceptance": "Приоритеты, скобки и проверка промежуточных результатов.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md"
+      ]
     },
     {
       "id": 18,
       "title": "Сравнение дробей и смешанных чисел",
       "acceptance": "Точное сравнение и подходящее объяснение.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md"
+      ]
     },
     {
       "id": 19,
       "title": "Степени с целыми показателями",
       "acceptance": "Отрицательное основание, нулевой и отрицательный показатели.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md"
+      ]
     },
     {
       "id": 20,
       "title": "Квадратные корни",
       "acceptance": "Вынос множителя и точная запись результата.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md"
+      ]
     },
     {
       "id": 21,
@@ -254,10 +282,12 @@
       "id": 24,
       "title": "Пропорции",
       "acceptance": "Отношения и проверка неизвестного.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md"
+      ]
     },
     {
       "id": 25,
@@ -290,28 +320,34 @@
       "id": 28,
       "title": "Точность округления",
       "acceptance": "Точный ответ, приближение и допустимая погрешность.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md"
+      ]
     },
     {
       "id": 29,
       "title": "Дроби, десятичные и проценты",
       "acceptance": "Перевод между тремя формами одной величины.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md"
+      ]
     },
     {
       "id": 30,
       "title": "Ответы с единицами",
       "acceptance": "Равнозначные величины и ошибки в размерности.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md"
+      ]
     },
     {
       "id": 31,
@@ -497,19 +533,23 @@
       "id": 51,
       "title": "Упрощение буквенных выражений",
       "acceptance": "Подобные слагаемые, скобки и проверка каждого преобразования.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md"
+      ]
     },
     {
       "id": 52,
       "title": "Разложение на множители",
       "acceptance": "Общий множитель, формулы и группировка.",
-      "implementation": "pending",
-      "validation": "pending",
+      "implementation": "prepared",
+      "validation": "local_passed_cloud_pending",
       "publication": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md"
+      ]
     },
     {
       "id": 53,
@@ -813,10 +853,12 @@
       "title": "Математическая клавиатура",
       "acceptance": "Дробь, степень, корень, модуль и неравенства.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/411",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41363422448"
       ]
     },
     {
@@ -824,10 +866,12 @@
       "title": "Привычное оформление формул",
       "acceptance": "Вертикальные дроби, показатели и корни.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/411",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41363422448"
       ]
     },
     {
@@ -835,10 +879,12 @@
       "title": "Словарь по нажатию",
       "acceptance": "Короткие определения возле текста.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/411",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41363422448"
       ]
     },
     {
@@ -846,10 +892,12 @@
       "title": "Требование к ответу",
       "acceptance": "Точность, приближение, набор корней или промежуток.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/411",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41363422448"
       ]
     },
     {
@@ -857,10 +905,12 @@
       "title": "Копирование фрагмента",
       "acceptance": "Условие или шаг без интерфейсных надписей.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/411",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41363422448"
       ]
     },
     {
@@ -868,10 +918,12 @@
       "title": "Печатный лист",
       "acceptance": "Условие, рисунок и выбранные объяснения.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/411",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41363422448"
       ]
     },
     {
@@ -879,10 +931,12 @@
       "title": "Закладки на шагах",
       "acceptance": "Возврат к отмеченному трудному месту.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/411",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41363422448"
       ],
       "note": "Bookmarks stay in the current tab and are cleared with the task/session; no hidden browser persistence."
     },
@@ -891,10 +945,12 @@
       "title": "Размер текста и контраст",
       "acceptance": "Настройка чтения в интерфейсе.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/411",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41363422448"
       ]
     },
     {
@@ -902,10 +958,12 @@
       "title": "Клавиатура и чтение с экрана",
       "acceptance": "Доступные формулы, кнопки и рисунки.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/411",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41363422448"
       ]
     },
     {
@@ -913,10 +971,12 @@
       "title": "Переход между частями",
       "acceptance": "Условие, собственное решение и последняя подсказка на телефоне.",
       "implementation": "prepared",
-      "validation": "local_passed_cloud_pending",
-      "publication": "pending",
+      "validation": "cloud_passed",
+      "publication": "merged_not_deployed",
       "evidence": [
-        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md"
+        "docs/reports/MATHEXAM_ASSISTANT_DIALOGUE_TOOLS_20261102.md",
+        "https://github.com/ladynata-cloud/math-exam-fipi/pull/411",
+        "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41363422448"
       ]
     },
     {

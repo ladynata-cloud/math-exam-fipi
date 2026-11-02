@@ -1,7 +1,12 @@
 // Pure, bounded teaching aids. No model output, network or browser state here.
 const HELP = {
+  arithmetic: { examples: ['(1/2+1/3)*6', '(-2)^-3', '√72', '1/3; округли до 2 знаков'] },
+  comparison: { examples: ['Сравни 1 1/2 и 7/4', 'Сравни -1/2 и -1/3'] },
+  proportions: { examples: ['x/3 = 4/6', '3/x = 6/4'] },
+  conversions: { examples: ['250 см в м', '0,25 в проценты', '25% в дробь', '1/4 в десятичную дробь'] },
+  polynomials: { examples: ['Упрости: 2(x+3)-x', 'Разложи: x^2-9', 'Разложи: x^3+2x^2+3x+6'] },
   'linear-equations': { examples: ['3x + 5 = 20', '2(x + 3) = x + 9', '0,5x + 2 = 0,25x + 5'], path: 'trainers/simple-equations-stepwise.html', title: 'Уравнения по шагам' },
-  fractions: { examples: ['1/2 + 1/3', '1 1/2 - 2/3'], path: 'trainers/oge-basics/fraction-common-denominator.html', title: 'Общий знаменатель' },
+  fractions: { examples: ['1/2 + 1/3', '1 1/2 - 2/3', '1 1/2 * 2/3', '1/2 : 3/4'], path: 'trainers/oge-basics/fraction-common-denominator.html', title: 'Общий знаменатель' },
   percentages: { examples: ['15% от 240', '15% числа равны 36', 'Сколько процентов составляет 30 от 120?', 'Уменьши 240 на 15%'], path: 'trainers/oge-basics/percentages/index.html', title: 'Практика с процентами' },
   'gcd-lcm': { examples: ['НОД 18 и 24', 'НОК 12 и 18'], path: 'trainers/grade6-nod.html', title: 'НОД и делители' },
   rounding: { examples: ['Округли 9,96 до десятых'], path: 'trainers/rounding-stepwise.html', title: 'Округление по шагам' },
@@ -14,6 +19,8 @@ export function topicHelp(topic) {
 }
 
 const PRACTICE = {
+  fractionProduct: ['2/3 * 3/4', '1 1/2 * 2/5'],
+  fractionQuotient: ['3/4 : 2/3', '1 1/2 : 3/5'],
   simple: ['4x + 3 = 19', '5x - 4 = 16'],
   parentheses: ['3(x + 2) = x + 14', '2(x + 4) = x + 11'],
   coefficients: ['0,5x + 1 = 0,25x + 3', '(1/2)x + 2 = (1/4)x + 5'],
@@ -34,7 +41,7 @@ export function practiceFor(topic, question) {
   const q = normalized(question);
   let family;
   if (topic === 'linear-equations') family = /[.,/]/.test(q) ? 'coefficients' : /[()]/.test(q) ? 'parentheses' : /[xх].*=[^=]*[xх]/.test(q) ? 'both' : 'simple';
-  if (topic === 'fractions') family = /\d[ \t\u00a0]+\d+\s*\//.test(q) ? 'mixed' : 'fractions';
+  if (topic === 'fractions') family = /[÷:]|\)\s*\/\s*\(/.test(q) ? 'fractionQuotient' : /[*×·]/.test(q) ? 'fractionProduct' : /\d[ \t\u00a0]+\d+\s*\//.test(q) ? 'mixed' : 'fractions';
   if (topic === 'percentages') family = /^увелич/.test(q) ? 'increase' : /^уменьш/.test(q) ? 'decrease' : /сколько процентов|в процентах/.test(q) ? 'ratio' : /числа равны|которого/.test(q) ? 'whole' : 'part';
   if (topic === 'gcd-lcm') family = /нок/.test(q) ? 'lcm' : 'gcd';
   if (topic === 'rounding') family = 'rounding';

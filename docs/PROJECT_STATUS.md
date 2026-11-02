@@ -3618,3 +3618,15 @@ accessible copy/print/bookmark/navigation controls. [Validation](reports/MATHEXA
 production release. No pupil conversation storage or external inference added.
 PR409 infrastructure is merged as 6ee8065 with successful cloud CI; Amvera
 credential provisioning remains pending, not publication authorization.
+
+## Assistant exact math foundations — 2026-11-02
+
+[11 arithmetic/algebra items](tasks/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md)
+add bounded exact fraction products/division, expressions/powers/roots, comparison,
+proportions, explicit rounding, format/unit conversions and polynomial operations.
+[Validation](reports/MATHEXAM_ASSISTANT_MATH_FOUNDATIONS_20261102.md): 189 service
+tests, 12 browser scenarios, independent fraction/root/polynomial oracles. New
+topics are offline-only; the original paid-evaluation corpus remains unchanged.
+PR411 is merged as 77be244 with cloud checks passed; both previous packages still
+await provisioned Amvera cloud delivery credentials. No production activation
+or actual pupil validation is implied by implementation/merge status.

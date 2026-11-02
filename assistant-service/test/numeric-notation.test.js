@@ -56,8 +56,7 @@ test('1,152 signed mixed expressions agree with an independent rational oracle',
 
 test('malformed operands and unsupported expressions are not repaired into other questions', () => {
   for (const question of ['1 2 + 3', '1/2 + 1 2', '1/2 + 1/2 3', '1 2/2 + 1/2', '1 3/2 + 1/2',
-    '1 1/0 + 1/2', '1 1/-2 + 1/2', '1 -1/2 + 1/2', '1/2 + 1/3 + 1/4', '1 1/2 * 2',
-    '(1 1/2) + 1/2', '1,5 + 1/2', '1,(3) + 1/2', '1\n1/2 + 1/2', '1/2\n+1/2',
+    '1 1/0 + 1/2', '1 1/-2 + 1/2', '1 -1/2 + 1/2', '1/2 + 1/3 + 1/4', '1,5 + 1/2', '1,(3) + 1/2', '1\n1/2 + 1/2', '1/2\n+1/2',
     '1 2/3 4 + 1/2', '10001/1 + 1/2', '10001 1/2 + 1/2', '1 1/10001 + 1/2',
     '1/2 + 1/2 = 1', '1/2 + 1/2 рублей']) {
     const answer = plain(question, { attempt: '6', mode: 'explain' });
@@ -152,5 +151,13 @@ test('mixed arithmetic keeps one hint per request and explanation is explicit', 
     }
     const full = plain(question, { mode: 'explain' }); valid(full);
     assert.equal(full.complete, true); assert.equal(full.steps.length, 5);
+  }
+});
+
+test('new exact arithmetic handles explicitly grouped and multiplied mixed operands', () => {
+  for (const [question, attempt] of [['1 1/2 * 2','3'],['(1 1/2) + 1/2','2']]) {
+    const answer=plain(question,{attempt});
+    assert.equal(answer.verification,'deterministic');
+    assert.equal(answer.attemptStatus,'correct');
   }
 });

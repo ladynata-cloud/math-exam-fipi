@@ -9,12 +9,17 @@ export function normalizeTask(value) {
 export function inferTopic(value) {
   const q = normalizeTask(value).toLowerCase();
   if (/^(?:нод|нок)\s/.test(q)) return 'gcd-lcm';
+  if (/^сравни /.test(q)) return 'comparison';
+  if (/^(упрости|разложи)/.test(q) && /x|х/.test(q)) return 'polynomials';
+  if (/ в (проценты|дробь|десятичную дробь|мм|см|км|м|мин|ч|с|кг|г|т)$/.test(q)) return 'conversions';
   if (/^округл/.test(q)) return 'rounding';
   if (/%|^сколько процентов/.test(q)) return 'percentages';
+  if (/^[xх\d.,+\-]+\s*[/:]\s*[xх\d.,+\-]+\s*=\s*[xх\d.,+\-]+\s*[/:]\s*[xх\d.,+\-]+$/.test(q) && /[xх]/.test(q)) return 'proportions';
   if (/[xх]/.test(q) && q.includes('=') && !/[<>≤≥^²]/.test(q)) return 'linear-equations';
-  if (/^[\d\s+*/(),.-]+$/.test(q) && /\d\s*\/\s*\d/.test(q)) return 'fractions';
+  if (/^[\d\s+*/(),.:÷×·-]+$/.test(q) && /\d\s*\/\s*\d/.test(q)) return 'fractions';
   if (/катет|гипотенуз|пифагор/.test(q)) return 'pythagoras';
   if (/сечени/.test(q)) return 'sections';
+  if (/^[\d\s+*/^(),.√-]+$/.test(q)) return 'arithmetic';
   return null;
 }
 export function ambiguity(value, topic) {
@@ -25,6 +30,11 @@ export function ambiguity(value, topic) {
   return null;
 }
 export const FORMATS = {
+  arithmetic: 'Точное число или упрощённый корень. Для округления допиши: ; округли до 2 знаков.',
+  comparison: 'Один знак сравнения: <, > или =.',
+  proportions: 'Значение x — точное число или дробь. Знаменатели должны быть ненулевыми.',
+  conversions: 'Число в запрошенном виде; для величин можно указать единицу.',
+  polynomials: 'Выражение с x. Для разложения нужен ответ в виде произведения множителей.',
   'linear-equations': 'Введи значение x (например, 2 или 1/3) либо до 6 строк равенств с x. Каждую строку — с новой строки.',
   fractions: 'Точное число: 3/4, 0,75 или 1 1/2. Если десятичная дробь бесконечная, лучше оставь обыкновенную дробь.',
   percentages: 'Число; если ищешь процентную долю, можно дописать знак %. Не округляй без указания.',
@@ -37,16 +47,23 @@ export const GLOSSARY = {
   'числитель': 'Числитель показывает, сколько равных долей взяли. Он записан над чертой дроби.',
   'знаменатель': 'Знаменатель показывает, на сколько равных долей разделено целое. Он не может быть нулём.',
   'коэффициент': 'Коэффициент — числовой множитель перед буквой: в 3x он равен 3.',
-  'корень': 'Корень уравнения — значение неизвестного, при котором равенство верно.',
+  'корень': 'Корень уравнения делает равенство верным. Квадратный корень √a — неотрицательное число, квадрат которого равен a; это другое значение слова.',
   'гипотенуза': 'Гипотенуза — сторона прямоугольного треугольника напротив прямого угла.',
   'катет': 'Катет — одна из двух сторон, образующих прямой угол.',
   'процент': 'Один процент — одна сотая исходного целого.',
   'сечение': 'Сечение многогранника плоскостью — общая часть многогранника и этой плоскости.'
 };
 export function whyStep(topic, step) {
+  if (topic === 'fractions' && step.includes(' * ')) return 'При умножении дробей перемножают числители и знаменатели. Сокращать можно общие ненулевые множители числителя и знаменателя.';
+  if (topic === 'fractions' && step.includes(' / ')) return 'Деление на ненулевую дробь заменяют умножением на обратную дробь.';
   if (/делим|раздели|делен/iu.test(step) && topic === 'linear-equations') return 'Деление обеих частей на одно и то же ненулевое число сохраняет равенство. Деление на ноль запрещено.';
   if (/прибав|вычит|вычти|перенос/iu.test(step) && topic === 'linear-equations') return 'Если прибавить или вычесть одно и то же число в обеих частях равенства, его решения сохранятся.';
   return {
+    arithmetic: 'Скобки задают группировку; степень вычисляется до умножения. Умножение и деление одной ступени выполняются слева направо. Знак перед степенью не входит в основание без скобок.',
+    comparison: 'Умножение обеих дробей на общий положительный знаменатель сохраняет их порядок. С отрицательными числами важно учитывать знак.',
+    proportions: 'При ненулевых знаменателях можно умножить обе части равенства на их произведение; получаются равные произведения крест-накрест.',
+    conversions: 'Меняется единица или форма записи, а сама величина сохраняется. Сравнивать можно только единицы одной размерности.',
+    polynomials: 'Распределительный закон раскрывает скобки. Подобные слагаемые имеют одинаковую степень x; при разложении раскрытие скобок должно вернуть исходный многочлен.',
     'linear-equations': 'Мы ищем значение x, при котором обе части равны. Каждый переход нужно проверить на сохранение решений.',
     fractions: 'Складывать и вычитать можно количества одинаковых долей. Умножение числителя и знаменателя на одно ненулевое число сохраняет дробь.',
     percentages: 'Процент означает сотую долю. Сначала определяем исходное целое, затем долю от него.',
@@ -72,7 +89,7 @@ export function appendMath(container, text) {
   const mathNode = (tag, text) => { const n = document.createElementNS('http://www.w3.org/1998/Math/MathML', tag); if (text !== undefined) n.textContent = text; return n; };
   for (const m of String(text).matchAll(pattern)) {
     container.append(document.createTextNode(text.slice(start, m.index)));
-    const math = mathNode('math'); math.setAttribute('data-plain', m[0]); const part = mathNode(m[1] !== undefined ? 'mfrac' : m[3] !== undefined ? 'msup' : 'msqrt');
+    const math = mathNode('math'); math.setAttribute('data-plain', m[0]); math.setAttribute('displaystyle', 'true'); const part = mathNode(m[1] !== undefined ? 'mfrac' : m[3] !== undefined ? 'msup' : 'msqrt');
     math.setAttribute('aria-label', m[1] !== undefined ? `${m[1]} делённое на ${m[2]}` : m[3] !== undefined ? `${m[3]} в степени ${m[4]}` : `квадратный корень из ${m[5]}`);
     if (m[1] !== undefined) part.append(mathNode('mn', m[1]), mathNode('mn', m[2]));
     else if (m[3] !== undefined) part.append(mathNode(/\d/.test(m[3]) ? 'mn' : 'mi', m[3]), mathNode('mn', m[4]));

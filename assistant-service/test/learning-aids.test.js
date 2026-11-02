@@ -50,7 +50,7 @@ test('all curated examples are supported and resource paths exist in this reposi
   }
   assert.deepEqual(topicHelp('__proto__'), { examples: [], resource: null });
   const help = topicHelp('fractions'); help.examples.length = 0;
-  assert.equal(topicHelp('fractions').examples.length, 2);
+  assert.equal(topicHelp('fractions').examples.length, 4);
 });
 
 test('similar exercises preserve the family and accept independently known answers', () => {
@@ -93,4 +93,12 @@ test('bounded visual descriptors represent original rational operands and percen
   for (const question of ['1/0+1/2', '1/13+1/2', '4/1+1/2', '1 3/2+1/2', '<img>1/2+1/3']) assert.equal(visualFor('fractions', question), null);
   for (const question of ['120% от 240', '-5% от 10', '30 от 120 в процентах']) assert.equal(visualFor('percentages', question), null);
   assert.equal(visualFor('linear-equations', 'x=2'), null);
+});
+
+test('fraction products and quotients get exercises of the same operation',()=>{
+  for(const [original,expected] of [['1/2 * 1/3','1/2'],['1/2 : 1/3','9/8']]){
+    const practice=practiceFor('fractions',original);
+    assert.equal(answerOffline({...practice,attempt:expected}).attemptStatus,'correct');
+    assert.match(practice.question,original.includes(':')?/:/:/\*/);
+  }
 });

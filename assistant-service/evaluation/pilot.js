@@ -6,7 +6,7 @@ import { execFileSync } from 'node:child_process';
 import { loadConfig, PROVIDERS, pricesFresh } from '../src/config.js';
 import { requireValue, AssistantError } from '../src/errors.js';
 import { parseQuestion, containsSensitiveText } from '../src/privacy.js';
-import { listTopics, getBuiltinKnowledge } from '../src/tutor.js';
+import { listProviderTopics, getBuiltinKnowledge } from '../src/tutor.js';
 import { prepareRequest, callProvider } from '../src/provider.js';
 import { CampaignLedger } from './ledger.js';
 
@@ -56,7 +56,7 @@ export function validateSpecification(spec) {
 export function validateCorpus(corpus, spec) {
   check(keys(corpus, ['schemaVersion', 'id', 'cases']) && corpus.schemaVersion === 1 && corpus.id === spec.id
     && Array.isArray(corpus.cases) && corpus.cases.length === spec.maxRequests + spec.preflightCount, 'EVAL_CORPUS_INVALID');
-  const ids = new Set(), topics = new Set(listTopics().map(topic => topic.id));
+  const ids = new Set(), topics = new Set(listProviderTopics().map(topic => topic.id));
   for (const row of corpus.cases) {
     check(keys(row, ['id', 'phase', 'category', 'grade', 'input', 'expectation'], ['pairId', 'expectedError'])
       && /^[a-z0-9][a-z0-9-]{2,79}$/.test(row.id) && !ids.has(row.id) && PHASES.includes(row.phase)
@@ -86,7 +86,7 @@ export function validateCorpus(corpus, spec) {
 }
 export function parseCase(row, requestId = FIXED_REQUEST_ID) {
   const { simpler, ...body } = row.input;
-  return { ...parseQuestion({ ...body, requestId, externalConsent: true }, listTopics().map(topic => topic.id)), simpler };
+  return { ...parseQuestion({ ...body, requestId, externalConsent: true }, listProviderTopics().map(topic => topic.id)), simpler };
 }
 export function planningConfig(spec) {
   validateSpecification(spec);

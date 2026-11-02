@@ -1,3 +1,4 @@
+import { FOUNDATION_TOPICS, solveFoundation, solveFractionProduct } from './math-foundations.js';
 import { readFileSync } from 'node:fs';
 import { normalizeTask } from '../public/study-tools.js';
 import { checkSolutionLines } from './solution-lines.js';
@@ -13,8 +14,12 @@ const TOPICS = [
   { id: 'gcd-lcm', title: 'НОД и НОК', sample: 'НОК 12 и 18' },
   { id: 'rounding', title: 'Округление', sample: 'Округли 9,96 до десятых' },
   { id: 'pythagoras', title: 'Теорема Пифагора', sample: 'Как отличить гипотенузу от катетов?' },
-  { id: 'sections', title: 'Первые шаги в сечениях', sample: 'Как начать строить сечение по трём точкам?' }
+  { id: 'sections', title: 'Первые шаги в сечениях', sample: 'Как начать строить сечение по трём точкам?' },
+  ...FOUNDATION_TOPICS
 ];
+const PROVIDER_TOPIC_IDS = new Set(['linear-equations', 'fractions', 'percentages', 'gcd-lcm', 'rounding', 'pythagoras', 'sections']);
+export const isProviderTopic = topic => PROVIDER_TOPIC_IDS.has(topic);
+export function listProviderTopics() { return clone(TOPICS.filter(topic => isProviderTopic(topic.id))); }
 const TOPIC_IDS = new Set(TOPICS.map(({ id }) => id));
 const INVALID = () => new TypeError('INVALID_MODEL_ANSWER');
 const clone = value => structuredClone(value);
@@ -31,7 +36,7 @@ const signed = value => value < 0n ? `(${value})` : String(value);
 const normalized = question => question.trim().toLowerCase()
   .replaceAll('ё', 'е').replace(/[−–—]/g, '-');
 
-export function listTopics() { return clone(TOPICS); }
+export function listTopics() { return clone(TOPICS).map(topic => isProviderTopic(topic.id) ? topic : { ...topic, offlineOnly: true }); }
 export function getBuiltinKnowledge() { return clone(BUILTIN); }
 
 function topicCards(topic, cards) {
@@ -445,7 +450,7 @@ function isConceptQuestion({ topic, question }) {
   const text = normalized(question);
   // A general card is never presented as a checked solution of an arbitrary
   // numeric problem, and a topic word alone does not license unrelated prose.
-  return !/[\d=]/.test(text) && CONCEPT_TERMS[topic].test(text)
+  return !/[\d=]/.test(text) && (CONCEPT_TERMS[topic]?.test(text) || false)
     && /^(?:пожалуйста[,\s]+)?(?:как|что|почему|зачем|когда|чем|какой|какая|какие|объясни|поясни|напомни|помоги понять|правило|формула)(?=\s|[?!,:;.]|$)/.test(text);
 }
 
@@ -475,20 +480,21 @@ function checkedInput(input) {
 export function answerOffline(input, cards = getBuiltinKnowledge()) {
   const safe = checkedInput(input); const selected = topicCards(safe.topic, cards);
   const sources = selected.map(card => ({ id: card.id, title: card.title, url: card.source.url }));
-  const solved = SOLVERS[safe.topic]?.(safe.question);
+  const solved = SOLVERS[safe.topic]?.(safe.question) || solveFoundation(safe.topic, safe.question) || (safe.topic === 'fractions' ? solveFractionProduct(safe.question) : null);
   if (solved) {
     const sequence = safe.topic === 'linear-equations' && safe.attempt.includes('\n') ? checkSolutionLines(safe.question, safe.attempt) : null;
-    const feedback = sequence ? sequence.text : attemptMessage(safe.attempt, solved, safe.simpler, safe);
+    const specific = safe.attempt.trim() && solved.verify ? solved.verify(safe.attempt) : null;
+    const feedback = specific ? specific.text : sequence ? sequence.text : attemptMessage(safe.attempt, solved, safe.simpler, safe);
     const value = parseNumericAttempt(solved.answerUnit === 'percent' ? safe.attempt.replace(/\s*%$/, '') : safe.attempt);
     const singleStep = safe.topic === 'linear-equations' && safe.attempt.includes('=') && !value ? checkSolutionLines(safe.question, safe.attempt) : null;
-    const attemptStatus = !safe.attempt.trim() ? 'none' : sequence?.status || singleStep?.status || (!value || !solved.expected ? 'unsupported' : value.n * solved.expected.d === solved.expected.n * value.d ? 'correct' : 'incorrect');
+    const attemptStatus = !safe.attempt.trim() ? 'none' : specific?.status || sequence?.status || singleStep?.status || (!value || !solved.expected ? 'unsupported' : value.n * solved.expected.d === solved.expected.n * value.d ? 'correct' : 'incorrect');
     const complete = safe.mode === 'explain';
     return {
       title: solved.title,
       text: [safe.simpler ? 'Разберём по одному небольшому действию.' : solved.text, feedback].filter(Boolean).join(' '),
       steps: complete ? solved.steps : [(safe.simpler && solved.shortHints ? solved.shortHints : solved.hints)[safe.hintLevel - 1]],
       check: complete ? solved.check : 'Сделай только этот шаг. Предыдущие подсказки можно оставить перед глазами.',
-      sources, verification: 'deterministic', topic: safe.topic, complete, attemptStatus, attemptKind: sequence || singleStep ? 'step' : 'answer', ...(sequence ? { lineChecks: sequence.lines } : {})
+      sources, verification: 'deterministic', topic: safe.topic, complete, attemptStatus, attemptKind: specific?.kind || (sequence || singleStep ? 'step' : 'answer'), ...(solved.format ? { answerFormat: solved.format } : {}), ...(sequence ? { lineChecks: sequence.lines } : {})
     };
   }
   const card = selected[0]; const theoryOnly = isConceptQuestion(safe);
@@ -516,6 +522,7 @@ export function answerOffline(input, cards = getBuiltinKnowledge()) {
 
 export function buildMessages(input, cards = getBuiltinKnowledge()) {
   const safe = checkedInput(input);
+  if (!isProviderTopic(safe.topic)) throw new TypeError('OFFLINE_TOPIC_ONLY');
   const context = topicCards(safe.topic, cards).map(card => ({
     id: card.id.slice(0, 80), title: card.title.slice(0, 160),
     explanation: card.explanation.slice(0, 1800),

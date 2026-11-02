@@ -72,6 +72,7 @@ export function installStudyTools({ elements: e, node, nextHint, busy }) {
   async function copy(text) { try { await navigator.clipboard.writeText(text); copyStatus.textContent = 'Скопировано.'; } catch { copyStatus.textContent = 'Копирование недоступно. Можно выделить нужный текст вручную.'; } }
   e.question.parentElement.append(button('Скопировать условие', () => copy(e.question.value)), copyStatus);
   function decorate(card, answer, task, attempt, submittedAttempt) {
+    if (typeof answer.answerFormat === 'string') format.textContent = answer.answerFormat;
     const key = JSON.stringify(task);
     if (key !== taskKey) { wrong = 0; taskKey = key; help.hidden = true; }
     if (submittedAttempt && answer.attemptStatus === 'incorrect') { wrong++; help.hidden = wrong < 2; }
