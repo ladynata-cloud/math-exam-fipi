@@ -6,7 +6,7 @@ const metadata={commit:'a'.repeat(40),authoredFileSha256:sha,bundleFileSha256:sh
 const test=(name,fn)=>{fn();checks++;};
 const reject=(name,mutate,pattern)=>test(name,()=>{const items=structuredClone(fixtures);mutate(items);assert.throws(()=>combine(items,lessons,options),pattern);});
 test('sphere capture addition preserves all 1685 historical cases in order',()=>{
- const entries=[...cases],historical=entries.filter(([,name])=>!name.startsWith('sphere-'));
+ const entries=[...require('./iv-selfcheck-baseline.cjs').previousCases(cases)],historical=entries.filter(([,name])=>!name.startsWith('sphere-'));
  assert.equal(historical.length,1685);
  assert.equal(crypto.createHash('sha256').update(JSON.stringify(historical)).digest('hex'),'970c43fdbcf70f22e90f3803d6463d8367185cdde9ad8613b39af5c6dc43f092');
  assert.deepEqual(entries.slice(0,1685),historical,'historical entries remain the exact leading sequence');

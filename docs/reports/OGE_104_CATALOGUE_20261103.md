@@ -2,7 +2,8 @@
 
 Task: [OGE_104_CATALOGUE](../tasks/OGE_104_CATALOGUE.md), MEDIUM;
 [MAT-9](https://linear.app/mathexam/issue/MAT-9).
-Validation base: `b9ba38b27f5b306f0d81d01c67e0a636e5a06b84`.
+Final validation base: `ea5b6cb9e931eee63224fbc4c13b2ac43326cc19`.
+Initial continuation base: `b9ba38b27f5b306f0d81d01c67e0a636e5a06b84`.
 Final remote head, CI run URLs and cloud transport evidence are recorded in the
 Draft PR. This is preparation evidence, not a production-release claim.
 
@@ -26,10 +27,16 @@ Current main has no catalogue. A verified HTTPS HEAD on the intended public
 catalogue URL returned 404. The recovered Git commit is later than the original
 22:45 progress note and already includes a first mobile-padding correction.
 
-Current main adds 26 task commits to the old base. A read-only virtual merge
+Initial main added 26 task commits to the old base. A read-only virtual merge
 identified one conflict in `docs/PROJECT_STATUS.md`; an ordinary local merge
 preserved both sections and all current-main product changes. No force, reset
 or rebase was used. The prior [report](OGE_104_CATALOGUE_20261101.md) is historical.
+
+Before the final CI rerun, main advanced to `ea5b6cb` through unrelated PR #402
+(Atanasyan self-check). A second read-only virtual merge again identified only
+the project-journal conflict. An ordinary merge preserves both journal entries
+and all 53 other incoming files byte-for-byte; the task delta remains 331 files.
+Relevant catalogue/navigation/sitemap checks were repeated on this combined tree.
 
 ## Correction and fresh verification
 
@@ -76,10 +83,26 @@ results and exact-head provenance are in the Draft PR.
 
 CLI push lacked Git HTTPS credentials. Connected GitHub writes work, but the
 13,132,766-byte collection exceeds the connector's 16 MiB request limit after
-Base64 encoding. A temporary cloud workflow can assemble that exact file from
-two hash-checked chunks, verify the complete SHA256 and commit with a normal
-task-branch push. The final candidate must contain no chunks or recovery workflow.
+Base64 encoding. Temporary cloud run
+[41497420291](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41497420291)
+assembled that exact file from two hash-checked chunks, verified the complete
+SHA256 and committed with a normal task-branch push. The final candidate contains
+no chunks or recovery workflow. Its complete Git tree matched the local candidate.
 This transports existing bytes; it does not generate or recompress the PDF.
+
+The first cloud run passed the focused catalogue, SEO, lesson showcase, Peterson
+and EGE-base workflows. The OGE-course workflow exposed an inherited stale
+assertion at `tools/oge-focus-navigation.test.cjs:29`: it banned any EGE mention
+in homepage `main`, including the 5–11 lesson invitation merged in PR #393
+(`2a9e70b`). The unmodified gate failed identically on base `b9ba38b` and the
+catalogue candidate. Gate SHA256 before correction:
+`1511cee6235f0aa69c689afb6feb02ec7691b842b90efab6dd449cbb47692590`.
+The narrow correction requires the published lesson invitation and all three
+lesson links, retains other whole-page exclusions, and applies the full
+exam/course exclusion to the dedicated OGE starting route. All other assertions
+remain intact. The corrected local gate passes 245 internal links; deliberate
+missing-contact-link and foreign-exam-in-OGE mutations are rejected. Final cloud
+reruns and their actual commit are recorded in the Draft PR.
 
 Initial checker development incorrectly rejected a repeated identical title on
 answer pages; it now requires a nonempty header set containing only the correct

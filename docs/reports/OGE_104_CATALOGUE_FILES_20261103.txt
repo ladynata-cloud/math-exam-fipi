@@ -325,6 +325,7 @@ oge/variants/2027/files/OGE_2027_104_variant.pdf
 oge/variants/2027/index.html
 oge/variants/2027/manifest.json
 sitemap.xml
+tools/oge-focus-navigation.test.cjs
 tools/oge-pdf-catalogue/browser.cjs
 tools/oge-pdf-catalogue/check.py
 tools/seo-public-pages.json

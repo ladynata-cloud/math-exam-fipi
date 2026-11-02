@@ -9,7 +9,7 @@ cloud execution. The endpoint of this continuation is the requested Draft PR;
 merge and deployment are not performed in this handoff.
 
 - Linear: [MAT-9](https://linear.app/mathexam/issue/MAT-9).
-- Current validation base: `b9ba38b27f5b306f0d81d01c67e0a636e5a06b84`.
+- Current validation base: `ea5b6cb9e931eee63224fbc4c13b2ac43326cc19`.
 - Existing task branch: `task/oge-2027-104-pdf-catalogue`.
 - Recovered checkpoint: `2ef2ec0834dbeb6986fde66b73d61d43822f4e26`,
   tree `deae9bc94599f0d3636bbe0cbda211969e21a14e`.
@@ -20,7 +20,11 @@ merge and deployment are not performed in this handoff.
   padding, preserving the 15 px labels and three adjacent actions.
 - Current scope additionally includes two focused verification scripts and
   `.github/workflows/oge-pdf-catalogue.yml`, implementing the cloud-check request.
-  Existing workflows/gates remain unchanged.
+  Existing workflows remain unchanged. The navigation test's obsolete ban on
+  any homepage EGE mention is aligned with the lesson showcase already merged
+  in PR #393: require its three lesson entries, retain the other whole-page
+  exclusions and apply the full exam/course exclusion to the OGE route itself.
+  The identical old assertion failed on the unmodified validation base.
 - If required by the connector's 16 MiB request limit, a temporary cloud recovery
   workflow may assemble the large collection from verified binary chunks. This
   must preserve the original PDF SHA256/Git blob, use a normal task-branch push,
