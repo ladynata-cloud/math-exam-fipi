@@ -33,7 +33,7 @@ const screenshotCases=require('./browser-cases.cjs');
 const explanation=stage=>'[data-step="'+stage+'"] > details > p';
 const mathLayoutCases=new Map([
  ['ex-selfcheck-iv-10|step-1',[{selector:explanation('step-1'),fractions:[['AB','2']]}]],
- ['ex-selfcheck-iv-10|step-2',[{selector:explanation('step-2'),fractions:[['AB','2']]}]],
+ ['ex-selfcheck-iv-10|step-2',[{selector:explanation('step-1'),fractions:[['AB','2']]}]],
  ['ex-selfcheck-iv-10|step-3',[{selector:explanation('step-3'),fractions:[['AB','2']]}]],
  // Actual294–298 paragraphs: complete radicals and stacked operands at both
  // widths, including their retained appearance on the final solution page.
