@@ -16,8 +16,8 @@ const FALLBACK_CODES = new Set(['PROVIDER_DISABLED', 'BUDGET_EXHAUSTED', 'API_RA
 // higher-priced provider is ever selected here.
 export async function executeAssistantAnswer({ store, config, clock, fetchImpl, active, res,
   session, input, cards, offline, externalAllowed = true, externalConsent = input.externalConsent,
-  permanentRequestId = null, messageBuilder, followUp = false }) {
-  let answer = offline, notice, usage, reservation;
+  permanentRequestId = null, messageBuilder, followUp = false, historyQuestion = input.question }) {
+  let answer = offline, notice, usage, reservation, validation;
   const reservationArgs = { sessionHash: session.hash, requestId: input.requestId, permanentRequestId };
   const eligible = externalAllowed && config.mode === 'api' && externalConsent && (followUp || offline.verification !== 'deterministic');
   if (eligible) {
@@ -35,8 +35,8 @@ export async function executeAssistantAnswer({ store, config, clock, fetchImpl, 
       const disconnect = () => { if (!res.writableEnded) controller.abort(); };
       res.once('close', disconnect);
       try {
-        const result = await callProvider({ config, prepared, input, cards, fetchImpl, signal: controller.signal });
-        answer = result.answer; usage = result.usage;
+        const result = await callProvider({ config, prepared, input, cards, fetchImpl, signal: controller.signal, historyQuestion });
+        answer = result.answer; usage = result.usage; validation = result.validation;
       } catch (error) {
         if (error.code === 'PROVIDER_USAGE_CONTRACT') store.tripCircuit();
         notice = 'Модель не дала проверяемый ответ. Показываю материалы MathExam; повторного платного запроса не было.';
@@ -46,7 +46,7 @@ export async function executeAssistantAnswer({ store, config, clock, fetchImpl, 
   if (!reservation) reservation = store.reserve(reservationArgs);
   try {
     const response = store.finish(reservation, session.hash, answer, usage);
-    return { ok: true, answer: response, ...(notice ? { notice } : {}) };
+    return { ok: true, answer: response, ...(validation ? { validation } : {}), ...(notice ? { notice } : {}) };
   } catch (error) { store.fail(reservation); throw error; }
 }
 
@@ -120,7 +120,8 @@ export function createCabinetBridge({ config, store, clock, fetchImpl, active, r
       // UUIDs are globally unique operations. Changing a profile, pseudonym or
       // bridge/session secret must not make the same operation spend again.
       permanentRequestId: hash(`cabinet-request:${input.requestId.toLowerCase()}`),
-      messageBuilder: dialogue ? dialogueMessageBuilder(dialogue) : buildCabinetMessages, followUp: !!dialogue });
+      messageBuilder: dialogue ? dialogueMessageBuilder(dialogue) : buildCabinetMessages, followUp: !!dialogue,
+      historyQuestion: dialogue?.question || input.question });
     if (dialogue && result.answer.verification !== 'model-unverified') {
       result.notice = 'На уточняющий вопрос сейчас не удалось ответить. Ниже показаны материалы к исходной задаче. Повторного платного запроса не было.';
     }

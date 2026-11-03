@@ -2,13 +2,14 @@ import { requireValue, exactKeys } from './errors.js';
 import { containsSensitiveText } from './privacy.js';
 import { validateModelAnswer } from './tutor.js';
 import { buildCabinetMessages } from './cabinet-topics.js';
+import { DIALOGUE_BYTES } from './answer-limits.js';
 
-const LIMIT_BYTES = 3500;
+const LIMIT_BYTES = DIALOGUE_BYTES;
 const invalid = 'CABINET_DIALOGUE_INVALID';
 const owns = (value, keys) => exactKeys(value, keys) && keys.every(key => Object.hasOwn(value, key));
 
 function text(value, max, credentials) {
-  requireValue(typeof value === 'string' && value.length <= max, invalid);
+  requireValue(typeof value === 'string' && value.isWellFormed() && value.length <= max, invalid);
   const normalized = value.normalize('NFKC').trim();
   requireValue(normalized.length > 0 && normalized.length <= max
     && !/[\u0000-\u0008\u000b-\u001f\u007f\u202a-\u202e\u2066-\u2069]/u.test(normalized), invalid);

@@ -7,6 +7,7 @@ import { normalizeTask } from '../public/study-tools.js';
 import { checkSolutionLines } from './solution-lines.js';
 import { clarificationFor } from './clarification.js';
 import { solveExtendedLinear, solvePercentProblem, checkLinearStep } from './extended-math.js';
+import { ANSWER_BYTES, jsonBytes } from './answer-limits.js';
 
 // Original bounded knowledge; owner acceptance is a rollout gate, not claimed here.
 const BUILTIN = JSON.parse(readFileSync(new URL('../knowledge/core.json', import.meta.url), 'utf8'));
@@ -554,11 +555,13 @@ export function validateModelAnswer(value) {
   if (!value || typeof value !== 'object' || Array.isArray(value)
     || Object.getPrototypeOf(value) !== Object.prototype
     || Object.keys(value).sort().join(',') !== 'check,steps,text,title') throw INVALID();
-  const validText = (text, max) => typeof text === 'string' && text.trim().length > 0 && text.length <= max
-    && !/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(text)
+  const validText = (text, max) => typeof text === 'string' && text.isWellFormed() && text.trim().length > 0 && text.length <= max
+    && !/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f\u202a-\u202e\u2066-\u2069]/.test(text)
     && !/(?:https?:\/\/|www\.|<\/?[a-z!]|javascript:|data:|```)/i.test(text);
   if (!validText(value.title, 160) || !validText(value.text, 1800) || !validText(value.check, 600)
     || !Array.isArray(value.steps) || value.steps.length < 1 || value.steps.length > 5
     || !value.steps.every(step => validText(step, 600))) throw INVALID();
-  return { title: value.title.trim(), text: value.text.trim(), steps: value.steps.map(step => step.trim()), check: value.check.trim() };
+  const content = { title: value.title.trim(), text: value.text.trim(), steps: value.steps.map(step => step.trim()), check: value.check.trim() };
+  if (jsonBytes(content) > ANSWER_BYTES) throw INVALID();
+  return content;
 }
