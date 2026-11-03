@@ -103,15 +103,19 @@ async function control(teacher, pupil, pupilWrites) {
 }
 async function reconnect(disconnected, active, note) {
   phase = disconnected.tag + ' transport interruption';
-  await disconnected.context.setOffline(true);
-  // Offline emulation alone need not close existing WebSockets in Chromium.
-  // Close the transport, preserving the Socket.IO client's automatic retry.
+  // Arm the listener before offline emulation: Chromium may close the socket
+  // synchronously while setOffline resolves, before a later listener exists.
   await disconnected.page.evaluate(() => {
     window.__smokeDisconnected = false;
     shared.socket.once('disconnect', () => { window.__smokeDisconnected = true; });
-    shared.socket.io.engine.close();
+  });
+  await disconnected.context.setOffline(true);
+  // Ensure an existing WebSocket is dropped too; keep automatic retry enabled.
+  await disconnected.page.evaluate(() => {
+    if (shared.socket.connected) shared.socket.io.engine.close();
   });
   await disconnected.page.waitForFunction(() => window.__smokeDisconnected && !shared.connected);
+  pass(disconnected.tag + ' transport loss detected');
   await active.frame.locator('.ocp-writing textarea').fill(note);
   await draw(active, active, 'pen', 360);
   await disconnected.context.setOffline(false);
@@ -157,7 +161,7 @@ async function run() {
   await action(teacher, pupil, 'answer feedback', () => teacher.frame.locator('[data-board-action="tr-check"]').click());
   await action(teacher, pupil, 'hint disclosure', () => teacher.frame.locator('#courseHintToggle').click());
   await action(teacher, pupil, 'guided solution', () => teacher.frame.locator('[data-board-action="tr-hint"]').click());
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 6; i++) {
     const ask = teacher.frame.locator('#gAsk');
     if (await ask.isVisible()) {
       await action(teacher, pupil, 'step draft ' + i, () => ask.fill('-987654'));
@@ -168,6 +172,7 @@ async function run() {
     if (await next.isVisible()) await action(teacher, pupil, 'retain step and advance ' + i, () => next.click());
     else break;
   }
+  assert(checks.some(label => label.startsWith('step feedback ')), 'at least one numeric guided step was exercised');
   assert((await native(teacher)).actions.length >= 5, 'sequential native actions recorded');
   const writing = teacher.frame.locator('.ocp-writing');
   if (!await writing.evaluate(el => el.open)) await action(teacher, pupil, 'open proof notebook', () => writing.locator('summary').click());
