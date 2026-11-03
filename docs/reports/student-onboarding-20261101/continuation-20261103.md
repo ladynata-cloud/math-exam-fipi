@@ -39,3 +39,9 @@ The owner's continuation and OWNER_RELEASE_AUTHORIZATION.md authorize routine in
 ## Fresh cloud evidence on integration head 5af20d2
 
 Focused run41553637281 passed all 17 synthetic onboarding test groups, rollback over exact main d74b8d5, and the real HTTP/SQLite browser journey at 320/390/1280px. Browser version151.0.7922.34; errors=[], publicRequestsAllowed=0. All fifteen fresh screenshots were actually inspected. Artifact13192738666 ZIP SHA-256 c841b5924d1f16b617c253a6667852bb94f3b4c38c3eafa3be27fcce6960a5af. The follow-up changes only release verification and this evidence; product source remains identical. Exact new-head CI is still required and recorded in the PR.
+
+## Retained CI failure and narrow harness correction
+
+On head341da146, Peterson run41554495785 / job125649949373 failed in the standalone synthetic iframe test at cabinet305/320. The preceding board and equation gates passed. The exact same product/source fixture had passed on integration head5af20d2; the intervening commit changed only release workflow/docs. The fixture does not execute the cabinet app, only checks its sandbox/referrer strings, so this is not a new onboarding routing result.
+
+The failing assertion read the generated session immediately after `frame.goto(exactUrl)` changed only the hash. Same-document navigation can complete before the hashchange handler restores the archived task; waiting for an already visible answer form does not wait for that handler. The harness now awaits the exact requested visible problem text before comparing the complete archived session, hint count, draft and solution count. All assertions, viewports, timeouts and production files are unchanged. The failed attempt is retained; the new exact-head run must pass.
