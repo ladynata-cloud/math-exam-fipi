@@ -37,9 +37,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
-<link rel="stylesheet" href="/assets/oge-home.css?v=20261104-orbits">
+<link rel="stylesheet" href="/assets/oge-home.css?v=20261104-25-orbits">
 <script defer src="/trainers/ege-profile-stereometry-3d/js/three.min.js"></script>
-<script defer src="/assets/oge-home.js?v=20261104-orbits"></script>
+<script defer src="/assets/oge-home-topics.js?v=20261104-25-orbits"></script>
+<script defer src="/assets/oge-home.js?v=20261104-25-orbits"></script>
 <style>
   .actions { display:flex; flex-wrap:wrap; gap:12px; margin:24px 0; }
   #where-to-start { margin-top:36px; }
@@ -109,22 +110,42 @@
           <g fill="none" stroke-linecap="round" stroke-width="7"><path d="M320 65Q368 180 416 65" stroke="#4e8c6d"/><path d="M440 151Q488 36 536 151" stroke="#c68c59"/></g>
           <g fill="#315747"><circle cx="354" cy="82" r="4"/><circle cx="382" cy="82" r="4"/><circle cx="475" cy="83" r="4"/><circle cx="500" cy="83" r="4"/></g>
         </svg>
-        <canvas id="oge-model-canvas" hidden role="img" aria-label="Солнечная система ОГЭ: восемь объёмных моделей на трёх орбитах"></canvas>
+        <canvas id="oge-model-canvas" hidden role="img" aria-label="ОГЭ: 25 наклонённых орбит с моделями типов задач"></canvas>
         <span class="orbit-label" aria-hidden="true">ОГЭ</span>
       </div>
-      <div class="model-tabs" role="group" aria-label="Выбрать модель" hidden>
-        <button type="button" data-model="all" aria-pressed="true">Все орбиты</button>
-        <button type="button" data-model="tires" aria-pressed="false">Шины</button>
-        <button type="button" data-model="apartment" aria-pressed="false">Квартира</button>
-        <button type="button" data-model="graphs" aria-pressed="false">Параболы</button>
-        <button type="button" data-model="geometry" aria-pressed="false">Геометрия</button>
-        <button type="button" data-model="stove" aria-pressed="false">Печь</button>
-        <button type="button" data-model="plot" aria-pressed="false">Участок</button>
-        <button type="button" data-model="paper" aria-pressed="false">Бумага</button>
-        <button type="button" data-model="dice" aria-pressed="false">Кубик</button>
+      <div class="orbit-picker" role="group" aria-label="Выбрать номер задания" hidden>
+        <button type="button" class="orbit-all" data-orbit="all" aria-pressed="true">Все 25 орбит</button>
+        <div class="orbit-numbers">
+          <button type="button" data-orbit="1" aria-pressed="false" aria-label="№1 — Практические задачи" title="Практические задачи">1</button>
+          <button type="button" data-orbit="2" aria-pressed="false" aria-label="№2 — Практические задачи" title="Практические задачи">2</button>
+          <button type="button" data-orbit="3" aria-pressed="false" aria-label="№3 — Практические задачи" title="Практические задачи">3</button>
+          <button type="button" data-orbit="4" aria-pressed="false" aria-label="№4 — Практические задачи" title="Практические задачи">4</button>
+          <button type="button" data-orbit="5" aria-pressed="false" aria-label="№5 — Практические задачи" title="Практические задачи">5</button>
+          <button type="button" data-orbit="6" aria-pressed="false" aria-label="№6 — Дроби" title="Дроби">6</button>
+          <button type="button" data-orbit="7" aria-pressed="false" aria-label="№7 — Числовая прямая" title="Числовая прямая">7</button>
+          <button type="button" data-orbit="8" aria-pressed="false" aria-label="№8 — Степени и корни" title="Степени и корни">8</button>
+          <button type="button" data-orbit="9" aria-pressed="false" aria-label="№9 — Уравнения" title="Уравнения">9</button>
+          <button type="button" data-orbit="10" aria-pressed="false" aria-label="№10 — Вероятность" title="Вероятность">10</button>
+          <button type="button" data-orbit="11" aria-pressed="false" aria-label="№11 — Графики" title="Графики">11</button>
+          <button type="button" data-orbit="12" aria-pressed="false" aria-label="№12 — Расчёты по формулам" title="Расчёты по формулам">12</button>
+          <button type="button" data-orbit="13" aria-pressed="false" aria-label="№13 — Неравенства" title="Неравенства">13</button>
+          <button type="button" data-orbit="14" aria-pressed="false" aria-label="№14 — Прогрессии" title="Прогрессии">14</button>
+          <button type="button" data-orbit="15" aria-pressed="false" aria-label="№15 — Треугольники" title="Треугольники">15</button>
+          <button type="button" data-orbit="16" aria-pressed="false" aria-label="№16 — Окружность" title="Окружность">16</button>
+          <button type="button" data-orbit="17" aria-pressed="false" aria-label="№17 — Четырёхугольники" title="Четырёхугольники">17</button>
+          <button type="button" data-orbit="18" aria-pressed="false" aria-label="№18 — Клетчатая бумага" title="Клетчатая бумага">18</button>
+          <button type="button" data-orbit="19" aria-pressed="false" aria-label="№19 — Утверждения" title="Утверждения">19</button>
+          <button type="button" data-orbit="20" aria-pressed="false" aria-label="№20 — Алгебра, часть 2" title="Алгебра, часть 2">20</button>
+          <button type="button" data-orbit="21" aria-pressed="false" aria-label="№21 — Текстовые задачи" title="Текстовые задачи">21</button>
+          <button type="button" data-orbit="22" aria-pressed="false" aria-label="№22 — Функции и параметры" title="Функции и параметры">22</button>
+          <button type="button" data-orbit="23" aria-pressed="false" aria-label="№23 — Геометрия: вычисления" title="Геометрия: вычисления">23</button>
+          <button type="button" data-orbit="24" aria-pressed="false" aria-label="№24 — Доказательства" title="Доказательства">24</button>
+          <button type="button" data-orbit="25" aria-pressed="false" aria-label="№25 — Сложная геометрия" title="Сложная геометрия">25</button>
+        </div>
       </div>
+      <div class="model-tabs" role="group" aria-label="Типы задач на выбранной орбите" hidden></div>
       <div class="model-caption" aria-live="polite" aria-atomic="true"><div><span id="model-number">Знакомые сюжеты — понятные решения</span><p id="model-description">Выберите тему и попробуйте её в деле.</p></div><a id="model-link" href="/trainers/oge-course/">К заданиям <span aria-hidden="true">↗</span></a></div>
-      <p class="model-hint" id="model-hint" hidden>Выберите модель или поверните систему мышью / пальцем ↔</p>
+      <p class="model-hint" id="model-hint" hidden>Выберите номер, затем модель · Поверните мышью или пальцем ↔</p>
     </div>
   </div>
 </section>

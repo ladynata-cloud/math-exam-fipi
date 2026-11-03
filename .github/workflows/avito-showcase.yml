@@ -7,6 +7,7 @@ on:
       - 'lessons/**'
       - 'assets/lesson-showcase.css'
       - 'assets/oge-home.*'
+      - 'assets/oge-home-topics.js'
       - 'tools/oge-home.browser.cjs'
       - 'tools/oge-home-orbits.test.cjs'
       - 'assets/lesson-funnel.js'
