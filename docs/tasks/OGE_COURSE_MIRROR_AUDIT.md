@@ -317,3 +317,31 @@ release; standing publication authorization applies. Risk remains HIGH.
   production two-role verification remain release gates; their final evidence
   is recorded in PR340. Rollback is a scoped revert of this PR, with no data
   migration or removal of pupil work. External provider review was not performed.
+
+### Recorded-case evidence completion
+
+- The preceding fixed-edition browser run completed all source/v1/v2 journeys,
+  but its separate mathematical replay correctly left 18 source observations
+  pending: the paper generator's new seeded case (five questions at three
+  widths) and the first fraction screenshot (three widths). Neither was marked
+  passed without review.
+- Actual hosted 1280px screenshots and recorded visible conditions were
+  inspected. The source paper case independently yields 2143, 4, 1250 cm²,
+  0.7 and 18 kg; source-only exact context and calculations were added. Frozen
+  edition contexts/calculations remain unchanged. The fraction image still
+  shows 1/5−41/50=−31/50; its current full payload is rebound after fresh visual
+  inspection while engine/TASKS and frozen-payload checks remain intact.
+- Replaying all recorded reports now passes 1185/1185, with zero pending cases,
+  missing reports or unreviewed source-derived oracles. Positive and negative
+  context probes verify that modified prompts, answers, geometry and page
+  fingerprints are still rejected.
+- An unchanged access-browser assertion falsely rejected a salted hexadecimal
+  scrypt hash containing the four synthetic PIN digits. A synthetic fixed-salt
+  probe demonstrates the collision with valid correct-code verification and
+  rejected wrong-code verification. The assertion now checks the strict scrypt
+  encoding, non-plaintext representation and both verification outcomes. All
+  existing DOM/storage/API credential-leak assertions remain; no production
+  authentication code changes.
+- These follow-ups change validation evidence only. The deployed runtime
+  candidate remains byte-identical to head a5e60ae; exact new-head cloud gates
+  remain required and are recorded in PR340 before publication.

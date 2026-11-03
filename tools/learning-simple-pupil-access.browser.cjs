@@ -11,7 +11,7 @@ const serverRequire = createRequire(path.join(ROOT, 'board-server/package.json')
 const express = serverRequire('express');
 const { LearningStore } = require('../board-server/learning-store');
 const { createLearningApi } = require('../board-server/learning-api');
-const { hashPassword } = require('../board-server/learning-auth');
+const { hashPassword, verifyPassword } = require('../board-server/learning-auth');
 const contracts = require('../board-server/learning-contracts');
 const { chromium } = require('playwright');
 const PASSWORD = '0417', REPLACEMENT = '0257';
@@ -69,7 +69,12 @@ const api = (page, route) => page.evaluate(route => LearningApp.api(route), rout
     assert.match(await page.locator('#student-form [data-onboarding-summary]').innerText(), /Виленкин/);
     await page.locator('#student-form [type=submit]').click(); await page.locator('#access-password').waitFor();
     const created = store.accountByLogin('fixture_simple_ready');
-    assert(created.password_hash); assert(!created.password_hash.includes(PASSWORD));
+    // A random hexadecimal salt/hash may contain the four fixture digits.
+    // Verify the actual encoded credential contract instead of a substring.
+    assert.match(created.password_hash, /^scrypt1:[a-f0-9]{32}:[a-f0-9]{64}$/);
+    assert.notEqual(created.password_hash, PASSWORD);
+    assert.equal(await verifyPassword(PASSWORD, created.password_hash), true);
+    assert.equal(await verifyPassword(REPLACEMENT, created.password_hash), false);
     assert.deepEqual(store.studentProfile(teacher, created.id).program,
       { grade: 6, courseIds: ['vilenkin6-textbook'] });
     const link = await page.locator('#access-link').inputValue();
