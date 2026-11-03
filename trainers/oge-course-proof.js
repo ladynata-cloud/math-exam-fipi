@@ -83,7 +83,8 @@ function explain(host,step,fallback,pending=false){const state=pending?'pending'
  const reasoning=pending?'Назови, что уже известно. Проверь условия теоремы, затем примени её к указанным на чертеже объектам. Число этого шага найди самостоятельно.':step.why||step.ok||(/по условию|дано|общая/i.test(text(step.t||step.h))?'Это дано в условии или относится к одному и тому же объекту. В записи решения укажи это явно.':'Этот шаг использует уже установленные соотношения. Назови исходное равенство и покажи преобразование, не пропуская промежуточную запись.');
  box.append(e('p',text(reasoning)));const topics=topicsForStep(step,fallback);R.topicCards(box,topics);R.sheetCards(box,cropsFor(topics));host.append(box);
 }
-const draftStore='oge-course-proof-drafts-v1';let drafts={};try{drafts=JSON.parse(root.localStorage.getItem(draftStore)||'{}')||{};}catch(_){}if(Array.isArray(drafts)||typeof drafts!=='object')drafts={};
+const shared=root.OgeCourseSharedMode===true;
+const draftStore='oge-course-proof-drafts-v1';let drafts={};if(!shared)try{drafts=JSON.parse(root.localStorage.getItem(draftStore)||'{}')||{};}catch(_){}if(Array.isArray(drafts)||typeof drafts!=='object')drafts={};
 function draft(anchor,key,proof=false){
  if(!anchor||anchor.parentElement?.querySelector(':scope > .ocp-writing'))return;
  const section=e('details',null,'ocp-writing');section.dataset.taskKey=key;
@@ -91,9 +92,10 @@ function draft(anchor,key,proof=false){
  const label=e('label',proof?'Обоснуй каждый вывод: что известно, что следует и почему.':'Запиши равенства и вычисления; укажи теорему для каждого геометрического вывода.');
  const textarea=e('textarea');textarea.rows=4;textarea.placeholder=proof?'Дано → вывод → обоснование → что требовалось доказать.':'Например: треугольник прямоугольный, поэтому применяю теорему Пифагора…';
  textarea.setAttribute('aria-label',proof?'Своя запись доказательства':'Своя запись решения');textarea.value=typeof drafts[key]==='string'?drafts[key]:'';
- const note=e('p','Запись сохраняется в этом браузере. Свободный текст можно обсудить с преподавателем. Ответ или собранные шаги проверяются отдельно.','ocp-writing-note');
+ const note=e('p',shared?'Запись видна участникам этой комнаты. Личный зачёт не изменяется.':'Запись сохраняется в этом браузере. Свободный текст можно обсудить с преподавателем. Ответ или собранные шаги проверяются отдельно.','ocp-writing-note');
  label.append(textarea);section.append(summary,label,note);
- textarea.addEventListener('input',()=>{drafts[key]=textarea.value;const keys=Object.keys(drafts);if(keys.length>100)delete drafts[keys[0]];try{root.localStorage.setItem(draftStore,JSON.stringify(drafts));}catch(_){note.textContent='Запись остаётся на этой странице. Сохранение в браузере сейчас недоступно.';}});
+ if(shared)textarea.maxLength=6000;
+ textarea.addEventListener('input',()=>{if(shared)textarea.value=textarea.value.replace(/</g,'＜').replace(/>/g,'＞').replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g,'').slice(0,6000);drafts[key]=textarea.value;const keys=Object.keys(drafts);if(keys.length>100)delete drafts[keys[0]];if(!shared)try{root.localStorage.setItem(draftStore,JSON.stringify(drafts));}catch(_){note.textContent='Запись остаётся на этой странице. Сохранение в браузере сейчас недоступно.';}});
  // The optional notebook follows the native answer / proof workspace, so it never
  // pushes the nearby help button or answer controls out of the way.
  anchor.parentElement.append(section);
@@ -129,5 +131,35 @@ let queued=false,disposed=false;function decorate(){queued=false;if(disposed)ret
 if(taskNo===23&&typeof buildTask==='function'){const nativeBuild=buildTask;buildTask=function(mount,task,mode,onDone){const result=nativeBuild(mount,task,mode,onDone);if(mode!=='quiz')current23=task;decorate();return result;};}
 const observer=new MutationObserver(()=>{if(!queued){queued=true;queueMicrotask(decorate);}});observer.observe(d.body,{subtree:true,childList:true});
 d.addEventListener('click',event=>{const button=event.target.closest('button');if(!button)return;const isReference=button.matches('.sp-go')||((taskNo===23)&&button.classList.contains('link-btn')&&/формула/.test(button.textContent));if(!isReference)return;const panel=q('.ocp-references');if(!panel)return;event.preventDefault();event.stopImmediatePropagation();const details=q('details',panel);details.open=true;details.querySelector('summary').focus();},true);
-root.OgeCourseProof={topic23,topic24,topic25,proofStepTopics,calculationStepTopics,extraReasons25,topicsForStep,cropsFor,decorate,dispose:()=>{disposed=true;observer.disconnect();}};decorate();d.addEventListener('DOMContentLoaded',decorate,{once:true});
+function sharedView(){return q(taskNo===23?'.train-host':taskNo===24?'#view':'#panel-train')||d.createElement('section');}
+function sharedControls(){
+ const host=sharedView();
+ return {writing:q('.ocp-writing',host),textarea:q('.ocp-writing textarea',host),
+ details:qa('.ocp-references details,.ocp-step-reason,.ocp-step-reason details',host),
+ zoom:qa('.ocp-references .ocr-zoom,.ocp-step-reason .ocr-zoom',host),
+ figures:qa('.ocp-figure-zoom',host)};
+}
+function exactShared(value,keys){
+ if(!value||typeof value!=='object'||Array.isArray(value)||![Object.prototype,null].includes(Object.getPrototypeOf(value))||Reflect.ownKeys(value).length!==keys.length)return false;
+ return keys.every(key=>{const prop=Object.getOwnPropertyDescriptor(value,key);return prop&&prop.enumerable&&Object.prototype.hasOwnProperty.call(prop,'value');});
+}
+function boolsShared(value,max){
+ if(!Array.isArray(value)||Object.getPrototypeOf(value)!==Array.prototype||value.length>max||Reflect.ownKeys(value).length!==value.length+1)return false;
+ return Array.from({length:value.length},(_,i)=>{const p=Object.getOwnPropertyDescriptor(value,String(i));return p&&p.enumerable&&Object.prototype.hasOwnProperty.call(p,'value')&&typeof p.value==='boolean';}).every(Boolean);
+}
+function validateState(state,matchCurrent=false){
+ if(!exactShared(state,['notes','writingOpen','details','zoom','figureLarge'])||typeof state.notes!=='string'||state.notes.length>6000||/[<>\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(state.notes)||typeof state.writingOpen!=='boolean'||!boolsShared(state.details,100)||!boolsShared(state.zoom,40)||!boolsShared(state.figureLarge,4))throw new TypeError('Invalid proof workspace state');
+ if(matchCurrent){const c=sharedControls();if(state.details.length!==c.details.length||state.zoom.length!==c.zoom.length||state.figureLarge.length!==c.figures.length||(!c.writing&&(state.notes!==''||state.writingOpen)))throw new TypeError('Proof workspace does not match this task');}
+ return true;
+}
+function captureState(){decorate();const c=sharedControls();return {notes:c.textarea?c.textarea.value:'',writingOpen:!!c.writing?.open,details:c.details.map(x=>x.open),zoom:c.zoom.map(x=>x.getAttribute('aria-pressed')==='true'),figureLarge:c.figures.map(x=>x.getAttribute('aria-pressed')==='true')};}
+function applyState(state){
+ validateState(state);decorate();validateState(state,true);const c=sharedControls();
+ if(c.textarea){c.textarea.value=state.notes;c.textarea.dispatchEvent(new root.Event('input',{bubbles:true}));}
+ if(c.writing)c.writing.open=state.writingOpen;
+ c.details.forEach((x,i)=>{x.open=state.details[i];});
+ c.zoom.forEach((x,i)=>{if((x.getAttribute('aria-pressed')==='true')!==state.zoom[i])x.click();});
+ c.figures.forEach((x,i)=>{if((x.getAttribute('aria-pressed')==='true')!==state.figureLarge[i])x.click();});
+}
+root.OgeCourseProof={topic23,topic24,topic25,proofStepTopics,calculationStepTopics,extraReasons25,topicsForStep,cropsFor,decorate,captureState,validateState,applyState,dispose:()=>{disposed=true;observer.disconnect();}};decorate();d.addEventListener('DOMContentLoaded',decorate,{once:true});
 })(window);

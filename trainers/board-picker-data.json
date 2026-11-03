@@ -3667,8 +3667,8 @@
       "href": "/trainers/negative-numbers-alternative.html"
     },
     {
-      "title": "ОГЭ №7 / числовая прямая",
-      "group": "Отрицательные числа",
+      "title": "ОГЭ №7 · Числовая прямая",
+      "group": "ОГЭ / числа и алгебра 6–14",
       "href": "/trainers/oge-task7-number-line.html"
     },
     {
@@ -3697,8 +3697,8 @@
       "href": "/trainers/percent-part-whole-trainer.html"
     },
     {
-      "title": "ОГЭ №1–5: проценты без паники",
-      "group": "ОГЭ / задачи 1–5",
+      "title": "ОГЭ №1–5 · Таблица и проценты",
+      "group": "ОГЭ / практические задачи 1–5",
       "href": "/trainers/oge-1-5-trainers/percent-table-trainer.html"
     },
     {
@@ -3722,18 +3722,18 @@
       "href": "/trainers/oge-1-5-trainers/practice-1-5-map.html"
     },
     {
-      "title": "ОГЭ-2027 №1–5: входная диагностика",
-      "group": "ОГЭ / задачи 1–5",
+      "title": "ОГЭ №1–5 · Входная диагностика",
+      "group": "ОГЭ / практические задачи 1–5",
       "href": "/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html"
     },
     {
-      "title": "ОГЭ №1–5: как читать план и условие",
-      "group": "ОГЭ / задачи 1–5",
+      "title": "ОГЭ №1–5 · Чтение плана и условия",
+      "group": "ОГЭ / практические задачи 1–5",
       "href": "/trainers/oge-1-5-trainers/practice-1-5-plan-reading.html"
     },
     {
-      "title": "ОГЭ-2027 №1–5: проверочная по планам и маршрутам",
-      "group": "ОГЭ / задачи 1–5",
+      "title": "ОГЭ №1–5 · Проверочная по планам и маршрутам",
+      "group": "ОГЭ / практические задачи 1–5",
       "href": "/trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html"
     },
     {
@@ -4567,33 +4567,33 @@
       "href": "/trainers/multiplication-table/elevator-sprint.html"
     },
     {
-      "title": "Квартира · план · задания 1–5 ОГЭ · тренажёр",
-      "group": "ОГЭ",
+      "title": "ОГЭ №1–5 · Квартиры",
+      "group": "ОГЭ / практические задачи 1–5",
       "href": "/trainers/oge-1-5-trainers/practice-1-5-apartments.html"
     },
     {
-      "title": "Участок · тренажёр 1–5 · ОГЭ",
-      "group": "ОГЭ",
+      "title": "ОГЭ №1–5 · Земельные участки",
+      "group": "ОГЭ / практические задачи 1–5",
       "href": "/trainers/oge-1-5-trainers/practice-1-5-land-plots.html"
     },
     {
-      "title": "Форматы бумаги А0–А6 · задания 1–5 · ОГЭ",
-      "group": "ОГЭ",
+      "title": "ОГЭ №1–5 · Листы бумаги",
+      "group": "ОГЭ / практические задачи 1–5",
       "href": "/trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html"
     },
     {
-      "title": "Тренажёр ОГЭ · Задания 1–5 «Дороги» (Антоновка → Богданово)",
-      "group": "ОГЭ",
+      "title": "ОГЭ №1–5 · Схемы дорог",
+      "group": "ОГЭ / практические задачи 1–5",
       "href": "/trainers/oge-1-5-trainers/practice-1-5-roads-schema.html"
     },
     {
-      "title": "Печки · тренажёр 1–5",
-      "group": "ОГЭ",
+      "title": "ОГЭ №1–5 · Печи",
+      "group": "ОГЭ / практические задачи 1–5",
       "href": "/trainers/oge-1-5-trainers/practice-1-5-stoves.html"
     },
     {
-      "title": "Тарифы · тренажёр 1–5 · ОГЭ",
-      "group": "ОГЭ",
+      "title": "ОГЭ №1–5 · Тарифы",
+      "group": "ОГЭ / практические задачи 1–5",
       "href": "/trainers/oge-1-5-trainers/practice-1-5-tariffs.html"
     },
     {
@@ -4747,28 +4747,23 @@
       "href": "/trainers/oge-informatics-1-10-tutor.html"
     },
     {
-      "title": "ОГЭ. Задание 10: вероятность — тренажёр",
-      "group": "ОГЭ",
+      "title": "ОГЭ №10 · Вероятность",
+      "group": "ОГЭ / числа и алгебра 6–14",
       "href": "/trainers/oge-task10-probability.html"
     },
     {
-      "title": "ОГЭ, задание 11 — Графики функций. Интерактивный тренажёр",
-      "group": "ОГЭ",
+      "title": "ОГЭ №11 · Графики",
+      "group": "ОГЭ / числа и алгебра 6–14",
       "href": "/trainers/oge-task11-graphs-trainer.html"
     },
     {
-      "title": "ОГЭ, задание 12 — расчёты по формулам. Тренажёр",
-      "group": "ОГЭ",
+      "title": "ОГЭ №12 · Формулы",
+      "group": "ОГЭ / числа и алгебра 6–14",
       "href": "/trainers/oge-task12-formulas-trainer.html"
     },
     {
-      "title": "ОГЭ №13: неравенства",
-      "group": "ОГЭ",
-      "href": "/trainers/oge-task13-inequalities.html"
-    },
-    {
-      "title": "ОГЭ №14. Прогрессии: формулы и здравый смысл",
-      "group": "ОГЭ",
+      "title": "ОГЭ №14 · Прогрессии",
+      "group": "ОГЭ / числа и алгебра 6–14",
       "href": "/trainers/oge-task14-progressions.html"
     },
     {
@@ -4787,53 +4782,53 @@
       "href": "/trainers/oge-task18-grid.html"
     },
     {
-      "title": "Задание 20 ОГЭ — тренажёр",
-      "group": "ОГЭ",
+      "title": "ОГЭ №20 · Уравнения второй части",
+      "group": "ОГЭ / развёрнутое решение 20–25",
       "href": "/trainers/oge-task20-equations.html"
     },
     {
-      "title": "ОГЭ · Задание 21 · Текстовые задачи — тренажёр",
-      "group": "ОГЭ",
+      "title": "ОГЭ №21 · Текстовые задачи",
+      "group": "ОГЭ / развёрнутое решение 20–25",
       "href": "/trainers/oge-task21-word-problems.html"
     },
     {
-      "title": "ОГЭ · Задание 22 — Графики функций",
-      "group": "ОГЭ",
+      "title": "ОГЭ №22 · Функции и графики",
+      "group": "ОГЭ / развёрнутое решение 20–25",
       "href": "/trainers/oge-task22-functions-graphs.html"
     },
     {
-      "title": "ОГЭ · Задание 23 — Геометрические задачи на вычисление",
-      "group": "ОГЭ",
+      "title": "ОГЭ №23 · Геометрические вычисления",
+      "group": "ОГЭ / развёрнутое решение 20–25",
       "href": "/trainers/oge-task23-geometry-calculations.html"
     },
     {
-      "title": "ОГЭ · Задание 24 — задачи на доказательство",
-      "group": "ОГЭ",
+      "title": "ОГЭ №24 · Доказательства",
+      "group": "ОГЭ / развёрнутое решение 20–25",
       "href": "/trainers/oge-task24-proofs.html"
     },
     {
-      "title": "ОГЭ · Задание 25 — геометрия повышенной сложности",
-      "group": "ОГЭ",
+      "title": "ОГЭ №25 · Сложная геометрия",
+      "group": "ОГЭ / развёрнутое решение 20–25",
       "href": "/trainers/oge-task25-geometry.html"
     },
     {
-      "title": "Тренажёр · ОГЭ математика · Задание 6",
-      "group": "ОГЭ",
+      "title": "ОГЭ №6 · Дроби",
+      "group": "ОГЭ / числа и алгебра 6–14",
       "href": "/trainers/oge-task6-fractions.html"
     },
     {
-      "title": "Задание 8 ОГЭ — степени и корни",
-      "group": "ОГЭ",
+      "title": "ОГЭ №8 · Степени и корни",
+      "group": "ОГЭ / числа и алгебра 6–14",
       "href": "/trainers/oge-task8-powers-roots.html"
     },
     {
-      "title": "Задание 9 ОГЭ · Уравнения — тренажёр",
-      "group": "ОГЭ",
+      "title": "ОГЭ №9 · Уравнения",
+      "group": "ОГЭ / числа и алгебра 6–14",
       "href": "/trainers/oge-task9-equations.html"
     },
     {
-      "title": "ОГЭ №13 — серия тренажёров по неравенствам",
-      "group": "ОГЭ",
+      "title": "ОГЭ №13 · Неравенства",
+      "group": "ОГЭ / числа и алгебра 6–14",
       "href": "/trainers/oge13-inequalities-series.html"
     },
     {

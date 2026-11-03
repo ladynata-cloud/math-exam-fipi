@@ -14,7 +14,7 @@
   const actionButtons = Object.fromEntries(Object.entries(actionIds).map(([id,action])=>[action,id]));
   const byId = id => doc.getElementById(id);
   const copy = value => JSON.parse(JSON.stringify(value));
-  let taskSeen = nativeTask(), applying = false, notify = function(){}, previous = '', actions = [], taskHelp = false;
+  let taskSeen = nativeTask(), applying = false, notify = function(){}, previous = '', actions = [], taskHelp = false, notifyTimer = null;
   root.OgeGeometryHelpUsed = false;
 
   function refreshTask() {
@@ -46,7 +46,13 @@
     // repeated first-step clicks cannot accumulate an unbounded room packet.
     actions=actions.filter((a,i)=>a[0]==='check'?(wrong.includes(i)||i===lastCheck):a[0]==='first'?(i===firstHint||i===lastHint):a[0]==='give'?i===firstGive:true);
   }
-  function afterAction() { Promise.resolve().then(changed); }
+  // Native dispatch may checkpoint microtasks before target handlers run.
+  // Capture the completed action/model and coalesce events from one dispatch.
+  function afterAction() {
+    if (applying || notifyTimer !== null) return;
+    notifyTimer = root.setTimeout(() => { notifyTimer = null; changed(); }, 0);
+  }
+  root.addEventListener('pagehide', () => { if (notifyTimer !== null) { root.clearTimeout(notifyTimer); notifyTimer = null; } });
   // Assistance is sticky for this actual task, not merely the visible help panel.
   doc.addEventListener('click', function(event) {
     if (applying) return;

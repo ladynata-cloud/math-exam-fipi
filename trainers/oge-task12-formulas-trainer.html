@@ -274,6 +274,7 @@ body{background:#f6f7f5!important;color:#202820;font-family:var(--ui);font-size:
 <p class="note">Тренажёр принимает и запятую, и точку в десятичных дробях. В бланке ОГЭ пишем только число, без единиц измерения: десятичные дроби — через запятую.</p>
 </div>
 
+<script src="oge-course-shared-mode.js"></script>
 <script>
 "use strict";
 
@@ -350,12 +351,13 @@ const CP=(function(){
   function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
   function num(v){ return (typeof v === "number" && isFinite(v) && v > 0) ? Math.floor(v) : 0; }
   function readAll(){
+    if (window.OgeCourseSharedMode) return {};
     try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(o) ? o : {}; }
     catch (e) { return {}; }
   }
   /* меняет только свою ветку: читает ключ заново прямо перед записью */
   function saveRec(fn){
-    if (RO) return;
+    if (RO || window.OgeCourseSharedMode) return;
     try {
       var all = readAll();
       var rec = isObj(all[TID]) ? all[TID] : {};
@@ -379,7 +381,7 @@ const CP=(function(){
   /* журнал: промах открывает тип, три верных подряд закрывают;
      верный ответ по типу без промахов записи не заводит */
   function mlog(type, ok){
-    if (RO) return;
+    if (RO || window.OgeCourseSharedMode) return;
     try {
       var all = readAll();
       var key = TID + "|" + type;
@@ -405,7 +407,7 @@ const CP=(function(){
   /* §6: старый ключ читается один раз; переносится сопоставимое с ядром; ставится
      migratedFrom; старый ключ не удаляется и не переписывается */
   function migrate(fn){
-    if (RO) return;
+    if (RO || window.OgeCourseSharedMode) return;
     try {
       var raw = localStorage.getItem(OLD_KEY);
       if (raw === null) return;
@@ -422,7 +424,7 @@ const CP=(function(){
   /* «Сбросить прогресс»: своя ветка и свои записи журнала (по префиксу TID|);
      отметка миграции остаётся — иначе старый ключ перенёсся бы снова */
   function resetOwn(){
-    if (RO) return;
+    if (RO || window.OgeCourseSharedMode) return;
     try {
       var all = readAll(), rec = all[TID];
       if (isObj(rec) && typeof rec.migratedFrom === "string") all[TID] = { v:1, solvedByType:{}, migratedFrom:rec.migratedFrom, updatedAt:Date.now() };
@@ -435,7 +437,7 @@ const CP=(function(){
   /* своя статистика панели тренажёра — поле ext ветки (адаптер курса его не читает) */
   function ext(){ var r = readAll()[TID]; return isObj(r) && isObj(r.ext) ? r.ext : {}; }
   function saveExt(fn){ saveRec(function(rec){ if (!isObj(rec.ext)) rec.ext = {}; fn(rec.ext); }); }
-  var REVIEW = /[?&]mode=review(&|$)/.test(location.search || "");
+  var REVIEW = !window.OgeCourseSharedMode && /[?&]mode=review(&|$)/.test(location.search || "");
   return { RO:RO, REVIEW:REVIEW, KEY:KEY, isObj:isObj, num:num, readAll:readAll, saveRec:saveRec,
     solvedOne:solvedOne, finishQuiz:finishQuiz, mlog:mlog, openTypes:openTypes,
     migrate:migrate, resetOwn:resetOwn, ext:ext, saveExt:saveExt };
@@ -1223,6 +1225,7 @@ var TWO_MISSES='Две ошибки — задание в счёт не идёт
 
 /* ===================== проверка числового ответа ===================== */
 function checkNumeric(inputEl,task){
+  if(A.done)return;
   var p=parseAns(inputEl.value);
   if(p.value===null){showFeedback('info','Введи число. Десятичную дробь можно писать и через запятую, и через точку.');return}
   var unitNote=p.hadUnit?' Кстати: в бланке ОГЭ пишем только число, без единиц измерения.':'';
@@ -1231,6 +1234,8 @@ function checkNumeric(inputEl,task){
     if(WRITES[mode])finishTask(task.t,ok);else A.done=true;
     var extra=(!ok&&!wasDone)?' (Разбор был показан — задание в счёт решённых не идёт, но главное, что разобрались.)':'';
     showFeedback('ok','Верно! Ответ: '+fmt(task.answer)+'.'+unitNote+extra);
+    inputEl.disabled=true;
+    var acceptedCheck=$('#checkBtn');if(acceptedCheck)acceptedCheck.disabled=true;
     return;
   }
   /* неверно: первый промах — в журнал; сообщение адресное, если ответ совпал с ловушкой */
@@ -2064,6 +2069,8 @@ function selftest12(){
 start12();
 </script>
 <script src="oge-course-reference.js"></script>
-<script src="oge-course-algebra.js" data-oge-task="12"></script>
+<script src="oge-course-algebra.js?v=20261025-oge-course-mirror" data-oge-task="12"></script>
+<script src="board-bridge.js"></script>
+<script src="oge-native-10-14-board.js" data-oge-native="12"></script>
 </body>
 </html>

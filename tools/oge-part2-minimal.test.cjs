@@ -119,12 +119,15 @@ test('task22: answer builder still grades the full generated set and keeps shown
 // The redesign may change composition and presentation, never their generated mathematics.
 const protectedRegions=[
  [20,'<script id="core-math">','</script>','ec76558e23da655f3af017d0b03e60765cd606345e4e424cc675c0aa57f4fa05'],
- [21,'const MODULES=[];','/*__MODULES_INSERT__*/','5043b1bad2e441999f829b3cb2d57e39e830a966a7a7228a1cef2da5d82d8143'],
+ // The captured 21 region also contains runAnim. Its only approved change is
+ // the room-only synchronous final frame; the normalization assertion below
+ // independently preserves every byte of the original generators and math.
+ [21,'const MODULES=[];','/*__MODULES_INSERT__*/','71e19ecc87418e361f1d05d445b63a292952250aae9717f790135d855a04ffea'],
  [22,'function bgcd(a,b)','function numStr(x)','c4f37002378f6104bec3d9ffeec0f71cdbdd585f3a2fdc51b1705ed0b7faeaac'],
  [22,'// ---------- set equality (for grading) ----------','function piecewiseHtml(pieces)','ba67ae39d38f1c05d37bc2071e74da76e5793ea0163e72bcd18e6608324f7651']
 ];
 test('exact math engines and complete generator bank are byte-identical to the published base',()=>{
- for(const [n,start,end,expected] of protectedRegions){const source=html(n),a=source.indexOf(start),b=source.indexOf(end,a+start.length);assert(a>=0&&b>a);const actual=crypto.createHash('sha256').update(source.slice(a,b)).digest('hex');assert.equal(actual,expected,'task '+n+' '+start);}
+ for(const [n,start,end,expected] of protectedRegions){const source=html(n),a=source.indexOf(start),b=source.indexOf(end,a+start.length);assert(a>=0&&b>a);const actual=crypto.createHash('sha256').update(source.slice(a,b)).digest('hex');assert.equal(actual,expected,'task '+n+' '+start);if(n===21){const original=source.slice(a,b).replace('if(window.OgeCourseSharedMode||reduceMotion())','if(reduceMotion())');assert.equal(crypto.createHash('sha256').update(original).digest('hex'),'5043b1bad2e441999f829b3cb2d57e39e830a966a7a7228a1cef2da5d82d8143','21: original bank and exact math stay unchanged');}}
 });
 
 

@@ -48,6 +48,30 @@ class GeneratorTests(unittest.TestCase):
         self.assertIn(b'"version":"v2"', first[edition.prefix + "edition-assets/bootstrap.js"])
         self.assertIn("Редакция 31.10.2026 · v2.".encode(), first[edition.alias + "01/index.html"])
 
+    def test_reviewed_task13_redirects_preserve_query_and_fragment(self):
+        source = "trainers/oge-task13-inequalities.html"
+        edition = builder.Edition("v2", builder.PUBLISHED_V1)
+        original = "window.location.replace('/trainers/oge13-inequalities-series.html');"
+        shared = "window.location.replace('/trainers/oge13-inequalities-series.html'+window.location.search+window.location.hash);"
+        outputs = [builder.sanitize(source, "<script>" + value + "</script>", edition)
+                   for value in (original, shared)]
+        self.assertEqual(outputs[0], outputs[1])
+        self.assertIn("destination.search=location.search;destination.hash=location.hash", outputs[0])
+        for unsafe in (shared.replace("oge13-inequalities-series", "unexpected-trainer"),
+                       shared + shared, original + shared):
+            with self.subTest(unsafe=unsafe), self.assertRaisesRegex(ValueError, "Task-13 redirect changed"):
+                builder.sanitize(source, "<script>" + unsafe + "</script>", edition)
+
+    def test_native_shared_adapters_are_not_fixed_book_dependencies(self):
+        edition = builder.Edition("v2", builder.PUBLISHED_V1)
+        output, manifest = builder.build(edition)
+        sources = {record["path"] for record in manifest["sourceFiles"]}
+        self.assertFalse(sources & builder.REMOVED)
+        for name, data in output.items():
+            if name.endswith(".html"):
+                self.assertNotIn(b"oge-course-shared-mode.js", data)
+                self.assertNotIn(b"oge-native-10-14-board.js", data)
+
     def test_no_implicit_write_base(self):
         with self.assertRaisesRegex(ValueError, "explicit full --base"):
             builder.ensure_writable(builder.Edition("v2", builder.PUBLISHED_V1), None)

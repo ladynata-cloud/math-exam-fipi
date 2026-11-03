@@ -4,6 +4,7 @@
 const E=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 // These are separate public exercises, never managed assignments or progress.
 const focusPractices=Object.freeze({
+ 'https://mathexam.space/trainers/oge-task11-graphs-trainer.html':'ОГЭ №11: графики функций',
  'https://mathexam.space/stereo-course/merzlyak-10-base/':'10 класс · Геометрия Мерзляк',
  'https://mathexam.space/trainers/rounding-stepwise.html':'Округление по шагам',
  'https://mathexam.space/trainers/task19-trainer.html':'ОГЭ №19: геометрические утверждения'
@@ -36,11 +37,15 @@ function planCoursesMarkup(value,{teacher=false}={}){
  return cards.join('');
 }
 const ogeGeometryCards=Object.freeze([
+ ['oge-task11-graphs-trainer','11','Графики функций','Сопоставляй графики и формулы. Если трудно — открой подсказку и пройди построение по шагам.'],
  ['oge-task15-triangles','15','Треугольники','Находи стороны и углы. Используй рисунок, подсказки и разбор по шагам.'],
  ['oge-task16-circle','16','Окружность','Разбирай углы, радиусы и фигуры, связанные с окружностью.'],
  ['oge-task17-quadrilaterals','17','Четырёхугольники','Тренируй свойства четырёхугольников, среднюю линию и площади.'],
  ['oge-task18-grid','18','Геометрия на клетчатой бумаге','Читай рисунок по клеткам, находи длины, углы и площади.'],
- ['task19-trainer','19','Геометрические утверждения','Проверяй геометрические утверждения и разбирай, почему они верны или неверны.']
+ ['task19-trainer','19','Геометрические утверждения','Проверяй геометрические утверждения и разбирай, почему они верны или неверны.'],
+ ['oge-task23-geometry-calculations','23','Геометрические вычисления','Находи длины и площади. Записывай решение с обоснованием каждого шага.'],
+ ['oge-task24-proofs','24','Доказательства','Выстраивай доказательство и объясняй, какое свойство используешь на каждом шаге.'],
+ ['oge-task25-geometry','25','Сложные задачи по геометрии','Соединяй несколько свойств фигур, используй дополнительные построения и записывай полное решение.']
 ]);
 // Public trainer references only: an allowlisted URL in the saved plan exposes
 // a fixed link, without creating managed attempts or changing learner progress.

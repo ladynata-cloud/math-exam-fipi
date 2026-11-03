@@ -160,9 +160,11 @@
   }
 
   function readStored(key) {
+    if(global.OgeCourseSharedMode)return {};
     try { const value = JSON.parse(sessionStorage.getItem(key) || '{}'); return value && typeof value === 'object' && !Array.isArray(value) ? value : {}; } catch (_) { return {}; }
   }
   function store(key, value) {
+    if(global.OgeCourseSharedMode)return;
     try { sessionStorage.setItem(key, JSON.stringify(value)); } catch (_) { /* storage is optional */ }
   }
 
@@ -331,6 +333,9 @@
       api.mount({ title: variant.group === 'main' ? 'Схема дорог · задания 1–5' : 'Схема дорог · дополнительное задание 5', condition, visual: schemaDiagram(), tables: schemaGivens(), controls, questions, nativeRoots });
     }
     mountSchema();
+    global.PracticalBoard?.register({id:'practice-1-5-roads-schema',get:()=>({variant:selectedVariant}),valid:d=>global.PracticalBoard.exact(d,['variant'])&&Number.isInteger(d.variant)&&d.variant>=0&&d.variant<VARIANTS.length,
+      describe:d=>(VARIANTS[d.variant].group==='main'?[1,2,3,4,5]:[5]).map(task=>global.PracticalBoard.description(global.PracticalBoard.kind('roads-schema',task,problem(VARIANTS[d.variant],task).text))),
+      set:d=>{selectedVariant=d.variant;for(const key of Object.keys(drafts))delete drafts[key];prog={solved:{},streak:0};cur=screenIndex(selectedVariant,VARIANTS[selectedVariant].group==='main'?1:5);mountSchema();}});
   }
 
   api.register('roads-grid', initGrid);

@@ -10,7 +10,7 @@ const root=path.resolve(__dirname,'..');
 const routes={inequalities:'trainers/oge13-inequalities-series.html',lesson:'oge/geometry/task-15-external-angle.html',variant:'trainers/oge-2027-analogue-1.html'};
 const source=key=>fs.readFileSync(path.join(root,routes[key]),'utf8');
 const externalScripts={
- inequalities:['trainers/oge-course-reference.js','trainers/oge-course-algebra-reference.js','trainers/oge-course-reference-entry.js'],
+ inequalities:['trainers/oge-course-shared-mode.js','trainers/oge-course-reference.js','trainers/oge-course-algebra-reference.js','trainers/oge-course-reference-entry.js','trainers/board-bridge.js','trainers/oge-native-10-14-board.js'],
  lesson:['trainers/task19-textbook-data.js','trainers/task19-reference.js','trainers/oge-course-reference.js','trainers/oge-course-geometry.js'],
  variant:[]
 };

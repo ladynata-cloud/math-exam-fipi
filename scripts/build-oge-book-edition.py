@@ -53,6 +53,15 @@ REMOVED = {
     "trainers/learning-bridge.js",
     "trainers/task19-board-session.js", "trainers/oge-geometry-board-mode.js",
     "trainers/oge-geometry-board.js",
+    # Native board adapters are integrations, never fixed-book dependencies.
+    "trainers/oge-course-shared-mode.js",
+    "trainers/oge-foundation-board.js",
+    "trainers/oge-native-10-14-board.js",
+    "trainers/oge-20-22-board.js",
+    "trainers/oge-part2-geometry-board.js",
+    "trainers/oge-1-5-trainers/percent-board.js",
+    "trainers/oge-1-5-trainers/practical-board.js",
+    "trainers/oge-1-5-trainers/practical-diagnostic-board.js",
 }
 NODE_ONLY = {"trainers/p2_core.js", "trainers/p3_families.js"}
 STATIC_REF = re.compile(r'''["']([^"'\s<>`]+\.(?:js|css|json|png|jpg|jpeg|webp|gif|svg|woff2?)(?:[?#][^"'\s<>`]*)?)["']''')
@@ -128,10 +137,14 @@ def sanitize(source, text, edition):
             raise ValueError("Textbook excerpt allowlist changed")
         text = text.replace(old, "^\\/" + edition.prefix.replace("/", "\\/") + r"trainers\/task19-")
     if source == "trainers/oge-task13-inequalities.html":
-        old = "window.location.replace('/trainers/oge13-inequalities-series.html');"
-        if text.count(old) != 1:
+        redirects = (
+            "window.location.replace('/trainers/oge13-inequalities-series.html');",
+            "window.location.replace('/trainers/oge13-inequalities-series.html'+window.location.search+window.location.hash);",
+        )
+        matches = [redirect for redirect in redirects if text.count(redirect) == 1]
+        if len(matches) != 1 or sum(text.count(redirect) for redirect in redirects) != 1:
             raise ValueError("Task-13 redirect changed; review its effective destination")
-        text = text.replace(old, "const destination=new URL('/trainers/oge13-inequalities-series.html',location.origin);destination.search=location.search;destination.hash=location.hash;location.replace(destination.href);")
+        text = text.replace(matches[0], "const destination=new URL('/trainers/oge13-inequalities-series.html',location.origin);destination.search=location.search;destination.hash=location.hash;location.replace(destination.href);")
     if source == "trainers/oge-1-5-trainers/practice-1-5-roads-grid.html":
         old = "const IS_STANDALONE=window.parent===window;"
         if text.count(old) != 1:
