@@ -85,6 +85,9 @@ def runtime_review(implementation_hash=None):
         from chapter08_extension import has_viii, validate_extension as validate_viii
         if has_viii((COURSE/'source-inventory.json').read_bytes()):
             expected_hash = validate_viii(ROOT)[0]['implementationSha256']
+        from chapter09_extension import has_ix, validate_extension as validate_ix
+        if has_ix((COURSE/'source-inventory.json').read_bytes()):
+            expected_hash = validate_ix(ROOT)[0]['implementationSha256']
         require(implementation_hash == expected_hash,
                 'Bundle runtime does not match caption review')
     return review, {'path': REVIEW_PATH, 'sha256': sha(raw)}

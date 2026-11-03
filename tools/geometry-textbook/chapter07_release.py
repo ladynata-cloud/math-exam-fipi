@@ -6,7 +6,8 @@ from chapter07_extension import (ROOT,PREFIX,SCOPE,encoded,digest,require,
  assert_893_preserved,check_evidence)
 
 def historical_vii_projection(bundle,scope):
- bundle,scope=deepcopy(bundle),deepcopy(scope)
+ from chapter08_release import historical_viii_projection
+ bundle,scope=historical_viii_projection(bundle,scope)
  if any(c['chapter']==8 for c in scope['chapters']):
   bundle['lessons']=[r for r in bundle['lessons'] if r['source']['chapter']!='VIII']
   bundle['catalog']['entries']=[r for r in bundle['catalog']['entries'] if r['source']['chapter']!='VIII']

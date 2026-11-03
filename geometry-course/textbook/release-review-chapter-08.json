@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "status": "passed",
   "authoredContentSha256": "4a01227216d6bcf57495cd90975350fd7aaa823ef1c5566b1c3335e7f2d6d723",
-  "implementationSha256": "b831d68dbdaaf2e696a99699e228cb646ba03d76c7333f799a9c10e4bb904ad7",
+  "implementationSha256": "ca0345494ebd9b0f150f07effd91baa777d6cf3c70bb55e9412ccf17f3ab588b",
   "source": "passed",
   "mathematics": "passed",
   "models": "passed",
@@ -174,5 +174,9 @@
     "priorFailedGatesRetained": true
   },
   "claude": "Same-course owner exception applies; no external Claude/provider verdict claimed.",
-  "mergeOrDeploymentAuthorization": false
+  "mergeOrDeploymentAuthorization": false,
+  "runtimeChapterIXReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_RUNTIME_EXTENSION_REVIEW.json",
+    "sha256": "9f88f10355fd899ce4ed7b1fe8bdf6d0fadd165552d8911618aceddae81df9e4"
+  }
 }

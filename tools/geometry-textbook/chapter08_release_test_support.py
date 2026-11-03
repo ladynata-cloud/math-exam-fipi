@@ -24,6 +24,8 @@ def fixture(root):
  base=frozen()
  for name in set(base['immutableFiles'])|{FIXTURE,'tools/geometry-textbook/chapter-08-source-map.json'}:
   p=root/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(historical_bytes(ROOT/name))
+ from chapter09_release_test_support import strip_ix_for_historical_fixture
+ strip_ix_for_historical_fixture(root)
  # Reconstruct the true previous publication if tests run after promotion.
  inventory_raw=(course/'source-inventory.json').read_bytes()
  if has_viii(inventory_raw):(course/'source-inventory.json').write_bytes(previous_inventory(inventory_raw,ROOT))

@@ -74,7 +74,7 @@ def restore_manifest(name,raw,root=ROOT,course=None):
  return oldraw
 
 def assert_755_preserved(bundle,root=ROOT):
- base=frozen(root);lessons=[x for x in bundle['lessons'] if x['source']['chapter'] not in ('VI','VII','VIII')];entries=[x for x in bundle['catalog']['entries'] if x['source']['chapter'] not in ('VI','VII','VIII')]
+ base=frozen(root);lessons=[x for x in bundle['lessons'] if x['source']['chapter'] not in ('VI','VII','VIII','IX')];entries=[x for x in bundle['catalog']['entries'] if x['source']['chapter'] not in ('VI','VII','VIII','IX')]
  require(len(lessons)==len(entries)==755,'Unexpected old-card scope')
  require(digest(lessons)==base['lessonsSha256'],'Previous755 lesson/order/review/storage identity changed')
  require(digest(entries)==base['catalogEntriesSha256'],'Previous755 catalog changed')
@@ -83,6 +83,8 @@ def assert_755_preserved(bundle,root=ROOT):
  if has_vii((root/PREFIX/'source-inventory.json').read_bytes()):review,_=validate_vii(root)
  from chapter08_extension import has_viii,validate_extension as validate_viii
  if has_viii((root/PREFIX/'source-inventory.json').read_bytes()):review,_=validate_viii(root)
+ from chapter09_extension import has_ix,validate_extension as validate_ix
+ if has_ix((root/PREFIX/'source-inventory.json').read_bytes()):review,_=validate_ix(root)
  require(bundle['build']['implementationSha256']==review['implementationSha256'],'Stale bundle runtime')
  require(bundle['sourceInventory']==json.loads((root/PREFIX/'source-inventory.json').read_bytes()),'Stale bundle source index')
  for name,expected in base['immutableFiles'].items():

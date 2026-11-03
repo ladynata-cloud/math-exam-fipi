@@ -122,6 +122,8 @@ def extension_matches(course, review_file):
         from chapter07_extension import restore_manifest
     if review_file == 'release-review-chapter-07.json':
         from chapter08_extension import restore_manifest
+    if review_file == 'release-review-chapter-08.json':
+        from chapter09_extension import restore_manifest
     try:
         restore_manifest('geometry-course/textbook/'+review_file,
                          (course/review_file).read_bytes(), ROOT, course)
@@ -304,7 +306,8 @@ def compose(course=COURSE, include_candidates=()):
                     and bool(review.get('reviewer')) and bool(review.get('at')))
         if approved and ((chapter <= 5 and any(p['chapter'] == 6 for p in inventory.get('paragraphs', [])))
                          or (chapter <= 6 and any(p['chapter'] == 7 for p in inventory.get('paragraphs', [])))
-                         or (chapter <= 7 and any(p['chapter'] == 8 for p in inventory.get('paragraphs', [])))):
+                         or (chapter <= 7 and any(p['chapter'] == 8 for p in inventory.get('paragraphs', [])))
+                         or (chapter <= 8 and any(p['chapter'] == 9 for p in inventory.get('paragraphs', [])))):
             approved = extension_matches(course, review_file)
         chapter_builds.append(dict(chapter=chapter, chapterLabel=CHAPTER_LABELS[chapter],
                                   authoredContentSha256=chapter_hash, publicationReviewMatches=approved,

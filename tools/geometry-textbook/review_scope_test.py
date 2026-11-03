@@ -133,7 +133,8 @@ class ChapterReviewBoundary(unittest.TestCase):
         amended_vi = (number == '7-advanced' or (isinstance(number, int) and number <= 5)) and any(c['chapter'] == 6 for c in self.chapters)
         amended_vii = (number == '7-advanced' or (isinstance(number, int) and number <= 6)) and any(c['chapter'] == 7 for c in self.chapters)
         amended_viii = (number == '7-advanced' or (isinstance(number, int) and number <= 7)) and any(c['chapter'] == 8 for c in self.chapters)
-        if amended_vi or amended_vii or amended_viii:
+        amended_ix = (number == '7-advanced' or (isinstance(number, int) and number <= 8)) and any(c['chapter'] == 9 for c in self.chapters)
+        if amended_vi or amended_vii or amended_viii or amended_ix:
             # The old approval is immutable; exercise the actual extension chain.
             shutil.copy2(COURSE/self.review_name(number), self.course/self.review_name(number))
             return

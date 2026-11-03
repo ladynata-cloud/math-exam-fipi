@@ -1308,6 +1308,57 @@
         181,
         185
       ]
+    },
+    {
+      "chapter": 9,
+      "number": 1,
+      "title": "Окружность и прямые",
+      "pointNumbers": [
+        76,
+        78
+      ],
+      "exerciseNumbers": [
+        737,
+        761
+      ],
+      "printedPages": [
+        189,
+        199
+      ]
+    },
+    {
+      "chapter": 9,
+      "number": 2,
+      "title": "Центральные и вписанные углы",
+      "pointNumbers": [
+        79,
+        81
+      ],
+      "exerciseNumbers": [
+        762,
+        783
+      ],
+      "printedPages": [
+        199,
+        206
+      ]
+    },
+    {
+      "chapter": 9,
+      "number": 3,
+      "title": "Вписанная и описанная окружности четырёхугольников",
+      "pointNumbers": [
+        82,
+        83
+      ],
+      "exerciseNumbers": [
+        784,
+        795
+      ],
+      "printedPages": [
+        206,
+        209
+      ]
     }
   ]
 }

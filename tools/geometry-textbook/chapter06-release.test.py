@@ -67,7 +67,7 @@ class ChapterVIRelease(unittest.TestCase):
   with tempfile.TemporaryDirectory() as temp:
    course=Path(temp)/'course';shutil.copytree(COURSE,course);(course/'release-review-chapter-06.json').unlink(missing_ok=True)
    bundle=compose(course);assert_755_preserved(bundle)
-   self.assertEqual(sum(x['status']=='reviewed' for x in bundle['lessons'] if x['source']['chapter'] not in ('VII','VIII')),755)
+   self.assertEqual(sum(x['status']=='reviewed' for x in bundle['lessons'] if x['source']['chapter'] not in ('VII','VIII','IX')),755)
    self.assertTrue(all(x['status']=='in-review' for x in bundle['lessons'] if x['source']['chapter']=='VI'))
  def test_union_cannot_hide_corruptions_behind_historical_projection(self):
   for mode in ('old text','old order','old review','old revision','foreign ID','missing VI','duplicate VI','VI page','VI scope','fullbook'):
@@ -95,6 +95,10 @@ class ChapterVIRelease(unittest.TestCase):
   if (ROOT/VIII_RECEIPT).exists():
    paths|={VIII_RECEIPT,VIII_FIXTURE}
    paths|={x['path'] for x in read(ROOT/VIII_RECEIPT)['evidence']}
+  from chapter09_extension import RECEIPT as IX_RECEIPT,FIXTURE as IX_FIXTURE
+  if (ROOT/IX_RECEIPT).exists():
+   paths|={IX_RECEIPT,IX_FIXTURE}
+   paths|={x['path'] for x in read(ROOT/IX_RECEIPT)['evidence']}
   for name in paths:
    p=root/name;p.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(ROOT/name,p)
   return root

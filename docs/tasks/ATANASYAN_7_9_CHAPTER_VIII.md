@@ -146,3 +146,18 @@ verbatim and records the current merge base; the earlier PR381 head is preserved
 remain historical evidence; current-base composition gates, fresh exact-head
 CI and current merge-ref board checks are recorded separately in the final PR.
 No rebase, reset, force or non-fast-forward branch update is used.
+
+## Completed publication, reconciled at chapter IX start
+
+The historical preparation snapshots above are retained. PR382 was merged as
+`3411acd7df5ebfbd4179cce85c2300c59677ddf7` with sole parent
+`a02061d30494fed7b2db9a596c1e89654bdc25be`. All81 changed paths, affected blobs
+and stable patch identity match the independently checked composition; all16
+incoming PR380 files remain exact. Exact-head planimetry CI, merge-ref board
+CI, current-composition local gates, actual-merge Pages and board CI passed.
+The [completed PR382 release record](https://github.com/ladynata-cloud/math-exam-fipi/pull/382)
+contains the exact provenance and hashes, including live21-file comparison,
+18 direct entries,11 flows,297 matching responses and six actually reviewed
+production captures. The1247-card release is published and verified. This
+reconciliation does not claim a new execution of those historical checks.
+No rollback was needed; chapter IX is the next authorized course stage.

@@ -1,0 +1,1538 @@
+{
+  "schemaVersion": 1,
+  "chapter": 9,
+  "block": "b",
+  "reviewer": "Independent non-author review agent /root/course_status",
+  "reviewedAt": "2026-11-03T00:40:14.506663+00:00",
+  "status": "PASS_CONTENT_AND_COORDINATES_ONLY",
+  "scope": "All 44 exercise cards 766–794: exact source conditions, complete mathematics and pedagogy, generator and coordinate models. This is not browser/image/whole-chapter release approval.",
+  "publicationApproval": false,
+  "counts": {
+    "numberedExercises": 29,
+    "cards": 44,
+    "modelViews": 186,
+    "modelClaims": 209
+  },
+  "sourceSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "actualSourceImagesViewed": [
+    {
+      "printedPage": 205,
+      "pdfPage": 206,
+      "sha256": "097ddb6a26fffda7857f16b8b4d41151c01972a56cdd997a751461d24a5fd4cc"
+    },
+    {
+      "printedPage": 206,
+      "pdfPage": 207,
+      "sha256": "653d59b77c2d299ea577c0bbd9674b171fbed69a8a5b22164bd70f36a102efbc"
+    },
+    {
+      "printedPage": 208,
+      "pdfPage": 209,
+      "sha256": "c2dea9f18d15f0308acde40381e219cae81a0129c4b710d046eafe6e43678852"
+    },
+    {
+      "printedPage": 209,
+      "pdfPage": 210,
+      "sha256": "720d842577e334d5f451cb62add34694259e92be01020438fa3bca4fea90cebc"
+    }
+  ],
+  "actualSourceDetailsViewed": [
+    {
+      "figure": 267,
+      "sha256": "9fae8d62e95238f6bb50a4396f2b1a14bd90abbb29c4fb4c3eb0f001e4363d43"
+    }
+  ],
+  "bindings": [
+    {
+      "path": "tools/geometry-textbook/models_ch9_b.py",
+      "sha256": "7a9d7d0ca35ada5a6f0130a3b86460878081eec3a40593118fe4f7f0157c3699"
+    },
+    {
+      "path": "geometry-course/textbook/preparation/chapter-09-b.json",
+      "sha256": "e488b65d84a05e838b710ada27c7397a76e5a83925891403d1428c9fb3cdd584"
+    },
+    {
+      "path": "geometry-course/textbook/models/chapter-09-b.json",
+      "sha256": "19ec1a58cbf56c83e7af6fcc27eab6bf0789ede92ab8f3a286986cc15b0ef444"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter09-b-independent.test.py",
+      "sha256": "904c72a03facdb3af2bc244bce365576a53b5e8a89334bdaa915b9defd7c6a44"
+    }
+  ],
+  "cardsReviewed": [
+    {
+      "number": 766,
+      "part": "а",
+      "sourcePrintedPages": [
+        205
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Five listed arcs halved:24,28.5,45,62,90 degrees; vertex excluded from intercepted arc."
+    },
+    {
+      "number": 766,
+      "part": "б",
+      "sourcePrintedPages": [
+        205
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Five listed arcs halved:24,28.5,45,62,90 degrees; vertex excluded from intercepted arc."
+    },
+    {
+      "number": 766,
+      "part": "в",
+      "sourcePrintedPages": [
+        205
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Five listed arcs halved:24,28.5,45,62,90 degrees; vertex excluded from intercepted arc."
+    },
+    {
+      "number": 766,
+      "part": "г",
+      "sourcePrintedPages": [
+        205
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Five listed arcs halved:24,28.5,45,62,90 degrees; vertex excluded from intercepted arc."
+    },
+    {
+      "number": 766,
+      "part": "д",
+      "sourcePrintedPages": [
+        205
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Five listed arcs halved:24,28.5,45,62,90 degrees; vertex excluded from intercepted arc."
+    },
+    {
+      "number": 767,
+      "part": "а",
+      "sourcePrintedPages": [
+        205
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Four source266 configurations individually read:64 degrees,175-degree arc,34 degrees,105-degree arc; harmless added A/B/C labels stated."
+    },
+    {
+      "number": 767,
+      "part": "б",
+      "sourcePrintedPages": [
+        205
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Four source266 configurations individually read:64 degrees,175-degree arc,34 degrees,105-degree arc; harmless added A/B/C labels stated."
+    },
+    {
+      "number": 767,
+      "part": "в",
+      "sourcePrintedPages": [
+        205
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Four source266 configurations individually read:64 degrees,175-degree arc,34 degrees,105-degree arc; harmless added A/B/C labels stated."
+    },
+    {
+      "number": 767,
+      "part": "г",
+      "sourcePrintedPages": [
+        205
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Four source266 configurations individually read:64 degrees,175-degree arc,34 degrees,105-degree arc; harmless added A/B/C labels stated."
+    },
+    {
+      "number": 768,
+      "part": "single",
+      "sourcePrintedPages": [
+        205
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Central=2*inscribed and difference30 gives30/60."
+    },
+    {
+      "number": 769,
+      "part": "single",
+      "sourcePrintedPages": [
+        205
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Source leaves positions open; same direction gives36, opposite directions101;79 intercepts arc containing vertex and is rejected."
+    },
+    {
+      "number": 770,
+      "part": "single",
+      "sourcePrintedPages": [
+        205
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Major arc220 split6:5 fromA givesBM100 and BAM50."
+    },
+    {
+      "number": 771,
+      "part": "а",
+      "sourcePrintedPages": [
+        205
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Diameter givesC90; source parts giveA/B67/23 and55/35."
+    },
+    {
+      "number": 771,
+      "part": "б",
+      "sourcePrintedPages": [
+        205
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Diameter givesC90; source parts giveA/B67/23 and55/35."
+    },
+    {
+      "number": 772,
+      "part": "single",
+      "sourcePrintedPages": [
+        205
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Both A positions modeled; apex51 or129 and equal base64.5 or25.5."
+    },
+    {
+      "number": 773,
+      "part": "single",
+      "sourcePrintedPages": [
+        205
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Source externalA,centerbetweenA/D and arcBD110 retained; tangent radius perpendicular gives20/35."
+    },
+    {
+      "number": 774,
+      "part": "single",
+      "sourcePrintedPages": [
+        205
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Auxiliary chord AC gives equal alternate angles and hence equal intercepted arcs."
+    },
+    {
+      "number": 775,
+      "part": "single",
+      "sourcePrintedPages": [
+        205
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "External secants32 and far arc100 give near arc36."
+    },
+    {
+      "number": 776,
+      "part": "single",
+      "sourcePrintedPages": [
+        205
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Half difference(140-52)/2=44; supplement136 excluded by acute requirement."
+    },
+    {
+      "number": 777,
+      "part": "single",
+      "sourcePrintedPages": [
+        205
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Interior chord angle half sum(54+70)/2=62."
+    },
+    {
+      "number": 778,
+      "part": "single",
+      "sourcePrintedPages": [
+        205
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Acute tangent-ray condition retained; both sought angles complementBAC."
+    },
+    {
+      "number": 779,
+      "part": "single",
+      "sourcePrintedPages": [
+        206
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "A diameter implies angle C is 90 degrees; both other angles of a nondegenerate triangle are strictly acute."
+    },
+    {
+      "number": 780,
+      "part": "single",
+      "sourcePrintedPages": [
+        206
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Altitude-to-hypotenuse theorem valid; endpoint zero cases explicitly separated from positive geometric mean."
+    },
+    {
+      "number": 781,
+      "part": "single",
+      "sourcePrintedPages": [
+        206
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Positive lengths are concatenated. A circle on their total as diameter meets the perpendicular through the interior division point twice. Both heights equal sqrt(ab)."
+    },
+    {
+      "number": 782,
+      "part": "single",
+      "sourcePrintedPages": [
+        206
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Centers of distinct circles tangent to both angle rays lie on the internal bisector. Their common tangent at A places both centers, A and O on one line."
+    },
+    {
+      "number": 783,
+      "part": "а",
+      "sourcePrintedPages": [
+        206
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "All seven configurations were read directly from figure 267 and its detail. Answers are 45,45,60,135,45,45,45 degrees. The square grid was restored with pale polygon primitives; exact diagonal and half-radius data remain."
+    },
+    {
+      "number": 783,
+      "part": "б",
+      "sourcePrintedPages": [
+        206
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "All seven configurations were read directly from figure 267 and its detail. Answers are 45,45,60,135,45,45,45 degrees. The square grid was restored with pale polygon primitives; exact diagonal and half-radius data remain."
+    },
+    {
+      "number": 783,
+      "part": "в",
+      "sourcePrintedPages": [
+        206
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "All seven configurations were read directly from figure 267 and its detail. Answers are 45,45,60,135,45,45,45 degrees. The square grid was restored with pale polygon primitives; exact diagonal and half-radius data remain."
+    },
+    {
+      "number": 783,
+      "part": "г",
+      "sourcePrintedPages": [
+        206
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "All seven configurations were read directly from figure 267 and its detail. Answers are 45,45,60,135,45,45,45 degrees. The square grid was restored with pale polygon primitives; exact diagonal and half-radius data remain."
+    },
+    {
+      "number": 783,
+      "part": "д",
+      "sourcePrintedPages": [
+        206
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "All seven configurations were read directly from figure 267 and its detail. Answers are 45,45,60,135,45,45,45 degrees. The square grid was restored with pale polygon primitives; exact diagonal and half-radius data remain."
+    },
+    {
+      "number": 783,
+      "part": "е",
+      "sourcePrintedPages": [
+        206
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "All seven configurations were read directly from figure 267 and its detail. Answers are 45,45,60,135,45,45,45 degrees. The square grid was restored with pale polygon primitives; exact diagonal and half-radius data remain."
+    },
+    {
+      "number": 783,
+      "part": "ж",
+      "sourcePrintedPages": [
+        206
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "All seven configurations were read directly from figure 267 and its detail. Answers are 45,45,60,135,45,45,45 degrees. The square grid was restored with pale polygon primitives; exact diagonal and half-radius data remain."
+    },
+    {
+      "number": 784,
+      "part": "single",
+      "sourcePrintedPages": [
+        208
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Equal opposite-side sums of 15 give perimeter 30."
+    },
+    {
+      "number": 785,
+      "part": "single",
+      "sourcePrintedPages": [
+        208
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Equal opposite sides of a parallelogram and equal opposite-side sums of a tangential quadrilateral imply all four sides are equal."
+    },
+    {
+      "number": 786,
+      "part": "single",
+      "sourcePrintedPages": [
+        208
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Fan triangulation from the incircle center has common height r. Summing areas gives Pr/2. The general proof and illustrative pentagon are distinguished."
+    },
+    {
+      "number": 787,
+      "part": "single",
+      "sourcePrintedPages": [
+        208
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Exact inconsistent source data 12 and 5 are retained. Formal area 60 is distinguished from nonexistence: bounds from two diagonals imply area at most 36. The diagram is explicitly a schematic."
+    },
+    {
+      "number": 788,
+      "part": "single",
+      "sourcePrintedPages": [
+        208
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Perimeter 20 gives radius 1.2. The coordinate rhombus has the required area/perimeter ratios."
+    },
+    {
+      "number": 789,
+      "part": "single",
+      "sourcePrintedPages": [
+        208
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Intersection of the diagonals lies on all internal bisectors. Equal positive distances to the sides give an incircle; acute half-angles at each side endpoint keep the feet on the segments."
+    },
+    {
+      "number": 790,
+      "part": "а",
+      "sourcePrintedPages": [
+        209
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Rectangle proof uses equal diagonals. Isosceles trapezoid proof uses supplementary opposite angles. Both coordinate circumcircles were verified."
+    },
+    {
+      "number": 790,
+      "part": "б",
+      "sourcePrintedPages": [
+        209
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Rectangle proof uses equal diagonals. Isosceles trapezoid proof uses supplementary opposite angles. Both coordinate circumcircles were verified."
+    },
+    {
+      "number": 791,
+      "part": "single",
+      "sourcePrintedPages": [
+        209
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Opposite parallelogram angles are equal and cyclic opposite angles supplementary; all angles must be 90 degrees."
+    },
+    {
+      "number": 792,
+      "part": "single",
+      "sourcePrintedPages": [
+        209
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "Parallel bases and cyclic angles imply equal base angles. Altitudes and congruent right triangles imply equal legs."
+    },
+    {
+      "number": 793,
+      "part": "single",
+      "sourcePrintedPages": [
+        209
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "All three source quadrilaterals remain. Opposite right angles give circles with diameters CH, AH and BH. All three coordinate circles were checked."
+    },
+    {
+      "number": 794,
+      "part": "single",
+      "sourcePrintedPages": [
+        209
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "coordinates": "PASS",
+      "rationale": "The incircle center is inside each angle and equidistant from its two sides, so it lies on all four internal bisectors."
+    }
+  ],
+  "findingsResolved": [
+    {
+      "id": "B-THEORY-LINKS",
+      "finding": "Five contextual references targeted unrelated theory points.",
+      "resolution": "781:midpoint/diameter21,23;perpendicular23,76.790b:trapezoid50.792:36,50.793:altitudes17,orthocenter70. Generated records rebuilt."
+    },
+    {
+      "id": "B-GRID-783",
+      "finding": "Original on-grid problem lacked the actual square grid; textual givens alone made cell-reading prompts misleading.",
+      "resolution": "Seven square grids restored using existing pale polygon primitives with underscore-only vertices; no runtime/style changes. Uniform spacing independently checked in every model view; exact source directions/half-radius preserved. Actual browser appearance remains a later gate."
+    },
+    {
+      "id": "B-783D-INITIAL-RADII",
+      "finding": "Root peer review found that auxiliary radii OA and OB were visible before the first solution step, while the source initial drawing contains BA, tangent BC and center O only.",
+      "resolution": "Moved OA and OB from neutral view to step1 and subsequent views. Added regression assertions that both radii are absent initially and present at step1. Generator and all12 independent tests pass again.",
+      "findingSource": "Root peer review of exact source drawing and current generator",
+      "peerReviewScope": "Root reported grid, mathematics and semantic-reference changes sound, with this single initial-view finding."
+    }
+  ],
+  "checks": [
+    {
+      "command": "python3 tools/geometry-textbook/models_ch9_b.py",
+      "status": "PASS",
+      "details": "44 models, 186 views, 43 author arithmetic checks; all model validators pass."
+    },
+    {
+      "command": "python3 tools/geometry-textbook/chapter09-b-independent.test.py",
+      "status": "PASS",
+      "details": "12 independent tests: all 44 models and 209 claims, positional cases, source-sensitive numeric geometry, square grids and contextual theory links, 180 iterations of independent geometric families, three rejecting mutation controls."
+    },
+    {
+      "command": "git diff --check -- <owned files>",
+      "status": "PASS"
+    }
+  ],
+  "notRun": [
+    "Actual browser layout and rendered-image inspection",
+    "Whole-chapter assembly, retained learner work, CI and release",
+    "External provider audit"
+  ],
+  "followUp": "Run root browser and image checks on the final bound B files, especially 783 grid readability, 788 slender rhombus and 793 altitude labels.",
+  "theoryLinkAudit": {
+    "reviewedAt": "2026-11-03T00:36:50.897486+00:00",
+    "scope": "Every theoryPoints list in all 44 block B cards was compared with the actual title and authored content of its target theory card; arithmetic continuation links retain the directly underlying geometric theorem.",
+    "stepsReviewed": 137,
+    "theoryTargetsReviewed": [
+      {
+        "number": 1,
+        "title": "Точки, прямые, отрезки"
+      },
+      {
+        "number": 11,
+        "title": "Смежные и вертикальные углы"
+      },
+      {
+        "number": 12,
+        "title": "Перпендикулярные прямые"
+      },
+      {
+        "number": 17,
+        "title": "Медианы, биссектрисы и высоты"
+      },
+      {
+        "number": 18,
+        "title": "Свойства равнобедренного треугольника"
+      },
+      {
+        "number": 21,
+        "title": "Окружность, радиус, хорда и диаметр"
+      },
+      {
+        "number": 22,
+        "title": "Построения циркулем и линейкой"
+      },
+      {
+        "number": 23,
+        "title": "Четыре основных построения"
+      },
+      {
+        "number": 29,
+        "title": "Свойства углов при параллельных прямых"
+      },
+      {
+        "number": 31,
+        "title": "Теорема о сумме углов треугольника"
+      },
+      {
+        "number": 36,
+        "title": "Признаки равенства прямоугольных треугольников"
+      },
+      {
+        "number": 37,
+        "title": "Расстояние от точки до прямой и между параллельными прямыми"
+      },
+      {
+        "number": 39,
+        "title": "Свойства биссектрисы угла"
+      },
+      {
+        "number": 46,
+        "title": "Выпуклый многоугольник"
+      },
+      {
+        "number": 48,
+        "title": "Параллелограмм"
+      },
+      {
+        "number": 50,
+        "title": "Трапеция"
+      },
+      {
+        "number": 51,
+        "title": "Прямоугольник"
+      },
+      {
+        "number": 52,
+        "title": "Ромб и квадрат"
+      },
+      {
+        "number": 54,
+        "title": "Понятие площади многоугольника"
+      },
+      {
+        "number": 58,
+        "title": "Площадь треугольника"
+      },
+      {
+        "number": 70,
+        "title": "Четыре замечательные точки треугольника"
+      },
+      {
+        "number": 71,
+        "title": "Пропорциональные отрезки в прямоугольном треугольнике"
+      },
+      {
+        "number": 74,
+        "title": "Синус, косинус и тангенс острого угла прямоугольного треугольника"
+      },
+      {
+        "number": 75,
+        "title": "Значения синуса, косинуса и тангенса для углов 30°, 45° и 60°"
+      },
+      {
+        "number": 76,
+        "title": "Взаимное расположение прямой и окружности"
+      },
+      {
+        "number": 79,
+        "title": "Градусная мера дуги окружности"
+      },
+      {
+        "number": 80,
+        "title": "Теорема о вписанном угле"
+      },
+      {
+        "number": 81,
+        "title": "Углы, образованные хордами, касательными и секущими"
+      },
+      {
+        "number": 82,
+        "title": "Вписанная окружность"
+      },
+      {
+        "number": 83,
+        "title": "Описанная окружность"
+      }
+    ],
+    "stepLinks": [
+      {
+        "number": 766,
+        "part": "а",
+        "theoryPointsByStep": [
+          [
+            80
+          ],
+          [
+            80
+          ],
+          [
+            80
+          ]
+        ]
+      },
+      {
+        "number": 766,
+        "part": "б",
+        "theoryPointsByStep": [
+          [
+            80
+          ],
+          [
+            80
+          ],
+          [
+            80
+          ]
+        ]
+      },
+      {
+        "number": 766,
+        "part": "в",
+        "theoryPointsByStep": [
+          [
+            80
+          ],
+          [
+            80
+          ],
+          [
+            80
+          ]
+        ]
+      },
+      {
+        "number": 766,
+        "part": "г",
+        "theoryPointsByStep": [
+          [
+            80
+          ],
+          [
+            80
+          ],
+          [
+            80
+          ]
+        ]
+      },
+      {
+        "number": 766,
+        "part": "д",
+        "theoryPointsByStep": [
+          [
+            80
+          ],
+          [
+            80
+          ],
+          [
+            80
+          ]
+        ]
+      },
+      {
+        "number": 767,
+        "part": "а",
+        "theoryPointsByStep": [
+          [
+            79,
+            80
+          ],
+          [
+            79,
+            80
+          ],
+          [
+            80
+          ]
+        ]
+      },
+      {
+        "number": 767,
+        "part": "б",
+        "theoryPointsByStep": [
+          [
+            79,
+            80
+          ],
+          [
+            79,
+            80
+          ],
+          [
+            80
+          ]
+        ]
+      },
+      {
+        "number": 767,
+        "part": "в",
+        "theoryPointsByStep": [
+          [
+            79,
+            80
+          ],
+          [
+            79,
+            80
+          ],
+          [
+            80
+          ]
+        ]
+      },
+      {
+        "number": 767,
+        "part": "г",
+        "theoryPointsByStep": [
+          [
+            79,
+            80
+          ],
+          [
+            79,
+            80
+          ],
+          [
+            80
+          ]
+        ]
+      },
+      {
+        "number": 768,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            79,
+            80
+          ],
+          [
+            80
+          ],
+          [
+            79,
+            80
+          ]
+        ]
+      },
+      {
+        "number": 769,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            79,
+            80
+          ],
+          [
+            80
+          ],
+          [
+            80
+          ],
+          [
+            80
+          ]
+        ]
+      },
+      {
+        "number": 770,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            79
+          ],
+          [
+            79
+          ],
+          [
+            80
+          ]
+        ]
+      },
+      {
+        "number": 771,
+        "part": "а",
+        "theoryPointsByStep": [
+          [
+            80
+          ],
+          [
+            80
+          ],
+          [
+            31
+          ]
+        ]
+      },
+      {
+        "number": 771,
+        "part": "б",
+        "theoryPointsByStep": [
+          [
+            80
+          ],
+          [
+            80
+          ],
+          [
+            31
+          ]
+        ]
+      },
+      {
+        "number": 772,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            18
+          ],
+          [
+            31,
+            80
+          ],
+          [
+            31,
+            80
+          ],
+          [
+            18,
+            80
+          ]
+        ]
+      },
+      {
+        "number": 773,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            76,
+            79
+          ],
+          [
+            11,
+            31
+          ],
+          [
+            18,
+            21,
+            31
+          ]
+        ]
+      },
+      {
+        "number": 774,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            29
+          ],
+          [
+            29
+          ],
+          [
+            80
+          ]
+        ]
+      },
+      {
+        "number": 775,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            81
+          ],
+          [
+            81
+          ],
+          [
+            11,
+            81
+          ]
+        ]
+      },
+      {
+        "number": 776,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            81
+          ],
+          [
+            81
+          ],
+          [
+            11,
+            81
+          ]
+        ]
+      },
+      {
+        "number": 777,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            81
+          ],
+          [
+            81
+          ],
+          [
+            81
+          ]
+        ]
+      },
+      {
+        "number": 778,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            76
+          ],
+          [
+            31,
+            80
+          ],
+          [
+            76,
+            80
+          ]
+        ]
+      },
+      {
+        "number": 779,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            80
+          ],
+          [
+            31
+          ],
+          [
+            31
+          ]
+        ]
+      },
+      {
+        "number": 780,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            80
+          ],
+          [
+            71
+          ],
+          [
+            71
+          ]
+        ]
+      },
+      {
+        "number": 781,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            22
+          ],
+          [
+            21,
+            23
+          ],
+          [
+            23,
+            76
+          ],
+          [
+            71,
+            80
+          ]
+        ]
+      },
+      {
+        "number": 782,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            39
+          ],
+          [
+            76
+          ],
+          [
+            1
+          ]
+        ]
+      },
+      {
+        "number": 783,
+        "part": "а",
+        "theoryPointsByStep": [
+          [
+            52,
+            79
+          ],
+          [
+            80
+          ],
+          [
+            80
+          ]
+        ]
+      },
+      {
+        "number": 783,
+        "part": "б",
+        "theoryPointsByStep": [
+          [
+            52,
+            79
+          ],
+          [
+            80
+          ],
+          [
+            80
+          ]
+        ]
+      },
+      {
+        "number": 783,
+        "part": "в",
+        "theoryPointsByStep": [
+          [
+            74,
+            75,
+            79
+          ],
+          [
+            80
+          ],
+          [
+            80
+          ]
+        ]
+      },
+      {
+        "number": 783,
+        "part": "г",
+        "theoryPointsByStep": [
+          [
+            52,
+            79
+          ],
+          [
+            80
+          ],
+          [
+            80
+          ]
+        ]
+      },
+      {
+        "number": 783,
+        "part": "д",
+        "theoryPointsByStep": [
+          [
+            12,
+            79
+          ],
+          [
+            81
+          ],
+          [
+            81
+          ]
+        ]
+      },
+      {
+        "number": 783,
+        "part": "е",
+        "theoryPointsByStep": [
+          [
+            18,
+            31
+          ],
+          [
+            18,
+            31
+          ],
+          [
+            18,
+            31
+          ]
+        ]
+      },
+      {
+        "number": 783,
+        "part": "ж",
+        "theoryPointsByStep": [
+          [
+            18,
+            31
+          ],
+          [
+            18,
+            31
+          ],
+          [
+            18,
+            31
+          ]
+        ]
+      },
+      {
+        "number": 784,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            82
+          ],
+          [
+            82
+          ]
+        ]
+      },
+      {
+        "number": 785,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            48
+          ],
+          [
+            82
+          ],
+          [
+            52
+          ]
+        ]
+      },
+      {
+        "number": 786,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            46,
+            54
+          ],
+          [
+            58,
+            76
+          ],
+          [
+            54,
+            58
+          ]
+        ]
+      },
+      {
+        "number": 787,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            82
+          ],
+          [
+            58,
+            82
+          ],
+          [
+            37,
+            58
+          ],
+          [
+            58,
+            82
+          ],
+          [
+            82
+          ]
+        ]
+      },
+      {
+        "number": 788,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            82
+          ],
+          [
+            58,
+            82
+          ],
+          [
+            58
+          ]
+        ]
+      },
+      {
+        "number": 789,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            52
+          ],
+          [
+            39
+          ],
+          [
+            39,
+            76
+          ]
+        ]
+      },
+      {
+        "number": 790,
+        "part": "а",
+        "theoryPointsByStep": [
+          [
+            48,
+            51
+          ],
+          [
+            51
+          ],
+          [
+            83
+          ]
+        ]
+      },
+      {
+        "number": 790,
+        "part": "б",
+        "theoryPointsByStep": [
+          [
+            50
+          ],
+          [
+            29
+          ],
+          [
+            83
+          ]
+        ]
+      },
+      {
+        "number": 791,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            48
+          ],
+          [
+            83
+          ],
+          [
+            48,
+            51
+          ]
+        ]
+      },
+      {
+        "number": 792,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            29,
+            83
+          ],
+          [
+            29
+          ],
+          [
+            36,
+            50
+          ]
+        ]
+      },
+      {
+        "number": 793,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            17,
+            70
+          ],
+          [
+            80,
+            83
+          ],
+          [
+            80,
+            83
+          ],
+          [
+            80,
+            83
+          ]
+        ]
+      },
+      {
+        "number": 794,
+        "part": "single",
+        "theoryPointsByStep": [
+          [
+            76
+          ],
+          [
+            39
+          ],
+          [
+            39,
+            82
+          ]
+        ]
+      }
+    ],
+    "furtherFindingsResolved": [
+      {
+        "number": 781,
+        "step": 1,
+        "before": [
+          23
+        ],
+        "after": [
+          22
+        ],
+        "reason": "Actual point22 teaches copying a segment with compass;23 covers four other constructions."
+      },
+      {
+        "number": 772,
+        "step": 3,
+        "before": [
+          80
+        ],
+        "after": [
+          31,
+          80
+        ],
+        "reason": "The same step also calculates base angles using the triangle angle sum."
+      },
+      {
+        "number": 773,
+        "step": 3,
+        "before": [
+          18,
+          79
+        ],
+        "after": [
+          18,
+          21,
+          31
+        ],
+        "reason": "Equal radii use circle definition21; equal base angles18 and their sum31. Arc measure79 is no longer the active justification."
+      },
+      {
+        "number": 783,
+        "parts": "all seven",
+        "reason": "Generic identical lists replaced with part-specific targets. Diagonal grid directions52/79; half-radius cosine74/75/79; orthogonal radii12/79; inscribed angles80; tangent-chord angle81; pure grid cases e/z use18/31 only."
+      }
+    ],
+    "reviewerFixes": "These further source-link corrections were applied by this reviewer to the recovered generator and generated files. Root should inspect the small correction diff as a second pair of eyes. Geometry points and views were not altered in this second pass.",
+    "tests": "Generator and all12 independent tests passed again; semantic-link regression expanded for all changed cases."
+  }
+}

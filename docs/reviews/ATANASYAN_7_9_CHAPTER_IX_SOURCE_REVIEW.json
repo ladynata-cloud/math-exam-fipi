@@ -1,0 +1,571 @@
+{
+  "schemaVersion": 1,
+  "chapter": 9,
+  "title": "Окружность",
+  "reviewer": "Independent non-author OpenAI source reviewer /root/ix_source",
+  "reviewedAt": "2026-10-30",
+  "sourceSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "sourceInventoryStatus": "PASS",
+  "authoredConditionStatus": "PENDING",
+  "mathematicsApproval": false,
+  "publicationApproval": false,
+  "scope": "Independent actual page inventory and source-issue verification only. Authored source fidelity remains pending until author files exist and are individually read/bound.",
+  "counts": {
+    "mainNumbers": 87,
+    "mainParts": 133,
+    "theoryPoints": 8,
+    "selfcheckQuestions": 19,
+    "cards": 160
+  },
+  "sourcePages": [
+    {
+      "printedPage": 189,
+      "pdfPage": 190,
+      "sha256": "72b9c5e1dad0b2f22d2aa0ed53341e83d0cbc97890122c63a64918abfd087a07",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 190,
+      "pdfPage": 191,
+      "sha256": "bb28851b334298aace18b526eab8849a14fbea9ad128f853e5c719ab247a125d",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 191,
+      "pdfPage": 192,
+      "sha256": "6bee3c3261cf09f30275acd30f4b73741e5931f6cb728a550b12ff130892d3a4",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 192,
+      "pdfPage": 193,
+      "sha256": "7eacb68ff1ca4fd0c9fe2d0fd3ef075387d452d46a09c2ae09f57f94dd4e3a7d",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 193,
+      "pdfPage": 194,
+      "sha256": "08a33a53f3bf98411423b7a47d1e84266694169211a23a20b33a149ba00d6f0f",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 194,
+      "pdfPage": 195,
+      "sha256": "163b54e8173c949ab4e10d91954538e11d256e195503ffe0de97cbf118beb22b",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 195,
+      "pdfPage": 196,
+      "sha256": "b4dffb267527b162b5eac69cc243bba1b8550fbcc21d687f161736467f236b6b",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 196,
+      "pdfPage": 197,
+      "sha256": "82be555080faa486d066fbcb9500ed9648f7c0f29f48b0394130f066694f81e9",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 197,
+      "pdfPage": 198,
+      "sha256": "1272a7874358df179d626f90faf649e5b2366da354e1a84ec4b2f9f25867f131",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 198,
+      "pdfPage": 199,
+      "sha256": "9db5181bd3ee3486093dd8bd9f4630e45e60abf40d05fa1ff3b05725f6dc6b54",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 199,
+      "pdfPage": 200,
+      "sha256": "331fe1ef9f4f7aab54dbe6a0dfdad5d33bf9005ac4c730c4a9c90828817b2417",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 200,
+      "pdfPage": 201,
+      "sha256": "2c536ca5d6aafca7a2a6deaf147c87e6d9fea501c0ee904f781df1f9ec478c62",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 201,
+      "pdfPage": 202,
+      "sha256": "8e496ce13116063bd582d13a3c955ce727e16612e847a7712c5eace9b8c8c839",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 202,
+      "pdfPage": 203,
+      "sha256": "650c344d288f27be404fd61d0d20413840cb7bb08b7ff3ca009770839fa46dbe",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 203,
+      "pdfPage": 204,
+      "sha256": "7649dc8ee40b19768c4775fa4c735a31c58297c8fd40ca3ccf1101fbd8ef965c",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 204,
+      "pdfPage": 205,
+      "sha256": "3ad419631a29f319ee2ea2dff4f24728377ba1ca4c464a568bf51abbd46628ed",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 205,
+      "pdfPage": 206,
+      "sha256": "097ddb6a26fffda7857f16b8b4d41151c01972a56cdd997a751461d24a5fd4cc",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 206,
+      "pdfPage": 207,
+      "sha256": "653d59b77c2d299ea577c0bbd9674b171fbed69a8a5b22164bd70f36a102efbc",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 207,
+      "pdfPage": 208,
+      "sha256": "2c5d7beed22f1f8812636785b0b265262c27b401ad89cfe9f99d911ef65e9a90",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 208,
+      "pdfPage": 209,
+      "sha256": "c2dea9f18d15f0308acde40381e219cae81a0129c4b710d046eafe6e43678852",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 209,
+      "pdfPage": 210,
+      "sha256": "720d842577e334d5f451cb62add34694259e92be01020438fa3bca4fea90cebc",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 210,
+      "pdfPage": 211,
+      "sha256": "5b932f023c76451ce676da728a07087c042f73551217eba3219f2740ee71ba51",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 211,
+      "pdfPage": 212,
+      "sha256": "dcd83d0a3226864f2146b38e594ea1cda78eac754aa79cd3defbb04e31675010",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 212,
+      "pdfPage": 213,
+      "sha256": "b43c9b2e207a38a4fc7605d4ccc54d12368d18dcd50d5904e9d79c388486f344",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 213,
+      "pdfPage": 214,
+      "sha256": "1cf9f47d1ea5ca2347f10ea01eb89361c1015eb676ce0a90ac3e8b80b0292c0b",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 413,
+      "pdfPage": 414,
+      "sha256": "42ad4c5b72a5e9ffa90d34450bce3ee4130e0441bddaa2395be01d0d77d34adf",
+      "actuallyViewed": true
+    },
+    {
+      "printedPage": 414,
+      "pdfPage": 415,
+      "sha256": "6613037b79ab915c428a7468597ebbf9c3cff19e27aea9ed9c37613b025f78d2",
+      "actuallyViewed": true
+    }
+  ],
+  "sourceMap": {
+    "path": "tools/geometry-textbook/chapter-09-source-map.json",
+    "sha256": "f26eec981425ca0cbf4161540394a4b1e86b860c158c53de8c4881f1639a73c9"
+  },
+  "sourceIssues": [
+    {
+      "exercise": 743,
+      "printedPages": [
+        197
+      ],
+      "kind": "missing-nondegeneracy-condition",
+      "finding": "Источник не исключает диаметр AB. Если AB — диаметр, радиус OM пересекает его в середине O при любом направлении, но касательная в M параллельна AB лишь при OM⊥AB.",
+      "requiredHandling": "Доказать утверждение для хорды,не проходящей через центр; явно объяснить исключение диаметра,не выдавая уточнение за исходное ограничение."
+    },
+    {
+      "exercise": 746,
+      "printedPages": [
+        197
+      ],
+      "kind": "missing-angle-case",
+      "finding": "Обычный невыпуклый угол не принят школьным обозначением∠. Для O(0,1),B(0,0),C(0,−1),M(2−√3,0),A(1/2,1−√3/2) оба касания выполнены,но∠AMC135°,3∠BMC225°.",
+      "requiredHandling": "Сохранить исходное требование и объяснить: равенство обычных углов верно приβ=∠BMC≤60°; приβ>60° обычный∠AMC=360°−3β,а3β — угол,содержащий лучMB."
+    },
+    {
+      "exercise": 787,
+      "printedPages": [
+        208
+      ],
+      "kind": "inconsistent-numerical-data",
+      "finding": "Сумма противоположных сторон12см даёт P24см,p12см. Формальная площадьpr60см² приr5см превышает верхнюю границу площади любого четырёхугольника P²/16=36см². Такого описанного четырёхугольника нет.",
+      "requiredHandling": "Не изображать несуществующую фигуру как точно удовлетворяющую данным. Отличить формальную подстановку60см² от вывода о несовместимости данных."
+    },
+    {
+      "exercise": 802,
+      "part": "а",
+      "printedPages": [
+        210,
+        211
+      ],
+      "kind": "missing-angle-configuration-restriction",
+      "finding": "Для центров(−2,0),(2,0),r√13,A(0,3),B(0,−3) секущие черезA под0° и60° дают обычный∠CKD112,619864948° и67,380135052°. Касания и невырожденность проверены независимо.",
+      "requiredHandling": "Не утверждать неизменность обычного угла для всех m. Объяснить два взаимно дополнительных значения/постоянство угла между прямыми; частьб формулировать как концикличность четырёх точек с корректным порядком."
+    },
+    {
+      "printedPages": [
+        414
+      ],
+      "kind": "editorial-table-of-contents",
+      "finding": "В оглавлении414 ошибочно напечатано«Вопросы для повторения к главеXII» у страницы209; фактический заголовок209 относится к главеIX.",
+      "requiredHandling": "В навигации и подписях использовать главуIX,соответствующую реальным страницам."
+    }
+  ],
+  "independentNumericalExamples": [
+    {
+      "exercise": 746,
+      "points": {
+        "A": [
+          0.5,
+          0.13397459621556135
+        ],
+        "B": [
+          0,
+          0
+        ],
+        "O": [
+          0,
+          1
+        ],
+        "M": [
+          0.2679491924311227,
+          0
+        ],
+        "C": [
+          0,
+          -1
+        ]
+      },
+      "onCircleA": 0.9999999999999999,
+      "tangentA": 1.3877787807814457e-17,
+      "tangentB": 0.0,
+      "angleAMC": 135.0,
+      "threeAngleBMC": 225.0
+    },
+    {
+      "exercise": 787,
+      "semiperimeter": 12,
+      "inradius": 5,
+      "formalArea": 60,
+      "areaUpperBoundAnyQuadrilateralPerimeter24": 36,
+      "perimeterGiven": 24,
+      "minimumCircumscribedQuadrilateralPerimeter": 40
+    },
+    {
+      "exercise": 802,
+      "secantDegrees": 0,
+      "points": {
+        "A": [
+          0,
+          3
+        ],
+        "B": [
+          0,
+          -3
+        ],
+        "C": [
+          -4.0,
+          3.0
+        ],
+        "D": [
+          4.0,
+          3.0
+        ],
+        "K": [
+          -0.0,
+          5.666666666666667
+        ]
+      },
+      "angleCKD": 112.61986494804043,
+      "angleCBD": 67.38013505195957,
+      "tangentResiduals": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "exercise": 802,
+      "secantDegrees": 20,
+      "points": {
+        "A": [
+          0,
+          3
+        ],
+        "B": [
+          0,
+          -3
+        ],
+        "C": [
+          -5.460451715297575,
+          1.0125581099838554
+        ],
+        "D": [
+          1.6037260571783383,
+          3.5837085487300127
+        ],
+        "K": [
+          -4.919163106834788,
+          2.8624303051272544
+        ]
+      },
+      "angleCKD": 112.61986494804043,
+      "angleCBD": 67.38013505195958,
+      "tangentResiduals": [
+        -1.5543122344752192e-15,
+        1.3322676295501878e-15
+      ]
+    },
+    {
+      "exercise": 802,
+      "secantDegrees": 40,
+      "points": {
+        "A": [
+          0,
+          3
+        ],
+        "B": [
+          0,
+          -3
+        ],
+        "C": [
+          -5.301719614370485,
+          -1.4486709730236242
+        ],
+        "D": [
+          -0.6071269037027632,
+          2.4905600390252074
+        ],
+        "K": [
+          -5.008543906925183,
+          -2.116858575146102
+        ]
+      },
+      "angleCKD": 67.38013505195961,
+      "angleCBD": 67.38013505195957,
+      "tangentResiduals": [
+        -1.7763568394002505e-15,
+        0.0
+      ]
+    },
+    {
+      "exercise": 802,
+      "secantDegrees": 60,
+      "points": {
+        "A": [
+          0,
+          3
+        ],
+        "B": [
+          0,
+          -3
+        ],
+        "C": [
+          -3.598076211353317,
+          -3.2320508075688767
+        ],
+        "D": [
+          -1.5980762113533162,
+          0.23205080756887764
+        ],
+        "K": [
+          -1.8763883748662844,
+          -4.083333333333333
+        ]
+      },
+      "angleCKD": 67.38013505195958,
+      "angleCBD": 67.38013505195957,
+      "tangentResiduals": [
+        -1.7763568394002505e-15,
+        -2.220446049250313e-16
+      ]
+    },
+    {
+      "exercise": 802,
+      "secantDegrees": 80,
+      "points": {
+        "A": [
+          0,
+          3
+        ],
+        "B": [
+          0,
+          -3
+        ],
+        "C": [
+          -1.1466751884051898,
+          -3.5031181490090617
+        ],
+        "D": [
+          -0.9054456715488233,
+          -2.135037575706387
+        ],
+        "K": [
+          -0.08938080009039658,
+          -3.2455717299811497
+        ]
+      },
+      "angleCKD": 67.38013505195958,
+      "angleCBD": 67.38013505195954,
+      "tangentResiduals": [
+        -2.220446049250313e-16,
+        -4.440892098500626e-16
+      ]
+    },
+    {
+      "exercise": 802,
+      "secantDegrees": 100,
+      "points": {
+        "A": [
+          0,
+          3
+        ],
+        "B": [
+          0,
+          -3
+        ],
+        "C": [
+          0.9054456715488227,
+          -2.135037575706387
+        ],
+        "D": [
+          1.1466751884051891,
+          -3.5031181490090617
+        ],
+        "K": [
+          0.08938080009039627,
+          -3.2455717299811497
+        ]
+      },
+      "angleCKD": 67.3801350519596,
+      "angleCBD": 67.38013505195957,
+      "tangentResiduals": [
+        8.881784197001252e-16,
+        3.3306690738754696e-16
+      ]
+    },
+    {
+      "exercise": 802,
+      "secantDegrees": 120,
+      "points": {
+        "A": [
+          0,
+          3
+        ],
+        "B": [
+          0,
+          -3
+        ],
+        "C": [
+          1.5980762113533158,
+          0.2320508075688763
+        ],
+        "D": [
+          3.598076211353314,
+          -3.2320508075688767
+        ],
+        "K": [
+          1.8763883748662824,
+          -4.083333333333331
+        ]
+      },
+      "angleCKD": 67.3801350519596,
+      "angleCBD": 67.38013505195956,
+      "tangentResiduals": [
+        8.881784197001252e-16,
+        -4.440892098500626e-16
+      ]
+    },
+    {
+      "exercise": 802,
+      "secantDegrees": 140,
+      "points": {
+        "A": [
+          0,
+          3
+        ],
+        "B": [
+          0,
+          -3
+        ],
+        "C": [
+          0.6071269037027645,
+          2.490560039025206
+        ],
+        "D": [
+          5.301719614370484,
+          -1.448670973023626
+        ],
+        "K": [
+          5.0085439069251825,
+          -2.1168585751461055
+        ]
+      },
+      "angleCKD": 67.38013505195951,
+      "angleCBD": 67.38013505195957,
+      "tangentResiduals": [
+        -1.7763568394002505e-15,
+        2.3314683517128287e-15
+      ]
+    },
+    {
+      "exercise": 802,
+      "secantDegrees": 160,
+      "points": {
+        "A": [
+          0,
+          3
+        ],
+        "B": [
+          0,
+          -3
+        ],
+        "C": [
+          -1.603726057178337,
+          3.5837085487300127
+        ],
+        "D": [
+          5.460451715297574,
+          1.0125581099838545
+        ],
+        "K": [
+          4.919163106834788,
+          2.862430305127252
+        ]
+      },
+      "angleCKD": 112.61986494804044,
+      "angleCBD": 67.38013505195958,
+      "tangentResiduals": [
+        8.881784197001252e-16,
+        -8.881784197001252e-16
+      ]
+    }
+  ],
+  "notReviewed": [
+    "Authored condition fidelity and source drawing fidelity: pending.",
+    "Complete authored mathematics and pedagogy.",
+    "Actual app rendering, browser/UI, retained learner work.",
+    "External provider review, release/publish decision."
+  ]
+}

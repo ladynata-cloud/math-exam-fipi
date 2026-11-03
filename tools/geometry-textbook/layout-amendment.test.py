@@ -26,7 +26,13 @@ class LayoutAmendment(unittest.TestCase):
  def test_all1247_cards_and_historical_review_identity_remain_exact(self):
   actual=compose();published=json.loads((COURSE/'data/course.json').read_text())
   self.assertEqual(actual,published,'No teaching/review/revision/storage-key migration')
-  self.assertEqual(len(actual['lessons']),1247)
+  if any(chapter['chapter']==9 for chapter in actual['build']['chapters']):
+   from chapter09_release import validate_release
+   from chapter09_extension import assert_1247_preserved
+   validate_release(actual)
+   assert_1247_preserved(actual)
+  else:
+   self.assertEqual(len(actual['lessons']),1247)
   self.assertTrue(actual['build']['publicationReviewMatches'])
  def test_unbound_runtime_change_invalidates_publication(self):
   with tempfile.TemporaryDirectory() as folder:

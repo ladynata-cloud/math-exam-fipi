@@ -1,0 +1,408 @@
+{
+  "schemaVersion": 1,
+  "status": "failed-browser-gate-fixes-required",
+  "reviewer": "root: actual cloud evidence and independent image findings",
+  "at": "2026-11-03T01:31:21.414867+00:00",
+  "testedHead": "848f3af7d0193157d31bd940e211ba8a4a5f7cf7",
+  "scope": "Full 1407-card candidate; not a successful release gate",
+  "publicationApprovalGranted": false,
+  "artifact": {
+    "id": 13196581196,
+    "name": "atanasyan-chapter09-candidate",
+    "size_in_bytes": 231823727,
+    "url": "https://api.github.com/repos/ladynata-cloud/math-exam-fipi/actions/artifacts/13196581196",
+    "archive_download_url": "https://api.github.com/repos/ladynata-cloud/math-exam-fipi/actions/artifacts/13196581196/zip",
+    "expired": false,
+    "created_at": "2026-11-03T01:23:15Z",
+    "expires_at": "2026-11-10T01:23:03Z",
+    "updated_at": "2026-11-03T01:23:15Z",
+    "digest": "sha256:1aa7b3b8fd7372a2706f283b01fa096ca0fa6d032704bd012d08987739d215e2",
+    "workflow_run": {
+      "id": 41555694755,
+      "repository_id": 1118899644,
+      "head_repository_id": 1118899644,
+      "head_branch": "content/atanasyan-chapter-ix-20261103",
+      "head_sha": "848f3af7d0193157d31bd940e211ba8a4a5f7cf7"
+    }
+  },
+  "rawEvidenceSha256": "ee742b0a5b29e1cd81669ce703dd897ff4a37f04eefc3563c61402fc2ff5042d",
+  "browserEvidence": {
+    "scope": "full-course",
+    "completed": false,
+    "bundleSha256": "75b0e2f22a2dba12db3a806dd4d5f0fd68faffd62b4e7c3226691a1497f549a4",
+    "authoredContentSha256": "b1d187961681a299d9c2de1c424715efd6a97446df3e6537558f53e1628cf254",
+    "implementationSha256": "ca0345494ebd9b0f150f07effd91baa777d6cf3c70bb55e9412ccf17f3ab588b",
+    "gateScriptSha256": "d5d1e5af7e377d5921c86e84c36e81489c150b78db6442a2b71f1c0aba817be7",
+    "widths": [
+      320,
+      1280
+    ],
+    "lessons": 1407,
+    "errors": [],
+    "interactions": [
+      "expansion-lesson-320-button-and-Escape",
+      "expansion-lesson-1280-button-and-Escape",
+      "notes-and-steps-reload",
+      "expansion-theory-1280-button-and-Escape",
+      "theory-return-retains-answer",
+      "manual-answer-honesty",
+      "two-tab-conflict-preserves-work",
+      "chapter-selfcheck-draft-isolation-and-reload",
+      "chapter-II-theory-return-and-saved-step",
+      "chapter-II-first-and-last-direct-entry",
+      "chapter-III-theory-return-and-saved-step",
+      "chapter-III-first-and-last-direct-entry",
+      "chapter-IV-theory-return-and-saved-step",
+      "chapter-IV-first-and-last-direct-entry",
+      "chapter-V-theory-return-and-saved-step",
+      "chapter-V-first-and-last-direct-entry",
+      "chapter-VI-theory-return-and-saved-step",
+      "chapter-VI-first-and-last-direct-entry",
+      "chapter-VII-theory-return-and-saved-step",
+      "chapter-VII-first-and-last-direct-entry",
+      "chapter-VIII-theory-return-and-saved-step",
+      "chapter-VIII-first-and-last-direct-entry",
+      "chapter-IX-theory-return-and-saved-step",
+      "chapter-IX-first-and-last-direct-entry"
+    ]
+  },
+  "counts": {
+    "viewWidthChecks": 14168,
+    "stepFlows": 2814,
+    "initialLastCaptures": 5628,
+    "chapterIXViewCaptures": 1480,
+    "issueViews": 12
+  },
+  "issues": [
+    {
+      "id": "atanasyan-7-9-main-757-part-1",
+      "view": "step-2",
+      "width": 320,
+      "issues": [
+        "unresolved label placement V",
+        "unresolved label placement O1",
+        "unresolved label placement A",
+        "unresolved label placement C",
+        "unresolved label placement K",
+        "overlapping labels O1/A",
+        "overlapping labels O1/K",
+        "line through label V",
+        "line through label O1",
+        "line through label A",
+        "line through label C",
+        "line through label K",
+        "circle through label V",
+        "circle through label O1",
+        "circle through label A"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-757-part-1",
+      "view": "step-3",
+      "width": 320,
+      "issues": [
+        "unresolved label placement V",
+        "unresolved label placement O1",
+        "unresolved label placement A",
+        "unresolved label placement C",
+        "unresolved label placement K",
+        "overlapping labels O1/A",
+        "overlapping labels O1/K",
+        "line through label V",
+        "line through label O1",
+        "line through label A",
+        "line through label C",
+        "line through label K",
+        "circle through label V",
+        "circle through label O1",
+        "circle through label A"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-757-part-1",
+      "view": "step-4",
+      "width": 320,
+      "issues": [
+        "unresolved label placement V",
+        "unresolved label placement O1",
+        "unresolved label placement A",
+        "unresolved label placement C",
+        "unresolved label placement K",
+        "overlapping labels O1/A",
+        "overlapping labels O1/K",
+        "line through label V",
+        "line through label O1",
+        "line through label A",
+        "line through label C",
+        "line through label K",
+        "circle through label V",
+        "circle through label O1",
+        "circle through label A"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-761-part-1",
+      "view": "step-3",
+      "width": 320,
+      "issues": [
+        "unresolved label placement O",
+        "unresolved label placement O1",
+        "unresolved label placement K",
+        "unresolved label placement K1",
+        "line through label O",
+        "line through label O1",
+        "line through label K",
+        "circle through label K",
+        "circle through label K1"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-761-part-1",
+      "view": "step-4",
+      "width": 320,
+      "issues": [
+        "unresolved label placement O",
+        "unresolved label placement O1",
+        "unresolved label placement K",
+        "unresolved label placement K1",
+        "line through label O",
+        "line through label O1",
+        "line through label K",
+        "circle through label K",
+        "circle through label K1"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-793-part-1",
+      "view": "neutral",
+      "width": 320,
+      "issues": [
+        "unresolved label placement A",
+        "unresolved label placement H",
+        "unresolved label placement M",
+        "unresolved label placement N",
+        "line through label A",
+        "line through label H",
+        "line through label M",
+        "line through label N"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-793-part-1",
+      "view": "step-1",
+      "width": 320,
+      "issues": [
+        "unresolved label placement A",
+        "unresolved label placement H",
+        "unresolved label placement M",
+        "unresolved label placement N",
+        "line through label A",
+        "line through label H",
+        "line through label M",
+        "line through label N"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-820-part-1",
+      "view": "step-1",
+      "width": 320,
+      "issues": [
+        "unresolved label placement A",
+        "unresolved label placement B",
+        "unresolved label placement C",
+        "unresolved label placement D",
+        "unresolved label placement P",
+        "unresolved label placement Q",
+        "unresolved label placement R",
+        "unresolved label placement S",
+        "unresolved label placement O",
+        "unresolved label placement H",
+        "overlapping labels O/H",
+        "line through label A",
+        "line through label B",
+        "line through label P",
+        "line through label Q",
+        "line through label S",
+        "line through label O",
+        "line through label H",
+        "circle through label P",
+        "circle through label Q",
+        "circle through label S",
+        "circle through label B",
+        "circle through label R"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-820-part-1",
+      "view": "step-2",
+      "width": 320,
+      "issues": [
+        "unresolved label placement A",
+        "unresolved label placement B",
+        "unresolved label placement C",
+        "unresolved label placement D",
+        "unresolved label placement P",
+        "unresolved label placement Q",
+        "unresolved label placement R",
+        "unresolved label placement S",
+        "unresolved label placement O",
+        "unresolved label placement H",
+        "overlapping labels O/H",
+        "line through label A",
+        "line through label B",
+        "line through label P",
+        "line through label Q",
+        "line through label S",
+        "line through label O",
+        "line through label H",
+        "circle through label P",
+        "circle through label Q",
+        "circle through label S",
+        "circle through label B",
+        "circle through label R"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-820-part-1",
+      "view": "step-3",
+      "width": 320,
+      "issues": [
+        "unresolved label placement A",
+        "unresolved label placement B",
+        "unresolved label placement C",
+        "unresolved label placement D",
+        "unresolved label placement P",
+        "unresolved label placement Q",
+        "unresolved label placement R",
+        "unresolved label placement S",
+        "unresolved label placement O",
+        "unresolved label placement H",
+        "overlapping labels O/H",
+        "line through label A",
+        "line through label B",
+        "line through label P",
+        "line through label Q",
+        "line through label S",
+        "line through label O",
+        "line through label H",
+        "circle through label P",
+        "circle through label Q",
+        "circle through label S",
+        "circle through label B",
+        "circle through label R"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-822-part-1",
+      "view": "step-3",
+      "width": 320,
+      "issues": [
+        "unresolved label placement A",
+        "unresolved label placement B",
+        "unresolved label placement C",
+        "unresolved label placement A1",
+        "unresolved label placement C1",
+        "unresolved label placement H",
+        "line through label B",
+        "line through label A1",
+        "line through label C1",
+        "line through label H",
+        "circle through label A",
+        "circle through label A1",
+        "circle through label C1"
+      ]
+    },
+    {
+      "id": "atanasyan-7-9-main-822-part-1",
+      "view": "step-4",
+      "width": 320,
+      "issues": [
+        "unresolved label placement A",
+        "unresolved label placement B",
+        "unresolved label placement C",
+        "unresolved label placement A1",
+        "unresolved label placement C1",
+        "unresolved label placement H",
+        "line through label B",
+        "line through label A1",
+        "line through label C1",
+        "line through label H",
+        "circle through label A",
+        "circle through label A1",
+        "circle through label C1"
+      ]
+    }
+  ],
+  "independentVisualFindings": [
+    {
+      "cards": [
+        "769-part-1",
+        "772-part-1"
+      ],
+      "view": "step-3",
+      "finding": "Text explains the alternate configuration, while the drawing retains the first case; the correct alternate case exists but must be aligned with the step."
+    },
+    {
+      "cards": [
+        "798-part-1",
+        "798-part-2"
+      ],
+      "view": "step-1",
+      "finding": "H, QH and the right-angle marker appear before their construction in step-2."
+    },
+    {
+      "cards": [
+        "808-part-1"
+      ],
+      "view": "step-1",
+      "finding": "Auxiliary height CH, H and right-angle marker appear before construction in step-2."
+    },
+    {
+      "cards": [
+        "816-part-1"
+      ],
+      "view": "step-2",
+      "finding": "Auxiliary height BH and H appear before the height/projection step-3."
+    },
+    {
+      "cards": [
+        "802-part-2"
+      ],
+      "view": "step-2",
+      "finding": "New circle through B,C,K,D is shown before the ordinary-angle criterion proves concyclicity in step-3. Tangent/chord steps1–2 also need visible AB,BC,BD to match their named angle arms."
+    },
+    {
+      "cards": [
+        "theory-78",
+        "selfcheck-5"
+      ],
+      "views": [
+        "step-3",
+        "step-5",
+        "case-2",
+        "case-4"
+      ],
+      "finding": "Proof refers to common tangency point K and the line of centers, but these are not explicitly drawn/labelled."
+    },
+    {
+      "cards": [
+        "theory-82",
+        "selfcheck-16"
+      ],
+      "view": "step-1",
+      "finding": "Text names contact points K,L,M,N in step-1 while they first appear in step-2; show points in step-1 and retain radii from step-2."
+    },
+    {
+      "cards": [
+        "798-part-2"
+      ],
+      "views": [
+        "step-2",
+        "step-3",
+        "last"
+      ],
+      "finding": "H lies beyond M on ray OM; OH or MH must be drawn so the right-angle marker and triangle OQH are connected."
+    }
+  ],
+  "resolution": "Pending actual corrected captures and complete repeated gate. Reviewers may reuse only unchanged whole-PNG hashes they actually inspected; this failed run is never represented as a successful full-course gate."
+}
