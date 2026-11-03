@@ -24,18 +24,14 @@ test('literal same-origin exercise 92a opens its registered wrapper and retains 
     assert.equal(canonical('/geometry-course/textbook/?seed=3' + hash), wrapper + hash);
   }
 });
-test('other lessons, origins and nonliteral paths gain no new alias', () => {
+test('other origins and nonliteral paths gain no new alias', () => {
   const { normalize } = picker();
   for (const value of [
     'https://example.com/geometry-course/textbook/' + hash,
-    '/geometry-course/textbook/#atanasyan-7-9-main-92-part-2',
-    '/geometry-course/textbook/#atanasyan-7-9-main-93-part-1',
-    '/geometry-course/textbook/',
     '/geometry-course/textbook//' + hash,
     '/geometry-course/%74extbook/' + hash,
     '/geometry-course/other/../textbook/' + hash,
     '/geometry-course/textbook/%2e/index.html' + hash,
-    '/geometry-course/textbook/#atanasyan-7-9-main-92-part-1/extra'
   ]) assert.equal(normalize(value), value, value);
   assert.throws(() => normalize('javascript:alert(1)'));
   assert.throws(() => normalize('/trainers/trainer-board.html'));
@@ -52,4 +48,12 @@ test('picker and exact registry agree without widening the canonical file bounda
   });
   assert.equal(canonicalTrainerFile('geometry-course/textbook/index.html'), null);
   assert.equal(registry.getByTrainerUrl('/geometry-course/textbook/' + hash), null);
+});
+
+test('grade 7 course, native activities and both managed families open their bounded wrappers',()=>{
+ const {normalize}=picker();
+ for(const hash of ['', '#atanasyan-7-9-main-92-part-2','#atanasyan-7-9-main-161-part-1'])assert.equal(normalize('/geometry-course/textbook/'+hash),'/trainers/atanasyan-grade7.html'+hash);
+ assert.equal(normalize('/geometry-course/first-steps/'),'/trainers/atanasyan-grade7.html');
+ assert.equal(normalize('/geometry-course/trainers/ch2-p4-t2-proof-sss.html'),'/trainers/geometry7-practice.html?activity=ch2-p4-t2-proof-sss');
+ for(const id of ['grade7-r-point-on-line-segment','grade7-g-core-sas'])assert.equal(normalize('/ege-baza/path/#lesson='+id),'/trainers/geometry7-rebuild.html#lesson='+id);
 });

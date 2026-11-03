@@ -42,6 +42,7 @@ function normalize(value){
   const id=u.hash.startsWith('#lesson=')?u.hash.slice(8):'';
   const position=['box','practice-displacement','practice-pour','practice-joined-surface','practice-faces'].includes(id)?11:['roundbody','pyramid','scale','practice-cone-area','practice-pyramid-lateral','practice-box-diagonal','practice-similar-volume'].includes(id)?13:null;
   if(position)return '/trainers/ege-baza-'+position+'.html'+u.search+u.hash;
+  if(/^grade7-(?:r-|g-|geo|core)/.test(id))return '/trainers/geometry7-rebuild.html'+u.search+u.hash;
  }
 
  if(u.origin===location.origin&&u.pathname==='/trainers/oge-task13-inequalities.html'&&['/trainers/oge-task13-inequalities.html','oge-task13-inequalities.html','./oge-task13-inequalities.html'].includes(rawPath))return '/trainers/oge13-inequalities-series.html'+u.search+u.hash;
@@ -56,6 +57,8 @@ function normalize(value){
   return '/trainers/peterson6.html'+u.search+u.hash;
  }
  if(u.origin===location.origin&&rawPath===u.pathname&&['/geometry-course/textbook/','/geometry-course/textbook/index.html'].includes(u.pathname)&&u.hash==='#atanasyan-7-9-main-92-part-1')return '/trainers/atanasyan-7-9.html'+u.search+u.hash;
+ if(u.origin===location.origin&&rawPath===u.pathname&&['/geometry-course/textbook/','/geometry-course/textbook/index.html','/geometry-course/first-steps/','/geometry-course/first-steps/index.html'].includes(u.pathname))return '/trainers/atanasyan-grade7.html'+u.search+u.hash;
+ if(u.origin===location.origin&&rawPath===u.pathname&&/^\/geometry-course\/trainers\/ch[1-4]-[a-z0-9-]+\.html$/.test(u.pathname))return '/trainers/geometry7-practice.html?activity='+u.pathname.split('/').pop().replace(/\.html$/,'');
  return raw;
 }
 function canonical(value){const u=new URL(normalize(value),location.href);u.searchParams.delete('seed');return u.origin===location.origin?u.pathname+u.search+u.hash:u.href;}

@@ -1,0 +1,74 @@
+name: Grade 7 geometry — native trainers and shared board
+on:
+  pull_request:
+    paths:
+      - 'geometry-course/board/**'
+      - 'geometry-course/grade7/**'
+      - 'geometry-course/trainers/**'
+      - 'geometry-course/textbook/assets/grade7-board*'
+      - 'trainers/geometry7*'
+      - 'trainers/atanasyan-grade7.html'
+      - 'trainers/board-*'
+      - 'ege-baza/path/board-session.js'
+      - 'learning/app.js'
+      - 'tools/geometry7-shared-board*'
+      - '.github/workflows/geometry7-shared-board.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'geometry-course/board/**'
+      - 'geometry-course/grade7/**'
+      - 'geometry-course/trainers/**'
+      - 'geometry-course/textbook/assets/grade7-board*'
+      - 'trainers/geometry7*'
+      - 'trainers/atanasyan-grade7.html'
+      - 'tools/geometry7-shared-board*'
+      - '.github/workflows/geometry7-shared-board.yml'
+permissions:
+  contents: read
+jobs:
+  shared-geometry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: board-server/package-lock.json
+      - name: Install locked server and browser dependencies
+        run: |
+          npm ci --prefix board-server --include=optional
+          npm install --prefix "$RUNNER_TEMP/g7-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/g7-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/g7-browser/node_modules" >> "$GITHUB_ENV"
+      - name: Textbook, models, existing assignments and registry
+        run: |
+          python3 tools/geometry-textbook/build_course.py --check
+          python3 tools/geometry-textbook/check_models.py
+          python3 tools/geometry-textbook/model_claims_test.py
+          node --test tools/geometry7-shared-board.test.cjs tools/atanasyan-board-adapter.test.cjs tools/atanasyan-board-picker.test.cjs tools/ege-baza-board.test.cjs board-server/test/trainer-registry.test.js
+          node --test tools/atanasyan-first-steps/*.test.cjs
+          git diff --check
+      - name: All 70 native activities at two widths
+        env:
+          GEOMETRY7_OUTPUT: ${{ runner.temp }}/g7-evidence/native
+        run: node tools/geometry7-shared-board.browser.cjs
+      - name: Complete proofs and compass/ruler construction
+        env:
+          GEOMETRY7_OUTPUT: ${{ runner.temp }}/g7-evidence/proofs
+        run: node tools/geometry7-shared-board-deep.browser.cjs
+      - name: Real rooms, roles, late join, reload and transport reconnect
+        env:
+          EGE_BAZA_BOARD_SHOTS: ${{ runner.temp }}/g7-evidence/rooms
+        run: node tools/geometry7-shared-board-room.browser.cjs
+      - name: Browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: geometry7-board-evidence
+          path: ${{ runner.temp }}/g7-evidence/
+          retention-days: 7
