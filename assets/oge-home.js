@@ -61,7 +61,7 @@
   renderer.toneMappingExposure = 1;
   const scene = new T.Scene();
   const camera = new T.PerspectiveCamera(35, 1, .1, 70);
-  camera.position.set(0, .3, 11.8);
+  camera.position.set(0, 0, 11.8);
   camera.lookAt(0, 0, 0);
   scene.add(new T.HemisphereLight(0xfffef2, 0x859a79, .8));
   const key = new T.DirectionalLight(0xfff8e1, 1.3); key.position.set(-4, 6, 7); scene.add(key);
@@ -127,37 +127,123 @@
   points.forEach((p,i)=>{rod(geometry,p,points[(i+1)%3],.045,cream);mesh(geometry,new T.SphereGeometry(.08,16,10),terra,p.x,p.y,0);});
   rod(geometry,v(0,1),v(0,-.5),.015,green);
   rod(geometry,v(0,-.36),v(.14,-.36),.012,green);rod(geometry,v(.14,-.36),v(.14,-.5),.012,green);
-  const layout={tires:{p:[-1.55,-.35,.35],s:1.06,r:[.13,-.4,-.23]},apartment:{p:[1.34,-.86,0],s:.72,r:[.55,-.6,.08]},graphs:{p:[.85,1.16,0],s:.9,r:[-.08,-.1,-.05]},geometry:{p:[-1.9,1.5,-.2],s:.43,r:[.05,.18,-.14]}};
-  Object.values(models).forEach(g=>scene.add(g));
+  // A stove from practical tasks: firebox, stone basket and chimney.
+  const stove=models.stove=new T.Group();
+  box(stove,1.1,1.35,.85,ink,0,-.2,0);
+  box(stove,.74,.72,.04,terra,0,-.23,.445);
+  box(stove,.56,.53,.05,rubber,0,-.23,.48);
+  rod(stove,v(.22,-.28,.53),v(.22,-.03,.53),.035,silver);
+  box(stove,1.22,.16,.96,silver,0,.51,0);
+  for(let i=0;i<7;i++)mesh(stove,new T.IcosahedronGeometry(.18,0),i%2?silver:tread,(i%3-1)*.32,.68,Math.floor(i/3)*.25-.25);
+  mesh(stove,new T.CylinderGeometry(.15,.15,.9,16),silver,0,1.06,-.25);
+  for(const x of [-.39,.39])for(const z of [-.28,.28])box(stove,.12,.25,.12,tread,x,-.96,z);
+  // A fenced rectangular plot, gabled house, path and tree.
+  const plot=models.plot=new T.Group();
+  mesh(plot,new T.BoxGeometry(2.4,.12,1.9,8,1,8),green,0,-.5,0);
+  mesh(plot,new T.BoxGeometry(.95,.85,.8,8,8,8),cream,-.35,-.03,-.25);
+  const roofShape=new T.Shape();roofShape.moveTo(-.6,0);roofShape.lineTo(0,.45);roofShape.lineTo(.6,0);roofShape.closePath();
+  mesh(plot,new T.ExtrudeGeometry(roofShape,{depth:1,steps:8,bevelEnabled:false}),terra,-.35,.395,-.75);
+  box(plot,.21,.44,.03,ink,-.35,-.2,.165);
+  box(plot,.21,.22,.04,silver,-.65,.04,.17);
+  box(plot,.3,.02,.65,cream,-.35,-.425,.58);
+  for(const x of [-1.13,1.13])rod(plot,v(x,-.25,-.88),v(x,-.25,.88),.028,cream);
+  for(const z of [-.88,.88])rod(plot,v(-1.13,-.25,z),v(1.13,-.25,z),.028,cream);
+  for(const x of [-1.13,0,1.13])for(const z of [-.88,.88])rod(plot,v(x,-.44,z),v(x,-.12,z),.03,cream);
+  rod(plot,v(.73,-.44,-.48),v(.73,.4,-.48),.055,terra);
+  mesh(plot,new T.IcosahedronGeometry(.43,1),tread,.73,.48,-.48);
+  // Successive A-series sheets: every smaller sheet has half the area.
+  const paper=models.paper=new T.Group();
+  const sheetMats=[cream,green,material(0xe8ba80)];
+  for(let i=0;i<3;i++){
+    const scale=Math.pow(Math.SQRT1_2,i),sheet=new T.Group();
+    // Separate parallel sheets stay legible in both GPU and painter rendering.
+    sheet.position.set([-1.15,.12,1.05][i],0,0);paper.add(sheet);
+    box(sheet,1.2*scale,.055,1.2*Math.SQRT2*scale,sheetMats[i]);
+  }
+  // A conventional die: opposing face counts sum to seven.
+  const dice=models.dice=new T.Group();box(dice,1.35,1.35,1.35,cream);
+  const pipGeometry=new T.SphereGeometry(.095,10,8);
+  const patterns={1:[[0,0]],2:[[-1,1],[1,-1]],3:[[-1,1],[0,0],[1,-1]],4:[[-1,1],[1,1],[-1,-1],[1,-1]],5:[[-1,1],[1,1],[0,0],[-1,-1],[1,-1]],6:[[-1,1],[1,1],[-1,0],[1,0],[-1,-1],[1,-1]]};
+  for(const [count,axis,sign] of [[1,'z',1],[6,'z',-1],[2,'y',1],[5,'y',-1],[3,'x',1],[4,'x',-1]]){
+    for(const [a,b] of patterns[count]){
+      const pos=axis==='z'?[a*.32,b*.32,sign*.66]:axis==='y'?[a*.32,sign*.66,b*.32]:[sign*.66,a*.32,b*.32];
+      mesh(dice,pipGeometry,ink,...pos);
+    }
+  }
+  // The same orbital coordinates drive both the visible paths and each planet.
+  // All orbit planes share one origin; motion is separate from the models' spin.
+  const orbitRadii=[1.25,2.7,4.25], orbitSpeeds=[.17,.12,.085];
+  const system=new T.Group(), paths=new T.Group(), sun=new T.Group();scene.add(system);system.add(paths,sun);
+  const orbitMat=material(0xc1cfb1), gold=material(0xc5a168,{roughness:.5});
+  mesh(sun,new T.SphereGeometry(.48,24,16),gold);
+  const halo=mesh(sun,new T.TorusGeometry(.61,.014,6,48),cream);halo.rotation.x=.65;
+  orbitRadii.forEach(radius=>{
+    const pts=[];for(let i=0;i<96;i++){const a=i*Math.PI*2/96;pts.push(v(radius*Math.cos(a),radius*Math.sin(a),radius*Math.sin(a)*.36));}
+    tube(paths,pts,.009,orbitMat,true);
+  });
+  const layout={
+    geometry:{orbit:0,phase:.55,s:.37,solo:1.58,r:[.05,.18,-.14]},
+    dice:{orbit:0,phase:Math.PI+.55,s:.48,solo:1.7,r:[.35,-.5,.12]},
+    tires:{orbit:1,phase:3.25,s:.55,solo:1.58,r:[.13,-.4,-.23]},
+    graphs:{orbit:1,phase:3.25+Math.PI*2/3,s:.47,solo:1.58,r:[-.08,-.1,-.05]},
+    paper:{orbit:1,phase:3.25+Math.PI*4/3,s:.51,solo:1.5,r:[.65,-.3,-.1]},
+    apartment:{orbit:2,phase:5.9,s:.46,solo:1.28,r:[.6,-.6,.08]},
+    stove:{orbit:2,phase:5.9+Math.PI*2/3,s:.53,solo:1.32,r:[.1,-.35,-.08]},
+    plot:{orbit:2,phase:5.9+Math.PI*4/3,s:.5,solo:1.3,r:[.55,-.4,.05]}
+  };
+  const modelRadii={};
+  for(const [id,g] of Object.entries(models)){
+    // A rotation-invariant bound keeps every individual view inside narrow screens.
+    g.updateMatrixWorld(true);let radius=0;
+    g.traverse(m=>{if(!m.isMesh)return;const positions=m.geometry.attributes.position;for(let i=0;i<positions.count;i++)radius=Math.max(radius,new T.Vector3().fromBufferAttribute(positions,i).applyMatrix4(m.matrixWorld).length());});
+    modelRadii[id]=radius;system.add(g);
+  }
   const info={
-    all:['Знакомые сюжеты — понятные решения','Выберите тему и попробуйте её в деле.','/trainers/oge-course/'],
+    all:['Математическая Солнечная система','8 моделей на трёх орбитах. Выберите любую — рассмотрим ближе.','/trainers/oge-course/'],
     tires:['№ 1–5 · Шины','Ширина, профиль и диаметр. Разбираем маркировку колеса.','/trainers/oge-1-5-trainers/practice-1-5-tires.html'],
     apartment:['№ 1–5 · Квартиры','План, масштаб и площадь комнат. Учимся читать чертёж.','/trainers/oge-1-5-trainers/practice-1-5-apartments.html'],
     graphs:['№ 11 · Параболы','a > 0 — ветви вверх. a < 0 — ветви вниз.','/trainers/oge-task11-graphs-trainer.html'],
-    geometry:['№ 15–19 · Геометрия','Треугольники, окружности, углы и площади — наглядно.','/trainers/oge-course/#geometry']
+    geometry:['№ 15–19 · Геометрия','Треугольники, окружности, углы и площади — наглядно.','/trainers/oge-course/#geometry'],
+    stove:['№ 1–5 · Печи','Размеры парной, объём и выбор подходящей печи.','/trainers/oge-1-5-trainers/practice-1-5-stoves.html'],
+    plot:['№ 1–5 · Участки','Дом, дорожки и ограда. Считаем длины и площади по плану.','/trainers/oge-1-5-trainers/practice-1-5-land-plots.html'],
+    paper:['№ 1–5 · Бумага','Форматы серии A: каждый следующий лист вдвое меньше по площади.','/trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html'],
+    dice:['№ 10 · Вероятность','Шесть граней кубика — шесть возможных исходов броска.','/trainers/oge-task10-probability.html']
   };
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
   let paused=reduced.matches, visible=true, lost=false, frame=0, last=0, painted=0, time=0, selection='all', drag=null, dragAngle=0;
   const pause=document.getElementById('model-pause');
+  let orbitX=1,orbitY=.58;
   function pose() {
+    const all=selection==='all';paths.visible=sun.visible=all;
+    paths.scale.set(orbitX,orbitY,1);
     Object.entries(models).forEach(([id,g],i)=>{
-      const l=layout[id], all=selection==='all';g.visible=all||id===selection;
+      const l=layout[id];g.visible=all||id===selection;
       if(!g.visible)return;
-      g.position.set(...(all?l.p:[0,id==='apartment'?-.1:0,0]));
-      g.scale.setScalar(all?l.s:id==='graphs'?1.58:id==='apartment'?1.28:1.58);
+      if(all){
+        const angle=l.phase+time*orbitSpeeds[l.orbit]+dragAngle, radius=orbitRadii[l.orbit];
+        g.position.set(radius*Math.cos(angle)*orbitX,radius*Math.sin(angle)*orbitY,radius*Math.sin(angle)*.36);
+      }else g.position.set(0,id==='apartment'?-.1:0,0);
+      g.scale.setScalar(all?l.s:l.solo);
       g.rotation.set(...l.r);
-      // Bounded yaw keeps graphs readable; tire rotation reveals the full rim.
-      g.rotation.y+=(id==='tires'?time*.23:Math.sin(time*.38+i)*.2)+dragAngle;
+      g.rotation.y+=(id==='tires'?time*.32:time*.18)+(all?0:dragAngle);
       g.rotation.z+=Math.sin(time*.32+i)*.035;
-      g.position.y+=Math.sin(time*.65+i)*.055;
     });
   }
   function render(){if(lost)return;pose();renderer.render(scene,camera);}
   function animate(now){frame=0;if(paused||!visible||document.hidden||lost)return;time+=last?Math.min((now-last)/1000,.05):0;last=now;if(!software||now-painted>65){render();painted=now;}frame=requestAnimationFrame(animate);}
   function schedule(){cancelAnimationFrame(frame);frame=0;last=0;if(!paused&&visible&&!document.hidden&&!lost)frame=requestAnimationFrame(animate);}
   function pauseLabel(){pause.textContent=paused?'Вращать':'Пауза';pause.setAttribute('aria-pressed',String(paused));host.dataset.motion=paused?'paused':'running';}
-  function resize(){const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.position.z=camera.aspect<1.3?10.4:8.2;camera.updateProjectionMatrix();render();}
-  function choose(id){selection=id;dragAngle=0;host.dataset.selection=id;document.querySelectorAll('[data-model]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.model===id)));const data=info[id];document.getElementById('model-number').textContent=data[0];document.getElementById('model-description').textContent=data[1];document.getElementById('model-link').href=data[2];canvas.setAttribute('aria-label','Объёмная модель: '+data[0]+'. '+data[1]);render();}
+  function resize(){
+    const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;
+    renderer.setSize(w,h,false);camera.aspect=w/h;
+    orbitX=Math.min(1,Math.max(.6,camera.aspect/1.5));orbitY=camera.aspect<1.2?.8:.58;
+    // Frame the outer orbit and the full model extents, including near-side depth.
+    const halfWidth=4.25*orbitX+.95, halfHeight=4.25*orbitY+.95;
+    const vertical=Math.PI*35/360, narrow=Math.min(vertical,Math.atan(Math.tan(vertical)*camera.aspect));
+    camera.position.z=selection==='all'?Math.max(halfHeight,halfWidth/camera.aspect)/Math.tan(vertical)+1.7:(modelRadii[selection]*layout[selection].solo+.12)/Math.sin(narrow)*1.06;
+    camera.updateProjectionMatrix();render();
+  }
+  function choose(id){selection=id;dragAngle=0;host.dataset.selection=id;document.querySelectorAll('[data-model]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.model===id)));const data=info[id];document.getElementById('model-number').textContent=data[0];document.getElementById('model-description').textContent=data[1];document.getElementById('model-link').href=data[2];canvas.setAttribute('aria-label','Объёмная модель: '+data[0]+'. '+data[1]);resize();}
   document.querySelectorAll('[data-model]').forEach(b=>b.addEventListener('click',()=>choose(b.dataset.model)));
   pause.addEventListener('click',()=>{paused=!paused;pauseLabel();schedule();});
   const motionChange=()=>{paused=reduced.matches;pauseLabel();schedule();};
