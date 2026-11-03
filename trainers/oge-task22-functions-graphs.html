@@ -1410,7 +1410,7 @@ function renderMarathon(mod,host){
   host.innerHTML='';
   const score={solved:0,tries:0},results=el('details','minimal-results');results.appendChild(el('summary',null,'Мои результаты · подтипы'));
   const progressKey='mathExam.oge22.practice.v1';
-  try{const saved=JSON.parse(localStorage.getItem(progressKey)||'{}')[mod.id];if(saved)for(const k of ['solved','tries'])if(Number.isSafeInteger(saved[k])&&saved[k]>=0)score[k]=saved[k];}catch(e){}
+  if(!window.OgeCourseSharedMode)try{const saved=JSON.parse(localStorage.getItem(progressKey)||'{}')[mod.id];if(saved)for(const k of ['solved','tries'])if(Number.isSafeInteger(saved[k])&&saved[k]>=0)score[k]=saved[k];}catch(e){}
   const scoreEl=el('div','score');results.appendChild(scoreEl);
   let subFilter=mod.sharedSub||null;const subs=mod.subs||[{k:null,l:'Все'}];
   if(subs.length>1){const chipRow=el('div','sub-chips');subs.forEach(s=>{const c=el('button','chip'+(s.k===subFilter?' chip-on':''),s.l);c.type='button';c.onclick=()=>{subFilter=s.k;[...chipRow.querySelectorAll('.chip')].forEach(x=>x.classList.remove('chip-on'));c.classList.add('chip-on');newProblem();};chipRow.appendChild(c);});results.appendChild(chipRow);}
@@ -1426,6 +1426,7 @@ function renderMarathon(mod,host){
   let problem,input,peeked,solvedThis=false,helpBuilt=false,stepsBuilt=false;
   function updScore(){
     scoreEl.innerHTML=`Решено: <b>${score.solved}</b> · попыток: ${score.tries}`;
+    if(window.OgeCourseSharedMode)return;
     try{
       let all={};
       try{all=JSON.parse(localStorage.getItem(progressKey)||'{}');}catch(e){}
