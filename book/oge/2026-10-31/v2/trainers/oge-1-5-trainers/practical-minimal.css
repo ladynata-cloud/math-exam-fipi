@@ -1,0 +1,120 @@
+/* Shared presentation for the existing OGE 1–5 engines. Conditions and figures stay in the task. */
+:root{--pm-green:#176747;--pm-pale:#eff8f2;--pm-line:#d9e4dc}
+body.pm-minimal{background:#f8faf8;color:#20372b;font-family:Arial,Helvetica,sans-serif;font-size:17px;line-height:1.65}
+body.pm-minimal .wrap{max-width:1040px;padding-top:22px}
+.pm-minimal h1{font-family:inherit;font-size:clamp(25px,4vw,34px);line-height:1.3;letter-spacing:-.02em}
+.pm-minimal h2{line-height:1.4}.pm-minimal p{line-height:1.7}
+.pm-minimal .topnav,.pm-minimal .topbar{position:static;box-shadow:none;background:#fff}
+.pm-minimal .card,.pm-minimal .panel,.pm-minimal .task-card,.pm-minimal .map-card,.pm-minimal .bath-card{box-shadow:none;border-color:var(--pm-line);border-radius:16px}
+.pm-minimal .title-block,.pm-minimal .titleblock,.pm-minimal .head,.pm-minimal .top{margin-bottom:22px}
+.pm-minimal .task-q,.pm-minimal .task-question,.pm-minimal .q,.pm-minimal .qtext,.pm-minimal .question,.pm-minimal .question-text{font-size:20px;line-height:1.8;margin-bottom:24px}
+.pm-minimal button,.pm-minimal input,.pm-minimal select,.pm-minimal summary{font:inherit}
+.pm-minimal button,.pm-minimal select,.pm-minimal input:not([type=checkbox]):not([type=radio]){min-height:44px}
+.pm-minimal button:not(.option):not(.choice):not(.quiz-option):not(.token):not([disabled]){color:var(--pm-green);border-color:#a9cbb8;background:#fff;border-radius:10px}
+.pm-minimal .btn-primary,.pm-minimal .btn.primary,.pm-minimal .act:not(.ghost),.pm-minimal button[id*="check"],.pm-minimal button[id*="Check"],.pm-minimal button[id*="start"],.pm-minimal button[id*="next"],.pm-minimal button[id*="Next"]{background:var(--pm-green)!important;color:#fff!important;border-color:var(--pm-green)!important}
+.pm-minimal button:disabled{opacity:.55}
+.pm-minimal button.active,.pm-minimal button.on,.pm-minimal button[aria-selected=true]{box-shadow:inset 0 0 0 2px var(--pm-green)}
+.pm-minimal button:focus-visible,.pm-minimal a:focus-visible,.pm-minimal summary:focus-visible,.pm-minimal input:focus-visible,.pm-minimal select:focus-visible{outline:3px solid #176747;outline-offset:4px}
+.pm-minimal .button-row,.pm-minimal .btn-row,.pm-minimal .actions,.pm-minimal .answer-row,.pm-minimal .task-actions{gap:12px;margin-top:20px;flex-wrap:wrap}
+.pm-minimal .layout,.pm-minimal .cols,.pm-minimal .practice-layout,.pm-minimal .workspace{grid-template-columns:minmax(0,1fr)}
+.pm-minimal .sidebar,.pm-minimal .side,.pm-minimal .side-col,.pm-minimal .side-stack{position:static}
+.pm-minimal .pm-details{margin:18px 0;border:1px solid var(--pm-line);border-radius:12px;background:#fff;min-width:0;padding:0}
+.pm-minimal .pm-details>summary{cursor:pointer;padding:12px 16px;color:var(--pm-green);font-weight:600;min-height:48px;list-style:revert}
+.pm-minimal .pm-details>summary::marker{color:var(--pm-green)}
+.pm-minimal .pm-details[open]>summary{border-bottom:1px solid var(--pm-line);margin-bottom:14px}
+.pm-minimal .pm-details>.pm-content{padding:0 16px 16px}
+.pm-minimal .pm-details .sidebar,.pm-minimal .pm-details .side,.pm-minimal .pm-details .side-stack{width:auto;display:block}
+.pm-minimal .pm-details .side-card{margin:12px 0}
+.pm-minimal .pm-hint-button{display:block;margin:20px 0;color:var(--pm-green);font-weight:600;padding:10px 14px;background:var(--pm-pale);border:1px solid #b7d8c5;border-radius:10px}
+.pm-minimal .pm-model{padding:18px;background:var(--pm-pale);border:1px solid #c1ddca;border-radius:14px;margin:18px 0}
+.pm-minimal .pm-model[hidden]{display:none}
+.pm-minimal .pm-model p{margin:0 0 16px}.pm-minimal .pm-model svg{max-width:100%;height:auto;display:block;margin:16px auto}
+.pm-minimal .pm-model label{display:block;margin:12px 0}.pm-minimal .pm-model output{display:block;margin-top:12px;font-weight:600}
+.pm-minimal .pm-model input[type=range]{width:100%;min-height:44px}
+.pm-minimal .pm-model-step{padding:10px 14px;border-left:3px solid #6ba785;margin:12px 0;background:#fff}
+.pm-minimal .pm-hint-open{outline:3px solid #bad9c8;outline-offset:3px}
+.pm-minimal .pm-question-first{margin-top:18px}
+.pm-minimal .pm-options-after{margin-top:24px}
+.pm-minimal .pm-fraction{display:inline-flex;vertical-align:middle;flex-direction:column;align-items:center;line-height:1.4;margin:0 .15em}.pm-minimal .pm-fraction>span:first-child{border-bottom:1px solid;padding:0 .25em}
+.pm-minimal.pm-map .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.pm-minimal.pm-map a.card{min-height:100px;padding:20px;display:block}.pm-minimal.pm-map .card h3{font-size:20px;margin-bottom:8px}.pm-minimal.pm-map .card .meta{margin-top:14px}.pm-minimal.pm-map .section{margin-top:30px}
+.pm-minimal.pm-paper-sheets .grid{display:block}.pm-minimal.pm-paper-sheets #taskCard{margin-top:0}
+.pm-minimal.pm-roads-schema #app>.grid{grid-template-columns:minmax(0,1fr)}
+.pm-minimal .pm-scenario-before{margin:20px 0}
+@media(max-width:600px){body.pm-minimal{font-size:16px}.pm-minimal .wrap{padding-left:14px;padding-right:14px}.pm-minimal.pm-map .grid{grid-template-columns:1fr}.pm-minimal .task-q,.pm-minimal .task-question,.pm-minimal .q,.pm-minimal .question,.pm-minimal .question-text{font-size:19px}.pm-minimal .answer-row>input,.pm-minimal .num-in>input{max-width:100%;min-width:0}.pm-minimal .topnav-inner{flex-wrap:wrap}.pm-minimal .pm-details>.pm-content{padding:0 12px 12px}.pm-minimal .plan-wrap{grid-template-columns:1fr}.pm-minimal .plan,.pm-minimal .paper{width:100%;max-width:100%;height:auto}.pm-minimal .task-card,.pm-minimal .card.task{padding:18px}.pm-minimal .titleblock{display:flex;flex-wrap:wrap;gap:12px}.pm-minimal .titleblock>div{border:0}.pm-minimal .match-grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.pm-minimal *{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+.pm-minimal .wrap,.pm-minimal main,.pm-minimal .main,.pm-minimal .main-col,.pm-minimal .layout,.pm-minimal .cols,.pm-minimal .grid,.pm-minimal .panel,.pm-minimal .card,.pm-minimal .task,.pm-minimal .answer{min-width:0;box-sizing:border-box}
+.pm-minimal .pm-table-scroll{max-width:100%;overflow-x:auto;margin:12px 0}.pm-minimal .pm-table-scroll table{margin-top:0;margin-bottom:0}
+.pm-minimal svg,.pm-minimal img{max-width:100%}.pm-minimal .num-in,.pm-minimal input{max-width:100%;min-width:0}
+
+.pm-minimal .pm-figure-scroll{max-width:100%;overflow:auto;min-width:0;border-radius:8px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.pm-minimal .pm-figure-scroll.pm-figure-large{max-height:70vh;border:1px solid var(--pm-line)}
+.pm-minimal .pm-figure-scroll.pm-figure-large>svg{max-width:none!important;height:auto}
+.pm-minimal .pm-figure-scroll:focus-visible{outline:3px solid var(--pm-green);outline-offset:3px}
+.pm-minimal .pm-zoom-button{margin:12px 0;padding:10px 14px;min-height:44px}
+.pm-minimal .pm-zoom-note{margin:0 0 12px;font-size:15px;line-height:1.6;color:#344c40}
+
+/* The road diagram is in the same column as the task; it must not float above later controls. */
+.pm-minimal.pm-roads-schema .mapwrap{position:static;top:auto}
+
+/* Progressive discoveries: model state stays mounted while help is closed. */
+.pm-minimal .pd-first-step{font-size:19px;font-weight:600;line-height:1.75}
+.pm-minimal .pd-instruction{font-size:18px;line-height:1.8}
+.pm-minimal .pd-note{font-size:15px;line-height:1.65;color:#42584b}
+.pm-minimal .pd-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px}
+.pm-minimal .pd-control{min-width:0;display:grid;grid-template-columns:1fr auto;align-content:start;gap:8px;margin:8px 0}
+.pm-minimal .pd-control>input,.pm-minimal .pd-control>select{grid-column:1/-1;width:100%;min-height:48px;margin:0}
+.pm-minimal .pd-control>output{font-weight:bold;margin:0;font-variant-numeric:tabular-nums}
+.pm-minimal .pd-action{min-height:48px;padding:10px 14px;text-align:left;white-space:normal;line-height:1.5}
+.pm-minimal .pd-action[aria-pressed=true]{background:#176747;color:white}
+.pm-minimal .pd-picture{max-width:430px;margin:20px auto}
+.pm-minimal .pd-picture svg{width:100%;max-height:none;margin:0}
+.pm-minimal .pd-reading{padding:14px 0;font-size:18px;line-height:1.8;min-height:2em}
+.pm-minimal .pd-table{width:100%;table-layout:fixed;font-size:16px;margin:18px 0}
+.pm-minimal .pd-table th,.pm-minimal .pd-table td{padding:7px;border:1px solid #b7d0bf;text-align:center}
+.pm-minimal .pd-table button{display:block;width:100%;min-height:48px;padding:8px 2px}
+.pm-minimal .pd-unsuitable{text-decoration:line-through;opacity:.6}
+.pm-minimal .pd-return{margin-top:18px}
+.pm-minimal .pd-native-detail .hint-box,.pm-minimal .pd-native-detail .box.hint,.pm-minimal .pd-native-detail .substep-hint{font-size:17px;line-height:1.85}
+.pm-minimal .pd-native-detail .pm-hint-button{margin-top:0}
+.pm-minimal .pd-panel[hidden]{display:none!important}
+@media(max-width:600px){.pm-minimal .pd-controls{grid-template-columns:1fr}.pm-minimal .pd-panel{padding:14px}.pm-minimal .pd-more>.pm-content{padding:0 10px 14px}.pm-minimal .pd-first-step{font-size:18px}.pm-minimal .pd-reading,.pm-minimal .pd-instruction{font-size:17px}.pm-minimal .pd-table{font-size:15px}.pm-minimal .pd-table th,.pm-minimal .pd-table td{padding:4px}.pm-minimal .pd-picture{margin:18px -4px}}
+
+.pm-minimal.pm-tires .task-gate{display:none!important}
+.pm-minimal.pm-tires .pd-original-steps .task-body{display:block!important}
+.pm-minimal.pm-tires .substep[data-pd-main="1"]{display:block;pointer-events:auto;opacity:1;margin:20px 0}
+.pm-minimal.pm-tires .substep[data-pd-main="1"] .substep-label{font-size:17px}
+.pm-minimal.pm-tires .substep[data-pd-main="1"] .substep-q{font-size:17px;line-height:1.8}
+
+.pm-minimal .pd-picture{overflow:auto;max-width:100%;overscroll-behavior:contain}
+.pm-minimal .pd-picture.pd-picture-zoomed{max-height:380px;border:1px solid #b7d0bf}
+.pm-minimal .pd-picture.pd-picture-zoomed svg{width:640px;max-width:none}
+@media(max-width:600px){.pm-minimal.pm-stoves .id-table{table-layout:fixed;min-width:0}.pm-minimal.pm-stoves .id-table th,.pm-minimal.pm-stoves .id-table td{padding:8px 6px;overflow-wrap:anywhere}.pm-minimal.pm-stoves .id-table select{width:100%;max-width:100%;min-width:0;padding:6px 4px;box-sizing:border-box}}
+.pm-minimal.pm-apartments .tab.on .n,.pm-minimal.pm-apartments .tab.on .t{color:var(--pm-green)}
+.pm-minimal .pd-land-description{font-size:17px;font-weight:400;line-height:1.7;margin-top:20px}.pm-minimal .pd-land-description li{margin:12px 0}
+.pm-minimal #plan .pd-derived{display:none}
+.pm-minimal #plan.pd-show-derived .pd-derived{display:initial}
+
+.pm-minimal .pd-original-steps .substep-input{max-width:100%;min-width:0}
+.pm-minimal .pd-original-steps .substep-input-row{flex-wrap:wrap;gap:10px}
+.pm-minimal .pm-model .calc-box,.pm-minimal .pm-model .substep-q,.pm-minimal .pm-model .box,.pm-minimal .pm-model .note,.pm-minimal .pd-native-detail .hint-box{overflow-wrap:anywhere}
+
+/* Tire width is axial: preserve the true projected proportions, including edge-on views. */
+.pm-minimal .t3d-root{min-width:0}
+.pm-minimal .t3d-marking{font-size:24px;line-height:1.4;font-weight:700;text-align:center;letter-spacing:.03em;margin:16px 0 0}
+.pm-minimal .pd-picture.t3d-stage{max-width:500px;margin:0 auto;cursor:grab;touch-action:none;overflow:hidden;border-radius:12px;background:#f9fcfa;outline-offset:3px}
+.pm-minimal .t3d-stage:focus-visible{outline:3px solid #176747}
+.pm-minimal .t3d-stage.t3d-dragging{cursor:grabbing}
+.pm-minimal .t3d-stage svg{display:block;user-select:none;-webkit-user-select:none;max-height:none}
+.pm-minimal .t3d-stage svg *{pointer-events:none}
+.pm-minimal .t3d-stage.pd-picture-zoomed{max-width:100%;max-height:440px;overflow:auto;touch-action:pan-x pan-y}
+.pm-minimal .t3d-stage.pd-picture-zoomed svg{width:640px;max-width:none}
+.pm-minimal .t3d-reading{margin:4px 0;padding:8px 0;font-size:19px;font-weight:600;min-height:0}
+.pm-minimal .t3d-view-note{margin:0 0 16px}
+.pm-minimal .t3d-views{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 20px}
+.pm-minimal .t3d-views .pd-action{flex:1 1 120px;text-align:center;font-size:15px;line-height:1.45;padding:10px 8px}
+.pm-minimal .t3d-controls{padding-top:4px;border-top:1px solid #d8e5dd}
+.pm-minimal .t3d-comparison{margin-top:20px}
+@media(max-width:600px){.pm-minimal .t3d-marking{font-size:22px}.pm-minimal .pd-picture.t3d-stage{margin:0 -8px;max-width:none}.pm-minimal .t3d-reading{font-size:17px}.pm-minimal .t3d-views{gap:6px}.pm-minimal .t3d-views .pd-action{flex-basis:100px}}
+.pm-minimal .t3d-views button.pd-action[aria-pressed=true]{background:#176747!important;color:#fff!important;border-color:#176747!important}
+.pm-minimal .t3d-controls .pd-control{display:grid}

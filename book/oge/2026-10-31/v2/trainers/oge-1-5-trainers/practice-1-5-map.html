@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="utf-8">
+<meta name="robots" content="noindex,follow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<link rel="stylesheet" href="/book/oge/2026-10-31/v2/edition-assets/edition.css">
+<script src="/book/oge/2026-10-31/v2/edition-assets/bootstrap.js"></script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОГЭ, задания 1–5: практические задачи и диагностика | MathExam</title>
+<meta name="description" content="Практические задачи ОГЭ 1–5: планы, дороги, шины, печи, квартиры и проценты. Входная диагностика, разбор ошибок и маршрут по тренажёрам.">
+<link rel="canonical" href="https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-map.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ОГЭ, задания 1–5: практические задачи и диагностика | MathExam">
+<meta property="og:description" content="Практические задачи ОГЭ 1–5: планы, дороги, шины, печи, квартиры и проценты. Входная диагностика, разбор ошибок и маршрут по тренажёрам.">
+<meta property="og:url" content="https://mathexam.space/book/oge/2026-10-31/v2/trainers/oge-1-5-trainers/practice-1-5-map.html">
+<meta property="og:site_name" content="MathExam">
+<meta property="og:locale" content="ru_RU">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ОГЭ, задания 1–5: практические задачи и диагностика | MathExam">
+<meta name="twitter:description" content="Практические задачи ОГЭ 1–5: планы, дороги, шины, печи, квартиры и проценты. Входная диагностика, разбор ошибок и маршрут по тренажёрам.">
+<style>
+  :root {
+    --bg: #faf7f2;
+    --bg-card: #ffffff;
+    --ink: #1a2332;
+    --ink-soft: #4a5568;
+    --ink-muted: #8a93a3;
+    --line: #e8e3d8;
+    --accent: #1e3a5f;
+    --accent-soft: #dbe4f0;
+    --gold: #b8924b;
+    --green: #4a7c59;
+    --warm: #d4956a;
+    --shadow: 0 1px 3px rgba(26,35,50,.05), 0 4px 24px rgba(26,35,50,.06);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PT Sans", Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    min-height: 100vh;
+  }
+  body {
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(184,146,75,.04) 0, transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(30,58,95,.04) 0, transparent 40%);
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  .head { margin-bottom: 56px; }
+  .eyebrow {
+    font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .18em;
+    color: var(--gold); margin-bottom: 14px;
+  }
+  h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(34px, 5vw, 52px);
+    font-weight: 400; line-height: 1.1;
+    letter-spacing: -.02em; margin-bottom: 18px;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+  .lede { max-width: 640px; font-size: 17px; color: var(--ink-soft); }
+  .lede strong { color: var(--ink); font-weight: 600; }
+
+  .progress-summary {
+    margin-top: 32px; padding: 20px 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+  }
+  .progress-summary .label {
+    font-size: 13px; color: var(--ink-muted);
+    text-transform: uppercase; letter-spacing: .1em;
+  }
+  .progress-bar {
+    flex: 1; min-width: 200px; height: 8px;
+    background: var(--accent-soft); border-radius: 4px; overflow: hidden;
+  }
+  .progress-bar .fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--gold));
+    border-radius: 4px; width: 0%;
+    transition: width .6s cubic-bezier(.4,0,.2,1);
+  }
+  .progress-summary .num {
+    font-family: Georgia, serif; font-size: 28px;
+    font-weight: 400; color: var(--accent); line-height: 1;
+  }
+  .progress-summary .num small { font-size: 14px; color: var(--ink-muted); }
+
+  .section { margin-top: 56px; }
+  .section-title {
+    font-family: Georgia, serif; font-size: 22px;
+    margin-bottom: 8px; font-weight: 400;
+  }
+  .section-sub { color: var(--ink-muted); font-size: 14px; margin-bottom: 24px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 24px;
+    text-decoration: none; color: inherit;
+    display: flex; flex-direction: column; gap: 14px;
+    transition: transform .25s, box-shadow .25s, border-color .25s;
+    position: relative; overflow: hidden; cursor: pointer;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+    border-color: var(--accent-soft);
+  }
+  .card .num-badge {
+    position: absolute; top: 18px; right: 18px;
+    font-family: Georgia, serif; font-size: 14px;
+    color: var(--ink-muted); font-style: italic;
+  }
+  .card .icon {
+    width: 56px; height: 56px;
+    background: var(--accent-soft); border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card .icon svg { width: 32px; height: 32px; stroke: var(--accent); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .card h3 {
+    font-family: Georgia, serif; font-size: 19px;
+    font-weight: 400; line-height: 1.25; color: var(--ink);
+  }
+  .card p { font-size: 14px; color: var(--ink-soft); line-height: 1.5; }
+  .card .meta {
+    margin-top: auto; padding-top: 14px;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; color: var(--ink-muted);
+  }
+  .card .status-dot {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--line); margin-right: 6px; vertical-align: middle;
+  }
+  .card.done .status-dot { background: var(--green); }
+  .card.started .status-dot { background: var(--gold); }
+
+  .card.highlight {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2d4a72 100%);
+    color: white; border-color: transparent;
+    grid-column: span 2;
+  }
+  @media (max-width: 600px) { .card.highlight { grid-column: span 1; } }
+  .card.highlight h3 { color: white; }
+  .card.highlight p { color: rgba(255,255,255,.8); }
+  .card.highlight .icon { background: rgba(255,255,255,.12); }
+  .card.highlight .icon svg { stroke: white; }
+  .card.highlight .num-badge { color: rgba(255,255,255,.5); }
+  .card.highlight .meta { color: rgba(255,255,255,.6); border-color: rgba(255,255,255,.15); }
+  .card.highlight .eyebrow-inline {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    letter-spacing: .15em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 4px;
+  }
+
+  .foot {
+    margin-top: 72px; padding-top: 32px;
+    border-top: 1px solid var(--line);
+    color: var(--ink-muted); font-size: 13px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+  }
+  .foot button {
+    background: none; border: 1px solid var(--line);
+    color: var(--ink-soft); padding: 6px 14px; border-radius: 8px;
+    font-size: 12px; cursor: pointer; font-family: inherit;
+    min-height: 44px;
+  }
+  .foot button:hover { border-color: var(--accent); color: var(--accent); }
+  .reset-msg { margin: 12px 0 0; font-size: 14px; color: var(--ink-soft); }
+  .reset-msg:empty { margin: 0; }
+
+  @keyframes fadeup {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .card { animation: fadeup .5s cubic-bezier(.4,0,.2,1) backwards; }
+  .card:nth-child(1) { animation-delay: 0.00s; }
+  .card:nth-child(2) { animation-delay: 0.05s; }
+  .card:nth-child(3) { animation-delay: 0.10s; }
+  .card:nth-child(4) { animation-delay: 0.15s; }
+  .card:nth-child(5) { animation-delay: 0.20s; }
+  .card:nth-child(6) { animation-delay: 0.25s; }
+  .card:nth-child(7) { animation-delay: 0.30s; }
+  .card:nth-child(8) { animation-delay: 0.35s; }
+  .card:nth-child(9) { animation-delay: 0.40s; }
+</style>
+<link rel="stylesheet" href="/book/oge/2026-10-31/v2/trainers/oge-1-5-trainers/practical-minimal.css">
+<script src="/book/oge/2026-10-31/v2/trainers/oge-1-5-trainers/practical-minimal.js"></script>
+</head>
+<body data-practical-page="map">
+<div class="wrap">
+
+  <header class="head">
+    <div class="eyebrow">ОГЭ · математика · 9 класс</div>
+    <h1>ОГЭ №1–5</h1>
+    <p class="lede">Выберите сюжет или начните с диагностики: она подскажет, что потренировать сначала.</p>
+
+    <div class="progress-summary">
+      <div>
+        <div class="label">Пройдено</div>
+        <div class="num"><span id="done-count">0</span><small> / 12</small></div>
+      </div>
+      <div class="progress-bar"><div class="fill" id="progress-fill"></div></div>
+      <div>
+        <div class="label">Задач решено</div>
+        <div class="num" id="tasks-solved">0</div>
+      </div>
+    </div>
+  </header>
+
+  <section class="section">
+    <h2 class="section-title">Начните здесь</h2>
+    <p class="section-sub">Диагностика покажет, какие сюжеты уже получаются, а какие лучше пройти в режиме обучения</p>
+    <div class="grid">
+
+      <a class="card highlight" data-topic="practiceEntryDiagnostic2026" data-diagnostic="true" href="/book/oge/2026-10-31/v2/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html">
+        <div class="num-badge">СТАРТ</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 4h16v16H4z"/>
+            <path d="M8 8h8M8 12h5M8 16h7"/>
+            <path d="M17 11l1.4 1.4L21 9.8" stroke-width="2"/>
+          </svg>
+        </div>
+        <div>
+          <div class="eyebrow-inline">ОГЭ-2027 · 10 заданий</div>
+          <h3>Входная диагностика по заданиям 1–5</h3>
+        </div>
+        <p>Короткая проверка по восьми сюжетам и процентам. В конце — результат, разбор ошибок и персональный маршрут по тренажёрам.</p>
+        <div class="meta">
+          <span><span class="status-dot"></span><span class="status-text">не пройдена</span></span>
+          <span class="solved-count">10 заданий</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Планы и маршруты</h2>
+    <p class="section-sub">Сначала разберите способ чтения условия, затем проверьте себя на двух видах маршрутов</p>
+    <div class="grid">
+
+      <a class="card" data-topic="practicePlanReadingTrainer" href="https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-plan-reading.html">
+        <div class="num-badge">2.1</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 4h16v16H4z"/>
+            <path d="M8 8h8M8 12h5M8 16h7"/>
+            <path d="M16 15l2 2 3-4"/>
+          </svg>
+        </div>
+        <h3>Как читать план и условие</h3>
+        <p>Два комплекта по 10 заданий: вопрос, масштаб, нужные данные, единицы и порядок решения.</p>
+        <div class="meta">
+          <span><span class="status-dot"></span><span class="status-text">не начато</span></span>
+          <span class="solved-count">0 задач</span>
+        </div>
+      </a>
+
+      <a class="card" data-topic="practiceRoutesCheckpoint2026" href="https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html">
+        <div class="num-badge">2.4</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="5" cy="18" r="2"/>
+            <circle cx="19" cy="6" r="2"/>
+            <path d="M7 18h5V6h5"/>
+            <path d="M7 17L17 7" stroke-dasharray="2,2"/>
+          </svg>
+        </div>
+        <h3>Проверочная работа: планы и маршруты</h3>
+        <p>Два варианта по 10 заданий: карта на клетках, схема дорог, расстояние, время и стоимость.</p>
+        <div class="meta">
+          <span><span class="status-dot"></span><span class="status-text">не начато</span></span>
+          <span class="solved-count">0 задач</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Методическая база</h2>
+    <p class="section-sub">Начните с тренажёра процентов — он работает во всех остальных сюжетах</p>
+    <div class="grid">
+
+      <a class="card" data-topic="percentTableTrainer" href="/book/oge/2026-10-31/v2/trainers/oge-1-5-trainers/percent-table-trainer.html">
+        <div class="num-badge">00</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><circle cx="7" cy="7" r="3"/><circle cx="17" cy="17" r="3"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+        </div>
+        <div>
+          <div class="eyebrow-inline">универсальный приём</div>
+          <h3>Проценты — таблица 2×2 и пропорция</h3>
+        </div>
+        <p>Что сравниваем — с чем сравниваем. Натуральная величина — процент. Один алгоритм для всех типов задач: «на сколько больше», «во сколько раз», «увеличить на p%».</p>
+        <div class="meta">
+          <span><span class="status-dot"></span><span class="status-text">не начато</span></span>
+          <span class="solved-count">0 задач</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Восемь сюжетов задач 1–5</h2>
+    <p class="section-sub">Тренажёры разделены по типам — каждый отрабатывает свой набор приёмов</p>
+    <div class="grid">
+
+      <a class="card" data-topic="practiceRoadsGridTrainer" href="/book/oge/2026-10-31/v2/trainers/oge-1-5-trainers/practice-1-5-roads-grid.html">
+        <div class="num-badge">01</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M3 3h18v18H3z" opacity=".3"/>
+            <path d="M3 9h18M3 15h18M9 3v18M15 3v18" opacity=".3"/>
+            <path d="M5 19 L19 5" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3>Дороги по клеткам</h3>
+        <p>Карта на сетке, прямоугольные треугольники, расстояния и время по шоссе и тропинке.</p>
+        <div class="meta">
+          <span><span class="status-dot"></span><span class="status-text">не начато</span></span>
+          <span class="solved-count">0 задач</span>
+        </div>
+      </a>
+
+      <a class="card" data-topic="practiceRoadsSchemaTrainer" href="/book/oge/2026-10-31/v2/trainers/oge-1-5-trainers/practice-1-5-roads-schema.html">
+        <div class="num-badge">02</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="5" cy="5" r="1.5" fill="currentColor"/>
+            <circle cx="19" cy="5" r="1.5" fill="currentColor"/>
+            <circle cx="19" cy="19" r="1.5" fill="currentColor"/>
+            <path d="M5 5h14v14"/>
+            <path d="M5 5 L19 19" stroke-dasharray="2,2"/>
+          </svg>
+        </div>
+        <h3>Дороги без клеток</h3>
+        <p>Схема деревень с известными расстояниями, теорема Пифагора, выбор маршрута.</p>
+        <div class="meta">
+          <span><span class="status-dot"></span><span class="status-text">не начато</span></span>
+          <span class="solved-count">0 задач</span>
+        </div>
+      </a>
+
+      <a class="card" data-topic="practiceTiresTrainer" href="/book/oge/2026-10-31/v2/trainers/oge-1-5-trainers/practice-1-5-tires.html">
+        <div class="num-badge">03</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+          </svg>
+        </div>
+        <h3>Шины</h3>
+        <p>Маркировка 195/65 R15: ширина, высота боковины, диаметр диска и колеса.</p>
+        <div class="meta">
+          <span><span class="status-dot"></span><span class="status-text">не начато</span></span>
+          <span class="solved-count">0 задач</span>
+        </div>
+      </a>
+
+      <a class="card" data-topic="practiceStovesTrainer" href="/book/oge/2026-10-31/v2/trainers/oge-1-5-trainers/practice-1-5-stoves.html">
+        <div class="num-badge">04</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="4" y="6" width="16" height="14" rx="1"/>
+            <path d="M8 12c0-2 1.5-3 4-3s4 1 4 3"/>
+            <path d="M8 6V3M16 6V3"/>
+          </svg>
+        </div>
+        <h3>Печки</h3>
+        <p>Выбор печи по объёму, скидки, радиус арки кожуха, геометрия дверцы.</p>
+        <div class="meta">
+          <span><span class="status-dot"></span><span class="status-text">не начато</span></span>
+          <span class="solved-count">0 задач</span>
+        </div>
+      </a>
+
+      <a class="card" data-topic="practiceLandPlotsTrainer" href="/book/oge/2026-10-31/v2/trainers/oge-1-5-trainers/practice-1-5-land-plots.html">
+        <div class="num-badge">05</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18"/>
+            <rect x="6" y="6" width="5" height="4" opacity=".3" fill="currentColor"/>
+            <rect x="14" y="13" width="5" height="5" opacity=".3" fill="currentColor"/>
+            <path d="M11 9v4h3"/>
+          </svg>
+        </div>
+        <h3>Участки</h3>
+        <p>План дачи, дорожки и плитка, расстояния между постройками, газовое vs электрическое.</p>
+        <div class="meta">
+          <span><span class="status-dot"></span><span class="status-text">не начато</span></span>
+          <span class="solved-count">0 задач</span>
+        </div>
+      </a>
+
+      <a class="card" data-topic="practiceApartmentsTrainer" href="/book/oge/2026-10-31/v2/trainers/oge-1-5-trainers/practice-1-5-apartments.html">
+        <div class="num-badge">06</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18"/>
+            <line x1="3" y1="11" x2="14" y2="11"/>
+            <line x1="14" y1="3" x2="14" y2="21"/>
+            <line x1="14" y1="15" x2="21" y2="15"/>
+          </svg>
+        </div>
+        <h3>Квартиры</h3>
+        <p>План двухкомнатной квартиры, площади помещений, паркетная доска, выбор техники.</p>
+        <div class="meta">
+          <span><span class="status-dot"></span><span class="status-text">не начато</span></span>
+          <span class="solved-count">0 задач</span>
+        </div>
+      </a>
+
+      <a class="card" data-topic="practiceTariffsTrainer" href="/book/oge/2026-10-31/v2/trainers/oge-1-5-trainers/practice-1-5-tariffs.html">
+        <div class="num-badge">07</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M3 17l4-6 4 4 4-8 6 9"/>
+            <circle cx="7" cy="11" r="1.5" fill="currentColor"/>
+            <circle cx="11" cy="15" r="1.5" fill="currentColor"/>
+            <circle cx="15" cy="7" r="1.5" fill="currentColor"/>
+          </svg>
+        </div>
+        <h3>Тарифы</h3>
+        <p>График минут и гигабайтов, абонентская плата, перерасход и сравнение тарифов.</p>
+        <div class="meta">
+          <span><span class="status-dot"></span><span class="status-text">не начато</span></span>
+          <span class="solved-count">0 задач</span>
+        </div>
+      </a>
+
+      <a class="card" data-topic="practicePaperSheetsTrainer" href="/book/oge/2026-10-31/v2/trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html">
+        <div class="num-badge">08</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="14"/>
+            <rect x="3" y="3" width="9" height="14" opacity=".3" fill="currentColor"/>
+            <rect x="3" y="3" width="9" height="7"/>
+            <line x1="12" y1="3" x2="12" y2="17"/>
+          </svg>
+        </div>
+        <h3>Листы</h3>
+        <p>Форматы A0–A6, деление пополам, подобие, размеры, площадь, масса пачки.</p>
+        <div class="meta">
+          <span><span class="status-dot"></span><span class="status-text">не начато</span></span>
+          <span class="solved-count">0 задач</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div>
+      Прогресс хранится локально в этом браузере · ключ <code style="font-family:monospace;font-size:12px;color:var(--accent);">mathExamCourseProgress.v1</code>
+    </div>
+    <button id="reset-btn">Сбросить прогресс заданий 1–5</button>
+  </footer>
+  <p id="reset-msg" class="reset-msg" role="status" aria-live="polite"></p>
+
+</div>
+
+<script>
+(function() {
+  const STORAGE_KEY = 'mathExamCourseProgress.v1';
+
+  function loadProgress() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return {};
+      return JSON.parse(raw) || {};
+    } catch(e) { return {}; }
+  }
+
+  function applyProgress() {
+    const data = loadProgress();
+    let totalDone = 0;
+    let totalSolved = 0;
+    const cards = document.querySelectorAll('.card[data-topic]');
+    cards.forEach(card => {
+      const topic = card.dataset.topic;
+      const t = data[topic] || {};
+      const solved = Number(t.solved) || 0;
+      const total = Number(t.total) || 0;
+      const statusText = card.querySelector('.status-text');
+      const solvedCount = card.querySelector('.solved-count');
+
+      if (card.dataset.diagnostic === 'true') {
+        if (t.completed) {
+          const last = Number(t.lastScore) || solved;
+          const best = Number(t.bestScore) || solved;
+          statusText.textContent = 'пройдена · ' + last + ' / 10';
+          solvedCount.textContent = 'лучший результат ' + best + ' / 10';
+          card.classList.add('done');
+          totalDone++;
+        } else {
+          statusText.textContent = 'не пройдена';
+          solvedCount.textContent = '10 заданий';
+        }
+        return;
+      }
+
+      if (solved === 0) {
+        statusText.textContent = 'не начато';
+      } else if (total > 0 && solved >= total) {
+        statusText.textContent = 'пройдено';
+        card.classList.add('done');
+        totalDone++;
+      } else {
+        statusText.textContent = 'в работе';
+        card.classList.add('started');
+      }
+      if (solved > 0) {
+        solvedCount.textContent = solved + (total > 0 ? ' / ' + total : '') + ' задач';
+      }
+      totalSolved += solved;
+    });
+    document.getElementById('done-count').textContent = totalDone;
+    document.getElementById('tasks-solved').textContent = totalSolved;
+    document.getElementById('progress-fill').style.width = (totalDone / cards.length * 100) + '%';
+  }
+
+  /*__RESET_OWN_PROGRESS_START__*/
+  /* Сброс только своего прогресса.
+     key — общий ключ mathExamCourseProgress.v1. own.tids — свои ветки верхнего
+     уровня, own.topics — свои ветки внутри topics; записи журнала mistakes
+     с префиксом «<ветка>|» удаляются вместе с ними. own.keys — собственные
+     отдельные ключи тренажёров страницы, удаляются целиком. Чужие ветки общего
+     ключа (курс ЕГЭ, student, full-exam, другие тренажёры) и чужие ключи
+     не трогаются. Общий ключ перечитывается прямо перед записью.
+     Если в общем ключе мусор (не JSON-объект), прочитать из него нельзя
+     ничего, а тренажёры не могут в него сохранять, — он заменяется на {}.
+     Ответ: 'reset' — своего прогресса больше нет (удалён или его не было);
+     'cleaned' — мусор в общем ключе заменён на {}; 'failed' — хранилище
+     недоступно или запись не удалась, сброс не выполнен или выполнен не до конца. */
+  function resetOwnProgress(key, own, storage) {
+    var has = Object.prototype.hasOwnProperty, names = [], changed = false,
+      status = 'reset', raw, all, list, i, k;
+    function isObj(v) { return !!v && typeof v === 'object' && !Array.isArray(v); }
+    function strs(a) {
+      var out = [], j;
+      if (Array.isArray(a)) for (j = 0; j < a.length; j++) if (typeof a[j] === 'string' && a[j]) out.push(a[j]);
+      return out;
+    }
+    own = own || {};
+    try {
+      storage = storage || window.localStorage;
+      raw = storage.getItem(key);
+    } catch (e) { return 'failed'; }
+    if (raw !== null) {
+      try { all = JSON.parse(raw); } catch (e) { all = null; }
+      if (!isObj(all)) {
+        try { storage.setItem(key, '{}'); } catch (e) { return 'failed'; }
+        status = 'cleaned';
+      } else {
+        list = strs(own.tids);
+        for (i = 0; i < list.length; i++) {
+          names.push(list[i]);
+          if (has.call(all, list[i])) { delete all[list[i]]; changed = true; }
+        }
+        list = strs(own.topics);
+        for (i = 0; i < list.length; i++) {
+          names.push(list[i]);
+          if (isObj(all.topics) && has.call(all.topics, list[i])) { delete all.topics[list[i]]; changed = true; }
+        }
+        if (isObj(all.mistakes)) {
+          for (k in all.mistakes) {
+            if (!has.call(all.mistakes, k)) continue;
+            for (i = 0; i < names.length; i++) {
+              if (k.indexOf(names[i] + '|') === 0) { delete all.mistakes[k]; changed = true; break; }
+            }
+          }
+        }
+        if (changed) {
+          try { storage.setItem(key, JSON.stringify(all)); } catch (e) { return 'failed'; }
+        }
+      }
+    }
+    list = strs(own.keys);
+    for (i = 0; i < list.length; i++) {
+      if (list[i] === key) continue;
+      try { if (storage.getItem(list[i]) !== null) storage.removeItem(list[i]); } catch (e) { return 'failed'; }
+    }
+    return status;
+  }
+  /*__RESET_OWN_PROGRESS_END__*/
+
+  /* Что пишут тренажёры этой карты (сверено по их коду; список закреплён
+     в tools/reset-own-progress.test.mjs): каждый — ветку верхнего уровня
+     с именем data-topic своей карточки; «Листы» — ещё и
+     topics.practicePaperSheetsTrainer. Проценты, участки, тарифы, шины и
+     схема дорог держат ещё и свой отдельный ключ и при следующем открытии
+     переписывают из него свою ветку, поэтому эти ключи сбрасываются тоже;
+     никакая другая страница сайта их не читает и не пишет. */
+  const OWN_TOPICS = ['practicePaperSheetsTrainer'];
+  const OWN_KEYS = ['percentTrainer.v1', 'landPlotsTrainer.v2', 'tariffsTrainer.v2', 'tiresTrainerV2', 'ogeRoadsTrainer.v2'];
+
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    const own = {
+      tids: Array.from(document.querySelectorAll('.card[data-topic]'), card => card.dataset.topic),
+      topics: OWN_TOPICS,
+      keys: OWN_KEYS
+    };
+    if (!confirm('Сбросить прогресс этой страницы — тренажёров заданий 1–5 ОГЭ? Прогресс других тренажёров и курса ЕГЭ сохранится.')) return;
+    const status = resetOwnProgress(STORAGE_KEY, own);
+    const note = document.getElementById('reset-msg');
+    if (status === 'failed') {
+      note.textContent = 'Не удалось сбросить прогресс: хранилище браузера недоступно или переполнено. Попробуйте ещё раз.';
+      return;
+    }
+    if (status === 'cleaned') {
+      note.textContent = 'Прогресс заданий 1–5 сброшен. Запись прогресса в этом браузере была повреждена: она очищена, и прогресс снова сохраняется.';
+      return;
+    }
+    location.reload();
+  });
+
+  applyProgress();
+})();
+</script>
+</body>
+</html>

@@ -28,6 +28,7 @@
     const sums = A.summaries();
     $('route-notice').hidden = !A.notice(); $('route-notice').textContent = A.notice();
     if (group) {
+      $('route-start').hidden = true; $('route-topics').hidden = true; $('route-resume').hidden = true;
       $('route-overview').hidden = true; $('route-detail').hidden = false;
       $('route-title').textContent = group.title; $('route-lead').textContent = group.lead;
       document.title = group.title + ' — ПредОГЭ · MathExam';
@@ -35,7 +36,8 @@
       const selected = next || group.levels[group.levels.length - 1];
       $('start-title').textContent = next ? selected[1] : 'Пора проверить навык в заданиях';
       $('start-practice').href = next ? A.practiceURL(selected[0]) : group.checkpoint;
-      $('start-practice').textContent = next ? 'Начать упражнение' : 'Открыть проверку';
+      const started = next && (sums[selected[0]].solved || sums[selected[0]].viewed);
+      $('start-practice').textContent = next ? (started ? 'Продолжить занятия' : 'Начать упражнение') : 'Открыть проверку';
       if (!next) $('start-note').textContent = 'В каждом упражнении уже есть 3 самостоятельных примера. Теперь попробуй применить навык в заданиях курса.';
       const guided = next && A.guidedURL(selected[0]);
       $('start-guided').hidden = !guided; if (guided) $('start-guided').href = guided;
@@ -45,6 +47,13 @@
       $('route-easier').hidden = !easier;
       if (easier) { $('route-easier').href = '?skill=' + easier.id; $('route-easier').textContent = 'Вернуться к опоре: ' + easier.title.toLowerCase(); }
     } else {
+      const latest = A.lastActivity();
+      $('route-resume').hidden = !latest;
+      if (latest) {
+        const level = A.levels.find(l => l.id === latest.level);
+        $('resume-note').textContent = level.title;
+        $('resume-link').href = latest.source === 'guided' ? A.guidedURL(latest.level).replace(/#.*$/, '#' + latest.topic) : A.routeURL(latest.level);
+      }
       $('route-overview').innerHTML = A.groups.map(g => {
         const count = g.levels.filter(([id]) => sums[id].independent >= 3).length;
         return '<a class="skill-card" data-skill="' + g.id + '" href="?skill=' + g.id + '"><span class="skill-example">' + esc(g.example) + '</span><h2>' + esc(g.title) + '</h2><p>' + esc(g.lead) + '</p><span class="open">Выбрать упражнение →</span><span class="progress">' + (count ? 'По 3 самостоятельных примера: ' + count + ' из ' + g.levels.length + ' упражнений' : 'Можно начать с любого шага') + '</span></a>';

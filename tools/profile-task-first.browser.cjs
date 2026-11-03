@@ -6,7 +6,7 @@ const http=require('node:http');
 const path=require('node:path');
 const {chromium}=require('playwright');
 const ROOT=path.resolve(__dirname,'..'),KEY='mathexam.profileStart2027.v1';
-const lessons=['geometry','algebra','stereo','probability','equations','functions','applied','readiness'].flatMap(n=>require('../ege-profil/start/'+n+'-data.js'));
+const lessons=['geometry','algebra','stereo','probability','equations','functions','applied', 'finance','readiness'].flatMap(n=>require('../ege-profil/start/'+n+'-data.js'));
 const server=http.createServer((req,res)=>{try{let file=path.resolve(ROOT,'.'+decodeURIComponent(new URL(req.url,'http://local').pathname));if(!file.startsWith(ROOT+path.sep))return res.writeHead(403).end();if(fs.statSync(file).isDirectory())file=path.join(file,'index.html');res.setHeader('Content-Type',file.endsWith('.js')?'text/javascript':file.endsWith('.css')?'text/css':'text/html');res.end(fs.readFileSync(file));}catch(_){res.writeHead(404).end();}});
 const saved=(page,id,mode='independent')=>page.evaluate(({KEY,id,mode})=>JSON.parse(localStorage.getItem(KEY)).sessions[id+':'+mode],{KEY,id,mode});
 const retained=s=>({taskId:s.taskId,started:s.started,step:s.step,draft:s.draft,answers:s.answers,done:s.done,wrong:s.wrong});

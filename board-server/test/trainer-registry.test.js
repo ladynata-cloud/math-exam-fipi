@@ -430,7 +430,7 @@ test('runtime registry has exact parity with all fifty-one mirror authorizations
     {
       trainerId: 'peterson6',
       file: 'trainers/peterson6.html',
-      version: '1.0.0',
+      version: '1.1.0',
       stateSchemaVersion: 1,
       bridgeProtocolVersion: 1,
       allowLegacyHtml: false

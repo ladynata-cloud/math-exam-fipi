@@ -81,6 +81,70 @@ function inspectBundle(catalog,lessons,options={}){
  const coverage={inventoried:catalog.entries.length,available:available.size,draft:catalog.entries.filter(x=>x.status==='draft').length,inReview:catalog.entries.filter(x=>x.status==='in-review').length,blocked:catalog.entries.filter(x=>x.status==='reviewed'&&!available.has(x.id)).length,inventoryComplete:catalog.inventoryComplete,...coverageGroups(catalog.entries,available)};
  return {available,coverage,issues};
 }
+// The 2024 edition restarts paragraph numbering in every chapter. Boundaries
+// were checked against its printed contents, pp. 282–287 (PDF pp. 284–289).
+// Main exercise ranges were checked at the body section boundaries, including
+// pages shared by tasks and the following heading. Chapter questions and
+// additional exercises are deliberately outside § ranges.
+const companionParagraphs=[
+ ['I',1,'Параллельность прямых, прямой и плоскости',4,6,9,14,16,33],
+ ['I',2,'Взаимное расположение прямых в пространстве. Угол между двумя прямыми',7,9,15,20,34,47],
+ ['I',3,'Параллельность плоскостей',10,11,21,24,48,65],
+ ['I',4,'Тетраэдр и параллелепипед',12,14,25,32,66,87],
+ ['II',1,'Перпендикулярность прямой и плоскости',15,18,36,42,116,137],
+ ['II',2,'Перпендикуляр и наклонные. Угол между прямой и плоскостью',19,21,43,49,138,165],
+ ['II',3,'Двугранный угол. Перпендикулярность плоскостей',22,26,50,59,166,196],
+ ['III',1,'Понятие многогранника. Призма',27,31,63,71,218,238],
+ ['III',2,'Пирамида',32,34,72,77,239,270],
+ ['III',3,'Правильные многогранники',35,37,78,84,271,287],
+ ['IV',1,'Цилиндр',38,39,89,93,320,345],
+ ['IV',2,'Конус',40,42,94,99,346,371],
+ ['IV',3,'Сфера',43,51,100,110,372,395],
+ ['V',1,'Объём прямоугольного параллелепипеда',52,53,116,120,440,451],
+ ['V',2,'Объёмы прямой призмы и цилиндра',54,55,121,124,452,465],
+ ['V',3,'Объёмы наклонной призмы, пирамиды и конуса',56,59,125,132,466,502],
+ ['V',4,'Объём шара и площадь сферы',60,62,133,137,503,517],
+ ['VI',1,'Понятие вектора в пространстве',63,64,142,144,557,563],
+ ['VI',2,'Сложение и вычитание векторов. Умножение вектора на число',65,67,145,149,564,591],
+ ['VI',3,'Компланарные векторы',68,70,150,155,592,612],
+ ['VII',1,'Координаты точки и координаты вектора',71,75,160,170,637,681],
+ ['VII',2,'Скалярное произведение векторов',76,79,171,179,682,718],
+ ['VII',3,'Движения',80,84,180,185,719,730],
+ ['VIII',1,'Углы и отрезки, связанные с окружностью',85,89,194,201,816,835],
+ ['VIII',2,'Решение треугольников',90,94,202,213,836,850],
+ ['VIII',3,'Теоремы Менелая и Чевы',95,96,214,218,851,862],
+ ['VIII',4,'Эллипс, гипербола и парабола',97,99,219,228,863,870]
+].map(([chapter,number,title,firstPoint,lastPoint,firstPage,lastPage,firstExercise,lastExercise])=>({chapter,number,title,firstPoint,lastPoint,firstPage,lastPage,firstExercise,lastExercise,key:chapter+':'+number}));
+function paragraphFor(source){
+ if(source.bookId!=='atanasyan-2024-10-11'||!['main','theory','example'].includes(source.collection))return null;
+ const chapter=source.chapter?.match(/^([IVX]+)\./)?.[1],point=/^\d+$/.test(source.point||'')?Number(source.point):null;
+ // Exercises can share a page with the following paragraph heading (e.g. 33).
+ // Use their verified printed number ranges, never the heading's page alone.
+ if(source.collection==='main'){const number=Number(source.exercise);return companionParagraphs.find(p=>(!chapter||p.chapter===chapter)&&number>=p.firstExercise&&number<=p.lastExercise)||null;}
+ return companionParagraphs.find(p=>(!chapter||p.chapter===chapter)&&(point!==null?point>=p.firstPoint&&point<=p.lastPoint:source.printedPages?.length&&source.printedPages.every(page=>page>=p.firstPage&&page<=p.lastPage)))||null;
+}
+function chapterLabel(chapter){
+ if(!chapter)return '';
+ if(chapter==='Введение')return 'К введению';
+ if(chapter==='Приложения')return 'К приложениям';
+ return /^([IVX]+|\d+)\.?($|\s)/.test(chapter)?'К главе '+chapter:'К разделу «'+chapter+'»';
+}
+const paragraphLabel=p=>'К параграфу '+p.number+' «'+p.title+'»';
+function companionIdentity(source){
+ const part=source.subpart?' · '+(/^[а-яё](?:$|\s|[).])/.test(source.subpart)?'подпункт ':'')+source.subpart:'';
+ // Theory subpart values are internal card keys, not printed book subparts.
+ if(source.collection==='theory')return !source.point?'К теории учебника':String(source.point).startsWith('appendix-')?'К приложению '+source.point.slice(9):'К пункту '+source.point;
+ if(source.collection==='selfcheck')return 'К вопросу '+source.exercise+' для самопроверки'+part;
+ if(source.collection==='example')return 'К примеру '+source.exercise+(source.point?' в пункте '+source.point:'')+part;
+ if(source.collection==='research')return 'К исследовательской задаче № '+source.exercise+part;
+ if(source.collection==='practical')return 'К практической задаче № '+source.exercise+part;
+ if(!source.exercise)return 'К материалу учебника';
+ return 'К задаче № '+source.exercise+part+(source.collection==='ege'?' · ЕГЭ в учебнике, задание '+source.examTask:'');
+}
+function companionLocation(source){
+ const paragraph=paragraphFor(source);
+ return [chapterLabel(source.chapter),paragraph&&paragraphLabel(paragraph)].filter(Boolean).join(' · ');
+}
 function createApp(root,options){
  const {catalog,lessons}=options,{available,coverage,issues}=inspectBundle(catalog,lessons,options),doc=root.ownerDocument,win=doc.defaultView,math=options.math||win.StereoMath,sceneViewer=options.sceneViewer||win.TaskSceneViewer;
  let storage;try{storage=options.storage??win.localStorage;}catch{storage=null;}
@@ -109,13 +173,14 @@ function createApp(root,options){
   return true;
  }
  function assisted(){state.assisted=true;return save();}
- function sourceText(source){return catalog.book.edition+' · стр. '+source.printedPages.join(', ')+' · PDF '+source.pdfPages.join(', ')+(source.point?' · пункт '+source.point:'')+(source.exercise?' · № '+source.exercise:'')+(source.subpart?' · '+source.subpart:'')+(source.examTask?' · номер ЕГЭ в книге: '+source.examTask:'');}
+ function sourceText(source){return [companionIdentity(source),companionLocation(source),catalog.book.title,catalog.book.edition,'стр. '+source.printedPages.join(', '),'PDF '+source.pdfPages.join(', ')].filter(Boolean).join(' · ');}
+ function companionNode(lesson){const box=el('div',undefined,{class:'companion-reference','data-companion-source':lesson.id});box.append(el('p',companionIdentity(lesson.source),{class:'companion-identity'}));const location=companionLocation(lesson.source);if(location)box.append(el('p',location,{class:'companion-location'}));box.append(el('p','К учебнику «'+catalog.book.title+'» · '+catalog.book.edition+' · стр. '+lesson.source.printedPages.join(', '),{class:'companion-book'}));return box;}
  function sourceNode(lesson){const details=el('details');details.append(el('summary','Где это в учебнике?'),el('p',sourceText(lesson.source)));return details;}
  function closeTheory(){if(!dialog)return;theoryTrail.length=0;dialogViewer?.destroy();dialogViewer=null;const old=dialog;dialog=null;if(old.close)old.close();old.remove();old._returnFocus?.focus();}
  function destroyScene(){closeTheory();viewer?.destroy();viewer=null;}
  function theoryButton(id){
   const lesson=available.get(id);if(!lesson||lesson.kind!=='theory')return null;
-  const button=el('button','Почему? '+lesson.title,{type:'button'});button.addEventListener('click',()=>showTheory(id,button));return button;
+  const button=el('button','Почему? '+lesson.title,{type:'button',title:companionIdentity(lesson.source)+' · '+companionLocation(lesson.source)});button.addEventListener('click',()=>showTheory(id,button));return button;
  }
  function justifications(step,container){
   const details=el('details');details.append(el('summary','Почему этот переход верен?'));
@@ -136,7 +201,7 @@ function createApp(root,options){
    const style=win.getComputedStyle?.(node);return style?.display!=='none'&&style?.visibility!=='hidden';
   }
   dialog.addEventListener('keydown',event=>{if(event.defaultPrevented)return;if(event.key==='Escape'){event.preventDefault();closeTheory();}if(event.key==='Tab'){const nodes=[...dialog.querySelectorAll('button,input,textarea,summary,a[href],[tabindex="0"]')].filter(focusable);if(event.shiftKey&&doc.activeElement===nodes[0]){event.preventDefault();nodes.at(-1).focus();}else if(!event.shiftKey&&doc.activeElement===nodes.at(-1)){event.preventDefault();nodes[0].focus();}}});
-  dialog.append(close,title,el('p',lesson.statement.text),model,el('p',lesson.statement.goal),el('p',lesson.visualization.caption),sourceNode(lesson));
+  dialog.append(close,companionNode(lesson),title,el('p',lesson.statement.text),model,el('p',lesson.statement.goal),el('p',lesson.visualization.caption),sourceNode(lesson));
   const nestedHelp=el('div');mountHelp(lesson.help,nestedHelp,()=>({setView:selectTheoryView}));dialog.append(nestedHelp);
   const steps=el('div');for(const step of lesson.steps){const d=el('details');d.append(el('summary',step.title),el('p',step.prompt),el('p',step.explanation));justifications(step,d);d.addEventListener('toggle',()=>{if(d.isConnected&&d.open)selectTheoryView(step.view||'neutral');});steps.append(d);}dialog.append(steps);root.append(dialog);
   dialogViewer=sceneViewer.mount(model,lesson.visualization.model,{savedCamera:backState?.camera});
@@ -162,7 +227,7 @@ function createApp(root,options){
   destroyScene();current=lesson;key='mathExamTextbook.v1:'+catalog.book.id+':'+lesson.id+':r'+lesson.revision;expected=safeRead(key);const cached=cache.get(key);state=readState(cached?.raw||expected);view.replaceChildren();
   win.history?.replaceState(null,'','#'+lesson.id);
   const back=el('button','← Все материалы курса',{type:'button'});back.addEventListener('click',home);
-  const header=el('header');header.append(back,el('p',lesson.kind==='theory'?'Теория':'Задача'),el('h1',lesson.title));view.append(header);
+  const header=el('header');header.append(back,companionNode(lesson),el('h1',lesson.title));view.append(header);
   const layout=el('div',undefined,{class:'textbook-layout'}),main=el('section',undefined,{class:'textbook-main'}),side=el('aside',undefined,{class:'textbook-help','aria-label':'Помощь к текущей задаче'}),model=el('div',undefined,{class:'textbook-model task-scene','data-main-model':''});
   main.append(el('p',lesson.statement.text,{class:'textbook-condition'}));if(lesson.statement.givens?.length){const list=el('ul');for(const text of lesson.statement.givens)list.append(el('li',text));main.append(list);}main.append(el('p',lesson.statement.goal,{class:'textbook-goal'}),model,el('p',lesson.visualization.caption),sourceNode(lesson));
   if(lesson.answer){
@@ -189,32 +254,37 @@ function createApp(root,options){
   side.append(help);layout.append(main,side);view.append(layout);viewer=sceneViewer.mount(model,lesson.visualization.model,{savedCamera:state.camera,onChange:camera=>{state.camera=camera;save();}});if(cached&&cached.base!==expected)freeze();
   return true;
  }
- function home(){if(destroyed||locked)return;destroyScene();current=null;state=null;view.replaceChildren();win.history?.replaceState(null,'',win.location.pathname+win.location.search);view.append(el('h1',catalog.book.title),el('p',catalog.book.edition),el('p','В учебнике учтено задач: '+coverage.exercises+'; пунктов теории: '+coverage.theoryPoints+(coverage.selfchecks?'; вопросов самопроверки: '+coverage.selfchecks:'')+(coverage.appendices?'; приложений: '+coverage.appendices:'')+'. Полностью доступны задачи: '+coverage.availableExercises+'; пункты теории: '+coverage.availableTheoryPoints+(coverage.availableSelfchecks?'; вопросы самопроверки: '+coverage.availableSelfchecks:'')+'.'),el('p','Доступно разборов и частей задач: '+coverage.available+'. Остальные материалы готовятся.'));
+ function home(){if(destroyed||locked)return;destroyScene();current=null;state=null;view.replaceChildren();win.history?.replaceState(null,'',win.location.pathname+win.location.search);view.append(el('h1','Курс к учебнику «'+catalog.book.title+'»'),el('p',catalog.book.edition),el('p','В учебнике учтено задач: '+coverage.exercises+'; пунктов теории: '+coverage.theoryPoints+(coverage.selfchecks?'; вопросов самопроверки: '+coverage.selfchecks:'')+(coverage.appendices?'; приложений: '+coverage.appendices:'')+'. Полностью доступны задачи: '+coverage.availableExercises+'; пункты теории: '+coverage.availableTheoryPoints+(coverage.availableSelfchecks?'; вопросы самопроверки: '+coverage.availableSelfchecks:'')+'.'),el('p','Доступно разборов и частей задач: '+coverage.available+'. Остальные материалы готовятся.'));
   if(!coverage.inventoryComplete)view.append(el('p','Список учебника ещё дополняется. Эти числа пока не означают полное покрытие книги.',{class:'course-note'}));
   if(!available.size)view.append(el('p','Проверенные материалы пока не опубликованы.'));
-  const controls=el('section',undefined,{class:'catalog-filters','aria-label':'Найти материал'}),search=el('input',undefined,{id:'catalog-search',type:'search',placeholder:'Номер задачи, пункт или название'});
+  const controls=el('section',undefined,{class:'catalog-filters','aria-label':'Найти материал'}),search=el('input',undefined,{id:'catalog-search',type:'search',placeholder:'Номер задачи, пункт, параграф или тема'});
   const collectionNames={main:'Основные задачи',ege:'ЕГЭ в учебнике',practical:'Практические задачи',research:'Исследования',selfcheck:'Вопросы для самопроверки',theory:'Теория',example:'Разобранные примеры'};
   function select(id,label,choices){const box=el('label',label,{for:id}),node=el('select',undefined,{id});for(const [value,title] of choices)node.append(el('option',title,{value}));box.append(node);controls.append(box);return node;}
   controls.append(el('label','Найти номер или тему',{for:'catalog-search'}),search);
   const kind=select('catalog-kind','Тип',[['','Все материалы'],['exercise','Задачи'],['theory','Теория']]);
   const collection=select('catalog-collection','Раздел',[['','Все разделы'],...collections.filter(name=>catalog.entries.some(entry=>entry.source.collection===name)).map(name=>[name,collectionNames[name]])]);
   const chapters=[...new Set(catalog.entries.map(entry=>entry.source.chapter||''))].filter(Boolean).sort((a,b)=>a.localeCompare(b,'ru',{numeric:true}));
-  const chapter=select('catalog-chapter','Глава',[['','Все главы'],...chapters.map(name=>[name,name])]);
+  const chapter=select('catalog-chapter','Глава',[['','Все главы'],...chapters.map(name=>[name,chapterLabel(name)])]);
+  const paragraphs=catalog.book.id==='atanasyan-2024-10-11'?companionParagraphs.filter(p=>catalog.entries.some(e=>paragraphFor(e.source)?.key===p.key)):[];
+  const paragraph=select('catalog-paragraph','Параграф',[['','Все параграфы'],...paragraphs.map(p=>[p.key,paragraphLabel(p)+' · глава '+p.chapter])]);
+  paragraph.parentElement.hidden=!paragraphs.length;
+  function updateParagraphs(){const selected=paragraph.value,roman=chapter.value.match(/^([IVX]+)\./)?.[1];paragraph.replaceChildren(el('option','Все параграфы',{value:''}));for(const p of paragraphs)if(!chapter.value||roman===p.chapter)paragraph.append(el('option',paragraphLabel(p)+' · глава '+p.chapter,{value:p.key}));paragraph.value=[...paragraph.options].some(o=>o.value===selected)?selected:'';}
   const results=el('div',undefined,{class:'catalog-results','aria-live':'polite'});view.append(controls,results);let readyPage=0,pendingPage=0;
   function renderResults(){
    results.replaceChildren();const q=search.value.trim().toLocaleLowerCase('ru').replace(/ё/g,'е'),number=q.match(/^(?:№\s*)?(\d+)$/)?.[1];
-   const filtered=catalog.entries.filter(entry=>{const s=entry.source;if(kind.value&&entry.kind!==kind.value||collection.value&&s.collection!==collection.value||chapter.value&&s.chapter!==chapter.value)return false;if(!q)return true;if(number)return (entry.kind==='theory'?s.point:s.exercise)===number;return [entry.title,s.exercise,s.point,s.subpart,s.chapter,collectionNames[s.collection],s.examTask?'ЕГЭ '+s.examTask:''].filter(Boolean).join(' ').toLocaleLowerCase('ru').replace(/ё/g,'е').includes(q);});
+   const filtered=catalog.entries.filter(entry=>{const s=entry.source;if(kind.value&&entry.kind!==kind.value||collection.value&&s.collection!==collection.value||chapter.value&&s.chapter!==chapter.value||paragraph.value&&paragraphFor(s)?.key!==paragraph.value)return false;if(!q)return true;if(number)return (entry.kind==='theory'?s.point:s.exercise)===number;return [entry.title,s.exercise,s.point,s.subpart,s.chapter,collectionNames[s.collection],s.examTask?'ЕГЭ '+s.examTask:'',companionIdentity(s),companionLocation(s)].filter(Boolean).join(' ').toLocaleLowerCase('ru').replace(/ё/g,'е').includes(q);});
    const ready=filtered.filter(entry=>available.has(entry.id)),pending=filtered.filter(entry=>!available.has(entry.id)),groups=new Map();for(const entry of pending){const group=sourceGroup(entry);if(!groups.has(group))groups.set(group,[]);groups.get(group).push(entry);}
+   if(chapter.value)results.append(el('h2',chapterLabel(chapter.value),{class:'catalog-location-heading'}));if(paragraph.value)results.append(el('h3',paragraphLabel(paragraphs.find(p=>p.key===paragraph.value)),{class:'catalog-location-heading'}));
    results.append(el('p','Найдено карточек: '+filtered.length+'. Доступно: '+ready.length+'. Ещё готовятся: '+pending.length+'.'));
    function pager(parent,count,page,move){const total=Math.ceil(count/24);if(total<2)return;const nav=el('nav',undefined,{'aria-label':'Страницы списка'}),prev=el('button','← Назад',{type:'button'}),next=el('button','Далее →',{type:'button'});prev.disabled=page===0;next.disabled=page>=total-1;prev.addEventListener('click',()=>move(page-1));next.addEventListener('click',()=>move(page+1));nav.append(prev,el('span',(page+1)+' / '+total),next);parent.append(nav);}
    const readySection=el('section',undefined,{'data-catalog-ready':''});readySection.append(el('h2','Можно изучать сейчас'));if(!ready.length)readySection.append(el('p','По этому запросу проверенных материалов пока нет.'));readyPage=Math.min(readyPage,Math.max(0,Math.ceil(ready.length/24)-1));
-   for(const entry of ready.slice(readyPage*24,(readyPage+1)*24)){const article=el('article'),button=el('button',entry.title,{type:'button','data-lesson':entry.id});button.addEventListener('click',()=>open(entry.id));article.append(button,el('p',sourceText(entry.source)));readySection.append(article);}pager(readySection,ready.length,readyPage,page=>{readyPage=page;renderResults();});results.append(readySection);
+   for(const entry of ready.slice(readyPage*24,(readyPage+1)*24)){const article=el('article'),button=el('button',entry.title,{type:'button','data-lesson':entry.id});button.addEventListener('click',()=>open(entry.id));article.append(companionNode(entry),button);readySection.append(article);}pager(readySection,ready.length,readyPage,page=>{readyPage=page;renderResults();});results.append(readySection);
    if(pending.length){const pendingSection=el('details',undefined,{'data-catalog-pending':''});pendingSection.append(el('summary','Учтены, но ещё не готовы: '+groups.size+' номеров / пунктов'));const groupList=[...groups.values()];pendingPage=Math.min(pendingPage,Math.max(0,Math.ceil(groupList.length/24)-1));
-    for(const group of groupList.slice(pendingPage*24,(pendingPage+1)*24)){const entry=group[0],s=entry.source,article=el('article'),identity=entry.kind==='theory'?(String(s.point).startsWith('appendix-')?'Приложение '+s.point.slice(9):'Пункт '+s.point):'№ '+s.exercise;article.append(el('h3',identity+' · '+collectionNames[s.collection]+(s.examTask?' · исторический номер ЕГЭ '+s.examTask:'')),el('p',group.map(item=>item.title).join('; ')),el('p','Разбор ещё готовится.'));pendingSection.append(article);}
+    for(const group of groupList.slice(pendingPage*24,(pendingPage+1)*24)){const entry=group[0],article=el('article');article.append(companionNode(entry),el('h3',collectionNames[entry.source.collection]),el('p',group.map(item=>item.title).join('; ')),el('p','Разбор ещё готовится.'));pendingSection.append(article);}
     pager(pendingSection,groupList.length,pendingPage,page=>{pendingPage=page;renderResults();results.querySelector('[data-catalog-pending]').open=true;});results.append(pendingSection);
    }
   }
-  function filterChanged(){readyPage=0;pendingPage=0;renderResults();}search.addEventListener('input',filterChanged);for(const node of [kind,collection,chapter])node.addEventListener('change',filterChanged);renderResults();
+  function filterChanged(){readyPage=0;pendingPage=0;renderResults();}search.addEventListener('input',filterChanged);for(const node of [kind,collection,paragraph])node.addEventListener('change',filterChanged);chapter.addEventListener('change',()=>{updateParagraphs();filterChanged();});renderResults();
  }
  function onStorage(event){if(current&&event.key===key&&safeRead(key)!==expected)freeze();}
  win.addEventListener('storage',onStorage);const start=win.location.hash.slice(1);if(start&&available.has(start))open(start);else home();

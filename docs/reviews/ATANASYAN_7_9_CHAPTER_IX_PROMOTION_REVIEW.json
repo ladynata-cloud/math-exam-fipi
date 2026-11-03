@@ -1,0 +1,182 @@
+{
+  "schemaVersion": 1,
+  "at": "2026-11-03T08:57:02.910995+00:00",
+  "reviewer": "/root/ix_infrastructure independently reviews the root-authored promotion snapshot",
+  "reviewIndependence": "Independent of creation of the runtime/content receipts and promotion. This reviewer previously contributed infrastructure and authored the live-smoke script; no independent approval of that script is claimed.",
+  "status": "passed-promotion-integrity-final-commit-ci-pending",
+  "publicationApprovalGranted": false,
+  "sourceEditsPerformed": false,
+  "baseHead": "4a97f329f0965c47eb1b0c21c9708458675de579",
+  "reviewedCommittedHead": null,
+  "binding": "Working-tree hashes below identify the reviewed promotion. A final committed head and production deployment are not asserted.",
+  "stageChanges": {
+    "existingPaths": 13,
+    "files": [
+      {
+        "path": "geometry-course/textbook/candidate-chapters.json",
+        "sha256": "57f8a7b2bad2955fc876a4f60bc42d8a80b577c13f02ff254441b378f1ccf1eb"
+      },
+      {
+        "path": "geometry-course/textbook/data/course.json",
+        "sha256": "84563ef900b15174be7f4dcb03bd450254bcce7789a90a364ae4b9ddf2de4911"
+      },
+      {
+        "path": "geometry-course/textbook/release-review-advanced-07.json",
+        "sha256": "744063f33f2cdcca54d8edc5668058f4093bdc88f580d98c021f84e3b0fb74a7"
+      },
+      {
+        "path": "geometry-course/textbook/release-review-chapter-02.json",
+        "sha256": "084647e84512ac1a083d83c7f226e4b38b16474c55b259bd6d116c4d21639b33"
+      },
+      {
+        "path": "geometry-course/textbook/release-review-chapter-03.json",
+        "sha256": "fdc5820e44a3ca2d0304000fadf7ea282906145d1a2b60ad838111d3f02dcab9"
+      },
+      {
+        "path": "geometry-course/textbook/release-review-chapter-04.json",
+        "sha256": "6aa4b62ddca54d7ac1248c7307acf08d3bc1d6ea2aba55d3f798cf4726db3b6a"
+      },
+      {
+        "path": "geometry-course/textbook/release-review-chapter-05.json",
+        "sha256": "20144d1b0226a3c01e04ae6e73c1f9b288358ac3b77a3482f305f5b96ec63e11"
+      },
+      {
+        "path": "geometry-course/textbook/release-review-chapter-06.json",
+        "sha256": "cd347b28073c6948c7fefd15a5736663572aeec1c869180210cc7b74ba383176"
+      },
+      {
+        "path": "geometry-course/textbook/release-review-chapter-07.json",
+        "sha256": "56dc0f6cbeb6448bce25497d451c4544f821852946a6bb357209e65eab1fb9a8"
+      },
+      {
+        "path": "geometry-course/textbook/release-review-chapter-08.json",
+        "sha256": "3899adc5a6365be8e46c6c703f3e9aef12700203de72c2c75739b37928fbd2a9"
+      },
+      {
+        "path": "geometry-course/textbook/release-review.json",
+        "sha256": "3d16e887e80aea31a5eae77f19d545189762d3481f46dc1168959ff6085bda17"
+      },
+      {
+        "path": "geometry-course/textbook/source-inventory.json",
+        "sha256": "2e9889681ce87a13b4cec641c7087c065de1d19298e94c10397240d4206157a2"
+      },
+      {
+        "path": "tools/geometry-textbook/release-scope.json",
+        "sha256": "f896cf49c71c28043ea37e8acb249e3e48edd3fc21f9561e52f09295ededf5ee"
+      }
+    ],
+    "separateNewReceipts": [
+      {
+        "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_RUNTIME_EXTENSION_REVIEW.json",
+        "sha256": "9f88f10355fd899ce4ed7b1fe8bdf6d0fadd165552d8911618aceddae81df9e4"
+      },
+      {
+        "path": "geometry-course/textbook/release-review-chapter-09.json",
+        "sha256": "dd91259ab30b61d05ca45eccea5f44dd6ed48d3b5d97d59c86e245d04e09f4ee"
+      }
+    ],
+    "separateDocumentationPaths": [
+      "docs/PROJECT_STATUS.md",
+      "docs/tasks/ATANASYAN_7_9_CHAPTER_IX.md",
+      "docs/tasks/ATANASYAN_7_9_COMPLETE_COURSE.md",
+      "geometry-course/textbook/README.md"
+    ],
+    "classification": "The thirteen stage paths exclude the four documentation edits, separate review records and two-line smoke correction. README.md is documentation, not a fourteenth staging change."
+  },
+  "checks": [
+    {
+      "name": "Nine historical approvals reversible",
+      "result": "PASS",
+      "detail": "Removed only runtimeChapterIXReview, restored the prior implementationSha256, then re-encoded each object and matched exact 4a97 Git bytes; previous reviewer, timestamps, evidence and every other field preserved."
+    },
+    {
+      "name": "1247 previous lessons and catalog entries",
+      "result": "PASS",
+      "detail": "Full dictionaries and sequence after excluding IX equal the 4a97 public bundle. Status, review provenance, revision and saved-work identities unchanged."
+    },
+    {
+      "name": "Only approved metadata expansion",
+      "result": "PASS",
+      "detail": "Source inventory adds exactly the three reviewed IX paragraphs. Removing them reproduces prior encoded bytes. Release scope adds exactly IX/160 and total1407; candidate registry removes only chapter9."
+    },
+    {
+      "name": "Authored input preservation",
+      "result": "PASS",
+      "detail": "Four preparation files, four model files and four models_ch9 generators are byte-identical to 4a97. Independent source map also unchanged."
+    },
+    {
+      "name": "Same content as actual browser candidate",
+      "result": "PASS",
+      "detail": "Every authored lesson dictionary, including order, equals the cloud candidate after removing review and normalizing status to draft; complete and IX digests recomputed."
+    },
+    {
+      "name": "Runtime and genuine receipt chain",
+      "result": "PASS",
+      "detail": "Six non-inventory runtime files remain raw-byte-identical to 4a97. validate_extension and validate_release pass with actual receipts; every 3 runtime and 14 content evidence binding was rehashed. The exact existing PR419 normalization remains intact."
+    },
+    {
+      "name": "Visual and browser aggregate bindings",
+      "result": "PASS_BINDINGS_ONLY",
+      "detail": "Actual full-course raw evidence is completed with no errors. Independently checked all1480 IX view identities and640 initial/final identities; read all2120 PNG files and verified1408 unique hashes equal the approval union of102 directly reviewed and1306 exact reused hashes. Five embedded visual reports; zero open findings. This reviewer did not repeat the manual image review."
+    }
+  ],
+  "identities": {
+    "candidateBundleSha256": "4396a32c08c16d4ddc5d5ff21f3490b64bf7b39ac2460d5b288cacfaa80a17af",
+    "promotedBundleSha256": "84563ef900b15174be7f4dcb03bd450254bcce7789a90a364ae4b9ddf2de4911",
+    "authoredContentSha256": "ee11ccb7255517a9ea166351e65fed50b50ebf4bf79dc40491a3e2d24372ca98",
+    "chapterIXAuthoredContentSha256": "acf35dc8cb6b3ff501a2886e81dce59289f51945e0b197bccdbec7d86386f30f",
+    "implementationSha256": "ca0345494ebd9b0f150f07effd91baa777d6cf3c70bb55e9412ccf17f3ab588b",
+    "sourceInventorySha256": "2e9889681ce87a13b4cec641c7087c065de1d19298e94c10397240d4206157a2",
+    "fullCourseRun": 41563278496,
+    "fullCourseArtifact": 13199642251,
+    "rawEvidenceSha256": "f153e6236a847f2a6bfbff13ab899132228233b5f40a2254f9beeea4c8001123"
+  },
+  "supportBindings": [
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_BROWSER_REVIEW.json",
+      "sha256": "463ccbf471ef408e15e8279b05776851f78c2b7a8036e25f0da0e5957ce75278"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_FINAL_VISUAL_REVIEW.json",
+      "sha256": "fd3042f32e4eee7858e30ae1f3dd78e7b047455691267310d5e2c7c0ec2073b1"
+    }
+  ],
+  "executedCommands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 tools/geometry-textbook/chapter09-release.test.py",
+      "exitCode": 0,
+      "tests": 14,
+      "seconds": 152.985,
+      "result": "PASS"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 tools/geometry-textbook/build_course.py --check",
+      "exitCode": 0,
+      "result": "PASS;1407 authoredCards,823 numberedExercises,publicationReviewMatches=true"
+    },
+    {
+      "command": "node --check tools/geometry-textbook/chapter09-live.browser.cjs",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "result": "PASS"
+    }
+  ],
+  "smokeCorrection": {
+    "path": "tools/geometry-textbook/chapter09-live.browser.cjs",
+    "sha256": "c990575f9b0e813c2b2fc38daeb18965b68cb99956361fc7461a2e76e709ab5a",
+    "exactChangedLines": 2,
+    "inspection": "Monotonic query visit number changes the document URL while preserving source SHA, lesson fragment and strict HTTP200 assertion. Reversing exactly these two lines reproduces 4a97 bytes. Full browser script and both workflows are unchanged.",
+    "independentApprovalGrantedByThisReviewer": false,
+    "required": "Root non-author review and corrected exact-commit cloud execution.",
+    "executionStatus": "pending"
+  },
+  "blockersFound": [],
+  "pending": [
+    "Final promoted committed-head CI, including the corrected smoke, must pass.",
+    "Fresh-main drift validation, merge identity, successful Pages deployment and exact-source production HTTPS smoke remain separate release requirements."
+  ]
+}

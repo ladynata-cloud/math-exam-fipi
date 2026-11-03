@@ -1,0 +1,1655 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "independent agent vi_theory_final",
+  "verdict": "PASS",
+  "base": "d3122b9f3905cd8f7715cee6a873d031cdb43de4",
+  "startingHead": "b36a7d8b239516076a367ec9f71957c83d07dccd",
+  "sourceSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "method": "Independently visually read every exact page image, then transcribed and compared number/part/page/paragraph inventories. No OCR substituted for page review.",
+  "pages": [
+    {
+      "pdfPage": 122,
+      "printedPage": 121,
+      "pngSha256": "8c867b90c93b57b9b8de488d79d63ced665a3786e1738d1877cbb09e5f686db0",
+      "visuallyRead": true
+    },
+    {
+      "pdfPage": 123,
+      "printedPage": 122,
+      "pngSha256": "9525295ded886164f70c77053cdfdd2a095b5e7c1eed7d59dd0386af89a6fe98",
+      "visuallyRead": true
+    },
+    {
+      "pdfPage": 124,
+      "printedPage": 123,
+      "pngSha256": "f36028ef20220ca999748221e940f1058c3cb05d372e88635547e1194afc2a5a",
+      "visuallyRead": true
+    },
+    {
+      "pdfPage": 125,
+      "printedPage": 124,
+      "pngSha256": "8b04cb8236da5edf7fc15668641bcb6b2cb124a87df71bc1286e6148d3c7b830",
+      "visuallyRead": true
+    },
+    {
+      "pdfPage": 126,
+      "printedPage": 125,
+      "pngSha256": "c830cb6f78477416b7504ca4d7dc900047300a8c814fbe070678e3e95bcebe20",
+      "visuallyRead": true
+    },
+    {
+      "pdfPage": 127,
+      "printedPage": 126,
+      "pngSha256": "704afccb3ae9f5f6ee0e98d3f5b50ca48bb6559aab64b388d56ae3d45160d09e",
+      "visuallyRead": true
+    },
+    {
+      "pdfPage": 128,
+      "printedPage": 127,
+      "pngSha256": "f7c08a1e4bd97a70ecd10b99e7439f11d03c809fc0b93a76c95d1d686a113b16",
+      "visuallyRead": true
+    },
+    {
+      "pdfPage": 129,
+      "printedPage": 128,
+      "pngSha256": "116c8833346cd99f2d520503abecdde7e678eba7ce766aca2ca18d6e47964095",
+      "visuallyRead": true
+    },
+    {
+      "pdfPage": 130,
+      "printedPage": 129,
+      "pngSha256": "d782f906023ea74a06fab32a5b300dfb43acd12f96b0c4bb18a4b92f9182cfde",
+      "visuallyRead": true
+    },
+    {
+      "pdfPage": 131,
+      "printedPage": 130,
+      "pngSha256": "f2559068550ff1c11e3fe801ab9c3c183d00ee2ee74baedde754c5cfe00838d7",
+      "visuallyRead": true
+    },
+    {
+      "pdfPage": 132,
+      "printedPage": 131,
+      "pngSha256": "3feabd7789f7da40d2b74653d3159b6d7161b4edecfd037a7340f5c53e3d2752",
+      "visuallyRead": true
+    },
+    {
+      "pdfPage": 133,
+      "printedPage": 132,
+      "pngSha256": "11d036c73787894b38cf78ab05c1cd64fcbbc424a235bbd2d9adcb952a17024b",
+      "visuallyRead": true
+    },
+    {
+      "pdfPage": 134,
+      "printedPage": 133,
+      "pngSha256": "a160d0ace2e06a6666d669e50caf625eb269d65c2d94fc2e33492f8f873f286f",
+      "visuallyRead": true
+    },
+    {
+      "pdfPage": 135,
+      "printedPage": 134,
+      "pngSha256": "2497d40fe3b88e49390b7c52eb230d65b01046fe881f75c11796372fd009f996",
+      "visuallyRead": true
+    },
+    {
+      "pdfPage": 136,
+      "printedPage": 135,
+      "pngSha256": "d8053cd4c1beba187da5335b8f5ab7b136dae5a3716fc9bb4f2211efe48bb996",
+      "visuallyRead": true
+    },
+    {
+      "pdfPage": 137,
+      "printedPage": 136,
+      "pngSha256": "3d3b45517fb375ad26c698995db142bb9900670ad94c3f5f5561f8d0b39c4087",
+      "visuallyRead": true
+    },
+    {
+      "pdfPage": 138,
+      "printedPage": 137,
+      "pngSha256": "5948bf248a387cc9eda08b1698b365758a7cacb0fc4af08945b0feb6fcadb720",
+      "visuallyRead": true
+    },
+    {
+      "pdfPage": 139,
+      "printedPage": 138,
+      "pngSha256": "f413defe04656f67995fb2941722743879f4bc5f9587b055aee2d781996a5fac",
+      "visuallyRead": true
+    }
+  ],
+  "counts": {
+    "exerciseNumbers": 79,
+    "exerciseParts": 108,
+    "theoryPoints": 8,
+    "selfcheckQuestions": 22,
+    "paragraphs": 3,
+    "cards": 138
+  },
+  "exercises": [
+    {
+      "number": 462,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        123
+      ],
+      "pdfPages": [
+        124
+      ],
+      "paragraph": 1,
+      "additional": false
+    },
+    {
+      "number": 463,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        123
+      ],
+      "pdfPages": [
+        124
+      ],
+      "paragraph": 1,
+      "additional": false
+    },
+    {
+      "number": 464,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        123
+      ],
+      "pdfPages": [
+        124
+      ],
+      "paragraph": 1,
+      "additional": false
+    },
+    {
+      "number": 465,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "printedPages": [
+        123
+      ],
+      "pdfPages": [
+        124
+      ],
+      "paragraph": 1,
+      "additional": false
+    },
+    {
+      "number": 466,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        123
+      ],
+      "pdfPages": [
+        124
+      ],
+      "paragraph": 1,
+      "additional": false
+    },
+    {
+      "number": 467,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        123
+      ],
+      "pdfPages": [
+        124
+      ],
+      "paragraph": 1,
+      "additional": false
+    },
+    {
+      "number": 468,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        123
+      ],
+      "pdfPages": [
+        124
+      ],
+      "paragraph": 1,
+      "additional": false
+    },
+    {
+      "number": 469,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        123
+      ],
+      "pdfPages": [
+        124
+      ],
+      "paragraph": 1,
+      "additional": false
+    },
+    {
+      "number": 470,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        123
+      ],
+      "pdfPages": [
+        124
+      ],
+      "paragraph": 1,
+      "additional": false
+    },
+    {
+      "number": 471,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        126
+      ],
+      "pdfPages": [
+        127
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 472,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        126
+      ],
+      "pdfPages": [
+        127
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 473,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        127
+      ],
+      "pdfPages": [
+        128
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 474,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        127
+      ],
+      "pdfPages": [
+        128
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 475,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        127
+      ],
+      "pdfPages": [
+        128
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 476,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д"
+      ],
+      "printedPages": [
+        127
+      ],
+      "pdfPages": [
+        128
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 477,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        127
+      ],
+      "pdfPages": [
+        128
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 478,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        127
+      ],
+      "pdfPages": [
+        128
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 479,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        127
+      ],
+      "pdfPages": [
+        128
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 480,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        127
+      ],
+      "pdfPages": [
+        128
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 481,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        127
+      ],
+      "pdfPages": [
+        128
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 482,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        128
+      ],
+      "pdfPages": [
+        129
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 483,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        128
+      ],
+      "pdfPages": [
+        129
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 484,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        128
+      ],
+      "pdfPages": [
+        129
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 485,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        128
+      ],
+      "pdfPages": [
+        129
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 486,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        128
+      ],
+      "pdfPages": [
+        129
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 487,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        128
+      ],
+      "pdfPages": [
+        129
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 488,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        128,
+        129
+      ],
+      "pdfPages": [
+        129,
+        130
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 489,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        129
+      ],
+      "pdfPages": [
+        130
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 490,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        129
+      ],
+      "pdfPages": [
+        130
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 491,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        129
+      ],
+      "pdfPages": [
+        130
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 492,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        129
+      ],
+      "pdfPages": [
+        130
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 493,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        129
+      ],
+      "pdfPages": [
+        130
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 494,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        129
+      ],
+      "pdfPages": [
+        130
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 495,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        129,
+        130
+      ],
+      "pdfPages": [
+        130,
+        131
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 496,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        130,
+        131
+      ],
+      "pdfPages": [
+        131,
+        132
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 497,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        131
+      ],
+      "pdfPages": [
+        132
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 498,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        131
+      ],
+      "pdfPages": [
+        132
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 499,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        131
+      ],
+      "pdfPages": [
+        132
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 500,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        131
+      ],
+      "pdfPages": [
+        132
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 501,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        131
+      ],
+      "pdfPages": [
+        132
+      ],
+      "paragraph": 2,
+      "additional": false
+    },
+    {
+      "number": 502,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        134
+      ],
+      "pdfPages": [
+        135
+      ],
+      "paragraph": 3,
+      "additional": false
+    },
+    {
+      "number": 503,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        134
+      ],
+      "pdfPages": [
+        135
+      ],
+      "paragraph": 3,
+      "additional": false
+    },
+    {
+      "number": 504,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        134
+      ],
+      "pdfPages": [
+        135
+      ],
+      "paragraph": 3,
+      "additional": false
+    },
+    {
+      "number": 505,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        134
+      ],
+      "pdfPages": [
+        135
+      ],
+      "paragraph": 3,
+      "additional": false
+    },
+    {
+      "number": 506,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        134
+      ],
+      "pdfPages": [
+        135
+      ],
+      "paragraph": 3,
+      "additional": false
+    },
+    {
+      "number": 507,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false
+    },
+    {
+      "number": 508,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false
+    },
+    {
+      "number": 509,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false
+    },
+    {
+      "number": 510,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false
+    },
+    {
+      "number": 511,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false
+    },
+    {
+      "number": 512,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false
+    },
+    {
+      "number": 513,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false
+    },
+    {
+      "number": 514,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false
+    },
+    {
+      "number": 515,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false
+    },
+    {
+      "number": 516,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false
+    },
+    {
+      "number": 517,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false
+    },
+    {
+      "number": 518,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false
+    },
+    {
+      "number": 519,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "paragraph": 3,
+      "additional": false
+    },
+    {
+      "number": 520,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true
+    },
+    {
+      "number": 521,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true
+    },
+    {
+      "number": 522,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true
+    },
+    {
+      "number": 523,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true
+    },
+    {
+      "number": 524,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true
+    },
+    {
+      "number": 525,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true
+    },
+    {
+      "number": 526,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true
+    },
+    {
+      "number": 527,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true
+    },
+    {
+      "number": 528,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true
+    },
+    {
+      "number": 529,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true
+    },
+    {
+      "number": 530,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true
+    },
+    {
+      "number": 531,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true
+    },
+    {
+      "number": 532,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        138
+      ],
+      "paragraph": null,
+      "additional": true
+    },
+    {
+      "number": 533,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        138
+      ],
+      "pdfPages": [
+        139
+      ],
+      "paragraph": null,
+      "additional": true
+    },
+    {
+      "number": 534,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        138
+      ],
+      "pdfPages": [
+        139
+      ],
+      "paragraph": null,
+      "additional": true
+    },
+    {
+      "number": 535,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        138
+      ],
+      "pdfPages": [
+        139
+      ],
+      "paragraph": null,
+      "additional": true
+    },
+    {
+      "number": 536,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        138
+      ],
+      "pdfPages": [
+        139
+      ],
+      "paragraph": null,
+      "additional": true
+    },
+    {
+      "number": 537,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        138
+      ],
+      "pdfPages": [
+        139
+      ],
+      "paragraph": null,
+      "additional": true
+    },
+    {
+      "number": 538,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        138
+      ],
+      "pdfPages": [
+        139
+      ],
+      "paragraph": null,
+      "additional": true
+    },
+    {
+      "number": 539,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        138
+      ],
+      "pdfPages": [
+        139
+      ],
+      "paragraph": null,
+      "additional": true
+    },
+    {
+      "number": 540,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        138
+      ],
+      "pdfPages": [
+        139
+      ],
+      "paragraph": null,
+      "additional": true
+    }
+  ],
+  "theory": [
+    {
+      "number": 46,
+      "title": "Выпуклый многоугольник",
+      "printedPages": [
+        121,
+        122
+      ],
+      "pdfPages": [
+        122,
+        123
+      ]
+    },
+    {
+      "number": 47,
+      "title": "Четырёхугольник",
+      "printedPages": [
+        122,
+        123
+      ],
+      "pdfPages": [
+        123,
+        124
+      ]
+    },
+    {
+      "number": 48,
+      "title": "Параллелограмм",
+      "printedPages": [
+        124,
+        125
+      ],
+      "pdfPages": [
+        125,
+        126
+      ]
+    },
+    {
+      "number": 49,
+      "title": "Признаки параллелограмма",
+      "printedPages": [
+        125,
+        126
+      ],
+      "pdfPages": [
+        126,
+        127
+      ]
+    },
+    {
+      "number": 50,
+      "title": "Трапеция",
+      "printedPages": [
+        126
+      ],
+      "pdfPages": [
+        127
+      ]
+    },
+    {
+      "number": 51,
+      "title": "Прямоугольник",
+      "printedPages": [
+        131,
+        132
+      ],
+      "pdfPages": [
+        132,
+        133
+      ]
+    },
+    {
+      "number": 52,
+      "title": "Ромб и квадрат",
+      "printedPages": [
+        132,
+        133
+      ],
+      "pdfPages": [
+        133,
+        134
+      ]
+    },
+    {
+      "number": 53,
+      "title": "Центральная симметрия",
+      "printedPages": [
+        133,
+        134
+      ],
+      "pdfPages": [
+        134,
+        135
+      ]
+    }
+  ],
+  "selfchecks": [
+    {
+      "number": 1,
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "embeddedParts": []
+    },
+    {
+      "number": 2,
+      "printedPages": [
+        135
+      ],
+      "pdfPages": [
+        136
+      ],
+      "embeddedParts": []
+    },
+    {
+      "number": 3,
+      "printedPages": [
+        136
+      ],
+      "pdfPages": [
+        137
+      ],
+      "embeddedParts": []
+    },
+    {
+      "number": 4,
+      "printedPages": [
+        136
+      ],
+      "pdfPages": [
+        137
+      ],
+      "embeddedParts": []
+    },
+    {
+      "number": 5,
+      "printedPages": [
+        136
+      ],
+      "pdfPages": [
+        137
+      ],
+      "embeddedParts": []
+    },
+    {
+      "number": 6,
+      "printedPages": [
+        136
+      ],
+      "pdfPages": [
+        137
+      ],
+      "embeddedParts": []
+    },
+    {
+      "number": 7,
+      "printedPages": [
+        136
+      ],
+      "pdfPages": [
+        137
+      ],
+      "embeddedParts": []
+    },
+    {
+      "number": 8,
+      "printedPages": [
+        136
+      ],
+      "pdfPages": [
+        137
+      ],
+      "embeddedParts": []
+    },
+    {
+      "number": 9,
+      "printedPages": [
+        136
+      ],
+      "pdfPages": [
+        137
+      ],
+      "embeddedParts": []
+    },
+    {
+      "number": 10,
+      "printedPages": [
+        136
+      ],
+      "pdfPages": [
+        137
+      ],
+      "embeddedParts": []
+    },
+    {
+      "number": 11,
+      "printedPages": [
+        136
+      ],
+      "pdfPages": [
+        137
+      ],
+      "embeddedParts": []
+    },
+    {
+      "number": 12,
+      "printedPages": [
+        136
+      ],
+      "pdfPages": [
+        137
+      ],
+      "embeddedParts": []
+    },
+    {
+      "number": 13,
+      "printedPages": [
+        136
+      ],
+      "pdfPages": [
+        137
+      ],
+      "embeddedParts": []
+    },
+    {
+      "number": 14,
+      "printedPages": [
+        136
+      ],
+      "pdfPages": [
+        137
+      ],
+      "embeddedParts": []
+    },
+    {
+      "number": 15,
+      "printedPages": [
+        136
+      ],
+      "pdfPages": [
+        137
+      ],
+      "embeddedParts": []
+    },
+    {
+      "number": 16,
+      "printedPages": [
+        136
+      ],
+      "pdfPages": [
+        137
+      ],
+      "embeddedParts": []
+    },
+    {
+      "number": 17,
+      "printedPages": [
+        136
+      ],
+      "pdfPages": [
+        137
+      ],
+      "embeddedParts": []
+    },
+    {
+      "number": 18,
+      "printedPages": [
+        136
+      ],
+      "pdfPages": [
+        137
+      ],
+      "embeddedParts": []
+    },
+    {
+      "number": 19,
+      "printedPages": [
+        136
+      ],
+      "pdfPages": [
+        137
+      ],
+      "embeddedParts": []
+    },
+    {
+      "number": 20,
+      "printedPages": [
+        136
+      ],
+      "pdfPages": [
+        137
+      ],
+      "embeddedParts": []
+    },
+    {
+      "number": 21,
+      "printedPages": [
+        136
+      ],
+      "pdfPages": [
+        137
+      ],
+      "embeddedParts": []
+    },
+    {
+      "number": 22,
+      "printedPages": [
+        136
+      ],
+      "pdfPages": [
+        137
+      ],
+      "embeddedParts": [
+        "а",
+        "б",
+        "в"
+      ]
+    }
+  ],
+  "paragraphs": [
+    {
+      "chapter": 6,
+      "number": 1,
+      "title": "Многоугольники",
+      "pointNumbers": [
+        46,
+        47
+      ],
+      "exerciseNumbers": [
+        462,
+        470
+      ],
+      "printedPages": [
+        121,
+        123
+      ]
+    },
+    {
+      "chapter": 6,
+      "number": 2,
+      "title": "Параллелограмм и трапеция",
+      "pointNumbers": [
+        48,
+        50
+      ],
+      "exerciseNumbers": [
+        471,
+        501
+      ],
+      "printedPages": [
+        124,
+        131
+      ]
+    },
+    {
+      "chapter": 6,
+      "number": 3,
+      "title": "Прямоугольник, ромб, квадрат",
+      "pointNumbers": [
+        51,
+        53
+      ],
+      "exerciseNumbers": [
+        502,
+        519
+      ],
+      "printedPages": [
+        131,
+        135
+      ]
+    }
+  ],
+  "sourceMapExactMatch": true,
+  "additionalTasksHaveNoParagraph": true,
+  "sourceFileHashes": {
+    "tools/geometry-textbook/chapter-06-source-map.json": "408b825cda9ef83375d511d7cdc665518c3cfa758fc1342eafbfa610aab48f43",
+    "geometry-course/textbook/candidate-chapters.json": "57f8a7b2bad2955fc876a4f60bc42d8a80b577c13f02ff254441b378f1ccf1eb",
+    "geometry-course/textbook/source-inventory.json": "96ab32a3b61bbac81432e6dc6c003cdbcf998e39b8ea3000254689f73ab88cf3"
+  },
+  "limitations": [
+    "Exercise solution mathematics is outside this reviewer scope and is covered by sibling reviewers. All exercise numbers, explicit subparts, page references, and section boundaries were independently checked here."
+  ]
+}

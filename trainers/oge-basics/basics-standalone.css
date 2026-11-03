@@ -1,6 +1,7 @@
 /* Scoped presentation only: the source teaching data and controls stay intact. */
 body.basics-task-first{background:#f7f9f7;color:#20362b;--accent:#28764d;--accent-deep:#185738;--accent-soft:#edf5ef;--green:#28764d;--blue:#28764d;--line:#dce6df;--shadow:none;line-height:1.65}
-.basics-task-first .wrap{max-width:1000px;padding:22px 18px 64px}
+.basics-task-first .wrap{max-width:1000px;padding:22px 18px 64px;grid-template-columns:minmax(0,1fr)}
+.basics-task-first .wrap>*{min-width:0}
 .basics-task-first .topbar{position:static;background:#fff;box-shadow:none;backdrop-filter:none}
 .basics-task-first .topbar-in{max-width:1000px;flex-wrap:wrap;align-items:flex-start}
 .basics-task-first .mark{background:#28764d;box-shadow:none}

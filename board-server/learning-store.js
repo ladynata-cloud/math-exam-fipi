@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { DatabaseSync } = require('node:sqlite');
 const { LearningError, requireValue, exactKeys, safeName, normalizeLogin, token, tokenHash, TOKEN_RE } = require('./learning-auth');
+const courseProgram = require('../learning/course-program');
 const DAY = 86400000;
 const ID = /^[A-Za-z0-9_-]{12,80}$/;
 const clone = value => JSON.parse(JSON.stringify(value));
@@ -13,6 +14,25 @@ const json = value => JSON.stringify(value);
 const parse = value => JSON.parse(value);
 function accountDTO(row) { return { id: row.id, role: row.role, name: row.name, login: row.login, teacherId: row.teacher_id, active: !!row.password_hash }; }
 const QUICK_TOKEN_RE = /^[A-Za-z0-9_-]{43}$/;
+
+function programValues(value) {
+  exactKeys(value, ['grade', 'courseIds'], ['grade', 'courseIds']);
+  requireValue(value.grade === null || (Number.isSafeInteger(value.grade) && value.grade >= 1 && value.grade <= 11), 'LEARNING_PROGRAM_INVALID');
+  requireValue(Array.isArray(value.courseIds) && value.courseIds.length >= 1 && value.courseIds.length <= courseProgram.MAX_COURSES,
+    'LEARNING_PROGRAM_INVALID');
+  requireValue(value.courseIds.every(id => typeof id === 'string' && courseProgram.get(id))
+    && new Set(value.courseIds).size === value.courseIds.length, 'LEARNING_PROGRAM_INVALID');
+  return { grade: value.grade, courseIds: [...value.courseIds] };
+}
+function profileValues(value, programRequired = false) {
+  exactKeys(value, ['course', 'goal', 'focus', 'program'], ['course', 'goal', 'focus', ...(programRequired ? ['program'] : [])]);
+  requireValue(['school','foundations','oge','ege','ege-profile','vilenkin6'].includes(value.course), 'LEARNING_PROFILE_INVALID');
+  requireValue((value.goal === null || ['pass','grade5'].includes(value.goal)) && (value.course === 'oge' || value.goal === null), 'LEARNING_PROFILE_INVALID');
+  requireValue(typeof value.focus === 'string' && value.focus.length <= 1200
+    && !/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f\u202a-\u202e\u2066-\u2069]/u.test(value.focus), 'LEARNING_PROFILE_INVALID');
+  return { course: value.course, goal: value.goal, focus: value.focus.trim(),
+    ...(Object.hasOwn(value, 'program') ? { program: programValues(value.program) } : {}) };
+}
 
 function migrateProfileCourse(db) {
   const schema = db.prepare("SELECT sql FROM sqlite_master WHERE type='table' AND name='learning_profiles'").get()?.sql;
@@ -69,6 +89,8 @@ class LearningStore {
         CREATE TABLE IF NOT EXISTS learning_profiles(learner_id TEXT PRIMARY KEY REFERENCES accounts(id), teacher_id TEXT NOT NULL REFERENCES accounts(id),
           course TEXT NOT NULL CHECK(course IN ('school','foundations','oge','ege','ege-profile','vilenkin6')), goal TEXT CHECK(goal IN ('pass','grade5')),
           focus TEXT NOT NULL, version INTEGER NOT NULL, updated_at INTEGER NOT NULL, CHECK(course='oge' OR goal IS NULL));
+        CREATE TABLE IF NOT EXISTS learning_programs(learner_id TEXT PRIMARY KEY REFERENCES accounts(id),
+          grade INTEGER CHECK(grade IS NULL OR (grade >= 1 AND grade <= 11)), course_ids_json TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS invitations(hash TEXT PRIMARY KEY, account_id TEXT NOT NULL REFERENCES accounts(id), purpose TEXT NOT NULL,
           expires_at INTEGER NOT NULL, used_at INTEGER);
         CREATE TABLE IF NOT EXISTS recovery_codes(hash TEXT PRIMARY KEY, account_id TEXT NOT NULL REFERENCES accounts(id), used_at INTEGER);
@@ -174,13 +196,66 @@ class LearningStore {
   createStudent(auth, body, passwordHash = null) {
     this.teacher(auth); exactKeys(body, ['name','login'], ['name','login']);
     const name = safeName(body.name), login = normalizeLogin(body.login);
+    return this.transaction(() => this.insertStudentAccount(auth, { name, login }, passwordHash));
+  }
+  // Shared by ordinary registration and atomic account/program creation. The
+  // caller owns the transaction; neither route creates another account system.
+  insertStudentAccount(auth, { name, login }, passwordHash) {
     // Only a hash produced at the authenticated API boundary may reach storage.
     requireValue(passwordHash === null || (typeof passwordHash === 'string' && /^scrypt1:[a-f0-9]{32}:[a-f0-9]{64}$/.test(passwordHash)), 'LEARNING_PASSWORD_INVALID');
+    this.limit('accounts', 2000); requireValue(!this.accountByLogin(login), 'LEARNING_LOGIN_EXISTS', 409);
+    const id = token(18);
+    this.run("INSERT INTO accounts(id,role,teacher_id,login,name,password_hash,created_at) VALUES(?,'student',?,?,?,?,?)", id, auth.id, login, name, passwordHash, this.clock());
+    return { student: accountDTO(this.account(id)), ...(passwordHash === null ? this.newInvitation(id, 'activate', 7 * DAY) : {}) };
+  }
+  studentOnboardingInput(body) {
+    exactKeys(body, ['opId', 'name', 'login', 'profile'], ['opId', 'name', 'login', 'profile']);
+    requireValue(typeof body.opId === 'string' && ID.test(body.opId), 'LEARNING_OP_INVALID');
+    return { opId: body.opId, name: safeName(body.name), login: normalizeLogin(body.login), profile: profileValues(body.profile, true) };
+  }
+  studentOnboardingReceipt(auth, input) {
+    this.teacher(auth);
+    input = this.studentOnboardingInput(input);
+    const fingerprint = tokenHash(canonical({ ...input, operation: 'onboard-student' }));
+    const old = this.row('SELECT * FROM operations WHERE actor_id=? AND op_id=?', auth.id, input.opId);
+    if (!old) return null;
+    requireValue(old.fingerprint === fingerprint, 'LEARNING_OP_CONFLICT', 409);
+    const receipt = parse(old.result_json);
+    requireValue(receipt.operation === 'onboard-student', 'LEARNING_OP_CONFLICT', 409);
+    const student = this.ownsStudent(auth, receipt.learnerId), profile = this.studentProfile(auth, student.id);
+    const { version, updatedAt, ...savedValues } = profile;
+    // A delayed retry may confirm only the program and credentials originally
+    // created. Never return an obsolete success card after a teacher changed it.
+    requireValue(student.auth_epoch === receipt.authEpoch && profile.version === receipt.profileVersion
+      && student.name === input.name && student.login === input.login
+      && canonical(savedValues) === canonical(input.profile), 'LEARNING_ONBOARDING_CHANGED', 409);
+    return { learnerId: student.id, passwordHash: student.password_hash, authEpoch: student.auth_epoch };
+  }
+  createStudentOnboarding(sessionToken, input, passwordHash) {
+    input = this.studentOnboardingInput(input);
+    requireValue(typeof passwordHash === 'string' && /^scrypt1:[a-f0-9]{32}:[a-f0-9]{64}$/.test(passwordHash), 'LEARNING_PASSWORD_INVALID');
     return this.transaction(() => {
-      this.limit('accounts', 2000); requireValue(!this.accountByLogin(login), 'LEARNING_LOGIN_EXISTS', 409);
-      const id = token(18);
-      this.run("INSERT INTO accounts(id,role,teacher_id,login,name,password_hash,created_at) VALUES(?,'student',?,?,?,?,?)", id, auth.id, login, name, passwordHash, this.clock());
-      return { student: accountDTO(this.account(id)), ...(passwordHash === null ? this.newInvitation(id, 'activate', 7 * DAY) : {}) };
+      const auth = this.session(sessionToken); this.teacher(auth);
+      // Another request may have committed while this request hashed its code.
+      // Let the API verify that request's password before replaying the receipt.
+      if (this.studentOnboardingReceipt(auth, input)) return null;
+      this.limit('operations', 100000);
+      const { student } = this.insertStudentAccount(auth, input, passwordHash);
+      this.writeStudentProfile(auth.id, student.id, input.profile, 1, this.clock());
+      const receipt = { operation: 'onboard-student', learnerId: student.id, authEpoch: 0, profileVersion: 1 };
+      // No password or password fingerprint belongs in this receipt. A replay
+      // verifies the submitted secret against the existing salted scrypt hash.
+      this.run('INSERT INTO operations VALUES(?,?,?,?)', auth.id, input.opId,
+        tokenHash(canonical({ ...input, operation: 'onboard-student' })), json(receipt));
+      return { student, profile: this.studentProfile(auth, student.id), duplicate: false };
+    });
+  }
+  replayStudentOnboarding(sessionToken, input, expectedHash, expectedEpoch) {
+    return this.transaction(() => {
+      const auth = this.session(sessionToken), receipt = this.studentOnboardingReceipt(auth, input);
+      requireValue(receipt && receipt.passwordHash === expectedHash && receipt.authEpoch === expectedEpoch, 'LEARNING_ONBOARDING_CHANGED', 409);
+      return { student: accountDTO(this.ownsStudent(auth, receipt.learnerId)),
+        profile: this.studentProfile(auth, receipt.learnerId), duplicate: true };
     });
   }
   students(auth) { this.teacher(auth); return this.rows("SELECT * FROM accounts WHERE teacher_id=? AND role='student' ORDER BY created_at,id", auth.id)
@@ -240,27 +315,38 @@ class LearningStore {
     const row = this.row('SELECT course,goal,focus,version,updated_at FROM learning_profiles WHERE learner_id=?', learnerId);
     // Existing pupils retain their school route until the teacher explicitly
     // selects another course. Reading a default must not write a profile.
-    return row ? { course: row.course, goal: row.goal, focus: row.focus, version: row.version, updatedAt: row.updated_at }
+    const profile = row ? { course: row.course, goal: row.goal, focus: row.focus, version: row.version, updatedAt: row.updated_at }
       : { course: 'school', goal: null, focus: '', version: 0, updatedAt: null };
+    const program = this.row('SELECT grade,course_ids_json FROM learning_programs WHERE learner_id=?', learnerId);
+    if (program) profile.program = { grade: program.grade, courseIds: parse(program.course_ids_json) };
+    return profile;
+  }
+  writeStudentProfile(teacherId, learnerId, profile, version, at) {
+    this.run(`INSERT INTO learning_profiles(learner_id,teacher_id,course,goal,focus,version,updated_at) VALUES(?,?,?,?,?,?,?)
+      ON CONFLICT(learner_id) DO UPDATE SET course=excluded.course,goal=excluded.goal,focus=excluded.focus,version=excluded.version,updated_at=excluded.updated_at`,
+    learnerId, teacherId, profile.course, profile.goal, profile.focus, version, at);
+    if (Object.hasOwn(profile, 'program')) this.run(`INSERT INTO learning_programs(learner_id,grade,course_ids_json) VALUES(?,?,?)
+      ON CONFLICT(learner_id) DO UPDATE SET grade=excluded.grade,course_ids_json=excluded.course_ids_json`,
+    learnerId, profile.program.grade, json(profile.program.courseIds));
   }
   saveStudentProfile(auth, learnerId, body) {
     this.ownsStudent(auth, learnerId);
-    exactKeys(body, ['opId','expectedVersion','course','goal','focus'], ['opId','expectedVersion','course','goal','focus']);
+    exactKeys(body, ['opId','expectedVersion','course','goal','focus','program'], ['opId','expectedVersion','course','goal','focus']);
     requireValue(Number.isSafeInteger(body.expectedVersion) && body.expectedVersion >= 0, 'LEARNING_PROFILE_INVALID');
-    requireValue(['school','foundations','oge','ege','ege-profile','vilenkin6'].includes(body.course), 'LEARNING_PROFILE_INVALID');
-    requireValue((body.goal === null || ['pass','grade5'].includes(body.goal)) && (body.course === 'oge' || body.goal === null), 'LEARNING_PROFILE_INVALID');
-    requireValue(typeof body.focus === 'string' && body.focus.length <= 1200
-      && !/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f\u202a-\u202e\u2066-\u2069]/u.test(body.focus), 'LEARNING_PROFILE_INVALID');
-    const focus = body.focus.trim();
-    return this.operation(auth, { ...body, focus, operation: 'save-profile', learnerId }, () => {
+    const { opId, expectedVersion, ...values } = body, profile = profileValues(values);
+    return this.operation(auth, { opId, expectedVersion, ...profile, operation: 'save-profile', learnerId }, () => {
       const current = this.studentProfile(auth, learnerId);
       requireValue(current.version === body.expectedVersion, 'LEARNING_PROFILE_CONFLICT', 409);
       const version = current.version + 1, at = this.clock();
-      this.run(`INSERT INTO learning_profiles(learner_id,teacher_id,course,goal,focus,version,updated_at) VALUES(?,?,?,?,?,?,?)
-        ON CONFLICT(learner_id) DO UPDATE SET course=excluded.course,goal=excluded.goal,focus=excluded.focus,version=excluded.version,updated_at=excluded.updated_at`,
-      learnerId, auth.id, body.course, body.goal, focus, version, at);
-      return { profile: { course: body.course, goal: body.goal, focus, version, updatedAt: at } };
-    });
+      this.writeStudentProfile(auth.id, learnerId, profile, version, at);
+      return { profile: this.studentProfile(auth, learnerId) };
+    }, Object.hasOwn(profile, 'program') ? saved => {
+      // A lost acknowledgement is not a confirmation of a newer program from
+      // another tab. Fence the replay while the operation transaction is held.
+      const current = this.studentProfile(auth, learnerId);
+      requireValue(current.version === saved.profile?.version && canonical(current) === canonical(saved.profile),
+        'LEARNING_PROFILE_CONFLICT', 409);
+    } : undefined);
   }
   recoverStudent(auth, id) { return this.transaction(() => { this.ownsStudent(auth, id); return this.newInvitation(id, 'recovery', 7 * DAY); }); }
   replaceStudentPassword(sessionToken, id, passwordHash, expectedHash, expectedEpoch) {
@@ -416,12 +502,17 @@ class LearningStore {
       requireValue(row && row.password_hash === expectedHash && row.auth_epoch === expectedEpoch, 'LEARNING_ACCESS_INVALID', 401);
       return this.createSession(accountId); });
   }
-  operation(auth, body, callback) {
+  operation(auth, body, callback, validateReplay) {
     requireValue(ID.test(body.opId || ''), 'LEARNING_OP_INVALID');
     const fingerprint = tokenHash(canonical(body));
     return this.transaction(() => {
       const old = this.row('SELECT * FROM operations WHERE actor_id=? AND op_id=?', auth.id, body.opId);
-      if (old) { requireValue(old.fingerprint === fingerprint, 'LEARNING_OP_CONFLICT', 409); return { ...parse(old.result_json), duplicate: true }; }
+      if (old) {
+        requireValue(old.fingerprint === fingerprint, 'LEARNING_OP_CONFLICT', 409);
+        const result = parse(old.result_json);
+        if (validateReplay) validateReplay(result);
+        return { ...result, duplicate: true };
+      }
       this.limit('operations', 100000);
       const result = callback();
       this.run('INSERT INTO operations VALUES(?,?,?,?)', auth.id, body.opId, fingerprint, json(result));
@@ -452,6 +543,18 @@ class LearningStore {
     return row;
   }
   getAttempt(auth, id) { return this.attemptDTO(this.attemptRow(auth, id)); }
+  textbookHelpAccess(auth,attempt) {
+    requireValue(auth.role==='student','LEARNING_FORBIDDEN',403);
+    requireValue(attempt.archivedAt==null,'LEARNING_ATTEMPT_ARCHIVED',409);
+    requireValue(attempt.controller===auth.role,'LEARNING_CONTROL_REQUIRED',409);
+    requireValue(!(this.row("SELECT name FROM sqlite_master WHERE type='table' AND name='learning_runs'")
+      && this.row('SELECT id FROM learning_runs WHERE learner_id=? AND finished_at IS NULL',auth.id)),'LEARNING_RUN_ACTIVE',409);
+  }
+  textbookHelpContext(auth,id) {
+    const attempt=this.getAttempt(auth,id);this.textbookHelpAccess(auth,attempt);
+    this.contracts.textbookHelpContext(attempt.taskSpec,attempt.state);
+    return {attempt};
+  }
   progress(auth) {
     requireValue(auth?.role === 'student', 'LEARNING_FORBIDDEN', 403);
     this.ready();
@@ -463,7 +566,7 @@ class LearningStore {
     const runFilter = this.runGuard ? `AND id NOT IN (SELECT a.attempt_id FROM learning_run_attempts a
       JOIN learning_runs r ON r.id=a.run_id WHERE r.finished_at IS NULL)` : '';
     const rows = this.db.prepare(`SELECT id,trainer_id,json_extract(task_json,'$.contentId') AS content_id,outcome,updated_at,created_at
-      FROM attempts WHERE learner_id=? AND archived_at IS NULL AND trainer_id IN ('ege-path','oge-basics','motion-grade6','vilenkin6-part1','atanasyan-7-9')
+      FROM attempts WHERE learner_id=? AND archived_at IS NULL AND trainer_id IN ('ege-path','oge-basics','motion-grade6','vilenkin6-part1','vilenkin6-textbook','atanasyan-7-9')
         AND id NOT IN (SELECT attempt_id FROM assignments WHERE status!='published')
         ${runFilter}
       ORDER BY updated_at DESC,id DESC`).iterate(auth.id);
@@ -499,7 +602,7 @@ class LearningStore {
   }
   grade7Exposure(learnerId, trainerId, taskSpec, excludeAttemptId = '') {
     // Pinned finite banks retain exposure; leave other legacy assessment alone.
-    if (!(trainerId === 'ege-path' && taskSpec?.task?.grade7 === true) && !['motion-grade6','vilenkin6-part1'].includes(trainerId)) return null;
+    if (!(trainerId === 'ege-path' && taskSpec?.task?.grade7 === true) && !['motion-grade6','vilenkin6-part1','vilenkin6-textbook'].includes(trainerId)) return null;
     // Reset clears current progress, not knowledge of an already shown question.
     // Archived homework has lost its former publication status, so conservatively
     // retain it; an unpublished current draft is not learner exposure.
@@ -533,13 +636,14 @@ class LearningStore {
       const exposure = this.grade7Exposure(auth.id, body.trainerId, generated.taskSpec);
       if (exposure) {
         // Motion has exactly 12 authored exercises per lesson, independent of seed.
-        for (let tries = 0; !['motion-grade6','vilenkin6-part1'].includes(body.trainerId) && tries < 15 && (exposure.truncated || exposure.fingerprints.has(this.taskFingerprint(generated.taskSpec))); tries++) {
+        for (let tries = 0; !['motion-grade6','vilenkin6-part1','vilenkin6-textbook'].includes(body.trainerId) && tries < 15 && (exposure.truncated || exposure.fingerprints.has(this.taskFingerprint(generated.taskSpec))); tries++) {
           generated = this.contracts.create(body.trainerId, body.contentId);
         }
       } else if (source && body.fresh) {
         const sourceFingerprint = this.taskFingerprint(parse(source.task_json));
         for (let tries = 0; tries < 15 && this.taskFingerprint(generated.taskSpec) === sourceFingerprint; tries++) generated = this.contracts.create(body.trainerId, body.contentId);
       }
+      if (body.trainerId === 'vilenkin6-textbook' && exposure && (exposure.truncated || exposure.fingerprints.has(this.taskFingerprint(generated.taskSpec)))) generated.state.task.repeated = true;
       const attempt = this.newAttempt(auth.id, auth.teacherId, body.trainerId, generated, source?.id || null);
       if (lesson) {
         seats.find(seat => seat.learnerId === auth.id).attemptId = attempt.id;
@@ -583,17 +687,24 @@ class LearningStore {
       const row = this.attemptRow(auth, id), attempt = this.attemptDTO(row);
       requireValue(!this.runGuard?.(id), 'LEARNING_RUN_ACTIVE', 409);
       requireValue(row.archived_at == null, 'LEARNING_ATTEMPT_ARCHIVED', 409);
+      let textbookHelp;
+      if(body.type==='textbook-help'){
+        this.textbookHelpAccess(auth,attempt);
+        // Recheck authority and the live source even when replaying an operation.
+        textbookHelp=this.contracts.textbookHelp(attempt.taskSpec,attempt.state,body.payload);
+      }
       const previous = this.row('SELECT * FROM events WHERE actor_id=? AND op_id=?', auth.id, body.opId);
-      if (previous) { requireValue(previous.fingerprint === fingerprint, 'LEARNING_OP_CONFLICT', 409); return { attempt, duplicate: true }; }
+      if (previous) { requireValue(previous.fingerprint === fingerprint, 'LEARNING_OP_CONFLICT', 409); return { attempt, duplicate: true,
+        ...(textbookHelp?{help:parse(previous.payload_json).help}:{}) }; }
       const commutative = ['stroke','erase','reference'].includes(body.type) || (body.type === 'undo' && !!body.payload?.strokeId);
-      const semantic = ['state','check','hint','control'].includes(body.type);
+      const semantic = ['state','check','hint','control','textbook-help'].includes(body.type);
       requireValue(commutative ? body.expectedVersion <= row.version
         : !semantic || body.expectedTrainerVersion === undefined ? body.expectedVersion === row.version
           : body.expectedVersion <= row.version && body.expectedTrainerVersion === row.trainer_version, 'LEARNING_STATE_CONFLICT', 409);
       this.limit('events', 500000);
       requireValue(this.row('SELECT COUNT(*) AS n FROM events WHERE attempt_id=?', id).n < 20000, 'LEARNING_LIMIT_EXCEEDED', 507);
       const { type, payload } = body;
-      requireValue(['state','check','hint','reference','stroke','erase','undo','control'].includes(type));
+      requireValue(['state','check','hint','reference','stroke','erase','undo','control','textbook-help'].includes(type));
       let evaluation;
       if (['state','check','hint'].includes(type)) requireValue(attempt.controller === auth.role, 'LEARNING_CONTROL_REQUIRED', 409);
       if (type === 'state') {
@@ -621,6 +732,9 @@ class LearningStore {
           if (payload.details.step !== undefined) requireValue(Number.isInteger(payload.details.step) && payload.details.step >= 0 && payload.details.step < 100);
         }
         attempt.assistance.hints = true;
+      } else if(type==='textbook-help') {
+        attempt.state=textbookHelp.state;
+        if(!textbookHelp.help.completed)attempt.assistance.hints=true;
       } else if (type === 'reference') {
         exactKeys(payload, ['id']); if (payload.id !== undefined) safeName(payload.id, 100);
       } else if (type === 'control') {
@@ -660,14 +774,20 @@ class LearningStore {
           }
         }
       }
+      if (attempt.trainerId === 'vilenkin6-textbook' && attempt.outcome === 'practiced') {
+        // Another tab can expose the finite source task after this attempt was
+        // opened. Keep its renderer result consistent with the server verdict.
+        attempt.state.task.repeated = true;
+        if (attempt.state.task.status === 'independent') attempt.state.task.status = 'repeated';
+      }
       attempt.version++; if (semantic) attempt.trainerVersion++; attempt.updatedAt = this.clock();
       this.run('UPDATE attempts SET state_json=?,strokes_json=?,version=?,trainer_version=?,controller=?,assistance_json=?,outcome=?,updated_at=? WHERE id=?',
         json(attempt.state), json(attempt.strokes), attempt.version, attempt.trainerVersion, attempt.controller, json(attempt.assistance), attempt.outcome, attempt.updatedAt, id);
       this.run('INSERT INTO events(attempt_id,actor_id,actor_role,op_id,fingerprint,revision,type,payload_json,at) VALUES(?,?,?,?,?,?,?,?,?)',
         id, auth.id, auth.role, body.opId, fingerprint, attempt.version, type, json({ ...payload, ...(['state','check'].includes(type) || payload.state !== undefined ? { state: attempt.state } : {}),
-          ...(evaluation ? { evaluation } : {}), after: { outcome: attempt.outcome, assistance: attempt.assistance, controller: attempt.controller, trainerVersion: attempt.trainerVersion } }), attempt.updatedAt);
+          ...(evaluation ? { evaluation } : {}), ...(textbookHelp?{state:attempt.state,help:textbookHelp.help}:{}), after: { outcome: attempt.outcome, assistance: attempt.assistance, controller: attempt.controller, trainerVersion: attempt.trainerVersion } }), attempt.updatedAt);
       attempt.submission = this.submissionForAttempt?.({ ...row, version: attempt.version }) || null;
-      return { attempt, duplicate: false, ...(evaluation ? { evaluation } : {}) };
+      return { attempt, duplicate: false, ...(evaluation ? { evaluation } : {}), ...(textbookHelp?{help:textbookHelp.help}:{}) };
     });
   }
   history(auth, id, { after = 0, through, limit = 100 } = {}) {

@@ -1,0 +1,26 @@
+body.peterson-help-ready{padding-bottom:88px}
+.peterson-help{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:1200;width:min(420px,calc(100vw - 32px));font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;color:#19352d;isolation:isolate}
+.peterson-help,.peterson-help *{box-sizing:border-box}
+.peterson-help button{font:inherit;line-height:1.4;min-height:44px;border:1px solid #9bb8a7;border-radius:12px;padding:10px 14px;cursor:pointer;color:#174c35;background:#fff;white-space:normal}
+.peterson-help button:focus-visible{outline:3px solid #be8218;outline-offset:3px}
+.peterson-help button:disabled{opacity:.6;cursor:default}
+.peterson-help .peterson-help-launcher{display:block;margin-left:auto;background:#166c49;color:#fff;border-color:#166c49;box-shadow:0 4px 18px #173c302b;font-weight:700}
+.peterson-help-panel{border:1px solid #b6cdbd;border-radius:18px;background:#fff;box-shadow:0 12px 45px #163e3633;margin-bottom:10px;max-height:min(74vh,650px);max-height:min(74dvh,650px);display:flex;flex-direction:column;overflow:hidden}
+.peterson-help-panel[hidden]{display:none}
+.peterson-help-header{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #dce8e0;background:#edf6ef;flex:0 0 auto}
+.peterson-help h2{font-size:18px;line-height:1.3;letter-spacing:normal;margin:0}
+.peterson-help h3{font-size:16px;line-height:1.5;letter-spacing:normal;margin:0 0 9px}
+.peterson-help p{font-size:16px;line-height:1.6;margin:0 0 12px;white-space:pre-wrap;overflow-wrap:anywhere}
+.peterson-help .peterson-help-close{font-size:14px;padding:8px 10px;flex-shrink:0}
+.peterson-help-body{padding:16px;overflow-y:auto;overscroll-behavior:contain;min-height:0}
+.peterson-help .peterson-help-note,.peterson-help .peterson-help-message{font-size:14px;color:#536b5d}
+.peterson-help-condition{padding:12px;background:#f4f8f2;border-radius:10px}
+.peterson-help-actions{display:grid;gap:8px;margin:14px 0}
+.peterson-help-actions button:first-child{background:#166c49;border-color:#166c49;color:white}
+.peterson-help-log{display:grid;gap:14px}
+.peterson-help-answer{padding-top:14px;border-top:1px solid #d5e3d9;min-width:0}
+.peterson-help-fraction{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.15;margin:0 .18em;white-space:nowrap}
+.peterson-help-fraction>span{padding:1px 3px}
+.peterson-help-fraction>span:first-child{border-bottom:1px solid currentColor}
+@media(max-width:480px){.peterson-help{right:12px;bottom:max(12px,env(safe-area-inset-bottom));width:calc(100vw - 24px)}.peterson-help-header{padding:12px}.peterson-help-body{padding:13px}.peterson-help-panel{max-height:70vh;max-height:70dvh}}
+@media print{.peterson-help{display:none}body.peterson-help-ready{padding-bottom:0}}

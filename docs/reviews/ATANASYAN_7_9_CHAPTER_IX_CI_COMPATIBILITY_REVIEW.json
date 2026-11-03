@@ -1,0 +1,198 @@
+{
+  "schemaVersion": 1,
+  "at": "2026-11-03T09:09:13.223936+00:00",
+  "reviewer": "Independent non-author review of the root-authored compatibility correction by /root/ix_infrastructure",
+  "status": "passed-technical-review-and-all-remaining-local-source-gates-cloud-rerun-pending",
+  "baseHead": "6094dcee451824a7bfeffadd36644daf77d8bab5",
+  "reviewedCommittedHead": null,
+  "browserApprovalGranted": false,
+  "publicationApprovalGranted": false,
+  "file": {
+    "path": "tools/geometry-textbook/chapter08-candidate.test.py",
+    "beforeSha256": "55b5fbb370e258b5a311e939d1891cc8a6d9a23fe62983138d351210118b39db",
+    "sha256": "fb1119e40473f5c6e03734f826f47ed297e4ca007333602e9d0c3bf8a50543ce"
+  },
+  "observedFailure": {
+    "run": 41607171286,
+    "job": 125819784272,
+    "url": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41607171286/job/125819784272",
+    "head": "6094dcee451824a7bfeffadd36644daf77d8bab5",
+    "test": "test_only_four_exact_paragraphs_change_isolated_runtime",
+    "error": "AssertionError: 32 != 29",
+    "suiteTests": 8,
+    "failures": 1,
+    "consequence": "source-and-models failed; five dependent browser jobs including chapter IX candidate were skipped. The separate drawing diagnostic succeeded but does not replace full-course execution."
+  },
+  "review": {
+    "cause": "The old final assertion counted the promoted IX inventory (32) while the historical VIII invariant is29. The test had already normalized away IX for its other assertions.",
+    "correction": "Normalize the actual candidate after object via before_ix(encoded(after)), assert exactly29 paragraphs there, then verify and remove the exact four VIII paragraphs before the existing equality comparison.",
+    "preservedGuards": [
+      "Exact three IX suffix and frozen previous-inventory hash remain enforced by chapter09_extension.previous_inventory.",
+      "Exact four VIII source paragraphs and equality with the preceding inventory remain enforced.",
+      "Implementation file keys and the source-inventory-only runtime delta remain enforced."
+    ],
+    "negativeProbes": {
+      "result": "PASS",
+      "actualPromotedInventoryParagraphs": 32,
+      "normalizedVIIIParagraphs": 29,
+      "rejectedActualCandidateMutations": [
+        "old paragraph",
+        "wrong IX",
+        "missing IX",
+        "extra IX"
+      ]
+    },
+    "scope": "Only the compatibility test is modified relative to6094. Workflows, all106 tracked textbook content/runtime files, receipts and source bytes remain unchanged."
+  },
+  "preservation": {
+    "textbookFilesByteIdenticalToBase": 106,
+    "pathHashManifestSha256": "1869ba174d32ee78ce539870ebc23963a2ae3312229ce9d47f8233652ebb0c55",
+    "promotedBundleSha256": "84563ef900b15174be7f4dcb03bd450254bcce7789a90a364ae4b9ddf2de4911",
+    "runtimeContentChanged": false,
+    "approvalRecordsChanged": false
+  },
+  "targetedTest": {
+    "command": "python3 tools/geometry-textbook/chapter08-candidate.test.py",
+    "tests": 8,
+    "seconds": 36.552,
+    "exitCode": 0,
+    "logSha256": "26ba87d149e066cadea7a31670796ee92776f8f2d3533a07d07bd58f38bbbed8"
+  },
+  "remainingWorkflowGates": {
+    "selection": "Every source-and-models command after chapter08-candidate.test.py in the unchanged atanasyan-planimetry.yml",
+    "result": "PASS",
+    "commands": 19,
+    "maxParallelWorkers": 3,
+    "wallSeconds": 209.644,
+    "sumTaskSeconds": 583.308,
+    "summarySha256": "f5d05435be9d18535a9e4b820d4f8c87e73f36493c03c6b462f082d1d87d59d0",
+    "nodeVersion": "24.22.1",
+    "jsdomVersion": "26.1.0",
+    "results": [
+      {
+        "command": "python3 tools/geometry-textbook/chapter08-release.test.py",
+        "exitCode": 0,
+        "seconds": 177.315,
+        "logSha256": "f494ad69a0b5fd2643171ac5bb7b7fe93d8b7aa279a91f8b53af6f2f994e0c08"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/chapter09-candidate.test.py",
+        "exitCode": 0,
+        "seconds": 53.87,
+        "logSha256": "ed2fe3189b2e249e7531abdfe65868e42356c27a31dbd377e2d0cd43b36b94ea"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/chapter09-release.test.py",
+        "exitCode": 0,
+        "seconds": 193.306,
+        "logSha256": "7bedc004054751b623340951d90a301a5807bda30c4bdd13535def71cc9dbda1"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/chapter09-a-independent.test.py",
+        "exitCode": 0,
+        "seconds": 0.117,
+        "logSha256": "aeb2abce134f1876ea0f85b66fcf415db81d1997fb8c3c2c8c265f398e71a706"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/chapter09-b-independent.test.py",
+        "exitCode": 0,
+        "seconds": 0.117,
+        "logSha256": "545c816c42f04109f9ae4f955fb40d6e6b82110cfa08c85cc5e4f88827778dd9"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/chapter09-c-independent.test.py",
+        "exitCode": 0,
+        "seconds": 0.115,
+        "logSha256": "006ac55040db8bd82eeb2e5abab682d80dc719e313b23af3bbac2921bafb69a1"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/chapter09-theory-independent.test.py",
+        "exitCode": 0,
+        "seconds": 0.115,
+        "logSha256": "95bce4d92b2cc9e65532d0046c56d326a88638b8232f1cac544d7c51382c91b3"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/chapter08-a-independent.test.py",
+        "exitCode": 0,
+        "seconds": 0.064,
+        "logSha256": "78ef4b38221902700bd5b5831224a61b8d7e91083066aaf1445adbde17875a99"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/chapter08-b-independent.test.py",
+        "exitCode": 0,
+        "seconds": 0.116,
+        "logSha256": "f2c833837ad74ed489d2594a90a9a101eb53d110ceb83bdcd39c1c2b5c01db61"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/chapter08-c-independent.test.py",
+        "exitCode": 0,
+        "seconds": 0.116,
+        "logSha256": "d5f286531f64fc9384a1729a896b72668f87755a182e6dba36a076394929427c"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/chapter08-theory-independent.test.py",
+        "exitCode": 0,
+        "seconds": 0.115,
+        "logSha256": "f70e1681b18da67741e92a5f267faae90ea4c7d73eb40966319e01f5eb9c666c"
+      },
+      {
+        "command": "python3 tools/geometry-textbook/advanced7-c-math.test.py",
+        "exitCode": 0,
+        "seconds": 0.115,
+        "logSha256": "2990f28c37138252adbe02b7abcb5f6619f5833b244b319e5a234b8bde61ca2b"
+      },
+      {
+        "command": "node tools/geometry-textbook/check_course.cjs",
+        "exitCode": 0,
+        "seconds": 1.074,
+        "logSha256": "decca152a5208b2c237b61602da3743dfcdf6d7666cfc4a442fca21f3d5e4927"
+      },
+      {
+        "command": "node tools/geometry-textbook/captions.test.cjs",
+        "exitCode": 0,
+        "seconds": 2.984,
+        "logSha256": "9290eb71c210ed8c13711ba63ae672a715ee8ebe918ecf32880eae21a0ffeb7e"
+      },
+      {
+        "command": "node tools/geometry-textbook/runtime_check.cjs",
+        "exitCode": 0,
+        "seconds": 11.093,
+        "logSha256": "80ffba8c0a67c00c4f29ca4b28f6704d0b219638ef14fa15aa2a3a1a7935ade4"
+      },
+      {
+        "command": "node tools/geometry-textbook/reviewer_runtime_check.cjs",
+        "exitCode": 0,
+        "seconds": 139.613,
+        "logSha256": "6613132f785ceaa572363b0633ef1d503beee495ee76c677a6480b3dc6f00270"
+      },
+      {
+        "command": "node tools/geometry/check.js",
+        "exitCode": 0,
+        "seconds": 0.417,
+        "logSha256": "99fbf6e2b9f8094b075c3dbd1c96efdb2a071d09b60edb4434419d783cba1290"
+      },
+      {
+        "command": "python3 tools/seo-check.py",
+        "exitCode": 0,
+        "seconds": 2.629,
+        "logSha256": "c97c81ba6769cbe98536b213130bc5dfcd80d28669af5e9fa878dc4f99d884c2"
+      },
+      {
+        "command": "git diff --check",
+        "exitCode": 0,
+        "seconds": 0.017,
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "timingAssessment": "The local remaining batch took209.644s with three workers; summed per-task elapsed times were583.308s and include contention. Together with the failed CI prefix of roughly four minutes this indicates limited but plausible room in the existing15-minute source job. This is not a remote sequential timing guarantee; no timeout change is made without an observed timeout. CI uses Node22 while this workspace uses Node24.22.1.",
+  "remainingRequirements": [
+    "Run the new exact committed head through all source and full browser jobs.",
+    "Download and verify its complete IX candidate artifact, then compare all2120 capture identities and whole-PNG hashes with the approved final visual set.",
+    "Any novel whole PNG needs actual visual review before merge; production HTTPS verification remains separate."
+  ],
+  "limits": [
+    "This is a technical compatibility review and local non-browser execution, not a browser/visual/content approval.",
+    "No source, runtime, receipt, workflow timeout or protection was changed by this reviewer."
+  ]
+}

@@ -61,8 +61,14 @@ const draft=clone(fixture);
 draft.catalog.entries[0].status=draft.lessons[0].status='draft';
 assert.equal(API.inspectBundle(draft.catalog,draft.lessons,allow).coverage.available,3,'a complete draft remains unavailable');
 
-// Guard the isolated fork against accidental unrelated runtime changes.
-const retained=fs.readFileSync(path.join(root,'stereo-course/textbook/assets/engine.js'),'utf8')
+// Guard the isolated fork against its exact original parent. The later Atanasyan
+// source-caption migration is deliberately not part of this Merzlyak fork.
+// Verify both the archived parent and the separately pinned current parent so a
+// stale comparison cannot conceal an unreviewed change to either file.
+require('../stereo-textbook/companion-migration.cjs').assertHistoricalFile(
+ 'stereo-course/textbook/assets/engine.js',
+ '3b2f3c3fae68a9c8e6f532d32a19df1fb1c5749b60253c75d9241ff639066ad4');
+const retained=fs.readFileSync(path.join(root,'tools/stereo-textbook/fixtures/companion-before/engine.js'),'utf8')
  .replace('source.pdfPages[i]!==n+2','source.pdfPages[i]!==n+1')
  .replace('q.match(/^(?:№\\s*)?(\\d+)$/)','q.match(/^(?:№\\s*)?(\\d+(?:\\.\\d+)?)$/)');
 const isolated=fs.readFileSync(runtime,'utf8');

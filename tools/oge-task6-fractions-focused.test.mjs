@@ -6,13 +6,15 @@ import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
+import bookCorrections from './oge-book-exam-corrections.cjs';
+import taskScope from './task6-scope.cjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const trainerPath = 'trainers/oge-task6-fractions.html';
 // Keep the independent mathematical bank comparison against the reviewed fix.
 const baselineSha = '4b56350c35a67e41add8f2b25cf2bf7d73d1f71f';
 // The board integration leaves the complete reviewed native engine unchanged.
-const nativeScriptSha256 = '442b9369cdbec829a8e379284e1fed90a253da4f85aaf880b50bdc63b6cedf24';
+const nativeScriptSha256 = 'fc2803edad40c7548979c656b37a2709a853f96467beb53ceb6144a779af0ce9';
 const git = (...args) => execFileSync('git',
   ['-c', 'safe.directory=' + root, ...args], { cwd: root, encoding: 'utf8' });
 const html = fs.readFileSync(path.join(root, trainerPath), 'utf8');
@@ -518,7 +520,9 @@ test('native trainer remains offline with only the reviewed local board integrat
     assert.ok(baseline.includes(tag), 'Canonical metadata must already exist in the reviewed base');
   }
   sourceRejects(/@import\b|url\(\s*["']?(?:https?:)?\/\//i);
-  scriptRejects(/\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|sendBeacon|localStorage|sessionStorage|indexedDB)\b/);
+  scriptRejects(/\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|sendBeacon|sessionStorage|indexedDB)\b/);
+  const historical=bookCorrections.restoreHistoricalBytes(trainerPath,html.replace('  if(window.OgeCourseSharedMode)return;\n','').replace('  if(window.OgeCourseSharedMode)return false;\n',''));
+  assert.doesNotMatch(historical,/\blocalStorage\b/,'Only the exact reviewed adapter may use localStorage');
   scriptRejects(/\beval\s*\(|\bnew\s+Function\b|\bimport\s*(?:\(|["'{*])/);
   scriptRejects(/document\.cookie|navigator\.serviceWorker/);
 });
@@ -532,7 +536,7 @@ test('format contract, accessible navigation and disclosure exist in source', ()
   sourceMatches(/focus-visible/);
   sourceMatches(/<select\b[^>]*id=["'][^"']+["']/);
   sourceMatches(/Перейти к задаче/);
-  sourceMatches(/Прогресс хранится только до обновления страницы/);
+  sourceMatches(/Прогресс сохраняется в этом браузере после обновления страницы/);
   sourceMatches(/Смена раздела или режима/);
   sourceMatches(/Раздел завершён/);
   sourceRejects(/Раздел пройден|с подсказкой/i);
@@ -555,11 +559,12 @@ test('two scoped relative help links resolve to existing offline files', () => {
   sourceMatches(/Потренировать общий знаменатель/);
 });
 
-test('the complete reviewed native engine remains byte-identical', () => {
+test('the reviewed native engine and isolated progress adapter remain byte-identical', () => {
   // A whole-repository diff against the historical interactive-help release
   // misclassified later published courses and integrations as task-6 changes.
   // Pin the actual native engine instead; retain the frozen TASKS comparison,
   // independent arithmetic, local-script allowlist and offline/API checks.
+  assert.equal(taskScope.auditHistoricalTask6(root).status, 'PASS');
   assert.equal(createHash('sha256').update(script, 'utf8').digest('hex'), nativeScriptSha256,
     'The board integration must not alter the reviewed native task-6 engine');
 });

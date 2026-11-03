@@ -62,13 +62,14 @@ function diagramGuide(task){
 function visual(task){return svg(task)+`<p class="muted">${E(task.model.diagram.description)} ${E(diagramGuide(task))}</p>`;}
 function mount(host,task,options={}){
  const model=task.model,session=root.PathModels.session(host,'grade7-construction',options),state=session.value;
- const constructions=model.constructions||[],rebuild=!!task.geometryRebuild;
+ const elements=root.GeometryObjectLabels?.elements(task)||model.elements;
+ const constructions=(model.constructions||[]).map(item=>({...item,label:root.GeometryObjectLabels?.constructionLabel(task,item)||item.label})),rebuild=!!task.geometryRebuild;
  host.classList.toggle('geometry-active-host',rebuild);
  state.selected=model.elements.some(e=>e.id===state.selected)?state.selected:null;
  state.built=Array.isArray(state.built)?[...new Set(state.built.filter(id=>constructions.some(c=>c.id===id)))]:[];
  state.revealed=Number.isInteger(state.revealed)?Math.max(0,Math.min(task.steps.length,state.revealed)):0;
  let readOnly=!!options.readOnly,active=null,renderedLocked;const locked=()=>readOnly||host.inert||!!host.closest('[inert]');
- const drawing=`<div data-core-drawing></div><p data-core-read role="status"></p><div class="actions geometry-element-buttons" role="group" aria-label="Элементы чертежа">${model.elements.map(e=>`<button type="button" data-core-select="${E(e.id)}" aria-pressed="false">${E(e.label)}</button>`).join('')}</div>${constructions.length?`<div class="geometry-build-tools"><p>Выбирай линии кнопками. Повторное нажатие убирает линию.</p><div class="actions" role="group" aria-label="Построить линию">${constructions.map(c=>`<button type="button" data-core-build="${E(c.id)}" aria-pressed="false">${E(c.label)}</button>`).join('')}<button type="button" data-core-reset>Убрать построения</button></div></div>`:''}`;
+ const drawing=`<div data-core-drawing></div><p data-core-read role="status"></p><div class="actions geometry-element-buttons" role="group" aria-label="Элементы чертежа">${elements.map(e=>`<button type="button" data-core-select="${E(e.id)}" aria-pressed="false">${E(e.label)}</button>`).join('')}</div>${constructions.length?`<div class="geometry-build-tools"><p>Выбирай линии кнопками. Повторное нажатие убирает линию.</p><div class="actions" role="group" aria-label="Построить линию">${constructions.map(c=>`<button type="button" data-core-build="${E(c.id)}" aria-pressed="false">${E(c.label)}</button>`).join('')}<button type="button" data-core-reset>Убрать построения</button></div></div>`:''}`;
  const explanation=`<div class="actions"><button type="button" data-core-next>Объяснить следующий шаг</button><button type="button" data-core-clear>Начать исследование заново</button></div><ol data-core-steps ${rebuild?'hidden':''} aria-label="Шаги объяснения" aria-live="polite"></ol>`;
  host.innerHTML=rebuild?`<p class="geometry-workshop-intro"><strong>Одна задача — несколько понятных шагов.</strong> Сначала прочитай рисунок, затем отвечай на вопросы. Если трудно, открой подсказку: за неё нет штрафа.</p><div class="geometry-workbench"><section class="geometry-drawing-panel" aria-label="Чертёж и его элементы"><h3>Рисунок к задаче</h3>${drawing}<details class="geometry-drawing-help"><summary>Как читать отметки</summary><p>${E(diagramGuide(task))}</p></details></section></div><details class="geometry-passive-help"><summary>Если пока трудно: посмотреть объяснение шага</summary><p>Кнопка откроет готовый шаг на доске рассуждений. Это работа с помощью. Можно вернуться к вопросам в любой момент.</p>${explanation}</details>`:`<p>Выдели элемент чертежа и прочитай его свойство.${constructions.length?' Затем выбери нужное построение.':''} Все изменения можно отменить.</p>${drawing}${explanation}<p class="muted">После разбора реши новый вариант самостоятельно. Просмотр модели остаётся в истории этой попытки.</p>`;
  function draw(){
@@ -76,7 +77,7 @@ function mount(host,task,options={}){
   host.querySelector('[data-core-drawing]').innerHTML=svg(task,state.selected,state.built);
   host.querySelectorAll('[data-core-select]').forEach(b=>{b.disabled=locked();b.setAttribute('aria-pressed',String(b.dataset.coreSelect===state.selected));});
   host.querySelectorAll('[data-core-build]').forEach(b=>{b.disabled=locked();b.setAttribute('aria-pressed',String(state.built.includes(b.dataset.coreBuild)));});
-  host.querySelector('[data-core-read]').textContent=model.elements.find(e=>e.id===state.selected)?.description||constructions.find(c=>c.id===state.built.at(-1))?.description||model.diagram.description;
+  host.querySelector('[data-core-read]').textContent=elements.find(e=>e.id===state.selected)?.description||constructions.find(c=>c.id===state.built.at(-1))?.description||model.diagram.description;
   host.querySelector('[data-core-steps]').innerHTML=rebuild?'':task.steps.slice(0,state.revealed).map(s=>`<li><p>${E(s.why)}</p></li>`).join('');
   host.querySelector('[data-core-next]').disabled=locked()||state.revealed>=task.steps.length;
   host.querySelector('[data-core-clear]').disabled=locked()||!state.selected&&!state.built.length&&!state.revealed;
@@ -94,7 +95,7 @@ function mount(host,task,options={}){
 }
 function activePractice(host,task,state,locked,mutate){
  const panel=document.createElement('section');panel.className='geometry-active';host.classList.add('geometry-active-host');panel.setAttribute('aria-label','Геометрическая мастерская');host.querySelector('.geometry-workbench').append(panel);
- const all=task.model.elements||[],d=task.model.diagram;
+ const all=root.GeometryObjectLabels?.elements(task)||task.model.elements||[],d=task.model.diagram;
  const points=all.filter(e=>Object.hasOwn(d.points,e.id)),lines=all.filter(e=>(d.segments||[]).some(s=>s.id===e.id)),angles=all.filter(e=>(d.angles||[]).some(a=>a.id===e.id));
  const pick=(items,offset)=>items[(Math.abs(task.seed||0)+offset)%items.length];
  const targets=[points.length&&pick(points,0),lines.length&&pick(lines,1),angles.length&&pick(angles,2)].filter(Boolean);

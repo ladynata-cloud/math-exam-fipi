@@ -1,0 +1,6743 @@
+{
+  "scope": "Independent mathematics and model relationship audit only; no all-image or external-provider approval",
+  "cards": 59,
+  "numbers": [
+    672,
+    709
+  ],
+  "inputs": {
+    "tools/geometry-textbook/models_ch8_b.py": "a531e80fa23b7cd0f5525b0cc4a37084a48b410fb904e371c5c588f960d33b7b",
+    "geometry-course/textbook/preparation/chapter-08-b.json": "6841e8969cbcd4f0b5dcb933b335d9e0980ed5bb777b32745ffa94d101eced45",
+    "geometry-course/textbook/models/chapter-08-b.json": "10f843470acba4a93913ddc2b5f812344502b38e7a6a62f90b95ff4dcbd51301"
+  },
+  "sourcePrintedPages": [
+    171,
+    172,
+    174,
+    175,
+    176,
+    177,
+    178,
+    179,
+    180,
+    181,
+    182,
+    183,
+    184,
+    185
+  ],
+  "sourceImagesRead": true,
+  "manualProofReview": "All59answers and step explanations read; corresponding vertex order, projection roles, physical-unit conversions, construction existence/uniqueness, acute-angle domain and degree-minute conversion checked.",
+  "independentAssertions": 1117,
+  "failures": [],
+  "passed": true,
+  "checks": [
+    {
+      "assertion": "(672, 'single') claim0 distanceRatio",
+      "actual": 1.5999999999709476,
+      "expected": 1.6,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') claim1 distanceRatio",
+      "actual": 1.399999999987549,
+      "expected": 1.4,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') claim2 equalLength",
+      "actual": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') claim3 equalLength",
+      "actual": 23.1250000004199,
+      "expected": 23.1250000004199,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') claim4 equalLength",
+      "actual": 32.37500000029993,
+      "expected": 32.37500000029993,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') claim5 parallel",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') claim6 distanceRatio",
+      "actual": 0.5,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') neutral equalSegments mark1",
+      "actual": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') neutral equalSegments mark2",
+      "actual": 23.1250000004199,
+      "expected": 23.1250000004199,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') neutral equalSegments mark3",
+      "actual": 32.37500000029993,
+      "expected": 32.37500000029993,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') step-1 equalSegments mark1",
+      "actual": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') step-1 equalSegments mark2",
+      "actual": 23.1250000004199,
+      "expected": 23.1250000004199,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') step-1 equalSegments mark3",
+      "actual": 32.37500000029993,
+      "expected": 32.37500000029993,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') step-2 equalSegments mark1",
+      "actual": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') step-2 equalSegments mark2",
+      "actual": 23.1250000004199,
+      "expected": 23.1250000004199,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') step-2 equalSegments mark3",
+      "actual": 32.37500000029993,
+      "expected": 32.37500000029993,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') step-3 equalSegments mark1",
+      "actual": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') step-3 equalSegments mark2",
+      "actual": 23.1250000004199,
+      "expected": 23.1250000004199,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') step-3 equalSegments mark3",
+      "actual": 32.37500000029993,
+      "expected": 32.37500000029993,
+      "passed": true
+    },
+    {
+      "assertion": "(673, 'single') claim0 parallel",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(673, 'single') claim1 parallel",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(673, 'single') claim2 equalLength",
+      "actual": 46.25,
+      "expected": 46.25,
+      "passed": true
+    },
+    {
+      "assertion": "(673, 'single') claim3 equalLength",
+      "actual": 74.0,
+      "expected": 74.0,
+      "passed": true
+    },
+    {
+      "assertion": "(673, 'single') claim4 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(673, 'single') claim5 equalLength",
+      "actual": 43.632162735761796,
+      "expected": 43.632162735761796,
+      "passed": true
+    },
+    {
+      "assertion": "(673, 'single') claim6 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(673, 'single') claim7 distanceRatio",
+      "actual": 0.5,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "assertion": "(673, 'single') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(673, 'single') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(673, 'single') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(674, 'single') claim0 equalLength",
+      "actual": 34.533333334000005,
+      "expected": 34.533333333,
+      "passed": true
+    },
+    {
+      "assertion": "(674, 'single') claim1 equalLength",
+      "actual": 44.40000000020455,
+      "expected": 44.40000000020455,
+      "passed": true
+    },
+    {
+      "assertion": "(674, 'single') claim2 parallel",
+      "actual": -2.0168737388123358e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(674, 'single') claim3 distanceRatio",
+      "actual": 0.5000000000010135,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "assertion": "(674, 'single') neutral equalSegments mark1",
+      "actual": 34.533333334000005,
+      "expected": 34.533333333,
+      "passed": true
+    },
+    {
+      "assertion": "(674, 'single') neutral equalSegments mark2",
+      "actual": 44.40000000020455,
+      "expected": 44.40000000020455,
+      "passed": true
+    },
+    {
+      "assertion": "(674, 'single') step-1 equalSegments mark1",
+      "actual": 34.533333334000005,
+      "expected": 34.533333333,
+      "passed": true
+    },
+    {
+      "assertion": "(674, 'single') step-1 equalSegments mark2",
+      "actual": 44.40000000020455,
+      "expected": 44.40000000020455,
+      "passed": true
+    },
+    {
+      "assertion": "(674, 'single') step-2 equalSegments mark1",
+      "actual": 34.533333334000005,
+      "expected": 34.533333333,
+      "passed": true
+    },
+    {
+      "assertion": "(674, 'single') step-2 equalSegments mark2",
+      "actual": 44.40000000020455,
+      "expected": 44.40000000020455,
+      "passed": true
+    },
+    {
+      "assertion": "(674, 'single') step-3 equalSegments mark1",
+      "actual": 34.533333334000005,
+      "expected": 34.533333333,
+      "passed": true
+    },
+    {
+      "assertion": "(674, 'single') step-3 equalSegments mark2",
+      "actual": 44.40000000020455,
+      "expected": 44.40000000020455,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single') claim0 parallel",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single') claim1 equalLength",
+      "actual": 26.681079438433517,
+      "expected": 26.68107943843352,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single') claim2 equalLength",
+      "actual": 33.09380606699689,
+      "expected": 33.09380606699688,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single') claim3 equalLength",
+      "actual": 16.546903033498445,
+      "expected": 16.54690303349844,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single') claim4 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single') claim5 parallel",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single') claim6 distanceRatio",
+      "actual": 0.29999999999999993,
+      "expected": 0.3,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single') claim7 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single') claim8 parallel",
+      "actual": -0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single') claim9 distanceRatio",
+      "actual": 0.29999999999999993,
+      "expected": 0.3,
+      "passed": true
+    },
+    {
+      "assertion": "(676, 'single') claim0 parallel",
+      "actual": -4.325193180791694e-17,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(676, 'single') claim1 parallel",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(676, 'single') claim2 equalLength",
+      "actual": 51.26870390474735,
+      "expected": 51.26870390474735,
+      "passed": true
+    },
+    {
+      "assertion": "(676, 'single') claim3 equalLength",
+      "actual": 59.2,
+      "expected": 59.2,
+      "passed": true
+    },
+    {
+      "assertion": "(676, 'single') claim4 collinear",
+      "actual": 3.1595536185772377e-12,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(676, 'single') claim5 collinear",
+      "actual": -1.1617918704002396e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(676, 'single') claim6 equalLength",
+      "actual": 25.63435195237367,
+      "expected": 25.634351952373674,
+      "passed": true
+    },
+    {
+      "assertion": "(676, 'single') claim7 distanceRatio",
+      "actual": 0.5000000000117071,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "assertion": "(676, 'single') neutral equalSegments mark1",
+      "actual": 25.63435195237367,
+      "expected": 25.634351952373674,
+      "passed": true
+    },
+    {
+      "assertion": "(676, 'single') step-1 equalSegments mark1",
+      "actual": 25.63435195237367,
+      "expected": 25.634351952373674,
+      "passed": true
+    },
+    {
+      "assertion": "(676, 'single') step-2 equalSegments mark1",
+      "actual": 25.63435195237367,
+      "expected": 25.634351952373674,
+      "passed": true
+    },
+    {
+      "assertion": "(676, 'single') step-3 equalSegments mark1",
+      "actual": 25.63435195237367,
+      "expected": 25.634351952373674,
+      "passed": true
+    },
+    {
+      "assertion": "(677, 'single') claim0 equalLength",
+      "actual": 33.844415262475565,
+      "expected": 33.844415262475565,
+      "passed": true
+    },
+    {
+      "assertion": "(677, 'single') claim1 equalLength",
+      "actual": 29.068883707497267,
+      "expected": 29.068883707497264,
+      "passed": true
+    },
+    {
+      "assertion": "(677, 'single') claim2 collinear",
+      "actual": -8.084264046216788e-12,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(677, 'single') claim3 collinear",
+      "actual": 7.317113922874845e-12,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(677, 'single') claim4 distanceRatio",
+      "actual": 1.999999999973542,
+      "expected": 2,
+      "passed": true
+    },
+    {
+      "assertion": "(677, 'single') neutral equalSegments mark1",
+      "actual": 33.844415262475565,
+      "expected": 33.844415262475565,
+      "passed": true
+    },
+    {
+      "assertion": "(677, 'single') neutral equalSegments mark2",
+      "actual": 29.068883707497267,
+      "expected": 29.068883707497264,
+      "passed": true
+    },
+    {
+      "assertion": "(677, 'single') step-1 equalSegments mark1",
+      "actual": 33.844415262475565,
+      "expected": 33.844415262475565,
+      "passed": true
+    },
+    {
+      "assertion": "(677, 'single') step-1 equalSegments mark2",
+      "actual": 29.068883707497267,
+      "expected": 29.068883707497264,
+      "passed": true
+    },
+    {
+      "assertion": "(677, 'single') step-2 equalSegments mark1",
+      "actual": 33.844415262475565,
+      "expected": 33.844415262475565,
+      "passed": true
+    },
+    {
+      "assertion": "(677, 'single') step-2 equalSegments mark2",
+      "actual": 29.068883707497267,
+      "expected": 29.068883707497264,
+      "passed": true
+    },
+    {
+      "assertion": "(677, 'single') step-3 equalSegments mark1",
+      "actual": 33.844415262475565,
+      "expected": 33.844415262475565,
+      "passed": true
+    },
+    {
+      "assertion": "(677, 'single') step-3 equalSegments mark2",
+      "actual": 29.068883707497267,
+      "expected": 29.068883707497264,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'а') claim0 perpendicular",
+      "actual": 1.3513364374269443e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'а') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'а') claim2 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'а') claim3 distanceRatio",
+      "actual": 1.5625000000432854,
+      "expected": 1.5625,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'а') claim4 distanceRatio",
+      "actual": 1.2500000000135134,
+      "expected": 1.25,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'а') neutral right mark",
+      "actual": 89.99999999922574,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'а') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'а') step-1 right mark",
+      "actual": 89.99999999922574,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'а') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'а') step-2 right mark",
+      "actual": 89.99999999922574,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'а') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'а') step-3 right mark",
+      "actual": 89.99999999922574,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'а') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'б') claim0 perpendicular",
+      "actual": -8.650386361822502e-17,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'б') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'б') claim2 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'б') claim3 distanceRatio",
+      "actual": 0.5625,
+      "expected": 0.5625,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'б') claim4 distanceRatio",
+      "actual": 0.75,
+      "expected": 0.75,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'б') neutral right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'б') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'б') step-1 right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'б') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'б') step-2 right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'б') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'б') step-3 right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'б') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'в') claim0 perpendicular",
+      "actual": -6.549329043857758e-13,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'в') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'в') claim2 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'в') claim3 distanceRatio",
+      "actual": 0.3333333333333333,
+      "expected": 0.3333333333333333,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'в') claim4 distanceRatio",
+      "actual": 0.5773502691894074,
+      "expected": 0.5773502691896257,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'в') neutral right mark",
+      "actual": 90.00000000003753,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'в') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'в') step-1 right mark",
+      "actual": 90.00000000003753,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'в') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'в') step-2 right mark",
+      "actual": 90.00000000003753,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'в') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'в') step-3 right mark",
+      "actual": 90.00000000003753,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'в') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'г') claim0 perpendicular",
+      "actual": -6.549329043857758e-13,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'г') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'г') claim2 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'г') claim3 distanceRatio",
+      "actual": 3.0,
+      "expected": 3.0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'г') claim4 distanceRatio",
+      "actual": 1.7320508075695324,
+      "expected": 1.7320508075688772,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'г') neutral right mark",
+      "actual": 90.00000000003753,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'г') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'г') step-1 right mark",
+      "actual": 90.00000000003753,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'г') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'г') step-2 right mark",
+      "actual": 90.00000000003753,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'г') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'г') step-3 right mark",
+      "actual": 90.00000000003753,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'г') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'д') claim0 perpendicular",
+      "actual": -2.4232724906260657e-13,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'д') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'д') claim2 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'д') claim3 distanceRatio",
+      "actual": 1.2499999999923985,
+      "expected": 1.25,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'д') claim4 distanceRatio",
+      "actual": 1.1180339887465258,
+      "expected": 1.118033988749895,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'д') neutral right mark",
+      "actual": 90.0000000000139,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'д') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'д') step-1 right mark",
+      "actual": 90.0000000000139,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'д') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'д') step-2 right mark",
+      "actual": 90.0000000000139,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'д') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'д') step-3 right mark",
+      "actual": 90.0000000000139,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'д') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(679, 'single') claim0 perpendicular",
+      "actual": -8.650386361822502e-17,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(679, 'single') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(679, 'single') claim2 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(679, 'single') claim3 distanceRatio",
+      "actual": 0.64,
+      "expected": 0.64,
+      "passed": true
+    },
+    {
+      "assertion": "(679, 'single') claim4 distanceRatio",
+      "actual": 0.36,
+      "expected": 0.36,
+      "passed": true
+    },
+    {
+      "assertion": "(679, 'single') neutral right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(679, 'single') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(679, 'single') step-1 right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(679, 'single') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(679, 'single') step-2 right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(679, 'single') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'а') claim0 perpendicular",
+      "actual": -8.650386361822502e-17,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'а') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'а') claim2 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'а') claim3 distanceRatio",
+      "actual": 0.4799999999999999,
+      "expected": 0.48,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'а') neutral right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'а') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'а') step-1 right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'а') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'а') step-2 right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'а') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'а') step-3 right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'а') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'б') claim0 perpendicular",
+      "actual": -8.650386361822502e-17,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'б') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'б') claim2 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'б') claim3 distanceRatio",
+      "actual": 1.7777777777777777,
+      "expected": 1.7777777777777777,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'б') claim4 distanceRatio",
+      "actual": 1.3333333333333333,
+      "expected": 1.3333333333333333,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'б') neutral right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'б') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'б') step-1 right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'б') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'б') step-2 right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'б') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'б') step-3 right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'б') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(681, 'single') claim0 perpendicular",
+      "actual": -8.650386361822502e-17,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(681, 'single') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(681, 'single') claim2 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(681, 'single') claim3 distanceRatio",
+      "actual": 0.75,
+      "expected": 0.75,
+      "passed": true
+    },
+    {
+      "assertion": "(681, 'single') claim4 distanceRatio",
+      "actual": 1.7777777777777777,
+      "expected": 1.7777777777777777,
+      "passed": true
+    },
+    {
+      "assertion": "(681, 'single') neutral right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(681, 'single') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(681, 'single') step-1 right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(681, 'single') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(681, 'single') step-2 right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(681, 'single') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(681, 'single') step-3 right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(681, 'single') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(682, 'single') claim0 perpendicular",
+      "actual": -2.3423556328947654e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(682, 'single') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(682, 'single') claim2 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(682, 'single') claim3 distanceRatio",
+      "actual": 1.2000000000205406,
+      "expected": 1.2,
+      "passed": true
+    },
+    {
+      "assertion": "(682, 'single') claim4 distanceRatio",
+      "actual": 1.4400000000369295,
+      "expected": 1.44,
+      "passed": true
+    },
+    {
+      "assertion": "(682, 'single') neutral right mark",
+      "actual": 90.00000000134207,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(682, 'single') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(682, 'single') step-1 right mark",
+      "actual": 90.00000000134207,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(682, 'single') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(682, 'single') step-2 right mark",
+      "actual": 90.00000000134207,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(682, 'single') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(682, 'single') step-3 right mark",
+      "actual": 90.00000000134207,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(682, 'single') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(683, 'single') claim0 perpendicular",
+      "actual": 2.7477399690720087e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(683, 'single') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(683, 'single') claim2 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(683, 'single') claim3 distanceRatio",
+      "actual": 0.41666666667511265,
+      "expected": 0.4166666666666667,
+      "passed": true
+    },
+    {
+      "assertion": "(683, 'single') claim4 distanceRatio",
+      "actual": 0.38461538462577965,
+      "expected": 0.38461538461538464,
+      "passed": true
+    },
+    {
+      "assertion": "(683, 'single') step-1 right mark",
+      "actual": 89.99999999842566,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(683, 'single') step-2 right mark",
+      "actual": 89.99999999842566,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(683, 'single') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(683, 'single') step-3 right mark",
+      "actual": 89.99999999842566,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(683, 'single') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(684, 'single') claim0 perpendicular",
+      "actual": -8.650386361822502e-17,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(684, 'single') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(684, 'single') claim2 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(684, 'single') claim3 distanceRatio",
+      "actual": 0.7999999999999999,
+      "expected": 0.8,
+      "passed": true
+    },
+    {
+      "assertion": "(684, 'single') claim4 distanceRatio",
+      "actual": 0.6,
+      "expected": 0.6,
+      "passed": true
+    },
+    {
+      "assertion": "(684, 'single') neutral right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(684, 'single') step-1 right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(684, 'single') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(684, 'single') step-2 right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(684, 'single') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(684, 'single') step-3 right mark",
+      "actual": 90.00000000000001,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(684, 'single') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(685, 'single') claim0 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(685, 'single') claim1 collinear",
+      "actual": 1.0015915429068483e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(685, 'single') claim2 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(685, 'single') claim3 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(685, 'single') claim4 distanceRatio",
+      "actual": 1.8529411764477577,
+      "expected": 1.8529411764705883,
+      "passed": true
+    },
+    {
+      "assertion": "(685, 'single') claim5 distanceRatio",
+      "actual": 0.49999999998748007,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "assertion": "(685, 'single') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(685, 'single') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(685, 'single') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(685, 'single') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(685, 'single') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(685, 'single') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(685, 'single') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(685, 'single') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(686, 'single') claim0 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(686, 'single') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(686, 'single') claim2 parallel",
+      "actual": 1.7024590780574442e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(686, 'single') claim3 distanceRatio",
+      "actual": 4.0799999999059455,
+      "expected": 4.08,
+      "passed": true
+    },
+    {
+      "assertion": "(686, 'single') claim4 distanceRatio",
+      "actual": 4.0800000000553265,
+      "expected": 4.08,
+      "passed": true
+    },
+    {
+      "assertion": "(686, 'single') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(686, 'single') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(686, 'single') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(686, 'single') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(686, 'single') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(686, 'single') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(686, 'single') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(686, 'single') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') claim0 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') claim1 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') claim2 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') claim3 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') claim4 distanceRatio",
+      "actual": 13.750000001716355,
+      "expected": 13.75,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') claim5 distanceRatio",
+      "actual": 0.2499999999938702,
+      "expected": 0.25,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') claim6 distanceRatio",
+      "actual": 0.25,
+      "expected": 0.25,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') claim7 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') claim8 distanceRatio",
+      "actual": 13.749999999338934,
+      "expected": 13.75,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') neutral angleArcs mark1",
+      "actual": 51.89242312281955,
+      "expected": 51.89242312350174,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') step-1 angleArcs mark1",
+      "actual": 51.89242312281955,
+      "expected": 51.89242312350174,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') step-2 angleArcs mark1",
+      "actual": 51.89242312281955,
+      "expected": 51.89242312350174,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') step-3 angleArcs mark1",
+      "actual": 51.89242312281955,
+      "expected": 51.89242312350174,
+      "passed": true
+    },
+    {
+      "assertion": "(688, 'single') claim0 distanceRatio",
+      "actual": 1.1428571428640375,
+      "expected": 1.1428571428571428,
+      "passed": true
+    },
+    {
+      "assertion": "(688, 'single') claim1 distanceRatio",
+      "actual": 1.1428571428640375,
+      "expected": 1.1428571428571428,
+      "passed": true
+    },
+    {
+      "assertion": "(689, 'single') claim0 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(689, 'single') claim1 collinear",
+      "actual": -6.078724981151539e-12,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(689, 'single') claim2 parallel",
+      "actual": -9.184677558584816e-12,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(689, 'single') claim3 distanceRatio",
+      "actual": 3.1250000000525424,
+      "expected": 3.125,
+      "passed": true
+    },
+    {
+      "assertion": "(689, 'single') claim4 distanceRatio",
+      "actual": 1.0624999999999245,
+      "expected": 1.0625,
+      "passed": true
+    },
+    {
+      "assertion": "(690, 'single') claim0 collinear",
+      "actual": 2.6783368860513677e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(690, 'single') claim1 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(690, 'single') claim2 equalLength",
+      "actual": 22.285714284999997,
+      "expected": 22.285714285747318,
+      "passed": true
+    },
+    {
+      "assertion": "(690, 'single') claim3 equalLength",
+      "actual": 29.714285714,
+      "expected": 29.71428571408418,
+      "passed": true
+    },
+    {
+      "assertion": "(690, 'single') claim4 parallel",
+      "actual": 1.0105811346504254e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(690, 'single') claim5 distanceRatio",
+      "actual": 0.7500000000073618,
+      "expected": 0.75,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'а') claim0 collinear",
+      "actual": -1.660955742303354e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'а') claim1 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'а') claim2 parallel",
+      "actual": 2.3298803092436235e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'а') claim3 distanceRatio",
+      "actual": 0.39999999998671626,
+      "expected": 0.4,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'а') claim4 distanceRatio",
+      "actual": 0.4000000000037838,
+      "expected": 0.4,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'б') claim0 collinear",
+      "actual": 4.301282316822932e-12,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'б') claim1 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'б') claim2 parallel",
+      "actual": 1.5130537017334688e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'б') claim3 distanceRatio",
+      "actual": 0.42857142856958463,
+      "expected": 0.42857142857142855,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'б') claim4 distanceRatio",
+      "actual": 0.42857142857785835,
+      "expected": 0.42857142857142855,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'в') claim0 collinear",
+      "actual": 2.768321358902993e-12,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'в') claim1 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'в') claim2 parallel",
+      "actual": 2.696394497969624e-12,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'в') claim3 distanceRatio",
+      "actual": 1.333333333345633,
+      "expected": 1.3333333333333333,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'в') claim4 distanceRatio",
+      "actual": 1.3333333333543544,
+      "expected": 1.3333333333333333,
+      "passed": true
+    },
+    {
+      "assertion": "(692, 'single') claim0 angle",
+      "actual": 34.99999999877981,
+      "expected": 35,
+      "passed": true
+    },
+    {
+      "assertion": "(692, 'single') claim1 angle",
+      "actual": 65.00000000007296,
+      "expected": 65,
+      "passed": true
+    },
+    {
+      "assertion": "(692, 'single') claim2 angle",
+      "actual": 17.49999999813942,
+      "expected": 17.5,
+      "passed": true
+    },
+    {
+      "assertion": "(692, 'single') claim3 angle",
+      "actual": 17.500000000640398,
+      "expected": 17.5,
+      "passed": true
+    },
+    {
+      "assertion": "(692, 'single') claim4 collinear",
+      "actual": -1.7326492296128964e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(692, 'single') claim5 collinear",
+      "actual": -2.5079030367273046e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(692, 'single') claim6 collinear",
+      "actual": 1.5505864050277017e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(692, 'single') claim7 parallel",
+      "actual": 1.410860930561077e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(692, 'single') claim8 equalLength",
+      "actual": 57.829912633000006,
+      "expected": 57.82991263246556,
+      "passed": true
+    },
+    {
+      "assertion": "(692, 'single') claim9 equalLength",
+      "actual": 57.829912633000006,
+      "expected": 57.82991263246556,
+      "passed": true
+    },
+    {
+      "assertion": "(692, 'single') claim10 parallel",
+      "actual": -1.410860930561077e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(692, 'single') step-2 angleArcs mark1",
+      "actual": 17.500000000640398,
+      "expected": 17.49999999813942,
+      "passed": true
+    },
+    {
+      "assertion": "(692, 'single') step-3 angleArcs mark1",
+      "actual": 17.500000000640398,
+      "expected": 17.49999999813942,
+      "passed": true
+    },
+    {
+      "assertion": "(692, 'single') step-4 angleArcs mark1",
+      "actual": 17.500000000640398,
+      "expected": 17.49999999813942,
+      "passed": true
+    },
+    {
+      "assertion": "(692, 'single') case-1 angleArcs mark1",
+      "actual": 17.500000000640398,
+      "expected": 17.49999999813942,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single') claim0 collinear",
+      "actual": 1.9893873666652028e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single') claim1 collinear",
+      "actual": 7.0355421107885275e-12,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single') claim2 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single') claim3 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single') claim4 parallel",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single') claim5 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single') claim6 equalLength",
+      "actual": 52.0,
+      "expected": 52.0,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single') claim7 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single') claim8 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single') claim9 parallel",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single') claim10 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single') step-4 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single') step-4 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single') case-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single') case-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single') case-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(694, 'single') claim0 distanceRatio",
+      "actual": 0.666666666638762,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "(694, 'single') claim1 distanceRatio",
+      "actual": 0.6666666666616408,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "(694, 'single') claim2 equalLength",
+      "actual": 10.863726326517705,
+      "expected": 10.863726325245983,
+      "passed": true
+    },
+    {
+      "assertion": "(694, 'single') claim3 equalLength",
+      "actual": 21.727452651763677,
+      "expected": 21.72745265209023,
+      "passed": true
+    },
+    {
+      "assertion": "(694, 'single') claim4 collinear",
+      "actual": -4.69109226424853e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(694, 'single') claim5 parallel",
+      "actual": 2.1750742491547056e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(694, 'single') claim6 equalLength",
+      "actual": 30.12792615,
+      "expected": 30.127926150123553,
+      "passed": true
+    },
+    {
+      "assertion": "(694, 'single') claim7 distanceRatio",
+      "actual": 0.6666666666616408,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "(694, 'single') claim8 equalLength",
+      "actual": 21.727452651763677,
+      "expected": 21.72745265209023,
+      "passed": true
+    },
+    {
+      "assertion": "(694, 'single') step-2 equalSegments mark1",
+      "actual": 10.863726326517705,
+      "expected": 10.863726325245983,
+      "passed": true
+    },
+    {
+      "assertion": "(694, 'single') step-3 equalSegments mark1",
+      "actual": 10.863726326517705,
+      "expected": 10.863726325245983,
+      "passed": true
+    },
+    {
+      "assertion": "(694, 'single') step-4 equalSegments mark1",
+      "actual": 10.863726326517705,
+      "expected": 10.863726325245983,
+      "passed": true
+    },
+    {
+      "assertion": "(694, 'single') step-4 equalSegments mark2",
+      "actual": 21.727452651763677,
+      "expected": 21.72745265209023,
+      "passed": true
+    },
+    {
+      "assertion": "(694, 'single') case-1 equalSegments mark1",
+      "actual": 10.863726326517705,
+      "expected": 10.863726325245983,
+      "passed": true
+    },
+    {
+      "assertion": "(694, 'single') case-1 equalSegments mark2",
+      "actual": 21.727452651763677,
+      "expected": 21.72745265209023,
+      "passed": true
+    },
+    {
+      "assertion": "(695, 'single') claim0 distanceRatio",
+      "actual": 1.9999999999222713,
+      "expected": 2,
+      "passed": true
+    },
+    {
+      "assertion": "(695, 'single') claim1 distanceRatio",
+      "actual": 2.0000000000027156,
+      "expected": 2,
+      "passed": true
+    },
+    {
+      "assertion": "(695, 'single') claim2 collinear",
+      "actual": -2.3222243713274024e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(695, 'single') claim3 collinear",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(695, 'single') claim4 collinear",
+      "actual": 5.2802752258601346e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(695, 'single') claim5 parallel",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(695, 'single') claim6 parallel",
+      "actual": 2.3222243713274024e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(695, 'single') claim7 equalLength",
+      "actual": 51.05922462406932,
+      "expected": 51.05922462406932,
+      "passed": true
+    },
+    {
+      "assertion": "(695, 'single') claim7 equalLength",
+      "actual": 51.05922462400001,
+      "expected": 51.05922462406932,
+      "passed": true
+    },
+    {
+      "assertion": "(695, 'single') claim8 distanceRatio",
+      "actual": 2.0000000000027156,
+      "expected": 2,
+      "passed": true
+    },
+    {
+      "assertion": "(695, 'single') claim9 equalLength",
+      "actual": 51.05922462400001,
+      "expected": 51.05922462406932,
+      "passed": true
+    },
+    {
+      "assertion": "(696, 'single') claim0 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(696, 'single') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(696, 'single') claim2 distanceRatio",
+      "actual": 0.7499999999725963,
+      "expected": 0.75,
+      "passed": true
+    },
+    {
+      "assertion": "(696, 'single') claim3 distanceRatio",
+      "actual": 0.7499999999869505,
+      "expected": 0.75,
+      "passed": true
+    },
+    {
+      "assertion": "(696, 'single') claim4 collinear",
+      "actual": -9.186789068907351e-12,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(696, 'single') claim5 parallel",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(696, 'single') claim6 parallel",
+      "actual": 9.186789068907351e-12,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(696, 'single') claim7 equalLength",
+      "actual": 47.8947368422,
+      "expected": 47.8947368422,
+      "passed": true
+    },
+    {
+      "assertion": "(696, 'single') claim7 equalLength",
+      "actual": 47.89473684200001,
+      "expected": 47.8947368422,
+      "passed": true
+    },
+    {
+      "assertion": "(696, 'single') claim8 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(696, 'single') claim9 distanceRatio",
+      "actual": 0.7499999999869505,
+      "expected": 0.75,
+      "passed": true
+    },
+    {
+      "assertion": "(696, 'single') claim10 equalLength",
+      "actual": 47.89473684200001,
+      "expected": 47.8947368422,
+      "passed": true
+    },
+    {
+      "assertion": "(696, 'single') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(696, 'single') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(696, 'single') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(696, 'single') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(696, 'single') step-4 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(696, 'single') case-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'а') claim0 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'а') claim1 distanceRatio",
+      "actual": 0.5333333333243242,
+      "expected": 0.5333333333333333,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'а') claim2 distanceRatio",
+      "actual": 0.8823529411797713,
+      "expected": 0.8823529411764706,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'а') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'а') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'а') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'а') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'б') claim0 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'б') claim1 distanceRatio",
+      "actual": 1.0499999999959615,
+      "expected": 1.05,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'б') claim2 distanceRatio",
+      "actual": 0.689655172415184,
+      "expected": 0.6896551724137931,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'б') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'б') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'б') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'б') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'в') claim0 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'в') claim1 distanceRatio",
+      "actual": 0.5,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'в') claim2 distanceRatio",
+      "actual": 0.8944271909999159,
+      "expected": 0.8944271909999159,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'в') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'в') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'в') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'в') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'г') claim0 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'г') claim1 distanceRatio",
+      "actual": 0.2916666666756757,
+      "expected": 0.2916666666666667,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'г') claim2 distanceRatio",
+      "actual": 0.9599999999976753,
+      "expected": 0.96,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'г') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'г') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'г') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'г') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'а') claim0 distanceRatio",
+      "actual": 0.49999999998653843,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'а') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'а') claim2 distanceRatio",
+      "actual": 0.5000000000134616,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'а') claim3 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'а') claim4 distanceRatio",
+      "actual": 0.5,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'а') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'а') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'а') case-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'б') claim0 distanceRatio",
+      "actual": 0.7499999999920672,
+      "expected": 0.75,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'б') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'б') claim2 distanceRatio",
+      "actual": 0.7499999999920672,
+      "expected": 0.75,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'б') claim3 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'б') claim4 distanceRatio",
+      "actual": 0.7499999999927884,
+      "expected": 0.75,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'б') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'б') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'б') case-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'в') claim0 distanceRatio",
+      "actual": 0.19999999999110418,
+      "expected": 0.2,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'в') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'в') claim2 distanceRatio",
+      "actual": 0.19999999999277004,
+      "expected": 0.2,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'в') claim3 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'в') claim4 distanceRatio",
+      "actual": 4.898979485594253,
+      "expected": 4.898979485566356,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'в') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'в') case-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'г') claim0 distanceRatio",
+      "actual": 0.6666666666704628,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'г') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'г') claim2 distanceRatio",
+      "actual": 0.6666666666772137,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'г') claim3 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'г') claim4 distanceRatio",
+      "actual": 1.1180339887497897,
+      "expected": 1.118033988749895,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'г') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'г') case-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'д') claim0 distanceRatio",
+      "actual": 0.4999999999896042,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'д') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'д') claim2 distanceRatio",
+      "actual": 0.5,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'д') claim3 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'д') claim4 distanceRatio",
+      "actual": 0.5773502691891892,
+      "expected": 0.5773502691896258,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'д') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'д') case-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'е') claim0 distanceRatio",
+      "actual": 0.3999999999967622,
+      "expected": 0.4,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'е') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'е') claim2 distanceRatio",
+      "actual": 0.4000000000000001,
+      "expected": 0.4,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'е') claim3 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'е') claim4 distanceRatio",
+      "actual": 0.4364357804594595,
+      "expected": 0.4364357804719848,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'е') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'е') case-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'а') claim0 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'а') claim1 distanceRatio",
+      "actual": 1.7320508075608312,
+      "expected": 1.7320508075688772,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'а') claim2 distanceRatio",
+      "actual": 0.500000000001742,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'а') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'а') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'а') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'а') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'б') claim0 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'б') claim1 distanceRatio",
+      "actual": 1.1180339887497897,
+      "expected": 1.118033988749895,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'б') claim2 distanceRatio",
+      "actual": 0.6666666666667014,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'б') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'б') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'б') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'б') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'в') claim0 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'в') claim1 distanceRatio",
+      "actual": 1.7320508075608312,
+      "expected": 1.7320508075688772,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'в') claim2 distanceRatio",
+      "actual": 0.500000000001742,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'в') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'в') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'в') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'в') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'г') claim0 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'г') claim1 distanceRatio",
+      "actual": 0.25819888975675676,
+      "expected": 0.2581988897471611,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'г') claim2 distanceRatio",
+      "actual": 0.9682458365496053,
+      "expected": 0.9682458365518543,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'г') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'г') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'г') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'г') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'а') claim0 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'а') claim1 distanceRatio",
+      "actual": 1.1917535925728664,
+      "expected": 1.1917535925942102,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'а') claim2 distanceRatio",
+      "actual": 0.6427876096932947,
+      "expected": 0.6427876096865393,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'а') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'а') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'а') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'а') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'б') claim0 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'б') claim1 distanceRatio",
+      "actual": 1.1917535925728664,
+      "expected": 1.1917535925942102,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'б') claim2 distanceRatio",
+      "actual": 0.6427876096932947,
+      "expected": 0.6427876096865393,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'б') claim3 angle",
+      "actual": 49.999999999494726,
+      "expected": 50,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'б') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'б') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'б') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'б') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'а') claim0 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'а') claim1 distanceRatio",
+      "actual": 0.9004040442840892,
+      "expected": 0.9004040442978399,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'а') claim2 distanceRatio",
+      "actual": 0.7431448254824757,
+      "expected": 0.7431448254773942,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'а') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'а') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'а') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'а') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'б') claim0 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'б') claim1 distanceRatio",
+      "actual": 0.9004040442840892,
+      "expected": 0.9004040442978399,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'б') claim2 distanceRatio",
+      "actual": 0.7431448254824757,
+      "expected": 0.7431448254773942,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'б') claim3 angle",
+      "actual": 41.99999999956489,
+      "expected": 42,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'б') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'б') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'б') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'б') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(702, 'single') claim0 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(702, 'single') claim1 distanceRatio",
+      "actual": 0.7002075382162163,
+      "expected": 0.7002075382097097,
+      "passed": true
+    },
+    {
+      "assertion": "(702, 'single') claim2 distanceRatio",
+      "actual": 0.8191520442864876,
+      "expected": 0.8191520442889918,
+      "passed": true
+    },
+    {
+      "assertion": "(702, 'single') claim3 angle",
+      "actual": 35.00000000025015,
+      "expected": 35,
+      "passed": true
+    },
+    {
+      "assertion": "(702, 'single') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(702, 'single') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(702, 'single') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(702, 'single') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(702, 'single') step-4 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(703, 'single') claim0 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(703, 'single') claim1 distanceRatio",
+      "actual": 0.8,
+      "expected": 0.8,
+      "passed": true
+    },
+    {
+      "assertion": "(703, 'single') claim2 distanceRatio",
+      "actual": 0.7808688094430304,
+      "expected": 0.7808688094430304,
+      "passed": true
+    },
+    {
+      "assertion": "(703, 'single') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(703, 'single') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(703, 'single') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(703, 'single') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'а') claim0 equalLength",
+      "actual": 48.30006970557755,
+      "expected": 48.30006970557755,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'а') claim1 equalLength",
+      "actual": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'а') claim2 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'а') claim3 angle",
+      "actual": 40.00000000040042,
+      "expected": 40,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'а') neutral equalSegments mark1",
+      "actual": 48.30006970557755,
+      "expected": 48.30006970557755,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'а') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'а') step-1 equalSegments mark1",
+      "actual": 48.30006970557755,
+      "expected": 48.30006970557755,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'а') step-1 equalSegments mark2",
+      "actual": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'а') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'а') step-2 equalSegments mark1",
+      "actual": 48.30006970557755,
+      "expected": 48.30006970557755,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'а') step-2 equalSegments mark2",
+      "actual": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'а') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'а') step-3 equalSegments mark1",
+      "actual": 48.30006970557755,
+      "expected": 48.30006970557755,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'а') step-3 equalSegments mark2",
+      "actual": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'б') claim0 equalLength",
+      "actual": 48.30006970557755,
+      "expected": 48.30006970557755,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'б') claim1 equalLength",
+      "actual": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'б') claim2 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'б') claim3 angle",
+      "actual": 40.00000000040042,
+      "expected": 40,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'б') neutral equalSegments mark1",
+      "actual": 48.30006970557755,
+      "expected": 48.30006970557755,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'б') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'б') step-1 equalSegments mark1",
+      "actual": 48.30006970557755,
+      "expected": 48.30006970557755,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'б') step-1 equalSegments mark2",
+      "actual": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'б') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'б') step-2 equalSegments mark1",
+      "actual": 48.30006970557755,
+      "expected": 48.30006970557755,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'б') step-2 equalSegments mark2",
+      "actual": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'б') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'б') step-3 equalSegments mark1",
+      "actual": 48.30006970557755,
+      "expected": 48.30006970557755,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'б') step-3 equalSegments mark2",
+      "actual": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') claim0 parallel",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') claim1 equalLength",
+      "actual": 38.374521063289066,
+      "expected": 38.374521063289066,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') claim2 equalLength",
+      "actual": 24.666666667,
+      "expected": 24.666666667,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') claim3 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') claim4 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') claim5 distanceRatio",
+      "actual": 3.0000000000810814,
+      "expected": 3,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') claim6 angle",
+      "actual": 50.00000000026767,
+      "expected": 50,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') neutral equalSegments mark1",
+      "actual": 38.374521063289066,
+      "expected": 38.374521063289066,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') step-1 equalSegments mark1",
+      "actual": 38.374521063289066,
+      "expected": 38.374521063289066,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') step-2 equalSegments mark1",
+      "actual": 38.374521063289066,
+      "expected": 38.374521063289066,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') step-2 equalSegments mark2",
+      "actual": 24.666666667,
+      "expected": 24.666666667,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') step-3 equalSegments mark1",
+      "actual": 38.374521063289066,
+      "expected": 38.374521063289066,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') step-3 equalSegments mark2",
+      "actual": 24.666666667,
+      "expected": 24.666666667,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') step-4 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') step-4 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') step-4 equalSegments mark1",
+      "actual": 38.374521063289066,
+      "expected": 38.374521063289066,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') step-4 equalSegments mark2",
+      "actual": 24.666666667,
+      "expected": 24.666666667,
+      "passed": true
+    },
+    {
+      "assertion": "(706, 'single') claim0 parallel",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(706, 'single') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(706, 'single') claim2 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(706, 'single') claim3 angle",
+      "actual": 59.999999996334445,
+      "expected": 60,
+      "passed": true
+    },
+    {
+      "assertion": "(706, 'single') claim4 angle",
+      "actual": 59.99999999633446,
+      "expected": 60,
+      "passed": true
+    },
+    {
+      "assertion": "(706, 'single') claim5 distanceRatio",
+      "actual": 5.0000000003326885,
+      "expected": 5,
+      "passed": true
+    },
+    {
+      "assertion": "(706, 'single') claim6 equalLength",
+      "actual": 6.941673222999995,
+      "expected": 6.941673222999999,
+      "passed": true
+    },
+    {
+      "assertion": "(706, 'single') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(706, 'single') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(706, 'single') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(706, 'single') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(706, 'single') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(706, 'single') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') claim0 equalLength",
+      "actual": 42.72391992002423,
+      "expected": 42.72391992002423,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') claim0 equalLength",
+      "actual": 42.72391992002423,
+      "expected": 42.72391992002423,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') claim0 equalLength",
+      "actual": 42.72391992002423,
+      "expected": 42.72391992002423,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') claim2 distanceRatio",
+      "actual": 1.732050807570187,
+      "expected": 1.7320508075688772,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') claim3 angle",
+      "actual": 59.999999999962476,
+      "expected": 60,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') claim4 angle",
+      "actual": 120.00000000003752,
+      "expected": 120,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') neutral equalSegments mark1",
+      "actual": 42.72391992002423,
+      "expected": 42.72391992002423,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') neutral equalSegments mark1",
+      "actual": 42.72391992002423,
+      "expected": 42.72391992002423,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') neutral equalSegments mark1",
+      "actual": 42.72391992002423,
+      "expected": 42.72391992002423,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') step-1 equalSegments mark1",
+      "actual": 42.72391992002423,
+      "expected": 42.72391992002423,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') step-1 equalSegments mark1",
+      "actual": 42.72391992002423,
+      "expected": 42.72391992002423,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') step-1 equalSegments mark1",
+      "actual": 42.72391992002423,
+      "expected": 42.72391992002423,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') step-2 equalSegments mark1",
+      "actual": 42.72391992002423,
+      "expected": 42.72391992002423,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') step-2 equalSegments mark1",
+      "actual": 42.72391992002423,
+      "expected": 42.72391992002423,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') step-2 equalSegments mark1",
+      "actual": 42.72391992002423,
+      "expected": 42.72391992002423,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') step-3 equalSegments mark1",
+      "actual": 42.72391992002423,
+      "expected": 42.72391992002423,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') step-3 equalSegments mark1",
+      "actual": 42.72391992002423,
+      "expected": 42.72391992002423,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') step-3 equalSegments mark1",
+      "actual": 42.72391992002423,
+      "expected": 42.72391992002423,
+      "passed": true
+    },
+    {
+      "assertion": "(708, 'single') claim0 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(708, 'single') claim1 perpendicular",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(708, 'single') claim2 parallel",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(708, 'single') claim3 distanceRatio",
+      "actual": 1.732050807570187,
+      "expected": 1.7320508075688772,
+      "passed": true
+    },
+    {
+      "assertion": "(708, 'single') claim4 angle",
+      "actual": 29.999999999981238,
+      "expected": 30,
+      "passed": true
+    },
+    {
+      "assertion": "(708, 'single') claim5 angle",
+      "actual": 60.00000000001876,
+      "expected": 60,
+      "passed": true
+    },
+    {
+      "assertion": "(708, 'single') neutral right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(708, 'single') step-1 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(708, 'single') step-2 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(708, 'single') step-3 right mark",
+      "actual": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(709, 'single') claim0 parallel",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(709, 'single') claim1 parallel",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(709, 'single') claim2 equalLength",
+      "actual": 34.24404344942332,
+      "expected": 34.24404344942332,
+      "passed": true
+    },
+    {
+      "assertion": "(709, 'single') claim3 equalLength",
+      "actual": 51.012333434,
+      "expected": 51.012333434,
+      "passed": true
+    },
+    {
+      "assertion": "(709, 'single') claim4 perpendicular",
+      "actual": -2.439536968278113e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(709, 'single') claim5 angle",
+      "actual": 47.83333333412461,
+      "expected": 47.833333333333336,
+      "passed": true
+    },
+    {
+      "assertion": "(709, 'single') claim6 distanceRatio",
+      "actual": 0.6712894930346291,
+      "expected": 0.6712894930267834,
+      "passed": true
+    },
+    {
+      "assertion": "(709, 'single') claim7 distanceRatio",
+      "actual": 0.7411952621041143,
+      "expected": 0.7411952620948437,
+      "passed": true
+    },
+    {
+      "assertion": "(709, 'single') neutral right mark",
+      "actual": 89.99999999860225,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(709, 'single') step-1 right mark",
+      "actual": 89.99999999860225,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(709, 'single') step-2 right mark",
+      "actual": 89.99999999860225,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(709, 'single') step-3 right mark",
+      "actual": 89.99999999860225,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(709, 'single') step-4 right mark",
+      "actual": 89.99999999860225,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') physical length AB",
+      "actual": 7.9999999998547375,
+      "expected": 8,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') physical length AC",
+      "actual": 6.999999999937744,
+      "expected": 7,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') M midpoint AB coordinate0",
+      "actual": 50.0,
+      "expected": 50.0,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') M midpoint AB coordinate1",
+      "actual": 60.026837463,
+      "expected": 60.026837463,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') N midpoint BC coordinate0",
+      "actual": 75.4375,
+      "expected": 75.4375,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') N midpoint BC coordinate1",
+      "actual": 40.0,
+      "expected": 40.0,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') P midpoint CA coordinate0",
+      "actual": 38.4375,
+      "expected": 38.4375,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') P midpoint CA coordinate1",
+      "actual": 40.0,
+      "expected": 40.0,
+      "passed": true
+    },
+    {
+      "assertion": "(672, 'single') medial perimeter",
+      "actual": 9.999999999896241,
+      "expected": 10,
+      "passed": true
+    },
+    {
+      "assertion": "(673, 'single') physical length CD",
+      "actual": 5.0,
+      "expected": 5,
+      "passed": true
+    },
+    {
+      "assertion": "(673, 'single') O midpoint AC coordinate0",
+      "actual": 50.0,
+      "expected": 50.0,
+      "passed": true
+    },
+    {
+      "assertion": "(673, 'single') O midpoint AC coordinate1",
+      "actual": 40.0,
+      "expected": 40.0,
+      "passed": true
+    },
+    {
+      "assertion": "(673, 'single') O midpoint BD coordinate0",
+      "actual": 50.0,
+      "expected": 50.0,
+      "passed": true
+    },
+    {
+      "assertion": "(673, 'single') O midpoint BD coordinate1",
+      "actual": 40.0,
+      "expected": 40.0,
+      "passed": true
+    },
+    {
+      "assertion": "(673, 'single') OH perpendicular AD",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(674, 'single') whole perimeter",
+      "actual": 42.00000000018243,
+      "expected": 42,
+      "passed": true
+    },
+    {
+      "assertion": "(674, 'single') P midpoint AB coordinate0",
+      "actual": 47.533333333,
+      "expected": 47.5333333335,
+      "passed": true
+    },
+    {
+      "assertion": "(674, 'single') P midpoint AB coordinate1",
+      "actual": 64.543023449,
+      "expected": 64.543023449,
+      "passed": true
+    },
+    {
+      "assertion": "(674, 'single') Q midpoint AC coordinate0",
+      "actual": 50.0,
+      "expected": 50.0,
+      "passed": true
+    },
+    {
+      "assertion": "(674, 'single') Q midpoint AC coordinate1",
+      "actual": 40.0,
+      "expected": 40.0,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single') M midpoint AC coordinate0",
+      "actual": 35.2,
+      "expected": 35.2,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single') M midpoint AC coordinate1",
+      "actual": 40.0,
+      "expected": 40.0,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single') N midpoint BD coordinate0",
+      "actual": 57.4,
+      "expected": 57.4,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single') N midpoint BD coordinate1",
+      "actual": 40.0,
+      "expected": 40.0,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single') E midpoint AB coordinate0",
+      "actual": 20.4,
+      "expected": 20.4,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single') E midpoint AB coordinate1",
+      "actual": 40.0,
+      "expected": 40.0,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single') MN parallel AD",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single') half absolute base difference",
+      "actual": 44.39999999999999,
+      "expected": 44.400000000000006,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single')__case1 M midpoint AC coordinate0",
+      "actual": 57.4,
+      "expected": 57.4,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single')__case1 M midpoint AC coordinate1",
+      "actual": 40.0,
+      "expected": 40.0,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single')__case1 N midpoint BD coordinate0",
+      "actual": 35.2,
+      "expected": 35.2,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single')__case1 N midpoint BD coordinate1",
+      "actual": 40.0,
+      "expected": 40.0,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single')__case1 E midpoint AB coordinate0",
+      "actual": 20.4,
+      "expected": 20.4,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single')__case1 E midpoint AB coordinate1",
+      "actual": 40.0,
+      "expected": 40.0,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single')__case1 MN parallel AD",
+      "actual": -0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(675, 'single')__case1 half absolute base difference",
+      "actual": 44.39999999999999,
+      "expected": 44.400000000000006,
+      "passed": true
+    },
+    {
+      "assertion": "(676, 'single') physical length AO",
+      "actual": 6.000000000093656,
+      "expected": 6,
+      "passed": true
+    },
+    {
+      "assertion": "(676, 'single') physical length OC",
+      "actual": 11.999999999906343,
+      "expected": 12,
+      "passed": true
+    },
+    {
+      "assertion": "(676, 'single') M midpoint AB coordinate0",
+      "actual": 20.4,
+      "expected": 20.4,
+      "passed": true
+    },
+    {
+      "assertion": "(676, 'single') M midpoint AB coordinate1",
+      "actual": 40.0,
+      "expected": 40.0,
+      "passed": true
+    },
+    {
+      "assertion": "(676, 'single') O on segment DM",
+      "actual": 57.320153524028214,
+      "expected": 57.320153524028214,
+      "passed": true
+    },
+    {
+      "assertion": "(676, 'single') interior O",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "(677, 'single') area multiplier",
+      "actual": 3.0000000000576916,
+      "expected": 3,
+      "passed": true
+    },
+    {
+      "assertion": "(677, 'single') A1 midpoint BC coordinate0",
+      "actual": 63.0,
+      "expected": 63.0,
+      "passed": true
+    },
+    {
+      "assertion": "(677, 'single') A1 midpoint BC coordinate1",
+      "actual": 40.0,
+      "expected": 40.0,
+      "passed": true
+    },
+    {
+      "assertion": "(677, 'single') B1 midpoint AC coordinate0",
+      "actual": 28.333333333,
+      "expected": 28.333333333,
+      "passed": true
+    },
+    {
+      "assertion": "(677, 'single') B1 midpoint AC coordinate1",
+      "actual": 40.0,
+      "expected": 40.0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'а') physical length HB",
+      "actual": 15.999999999556756,
+      "expected": 16,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'а') physical length AB",
+      "actual": 40.999999999556756,
+      "expected": 41,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'а') physical length CH",
+      "actual": 19.999999999999996,
+      "expected": 20.0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'а') physical length BC",
+      "actual": 25.612496949454503,
+      "expected": 25.612496949731394,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'а') physical length AC",
+      "actual": 32.01562118716424,
+      "expected": 32.01562118716424,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'а') AC perpendicular BC",
+      "actual": 1.3513364374269443e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'а') CH perpendicular AB",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'б') physical length HB",
+      "actual": 64.0,
+      "expected": 64,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'б') physical length AB",
+      "actual": 100.0,
+      "expected": 100,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'б') physical length CH",
+      "actual": 47.99999999999999,
+      "expected": 48.0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'б') physical length BC",
+      "actual": 80.0,
+      "expected": 80.0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'б') physical length AC",
+      "actual": 60.0,
+      "expected": 60.0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'б') AC perpendicular BC",
+      "actual": -8.650386361822502e-17,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'б') CH perpendicular AB",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'в') physical length HB",
+      "actual": 18.0,
+      "expected": 18,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'в') physical length AB",
+      "actual": 24.0,
+      "expected": 24,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'в') physical length CH",
+      "actual": 10.392304845405404,
+      "expected": 10.392304845413264,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'в') physical length BC",
+      "actual": 20.7846096908226,
+      "expected": 20.784609690826528,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'в') physical length AC",
+      "actual": 11.999999999993191,
+      "expected": 12.0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'в') AC perpendicular BC",
+      "actual": -6.549329043857758e-13,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'в') CH perpendicular AB",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'г') physical length HB",
+      "actual": 4.0,
+      "expected": 4,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'г') physical length AB",
+      "actual": 16.0,
+      "expected": 16,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'г') physical length CH",
+      "actual": 6.928203230270269,
+      "expected": 6.928203230275509,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'г') physical length BC",
+      "actual": 7.999999999995461,
+      "expected": 8.0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'г') physical length AC",
+      "actual": 13.8564064605484,
+      "expected": 13.856406460551018,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'г') AC perpendicular BC",
+      "actual": -6.549329043857758e-13,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'г') CH perpendicular AB",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'д') physical length HB",
+      "actual": 4.0000000000243245,
+      "expected": 4,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'д') physical length AB",
+      "actual": 9.000000000024325,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'д') physical length CH",
+      "actual": 4.472135955012087,
+      "expected": 4.47213595499958,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'д') physical length BC",
+      "actual": 6.000000000025539,
+      "expected": 6.0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'д') physical length AC",
+      "actual": 6.708203932507708,
+      "expected": 6.708203932499369,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'д') AC perpendicular BC",
+      "actual": -2.4232724906260657e-13,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(678, 'д') CH perpendicular AB",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(679, 'single') Pythagoras",
+      "actual": 5475.999999999999,
+      "expected": 5476.0,
+      "passed": true
+    },
+    {
+      "assertion": "(679, 'single') leg a projection",
+      "actual": 3504.6399999999994,
+      "expected": 3504.64,
+      "passed": true
+    },
+    {
+      "assertion": "(679, 'single') leg b projection",
+      "actual": 1971.36,
+      "expected": 1971.3600000000001,
+      "passed": true
+    },
+    {
+      "assertion": "(679, 'single') height through area",
+      "actual": 35.519999999999996,
+      "expected": 35.519999999999996,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'а') Pythagoras",
+      "actual": 5475.999999999999,
+      "expected": 5476.0,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'а') leg a projection",
+      "actual": 3504.6399999999994,
+      "expected": 3504.64,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'а') leg b projection",
+      "actual": 1971.36,
+      "expected": 1971.3600000000001,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'а') height through area",
+      "actual": 35.519999999999996,
+      "expected": 35.519999999999996,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'б') Pythagoras",
+      "actual": 5475.999999999999,
+      "expected": 5476.0,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'б') leg a projection",
+      "actual": 3504.6399999999994,
+      "expected": 3504.64,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'б') leg b projection",
+      "actual": 1971.36,
+      "expected": 1971.3600000000001,
+      "passed": true
+    },
+    {
+      "assertion": "(680, 'б') height through area",
+      "actual": 35.519999999999996,
+      "expected": 35.519999999999996,
+      "passed": true
+    },
+    {
+      "assertion": "(684, 'single') Pythagoras",
+      "actual": 5475.999999999999,
+      "expected": 5476.0,
+      "passed": true
+    },
+    {
+      "assertion": "(684, 'single') leg a projection",
+      "actual": 1971.36,
+      "expected": 1971.3600000000001,
+      "passed": true
+    },
+    {
+      "assertion": "(684, 'single') leg b projection",
+      "actual": 3504.6399999999994,
+      "expected": 3504.64,
+      "passed": true
+    },
+    {
+      "assertion": "(684, 'single') height through area",
+      "actual": 35.519999999999996,
+      "expected": 35.519999999999996,
+      "passed": true
+    },
+    {
+      "assertion": "(681, 'single') physical length AH",
+      "actual": 32.0,
+      "expected": 32,
+      "passed": true
+    },
+    {
+      "assertion": "(681, 'single') physical length HB",
+      "actual": 18.0,
+      "expected": 18,
+      "passed": true
+    },
+    {
+      "assertion": "(681, 'single') physical length AC",
+      "actual": 40.0,
+      "expected": 40,
+      "passed": true
+    },
+    {
+      "assertion": "(681, 'single') physical length BC",
+      "actual": 30.0,
+      "expected": 30,
+      "passed": true
+    },
+    {
+      "assertion": "(682, 'single') physical length AB",
+      "actual": 60.999999995803456,
+      "expected": 61,
+      "passed": true
+    },
+    {
+      "assertion": "(682, 'single') BC/AC",
+      "actual": 1.2000000000205406,
+      "expected": 1.2,
+      "passed": true
+    },
+    {
+      "assertion": "(683, 'single') physical length AC",
+      "actual": 12.00000000008108,
+      "expected": 12,
+      "passed": true
+    },
+    {
+      "assertion": "(683, 'single') physical length BC",
+      "actual": 5.0000000001351355,
+      "expected": 5,
+      "passed": true
+    },
+    {
+      "assertion": "(683, 'single') physical length AH",
+      "actual": 11.076923076945945,
+      "expected": 11.076923076923077,
+      "passed": true
+    },
+    {
+      "assertion": "(683, 'single') physical length HB",
+      "actual": 1.9230769230540548,
+      "expected": 1.9230769230769231,
+      "passed": true
+    },
+    {
+      "assertion": "(685, 'single') physical length BC1",
+      "actual": 6.299999999922376,
+      "expected": 6.3,
+      "passed": true
+    },
+    {
+      "assertion": "(685, 'single') physical length AC",
+      "actual": 1.6999999999574322,
+      "expected": 1.7,
+      "passed": true
+    },
+    {
+      "assertion": "(685, 'single') physical length A1C1",
+      "actual": 3.149999999961188,
+      "expected": 3.15,
+      "passed": true
+    },
+    {
+      "assertion": "(686, 'single') physical length OS",
+      "actual": 10.199999999764865,
+      "expected": 10.2,
+      "passed": true
+    },
+    {
+      "assertion": "(686, 'single') physical length AB",
+      "actual": 1.699999999960811,
+      "expected": 1.7,
+      "passed": true
+    },
+    {
+      "assertion": "(686, 'single') physical length TO",
+      "actual": 6.935999999934164,
+      "expected": 6.936,
+      "passed": true
+    },
+    {
+      "assertion": "(686, 'single') TS parallel BD",
+      "actual": 1.7024590780574442e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') physical length AC",
+      "actual": 1.6500000000441346,
+      "expected": 1.65,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') physical length BC",
+      "actual": 0.11999999998823069,
+      "expected": 0.12,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') physical length AB",
+      "actual": 1.5300000000559038,
+      "expected": 1.53,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') physical length DE",
+      "actual": 4.8000000001176915,
+      "expected": 4.8,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') physical length EF",
+      "actual": 6.120000000223615,
+      "expected": 6.12,
+      "passed": true
+    },
+    {
+      "assertion": "(687, 'single') reflection angle",
+      "actual": 51.89242312350174,
+      "expected": 51.89242312281955,
+      "passed": true
+    },
+    {
+      "assertion": "(688, 'single') physical length AB",
+      "actual": 48.00000000028957,
+      "expected": 48,
+      "passed": true
+    },
+    {
+      "assertion": "(688, 'single')__case1 physical length A1B1",
+      "actual": 7.2000000000434365,
+      "expected": 7.2,
+      "passed": true
+    },
+    {
+      "assertion": "(689, 'single') physical length AC1",
+      "actual": 31.999999999461966,
+      "expected": 32,
+      "passed": true
+    },
+    {
+      "assertion": "(689, 'single') physical length AB1",
+      "actual": 33.999999999425924,
+      "expected": 34,
+      "passed": true
+    },
+    {
+      "assertion": "(689, 'single') physical length AB",
+      "actual": 106.24999999820601,
+      "expected": 106.25,
+      "passed": true
+    },
+    {
+      "assertion": "(689, 'single') physical length BB1",
+      "actual": 72.24999999878008,
+      "expected": 72.25,
+      "passed": true
+    },
+    {
+      "assertion": "(689, 'single') B1 on segment AB",
+      "actual": 52.0,
+      "expected": 52.0,
+      "passed": true
+    },
+    {
+      "assertion": "(689, 'single') interior B1",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "(689, 'single') C1 on segment AC",
+      "actual": 48.941176471414586,
+      "expected": 48.941176471414586,
+      "passed": true
+    },
+    {
+      "assertion": "(689, 'single') interior C1",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "(690, 'single') X on segment AB",
+      "actual": 59.428571428,
+      "expected": 59.428571428,
+      "passed": true
+    },
+    {
+      "assertion": "(690, 'single') interior X",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "(690, 'single') AX/XB",
+      "actual": 0.7500000000073618,
+      "expected": 0.749999999983173,
+      "passed": true
+    },
+    {
+      "assertion": "(690, 'single') given AC copied",
+      "actual": 22.285714285747318,
+      "expected": 22.285714284999997,
+      "passed": true
+    },
+    {
+      "assertion": "(690, 'single') given CD copied",
+      "actual": 29.71428571408418,
+      "expected": 29.714285714,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'а') X on segment AB",
+      "actual": 74.0,
+      "expected": 74.0,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'а') interior X",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'а') AX/XB",
+      "actual": 0.4000000000037838,
+      "expected": 0.4,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'а') AU/AV",
+      "actual": 0.28571428570750834,
+      "expected": 0.2857142857142857,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'а') UX parallel VB",
+      "actual": 2.3298803092436235e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'б') X on segment AB",
+      "actual": 63.48027861599999,
+      "expected": 63.48027861599999,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'б') interior X",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'б') AX/XB",
+      "actual": 0.42857142857785835,
+      "expected": 0.42857142857142855,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'б') AU/AV",
+      "actual": 0.2999999999990965,
+      "expected": 0.3,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'б') UX parallel VB",
+      "actual": 1.5130537017334688e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'в') X on segment AB",
+      "actual": 74.0,
+      "expected": 74.0,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'в') interior X",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'в') AX/XB",
+      "actual": 1.3333333333543544,
+      "expected": 1.3333333333333333,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'в') AU/AV",
+      "actual": 0.5714285714308306,
+      "expected": 0.5714285714285714,
+      "passed": true
+    },
+    {
+      "assertion": "(691, 'в') UX parallel VB",
+      "actual": 2.696394497969624e-12,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(692, 'single') smaller given angle alpha",
+      "actual": 34.999999999344126,
+      "expected": 35,
+      "passed": true
+    },
+    {
+      "assertion": "(692, 'single') other given angle beta",
+      "actual": 64.99999999926459,
+      "expected": 65,
+      "passed": true
+    },
+    {
+      "assertion": "(692, 'single') bisector halves",
+      "actual": 17.49999999957634,
+      "expected": 17.49999999976778,
+      "passed": true
+    },
+    {
+      "assertion": "(692, 'single') D on segment BC",
+      "actual": 36.845566082341826,
+      "expected": 36.845566082341826,
+      "passed": true
+    },
+    {
+      "assertion": "(692, 'single') interior D",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "(692, 'single') given bisector copied",
+      "actual": 57.82991263246556,
+      "expected": 57.829912633000006,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single') CH perpendicular AB",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single') given height copied",
+      "actual": 52.0,
+      "expected": 52.0,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single') alpha preserved",
+      "actual": 68.19859051364818,
+      "expected": 68.19859051478802,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single') beta preserved",
+      "actual": 51.34019174590991,
+      "expected": 51.3401917455068,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single')__case1 CH perpendicular AB",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "693 external height foot",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "(693, 'single')__case2 CA perpendicular AB",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(694, 'single') M midpoint BC coordinate0",
+      "actual": 56.980266334,
+      "expected": 56.9802663345,
+      "passed": true
+    },
+    {
+      "assertion": "(694, 'single') M midpoint BC coordinate1",
+      "actual": 34.536403869,
+      "expected": 34.536403869,
+      "passed": true
+    },
+    {
+      "assertion": "(694, 'single') AB/AC",
+      "actual": 0.6666666666616408,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "(694, 'single') given median copied",
+      "actual": 30.127926150123553,
+      "expected": 30.12792615,
+      "passed": true
+    },
+    {
+      "assertion": "(695, 'single') AB/AC",
+      "actual": 2.0000000000027156,
+      "expected": 2,
+      "passed": true
+    },
+    {
+      "assertion": "(695, 'single') given opposite side copied",
+      "actual": 51.05922462406932,
+      "expected": 51.05922462400001,
+      "passed": true
+    },
+    {
+      "assertion": "(695, 'single') parallelogram transfer",
+      "actual": 51.05922462406932,
+      "expected": 51.05922462406932,
+      "passed": true
+    },
+    {
+      "assertion": "(696, 'single') CA perpendicular CB",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(696, 'single') CA/CB",
+      "actual": 0.7499999999869505,
+      "expected": 0.7499999999725963,
+      "passed": true
+    },
+    {
+      "assertion": "(696, 'single') given hypotenuse copied",
+      "actual": 47.8947368422,
+      "expected": 47.89473684200001,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'а') AC perpendicular BC",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'а') BC/AB",
+      "actual": 0.4705882352879288,
+      "expected": 0.47058823529411764,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'а') AC/AB",
+      "actual": 0.8823529411797713,
+      "expected": 0.8823529411764706,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'а') BC/AC",
+      "actual": 0.5333333333243242,
+      "expected": 0.5333333333333333,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'а') AC/BC",
+      "actual": 1.8750000000316724,
+      "expected": 1.875,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'б') AC perpendicular BC",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'б') BC/AB",
+      "actual": 0.724137931033158,
+      "expected": 0.7241379310344828,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'б') AC/AB",
+      "actual": 0.689655172415184,
+      "expected": 0.6896551724137931,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'б') BC/AC",
+      "actual": 1.0499999999959615,
+      "expected": 1.05,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'б') AC/BC",
+      "actual": 0.9523809523846154,
+      "expected": 0.9523809523809523,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'в') AC perpendicular BC",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'в') BC/AB",
+      "actual": 0.4472135954999579,
+      "expected": 0.4472135954999579,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'в') AC/AB",
+      "actual": 0.8944271909999159,
+      "expected": 0.8944271909999159,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'в') BC/AC",
+      "actual": 0.5,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'в') AC/BC",
+      "actual": 2.0,
+      "expected": 2.0,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'г') AC perpendicular BC",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'г') BC/AB",
+      "actual": 0.2800000000079706,
+      "expected": 0.28,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'г') AC/AB",
+      "actual": 0.9599999999976753,
+      "expected": 0.96,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'г') BC/AC",
+      "actual": 0.2916666666756757,
+      "expected": 0.2916666666666667,
+      "passed": true
+    },
+    {
+      "assertion": "(697, 'г') AC/BC",
+      "actual": 3.4285714284655264,
+      "expected": 3.4285714285714284,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'а') AC perpendicular BC",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'а') constructed tg",
+      "actual": 0.49999999998653843,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'а') PQ/RS",
+      "actual": 0.5000000000134616,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'а') opposite copied",
+      "actual": 18.571428571,
+      "expected": 18.571428572000002,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'а') adjacent copied",
+      "actual": 37.142857143,
+      "expected": 37.142857143,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'а')__case1 AC perpendicular BC",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'а')__case1 constructed tg",
+      "actual": 0.5,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'б') AC perpendicular BC",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'б') constructed tg",
+      "actual": 0.7499999999920672,
+      "expected": 0.75,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'б') PQ/RS",
+      "actual": 0.7499999999920672,
+      "expected": 0.75,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'б') opposite copied",
+      "actual": 23.636363636,
+      "expected": 23.636363636,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'б') adjacent copied",
+      "actual": 31.515151515,
+      "expected": 31.515151515,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'б')__case1 AC perpendicular BC",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'б')__case1 constructed tg",
+      "actual": 0.7499999999927884,
+      "expected": 0.75,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'в') AC perpendicular BC",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'в') constructed cos",
+      "actual": 0.19999999999110418,
+      "expected": 0.2,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'в') PQ/RS",
+      "actual": 0.19999999999277004,
+      "expected": 0.2,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'в') hypotenuse copied",
+      "actual": 27.662577666230415,
+      "expected": 27.662577666000004,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'в') given cathetus copied",
+      "actual": 5.5325155330000015,
+      "expected": 5.5325155330000015,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'в')__case1 AC perpendicular BC",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'в')__case1 constructed cos",
+      "actual": 0.19999999999890666,
+      "expected": 0.2,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'г') AC perpendicular BC",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'г') constructed cos",
+      "actual": 0.6666666666704628,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'г') PQ/RS",
+      "actual": 0.6666666666772137,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'г') hypotenuse copied",
+      "actual": 31.60410284232004,
+      "expected": 31.604102842000003,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'г') given cathetus copied",
+      "actual": 21.069401895,
+      "expected": 21.069401895,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'г')__case1 AC perpendicular BC",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'г')__case1 constructed cos",
+      "actual": 0.6666666666667014,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'д') AC perpendicular BC",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'д') constructed sin",
+      "actual": 0.4999999999896042,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'д') PQ/RS",
+      "actual": 0.5,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'д') hypotenuse copied",
+      "actual": 37.14285714277226,
+      "expected": 37.142857142,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'д') given cathetus copied",
+      "actual": 18.571428571,
+      "expected": 18.571428571,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'д')__case1 AC perpendicular BC",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'д')__case1 constructed sin",
+      "actual": 0.49999999999971645,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'е') AC perpendicular BC",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'е') constructed sin",
+      "actual": 0.3999999999967622,
+      "expected": 0.4,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'е') PQ/RS",
+      "actual": 0.4000000000000001,
+      "expected": 0.4,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'е') hypotenuse copied",
+      "actual": 40.00000000032378,
+      "expected": 40.0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'е') given cathetus copied",
+      "actual": 16.0,
+      "expected": 16.000000000000004,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'е')__case1 AC perpendicular BC",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(698, 'е')__case1 constructed sin",
+      "actual": 0.3999999999903572,
+      "expected": 0.4,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'а') BC/AB",
+      "actual": 0.8660254037834328,
+      "expected": 0.8660254037844386,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'а') AC/AB",
+      "actual": 0.500000000001742,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'а') BC/AC",
+      "actual": 1.7320508075608312,
+      "expected": 1.7320508075688772,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'б') BC/AB",
+      "actual": 0.7453559924998987,
+      "expected": 0.7453559924999299,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'б') AC/AB",
+      "actual": 0.6666666666667014,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'б') BC/AC",
+      "actual": 1.1180339887497897,
+      "expected": 1.118033988749895,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'в') BC/AB",
+      "actual": 0.8660254037834328,
+      "expected": 0.8660254037844386,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'в') AC/AB",
+      "actual": 0.500000000001742,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'в') BC/AC",
+      "actual": 1.7320508075608312,
+      "expected": 1.7320508075688772,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'г') BC/AB",
+      "actual": 0.25000000000871025,
+      "expected": 0.25,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'г') AC/AB",
+      "actual": 0.9682458365496053,
+      "expected": 0.9682458365518543,
+      "passed": true
+    },
+    {
+      "assertion": "(699, 'г') BC/AC",
+      "actual": 0.25819888975675676,
+      "expected": 0.2581988897471611,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'а') physical length AC",
+      "actual": 8.390996311923079,
+      "expected": 8.390996311772799,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'а') physical length AB",
+      "actual": 13.054072893419384,
+      "expected": 13.054072893322786,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'а') selected angle",
+      "actual": 49.999999999494726,
+      "expected": 50,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'а') other angle",
+      "actual": 40.000000000505274,
+      "expected": 40,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'б') physical length AC",
+      "actual": 8.390996311923079,
+      "expected": 8.390996311772799,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'б') physical length AB",
+      "actual": 13.054072893419384,
+      "expected": 13.054072893322786,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'б') selected angle",
+      "actual": 49.999999999494726,
+      "expected": 50,
+      "passed": true
+    },
+    {
+      "assertion": "(700, 'б') other angle",
+      "actual": 40.000000000505274,
+      "expected": 40,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'а') physical length AC",
+      "actual": 12.00000000018326,
+      "expected": 12,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'а') physical length AB",
+      "actual": 16.1475927554127,
+      "expected": 16.147592755276513,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'а') selected angle",
+      "actual": 41.99999999956489,
+      "expected": 42,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'а') other angle",
+      "actual": 48.00000000043511,
+      "expected": 48,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'б') physical length AC",
+      "actual": 12.00000000018326,
+      "expected": 12,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'б') physical length AB",
+      "actual": 16.1475927554127,
+      "expected": 16.147592755276513,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'б') selected angle",
+      "actual": 41.99999999956489,
+      "expected": 42,
+      "passed": true
+    },
+    {
+      "assertion": "(701, 'б') other angle",
+      "actual": 48.00000000043511,
+      "expected": 48,
+      "passed": true
+    },
+    {
+      "assertion": "(702, 'single') physical length BC",
+      "actual": 13.765834472510939,
+      "expected": 13.765834472425105,
+      "passed": true
+    },
+    {
+      "assertion": "(702, 'single') physical length AC",
+      "actual": 19.659649062875705,
+      "expected": 19.659649062935802,
+      "passed": true
+    },
+    {
+      "assertion": "(702, 'single') other angle",
+      "actual": 54.99999999974985,
+      "expected": 55,
+      "passed": true
+    },
+    {
+      "assertion": "(703, 'single') physical length AC",
+      "actual": 15.000000000000002,
+      "expected": 15,
+      "passed": true
+    },
+    {
+      "assertion": "(703, 'single') physical length AB",
+      "actual": 19.209372712298546,
+      "expected": 19.209372712298546,
+      "passed": true
+    },
+    {
+      "assertion": "(703, 'single') BC/AC",
+      "actual": 0.8,
+      "expected": 0.8,
+      "passed": true
+    },
+    {
+      "assertion": "(703, 'single') AC/BC",
+      "actual": 1.25,
+      "expected": 1.25,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'а') area through equal side",
+      "actual": 1148.727395098,
+      "expected": 1148.7273950980002,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'а') area through base",
+      "actual": 1148.727395098,
+      "expected": 1148.727395098,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'а') H midpoint AC coordinate0",
+      "actual": 50.0,
+      "expected": 50.0,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'а') H midpoint AC coordinate1",
+      "actual": 55.523343177,
+      "expected": 55.523343177,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'а') BH perpendicular AC",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'б') area through equal side",
+      "actual": 1148.727395098,
+      "expected": 1148.7273950980002,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'б') area through base",
+      "actual": 1148.727395098,
+      "expected": 1148.727395098,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'б') H midpoint AC coordinate0",
+      "actual": 50.0,
+      "expected": 50.0,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'б') H midpoint AC coordinate1",
+      "actual": 55.523343177,
+      "expected": 55.523343177,
+      "passed": true
+    },
+    {
+      "assertion": "(704, 'б') BH perpendicular AC",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') physical length AD",
+      "actual": 6.000000000162163,
+      "expected": 6,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') trapezoid area",
+      "actual": 9.53402874142391,
+      "expected": 9.534028740844134,
+      "passed": true
+    },
+    {
+      "assertion": "(705, 'single') equal legs",
+      "actual": 38.374521063289066,
+      "expected": 38.374521063289066,
+      "passed": true
+    },
+    {
+      "assertion": "(706, 'single') physical length BH",
+      "actual": 11.999999999201545,
+      "expected": 12,
+      "passed": true
+    },
+    {
+      "assertion": "(706, 'single') physical length AD",
+      "actual": 73.85640646167627,
+      "expected": 73.85640646055101,
+      "passed": true
+    },
+    {
+      "assertion": "(706, 'single') left slope",
+      "actual": 59.999999996334445,
+      "expected": 60,
+      "passed": true
+    },
+    {
+      "assertion": "(706, 'single') right slope",
+      "actual": 59.99999999633446,
+      "expected": 60,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') AC/BD",
+      "actual": 1.732050807570187,
+      "expected": 1.7320508075688772,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') rhombus angle A",
+      "actual": 59.999999999962476,
+      "expected": 60,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') rhombus angle B",
+      "actual": 120.00000000003752,
+      "expected": 120,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') rhombus angle C",
+      "actual": 59.999999999962476,
+      "expected": 60,
+      "passed": true
+    },
+    {
+      "assertion": "(707, 'single') rhombus angle D",
+      "actual": 120.00000000003752,
+      "expected": 120,
+      "passed": true
+    },
+    {
+      "assertion": "(708, 'single') AB/BC",
+      "actual": 1.732050807570187,
+      "expected": 1.7320508075688772,
+      "passed": true
+    },
+    {
+      "assertion": "(708, 'single') diagonal to long side",
+      "actual": 29.999999999981238,
+      "expected": 30,
+      "passed": true
+    },
+    {
+      "assertion": "(708, 'single') diagonal to short side",
+      "actual": 60.00000000001876,
+      "expected": 60,
+      "passed": true
+    },
+    {
+      "assertion": "(709, 'single') degree-minute conversion",
+      "actual": 47.83333333412461,
+      "expected": 47.833333333333336,
+      "passed": true
+    },
+    {
+      "assertion": "(709, 'single') BD perpendicular AB",
+      "actual": -2.439536968278113e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "assertion": "(709, 'single') parallelogram area",
+      "actual": 71.64814921020576,
+      "expected": 71.64814920847222,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 15 0.15 median",
+      "actual": 0.3719206814288661,
+      "expected": 0.37192068142886614,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 15 0.15 ratio",
+      "actual": 0.6666666666666666,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 15 0.15 length transfer",
+      "actual": 0.17804501369583933,
+      "expected": 0.1780450136958392,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 15 0.15 parallel transfer",
+      "actual": 0.11646857029613433,
+      "expected": 0.11646857029613433,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 15 0.6 median",
+      "actual": 1.4876827257154643,
+      "expected": 1.4876827257154646,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 15 0.6 ratio",
+      "actual": 0.6666666666666666,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 15 0.6 length transfer",
+      "actual": 0.7121800547833567,
+      "expected": 0.7121800547833568,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 15 0.6 parallel transfer",
+      "actual": 0.46587428118453733,
+      "expected": 0.46587428118453733,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 15 1 median",
+      "actual": 2.4794712095257743,
+      "expected": 2.4794712095257743,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 15 1 ratio",
+      "actual": 0.6666666666666666,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 15 1 length transfer",
+      "actual": 1.1869667579722614,
+      "expected": 1.1869667579722614,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 15 1 parallel transfer",
+      "actual": 0.7764571353075622,
+      "expected": 0.7764571353075622,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 15 1.8 median",
+      "actual": 4.463048177146393,
+      "expected": 4.463048177146394,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 15 1.8 ratio",
+      "actual": 0.6666666666666666,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 15 1.8 length transfer",
+      "actual": 2.1365401643500705,
+      "expected": 2.13654016435007,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 15 1.8 parallel transfer",
+      "actual": 1.397622843553612,
+      "expected": 1.397622843553612,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 15 4 median",
+      "actual": 9.917884838103097,
+      "expected": 9.917884838103097,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 15 4 ratio",
+      "actual": 0.6666666666666666,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 15 4 length transfer",
+      "actual": 4.7478670318890455,
+      "expected": 4.7478670318890455,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 15 4 parallel transfer",
+      "actual": 3.105828541230249,
+      "expected": 3.105828541230249,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 35 0.15 median",
+      "actual": 0.3583542423210683,
+      "expected": 0.3583542423210683,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 35 0.15 ratio",
+      "actual": 0.6666666666666667,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 35 0.15 length transfer",
+      "actual": 0.2670747985901556,
+      "expected": 0.26707479859015565,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 35 0.15 parallel transfer",
+      "actual": 0.2581093963579707,
+      "expected": 0.2581093963579707,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 35 0.6 median",
+      "actual": 1.433416969284273,
+      "expected": 1.433416969284273,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 35 0.6 ratio",
+      "actual": 0.6666666666666667,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 35 0.6 length transfer",
+      "actual": 1.0682991943606224,
+      "expected": 1.0682991943606226,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 35 0.6 parallel transfer",
+      "actual": 1.0324375854318828,
+      "expected": 1.0324375854318828,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 35 1 median",
+      "actual": 2.389028282140455,
+      "expected": 2.389028282140455,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 35 1 ratio",
+      "actual": 0.6666666666666666,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 35 1 length transfer",
+      "actual": 1.7804986572677044,
+      "expected": 1.7804986572677044,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 35 1 parallel transfer",
+      "actual": 1.7207293090531381,
+      "expected": 1.7207293090531381,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 35 1.8 median",
+      "actual": 4.300250907852819,
+      "expected": 4.30025090785282,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 35 1.8 ratio",
+      "actual": 0.6666666666666666,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 35 1.8 length transfer",
+      "actual": 3.204897583081868,
+      "expected": 3.204897583081868,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 35 1.8 parallel transfer",
+      "actual": 3.097312756295649,
+      "expected": 3.097312756295649,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 35 4 median",
+      "actual": 9.55611312856182,
+      "expected": 9.55611312856182,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 35 4 ratio",
+      "actual": 0.6666666666666666,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 35 4 length transfer",
+      "actual": 7.121994629070818,
+      "expected": 7.121994629070818,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 35 4 parallel transfer",
+      "actual": 6.882917236212553,
+      "expected": 6.882917236212553,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 65 0.15 median",
+      "actual": 0.3188286885891814,
+      "expected": 0.3188286885891814,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 65 0.15 ratio",
+      "actual": 0.6666666666666667,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 65 0.15 length transfer",
+      "actual": 0.4223660371407852,
+      "expected": 0.42236603714078513,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 65 0.15 parallel transfer",
+      "actual": 0.4078385041664924,
+      "expected": 0.4078385041664924,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 65 0.6 median",
+      "actual": 1.2753147543567256,
+      "expected": 1.2753147543567256,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 65 0.6 ratio",
+      "actual": 0.6666666666666667,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 65 0.6 length transfer",
+      "actual": 1.6894641485631405,
+      "expected": 1.6894641485631405,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 65 0.6 parallel transfer",
+      "actual": 1.6313540166659697,
+      "expected": 1.6313540166659697,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 65 1 median",
+      "actual": 2.1255245905945426,
+      "expected": 2.1255245905945426,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 65 1 ratio",
+      "actual": 0.6666666666666666,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 65 1 length transfer",
+      "actual": 2.815773580938568,
+      "expected": 2.815773580938568,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 65 1 parallel transfer",
+      "actual": 2.7189233611099497,
+      "expected": 2.7189233611099497,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 65 1.8 median",
+      "actual": 3.8259442630701765,
+      "expected": 3.8259442630701765,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 65 1.8 ratio",
+      "actual": 0.6666666666666666,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 65 1.8 length transfer",
+      "actual": 5.0683924456894225,
+      "expected": 5.0683924456894225,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 65 1.8 parallel transfer",
+      "actual": 4.89406204999791,
+      "expected": 4.89406204999791,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 65 4 median",
+      "actual": 8.50209836237817,
+      "expected": 8.50209836237817,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 65 4 ratio",
+      "actual": 0.6666666666666666,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 65 4 length transfer",
+      "actual": 11.263094323754272,
+      "expected": 11.263094323754272,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 65 4 parallel transfer",
+      "actual": 10.875693444439799,
+      "expected": 10.875693444439799,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 90 0.15 median",
+      "actual": 0.27041634565979916,
+      "expected": 0.27041634565979916,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 90 0.15 ratio",
+      "actual": 0.6666666666666667,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 90 0.15 length transfer",
+      "actual": 0.5408326913195982,
+      "expected": 0.5408326913195983,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 90 0.15 parallel transfer",
+      "actual": 0.44999999999999996,
+      "expected": 0.44999999999999996,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 90 0.6 median",
+      "actual": 1.0816653826391966,
+      "expected": 1.0816653826391966,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 90 0.6 ratio",
+      "actual": 0.6666666666666667,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 90 0.6 length transfer",
+      "actual": 2.1633307652783933,
+      "expected": 2.1633307652783933,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 90 0.6 parallel transfer",
+      "actual": 1.7999999999999998,
+      "expected": 1.7999999999999998,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 90 1 median",
+      "actual": 1.8027756377319946,
+      "expected": 1.8027756377319946,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 90 1 ratio",
+      "actual": 0.6666666666666666,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 90 1 length transfer",
+      "actual": 3.605551275463989,
+      "expected": 3.605551275463989,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 90 1 parallel transfer",
+      "actual": 3.0,
+      "expected": 3.0,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 90 1.8 median",
+      "actual": 3.2449961479175906,
+      "expected": 3.24499614791759,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 90 1.8 ratio",
+      "actual": 0.6666666666666666,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 90 1.8 length transfer",
+      "actual": 6.489992295835181,
+      "expected": 6.489992295835181,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 90 1.8 parallel transfer",
+      "actual": 5.4,
+      "expected": 5.4,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 90 4 median",
+      "actual": 7.211102550927978,
+      "expected": 7.211102550927978,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 90 4 ratio",
+      "actual": 0.6666666666666666,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 90 4 length transfer",
+      "actual": 14.422205101855956,
+      "expected": 14.422205101855956,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 90 4 parallel transfer",
+      "actual": 12.0,
+      "expected": 12.0,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 110 0.15 median",
+      "actual": 0.2236931834578724,
+      "expected": 0.22369318345787242,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 110 0.15 ratio",
+      "actual": 0.6666666666666666,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 110 0.15 length transfer",
+      "actual": 0.6203591207501752,
+      "expected": 0.6203591207501752,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 110 0.15 parallel transfer",
+      "actual": 0.42286167935365876,
+      "expected": 0.42286167935365876,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 110 0.6 median",
+      "actual": 0.8947727338314896,
+      "expected": 0.8947727338314897,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 110 0.6 ratio",
+      "actual": 0.6666666666666666,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 110 0.6 length transfer",
+      "actual": 2.4814364830007007,
+      "expected": 2.4814364830007007,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 110 0.6 parallel transfer",
+      "actual": 1.691446717414635,
+      "expected": 1.691446717414635,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 110 1 median",
+      "actual": 1.4912878897191495,
+      "expected": 1.4912878897191495,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 110 1 ratio",
+      "actual": 0.6666666666666666,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 110 1 length transfer",
+      "actual": 4.135727471667836,
+      "expected": 4.135727471667836,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 110 1 parallel transfer",
+      "actual": 2.8190778623577253,
+      "expected": 2.8190778623577253,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 110 1.8 median",
+      "actual": 2.6843182014944693,
+      "expected": 2.6843182014944693,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 110 1.8 ratio",
+      "actual": 0.6666666666666666,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 110 1.8 length transfer",
+      "actual": 7.444309449002104,
+      "expected": 7.444309449002104,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 110 1.8 parallel transfer",
+      "actual": 5.074340152243906,
+      "expected": 5.074340152243906,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 110 4 median",
+      "actual": 5.965151558876598,
+      "expected": 5.965151558876598,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 110 4 ratio",
+      "actual": 0.6666666666666666,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 110 4 length transfer",
+      "actual": 16.542909886671342,
+      "expected": 16.542909886671342,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 110 4 parallel transfer",
+      "actual": 11.276311449430901,
+      "expected": 11.276311449430901,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 150 0.15 median",
+      "actual": 0.12111269646304794,
+      "expected": 0.12111269646304794,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 150 0.15 ratio",
+      "actual": 0.6666666666666667,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 150 0.15 length transfer",
+      "actual": 0.7254838792294411,
+      "expected": 0.7254838792294411,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 150 0.15 parallel transfer",
+      "actual": 0.22499999999999995,
+      "expected": 0.22499999999999995,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 150 0.6 median",
+      "actual": 0.48445078585219176,
+      "expected": 0.48445078585219176,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 150 0.6 ratio",
+      "actual": 0.6666666666666667,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 150 0.6 length transfer",
+      "actual": 2.901935516917765,
+      "expected": 2.9019355169177645,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 150 0.6 parallel transfer",
+      "actual": 0.8999999999999998,
+      "expected": 0.8999999999999998,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 150 1 median",
+      "actual": 0.8074179764203196,
+      "expected": 0.8074179764203196,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 150 1 ratio",
+      "actual": 0.6666666666666666,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 150 1 length transfer",
+      "actual": 4.836559194862941,
+      "expected": 4.836559194862941,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 150 1 parallel transfer",
+      "actual": 1.4999999999999998,
+      "expected": 1.4999999999999998,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 150 1.8 median",
+      "actual": 1.4533523575565754,
+      "expected": 1.4533523575565754,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 150 1.8 ratio",
+      "actual": 0.6666666666666666,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 150 1.8 length transfer",
+      "actual": 8.705806550753294,
+      "expected": 8.705806550753294,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 150 1.8 parallel transfer",
+      "actual": 2.6999999999999997,
+      "expected": 2.6999999999999997,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 150 4 median",
+      "actual": 3.2296719056812786,
+      "expected": 3.2296719056812786,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 150 4 ratio",
+      "actual": 0.6666666666666666,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 150 4 length transfer",
+      "actual": 19.346236779451765,
+      "expected": 19.346236779451765,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 150 4 parallel transfer",
+      "actual": 5.999999999999999,
+      "expected": 5.999999999999999,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 175 0.15 median",
+      "actual": 0.07669327140504034,
+      "expected": 0.07669327140504034,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 175 0.15 ratio",
+      "actual": 0.6666666666666665,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 175 0.15 length transfer",
+      "actual": 0.7493147325955705,
+      "expected": 0.7493147325955705,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 175 0.15 parallel transfer",
+      "actual": 0.039220084236446184,
+      "expected": 0.039220084236446184,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 175 0.6 median",
+      "actual": 0.30677308562016137,
+      "expected": 0.30677308562016137,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 175 0.6 ratio",
+      "actual": 0.6666666666666665,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 175 0.6 length transfer",
+      "actual": 2.997258930382282,
+      "expected": 2.997258930382282,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 175 0.6 parallel transfer",
+      "actual": 0.15688033694578474,
+      "expected": 0.15688033694578474,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 175 1 median",
+      "actual": 0.5112884760336023,
+      "expected": 0.5112884760336023,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 175 1 ratio",
+      "actual": 0.6666666666666665,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 175 1 length transfer",
+      "actual": 4.995431550637137,
+      "expected": 4.995431550637137,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 175 1 parallel transfer",
+      "actual": 0.2614672282429746,
+      "expected": 0.2614672282429746,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 175 1.8 median",
+      "actual": 0.9203192568604842,
+      "expected": 0.9203192568604841,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 175 1.8 ratio",
+      "actual": 0.6666666666666665,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 175 1.8 length transfer",
+      "actual": 8.991776791146847,
+      "expected": 8.991776791146847,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 175 1.8 parallel transfer",
+      "actual": 0.47064101083735427,
+      "expected": 0.47064101083735427,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 175 4 median",
+      "actual": 2.045153904134409,
+      "expected": 2.045153904134409,
+      "passed": true
+    },
+    {
+      "assertion": "694 sweep 175 4 ratio",
+      "actual": 0.6666666666666665,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 175 4 length transfer",
+      "actual": 19.981726202548547,
+      "expected": 19.981726202548547,
+      "passed": true
+    },
+    {
+      "assertion": "695 sweep 175 4 parallel transfer",
+      "actual": 1.0458689129718983,
+      "expected": 1.0458689129718983,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep0.2,0.4 sum",
+      "actual": 0.447213595499958,
+      "expected": 0.447213595499958,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep0.2,0.4 height",
+      "actual": 0.03200000000000001,
+      "expected": 0.03200000000000001,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep0.2,2 sum",
+      "actual": 2.0099751242241783,
+      "expected": 2.009975124224178,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep0.2,2 height",
+      "actual": 0.03960396039603962,
+      "expected": 0.03960396039603962,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep0.2,7 sum",
+      "actual": 7.002856560004638,
+      "expected": 7.002856560004639,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep0.2,7 height",
+      "actual": 0.039967373572593806,
+      "expected": 0.039967373572593806,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep1,0.4 sum",
+      "actual": 1.077032961426901,
+      "expected": 1.0770329614269007,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep1,0.4 height",
+      "actual": 0.13793103448275865,
+      "expected": 0.13793103448275867,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep1,2 sum",
+      "actual": 2.23606797749979,
+      "expected": 2.23606797749979,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep1,2 height",
+      "actual": 0.7999999999999999,
+      "expected": 0.7999999999999999,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep1,7 sum",
+      "actual": 7.071067811865475,
+      "expected": 7.0710678118654755,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep1,7 height",
+      "actual": 0.9799999999999999,
+      "expected": 0.98,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep4,0.4 sum",
+      "actual": 4.019950248448357,
+      "expected": 4.019950248448356,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep4,0.4 height",
+      "actual": 0.15841584158415847,
+      "expected": 0.15841584158415847,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep4,2 sum",
+      "actual": 4.47213595499958,
+      "expected": 4.47213595499958,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep4,2 height",
+      "actual": 3.1999999999999997,
+      "expected": 3.1999999999999997,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep4,7 sum",
+      "actual": 8.062257748298551,
+      "expected": 8.06225774829855,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep4,7 height",
+      "actual": 12.061538461538465,
+      "expected": 12.061538461538463,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep15,0.4 sum",
+      "actual": 15.005332385522154,
+      "expected": 15.005332385522156,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep15,0.4 height",
+      "actual": 0.15988630307337004,
+      "expected": 0.15988630307337004,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep15,2 sum",
+      "actual": 15.132745950421556,
+      "expected": 15.132745950421556,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep15,2 height",
+      "actual": 3.930131004366812,
+      "expected": 3.930131004366812,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep15,7 sum",
+      "actual": 16.55294535724685,
+      "expected": 16.55294535724685,
+      "passed": true
+    },
+    {
+      "assertion": "projection sweep15,7 height",
+      "actual": 40.237226277372265,
+      "expected": 40.237226277372265,
+      "passed": true
+    },
+    {
+      "assertion": "672 answer token",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "673 answer token",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "674 answer token",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "676 answer token",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "677 answer token",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "681 answer token",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "682 answer token",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "683 answer token",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "685 answer token",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "686 answer token",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "687 answer token",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "688 answer token",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "689 answer token",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "702 answer token",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "703 answer token",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "705 answer token",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "706 answer token",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "707 answer token",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "708 answer token",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "assertion": "709 answer token",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    }
+  ],
+  "reviewType": "independent-mathematics",
+  "reviewer": "Independent chapter VIII theory author reviewing B; not the B author",
+  "externalProviderReview": false,
+  "reviewedAt": "2026-10-29T22:49:24.095844+00:00",
+  "oracleSha256": "02069ef89a5d4da23b81645de991127900a116c8919423ecd2547ae8f3749c64"
+}

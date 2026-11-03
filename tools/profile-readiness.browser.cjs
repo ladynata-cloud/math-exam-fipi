@@ -39,7 +39,9 @@ const server = http.createServer((req,res) => {
     async function revealResult(task) {
       const solution=page.locator('#result-solution'),items=solution.locator('[data-solution-step]');
       const expected=await page.evaluate(id=>ProfileSolutions.steps(ProfileLessons.flatMap(lesson=>lesson.tasks).find(task=>task.id===id)).length,task.id);
-      assert.equal(await items.count(),1,task.id+': result begins with one explanation step');
+      assert.equal(await items.count(),0,task.id+': result keeps explanations closed until requested');
+      await solution.locator('[data-solution-open]').click();
+      assert.equal(await items.count(),1,task.id+': requested result begins with one explanation step');
       const history=await items.allInnerTexts(),next=solution.locator('[data-solution-next]');
       for(let count=2;count<=expected;count++) {
         await next.click();const text=await items.allInnerTexts();
@@ -160,7 +162,10 @@ const server = http.createServer((req,res) => {
     await noviceContext.close();
     await page.goto(base+'#progress');await page.locator('#export').waitFor();
     const downloaded=page.waitForEvent('download');await page.locator('#export').click();
-    const report=JSON.parse(fs.readFileSync(await(await downloaded).path(),'utf8'));
+    const envelope=JSON.parse(fs.readFileSync(await(await downloaded).path(),'utf8'));
+    assert.equal(envelope.kind,'mathexam-profile-full-report');
+    assert.equal(envelope.version,1);
+    const report=envelope.course;
     for(const l of lessons)assert.equal(report.records[l.id].independent.length,3);
     assert.deepEqual(errors,[]);
     console.log(JSON.stringify({gate:'PROFILE_READINESS_BROWSER_OK',tasks:taskCount,checkedAnswers:answerCount,diagnosticProfiles:3,responsive:[360,1280],acceptedStepReload:true,completedTaskReload:true,wrongAnswerRecovery:true,export:true,errors}));

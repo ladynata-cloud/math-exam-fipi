@@ -1,0 +1,188 @@
+[
+  {
+    "id": "vilenkin6-textbook",
+    "url": "https://mathexam.space/courses/vilenkin-6-part-1/textbook.html",
+    "status": 200,
+    "bytes": 2393,
+    "sha256": "70d1bab7869889a4874f66472f9c4fffa4293ed140e8bf13efd4154fec17e843",
+    "redirected": false
+  },
+  {
+    "id": "vilenkin6-legacy",
+    "url": "https://mathexam.space/courses/vilenkin-6-part-1/",
+    "status": 200,
+    "bytes": 3337,
+    "sha256": "8f1d0fdf146c6d2a15d4ffdf27303b3a4daaf0598e2d5bbf4ec497efc4454849",
+    "redirected": false
+  },
+  {
+    "id": "foundations",
+    "url": "https://mathexam.space/foundations/",
+    "status": 200,
+    "bytes": 10645,
+    "sha256": "c6952114e6cf720ddfa2bcad8f1afb88e5469f7b2e4f350a739dfe179612914f",
+    "redirected": false
+  },
+  {
+    "id": "division",
+    "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/division-course.html",
+    "status": 200,
+    "bytes": 4591,
+    "sha256": "3428ad0acd0fe5d9991a60e5b5eb7d4326efbe4795dc623747707fd54f54a36d",
+    "redirected": false
+  },
+  {
+    "id": "school7",
+    "url": "https://mathexam.space/grade7/",
+    "status": 200,
+    "bytes": 19471,
+    "sha256": "519aed10235f70f414c52912238b3dbc2f3c8557f924e727260a6d7e30ee43ef",
+    "redirected": false
+  },
+  {
+    "id": "oge",
+    "url": "https://mathexam.space/oge/",
+    "status": 200,
+    "bytes": 6146,
+    "sha256": "10b42586ab2aea8735ff4ffdc606bcc138c478679815d5412ca7fbae781936bb",
+    "redirected": false
+  },
+  {
+    "id": "ege-base",
+    "url": "https://mathexam.space/ege-baza/",
+    "status": 200,
+    "bytes": 3814,
+    "sha256": "03701b7f2ab79d23a803bf9944211bbac6a6d846cc7f8fbdb0bd976f908d3fe0",
+    "redirected": false
+  },
+  {
+    "id": "ege-profile",
+    "url": "https://mathexam.space/ege-profil/start/",
+    "status": 200,
+    "bytes": 5215,
+    "sha256": "07f8b5a60ab56992ccad503474c862e79695cdc60f62033b2f1c87a6563fc094",
+    "redirected": false
+  },
+  {
+    "id": "number-theory",
+    "url": "https://mathexam.space/trainers/grade6-nok.html",
+    "status": 200,
+    "bytes": 2467,
+    "sha256": "ec58a04c76bd9a23c62318416be9f25cb5b7be2879bd15d7ec1b9a3587dd634b",
+    "redirected": false
+  },
+  {
+    "id": "atanasyan-first-steps",
+    "url": "https://mathexam.space/geometry-course/first-steps/",
+    "status": 200,
+    "bytes": 1618,
+    "sha256": "315a475aeae1078f1f2bf6832c67b4706e76f53abfffd11a44f18ebd2e383df3",
+    "redirected": false
+  },
+  {
+    "id": "atanasyan7-9",
+    "url": "https://mathexam.space/geometry-course/textbook/",
+    "status": 200,
+    "bytes": 2065,
+    "sha256": "098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804",
+    "redirected": false
+  },
+  {
+    "id": "atanasyan10-11",
+    "url": "https://mathexam.space/stereo-course/textbook/",
+    "status": 200,
+    "bytes": 1871,
+    "sha256": "af453fa854b9995f3a41bbf1a476564116a8efff43cee2234716e2c5489b5e55",
+    "redirected": false
+  },
+  {
+    "id": "peterson5",
+    "url": "https://mathexam.space/school/peterson5/",
+    "status": 200,
+    "bytes": 2194,
+    "sha256": "1a52d74533fcb8569000f1f64717b1647313e0ffaa4b38ec2f0cd82ef36cdce3",
+    "redirected": false
+  },
+  {
+    "id": "peterson6",
+    "url": "https://mathexam.space/school/peterson6/",
+    "status": 200,
+    "bytes": 2188,
+    "sha256": "e420820744281d685cb8f29866954dbb92094ec750f2111bf35c34a1b18d66d5",
+    "redirected": false
+  },
+  {
+    "id": "maxim-peterson6",
+    "url": "https://mathexam.space/trainers/maxim-peterson6/",
+    "status": 200,
+    "bytes": 130095,
+    "sha256": "d72ebd77f9ba192af899308f899aa340d2d87010ceaacc2e9950e2c0026f2172",
+    "redirected": false
+  },
+  {
+    "id": "makarychev7",
+    "url": "https://mathexam.space/school/makarychev7/",
+    "status": 200,
+    "bytes": 3047,
+    "sha256": "ee41be76237e0750c18d941cd98a1bf91f5faa4e7d28895f1302161d217b27c0",
+    "redirected": false
+  },
+  {
+    "id": "makarychev8",
+    "url": "https://mathexam.space/school/makarychev8/",
+    "status": 200,
+    "bytes": 1974,
+    "sha256": "e8165b8bbf39b08f85e12a7626441128ccf665e58394a89e4d06f1e82ff583e0",
+    "redirected": false
+  },
+  {
+    "id": "alimov10-11",
+    "url": "https://mathexam.space/school/alimov10-11/",
+    "status": 200,
+    "bytes": 2553,
+    "sha256": "f067b8e9c2fd646d9512d8229da7759e825e18da1c3182ec5538f210e8235094",
+    "redirected": false
+  },
+  {
+    "id": "nikolsky10",
+    "url": "https://mathexam.space/school/nikolsky10/",
+    "status": 200,
+    "bytes": 1985,
+    "sha256": "fe483d9a9d47d5cfaa14afeba5d820f58dfe3cda3ae78a17d86ac2e0b066b2b8",
+    "redirected": false
+  },
+  {
+    "id": "merzlyak-10-base",
+    "url": "https://mathexam.space/stereo-course/merzlyak-10-base/",
+    "status": 200,
+    "bytes": 2270,
+    "sha256": "a9da6498f42936ac165b7694a102e1372d11f06a1b265482479de4d340de381b",
+    "redirected": false
+  },
+  {
+    "id": "ege-base-11-13",
+    "url": "https://mathexam.space/ege-baza/path/index.html",
+    "status": 200,
+    "bytes": 3930,
+    "sha256": "459f31f2fb6f1c8ad403644dbc53632a079049d61d1397d01f25ce772832ccd9",
+    "redirected": false
+  },
+  {
+    "id": "college-functions",
+    "url": "https://mathexam.space/trainers/college-functions/",
+    "status": 200,
+    "bytes": 7725,
+    "sha256": "a9ae61fa5916e0ddcd09f316168e28e46f866a3eece5260e736b8770539bccc2",
+    "redirected": false
+  },
+  {
+    "id": "cabinet-app",
+    "url": "https://mathexam-board-ladynata.amvera.io/learning/app.js",
+    "error": "HTTP Error 503: Service Unavailable"
+  },
+  {
+    "id": "cabinet-status",
+    "url": "https://mathexam-board-ladynata.amvera.io/api/learning/status",
+    "error": "HTTP Error 503: Service Unavailable"
+  }
+]

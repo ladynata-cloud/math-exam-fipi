@@ -1,0 +1,68 @@
+name: Ichenskaya grade 7 — source, proofs and retained work
+
+on:
+  pull_request:
+    paths:
+      - 'learning/ichenskaya-grade7-works/**'
+      - 'learning/atanasyan-first-steps/**'
+      - 'geometry-course/ichenskaya-7-works/**'
+      - 'learning/app.js'
+      - 'learning/attached-course.js'
+      - 'learning/assistant.js'
+      - 'learning/index.html'
+      - 'board-server/assistant-course-context.js'
+      - 'assistant-service/src/course-context.js'
+      - 'assistant-service/knowledge/ichenskaya-*.json'
+      - 'assistant-service/scripts/build-course-knowledge.cjs'
+      - 'tools/ichenskaya-grade7-works/**'
+      - '.github/workflows/ichenskaya-grade7-works.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-proof-and-browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Exact sources, independent calculations and reviewed diagrams
+        run: |
+          python3 tools/ichenskaya-grade7-works/build.py --check
+          python3 tools/ichenskaya-grade7-works/math_audit.py
+          node tools/ichenskaya-grade7-works/source.test.cjs
+          node assistant-service/scripts/build-course-knowledge.cjs --check
+          python3 tools/atanasyan-first-steps/build.py --check
+          node tools/atanasyan-first-steps/source.test.cjs
+          python3 tools/geometry-textbook/build_course.py --check
+      - name: Install pinned browser tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/ichenskaya-tools" --no-audit --no-fund --ignore-scripts jsdom@26.1.0 playwright@1.55.0
+          node "$RUNNER_TEMP/ichenskaya-tools/node_modules/playwright/cli.js" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/ichenskaya-tools/node_modules" >> "$GITHUB_ENV"
+      - name: Separate records, source adapters and cabinet boundaries
+        run: node --test --test-isolation=none tools/atanasyan-first-steps/*.test.cjs tools/ichenskaya-grade7-works/*.test.cjs
+      - name: Actual source tasks on desktop and mobile
+        env:
+          ICHENSKAYA_WORKS_ARTIFACTS: ${{ runner.temp }}/ichenskaya-works
+        run: node tools/ichenskaya-grade7-works/browser.cjs
+      - name: Browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ichenskaya-grade7-browser
+          path: ${{ runner.temp }}/ichenskaya-works/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Preparation gate
+        run: |
+          python3 tools/build-sitemap.py --check
+          git diff --check
+          echo ICHENSKAYA_GRADE7_WORKS_PREPARED_OK

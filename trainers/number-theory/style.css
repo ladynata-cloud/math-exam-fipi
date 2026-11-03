@@ -101,6 +101,7 @@ h2{font-size:24px;line-height:1.3;letter-spacing:-.015em;margin:0}
 .answer-proof{font-size:20px;margin:12px 0 0;line-height:1.7;overflow-wrap:anywhere}
 .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 body.embedded .site-header{display:none}
+body.embedded .public-explanation{display:none}
 body.embedded main{padding-top:14px}
 @media(max-width:650px){.site-header{padding:17px 18px;gap:15px}.other-topic{display:none}main{padding:0 16px 32px}.task-card,.work-card{padding:22px 20px;border-radius:18px}.task-card{border-top-width:4px}.factor-columns{gap:12px}.factor-column{padding:13px 9px}.factor-column.active{padding:12px 8px}.factor-expression{font-size:17px}.column-heading{font-size:15px}.ladder{font-size:29px}.stage-heading{gap:10px}h2{font-size:22px}.rule-box{padding:15px}.factor-row-label{min-width:55px;font-size:22px}.factor-chip{min-width:48px;padding:7px 11px}.active-calculation{padding:17px}.settings{padding:14px 18px}.settings-grid{gap:15px}.site-header>span{font-size:14px}}
 @media(max-width:390px){.site-header{padding-inline:13px}main{padding-inline:10px}.task-card,.work-card{padding:19px 15px}.mode-controls button{font-size:15px;padding:9px 12px}.factor-columns{gap:8px}.ladder th,.ladder td{padding-inline:11px}.factor-expression{font-size:16px}.input-row{gap:9px}.input-row button{padding-inline:12px}.number-input{width:105px}}

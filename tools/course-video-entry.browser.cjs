@@ -65,7 +65,7 @@ async function main() {
       if (!['GET', 'HEAD'].includes(req.method)) { report.writes.push(req.method + ' ' + pathname); res.writeHead(405); return res.end(); }
       if (pathname === '/favicon.ico') { res.writeHead(204); return res.end(); }
       const allowed = ['/grade7/', '/assets/', '/video-lessons/', '/ege-baza/', '/trainers/oge-basics/', '/geometry-course/trainers/'].some(prefix => pathname.startsWith(prefix)) ||
-        ['/learning/grade7-route.css', '/learning/grade7-route-map.js', '/learning/catalog.js', '/learning/topic-guides.js', '/learning/practice-entry.js', '/trainers/learning-bridge.js'].includes(pathname);
+        ['/learning/grade7-route.css', '/learning/grade7-route-map.js', '/learning/catalog.js', '/learning/topic-guides.js', '/learning/practice-entry.js', '/learning/geometry-object-labels.js', '/trainers/learning-bridge.js'].includes(pathname);
       const filename = path.resolve(ROOT, '.' + pathname), type = types[path.extname(pathname)];
       if (!allowed || !type || !filename.startsWith(ROOT + path.sep)) { res.writeHead(404); return res.end(); }
       const content = await fs.readFile(filename), range = /^bytes=(\d+)-(\d*)$/.exec(req.headers.range || '');

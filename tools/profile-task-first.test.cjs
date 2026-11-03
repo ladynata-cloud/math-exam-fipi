@@ -3,9 +3,9 @@ const assert=require('node:assert/strict');
 const test=require('node:test');
 const fs=require('node:fs');
 const {question}=require('../ege-profil/start/task-first.js');
-const lessons=['geometry','algebra','stereo','probability','equations','functions','applied','readiness'].flatMap(n=>require('../ege-profil/start/'+n+'-data.js'));
+const lessons=['geometry','algebra','stereo','probability','equations','functions','applied', 'finance','readiness'].flatMap(n=>require('../ege-profil/start/'+n+'-data.js'));
 test('Every existing task names the sought value from its own condition, never an intermediate answer',()=>{
-  assert.equal(lessons.length,68);assert.equal(lessons.flatMap(l=>l.tasks).length,408);
+  assert.equal(lessons.length,81);assert.equal(lessons.flatMap(l=>l.tasks).length,486);
   for(const l of lessons)for(const task of l.tasks){
     const text=question(task);
     assert(text.trim(),l.id+': nonempty authored instruction');

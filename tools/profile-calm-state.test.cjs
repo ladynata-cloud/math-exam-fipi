@@ -2,7 +2,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const State = require('../ege-profil/start/state.js');
-const lessons = ['geometry', 'algebra', 'stereo', 'probability', 'equations', 'functions', 'applied']
+const lessons = ['geometry', 'algebra', 'stereo', 'probability', 'equations', 'functions', 'applied', 'finance']
   .flatMap(name => require('../ege-profil/start/' + name + '-data.js'));
 const lesson = lessons.find(l => l.id === 'vec-coordinates');
 

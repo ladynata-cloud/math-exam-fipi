@@ -87,7 +87,7 @@ test('number-theory references coexist with the unchanged Peterson card and stay
   assert(peterson);
   assert.equal(peterson.querySelectorAll('a').length, 3);
   assert.match(peterson.textContent, /не входят в итоги кабинета/);
-  assert.equal(catalog.items.length, 378);
+  assert.equal(catalog.items.filter(item => item.trainerId !== 'vilenkin6-textbook').length, 378);
   assert.equal(catalog.items.filter(item => item.trainerId === 'vilenkin6-part1').length, 27);
   assert.equal(catalog.items.some(item => trainers.includes(item.trainerId)), false);
 });

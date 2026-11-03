@@ -12,12 +12,12 @@
       if (hintParts.length > 1 && hintParts.every(part => /^\s*\d+\.\s/.test(part))) {
         const titles = ['Записываем величины', 'Приводим к общему знаменателю', 'Убираем знаменатель', 'Находим нужное произведение'];
         return hintParts.map((part, index) => ({ title: titles[index] || 'Продолжаем вычисление', lines: [{ html: part.replace(/^\s*\d+\.\s*/, '') }] })).concat({
-          title: 'Вычисляем результат действия', lines: [{ html: question.why }, { formula: 'Получаем: ' + format(question.answer) }]
+          title: 'Вычисляем результат действия', lines: [{ html: question.why }, { formula: 'Получаем: ' + format(question.choiceLabels?.[question.answer] ?? question.answerExact ?? question.answer) + (question.unit ? ' ' + question.unit : '') }]
         });
       }
-      return [{ title: question.prompt, lines: [{ html: question.hint }, { html: question.why }, { formula: 'Получаем: ' + format(question.answer) }] }];
+      return [{ title: question.prompt, lines: [{ html: question.hint }, { html: question.why }, { formula: 'Получаем: ' + format(question.choiceLabels?.[question.answer] ?? question.answerExact ?? question.answer) + (question.unit ? ' ' + question.unit : '') }] }];
     });
-    result.push({ title: 'Получаем ответ', lines: [{ html: task.explanation }, { formula: 'Ответ: ' + format(task.answer) }] });
+    result.push({ title: 'Получаем ответ', lines: [{ html: task.explanation }, { formula: 'Ответ: ' + format(task.answerExact ?? task.answer) + (task.unit ? ' ' + task.unit : '') }] });
     return result;
   }
 

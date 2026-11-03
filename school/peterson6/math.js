@@ -49,7 +49,9 @@ const rows=[
 ['percent-ratio','Сколько процентов','Часть делим на целое и умножаем на 100.',['decimal-divide']]
 ];
 const skills=rows.map(r=>({id:r[0],title:r[1],description:r[2],prerequisites:r[3]}));
-function generate(id,seed,level=1){
+const equationDescriptions={'percent-part':'Обозначаем искомую величину и составляем равенство.','percent-whole':'Обозначаем целое за x и составляем уравнение.','percent-ratio':'Обозначаем неизвестный процент и связываем часть с целым.'};
+const equationSkills=skills.map(s=>({...s,description:equationDescriptions[s.id]||s.description}));
+function generateLegacy(id,seed,level=1){
  const skill=skills.find(s=>s.id===id);if(!skill)throw Error('Unknown skill: '+id);if(!Number.isInteger(level)||level<1||level>3)throw Error('Level must be 1, 2 or 3');
  if(!Number.isSafeInteger(Number(seed)))throw Error('Seed must be a safe integer');const R=rng((Number(seed)>>>0)^((rows.findIndex(r=>r[0]===id)+1)*1009)^(level*7919));const pick=a=>a[R(0,a.length-1)];
  const task={id:'skill-'+id+'-'+level+'-'+seed,title:skill.title,prompt:'',kind:'number',answer:'',steps:[],hint:skill.description,explanation:'',skills:[id],source:{type:'authored',reference:'Авторская тренировка вычислительного навыка'}};
@@ -99,5 +101,39 @@ function generate(id,seed,level=1){
  task.finalLabel=labels[id]||(id.includes('multiply')?'Чему равно произведение?':id.includes('divide')?'Чему равно частное?':id.includes('subtract')?'Чему равна разность?':'Чему равна сумма?');
  if(task.steps.length<2||task.steps.length>5)throw Error('Unexpected step count');return task;
 }
-return {skills,generate,parse,equal,check,format,decimal,answer,operation};
+// The original generator is retained for saved attempts made before the
+// equation-method revision. A seed never changes its historical meaning.
+function generate(id,seed,level=1,methodVersion=1){
+ const task=generateLegacy(id,seed,level);
+ if(methodVersion===1||!['percent-part','percent-whole','percent-ratio'].includes(id))return task;
+ if(methodVersion!==2)throw Error('Unsupported teaching method');
+ const number=(key,prompt,value,hint,explanation)=>({id:key,kind:'number',prompt,answer:answer(value),hint,explanation});
+ const choice=(key,prompt,correct,alternatives,hint,explanation)=>({id:key,kind:'choice',prompt,choices:[correct,...alternatives],answer:correct,hint,explanation});
+ const c=task.calculation;
+ const whole=id==='percent-part'?c.left:id==='percent-whole'?task.answer:task.steps[0].answer;
+ const rate=id==='percent-ratio'?c.left:c.right;
+ const part=id==='percent-part'?task.answer:id==='percent-whole'?c.left:answer(operation('multiply',whole,rate));
+ const pct=answer(operation('multiply',rate,100));
+ const W=decimal(whole),P=decimal(part),R=decimal(rate),pc=decimal(pct);
+ const meaning=id==='percent-part'?'искомая часть числа':id==='percent-whole'?'всё число, принятое за 100%':'искомое число процентов';
+ const equation=id==='percent-part'?'{{frac:x:'+W+'}} = '+R:id==='percent-whole'?R+'x = '+P:W+' · {{frac:x:100}} = '+P;
+ const alternatives=id==='percent-part'?['x · '+W+' = '+R,'{{frac:x:'+W+'}} = '+pc]:id==='percent-whole'?[pc+'x = '+P,R+'x = '+decimal(operation('add',part,1))]:[W+' · x = '+P,'{{frac:x:100}} = '+P+' · '+W];
+ const root=id==='percent-part'?part:id==='percent-whole'?whole:pct;
+ const calculation=id==='percent-part'?'x = '+W+' · '+R+' = '+P:id==='percent-whole'?'x = '+P+' : '+R+' = '+W:'x = '+P+' · 100 : '+W+' = '+pc;
+ task.methodVersion=2;
+ task.steps=[
+  choice('unknown','Что обозначим за x?',meaning,['известное число '+(id==='percent-whole'?P:W),'количество шагов решения'],'Прочитай вопрос: какая величина неизвестна?','x — '+meaning+'.'),
+  number('rate',id==='percent-ratio'?'Какое число в условии принимается за 100%?':'Запиши '+pc+'% десятичной дробью.',id==='percent-ratio'?whole:rate,id==='percent-ratio'?'Целое названо после слова «от».':'Раздели число процентов на 100.',id==='percent-ratio'?W+' — целое, принятое за 100%.':pc+'% = '+R+'.'),
+  choice('equation','Выбери равенство, которое связывает часть с целым.',equation,alternatives,id==='percent-part'?'Искомая часть x, делённая на данное целое, равна известной доле.':id==='percent-whole'?'Известная доля, умноженная на неизвестное целое x, равна данной части.':'Искомые x% соответствуют доле {{frac:x:100}}. Умножь её на данное целое.','Модель условия: '+equation+'.'),
+  number('root','Реши полученное уравнение. Чему равно x?',root,'Используй связь части, доли и целого; одинаковое действие выполняй с обеими частями равенства.',calculation+'.'),
+  number('check',id==='percent-part'?'Проверь: какой процент от '+W+' составляет найденное число '+P+'?':'Проверь: чему равна часть '+pc+'% от '+(id==='percent-ratio'?'данного':'найденного')+' целого '+W+'?',id==='percent-part'?pct:part,id==='percent-part'?'Раздели найденную часть на целое и умножь на 100.':'Умножь целое на долю '+R+'.',id==='percent-part'?P+' : '+W+' · 100 = '+pc+'%.':W+' · '+R+' = '+P+' — исходная часть.')
+ ];
+ if(id!=='percent-ratio'){task.steps[1].answerFormat='decimal';task.steps[1].answer=R;}
+ // Vary the correct position deterministically, without changing conditions.
+ task.steps.filter(s=>s.kind==='choice').forEach((s,i)=>{const shift=(Number(seed)+i)%s.choices.length;s.choices=s.choices.slice(shift).concat(s.choices.slice(0,shift));});
+ task.hint='Пусть x — '+meaning+'. Вырази связь с целым, принятым за 100%.';
+ task.explanation='Пусть x — '+meaning+'. '+equation+'. '+calculation+'. Проверка: '+W+' · '+R+' = '+P+'.';
+ return task;
+}
+return {skills,equationSkills,generate,generateLegacy,parse,equal,check,format,decimal,answer,operation};
 });

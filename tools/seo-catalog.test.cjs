@@ -21,6 +21,21 @@ function cards(document, selector, heading, link) {
   }));
 }
 
+function assertDestination(href, base, context) {
+  const url = new URL(href, base);
+  assert.equal(url.origin, origin, `${context}: destination must stay on this site`);
+  const relative = decodeURIComponent(url.pathname).replace(/^\//, '');
+  const target = path.join(root, relative.endsWith('/') ? relative + 'index.html' : relative);
+  assert(fs.statSync(target).isFile(), `${context}: missing ${href}`);
+  if (path.extname(target) === '.html') {
+    const html = fs.readFileSync(target, 'utf8').replace(/<!--[\s\S]*?-->/g, '').trim();
+    assert(html.length > 0, `${context}: empty HTML destination ${href}`);
+  } else {
+    assert(fs.statSync(target).size > 0, `${context}: empty download ${href}`);
+  }
+  return url;
+}
+
 let links = 0;
 for (const [file, selector, heading, link] of cases) {
   const html = fs.readFileSync(path.join(root, file), 'utf8');
@@ -35,11 +50,7 @@ for (const [file, selector, heading, link] of cases) {
     `${file}: JavaScript did not replace every source fallback container`);
   for (const { href } of fallback) {
     if (!href) continue; // Existing unavailable chapters have no fake links.
-    const url = new URL(href, options.url);
-    assert.equal(url.origin, origin);
-    const relative = decodeURIComponent(url.pathname).replace(/^\//, '');
-    const target = path.join(root, relative.endsWith('/') ? relative + 'index.html' : relative);
-    assert(fs.statSync(target).isFile(), `${file}: missing ${href}`);
+    assertDestination(href, options.url, file);
     links++;
   }
   if (process.argv[2]) {
@@ -69,4 +80,43 @@ for (const file of ['index.html', 'textbook.html']) {
 const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
 assert(sitemap.includes(`<loc>${target}</loc>`));
 assert(!sitemap.includes(`<loc>${origin}/${course}</loc>`));
-console.log(`SEO_CATALOG_OK: ${links} existing destinations available without JavaScript; Vilenkin canonical/sitemap agree.`);
+
+// Compatibility addresses remain usable for saved links, but the catalog links
+// directly to their working destinations. A one-byte placeholder is not a page.
+const compatibility = [
+  ['index.html', 'multiplication-mixed.html'],
+  ['pythagoras.html', 'multiplication-pythagoras-table.html'],
+  ['times-9.html', 'multiplication-tricks.html'],
+];
+const catalog = new JSDOM(fs.readFileSync(path.join(root, 'trainers/index.html'), 'utf8'),
+  { url: `${origin}/trainers/` });
+const catalogLinks = [...catalog.window.document.querySelectorAll('#catalog .actions a')].map(a => a.href);
+for (const [old, current] of compatibility) {
+  const file = `trainers/multiplication-table/${old}`;
+  const destination = `${origin}/trainers/oge-basics/multiplication-division/${current}`;
+  const dom = new JSDOM(fs.readFileSync(path.join(root, file), 'utf8'), { url: `${origin}/${file}` });
+  assert.deepEqual([...dom.window.document.querySelectorAll('link[rel="canonical"]')].map(a => a.href), [destination]);
+  const refresh = dom.window.document.querySelector('meta[http-equiv="refresh"]');
+  assert(refresh, `${file}: missing no-JavaScript redirect`);
+  const redirect = refresh.content.match(/^0;\s*url=(.+)$/i);
+  assert(redirect, `${file}: invalid redirect`);
+  assert.equal(assertDestination(redirect[1], `${origin}/${file}`, file).href, destination);
+  assert([...dom.window.document.querySelectorAll('main a')].some(a => a.href === destination && a.textContent.trim()),
+    `${file}: missing visible fallback link`);
+  assert(catalogLinks.includes(destination), `${file}: catalog must link directly to the working trainer`);
+  dom.window.close();
+}
+for (const id of ['grade6-nok', 'grade6-nod']) {
+  const url = `${origin}/trainers/${id}.html`;
+  assert(catalogLinks.includes(url), `${id}: missing ordinary public catalog link`);
+  assert(sitemap.includes(`<loc>${url}</loc>`), `${id}: missing public sitemap entry`);
+}
+catalog.window.close();
+const ogeCourse = new JSDOM(fs.readFileSync(path.join(root, 'trainers/oge-course/index.html'), 'utf8'),
+  { url: `${origin}/trainers/oge-course/` });
+const courseLinks = [...ogeCourse.window.document.querySelectorAll('a')].map(a => a.href);
+assert(!courseLinks.includes(`${origin}/trainers/oge-task13-inequalities.html`),
+  'OGE course still links to the obsolete inequality wrapper');
+assert(courseLinks.includes(`${origin}/trainers/oge13-inequalities-series.html`));
+ogeCourse.window.close();
+console.log(`SEO_CATALOG_OK: ${links} nonempty destinations available without JavaScript; compatibility entries, primary links and sitemap agree.`);

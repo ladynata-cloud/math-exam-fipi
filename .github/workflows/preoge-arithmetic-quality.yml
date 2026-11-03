@@ -11,6 +11,11 @@ on:
       - 'trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html'
       - 'tools/preoge-arithmetic*'
       - 'tools/arithmetic-course.test.cjs'
+      - 'tools/arithmetic-route-entry.dom.cjs'
+      - 'tools/division-guided-continuation.dom.cjs'
+      - 'tools/decimal-divisor-entry*'
+      - 'tools/arithmetic-url-contract*'
+      - 'trainers/oge-basics/multiplication-division/decimal-divisor-shift.html'
       - 'tools/decimal-shift*'
       - '.github/workflows/preoge-arithmetic-quality.yml'
   push:
@@ -43,16 +48,29 @@ jobs:
           NODE_PATH: /tmp/preoge-quality/node_modules
         run: |
           node tools/preoge-arithmetic.test.cjs
+          node tools/arithmetic-route-entry.dom.cjs
+          node tools/decimal-divisor-entry.dom.cjs
+          node tools/arithmetic-url-contract.test.cjs
           node tools/arithmetic-course.test.cjs
           node tools/division-guided.test.cjs
+          node tools/division-guided-continuation.dom.cjs
           node tools/decimal-shift.test.cjs
           node tools/learning-remediation-bank.cjs --check
           git diff --check
       - name: Fictional learner scenarios
         env:
           NODE_PATH: /tmp/preoge-quality/node_modules
+          PREOGE_SCREENSHOTS: arithmetic-browser-results
         run: |
           node tools/preoge-arithmetic.browser.cjs
           node tools/division-guided.browser.cjs
           node tools/division-notebook.browser.cjs
           node tools/decimal-shift.browser.cjs
+      - name: Arithmetic entry screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: arithmetic-entry-${{ github.run_id }}
+          path: arithmetic-browser-results/
+          retention-days: 7
+          if-no-files-found: ignore

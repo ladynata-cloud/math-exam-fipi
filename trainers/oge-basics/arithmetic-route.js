@@ -93,7 +93,13 @@
       }
       return all;
     }
-    return {recordAttempt, summaries, summaryForLevel:level => summaries()[level] || {solved:0,independent:0,viewed:0,guidedSolved:0,guidedIndependent:0}, notice:() => warning};
+    function lastActivity() {
+      // Derive a continuation from existing finished work; never create or migrate progress.
+      const attempts = read().map(r => ({level:r.level, at:r.at, source:'practice'}));
+      const guided = guidedRecords().map(r => ({level:guidedMap[r.topic], at:r.at, source:'guided', topic:r.topic}));
+      return [...attempts, ...guided].reduce((latest, item) => !latest || item.at > latest.at ? item : latest, null);
+    }
+    return {recordAttempt, summaries, lastActivity, summaryForLevel:level => summaries()[level] || {solved:0,independent:0,viewed:0,guidedSolved:0,guidedIndependent:0}, notice:() => warning};
   }
   let storage; try { storage = root.localStorage; } catch (_) {}
   const api = {

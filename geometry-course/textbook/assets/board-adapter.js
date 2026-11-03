@@ -20,6 +20,7 @@
     const ids = new Set([LESSON_ID, ...THEORY_IDS]);
     const lessons = bundle.lessons.filter(lesson => ids.has(lesson.id));
     const catalog = { ...bundle.catalog, entries: bundle.catalog.entries.filter(entry => ids.has(entry.id)) };
+    const sourceInventory = bundle.sourceInventory;
     const inspected = engine.inspectBundle(catalog, lessons, { sceneViewer: planar });
     if (inspected.available.size !== ids.size || inspected.issues.length ||
         lessons.find(lesson => lesson.id === LESSON_ID)?.answer?.mode !== 'manual') {
@@ -124,7 +125,7 @@
       // semantic action, not a form navigation, so it must not rely on submit.
       save.type = 'button'; save.dataset.manualSave = '';
       for (const button of host.querySelectorAll('button')) {
-        const lesson = [...known.values()].find(item => item.kind === 'theory' && button.textContent === 'Почему? ' + item.title);
+        const lesson = [...known.values()].find(item => item.kind === 'theory' && button.textContent === 'Почему? ' + engine.lessonTitle(item));
         if (lesson) button.dataset.theoryLink = lesson.id;
       }
       if (submitted) host.querySelector('[data-final-feedback]').textContent = 'Рассуждение сохранено. Его обоснованность нужно обсудить с учителем.';
@@ -138,7 +139,7 @@
       }));
       submitted = value.submitted; theory = clone(value.theory);
       win.history.replaceState(null, '', '#' + LESSON_ID);
-      app = engine.createApp(host, { catalog, lessons, storage, sceneViewer, math });
+      app = engine.createApp(host, { catalog, lessons, sourceInventory, storage, sceneViewer, math });
       scopeMain(); restoreDetails(host.querySelector('main'), value.openDetails);
       if (theory.length) renderTheory();
       setReadOnly(readOnly);
@@ -152,12 +153,13 @@
       finally { applying = false; }
     }
     function sourceText(source) {
-      return catalog.book.edition + ' · стр. ' + source.printedPages.join(', ') +
-        ' · PDF ' + source.pdfPages.join(', ') + (source.point ? ' · пункт ' + source.point : '');
+      return [engine.sourceIdentity(source, source.collection === 'theory' ? 'theory' : 'exercise'),
+        engine.sourceLocation(source, sourceInventory), 'К учебнику: ' + catalog.book.edition,
+        'стр. ' + source.printedPages.join(', ') + ' · PDF ' + source.pdfPages.join(', ')].filter(Boolean).join(' · ');
     }
     function theoryButton(id) {
       if (!THEORY_IDS.includes(id)) throw new Error('Out-of-scope theory');
-      return el('button', 'Почему? ' + known.get(id).title, { type: 'button', 'data-theory-link': id });
+      return el('button', 'Почему? ' + engine.lessonTitle(known.get(id)), { type: 'button', 'data-theory-link': id });
     }
     function renderTheory() {
       destroyDialog();
@@ -168,7 +170,8 @@
       const close = el('button', 'Закрыть теорию', { type: 'button', 'data-theory-close': '' });
       const model = el('div', undefined, { class: 'textbook-model task-scene', 'data-theory-model': '' });
       const source = el('details'); source.append(el('summary', 'Где это в учебнике?'), el('p', sourceText(lesson.source)));
-      dialog.append(back, close, el('h2', lesson.title, { id: 'theory-dialog-title' }),
+      dialog.append(back, close, el('h2', engine.lessonTitle(lesson), { id: 'theory-dialog-title' }),
+        el('p', engine.sourceLocation(lesson.source, sourceInventory), { class: 'source-context' }),
         el('p', lesson.statement.text), model, el('p', lesson.statement.goal), el('p', lesson.visualization.caption), source);
       function changeView(id) {
         if (dialog !== current || applying || readOnly) return;
@@ -337,8 +340,8 @@
     global.__atanasyanBoard = adapter;
     const managed = new URLSearchParams(global.location.search).get('learning') === '1';
     const note = global.document.querySelector('[data-work-context]');
+    note.textContent = 'К задаче №92а · ' + (managed ? 'работа в личном кабинете' : 'совместная работа');
     if (managed) {
-      note.textContent = 'Задача 92а · работа в личном кабинете';
       adapter.setReadOnly(true);
       global.MathExamLearning.register({
         trainerId: 'atanasyan-7-9', contentVersion: 1,

@@ -1,0 +1,63 @@
+name: Public lesson showcase and selected examples
+
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'lessons/**'
+      - 'assets/lesson-showcase.css'
+      - 'assets/lesson-funnel.js'
+      - 'assets/site.css'
+      - 'assets/lesson-contacts.css'
+      - 'assets/download-panel.css'
+      - 'trainers/long-division-entry.js'
+      - 'trainers/long-division-stepwise.html'
+      - 'trainers/oge-basics/arithmetic-route.js'
+      - 'trainers/oge-basics/basics-help*'
+      - 'trainers/oge-basics/navigation-minimal*'
+      - 'trainers/oge-basics/multiplication-division/division-*'
+      - 'trainers/oge-basics/multiplication-division/decimal-shift*'
+      - 'trainers/oge-basics/multiplication-division/multiplication-refresh*'
+      - 'trainers/oge-task11-graphs-trainer.html'
+      - 'trainers/oge-course-algebra-reference.js'
+      - 'trainers/oge-course-reference*'
+      - 'trainers/oge-course-reference/**'
+      - 'trainers/task19-reference/fipi-oge-2027-page-03.png'
+      - 'ege-profil/learning/**'
+      - 'ege-profil/start/**'
+      - 'stereo-course/assets/**'
+      - 'stereo-course/textbook/**'
+      - 'tools/avito-showcase*'
+      - '.github/workflows/avito-showcase.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  showcase:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Static public routes and existing privacy contract
+        run: |
+          python3 tools/seo-sitemap.test.py
+          python3 tools/build-sitemap.py --check
+          python3 tools/seo-check.py
+          node tools/lesson-funnel.test.cjs
+          git diff --check
+      - name: Install isolated browser test runtime
+        run: |
+          npm install --prefix "$RUNNER_TEMP/showcase-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/showcase-qa/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Advertising route, responsive layout and accessible navigation
+        env:
+          NODE_PATH: ${{ runner.temp }}/showcase-qa/node_modules
+        run: node tools/avito-showcase.browser.cjs
+      - name: Four complete public example journeys on three screen widths
+        env:
+          NODE_PATH: ${{ runner.temp }}/showcase-qa/node_modules
+        run: node tools/avito-showcase-demos.browser.cjs

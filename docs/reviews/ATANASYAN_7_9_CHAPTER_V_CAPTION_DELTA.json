@@ -1,0 +1,31 @@
+{
+  "oldBundleSha256": "58cec7c15c71b92c87c896427d9a550023a8c0a44ac139705394907ff4f9dee7",
+  "finalCandidateSha256": "a86906ee62964e6023d36b66aaae92c4946e00fe167d9a91b9b86f9aa950d3a4",
+  "differences": [
+    [
+      "/lessons/661/visualization/model/views/step-1/note",
+      "В этом виде X = O. Ось AB сохраняет первую хорду, но не переводит её во вторую.",
+      "В этом виде X = O. Ось A₁B₁ сохраняет первую хорду, но не переводит её во вторую."
+    ],
+    [
+      "/lessons/661/visualization/model/views/case-1/note",
+      "В этом виде X = O. Ось AB сохраняет первую хорду, но не переводит её во вторую.",
+      "В этом виде X = O. Ось A₁B₁ сохраняет первую хорду, но не переводит её во вторую."
+    ],
+    [
+      "/build/authoredContentSha256",
+      "30336de85eefd4e9193053251371a5e6252544417166d6e08eab56b0748841b1",
+      "b0ff497aba0770f1f8295acfa151056c8080b7d4c8b84507e098e64ff3f1f037"
+    ],
+    [
+      "/build/chapters/4/authoredContentSha256",
+      "43e043884ec0e78aef8c16de4652d49228638fe49ddb74690b0938689e9a4145",
+      "45aa332673548772c19372db17583f43236c7432b955a369cbbbc4e605c18acb"
+    ]
+  ],
+  "schemaVersion": 1,
+  "status": "passed",
+  "lessonId": "atanasyan-7-9-main-408-part-1",
+  "scope": "Only the axis name in the step-1/case-1 note changed after the complete local browser run. No geometry, prompt, answer, state or other lesson changed.",
+  "verification": "The actual-page focused run checks all 16 view/width pairs of exercise408 at 320/1280, and independent C full-context review uses its four changed note images. Final exact-head CI remains a separate release requirement."
+}

@@ -4,6 +4,7 @@
 const E=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 // These are separate public exercises, never managed assignments or progress.
 const focusPractices=Object.freeze({
+ 'https://mathexam.space/trainers/oge-task11-graphs-trainer.html':'ОГЭ №11: графики функций',
  'https://mathexam.space/stereo-course/merzlyak-10-base/':'10 класс · Геометрия Мерзляк',
  'https://mathexam.space/trainers/rounding-stepwise.html':'Округление по шагам',
  'https://mathexam.space/trainers/task19-trainer.html':'ОГЭ №19: геометрические утверждения'
@@ -36,6 +37,7 @@ function planCoursesMarkup(value,{teacher=false}={}){
  return cards.join('');
 }
 const ogeGeometryCards=Object.freeze([
+ ['oge-task11-graphs-trainer','11','Графики функций','Сопоставляй графики и формулы. Если трудно — открой подсказку и пройди построение по шагам.'],
  ['oge-task15-triangles','15','Треугольники','Находи стороны и углы. Используй рисунок, подсказки и разбор по шагам.'],
  ['oge-task16-circle','16','Окружность','Разбирай углы, радиусы и фигуры, связанные с окружностью.'],
  ['oge-task17-quadrilaterals','17','Четырёхугольники','Тренируй свойства четырёхугольников, среднюю линию и площади.'],

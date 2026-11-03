@@ -72,7 +72,20 @@
       goal:'Различать долг, проценты и платёж и составлять расчёт в порядке событий из условия.',
       plan:['Запишите, к какой сумме относятся проценты.','Отметьте порядок изменения суммы или расчёта платежей.','Вычислите искомую сумму и сверьте её с условием.'],
       prerequisites:['bridge-fractions','bridge-equations','applied-formula'],
-      lessonIds:['applied-percent','applied-loan-linear','applied-loan-equal']}
+      lessonIds:['applied-percent','applied-loan-linear','applied-loan-equal',
+        'finance-lesson-01-ledger',
+        'finance-lesson-02-deposits',
+        'finance-lesson-03-interest-progression',
+        'finance-lesson-04-first-last-payment',
+        'finance-lesson-05-balance-tables',
+        'finance-lesson-06-payment-bounds',
+        'finance-lesson-07-equal-payments',
+        'finance-lesson-08-unknown-in-ledger',
+        'finance-lesson-09-rates',
+        'finance-lesson-10-inverse-equal-payments',
+        'finance-lesson-11-changing-conditions',
+        'finance-lesson-12-calendar',
+        'finance-lesson-13-two-stages']}
   ];
   const exams=specs.map(exam=>({...exam,milestones:milestones.map(stage=>({...stage}))}));
   const trigFoundations={

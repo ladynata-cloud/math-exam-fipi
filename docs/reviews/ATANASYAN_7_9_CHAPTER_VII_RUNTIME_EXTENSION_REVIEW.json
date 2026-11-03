@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "browser": "passed",
+  "reviewer": "Independent integration reviewer /root/vii_theory; runtime scope accepted by /root",
+  "at": "2026-10-29T19:21:32.103869+00:00",
+  "previousSourceCommit": "6fb959fc0130a0bb8842601d19297e305ac91ac0",
+  "preservedCards": 893,
+  "contentApprovalGranted": false,
+  "publicationApprovalGranted": false,
+  "oldImplementationSha256": "04e5a58da99bf68421e8f7aa9baccd8c3b2054766dab4141f912a46eba7690ec",
+  "implementationSha256": "06f892e4142242b6e1f22331479c884924d5e6690f18ca0fb3d6202bac0c319c",
+  "implementationFiles": {
+    "index.html": "098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804",
+    "assets/engine.js": "85d395dbfb66f8a1409f1d2f930fbb6f742c0085239d34d18ec2a901f3bd6492",
+    "assets/planar-viewer.js": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061",
+    "assets/style.css": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b",
+    "assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+    "source-inventory.json": "2c7afd7f801e3dc282fe4cfe85b86342d9d17e961986ce663beb3443f17bf3f3",
+    "assets/board-adapter.js": "e1c366fd77f2cc822894be7e21139ce99b9e7b3c568392b122f2a3b386b7545b"
+  },
+  "paragraphsAdded": [
+    {
+      "chapter": 7,
+      "number": 1,
+      "title": "Площадь многоугольника",
+      "pointNumbers": [
+        54,
+        56
+      ],
+      "exerciseNumbers": [
+        541,
+        554
+      ],
+      "printedPages": [
+        139,
+        145
+      ]
+    },
+    {
+      "chapter": 7,
+      "number": 2,
+      "title": "Площади параллелограмма, треугольника и трапеции",
+      "pointNumbers": [
+        57,
+        59
+      ],
+      "exerciseNumbers": [
+        555,
+        580
+      ],
+      "printedPages": [
+        146,
+        152
+      ]
+    },
+    {
+      "chapter": 7,
+      "number": 3,
+      "title": "Теорема Пифагора",
+      "pointNumbers": [
+        60,
+        62
+      ],
+      "exerciseNumbers": [
+        581,
+        604
+      ],
+      "printedPages": [
+        152,
+        158
+      ]
+    }
+  ],
+  "previousRuntimeReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_RUNTIME_EXTENSION_REVIEW.json",
+    "sha256": "76c2cb88441a834286dcf8fe6bb7ce0048a50542ec9d2bac315e8a263889487e"
+  },
+  "scope": "Only the exact three chapter VII paragraph metadata rows and the associated runtime digest; preserves all 893 published records and 167 frozen files through the verified amendment chain. Does not approve chapter VII lesson content.",
+  "acceptance": {
+    "acceptedBy": "/root",
+    "basis": "Explicit acceptance of the independent integration review and 105 probes; runtime extension scope only.",
+    "integrationAuthor": "/root/vii_integration",
+    "independentReviewer": "/root/vii_theory"
+  },
+  "evidence": [
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_TECHNICAL_REVIEW.md",
+      "sha256": "e87f4c6dce74f5a36cdeffef18015c1bc97232725ffa64007eafcb21ac8d0e21"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_TECHNICAL_PROBES.json",
+      "sha256": "cbc898c16035298122c61aaea19512a285c6fe7d3b165978b730c557ff9dd2bf"
+    }
+  ]
+}

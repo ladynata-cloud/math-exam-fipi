@@ -19,6 +19,7 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Reproducible standalone build
         run: |
+          node tools/stereo/sync_canvas_visibility.cjs --check
           python3 tools/stereo/build_site.py
           git diff --exit-code -- stereo-course/index.html
       - name: Retained mathematics and state
@@ -32,6 +33,7 @@ jobs:
           node tools/stereo/proof-choice-fractions.test.cjs
       - name: Numeric and proof figure invariants
         run: |
+          node tools/stereo/canvas-visibility.test.cjs
           node tools/stereo/task-scenes-math.test.cjs
           node tools/stereo/task-scenes.dom.test.cjs
           node tools/stereo/task-scene-expansion.test.cjs

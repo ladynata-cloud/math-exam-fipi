@@ -9,3 +9,13 @@ button,summary,small{overflow-wrap:anywhere;hyphens:auto}
 .stereo-math-atom,.stereo-mixed-number{display:inline;white-space:nowrap;overflow-wrap:normal;word-break:normal;hyphens:none}
 .stereo-fraction,.stereo-numerator,.stereo-denominator{white-space:nowrap;overflow-wrap:normal;word-break:normal;hyphens:none}
 button{max-width:100%;white-space:normal}
+
+/* Always-visible source captions accompany cards without affecting learner state. */
+.companion-reference{margin:1rem 0;min-width:0}
+.companion-reference p{margin:.35rem 0;line-height:1.5}
+.companion-identity{font-size:1.05rem;font-weight:700;color:#185737}
+.companion-location{font-size:.95rem;color:#284e3b}
+.companion-book{font-size:.88rem;color:#52665e}
+.catalog-results .companion-reference{margin:0 0 .65rem}
+.catalog-location-heading{margin:1.2rem 0 .6rem}
+.catalog-filters>[hidden]{display:none}

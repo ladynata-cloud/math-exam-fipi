@@ -50,14 +50,28 @@ const api = (page, route) => page.evaluate(route => LearningApp.api(route), rout
     page.on('request', request => { if (request.method() === 'POST') posts.push(new URL(request.url()).pathname); });
     await page.goto(origin + '/learning/?role=teacher'); await page.locator('#add-student').waitFor();
     await page.locator('#add-student').click();
-    assert.equal(await page.locator('#student-form select,#student-form [name=confirm]').count(), 0);
+    assert.equal(await page.locator('#student-form [name=confirm]').count(), 0,
+      'Ready access still needs no redundant password confirmation');
+    await page.locator('#student-form [data-onboarding-step="1"]').waitFor({ state: 'visible' });
+    assert.equal(await page.locator('#student-form [name=grade]').count(), 1);
+    assert.equal(await page.locator('#student-form [name=course]').count(), 1);
     assert.match(await page.locator('#student-form [name=password]').inputValue(), /^\d{4}$/);
     await page.locator('#student-form [name=name]').fill('Готовый вход');
     await page.locator('#student-form [name=login]').fill('fixture_simple_ready');
     await page.locator('#student-form [name=password]').fill(PASSWORD);
+    await page.locator('#student-form [name=grade]').selectOption('6');
+    await page.locator('#student-form [name=course]').selectOption('vilenkin6');
+    await page.locator('#student-form [data-onboarding-next]').click();
+    await page.locator('#student-form [data-onboarding-step="2"]').waitFor({ state: 'visible' });
+    await page.locator('#student-form [name=courseIds][value="vilenkin6-textbook"]').check();
+    await page.locator('#student-form [data-onboarding-next]').click();
+    await page.locator('#student-form [data-onboarding-step="3"]').waitFor({ state: 'visible' });
+    assert.match(await page.locator('#student-form [data-onboarding-summary]').innerText(), /Виленкин/);
     await page.locator('#student-form [type=submit]').click(); await page.locator('#access-password').waitFor();
     const created = store.accountByLogin('fixture_simple_ready');
     assert(created.password_hash); assert(!created.password_hash.includes(PASSWORD));
+    assert.deepEqual(store.studentProfile(teacher, created.id).program,
+      { grade: 6, courseIds: ['vilenkin6-textbook'] });
     const link = await page.locator('#access-link').inputValue();
     assert.equal(link, origin + '/learning/?role=student#login=fixture_simple_ready');
     assert.equal(await page.locator('#access-saved,#access-discard-confirm,#discard-access').count(), 0);

@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS_TECHNICAL_REVIEW_BROWSER_PENDING",
+  "reviewer": "Codex root, independent of restored scaffold and integration author",
+  "at": "2026-11-03T00:47:19.134481+00:00",
+  "baseCommit": "d74b8d599a5031a0620679a76dd08151fa171661",
+  "scope": "Chapter IX infrastructure, preservation boundaries, current-base integration and peer correction spot-review; not full image approval.",
+  "publicationApproval": false,
+  "reviewedDesign": [
+    "IX exact source union is160 cards; isolated candidate is1407 and remains unapproved.",
+    "All prior1247 lesson/catalog dictionaries, order, revision, provenance and storage identities have immutable hash checks.",
+    "Only three exact paragraph rows extend runtime inventory; prior manifest restoration is byte-exact; no broad exemption.",
+    "PR419 normalization accepts exactly its already-approved two-file delta; unknown extra byte fails.",
+    "Historical subset tests validate the complete new union before projection, preventing hidden foreign/missing/rewritten cards.",
+    "Staging requires real separate runtime/content receipts and an absent path outside checkout; tests use temporary synthetic fixtures only.",
+    "Workflow retains existing source, UI and full browser jobs, adds isolatedIX browser job and four independent math suites. All candidate views at320/1280 require capture and image review."
+  ],
+  "peerCorrectionReview": [
+    {
+      "item": "747",
+      "verdict": "Mathematics accepted; projected midpoint equality follows from congruent right triangles then rectangles; parallel diameter handled separately.",
+      "requestedCorrection": "Clarify intersecting perpendicular lines (extensions), add missing B-Q auxiliary from step2. Reviewer implemented; root verified current points and segments."
+    },
+    {
+      "item": "B theory links and783 grid",
+      "verdict": "Accepted: correct theory22/31/21/74/75/79/80/81/18 links; pale polygon grid preserves exact square directions and source ratios without runtime edits.",
+      "requestedCorrection": "783д radiiOA/OB absent initially, revealed fromstep1. Reviewer implemented and tested."
+    }
+  ],
+  "verificationLimits": [
+    "Local Chromium blocked by OS socket restriction; no browser pass claimed.",
+    "All new rendered views and cloud retained-work evidence still require actual review.",
+    "No external provider audit performed under standing owner policy."
+  ],
+  "bindings": [
+    {
+      "path": ".github/workflows/atanasyan-planimetry.yml",
+      "sha256": "a5f161240fa48c38521ebf940c3a32511c3255b4cc9c3d92a2eee80cd44c2a2c"
+    },
+    {
+      "path": "tools/geometry-textbook/build_candidate.py",
+      "sha256": "3af1aedafd2df89ec13e3f788a17ef95edb66dbef31a495fc68f52ddfd146a38"
+    },
+    {
+      "path": "tools/geometry-textbook/build_course.py",
+      "sha256": "1f20bd020a8da3b7b114d73367958d3f63d18a4b25a5f668b5c7d78dd7af5773"
+    },
+    {
+      "path": "tools/geometry-textbook/captions.test.cjs",
+      "sha256": "7c5c74c28d77860bc82a38c4529cac1214bc91f3cdf025f4218238d78e03ecd4"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter06_extension.py",
+      "sha256": "4250afad079a4aa116cfca32fee335ac25a249997578d5df8442d970cac5c4b6"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter07_extension.py",
+      "sha256": "09ce3049646d8f7222f3b0bd934dd37ea80da9904845eab7a5f7761e5b17aed3"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter08_extension.py",
+      "sha256": "c2357f1e20651e43bd7cf29b00a791848d080a5dcaddd527552a072e8a9f9de8"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter09-a-independent.test.py",
+      "sha256": "bb6b680bceb0c87133b98fe4decb4a40f6f174db00a85c46b02a988d7f73009e"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter09-b-independent.test.py",
+      "sha256": "904c72a03facdb3af2bc244bce365576a53b5e8a89334bdaa915b9defd7c6a44"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter09-c-independent.test.py",
+      "sha256": "52a2d1e65a295dc9962f4d983269fd075d16de39b28303c6f9b41c6581e44511"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter09-candidate.test.py",
+      "sha256": "0f9d8df4f9006441200033628c4ed905c7676dd58a43fd9a851b009517bbab98"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter09-captions.test.cjs",
+      "sha256": "8b067f25fb7d53f10291e38acceed0a8fad6e2704a51fbedebb3e4a27ad69f79"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter09-release.test.py",
+      "sha256": "ad802a947cd983fbc80ed50894e185b767e82ce05c658890e83f86c158570887"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter09-theory-independent.test.py",
+      "sha256": "69365d1896372a1f1dcadb34a782010a0ccaad977de53b28caf60c8d238414ef"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter09_common.py",
+      "sha256": "c12b882aefc17d6285cb6f36f4314f6629f80e72f116407bf02bd7a421f63002"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter09_extension.py",
+      "sha256": "97dfe98ca80b7bbcbd3fe9a5649aa425d558290a1fea394a60b27f1e64db5a00"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter09_preservation.py",
+      "sha256": "cea8d13aaf8198277c07122889f3ae172a490b1816010b9911cef7445a2bed71"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter09_release.py",
+      "sha256": "2b0bb9cfa1d515df8fc240f498739e7e3a670c994cfcf0bb6cc53b37305f7714"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter09_release_test_support.py",
+      "sha256": "76ea8deefbffaa4d8a5f5ec0006d86137e2f5705b5a69ae58cbe1f32234fc8e1"
+    },
+    {
+      "path": "tools/geometry-textbook/layout-amendment.test.py",
+      "sha256": "2cef1197213ce123b6a16a5e25f6cf4b32bceba3443bdee99c465924df72fdfd"
+    },
+    {
+      "path": "tools/geometry-textbook/published_preservation.py",
+      "sha256": "a6871752b9c24da225a2bb41cbadafb200a6c6e1f197d07f27cd80a6ac6d8836"
+    }
+  ],
+  "rootChecks": [
+    {
+      "command": "python3 tools/geometry-textbook/chapter09-candidate.test.py",
+      "tests": 8,
+      "result": "PASS",
+      "seconds": 14.264
+    },
+    {
+      "command": "python3 tools/geometry-textbook/chapter09-release.test.py",
+      "tests": 14,
+      "result": "PASS",
+      "seconds": 87.9
+    },
+    {
+      "command": "node tools/geometry-textbook/chapter09-captions.test.cjs <isolated-candidate>",
+      "cards": 160,
+      "domJourneys": 160,
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ]
+}

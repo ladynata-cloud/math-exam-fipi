@@ -1,0 +1,4056 @@
+{
+  "schemaVersion": 1,
+  "recordedAtUTC": "2026-10-29T14:31:17.620130+00:00",
+  "verdict": "FOCUSED_BROWSER_AND_INDEPENDENT_VISUAL_PASS",
+  "scope": {
+    "book": "Atanasyan geometry10–11,2024",
+    "chapter": "IV",
+    "paragraph": 2,
+    "exerciseNumbers": "346–371",
+    "newExerciseCards": 37,
+    "newTheoryCards": 3,
+    "theoryPoints": [
+      40,
+      41,
+      42
+    ],
+    "ids": [
+      "ex-main-0346",
+      "ex-main-0347-a",
+      "ex-main-0347-b",
+      "ex-main-0347-c",
+      "ex-main-0348-a",
+      "ex-main-0348-b",
+      "ex-main-0349",
+      "ex-main-0350-a",
+      "ex-main-0350-b",
+      "ex-main-0350-c",
+      "ex-main-0351",
+      "ex-main-0352",
+      "ex-main-0353-a",
+      "ex-main-0353-b",
+      "ex-main-0354-a",
+      "ex-main-0354-b",
+      "ex-main-0354-c",
+      "ex-main-0355",
+      "ex-main-0356",
+      "ex-main-0357",
+      "ex-main-0358",
+      "ex-main-0359-a",
+      "ex-main-0359-b",
+      "ex-main-0359-c",
+      "ex-main-0360",
+      "ex-main-0361",
+      "ex-main-0362",
+      "ex-main-0363",
+      "ex-main-0364",
+      "ex-main-0365",
+      "ex-main-0366",
+      "ex-main-0367-a",
+      "ex-main-0367-b",
+      "ex-main-0368",
+      "ex-main-0369",
+      "ex-main-0370",
+      "ex-main-0371",
+      "theory-040",
+      "theory-041",
+      "theory-042"
+    ],
+    "newSteps": 166,
+    "newModelViews": 171
+  },
+  "execution": {
+    "actualReviewedRepositoryBundle": true,
+    "scratchStatusProjectionUsedInFinalRun": false,
+    "widths": [
+      320,
+      1280
+    ],
+    "cardWidthJourneys": 80,
+    "screenshots": 414,
+    "screenshotCases": 207,
+    "fullExpandedHelpAndProofScreenshotsIncluded": 80,
+    "browserErrors": [],
+    "chromium": "153.0.8010.0",
+    "playwright": "1.62.1",
+    "sourceFilesIdenticalBeforeAfter": 53,
+    "browserHarnessChanged": false,
+    "productionHelperFunctionsVerbatim": true,
+    "timeoutChanged": false,
+    "supplementaryScratchAudits": "Actual visible DOM formula/operand layout at every captured state; nested and isolated-superscript fraction checks; targeted complete πR²/πr² line ranges. Production browser helpers remain unchanged.",
+    "exactSourceBinding": "Repository-relative SHA256 list below; final Git commit is bound separately after this report is committed. No embedded base SHA is claimed as the tested head."
+  },
+  "visualMethod": {
+    "allOriginalImagesIndependentlyInspectedOrExactMatched": 414,
+    "independentOfLessonAuthorship": true,
+    "models": "Every condition, authored step and otherwise help-only view at both widths; native model/caption crops bound to original PNG hashes.",
+    "proofs": "All80 complete expanded help/proof pages covered at native scale using contiguous overlapping tiles and byte-identical previously reviewed regions.",
+    "byteIdenticalToPreview2": 330,
+    "differentImagesIndependentlyReinspected": 84,
+    "previewNote": "Early isolated UI previews projected only status/review metadata for unfinished content. They were not source/math approval or publication evidence. The final run serves the actual reviewed repository bundle with53 unchanged input files.",
+    "derivedCropsExcludedFromScreenshotCount": true
+  },
+  "reviewOwnership": [
+    {
+      "group": "A",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "independentOfLessonAuthorship": true,
+      "ids": [
+        "ex-main-0346",
+        "ex-main-0347-a",
+        "ex-main-0347-b",
+        "ex-main-0347-c",
+        "ex-main-0348-a",
+        "ex-main-0348-b",
+        "ex-main-0349",
+        "ex-main-0350-a",
+        "ex-main-0350-b",
+        "ex-main-0350-c",
+        "ex-main-0351",
+        "ex-main-0352",
+        "ex-main-0353-a",
+        "ex-main-0353-b"
+      ],
+      "cards": 14,
+      "originalImages": 140,
+      "verdict": "PASS",
+      "reviewReport": "ATANASYAN_CONE_A_VISUAL.json",
+      "reviewReportSHA256": "92d7bb5267c03ef8d0f3b6ed33311e4e916f989ad6938f7733b2886638d7b9e0",
+      "componentReviews": []
+    },
+    {
+      "group": "B",
+      "reviewer": "cone_source",
+      "independentOfLessonAuthorship": true,
+      "ids": [
+        "ex-main-0354-a",
+        "ex-main-0354-b",
+        "ex-main-0354-c",
+        "ex-main-0355",
+        "ex-main-0356",
+        "ex-main-0357",
+        "ex-main-0358",
+        "ex-main-0359-a",
+        "ex-main-0359-b",
+        "ex-main-0359-c",
+        "ex-main-0360",
+        "ex-main-0361",
+        "ex-main-0362"
+      ],
+      "cards": 13,
+      "originalImages": 130,
+      "verdict": "PASS_INDEPENDENT_FINAL_VISUAL_REVIEW",
+      "reviewReport": "b-final-visual-review.json",
+      "reviewReportSHA256": "b445f2bbd72cb62edf92382cc52fb9589306c59691ab83313d334e4b447fd9f0",
+      "componentReviews": [
+        {
+          "reviewer": "cone_browser",
+          "scope": "desktop captions across all65 final capture cases",
+          "file": "b-desktop-captions-visual-review.json",
+          "sha256": "f093ef73adb04bce95ac3bdd5ee989e41800be6c728c3fe5238e0a01eca7c58a",
+          "verdict": "PASS"
+        },
+        {
+          "reviewer": "cone_integration",
+          "scope": "seven desktop complete proofs/help",
+          "file": "inspected-inputs.json",
+          "sha256": "4ad5d57d94993425483fb426c0c2aa8065203d91915a402c8c6bfddf1a4e6091",
+          "verdict": "PASS"
+        },
+        {
+          "reviewer": "cone_integration",
+          "scope": "all13 desktop initial main panels",
+          "file": "inspected-inputs.json",
+          "sha256": "72a36e97009027c2e0ba57c5b820938d0409d7aa497ebf54994ba2975aa47277",
+          "verdict": "PASS"
+        }
+      ]
+    },
+    {
+      "group": "C",
+      "reviewer": "cone_b",
+      "independentOfLessonAuthorship": true,
+      "ids": [
+        "ex-main-0363",
+        "ex-main-0364",
+        "ex-main-0365",
+        "ex-main-0366",
+        "ex-main-0367-a",
+        "ex-main-0367-b",
+        "ex-main-0368",
+        "ex-main-0369",
+        "ex-main-0370",
+        "ex-main-0371"
+      ],
+      "cards": 10,
+      "originalImages": 100,
+      "verdict": "PASS",
+      "reviewReport": "cone-c-independent-visual.json",
+      "reviewReportSHA256": "05f47566e461e51123394c7f8046b6578a3bafa5a19ce9ddb76d163ede8753a8",
+      "componentReviews": []
+    },
+    {
+      "group": "theory",
+      "reviewer": "cone_browser",
+      "independentOfLessonAuthorship": true,
+      "ids": [
+        "theory-040",
+        "theory-041",
+        "theory-042"
+      ],
+      "cards": 3,
+      "originalImages": 44,
+      "verdict": "VISUAL_PASS",
+      "reviewReport": "theory-final-visual-review.json",
+      "reviewReportSHA256": "40e680513e9034858efe2c8b56deae931baf25bb998b6a520e96a3156a571939",
+      "componentReviews": []
+    }
+  ],
+  "supplementaryVisualReview": [
+    {
+      "reviewer": "cone_browser",
+      "role": "Independent read of all65 final B desktop model captions",
+      "report": "b-desktop-captions-visual-review.json",
+      "sha256": "f093ef73adb04bce95ac3bdd5ee989e41800be6c728c3fe5238e0a01eca7c58a",
+      "verdict": "DESKTOP_CAPTIONS_VISUAL_PASS"
+    },
+    {
+      "reviewer": "cone_browser",
+      "role": "Native before/after reinspection of three unchanged-content border-only PNG differences",
+      "report": "border-only-final-review.json",
+      "sha256": "2093aa38071d9706b7a3d79e1c0b6f6f67c532fe34c76cdb9c2143ca3eb4afc4",
+      "verdict": "VISUAL_PASS"
+    }
+  ],
+  "sourceFilesSHA256": {
+    "stereo-course/assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+    "stereo-course/assets/task-scene-viewer.js": "a3e470e55b45d658cb74b2e32b5f1e9479785fa9b014be3929591bdcd55cefe6",
+    "stereo-course/assets/task-scenes.css": "5dbecdc2c98fbb030bcc4dba224f3b4ae89af292579a5136942810be75fd2cbf",
+    "stereo-course/textbook/assets/engine.js": "9da6fb10924d50793521740ea779d81ef78fe3dfee5dbd71ab138b7d345dba74",
+    "stereo-course/textbook/assets/style.css": "56b3ec43f680dde578320a9ea1c5969a9a15d2d0344bfa1eda903f5bd3e09f51",
+    "stereo-course/textbook/data/course.json": "a72afcbd8dcb3279cda2f452ee84ded625c128a90f4fe2825db10d707507b1a3",
+    "stereo-course/textbook/index.html": "af453fa854b9995f3a41bbf1a476564116a8efff43cee2234716e2c5489b5e55",
+    "stereo-course/textbook/lessons/ex-main-0346.json": "08fe11372d60cb59004ccd0888a699a9a9472016e2f9a29a67f141b0efd97b38",
+    "stereo-course/textbook/lessons/ex-main-0347-a.json": "0e1ca64280cabf5c94c460e96f1669be82d6fb0410e9e1a8943946563be378c5",
+    "stereo-course/textbook/lessons/ex-main-0347-b.json": "f99d706895958863840cc980e7822a16ab98476d77a4fe5b2785d50fe1b01c64",
+    "stereo-course/textbook/lessons/ex-main-0347-c.json": "7896aad75dd2f0cf0433e5609c3825b9874e7cb8a7d47a6a29f021b2b7ee9848",
+    "stereo-course/textbook/lessons/ex-main-0348-a.json": "a20ea73451d1fd4b9d377dcfd1cc6412c3997e2702eff7545097f4ece87394e0",
+    "stereo-course/textbook/lessons/ex-main-0348-b.json": "47350e107fd651e3ed69e09e20a6811eb9ea6cd722596d6431bbdeb083c64ae0",
+    "stereo-course/textbook/lessons/ex-main-0349.json": "2cd33037ca0a4ce6c579b7e6cbe3dbf34ace7fb52104bf702c35c6e5b8900f92",
+    "stereo-course/textbook/lessons/ex-main-0350-a.json": "39cce2fe47d54ca838c4ef83df55ecbc07cc5a75a53aa985d2a9b7db2580853c",
+    "stereo-course/textbook/lessons/ex-main-0350-b.json": "b561b6b1b610c9331a1953e55d997387ff8a5d6a0131b3dc47a06d6557642e17",
+    "stereo-course/textbook/lessons/ex-main-0350-c.json": "0be14932d54681989ebbdf7ae08812cdb1711adbd690ea9d4087f4e5ec7c5fed",
+    "stereo-course/textbook/lessons/ex-main-0351.json": "4c339c826da706872a4647aef943b48352ccac67084d600e30f820a982bea90d",
+    "stereo-course/textbook/lessons/ex-main-0352.json": "26cf6552054993ac687456e123c215da845b972e9e5102e14e3dca35f654df8b",
+    "stereo-course/textbook/lessons/ex-main-0353-a.json": "8decf791ac57fd3d7f224a833f2c4fdaa3f466c7491906c2997c847618b0947d",
+    "stereo-course/textbook/lessons/ex-main-0353-b.json": "df80cb6cc758033cd7533de504fa246aa372eac59f9dd053d7eb502c0f635c5c",
+    "stereo-course/textbook/lessons/ex-main-0354-a.json": "de403fc556ce32af2dfc1921fc25993c381b00bf4db56ec50868dd914eac2c0d",
+    "stereo-course/textbook/lessons/ex-main-0354-b.json": "354921504c0a18c53454f2fd0bf0707ff6083660e37acc0c95200d2fd77b6264",
+    "stereo-course/textbook/lessons/ex-main-0354-c.json": "4a23003ce8ac98f7497b33adf50df77ce939c3f5d050ea0e14722a809cb00ad9",
+    "stereo-course/textbook/lessons/ex-main-0355.json": "6cb4adc7b6970d2fdb8434711d3465d7db3f71ba1c32ea94741a8dfb7f184257",
+    "stereo-course/textbook/lessons/ex-main-0356.json": "1f5ac4f2689db14f51d0f9a016d50772ac0bb61147326815ae08bc75614bec12",
+    "stereo-course/textbook/lessons/ex-main-0357.json": "8d912ad81f77f2fb421e56786d1dc25636988c5fe3aa83f90bd2439e55c22155",
+    "stereo-course/textbook/lessons/ex-main-0358.json": "0f702328042f74be8b309f0257415751d693dfb85a9cfdc537bf4393d725e765",
+    "stereo-course/textbook/lessons/ex-main-0359-a.json": "fd25ff189d05e3f4e4b3949b4e0ec49e1dbda41c6c8a2cbbf74c771ff312dfd5",
+    "stereo-course/textbook/lessons/ex-main-0359-b.json": "c4b2b4a0a188fb4c5e39ba327071ef844a26f0c64a8727171ee435f9b521be2b",
+    "stereo-course/textbook/lessons/ex-main-0359-c.json": "442160407c960c17aa60e999166eff941a310ee04be8d11f2c64e9882f30c9a7",
+    "stereo-course/textbook/lessons/ex-main-0360.json": "0ddc3c072b84b65c94688d0262a381d903ca904b722ace14d9aaaa72694ba395",
+    "stereo-course/textbook/lessons/ex-main-0361.json": "38989a11793da555c4b43d2cac7917a19d18a124cdcb9445691f6b0832a87698",
+    "stereo-course/textbook/lessons/ex-main-0362.json": "28c69c2cdff6e1df79f7dd9873c8387584932ab1665b405ab074240e354c6433",
+    "stereo-course/textbook/lessons/ex-main-0363.json": "5f19303f7d53154d83003c571326c429f6d4a66917da22108af1cc08725fd981",
+    "stereo-course/textbook/lessons/ex-main-0364.json": "f4c08f39ec7d40c670df94021f5a2796560c09d16a4902f57e85b89f74630f96",
+    "stereo-course/textbook/lessons/ex-main-0365.json": "34fa860f411da6a35db36becdca1c094bd751e6fb2bfedad89fdd3c7b8a21349",
+    "stereo-course/textbook/lessons/ex-main-0366.json": "90d2bc8ac265bec48c44a11894bdc448efd216a9c58cb4b1665b5175ed8fa81e",
+    "stereo-course/textbook/lessons/ex-main-0367-a.json": "b51d8c39f0a44de8542444da08fe47fc7a6c615d90ff73af16006483c3d6fd9c",
+    "stereo-course/textbook/lessons/ex-main-0367-b.json": "f02615b27b98d6e772414d1a8264d3ebc0fb9eeafda69ac0a65695e089829418",
+    "stereo-course/textbook/lessons/ex-main-0368.json": "caea3fc002524c69d7dce0d21e3bc7e97187e119eb1ff982712ff45902000213",
+    "stereo-course/textbook/lessons/ex-main-0369.json": "cc8ba05a5d105bc39158ac03918a0d8685ab38f5f1a375fa86b548458e94cd47",
+    "stereo-course/textbook/lessons/ex-main-0370.json": "a6ab8718bcd0274ac433bf4017e03e51645cde4716fb8bfcd6be5970c85d1f8a",
+    "stereo-course/textbook/lessons/ex-main-0371.json": "1204363dba9e1efc5c94d619d4070d574bf1a343ee7145df707ba9ea31b4fd59",
+    "stereo-course/textbook/lessons/theory-040.json": "3f1f4da0d756b6c423f59d1d5e9ae287e35439c71de3a3f3348e403812c4329d",
+    "stereo-course/textbook/lessons/theory-041.json": "905c9b204f8460b5e8edc32ae5442ee3eaec16299176874488c20b8ab8f01d1d",
+    "stereo-course/textbook/lessons/theory-042.json": "00445781aa38e7abf0013b05373ebab6f523b796dcf94b75113a0489229ca482",
+    "stereo-course/textbook/source-index.json": "d34f6fbc6ce56d072e41b495f4e1dbb02ad72439c2acda6a9c381c56fd7e47e0",
+    "tools/stereo-textbook/browser-cases.cjs": "add8c32cf86c9b74c217b3126f9f30d8e13ea4ee8bc1b676d9b66f2a685488aa",
+    "tools/stereo-textbook/browser-shards.cjs": "54a44bfef687208675ffe7c141e5b4f31c9611ad5844a32d1c53e646932d85e8",
+    "tools/stereo-textbook/browser.cjs": "5c4ebb4a9ef5b24554244bd93d883b6bbcbf83f9ff0526824c4b180987782200",
+    "tools/stereo-textbook/cone-baseline.cjs": "6a4e4eb4bc36611030ff9f44a27c7ce79052955bb17d2cd50c127e8b739e34dd",
+    "tools/stereo-textbook/cone-baseline.json": "5b3972ec357ff1a51c1c1b19f904a4dc7aa054934d6a01d593011e917c930a2d"
+  },
+  "evidenceDigests": {
+    "beforeSourceManifestSHA256": "17d991e98a4ef85989dd75197cfbae2012b110173a3327afcd3acbb1332dafbb",
+    "afterSourceManifestSHA256": "17d991e98a4ef85989dd75197cfbae2012b110173a3327afcd3acbb1332dafbb",
+    "focusedBrowserEvidenceSHA256": "23388f578f8289fb2602b6d49238031b4bbf976d07673de9d1fcfb40f01c7063",
+    "focusedScreenshotManifestSHA256": "fd1124d268cc7024f1670b64ad9cfcb4ce455b443a33403755ea9ef981025fd2",
+    "focusedRunnerSHA256": "d8d05f60ec6fc8bec2fb11110c8a5ac00a720cf03fa96ff1df09f287150e3328",
+    "executionBindingSHA256": "f7235a31da3cb8a40a836c7c0ba5e158db54534dc7df0e5b96ac1e4737e98f52",
+    "previewContentBindingSHA256": "b66e96fa7632dbf2cdd283bcb8673df9e24f5a1d57569c1ed07af12588d7f978",
+    "previewPNGComparisonSHA256": "cefac73ee5b33e765eb79d0fc8de3a64c439fb7a663e09c9666b7f4c639197bf"
+  },
+  "previousCoverage": {
+    "existingCards": 554,
+    "existingScreenshotCasesPreserved": 1478,
+    "existingScreenshotCasesCanonicalSHA256": "76ec8e4241c1f3f2fb86ffa5a9d86567bd821d9da08c322957e8e2ff2aefc045",
+    "newTotalCards": 594,
+    "newTotalScreenshotCases": 1685,
+    "newScreenshotCasesCanonicalSHA256": "b940525a643803ead741693531ffbcd562881b57fa6f6cea356993d6f91fc496"
+  },
+  "attemptHistory": [
+    {
+      "stage": "Early per-author draft previews",
+      "status": "Diagnostic only",
+      "notes": "Exposed fixed-generator silhouettes, neutral-label omissions and fraction/formula readability issues; authors fixed source content and coordinates without changing runtime."
+    },
+    {
+      "stage": "Unified projected preview2",
+      "status": "Actual80 journeys and414 PNG completed; independent visual review requested corrections",
+      "notes": "All changed formulas, titles and geometry were recaptured in the final actual bundle. No preview status projection is used as final approval."
+    },
+    {
+      "stage": "Final actual reviewed repository",
+      "status": "PASS",
+      "cardWidthJourneys": 80,
+      "originalPNGs": 414,
+      "unchangedInputFiles": 53
+    }
+  ],
+  "publicationGate": {
+    "status": "PENDING_FULL_CI",
+    "required": "Exact committed-head complete four-shard browser gate and collector:1188 card-width journeys,3370 ordinary PNGs plus4 expanded PNGs; existing retention, theory, fullscreen and two-tab checks.",
+    "focusedRunIsNotFullCoursePass": true,
+    "mergeAuthorizedByThisRecord": false
+  },
+  "limitations": [
+    "This report covers the40 new cards locally; the unchanged554-card universe remains subject to exact-head full CI.",
+    "No paid external-provider or real-pupil evaluation is claimed.",
+    "Source scans, private file identifiers and host filesystem paths are excluded."
+  ],
+  "images": [
+    {
+      "id": "ex-main-0346",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-346-condition-320.png",
+      "sha256": "c43593299dccefddda2c0ddab82988bccc8af61a7f9f9b1b526f6724a59bdf45",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0346",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-346-step-1-320.png",
+      "sha256": "bdb11c8850dc084f7f2f531bc9569bda054206d13f0574817366fe81221d98b8",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0346",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-346-step-2-320.png",
+      "sha256": "e2278d6a6ae2695a57f65e2bd60418a0d59b06fa3bc8c5663455fb740451e9ef",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0346",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-346-complete-proof-320.png",
+      "sha256": "eeb6203596cdd2b99998937cb778128c8adadcf98e3149692a578a8e71357567",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0347-a",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-347-a-condition-320.png",
+      "sha256": "b121e825ba2d9fdafbc9834f244edc954ac7960f37128a8d97c7a8e73bbc7aff",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-a",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-347-a-step-1-320.png",
+      "sha256": "a0535fbf93f4676cca6bc75d372fd8e85698311c4642c0e0bfcce885fe4de205",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-a",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-347-a-step-2-320.png",
+      "sha256": "fc3690611b23620fe26815abb547b4141f33f8a135e6ed0116585caa0a412c88",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-a",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-347-a-step-3-320.png",
+      "sha256": "34058c608537aba0584a580b7581e10f0f5233d3fad0d132c70fe3a805729bc2",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-a",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-347-a-complete-proof-320.png",
+      "sha256": "533dda69526c39488ca4b5a143724a229fba7eb8f783a823581946301bba7325",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0347-b",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-347-b-condition-320.png",
+      "sha256": "521fa01ef5a8787634a449ce90a6d7c37b8937314e49ed539f080c2d778872c2",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-b",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-347-b-step-1-320.png",
+      "sha256": "44189baab7c580bbdc03355865a91b9f5a3217253c00f62252171545e75adb54",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-b",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-347-b-step-2-320.png",
+      "sha256": "4e711ea71d57b20a6d307dc199114465a6412e7a7ff3e89acc9708cfc01107ab",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-b",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-347-b-step-3-320.png",
+      "sha256": "6020784446b8f62b22344c3bfdfd39f8f49ad59289cfad1a79c7fcc6d3799919",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-b",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-347-b-complete-proof-320.png",
+      "sha256": "3346f0d378b97c276e2b9b85b7a9c44668ea97b9eac65c27b3aec6a0ae1e20f8",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0347-c",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-347-c-condition-320.png",
+      "sha256": "9a9cbda5ec0ca560d087b6aa12876cefd1250a207ac87a09d32f6f6d994b89c7",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-c",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-347-c-step-1-320.png",
+      "sha256": "fcf4e04e7e17a5ceb460c73d8f19d93e385b833d17796600070e2ea8c689e70f",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-c",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-347-c-step-2-320.png",
+      "sha256": "060a14cb335e74afadd9f3cbf604fa1f5d273e4173ea69707bdaebcd4e17d654",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-c",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-347-c-step-3-320.png",
+      "sha256": "e6ca508106f1166240ca2b06d2c550488d9409cb92a287b87e44d594f827a916",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-c",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-347-c-complete-proof-320.png",
+      "sha256": "124769f00ef30d8e7398d6a427b4191d8abcde76090a4a94515108faef17d358",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0348-a",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-348-a-condition-320.png",
+      "sha256": "f2880bb9547c17eff45333b369ea138920324b8598a52833e0badd134899c01c",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0348-a",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-348-a-step-1-320.png",
+      "sha256": "ae96aa3d848926d6ffc68124cb369665baf5c3b0ebabf4ac9a711b143427e47d",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0348-a",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-348-a-step-2-320.png",
+      "sha256": "5a6256ff90ac6b9353f028e3e42cb813e722eb44170fe13c9de1f542dcaeb767",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0348-a",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-348-a-step-3-320.png",
+      "sha256": "138db8b31ddd5e887c3088f2061c01ffe12bc910b08c2eb4a0e1786a774baa6a",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0348-a",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-348-a-complete-proof-320.png",
+      "sha256": "259b0538b31e95a6249ab49cdfea26b58b8fd71d3c09c33734fe9fdf71dc16e8",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0348-b",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-348-b-condition-320.png",
+      "sha256": "18dada15d47bb186e167a59447319583a0d6df796389bb2095be13401fd3f2be",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0348-b",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-348-b-step-1-320.png",
+      "sha256": "c37a7da91ed53265f934b1492e70c3d1aeb144d55963729831c68d2790accc81",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0348-b",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-348-b-step-2-320.png",
+      "sha256": "93b536bcbead6c2b465e2c49a5c05e89292467bf95a6d00399159fcb07ab7393",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0348-b",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-348-b-step-3-320.png",
+      "sha256": "9c98106ff6577d36ebf5aab404d3772f1031f5adad952017809d151f47f26e0e",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0348-b",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-348-b-complete-proof-320.png",
+      "sha256": "2d4cf138d729b39b368f20b607a27b2689bce767be1e15521cb2e6cfab8998ab",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0349",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-349-condition-320.png",
+      "sha256": "6dc80b9686abbff6b5e63f8ca594173ab56d00d5681d9d7ed8ec33fe506c1119",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0349",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-349-step-1-320.png",
+      "sha256": "cbaa50a775869bfdb55c15770ec53256eca5f297b23231733767ad4032e8a5db",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0349",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-349-step-2-320.png",
+      "sha256": "fc7e0087e50f32aa4b8cc58c4c7af01aa1d96674146526b16290b658c1d9756f",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0349",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-349-complete-proof-320.png",
+      "sha256": "ee5c3b91fde3fe8af84d42582880e63de79bf787d8969b2ad9cd0d105b0bdd81",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0350-a",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-350-a-condition-320.png",
+      "sha256": "2fd3e8414fefb03d138916cc7104874472a253950a37d21a15fa4797b81f0733",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-a",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-350-a-step-1-320.png",
+      "sha256": "f9af4daafd6bf178658e7fd492f99c92a8cb02acca58988e4a064f792ae0ac4c",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-a",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-350-a-step-2-320.png",
+      "sha256": "4676f6833d09bf88c8f5659f08f6cd938be59c08b628b755beeb87bb59be7a70",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-a",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-350-a-step-3-320.png",
+      "sha256": "15319a6b26464b6665962d61220c17343b12df96634a33f37861de5f71520f30",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-a",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-350-a-complete-proof-320.png",
+      "sha256": "fe383d7a0eaba608d1d509007f0db3369e244eb9a044b40fe0f77a3a16c91e7f",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0350-b",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-350-b-condition-320.png",
+      "sha256": "b6332b14aaf4845a1710cd6c79f69f4acfe03353908c16795a563de1e2fdd489",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-b",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-350-b-step-1-320.png",
+      "sha256": "c51cef1389d2c723b88f34820d2468837220e1ecfff2783b83b4a580f4f68338",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-b",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-350-b-step-2-320.png",
+      "sha256": "95c6445fa12460be90e886c92f190e201fb08acc7121099163bfaf82393ea2dd",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-b",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-350-b-step-3-320.png",
+      "sha256": "92f9e8a70bef41038a6efc72ea2209b57a73b76632c15a5ac8f85811139e4505",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-b",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-350-b-complete-proof-320.png",
+      "sha256": "14cfad3c1ff011a386c95323d513f48a23d8cb9333846f1637dd552233fdc9b1",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0350-c",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-350-c-condition-320.png",
+      "sha256": "fcd8aba06462da4d30c3ed6a815b2d026882e986a798f7dbf5be46dab8daff20",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-c",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-350-c-step-1-320.png",
+      "sha256": "c85e131f3b04d497ac28bb9e25406c9714f4242897d091124b12d334d3f494f8",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-c",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-350-c-step-2-320.png",
+      "sha256": "2322e8a0b15f8b99cadcb4aeb91e1ed5bb23a916b51edbac5122e85a57841d29",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-c",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-350-c-step-3-320.png",
+      "sha256": "5ab38437a81502f5a23aad54f6fdab6edf43cf4dfb163de3134da019a3368bcc",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-c",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-350-c-complete-proof-320.png",
+      "sha256": "4adaafd24e25bf9301648b0be2bffc10eeb45af201156319e3c499e1f2d8d886",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0351",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-351-condition-320.png",
+      "sha256": "78fb51ed9478661ec5cba9e97bf66f9fe1c429804c28e56c79d55eae9eba47cc",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0351",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-351-step-1-320.png",
+      "sha256": "4adc19a5a3fd4ef6f469bba8a6f4f17e6d8d9a323cdcd7c6e1148c14f87baab6",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0351",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-351-step-2-320.png",
+      "sha256": "0b583231ad2ae4420970abfb01c161c77f159e0a9e49c0e71b82026345f53ad0",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0351",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-351-step-3-320.png",
+      "sha256": "e06b80ed03385d3fc2b4c6defc671ddf83e5fba0d87accdef5d68517ccfd3633",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0351",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-351-complete-proof-320.png",
+      "sha256": "8263841bc3440fdec76b6e80121104c67a7af0833d719058231b6756978e009b",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0352",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-352-condition-320.png",
+      "sha256": "0d2f89a612ca016e11d1310630393bc41398b237654de560fe158b034addd86d",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0352",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-352-step-1-320.png",
+      "sha256": "e1ba256d089f281891dd7d316c6a61e5e73bc1e7ab09d8f79b0bca9d1887bec2",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0352",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-352-step-2-320.png",
+      "sha256": "ecea14c30328deec2385ef7ba0f2ef54caa17292a57d782f4f21481a416f7749",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0352",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-352-step-3-320.png",
+      "sha256": "800ec19bff24d454cd56773497c74cdaa4e1a9b2c408a7125ec54046c2150a75",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0352",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-352-complete-proof-320.png",
+      "sha256": "1bc8858eb883bec73c7f49ac30f5122a414504f9a6ef27d65169961f104b4f70",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0353-a",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-353-a-condition-320.png",
+      "sha256": "323b236929a46a205ca669b0694509c9ab21ebc7c5bcbf0933c4eaadb055f1af",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0353-a",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-353-a-step-1-320.png",
+      "sha256": "a5e819b4df5d153341ce5efd7cec2d04e2bf3198dd1f3256bbecae1ed5cb0ded",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0353-a",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-353-a-step-2-320.png",
+      "sha256": "ef5c2a7ecfb5aff2f7e4598c550b80df926ec1c62b1efb3dcac6cf9ebe526953",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0353-a",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-353-a-step-3-320.png",
+      "sha256": "d39a60cdbe2c31fef3492814ec9582fee84ce237af46fed01fd6472986f43218",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0353-a",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-353-a-step-4-320.png",
+      "sha256": "be9c41e26437bc2acbce89edfb411027d4c1b12062f5b4f9d7d937012ea36d2e",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0353-a",
+      "width": 320,
+      "stage": "step-5",
+      "file": "cone-353-a-complete-proof-320.png",
+      "sha256": "b61289d5d94b4dbfe33ce61b8717004dcf97c48e6fb28ef0870e5aae932c7b99",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0353-b",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-353-b-condition-320.png",
+      "sha256": "7c72429e41e3c8dd002d5eda55911613f698a265f750d7da4025dae7d031d78b",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0353-b",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-353-b-step-1-320.png",
+      "sha256": "fabb022125504c80ea9541a083f2324768614fc36bf8237b4699eff414e9b9fc",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0353-b",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-353-b-step-2-320.png",
+      "sha256": "c3bb3fd10c916104fbfdf16570ae91bde1dd5d9d6a1f8872a62af6e5cd37029a",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0353-b",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-353-b-step-3-320.png",
+      "sha256": "16cb3c1b64058d2da6e4a455a0475f96fdb74075dfd8e0d1a309c0cc24ae7678",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0353-b",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-353-b-step-4-320.png",
+      "sha256": "c33f2a8ab4b613c7cbcdb48e9ea5eb5fc9add15c63e5ebb9dbbff424078e71fc",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0353-b",
+      "width": 320,
+      "stage": "step-5",
+      "file": "cone-353-b-complete-proof-320.png",
+      "sha256": "1dee59e4b5a20e9176435a808da1704476d438711cccd2574820dbc8080adf88",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0354-a",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-354-a-condition-320.png",
+      "sha256": "ac3a908144e8baca937fcb8636d7b7119a0fdcab3598a40cdc919915c6cadc4e",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-a",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-354-a-step-1-320.png",
+      "sha256": "0cd29bfa594e5b14b90e8cfaf57e26913e6b69f697b121c733dca7a9055f7427",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-a",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-354-a-step-2-320.png",
+      "sha256": "c424085a0162e56f00054ab7ac0f2c092f5b4916ffd9202ff728a470aa05fe78",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-a",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-354-a-step-3-320.png",
+      "sha256": "b9a8dfb5b55e3ef8e92f521f59079cbbb7f7f73880ee08df402f08a4393f3ce9",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-a",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-354-a-complete-proof-320.png",
+      "sha256": "1f092f9b4b89c535bc13cd285fcc591d5c6ba8bc1d3c61a973c5699a19580666",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0354-b",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-354-b-condition-320.png",
+      "sha256": "115e6bbd7add7ddff36768bfa09156514fa258cc9ff3461beb33a175be581dd3",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-b",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-354-b-step-1-320.png",
+      "sha256": "4810f015ebffa6dada866a82bcedf82fe55f039b7e674aa201618507acda29e3",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-b",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-354-b-step-2-320.png",
+      "sha256": "63b22f1bbb2e99ba8229f6b3671a31b2479ffb6c6ba38837becdb60aa6c12b5e",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-b",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-354-b-step-3-320.png",
+      "sha256": "c183648042729575e582dd925a85bb8f2e807f6e3c0e69dd7f8dfa304f461366",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-b",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-354-b-complete-proof-320.png",
+      "sha256": "823a469f98ac30321de1e68c5513fe3cf5d7332337f733332e191571f980635f",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0354-c",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-354-c-condition-320.png",
+      "sha256": "dd10c6f7b113239ddd09ef956f0b22976a5ebf76d1c740afede5f6eba2a7248c",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-c",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-354-c-step-1-320.png",
+      "sha256": "58073e0ad35874729cf09973de12743193b4eb0dbd358731f85289b75212e1e9",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-c",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-354-c-step-2-320.png",
+      "sha256": "264370002bc94959f351bba87e32407d4a8bbbf5ed9235dabd4be591aaf9d0cd",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-c",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-354-c-step-3-320.png",
+      "sha256": "36010d843ca3259a143bb71f0b63522595210cb4278492b43d5bd9584e05629f",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-c",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-354-c-complete-proof-320.png",
+      "sha256": "23f08204b8b8799b7e1455812d7b6f4004df15e2aff0c1445a79306fa28f452b",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0355",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-355-condition-320.png",
+      "sha256": "d7747b572869ab710bf090f55c8be2fb60a992eadedcb8e54d4d59fa0f2f12e9",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0355",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-355-step-1-320.png",
+      "sha256": "a7c06a0d154bef0236c9982746c47e29cbda37eef51c8951645967b537f0653e",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0355",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-355-step-2-320.png",
+      "sha256": "a13f8077469469dd927cf7ab613668483749b736d6377a7f9ef125db250b82ae",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0355",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-355-step-3-320.png",
+      "sha256": "8d9020ad64ca17b749c34e4c93789fb7c172ac32da0e19938738db8b96c7be41",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0355",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-355-step-4-320.png",
+      "sha256": "1bca0f0e9dcd180d5f71f74bb807cbbf2fa7d3c826ea71be1a72ac00f2044066",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0355",
+      "width": 320,
+      "stage": "step-5",
+      "file": "cone-355-complete-proof-320.png",
+      "sha256": "ab618156e23b6d2d27f826a8f4459d3325fca0dbe966b8bf62a76e6938205cba",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0356",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-356-condition-320.png",
+      "sha256": "3513fd3c60e3975768121b1106a4795b0a9646bd8e3eb9143fdc3d181b420845",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0356",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-356-step-1-320.png",
+      "sha256": "c3e85854022702f0d9e2003b7cb526330d44f25eaf0e63a604a105118833b2c5",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0356",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-356-step-2-320.png",
+      "sha256": "d34e31f5e155bd2b7563657c2e38ea53a589db24b4def036e99b85653ed2647b",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0356",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-356-step-3-320.png",
+      "sha256": "d8f3a9972cce9e285bf2bcd26097fd44f18b8b548b8f58c907a6087871b3dea3",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0356",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-356-complete-proof-320.png",
+      "sha256": "ce6d895911b63e5b25f8bf79ad92dfe8ced9e62759d40a3ed8f3698d91b378ea",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0357",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-357-condition-320.png",
+      "sha256": "11ce340ffcc77ee27035bc273bbddc86257838ca408c11c2e96580e163130310",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0357",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-357-step-1-320.png",
+      "sha256": "de34071ec7cae1564ec85cd7d0a27df295c1ee67b94afe471bc01288941c4d25",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0357",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-357-step-2-320.png",
+      "sha256": "98511596ff4482be5d34c09daa7d2675f5f71af0f6f121e283d6aafba7f450dc",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0357",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-357-step-3-320.png",
+      "sha256": "6f7be802b5468af3a385087069c08af5622375ec77d16de1a0c0be7175f72bae",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0357",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-357-complete-proof-320.png",
+      "sha256": "7b2f04be05234982c183746aea9d7236ed3cb56d00da8a2c106565e7eb122b83",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0358",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-358-condition-320.png",
+      "sha256": "26b14fcae571fe897987ff83ad0ca3f685eb22183ffe43d2cc80eb6e5aec9ef6",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0358",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-358-step-1-320.png",
+      "sha256": "c082baea5b55b72b1f8bfa65b2771847108375a18dfbd122bd077a5a7fca432a",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0358",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-358-step-2-320.png",
+      "sha256": "86ebc65db81e19b7515cf50d33d724cb4f6db270e42c918040baa45ebc75c371",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0358",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-358-step-3-320.png",
+      "sha256": "95652cdd025d59cdae23d599adbb374ecfc8318c710458b6203b8fc2f3591033",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0358",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-358-complete-proof-320.png",
+      "sha256": "cb69eefa1e50324b8672ca8aa4cc21161413d6f8317f182f00c07a877545a9e7",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0359-a",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-359-a-condition-320.png",
+      "sha256": "28ca8bf2aa17e631df7f7b0b663f72cc335c4f86c59e6a89d2ba6a18af2edbc0",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-a",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-359-a-step-1-320.png",
+      "sha256": "7794d4a3200544d480aabcdab2f84b209bcfdd0fd234caa418b49b417ea544b8",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-a",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-359-a-step-2-320.png",
+      "sha256": "99f68de0872cdcdc1cfb0deaa4b1cfc64dd54f6851c2f0d4346ace48de57ba5c",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-a",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-359-a-step-3-320.png",
+      "sha256": "ff98bb78f7e64d19aa6f3932f650cc8f270ff3e8426248c5d04ca864d150921e",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-a",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-359-a-complete-proof-320.png",
+      "sha256": "558f366c6b0371eb332feabc32cc674a4be1db4f3b2045937ec1babdbc08275d",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0359-b",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-359-b-condition-320.png",
+      "sha256": "91886a89f130e4734bff968e61fb67336230ec922acaf3c1ca52676b89f47b9e",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-b",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-359-b-step-1-320.png",
+      "sha256": "9932b6de27267c0a912b3fe6f3ba157beb5ab938a841e2ee15b25feda89e2cc1",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-b",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-359-b-step-2-320.png",
+      "sha256": "960eda12ca7a6dd1155c9a206f0e293acefc55c9cdb5bc41f0b2d5b88f38509a",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-b",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-359-b-step-3-320.png",
+      "sha256": "35595c347eec4f18507fc1e324a414d39683b1a48907eebadb75e9d3559dd3d5",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-b",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-359-b-complete-proof-320.png",
+      "sha256": "9132f09650ddf04a43ae777f7641183b5bcacc34218f41266273dcfda31ba3c1",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0359-c",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-359-c-condition-320.png",
+      "sha256": "4cc43ebf92ea726bd0c4f5821d3e10bc083e654a15e3b182ac2fcbd4f88d2a25",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-c",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-359-c-step-1-320.png",
+      "sha256": "8f6342c1f7a46313863536b249b0156b7cecc92a8cfe1755d3b01a3e6bebb7ac",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-c",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-359-c-step-2-320.png",
+      "sha256": "33b8e49b1ea50f155546f684b8ef589213c62bbe8cba79e608098f9249f5715f",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-c",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-359-c-step-3-320.png",
+      "sha256": "842641a2d66ce3e1671b9e8bed57ba1bb97610525d3910465793b9440d54eb48",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-c",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-359-c-complete-proof-320.png",
+      "sha256": "c8a1a281757a5a7d92878ae94a43177f840cb0170ab51651e524e7d7320ca403",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0360",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-360-condition-320.png",
+      "sha256": "bea6b7918b2a1c7e704bc28caef994aec9c73b2e1d0ce5074542ea4c7eb9e353",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0360",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-360-step-1-320.png",
+      "sha256": "b7fbcffbb85293afdd1332a993049bbd7a90a53483511c04d695ef9932d3b1af",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0360",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-360-step-2-320.png",
+      "sha256": "fbaf79d042b6d7b76df074dd5f81f3fbdeae5db5524aedc547af8b42c3e08aea",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0360",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-360-step-3-320.png",
+      "sha256": "c6f7d2c98d7c6926a8fe34f6c004ab726e21de64ebfa98aa3fabc3ba7c13289b",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0360",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-360-complete-proof-320.png",
+      "sha256": "99a5226ca66ac78556abeff5d0570771e512919235e3fbb3860b8287eb865f9f",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0361",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-361-condition-320.png",
+      "sha256": "90de4a7089b38c4d99e26a8ad157826552b40fc7d3b8906d6ca02cd9e1852a0c",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0361",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-361-step-1-320.png",
+      "sha256": "5759ed4471edcd03ae9d8ea9efc8b5c4912dc6f1c6512c3907bbd0e1f679f746",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0361",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-361-step-2-320.png",
+      "sha256": "bdaf611adef092cae55430276fac41bff73c139640b70967fc0d4819a4d45256",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0361",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-361-complete-proof-320.png",
+      "sha256": "d474822b5d7bbab69d463e188928ce1c8ef6de876c54779cb5810f77498e7fc6",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0362",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-362-condition-320.png",
+      "sha256": "3571926f5f6e0ef6ea8c68dc07e4dde87f578cca7aac2c4948c7f0e2d959d2ed",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0362",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-362-step-1-320.png",
+      "sha256": "98a6638805d082d4340530d89281fcc5d34452c99b3d4aea1f290d10b10ff63c",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0362",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-362-step-2-320.png",
+      "sha256": "41da8cef11a813cf055fe6143fbd2747e6ce095c196dbec45c08e47f3320965c",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0362",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-362-step-3-320.png",
+      "sha256": "fec17e82c106601de5325a1449fe6db31b74099059f270ac4a645f470c2b101b",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0362",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-362-complete-proof-320.png",
+      "sha256": "4d5c52c6f2e34acca7007ef8d62b2017d20b4b6b7db9a8296411fbdcef735eed",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0363",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-363-condition-320.png",
+      "sha256": "ad23dc159b5a3e8cb8b7aae1642546bacb8faafd03a3b55257c16d886e15a9b6",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0363",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-363-step-1-320.png",
+      "sha256": "5a986ae993f570a011a7a7b65ab752ad4f0ad0c44fe682ec8a857a23bcaf91a7",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0363",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-363-step-2-320.png",
+      "sha256": "72a231fde56cabc0d989ec51948852e4b056e58ce68c2f95f15f08a06780e13f",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0363",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-363-step-3-320.png",
+      "sha256": "a907c6bce1c5d798e7c0630dab595780744ca6f300e53f2b0d4adb2d3b145acd",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0363",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-363-complete-proof-320.png",
+      "sha256": "ca303d17831ac3e498b370d8bcd103c0b54ad2fa2a9f74ad9bec64c0f7d84f9a",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0364",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-364-condition-320.png",
+      "sha256": "5b3893c7b16cdb7fe493b63596c98bbd22098f13772396c986f352b9f7dfd06b",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0364",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-364-step-1-320.png",
+      "sha256": "085a912831e3b834bb7c3b517ac0020ed816399518b749942f2e9d43a66f5f83",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0364",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-364-step-2-320.png",
+      "sha256": "9c40a9f997783e7a21f6c051e7be6a25cca9aa710179ce50ea57dda288e193e1",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0364",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-364-step-3-320.png",
+      "sha256": "99af728234f51f79d86cf0ff3da1c63ec34f3430453685b94b568d7ea6dd3cb3",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0364",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-364-complete-proof-320.png",
+      "sha256": "244d56c8dae18e685bd16b0f6b84c145dc988e83da435d9431e53a6a149f0022",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0365",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-365-condition-320.png",
+      "sha256": "d085726695e496c582f29677d9f4977925170855d267ef05e2ee4cbf7e04484e",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0365",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-365-step-1-320.png",
+      "sha256": "7c11e22f6ab86c170f1b34b84afbf4c436151e9eefd80aa780e26d2f4df332b1",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0365",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-365-step-2-320.png",
+      "sha256": "5099cd10a62fd94da347ff0f74cda4a3e21d2619f4a8841765a07101703c918c",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0365",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-365-step-3-320.png",
+      "sha256": "19c57db8dd84059ff8b5051a9c2e15ac93cb4cba9897ca173aabcf8497b9ad41",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0365",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-365-step-4-320.png",
+      "sha256": "860dfe45de219c3289a7174887397977011480f657a1a8b14749b16fb99de5a1",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0365",
+      "width": 320,
+      "stage": "step-5",
+      "file": "cone-365-complete-proof-320.png",
+      "sha256": "fdfc4a5ed97095f85dfbbf898ece41d9b0a1b4459cd0ea456ba84500c24042b4",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0366",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-366-condition-320.png",
+      "sha256": "b7e5095aca0a29a90aab392a382e7a387b16d43ccebad6e0d1b39bd8b19927d6",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0366",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-366-step-1-320.png",
+      "sha256": "691419c71ccabfc90de47e4bdc55cee7e2e2a27615499bf728be79e026965760",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0366",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-366-step-2-320.png",
+      "sha256": "882c813d2fb2630b2ed75d1b8126b542d54fec2f9bf9fdfe42c31724c5172f20",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0366",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-366-complete-proof-320.png",
+      "sha256": "948c8115aabdab1e72cc9783f01923d832067de906d80495e1db50f7937da313",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0367-a",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-367-a-condition-320.png",
+      "sha256": "0a130125f94873a6699b156c48b3f67c4fd9f4540254230ab9b684cffcd593b4",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0367-a",
+      "width": 320,
+      "stage": "help:h1",
+      "file": "cone-367-a-help-h1-320.png",
+      "sha256": "255c3a0b4b976bc385c5d17a7efbbdc6f571fc4d52f05ce6ea3b955937972a0c",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0367-a",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-367-a-step-1-320.png",
+      "sha256": "353782f8ad69da9511e76d4e57f0e3ea0110d328b101fa304f3d88fe7e9acbd3",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0367-a",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-367-a-complete-proof-320.png",
+      "sha256": "d7a2c842246b27d4b876f91b03a7b863e012623544c79e5d0fef2812af6d7104",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0367-b",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-367-b-condition-320.png",
+      "sha256": "89726994ca1c99ecf6c9e43bc2e19ad1d52272aba4782a8e0a036984e590cb24",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0367-b",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-367-b-step-1-320.png",
+      "sha256": "52f2ee8dcaf5d78ba7a8e76add81df5d35d163a2c9cb305f7e3959b5557c511a",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0367-b",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-367-b-step-2-320.png",
+      "sha256": "c71762721ed963ce79bcf532e3a5a14b34bd547a70dba06bd41cf0d56362582b",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0367-b",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-367-b-step-3-320.png",
+      "sha256": "5d2ee8b572684e71da641a80ff2e14844ce9f2bfa538e3e68770699d5676d25e",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0367-b",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-367-b-complete-proof-320.png",
+      "sha256": "5e4f2c1d4a4356fe3f8db80f96173d7cc9245f5962d49eb701f9bcedfdbc6bd6",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0368",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-368-condition-320.png",
+      "sha256": "cb117b7d272bcedfbb9791926b4a821ae2c8cc711461048a5eec93b4c8b4598e",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0368",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-368-step-1-320.png",
+      "sha256": "67ac237c9f8afb06910588cedecc120ba7c4dcd7f9b12ef01bd860286d74be9c",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0368",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-368-step-2-320.png",
+      "sha256": "26ef76dd4c73dd42ad35c10379079c891a666bdac558ff9a97c399e08991a8b1",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0368",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-368-complete-proof-320.png",
+      "sha256": "ca37312f52c2629ba2a2e99f54d3df452e53c014f945409196499e81069e9905",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0369",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-369-condition-320.png",
+      "sha256": "e6bd4d121bfbb51ec11bd2597c08e5f8a91649724e30378392a941789eae9676",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0369",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-369-step-1-320.png",
+      "sha256": "64dd32e826bacfe93f738c576b75eb463620aa46f2746a4d4d182a95e515dcc5",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0369",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-369-step-2-320.png",
+      "sha256": "f98d7947f1978147cf8cbdb7ff0afdbf0ca1e89c10ee6e768664473995e3838a",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0369",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-369-step-3-320.png",
+      "sha256": "062fedff03e267a19ff376929b77e40e53cd18f9a7f3d23388524edf32926325",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0369",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-369-complete-proof-320.png",
+      "sha256": "26d2a2d38e780c0a74184c0d816553da61df2b074877da39bc0fb3ec3cdbb8e3",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0370",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-370-condition-320.png",
+      "sha256": "04dd5b9da88e086ac793e43610e833c4201128f1b72f06237933cc77d0803c6e",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0370",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-370-step-1-320.png",
+      "sha256": "d42f98f0f1f03e26706d5fe46b54967fcdaae39c067bf68e460342c1a1a6f863",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0370",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-370-step-2-320.png",
+      "sha256": "ec728c279cf86498a9355f2bec2f485cb898846109f7e1b639014675df0fb27e",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0370",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-370-step-3-320.png",
+      "sha256": "d01374e0470e6afd321711affa591fa1fccdb2358d2ad11da5c529161b2b385d",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0370",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-370-step-4-320.png",
+      "sha256": "fb0e33597b8093ce3e7eb54c180efcafc76318b0d78e4450f7cf7817db0065a6",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0370",
+      "width": 320,
+      "stage": "step-5",
+      "file": "cone-370-complete-proof-320.png",
+      "sha256": "80b74f3359e86449ced633cb360053f814da83e858ca6eae9cce7b0428804812",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0371",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-371-condition-320.png",
+      "sha256": "ab7feeb49672acd8ed684924875c05e3736079d40c1624dd72e6c7798acacba7",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0371",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-371-step-1-320.png",
+      "sha256": "5faee47b3bc24cc4e82b847c7a27059aa6674885dc3fccf9221ef018c61864e6",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0371",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-371-step-2-320.png",
+      "sha256": "a27c2d5fbce459df90120b9b3fff66d2e8dc1fc10375015c50766a26caee9c10",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0371",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-371-step-3-320.png",
+      "sha256": "ca65d7b09761041778c6445ddaef41d11d502c6d5b4ad4a6ef5dcc1c67040f02",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0371",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-371-step-4-320.png",
+      "sha256": "ebb08a0c8ba37e8fcae2a95556306743487ac0cbdb097c387a5f0aada02eb95b",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0371",
+      "width": 320,
+      "stage": "step-5",
+      "file": "cone-371-complete-proof-320.png",
+      "sha256": "982b6dc1dd66ebd4f9f7afd61a110bf7377b169090ca70c535f5b5458d29d9ba",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "theory-040",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-theory-040-condition-320.png",
+      "sha256": "696ab40f455cb57e1485723f216291f1a95420355957527e719f6a7199652451",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-040",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-theory-040-step-1-320.png",
+      "sha256": "6fac824d7bfbb08204864ce96be95a6ec41182b68ce76a97a710ebe39cc61ca2",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-040",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-theory-040-step-2-320.png",
+      "sha256": "37a76ffe986ecc1ec4e83557fed1dd0d9e0ce0058e72497015ebf64e5ad36ed5",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-040",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-theory-040-step-3-320.png",
+      "sha256": "7bdcdf64de7af9dd380d8c86143f0e8ef459bc34c9915158af78cfaa8dc17084",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-040",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-theory-040-step-4-320.png",
+      "sha256": "ac65cd9071bece3e53546831c179e6a3410140bda20e3d5471c35691623c9dc5",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-040",
+      "width": 320,
+      "stage": "step-5",
+      "file": "cone-theory-040-step-5-320.png",
+      "sha256": "3a03cd111644f8cf10a0480898c78fd95b72b30eb3e419346518e59408efcb9a",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-040",
+      "width": 320,
+      "stage": "step-6",
+      "file": "cone-theory-040-complete-proof-320.png",
+      "sha256": "5091fb6aeb14bdf52f836994503bb6a50aff4f49bf4285fb91ced6a1cbcabd91",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "theory-041",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-theory-041-condition-320.png",
+      "sha256": "7ac6cc4a9d0dd221ca61a72b6d0f18624deda7833d4e2ba9bc39ab5148311bc9",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-041",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-theory-041-step-1-320.png",
+      "sha256": "0534268e2dfe28670a5cb51911064925a2fe075d452ab116ee7c967b2971e3b0",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-041",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-theory-041-step-2-320.png",
+      "sha256": "93782652ac46f54dc9dfb373abfafe2f51b912c0effc10e3215832c9cb9e3c87",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-041",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-theory-041-step-3-320.png",
+      "sha256": "e62d9f3783c628ee14b888b93c62340b033e2eecaf40218999b39acbf08f1b1c",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-041",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-theory-041-step-4-320.png",
+      "sha256": "b3497f97d3db28259b515c43b34f5bd86d20bc909f45c5cf8aa25786f5ac9893",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-041",
+      "width": 320,
+      "stage": "step-5",
+      "file": "cone-theory-041-step-5-320.png",
+      "sha256": "3caca82f5dc22203dcf8994de1537a7b8d5a085a0b94b57ae90e3570a3b7b95c",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-041",
+      "width": 320,
+      "stage": "step-6",
+      "file": "cone-theory-041-complete-proof-320.png",
+      "sha256": "a17b7411ea1d7a456e24657402c7805cb945c3690755ac7d4eea62fddcbfc151",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "theory-042",
+      "width": 320,
+      "stage": "condition",
+      "file": "cone-theory-042-condition-320.png",
+      "sha256": "e33edacb21fd23e81e15852a2733cec998a8258b94dac6ee45f3b575f0ac2a96",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-042",
+      "width": 320,
+      "stage": "step-1",
+      "file": "cone-theory-042-step-1-320.png",
+      "sha256": "ffdd58609f247a6358582b8fffd0035fd0ee9fa149f724eeee2250e9bb637a76",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-042",
+      "width": 320,
+      "stage": "step-2",
+      "file": "cone-theory-042-step-2-320.png",
+      "sha256": "f687b820624feb8fb12e1a7a4d043dd22b4c034322fd64dbc83c3701014d4a81",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-042",
+      "width": 320,
+      "stage": "step-3",
+      "file": "cone-theory-042-step-3-320.png",
+      "sha256": "50f999653a04a151e1775e1c68ae0a313c7ebcdbd2043a114731641ec66cc878",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-042",
+      "width": 320,
+      "stage": "step-4",
+      "file": "cone-theory-042-step-4-320.png",
+      "sha256": "005bb25f9d6bf17c096d934076d0bb7f064c07dcb450f74a2f46d9296985de96",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-042",
+      "width": 320,
+      "stage": "step-5",
+      "file": "cone-theory-042-step-5-320.png",
+      "sha256": "a91c36a7f68275949aada75185c67a323855906b1aebda03cef5bf1596855902",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-042",
+      "width": 320,
+      "stage": "step-6",
+      "file": "cone-theory-042-step-6-320.png",
+      "sha256": "42df8c908ba27d0d885200b498fed2a5c19c98b485059f2b6779e4956666a79b",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-042",
+      "width": 320,
+      "stage": "step-7",
+      "file": "cone-theory-042-complete-proof-320.png",
+      "sha256": "fb8922b874a025561fac54562d4a3e124fede6e135c7cd6fa2a5cd51cabb077b",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0346",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-346-condition-1280.png",
+      "sha256": "ff94fa82b83a89342268c1f94b7d954143d40735661e519c047d143d732df91e",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0346",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-346-step-1-1280.png",
+      "sha256": "f3a2bfd08f9bbfc5276db12f4921c35f0d4fc2864c8e0bbd3351b8b164e9b982",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0346",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-346-step-2-1280.png",
+      "sha256": "7fd84b1532565643f52ec1755dd6faf0961bd426c3799ab575a31bb267c69283",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0346",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-346-complete-proof-1280.png",
+      "sha256": "bd6eedf5ff53dc37b5be0f6f881b940f6542b177c76742b4de525d3cc0b3c3e7",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0347-a",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-347-a-condition-1280.png",
+      "sha256": "aa35f9f40e8c47ceaa6416922bd89d6f905fd71d3e17d9819c710f43e1f3a013",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-a",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-347-a-step-1-1280.png",
+      "sha256": "6079798920cb682e97b79a3fcca75d2ae2925fcd5d7ddc2af9c09e27e92a45de",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-a",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-347-a-step-2-1280.png",
+      "sha256": "0d5232ca343eb182a2e4e5429b95a1ff4432c69ccce922eee980e254f3e39805",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-a",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-347-a-step-3-1280.png",
+      "sha256": "f7f64a1ca713e9ba61d42b0028f8bbc3a663c1f639c5d866fe9950d8ab3d70ae",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-a",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-347-a-complete-proof-1280.png",
+      "sha256": "65ece0b5da804e88fbb915924125fc7a328a3668c84e04ac5b23e40e66dfd7ac",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0347-b",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-347-b-condition-1280.png",
+      "sha256": "eb8501eaa3be349cc14cf086c1ba03ab7dd4c7e754a55a8efd0082f9664571d1",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-b",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-347-b-step-1-1280.png",
+      "sha256": "cb3dc8271ec5ed0106ac43a5596510c3e282c8720bfa87da7997142e256734eb",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-b",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-347-b-step-2-1280.png",
+      "sha256": "c58b8b728e54c4e784b32e60ed1e0aa83f70aeccd9e5c7304602d3b5ac1c3541",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-b",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-347-b-step-3-1280.png",
+      "sha256": "0da71ca0418ac22a0e76a9f07440283a81f6490c8357d62ce13621bff0fd7dbc",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-b",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-347-b-complete-proof-1280.png",
+      "sha256": "feba44e2e95f482ee978ec021c1e6541c73c321b280e1a3f13bc6b1ac348288d",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0347-c",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-347-c-condition-1280.png",
+      "sha256": "7fae49c13597b03c3014ca230eb134e53be6939986eaa500e6f07a43d114c27c",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-c",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-347-c-step-1-1280.png",
+      "sha256": "0508f8237d92588c2230ddca3af50fb8ee75ee67a670b7e6ef07683778750f50",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-c",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-347-c-step-2-1280.png",
+      "sha256": "1a2db042dbb5eedf5c7e66e8e37b451472057e1767d3fb18b9f7241c120d8e72",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-c",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-347-c-step-3-1280.png",
+      "sha256": "51c67bfd15c621b13ec4f30d5242aaf969c599d3af93cd5c64f76c0d87450f57",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0347-c",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-347-c-complete-proof-1280.png",
+      "sha256": "2a8f7e539797e8032012d6cf1d4415355a1656d1e6df01e9acef5db321bab724",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0348-a",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-348-a-condition-1280.png",
+      "sha256": "c88c98b1c867ba2ac324a5be99b956d1cbf2fad96a985481a5dd58d13180656f",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0348-a",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-348-a-step-1-1280.png",
+      "sha256": "74758ad9321ff405b5ba1c54264dc73b9809ef97b10df12838efc898af616231",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0348-a",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-348-a-step-2-1280.png",
+      "sha256": "33271ff804cbf6c314c3ed09a59f6da2438360b72297be1630220d82fab7c4c8",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0348-a",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-348-a-step-3-1280.png",
+      "sha256": "b9fa8d3c795eca7065375f870bdab8589be9145689e46162403520159beb56df",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0348-a",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-348-a-complete-proof-1280.png",
+      "sha256": "2b249fca5f16bd63a537e3d06b59e5e77e4d219140ee63d51a85f90afba1540c",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0348-b",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-348-b-condition-1280.png",
+      "sha256": "351f143da71f5ab423fae5a717920d3f955eca7a09565c18e280366b612c5008",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0348-b",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-348-b-step-1-1280.png",
+      "sha256": "b10d38d6cebeda0d424f02a6feb29d09bb9008fee5ba9f3a42985a6e0db7481e",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0348-b",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-348-b-step-2-1280.png",
+      "sha256": "11ef7679742c46f45028b926d373985a130b9480140c4133da546d87b7fe794d",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0348-b",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-348-b-step-3-1280.png",
+      "sha256": "b46f8bf71d98e69b576240f81a74fde6c66eb89f6d9c464702fd36f75a11d17d",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0348-b",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-348-b-complete-proof-1280.png",
+      "sha256": "e5810e12a2df090a7014ed04d8e488609d6c7160dbf42e95b13cc71a62b71b9f",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0349",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-349-condition-1280.png",
+      "sha256": "a772cf14d7e1bbdd112d833213cbe498fd2e6c26b7a553cddaa96027e0e3c365",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0349",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-349-step-1-1280.png",
+      "sha256": "b6f61e907cb0203c54a70fad4362859dd131ef16b321c41b9055139e32f24424",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0349",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-349-step-2-1280.png",
+      "sha256": "d54b3370061d8f7f7735fde1787c81a48ab6253c42219fb77c7485e3521c6a5a",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0349",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-349-complete-proof-1280.png",
+      "sha256": "83ae8f240c13411f80cab7df1db41df18aa6c82a514e83b3dbfa25387ea8d4e9",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0350-a",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-350-a-condition-1280.png",
+      "sha256": "cb8242ae12a83d3b9bc0568b9d913e4d4571a1e48c25082e70d92d82309a020e",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-a",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-350-a-step-1-1280.png",
+      "sha256": "621e52588ce1812e20f7784c700caa4356129892bf9ba97668d294a6f161342e",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-a",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-350-a-step-2-1280.png",
+      "sha256": "1cd50e9adf3dcd87718ef597a4ffc4728a428bf44a8950d23d42b935097c9176",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-a",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-350-a-step-3-1280.png",
+      "sha256": "bb3d73f0df8d8b334dd36249e927c734f3827cdc5f3fb20362e1bd4a5f16f31c",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-a",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-350-a-complete-proof-1280.png",
+      "sha256": "d5b9c38b58a172026932a90de3ace42829785e6b56319ee59e7ac94748d23cef",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0350-b",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-350-b-condition-1280.png",
+      "sha256": "6f371da61c9b8eb349445b2abc5b7567eced3564ab017cecd572851f7a1aaeb6",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-b",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-350-b-step-1-1280.png",
+      "sha256": "31d26ca71bdd8a83248ef8628d3df3f2e10d1fe1feed0e95cef84441a6991d77",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-b",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-350-b-step-2-1280.png",
+      "sha256": "e2acf55362299a2188d7ad9fea70f184851e58213acf9dbb5b6ac1f2e555bed5",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-b",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-350-b-step-3-1280.png",
+      "sha256": "55c814b01b2f47afcc9b0b1c9c2058299be59e88039da6ad8d1ea18d738cccc4",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-b",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-350-b-complete-proof-1280.png",
+      "sha256": "962f338de2c26423a5fb5aabfb72a1fc5693604a8b2c35f39f51c88c21b7fe09",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0350-c",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-350-c-condition-1280.png",
+      "sha256": "6225de5950115317494cddf050723c49620f04e7dc76f196d72a7657118e4f71",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-c",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-350-c-step-1-1280.png",
+      "sha256": "674d6f91754d56073110bf57adf4c0eafe3163674784a426d52b5b79be357620",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-c",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-350-c-step-2-1280.png",
+      "sha256": "394c10c4fa5f9acda38d899930bc2719e281343ce28a5c9cacc59cac2b3c8bf8",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-c",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-350-c-step-3-1280.png",
+      "sha256": "d01a6857274c4521d6a2acc1ec9f3d8d3fd81423914e0d32827ac81fcc2877db",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0350-c",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-350-c-complete-proof-1280.png",
+      "sha256": "99a97e617a7a3a8702e951ced46428e0885af72aa1cae17418ad0c1fd3c0f931",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0351",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-351-condition-1280.png",
+      "sha256": "b8679db9f9e8d6e369e28323416f0e80419012b3579769c707a0b149c17454f3",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0351",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-351-step-1-1280.png",
+      "sha256": "ddc6bb71440f6daad18a95f8ff1d0467934b4346add0039dd757129f4a183a82",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0351",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-351-step-2-1280.png",
+      "sha256": "0295187cbce13a16b3dc23857ccc0ba71e354722229f909fa25c3e868d3073ca",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0351",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-351-step-3-1280.png",
+      "sha256": "fc578a5880827f9e108a6780cc6fb3fbfc60f104fe4f12d9d319df9ba4458a01",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0351",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-351-complete-proof-1280.png",
+      "sha256": "1be10bd51926bdd28de7f86f12f57979024157fca31abfee7a155967d1f57147",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0352",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-352-condition-1280.png",
+      "sha256": "0dfe1979616bf7d93e61b0d567eecfd142766a1334c95d0153dfa0ff63fd11ed",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0352",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-352-step-1-1280.png",
+      "sha256": "558cadd3e5a64a9c9fc59b1fd5ebb0ba4930596ab50590a7136d6ba170ab927b",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0352",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-352-step-2-1280.png",
+      "sha256": "312b7a001f0b2fba2051a69152482c2cb1b8e41b0a07987e637bb79aeaab4577",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0352",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-352-step-3-1280.png",
+      "sha256": "8dfafde8294d23e8c06d11b5f8a674d4c046c3021935142bac7ae8e9d17f41b4",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0352",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-352-complete-proof-1280.png",
+      "sha256": "e3fbf8a000d12009ac901c280dcea9a83ea38143daef152918283977ef4f9750",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0353-a",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-353-a-condition-1280.png",
+      "sha256": "218b96892618d6fe7e318c8e2b271bc60e203a5ea40115662f0eeb30c2f0e07d",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0353-a",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-353-a-step-1-1280.png",
+      "sha256": "2f5b2a4c52fd858a5a0c2479cd3a72f948ea1626510e39144246b9ff59d17ae1",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0353-a",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-353-a-step-2-1280.png",
+      "sha256": "6669ee54ce067173c6759a4a0679f87c3b13d6a9fa584078f1a3647550ed4b10",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0353-a",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-353-a-step-3-1280.png",
+      "sha256": "fc478d8ed399a901f92f33eb623eaf3cc16a82f70b65459652f8155942bd4a4d",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0353-a",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-353-a-step-4-1280.png",
+      "sha256": "a4734c78292f2a66cc9d1c88d4f27247a23c3ac7051ba8d4bbb380b33f24eec2",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0353-a",
+      "width": 1280,
+      "stage": "step-5",
+      "file": "cone-353-a-complete-proof-1280.png",
+      "sha256": "fb06391952d533f27566bcfd31ac96222d0339009ea529859146e54793818492",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0353-b",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-353-b-condition-1280.png",
+      "sha256": "a4de3b90a3b2d6a61fa10ea720c3975e5bd051ff9d163dfee2efb805eb28ccba",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0353-b",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-353-b-step-1-1280.png",
+      "sha256": "1eccb068d3796b7396b0b000f117ac4e31baa83708af76433ca748ed8afa2953",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0353-b",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-353-b-step-2-1280.png",
+      "sha256": "e322d8d1786244aab3821ad1562ed7bc3597b509f845e693be66591fc2324e4b",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0353-b",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-353-b-step-3-1280.png",
+      "sha256": "df13bb7131239c429028075f4cd53eb8a223089cf048a5549f2cb01c011d4ae7",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0353-b",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-353-b-step-4-1280.png",
+      "sha256": "657da8c8d84da712e12d5ea148eb65824ab85c17801b68b86562da7769d186ee",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0353-b",
+      "width": 1280,
+      "stage": "step-5",
+      "file": "cone-353-b-complete-proof-1280.png",
+      "sha256": "b231b2825bea8083b1c93e01a6e07468b87696b243171eba87d09d1cd36e8411",
+      "reviewer": "Codex independent visual reviewer cone_c",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0354-a",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-354-a-condition-1280.png",
+      "sha256": "186f9e4ffb1ee7e24f09c02f65edd0cc0accac412b6374729c096971409e3ebf",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-a",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-354-a-step-1-1280.png",
+      "sha256": "b4759711e1b3586b43ff27b0ef14684b7fb738b1548cf7389b5d274539af9746",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-a",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-354-a-step-2-1280.png",
+      "sha256": "780aadd42922c6aec6e7f503d687bfa85f75e3883622e821aed894e55c786c61",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-a",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-354-a-step-3-1280.png",
+      "sha256": "26d1cd4b1cf91462816d91eb614d262a95ce77e0a6a60e3723c640cbe6dfb42c",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-a",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-354-a-complete-proof-1280.png",
+      "sha256": "cd974742aaacb60367894074a18ea9eaab1a3c62c28e6d4de86b87edc9702c15",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0354-b",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-354-b-condition-1280.png",
+      "sha256": "bd7b1802a2e30224e46bb44c9ca17b3ca001cfc4041c1223773403a4a8d39130",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-b",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-354-b-step-1-1280.png",
+      "sha256": "e7bf9f30b34194b4671663d2f80b2322c54b136ed288fd9d3d8e17fb9405903b",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-b",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-354-b-step-2-1280.png",
+      "sha256": "2f287074b6673979ea4b383c5fc8f971856b64b4838ed737ba441e793cb24540",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-b",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-354-b-step-3-1280.png",
+      "sha256": "636877ede9606d5fa62795c30d1c222e793bc92ee51b3aa561f683ec3676dc9c",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-b",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-354-b-complete-proof-1280.png",
+      "sha256": "9878126c838899cf1ab7721ec44612bbcba6b4fbb437b457c07d0479f459acaa",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0354-c",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-354-c-condition-1280.png",
+      "sha256": "19252e6c47b13d143b1bc5ff70e93ce3ebb90346b01fba271ec7dc0032d9d403",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-c",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-354-c-step-1-1280.png",
+      "sha256": "d970818e803d8e5c6898b329b13940802acb8f07eb608898e610016c8d4b4412",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-c",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-354-c-step-2-1280.png",
+      "sha256": "38ee57dbb4b7b2de2f0132bc1335686037d5d122038e5f8ce900bb9be85d14bd",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-c",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-354-c-step-3-1280.png",
+      "sha256": "e333e71232d0d8b9bebc483e0623bd5e0ceec7d9f851e5bdc18d693b0580fd4c",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0354-c",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-354-c-complete-proof-1280.png",
+      "sha256": "0851631032a873ab08abea26b0dad3c14de27b91b6d25e65e962c11cacc9886d",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0355",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-355-condition-1280.png",
+      "sha256": "7f21f2a55ec90cdc1c97d8c2e7476812bd4f9de5737e2945dd8b63bc66723d91",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0355",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-355-step-1-1280.png",
+      "sha256": "476638fb0457d98da8c314606592ba370f1e96171d7e2b957062522e571ac080",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0355",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-355-step-2-1280.png",
+      "sha256": "ca6296889cbc7af7e59cacde5699ec69afb0782ffb7b42437057a7653af9e3aa",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0355",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-355-step-3-1280.png",
+      "sha256": "9bf2e87795c599f582f64f331a19490ae1be8b23164315d88d2695aae06ecb3c",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0355",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-355-step-4-1280.png",
+      "sha256": "03463cd0b4f79a41630a14797655833b4a3096a144cade851827e5ec55cab2f2",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0355",
+      "width": 1280,
+      "stage": "step-5",
+      "file": "cone-355-complete-proof-1280.png",
+      "sha256": "8643747e7c74bd533cef9807e2170967e2460fa209a8f0eb514fddb201c827db",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0356",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-356-condition-1280.png",
+      "sha256": "07a32406f150bb1b26e47fbbf83711505632d7f8ce6ae96ceb3adb22479fb75b",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0356",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-356-step-1-1280.png",
+      "sha256": "838b9a0fc95853241ac275d8c53bf1330d2c8e057ccb6e79c84a9ecdd58bf138",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0356",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-356-step-2-1280.png",
+      "sha256": "9ae13b225b615c5be59a8a5ee4d83c0d070ca3b8e73b2c981e45368c59b7bb65",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0356",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-356-step-3-1280.png",
+      "sha256": "3f4bad50772da5e964485d620afd38f2161a7d1391e05d22b433e08f8194bd58",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0356",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-356-complete-proof-1280.png",
+      "sha256": "389d928ab5d38849a25a48fdc7239d8d5bbfe30ba7fc2d71050a5866c29b7903",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0357",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-357-condition-1280.png",
+      "sha256": "076e07a0b6b2dbcffef7f58fc6f0ffcaecd560521cd337e63e469b307ef30397",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0357",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-357-step-1-1280.png",
+      "sha256": "3195823d4470d39ab006828cf1015538af7a74ce116eb5491b68437912e0f6fe",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0357",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-357-step-2-1280.png",
+      "sha256": "c8a0cdbfb639301b7483fac91668645043b5e16d2d240f971c0c6dd2fd3688f4",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0357",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-357-step-3-1280.png",
+      "sha256": "5aa48874d6a43efcba0ddb6afc8eb3f0152ef83d645c4084a657e0e7f8d28256",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0357",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-357-complete-proof-1280.png",
+      "sha256": "27dca1f409956d3248803dd2af77cbca84eeb51f1aa96376cdf32d93647733c4",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0358",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-358-condition-1280.png",
+      "sha256": "0c5654529fd1d775486aff4f91b4a55e0eeba89209c063a159af7b66b78f864a",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0358",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-358-step-1-1280.png",
+      "sha256": "55dd5d9db7e634ec46ec7a0032bfcce51f6fc28f2c5f60fca5277212f60e597e",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0358",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-358-step-2-1280.png",
+      "sha256": "5492daf4f738c5ef998ab3975b32c6a590085b8111831743406483240a81ac87",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0358",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-358-step-3-1280.png",
+      "sha256": "035540d646d463148d04f7bd920d9a48f5f3d40abbfb1ba17c191c65e4fceff9",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0358",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-358-complete-proof-1280.png",
+      "sha256": "cbade4c553ed4a9eabe0ca955953f1abb0452b1fa80e2b0e5364cd2f84c6434f",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0359-a",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-359-a-condition-1280.png",
+      "sha256": "5d6b5582c403c32ed60b03d57f0d641392ac31a20f2914b64b43b5bb0beb9893",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-a",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-359-a-step-1-1280.png",
+      "sha256": "fe165980114c7fec933e674dcf39e05d782875c3a4d9068aa7a4ad3c0a95ad85",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-a",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-359-a-step-2-1280.png",
+      "sha256": "919444217272b21b6007026ed7b35972ecbab6b5a07b98e1c235f5f74b84f54d",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-a",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-359-a-step-3-1280.png",
+      "sha256": "80515be812905b516a46a5bdcb767ab93a2b6f1fb0a0f5fa0a4691c91c990b1f",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-a",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-359-a-complete-proof-1280.png",
+      "sha256": "ab8672c58435dd6071e9c0d3b14ab6de02ac47fc0a13c4066d2a1c9ab354447e",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0359-b",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-359-b-condition-1280.png",
+      "sha256": "f9c2955a0d4be1476e0f74ae93913d86bfcf55019f52103fed690ff8214417de",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-b",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-359-b-step-1-1280.png",
+      "sha256": "9447e20f676ff77726f6ca09c490fe64d5525393874c9280ad9db8b66b3920a1",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-b",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-359-b-step-2-1280.png",
+      "sha256": "92669e57b99c4fa5cfefe864f561250850ca27061c72427e63355fab1d01b027",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-b",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-359-b-step-3-1280.png",
+      "sha256": "c727b8bf4223c74e0771cc75f375ef0d402d5ee6d173c5f96ab7960902a4c30b",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-b",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-359-b-complete-proof-1280.png",
+      "sha256": "453e5d3334c34cd6269a676cbcc7cabf8fb3f36f59d6c8493a031c4ccefae81b",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0359-c",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-359-c-condition-1280.png",
+      "sha256": "160078f0f19acfc99da5cbec01070a5eadd93f38895b38ec3b5e566f7850067c",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-c",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-359-c-step-1-1280.png",
+      "sha256": "2ecbfe76b01f2610131deaf664ffa2f29869260ea6a5d79bb27959017e7fe7b9",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-c",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-359-c-step-2-1280.png",
+      "sha256": "317426a545dfcf978e9235f2ecbb0dcf0be11afb6dd6ed776fce048100bd0ee6",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-c",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-359-c-step-3-1280.png",
+      "sha256": "e79ab67fcdaed075058fecce60c583e02223a69812d91988a1fe5891c743929c",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0359-c",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-359-c-complete-proof-1280.png",
+      "sha256": "11d48b90920aa492823a8a4c713644f1dfe8867c96b35c7c23b757469072a1e8",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0360",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-360-condition-1280.png",
+      "sha256": "afb49cafc7035d36b2a8eaca817260e38869c814f0307fccecff48bcc6ddd16e",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0360",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-360-step-1-1280.png",
+      "sha256": "b8c88a325a404fc3d91474c5664e186623de4f553ddc7d311d2fe77730a57aa2",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0360",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-360-step-2-1280.png",
+      "sha256": "11c1fcc28bda419394f03b7953315d3b6ffc81f6a4bb4afc46ced22782d0f1c5",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0360",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-360-step-3-1280.png",
+      "sha256": "15e26b4938c2d1a22c61a8f64443284922623f8b33be9d90b2db4c422b011e34",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0360",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-360-complete-proof-1280.png",
+      "sha256": "c69ad67b8f33b1ae317fdef40e2daa8d12f5efc48b850e47b5c1d808cd581d0c",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0361",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-361-condition-1280.png",
+      "sha256": "7362175510736d174c03649a5b4037b1d3c2fc2a3ca0d0f3a404bac7854c975d",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0361",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-361-step-1-1280.png",
+      "sha256": "94b6762e52bda36b735ecf29751700b2cbbae813ab7b26bf2b5abe8e5fc32939",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0361",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-361-step-2-1280.png",
+      "sha256": "409120030f3f41f2a940086d8081577e7fb45a1a903894fb9f441e4bad1537cc",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0361",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-361-complete-proof-1280.png",
+      "sha256": "2705efa42dc23ce3e83a2523ba91006899e7dd6b04390f838123a678a70df36e",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0362",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-362-condition-1280.png",
+      "sha256": "3080a6b663e8434b3463a3b72336abf1e677836bf66b93158e295c7cd5908b48",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0362",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-362-step-1-1280.png",
+      "sha256": "35ab30660244a791f2a3bb5bc4c5023c18b3ac7732fe397615bc4129233eea8f",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0362",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-362-step-2-1280.png",
+      "sha256": "725d5457e46a7aa220a6565a746e6c003e859c3ca2437a35d121c5a7fc336b3c",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0362",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-362-step-3-1280.png",
+      "sha256": "5a00d2276d994678ca24feb45dc08a3ab84e8ef4bff14a230e898254d23591bc",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0362",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-362-complete-proof-1280.png",
+      "sha256": "ba68191d64fed4871ddd95e561cd9464351232b688735872512467c8618c40de",
+      "reviewer": "cone_source",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0363",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-363-condition-1280.png",
+      "sha256": "d071470366935c90f576d19d39659fe96cae8286a493240acc0a26cc0d4b459f",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0363",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-363-step-1-1280.png",
+      "sha256": "e6161e1bf6c0afc1457f0429a9e7e35e93515731aaffc483d1ed8f0bd48c8a4d",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0363",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-363-step-2-1280.png",
+      "sha256": "2b6886115af0140978823e38a51c964caad3406319f58118c9ea9466ebc943ca",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0363",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-363-step-3-1280.png",
+      "sha256": "c33cdc4f8e5ce79b44b49617f3147ff8d3fe598c39b071b73bc6f3d16f05475b",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0363",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-363-complete-proof-1280.png",
+      "sha256": "89cb4708171bee52f7a18a13515fbcf059a48248f388d138c2f8b1cdc5a8fa45",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0364",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-364-condition-1280.png",
+      "sha256": "673996a401860032c30a98aaf799995ec35a2676821d07b67ac672d140a870c6",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0364",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-364-step-1-1280.png",
+      "sha256": "edba87ba465a17860137d5e93cf824f8bb05a79034b2cdcecb19838f59d1c0cc",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0364",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-364-step-2-1280.png",
+      "sha256": "16fc12bfa469396a925d43466f4bd5966e97ed7dc4f0c06f87da0259b045326f",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0364",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-364-step-3-1280.png",
+      "sha256": "acc84c19b8af8463594ccf8e78f0c4165af1349452efa155ebaf7f333811bef3",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0364",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-364-complete-proof-1280.png",
+      "sha256": "fc21916f5a9cb7e30f6ef058348b4837fb7f119c31783a27ad3f3d126e467d7c",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0365",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-365-condition-1280.png",
+      "sha256": "bd1eb33a9286aaf4ace9d52ed8739fb64ba5498d6e7d64e4899ab21a8b33619e",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0365",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-365-step-1-1280.png",
+      "sha256": "05f95be90385365388190c5670e87270e86dec7fef5049e0e8e4d93072c244d4",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0365",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-365-step-2-1280.png",
+      "sha256": "9c37c441c8b73ef206d283d920fdec1d07efd692598af7ea0e183fb580ec055d",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0365",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-365-step-3-1280.png",
+      "sha256": "276211947c5df580941290a01623f29316d0ab9d651049053d98fe6fdedf7810",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0365",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-365-step-4-1280.png",
+      "sha256": "54ac3d108b6d8856307d397a68a5794900037490ec968bb6295f9101d9fa7362",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0365",
+      "width": 1280,
+      "stage": "step-5",
+      "file": "cone-365-complete-proof-1280.png",
+      "sha256": "195593df2468051cf1ba6af4ffa08cdd519e285e4fd639d34db1a82cfd523b05",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0366",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-366-condition-1280.png",
+      "sha256": "403b17e9751e452fc25aaabeaefb95d5b68da10cb2bfa2b3d5217e8e71dad013",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0366",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-366-step-1-1280.png",
+      "sha256": "411fd38cff47fdf79dbcf9c264b3b93787237641d1871c8c860893c093ededbf",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0366",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-366-step-2-1280.png",
+      "sha256": "9c8134b557b967f94781f6090d16f8ff17fabdefa99215a3632bc9bd8db2006d",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0366",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-366-complete-proof-1280.png",
+      "sha256": "b1725528cc2b028d9634428aaa00153ff3f6d21daedd4f27c01f2e9685a237b4",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0367-a",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-367-a-condition-1280.png",
+      "sha256": "6828aebaed59ae7f2d2b194ad79a5986ec209193c01ddfc0ff215c756091b788",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0367-a",
+      "width": 1280,
+      "stage": "help:h1",
+      "file": "cone-367-a-help-h1-1280.png",
+      "sha256": "efdcdd40c842d06c9eb0e4c7fb45c56cce815159144dd8e728ab38e27c47b60b",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0367-a",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-367-a-step-1-1280.png",
+      "sha256": "74a94337bec0c2e3fffb956261304a3ae987ec5bd773ebb91809c53452ab045b",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0367-a",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-367-a-complete-proof-1280.png",
+      "sha256": "21634163936a3c97c0ab4168210ca521c2d92db2e622f060c85cd6b1db58df4a",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0367-b",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-367-b-condition-1280.png",
+      "sha256": "482c3124cca8865b1acb36a539642fe000181700465966a6c42b156667b54ed1",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0367-b",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-367-b-step-1-1280.png",
+      "sha256": "bec1c2c099180d22cf098799271b3025debdae93da57ea18e0e9982377b7d15f",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0367-b",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-367-b-step-2-1280.png",
+      "sha256": "930a204efbb3743dd7c3503b36f13efceaffe3d21d4ce4a5621383c069c44b80",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0367-b",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-367-b-step-3-1280.png",
+      "sha256": "d3ae64c8f53fe00b5bf67fc1dd1e4cd68aaa90381f3bb7d12b2e661dd7b8e9e1",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0367-b",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-367-b-complete-proof-1280.png",
+      "sha256": "acaccfae4b790a1cf0015cfa3212ee42599e0639e690ef51a48968785b733253",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0368",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-368-condition-1280.png",
+      "sha256": "e2b6573d63c7498dce27d60d9251989fe4d2879d72779cd3e31a3ca111c546c6",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0368",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-368-step-1-1280.png",
+      "sha256": "97d520310da07d0b56006f610059f0ec3a646eaf5efec4b2a158da7ed6768580",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0368",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-368-step-2-1280.png",
+      "sha256": "4414692fef695a6725d8a16554c8dec772eba99244f979f580f08b21a03e796f",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0368",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-368-complete-proof-1280.png",
+      "sha256": "51a85a2c868f619ed9bb97468e485eb4a0d8125176790fe3eceaa2178889ba8a",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0369",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-369-condition-1280.png",
+      "sha256": "4c392918afe10dad8efc73f265213309cc8447090305f5cdc8675b5ae6ad481b",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0369",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-369-step-1-1280.png",
+      "sha256": "50a155f8d3ab81ebf4a8092e906b32a88b33759f650f80a82252633905e53c4d",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0369",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-369-step-2-1280.png",
+      "sha256": "849f07c6219bfa45a224cd08b7382319e0516f2cc7dd9f27a102cd709a8055c4",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0369",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-369-step-3-1280.png",
+      "sha256": "7e78c406891c3e61fccd76fb618bfcb3ad172039481d9d80cd25d80ac657ab29",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0369",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-369-complete-proof-1280.png",
+      "sha256": "6bbe82a066510b43eeba619c945ef0dabe3f90af1588d198c08ca76318db325c",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0370",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-370-condition-1280.png",
+      "sha256": "bc2397e04c2fead84fc34e4cd9e29e9c1c7e1ce20eb27c2fe9fcc1b28f29ef77",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0370",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-370-step-1-1280.png",
+      "sha256": "f33baa6d95beb566e9553717f296ac38a446c335a05dba93ac4419ce8a853265",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0370",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-370-step-2-1280.png",
+      "sha256": "65c5a6cd572a8a8df222190aff824fab050701f8c03e2a5a1122c35dc6e046c3",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0370",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-370-step-3-1280.png",
+      "sha256": "f822f79f4b2ce5b61f080ea8c87fe85b9aca7f285f4c93972fe79b9765207bb3",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0370",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-370-step-4-1280.png",
+      "sha256": "5141604fd1635fcb79d3643842803fd265e2335eb4f8a3bbadd75afb7be2141c",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0370",
+      "width": 1280,
+      "stage": "step-5",
+      "file": "cone-370-complete-proof-1280.png",
+      "sha256": "f1cf60366daee472312da0e78b8ef145495b6943a05af5c73fc4189f1d8c9c84",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "ex-main-0371",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-371-condition-1280.png",
+      "sha256": "cc70a4e9b5da84bdf8e51ce71cb9d9665d0a3e77ddf1eb72deb3f1c5ecc19f02",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0371",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-371-step-1-1280.png",
+      "sha256": "1400e222ff2d2d2278eda8cf11b2d51e8626bb968aab200dd7f88c7018ce81d0",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0371",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-371-step-2-1280.png",
+      "sha256": "3b2e8ee03bc298857a91dd08d71e92fac8297a3dcf13bae65681747dfca8364f",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0371",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-371-step-3-1280.png",
+      "sha256": "99f6bc28a84f030b96980242ad37bc846815e83edc9468c3dbf3edb43e5fb1de",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0371",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-371-step-4-1280.png",
+      "sha256": "ad73968e21d94dcbda170a3832af8f53a5f962b947f37b46fdee7aec8be3ae03",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "ex-main-0371",
+      "width": 1280,
+      "stage": "step-5",
+      "file": "cone-371-complete-proof-1280.png",
+      "sha256": "224447aba331c99db7b613fb6c8af0b652e705d8c11dee20fb4663251b49b069",
+      "reviewer": "cone_b",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "theory-040",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-theory-040-condition-1280.png",
+      "sha256": "52ade27a5222e4a6ee07f4ec59cc868a625601aaa786b9cf321d5479f19e7b32",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-040",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-theory-040-step-1-1280.png",
+      "sha256": "a565512acd3038f01bf2f5344d20b597a5c152e57467465002235ba71a3243c7",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-040",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-theory-040-step-2-1280.png",
+      "sha256": "48f634d838732a5cdb239a97cd7527187442f624d07d1bc8e99158b4bcd3d1dc",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-040",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-theory-040-step-3-1280.png",
+      "sha256": "d08e752708f80233d76aab721dacff31d3cbdd1721192ddbe472fba975232961",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-040",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-theory-040-step-4-1280.png",
+      "sha256": "78f3c5144c452a5377a740896c636be8a7f5e3b65fb4292ef7e23ca5e3bf48ed",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-040",
+      "width": 1280,
+      "stage": "step-5",
+      "file": "cone-theory-040-step-5-1280.png",
+      "sha256": "aa07cd8b03ce261c0a8172787d6b880371244d738de8312d6dfa052dce93c0e6",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-040",
+      "width": 1280,
+      "stage": "step-6",
+      "file": "cone-theory-040-complete-proof-1280.png",
+      "sha256": "6e7b9890d3802cfb8a16b71841b3405e2dee78909d4b5f06a7fc2aacd801da50",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "theory-041",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-theory-041-condition-1280.png",
+      "sha256": "ea28cbf15cea00aa80b0e128ecc5eea6cd41c1219ebb5489df8aa9a688b094fc",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-041",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-theory-041-step-1-1280.png",
+      "sha256": "70953b048a41937d7523f9df2eb3a207fa5c7f1c612b7a6b696eb75ca4347c69",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-041",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-theory-041-step-2-1280.png",
+      "sha256": "e8ef172b0c067e2d88801e67d75f5a559fd74d8a7ff9d32ff9cdecfdfb2ed4bd",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-041",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-theory-041-step-3-1280.png",
+      "sha256": "b4324e3fb10acc454de32c41ea2aac8e5eaec3b9c27a81392cfd18dbaae3d15f",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-041",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-theory-041-step-4-1280.png",
+      "sha256": "86f800320f8525fbdaf376a42e0c2ef2726ed40219f4bb70a81af7872b6e432d",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-041",
+      "width": 1280,
+      "stage": "step-5",
+      "file": "cone-theory-041-step-5-1280.png",
+      "sha256": "c16c70f13185ed4d491449931e5022995c0ba8dfe1f4aac1772a06e15cd0c372",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-041",
+      "width": 1280,
+      "stage": "step-6",
+      "file": "cone-theory-041-complete-proof-1280.png",
+      "sha256": "9e3314f04b56cfeeb9c5af8f485e84f31a62264a65dad880aae6f58376087491",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": true
+    },
+    {
+      "id": "theory-042",
+      "width": 1280,
+      "stage": "condition",
+      "file": "cone-theory-042-condition-1280.png",
+      "sha256": "3138c274ab43b5a1db5ada8d456a6d2e6b2b55094cf2f92ca5e8563615273acf",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-042",
+      "width": 1280,
+      "stage": "step-1",
+      "file": "cone-theory-042-step-1-1280.png",
+      "sha256": "cae7516faa51015de416ce2a13c950fe01e7dd23c35dc912d740b5ce8f1a2ac8",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-042",
+      "width": 1280,
+      "stage": "step-2",
+      "file": "cone-theory-042-step-2-1280.png",
+      "sha256": "d05d5d2d2174f760fa5f25345e88b6f0de99156ff67fe627c96b4d3bd754bd73",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-042",
+      "width": 1280,
+      "stage": "step-3",
+      "file": "cone-theory-042-step-3-1280.png",
+      "sha256": "7ab7d719d384a9897937d83f461821a36a327346d862c5deb31a5d3cdb610771",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-042",
+      "width": 1280,
+      "stage": "step-4",
+      "file": "cone-theory-042-step-4-1280.png",
+      "sha256": "779f077654b835442fb3d32885b782faa550710b0c30a8a75c51b4427348029c",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-042",
+      "width": 1280,
+      "stage": "step-5",
+      "file": "cone-theory-042-step-5-1280.png",
+      "sha256": "ad336f21eb478518f3ec382f2e0fd085fb1f055a93523d594c70bb8e4d896bc3",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-042",
+      "width": 1280,
+      "stage": "step-6",
+      "file": "cone-theory-042-step-6-1280.png",
+      "sha256": "862ec65366b18a1bbb85a554b5181c50f7d49d91d431dd8d14fdf459a4496225",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": false
+    },
+    {
+      "id": "theory-042",
+      "width": 1280,
+      "stage": "step-7",
+      "file": "cone-theory-042-complete-proof-1280.png",
+      "sha256": "93927fca1c5a0ecf36b7df3dfe4ed2f1c413da040637e764eeced0504722023a",
+      "reviewer": "cone_browser",
+      "fullExpandedHelpAndProof": true
+    }
+  ]
+}

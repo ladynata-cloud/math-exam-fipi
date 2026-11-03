@@ -47,7 +47,9 @@ test('the fixed wrapper registers only board v1 and never reads personal storage
     const config = f.registrations.board[0];
     assert.equal(config.id, 'atanasyan-7-9'); assert.equal(config.version, '1.0.0');
     assert.equal(config.stateSchemaVersion, 1); assert.equal(config.parentOrigin, 'https://local.example');
-    assert.equal(f.query('h1').textContent, 'Задача 92 · а');
+    assert.equal(f.query('h1').textContent, 'К задаче №92 · а');
+    assert.match(f.query('.source-context').textContent, /К главе II.*К параграфу §1/);
+    assert.equal(f.query('[data-work-context]').textContent, 'К задаче №92а · совместная работа');
     assert.equal(f.query('#catalog-search'), null);
     assert.equal(f.query('.lesson-permalink').href, 'https://mathexam.space/geometry-course/textbook/#' + lessonId);
     assert.equal(f.query('main > header > button'), null);
@@ -128,6 +130,39 @@ test('the exact four theory cards retain nested dialogs, disclosures, view and z
   } finally { f.close(); }
 });
 
+test('newly revealed captioned theory links preserve the complete board theory stack', async () => {
+  const f = await fixture();
+  try {
+    f.query('#final-answer').value = 'Моя запись к задаче 92а';
+    f.query('#final-answer').dispatchEvent(new f.w.Event('input', { bubbles: true }));
+    f.query('[data-main-help] > summary').click(); await f.tick();
+    f.clickText('Разобрать по шагам'); await f.tick();
+    const link = f.query(`[data-step="step-1"] [data-theory-link="${theoryId(14)}"]`);
+    assert(link, 'A newly rendered justification is registered with the board adapter');
+    assert.equal(link.textContent, 'Почему? К пункту 14 · Треугольник, периметр и равенство');
+    link.click(); await f.tick();
+    assert.equal(f.query('dialog h2').textContent, 'К пункту 14 · Треугольник, периметр и равенство');
+    assert.match(f.query('dialog .source-context').textContent, /К главе II.*К параграфу §1/);
+    const child = f.query(`dialog [data-theory-link="${theoryId(1)}"]`);
+    assert.equal(child.textContent, 'Почему? К пункту 1 · Точки, прямые, отрезки');
+    child.click(); await f.tick();
+    assert.equal(f.query('dialog h2').textContent, 'К пункту 1 · Точки, прямые, отрезки');
+    assert.match(f.query('dialog .source-context').textContent, /К главе I «.*К параграфу §1/);
+    const state = f.state(), before = f.changes.length;
+    assert.deepEqual(state.theory.map(frame => frame.id), [theoryId(14), theoryId(1)]);
+    assert.equal(state.draft, 'Моя запись к задаче 92а'); assert.equal(state.revealed, 1);
+    f.apply(state); await f.tick();
+    assert.deepEqual(f.state(), state); assert.equal(f.changes.length, before);
+    assert.equal(f.query('dialog h2').textContent, 'К пункту 1 · Точки, прямые, отрезки');
+    f.query('[data-theory-back]').click(); await f.tick();
+    assert.deepEqual(f.state().theory, state.theory.slice(0, 1));
+    f.query('[data-theory-back]').click(); await f.tick();
+    assert.equal(f.state().theory.length, 0); assert.equal(f.query('#final-answer').value, state.draft);
+    assert.equal(f.query(`[data-step="step-1"] [data-theory-link="${theoryId(14)}"]`).textContent, link.textContent);
+    assert.deepEqual(f.accesses, { local: 0, session: 0 });
+  } finally { f.close(); }
+});
+
 test('malformed snapshots are rejected before DOM, work, hash or notifications mutate', async () => {
   const f = await fixture();
   try {
@@ -192,6 +227,7 @@ test('unsupported markup stays visibly unsaved while the previous valid work rem
 test('managed mode registers only learning, restores pinned work, and readonly guards theory and main', async () => {
   const f = await fixture({ search: '?learning=1' });
   try {
+    assert.equal(f.query('[data-work-context]').textContent, 'К задаче №92а · работа в личном кабинете');
     assert.equal(f.registrations.board.length, 0); assert.equal(f.registrations.learning.length, 1);
     const config = f.registrations.learning[0];
     const managedChanges = []; config.subscribe(change => managedChanges.push(copy(change)));
@@ -216,7 +252,7 @@ test('managed mode registers only learning, restores pinned work, and readonly g
     assert.equal(f.state().submitted, true); assert.equal(f.state().checked, false);
     assert.equal(managedChanges.at(-1).kind, 'input');
     f.w.location.hash = '#atanasyan-7-9-main-93-part-1'; await f.tick();
-    assert.equal(f.w.location.hash, '#' + lessonId); assert.equal(f.query('h1').textContent, 'Задача 92 · а');
+    assert.equal(f.w.location.hash, '#' + lessonId); assert.equal(f.query('h1').textContent, 'К задаче №92 · а');
     assert.equal(f.query('#catalog-search'), null);
     assert.deepEqual(f.accesses, { local: 0, session: 0 });
   } finally { f.close(); }

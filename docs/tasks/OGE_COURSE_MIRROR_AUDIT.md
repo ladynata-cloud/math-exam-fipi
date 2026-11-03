@@ -219,3 +219,39 @@ the checks and HIGH review decision are complete.
   as though the concurrent main releases belonged to PR340.
 - Next: read exact-head cloud checks; obtain current HIGH review/exception;
   only then consider a separately authorized release with a fresh main check.
+
+
+## Requested classroom verification and current-base integration — 2026-11-03
+
+- Owner explicitly requested completion of the existing PR340 work, assignment
+  of OGE11/19 and elementary arithmetic through the teacher UI, isolated
+  teacher/pupil synchronization checks and publication when current gates pass.
+- Authorization: `docs/OWNER_RELEASE_AUTHORIZATION.md` supersedes historical
+  release holds and external-provider prerequisites above. External review was
+  not performed; technical/content checks remain mandatory.
+- Validation base: `356eeded700e84e7de0074ede56673d56459a34c`.
+  Prior head: `9729aacdda8d89b0147c3bb7d72a7011531ca74c`.
+- Read-only `merge-tree` found five conflicts: project history, course navigation,
+  Task6 regression, generated practical ZIP and its manifest date. The normal
+  two-parent integration retains both histories, both catalogue links, current
+  canonical Task13 target, all published book corrections and current assets.
+- Concurrent main consists of published PR362–426 releases: source geometry,
+  profile/assistant, classroom UI, SEO, OGE PDF/book and arithmetic fixes.
+  These are preserved as base work, not attributed to this PR.
+- New integration defect: Task6 standalone progress added after the original
+  PR would read/write personal storage in board mode. Two early guards now
+  prevent those accesses; the unchanged standalone adapter remains covered by
+  the historical book regression and the shared-room isolation tests.
+- Existing exact-URL cabinet rendering now includes OGE11 for both focus notes
+  and saved-plan cards. It does not create managed attempts or report public
+  practice as cabinet credit. Existing adapters are reused unchanged.
+- Production pupil data, identifiers, access links, PINs and synthetic answers
+  are excluded from this repository. Assignment is performed through teacher UI;
+  all synchronization tests use synthetic isolated rooms and disposable stores.
+- Elementary managed arithmetic and public board mirroring are distinct
+  capabilities. The request does not authorize a new generic bridge archetype;
+  unsupported arithmetic remains explicitly individual until separately built.
+- Rollback: revert only this PR's reviewed base-to-merge delta. Preserve all
+  concurrent main releases and every personal learning store; no migration.
+- Final gate results, current exact head, release decision and deployed evidence
+  are recorded in PR340. Old 2026-10-27 CI is historical only.

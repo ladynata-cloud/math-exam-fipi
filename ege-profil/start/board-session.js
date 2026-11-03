@@ -47,6 +47,10 @@
     simpler: '.task-foundation details', numberInput: '.number-help', extraSupport: '.support-details',
     calmBasics: '.calm-number-foundations', trigBasics: '.calm-trig-foundations'
   });
+  // Additive disclosures: older room snapshots omitted these closed panels.
+  const OPTIONAL_DETAIL_SELECTORS = Object.freeze({
+    theory: 'details.theory', startHelp: '.calm-start-help', resources: '.course-resources'
+  });
   const clone = value => JSON.parse(JSON.stringify(value));
   const object = value => !!value && typeof value === 'object' && !Array.isArray(value) &&
     (Object.getPrototypeOf(value) === Object.prototype || Object.getPrototypeOf(value) === null);
@@ -145,9 +149,10 @@
             !object(data.seen) || !object(data.sessions) || Object.keys(data.sessions).length > LESSON_IDS.length * MODES.length) return false;
         for (const id of LESSON_IDS) {
           const record = data.records[id], lesson = known.get(id);
-          if (!fields(record, ['guided', 'independent', 'attempts']) || !integer(record.attempts, 0, 100000)) return false;
-          for (const kind of ['guided', 'independent']) {
-            const list = record[kind], pool = kind === 'independent' ? lesson.tasks.slice(-3) : lesson.tasks;
+          const optional = ['recovered', 'checkpointIndependent', 'mistakes'].filter(key => Object.hasOwn(record, key));
+          if (!fields(record, ['guided', 'independent', 'attempts', ...optional]) || !integer(record.attempts, 0, 100000)) return false;
+          for (const kind of ['guided', 'independent', ...optional]) {
+            const list = record[kind], pool = ['independent', 'recovered', 'checkpointIndependent'].includes(kind) ? lesson.tasks.slice(-3) : lesson.tasks;
             if (!Array.isArray(list) || list.length > pool.length || new Set(list).size !== list.length || !list.every(id => pool.some(t => t.id === id))) return false;
           }
         }
@@ -167,8 +172,9 @@
         if (!fields(view, ['hintOpen', 'difficultyOpen', 'feedback', 'details', 'help', 'model', 'solution']) ||
             typeof view.hintOpen !== 'boolean' || typeof view.difficultyOpen !== 'boolean' ||
             !['none', 'empty', 'format', 'wrong', 'right'].includes(view.feedback) ||
-            !fields(view.details, [...Object.keys(DETAIL_SELECTORS), 'earned']) ||
-            !Object.keys(DETAIL_SELECTORS).every(key => typeof view.details[key] === 'boolean') || !Array.isArray(view.details.earned)) return false;
+            !fields(view.details, [...Object.keys(DETAIL_SELECTORS), 'earned', ...Object.keys(OPTIONAL_DETAIL_SELECTORS).filter(key => Object.hasOwn(view.details, key))]) ||
+            !Object.keys(DETAIL_SELECTORS).every(key => typeof view.details[key] === 'boolean') ||
+            !Object.keys(OPTIONAL_DETAIL_SELECTORS).every(key => !Object.hasOwn(view.details, key) || typeof view.details[key] === 'boolean') || !Array.isArray(view.details.earned)) return false;
         const c = context(value), d = view.details;
         if ((!c.live && (view.hintOpen || view.difficultyOpen || view.feedback !== 'none' || view.help !== null)) ||
             (c.live && ((view.feedback === 'right') !== c.solved || (view.difficultyOpen && (!c.session.wrong || c.solved)) ||
@@ -177,6 +183,7 @@
             (d.foundation && !c.live) || (d.simpler && (!c.live || !c.lesson.prereq?.text)) ||
             (d.numberInput && (!c.live || c.question.choices)) || (d.extraSupport && !c.live) ||
             (d.calmBasics && c.page !== 'calm') || (d.trigBasics && (c.page !== 'calm' || config.number !== 8)) ||
+            (d.theory && c.page !== 'lesson') || (d.startHelp && c.page !== 'calm') || (d.resources && !['exam', 'calm'].includes(c.page)) ||
             new Set(d.earned).size !== d.earned.length || !d.earned.every(index => c.page === 'practice' && c.mode === 'guided' &&
               prefs.enabled && integer(index, 0, c.session.answers.length - 1))) return false;
         if (view.help !== null && (!fields(view.help, ['kind', 'controlIndex']) ||
@@ -199,14 +206,14 @@
       storage.setItem(PREFERENCES_KEY, JSON.stringify(value.preferences));
     }
     function readDetails(main) {
-      const values = Object.fromEntries(Object.entries(DETAIL_SELECTORS).map(([key, selector]) => [key, !!main.ownerDocument.querySelector(selector)?.open]));
+      const values = Object.fromEntries(Object.entries({ ...DETAIL_SELECTORS, ...OPTIONAL_DETAIL_SELECTORS }).map(([key, selector]) => [key, !!main.ownerDocument.querySelector(selector)?.open]));
       values.earned = [...main.querySelectorAll('.earned-explanation')].flatMap((element, index) => element.open ? [index] : []);
       return values;
     }
     function applyDetails(main, value) {
-      for (const [key, selector] of Object.entries(DETAIL_SELECTORS)) {
+      for (const [key, selector] of Object.entries({ ...DETAIL_SELECTORS, ...OPTIONAL_DETAIL_SELECTORS })) {
         const element = main.ownerDocument.querySelector(selector);
-        if (element) element.open = value[key];
+        if (element) element.open = value[key] === true;
       }
       [...main.querySelectorAll('.earned-explanation')].forEach((element, index) => { element.open = value.earned.includes(index); });
     }

@@ -1,0 +1,868 @@
+{
+  "schemaVersion": 1,
+  "status": "passed-technical-candidate-and-staging-mechanism",
+  "reviewer": "independent integration reviewer /root/vii_theory",
+  "at": "2026-10-29T19:19:37.261695+00:00",
+  "base": "6fb959fc0130a0bb8842601d19297e305ac91ac0",
+  "contentApprovalGranted": false,
+  "publicationApprovalGranted": false,
+  "independence": "Reviewer authored the 21 chapter VII theory/selfcheck cards. Those cards are explicitly outside this technical review; integration was authored by a separate agent.",
+  "codeReview": "Read all listed integration and gate files. File hashes bind this working-tree review; no exact-head external-provider verdict is claimed.",
+  "reviewedFiles": {
+    "tools/geometry-textbook/chapter07_common.py": "929cb92e91abb092a35befe7edbf3fc393467852ac49f21b01b547a5f1d4af54",
+    "tools/geometry-textbook/build_candidate.py": "cacd45f5faa35170f89c3ec94cf837d428afc0b6272d5a415a3c886a9e757b44",
+    "tools/geometry-textbook/build_course.py": "9420bf3559ab62c4ac5c511f02c3a65c71d1a5db994a04c05f0b5f1633205e07",
+    "tools/geometry-textbook/chapter07_preservation.py": "baae4004b610fede7d4b1c5deb48dbd34ee39fec410b12a5e50d1ae4c24ad0b9",
+    "tools/geometry-textbook/chapter07_extension.py": "1f60e2f9141bb0a1da48ddc1fdadcc57d376f92b366d586a0f32892a0d2708f5",
+    "tools/geometry-textbook/chapter07_release.py": "8ca9b7dff8c64b67df456893010186947377ac2f1862ed692e4335b8aacb3dfb",
+    "tools/geometry-textbook/stage_chapter07_release.py": "660ca2be63addde6fed4a201ee322d248563e1baa057a638bf9c82f885ed9ab4",
+    "tools/geometry-textbook/chapter06_extension.py": "2ce010be31263f3bd05fab5318bbeea4a52e586ef9e9ae12b9444bb50716bfbf",
+    "tools/geometry-textbook/published_preservation.py": "308430bc47839d2316c12c8986f4810b69e76460e23a2e6226fb4a85bc2c6cc4",
+    "tools/geometry-textbook/chapter05-preservation.test.py": "93978274aff86668ed261ec5e589a18ef493a303350d41af584936e1baad6d54",
+    "tools/geometry-textbook/chapter06-candidate.test.py": "4fc8a7833c7655fe7004a1087f9a8977aa3302f37771ec9ab4a7ebb0b1856e1e",
+    "tools/geometry-textbook/chapter06-release.test.py": "0d0c7a441af3f65d2351eea5fd7c601e430c2a39758c44fe6f02aaec13a6ba91",
+    "tools/geometry-textbook/chapter06-captions.test.cjs": "d10416ef8ad39657a3e03bf25372173c8f0dce5ce4182838626ef5b6ed85cf72",
+    "tools/geometry-textbook/captions.test.cjs": "7f340d01d3fd02056eda065d22b8c9fb31934b75046df8e92922ea9d9efdc4ac",
+    "tools/geometry-textbook/review_scope_test.py": "34fbefd3675f94121962467f3e83b7afeb64b113afcf8c3d22847cbf5da6c26c",
+    "tools/geometry-textbook/chapter07-candidate.test.py": "b6e0a5b871117dedf19a63b8a34d8f085c63be9845a45fa48204a761283932d5",
+    "tools/geometry-textbook/chapter07-release.test.py": "47ed391cc82841581c812a5680909702e43807fef61b76995040a06ddcd670a0",
+    "tools/geometry-textbook/chapter07_release_test_support.py": "1ba8c156bf240ac8fdd7d11969a7a8806cfb98dc459e4a9112e4a99a3be0d8e3",
+    "tools/geometry-textbook/chapter07-captions.test.cjs": "a41b58ee9dbe2aba17929ef53e1a5f3a16f90001daed861c09d15ebd49236c71",
+    "tools/geometry-textbook/published-through-540.json": "b53fe1c528bc0660f6f512a0e70ea77d4c9e9031b5905a954035ae54ca290935",
+    "tools/geometry-textbook/chapter-07-source-map.json": "7c87229a8316a601c806f78ea4d6a41bedc9818b571e3e7e848bc411c9aee463",
+    "geometry-course/textbook/candidate-chapters.json": "39acca72e24524fea5f6571a9ac1af38650d80778082e03b9e9094a3dcd66ef7",
+    ".github/workflows/atanasyan-planimetry.yml": "84edf5e1e1864c2c6ad49b9a308c336ad4ae36468bbf3b4ac33d5502afa83748"
+  },
+  "frozenPublication": {
+    "cards": 893,
+    "immutableFiles": 167,
+    "all167VerifiedAgainstActualGitObjects": true,
+    "publicBytesEqualActualBase": true,
+    "courseSha256": "d15bb793245f20b9f1b8d4bac726637192c816922effd45d209618a0c244f3fc"
+  },
+  "runtimeChain": {
+    "checks": [
+      {
+        "name": "frozen_893_and_all167_actual_git_objects_and_current_bytes",
+        "result": "passed"
+      },
+      {
+        "name": "exact_three_source_audited_paragraphs_and_scope",
+        "result": "passed"
+      },
+      {
+        "name": "missing_VII_runtime_receipt",
+        "result": "rejected",
+        "exception": "FileNotFoundError",
+        "reason": "[Errno 2] No such file or directory: '<temporary-root>/docs/reviews/ATANASYAN_7_9_CHAPTER_VII_RUNTIME_EXTENSION_REVIEW.json'"
+      },
+      {
+        "name": "isolated_synthetic_receipt_control",
+        "result": "passed"
+      },
+      {
+        "name": "all_seven_manifests_exact_VII_then_VI_unwrap",
+        "result": "passed",
+        "manifests": 7
+      },
+      {
+        "name": "runtime_amendment_alone_never_promotes_candidate_or_approves_content",
+        "result": "passed"
+      },
+      {
+        "name": "receipt_status",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "VII runtime extension lacks completed review"
+      },
+      {
+        "name": "receipt_browser",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "VII runtime extension lacks completed review"
+      },
+      {
+        "name": "receipt_reviewer",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "VII runtime extension lacks provenance"
+      },
+      {
+        "name": "receipt_at",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "VII runtime extension lacks provenance"
+      },
+      {
+        "name": "receipt_previousSourceCommit",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Wrong previous publication"
+      },
+      {
+        "name": "receipt_preservedCards",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Runtime review cannot approve VII content"
+      },
+      {
+        "name": "receipt_contentApprovalGranted",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Runtime review cannot approve VII content"
+      },
+      {
+        "name": "receipt_oldImplementationSha256",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Wrong prior runtime chain"
+      },
+      {
+        "name": "receipt_implementationSha256",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Stale VII runtime files"
+      },
+      {
+        "name": "receipt_paragraphsAdded",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Unreviewed VII paragraph additions"
+      },
+      {
+        "name": "receipt_previousRuntimeReview",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Wrong prior runtime receipt binding"
+      },
+      {
+        "name": "receipt_missing_evidence",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Missing independent VII runtime evidence"
+      },
+      {
+        "name": "receipt_stale_evidence_hash",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Stale independent VII runtime evidence: docs/reviews/SYNTHETIC_PROBE_EVIDENCE.txt"
+      },
+      {
+        "name": "receipt_absolute_evidence_path",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Evidence must be repo-relative"
+      },
+      {
+        "name": "receipt_parent_evidence_path",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Evidence must be repo-relative"
+      },
+      {
+        "name": "receipt_stale_implementation_file",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Stale VII runtime files"
+      },
+      {
+        "name": "tampered_runtime_evidence_file",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Stale independent VII runtime evidence: docs/reviews/SYNTHETIC_PROBE_EVIDENCE.txt"
+      },
+      {
+        "name": "tampered_historical_VI_receipt",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Historical VI runtime receipt changed"
+      },
+      {
+        "name": "tampered_historical_caption_receipt",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Historical caption receipt changed"
+      },
+      {
+        "name": "runtime_mutation_even_with_rehashed_synthetic_receipt",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Only VII paragraph metadata may change"
+      },
+      {
+        "name": "source_index_old-row",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Previous source index/order/metadata changed"
+      },
+      {
+        "name": "source_index_VII-row",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "VII paragraphs must be the exact reviewed suffix"
+      },
+      {
+        "name": "source_index_extra-row",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "VII paragraphs must be the exact reviewed suffix"
+      },
+      {
+        "name": "source_index_reorder",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "VII paragraphs must be the exact reviewed suffix"
+      },
+      {
+        "name": "source_index_formatting",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Unrelated source-index formatting changes"
+      },
+      {
+        "name": "manifest_release-review-advanced-07.json_missing-binding",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Missing/stale VII extension binding"
+      },
+      {
+        "name": "manifest_release-review-advanced-07.json_stale-binding",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Missing/stale VII extension binding"
+      },
+      {
+        "name": "manifest_release-review-advanced-07.json_old-content-review-tamper",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Previous review evidence/provenance changed"
+      },
+      {
+        "name": "manifest_release-review-advanced-07.json_stale-runtime",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Stale manifest VII runtime"
+      },
+      {
+        "name": "manifest_release-review-advanced-07.json_VI-binding-tamper",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Previous review evidence/provenance changed"
+      },
+      {
+        "name": "manifest_release-review-chapter-02.json_missing-binding",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Missing/stale VII extension binding"
+      },
+      {
+        "name": "manifest_release-review-chapter-02.json_stale-binding",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Missing/stale VII extension binding"
+      },
+      {
+        "name": "manifest_release-review-chapter-02.json_old-content-review-tamper",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Previous review evidence/provenance changed"
+      },
+      {
+        "name": "manifest_release-review-chapter-02.json_stale-runtime",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Stale manifest VII runtime"
+      },
+      {
+        "name": "manifest_release-review-chapter-02.json_VI-binding-tamper",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Previous review evidence/provenance changed"
+      },
+      {
+        "name": "manifest_release-review-chapter-03.json_missing-binding",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Missing/stale VII extension binding"
+      },
+      {
+        "name": "manifest_release-review-chapter-03.json_stale-binding",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Missing/stale VII extension binding"
+      },
+      {
+        "name": "manifest_release-review-chapter-03.json_old-content-review-tamper",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Previous review evidence/provenance changed"
+      },
+      {
+        "name": "manifest_release-review-chapter-03.json_stale-runtime",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Stale manifest VII runtime"
+      },
+      {
+        "name": "manifest_release-review-chapter-03.json_VI-binding-tamper",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Previous review evidence/provenance changed"
+      },
+      {
+        "name": "manifest_release-review-chapter-04.json_missing-binding",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Missing/stale VII extension binding"
+      },
+      {
+        "name": "manifest_release-review-chapter-04.json_stale-binding",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Missing/stale VII extension binding"
+      },
+      {
+        "name": "manifest_release-review-chapter-04.json_old-content-review-tamper",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Previous review evidence/provenance changed"
+      },
+      {
+        "name": "manifest_release-review-chapter-04.json_stale-runtime",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Stale manifest VII runtime"
+      },
+      {
+        "name": "manifest_release-review-chapter-04.json_VI-binding-tamper",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Previous review evidence/provenance changed"
+      },
+      {
+        "name": "manifest_release-review-chapter-05.json_missing-binding",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Missing/stale VII extension binding"
+      },
+      {
+        "name": "manifest_release-review-chapter-05.json_stale-binding",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Missing/stale VII extension binding"
+      },
+      {
+        "name": "manifest_release-review-chapter-05.json_old-content-review-tamper",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Previous review evidence/provenance changed"
+      },
+      {
+        "name": "manifest_release-review-chapter-05.json_stale-runtime",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Stale manifest VII runtime"
+      },
+      {
+        "name": "manifest_release-review-chapter-05.json_VI-binding-tamper",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Previous review evidence/provenance changed"
+      },
+      {
+        "name": "manifest_release-review-chapter-06.json_missing-binding",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Missing/stale VII extension binding"
+      },
+      {
+        "name": "manifest_release-review-chapter-06.json_stale-binding",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Missing/stale VII extension binding"
+      },
+      {
+        "name": "manifest_release-review-chapter-06.json_old-content-review-tamper",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Previous review evidence/provenance changed"
+      },
+      {
+        "name": "manifest_release-review-chapter-06.json_stale-runtime",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Stale manifest VII runtime"
+      },
+      {
+        "name": "manifest_release-review.json_missing-binding",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Missing/stale VII extension binding"
+      },
+      {
+        "name": "manifest_release-review.json_stale-binding",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Missing/stale VII extension binding"
+      },
+      {
+        "name": "manifest_release-review.json_old-content-review-tamper",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Previous review evidence/provenance changed"
+      },
+      {
+        "name": "manifest_release-review.json_stale-runtime",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Stale manifest VII runtime"
+      },
+      {
+        "name": "manifest_release-review.json_VI-binding-tamper",
+        "result": "rejected",
+        "exception": "AssertionError",
+        "reason": "Previous review evidence/provenance changed"
+      },
+      {
+        "name": "compose_missing_VII_receipt_deapproves_all_amended_old_cards",
+        "result": "passed"
+      }
+    ],
+    "probeScriptSha256": "0474310cb56217f9c781f7481efd28c88df06a1b375a4bce552833ec97d4bd9a"
+  },
+  "completeUnionAndStage": {
+    "checks": [
+      {
+        "name": "unreviewed_VII_cannot_release",
+        "result": "rejected",
+        "reason": "VII independent content review incomplete"
+      },
+      {
+        "name": "isolated_complete_union_control",
+        "result": "passed",
+        "cards": 1083
+      },
+      {
+        "name": "VII_review_reviewer_tamper",
+        "result": "rejected",
+        "reason": "VII review provenance/verdict mismatch"
+      },
+      {
+        "name": "VII_review_mathematics_pending",
+        "result": "rejected",
+        "reason": "VII review provenance/verdict mismatch"
+      },
+      {
+        "name": "VII_review_at_tamper",
+        "result": "rejected",
+        "reason": "VII review provenance/verdict mismatch"
+      },
+      {
+        "name": "full_authored_digest_tamper",
+        "result": "rejected",
+        "reason": "Full authored-content digest is stale"
+      },
+      {
+        "name": "VII_catalog_order_tamper",
+        "result": "rejected",
+        "reason": "Catalog/lesson ordering mismatch"
+      },
+      {
+        "name": "foreign_VIII_card",
+        "result": "rejected",
+        "reason": "Unexpected old-card scope"
+      },
+      {
+        "name": "foreign_VII_id",
+        "result": "rejected",
+        "reason": "Catalog/lesson ordering mismatch"
+      },
+      {
+        "name": "old_disguised_as_VII",
+        "result": "rejected",
+        "reason": "Unexpected old-card scope"
+      },
+      {
+        "name": "extra_VII_card",
+        "result": "rejected",
+        "reason": "Wrong full release union size"
+      },
+      {
+        "name": "missing_VII_card",
+        "result": "rejected",
+        "reason": "Wrong full release union size"
+      },
+      {
+        "name": "missing_old_card",
+        "result": "rejected",
+        "reason": "Unexpected old-card scope"
+      },
+      {
+        "name": "stale_VII_content",
+        "result": "rejected",
+        "reason": "VII authored-content digest is stale"
+      },
+      {
+        "name": "stale_VII_revision",
+        "result": "rejected",
+        "reason": "Wrong VII page/storage identity"
+      },
+      {
+        "name": "stale_VII_source_page",
+        "result": "rejected",
+        "reason": "Wrong VII source attribution"
+      },
+      {
+        "name": "wrong_total",
+        "result": "rejected",
+        "reason": "Wrong full release union size"
+      },
+      {
+        "name": "foreign_build_chapter",
+        "result": "rejected",
+        "reason": "Wrong1083 built scope"
+      },
+      {
+        "name": "false_full_book_claim",
+        "result": "rejected",
+        "reason": "Full book is not complete"
+      },
+      {
+        "name": "content_manifest_status",
+        "result": "rejected",
+        "reason": "Missing VII independent review dimensions"
+      },
+      {
+        "name": "content_manifest_source",
+        "result": "rejected",
+        "reason": "Missing VII independent review dimensions"
+      },
+      {
+        "name": "content_manifest_mathematics",
+        "result": "rejected",
+        "reason": "Missing VII independent review dimensions"
+      },
+      {
+        "name": "content_manifest_models",
+        "result": "rejected",
+        "reason": "Missing VII independent review dimensions"
+      },
+      {
+        "name": "content_manifest_pedagogy",
+        "result": "rejected",
+        "reason": "Missing VII independent review dimensions"
+      },
+      {
+        "name": "content_manifest_browser",
+        "result": "rejected",
+        "reason": "Missing VII independent review dimensions"
+      },
+      {
+        "name": "content_manifest_reviewer",
+        "result": "rejected",
+        "reason": "VII review provenance/verdict mismatch"
+      },
+      {
+        "name": "content_manifest_at",
+        "result": "rejected",
+        "reason": "VII review provenance/verdict mismatch"
+      },
+      {
+        "name": "content_manifest_authoredContentSha256",
+        "result": "rejected",
+        "reason": "Stale VII content/runtime review"
+      },
+      {
+        "name": "content_manifest_implementationSha256",
+        "result": "rejected",
+        "reason": "Stale VII content/runtime review"
+      },
+      {
+        "name": "content_manifest_scope",
+        "result": "rejected",
+        "reason": "Wrong VII review scope"
+      },
+      {
+        "name": "content_manifest_evidence",
+        "result": "rejected",
+        "reason": "Missing independent VII content evidence"
+      },
+      {
+        "name": "missing_VII_content_manifest",
+        "result": "rejected",
+        "reason": "[Errno 2] No such file or directory: '<temporary-root>/geometry-course/textbook/release-review-chapter-07.json'"
+      },
+      {
+        "name": "missing_content_review_keeps_old893_and_new190_pending",
+        "result": "passed"
+      },
+      {
+        "name": "historical_VI_entry_checks_complete1083_before_projection",
+        "result": "passed"
+      },
+      {
+        "name": "historical_VI_entry_rejects_forged_VII_filter_escape",
+        "result": "rejected",
+        "reason": "Wrong full release union size"
+      },
+      {
+        "name": "stage_rejects_repository_output",
+        "result": "rejected",
+        "reason": "Staging must be outside the working repository"
+      },
+      {
+        "name": "stage_rejects_existing_output",
+        "result": "rejected",
+        "reason": "Existing output is never overwritten"
+      },
+      {
+        "name": "actual_stage_copies_1083_without_changing_source893",
+        "result": "passed"
+      },
+      {
+        "name": "stage_missing_runtime_receipt",
+        "result": "rejected",
+        "reason": "[Errno 2] No such file or directory: '<temporary-root>/docs/reviews/ATANASYAN_7_9_CHAPTER_VII_RUNTIME_EXTENSION_REVIEW.json'"
+      }
+    ],
+    "probeScriptSha256": "97dd94395899869964492cb2499ff27003e3a06ce9f938b161e478e0b36b1b9e",
+    "unexpectedAcceptances": []
+  },
+  "browserInteractions": [
+    {
+      "label": "published893",
+      "evidenceSha256": "1551bac580b4eb357047b0e7264cf8fec4389dbf7858945191cbd798d298a9dc",
+      "scope": "interactions-only",
+      "gateScriptSha256": "d5d1e5af7e377d5921c86e84c36e81489c150b78db6442a2b71f1c0aba817be7",
+      "implementationSha256": "04e5a58da99bf68421e8f7aa9baccd8c3b2054766dab4141f912a46eba7690ec",
+      "authoredContentSha256": "eac1eb2b73cf13a6bd31c4524d4327be75d044f4a174bb7b7d9ff910d5c744e1",
+      "bundleSha256": "d15bb793245f20b9f1b8d4bac726637192c816922effd45d209618a0c244f3fc",
+      "lessons": 893,
+      "interactions": [
+        "notes-and-steps-reload",
+        "expansion-theory-1280-button-and-Escape",
+        "theory-return-retains-answer",
+        "manual-answer-honesty",
+        "two-tab-conflict-preserves-work",
+        "chapter-selfcheck-draft-isolation-and-reload",
+        "chapter-II-theory-return-and-saved-step",
+        "chapter-II-first-and-last-direct-entry",
+        "chapter-III-theory-return-and-saved-step",
+        "chapter-III-first-and-last-direct-entry",
+        "chapter-IV-theory-return-and-saved-step",
+        "chapter-IV-first-and-last-direct-entry",
+        "chapter-V-theory-return-and-saved-step",
+        "chapter-V-first-and-last-direct-entry",
+        "chapter-VI-theory-return-and-saved-step",
+        "chapter-VI-first-and-last-direct-entry"
+      ],
+      "errors": [],
+      "completed": true
+    },
+    {
+      "label": "isolated1083",
+      "evidenceSha256": "792593aa87c57953879d301ae238b9e7453850e042c38859e32c490ab4e956b2",
+      "scope": "interactions-only",
+      "gateScriptSha256": "d5d1e5af7e377d5921c86e84c36e81489c150b78db6442a2b71f1c0aba817be7",
+      "implementationSha256": "06f892e4142242b6e1f22331479c884924d5e6690f18ca0fb3d6202bac0c319c",
+      "authoredContentSha256": "fd324cb639df6aacca39d9f6c64914c4ee56e999ad1d0d171147a63a7e6b17f5",
+      "bundleSha256": "2fb4d953e2267ea70e1586c0489044f2b53a21a11ba23aa06948af26da63cd98",
+      "lessons": 1083,
+      "interactions": [
+        "notes-and-steps-reload",
+        "expansion-theory-1280-button-and-Escape",
+        "theory-return-retains-answer",
+        "manual-answer-honesty",
+        "two-tab-conflict-preserves-work",
+        "chapter-selfcheck-draft-isolation-and-reload",
+        "chapter-II-theory-return-and-saved-step",
+        "chapter-II-first-and-last-direct-entry",
+        "chapter-III-theory-return-and-saved-step",
+        "chapter-III-first-and-last-direct-entry",
+        "chapter-IV-theory-return-and-saved-step",
+        "chapter-IV-first-and-last-direct-entry",
+        "chapter-V-theory-return-and-saved-step",
+        "chapter-V-first-and-last-direct-entry",
+        "chapter-VI-theory-return-and-saved-step",
+        "chapter-VI-first-and-last-direct-entry",
+        "chapter-VII-theory-return-and-saved-step",
+        "chapter-VII-first-and-last-direct-entry"
+      ],
+      "errors": [],
+      "completed": true
+    }
+  ],
+  "uiSmoke": {
+    "scope": "independent technical public/candidate smoke; no lesson content approval",
+    "freshStorage": true,
+    "checks": [
+      {
+        "width": 320,
+        "name": "published893_and_unavailable_VII",
+        "result": "passed"
+      },
+      {
+        "width": 320,
+        "name": "candidate_public_entry_rejects_unreviewed_VII",
+        "result": "passed"
+      },
+      {
+        "width": 320,
+        "id": "atanasyan-7-9-main-541-part-1",
+        "name": "explicit_preview_caption_and_model",
+        "result": "passed"
+      },
+      {
+        "width": 320,
+        "id": "atanasyan-7-9-main-605-part-1",
+        "name": "explicit_preview_caption_and_model",
+        "result": "passed"
+      },
+      {
+        "width": 320,
+        "id": "atanasyan-7-9-main-639-part-1",
+        "name": "explicit_preview_caption_and_model",
+        "result": "passed"
+      },
+      {
+        "width": 320,
+        "id": "atanasyan-7-9-theory-54-part-1",
+        "name": "explicit_preview_caption_and_model",
+        "result": "passed"
+      },
+      {
+        "width": 320,
+        "id": "atanasyan-7-9-selfcheck-chapter-7-1-part-1",
+        "name": "explicit_preview_caption_and_model",
+        "result": "passed"
+      },
+      {
+        "width": 1280,
+        "name": "published893_and_unavailable_VII",
+        "result": "passed"
+      },
+      {
+        "width": 1280,
+        "name": "candidate_public_entry_rejects_unreviewed_VII",
+        "result": "passed"
+      },
+      {
+        "width": 1280,
+        "id": "atanasyan-7-9-main-541-part-1",
+        "name": "explicit_preview_caption_and_model",
+        "result": "passed"
+      },
+      {
+        "width": 1280,
+        "id": "atanasyan-7-9-main-605-part-1",
+        "name": "explicit_preview_caption_and_model",
+        "result": "passed"
+      },
+      {
+        "width": 1280,
+        "id": "atanasyan-7-9-main-639-part-1",
+        "name": "explicit_preview_caption_and_model",
+        "result": "passed"
+      },
+      {
+        "width": 1280,
+        "id": "atanasyan-7-9-theory-54-part-1",
+        "name": "explicit_preview_caption_and_model",
+        "result": "passed"
+      },
+      {
+        "width": 1280,
+        "id": "atanasyan-7-9-selfcheck-chapter-7-1-part-1",
+        "name": "explicit_preview_caption_and_model",
+        "result": "passed"
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "public-320.png",
+        "sha256": "3154e5502236fd96d2ce26b5f560b7ae240293e1840b2e5f03c2f020db067b4d"
+      },
+      {
+        "file": "preview541-320.png",
+        "sha256": "49d9c469a7753d982aff6a1437c05e649f7db18b0fd11a7e36cb4282402891c8"
+      },
+      {
+        "file": "public-1280.png",
+        "sha256": "10ceeafe2bc7166d7c6c300c171b0e75a82a8c0a8dc4288a610ffb6dc11f7048"
+      },
+      {
+        "file": "preview541-1280.png",
+        "sha256": "1e58b22b4c2a9dde1537a2dceaadd71f3d8b3f460f5fcd941a779aafc62571cc"
+      }
+    ],
+    "errors": [],
+    "completed": true,
+    "publicBundleSha256": "d15bb793245f20b9f1b8d4bac726637192c816922effd45d209618a0c244f3fc",
+    "candidateBundleSha256": "2fb4d953e2267ea70e1586c0489044f2b53a21a11ba23aa06948af26da63cd98",
+    "scriptSha256": "f2fd98a272801d429af83625486b731a1f2e61222c2dcda7db848be86dbd29e2"
+  },
+  "resolvedFindings": [
+    {
+      "problem": "VII review metadata could differ from its manifest without affecting the authored hash.",
+      "fix": "Require the exact row review object, including provenance and honest pending fields."
+    },
+    {
+      "problem": "VII catalog order was not compared with lesson order.",
+      "fix": "Require complete catalog/lesson identity order equality."
+    },
+    {
+      "problem": "Full authored-content digest and aggregate build flags were not independently recomputed.",
+      "fix": "Recompute full and per-chapter authored digests/counts and coherent global review flags."
+    }
+  ],
+  "syntheticReceipts": "Only isolated temporary roots received synthetic positive fixtures; all were deleted. They were never copied into actual approval files.",
+  "limits": [
+    "Technical integration only; no source, mathematics, pedagogy or drawing approval of the reviewer-authored theory.",
+    "The interaction browser gate inspected no exhaustive drawing views. Four UI screenshots were manually opened at 320 and 1280 pixels; every novel chapter drawing remains a separate review.",
+    "Browser candidate evidence binds its recorded bundle hash. Later lesson-only corrections do not alter the reviewed runtime hash and are not silently included as content approval.",
+    "Actual VII runtime/content receipts and promotion were absent during these probes. Final reviewed receipts, promoted bundle and exact-head CI require their own checks."
+  ],
+  "authorRegressionEvidenceReviewed": {
+    "independentlyExecuted": false,
+    "allPassed": true,
+    "commands": [
+      "python tools/geometry-textbook/build_course.py --check",
+      "python tools/geometry-textbook/chapter05-preservation.test.py",
+      "python tools/geometry-textbook/review_scope_test.py",
+      "python tools/geometry-textbook/chapter06-candidate.test.py",
+      "python tools/geometry-textbook/chapter06-release.test.py",
+      "python tools/geometry-textbook/chapter07-candidate.test.py",
+      "python tools/geometry-textbook/chapter07-release.test.py",
+      "node tools/geometry-textbook/check_course.cjs --require-reviewed",
+      "node tools/geometry-textbook/captions.test.cjs"
+    ],
+    "evidenceSha256": "975ef55dd7e5ccc6df031e9c16582a7e63d3bb1c5175920f1407db519422aa0e",
+    "note": "Author-run synthetic1083 logs were read; not counted as independent probes."
+  },
+  "scopedFollowups": [
+    {
+      "at": "2026-10-29T19:26:05.142179+00:00",
+      "reviewer": "/root/vii_theory",
+      "scope": "Workflow-only follow-up for forthcoming 1083-card promotion.",
+      "changedFiles": [
+        ".github/workflows/atanasyan-planimetry.yml"
+      ],
+      "previousWorkflowSha256": "47448b340d8f4c31bbf2c2fb3085e50f879311f6c0c20a87c55e282bc126319b",
+      "reviewedWorkflowSha256": "84edf5e1e1864c2c6ad49b9a308c336ad4ae36468bbf3b4ac33d5502afa83748",
+      "changes": [
+        "Public browser timeout 35 to 55 minutes.",
+        "VI browser timeout 40 to 55 minutes.",
+        "VII added to public browser screenshot capture sections.",
+        "Three descriptive step names generalized."
+      ],
+      "gateCommandsUnchanged": true,
+      "exactPreviousWorkflowBytesRecoveredByReversingOnlyListedChanges": true,
+      "other22ReviewedFilesByteIdentical": true,
+      "retainedIndependentProbes": 105,
+      "probesRerun": false,
+      "finalPublic1083Browser": "pending; not claimed by this follow-up",
+      "contentApprovalGranted": false,
+      "publicationApprovalGranted": false
+    }
+  ]
+}

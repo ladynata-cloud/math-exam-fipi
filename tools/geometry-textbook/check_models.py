@@ -128,7 +128,14 @@ def main():
     models, views, claims, errors = 0, 0, 0, []
     identities = set()
     for path in sorted((COURSE / 'models').glob('*.json')):
-        chapter = int(re.fullmatch(r'chapter-(\d{2})-[a-z]+\.json', path.name)[1])
+        match = re.fullmatch(r'chapter-(\d{2})-[a-z]+\.json', path.name)
+        if match:
+            chapter = int(match[1])
+        elif re.fullmatch(r'grade-07-advanced-[a-z]\.json', path.name):
+            chapter = '7-advanced'
+        else:
+            errors.append(f'Unexpected model filename: {path.name}')
+            continue
         data = json.loads(path.read_text())
         if data.get('chapter', chapter) != chapter:
             errors.append(f'Model chapter disagrees with filename: {path.name}')

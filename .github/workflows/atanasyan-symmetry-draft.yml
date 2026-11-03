@@ -8,6 +8,7 @@ on:
       - 'stereo-course/textbook/lessons/ex-main-0278*.json'
       - 'stereo-course/textbook/source-index.json'
       - 'stereo-course/textbook/data/course.json'
+      - 'stereo-course/assets/**'
       - 'tools/stereo-textbook/pending-symmetry/**'
       - 'tools/stereo-textbook/symmetry-*'
       - '.github/workflows/atanasyan-symmetry-draft.yml'

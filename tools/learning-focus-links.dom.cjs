@@ -113,3 +113,26 @@ test('actual teacher preview shares links, with escaped fallback for a cached ol
  }finally{dom.window.close();}
  }
 });
+
+
+test('OGE11 focus and saved-plan references expose the exact trainer without starting personal work',()=>{
+ const dom=fixture(),{window}=dom,host=window.document.querySelector('main');
+ const url='https://mathexam.space/trainers/oge-task11-graphs-trainer.html';
+ try{
+  host.innerHTML=window.LearningPreparationUI.focusMarkup(url);
+  const link=host.querySelector('[data-focus-practice]');
+  assert.equal(link.href,url);assert.match(link.textContent,/№11/);
+  assert.equal(host.querySelectorAll('[data-prep-start]').length,0);
+  for(const teacher of [false,true]){
+   host.innerHTML=window.LearningPreparationUI.planCoursesMarkup(url,{teacher});
+   assert.equal(host.querySelector('[data-plan-course-open]').href,url);
+   assert.equal(host.querySelectorAll('[data-plan-course-board]').length,teacher?1:0);
+   assert.match(host.textContent,/не входят в прогресс кабинета/);
+  }
+  for(const unsafe of [url+'?next=evil',url.replace('mathexam.space','mathexam.space.evil.test')]){
+   host.innerHTML=window.LearningPreparationUI.focusMarkup(unsafe);
+   assert.equal(host.querySelectorAll('a').length,0);
+   assert.equal(window.LearningPreparationUI.planCoursesMarkup(unsafe),'');
+  }
+ }finally{dom.window.close();}
+});
