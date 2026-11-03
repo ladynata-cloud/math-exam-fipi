@@ -28,7 +28,7 @@ test('grade 7 textbook: all 619 cards, private isolation, catalog and reasoning 
 });
 test('all native entries and board metadata are complete',()=>{
  const catalog=JSON.parse(readFileSync(resolve(ROOT,'geometry-course/board/catalog.json')));assert.equal(catalog.length,70);assert.equal(new Set(catalog.map(x=>x.id)).size,70);
- for(const x of catalog){const text=readFileSync(resolve(ROOT,'geometry-course/trainers/'+x.id+'.html'),'utf8');assert(text.includes('/geometry-course/board/native-session.js'));assert(text.includes('/geometry-course/board/learning-support.js'));}
+ for(const x of catalog){const text=readFileSync(resolve(ROOT,'geometry-course/trainers/'+x.id+'.html'),'utf8');assert(text.includes('/geometry-course/board/native-session.js'));assert(text.includes('/geometry-course/board/learning-support.js'));assert(!/addEventListener\(['"](?:mousedown|touchstart)/.test(text),'All '+x.id+' canvas input uses captured pointer events');}
  const registry=JSON.parse(readFileSync(resolve(ROOT,'trainers/board-compat.json')));for(const id of ['atanasyan-grade7','geometry7-practice'])assert.equal(registry.trainers.find(x=>x.trainerId===id).allowLegacyHtml,false);
 });
 test('all managed grade 7 geometry families use the existing board and preserve model snapshots',()=>{
@@ -37,7 +37,7 @@ test('all managed grade 7 geometry families use the existing board and preserve 
  try{
   for(const el of w.document.querySelectorAll('script[src]')){const file=new URL(el.src).pathname;if(file!=='/trainers/board-bridge.js')w.eval(readFileSync(resolve(ROOT,'.'+file),'utf8'));}
   assert(config);assert.equal(config.id,'geometry7-rebuild');const families=w.BazaBoard.LESSONS[7];assert(families.length>=103);
-  for(const id of families){w.__bazaBoard.navigate('#lesson='+id);assert(!w.document.querySelector('.task-first-heading .eyebrow').textContent.includes('ЕГЭ'));assert([...w.document.querySelector('#typeSelect').options].every(o=>families.includes(o.value)));const state=config.getState();assert(w.__bazaBoard.validateState(state),id);config.applyState(state);assert.deepEqual(JSON.parse(JSON.stringify(config.getState())),JSON.parse(JSON.stringify(state)),id);}
+  for(const id of families){w.__bazaBoard.navigate('#lesson='+id);assert(!w.document.querySelector('.task-first-heading .eyebrow').textContent.includes('ЕГЭ'));assert.equal(w.document.querySelector('#typeSelect').options.length,families.length);assert([...w.document.querySelector('#typeSelect').options].every(o=>families.includes(o.value)));const state=config.getState();assert(w.__bazaBoard.validateState(state),id);config.applyState(state);assert.deepEqual(JSON.parse(JSON.stringify(config.getState())),JSON.parse(JSON.stringify(state)),id);}
   console.log('Managed geometry families:',families.length);
  }finally{dom.window.close();}
 });

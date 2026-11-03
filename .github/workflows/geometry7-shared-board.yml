@@ -50,7 +50,7 @@ jobs:
           python3 tools/geometry-textbook/build_course.py --check
           python3 tools/geometry-textbook/check_models.py
           python3 tools/geometry-textbook/model_claims_test.py
-          node --test tools/geometry7-shared-board.test.cjs tools/atanasyan-board-adapter.test.cjs tools/atanasyan-board-picker.test.cjs tools/ege-baza-board.test.cjs board-server/test/trainer-registry.test.js
+          node --test tools/geometry7-shared-board.test.cjs tools/atanasyan-board-adapter.test.cjs tools/atanasyan-board-picker.test.cjs tools/ege-baza-board.test.cjs board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js
           node --test tools/atanasyan-first-steps/*.test.cjs
           git diff --check
       - name: All 70 native activities at two widths

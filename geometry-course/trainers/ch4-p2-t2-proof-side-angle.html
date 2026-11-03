@@ -390,8 +390,7 @@ function placeD(){
   document.getElementById('successBar').textContent='✓ D отмечена: AD = AC';
   advanceReady();
 }
-cv.addEventListener('mousedown',onDown); cv.addEventListener('mousemove',onMove); window.addEventListener('mouseup',onUp);
-cv.addEventListener('touchstart',onDown,{passive:false}); cv.addEventListener('touchmove',onMove,{passive:false}); window.addEventListener('touchend',onUp);
+cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);onDown(e);}); cv.addEventListener('pointermove',onMove); cv.addEventListener('pointerup',onUp); cv.addEventListener('pointercancel',onUp);
 
 /* ───────── СБОРКА (конструктор) ───────── */
 function asmCards(){return S().cards||[]}

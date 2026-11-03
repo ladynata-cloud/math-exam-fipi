@@ -102,7 +102,7 @@ async function run(browser,origin,serverOrigin,errors){
   if(file==='atanasyan-grade7.html'){
    await t.locator('#catalog-search').fill('161');await t.locator('[data-lesson]').first().click();await t.locator('#final-answer').fill('Синтетическое доказательство параллельности.');await t.locator('[data-main-help]>summary').click();await t.getByRole('button',{name:'Разобрать по шагам',exact:true}).click();await t.getByRole('button',{name:'Увеличить чертёж',exact:true}).click();
   }else if(file==='geometry7-rebuild.html'){
-   await t.locator('a[href^="#lesson="]').first().click();await t.locator('#answer').fill('123');await t.locator('#taskHelp>summary').click();await t.locator('#taskModel>summary').click();
+   await t.locator('a[href^="#lesson="]').first().click();await t.locator('#answer').fill('123');await t.locator('#taskHelp>summary').click();await t.locator('#taskModel>summary').click();await t.waitForFunction(()=>__bazaBoard.getState().work.ui.model!==null);await t.locator('[data-geometry-select]').first().click();await t.locator('[data-geometry-next]').click();
   }else{
    await t.locator('#exercise-choice').selectOption('ch2-p1-t3-proof-sas');let n=await native(teacher);await n.locator('#geometry7-givens').fill('Дано: две стороны и угол между ними.');const text=await n.evaluate(()=>CARDS.find(c=>c.id==='overlay').txt);await n.getByRole('button',{name:text,exact:true}).click();await wait(1400);
   }

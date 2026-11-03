@@ -29,7 +29,7 @@ async function restore(page,state){await page.evaluate(s=>Geometry7Practice.appl
    for(const key of order){const label=await f.evaluate(key=>CARDS.find(c=>c.id===key).txt,key);await f.getByRole('button',{name:label,exact:true}).click();await wait(key==='overlay'?1400:70);const {peer}=await mirror();await sameBody(f,peer,id+':'+key);}
   }
   let f=await open('ch2-constr-angle-bisector');
-  async function position(f,p){const box=await f.locator('#cv').boundingBox();return {x:box.x+p.x/640*box.width,y:box.y+p.y/460*box.height};}
+  async function position(f,p){const box=await f.locator('#cv').boundingBox(),size=await f.evaluate(()=>({w:W,h:typeof HT==='number'?HT:H}));return {x:box.x+p.x/size.w*box.width,y:box.y+p.y/size.h*box.height};}
   async function drag(from,to){await f.locator('#cv').scrollIntoViewIfNeeded();const a=await position(f,from),b=await position(f,to);await pages[0].mouse.move(a.x,a.y);await pages[0].mouse.down();await pages[0].mouse.move(b.x,b.y,{steps:12});await pages[0].mouse.up();}
   async function clickPoint(name){await f.locator('#cv').scrollIntoViewIfNeeded();const p=await f.evaluate(name=>{const p=P.find(x=>x.name===name);return {x:p.x,y:p.y};},name),a=await position(f,p);await pages[0].mouse.click(a.x,a.y);}
   await drag({x:150,y:390},{x:330,y:390});assert.equal(await f.evaluate(()=>step),1);
@@ -65,6 +65,11 @@ async function restore(page,state){await page.evaluate(s=>Geometry7Practice.appl
    }
    assert(steps>0,id+' completed steps');
   }
+  for(const [id,key]of [['ch4-p2-t1-side-angle-lab','C'],['ch4-p1-t4-triangle-types','labC']]){
+   f=await open(id);const start=await f.evaluate(key=>key==='C'?C:labC,key),end={x:start.x+45,y:start.y+35};await drag(start,end);const result=await mirror();assert.deepEqual(geometry(await result.peer.evaluate(key=>key==='C'?C:labC,key)),geometry(await f.evaluate(key=>key==='C'?C:labC,key)));assert(Math.abs((await f.evaluate(key=>key==='C'?C:labC,key)).x-end.x)<1e-4,JSON.stringify({id,start,end,actual:await f.evaluate(key=>key==='C'?C:labC,key)}));passes.push(id+' pointer drag');
+  }
+  f=await open('ch4-p2-t2-proof-side-angle');await drag(await f.evaluate(()=>A),await f.evaluate(()=>C));assert(await f.evaluate(()=>comp.radiusSet));await drag(await f.evaluate(()=>D),await f.evaluate(()=>D));assert(await f.evaluate(()=>comp.placed));let peer=(await mirror()).peer;assert(await peer.evaluate(()=>comp.radiusSet&&comp.placed&&built.D));passes.push('side-angle compass pointer');
+  f=await open('ch4-p2-t3-converse-iso');await f.locator('#cv').scrollIntoViewIfNeeded();const swap=await f.evaluate(()=>({x:SWAP_BTN.x+SWAP_BTN.w/2,y:SWAP_BTN.y+SWAP_BTN.h/2})),click=await position(f,swap);await pages[0].mouse.click(click.x,click.y);assert(await f.evaluate(()=>sw.swapped&&proved.conv));peer=(await mirror()).peer;assert(await peer.evaluate(()=>sw.swapped&&proved.conv));passes.push('converse canvas pointer');
   assert.deepEqual(failures,[]);console.log('GEOMETRY7_DEEP_GATE_PASS',passes.length);
  }finally{fs.writeFileSync(path.join(OUT,'summary.json'),JSON.stringify({passes,failures},null,2));await browser.close();server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;server.close();});

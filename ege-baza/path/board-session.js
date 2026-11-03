@@ -137,7 +137,7 @@
       if(position===7){
         main.querySelector('.task-first-heading .eyebrow').textContent='Геометрия · 7 класс · Общая доска';
         const choice=main.querySelector('#typeSelect');
-        for(const option of [...choice.options])if(!LESSONS[7].includes(option.value))option.remove();
+        choice.replaceChildren(...LESSONS[7].map(value=>{const option=root.document.createElement('option');option.value=value;option.textContent=D.meta.find(item=>item.id===value).title;option.selected=value===id;return option;}));
       }
       main.querySelectorAll('input').forEach(el => { if (el.type !== 'range') el.maxLength = 200; });
       main.querySelector('#note').maxLength = 4000;

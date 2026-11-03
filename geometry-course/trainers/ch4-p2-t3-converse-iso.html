@@ -249,7 +249,7 @@ function openDoor(id){
     document.getElementById('successBar').textContent='Все три случая разобраны — сделай вывод';
   }
 }
-cv.addEventListener('mousedown',onTap); cv.addEventListener('touchstart',onTap,{passive:false});
+cv.addEventListener('pointerdown',onTap);
 
 /* ───────── ПРИМИТИВЫ ───────── */
 function hexA(h,a){const n=parseInt(h.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')';}

@@ -19,7 +19,7 @@ The base includes PR 427 (published OGE board acceptance); it did not add grade 
 - [x] Conditions, selected task, answers, hints, retained steps, constructions/model state agree between independent teacher/pupil clients.
 - [x] Reload, reconnect and late join restore the same state; read-only pupil cannot mutate it.
 - [x] Shared tests neither read nor write real pupils' work.
-- [x] Board/mobile layouts remain usable; screenshots reviewed.
+- [x] Board/narrow-frame layouts remain usable; screenshots reviewed.
 - [x] Existing 92a, first-steps and planar engine regressions pass.
 - [x] Account creation/assignment and preservation verified through published UI.
 - [ ] Exact-main/head check, deployment and live acceptance recorded.
@@ -35,7 +35,7 @@ Learning review: explicit corresponding vertices and reasons for each equality; 
 Local evidence:
 - 109 unit/integration tests PASS (grade 7 generation/math, private history, wizard, first steps, 92a, native snapshot guards, picker and registry). Updated exact registry expectation from 75/51 to 78/54 for the three explicit new entries; negative boundaries remain tested.
 - All 70 native entries PASS at two widths, memory-only progress isolation, no horizontal overflow or page errors.
-- Deep browser gate: 61 checkpoints across full SAS/ASA/SSS, four compass/ruler constructions (both perpendicular cases), and five parallel-line proof sequences. Repeated after the viewport-coordinate correction with 800/640 widths.
+- Deep browser gate: 65 checkpoints across full SAS/ASA/SSS, four compass/ruler constructions (both perpendicular cases), and five parallel-line proof sequences, plus four older canvas gesture paths. Repeated after the viewport-coordinate correction with 800/640 widths.
 - Real Socket.IO room: all three wrappers, conditions/drafts/help/model/steps, teacher/pupil control, late join, reload, both roles' transport loss and resumption, and compass arc through the actual room.
 - Public textbook source-review gate PASS; 13 review-scope tests; 1407 models / 7084 views / 6466 coordinate claims; 4066 additional independent advanced-grade-7 checks; 4879 retained DOM checkpoints; geometry checker 46551 assertions. No textbook source or review receipts regenerated.
 - Screenshots inspected for native canvas, textbook and managed geometry in split board layout. Corrected a misleading inherited EGE/null heading in the grade-7 wrapper.
@@ -44,3 +44,8 @@ Local evidence:
 Failures found and resolved: missing round-two compass; oversized-canvas coordinate scaling; stale iframe readiness; over-rounded wire coordinates; lossless comparison-sign encoding; legacy exact inventory expectations; inherited EGE heading. No external provider review or real-pupil learning pilot performed. Free-written proofs require teacher review; board work does not credit individual completion. Native sessions are bounded to 1800 operations/60 KB and offer a new discussion when full.
 
 Release authorization: standing OWNER_RELEASE_AUTHORIZATION.md. Main advanced to 7649cb1368f2c5631f79d25fa8414373481f9ed7 via owner PR 428 (homepage-only, seven disjoint files). Inspect virtual composition and preserve that published work with an ordinary merge. CI and exact production deployment verification remain pending at this commit; final hashes and live evidence go in the PR release record. Rollback is an ordinary revert, no migration or pupil data deletion.
+
+
+## Candidate correction after CI
+The first CI candidate passed 70 native browser activities and the 61 deep proof/construction checkpoints. The room test captured an expected snapshot before an asynchronous model-opening event completed; it now explicitly waits for the model and exercises selected geometry plus a retained step before comparing peers. The runtime task selector now lists all 134 grade-7 topics rather than inheriting an empty EGE list. Four older mouse/touch canvases now use pointer events (also covering touch) and pointer capture, matching the common replay contract; four additional two-width gestures pass. Chromium's input coordinate quantization is checked within 0.0001 canvas units; teacher/peer geometry equality remains checked at 1e-8.
+Ten related CI workflows exposed the same stale server integration expectation of 51 mirror entries. Updated the exact expected count AND explicit identity list to 54; all seven integration tests pass, with negative authorization/CORS boundaries retained. No gate was removed. Added that integration suite to this task's own workflow.
