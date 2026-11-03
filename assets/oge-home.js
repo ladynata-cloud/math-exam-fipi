@@ -34,7 +34,7 @@
             const z=p.z;p.applyMatrix4(view.projectionMatrix);
             vertices.push({x:(p.x+1)*width/2,y:(1-p.y)*height/2,z,n});
           }
-          const color=object.material.color;
+          const color=object.material.color.clone().convertLinearToSRGB();
           for(let i=0;i<count;i+=3){
             const a=vertices[indices?indices.getX(i):i],b=vertices[indices?indices.getX(i+1):i+1],c=vertices[indices?indices.getX(i+2):i+2];
             if((b.x-a.x)*(c.y-a.y)-(b.y-a.y)*(c.x-a.x)>=0)continue;
@@ -57,14 +57,20 @@
   if(!renderer)return; // The inline SVG and real course links remain usable.
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
   renderer.outputEncoding = T.sRGBEncoding;
+  renderer.toneMapping = T.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1;
   const scene = new T.Scene();
   const camera = new T.PerspectiveCamera(35, 1, .1, 70);
   camera.position.set(0, .3, 11.8);
   camera.lookAt(0, 0, 0);
-  scene.add(new T.HemisphereLight(0xfffef2, 0x859a79, 1.5));
-  const key = new T.DirectionalLight(0xfff8e1, 2.1); key.position.set(-4, 6, 7); scene.add(key);
-  const rim = new T.DirectionalLight(0xd2eee1, 1.2); rim.position.set(5, 1, -3); scene.add(rim);
-  const material = (color, options={}) => new T.MeshStandardMaterial({color, roughness:.65, metalness:.05, ...options});
+  scene.add(new T.HemisphereLight(0xfffef2, 0x859a79, .8));
+  const key = new T.DirectionalLight(0xfff8e1, 1.3); key.position.set(-4, 6, 7); scene.add(key);
+  const rim = new T.DirectionalLight(0xd2eee1, .5); rim.position.set(5, 1, -3); scene.add(rim);
+  const material = (color, options={}) => {
+    const mat=new T.MeshStandardMaterial({color, roughness:.65, metalness:.05, ...options});
+    mat.color.convertSRGBToLinear();
+    return mat;
+  };
   const rubber=material(0x243d34), tread=material(0x334e41), silver=material(0xc3cdbd,{metalness:.55,roughness:.27});
   const cream=material(0xf5e5c9), green=material(0x82a777), terra=material(0xc78657), ink=material(0x294a3a);
   const v = (x,y,z=0) => new T.Vector3(x,y,z);

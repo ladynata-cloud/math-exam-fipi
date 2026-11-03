@@ -54,7 +54,7 @@ async function fits(p){assert(await p.evaluate(()=>document.documentElement.scro
   await p.locator('[data-model="tires"]').click();const moving=await p.locator('#oge-model-canvas').screenshot();await p.waitForTimeout(300);assert.notDeepEqual(await p.locator('#oge-model-canvas').screenshot(),moving,'animation changes pixels');
   await p.locator('#model-pause').click();const still=await p.locator('#oge-model-canvas').screenshot();await p.waitForTimeout(200);assert.deepEqual(await p.locator('#oge-model-canvas').screenshot(),still,'pause stops animation');
   const box=await p.locator('#oge-model-canvas').boundingBox();await p.mouse.move(box.x+box.width*.4,box.y+box.height*.5);await p.mouse.down();await p.mouse.move(box.x+box.width*.65,box.y+box.height*.5,{steps:8});await p.mouse.up();assert.notDeepEqual(await p.locator('#oge-model-canvas').screenshot(),still,'drag rotates model');
-  await p.locator('#model-pause').click();await p.emulateMedia({reducedMotion:'reduce'});assert.equal(await p.locator('#model-pause').getAttribute('aria-pressed'),'true');
+  await p.locator('#model-pause').click();await p.emulateMedia({reducedMotion:'reduce'});await p.locator('#model-pause[aria-pressed="true"]').waitFor({timeout:5000});assert.equal(await p.locator('#model-pause').getAttribute('aria-pressed'),'true');
   await p.keyboard.press('Tab');await fits(p);report.cases.push({status:'PASS',checks:['animation','pause','resume','drag','motion preference changes']});await c.close();
   for(const mode of ['no-js','no-library','no-webgl']){
    const c=await context(browser,{javaScriptEnabled:mode!=='no-js'});
