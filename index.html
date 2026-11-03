@@ -37,9 +37,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
-<link rel="stylesheet" href="/assets/oge-home.css?v=20261104">
+<link rel="stylesheet" href="/assets/oge-home.css?v=20261104-orbits">
 <script defer src="/trainers/ege-profile-stereometry-3d/js/three.min.js"></script>
-<script defer src="/assets/oge-home.js?v=20261104"></script>
+<script defer src="/assets/oge-home.js?v=20261104-orbits"></script>
 <style>
   .actions { display:flex; flex-wrap:wrap; gap:12px; margin:24px 0; }
   #where-to-start { margin-top:36px; }
@@ -100,7 +100,7 @@
       <p class="hero-author">Курс Натальи Михайловны<br><span>Из живых занятий — в понятные тренажёры.</span></p>
     </div>
     <div class="model-exhibit" id="oge-models" aria-label="Объёмные модели из тем ОГЭ">
-      <div class="exhibit-top"><span><i aria-hidden="true"></i> Математика, которую видно</span><button type="button" id="model-pause" hidden aria-pressed="false">Пауза</button></div>
+      <div class="exhibit-top"><span><i aria-hidden="true"></i> Вселенная ОГЭ</span><button type="button" id="model-pause" hidden aria-pressed="false">Пауза</button></div>
       <div class="model-stage" id="model-stage">
         <svg class="model-fallback" viewBox="0 0 600 440" role="img" aria-label="Шина, объёмный план квартиры и две параболы: ветвями вверх и вниз">
           <defs><linearGradient id="tire-shade" x2="1" y2="1"><stop stop-color="#52665f"/><stop offset="1" stop-color="#173b31"/></linearGradient></defs>
@@ -109,18 +109,22 @@
           <g fill="none" stroke-linecap="round" stroke-width="7"><path d="M320 65Q368 180 416 65" stroke="#4e8c6d"/><path d="M440 151Q488 36 536 151" stroke="#c68c59"/></g>
           <g fill="#315747"><circle cx="354" cy="82" r="4"/><circle cx="382" cy="82" r="4"/><circle cx="475" cy="83" r="4"/><circle cx="500" cy="83" r="4"/></g>
         </svg>
-        <canvas id="oge-model-canvas" hidden role="img" aria-label="Вращающиеся объёмные модели ОГЭ: шина, квартира, параболы и геометрические фигуры"></canvas>
-        <span class="scene-tag tag-tire" aria-hidden="true">215 / 65 R16</span><span class="scene-tag tag-graph" aria-hidden="true">y = ax² + c</span>
+        <canvas id="oge-model-canvas" hidden role="img" aria-label="Солнечная система ОГЭ: восемь объёмных моделей на трёх орбитах"></canvas>
+        <span class="orbit-label" aria-hidden="true">ОГЭ</span>
       </div>
       <div class="model-tabs" role="group" aria-label="Выбрать модель" hidden>
-        <button type="button" data-model="all" aria-pressed="true">Все</button>
+        <button type="button" data-model="all" aria-pressed="true">Все орбиты</button>
         <button type="button" data-model="tires" aria-pressed="false">Шины</button>
         <button type="button" data-model="apartment" aria-pressed="false">Квартира</button>
         <button type="button" data-model="graphs" aria-pressed="false">Параболы</button>
         <button type="button" data-model="geometry" aria-pressed="false">Геометрия</button>
+        <button type="button" data-model="stove" aria-pressed="false">Печь</button>
+        <button type="button" data-model="plot" aria-pressed="false">Участок</button>
+        <button type="button" data-model="paper" aria-pressed="false">Бумага</button>
+        <button type="button" data-model="dice" aria-pressed="false">Кубик</button>
       </div>
       <div class="model-caption" aria-live="polite" aria-atomic="true"><div><span id="model-number">Знакомые сюжеты — понятные решения</span><p id="model-description">Выберите тему и попробуйте её в деле.</p></div><a id="model-link" href="/trainers/oge-course/">К заданиям <span aria-hidden="true">↗</span></a></div>
-      <p class="model-hint" id="model-hint" hidden>Модель можно повернуть мышью или пальцем ↔</p>
+      <p class="model-hint" id="model-hint" hidden>Выберите модель или поверните систему мышью / пальцем ↔</p>
     </div>
   </div>
 </section>
