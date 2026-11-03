@@ -121,6 +121,21 @@
       ],
       "selfcheckQuestions": 18,
       "cards": 164
+    },
+    {
+      "chapter": 9,
+      "label": "IX",
+      "exerciseNumbers": [
+        737,
+        823
+      ],
+      "mainParts": 133,
+      "theoryPoints": [
+        76,
+        83
+      ],
+      "selfcheckQuestions": 19,
+      "cards": 160
     }
   ],
   "supplements": [
@@ -135,6 +150,6 @@
       "cards": 50
     }
   ],
-  "totalCards": 1247,
+  "totalCards": 1407,
   "fullTextbookComplete": false
 }

@@ -1,6 +1,27 @@
 # Атанасян 7–9: глава IX «Окружность»
 
-## Identity and continuing owner scope
+## Current source version — after genuine review promotion
+
+The standard source build includes all 160 chapter IX cards and 1407 reviewed
+cards overall: exercises 1–823 (1136 explicit parts), 83 theory points,
+188 selfchecks and 32 source paragraph rows. Chapter IX contains 509 steps,
+740 views and 995 coordinate claims. All prior 1247 lesson/catalog records,
+order, review provenance, IDs and learner storage keys remain preserved.
+
+- PR: [#425](https://github.com/ladynata-cloud/math-exam-fipi/pull/425).
+- Branch: `content/atanasyan-chapter-ix-20261103`.
+- Authorization: [active standing owner policy](../OWNER_RELEASE_AUTHORIZATION.md).
+- Review level: HIGH. The release receipt binds genuine content and visual
+  evidence; generated test fixtures are not publication approval.
+- This is the source-version state, not a claim of completed deployment.
+  Final-head checks, the fresh main/head guard, merge parent/tree/delta,
+  Pages commit and public HTTPS/browser evidence are recorded in PR #425.
+
+Next source block: grade 8 advanced exercises 824–925 (102 numbers), printed
+214–223 / PDF 215–224, then chapter X «Векторы» from 926. Full-book completion,
+all grade 8 advanced work, research/complex tasks and appendices are not claimed.
+
+## Historical identity and continuing owner scope — 2026-10-30
 
 - Date: 2026-10-30 (Asia/Novosibirsk).
 - Owner requests: continue the existing source-specific course, add accurate
@@ -77,13 +98,13 @@ inference from a passing test. Preserve unrelated concurrent work, revalidate
 any composed current-main tree, and record actual base/head/delta before merge.
 No force/reset/rebase, admin override, TLS bypass or weakened gate is authorized.
 
-## Execution record
+## Historical execution checkpoint — before the pause
 
-Preparation in progress. Source/card counts, review evidence, tests, failures,
+Preparation was in progress. Source/card counts, review evidence, tests, failures,
 exact head, PR and publication result will be recorded as they are established.
-No chapter IX card is currently claimed as published.
+At this historical checkpoint no chapter IX card was claimed as published.
 
-## Owner-requested pause for chat-mode handoff
+## Historical owner-requested pause — resumed below on 2026-11-03
 
 The owner subsequently requested «подготовь проект для передачи в режим чата».
 Implementation is paused after preserving the source inventory, incomplete
@@ -114,3 +135,54 @@ PR419's first-screen layout amendment and all intervening project work.
 The archive's historical test results are not new validation. The local
 Chromium launch was blocked by a system socket restriction; browser validation
 uses the existing cloud GitHub Actions path. No bypass or TLS exception is used.
+
+## Review and integration evidence for the resumed work
+
+The exact full 2023 edition is identified by the source SHA256 above. The
+[visual source inventory](../reviews/ATANASYAN_7_9_CHAPTER_IX_SOURCE_REVIEW.json)
+covers all 25 source pages; it alone is not authored-content approval.
+Separate [A](../reviews/ATANASYAN_7_9_CHAPTER_IX_A_REVIEW.json),
+[B](../reviews/ATANASYAN_7_9_CHAPTER_IX_B_REVIEW.json),
+[C](../reviews/ATANASYAN_7_9_CHAPTER_IX_C_REVIEW.json) and
+[theory/selfcheck](../reviews/ATANASYAN_7_9_CHAPTER_IX_THEORY_REVIEW.json)
+reviews cover all conditions, subparts, proofs, numerical cases, pedagogy,
+semantic theory links and coordinate models. Reviewer corrections and root
+peer checks are distinguished from independent approval of untouched content.
+
+The [first visual review](../reviews/ATANASYAN_7_9_CHAPTER_IX_INITIAL_VISUAL_REVIEW.json)
+accounts for all 2120 PNGs by actual viewing of 1404 unique whole images and
+hash-bound exact reuse. The first full candidate on head
+`848f3af7d0193157d31bd940e211ba8a4a5f7cf7` failed 12 layout views;
+[that failure](../reviews/ATANASYAN_7_9_CHAPTER_IX_BROWSER_FAILURE_REVIEW.json)
+remains recorded as a failure. Corrections covered 16 cards, including
+geometry/step agreement and theory point K. The
+[diagram amendment](../reviews/ATANASYAN_7_9_CHAPTER_IX_DIAGRAM_AMENDMENT_REVIEW.json)
+records those changes. The focused cloud repeat passed 1480 view checks;
+that result does not replace independent viewing of corrected images.
+Final visual receipts bind corrected bytes and identify exact image reuse.
+
+[Full cloud run 41563278496](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41563278496)
+on `4a97f329f0965c47eb1b0c21c9708458675de579` completed successfully:
+all seven jobs passed (`chapter-ix-drawing-diagnostic`, `source-and-models`,
+`chapter-viii-candidate`, `chapter-vi-candidate`, `chapter-ix-candidate`,
+`browser`, `chapter-vii-candidate`). This is evidence for that exact candidate;
+it precedes final promotion and does not itself certify the later promoted
+build or production deployment. Applicable final-head checks and their
+actual outcomes are recorded in PR #425.
+
+The composition includes current-main PR #394 onboarding work. Its status
+entry and the entire incoming main journal were preserved byte-for-byte;
+only the IX prefix is maintained by this task. The
+[base-drift review](../reviews/ATANASYAN_7_9_CHAPTER_IX_BASE_DRIFT_REVIEW.json)
+records ordinary history-preserving integration and scope boundaries.
+Further main/head movement requires a fresh composition and affected checks.
+
+The last pre-release public bundle check contained 1247 cards. A 1407-card
+source build is not production verification. PR #425 records the actual
+publication outcome, Pages commit, public asset hashes, direct entries and
+synthetic saved-work/browser checks, with failures and unrun checks separate.
+No real pupil records are changed for verification. External provider audit,
+physical-device testing and a pupil pilot are not claimed. Rollback remains
+an ordinary scoped revert and redeployment without learner-data deletion.
+No additional owner publication approval is required for the approved scope
+once all applicable checks have passed.

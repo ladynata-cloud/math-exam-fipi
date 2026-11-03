@@ -1,0 +1,190 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "source": "passed",
+  "mathematics": "passed",
+  "models": "passed",
+  "pedagogy": "passed",
+  "browser": "passed",
+  "reviewer": "Independent non-author source, mathematics, pedagogy, model and whole-image reviewers; root validates exact full-course evidence and bindings",
+  "at": "2026-11-03T08:52:25.932522+00:00",
+  "authoredContentSha256": "acf35dc8cb6b3ff501a2886e81dce59289f51945e0b197bccdbec7d86386f30f",
+  "implementationSha256": "ca0345494ebd9b0f150f07effd91baa777d6cf3c70bb55e9412ccf17f3ab588b",
+  "reviewKind": "Completed exact authored/runtime/image-hash-bound candidate review; final commit CI and public deployment remain separate.",
+  "sourcePdfSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "scope": {
+    "chapter": "IX",
+    "mainNumbers": 87,
+    "mainParts": 133,
+    "theory": 8,
+    "selfchecks": 19,
+    "cards": 160,
+    "steps": 509,
+    "views": 740,
+    "coordinateClaims": 995,
+    "fullBookComplete": false
+  },
+  "evidence": [
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_SOURCE_REVIEW.json",
+      "sha256": "a630c5f6ba2eb097ae08ff3061a77e2106a9afe6a1d0138eb7ebeb8a298a3890"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_A_REVIEW.json",
+      "sha256": "ab66539c758ad7c66ad416bab44c94c2449352375cf958a4035176d64d4c69b9"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_B_REVIEW.json",
+      "sha256": "e281337fcd5482e4a9f87d2a80c22ae7ff5429b82807a0c66da1f66bdc09f5a9"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_C_REVIEW.json",
+      "sha256": "717019e5f4f4367409e75e822d55d154161ba8ce505339a3371107e920eb82ed"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_THEORY_REVIEW.json",
+      "sha256": "ac9472c4c72606fcaeb1e6c6346cca57325e20feb62e89428244675d7a7fc41e"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_DIAGRAM_AMENDMENT_REVIEW.json",
+      "sha256": "aac417fedc3e1d7843def46a08a2f0437c9e2c4808c7a148dfcae58dc949c7dc"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_BROWSER_FAILURE_REVIEW.json",
+      "sha256": "f8c1578798517622ed7175b6b36473d14ee00db0d3277e2ef0ff321b02d32ac2"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_INITIAL_VISUAL_REVIEW.json",
+      "sha256": "84d5ffa765f5415f4eb10d70e448af7d4b7026f41137a714608ea8a6303a7793"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_FINAL_VISUAL_REVIEW.json",
+      "sha256": "fd3042f32e4eee7858e30ae1f3dd78e7b047455691267310d5e2c7c0ec2073b1"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_BROWSER_REVIEW.json",
+      "sha256": "463ccbf471ef408e15e8279b05776851f78c2b7a8036e25f0da0e5957ce75278"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_INFRASTRUCTURE_REVIEW.json",
+      "sha256": "3d21bc08a8b45f77379c023f9f6859b0af36d48f6c5f4cbf79f5128b195dc160"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_ROOT_TECHNICAL_REVIEW.json",
+      "sha256": "025fe08511ce519bba2d52d9fa7737d9bcdf2864289388c2fcd39b5c5d49386d"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_RUNTIME_EXTENSION_REVIEW.json",
+      "sha256": "9f88f10355fd899ce4ed7b1fe8bdf6d0fadd165552d8911618aceddae81df9e4"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter-09-source-map.json",
+      "sha256": "f26eec981425ca0cbf4161540394a4b1e86b860c158c53de8c4881f1639a73c9"
+    }
+  ],
+  "browserEvidence": {
+    "schemaVersion": 1,
+    "status": "passed-automated-full-course",
+    "reviewer": "root independently verifies cloud artifact, exact identities, every required flow and hash binding",
+    "at": "2026-11-03T08:48:51.933670+00:00",
+    "baseCommit": "2c8d4e9e52abcec39b8381d4e9370d0df7902c23",
+    "testedHead": "4a97f329f0965c47eb1b0c21c9708458675de579",
+    "workflowRun": 41563278496,
+    "job": 125680465528,
+    "artifactId": 13199642251,
+    "artifactZipSha256": "99fca48c56c00326d285cf09196f61d5de551eb48f2c48a2dd97d11aba940270",
+    "rawEvidenceSha256": "f153e6236a847f2a6bfbff13ab899132228233b5f40a2254f9beeea4c8001123",
+    "scope": "full-course",
+    "completed": true,
+    "errors": [],
+    "bundleSha256": "4396a32c08c16d4ddc5d5ff21f3490b64bf7b39ac2460d5b288cacfaa80a17af",
+    "authoredContentSha256": "ee11ccb7255517a9ea166351e65fed50b50ebf4bf79dc40491a3e2d24372ca98",
+    "implementationSha256": "ca0345494ebd9b0f150f07effd91baa777d6cf3c70bb55e9412ccf17f3ab588b",
+    "gateScriptSha256": "d5d1e5af7e377d5921c86e84c36e81489c150b78db6442a2b71f1c0aba817be7",
+    "widths": [
+      320,
+      1280
+    ],
+    "lessons": 1407,
+    "viewWidthChecks": 14168,
+    "stepFlows": 2814,
+    "initialFinalCaptures": 5628,
+    "chapterIXViewCaptures": 1480,
+    "chapterIXInitialFinalCaptures": 640,
+    "interactions": [
+      "expansion-lesson-320-button-and-Escape",
+      "expansion-lesson-1280-button-and-Escape",
+      "notes-and-steps-reload",
+      "expansion-theory-1280-button-and-Escape",
+      "theory-return-retains-answer",
+      "manual-answer-honesty",
+      "two-tab-conflict-preserves-work",
+      "chapter-selfcheck-draft-isolation-and-reload",
+      "chapter-II-theory-return-and-saved-step",
+      "chapter-II-first-and-last-direct-entry",
+      "chapter-III-theory-return-and-saved-step",
+      "chapter-III-first-and-last-direct-entry",
+      "chapter-IV-theory-return-and-saved-step",
+      "chapter-IV-first-and-last-direct-entry",
+      "chapter-V-theory-return-and-saved-step",
+      "chapter-V-first-and-last-direct-entry",
+      "chapter-VI-theory-return-and-saved-step",
+      "chapter-VI-first-and-last-direct-entry",
+      "chapter-VII-theory-return-and-saved-step",
+      "chapter-VII-first-and-last-direct-entry",
+      "chapter-VIII-theory-return-and-saved-step",
+      "chapter-VIII-first-and-last-direct-entry",
+      "chapter-IX-theory-return-and-saved-step",
+      "chapter-IX-first-and-last-direct-entry"
+    ],
+    "twoTabConflict": {
+      "before": {
+        "first": {
+          "raw": "{\"draft\":\"Запись перед теорией.\",\"stepDrafts\":{},\"revealed\":2,\"assisted\":true,\"checked\":false,\"camera\":{\"yaw\":0,\"pitch\":0,\"viewId\":\"neutral\",\"zoom\":1,\"maxStep\":2}}",
+          "readonly": false,
+          "conflict": false
+        },
+        "second": {
+          "raw": "{\"draft\":\"Запись перед теорией.\",\"stepDrafts\":{},\"revealed\":2,\"assisted\":true,\"checked\":false,\"camera\":{\"yaw\":0,\"pitch\":0,\"viewId\":\"neutral\",\"zoom\":1,\"maxStep\":2}}",
+          "readonly": false,
+          "conflict": false
+        }
+      },
+      "after": {
+        "first": {
+          "raw": "{\"draft\":\"Новое решение в первом окне.\",\"stepDrafts\":{},\"revealed\":2,\"assisted\":true,\"checked\":false,\"camera\":{\"yaw\":0,\"pitch\":0,\"viewId\":\"neutral\",\"zoom\":1,\"maxStep\":2}}",
+          "value": "Новое решение в первом окне.",
+          "readonly": false,
+          "conflict": false
+        },
+        "second": {
+          "raw": "{\"draft\":\"Новое решение в первом окне.\",\"stepDrafts\":{},\"revealed\":2,\"assisted\":true,\"checked\":false,\"camera\":{\"yaw\":0,\"pitch\":0,\"viewId\":\"neutral\",\"zoom\":1,\"maxStep\":2}}",
+          "value": "Запись перед теорией.",
+          "readonly": true,
+          "conflict": true
+        }
+      }
+    },
+    "exactSourceAndModelsBound": true,
+    "manualVisualApprovalGranted": false,
+    "publicationApprovalGranted": false,
+    "limitations": [
+      "This is actual full-course Chromium execution on the candidate. Independent whole-image review is recorded separately.",
+      "Final promoted commit CI and public-entry HTTPS deployment checks remain separate."
+    ],
+    "cloudRunUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41563278496",
+    "artifactSourceFilesByteIdenticalToTestedHead": true,
+    "rawRuntimeFilesByteIdenticalToTestedHead": true
+  },
+  "manualImageReview": {
+    "totalCaptures": 2120,
+    "uniqueWholeImages": 1408,
+    "newWholeImagesActuallyViewed": 102,
+    "exactPreviouslyApprovedImagesReused": 1306,
+    "openFindings": 0,
+    "exactWholePngDuplicateGroupingOnly": true
+  },
+  "sourceModelReviewContinuity": "All preparation files remain byte-identical to complete independent content reviews. The exact8 model/generator changes and16 added theory coordinate claims are separately independently reviewed and validated by actual cloud tests and final images.",
+  "externalProviderReview": "Not performed under standing owner policy; no provider approval claimed.",
+  "mergeOrDeploymentAuthorization": false
+}

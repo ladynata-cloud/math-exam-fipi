@@ -17,7 +17,7 @@ const bundle=JSON.parse(files[prefix+'data/course.json']),ix=bundle.lessons.filt
 const evidence={schemaVersion:1,head,mode,origin:null,startedAt:new Date().toISOString(),scriptSha256:sha(fs.readFileSync(__filename)),
   expectedHashes:expected,matchedHashes:{},browserMatchedHashes:{},lessons:bundle.lessons.length,chapterIXCards:ix.length,
   chapterIXPresent:ix.length>0,localSmokePassed:false,httpsReleaseVerified:false,completed:false,checks:[],errors:[]};
-let server,browser,base;
+let server,browser,base,visitSequence=0;
 const contentType=name=>name.endsWith('.html')?'text/html':name.endsWith('.css')?'text/css':name.endsWith('.json')?'application/json':'javascript';
 async function verifyBytes(){
  const found=await Promise.all(Object.keys(files).map(async name=>{
@@ -39,7 +39,7 @@ async function serve(){
  });await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));return 'http://127.0.0.1:'+server.address().port+prefix;
 }
 async function visit(page,lesson,pending,width){
- const response=await page.goto(base+'?release='+head+'#'+lesson.id);assert.equal(response.status(),200);
+ const response=await page.goto(base+'?release='+head+'&visit='+(++visitSequence)+'#'+lesson.id);assert.equal(response.status(),200);
  await page.waitForFunction(()=>window.textbookApp);await Promise.all(pending.splice(0));
  assert.equal(await page.locator('[data-preview-notice]').count(),0,'Use the genuine public entry');
  assert.equal(await page.locator('.lesson-permalink').getAttribute('href'),'#'+lesson.id);
