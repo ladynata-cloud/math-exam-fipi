@@ -6,6 +6,8 @@ on:
       - 'index.html'
       - 'lessons/**'
       - 'assets/lesson-showcase.css'
+      - 'assets/oge-home.*'
+      - 'tools/oge-home.browser.cjs'
       - 'assets/lesson-funnel.js'
       - 'assets/site.css'
       - 'assets/lesson-contacts.css'
@@ -61,3 +63,14 @@ jobs:
         env:
           NODE_PATH: ${{ runner.temp }}/showcase-qa/node_modules
         run: node tools/avito-showcase-demos.browser.cjs
+      - name: OGE 3D landing, motion controls and graphics fallbacks
+        env:
+          NODE_PATH: ${{ runner.temp }}/showcase-qa/node_modules
+          OGE_HOME_ARTIFACTS: ${{ runner.temp }}/oge-home-artifacts
+        run: node tools/oge-home.browser.cjs
+      - name: Save OGE landing screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: oge-home-3d
+          path: ${{ runner.temp }}/oge-home-artifacts
