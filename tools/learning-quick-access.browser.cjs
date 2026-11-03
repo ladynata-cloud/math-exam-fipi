@@ -198,7 +198,11 @@ async function checkQuickAccess({ teacher, teacherId, pupil, metadataPath, initi
   assert.equal(await tp.locator('#quick-copy-status').evaluate(node => !!node.closest('dialog[open]')), true);
   await teacher.context.clearPermissions();
   const clipboard = await teacher.context.newCDPSession(tp);
-  await clipboard.send('Browser.setPermission', { permission: { name: 'clipboard-write' }, setting: 'denied', origin });
+  const { targetInfo } = await clipboard.send('Target.getTargetInfo');
+  for (const allowWithoutSanitization of [true, false]) {
+    await clipboard.send('Browser.setPermission', { permission: { name: 'clipboard-write', allowWithoutSanitization },
+      setting: 'denied', origin, browserContextId: targetInfo.browserContextId });
+  }
   await tp.locator('#quick-copy-link').click();
   await tp.waitForFunction(() => {
     const link = document.querySelector('#quick-access-link');

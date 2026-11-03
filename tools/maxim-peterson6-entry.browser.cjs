@@ -57,6 +57,9 @@ async function exerciseJourney({page,work,id,exactUrl,mode,width}){
  await work.locator('#another').click();const generated=await snapshot(work,source.module);assert.equal(generated.session.exampleId,null);
  assert.equal(new URL(work.url()).hash,'#'+source.module,'A new generated example has a truthful URL');
  await work.goto(exactUrl);await work.locator('#answer-form').waitFor();
+ // A same-document hash navigation can resolve before hashchange is handled.
+ // Await the requested visible condition; keep the exact saved-session check below.
+ await work.waitForFunction(prompt=>document.querySelector('.problem-text')?.textContent.trim()===prompt,source.prompt);
  const restored=await snapshot(work,source.module);assert.deepEqual(restored.session,partial.session,'Exact URL restores archived source work rather than starting over');
  assert.equal(restored.hints,1);assert.equal(restored.solutions,0);assert.equal(await work.locator('#answer-input').inputValue(),draft);
  assert.equal(await work.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,'No frame overflow at '+width);

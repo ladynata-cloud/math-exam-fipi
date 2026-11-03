@@ -18,6 +18,18 @@
 
 ---
 
+# 3 ноября 2026 — продолжение автоматизации кабинетов, PR #394
+
+- Владелец продолжил порученную работу после завершения PR421–423 и подтвердил облачное выполнение. Текущая публикационная политика применяется; отдельный внешний аудит не требуется.
+- PR423 опубликован в `d74b8d599a5031a0620679a76dd08151fa171661`; Pages41533307654 и точные опубликованные байты41533307755 PASS. Это закрывает предыдущую запись об ожидавшей проверке.
+- Следующая работа: существующий PR394 / MAT-6, создание ученика и выбор курсов одним процессом. Подготовлен обычный merge актуального main с сохранением обеих историй.
+- Шесть пересечений проверены: app.js, browser gate и общий workflow совместились автоматически; HTML подключения, независимые CSS-блоки и записи статуса согласованы с сохранением обеих сторон.
+- Сервер создания, хранилище, мастер и каталог курсов сохраняют проверенные исходные blobs. Полная проверка нового состава, rollback и read-only проверка текущего кабинета выполняются в GitHub Actions; результаты и точный head фиксируются в PR.
+- Действующий публичный вход из index.html: `https://mathexam-board-ladynata.msk1.amvera.tech/learning/`. Старый .amvera.io из отчёта 1 ноября не используется как доказательство нынешней недоступности.
+- Выпуск интерфейса и backend должен быть согласован. Настоящие ученики не создаются, существующие записи не редактируются. Подтверждён установленный путь автоматического обновления Amvera после merge по выпуску PR395; новый выпуск проверяет 26 точных ресурсов на Pages и Amvera плюс готовность постоянного хранилища.
+
+---
+
 # 3 ноября 2026 — завершение текущих выпусков
 
 ## Подтверждённый результат
@@ -650,6 +662,43 @@
 - Next: complete exact-head technical/review evidence, obtain the separate
   release decision, then verify the intended existing cabinet after owner
   sign-in and publication. No other learner's route is in scope.
+
+
+## Historical onboarding preparation record, 1 November
+
+## In preparation: pupil onboarding and course assignment, 2026-11-01
+
+- [Task](tasks/STUDENT_ONBOARDING_COURSES.md), `HIGH`; explicit owner START,
+  base `37718f1c0138ba031314b8f4716b73c9d963bc81`, branch
+  `feat/student-onboarding-courses-20261101`. One Draft PR; merge and deployment
+  are not authorized.
+- A three-stage teacher flow creates the existing pupil account together with
+  grade, preparation direction and selected courses. Ready link/login/code,
+  read-only teacher preview and later versioned program editing reuse the
+  existing mechanisms. The catalog has 22 published entries; browser-local
+  courses retain explicit storage limitations.
+- [Verification record](reports/student-onboarding-20261101/README.md):
+  complete backend regression 375/375, synthetic two-course journey with
+  concurrent edits, relogin and real database/server restart, preserved peer
+  data, desktop/320/390px evidence, independent internal review and old-runtime
+  rollback preservation. All eight relevant local browser gates passed; exact-head CI is recorded
+  separately in the PR. HIGH external review is still required; no waiver
+  for this task has been granted.
+- Start-of-task reconciliation: authoritative GitHub main matches the base.
+  [PR391](https://github.com/ladynata-cloud/math-exam-fipi/pull/391) merged as that
+  commit at 2026-10-31 22:36:02 UTC. All 22 catalog public destinations returned
+  HTTP 200. Read-only checks of the deployed cabinet app and status endpoint
+  returned HTTP 503; its runtime version and availability are not certified by
+  this task. Previous release records below are retained; no real pupil data
+  was accessed or changed.
+
+Next actions:
+
+1. Finish final Draft PR checks and bind the internal review to its exact head.
+2. Complete external review, or obtain a task-specific owner exception with
+   rationale under the HIGH review policy.
+3. Obtain separate base/head-bound publication authorization; verify current
+   main, cabinet availability and the approved release before production checks.
 
 ## Merged: corrected fixed OGE book edition v2, 2026-10-31
 
