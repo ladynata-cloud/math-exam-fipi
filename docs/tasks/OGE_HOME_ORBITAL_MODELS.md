@@ -28,9 +28,10 @@ public course. The owner explicitly requested more objects and solar-system moti
 ## Approved scope
 
 In scope: homepage scene, responsive presentation, eight model selectors, captions,
-existing destination links, regression coverage and this task record.
+existing destination links, regression coverage/workflow and this task record.
 Out of scope / do not change: trainers, scoring, accounts, persistence, API contracts,
-analytics, course contents, dependencies and deployment configuration.
+analytics, course contents, dependencies and deployment configuration. The existing
+showcase CI gains only a deterministic geometry check.
 
 ## Acceptance criteria
 
@@ -48,10 +49,13 @@ analytics, course contents, dependencies and deployment configuration.
   existing lesson-funnel tests.
 - Browser: tools/oge-home.browser.cjs (eight selections, links, keyboard, movement,
   whole-system pause, individual pause/drag, reduced motion, responsive/fallbacks).
+- Geometry: tools/oge-home-orbits.test.cjs runs the real scene for 120 simulated
+  seconds at four stage sizes; all model centers traverse all four quadrants and
+  projected vertices stay within the viewport, including individual views.
 - CI: all applicable existing workflows on the exact PR head.
 - Manual: managed preview and live browser; CI desktop/mobile WebGL screenshots;
   orbit motion and each new model inspected.
-- Gate: OGE_HOME_3D_OK plus applicable successful workflows.
+- Gate: OGE_HOME_ORBITS_OK, OGE_HOME_3D_OK and applicable successful workflows.
 - Local browser automation intentionally not run: managed-preview environment;
   browser regression runs in the existing GitHub Actions workflow.
 

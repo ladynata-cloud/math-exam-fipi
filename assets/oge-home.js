@@ -191,7 +191,13 @@
     stove:{orbit:2,phase:5.9+Math.PI*2/3,s:.53,solo:1.32,r:[.1,-.35,-.08]},
     plot:{orbit:2,phase:5.9+Math.PI*4/3,s:.5,solo:1.3,r:[.55,-.4,.05]}
   };
-  Object.values(models).forEach(g=>system.add(g));
+  const modelRadii={};
+  for(const [id,g] of Object.entries(models)){
+    // A rotation-invariant bound keeps every individual view inside narrow screens.
+    g.updateMatrixWorld(true);let radius=0;
+    g.traverse(m=>{if(!m.isMesh)return;const positions=m.geometry.attributes.position;for(let i=0;i<positions.count;i++)radius=Math.max(radius,new T.Vector3().fromBufferAttribute(positions,i).applyMatrix4(m.matrixWorld).length());});
+    modelRadii[id]=radius;system.add(g);
+  }
   const info={
     all:['Математическая Солнечная система','8 моделей на трёх орбитах. Выберите любую — рассмотрим ближе.','/trainers/oge-course/'],
     tires:['№ 1–5 · Шины','Ширина, профиль и диаметр. Разбираем маркировку колеса.','/trainers/oge-1-5-trainers/practice-1-5-tires.html'],
@@ -233,7 +239,8 @@
     orbitX=Math.min(1,Math.max(.6,camera.aspect/1.5));orbitY=camera.aspect<1.2?.8:.58;
     // Frame the outer orbit and the full model extents, including near-side depth.
     const halfWidth=4.25*orbitX+.95, halfHeight=4.25*orbitY+.95;
-    camera.position.z=selection==='all'?Math.max(halfHeight,halfWidth/camera.aspect)/Math.tan(Math.PI*35/360)+1.7:(camera.aspect<1.3?10.4:8.2);
+    const vertical=Math.PI*35/360, narrow=Math.min(vertical,Math.atan(Math.tan(vertical)*camera.aspect));
+    camera.position.z=selection==='all'?Math.max(halfHeight,halfWidth/camera.aspect)/Math.tan(vertical)+1.7:(modelRadii[selection]*layout[selection].solo+.12)/Math.sin(narrow)*1.06;
     camera.updateProjectionMatrix();render();
   }
   function choose(id){selection=id;dragAngle=0;host.dataset.selection=id;document.querySelectorAll('[data-model]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.model===id)));const data=info[id];document.getElementById('model-number').textContent=data[0];document.getElementById('model-description').textContent=data[1];document.getElementById('model-link').href=data[2];canvas.setAttribute('aria-label','Объёмная модель: '+data[0]+'. '+data[1]);resize();}
