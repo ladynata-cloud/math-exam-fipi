@@ -1,0 +1,150 @@
+name: Cabinet onboarding — integration and release readiness
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'board-server/**'
+      - 'learning/**'
+      - '.github/workflows/learning-onboarding-release.yml'
+  pull_request:
+    paths:
+      - 'board-server/**'
+      - 'learning/**'
+      - 'tools/learning-onboarding*'
+      - '.github/workflows/learning-onboarding-release.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  focused:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: board-server/package-lock.json
+      - name: Locked dependencies and synthetic persistence checks
+        run: |
+          npm --prefix board-server ci --include=optional
+          node --test board-server/test/learning-onboarding.test.js
+          node tools/learning-onboarding-rollback.cjs d74b8d599a5031a0620679a76dd08151fa171661
+      - name: Install pinned browser
+        run: |
+          npm install --prefix "$RUNNER_TEMP/onboarding-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/onboarding-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/onboarding-browser/node_modules" >> "$GITHUB_ENV"
+      - name: Existing free route and credential receipt privacy
+        run: node tools/learning-free-route.browser.cjs
+      - name: Onboarding, retained work and concurrent program editing
+        env:
+          LEARNING_ONBOARDING_OUTPUT_DIR: ${{ runner.temp }}/onboarding-evidence
+        run: node tools/learning-onboarding.browser.cjs
+      - name: Preserve actual screenshots and results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: onboarding-release-evidence
+          path: ${{ runner.temp }}/onboarding-evidence/
+          if-no-files-found: warn
+          retention-days: 14
+
+  public-readiness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Read public cabinet without accounts or writes
+        run: |
+          python - <<'PY'
+          import urllib.request, urllib.error, hashlib, json, pathlib, datetime
+          origin='https://mathexam-board-ladynata.msk1.amvera.tech'
+          results=[]
+          for path in ['/health','/api/learning/status','/learning/','/learning/app.js']:
+              item={'url':origin+path,'method':'GET'}
+              try:
+                  request=urllib.request.Request(origin+path,headers={'User-Agent':'MathExam-readonly-release-check','Cache-Control':'no-cache'})
+                  with urllib.request.urlopen(request,timeout=30) as response:
+                      body=response.read(12000000)
+                      item.update(status=response.status,content_type=response.headers.get('Content-Type',''),bytes=len(body),sha256=hashlib.sha256(body).hexdigest())
+                      if 'json' in item['content_type']:
+                          data=json.loads(body)
+                          item['readiness']={key:value for key,value in data.items() if key in ['ok','available','durable','enabled','learningEnabled','learningAvailable','registryLoaded','progressStoreReady','progressStorePersistent'] and isinstance(value,(bool,int,str,type(None)))}
+              except urllib.error.HTTPError as error:
+                  item.update(status=error.code,error='HTTP error')
+              except Exception as error:
+                  item.update(status=None,error=type(error).__name__)
+              results.append(item)
+          report={'gate':'CABINET_PUBLIC_READINESS','checked_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'read_only':True,'results':results}
+          report['status']='PASS' if all(x.get('status')==200 for x in results) else 'BLOCKED'
+          pathlib.Path('cabinet-public-readiness.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
+          print(json.dumps(report,ensure_ascii=False))
+          if report['status']!='PASS': raise SystemExit(1)
+          PY
+      - name: Preserve public availability evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cabinet-public-readiness
+          path: cabinet-public-readiness.json
+          retention-days: 14
+
+  published:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Verify coordinated Pages and Amvera delivery without pupil writes
+        run: |
+          python - <<'PY'
+          import urllib.request, hashlib, json, pathlib, time, datetime
+          origins=['https://mathexam.space','https://mathexam-board-ladynata.msk1.amvera.tech']
+          paths=['learning/app.js','learning/index.html','learning/style.css','learning/course-program.js','learning/onboarding.js','learning/onboarding.css','learning/teaching.js','learning/welcome.js','learning/attached-course.js','learning/vilenkin6-textbook-course.js','learning/vilenkin6-textbook-catalog.js','learning/vilenkin6-textbook-helper.js','learning/vilenkin6-textbook-course.css']
+          expected={path:hashlib.sha256(pathlib.Path(path).read_bytes()).hexdigest() for path in paths}
+          pending={(origin,path) for origin in origins for path in paths}
+          verified={}
+          deadline=time.monotonic()+600
+          def read(url):
+              request=urllib.request.Request(url,headers={'User-Agent':'MathExam-readonly-release-check','Cache-Control':'no-cache'})
+              with urllib.request.urlopen(request,timeout=20) as response:
+                  assert response.status==200
+                  return response.read(12000000)
+          while pending and time.monotonic()<deadline:
+              for origin,path in list(pending):
+                  try:
+                      actual=hashlib.sha256(read(origin+'/'+path)).hexdigest()
+                      if actual==expected[path]:
+                          verified[origin+'/'+path]=actual
+                          pending.remove((origin,path))
+                  except Exception:
+                      pass
+              if pending: time.sleep(10)
+          assert not pending, 'Published assets not current: '+str(sorted(pending))
+          health=json.loads(read(origins[1]+'/health'))
+          status=json.loads(read(origins[1]+'/api/learning/status'))
+          assert health.get('ok') is True and health.get('registryLoaded') is True and health.get('progressStoreReady') is True
+          assert status.get('available') is True and status.get('durable') is True
+          result={'gate':'STUDENT_ONBOARDING_PUBLISHED_BYTES_OK','status':'PASS','read_only':True,'asset_count':len(verified),'checked_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'sha256':verified,'learning':{'available':True,'durable':True},'health':{k:health.get(k) for k in ['ok','registryLoaded','progressStoreReady','startedAt']}}
+          pathlib.Path('onboarding-published.json').write_text(json.dumps(result,ensure_ascii=False,indent=2))
+          print(json.dumps(result,ensure_ascii=False))
+          PY
+      - name: Preserve exact production evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: onboarding-published
+          path: onboarding-published.json
+          retention-days: 30
