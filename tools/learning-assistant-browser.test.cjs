@@ -21,7 +21,7 @@ const peer = { ...pupil, id: 'fixture-pupil-b', name: 'Учебный профи
 const status = () => ({ ok: true, configuredEnabled: true, enabled: true, available: true, profile: clone(profile), mode: 'offline',
   externalAvailable: false, externalAllowed: false, externalEnabled: false, dailyLimit: 10, used: 0, remaining: 10, version: 0 });
 let fixtureStatus = status(), actor = clone(pupil), calls = [], sequence = 0, failNext = false, delayNext = false, held = null, unsafeTitle = true, fixtureAttempt = null;
-const makeAnswer = (contextMode = 'entered') => ({ ok: true, contextMode, answer: { answerId: 'fixture-answer-' + (++sequence), topic: 'decimal-addition',
+const makeAnswer = (contextMode = 'entered') => ({ ok: true, contextMode, followUpAvailable: fixtureStatus.externalEnabled === true, answer: { answerId: 'fixture-answer-' + (++sequence), topic: 'decimal-addition',
   title: unsafeTitle ? 'Следующий шаг <img src=x onerror="window.injected=true">' : 'Сложение десятичных дробей', steps: ['Поставь запятые одну под другой.'],
   check: '', verification: 'curated-guidance', sourceIds: ['decimal-card'] }, remaining: --fixtureStatus.remaining });
 const fixtureHTML = '<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
@@ -221,6 +221,41 @@ async function until(predicate, message) { for (let i = 0; i < 300; i++) { if (p
     assert.equal(calls.filter(call => call.path === '/assistant/ask').at(-1).body.externalConsent, true);
     assert.equal(await page.locator('[name=assistant-external-consent]').isChecked(), false, 'Consent is not silently reused for another request');
     check.push('exhausted limit blocks calls; external transfer requires explicit unchecked consent');
+
+    await page.locator('[data-assistant-follow-up]').waitFor();
+    assert.equal(await page.locator('[name=assistant-follow-up]').getAttribute('maxlength'), '400');
+    const rootQuestion = await page.locator('[name=assistant-question]').inputValue();
+    const beforeFollowUp = calls.filter(call => call.path === '/assistant/ask').length;
+    const previousAnswer = 'fixture-answer-' + sequence;
+    await page.locator('[name=assistant-follow-up]').fill('Почему запятые должны быть друг под другом?');
+    await page.getByRole('button', { name: 'Задать вопрос', exact: true }).click();
+    await page.getByText('Для уточнения отметь согласие на отправку этого вопроса и контекста внешней модели.', { exact: true }).waitFor();
+    assert.equal(calls.filter(call => call.path === '/assistant/ask').length, beforeFollowUp);
+    await page.locator('[name=assistant-follow-up-consent]').check();
+    await page.getByRole('button', { name: 'Задать вопрос', exact: true }).click();
+    await page.waitForFunction(() => document.querySelectorAll('[data-assistant-answer]').length === 2);
+    const followUpRequest = calls.filter(call => call.path === '/assistant/ask').at(-1).body;
+    assert.equal(followUpRequest.question, rootQuestion);
+    assert.deepEqual(followUpRequest.followUp, { answerId: previousAnswer, question: 'Почему запятые должны быть друг под другом?' });
+    assert.equal(followUpRequest.externalConsent, true);
+    assert.equal(await page.locator('[name=assistant-follow-up]').inputValue(), '');
+    assert.equal(await page.locator('[name=assistant-follow-up-consent]').isChecked(), false);
+    assert.equal(await page.locator('.cabinet-assistant-question').last().textContent(), 'Уточнение: Почему запятые должны быть друг под другом?');
+    assert.equal(await page.locator('[name=assistant-question]').inputValue(), rootQuestion);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.locator('[name=assistant-follow-up]').scrollIntoViewIfNeeded();
+    const followUpBox = await page.locator('[name=assistant-follow-up]').boundingBox();
+    assert(followUpBox.x >= 0 && followUpBox.x + followUpBox.width <= 391);
+    if (process.env.LEARNING_ASSISTANT_BROWSER_ARTIFACTS) {
+      const dir = path.resolve(process.env.LEARNING_ASSISTANT_BROWSER_ARTIFACTS);
+      fs.mkdirSync(dir, { recursive: true });
+      await page.screenshot({ path: path.join(dir, 'assistant-dialogue-mobile.png') });
+    }
+    await page.locator('[name=assistant-question]').fill('0,5 + 0,25');
+    assert.equal(await page.locator('[data-assistant-follow-up]').isHidden(), true);
+    assert.equal(await page.locator('[data-assistant-answer]').count(), 2, 'Changing root task preserves displayed earlier answers');
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    check.push('contextual follow-up preserves root task and answers, requires fresh consent, clears its anchor on task change, and fits mobile');
 
     fixtureStatus = { ...status(), configuredEnabled: true, enabled: false, available: false, mode: 'unavailable', version: 4 };
     await mount('teacher'); await page.getByRole('heading', { name: 'MaxExam 0.0 в этом кабинете' }).waitFor();

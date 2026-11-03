@@ -23,8 +23,8 @@ var PROGRESS = (function(){
   function liveStore(){ return { live:true, main:null, side:readLocal }; }
   /* Снимок: только главный ключ. Побочные ключи в код прогресса не входят,
      поэтому их адаптеры честно покажут «не начат». */
-  function snapshotStore(obj){
-    return { live:false, main:(obj && typeof obj === "object") ? obj : {}, side:function(){ return null; } };
+  function snapshotStore(obj, side){
+    return { live:false, main:(obj && typeof obj === "object") ? obj : {}, side:function(key){ return side && Object.prototype.hasOwnProperty.call(side,key) ? side[key] : null; } };
   }
   function read(key){
     if (!STORE) return null;

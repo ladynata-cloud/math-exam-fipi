@@ -145,3 +145,65 @@ test('reading the topic support before starting practice creates no attempt or h
   assert.equal(ctx.d.querySelectorAll('[data-study-support] details[open]').length,0);
   assert.deepEqual(ctx.errors,[]);ctx.close();
 });
+
+test('fraction task offers existing LCM practice beside its controls and records help before opening it', async () => {
+  const task=units.find(unit=>unit.id===9).tasks.find(item=>item.id==='v6-book-2-134-в');
+  const ctx=await open(`#unit/9/task/${encodeURIComponent(task.id)}`);
+  const link=ctx.d.querySelector('.work .help-actions [data-v6-practice="lcm"]');
+  assert(link,'the prerequisite entry must be visible beside the answer actions');
+  assert.equal(link.href,'https://mathexam.space/trainers/grade6-nok.html?task=nt-1-5');
+  assert.equal(link.target,'_blank');
+  assert(link.rel.includes('noopener'));assert(link.rel.includes('noreferrer'));
+  assert.match(link.textContent,/Потренировать поиск НОК по шагам/);
+  assert.match(link.parentNode.textContent,/На отдельном примере\. Затем вернись к этим дробям/);
+  assert.equal(record(ctx,task),undefined,'viewing the entry must not record help');
+  const input=type(ctx,'28/'),form=ctx.d.querySelector('#answer-form'),condition=ctx.d.querySelector('.prompt').textContent;
+  let observed=false;
+  link.addEventListener('click',event=>{
+    observed=true;
+    assert.equal(record(ctx,task).helped,true,'help is recorded before the link default action');
+    event.preventDefault();
+  });
+  link.click();
+  assert(observed);
+  assert.equal(ctx.d.querySelector('#answer'),input);
+  assert.equal(ctx.d.querySelector('#answer-form'),form);
+  assert.equal(input.value,'28/');assert.equal(record(ctx,task).draft,'28/');
+  assert.equal(ctx.d.querySelector('.prompt').textContent,condition);
+  assert.equal(record(ctx,task).status,'');assert.equal(record(ctx,task).attempts,0);
+  const saved=ctx.w.localStorage.getItem(KEY);
+  ctx.close();
+  const resumed=await open(`#unit/9/task/${encodeURIComponent(task.id)}`,saved);
+  assert.equal(record(resumed,task).helped,true);
+  assert.equal(resumed.d.querySelector('#answer').value,'28/');
+  resumed.close();
+});
+
+test('LCM practice entry is scoped to fraction tasks and stale or read-only controls cannot open it', async () => {
+  const task=units.find(unit=>unit.id===9).tasks.find(item=>item.id==='v6-book-2-134-в');
+  const ctx=await open(`#unit/9/task/${encodeURIComponent(task.id)}`);
+  const stale=ctx.d.querySelector('[data-v6-practice="lcm"]');
+  ctx.w.location.hash=route(practice);
+  const before=ctx.w.localStorage.getItem(KEY);
+  const staleClick=new ctx.w.MouseEvent('click',{bubbles:true,cancelable:true});
+  stale.dispatchEvent(staleClick);
+  assert.equal(staleClick.defaultPrevented,true);
+  assert.equal(ctx.w.localStorage.getItem(KEY),before);
+  await tick();await tick();
+  assert.equal(ctx.d.querySelector('[data-v6-practice="lcm"]'),null);
+  assert.equal(stale.isConnected,false);
+  ctx.close();
+
+  const dom=new JSDOM('<main><div id="support"></div><div id="actions"></div></main>',{url:'https://example.test/',runScripts:'outside-only'});
+  dom.window.eval(scripts[1]);
+  const host=dom.window.document.querySelector('#support'),actionsHost=dom.window.document.querySelector('#actions'),calls=[];
+  const dispose=dom.window.VilenkinStudySupport.mount(host,{unitId:9,answerType:'fixed-denominator-pair',actionsHost,isCurrent:()=>false,onUse:reason=>calls.push(reason)});
+  const link=actionsHost.querySelector('[data-v6-practice="lcm"]');assert(link);
+  const blocked=new dom.window.MouseEvent('click',{bubbles:true,cancelable:true});
+  link.dispatchEvent(blocked);
+  assert.equal(blocked.defaultPrevented,true);assert.deepEqual(calls,[]);
+  dispose();assert.equal(actionsHost.childElementCount,0);
+  const other=dom.window.VilenkinStudySupport.mount(host,{unitId:9,answerType:'integer',actionsHost});
+  assert.equal(actionsHost.childElementCount,0,'other task types do not receive a misleading LCM entry');
+  other();dom.window.close();
+});

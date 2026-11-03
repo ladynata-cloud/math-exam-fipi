@@ -10,7 +10,7 @@ const { chromium } = require('playwright');
 const ROOT = path.resolve(__dirname, '..');
 const KEY = 'mathexam.profileStart2027.v1';
 const CHECKPOINT_KEY = 'mathexam.profileCheckpoint.v1';
-const lessons = ['geometry', 'stereo', 'algebra', 'probability', 'equations', 'functions', 'applied', 'readiness']
+const lessons = ['geometry', 'stereo', 'algebra', 'probability', 'equations', 'functions', 'applied', 'finance', 'readiness']
   .flatMap(name => require('../ege-profil/start/' + name + '-data.js'));
 const cases = Array.from({ length: 13 }, (_, i) => {
   const lesson = lessons.find(lesson => lesson.position === i + 1);
@@ -145,7 +145,9 @@ async function validateCross(row) {
         else await accept(page, item.task.answer);
         await page.locator('.result-panel').waitFor();
         assert.equal((await saved(page)).records[item.lesson.id].independent.length, 0, label + ': helped answer is never independent credit');
-        assert.equal(await page.locator('#result-solution [data-solution-step]').count(), 1, label + ': result also unfolds one step at a time');
+        assert.equal(await page.locator('#result-solution [data-solution-step]').count(), 0, label + ': result explanation stays closed until requested');
+        await page.locator('#result-solution [data-solution-open]').click();
+        assert.equal(await page.locator('#result-solution [data-solution-step]').count(), 1, label + ': requested result unfolds one step at a time');
         journeys++;
       }
 

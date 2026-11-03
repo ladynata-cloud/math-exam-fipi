@@ -1,16 +1,28 @@
+import { GEOMETRY_TOPICS, solveGeometry } from './geometry.js';
+import { DATA_TOPICS, solveWordData } from './word-data.js';
+import { EQUATION_TOPICS, solveExpandedEquation } from './equations-expanded.js';
+import { FOUNDATION_TOPICS, solveFoundation, solveFractionProduct } from './math-foundations.js';
 import { readFileSync } from 'node:fs';
+import { normalizeTask } from '../public/study-tools.js';
+import { checkSolutionLines } from './solution-lines.js';
+import { clarificationFor } from './clarification.js';
+import { solveExtendedLinear, solvePercentProblem, checkLinearStep } from './extended-math.js';
 
 // Original bounded knowledge; owner acceptance is a rollout gate, not claimed here.
 const BUILTIN = JSON.parse(readFileSync(new URL('../knowledge/core.json', import.meta.url), 'utf8'));
 const TOPICS = [
   { id: 'linear-equations', title: 'Линейные уравнения', sample: '3x + 5 = 20' },
   { id: 'fractions', title: 'Сложение и вычитание дробей', sample: '1/2 + 1/3' },
-  { id: 'percentages', title: 'Проценты от числа', sample: '15% от 240' },
+  { id: 'percentages', title: 'Проценты', sample: '15% от 240' },
   { id: 'gcd-lcm', title: 'НОД и НОК', sample: 'НОК 12 и 18' },
   { id: 'rounding', title: 'Округление', sample: 'Округли 9,96 до десятых' },
   { id: 'pythagoras', title: 'Теорема Пифагора', sample: 'Как отличить гипотенузу от катетов?' },
-  { id: 'sections', title: 'Первые шаги в сечениях', sample: 'Как начать строить сечение по трём точкам?' }
+  { id: 'sections', title: 'Первые шаги в сечениях', sample: 'Как начать строить сечение по трём точкам?' },
+  ...FOUNDATION_TOPICS, ...EQUATION_TOPICS, ...DATA_TOPICS, ...GEOMETRY_TOPICS
 ];
+const PROVIDER_TOPIC_IDS = new Set(['linear-equations', 'fractions', 'percentages', 'gcd-lcm', 'rounding', 'pythagoras', 'sections']);
+export const isProviderTopic = topic => PROVIDER_TOPIC_IDS.has(topic);
+export function listProviderTopics() { return clone(TOPICS.filter(topic => isProviderTopic(topic.id))); }
 const TOPIC_IDS = new Set(TOPICS.map(({ id }) => id));
 const INVALID = () => new TypeError('INVALID_MODEL_ANSWER');
 const clone = value => structuredClone(value);
@@ -27,7 +39,7 @@ const signed = value => value < 0n ? `(${value})` : String(value);
 const normalized = question => question.trim().toLowerCase()
   .replaceAll('ё', 'е').replace(/[−–—]/g, '-');
 
-export function listTopics() { return clone(TOPICS); }
+export function listTopics() { return clone(TOPICS).map(topic => isProviderTopic(topic.id) ? topic : { ...topic, offlineOnly: true }); }
 export function getBuiltinKnowledge() { return clone(BUILTIN); }
 
 function topicCards(topic, cards) {
@@ -48,22 +60,70 @@ function parseDecimal(text) {
   return rat(BigInt(whole + fractional) * (negative ? -1n : 1n), 10n ** BigInt(fractional.length));
 }
 
-function parseAttempt(attempt) {
-  if (typeof attempt !== 'string') return null;
-  const text = normalized(attempt).replace(/^[xх]\s*=\s*/, '').replace(/\s+/g, '');
-  const fraction = /^([+-]?\d{1,12})\/([1-9]\d{0,11})$/.exec(text);
-  return fraction ? rat(BigInt(fraction[1]), BigInt(fraction[2])) : parseDecimal(text);
+// Spaces separate the whole and fractional parts of a mixed number. Removing
+// them first turns 1 1/2 into 11/2 and can incorrectly praise a learner's answer.
+// Keep one bounded grammar for the standalone and cabinet feedback paths.
+export function parseNumericAttempt(attempt) {
+  if (typeof attempt !== 'string' || attempt.length > 400) return null;
+  const text = normalized(attempt)
+    .replace(/^ответ[ \t\u00a0\u202f]*:[ \t\u00a0\u202f]*/, '')
+    .replace(/^[xх][ \t\u00a0\u202f]*=[ \t\u00a0\u202f]*/, '');
+  const space = '[ \\t\\u00a0\\u202f]';
+  const digits = '\\d{1,12}';
+  const mixed = new RegExp(`^([+-]?)${space}*(${digits})${space}+(${digits})${space}*/${space}*(${digits})$`).exec(text);
+  if (mixed) {
+    const [whole, numerator, denominator] = mixed.slice(2).map(BigInt);
+    // A signed or improper fractional part is ambiguous in school mixed
+    // notation. Ask for a different form instead of choosing an interpretation.
+    if (denominator === 0n || numerator >= denominator) return null;
+    return rat((whole * denominator + numerator) * (mixed[1] === '-' ? -1n : 1n), denominator);
+  }
+  const fraction = new RegExp(`^([+-]?)${space}*(${digits})${space}*/${space}*([+-]?)${space}*(${digits})$`).exec(text);
+  if (fraction) {
+    const denominator = BigInt(fraction[4]);
+    if (denominator === 0n) return null;
+    return rat(BigInt(fraction[2]) * (fraction[1] === '-' ? -1n : 1n),
+      denominator * (fraction[3] === '-' ? -1n : 1n));
+  }
+  const periodic = new RegExp(`^([+-]?)${space}*(${digits})[.,](\\d{0,64})\\((\\d{1,64})\\)$`).exec(text);
+  if (periodic) {
+    const [, sign, whole, prefix, cycle] = periodic;
+    // Match the bounded repeating notation already shown by cabinet division.
+    // Example: 0,1(6) = (1 * 9 + 6) / (10 * 9), with exact integers.
+    if (prefix.length + cycle.length > 64) return null;
+    const repeatingScale = 10n ** BigInt(cycle.length) - 1n;
+    return rat((BigInt(whole + prefix) * repeatingScale + BigInt(cycle)) * (sign === '-' ? -1n : 1n),
+      10n ** BigInt(prefix.length) * repeatingScale);
+  }
+  const decimal = new RegExp(`^([+-]?)${space}*(${digits}(?:[.,]\\d{1,6})?)$`).exec(text);
+  return decimal ? parseDecimal(decimal[1] + decimal[2]) : null;
 }
 
-function attemptMessage(attempt, expected) {
-  const value = parseAttempt(attempt);
-  if (!value || !expected) return '';
+export function mistakeFeedback(value, expected, mistakes = [], simpler = false) {
+  const equal = (a, b) => a.n * b.d === b.n * a.d;
+  // A matching wrong value is evidence for a possible error, not its cause.
+  // Correct/equivalent answers always win when candidate formulas coincide.
+  if (!value || !expected || equal(value, expected)) return '';
+  const mistake = mistakes.find(item => equal(value, item.value));
+  return mistake ? (simpler ? mistake.shortText : mistake.text) : '';
+}
+
+function attemptMessage(attempt, solved, simpler, input) {
+  const value = parseNumericAttempt(solved.answerUnit === 'percent' ? attempt.replace(/\s*%$/, '') : attempt);
+  const { expected, mistakes } = solved;
+  if (!value && input.topic === 'linear-equations' && attempt.includes('=')) return checkLinearStep(input.question, attempt);
+  if (!attempt.trim() || !expected) return '';
+  if (!value) return 'Такую запись ответа здесь не проверяю. Смешанное число записывай как 1 1/2, периодическую дробь — как 0,(3). Цифры внутри целой или дробной части пиши подряд.';
   return value.n === expected.n && value.d === expected.d
     ? 'Твоё число подходит. Теперь проверь его подстановкой или обратным действием.'
-    : 'Пока получилось другое число. Проверь каждое действие по подсказке; можно запросить полное объяснение.';
+    : mistakeFeedback(value, expected, mistakes, simpler)
+      || 'Пока получилось другое число. Проверь каждое действие по подсказке; можно запросить полное объяснение.';
 }
 
 function solveLinear(question) {
+  // Formatting spaces around operators are harmless; joining separate digit
+  // groups would choose a different equation on the learner's behalf.
+  if (/\d\s+\d/.test(question)) return null;
   const text = normalized(question).replace(/^(?:реши(?:те|ть)?\s+)?(?:уравнение\s+)?/, '').replaceAll('х', 'x').replace(/\s+/g, '').replace(/\.$/, '');
   const match = /^([+-]?\d{0,5})([·*]?)x([+-]\d{1,6})?=([+-]?\d{1,6})$/.exec(text);
   // The implicit coefficients in x, +x and -x do not license a bare *x or ·x.
@@ -122,44 +182,91 @@ function solveLinear(question) {
     ],
     steps,
     check: `Подстановка: ${a} · (${rtext(expected)}) + ${signed(b)} = ${c}. Обе части равны.`,
-    expected
+    expected,
+    mistakes: [
+      { value: rat(c + b, a),
+        text: 'Похоже, отдельное слагаемое убрано действием с неверным знаком. Прибавление отменяют вычитанием, а вычитание — прибавлением; действие выполняют в обеих частях.',
+        shortText: 'Похоже, перепутан знак действия. Убирай отдельное слагаемое обратным действием в обеих частях.' },
+      { value: rat(difference),
+        text: 'Похоже, найдено значение слагаемого с x, а не самого x. Чтобы найти x, раздели обе части на ненулевой множитель перед ним.',
+        shortText: 'Похоже, ещё осталось деление на число перед x. Раздели обе части.' }
+    ]
   };
 }
 
+const HSPACE = '[ \\t\\u00a0\\u202f]';
+const QUESTION_FRACTION = `\\d{1,5}${HSPACE}*/${HSPACE}*[1-9]\\d{0,4}`;
+const QUESTION_OPERAND = `[+-]?${HSPACE}*(?:(?:\\d{1,5}${HSPACE}+)?${QUESTION_FRACTION}|\\d{1,5})`;
+
+function fractionOperand(text) {
+  const mixedOrFraction = new RegExp(`^([+-]?)${HSPACE}*(?:(\\d{1,5})${HSPACE}+)?(\\d{1,5})${HSPACE}*/${HSPACE}*([1-9]\\d{0,4})$`).exec(text);
+  if (!mixedOrFraction) {
+    const integer = new RegExp(`^([+-]?)${HSPACE}*(\\d{1,5})$`).exec(text);
+    if (!integer || BigInt(integer[2]) > 10000n) return null;
+    return { n: BigInt(integer[2]) * (integer[1] === '-' ? -1n : 1n), d: 1n };
+  }
+  const [, sign, wholeText, numeratorText, denominatorText] = mixedOrFraction;
+  const whole = BigInt(wholeText || '0'), numerator = BigInt(numeratorText), d = BigInt(denominatorText);
+  const mixed = wholeText !== undefined;
+  if ([whole, numerator, d].some(value => value > 10000n) || (mixed && numerator >= d)) return null;
+  const n = (whole * d + numerator) * (sign === '-' ? -1n : 1n);
+  // Keep ordinary fractions unreduced so their existing common-denominator
+  // explanations and mistake feedback retain the original operands.
+  return { n, d, conversion: mixed
+    ? `${text}: ${sign === '-' ? '-' : ''}(${whole} · ${d} + ${numerator}) / ${d} = ${n}/${d}.` : null };
+}
+
 function solveFractions(question) {
-  const text = normalized(question).replace(/^(?:вычисли(?:те|ть)?|реши(?:те|ть)?)\s+/, '').replace(/\s+/g, '').replace(/\.$/, '');
-  const match = /^([+-]?\d{1,5})\/([1-9]\d{0,4})([+-])([+-]?\d{1,5})\/([1-9]\d{0,4})$/.exec(text);
+  const text = normalized(question).replace(/^(?:вычисли(?:те|ть)?|реши(?:те|ть)?)\s+/, '').replace(/\.$/, '').trim();
+  const match = new RegExp(`^(${QUESTION_OPERAND})${HSPACE}*([+-])${HSPACE}*(${QUESTION_OPERAND})$`).exec(text);
   if (!match) return null;
-  const [a, b, c, d] = [match[1], match[2], match[4], match[5]].map(BigInt);
-  if ([abs(a), b, abs(c), d].some(value => value > 10000n)) return null;
-  const minus = match[3] === '-'; const common = b / gcd(b, d) * d;
+  const left = fractionOperand(match[1]), right = fractionOperand(match[3]);
+  if (!left || !right) return null;
+  const { n: a, d: b } = left, { n: c, d } = right;
+  const conversions = [left.conversion, right.conversion].filter(Boolean);
+  const minus = match[2] === '-'; const common = b / gcd(b, d) * d;
   const first = a * (common / b); const second = c * (common / d);
   const numerator = first + (minus ? -second : second); const expected = rat(numerator, common);
   return {
     title: minus ? 'Вычитаем дроби' : 'Складываем дроби',
-    text: 'Сначала сделаем доли одинаковыми по размеру.',
+    text: conversions.length ? 'Сначала запишем смешанные числа неправильными дробями, затем сделаем доли одинаковыми по размеру.'
+      : 'Сначала сделаем доли одинаковыми по размеру.',
     hints: [
-      b === d ? 'Знаменатели уже одинаковые. Доли имеют одинаковый размер.' : 'Знаменатели разные. Сначала нужен один общий знаменатель.',
+      conversions.length ? 'У смешанного числа умножь целую часть на знаменатель и прибавь числитель. Знаменатель сохрани; минус перед числом относится ко всему результату.'
+        : b === d ? 'Знаменатели уже одинаковые. Доли имеют одинаковый размер.' : 'Знаменатели разные. Сначала нужен один общий знаменатель.',
       'Выбери положительное число, которое делится на оба знаменателя без остатка.',
       'Для каждой дроби раздели новый знаменатель на старый. На полученное число умножь числитель и знаменатель.',
       `${minus ? 'Вычти второй числитель из первого' : 'Сложи числители'}. Знаменатель оставь прежним.`,
       'Проверь, можно ли разделить числитель и знаменатель результата на одно и то же число больше 1.'
     ],
     shortHints: [
-      b === d ? 'Знаменатели одинаковые: размер долей уже совпадает.' : 'Посмотри на знаменатели: размер долей пока разный.',
+      conversions.length ? 'Переведи смешанное число в неправильную дробь. Минус перед числом оставь перед всей дробью.'
+        : b === d ? 'Знаменатели одинаковые: размер долей уже совпадает.' : 'Посмотри на знаменатели: размер долей пока разный.',
       'Найди число, которое делится на оба знаменателя без остатка.',
       'Умножай верх и низ каждой дроби на одно и то же число.',
       `${minus ? 'Вычти второй числитель из первого' : 'Сложи числители'}; знаменатель не меняй.`,
       'Попробуй разделить верх и низ ответа на одно и то же число.'
     ],
     steps: [
+      ...(conversions.length ? [conversions.join(' ')] : []),
       `Общий знаменатель: ${common}. Он делится и на ${b}, и на ${d}.`,
       `${a}/${b} = ${first}/${common}; ${c}/${d} = ${second}/${common}.`,
       `Числитель результата: ${first} ${minus ? '−' : '+'} ${signed(second)} = ${numerator}. Знаменатель: ${common}.`,
       `Сокращаем ${numerator}/${common}, если это возможно. Ответ: ${rtext(expected)}.`
     ],
     check: 'При сложении или вычитании мы изменяли числители одинаковых долей. Значение каждой дроби при приведении к общему знаменателю сохранилось.',
-    expected
+    expected,
+    mistakes: [
+      { value: rat(a + (minus ? -c : c), b + d),
+        text: 'Похоже, знаменатели сложены вместе с числителями. Знаменатель задаёт размер долей: сначала сделай доли одинаковыми, затем меняй только числители.',
+        shortText: 'Похоже, сложены знаменатели. Сначала сделай доли одинаковыми; знаменатели складывать не нужно.' },
+      ...(minus && b !== d ? [{ value: rat(a - c, b - d),
+        text: 'Похоже, вычтены и числители, и знаменатели. Сначала приведи дроби к одному знаменателю, затем вычитай только числители.',
+        shortText: 'Похоже, вычтены знаменатели. Сначала нужен один общий знаменатель.' }] : []),
+      { value: rat(a + (minus ? -c : c), common),
+        text: 'Похоже, знаменатель изменён, а числители оставлены прежними. При приведении дроби к общему знаменателю умножай её числитель и знаменатель на одно и то же число.',
+        shortText: 'Похоже, забыто изменение числителя. Умножай верх и низ дроби на одно и то же число.' }
+    ]
   };
 }
 
@@ -209,52 +316,76 @@ function primeFactors(number) {
   return factors;
 }
 
-function solveCommon(question) {
+export function solveCommon(question) {
   const text = normalized(question).replace(/^найди(?:те)?\s+/, '').replace(/\.$/, '');
-  const match = /^(нод|нок)\s*(?:\(\s*(\d{1,6})\s*[,;]\s*(\d{1,6})\s*\)|(\d{1,6})\s*(?:и|,|;)\s*(\d{1,6}))$/.exec(text);
+  const match = /^(нод|нок)\s*(?:\(([^()]+)\)|([^()]+))$/.exec(text);
   if (!match) return null;
-  const a = BigInt(match[2] || match[4]); const b = BigInt(match[3] || match[5]);
-  if (a === 0n || b === 0n) return null;
-  const isGcd = match[1] === 'нод'; const common = gcd(a, b);
-  const result = isGcd ? common : a / common * b; const expected = rat(result);
-  const factorsA = primeFactors(a); const factorsB = primeFactors(b);
-  const choices = [...new Set([...factorsA, ...factorsB])].sort((x, y) => x < y ? -1 : x > y ? 1 : 0);
+  const list = (match[2] || match[3]).trim();
+  // Mixed separators require a space after commas: 1,5 и 12 could be a
+  // decimal, whereas 1, 5 и 12 is an explicit integer list. Parentheses retain
+  // established comma-only NOD(a,b) notation. No free prose or digit extraction.
+  if (!/^\d{1,6}(?:\s*[,;и]\s*\d{1,6}){1,4}$/.test(list)) return null;
+  const parts = list.split(/\s*[,;и]\s*/);
+  if (/,(?!\s)/.test(list) && ((!match[2] && parts.length > 2) || /[;и]/.test(list))) return null;
+  const numbers = parts.map(BigInt);
+  if (numbers.some(value => value === 0n)) return null;
+  const isGcd = match[1] === 'нод';
+  const divisor = numbers.reduce((a, b) => gcd(a, b));
+  const multiple = numbers.reduce((a, b) => a / gcd(a, b) * b);
+  const result = isGcd ? divisor : multiple;
+  // Preserve the previous two-input result envelope and attempt parser bounds.
+  if (result > 999999999999n) return null;
+  const expected = rat(result), decompositions = numbers.map(primeFactors);
+  const choices = [...new Set(decompositions.flat())].sort((x, y) => x < y ? -1 : x > y ? 1 : 0);
   const chosen = choices.flatMap(prime => Array((isGcd ? Math.min : Math.max)(
-    factorsA.filter(x => x === prime).length, factorsB.filter(x => x === prime).length)).fill(prime));
+    ...decompositions.map(factors => factors.filter(value => value === prime).length))).fill(prime));
   const product = values => values.length ? values.join(' · ') : '1';
+  const both = numbers.length === 2;
+  const everyNumber = both ? 'оба исходных числа' : 'все исходные числа';
+  const everyDecomposition = both ? 'обоих разложениях' : 'каждом разложении';
   return {
     title: isGcd ? 'Находим НОД' : 'Находим НОК',
-    text: isGcd ? 'Ищем самое большое число, на которое оба исходных числа делятся без остатка.'
-      : 'Ищем самое маленькое положительное число, которое само делится на оба исходных числа без остатка.',
+    text: isGcd ? `Ищем самое большое число, на которое ${everyNumber} делятся без остатка.`
+      : `Ищем самое маленькое положительное число, которое само делится на ${everyNumber} без остатка.`,
     hints: [
-      isGcd ? 'Проверь направление деления: оба исходных числа должны делиться на твой ответ.'
+      isGcd ? `Проверь направление деления: ${everyNumber} должны делиться на твой ответ.`
         : 'Проверь направление деления: твой ответ должен делиться на каждое исходное число.',
       'Разложи каждое число в произведение простых чисел. Все повторения оставляй в записи.',
-      isGcd ? 'Возьми простые числа, встречающиеся в обоих разложениях, с меньшим числом повторений.'
-        : 'Возьми все простые числа, которые встретились хотя бы в одном разложении, с большим числом повторений.',
-      isGcd ? 'Перемножь выбранные числа. Если общих простых чисел нет, ответ будет 1.'
-        : 'Перемножь выбранные числа. Если одно исходное число равно 1, оно не добавляет простых чисел в произведение.',
-      isGcd ? 'Раздели каждое исходное число на свой ответ: оба раза должен получиться целый результат.'
-        : 'Раздели свой ответ на каждое исходное число: оба раза должен получиться целый результат.'
+      isGcd ? `Возьми простые числа, встречающиеся в ${everyDecomposition}, с наименьшим числом повторений.`
+        : 'Возьми все простые числа, которые встретились хотя бы в одном разложении, с наибольшим числом повторений.',
+      isGcd ? 'Перемножь выбранные числа. Если общих простых чисел нет, подумай, на какое число делится любое натуральное число.'
+        : 'Перемножь выбранные числа. Исходное число 1 не добавляет простых чисел в произведение.',
+      isGcd ? 'Раздели каждое исходное число на свой результат. Каждый раз должно получиться целое число.'
+        : 'Раздели свой ответ на каждое исходное число: каждый раз должен получиться целый результат.'
     ],
     shortHints: [
-      isGcd ? 'Оба исходных числа должны делиться на твой ответ.' : 'Твой ответ должен делиться на оба исходных числа.',
+      isGcd ? 'Каждое исходное число должно делиться на твой ответ.' : 'Твой ответ должен делиться на каждое исходное число.',
       'Запиши каждое число как произведение простых чисел.',
-      isGcd ? 'Возьми общие простые числа с меньшим числом повторений.' : 'Возьми все простые числа с большим числом повторений.',
-      isGcd ? 'Перемножь выбранное; если общих чисел нет, НОД равен 1.' : 'Перемножь выбранные простые числа.',
+      isGcd ? 'Возьми общие для всех разложений простые числа с наименьшим числом повторений.' : 'Возьми все простые числа с наибольшим числом повторений.',
+      'Перемножь выбранные простые числа.',
       isGcd ? 'Раздели исходные числа на свой ответ: остатка быть не должно.' : 'Раздели свой ответ на исходные числа: остатка быть не должно.'
     ],
     steps: [
-      `${a} = ${product(factorsA)}; ${b} = ${product(factorsB)}.`,
+      numbers.map((value, i) => `${value} = ${product(decompositions[i])}`).join('; ') + '.',
       chosen.length === 0 ? (isGcd ? 'Общих простых чисел в разложениях нет. В этом случае НОД равен 1.'
-        : 'Оба исходных числа равны 1. В этом случае НОК равен 1.')
-        : isGcd ? `Берём общие простые числа с меньшим числом повторений: ${product(chosen)}.`
-          : `Берём все встречающиеся простые числа с большим числом повторений: ${product(chosen)}.`,
-      `Ответ: ${isGcd ? 'НОД' : 'НОК'}(${a}, ${b}) = ${result}.`
+        : 'Все исходные числа равны 1. В этом случае НОК равен 1.')
+        : isGcd ? `Берём общие для всех разложений простые числа с наименьшим числом повторений: ${product(chosen)}.`
+          : `Берём все встречающиеся простые числа с наибольшим числом повторений: ${product(chosen)}.`,
+      `Ответ: ${isGcd ? 'НОД' : 'НОК'}(${numbers.join(', ')}) = ${result}.`
     ],
-    check: isGcd ? `${a} / ${result} = ${a / result}; ${b} / ${result} = ${b / result}. Остатка нет.`
-      : `${result} / ${a} = ${result / a}; ${result} / ${b} = ${result / b}. Остатка нет.`,
-    expected
+    check: numbers.map(value => isGcd ? `${value} / ${result} = ${value / result}`
+      : `${result} / ${value} = ${result / value}`).join('; ') + '. Остатка нет.',
+    expected,
+    mistakes: [
+      { value: rat(isGcd ? multiple : divisor),
+        text: isGcd ? 'Похоже, найден НОК вместо НОД. Для НОД каждое исходное число должно делиться на искомое число.'
+          : 'Похоже, найден НОД вместо НОК. Для НОК искомое число должно делиться на каждое исходное число.',
+        shortText: isGcd ? 'Похоже, перепутаны НОД и НОК. Исходные числа делим на ответ.'
+          : 'Похоже, перепутаны НОК и НОД. Ответ делим на исходные числа.' },
+      ...(!isGcd ? [{ value: rat(numbers.reduce((a, b) => a * b)),
+        text: 'Похоже, перемножены все исходные числа. Такое число делится на каждое из них, но здесь оно не наименьшее. В разложениях бери наибольшее число повторений каждого простого числа, не складывай повторения.',
+        shortText: 'Похоже, просто перемножены исходные числа. Проверь повторяющиеся простые числа: нужны не все повторения вместе.' }] : [])
+    ]
   };
 }
 
@@ -305,8 +436,8 @@ function solveRounding(question) {
   };
 }
 
-const SOLVERS = { 'linear-equations': solveLinear, fractions: solveFractions,
-  percentages: solvePercent, 'gcd-lcm': solveCommon, rounding: solveRounding };
+const SOLVERS = { 'linear-equations': question => solveLinear(question) || solveExtendedLinear(question), fractions: solveFractions,
+  percentages: question => solvePercent(question) || solvePercentProblem(question), 'gcd-lcm': solveCommon, rounding: solveRounding };
 
 const CONCEPT_TERMS = {
   'linear-equations': /уравнени|равенств|неизвестн/,
@@ -322,7 +453,7 @@ function isConceptQuestion({ topic, question }) {
   const text = normalized(question);
   // A general card is never presented as a checked solution of an arbitrary
   // numeric problem, and a topic word alone does not license unrelated prose.
-  return !/[\d=]/.test(text) && CONCEPT_TERMS[topic].test(text)
+  return !/[\d=]/.test(text) && (CONCEPT_TERMS[topic]?.test(text) || false)
     && /^(?:пожалуйста[,\s]+)?(?:как|что|почему|зачем|когда|чем|какой|какая|какие|объясни|поясни|напомни|помоги понять|правило|формула)(?=\s|[?!,:;.]|$)/.test(text);
 }
 
@@ -345,31 +476,45 @@ function checkedInput(input) {
     || (input.hintLevel !== undefined && (!Number.isInteger(input.hintLevel) || input.hintLevel < 1 || input.hintLevel > 5))) {
     throw new TypeError('INVALID_TUTOR_INPUT');
   }
-  return { topic: input.topic, question: input.question.trim(), attempt: input.attempt || '',
+  return { topic: input.topic, question: normalizeTask(input.question), attempt: input.attempt || '',
     mode: input.mode || 'hint', hintLevel: input.hintLevel || 1, simpler: input.simpler === true };
 }
 
 export function answerOffline(input, cards = getBuiltinKnowledge()) {
   const safe = checkedInput(input); const selected = topicCards(safe.topic, cards);
   const sources = selected.map(card => ({ id: card.id, title: card.title, url: card.source.url }));
-  const solved = SOLVERS[safe.topic]?.(safe.question);
+  const solved = solveGeometry(safe.topic, safe.question) || SOLVERS[safe.topic]?.(safe.question) || solveWordData(safe.topic, safe.question) || solveExpandedEquation(safe.topic, safe.question) || solveFoundation(safe.topic, safe.question) || (safe.topic === 'fractions' ? solveFractionProduct(safe.question) : null);
   if (solved) {
-    const feedback = attemptMessage(safe.attempt, solved.expected);
+    const sequence = safe.topic === 'linear-equations' && safe.attempt.includes('\n') ? checkSolutionLines(safe.question, safe.attempt) : null;
+    const specific = safe.attempt.trim() && solved.verify ? solved.verify(safe.attempt) : null;
+    const feedback = specific ? specific.text : sequence ? sequence.text : attemptMessage(safe.attempt, solved, safe.simpler, safe);
+    const value = parseNumericAttempt(solved.answerUnit === 'percent' ? safe.attempt.replace(/\s*%$/, '') : safe.attempt);
+    const singleStep = safe.topic === 'linear-equations' && safe.attempt.includes('=') && !value ? checkSolutionLines(safe.question, safe.attempt) : null;
+    const attemptStatus = !safe.attempt.trim() ? 'none' : specific?.status || sequence?.status || singleStep?.status || (!value || !solved.expected ? 'unsupported' : value.n * solved.expected.d === solved.expected.n * value.d ? 'correct' : 'incorrect');
     const complete = safe.mode === 'explain';
     return {
       title: solved.title,
       text: [safe.simpler ? 'Разберём по одному небольшому действию.' : solved.text, feedback].filter(Boolean).join(' '),
       steps: complete ? solved.steps : [(safe.simpler && solved.shortHints ? solved.shortHints : solved.hints)[safe.hintLevel - 1]],
       check: complete ? solved.check : 'Сделай только этот шаг. Предыдущие подсказки можно оставить перед глазами.',
-      sources, verification: 'deterministic', topic: safe.topic, complete
+      sources, verification: 'deterministic', topic: safe.topic, complete, ...(complete && solved.figure ? { figure: solved.figure } : {}), ...(complete && solved.table ? { table: solved.table } : {}), attemptStatus, attemptKind: specific?.kind || (sequence || singleStep ? 'step' : 'answer'), ...(solved.format ? { answerFormat: solved.format } : {}), ...(sequence ? { lineChecks: sequence.lines } : {})
     };
   }
   const card = selected[0]; const theoryOnly = isConceptQuestion(safe);
+  const clarification = !theoryOnly && clarificationFor(safe.topic, safe.question);
+  if (clarification) return {
+    title: 'Уточним условие', text: clarification,
+    steps: ['Допиши условие в поле задачи и снова нажми «Дай первый шаг».'],
+    check: 'Пока условие неполное, ответ не проверяю.',
+    sources, verification: 'needs-teacher', topic: safe.topic, complete: false
+  };
   const complete = safe.mode === 'explain' && theoryOnly && Boolean(card);
   return {
     title: theoryOnly && card ? card.title : 'Для этой задачи нужен отдельный разбор',
-    text: theoryOnly && card ? (safe.simpler ? conciseExplanation(card, safe) : card.explanation)
-      : `Без модельного API я проверяю только ограниченные форматы примеров. ${TOPICS.find(t => t.id === safe.topic).sample ? 'Для этой задачи не буду придумывать непроверенный ответ.' : ''}`,
+    text: safe.topic === 'linear-equations' && /\d\s+\d/.test(safe.question)
+      ? 'В уравнении цифры одного числа пиши подряд. Убери пробел внутри числа или допиши пропущенный знак действия. По неоднозначной записи я не проверяю ответ.'
+      : theoryOnly && card ? (safe.simpler ? conciseExplanation(card, safe) : card.explanation)
+      : 'Эту запись я пока не умею проверять. Можно выбрать пример записи ниже или открыть материал по теме. Общие правила помогут начать, но не заменяют проверку решения.',
     steps: card ? (complete ? card.steps : [card.steps[Math.min(safe.hintLevel - 1, card.steps.length - 1)]])
       : ['Покажи условие учителю и уточни, какое правило нужно применить.'],
     check: card ? (safe.topic === 'sections' ? 'Без чертежа нельзя выбрать конкретный следующий отрезок. ' : '') + card.check
@@ -380,6 +525,7 @@ export function answerOffline(input, cards = getBuiltinKnowledge()) {
 
 export function buildMessages(input, cards = getBuiltinKnowledge()) {
   const safe = checkedInput(input);
+  if (!isProviderTopic(safe.topic)) throw new TypeError('OFFLINE_TOPIC_ONLY');
   const context = topicCards(safe.topic, cards).map(card => ({
     id: card.id.slice(0, 80), title: card.title.slice(0, 160),
     explanation: card.explanation.slice(0, 1800),

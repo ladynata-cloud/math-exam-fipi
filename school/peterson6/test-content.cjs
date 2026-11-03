@@ -9,7 +9,7 @@ for(const [i,l] of D.lessons.entries()){
   for(const sk of t.skills||[])assert(skills.has(sk),t.id+': unknown skill '+sk);
   if(t.kind==='choice'){choice++;assert.equal(t.choices.filter(c=>c===t.answer).length,1,t.id);assert.equal(new Set(t.choices).size,t.choices.length);}
   else{numeric++;assert(M.parse(t.answer),t.id+' final '+t.answer);assert(M.check(t.answerFormat==='decimal'?M.decimal(t.answer):t.answer,t.answer,t.answerFormat),t.id+' invalid answer representation '+t.answer);assert(t.steps.length>=2);}
-  for(const q of t.steps||[]){steps++;assert(q.prompt&&q.hint&&q.explanation);assert(M.parse(q.answer),t.id+' step '+q.answer);assert(M.check(q.answerFormat==='decimal'?M.decimal(q.answer):q.answer,q.answer,q.answerFormat),t.id+' invalid step representation '+q.answer+' '+q.answerFormat);}
+  for(const q of t.steps||[]){steps++;assert(q.prompt&&q.hint&&q.explanation);if(q.kind==='choice'){assert(Array.isArray(q.choices)&&q.choices.length>=2,t.id+' choice variants');assert.equal(new Set(q.choices).size,q.choices.length,t.id+' unique choices');assert.equal(q.choices.filter(v=>v===q.answer).length,1,t.id+' one correct choice');}else{assert(!q.kind||q.kind==='number',t.id+' known step kind');assert(M.parse(q.answer),t.id+' step '+q.answer);assert(M.check(q.answerFormat==='decimal'?M.decimal(q.answer):q.answer,q.answer,q.answerFormat),t.id+' invalid step representation '+q.answer+' '+q.answerFormat);}}
  }
 }
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));

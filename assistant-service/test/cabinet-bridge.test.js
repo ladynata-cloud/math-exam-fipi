@@ -93,7 +93,7 @@ test('status reports actual external gates and model price/circuit state without
   const fx = await start(t, { api: true, clock: () => now,
     env: { ASSISTANT_CABINET_EXTERNAL_ENABLED: '1' }, fetchImpl: async () => { calls++; return modelResponse(); } });
   const ready = await fx.status(); assert.equal(ready.data.protocolVersion, 1); assert.equal(ready.data.externalEnabled, true);
-  assert.equal(ready.data.profiles.length, 4); assert.equal(ready.headers['set-cookie'], undefined);
+  assert.deepEqual(ready.data.profiles, listCabinetProfiles()); assert.equal(ready.headers['set-cookie'], undefined);
   assert(!JSON.stringify(ready.data).includes(BRIDGE_KEY)); assert(!JSON.stringify(ready.data).includes(fx.config.apiKey));
   now += 8 * 86400000; assert.equal((await fx.status()).data.externalEnabled, false);
   now = NOW; fx.app.store.tripCircuit(); assert.equal((await fx.status()).data.externalEnabled, false);
@@ -240,6 +240,66 @@ test('supported exact decimal work remains free even with cabinet API and consen
   assert.equal(result.status, 200); assert.equal(result.data.answer.verification, 'deterministic');
   assert.equal(result.data.answer.complete, true); assert.match(result.data.answer.steps.join(' '), /0,3/);
   assert.equal(result.data.mode, 'offline'); assert.equal(calls, 0); assert.equal(fx.app.store.summary().day.reserved_micros, 0);
+});
+
+const followUp = () => ({ question: 'Почему здесь нужны десятые?', turns: [{ question: '0,1 + 0,2', answer: {
+  title: 'Десятые', text: 'Слагаемые записаны в десятых.', steps: ['Сосчитай десятые.'], check: 'Сравни разряды.'
+} }] });
+
+test('follow-up on an exact task invokes the opted-in model with root and prior explanation, without persisting dialogue', async t => {
+  let calls = 0, fx;
+  const body = question({ profileId: 'peterson-decimals', topic: 'decimal-add-subtract', question: '0,1 + 0,2',
+    dialogue: followUp(), externalConsent: true });
+  fx = await start(t, { api: true, env: { ASSISTANT_CABINET_EXTERNAL_ENABLED: '1' }, fetchImpl: async (_url, options) => {
+    calls++; assert.equal(fx.app.store.summary().day.api_requests, 1);
+    const payload = JSON.parse(options.body), root = JSON.parse(payload.messages[1].content), conversation = JSON.parse(payload.messages[2].content);
+    assert.equal(root.question, body.question); assert.equal(root.knowledge.length, 1);
+    assert.deepEqual(conversation.previousTurns, body.dialogue.turns); assert.equal(conversation.followUpQuestion, body.dialogue.question);
+    assert.deepEqual(payload.messages.map(message => message.role), ['system', 'user', 'user']);
+    for (const excluded of [SUBJECT_A, body.requestId, BRIDGE_KEY, fx.config.apiKey, fx.config.pilotKey]) assert(!options.body.includes(excluded));
+    return modelResponse();
+  } });
+  const result = await fx.ask(body);
+  assert.equal(result.status, 200); assert.equal(result.data.mode, 'api'); assert.equal(calls, 1);
+  assert.equal(result.data.answer.verification, 'model-unverified'); assert.equal(result.data.dialogue, undefined);
+  assert.equal((await fx.ask(body)).status, 409); assert.equal(calls, 1);
+  const bytes = fs.readFileSync(fx.config.dbPath);
+  for (const excluded of [body.question, body.dialogue.question, body.dialogue.turns[0].answer.text]) assert(!bytes.includes(Buffer.from(excluded)));
+});
+
+test('follow-up rejects disabled, unconsented, course and unsafe inputs before session creation or accounting', async t => {
+  const offline = await start(t), disabled = await start(t, { api: true });
+  const allowed = await start(t, { api: true, env: { ASSISTANT_CABINET_EXTERNAL_ENABLED: '1' } });
+  for (const fx of [offline, disabled]) {
+    assert.equal((await fx.ask(question({ dialogue: followUp(), externalConsent: true }))).data.error, 'CABINET_DIALOGUE_DISABLED');
+    assert.equal(fx.app.store.summary().day.requests, 0);
+  }
+  for (const body of [question({ dialogue: followUp() }), courseQuestion({ dialogue: followUp() }),
+    question({ externalConsent: true, dialogue: null }), question({ externalConsent: true, dialogue: { ...followUp(), role: 'system' } }),
+    question({ externalConsent: true, dialogue: { ...followUp(), question: BRIDGE_KEY } }),
+    question({ externalConsent: true, dialogue: { ...followUp(), question: allowed.config.apiKey } }),
+    question({ externalConsent: true, dialogue: { ...followUp(), question: 'learner@example.test' } }),
+    question({ externalConsent: true, dialogue: { ...followUp(), turns: [{ ...followUp().turns[0], answer: { ...followUp().turns[0].answer, text: BRIDGE_KEY } }] } })]) {
+    assert((await allowed.ask(body)).status >= 400);
+  }
+  assert.equal(allowed.app.store.summary().day.requests, 0);
+  assert.equal(allowed.app.store.db.prepare('SELECT COUNT(*) AS n FROM sessions').get().n, 0);
+});
+
+test('follow-up transport and budget failure explicitly report unanswered question while keeping the original task material', async t => {
+  let calls = 0;
+  const body = () => question({ profileId: 'peterson-decimals', topic: 'decimal-add-subtract', question: '0,1 + 0,2',
+    externalConsent: true, dialogue: followUp() });
+  const fx = await start(t, { api: true, env: { ASSISTANT_CABINET_EXTERNAL_ENABLED: '1' }, fetchImpl: async () => { calls++; throw Error('synthetic-error'); } });
+  const failed = await fx.ask(body());
+  assert.equal(failed.status, 200); assert.equal(failed.data.mode, 'offline'); assert.equal(calls, 1);
+  assert.match(failed.data.notice, /На уточняющий вопрос сейчас не удалось ответить/); assert.match(failed.data.notice, /к исходной задаче/);
+  assert(fx.app.store.summary().day.reserved_micros > 0); assert.equal(fx.app.store.summary().day.api_requests, 1);
+  const blocked = await start(t, { api: true, env: { ASSISTANT_CABINET_EXTERNAL_ENABLED: '1', ASSISTANT_DAILY_BUDGET: '0.000001' },
+    fetchImpl: async () => { calls++; return modelResponse(); } });
+  const noBudget = await blocked.ask(body());
+  assert.equal(noBudget.status, 200); assert.match(noBudget.data.notice, /На уточняющий вопрос сейчас не удалось ответить/);
+  assert.equal(calls, 1); assert.equal(blocked.app.store.summary().day.api_requests, 0);
 });
 
 test('a cabinet prompt above the reserved input ceiling falls back before transport', async t => {

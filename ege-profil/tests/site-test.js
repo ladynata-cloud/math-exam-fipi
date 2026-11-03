@@ -783,13 +783,15 @@ timers.length = 0;
   ok(timers.length === 1, 'probability: следующая задача запланирована таймером');
   flushTimers();
   ok(!prBox(d).classList.contains('on') && prBox(d).textContent === '', 'probability: новая задача — лестница закрыта');
-  /* вторая ошибка открывает лестницу; итог — последней ступенью; решённая после итога не засчитана */
+  /* после второй ошибки лестница открывается по запросу; итог — последней ступенью */
   fb = checkPr(w, '1,5');
   ok(/bad/.test(fb.className) && /от 0 до 1/.test(fb.textContent) && !prBox(d).classList.contains('on'), 'probability: значение больше 1 — общее объяснение, лестницы ещё нет');
   const missBefore = JSON.stringify(Object.entries(prMiss(w)).map(([key, e]) => [key, e.w, e.r]));
   fb = checkPr(w, '1,5');
+  ok(!prBox(d).classList.contains('on') && !prBox(d).querySelector('.ladder-btn'), 'probability: вторая ошибка не открывает разбор без запроса');
+  d.getElementById('dSol').click();
   const box = prBox(d), btn = box.querySelector('.ladder-btn');
-  ok(/bad/.test(fb.className) && /Снова неверно/.test(fb.textContent) && /разбор по шагам/.test(fb.textContent), 'probability: вторая ошибка — приглашение в разбор: ' + fb.textContent);
+  ok(/bad/.test(fb.className) && /Снова неверно/.test(fb.textContent) && /разбор по шагам/i.test(fb.textContent), 'probability: вторая ошибка — приглашение в разбор: ' + fb.textContent);
   ok(box.classList.contains('on') && !!btn && box.querySelectorAll('.lq').length === 1 && box.querySelectorAll('.la').length === 0 && btn.textContent === 'Ответ шага' && !/Ответ:/.test(box.textContent),
      'probability: лестница открыта на вопросе первой ступени, итога нет');
   ok(/в счёт решённых не пойдёт \(промахом это не считается\)/.test(box.querySelector('.ladder-note').textContent), 'probability: подпись над лестницей предупреждает об открытом итоге до последнего нажатия');
@@ -839,6 +841,8 @@ timers.length = 0;
   const w = boot(PRB, win => { win.Math.random = rng(3); win.setTimeout = fn => { timers.push(fn); return timers.length; }; win.localStorage.setItem(KEY, '[1,2,3]'); });
   const d = w.document;
   checkPr(w, '1,5'); checkPr(w, '1,5');
+  ok(!prBox(d).classList.contains('on'), 'probability: при мусоре в хранилище разбор тоже ждёт запроса');
+  d.getElementById('dSol').click();
   ok(prBox(d).classList.contains('on') && walkPr(d) > 0 && !!finalPr(d), 'probability: при мусоре в хранилище лестница работает');
   w.close();
 }

@@ -15,6 +15,10 @@
 .stimulus{margin:20px 0}.stimulus figcaption,caption{font-weight:700;text-align:left;font-size:15px;margin-bottom:10px}.chart-scroll{max-width:100%;overflow-x:auto}.chart-scroll:focus-visible{outline:3px solid #b76914;outline-offset:3px}.data-chart{display:block;width:100%;min-width:440px;height:auto;background:#fffef9;border-radius:10px}.data-chart text{font:17px system-ui,sans-serif;fill:#173e3c}.balls{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}.ball{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;font-weight:800;color:white}.ball.red{background:#a23e36}.ball.blue{background:#285f98}.logic-set{border:2px solid #176652;border-radius:15px;padding:18px;margin:18px 0}.logic-set>div{border:2px solid #a46d13;border-radius:12px;padding:13px;margin:12px 0;background:#fff3d0}.model .stimulus{margin-top:20px}
 .two>*,.stack>*{min-width:0}.model{min-width:0;overflow-x:auto}.model table{min-width:280px}
 </style>
+<link rel="stylesheet" href="../../../ege-baza/reference/style.css?v=20261101">
+<script src="../../../ege-baza/reference/data.js?v=20261101"></script>
+<script src="../../../ege-baza/reference/legacy-map.js?v=20261101"></script>
+<script src="../../../ege-baza/reference/ui.js?v=20261101"></script>
 </head>
 <body>
 <a class="skip" href="#main">К содержанию</a>
@@ -92,13 +96,26 @@ function renderMap(){
 }
 const modelHTML=globalThis.EgeBazaDataVisuals.modelHTML,updateModel=globalThis.EgeBazaDataVisuals.updateModel;
 function visual(t){return globalThis.EgeBazaDataVisuals.draw(t.visual);}
+function attachReference(sheetIds,onReveal){
+ if(!sheetIds?.length||!globalThis.EgeReferenceUI)return;
+ const host=document.createElement('div');host.className='legacy-reference';
+ $('main').querySelector('.panel')?.append(host);
+ globalThis.EgeReferenceUI.attach(host,{sheetIds,onReveal,referenceBase:'../../../ege-baza/reference/',returnHref:location.pathname+location.search+location.hash,showPins:false});
+}
 function renderLearn(id){const s=SKILLS.find(s=>s.id===id);if(!s){route('#map');return;}markLearning();
  $('main').innerHTML=`<span class="eyebrow">Разобраться · Навык ${SKILLS.indexOf(s)+1} из 4</span><h1 class="lesson-title">${esc(s.title)}</h1><div class="two"><section class="panel"><h3>Что нужно понять</h3><ol>${s.lesson.map(p=>`<li>${esc(p)}</li>`).join('')}</ol><div class="model">${modelHTML(s)}</div></section><aside class="stack"><section class="panel"><span class="eyebrow">Цель урока</span><h3>${esc(s.goal)}</h3><p class="small muted">Пригодится: ${esc(s.exam)}.</p><div class="actions">${btn('Попробовать самостоятельно','practice-'+id+'-0')}</div></section><section class="panel"><h3>Нужен ещё один шаг?</h3><p>Откройте подробный тренажёр. Он работает отдельно; вернувшись, продолжите практику здесь.</p><p><a href="${s.link}" target="_blank" rel="noopener">${esc(s.linkTitle)} ↗</a></p></section><section class="panel"><h3>Объясните своими словами</h3><p>Почему выбранное действие работает? Как проверить результат другим способом?</p></section></aside></div>`;
  $('slider').addEventListener('input',()=>updateModel(s));$('example')?.addEventListener('change',()=>updateModel(s));updateModel(s);
+ attachReference(globalThis.EgeReferenceLegacy?.skillSheets['m02-'+id],markLearning);
 }
 function renderPractice(id,index){const s=SKILLS.find(s=>s.id===id);if(!s){route('#map');return;}markLearning();const tasks=list('practice',id),i=Math.max(0,Math.min(tasks.length-1,index||0)),t=tasks[i],r=practiceRec(t);
  $('main').innerHTML=`<div class="task-top"><div><span class="eyebrow">Самостоятельная практика</span><h2>${esc(s.title)}</h2></div>${btn('К объяснению','learn-'+id,'secondary small')}</div><div class="mini-nav" aria-label="Задания навыка">${tasks.map((q,j)=>`<button class="${i===j?'active':''} ${state.practice[q.id]?.done?'done':''}" data-action="practice-${id}-${j}" aria-label="Задание ${j+1}${state.practice[q.id]?.done?', решено':''}" ${i===j?'aria-current="step"':''}>${j+1}</button>`).join('')}</div>
  <section class="panel"><span class="eyebrow">Задача ${i+1} из ${tasks.length}</span><p class="prompt">${esc(t.text)}</p>${visual(t)}${r.done?`<div class="feedback"><b>${independent(r)?'Верно с первого раза — самостоятельно':r.hints||r.solution?'Верно — с поддержкой':'Верно после исправления'}</b><p>Ответ: ${fmt(t.answer)} ${esc(t.unit)}.</p><p>${esc(t.solution)}</p></div><div class="actions">${i<3?btn('Следующая задача','practice-'+id+'-'+(i+1)):btn('К карте навыков','map')}${btn('К проверкам','checks','secondary')}</div>`:`<form id="answer-form"><label for="answer">Ваш ответ ${t.unit?'('+esc(t.unit)+')':''}</label><p class="small muted" id="answer-format">Одно число без единиц. Можно использовать запятую или точку.</p><div class="answer-row"><input id="answer" inputmode="decimal" autocomplete="off" aria-describedby="answer-format feedback" value="${esc(r.answer)}"><button class="btn" type="submit">Проверить</button></div></form><div id="feedback" role="status" class="feedback" ${r.hints||r.solution?'':'hidden'}>${r.solution?esc(t.solution):r.hints?esc(t.hint):''}</div><div class="actions">${btn('Подсказка','hint','secondary small')}${btn('Разобрать решение','solution','secondary small')}</div><p class="small muted" style="margin-top:14px">Помощь доступна всегда. После подсказки задача учитывается как решённая с поддержкой.</p>`}</section>`;
+ attachReference(globalThis.EgeReferenceLegacy?.taskSheets[t.id],()=>{
+  if(r.done)return;
+  r.hints=true;
+  const input=$('answer');if(input)r.answer=input.value.slice(0,120);
+  save();
+ });
  if(!r.done){$('answer-form').addEventListener('submit',e=>{e.preventDefault();const input=$('answer').value;if(parseNumber(input)===null){feedback('Введите одно число, например 0,75. Пустой ответ и выражения не засчитываются.','bad');return;}r.answer=input.trim();r.tries++;r.done=right(t,input);save();if(r.done){renderPractice(id,i);$('main').focus();}else feedback('Пока не совпало. Проверьте действие и вычисление. Можно воспользоваться подсказкой.','bad');});$('main').querySelector('[data-action="hint"]').onclick=()=>{r.hints=true;save();feedback(t.hint,'tip');};$('main').querySelector('[data-action="solution"]').onclick=()=>{r.solution=true;save();feedback(t.solution,'tip');};}
 }
 function feedback(message,kind=''){const f=$('feedback');f.hidden=false;f.className='feedback '+kind;f.textContent=message;}

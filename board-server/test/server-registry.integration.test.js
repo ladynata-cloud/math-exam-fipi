@@ -274,6 +274,8 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
   assert.match(dockerfile, /COPY courses\/vilenkin-6-part-1\/textbook-data\/ \/app\/courses\/vilenkin-6-part-1\/textbook-data\//);
   const vilenkinSupportAssets = ['textbook-source-labels.js', 'textbook-support.js', 'textbook-support.css'];
   assert.ok(dockerfile.includes(`COPY ${vilenkinSupportAssets.map(file => 'courses/vilenkin-6-part-1/' + file).join(' ')} /app/courses/vilenkin-6-part-1/`));
+  const practiceAssets = ['assistant-service/package.json', 'assistant-service/public/practice-core.js'];
+  for (const file of practiceAssets) assert.ok(dockerfile.includes(`COPY ${file} /app/${file}`));
   const textbookContract = 'geometry-course/textbook/learning-contracts.js';
   assert.ok(dockerfile.includes(`COPY ${textbookContract} /app/${textbookContract}`));
   const textbookAssets = ['math-text.js', 'planar-viewer.js'].map(file => 'geometry-course/textbook/assets/' + file);
@@ -300,6 +302,10 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
   }
   fs.copyFileSync(manifestPath, path.join(runtimeTrainerDir, 'board-compat.json'));
   for (const folder of ['learning', 'ege-baza/path', 'trainers/oge-basics', 'trainers/motion-grade6']) fs.cpSync(path.join(rootDir, folder), path.join(directory, 'app', folder), { recursive: true });
+  for (const file of practiceAssets) { fs.mkdirSync(path.dirname(path.join(directory, 'app', file)), {recursive:true}); fs.copyFileSync(path.join(rootDir,file),path.join(directory,'app',file)); }
+  const packagedPractice = await import(require('node:url').pathToFileURL(path.join(directory,'app/assistant-service/public/practice-core.js')));
+  const descriptor = {skill:'fractions',level:2,seed:7};
+  assert.equal(packagedPractice.gradePractice(descriptor,packagedPractice.generatePractice(descriptor).expected).status,'correct');
   const coursePath = 'courses/vilenkin-6-part-1';
   fs.mkdirSync(path.join(directory, 'app', coursePath), { recursive: true });
   for (const file of ['math.js', 'learning-contracts.js', 'textbook-math.js', 'textbook-learning-contracts.js', ...vilenkinSupportAssets]) fs.copyFileSync(path.join(rootDir, coursePath, file), path.join(directory, 'app', coursePath, file));

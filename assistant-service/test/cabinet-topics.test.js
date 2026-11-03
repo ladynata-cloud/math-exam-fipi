@@ -28,11 +28,11 @@ const checked = (topic, question, expected) => {
   return answer;
 };
 
-test('four nonpersonal profiles expose original topic cards or the exact source-course route and existing links', () => {
+test('nonpersonal profiles expose original topic cards or the exact source-course route and existing links', () => {
   const profiles = listCabinetProfiles();
-  assert.deepEqual(profiles.map(p => p.id), ['oge-geometry', 'peterson-decimals', 'triangle-congruence', 'atanasyan-first-steps']);
+  assert.deepEqual(profiles.map(p => p.id), ['oge-geometry', 'peterson-decimals', 'triangle-congruence', 'atanasyan-first-steps', 'vilenkin-grade6']);
   const topics = profiles.flatMap(p => p.topics.map(t => t.id));
-  assert.equal(new Set(topics).size, 19);
+  assert.equal(new Set(topics).size, 21);
   assert.deepEqual(profiles.find(profile => profile.id === 'atanasyan-first-steps').topics.map(topic => topic.id), ['atanasyan-course-step', 'ichenskaya-course-step']);
   const repository = fileURLToPath(new URL('../../', import.meta.url));
   for (const profile of profiles) {

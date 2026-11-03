@@ -1,0 +1,83 @@
+name: Atanasyan IV — reviewed content and production integration
+on:
+  # Keep the isolated candidate verifiable even when GitHub cannot create a PR merge ref.
+  push:
+    branches:
+      - 'content/atanasyan-chapter-iv-selfcheck-20261102'
+    paths:
+      - 'content-drafts/atanasyan-chapter-iv-selfcheck/**'
+      - 'tools/atanasyan-chapter-iv-selfcheck/**'
+      - 'stereo-course/textbook/**'
+      - 'tools/stereo-textbook/**'
+      - 'stereo-course/assets/**'
+      - '.github/workflows/atanasyan-iv-selfcheck.yml'
+  pull_request:
+    paths:
+      - 'content-drafts/atanasyan-chapter-iv-selfcheck/**'
+      - 'tools/atanasyan-chapter-iv-selfcheck/**'
+      - 'stereo-course/textbook/**'
+      - 'tools/stereo-textbook/**'
+      - 'stereo-course/assets/**'
+      - '.github/workflows/atanasyan-iv-selfcheck.yml'
+permissions:
+  contents: read
+jobs:
+  draft-math-and-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0 ajv@8.17.1 ajv-formats@3.0.1
+      - name: Source, exact published preservation and mathematical coordinates
+        run: |
+          node tools/atanasyan-chapter-iv-selfcheck/check.cjs
+          python3 tools/atanasyan-chapter-iv-selfcheck/math.test.py
+          git diff --check
+      - run: npx playwright install --with-deps chromium
+      - name: Every candidate on phones and desktop, without learner storage writes
+        run: node tools/atanasyan-chapter-iv-selfcheck/browser.cjs
+      - name: Preserve actual images and exact candidate evidence, including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: atanasyan-iv-selfcheck-preview
+          path: artifacts/atanasyan-iv-selfcheck/
+          retention-days: 14
+          if-no-files-found: error
+
+  production-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0 ajv@8.17.1 ajv-formats@3.0.1
+      - name: Exact reviewed candidate, prior 640 cards and production storage
+        run: |
+          python3 tools/stereo-textbook/build_textbook.py
+          git diff --exit-code -- stereo-course/textbook/data/course.json
+          node tools/stereo-textbook/iv-selfcheck-content.test.cjs
+          node tools/stereo-textbook/schema.test.cjs
+          node tools/stereo-textbook/runtime.test.cjs
+          node tools/stereo-textbook/browser-shards.test.cjs
+          python3 tools/atanasyan-chapter-iv-selfcheck/math.test.py
+      - run: npx playwright install --with-deps chromium
+      - name: All thirteen production cards on phones and desktop, including reload
+        run: node tools/stereo-textbook/iv-selfcheck.browser.cjs
+      - name: Preserve integrated course images and persistence evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: atanasyan-iv-selfcheck-integrated
+          path: artifacts/atanasyan-iv-integrated/
+          retention-days: 14
+          if-no-files-found: error

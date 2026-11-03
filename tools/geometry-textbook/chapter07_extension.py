@@ -3,6 +3,7 @@
 The receipt cannot approve geometric content. Every prior approval is restored
 byte-for-byte against the actual preceding production Git snapshot.
 """
+from layout_amendment import historical_bytes
 from copy import deepcopy
 import hashlib,json
 from pathlib import Path
@@ -58,7 +59,7 @@ def validate_extension(root=ROOT,course=None):
  require(review.get('previousSourceCommit')==base['sourceCommit'],'Wrong previous publication')
  require(review.get('preservedCards')==893 and review.get('contentApprovalGranted') is False,'Runtime review cannot approve VII content')
  oldfiles={name:base['immutableFiles'][PREFIX+name] for name in RUNTIME}
- files={name:sha((course/name).read_bytes()) for name in RUNTIME}
+ files={name:sha(historical_bytes(course/name)) for name in RUNTIME}
  from chapter08_extension import has_viii,previous_inventory as before_viii,validate_extension as validate_viii
  inventory_raw=(course/'source-inventory.json').read_bytes()
  if has_viii(inventory_raw):
@@ -105,7 +106,7 @@ def assert_893_preserved(bundle,root=ROOT,course=None,scope=None):
  previous_scope(scope,root)
  for name,expected in base['immutableFiles'].items():
   path=course/name.removeprefix(PREFIX) if name.startswith(PREFIX) else root/name
-  raw=path.read_bytes()
+  raw=historical_bytes(path)
   if name==PREFIX+'data/course.json':continue # The full1083 union is checked separately.
   if name=='tools/geometry-textbook/release-scope.json':continue # Exact suffix restoration above.
   if name==PREFIX+'source-inventory.json':previous_inventory(raw,root)

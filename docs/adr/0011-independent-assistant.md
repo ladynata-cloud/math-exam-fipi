@@ -242,3 +242,27 @@ merge/deployment remain operational prerequisites. See the
 [cabinet operator guide](../../assistant-service/CABINETS.md) for limits and data
 retention details. The prior finite synthetic budget does not authorize pupil
 traffic or a different model.
+
+## Approved structured practice extension — 2026-11-02
+
+The owner's instruction to implement all100 numbered improvements authorizes
+[package8](../tasks/MATHEXAM_ASSISTANT_CABINET_TOOLS_20261102.md), including opt-in
+cabinet resume and teacher tools. This is a narrow extension of the no-retention
+prototype: only deterministic generated task descriptors, bounded categorical
+results and help state may be retained with explicit learner opt-in. Raw pupil
+questions, answers and conversations remain unpersisted. Disabling retention
+erases this progress, without resetting existing usage or monetary ledgers.
+The existing owned teacher can see retained skill/error aggregates; the opt-in
+copy states this. Generated-task disputes retain minimal reproducible math and
+an enum, not pupil identity or free text.
+
+Teacher notes use draft and explicit versioned approval and remain labelled
+separately from deterministic math. Homework previews require an explicit
+assignment action. Solution/method policies are enforced by cabinet endpoints;
+these formative tasks are not a secret examination system and cannot prove a
+learner used a particular method. Sandbox grading does not touch pupil progress.
+A pure deterministic practice core is shared with the cabinet, without moving
+inference, provider keys or the independent helper database into that process.
+Existing three-account admission and active-assessment blocks remain. Provider
+and purchase permissions remain unchanged. Standing publication authorization
+supersedes older per-PR permission and mandatory external-review statements.

@@ -96,7 +96,7 @@ set(elements(b, 'input')[0], 3); assert(b.host.textContent.includes('3 · 4 = 12
 a = mount('river', 'p09'); b = mount('river', 'p09'); set(elements(a, 'input')[0], 17); set(elements(a, 'input')[1], 3.5); transfer(a, b);
 set(elements(b, 'input')[0], 12); assert(b.host.textContent.includes('15,5 − 8,5 = 7 = 2 · 3,5'));
 a = mount('percent', 'p12'); b = mount('percent', 'p12'); set(elements(a, 'input')[0], 320); set(elements(a, 'input')[1], 150); transfer(a, b);
-assert.equal(elements(b, 'svg').length, 2); set(elements(b, 'input')[1], 50); assert(b.host.textContent.includes('50% = 3,2 · 50 = 160'));
+assert.equal(elements(b, 'svg').length, 2); set(elements(b, 'input')[1], 50); assert(b.host.textContent.includes('Пусть x')); assert(b.host.textContent.includes('160 : 320 = 0,5')); assert(elements(b, 'span').some(n=>n.className==='pm-fraction'));
 a = mount('growth', 'p14'); b = mount('growth', 'p14'); set(elements(a, 'input')[0], 1200); set(elements(a, 'input')[1], 20); set(elements(a, 'input')[2], 2); transfer(a, b);
 set(elements(b, 'input')[2], 3); assert(b.host.textContent.includes('1 920')); assert(b.host.textContent.includes('2 073,6'));
 // Mean carries both selectors even when changing them did not redraw the model.

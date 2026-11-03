@@ -3,6 +3,7 @@
 The receipt cannot approve geometric content. Every prior approval is restored
 byte-for-byte against the actual preceding production Git snapshot.
 """
+from layout_amendment import historical_bytes
 from copy import deepcopy
 import hashlib,json
 from pathlib import Path
@@ -55,7 +56,7 @@ def validate_extension(root=ROOT,course=None):
  require(review.get('previousSourceCommit')==base['sourceCommit'],'Wrong previous publication')
  require(review.get('preservedCards')==1083 and review.get('contentApprovalGranted') is False,'Runtime review cannot approve VIII content')
  oldfiles={name:base['immutableFiles'][PREFIX+name] for name in RUNTIME}
- files={name:sha((course/name).read_bytes()) for name in RUNTIME}
+ files={name:sha(historical_bytes(course/name)) for name in RUNTIME}
  require(review.get('oldImplementationSha256')==digest(oldfiles)==base['implementationSha256'],'Wrong prior runtime chain')
  require(review.get('implementationFiles')==files and review.get('implementationSha256')==digest(files),'Stale VIII runtime files')
  require([name for name in RUNTIME if oldfiles[name]!=files[name]]==['source-inventory.json'],'Only VIII paragraph metadata may change')
@@ -94,7 +95,7 @@ def assert_1083_preserved(bundle,root=ROOT,course=None,scope=None):
  previous_scope(scope,root)
  for name,expected in base['immutableFiles'].items():
   path=course/name.removeprefix(PREFIX) if name.startswith(PREFIX) else root/name
-  raw=path.read_bytes()
+  raw=historical_bytes(path)
   if name==PREFIX+'data/course.json':continue # The full1247 union is checked separately.
   if name=='tools/geometry-textbook/release-scope.json':continue # Exact suffix restoration above.
   if name==PREFIX+'source-inventory.json':previous_inventory(raw,root)

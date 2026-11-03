@@ -7,12 +7,28 @@
   document.querySelector('.skip-link')?.addEventListener('click',event=>{event.preventDefault();main.focus();main.scrollIntoView?.({block:'start'});});
   const statusLabels={independent:'Решено самостоятельно',assisted:'Решено с помощью',learned:'Разобрано по шагам',manual:'Проверено по памятке',repeated:'Решено повторно'};
   const roleLabels={learn:'Разбираем вместе',practice:'Тренируемся',check:'Проверяем себя'};
+  const supplementStages={example:'Разбираем примеры',practice:'Тренируемся двумя способами',check:'Проверяем себя'};
+  const methodLabels={chain:'По очереди',factors:'Через простые множители'};
   let units=[], taskMap=new Map(), unitMap=new Map(), state={version:1,last:'',tasks:{}}, resetPending=false, writesBlocked=false, renderEpoch=0;
   const text=v=>M.esc(v), fmt=v=>M.fmt(v), limited=(v,n=180)=>typeof v==='string'?v.slice(0,n):'';
   const taskURL=(unit,task)=>`#unit/${unit.id}/task/${encodeURIComponent(task.id)}`;
   const unitURL=unit=>`#unit/${unit.id}`;
+  const isSupplement=unit=>unit?.kind==='author-supplement'&&unit.id===1008;
+  const bookUnits=()=>units.filter(unit=>!isSupplement(unit));
+  function setSupplementView(value){document.body.classList.toggle('supplement-task',value);}
   const viewIsCurrent=(epoch,hash)=>epoch===renderEpoch&&location.hash===hash&&(!managed||managedReady&&!managedReadonly&&!managedApplying);
   function guardLinks(epoch,hash){main.querySelectorAll('a').forEach(link=>{
+    // The isolated task returns to its owning cabinet's existing catalogue.
+    if(managed&&link.getAttribute('href')==='#'){
+      link.dataset.managedCourseCatalog='';
+      link.setAttribute('aria-label','Все темы курса в кабинете');
+      link.setAttribute('aria-disabled',String(managedReadonly||!managedReady));
+      link.addEventListener('click',event=>{
+        event.preventDefault();
+        if(viewIsCurrent(epoch,hash))managedNotify({kind:'navigate',details:{target:'vilenkin-textbook-catalog'},state:managedSnapshot()});
+      });
+      return;
+    }
     if(managed&&link.getAttribute('href')?.startsWith('#')&&link.getAttribute('href')!==managedRoute()){
       link.removeAttribute('href');link.setAttribute('aria-disabled','true');link.title='Другую задачу можно выбрать в маршруте кабинета.';
     }
@@ -92,12 +108,13 @@
   }
   function sourceHTML(task,unit) {
     const s=task.source;
+    if(s.kind==='author')return `<p class="source source-author"><strong>${text(Sources.taskLabel(task))}</strong><br>К теме НОК · пункт ${text(unit.relatedPoint)}</p>`;
     return `<p class="source"><strong>${text(Sources.taskLabel(task))}</strong><br>${text(Sources.sectionLabel(unit.id))}<br><a href="textbook.pdf#page=${Number(s.page)+1}" target="_blank" rel="noopener">с. ${Number(s.page)} учебника</a></p>`;
   }
   function mountSupport(unit,epoch,hash,task=null,p=null) {
     const host=main.querySelector('[data-study-support]');
     if(!host||!window.VilenkinStudySupport)return;
-    window.VilenkinStudySupport.mount(host,{unitId:unit.id,isCurrent:()=>viewIsCurrent(epoch,hash)&&(!task||state.tasks[task.id]===p),onUse(reason){
+    window.VilenkinStudySupport.mount(host,{unitId:isSupplement(unit)?unit.relatedPoint:unit.id,answerType:task?.answerType,actionsHost:main.querySelector('.work .help-actions'),isCurrent:()=>viewIsCurrent(epoch,hash)&&(!task||state.tasks[task.id]===p),onUse(reason){
       if(!task||p.status)return;
       p.helped=true;
       save('hint',{resource:reason});
@@ -112,13 +129,47 @@
     if (visual.type==='table') return `<div class="table-wrap"><table>${visual.headers?`<thead><tr>${visual.headers.map(h=>`<th scope="col">${fmt(h)}</th>`).join('')}</tr></thead>`:''}<tbody>${(visual.rows || []).map(row=>`<tr>${row.map(cell=>`<td>${fmt(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
     return '';
   }
+  function supplementGroups(unit,stage) {
+    const groups=new Map();
+    for(const task of unit.tasks.filter(task=>task.stage===stage)){
+      if(!groups.has(task.groupId))groups.set(task.groupId,{id:task.groupId,numbers:task.numbers,tasks:[]});
+      groups.get(task.groupId).tasks.push(task);
+    }
+    return [...groups.values()];
+  }
+  function supplementOverviewHTML(unit) {
+    const count=stage=>supplementGroups(unit,stage).length;
+    return `<section class="card supplement-overview" data-author-supplement="${unit.id}"><p class="eyebrow">Авторское дополнение MathExam · к теме НОК</p><h2>${text(unit.title)}</h2><p>Сначала научимся находить НОК по очереди для двух чисел. Затем соберём его из простых множителей всех исходных чисел.</p><p class="muted">${count('example')} разобранных примера, ${count('practice')} тренировочных условий с выбором способа и ${count('check')} новых проверочных заданий.</p><a class="button-link" href="${unitURL(unit)}">НОК трёх и более чисел →</a></section>`;
+  }
+  function supplementTasksHTML(unit) {
+    const names={example:'Пример',practice:'Тренировка',check:'Проверка'};
+    return Object.entries(supplementStages).map(([stage,title])=>`<section class="supplement-stage" data-lcm-stage="${stage}"><h2>${title}</h2>${stage==='check'?'<p class="muted">Это новые условия. Реши выбранным в задании способом на листе или в уме и введи ответ. Подсказку можно открыть, если понадобится.</p>':'<p class="muted">У каждого условия два способа. Пройди один, затем сравни со вторым. Шаги каждого способа сохраняются отдельно.</p>'}<div class="supplement-cases">${supplementGroups(unit,stage).map((group,index)=>`<article class="card lcm-group" data-lcm-group="${text(group.id)}"><h3>${names[stage]} ${index+1}</h3><p>Найди НОК чисел <strong>${group.numbers.map(text).join(', ')}</strong>.</p><div class="lcm-methods">${group.tasks.map(task=>`<div><a class="button-link${task.method==='factors'?' secondary':''}" data-lcm-method="${text(task.method)}" href="${taskURL(unit,task)}">${text(methodLabels[task.method])}${stage==='check'?' · проверить себя':''}</a><small>${text(statusLabels[state.tasks[task.id]?.status]||(hasPriorWork(state.tasks[task.id])||state.tasks[task.id]?.draft||state.tasks[task.id]?.stepDrafts?.some(Boolean)?'Продолжить сохранённые шаги':stage==='check'?'Ещё не решали':'Начать по шагам'))}</small></div>`).join('')}</div></article>`).join('')}</div></section>`).join('');
+  }
+  function renderSupplementUnit(unit) {
+    setSupplementView(false);
+    const epoch=++renderEpoch,hash=location.hash,progress=progressSummary(unit);
+    const next=unit.tasks.find(task=>!state.tasks[task.id]?.status)||unit.tasks[0];
+    main.innerHTML=`<nav class="breadcrumb" aria-label="Путь"><a href="#">Все темы</a><span>›</span><span>НОК трёх и более чисел</span></nav><p class="eyebrow">${text(Sources.unitSectionLabel(unit))}</p><h1>${text(unit.title)}</h1><p class="intro">${fmt(unit.goal)}</p><a class="button-link" href="${taskURL(unit,next)}">${progress.total?'Продолжить разборы':'Начать с первого примера'} →</a><details class="card rules supplement-rules"><summary>Правила двух способов и частые ошибки</summary>${unit.rules.map(rule=>`<article><h2>${text(rule.title)}</h2><p>${fmt(rule.text)}</p></article>`).join('')}<h2>Где легко ошибиться</h2><ul>${unit.pitfalls.map(pitfall=>`<li>${fmt(pitfall)}</li>`).join('')}</ul></details><details class="card supplement-support"><summary>Вспомнить простые числа и действия</summary><aside data-study-support aria-label="Справка и повторение"></aside></details>${unit.prereq?.length?`<p class="unit-rule-link">Прежние темы: ${unit.prereq.map(id=>unitMap.get(id)).filter(Boolean).map(topic=>`<a href="${unitURL(topic)}">${text(topic.title)}</a>`).join(' · ')}.</p>`:''}${supplementTasksHTML(unit)}<p class="status-detail">Завершено разборов по шагам: ${progress.counts.learned+progress.counts.assisted}. Самостоятельных решений: ${progress.counts.independent}. Повторных решений: ${progress.counts.repeated}. Каждое условие в двух способах хранится как две отдельные работы.</p><a href="#">Вернуться ко всем прежним темам</a>`;
+    mountSupport(unit,epoch,hash);
+    guardLinks(epoch,hash);
+  }
+  function alternativeMethodHTML(unit,task) {
+    if(!isSupplement(unit)||task.stage==='check')return '';
+    if(managed)return '<p class="method-return-note">Другой способ можно открыть в маршруте кабинета. Шаги текущей работы сохраняются отдельно.</p>';
+    const alternative=unit.tasks.find(candidate=>candidate.id===task.alternativeId)||unit.tasks.find(candidate=>candidate.groupId===task.groupId&&candidate.stage===task.stage&&candidate.method!==task.method);
+    if(!alternative)return '';
+    return `<div class="method-switch"><a class="button-link secondary" href="${taskURL(unit,alternative)}">Другой способ: ${text(methodLabels[alternative.method])}</a><small>Шаги обоих способов сохраняются отдельно. Можно вернуться к начатому решению.</small></div>`;
+  }
   function renderHome() {
+    setSupplementView(false);
     const epoch=++renderEpoch,hash=location.hash;
     const last=parseRoute(state.last), resume=last && unitMap.has(last.unit)?state.last:'';
-    main.innerHTML=`<div class="intro"><p class="eyebrow">Математика · 6 класс · часть 1</p><h1>Разберёмся по учебнику</h1><p>Сначала — короткое правило и решение по шагам. Затем — задания из учебника для самостоятельной работы. Рядом с условием — номер упражнения или название примера и ссылка на страницу учебника.</p><p class="muted">Начни с нужной темы. Если что-то не получается, открой подсказку: условие и уже выполненные действия останутся перед тобой.</p>${resume?`<a class="button-link" href="${text(resume)}">Продолжить занятие</a>`:''}</div><div class="topic-grid">${units.map(u=>{const p=progressSummary(u);return `<a class="topic-card" href="${unitURL(u)}"><span class="eyebrow">${text(Sources.pointLabel(u.id))} · с. ${u.page}–${u.endPage}</span><strong>${text(u.title)}</strong><small>${p.total?`Выполнено заданий: ${p.total} из ${u.tasks.length}`:'Правило · решение по шагам · практика'}</small></a>`;}).join('')}</div><p class="muted">Здесь собраны выбранные упражнения из всех 23 тем первой части и примеры для повторения. Выполненные упражнения показывают твою работу, но сами по себе не означают, что вся тема уже освоена.</p>`;
+    main.innerHTML=`<div class="intro"><p class="eyebrow">Математика · 6 класс · часть 1</p><h1>Разберёмся по учебнику</h1><p>Сначала — короткое правило и решение по шагам. Затем — задания из учебника для самостоятельной работы. Рядом с условием — номер упражнения или название примера и ссылка на страницу учебника.</p><p class="muted">Начни с нужной темы. Если что-то не получается, открой подсказку: условие и уже выполненные действия останутся перед тобой.</p>${resume?`<a class="button-link" href="${text(resume)}">Продолжить занятие</a>`:''}</div>${units.filter(isSupplement).map(supplementOverviewHTML).join('')}<div class="topic-grid">${bookUnits().map(u=>{const p=progressSummary(u);return `<a class="topic-card" href="${unitURL(u)}"><span class="eyebrow">${text(Sources.pointLabel(u.id))} · с. ${u.page}–${u.endPage}</span><strong>${text(u.title)}</strong><small>${p.total?`Выполнено заданий: ${p.total} из ${u.tasks.length}`:'Правило · решение по шагам · практика'}</small></a>`;}).join('')}</div><p class="muted">Здесь собраны выбранные упражнения из всех 23 тем первой части и примеры для повторения. Выполненные упражнения показывают твою работу, но сами по себе не означают, что вся тема уже освоена.</p>`;
     guardLinks(epoch,hash);
   }
   function renderUnit(unit) {
+    if(isSupplement(unit)){renderSupplementUnit(unit);return;}
+    setSupplementView(false);
     const epoch=++renderEpoch,hash=location.hash,live=()=>viewIsCurrent(epoch,hash);
     const progress=progressSummary(unit), next=unit.tasks.find(t=>!state.tasks[t.id]?.status) || unit.tasks[0];
     main.innerHTML=`<nav class="breadcrumb" aria-label="Путь"><a href="#">Все темы</a><span>›</span><span>${text(Sources.pointLabel(unit.id))}</span></nav><p class="eyebrow">${text(Sources.sectionLabel(unit.id))} · с. ${unit.page}–${unit.endPage}</p><h1>${text(unit.title)}</h1><p class="intro">${fmt(unit.goal)}</p>${unit.prereq?.length?`<p class="unit-rule-link">Пригодится: ${unit.prereq.map(id=>unitMap.get(id)).filter(Boolean).map(u=>`<a href="${unitURL(u)}">${text(u.title)}</a>`).join(' · ')}.</p>`:''}<section class="card rules" aria-label="Коротко о главном">${unit.rules.map(r=>`<article><h2>${text(r.title)}</h2><p>${fmt(r.text)}</p></article>`).join('')}${unit.pitfalls?.length?`<details data-disclosure="pitfalls"><summary>Где легко ошибиться</summary><ul>${unit.pitfalls.map(p=>`<li>${fmt(p)}</li>`).join('')}</ul></details>`:''}</section><aside class="card" data-study-support aria-label="Справка и повторение"></aside><a class="button-link" href="${taskURL(unit,next)}">${progress.total?'Продолжить задания':'Начать с решения по шагам'}</a><div class="task-groups">${['learn','practice','check'].map(role=>`<section class="card"><h2>${roleLabels[role]}</h2><ol>${unit.tasks.filter(t=>t.role===role).map(t=>`<li><a href="${taskURL(unit,t)}">${text(Sources.taskLabel(t))}</a><small>${statusLabels[state.tasks[t.id]?.status] || (role==='learn'?'Один шаг за другим':'Попробуй решить сам')}</small></li>`).join('')}</ol></section>`).join('')}</div>${progress.total?`<p class="status-detail">Выполнено ${progress.total} из ${unit.tasks.length}. Самостоятельно с первого прохождения: ${progress.counts.independent}. По шагам и с помощью: ${progress.counts.learned+progress.counts.assisted}. По памятке: ${progress.counts.manual}. Повторно: ${progress.counts.repeated}.</p>`:''}<p class="muted">После этой подборки попробуй ещё одно задание того же вида в учебнике. Не торопись переходить дальше, если пока нужна помощь.</p><div class="reset"><button type="button" data-action="ask-reset">Начать эту тему заново</button>${resetPending?`<div class="reset-confirm"><p>Очистить только ответы и отметки этой темы в этом браузере?</p><button type="button" data-action="confirm-reset">Да, начать заново</button> <button type="button" data-action="cancel-reset">Отмена</button></div>`:''}</div>`;
@@ -132,11 +183,16 @@
   }
   function itemKey(p) {return p.mode==='guided'?p.step:'final';}
   function activeItem(task,p) {return p.mode==='guided'?task.steps[p.step]:task;}
-  function feedbackHTML(item,p,key) {
+  function feedbackHTML(item,p,key,author=false) {
     const f=p.feedback[String(key)]; if(!f)return '';
     const hintVisible=p.hintKeys.includes(key)&&!p.hiddenHints.includes(key);
     const help=item.hint&&hintVisible?'В подсказке ниже указано, с какого действия начать. Можешь попробовать ещё раз.':item.hint&&(p.wrongCounts[String(key)]||0)>=2?'Хочешь подсказку? Нажми «Подсказка к этому шагу» или попробуй ещё раз.':'Сверь числа с условием и проверь последнее действие. Можно попробовать ещё раз.';
     let message=f.kind==='format'?`Проверь запись ответа. ${M.formats[item.answerType || 'number']}`:f.kind==='manual'?'Проверь каждый пункт памятки и поставь отметку, когда он выполнен.':`Пока не получилось. ${help}`;
+    const operands=Array.isArray(item.lcmInputs)?item.lcmInputs:key==='final'&&item.source?.kind==='author'?item.numbers:null;
+    const raw=key==='final'?p.draft:p.stepDrafts[key],answer=Number(raw),expected=Number(item.answer);
+    if(author&&f.kind==='wrong'&&item.answerType==='integer'&&typeof raw==='string'&&/^\+?\d+$/.test(raw.trim())&&Number.isSafeInteger(answer)&&Number.isSafeInteger(expected)&&answer>expected&&Array.isArray(operands)&&operands.length>=2&&operands.every(number=>Number.isSafeInteger(number)&&number>0&&answer%number===0)){
+      message='Это общее кратное, но есть меньшее. Найди наименьшее.'+((p.wrongCounts[String(key)]||0)>=2?' '+help:'');
+    }
     return `<div class="feedback" role="status">${fmt(message)}</div>`;
   }
   function entryHTML(item,p,key) {
@@ -152,14 +208,33 @@
     p.status=resultStatus(task,p,manual);
   }
   function renderTask(unit,task,focusAnswer=false) {
+    const author=isSupplement(unit);
+    setSupplementView(author);
     const epoch=++renderEpoch,hash=location.hash;
     const p=getProgress(task), isComplete=!!p.status, guided=p.mode==='guided', item=activeItem(task,p), key=itemKey(p), idx=unit.tasks.findIndex(t=>t.id===task.id), next=unit.tasks[idx+1];
     const doneSteps=guided?task.steps.slice(0,p.step):[];
     const live=()=>viewIsCurrent(epoch,hash)&&state.tasks[task.id]===p&&!p.status&&p.mode===(guided?'guided':'independent')&&itemKey(p)===key;
     const hintVisible=p.hintKeys.includes(key)&&!p.hiddenHints.includes(key);
-    main.innerHTML=`<nav class="breadcrumb" aria-label="Путь"><a href="#">Все темы</a><span>›</span><a href="${unitURL(unit)}">${text(unit.title)}</a></nav><p class="eyebrow">${roleLabels[task.role]} · задание ${managed?(managedUnits.find(u=>u.id===unit.id)?.tasks.findIndex(t=>t.id===task.id)??idx)+1:idx+1} из ${managed?(managedUnits.find(u=>u.id===unit.id)?.tasks.length??unit.tasks.length):unit.tasks.length}</p><div class="task-layout"><section class="card condition"><h1>Условие задания</h1>${sourceHTML(task,unit)}<p class="prompt">${fmt(task.prompt)}</p>${visualHTML(task.visual)}<details data-disclosure="rule" ${p.ruleOpen?'open':''}><summary>Вспомнить правило</summary>${unit.rules.map(r=>`<h3>${text(r.title)}</h3><p>${fmt(r.text)}</p>`).join('')}</details><aside data-study-support aria-label="Справка и повторение"></aside></section><section class="card work" aria-label="Решение">${p.repeated?'<p class="pill">Повторное решение знакомого задания</p>':''}${doneSteps.length?`<ol class="step-history">${doneSteps.map((step,i)=>`<li><span class="step-label">Шаг ${i+1} ${p.revealedSteps.includes(i)?'разобран с объяснением':'выполнен'}</span><p>${fmt(step.prompt)}</p><p class="equation">${fmt(step.explain || p.stepDrafts[i] || '')}</p>${step.answerType==='self-check'?'<small>Отмечено по памятке, без автоматической проверки рисунка.</small>':''}</li>`).join('')}</ol>`:''}${isComplete?`<h2>${text(statusLabels[p.status])}</h2>${!guided&&task.answerType!=='self-check'?`<p>Твой ответ: <strong>${fmt(p.draft)}</strong>${task.unit?` ${text(task.unit)}`:''}.</p>`:''}<p class="status-detail">${p.status==='independent'?'Ты справился без подсказки в этом задании.':p.status==='manual'?'Сохранена твоя отметка самопроверки. Правильность рисунка программа не оценивала.':p.status==='repeated'?'Это повтор знакомого задания. Для проверки темы реши ещё одно из учебника.':p.status==='learned'?'Теперь попробуй похожее задание самостоятельно.':'Подсказки помогли выполнить задание. Позже попробуй ещё одно без помощи.'}</p><div class="actions">${next?`<a class="button-link" href="${taskURL(unit,next)}">${next.role!==task.role?roleLabels[next.role]:'Следующее задание'}</a>`:`<a class="button-link" href="${unitURL(unit)}">К итогам темы</a>`}<button type="button" data-action="repeat">Решить ещё раз</button>${task.solution.length&&!p.solution?`<button type="button" data-action="review-solution">${p.reviewedAfter?'Скрыть решение':'Посмотреть решение после ответа'}</button>`:''}</div>`:`<h2>${guided?`Шаг ${p.step+1} из ${task.steps.length}`:task.answerType==='self-check'?'Выполни и проверь построение':'Попробуй решить самостоятельно'}</h2>${guided&&item.answerType==='self-check'?`<p>${fmt(item.prompt)}</p>`:''}<form id="answer-form" novalidate>${entryHTML(item,p,key)}</form>${feedbackHTML(item,p,key)}${hintVisible&&item.hint?`<div class="hint"><strong>Подсказка.</strong> ${fmt(item.hint)}</div>`:''}<div class="help-actions">${item.hint?`<button type="button" data-action="hint">${hintVisible?'Скрыть подсказку':'Подсказка к этому шагу'}</button>`:''}${guided&&item.answerType!=='self-check'?'<button type="button" data-action="reveal-step">Показать этот шаг</button>':''}${!guided&&task.steps.length?'<button type="button" data-action="guide">Разобрать по шагам</button>':''}${p.hintKeys.includes(key)||guided&&p.step>0?'<button type="button" data-action="solution">Посмотреть всё решение</button>':''}</div>${guided&&p.revealedSteps.includes(key)?`<div class="solution"><h3>Разбор этого шага</h3><p>${fmt(item.explain || `Ответ: ${Array.isArray(item.answer)?item.answer[0]:item.answer}`)}</p><button type="button" data-action="continue-step">Понятно, перейти дальше</button></div>`:''}${p.helped?'<p class="status-detail">Это задание выполняется с помощью.</p>':''}`}${p.solution||p.reviewedAfter?`<div class="solution"><h3>Решение для проверки</h3>${p.reviewedAfter?'<p class="status-detail">Ты открыл решение после ответа. Отметка за выполненное задание сохранена.</p>':''}${task.solution.map(line=>`<p>${fmt(line)}</p>`).join('')}</div>`:''}</section></div><div class="actions">${idx>0?`<a class="button-link secondary" href="${taskURL(unit,unit.tasks[idx-1])}">Предыдущее задание</a>`:''}<a href="${unitURL(unit)}">К правилу и списку заданий</a>${!isComplete&&next?`<a href="${taskURL(unit,next)}">Пропустить пока</a>`:''}</div>`;
+    main.innerHTML=`<nav class="breadcrumb" aria-label="Путь"><a href="#">Все темы</a><span>›</span><a href="${unitURL(unit)}">${text(unit.title)}</a></nav><p class="eyebrow">${author?supplementStages[task.stage]:roleLabels[task.role]} · задание ${managed?(managedUnits.find(u=>u.id===unit.id)?.tasks.findIndex(t=>t.id===task.id)??idx)+1:idx+1} из ${managed?(managedUnits.find(u=>u.id===unit.id)?.tasks.length??unit.tasks.length):unit.tasks.length}</p><div class="task-layout"><section class="card condition">${author?`<h1>Найди НОК</h1><p class="prompt">${fmt(task.prompt)}</p>${sourceHTML(task,unit)}`:`<h1>Условие задания</h1>${sourceHTML(task,unit)}<p class="prompt">${fmt(task.prompt)}</p>`}${visualHTML(task.visual)}<details data-disclosure="rule" ${p.ruleOpen?'open':''}><summary>Вспомнить правило</summary>${unit.rules.map(r=>`<h3>${text(r.title)}</h3><p>${fmt(r.text)}</p>`).join('')}</details>${author?'<details class="supplement-support"><summary>Вспомнить простые числа и действия</summary><aside data-study-support aria-label="Справка и повторение"></aside></details>':'<aside data-study-support aria-label="Справка и повторение"></aside>'}</section><section class="card work" aria-label="Решение">${p.repeated?'<p class="pill">Повторное решение знакомого задания</p>':''}${doneSteps.length?`<ol class="step-history">${doneSteps.map((step,i)=>`<li><span class="step-label">Шаг ${i+1} ${p.revealedSteps.includes(i)?'разобран с объяснением':'выполнен'}</span><p>${fmt(step.prompt)}</p><p class="equation">${fmt(step.explain || p.stepDrafts[i] || '')}</p>${step.answerType==='self-check'?'<small>Отмечено по памятке, без автоматической проверки рисунка.</small>':''}</li>`).join('')}</ol>`:''}${isComplete?`<h2>${text(statusLabels[p.status])}</h2>${!guided&&task.answerType!=='self-check'?`<p>Твой ответ: <strong>${fmt(p.draft)}</strong>${task.unit?` ${text(task.unit)}`:''}.</p>`:''}<p class="status-detail">${p.status==='independent'?'Ты справился без подсказки в этом задании.':p.status==='manual'?'Сохранена твоя отметка самопроверки. Правильность рисунка программа не оценивала.':p.status==='repeated'?'Это повтор знакомого задания. Для проверки темы реши ещё одно из учебника.':p.status==='learned'?'Теперь попробуй похожее задание самостоятельно.':'Подсказки помогли выполнить задание. Позже попробуй ещё одно без помощи.'}</p><div class="actions">${next?`<a class="button-link" href="${taskURL(unit,next)}">${next.role!==task.role?roleLabels[next.role]:'Следующее задание'}</a>`:`<a class="button-link" href="${unitURL(unit)}">К итогам темы</a>`}<button type="button" data-action="repeat">Решить ещё раз</button>${task.solution.length&&!p.solution?`<button type="button" data-action="review-solution">${p.reviewedAfter?'Скрыть решение':'Посмотреть решение после ответа'}</button>`:''}</div>`:`<h2>${guided?`Шаг ${p.step+1} из ${task.steps.length}`:task.answerType==='self-check'?'Выполни и проверь построение':'Попробуй решить самостоятельно'}</h2>${guided&&item.answerType==='self-check'?`<p>${fmt(item.prompt)}</p>`:''}<form id="answer-form" novalidate>${entryHTML(item,p,key)}</form>${feedbackHTML(item,p,key,author)}${hintVisible&&item.hint?`<div class="hint"><strong>Подсказка.</strong> ${fmt(item.hint)}</div>`:''}<div class="help-actions">${item.hint?`<button type="button" data-action="hint">${hintVisible?'Скрыть подсказку':'Подсказка к этому шагу'}</button>`:''}${guided&&item.answerType!=='self-check'?'<button type="button" data-action="reveal-step">Показать этот шаг</button>':''}${!guided&&task.steps.length?'<button type="button" data-action="guide">Разобрать по шагам</button>':''}${p.hintKeys.includes(key)||guided&&p.step>0?'<button type="button" data-action="solution">Посмотреть всё решение</button>':''}</div>${guided&&p.revealedSteps.includes(key)?`<div class="solution"><h3>Разбор этого шага</h3><p>${fmt(item.explain || `Ответ: ${Array.isArray(item.answer)?item.answer[0]:item.answer}`)}</p><button type="button" data-action="continue-step">Понятно, перейти дальше</button></div>`:''}${p.helped?'<p class="status-detail">Это задание выполняется с помощью.</p>':''}`}${p.solution||p.reviewedAfter?`<div class="solution"><h3>Решение для проверки</h3>${p.reviewedAfter?'<p class="status-detail">Ты открыл решение после ответа. Отметка за выполненное задание сохранена.</p>':''}${task.solution.map(line=>`<p>${fmt(line)}</p>`).join('')}</div>`:''}</section></div>${alternativeMethodHTML(unit,task)}<div class="actions">${idx>0?`<a class="button-link secondary" href="${taskURL(unit,unit.tasks[idx-1])}">Предыдущее задание</a>`:''}<a href="${unitURL(unit)}">К правилу и списку заданий</a>${!isComplete&&next?`<a href="${taskURL(unit,next)}">Пропустить пока</a>`:''}</div>`;
+    if(author){
+      // Keep the condition and active entry first on small screens. Help remains
+      // available below the work area and still records assistance normally.
+      const reference=document.createElement('section');reference.className='card supplement-task-reference';
+      // The cabinet already names this author task above the frame. Keep its
+      // stage/count available with the reference material without repeating
+      // that heading above the current input on a small managed screen.
+      const position=managed?main.querySelector(':scope > .eyebrow'):null;
+      if(position)reference.append(position);
+      const condition=main.querySelector('.condition');
+      reference.append(condition.querySelector('[data-disclosure="rule"]'),condition.querySelector('.supplement-support'));
+      main.querySelector('.task-layout').after(reference);
+      if(!isComplete){
+        const history=main.querySelector('.step-history');
+        if(history){const heading=document.createElement('h2');heading.className='retained-step-heading';heading.textContent='Уже выполненные шаги';main.querySelector('.work').append(heading,history);}
+      }
+    }
     mountSupport(unit,epoch,hash,task,p);
-    main.querySelector('.source a').addEventListener('click',()=>{if(!viewIsCurrent(epoch,hash))return;if(!p.status){p.helped=true;save();}});
+    main.querySelector('.source a')?.addEventListener('click',()=>{if(!viewIsCurrent(epoch,hash))return;if(!p.status){p.helped=true;save();}});
     const rule=main.querySelector('[data-disclosure="rule"]');
     rule.addEventListener('toggle',()=>{if(!viewIsCurrent(epoch,hash)||isComplete)return;p.ruleOpen=rule.open;if(rule.open){p.helped=true;}save();});
     main.querySelector('[data-action="repeat"]')?.addEventListener('click',()=>{if(!viewIsCurrent(epoch,hash)||state.tasks[task.id]!==p||!p.status)return;if(managed){save('new-task');return;}const old=p;delete state.tasks[task.id];const fresh=getProgress(task);fresh.repeated=true;fresh.attempts=old.attempts;save();renderTask(unit,task,true);});
@@ -196,17 +271,25 @@
     main.querySelector('[data-action="continue-step"]')?.addEventListener('click',()=>{if(!live()||!p.revealedSteps.includes(key))return;p.step++;if(p.step>=task.steps.length)complete(task,p,task.answerType==='self-check');save('check',{scope:'guided'});renderTask(unit,task,true);});
     main.querySelector('[data-action="guide"]')?.addEventListener('click',()=>{if(!live())return;p.mode='guided';p.helped=true;save();renderTask(unit,task,true);});
     main.querySelector('[data-action="solution"]')?.addEventListener('click',()=>{if(!live())return;p.solution=true;p.helped=true;save();renderTask(unit,task);});
-    if(focusAnswer)main.querySelector('#answer')?.focus({preventScroll:true});
+    if(focusAnswer){
+      input?.focus({preventScroll:true});
+      // A new author step can be longer than the previous one. Reveal the
+      // whole current form, including its question and check button, inside
+      // this document; the cabinet also reveals the owning frame on checks.
+      if(author)answerForm.scrollIntoView?.({block:'center',inline:'nearest'});
+    }
   }
   function renderProgress() {
+    setSupplementView(false);
     const epoch=++renderEpoch,hash=location.hash;
     const practiced=units.filter(u=>progressSummary(u).total>0);
-    main.innerHTML=`<nav class="breadcrumb" aria-label="Путь"><a href="#">Все темы</a></nav><h1>Моя работа</h1><p class="intro">Здесь видны выполненные задания. Отдельно отмечены решения с помощью, самопроверка рисунков и повторные решения знакомых примеров. Эти отметки не заменяют проверку понимания всей темы.</p>${practiced.length?practiced.map(u=>`<section class="card rules"><h2><a href="${unitURL(u)}">${text(u.title)}</a></h2><ul>${u.tasks.filter(t=>state.tasks[t.id]?.status).map(t=>`<li><a href="${taskURL(u,t)}">${t.source.number?`№ ${text(t.source.number)}`:text(t.source.kind==='question'?'Вопрос из учебника':t.source.kind==='check'?'Проверочная работа из учебника':'Пример из учебника')}${t.source.part?` · ${text(t.source.part)}`:''}</a> — ${text(statusLabels[state.tasks[t.id].status])}</li>`).join('')}</ul></section>`).join(''):'<p>Пока нет выполненных заданий. Начни с нужной темы — ответы сохранятся в этом браузере.</p>'}<a class="button-link" href="#">Выбрать тему</a>`;
+    main.innerHTML=`<nav class="breadcrumb" aria-label="Путь"><a href="#">Все темы</a></nav><h1>Моя работа</h1><p class="intro">Здесь видны выполненные задания. Отдельно отмечены решения с помощью, самопроверка рисунков и повторные решения знакомых примеров. Эти отметки не заменяют проверку понимания всей темы.</p>${practiced.length?practiced.map(u=>`<section class="card rules"><h2><a href="${unitURL(u)}">${text(u.title)}</a></h2><ul>${u.tasks.filter(t=>state.tasks[t.id]?.status).map(t=>`<li><a href="${taskURL(u,t)}">${t.source.kind==='author'?text(Sources.taskLabel(t)):t.source.number?`№ ${text(t.source.number)}`:text(t.source.kind==='question'?'Вопрос из учебника':t.source.kind==='check'?'Проверочная работа из учебника':'Пример из учебника')}${t.source.part?` · ${text(t.source.part)}`:''}</a> — ${text(statusLabels[state.tasks[t.id].status])}</li>`).join('')}</ul></section>`).join(''):'<p>Пока нет выполненных заданий. Начни с нужной темы — ответы сохранятся в этом браузере.</p>'}<a class="button-link" href="#">Выбрать тему</a>`;
     guardLinks(epoch,hash);
   }
   function renderBook() {
+    setSupplementView(false);
     const epoch=++renderEpoch,hash=location.hash;
-    main.innerHTML=`<nav class="breadcrumb" aria-label="Путь"><a href="#">Все темы</a></nav><h1>Учебник, часть 1</h1><p class="intro">Н. Я. Виленкин и соавторы. «Математика. 6 класс», часть 1, 2024 год. В заданиях курса указан номер упражнения и печатная страница этого издания.</p><a class="button-link" href="textbook.pdf" target="_blank" rel="noopener">Открыть учебник</a><div class="topic-grid">${units.map(u=>`<a class="topic-card" href="textbook.pdf#page=${u.page+1}" target="_blank" rel="noopener"><strong>${text(u.title)}</strong><small>С. ${u.page}–${u.endPage}</small></a>`).join('')}</div>`;
+    main.innerHTML=`<nav class="breadcrumb" aria-label="Путь"><a href="#">Все темы</a></nav><h1>Учебник, часть 1</h1><p class="intro">Н. Я. Виленкин и соавторы. «Математика. 6 класс», часть 1, 2024 год. В заданиях курса указан номер упражнения и печатная страница этого издания.</p><a class="button-link" href="textbook.pdf" target="_blank" rel="noopener">Открыть учебник</a><div class="topic-grid">${bookUnits().map(u=>`<a class="topic-card" href="textbook.pdf#page=${u.page+1}" target="_blank" rel="noopener"><strong>${text(u.title)}</strong><small>С. ${u.page}–${u.endPage}</small></a>`).join('')}</div>`;
     guardLinks(epoch,hash);
   }
   function managedRoute(){return managedSpec?`#unit/${managedSpec.unitId}/task/${encodeURIComponent(managedSpec.contentId)}`:'';}
@@ -220,13 +303,14 @@
   function managedAccess(value){
     managedReadonly=!!value;main.inert=managedReadonly||!managedReady;
     document.body.dataset.managedReadonly=String(managedReadonly);
+    main.querySelectorAll('[data-managed-course-catalog]').forEach(link=>link.setAttribute('aria-disabled',String(managedReadonly||!managedReady)));
   }
   function initManaged(){
     document.body.classList.add('managed');
-    main.innerHTML='<h1>Задание из учебника</h1><p role="status">Открываем сохранённую работу из кабинета…</p>';
+    main.innerHTML='<h1>Задание курса</h1><p role="status">Открываем сохранённую работу из кабинета…</p>';
     document.querySelector('.site-header nav')?.replaceChildren();
     const brand=document.querySelector('.site-header .brand');if(brand)brand.removeAttribute('href');
-    const note=document.createElement('p');note.className='managed-course-note';note.textContent='Ответы, шаги и подсказки сохраняются в этой работе. Другую задачу выбирай в маршруте кабинета.';main.before(note);
+    const note=document.createElement('p');note.className='managed-course-note';note.textContent='Работа сохраняется в кабинете. Вернуться к каталогу можно по ссылке «Все темы курса» над заданием.';main.before(note);
     announceStorage(true);managedAccess(true);
     if(!window.MathExamLearning?.enabled||!window.VilenkinTextbookLearning?.createFactory){
       main.innerHTML='<h1>Открой задание из кабинета</h1><p>Связь с кабинетом не установлена. Сохранённые работы остаются на сервере.</p>';return;
@@ -280,10 +364,18 @@
   }
   async function start() {
     try{
-      const files=['A','B','C','D'];
-      const groups=await Promise.all(files.map(async name=>{const r=await fetch(`textbook-data/units-${name}.json`,{cache:'no-cache'});if(!r.ok)throw new Error('load');return r.json();}));
-      units=groups.flat().sort((a,b)=>a.id-b.id);
-      if(units.length!==24||units.some((u,i)=>u.id!==i||!Array.isArray(u.tasks)||!u.tasks.length||!Array.isArray(u.rules)))throw new Error('data');
+      const files=['A','B','C','D'].map(name=>`textbook-data/units-${name}.json`).concat('textbook-data/supplement-lcm-multi.json');
+      const groups=await Promise.all(files.map(async name=>{const r=await fetch(name,{cache:'no-cache'});if(!r.ok)throw new Error('load');return r.json();}));
+      const originals=groups.slice(0,4).flat().sort((a,b)=>a.id-b.id);
+      if(originals.length!==24||originals.some((u,i)=>u.id!==i||!Array.isArray(u.tasks)||!u.tasks.length||!Array.isArray(u.rules)))throw new Error('data');
+      // Authored practice is validated separately; it never becomes a textbook
+      // point or weakens the original 24-unit/source-number contract.
+      const supplements=groups[4],supplement=Array.isArray(supplements)&&supplements[0];
+      if(!Array.isArray(supplements)||supplements.length!==1||!isSupplement(supplement)||supplement.relatedPoint!==8||!Array.isArray(supplement.rules)||!supplement.rules.length||!Array.isArray(supplement.pitfalls)||!Array.isArray(supplement.tasks)||supplement.tasks.length!==44)throw new Error('supplement');
+      for(const task of supplement.tasks){
+        if(!/^v6-author-lcm-(example|practice|check)-[0-9]{2}-(chain|factors)$/.test(task.id)||task.source?.kind!=='author'||typeof task.source.label!=='string'||!task.source.label.trim()||task.source.relatedPoint!==8||Object.hasOwn(task.source,'number')||Object.hasOwn(task.source,'page')||!Object.hasOwn(supplementStages,task.stage)||!Object.hasOwn(methodLabels,task.method)||task.role!==(task.stage==='check'?'check':'learn')||typeof task.groupId!=='string'||!Array.isArray(task.numbers)||task.numbers.length<3||task.numbers.length>5||task.numbers.some(number=>!Number.isSafeInteger(number)||number<1))throw new Error('author task');
+      }
+      units=originals.concat(supplements);
       units.forEach(u=>{unitMap.set(u.id,u);u.tasks.forEach(t=>{if(taskMap.has(t.id)||!t.source||!Array.isArray(t.steps)||!t.steps.length||!Array.isArray(t.solution))throw new Error('task');taskMap.set(t.id,t);});});
       if(managed)initManaged();else{loadState();route();}window.addEventListener('hashchange',route);
       window.VilenkinTextbook={key:KEY,units,math:M,ready:true};

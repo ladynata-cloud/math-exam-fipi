@@ -11,8 +11,8 @@ const start = path.resolve(__dirname, '../ege-profil/start');
 function fixture() {
   const dom = new JSDOM('<main id="model"></main>', { runScripts: 'outside-only' });
   const w = dom.window;
-  for (const name of ['geometry-data', 'stereo-data', 'probability-data', 'equations-data', 'functions-data', 'applied-data',
-    'planimetry-tasks', 'vector-tasks', 'stereo-tasks', 'probability-tasks', 'equations-tasks', 'functions-tasks', 'applied-tasks']) {
+  for (const name of ['geometry-data', 'stereo-data', 'probability-data', 'equations-data', 'functions-data', 'applied-data', 'finance-data',
+    'planimetry-tasks', 'vector-tasks', 'stereo-tasks', 'probability-tasks', 'equations-tasks', 'functions-tasks', 'applied-tasks', 'finance-tasks']) {
     w.eval(fs.readFileSync(path.join(start, name + '.js'), 'utf8'));
   }
   const container = w.document.getElementById('model');

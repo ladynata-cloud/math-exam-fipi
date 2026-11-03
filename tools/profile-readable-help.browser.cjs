@@ -10,7 +10,7 @@ const { chromium } = require('playwright');
 const ROOT = path.resolve(__dirname, '..');
 const KEY = 'mathexam.profileStart2027.v1';
 const PREFS = 'mathexam.profileCalmPreferences.v1';
-const lessons = ['geometry', 'stereo', 'algebra', 'probability', 'equations', 'functions', 'applied', 'readiness']
+const lessons = ['geometry', 'stereo', 'algebra', 'probability', 'equations', 'functions', 'applied', 'finance', 'readiness']
   .flatMap(name => require('../ege-profil/start/' + name + '-data.js'));
 const itemFor = (lessonId, taskId, mode = 'independent') => {
   const lesson = lessons.find(item => item.id === lessonId);

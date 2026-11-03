@@ -2,13 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { parseQuestion } from '../src/privacy.js';
-import { buildMessages, getBuiltinKnowledge, listTopics } from '../src/tutor.js';
+import { buildMessages, getBuiltinKnowledge, listProviderTopics } from '../src/tutor.js';
 
 const corpus = JSON.parse(readFileSync(new URL('../evaluation/pilot-cases.json', import.meta.url), 'utf8'));
 const modelCases = corpus.cases.filter(item => item.phase === 'model');
 const preflightCases = corpus.cases.filter(item => item.phase === 'preflight');
 const byId = new Map(corpus.cases.map(item => [item.id, item]));
-const topics = listTopics().map(topic => topic.id);
+const topics = listProviderTopics().map(topic => topic.id);
 const requestId = '00000000-0000-4000-8000-000000000001';
 const inputForApi = item => {
   const { simpler, ...input } = item.input;

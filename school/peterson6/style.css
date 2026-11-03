@@ -3,3 +3,5 @@
 .hero>*{min-width:0}.table-scroll{overflow-x:auto}.progress-table{min-width:480px}@media(max-width:620px){.hero{grid-template-columns:minmax(0,1fr)}.hero h1{font-size:clamp(1.65rem,8.5vw,2.5rem);overflow-wrap:anywhere}.hero-art .equation{font-size:clamp(1.6rem,7vw,2rem)}}
 
 .lesson-layout>*{min-width:0}.side button,.lesson-title{overflow-wrap:anywhere}@media(max-width:620px){.lesson-title{font-size:clamp(1.65rem,7.7vw,1.9rem)}}
+
+.method-notice,.earlier-work{margin:0 0 20px;padding:16px;border:1px solid var(--line);border-radius:14px;background:#f2f7f1}.method-notice p{margin-top:0}.earlier-work summary,.legacy-summary summary{cursor:pointer;font-weight:650}.earlier-work section{border-top:1px solid var(--line);margin-top:16px;padding-top:12px}.earlier-work li{margin:12px 0}.step .choices{margin:14px 0}.step .choices button{white-space:normal;overflow-wrap:anywhere}.legacy-summary li{margin:8px 0}.step .fra{font-size:1em}

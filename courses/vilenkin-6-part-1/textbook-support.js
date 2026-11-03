@@ -96,6 +96,23 @@
       element.addEventListener(event, callback);
       listeners.push(() => element.removeEventListener(event, callback));
     }
+    // A prerequisite practice entry beside the current answer controls. The
+    // separate, existing trainer keeps its own example; this never changes the
+    // fractions, fills an answer, or claims completion of the current task.
+    let contextualPractice = null;
+    const actionsHost = options.actionsHost;
+    if (options.answerType === 'fixed-denominator-pair' &&
+        actionsHost?.ownerDocument === host.ownerDocument && actionsHost.isConnected) {
+      contextualPractice = host.ownerDocument.createElement('aside');
+      contextualPractice.className = 'v6-context-practice';
+      contextualPractice.setAttribute('aria-label', 'Повторить поиск НОК');
+      contextualPractice.innerHTML = '<a class="button-link secondary" data-v6-practice="lcm" href="https://mathexam.space/trainers/grade6-nok.html?task=nt-1-5" target="_blank" rel="noopener noreferrer">Потренировать поиск НОК по шагам ↗</a><p>На отдельном примере. Затем вернись к этим дробям.</p>';
+      actionsHost.append(contextualPractice);
+      on(contextualPractice.querySelector('a'), 'click', event => {
+        if (!current()) { event.preventDefault(); return; }
+        report('practice-link');
+      });
+    }
     host.querySelectorAll('[data-v6-support]').forEach(details => {
       on(details, 'toggle', () => { if (details.open) report(details.dataset.v6Support); });
     });
@@ -115,7 +132,7 @@
         report('practice-link');
       });
     });
-    return () => { alive = false; listeners.forEach(remove => remove()); };
+    return () => { alive = false; listeners.forEach(remove => remove()); contextualPractice?.remove(); };
   }
   return Object.freeze({mount, primesUpTo, isPrime, recommendation, resources});
 });

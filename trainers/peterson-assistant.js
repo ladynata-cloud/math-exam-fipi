@@ -13,7 +13,7 @@
     };
     function mathText(host, value) {
       const text = String(value || '');
-      const token = /\{\{(frac|mix):([−\-\d]+):([−\-\d]+)(?::([\d]+))?\}\}/g;
+      const token = /\{\{(frac|mix):([^{}:\n]+):([^{}:\n]+)(?::([\d]+))?\}\}/g;
       let start = 0, match;
       while ((match = token.exec(text))) {
         host.append(doc.createTextNode(text.slice(start, match.index)));

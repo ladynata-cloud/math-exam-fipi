@@ -3,7 +3,7 @@
 (function(root, factory) {
   'use strict';
   if(typeof module==='object'&&module.exports) {
-    const units=['A','B','C','D'].flatMap(part=>require('./textbook-data/units-'+part+'.json'));
+    const units=[...['A','B','C','D'].flatMap(part=>require('./textbook-data/units-'+part+'.json')),...require('./textbook-data/supplement-lcm-multi.json')];
     module.exports=factory(units,require('./textbook-math'),require('../../learning/vilenkin6-textbook-catalog'));
   } else root.VilenkinTextbookLearning=Object.freeze({createFactory:factory});
 })(typeof globalThis==='undefined'?this:globalThis,function(units,math,manifest) {

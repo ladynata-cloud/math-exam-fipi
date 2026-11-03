@@ -30,6 +30,7 @@ jobs:
           python3 tools/geometry/check_textbook_preparation.py
           python3 tools/geometry-textbook/build_course.py --check
           python3 tools/geometry-textbook/review_scope_test.py
+          python3 tools/geometry-textbook/layout-amendment.test.py
           python3 tools/geometry-textbook/chapter05-preservation.test.py
           python3 tools/geometry-textbook/check_models.py
           python3 tools/geometry-textbook/model_claims_test.py
@@ -66,6 +67,10 @@ jobs:
           node-version: '22'
       - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1
       - run: npx playwright install --with-deps chromium
+      - name: First viewport, all1247 cards, four screens and before-after evidence
+        env:
+          GEOMETRY_VIEWPORT_ARTIFACTS: artifacts/geometry-textbook/first-viewport
+        run: node tools/geometry-textbook/first-viewport.browser.cjs
       - name: All source-audited cards, every drawing, mobile and desktop, actual saved work
         env:
           GEOMETRY_TEXTBOOK_ARTIFACTS: artifacts/geometry-textbook

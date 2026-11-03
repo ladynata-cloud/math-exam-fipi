@@ -9,10 +9,12 @@ const root = path.resolve(__dirname, '../..');
 const dir = path.join(root, 'stereo-course/textbook/lessons');
 const baseline = require('./cone-baseline.cjs');
 const {ids, published, sha} = baseline;
-const sourceIndex = require(root + '/stereo-course/textbook/source-index.json');
-const production = require(root + '/stereo-course/textbook/data/course.json');
-const registry = require('./content-review.json');
-const screenshots = require('./browser-cases.cjs');
+const later = require('./sphere-baseline.cjs');
+const currentIndex = require(root + '/stereo-course/textbook/source-index.json');
+const sourceIndex = later.previousIndex(currentIndex);
+const production = later.previousCourse(require(root + '/stereo-course/textbook/data/course.json'), currentIndex);
+const registry = later.previousRegistry(require('./content-review.json'));
+const screenshots = later.previousCases(require('./browser-cases.cjs'));
 const API = require(root + '/stereo-course/textbook/assets/engine.js');
 const reportPath = 'docs/reviews/ATANASYAN_CONE_CONTENT.json';
 const report = JSON.parse(fs.readFileSync(path.join(root, reportPath), 'utf8'));
@@ -56,7 +58,7 @@ const CHECKPOINT = {
 const previous = baseline.previousCourse(production, sourceIndex);
 const oldRegistry = baseline.previousRegistry(registry);
 baseline.previousCases(screenshots);
-const rawPrevious = fs.readdirSync(dir).filter(name => name.endsWith('.json') && !ids.has(name.slice(0, -5)))
+const rawPrevious = later.previousLessonFiles(dir).filter(name => name.endsWith('.json') && !ids.has(name.slice(0, -5)))
   .sort().map(name => [name, hash(fs.readFileSync(path.join(dir, name)))]);
 assert.equal(rawPrevious.length, 554);
 assert.equal(sha(rawPrevious), published.rawLessonManifestSHA256, 'all 554 prior authored files byte-identical');
@@ -66,9 +68,12 @@ assert.equal(sha(oldRegistry.batches), published.reviewBatchesSHA256, 'all 28 pr
 // visibility assets already reviewed and published in PR376. All other
 // runtime/schema/builder bytes remain frozen by this content-only release.
 const visibilityMigration = require('./visibility-migration.cjs');
+const sphereSchemaMigration = require('./sphere-schema-migration.cjs');
 for (const [file, expectedHash] of Object.entries(published.immutableFiles)) {
   if (Object.hasOwn(visibilityMigration.originals, file))
     visibilityMigration.assertVisibilityMigration(file, expectedHash);
+  else if (Object.hasOwn(sphereSchemaMigration.originals, file))
+    sphereSchemaMigration.assertSphereSchemaMigration(file, expectedHash);
   else
     assert.equal(hash(fs.readFileSync(path.join(root, file))), expectedHash, 'unchanged released runtime/schema/builder: ' + file);
 }

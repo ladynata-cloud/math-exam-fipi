@@ -1,5 +1,9 @@
 # Student onboarding and course assignment
 
+## Current continuation — 2026-11-03
+
+Owner continued this approved work with cloud execution after PR421–423. The active [standing release policy](../OWNER_RELEASE_AUTHORIZATION.md) supersedes the older generic per-PR publication and external-review holds recorded below. Candidate integration base: `d74b8d599a5031a0620679a76dd08151fa171661`; historical head: `5ea0809168e63ae021995a5d5e34696508e919e7`. Product scope, HIGH technical checks, preserved pupil records and coordinated frontend/backend release remain binding. Current evidence is recorded in [the continuation report](../reports/student-onboarding-20261101/continuation-20261103.md) and PR394.
+
 ## Identity
 
 - Task: `STUDENT_ONBOARDING_COURSES`

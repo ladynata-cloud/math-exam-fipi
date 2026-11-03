@@ -4,6 +4,7 @@ import { prepareRequest, callProvider } from './provider.js';
 import { pricesFresh } from './config.js';
 import { prepareCabinetQuestion, answerCabinetOffline, buildCabinetMessages, listCabinetProfiles } from './cabinet-topics.js';
 import { COURSE_PROFILE } from './course-context.js';
+import { prepareDialogue, dialogueMessageBuilder } from './dialogue.js';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const SUBJECT = /^[a-f0-9]{64}$/;
@@ -15,10 +16,10 @@ const FALLBACK_CODES = new Set(['PROVIDER_DISABLED', 'BUDGET_EXHAUSTED', 'API_RA
 // higher-priced provider is ever selected here.
 export async function executeAssistantAnswer({ store, config, clock, fetchImpl, active, res,
   session, input, cards, offline, externalAllowed = true, externalConsent = input.externalConsent,
-  permanentRequestId = null, messageBuilder }) {
+  permanentRequestId = null, messageBuilder, followUp = false }) {
   let answer = offline, notice, usage, reservation;
   const reservationArgs = { sessionHash: session.hash, requestId: input.requestId, permanentRequestId };
-  const eligible = externalAllowed && config.mode === 'api' && externalConsent && offline.verification !== 'deterministic';
+  const eligible = externalAllowed && config.mode === 'api' && externalConsent && (followUp || offline.verification !== 'deterministic');
   if (eligible) {
     let prepared;
     try {
@@ -63,13 +64,19 @@ function authorize(req, config) {
 }
 
 function prepare(body, config) {
-  requireValue(exactKeys(body, [...ASK_KEYS, 'courseContext', 'courseRevision']) && ASK_KEYS.every(key => Object.hasOwn(body, key)), 'CABINET_REQUEST_INVALID');
+  requireValue(exactKeys(body, [...ASK_KEYS, 'courseContext', 'courseRevision', 'dialogue']) && ASK_KEYS.every(key => Object.hasOwn(body, key)), 'CABINET_REQUEST_INVALID');
   requireValue(Object.hasOwn(body, 'courseContext') === Object.hasOwn(body, 'courseRevision'), 'CABINET_REQUEST_INVALID');
   requireValue(typeof body.subject === 'string' && SUBJECT.test(body.subject), 'CABINET_SUBJECT_INVALID');
   requireValue(typeof body.requestId === 'string' && UUID.test(body.requestId), 'REQUEST_ID_INVALID');
   requireValue(typeof body.externalConsent === 'boolean' && typeof body.simpler === 'boolean', 'CABINET_REQUEST_INVALID');
   requireValue(body.profileId !== COURSE_PROFILE || body.externalConsent === false, 'CABINET_COURSE_SOURCE_ONLY', 409);
   const credentials = [config.cabinetBridgeKey, config.apiKey, config.pilotKey].filter(value => typeof value === 'string' && value.length >= 16);
+  let dialogue;
+  if (Object.hasOwn(body, 'dialogue')) {
+    requireValue(body.profileId !== COURSE_PROFILE && !Object.hasOwn(body, 'courseContext'), 'CABINET_COURSE_SOURCE_ONLY', 409);
+    requireValue(body.externalConsent && config.mode === 'api' && config.cabinetExternalEnabled === true, 'CABINET_DIALOGUE_DISABLED', 409);
+    dialogue = prepareDialogue(body.dialogue, credentials);
+  }
   requireValue(!credentials.some(value => [body.question, body.attempt].some(text => typeof text === 'string' && text.includes(value))), 'PERSONAL_DATA_REJECTED');
   const { input, cards } = prepareCabinetQuestion({
     profileId: body.profileId, topic: body.topic, question: body.question, attempt: body.attempt,
@@ -78,7 +85,7 @@ function prepare(body, config) {
   });
   // Neither subject nor the bridge's authentication material enters input,
   // source cards or a provider payload.
-  return { subject: body.subject, input: { ...input, requestId: body.requestId }, cards, externalConsent: body.externalConsent };
+  return { subject: body.subject, input: { ...input, requestId: body.requestId }, cards, externalConsent: body.externalConsent, dialogue };
 }
 
 export function createCabinetBridge({ config, store, clock, fetchImpl, active, readBody, send }) {
@@ -103,7 +110,7 @@ export function createCabinetBridge({ config, store, clock, fetchImpl, active, r
       store.feedback(session.hash, body.answerId, body.rating === 'simpler' ? 'unclear' : body.rating);
       send(res, 200, { ok: true }); return true;
     }
-    const { subject, input, cards, externalConsent } = prepare(body, config);
+    const { subject, input, cards, externalConsent, dialogue } = prepare(body, config);
     const session = store.cabinetSession(subject, true);
     input.simpler ||= !!session.simpler;
     const offline = answerCabinetOffline(input, cards);
@@ -112,7 +119,11 @@ export function createCabinetBridge({ config, store, clock, fetchImpl, active, r
       externalAllowed: config.cabinetExternalEnabled === true && input.profileId !== COURSE_PROFILE,
       // UUIDs are globally unique operations. Changing a profile, pseudonym or
       // bridge/session secret must not make the same operation spend again.
-      permanentRequestId: hash(`cabinet-request:${input.requestId.toLowerCase()}`), messageBuilder: buildCabinetMessages });
+      permanentRequestId: hash(`cabinet-request:${input.requestId.toLowerCase()}`),
+      messageBuilder: dialogue ? dialogueMessageBuilder(dialogue) : buildCabinetMessages, followUp: !!dialogue });
+    if (dialogue && result.answer.verification !== 'model-unverified') {
+      result.notice = 'На уточняющий вопрос сейчас не удалось ответить. Ниже показаны материалы к исходной задаче. Повторного платного запроса не было.';
+    }
     if (input.profileId === COURSE_PROFILE) {
       result.notice = 'Подсказка взята из проверенного разбора курса. Внешняя модель не вызывается; доказательство проверяет преподаватель.';
     } else if (result.answer.verification !== 'model-unverified' && !result.notice && !config.cabinetExternalEnabled) {

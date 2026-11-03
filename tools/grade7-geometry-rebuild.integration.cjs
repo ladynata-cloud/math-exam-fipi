@@ -33,8 +33,16 @@ assert.equal(catalog.items.filter(item=>originalTrainers.has(item.trainerId)&&!i
 const manualItems=catalog.items.filter(item=>item.trainerId==='atanasyan-7-9');
 assert.deepEqual(manualItems.map(item=>item.id),['atanasyan-7-9:atanasyan-7-9-main-92-part-1'],'The fixed manual exercise is separate from the original trainer identities');
 const textbookIds=new Set(['A','B','C','D'].flatMap(block=>JSON.parse(read('courses/vilenkin-6-part-1/textbook-data/units-'+block+'.json')).flatMap(unit=>unit.tasks.map(task=>'vilenkin6-textbook:'+task.id))));
-assert.deepEqual(catalog.items.filter(item=>item.trainerId==='vilenkin6-textbook').map(item=>item.id).sort(),[...textbookIds].sort(),'Every revised Vilenkin source task belongs to its distinct group exactly once');
-assert.equal(catalog.items.length,217+items.length+addedDivisionIds.size+addedMultiplicationIds.size+addedVilenkin6Ids.size+manualItems.length+textbookIds.size,'Every catalog entry belongs to an explicitly checked group');
+assert.equal(textbookIds.size,194,'The original reviewed textbook selection is unchanged');
+assert.deepEqual(catalog.items.filter(item=>item.trainerId==='vilenkin6-textbook'&&item.source?.kind!=='author').map(item=>item.id).sort(),[...textbookIds].sort(),'Every revised Vilenkin source task belongs to its distinct group exactly once');
+const authorUnits=JSON.parse(read('courses/vilenkin-6-part-1/textbook-data/supplement-lcm-multi.json'));
+assert.equal(authorUnits.length,1);assert.equal(authorUnits[0].id,1008);assert.equal(authorUnits[0].kind,'author-supplement');assert.equal(authorUnits[0].tasks.length,44);
+const authorTextbookIds=new Set(authorUnits[0].tasks.map(task=>'vilenkin6-textbook:'+task.id));
+assert.equal(authorTextbookIds.size,44);assert([...authorTextbookIds].every(id=>!textbookIds.has(id)),'Authored additions cannot replace a source identity');
+const authorTextbookItems=catalog.items.filter(item=>item.trainerId==='vilenkin6-textbook'&&item.source?.kind==='author');
+assert.deepEqual(authorTextbookItems.map(item=>item.id).sort(),[...authorTextbookIds].sort(),'Every authored LCM card belongs to its separate group exactly once');
+assert(authorTextbookItems.every(item=>item.unitKind==='author-supplement'&&item.unitId===1008&&item.relatedPoint===8&&item.page===null&&item.pointId===null),'Author cards do not claim a textbook page or point identity');
+assert.equal(catalog.items.length,217+items.length+addedDivisionIds.size+addedMultiplicationIds.size+addedVilenkin6Ids.size+manualItems.length+textbookIds.size+authorTextbookIds.size,'Every catalog entry belongs to an explicitly checked group');
 for(const meta of families){
  const item=catalog.get('path:'+meta.id);assert(item);assert(item.grade7&&item.trainingOnly&&item.geometryRebuild);
  assert.equal(item.trainerId,'ege-path');assert.equal(item.contentVersion,1);assert.equal(item.position,null);assert.equal(item.topicId,'plane');

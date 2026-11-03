@@ -8,7 +8,7 @@ const path = require('node:path');
 const { chromium } = require('playwright');
 const ROOT = path.resolve(__dirname, '..');
 const KEY = 'mathexam.profileStart2027.v1';
-const lessons = ['geometry', 'algebra', 'stereo', 'probability', 'equations', 'functions', 'applied', 'readiness']
+const lessons = ['geometry', 'algebra', 'stereo', 'probability', 'equations', 'functions', 'applied', 'finance', 'readiness']
   .flatMap(name => require('../ege-profil/start/' + name + '-data.js'));
 const byId = new Map(lessons.map(lesson => [lesson.id, lesson]));
 const { exams } = require('../ege-profil/start/calm-data.js');
