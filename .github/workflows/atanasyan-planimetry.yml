@@ -206,6 +206,39 @@ jobs:
           retention-days: 7
           if-no-files-found: error
 
+  chapter-ix-drawing-diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+      - run: npx playwright install --with-deps chromium
+      - name: Build the same isolated IX candidate for early drawing feedback
+        run: python3 tools/geometry-textbook/build_candidate.py --chapter 9 --output "$RUNNER_TEMP/chapter09-drawing-diagnostic"
+      - name: Every IX drawing at both widths; diagnostic only
+        env:
+          GEOMETRY_TEXTBOOK_ROOT: ${{ runner.temp }}/chapter09-drawing-diagnostic
+          GEOMETRY_TEXTBOOK_ARTIFACTS: artifacts/chapter09-drawing-diagnostic
+          GEOMETRY_TEXTBOOK_CAPTURE_CHAPTERS: IX
+          GEOMETRY_TEXTBOOK_FOCUS_SECTION: IX
+          GEOMETRY_TEXTBOOK_VIEWS_ONLY: '1'
+          GEOMETRY_TEXTBOOK_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: node tools/geometry-textbook/browser_check.js
+      - name: Preserve diagnostic images; the complete course gate remains separate
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: atanasyan-chapter09-drawing-diagnostic
+          path: artifacts/chapter09-drawing-diagnostic/
+          retention-days: 7
+          if-no-files-found: error
+
   chapter-ix-candidate:
     needs: source-and-models
     runs-on: ubuntu-latest

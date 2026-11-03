@@ -244,6 +244,15 @@ put(794,'single','Докажите: если в четырёхугольник �
  row('Сравни расстояния до сторон одного угла.','Пусть O — центр вписанной окружности. Его расстояния до двух сторон угла A равны радиусу r, поскольку радиусы к точкам касания перпендикулярны сторонам.','Свойство касательной и радиуса.',76),
  row('Что это означает для точки O?','O лежит внутри угла A и равноудалён от его сторон, поэтому находится на внутренней биссектрисе этого угла.','Геометрическое место точек внутри угла, равноудалённых от его сторон.',39),
  row('Повтори рассуждение у остальных вершин.','Те же радиусы дают равенство расстояний от O до сторон углов B, C и D. Значит O лежит на всех четырёх биссектрисах и является их общей точкой пересечения.','Применение одного свойства к каждому углу четырёхугольника.',[39,82])],p,v,[w,z,z],checks=tangent_checks(p,'ABCD'))
+# Step 3 actively switches to the alternative configuration it explains.
+for item in B.models:
+ if item['number'] in (769,772):
+  for step in (3,4):
+   view=deepcopy(item['model']['views']['case-1']);view.pop('availableFromStep',None);view['label']=f'Шаг {step}'
+   item['model']['views'][f'step-{step}']=view
+ if item['number']==793:
+  item['model']['bounds']=[9,0,91,82]
+  item['model']['labelOffsets'].update(H=[6,-1],N=[0,-5],M=[-4,3],A=[-3,-3])
 # Preserve the source page orientation: the viewer uses mathematical +y upward,
 # whereas the shared normalizer writes screen-oriented y coordinates.
 for item in B.models:

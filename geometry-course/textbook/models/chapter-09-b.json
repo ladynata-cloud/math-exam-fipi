@@ -2229,50 +2229,48 @@
           "step-3": {
             "label": "Шаг 3",
             "points": [
-              "A",
-              "B",
-              "C",
-              "O"
+              "A__case1",
+              "B__case1",
+              "C__case1"
             ],
             "segments": [
               [
-                "A",
-                "B"
+                "A__case1",
+                "B__case1"
               ],
               [
-                "A",
-                "C"
+                "A__case1",
+                "C__case1"
               ]
             ],
             "circles": [
               {
-                "center": "O",
-                "through": "A"
+                "center": "O__case1",
+                "through": "A__case1"
               }
             ]
           },
           "step-4": {
             "label": "Шаг 4",
             "points": [
-              "A",
-              "B",
-              "C",
-              "O"
+              "A__case1",
+              "B__case1",
+              "C__case1"
             ],
             "segments": [
               [
-                "A",
-                "B"
+                "A__case1",
+                "B__case1"
               ],
               [
-                "A",
-                "C"
+                "A__case1",
+                "C__case1"
               ]
             ],
             "circles": [
               {
-                "center": "O",
-                "through": "A"
+                "center": "O__case1",
+                "through": "A__case1"
               }
             ]
           },
@@ -3335,39 +3333,39 @@
           "step-3": {
             "label": "Шаг 3",
             "points": [
-              "A",
-              "B",
-              "C"
+              "A__case1",
+              "B__case1",
+              "C__case1"
             ],
             "segments": [
               [
-                "A",
-                "B"
+                "A__case1",
+                "B__case1"
               ],
               [
-                "B",
-                "C"
+                "B__case1",
+                "C__case1"
               ],
               [
-                "C",
-                "A"
+                "C__case1",
+                "A__case1"
               ]
             ],
             "circles": [
               {
-                "center": "O",
-                "through": "A"
+                "center": "O__case1",
+                "through": "A__case1"
               }
             ],
             "equalSegments": [
               {
-                "a": "A",
-                "b": "B",
+                "a": "A__case1",
+                "b": "B__case1",
                 "marks": 1
               },
               {
-                "a": "A",
-                "b": "C",
+                "a": "A__case1",
+                "b": "C__case1",
                 "marks": 1
               }
             ]
@@ -3375,39 +3373,39 @@
           "step-4": {
             "label": "Шаг 4",
             "points": [
-              "A",
-              "B",
-              "C"
+              "A__case1",
+              "B__case1",
+              "C__case1"
             ],
             "segments": [
               [
-                "A",
-                "B"
+                "A__case1",
+                "B__case1"
               ],
               [
-                "B",
-                "C"
+                "B__case1",
+                "C__case1"
               ],
               [
-                "C",
-                "A"
+                "C__case1",
+                "A__case1"
               ]
             ],
             "circles": [
               {
-                "center": "O",
-                "through": "A"
+                "center": "O__case1",
+                "through": "A__case1"
               }
             ],
             "equalSegments": [
               {
-                "a": "A",
-                "b": "B",
+                "a": "A__case1",
+                "b": "B__case1",
                 "marks": 1
               },
               {
-                "a": "A",
-                "b": "C",
+                "a": "A__case1",
+                "b": "C__case1",
                 "marks": 1
               }
             ]
@@ -17827,9 +17825,9 @@
         "edges": [],
         "planar": true,
         "bounds": [
+          9,
           0,
-          0,
-          100,
+          91,
           82
         ],
         "views": {
@@ -18399,7 +18397,24 @@
           "O2__case3": "O2",
           "O3__case3": "O3"
         },
-        "labelOffsets": {},
+        "labelOffsets": {
+          "H": [
+            6,
+            -1
+          ],
+          "N": [
+            0,
+            -5
+          ],
+          "M": [
+            -4,
+            3
+          ],
+          "A": [
+            -3,
+            -3
+          ]
+        },
         "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
       },
       "didactics": {

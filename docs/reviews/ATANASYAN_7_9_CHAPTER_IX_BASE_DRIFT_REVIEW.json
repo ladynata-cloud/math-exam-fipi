@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "status": "clean-history-preserving-composition-final-gates-pending",
+  "reviewer": "root",
+  "at": "2026-11-03T01:50:25.379782+00:00",
+  "authorization": "docs/OWNER_RELEASE_AUTHORIZATION.md",
+  "validatedOriginalBase": "d74b8d599a5031a0620679a76dd08151fa171661",
+  "observedCurrentMain": "e7a9541593e64fa10e89853857620d177cd28178",
+  "concurrentCommits": [
+    "710cd5c (PR418 grade7 discovery links)",
+    "e7a9541 (PR424 practice entry links)"
+  ],
+  "concurrentFiles": [
+    "articles/stroynost-kursa-geometrii/index.html",
+    "docs/tasks/SEO_GRADE7_DISCOVERY_20261102.md",
+    "docs/tasks/SEO_PRACTICE_ENTRYPOINTS_20261103.md",
+    "geometry-course/index.html",
+    "grade7/index.html",
+    "tools/geometry/build_site.py",
+    "tools/seo-entrypoints.browser.cjs",
+    "trainers/oge-course/index.html"
+  ],
+  "classification": "Approved SEO entry links and their task/test documentation; no textbook runtime, authored cards, models, learner storage or IX source change. Both overlapping repository-level geometry landing/generator files compose cleanly.",
+  "readOnlyVirtualMergeTree": "080e2452d3edadf4d62c95098607ad7b4645a682",
+  "composition": "git merge --no-commit --no-ff origin/main succeeded without conflicts. Next Git commit will retain both task head and current main as parents; no reset/rebase/force.",
+  "finalGates": "Full new-head CI and fresh main/head guard remain required before merge.",
+  "newOwnerAuthorizationRequired": false
+}

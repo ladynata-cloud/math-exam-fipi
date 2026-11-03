@@ -4308,37 +4308,42 @@
             0
           ],
           "O2__case2": [
-            57.428571429,
+            63.0,
             40.0,
             0
           ],
           "_R__case2": [
             50.0,
-            25.142857143,
+            14.0,
             0
           ],
           "_r__case2": [
-            57.428571429,
-            32.571428571,
+            63.0,
+            27.0,
             0
           ],
           "T1__case2": [
-            64.857142857,
+            76.0,
             40.0,
             0
           ],
           "_L1__case2": [
-            64.857142857,
+            76.0,
             66.0,
             0
           ],
           "_U1__case2": [
-            64.857142857,
+            76.0,
             14.0,
             0
           ],
           "_S1__case2": [
-            64.857142857,
+            76.0,
+            40.0,
+            0
+          ],
+          "K__case2": [
+            76.0,
             40.0,
             0
           ],
@@ -4481,6 +4486,11 @@
             59.780327064,
             40.0,
             0
+          ],
+          "K__case4": [
+            59.780327064,
+            40.0,
+            0
           ]
         },
         "edges": [],
@@ -4566,9 +4576,19 @@
             "label": "Шаг 3",
             "points": [
               "O1__case2",
-              "O2__case2"
+              "O2__case2",
+              "K__case2"
             ],
-            "segments": [],
+            "segments": [
+              [
+                "O1__case2",
+                "K__case2"
+              ],
+              [
+                "O2__case2",
+                "K__case2"
+              ]
+            ],
             "circles": [
               {
                 "center": "O1__case2",
@@ -4584,6 +4604,14 @@
                 "_L1__case2",
                 "_U1__case2"
               ]
+            ],
+            "rightAngles": [
+              {
+                "a": "O1__case2",
+                "vertex": "K__case2",
+                "b": "_U1__case2",
+                "size": 2.3
+              }
             ]
           },
           "step-4": {
@@ -4618,9 +4646,19 @@
             "label": "Шаг 5",
             "points": [
               "O1__case4",
-              "O2__case4"
+              "O2__case4",
+              "K__case4"
             ],
-            "segments": [],
+            "segments": [
+              [
+                "O1__case4",
+                "K__case4"
+              ],
+              [
+                "O2__case4",
+                "K__case4"
+              ]
+            ],
             "circles": [
               {
                 "center": "O1__case4",
@@ -4644,6 +4682,14 @@
                 "_L3__case4",
                 "_U3__case4"
               ]
+            ],
+            "rightAngles": [
+              {
+                "a": "O1__case4",
+                "vertex": "K__case4",
+                "b": "_U3__case4",
+                "size": 2.3
+              }
             ]
           },
           "step-6": {
@@ -4705,9 +4751,19 @@
             "label": "Внутреннее касание: 1",
             "points": [
               "O1__case2",
-              "O2__case2"
+              "O2__case2",
+              "K__case2"
             ],
-            "segments": [],
+            "segments": [
+              [
+                "O1__case2",
+                "K__case2"
+              ],
+              [
+                "O2__case2",
+                "K__case2"
+              ]
+            ],
             "circles": [
               {
                 "center": "O1__case2",
@@ -4723,6 +4779,14 @@
                 "_L1__case2",
                 "_U1__case2"
               ]
+            ],
+            "rightAngles": [
+              {
+                "a": "O1__case2",
+                "vertex": "K__case2",
+                "b": "_U1__case2",
+                "size": 2.3
+              }
             ],
             "availableFromStep": 3
           },
@@ -4759,9 +4823,19 @@
             "label": "Внешнее касание: 3",
             "points": [
               "O1__case4",
-              "O2__case4"
+              "O2__case4",
+              "K__case4"
             ],
-            "segments": [],
+            "segments": [
+              [
+                "O1__case4",
+                "K__case4"
+              ],
+              [
+                "O2__case4",
+                "K__case4"
+              ]
+            ],
             "circles": [
               {
                 "center": "O1__case4",
@@ -4785,6 +4859,14 @@
                 "_L3__case4",
                 "_U3__case4"
               ]
+            ],
+            "rightAngles": [
+              {
+                "a": "O1__case4",
+                "vertex": "K__case4",
+                "b": "_U3__case4",
+                "size": 2.3
+              }
             ],
             "availableFromStep": 5
           }
@@ -5091,6 +5173,53 @@
             ]
           },
           {
+            "type": "collinear",
+            "points": [
+              "O1__case2",
+              "O2__case2",
+              "K__case2"
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "O1__case2",
+                "K__case2"
+              ],
+              [
+                "O1__case2",
+                "_R__case2"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "O2__case2",
+                "K__case2"
+              ],
+              [
+                "O2__case2",
+                "_r__case2"
+              ]
+            ]
+          },
+          {
+            "type": "perpendicular",
+            "segments": [
+              [
+                "O1__case2",
+                "K__case2"
+              ],
+              [
+                "_L1__case2",
+                "_U1__case2"
+              ]
+            ]
+          },
+          {
             "type": "perpendicular",
             "segments": [
               [
@@ -5389,6 +5518,53 @@
               "T3__case4",
               "_U3__case4"
             ]
+          },
+          {
+            "type": "collinear",
+            "points": [
+              "O1__case4",
+              "O2__case4",
+              "K__case4"
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "O1__case4",
+                "K__case4"
+              ],
+              [
+                "O1__case4",
+                "_R__case4"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "O2__case4",
+                "K__case4"
+              ],
+              [
+                "O2__case4",
+                "_r__case4"
+              ]
+            ]
+          },
+          {
+            "type": "perpendicular",
+            "segments": [
+              [
+                "O1__case4",
+                "K__case4"
+              ],
+              [
+                "_L3__case4",
+                "_U3__case4"
+              ]
+            ]
           }
         ],
         "labels": {
@@ -5403,6 +5579,7 @@
           "O1__case2": "O₁",
           "O2__case2": "O₂",
           "T1__case2": "T₁",
+          "K__case2": "K",
           "O1__case3": "O₁",
           "O2__case3": "O₂",
           "T1__case3": "T₁",
@@ -5411,7 +5588,8 @@
           "O2__case4": "O₂",
           "T1__case4": "T₁",
           "T2__case4": "T₂",
-          "T3__case4": "T3"
+          "T3__case4": "T3",
+          "K__case4": "K"
         },
         "labelOffsets": {},
         "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
@@ -5604,37 +5782,42 @@
             0
           ],
           "O2__case2": [
-            57.428571429,
+            63.0,
             40.0,
             0
           ],
           "_R__case2": [
             50.0,
-            25.142857143,
+            14.0,
             0
           ],
           "_r__case2": [
-            57.428571429,
-            32.571428571,
+            63.0,
+            27.0,
             0
           ],
           "T1__case2": [
-            64.857142857,
+            76.0,
             40.0,
             0
           ],
           "_L1__case2": [
-            64.857142857,
+            76.0,
             66.0,
             0
           ],
           "_U1__case2": [
-            64.857142857,
+            76.0,
             14.0,
             0
           ],
           "_S1__case2": [
-            64.857142857,
+            76.0,
+            40.0,
+            0
+          ],
+          "K__case2": [
+            76.0,
             40.0,
             0
           ],
@@ -5777,6 +5960,11 @@
             59.780327064,
             40.0,
             0
+          ],
+          "K__case4": [
+            59.780327064,
+            40.0,
+            0
           ]
         },
         "edges": [],
@@ -5862,9 +6050,19 @@
             "label": "Шаг 3",
             "points": [
               "O1__case2",
-              "O2__case2"
+              "O2__case2",
+              "K__case2"
             ],
-            "segments": [],
+            "segments": [
+              [
+                "O1__case2",
+                "K__case2"
+              ],
+              [
+                "O2__case2",
+                "K__case2"
+              ]
+            ],
             "circles": [
               {
                 "center": "O1__case2",
@@ -5880,6 +6078,14 @@
                 "_L1__case2",
                 "_U1__case2"
               ]
+            ],
+            "rightAngles": [
+              {
+                "a": "O1__case2",
+                "vertex": "K__case2",
+                "b": "_U1__case2",
+                "size": 2.3
+              }
             ]
           },
           "step-4": {
@@ -5914,9 +6120,19 @@
             "label": "Шаг 5",
             "points": [
               "O1__case4",
-              "O2__case4"
+              "O2__case4",
+              "K__case4"
             ],
-            "segments": [],
+            "segments": [
+              [
+                "O1__case4",
+                "K__case4"
+              ],
+              [
+                "O2__case4",
+                "K__case4"
+              ]
+            ],
             "circles": [
               {
                 "center": "O1__case4",
@@ -5940,6 +6156,14 @@
                 "_L3__case4",
                 "_U3__case4"
               ]
+            ],
+            "rightAngles": [
+              {
+                "a": "O1__case4",
+                "vertex": "K__case4",
+                "b": "_U3__case4",
+                "size": 2.3
+              }
             ]
           },
           "step-6": {
@@ -6001,9 +6225,19 @@
             "label": "Внутреннее касание: 1",
             "points": [
               "O1__case2",
-              "O2__case2"
+              "O2__case2",
+              "K__case2"
             ],
-            "segments": [],
+            "segments": [
+              [
+                "O1__case2",
+                "K__case2"
+              ],
+              [
+                "O2__case2",
+                "K__case2"
+              ]
+            ],
             "circles": [
               {
                 "center": "O1__case2",
@@ -6019,6 +6253,14 @@
                 "_L1__case2",
                 "_U1__case2"
               ]
+            ],
+            "rightAngles": [
+              {
+                "a": "O1__case2",
+                "vertex": "K__case2",
+                "b": "_U1__case2",
+                "size": 2.3
+              }
             ],
             "availableFromStep": 3
           },
@@ -6055,9 +6297,19 @@
             "label": "Внешнее касание: 3",
             "points": [
               "O1__case4",
-              "O2__case4"
+              "O2__case4",
+              "K__case4"
             ],
-            "segments": [],
+            "segments": [
+              [
+                "O1__case4",
+                "K__case4"
+              ],
+              [
+                "O2__case4",
+                "K__case4"
+              ]
+            ],
             "circles": [
               {
                 "center": "O1__case4",
@@ -6081,6 +6333,14 @@
                 "_L3__case4",
                 "_U3__case4"
               ]
+            ],
+            "rightAngles": [
+              {
+                "a": "O1__case4",
+                "vertex": "K__case4",
+                "b": "_U3__case4",
+                "size": 2.3
+              }
             ],
             "availableFromStep": 5
           }
@@ -6387,6 +6647,53 @@
             ]
           },
           {
+            "type": "collinear",
+            "points": [
+              "O1__case2",
+              "O2__case2",
+              "K__case2"
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "O1__case2",
+                "K__case2"
+              ],
+              [
+                "O1__case2",
+                "_R__case2"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "O2__case2",
+                "K__case2"
+              ],
+              [
+                "O2__case2",
+                "_r__case2"
+              ]
+            ]
+          },
+          {
+            "type": "perpendicular",
+            "segments": [
+              [
+                "O1__case2",
+                "K__case2"
+              ],
+              [
+                "_L1__case2",
+                "_U1__case2"
+              ]
+            ]
+          },
+          {
             "type": "perpendicular",
             "segments": [
               [
@@ -6685,6 +6992,53 @@
               "T3__case4",
               "_U3__case4"
             ]
+          },
+          {
+            "type": "collinear",
+            "points": [
+              "O1__case4",
+              "O2__case4",
+              "K__case4"
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "O1__case4",
+                "K__case4"
+              ],
+              [
+                "O1__case4",
+                "_R__case4"
+              ]
+            ]
+          },
+          {
+            "type": "equalLength",
+            "segments": [
+              [
+                "O2__case4",
+                "K__case4"
+              ],
+              [
+                "O2__case4",
+                "_r__case4"
+              ]
+            ]
+          },
+          {
+            "type": "perpendicular",
+            "segments": [
+              [
+                "O1__case4",
+                "K__case4"
+              ],
+              [
+                "_L3__case4",
+                "_U3__case4"
+              ]
+            ]
           }
         ],
         "labels": {
@@ -6699,6 +7053,7 @@
           "O1__case2": "O₁",
           "O2__case2": "O₂",
           "T1__case2": "T₁",
+          "K__case2": "K",
           "O1__case3": "O₁",
           "O2__case3": "O₂",
           "T1__case3": "T₁",
@@ -6707,7 +7062,8 @@
           "O2__case4": "O₂",
           "T1__case4": "T₁",
           "T2__case4": "T₂",
-          "T3__case4": "T3"
+          "T3__case4": "T3",
+          "K__case4": "K"
         },
         "labelOffsets": {},
         "description": "Отдельный чертёж к условию. Числа и обоснования приведены рядом; измерение на экране не заменяет доказательство."
@@ -12358,7 +12714,11 @@
               "B",
               "C",
               "D",
-              "O"
+              "O",
+              "K",
+              "L",
+              "M",
+              "N"
             ],
             "segments": [
               [
@@ -13059,7 +13419,11 @@
               "B",
               "C",
               "D",
-              "O"
+              "O",
+              "K",
+              "L",
+              "M",
+              "N"
             ],
             "segments": [
               [

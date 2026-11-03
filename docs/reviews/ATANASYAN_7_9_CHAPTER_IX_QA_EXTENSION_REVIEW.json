@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "Independent non-author /root/ix_visual_a_mobile",
+  "at": "2026-11-03T01:37:05.911733+00:00",
+  "verdict": "PASS_TECHNICAL_REVIEW_CLOUD_EXECUTION_PENDING",
+  "status": "read-only-code-review-and-offline-negative-probes-passed",
+  "technicalInspectionComplete": true,
+  "browserApprovalGranted": false,
+  "releaseApprovalGranted": false,
+  "baseHeadAtReview": "848f3af7d0193157d31bd940e211ba8a4a5f7cf7",
+  "reviewedCommittedHead": null,
+  "reviewBinding": "Three working-tree additions/changes inspected; hashes below are authoritative. These new QA files are not claimed to be present in baseHeadAtReview. Actual committed-head cloud execution remains required.",
+  "files": [
+    {
+      "path": ".github/workflows/atanasyan-planimetry.yml",
+      "sha256": "e484b7dc0f9d78790da90e27da38031ad1db895d9225411f159a9fd8d605a7a8"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter09-live.browser.cjs",
+      "sha256": "ddc058a2a46bc6418f7d1bd1eaf62f74fd5665bc588de7dfba0dbf3d7915bd14"
+    },
+    {
+      "path": ".github/workflows/atanasyan-chapter09-live.yml",
+      "sha256": "6e282ff616f6d045182f011dbeb1872d731ce66ef4a8f76c6aa1cff1089820a6"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Existing exhaustive gates preserved",
+      "result": "PASS",
+      "evidence": "Parsed YAML and compared against git HEAD after removing only chapter-ix-drawing-diagnostic; all6 original jobs and workflow configuration match exactly. Existing full-course browser script and three shared renderer/runtime files are byte-identical to HEAD."
+    },
+    {
+      "name": "Diagnostic scope honest",
+      "result": "PASS",
+      "evidence": "Additional job builds exact chapter9 candidate, checks every IX authoredview at320/1280 through existing gate, emits focused-section-drawing-diagnostic scope, and retains separate full-course job. No approval receipt or public bundle write occurs."
+    },
+    {
+      "name": "Exact source commit",
+      "result": "PASS",
+      "evidence": "Live smoke validates requested HEAD against git rev-parse, then compares seven workspace resources with git show HEAD bytes before serving or fetching. Workflow checkout and ATANASYAN_IX_HEAD use the exact PR head or main push SHA."
+    },
+    {
+      "name": "Public source bytes and normal TLS",
+      "result": "PASS",
+      "evidence": "Production URL is fixed HTTPS mathexam.space. Seven resources are compared with source SHA256 before and after browser journeys; browser-loaded resources are checked again for exact origin/status/hash. TLS defaults remain enabled; no ignoreHTTPSErrors, NODE_TLS_REJECT_UNAUTHORIZED override, redirect allowance or authentication secret is introduced."
+    },
+    {
+      "name": "Legacy is not IX approval",
+      "result": "PASS",
+      "evidence": "Reviewed1247 legacy is allowed only in local mode with skipped explanation and httpsReleaseVerified=false. HTTPS requires actual reviewed1407/IX160. Independent negative run on real1247 bytes exited1 with HTTPS release requires chapter IX; origin remained null and all success flags false, before network or browser."
+    },
+    {
+      "name": "Wrong expected HEAD rejected",
+      "result": "PASS",
+      "evidence": "Independent negative run with expectedHEAD of fortyzeros exited1 with Checkout must match the requested source commit, before network/browser or artifact directory creation."
+    },
+    {
+      "name": "Actual public entry and synthetic work",
+      "result": "PASS",
+      "evidence": "Script navigates public index directly without allowInReview or recreating the application. At320/1280 it checks736,737,823,theory83 andIXselfcheck1 after promotion; verifies title/condition/available count/no preview/errors/SVG/overflow. It clicks assistance and a step, opens source-linked theory, returns, reloads and compares draft, assisted flag, revealed count and complete persisted state. Each width uses a fresh nonpersistent context."
+    },
+    {
+      "name": "Workflow permissions/pins/scope",
+      "result": "PASS",
+      "evidence": "contents:read; persist-credentials:false; existing exact40-character actioncommit pins; Playwright1.62.1 with ignore-scripts install; PR=local, mainpush/manual=https; main-only productioncondition; bounded15/20min jobs and8min publication wait; artifacts always retained."
+    },
+    {
+      "name": "Syntax and YAML",
+      "result": "PASS",
+      "evidence": "node --check succeeded; Python YAML parsing and structural assertions succeeded."
+    }
+  ],
+  "negativeEvidence": {
+    "legacyHTTPS": {
+      "exitCode": 1,
+      "completed": false,
+      "localSmokePassed": false,
+      "httpsReleaseVerified": false,
+      "origin": null,
+      "lessons": 1247,
+      "chapterIXCards": 0,
+      "evidenceSha256": "4e65172a7e18c086295adf06bf18bb373b6879ae1fbea391aad4c9b3734aa8c8"
+    },
+    "headMismatch": {
+      "exitCode": 1,
+      "artifactDirectoryCreated": false,
+      "logSha256": "ff8be2fbb6a047f874bd9a0cfdaf72bf65806a5088d5bbe21de8324c2c31f54e"
+    },
+    "localBrowserLaunchAttempted": false
+  },
+  "issues": [],
+  "limits": [
+    "No real Chromium execution or live HTTPS publication verification performed by this review; local launch restriction was respected. Cloud exact-head CI must still run.",
+    "Focused drawing diagnostic never replaces full-course, first-viewport, stored-work or independent visual gates.",
+    "Live smoke samples five direct entries plus one saved-work journey per width; full condition/givens/goal and allscene coverage belongs to the unchanged exhaustive gates.",
+    "Counts1407/160 intentionally bind this IX release; a future source expansion must revise the release-specific expectations before its main publication.",
+    "Expected-head/resource mismatch can reject at top level before evidence JSON creation; workflow logs retain the primary failure and artifact upload may also fail. This cannot yield a false approval."
+  ]
+}

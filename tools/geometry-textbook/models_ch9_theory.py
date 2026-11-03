@@ -76,10 +76,25 @@ def tangent_scene(d,R=4,r=2):
   nx=k/d;ys=[0] if abs(nx-1)<1e-9 else [math.sqrt(1-nx*nx),-math.sqrt(1-nx*nx)]
   for ny in ys:
    count+=1;name=str(count);A='T'+name;D='_L'+name;E='_U'+name;n=[nx,ny];t=[-ny,nx]
-   p[A]=[R*x for x in n];p[D]=addv(p[A],[-7*x for x in t]);p[E]=addv(p[A],[7*x for x in t]);Q='_S'+name;p[Q]=[d+sign*r*nx,sign*r*ny]
+   # A line is infinite in the viewer: its two defining points need not
+   # shrink the touching circles. For internal contact keep those points
+   # inside the circle's vertical extent, leaving room for O1/O2/K labels.
+   span=R if abs(d-(R-r))<1e-9 else 7
+   p[A]=[R*x for x in n];p[D]=addv(p[A],[-span*x for x in t]);p[E]=addv(p[A],[span*x for x in t]);Q='_S'+name;p[Q]=[d+sign*r*nx,sign*r*ny]
    f['lines']=f.get('lines',[])+[[D,E]]
    checks += [perp('O1',A,D,E),perp('O2',Q,D,E),equal(('O1',A),('O1','_R')),equal(('O2',Q),('O2','_r')),col(D,A,E)]
    verify('common tangent second contact '+str(d)+' '+name,dist(p['O2'],p[Q]),r)
+ # At internal/external contact d=R-r or R+r, the shared contact is
+ # K=(R,0). Both centre-to-contact radii are horizontal; its common
+ # tangent is vertical. Reveal these proof objects only in the case view.
+ if d and (abs(d-(R-r))<1e-9 or abs(d-(R+r))<1e-9):
+  p['K']=[R,0]
+  tangent_index=next(i for i in range(1,count+1) if abs(p['T'+str(i)][0]-R)<1e-9 and abs(p['T'+str(i)][1])<1e-9)
+  lo='_L'+str(tangent_index);hi='_U'+str(tangent_index)
+  f=more(f,['K'],[['O1','K'],['O2','K']],rightAngles=[rt('O1','K',hi)])
+  checks += [col('O1','O2','K'),equal(('O1','K'),('O1','_R')),equal(('O2','K'),('O2','_r')),perp('O1','K',lo,hi)]
+  verify('touch K on first circle '+str(d),dist(p['O1'],p['K']),R)
+  verify('touch K on second circle '+str(d),dist(p['O2'],p['K']),r)
  return p,v,f,checks,count
 T=[tangent_scene(d) for d in [1,2,4,6,8]]
 assert [z[4] for z in T]==[0,1,2,3,4]
@@ -150,7 +165,7 @@ def tangent_line(q):return (addv(q,[-q[1],q[0]]),addv(q,[q[1],-q[0]]))
 lines82=[tangent_line(contacts[k]) for k in 'KLMN']
 p82={'O':[0,0],**contacts}
 for i,n in enumerate('ABCD'):p82[n]=inter(*lines82[(i-1)%4],*lines82[i])
-v82=sc('ABCDO',poly(),circles=[circle('O','K')]);f82=more(v82,'KLMN',[[n,k] for n,k in zip('OOOO','KLMN')],rightAngles=[rt('O',k,'ABCD'[i]) for i,k in enumerate('KLMN')])
+v82=sc('ABCDO',poly(),circles=[circle('O','K')]);g82=more(v82,'KLMN');f82=more(v82,'KLMN',[[n,k] for n,k in zip('OOOO','KLMN')],rightAngles=[rt('O',k,'ABCD'[i]) for i,k in enumerate('KLMN')])
 # K on AB, L on BC, M on CD, N on DA.
 ch82=[equal_radii('KLMN')]
 for i,k in enumerate('KLMN'):
@@ -159,8 +174,8 @@ for a,k,l in [('A','K','N'),('B','K','L'),('C','L','M'),('D','M','N')]:ch82 += [
 verify('Pitot opposite side sums',dist(p82['A'],p82['B'])+dist(p82['C'],p82['D']),dist(p82['B'],p82['C'])+dist(p82['D'],p82['A']))
 rectp=dict(A=[0,0],B=[0,4],C=[7,4],D=[7,0],O=[2,2],T=[2,0]);rectv=sc('ABCDO',poly(),circles=[circle('O','T')]);rectch=[par('A','B','D','C'),par('A','D','B','C'),ratio('A','B','A','D',4/7)]
 r82=[row('Какая окружность является вписанной?','Окружность вписана в многоугольник, если она касается всех его сторон. Тогда многоугольник описан около окружности. На рисунке окружность касается AB, BC, CD, DA в K, L, M, N. Касаться лишь трёх сторон недостаточно.','Определения вписанной окружности и описанного многоугольника.',82),row('Какие отрезки касательных равны?','Из каждой вершины к окружности проведены две касательные: AK = AN, BK = BL, CL = CM, DM = DN. Обозначим эти пары длин соответственно x, y, z, t.','Равенство отрезков касательных из одной точки.',42),row('Почему суммы противоположных сторон совпадают?','AB = x + y, BC = y + z, CD = z + t, DA = t + x. Поэтому AB + CD = x + y + z + t = BC + DA. Это необходимое свойство любого описанного четырёхугольника.','Сложение отрезков; равенство касательных.',[42, 82]),row('Почему не в каждый четырёхугольник можно вписать окружность?','Для прямоугольника со сторонами a и b равенство противоположных сумм означало бы 2a = 2b, то есть a = b. Поэтому прямоугольник, не являющийся квадратом, не имеет вписанной окружности. На отдельном рисунке круг касается только трёх сторон такого прямоугольника.','Доказанное необходимое равенство сторон.',82),row('Как звучит обратное утверждение?','Если четырёхугольник выпуклый и AB + CD = BC + DA, в него можно вписать окружность. Выпуклость — часть условия. Полное доказательство обратного утверждения вынесено в задачу №807 этой главы, как и в учебнике; прямое доказательство выше от него не зависит.','Обратное утверждение; доказательство в задаче №807.',82)]
-add(82,'Вписанная окружность','Определите вписанную окружность и описанный многоугольник. Докажите свойство противоположных сторон описанного четырёхугольника и сформулируйте обратное утверждение.','Окружность касается всех сторон; AB + CD = BC + DA. Для выпуклого четырёхугольника это условие также достаточно.',r82,p82,v82,[v82,f82,f82,f82,f82],checks=ch82,cases=[(rectp,rectv,'Не каждый прямоугольник описанный',4,rectch,labels(rectp))],notes=['Полное доказательство обратного утверждения находится в задаче №807; здесь оно сформулировано с условием выпуклости.']);case_view(rectv,rectp,1,4)
-question(16,'Какая окружность называется вписанной в многоугольник? Какой многоугольник называется описанным около окружности?','Окружность вписана, если касается всех сторон; этот многоугольник описан около неё.',[r82[0],row('Как проверить касание каждой стороны?','Опусти радиусы к точкам касания K, L, M, N. Они перпендикулярны соответствующим сторонам и имеют одинаковую длину r. Если хотя бы одна сторона не касается окружности, определение не выполнено.','Свойство касательной; определение вписанной окружности.',[42, 82])],p82,v82,[v82,f82],checks=ch82)
+add(82,'Вписанная окружность','Определите вписанную окружность и описанный многоугольник. Докажите свойство противоположных сторон описанного четырёхугольника и сформулируйте обратное утверждение.','Окружность касается всех сторон; AB + CD = BC + DA. Для выпуклого четырёхугольника это условие также достаточно.',r82,p82,v82,[g82,f82,f82,f82,f82],checks=ch82,cases=[(rectp,rectv,'Не каждый прямоугольник описанный',4,rectch,labels(rectp))],notes=['Полное доказательство обратного утверждения находится в задаче №807; здесь оно сформулировано с условием выпуклости.']);case_view(rectv,rectp,1,4)
+question(16,'Какая окружность называется вписанной в многоугольник? Какой многоугольник называется описанным около окружности?','Окружность вписана, если касается всех сторон; этот многоугольник описан около неё.',[r82[0],row('Как проверить касание каждой стороны?','Опусти радиусы к точкам касания K, L, M, N. Они перпендикулярны соответствующим сторонам и имеют одинаковую длину r. Если хотя бы одна сторона не касается окружности, определение не выполнено.','Свойство касательной; определение вписанной окружности.',[42, 82])],p82,v82,[g82,f82],checks=ch82)
 question(17,'Каким свойством обладают стороны четырёхугольника, описанного около окружности?','Суммы противоположных сторон равны: AB + CD = BC + DA.',r82[1:3],p82,v82,[f82,f82],checks=ch82)
 
 # 83: direct angle proof; the converse has its complete source exercise810.
