@@ -134,10 +134,11 @@ class ChapterVIIICompleteCandidate(unittest.TestCase):
    from chapter08_extension import previous_inventory
    before=json.loads(previous_inventory((COURSE/'source-inventory.json').read_bytes()))
   if any(p['chapter']==9 for p in after['paragraphs']):
-   from chapter09_extension import previous_inventory as before_ix
-   after=json.loads(before_ix((COURSE/'source-inventory.json').read_bytes()))
+   from chapter09_extension import previous_inventory as before_ix,encoded
+   after=json.loads(before_ix(encoded(after)))
+  self.assertEqual(len(after['paragraphs']),29)
   self.assertEqual(after['paragraphs'][-4:],source['paragraphs']);after['paragraphs']=after['paragraphs'][:-4]
-  self.assertEqual(after,before);self.assertEqual(len(self.bundle['sourceInventory']['paragraphs']),29)
+  self.assertEqual(after,before)
   new=self.bundle['build']['implementationFiles'];old={name:frozen()['immutableFiles']['geometry-course/textbook/'+name] for name in new}
   self.assertEqual(set(old),set(new));self.assertEqual([k for k in old if old[k]!=new[k]],['source-inventory.json'])
  def test_source_coverage_rejects_missing_page_namespace_part_and_duplicate(self):
