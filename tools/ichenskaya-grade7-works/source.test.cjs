@@ -68,5 +68,5 @@ assert.match(card('ichenskaya-7-sr-10-v1-task-02').answer, /во всех трё
 assert.match(JSON.stringify(card('ichenskaya-7-sr-09-v2-task-01').steps), /пункте 30/);
 // Pin the audited primary course; its source test also restores the original
 // provenance and verifies the immutable teaching-content snapshot.
-assert.equal(hash(fs.readFileSync(path.join(root, 'learning/atanasyan-first-steps/course.json'))), '0a55791957f465cf6f9c3736fe41ca8a4fb110601bbcf9c4e9843e38a3f5a0fe');
+assert.equal(hash(fs.readFileSync(path.join(root, 'learning/atanasyan-first-steps/course.json'))), '9c269243f2940f0f86d5ba5ee918759cd52c19152f006f093bb2412447ba2776');
 console.log(JSON.stringify({ gate: 'ICHENSKAYA_SOURCE_MODEL_WORK_OK', cards: 110, works: 23, variants: 46, primary: 54, steps, views }));

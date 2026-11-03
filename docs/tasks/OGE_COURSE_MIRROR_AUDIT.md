@@ -284,3 +284,36 @@ release; standing publication authorization applies. Risk remains HIGH.
   No new bridge archetype, authentication contract or database migration.
 - Rollback remains a scoped revert of the reviewed base-to-merge delta, retaining
   concurrent textbook releases and private saved plans/work.
+
+### Exact-candidate review and gate follow-up
+
+- The current executing agent independently inspected the inherited native
+  foundation, 10–14, 20–22, 23–25 and common algebra/proof mirroring code,
+  registry delta, native page hooks and integration with current main. Review
+  covered bounded semantic payloads, destination validation and rollback,
+  native event ordering, role-controlled transport and isolation from personal
+  storage. This is technical review of the inherited implementation, not a
+  claimed external provider or human approval. The small cabinet/provenance
+  follow-ups were self-reviewed. No unresolved runtime finding was identified.
+- Exact-tree local results: algebra 668/668, geometry 1873/1873, actual transport
+  32/32, cabinet/fixed-book checks 41/41. Native state suites passed; the initial
+  two transport module-resolution failures were resolved by completing the
+  sparse checkout, with the complete transport rerun above passing. Source
+  build checks and helper projection checks pass.
+- Cloud head `1497c71bd4faf1fa138848729ab31b27e5ed1c66` exposed two remaining
+  consumers pinned to the prior primary-course provenance. Their exact expected
+  fingerprints are rebound to the inspected metadata-only update. The original
+  teaching-projection fingerprint and all source/namespace guards remain.
+  The complete isolated helper local suite passes 216/216; the Ichenskaya source
+  guard passes 110 cards, 360 steps and 470 views.
+- The algebra browser gate timed out waiting for a blank notebook after drawing
+  another task. Native random generators may draw the identical condition,
+  whose existing notes are correctly retained. The gate now explicitly verifies
+  notes are retained for any duplicate draw, requires a distinct condition
+  within eight draws, then keeps the original blank-notebook and archive checks.
+  No production generator or notebook behavior changed. The updated cloud
+  browser result is required before release.
+- Current-head cloud completion, immediately refreshed main/head identity and
+  production two-role verification remain release gates; their final evidence
+  is recorded in PR340. Rollback is a scoped revert of this PR, with no data
+  migration or removal of pupil work. External provider review was not performed.
