@@ -87,6 +87,8 @@ async function retainedWork(page,lesson,pending,width){
  for(const width of [320,1280]){
   // Nonpersistent, empty contexts: no real account, cookie, learner state or disk profile.
   const context=await browser.newContext({viewport:{width,height:900},extraHTTPHeaders:{'Cache-Control':'no-cache'}}),page=await context.newPage(),pending=[];
+  // Routing disables the HTTP cache while preserving real responses for exact body verification.
+  await context.route('**/*',route=>route.continue());
   page.setDefaultTimeout(15000);page.on('pageerror',error=>evidence.errors.push(error.message));
   page.on('response',response=>{const url=new URL(response.url()),name=url.pathname.replace(/\/$/,'/index.html');if(!(name in expected))return;
    pending.push((async()=>{assert.equal(url.origin,new URL(base).origin,'Resource origin');assert.equal(response.status(),200,name+' browser HTTP');
