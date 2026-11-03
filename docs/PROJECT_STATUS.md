@@ -1,4 +1,143 @@
+# 3 ноября 2026 — завершение текущих выпусков
+
+## Подтверждённый результат
+
+- **ОГЭ: 104 варианта и 315 авторских PDF опубликованы.** PR #421, squash `f054fdcbc233a8bc4752c1abae46b19a4b54cb78`. Pages и [проверка живого каталога](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41526652856) PASS: точные байты пяти ресурсов, 315 PDF, восемь фильтров, 104 поиска и 28 раскладок. MAT-9 закрыта как Done.
+- **Атанасян: задачи №396–403, девять новых карточек, всего 662.** PR #422 объединён в `2db15293087190be209dda1db092dd79228c9488` после семи успешных workflow, включая полный курс. Parent и tree подтверждены. Все 174 снимка итогового head побайтно совпали с ранее просмотренным кандидатом. [Проверка публикации и новых карточек на живом сайте](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41532239684); итог релиза фиксируется в PR #422.
+- **ОГЭ №19: редакторская проверка всех 234 утверждений завершена.** Исправлены объяснение косинуса, формулировка о медиане, начальный контрпример тангенса и перегруженный рисунок совпадающих центров. Все ключи ответов и исходные утверждения сохранены. 38 типов моделей, 457 ползунков, 2073 технических состояния; 11 независимых координатных тестов PASS. Репрезентативные рисунки всех 38 типов просмотрены в облачном Chromium.
+- **Каталог моделей опубликован в Sites, версия 2**, source `6082026a32b1c9db73e0dbef605781aa65aba2a6`, deployment `appgdep_6ae9041b3c088191a3fb0dc9d4c3fbcd` SUCCESS. [Каталог](https://mathexam-oge19-model-review.ladynata3000.chatgpt.site) содержит отдельный результат редакторской проверки и отчёт по каждой карточке. Личные заметки не перезаписываются. Сохранён прежний доступ.
+
+Исправления основного банка и обновлённой offline-копии входят в PR #423. Первоначальные четыре workflow PASS; после сохранения нового main выполняются заключительные проверки. Доказательства фактического merge, развёртывания и чтения опубликованных байтов фиксируются в PR без отдельного status-only PR.
+
+Разрешение: прямое поручение владельца завершить и опубликовать задания, работа облачно, плюс действующий OWNER_RELEASE_AUTHORIZATION.md. Помощник и SEO не входят в объём этого завершения. Внешний аудит, физические устройства и занятия с учениками не заявляются проведёнными.
+
+---
+
+## Предыдущие записи проекта
+
 # MathExam project status
+
+## Recovered: 104 OGE PDF variants, MAT-9, 2026-11-03
+
+- [Task](tasks/OGE_104_CATALOGUE.md), MEDIUM; original START continued by owner.
+  Recovered Git checkpoint `2ef2ec0` and the complete author archive; current
+  validation base `ea5b6cb`. All 315 PDFs retain their original bytes.
+- Catalogue: 104 variants, three files per variant, eight families x13; three
+  complete collections. Font-dependent mobile button overflow corrected.
+- Fresh checks: 315 PDF/hash/HTTP matches, 1,976 printed answers, 1,084 ordered
+  collection-page pairs, all filters/numbers, 8,736 button measurements and
+  sitemap preservation. [Report](reports/OGE_104_CATALOGUE_20261103.md).
+- [Draft PR #421](https://github.com/ladynata-cloud/math-exam-fipi/pull/421)
+  includes a focused cloud gate and exact 332-file inventory. The PR records
+  final head, CI and cloud transport-recovery evidence. An inherited navigation
+  assertion was aligned with the published lesson showcase; OGE route checks
+  and all existing workflows remain in place.
+  The owner continued after the Draft handoff and requested cloud publication.
+  Standing release authorization applies. The read-only workflow will verify
+  deployed bytes and actual public PDF/browser behavior after the main push;
+  actual merge, Pages and live results are recorded in PR #421.
+
+## Preparing: additional cylinder exercises396–403, 2026-11-02
+
+- Owner requested the next Atanasyan10–11 increment and cloud execution.
+  Nine cards cover396–403 including400а/б:38 steps and40 model states.
+- [Task](tasks/ATANASYAN_ADDITIONAL_396_403.md), MEDIUM; base
+  ea5b6cb9e931eee63224fbc4c13b2ac43326cc19.
+- [Author review and cloud evidence](reviews/ATANASYAN_ADDITIONAL_396_403.md).
+  Candidate result:662 cards,403 complete main exercises. Cloud CI and visual
+  artifact review are pending at preparation; this is not yet a publication.
+- Existing653 raw cards, shared renderer and saved-work format remain unchanged.
+  Standing release authorization applies after all applicable checks.
+
+## Published: chapter IV self-check, PR402, 2026-11-02
+
+- [PR402](https://github.com/ladynata-cloud/math-exam-fipi/pull/402) merged as
+  ea5b6cb9e931eee63224fbc4c13b2ac43326cc19, sole parent
+  b9ba38b27f5b306f0d81d01c67e0a636e5a06b84; tree
+  2dbca81213348bd0b53e82b6dcfdec1ec9fae01b.
+- All13 reviewed cards were integrated without rewriting their mathematical
+  content:653 published cards and50 complete self-check questions. All640
+  preceding raw lessons and stored-work contracts were preserved.
+- All7 final-head workflows passed. Full course run
+  [41493180126](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41493180126)
+  passed14 jobs:1306 journeys,10356 label states and4004 screenshots.
+- [Pages41498590641](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41498590641)
+  and postmerge Profile2027 run41498592137 passed. Deployment commit matches
+  the merge. Cloud live verification opened all13 new routes, checked√5 in
+  question8, stacked fractions in10 and retained new/old saved work.
+- This reconciles the preceding integrated-candidate entry. Earlier preparation
+  entries below are historical, not current publication blockers.
+
+## Preparing: Atanasyan chapter IV self-check, 2026-11-02
+
+- Owner requested continuation after Sphere publication. The next bounded
+  increment covers all ten chapter IV self-check questions in thirteen draft
+  cards, preserving original parts 3а/б/в and 5а/б.
+- [Task](tasks/ATANASYAN_CHAPTER_IV_SELFCHECK.md), HIGH; base
+  `1577c058309f4cc78c21315bf64b0b393751ec2d`; branch
+  `content/atanasyan-chapter-iv-selfcheck-20261102`.
+- [Candidate report](reviews/ATANASYAN_CHAPTER_IV_SELFCHECK_DRAFT.md):
+  31 steps and 45 model states, schema/coordinate/preservation checks passed.
+  [Independent review](reviews/ATANASYAN_CHAPTER_IV_SELFCHECK_INDEPENDENT.md)
+  found missing fraction styling; the correction and two small model/copy
+  improvements now pass focused independent review and fresh head-branch CI
+  (run 41352063380). All 640 published cards and learner-storage contracts
+  remain unchanged; no production integration has occurred. Draft PR402 records
+  exact-head evidence and the unresolved GitHub mergeability flag, despite a
+  clean local read-only virtual merge. No merge or deployment was performed.
+
+## Published: Atanasyan Sphere, PR386
+
+- [PR386](https://github.com/ladynata-cloud/math-exam-fipi/pull/386) was merged
+  as `3376ff99926e6e8e9721316f4cac045afc737a0c`, sole parent
+  `5bbfe3a4615b6410dacf7f1344aa57b909a986ef`. The verified tree is
+  `8f12df95753346ddcb53f53157e1b29524066813`.
+- The release record confirms 20 successful premerge checks, 1,280 browser
+  card/width journeys, all six postmerge checks, and successful Pages run
+  [41346143683](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41346143683).
+- Public HTTPS verification matched all 46 new lesson files and nine course
+  assets to the release. The live catalogue showed 640 cards and all 46 Sphere
+  cards; theory 43 help/steps/rotation and exercise 382b opened successfully.
+  Previous 594 cards and saved-work identities were retained exactly.
+- This reconciles the completed preceding release; historical preparation
+  records below remain unchanged. The next self-check increment requires its
+  own independent review and release decision.
+
+## Geometry first viewport: prepared, issue #384 / MAT-17
+
+- Current public geometry HTML/engine/CSS matched main `01e412d` before this fix.
+- Scoped card layout preserves all 1247 authored cards and saved-work identities;
+  condition and unchanged SVG now precede bibliographic service content.
+- Local gates passed: 26 source/model/runtime groups, 4988 viewport scenarios,
+  52 before/after comparisons and 20 retained-work/theory browser interactions.
+- [Task](tasks/ATANASYAN_FIRST_VIEWPORT_384.md) and
+  [evidence](reports/ATANASYAN_FIRST_VIEWPORT_384.md). CI/release evidence will
+  be recorded in the task PR. Standing publication permission applies.
+
+## Release candidate: Peterson 6 exact exercise entry, PR404, 2026-11-02
+
+- [Task](tasks/PETERSON6_EXACT_EXERCISE_ENTRY.md), MEDIUM; bounded continuation
+  after the published equation-method trainer. Branch
+  `fix/peterson6-exact-exercises-20261102`, implementation base
+  `5bbfe3a4615b6410dacf7f1344aa57b909a986ef`.
+- Course number search now points 303 and 305 to their exact existing source
+  exercises. Public links open a separate tab; the cabinet follows the link
+  inside its existing public frame with its original sandbox permissions.
+- Exact routes resume saved work, including archived legacy drafts. The
+  smaller-speed question is clarified through presentation metadata; stored
+  labels, condition keys, mathematical answers and storage formats are unchanged.
+- Actual cabinet browser testing also exposed blocked native form submission.
+  Search and existing answer forms now call their local checks from click/Enter,
+  retaining the cabinet sandbox and the original validation logic.
+- [Verification](reports/PETERSON6_EXACT_EXERCISE_ENTRY.md) records the executed
+  checks, frozen published-save evidence and focused internal review. The
+  PR records its exact head and CI. The owner explicitly requested this release;
+  [standing permission](OWNER_RELEASE_AUTHORIZATION.md) from PR408 applies.
+- Reconciled current main `01e412d4314445366bcd4773a3789129aa7264bd` with all
+  existing project records preserved. Runtime, source conditions and saved-work
+  identities match the reviewed correction. Updated-head CI and live verification
+  are release gates, not claimed complete in this pre-release commit.
+
 
 ## Assistant: all100 items have prepared source, 2026-11-02
 

@@ -205,9 +205,15 @@ function createApp(root,options){
   destroyScene();current=lesson;key='mathExamTextbook.v1:'+catalog.book.id+':'+lesson.id+':r'+lesson.revision;expected=safeRead(key);const cached=cache.get(key);state=readState(cached?.raw||expected);view.replaceChildren();
   win.history?.replaceState(null,'','#'+lesson.id);
   const back=el('button','← Все материалы курса',{type:'button'});back.addEventListener('click',home);
-  const header=el('header');header.append(back,el('p','К учебнику Атанасяна и соавторов · Геометрия 7–9'),el('h1',lessonTitle(lesson)),el('p',sourceLocation(lesson.source,sourceInventory),{class:'source-context'}));const share=el('a','Ссылка на этот материал',{href:'#'+lesson.id,class:'lesson-permalink'});header.append(share);view.append(header);
+  const header=el('header',undefined,{class:'textbook-lesson-header'});header.append(back,el('h1',lessonTitle(lesson)));const share=el('a','Ссылка на этот материал',{href:'#'+lesson.id,class:'lesson-permalink'});view.append(header);
   const layout=el('div',undefined,{class:'textbook-layout'}),main=el('section',undefined,{class:'textbook-main'}),side=el('aside',undefined,{class:'textbook-help','aria-label':'Помощь к текущей задаче'}),model=el('div',undefined,{class:'textbook-model task-scene','data-main-model':''});
-  main.append(el('p',lesson.statement.text,{class:'textbook-condition'}));if(lesson.statement.givens?.length){const list=el('ul');for(const text of lesson.statement.givens)list.append(el('li',text));main.append(list);}main.append(el('p',lesson.statement.goal,{class:'textbook-goal'}),model,el('p',lesson.visualization.caption),sourceNode(lesson));
+  const condition=el('div',undefined,{class:'textbook-problem'});condition.append(el('p',lesson.statement.text,{class:'textbook-condition'}));if(lesson.statement.givens?.length){const list=el('ul');for(const text of lesson.statement.givens)list.append(el('li',text));condition.append(list);}
+  // A mathematical goal belongs with the givens. Only these exact generic UI
+  // instructions move below the figure; no authored task requirement is hidden.
+  const goal=el('p',lesson.statement.goal,{class:'textbook-goal'}),genericGoal=['Сначала предложи своё решение. Подсказки и разбор можно открыть рядом.','Рассмотри чертёж, ответь на вопрос каждого шага и проверь своё объяснение.'].includes(lesson.statement.goal);
+  if(!genericGoal)condition.append(goal);
+  const source=sourceNode(lesson);source.classList.add('textbook-source');source.append(el('p','К учебнику Атанасяна и соавторов · Геометрия 7–9'),el('p',sourceLocation(lesson.source,sourceInventory),{class:'source-context'}),share);
+  main.append(condition,model);if(genericGoal)main.append(goal);main.append(el('p',lesson.visualization.caption),source);
   if(lesson.answer){
    const form=el('form',undefined,{'data-final-form':''}),label=el('label',lesson.answer.prompt,{for:'final-answer'}),input=el(lesson.answer.mode==='manual'?'textarea':'input',undefined,{id:'final-answer',autocomplete:'off'}),check=el('button',lesson.answer.mode==='manual'?'Сохранить рассуждение':'Проверить ответ',{type:'submit'}),feedback=el('p',undefined,{role:'status','data-final-feedback':''});input.value=state.draft;
    input.addEventListener('input',()=>{state.draft=input.value;save();});

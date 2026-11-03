@@ -26,7 +26,19 @@ for (const href of ['https://t.me/ladynata3000', 'https://vk.ru/ladynata3000']) 
 
 assert.match(home.title, /ОГЭ/);
 assert.equal(home.querySelectorAll('h1').length, 1);
-assert.doesNotMatch(home.querySelector('main').textContent, /ЕГЭ|Атанасян|Макарычев|ДВИ|7 класс/);
+// The published lesson showcase covers grades 5–11, including EGE. Keep that
+// invitation and check the OGE route itself for unrelated exam/course content.
+const invitation = home.querySelector('.hero-inner');
+assert(invitation, 'Published lesson invitation remains on home');
+assert.match(invitation.textContent, /5–11 классы · ОГЭ · ЕГЭ базовый и профильный/);
+for (const href of ['/lessons/', '/lessons/#examples', '/lessons/#contact']) {
+  assert(invitation.querySelector('a[href="' + href + '"]'), 'Lesson invitation entry: ' + href);
+}
+assert.doesNotMatch(home.querySelector('main').textContent, /Атанасян|Макарычев|ДВИ|7 класс/);
+const ogeEntry = home.querySelector('.start-routes a[href="/trainers/oge-course/"]')?.closest('article');
+assert(ogeEntry, 'OGE retains its own starting route');
+assert.equal(ogeEntry.querySelector('h3').textContent.trim(), 'ОГЭ');
+assert.doesNotMatch(ogeEntry.textContent, /ЕГЭ|Атанасян|Макарычев|ДВИ|7 класс/);
 // The independent foundations course became the home entry before this UI release.
 // Keep its canonical entry and the older quick-skill map separately reachable.
 for (const href of ['/trainers/oge-course/', '/foundations/']) {

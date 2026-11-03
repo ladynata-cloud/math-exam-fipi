@@ -82,3 +82,33 @@ Merge and deployment are not authorized by this task's explicit restriction.
   returned an invalid archive. The existing cloud SEO workflow executes the test.
 - Publication still requires the separate owner decision explicitly requested
   in the continuation. No merge or live patch verification claimed before it.
+
+## Authorized cloud continuation, 2026-11-03
+
+- The owner approved the SEO plan in the current conversation and then explicitly
+  authorized all publications in that scope, waiving external Claude review.
+  This supersedes the historical release hold above and follows
+  [the standing owner policy](../OWNER_RELEASE_AUTHORIZATION.md).
+- Revalidated base: `d74b8d599a5031a0620679a76dd08151fa171661`.
+  Previous PR head: `a17b92aac442f0cb36bd6aae7f4ff7c0fb3d732a`.
+- Six intervening main commits are published owner-requested work: Peterson
+  exercise/form fixes (#404), geometry viewport fixes (#419), chapter-IV
+  self-check (#402), OGE PDF catalogue (#421), cylinder exercises (#422), and
+  OGE-19 editorial fixes (#423). None modifies the five files in this patch.
+- Read-only virtual merge is clean, tree
+  `eb0ab5b37f3ff4b6dc8ee84b1f35984587f48f10`. The original product patch is
+  unchanged; an ordinary merge retains all concurrent work.
+- The live sitemap now contains 532 canonical URLs, including the new OGE PDF
+  catalogue and both geometry-course destinations. No sitemap edit is needed.
+- Repeat the focused SEO checks on this composition and require successful CI
+  on the updated PR head. Record exact head/check/deployment evidence in PR #418.
+  Publish through the existing GitHub Pages path, then verify all four links
+  and both destination canonicals on the live site.
+- External review is not performed under the owner's explicit waiver. This
+  does not waive technical checks. Rollback remains an ordinary revert.
+
+Focused cloud-workspace validation on this composition: all 12 sitemap tests,
+sitemap freshness (532 URLs), public SEO checks, source/rendered catalog parity
+and `git diff --check` passed. All four product/test files retain their reviewed
+blob identities and stable patch ID. Updated-head GitHub browser/full-course
+checks and live verification remain separate release gates.

@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'school/peterson6/**'
+      - 'trainers/maxim-peterson6/**'
       - 'trainers/peterson6.html'
       - 'trainers/board-compat.json'
       - 'trainers/board-picker.js'
@@ -11,12 +12,15 @@ on:
       - 'trainers/board-bridge.js'
       - 'learning/**'
       - 'tools/peterson6-*'
+      - 'tools/maxim-peterson6-entry*'
+      - 'tools/fixtures/maxim-peterson6-pr400-save.json'
       - 'tools/learning-peterson-plan.dom.cjs'
       - '.github/workflows/peterson6-quality.yml'
   push:
     branches: [main]
     paths:
       - 'school/peterson6/**'
+      - 'trainers/maxim-peterson6/**'
       - 'trainers/peterson6.html'
       - 'trainers/board-compat.json'
       - 'trainers/board-picker.js'
@@ -25,6 +29,8 @@ on:
       - 'trainers/board-bridge.js'
       - 'learning/**'
       - 'tools/peterson6-*'
+      - 'tools/maxim-peterson6-entry*'
+      - 'tools/fixtures/maxim-peterson6-pr400-save.json'
       - 'tools/learning-peterson-plan.dom.cjs'
       - '.github/workflows/peterson6-quality.yml'
 permissions:
@@ -58,6 +64,7 @@ jobs:
           export NODE_PATH="$RUNNER_TEMP/peterson-qa/node_modules"
           node school/peterson6/test-ui.cjs
           node school/peterson6/test-equation-state.cjs
+          node --test tools/peterson6-exact-number-search.test.cjs tools/maxim-peterson6-entry.test.cjs
   board:
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -85,6 +92,7 @@ jobs:
         run: |
           PETERSON6_BOARD_SHOTS="$RUNNER_TEMP/peterson-board-shots" node tools/peterson6-board.browser.cjs
           PETERSON_EQUATION_ARTIFACTS="$RUNNER_TEMP/peterson-equation-shots" node tools/peterson6-equations.browser.cjs
+          PETERSON_ENTRY_ARTIFACTS="$RUNNER_TEMP/peterson-entry-shots" node tools/maxim-peterson6-entry.browser.cjs
       - name: Retain visual evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -93,4 +101,5 @@ jobs:
           path: |
             ${{ runner.temp }}/peterson-board-shots
             ${{ runner.temp }}/peterson-equation-shots
+            ${{ runner.temp }}/peterson-entry-shots
           if-no-files-found: ignore
