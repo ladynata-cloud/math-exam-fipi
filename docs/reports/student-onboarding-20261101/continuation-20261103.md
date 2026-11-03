@@ -28,10 +28,14 @@ Syntax checks of the merged app and browser gate pass. Exact-head cloud CI, the 
 
 The current public root links to `https://mathexam-board-ladynata.msk1.amvera.tech/learning/`. Historical .amvera.io checks are not current availability evidence. A fresh cloud read-only probe checks health, learning status and public static assets with normal TLS and no authentication. It performs no writes and retains only HTTP metadata, safe readiness flags and content hashes.
 
-Amvera control access has not been established: no connected tool or matching plugin was found. Successful source CI does not prove a cabinet backend deployment. Frontend/backend must be released together through the established host, preserving the persistent volume; no real-pupil test or server configuration change is authorized by this validation.
+The public host was verified healthy on 2026-11-03 00:34:46 UTC: all four public endpoints return HTTP200; learning available=true; live app.js and index.html match current main byte-for-byte. The completed PR395 release records automatic Amvera update after squash-merge, 37 exact assets and three runtime checks; no manual provider deployment occurred. This is the established publication path. No new hosting credentials or provider configuration is needed for that path. Successful source CI alone does not prove this new deployment: the post-push gate waits for 26 exact asset matches across Pages and Amvera plus available/durable backend readiness. Real-pupil writes and private provider-package inspection remain outside this task.
 
 Rollback remains the previous runtime over the existing database, without deleting additive program data or restoring an older pupil database. The cloud rollback check uses the exact new main as the previous runtime and only synthetic data.
 
 ## Authorization
 
 The owner's continuation and OWNER_RELEASE_AUTHORIZATION.md authorize routine integration, checks and publication of this task without a repeated approval or mandatory external audit. External-provider review is not performed. Hosting access/readiness is a technical prerequisite, not a request for another publication permission.
+
+## Fresh cloud evidence on integration head 5af20d2
+
+Focused run41553637281 passed all 17 synthetic onboarding test groups, rollback over exact main d74b8d5, and the real HTTP/SQLite browser journey at 320/390/1280px. Browser version151.0.7922.34; errors=[], publicRequestsAllowed=0. All fifteen fresh screenshots were actually inspected. Artifact13192738666 ZIP SHA-256 c841b5924d1f16b617c253a6667852bb94f3b4c38c3eafa3be27fcce6960a5af. The follow-up changes only release verification and this evidence; product source remains identical. Exact new-head CI is still required and recorded in the PR.
