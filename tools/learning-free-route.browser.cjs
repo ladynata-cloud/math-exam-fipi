@@ -184,8 +184,14 @@ async function main() {
     await teacher.page.locator('#student-form [data-onboarding-next]').click();
     await teacher.page.locator('#student-form [type=submit]').click();
     await teacher.page.locator('#access-password').waitFor();
-    assert.deepEqual(store.rows('SELECT * FROM operations ORDER BY rowid'), receiptsBeforeIssuance,
-      'Issuing a real synthetic pupil credential must not create or modify any operation receipt');
+    const receiptsAfterIssuance = store.rows('SELECT * FROM operations ORDER BY rowid');
+    assert.equal(receiptsAfterIssuance.length, receiptsBeforeIssuance.length + 1,
+      'Atomic onboarding adds exactly one retry receipt');
+    assert.deepEqual(receiptsAfterIssuance.slice(0, receiptsBeforeIssuance.length), receiptsBeforeIssuance,
+      'Onboarding preserves every earlier operation receipt');
+    const onboardingReceipt = receiptsAfterIssuance.at(-1);
+    assert.equal(onboardingReceipt.actor_id, teacherSession.account.id);
+    assertCredentialFreeReceipt(onboardingReceipt, PUPIL_PASSWORD);
     assert.equal(await teacher.page.locator('#access-login').inputValue(), PUPIL_LOGIN);
     assert.equal(await teacher.page.locator('#access-password').inputValue(), PUPIL_PASSWORD);
     const accessURL = new URL(await teacher.page.locator('#access-link').inputValue());
@@ -199,9 +205,14 @@ async function main() {
     assert.equal(await teacher.page.locator('#access-password').count(), 0, 'Closing removes plaintext credential card');
     const roster = await api(teacher.page, '/teacher/students'), pupil = roster.students.find(student => student.login === PUPIL_LOGIN);
     assert.equal(pupil.active, true); assert.equal(JSON.stringify(roster).includes(PUPIL_PASSWORD), false);
+    assert.deepEqual(JSON.parse(onboardingReceipt.result_json), {
+      operation: 'onboard-student', learnerId: pupil.id, authEpoch: 0, profileVersion: 1
+    }, 'The onboarding receipt contains only the exact nonsecret retry metadata');
     const peer = (await api(teacher.page, '/teacher/students', { name: 'Другой ученик', login: 'fixture_route_peer', password: PASSWORD })).student;
     const existing = await raw(teacher.page, '/teacher/students', { name: 'Не менять', login: PUPIL_LOGIN, password: PASSWORD });
     assert.equal(existing.status, 409, 'Duplicate login cannot overwrite credentials');
+    assert.deepEqual(store.rows('SELECT * FROM operations ORDER BY rowid'), receiptsAfterIssuance,
+      'Legacy credential creation and rejected duplicates create or modify no operation receipts');
     const plan = { opId: uuid(), items: [{ catalogId: 'path:equations-signs', reason: 'Рекомендация только этой ученице', priority: 'high' }], note: 'Выбирайте порядок самостоятельно.' };
     await api(teacher.page, '/teacher/students/' + pupil.id + '/plan', plan);
     await api(teacher.page, '/teacher/students/' + peer.id + '/plan', { opId: uuid(), items: [], note: 'Закрытый план другого ученика' });
