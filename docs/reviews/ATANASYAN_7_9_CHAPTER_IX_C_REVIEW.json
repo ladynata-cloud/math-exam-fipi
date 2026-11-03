@@ -1,0 +1,256 @@
+{
+  "reviewId": "ATANASYAN_7_9_CHAPTER_IX_C_REVIEW",
+  "reviewer": "/root/review_c_theory",
+  "date": "2026-11-03",
+  "scope": "Chapter IX exercises 795–823, every one of 32 explicit-part cards",
+  "independentOfAuthor": true,
+  "verdict": "PASS",
+  "sourceFidelity": "PASS",
+  "mathematicsAndPedagogy": "PASS",
+  "coordinateModels": "PASS",
+  "sourceEdition": "2023 fourteenth revised edition",
+  "sourceSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "sourcePagesActuallyViewed": [
+    209,
+    210,
+    211,
+    212,
+    213
+  ],
+  "sourcePageImageSha256": {
+    "209": "720d842577e334d5f451cb62add34694259e92be01020438fa3bca4fea90cebc",
+    "210": "5b932f023c76451ce676da728a07087c042f73551217eba3219f2740ee71ba51",
+    "211": "dcd83d0a3226864f2146b38e594ea1cda78eac754aa79cd3defbb04e31675010",
+    "212": "b43c9b2e207a38a4fc7605d4ccc54d12368d18dcd50d5904e9d79c388486f344",
+    "213": "1cf9f47d1ea5ca2347f10ea01eb89361c1015eb676ce0a90ac3e8b80b0292c0b"
+  },
+  "method": "Read the actual source page images, all 32 conditions and answers, all 110 complete proof steps, all model definitions and all 110 didactic theory reference sets. Independently derived the difficult converse proofs, checked ordinary versus directed angles, construction existence, degeneracies and every stored model. Numerical assertions read generated artifacts without importing the author generator; the generic model validator is supplementary.",
+  "cards": 32,
+  "steps": 110,
+  "views": 150,
+  "claims": 183,
+  "independentTestMethods": 10,
+  "command": "python3 tools/geometry-textbook/chapter09-c-independent.test.py",
+  "result": "PASS: 10 tests, 0 failures",
+  "files": {
+    "tools/geometry-textbook/models_ch9_c.py": "1e396f8e575b6c6e4ac9d9b3879e8ed56dfabd81df265cba6552c2c60b96c33c",
+    "geometry-course/textbook/preparation/chapter-09-c.json": "fb3040e8e74711514384d9339db59be8674e736e68a29a3880fdb7a5cffc7f55",
+    "geometry-course/textbook/models/chapter-09-c.json": "af23d86086a1368aa2dd2b0fca21a2f83c9c8f804d1c1c91f2bc609778e77e35",
+    "tools/geometry-textbook/chapter09-c-independent.test.py": "52a2d1e65a295dc9962f4d983269fd075d16de39b28303c6f9b41c6581e44511"
+  },
+  "cardsReviewed": [
+    {
+      "number": 795,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Perpendicular bisector locus and uniqueness checked for all four sides."
+    },
+    {
+      "number": 796,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Internal bisectors of supplementary angles and triangle angle sum give 90 degrees."
+    },
+    {
+      "number": 797,
+      "part": "а",
+      "result": "PASS",
+      "reason": "External tangency; equal tangent lengths prove the right angle. Difference-of-radii projection gives MK=2 sqrt(Rr), including the equal-radius limit."
+    },
+    {
+      "number": 797,
+      "part": "б",
+      "result": "PASS",
+      "reason": "External tangency; equal tangent lengths prove the right angle. Difference-of-radii projection gives MK=2 sqrt(Rr), including the equal-radius limit."
+    },
+    {
+      "number": 798,
+      "part": "а",
+      "result": "PASS",
+      "reason": "Both external and internal tangent formulas independently checked by perpendicular distances; strict d>R+r ensures existence and positive lengths."
+    },
+    {
+      "number": 798,
+      "part": "б",
+      "result": "PASS",
+      "reason": "Both external and internal tangent formulas independently checked by perpendicular distances; strict d>R+r ensures existence and positive lengths."
+    },
+    {
+      "number": 799,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Perpendicular diameter bisects the chord; central angles and the diameter-chord boundary case checked."
+    },
+    {
+      "number": 800,
+      "part": "single",
+      "result": "PASS",
+      "reason": "SAS proves equal chords for equal arcs; larger arcs use complements and semicircles use diameters."
+    },
+    {
+      "number": 801,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Complete coordinate proof retains a positive common factor, proving constancy of the ordinary angle across both line positions; independently checked for unequal circles and seven directions."
+    },
+    {
+      "number": 802,
+      "part": "а",
+      "result": "PASS",
+      "reason": "Part a openly corrects the ordinary-angle source assertion using exact 120/60 degree counterexamples. Part b proves concyclicity with the order caveat; both coordinate cases, tangencies and cyclicity independently checked."
+    },
+    {
+      "number": 802,
+      "part": "б",
+      "result": "PASS",
+      "reason": "Part a openly corrects the ordinary-angle source assertion using exact 120/60 degree counterexamples. Part b proves concyclicity with the order caveat; both coordinate cases, tangencies and cyclicity independently checked."
+    },
+    {
+      "number": 803,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Ordinary-angle proof checked in all nondegenerate configurations using the common inside arc. Independent three-parameter families check BC=CD on both sides of the midpoint; midpoint and diameter degeneracies explicit."
+    },
+    {
+      "number": 804,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Pitot plus rectangle side equalities forces a square."
+    },
+    {
+      "number": 805,
+      "part": "single",
+      "result": "PASS",
+      "reason": "S=pr and Pitot give all four source ratios and lengths; area and all four lengths independently recomputed from model coordinates."
+    },
+    {
+      "number": 806,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Equidistance from parallel lines places the center on the full midline; proof expressly permits the center outside its segment."
+    },
+    {
+      "number": 807,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Converse Pitot proof starts with a circle contained in the convex quadrilateral, avoiding contacts on extensions. First third-side contact, second supporting tangent, subtraction, and strict triangle inequality checked. Separate E-not-D contradiction model visibly violates the source equality."
+    },
+    {
+      "number": 808,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Right trapezoid height 2r, Pythagoras and Pitot yield r=ab/(a+b); squaring sign and equal-base extension checked."
+    },
+    {
+      "number": 809,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Equal opposite rhombus angles plus cyclic angle sum force four right angles."
+    },
+    {
+      "number": 810,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Converse cyclic criterion avoids circular reasoning. The angle-sum hypothesis proves that ray BC enters circle ABD through the tangent-chord sector; the two exterior-angle contradictions are complete. Tangent and radius appear from step 2, and both distinct C/E cases are explicitly hypothetical."
+    },
+    {
+      "number": 811,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Both perpendiculars and circle on diameter OC checked; ACBO is the correct vertex order."
+    },
+    {
+      "number": 812,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Opposite intersections of trapezoid angle bisectors are right angles; nondegenerate convexity condition explicit."
+    },
+    {
+      "number": 813,
+      "part": "single",
+      "result": "PASS",
+      "reason": "B,H,M,C lie on the circle with diameter BM; the relevant equal inscribed angles checked."
+    },
+    {
+      "number": 814,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Equilateral triangle center/median ratio gives R=2r and r=5 cm when R=10 cm."
+    },
+    {
+      "number": 815,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Tangential parallelogram is a rhombus and cyclic parallelogram is a rectangle, hence square."
+    },
+    {
+      "number": 816,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Cyclic trapezoid is isosceles; Pitot and Pythagoras yield h squared=ab and r=sqrt(ab)/2. Both circles independently checked."
+    },
+    {
+      "number": 817,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Intersection of the perpendicular at A and perpendicular bisector AB proves construction, existence and uniqueness; model verified."
+    },
+    {
+      "number": 818,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Middle parallel and circle centered at P produce exactly two solutions inside the strip and none outside. Boundary is excluded by the source; all shown cases checked."
+    },
+    {
+      "number": 819,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Both opposite central-angle sums separately equal 180 degrees using internal angle bisectors."
+    },
+    {
+      "number": 820,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Consecutive contact arcs have total 180 degrees for opposite cyclic angles; intersecting chords are perpendicular. All contact positions checked."
+    },
+    {
+      "number": 821,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Proof preserves consecutive arcs, even an arc larger than a semicircle. Arc midpoint sums imply perpendicular diagonals."
+    },
+    {
+      "number": 822,
+      "part": "single",
+      "result": "PASS",
+      "reason": "All three original angle bisectors reach opposite arc midpoints; each becomes a new triangle altitude. All three numerical angle/perpendicular identities checked."
+    },
+    {
+      "number": 823,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Acute hypothesis ensures interior rays and positive half angles; all three altitude lines become internal bisectors. Every altitude and bisector checked independently."
+    }
+  ],
+  "findingsClosed": [
+    "797б projection H corrected so the model reflects the radius difference rather than the wrong sign.",
+    "801/802 coincident D and O1 label collision removed in the second case, while retaining the correct center coordinate.",
+    "802а source claim is explicitly qualified, exact 120/60 counterexample preserved, and center notation corrected to O1C.",
+    "803 proof replaced an ambiguous directed-angle conversion with a complete ordinary-angle argument and explicit existence restrictions.",
+    "807 proof closes the inside-circle and contact-placement gap; distinct contradiction view includes CE and triangle CED and labels the violated hypothesis.",
+    "810 existence of a second BC intersection is proved from the angle-sum condition; both exterior-angle cases have separate views and the tangent/radius construction is shown from step 2 only.",
+    "811 corrected perpendicular geometry verified by independent dot products and common-circle distances.",
+    "All 110 theory reference sets checked against exact-edition titles after correcting Pythagoras, circle/tangent, perpendicular-bisector, inequality, quadrilateral and square references.",
+    "Empty labels replaced with explicit unlabelled helper identifiers; every view passed distinct visible-label coordinate checks."
+  ],
+  "changesMadeToAuthoredContent": [],
+  "reviewerContributions": "Reviewer sent mathematical derivations and requested fixes to author; author exclusively edited the preparation, models and generator. Reviewer wrote only this report and the independent regression test.",
+  "crossLinkAudit": "PASS: all 110 step reference sets checked against exact 2023 theory titles. Geometric arguments not directly named by a linked theory point are fully explained in their proof text.",
+  "openContentFindings": [],
+  "limits": [
+    "No rendered browser panel or complete screenshot was inspected in this review. All 150 views require the separate 320/1280 visual review.",
+    "This report is not chapter-wide source approval, runtime approval, release approval, external-provider verdict, or exact-head CI evidence.",
+    "SourceVerified/mathVerified fields remain author metadata; this hash-bound independent report supplies separate content review.",
+    "Theory 76–83 and selfchecks 1–19 are reviewed separately by /root/review_ab."
+  ]
+}
