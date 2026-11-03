@@ -139,10 +139,10 @@
   for(const x of [-.39,.39])for(const z of [-.28,.28])box(stove,.12,.25,.12,tread,x,-.96,z);
   // A fenced rectangular plot, gabled house, path and tree.
   const plot=models.plot=new T.Group();
-  box(plot,2.4,.12,1.9,green,0,-.5,0);
-  box(plot,.95,.85,.8,cream,-.35,-.03,-.25);
+  mesh(plot,new T.BoxGeometry(2.4,.12,1.9,8,1,8),green,0,-.5,0);
+  mesh(plot,new T.BoxGeometry(.95,.85,.8,8,8,8),cream,-.35,-.03,-.25);
   const roofShape=new T.Shape();roofShape.moveTo(-.6,0);roofShape.lineTo(0,.45);roofShape.lineTo(.6,0);roofShape.closePath();
-  mesh(plot,new T.ExtrudeGeometry(roofShape,{depth:1,bevelEnabled:false}),terra,-.35,.395,-.75);
+  mesh(plot,new T.ExtrudeGeometry(roofShape,{depth:1,steps:8,bevelEnabled:false}),terra,-.35,.395,-.75);
   box(plot,.21,.44,.03,ink,-.35,-.2,.165);
   box(plot,.21,.22,.04,silver,-.65,.04,.17);
   box(plot,.3,.02,.65,cream,-.35,-.425,.58);
@@ -156,10 +156,9 @@
   const sheetMats=[cream,green,material(0xe8ba80)];
   for(let i=0;i<3;i++){
     const scale=Math.pow(Math.SQRT1_2,i),sheet=new T.Group();
-    sheet.position.set(i*.14,i*.12,i*.14);paper.add(sheet);
-    box(sheet,1.6*scale,.055,1.6*Math.SQRT2*scale,sheetMats[i]);
-    const long=1.6*Math.SQRT2*scale;
-    for(let n=0;n<3;n++)box(sheet,.75*scale,.008,.025,ink,0,.033,-long*.25+n*.17*scale);
+    // Separate parallel sheets stay legible in both GPU and painter rendering.
+    sheet.position.set([-1.15,.12,1.05][i],0,0);paper.add(sheet);
+    box(sheet,1.2*scale,.055,1.2*Math.SQRT2*scale,sheetMats[i]);
   }
   // A conventional die: opposing face counts sum to seven.
   const dice=models.dice=new T.Group();box(dice,1.35,1.35,1.35,cream);
