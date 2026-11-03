@@ -255,3 +255,32 @@ the checks and HIGH review decision are complete.
   concurrent main releases and every personal learning store; no migration.
 - Final gate results, current exact head, release decision and deployed evidence
   are recorded in PR340. Old 2026-10-27 CI is historical only.
+
+## Complete geometry cabinet request — 2026-11-04
+
+The owner requested a pupil cabinet containing OGE11 and all OGE geometry
+trainers, with shared-board synchronization. This continues the existing mirror
+release; standing publication authorization applies. Risk remains HIGH.
+
+- The existing account and its private plan are updated only through the teacher
+  UI. No pupil identifier, login, credential, access link or work enters Git.
+- The saved plan includes nine distinct public practices: 11, 15–19 and 23–25.
+  Add the three second-part cards to the existing fixed URL allowlist. Public
+  practice and room work remain distinct from managed independent attempts.
+- Existing source guard failures are traced to the published chapter IX bundle.
+  All 255 beginning-route lessons and their catalogue entries are independently
+  compared with that bundle and are unchanged. Rebind the source SHA only and
+  rebuild the assistant projection; the sealed original selection SHA and
+  original whole-route identity check remain unchanged.
+- The book regression previously compared full pre-mirror HTML with the newer
+  board pages. A static exact inverse of the 19 already reviewed integration
+  hunks now precedes the original book inverse in that test only. Both full
+  candidate/base identities and all original historical hashes remain sealed.
+  Mutation/omission/extra-code probes cover every inverse. Existing native
+  engine snapshot gates and actual persistence tests are unchanged.
+- Local cabinet/book regressions: 41 passed. New exact-head CI and live two-role
+  verification are still required before declaring publication complete.
+- External provider review was not performed under the standing owner policy.
+  No new bridge archetype, authentication contract or database migration.
+- Rollback remains a scoped revert of the reviewed base-to-merge delta, retaining
+  concurrent textbook releases and private saved plans/work.
