@@ -1,7 +1,7 @@
 # Pupil onboarding and course assignment — verification record
 
-Task: [STUDENT_ONBOARDING_COURSES](../../tasks/STUDENT_ONBOARDING_COURSES.md).  
-Review level: **HIGH**. Base: `37718f1c0138ba031314b8f4716b73c9d963bc81`.  
+Task: [STUDENT_ONBOARDING_COURSES](../../tasks/STUDENT_ONBOARDING_COURSES.md).\
+Review level: **HIGH**. Base: `37718f1c0138ba031314b8f4716b73c9d963bc81`.\
 Candidate branch: `feat/student-onboarding-courses-20261101`.
 
 This is a preparation record. The Draft PR supplies the final head and CI

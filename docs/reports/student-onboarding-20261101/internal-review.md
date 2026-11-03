@@ -1,7 +1,7 @@
 # Independent internal HIGH review
 
-Date: 2026-11-01. Task: `STUDENT_ONBOARDING_COURSES`.  
-Base: `37718f1c0138ba031314b8f4716b73c9d963bc81`.  
+Date: 2026-11-01. Task: `STUDENT_ONBOARDING_COURSES`.\
+Base: `37718f1c0138ba031314b8f4716b73c9d963bc81`.\
 Implementation commit: `79ab2da2be8d21b7d14444026869c4d4f1a4f950`.
 
 Verdict: **INTERNAL_REVIEW_PASS**. No unresolved blocking findings. The reviewer
