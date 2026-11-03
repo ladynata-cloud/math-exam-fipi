@@ -48,6 +48,22 @@ const server = http.createServer((req, res) => {
       }
       for (const width of [320, 390, 1280]) {
         await page.setViewportSize({ width, height: 900 });
+        for (const [source, target] of [
+          ['/trainers/oge-course/', '/oge/variants/2027/'],
+          ['/articles/stroynost-kursa-geometrii/', '/geometry-course/first-steps/'],
+        ]) {
+          await page.goto(origin + source);
+          const link = page.locator(`a[href="${target}"]`);
+          assert.equal(await link.count(), 1, `${source}: one direct practice entrance`);
+          assert.equal(await link.isVisible(), true);
+          await link.scrollIntoViewIfNeeded();
+          const rects = await link.evaluate(a => [...a.getClientRects()].map(r => ({left:r.left, right:r.right, width:r.width, height:r.height})));
+          assert(rects.length && rects.every(r => r.width > 0 && r.height > 0 && r.left >= -1 && r.right <= width + 1), `${source}: practice link fits ${width}px`);
+          await Promise.all([page.waitForURL(url => url.pathname === target), link.click()]);
+          assert((await page.locator('h1').first().innerText()).trim());
+          assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), 'https://mathexam.space' + target);
+        }
+        console.log(`SEO_PRACTICE_ENTRANCES_OK: two actual clicks, ${width}px, JavaScript ${javaScriptEnabled}`);
         for (const target of targets) {
           await page.goto(`${origin}/trainers/`);
           const links = page.locator('#catalog .actions a');
