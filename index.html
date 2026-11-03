@@ -5,18 +5,18 @@
 <meta name="yandex-verification" content="9aa99c095bf28e3b" />
 <meta name="google-site-verification" content="paEBFA2bkE7PARsDDCyY4OXupsgtIY44ZeYaZmVCCkA" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MathExam — математика 5–11 классов, ОГЭ и ЕГЭ</title>
-<meta name="description" content="Математика 5–11 классов, подготовка к ОГЭ и ЕГЭ. Индивидуальные онлайн-занятия с Натальей Михайловной, пошаговые тренажёры и наглядные примеры без регистрации.">
+<title>ОГЭ по математике — наглядный курс и тренажёры | MathExam</title>
+<meta name="description" content="Подготовка к ОГЭ по математике: шины, квартиры, графики и геометрия в наглядных моделях. Бесплатные тренажёры, пошаговые подсказки и варианты с решениями.">
 <link rel="canonical" href="https://mathexam.space/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="MathExam — математика 5–11 классов, ОГЭ и ЕГЭ">
-<meta property="og:description" content="Математика 5–11 классов, подготовка к ОГЭ и ЕГЭ. Индивидуальные онлайн-занятия с Натальей Михайловной, пошаговые тренажёры и наглядные примеры без регистрации.">
+<meta property="og:title" content="ОГЭ по математике — наглядный курс и тренажёры | MathExam">
+<meta property="og:description" content="Подготовка к ОГЭ по математике: шины, квартиры, графики и геометрия в наглядных моделях. Бесплатные тренажёры, пошаговые подсказки и варианты с решениями.">
 <meta property="og:url" content="https://mathexam.space/">
 <meta property="og:site_name" content="MathExam">
 <meta property="og:locale" content="ru_RU">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MathExam — математика 5–11 классов, ОГЭ и ЕГЭ">
-<meta name="twitter:description" content="Математика 5–11 классов, подготовка к ОГЭ и ЕГЭ. Индивидуальные онлайн-занятия с Натальей Михайловной, пошаговые тренажёры и наглядные примеры без регистрации.">
+<meta name="twitter:title" content="ОГЭ по математике — наглядный курс и тренажёры | MathExam">
+<meta name="twitter:description" content="Подготовка к ОГЭ по математике: шины, квартиры, графики и геометрия в наглядных моделях. Бесплатные тренажёры, пошаговые подсказки и варианты с решениями.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -24,7 +24,7 @@
   "@id": "https://mathexam.space/#website",
   "url": "https://mathexam.space/",
   "name": "MathExam",
-  "description": "Математика 5–11 классов, подготовка к ОГЭ и ЕГЭ. Индивидуальные онлайн-занятия с Натальей Михайловной, пошаговые тренажёры и наглядные примеры без регистрации.",
+  "description": "Подготовка к ОГЭ по математике: шины, квартиры, графики и геометрия в наглядных моделях. Бесплатные тренажёры, пошаговые подсказки и варианты с решениями.",
   "inLanguage": "ru-RU",
   "creator": {
     "@type": "Person",
@@ -37,6 +37,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/oge-home.css?v=20261104">
+<script defer src="/trainers/ege-profile-stereometry-3d/js/three.min.js"></script>
+<script defer src="/assets/oge-home.js?v=20261104"></script>
 <style>
   .actions { display:flex; flex-wrap:wrap; gap:12px; margin:24px 0; }
   #where-to-start { margin-top:36px; }
@@ -62,7 +65,7 @@
 <link rel="stylesheet" href="/assets/lesson-contacts.css?v=20261025">
 <script defer src="/assets/lesson-funnel.js?v=20261026"></script>
 </head>
-<body>
+<body class="oge-home">
 <a class="skip-link" href="#main-content">К содержанию</a>
 
 <!-- ==================== ШАПКА (единая для всего сайта) ==================== -->
@@ -83,23 +86,58 @@
 </header>
 
 <main id="main-content">
-<section class="hero">
-  <div class="container">
+<section class="hero oge-hero" aria-labelledby="oge-heading">
+  <div class="container hero-grid">
     <div class="hero-inner">
-      <p class="kicker">5–11 классы · ОГЭ · ЕГЭ базовый и профильный</p>
-      <h1>Понять математику.<br>Шаг за шагом.<br>Решать самостоятельно.</h1>
-      <p class="lead">Индивидуальные онлайн-занятия с Натальей Михайловной и
-        интерактивная практика: от вычислений и школьных тем до экзаменационных
-        задач. Познакомьтесь с подходом на нескольких коротких примерах.</p>
+      <p class="kicker">Бесплатный курс · 9 класс</p>
+      <h1 id="oge-heading">ОГЭ по математике.<br><em>Сначала — понять.</em></h1>
+      <p class="lead">Покрутить колесо. Рассмотреть квартиру. Увидеть, как улыбается парабола.<br>А потом — решить задачу самому.</p>
       <div class="actions">
-        <a class="btn" href="/lessons/" style="background:#17664f;border-color:#104b3a">Занятия для 5–11 классов</a>
-        <a class="btn secondary" href="/lessons/#examples">Попробовать задания</a>
-        <a class="btn secondary" href="/lessons/#contact">Обсудить занятия</a>
+        <a class="btn" href="/trainers/oge-course/">Начать заниматься <span aria-hidden="true">↗</span></a>
+        <a class="btn secondary" href="#oge-models">Рассмотреть модели</a>
       </div>
-      <p class="byline">Автор — Наталья Михайловна, учитель математики и репетитор.
-        Тренажёры выросли из живых занятий с учениками. Можно заниматься самостоятельно или разбирать темы вместе со мной онлайн.</p>
+      <p class="hero-note"><span aria-hidden="true">✓</span> Без регистрации · В своём темпе · С подсказками</p>
+      <p class="hero-author">Курс Натальи Михайловны<br><span>Из живых занятий — в понятные тренажёры.</span></p>
     </div>
-    <h2 id="where-to-start">С чего начнём?</h2>
+    <div class="model-exhibit" id="oge-models" aria-label="Объёмные модели из тем ОГЭ">
+      <div class="exhibit-top"><span><i aria-hidden="true"></i> Математика, которую видно</span><button type="button" id="model-pause" hidden aria-pressed="false">Пауза</button></div>
+      <div class="model-stage" id="model-stage">
+        <svg class="model-fallback" viewBox="0 0 600 440" role="img" aria-label="Шина, объёмный план квартиры и две параболы: ветвями вверх и вниз">
+          <defs><linearGradient id="tire-shade" x2="1" y2="1"><stop stop-color="#52665f"/><stop offset="1" stop-color="#173b31"/></linearGradient></defs>
+          <g transform="translate(182 226) rotate(-24)"><ellipse rx="97" ry="121" fill="url(#tire-shade)"/><ellipse rx="66" ry="91" fill="#aabeb0"/><ellipse rx="49" ry="71" fill="#f3f5e9"/><g stroke="#648374" stroke-width="10"><path d="M0 -71V71M-49 0H49M-34 -50L34 50M-34 50L34 -50"/></g><circle r="16" fill="#e9eddd"/></g>
+          <g transform="translate(365 245)"><path d="M-35 30L75 -20L165 30L55 85Z" fill="#d2dfc5" stroke="#759279"/><path d="M-35 30V-20L75 -70V-20Z" fill="#e0cbb0"/><path d="M75 -70L165 -20V30L75 -20Z" fill="#f4e5ce"/><path d="M25 2V-40L75 -18V27M75 -18L120 -40" fill="none" stroke="#91ab91" stroke-width="7"/></g>
+          <g fill="none" stroke-linecap="round" stroke-width="7"><path d="M320 65Q368 180 416 65" stroke="#4e8c6d"/><path d="M440 151Q488 36 536 151" stroke="#c68c59"/></g>
+          <g fill="#315747"><circle cx="354" cy="82" r="4"/><circle cx="382" cy="82" r="4"/><circle cx="475" cy="83" r="4"/><circle cx="500" cy="83" r="4"/></g>
+        </svg>
+        <canvas id="oge-model-canvas" hidden role="img" aria-label="Вращающиеся объёмные модели ОГЭ: шина, квартира, параболы и геометрические фигуры"></canvas>
+        <span class="scene-tag tag-tire" aria-hidden="true">215 / 65 R16</span><span class="scene-tag tag-graph" aria-hidden="true">y = ax² + c</span>
+      </div>
+      <div class="model-tabs" role="group" aria-label="Выбрать модель" hidden>
+        <button type="button" data-model="all" aria-pressed="true">Все</button>
+        <button type="button" data-model="tires" aria-pressed="false">Шины</button>
+        <button type="button" data-model="apartment" aria-pressed="false">Квартира</button>
+        <button type="button" data-model="graphs" aria-pressed="false">Параболы</button>
+        <button type="button" data-model="geometry" aria-pressed="false">Геометрия</button>
+      </div>
+      <div class="model-caption" aria-live="polite" aria-atomic="true"><div><span id="model-number">Знакомые сюжеты — понятные решения</span><p id="model-description">Выберите тему и попробуйте её в деле.</p></div><a id="model-link" href="/trainers/oge-course/">К заданиям <span aria-hidden="true">↗</span></a></div>
+      <p class="model-hint" id="model-hint" hidden>Модель можно повернуть мышью или пальцем ↔</p>
+    </div>
+  </div>
+</section>
+<section class="oge-topics section" aria-labelledby="oge-topics-title">
+  <div class="container">
+    <div class="section-intro"><div><p class="kicker">От картинки к решению</p><h2 id="oge-topics-title">Вот с чего можно начать</h2></div><a href="/trainers/oge-course/">Весь курс ОГЭ <span aria-hidden="true">↗</span></a></div>
+    <div class="topic-strip">
+      <a class="topic-tile" href="/trainers/oge-1-5-trainers/practice-1-5-tires.html"><span class="topic-art tire-art" aria-hidden="true">◉</span><span class="topic-number">№ 1–5</span><h3>Шины</h3><p>Что скрывается за маркировкой колеса?</p><span class="topic-arrow" aria-hidden="true">↗</span></a>
+      <a class="topic-tile" href="/trainers/oge-1-5-trainers/practice-1-5-apartments.html"><span class="topic-art plan-art" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="topic-number">№ 1–5</span><h3>Квартиры</h3><p>План, масштаб и площадь — по порядку.</p><span class="topic-arrow" aria-hidden="true">↗</span></a>
+      <a class="topic-tile" href="/trainers/oge-task11-graphs-trainer.html"><span class="topic-art graph-art" aria-hidden="true">∪ ∩</span><span class="topic-number">№ 11</span><h3>Графики</h3><p>Узнать функцию по её характеру.</p><span class="topic-arrow" aria-hidden="true">↗</span></a>
+      <a class="topic-tile" href="/trainers/oge-course/#geometry"><span class="topic-art geometry-art" aria-hidden="true">△</span><span class="topic-number">№ 15–19</span><h3>Геометрия</h3><p>Увидеть на чертеже то, что нужно для решения.</p><span class="topic-arrow" aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+</section>
+<section class="section start-section">
+  <div class="container">
+    <h2 id="where-to-start">Выберите свой следующий шаг</h2>
     <div class="entry-grid start-routes">
       <article class="entry">
         <span class="kicker">Решать экзаменационные задачи</span>
@@ -121,7 +159,7 @@
 
 <section class="section alt">
   <div class="container">
-    <h2>Что будем разбирать</h2>
+    <h2>Всё для подготовки</h2>
     <div class="entry-grid">
       <article class="entry">
         <span class="kicker">планы, таблицы и расчёты</span>
@@ -150,6 +188,13 @@
     </div>
   </div>
 </section>
+
+<section class="section lesson-entry" aria-labelledby="other-lessons-title"><div class="container">
+  <p class="kicker">5–11 классы · ОГЭ · ЕГЭ базовый и профильный</p>
+  <h2 id="other-lessons-title">Если нужна помощь преподавателя</h2>
+  <p>Индивидуальные онлайн-занятия с Натальей Михайловной: от школьных тем до экзаменационных задач.</p>
+  <div class="actions"><a class="btn" href="/lessons/">Занятия для 5–11 классов</a><a class="btn secondary" href="/lessons/#examples">Попробовать задания</a><a class="btn secondary" href="/lessons/#contact">Обсудить занятия</a></div>
+</div></section>
 
 <!-- seo-topic-links:start -->
 <section class="section" aria-labelledby="topic-explanations">

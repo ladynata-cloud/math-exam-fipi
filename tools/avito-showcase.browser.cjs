@@ -238,14 +238,14 @@ async function homepageEntry(browser, width) {
   try {
     await page.goto(base + '/', {waitUntil:'load'});
     await fits(page, 'homepage ' + width);
-    assert.match(await page.locator('.hero-inner .kicker').innerText(), /5–11.*ОГЭ.*ЕГЭ.*базовый.*профильный/i);
-    await inViewport(page, '.hero-inner .kicker', 'homepage grades and exam offer');
+    assert.match(await page.locator('.hero-inner .kicker').innerText(), /Бесплатный курс.*9 класс/i);
+    await inViewport(page, '.hero-inner .kicker', 'homepage OGE offer');
     await inViewport(page, '.hero-inner h1', 'homepage heading');
-    assert.deepEqual(await page.locator('.hero-inner .actions a').evaluateAll(links => links.map(a => a.getAttribute('href'))), entries.map(entry => entry.route));
+    assert.deepEqual(await page.locator('.lesson-entry .actions a').evaluateAll(links => links.map(a => a.getAttribute('href'))), entries.map(entry => entry.route));
     await screenshot(page, `homepage-${width}-initial`);
     for (const entry of entries) {
       await page.goto(base + '/', {waitUntil:'load'});
-      await page.locator('.hero-inner .actions a[href="' + entry.route + '"]').click();
+      await page.locator('.lesson-entry .actions a[href="' + entry.route + '"]').click();
       await page.waitForURL(base + entry.route);
       await page.locator(entry.target).waitFor();
       await inViewport(page, entry.target, 'homepage CTA reaches ' + entry.name, true);
@@ -254,8 +254,8 @@ async function homepageEntry(browser, width) {
       await screenshot(page, `homepage-${width}-to-${entry.name}`);
     }
     report.cases.push({page:'homepage', width, result:'PASS', destinations:entries.map(entry => entry.route),
-      checks:['grades and exams in hero', 'no horizontal overflow', 'three actual CTA navigations', 'rendered destination targets'], fonts:'inherited Google Fonts intercepted; system fallback rendered'});
-    console.log(`PASS homepage at ${width}px: school/OGE/EGE offer and three real showcase entry paths`);
+      checks:['OGE hero and retained school/EGE lesson entrances', 'no horizontal overflow', 'three actual CTA navigations', 'rendered destination targets'], fonts:'inherited Google Fonts intercepted; system fallback rendered'});
+    console.log(`PASS homepage at ${width}px: OGE landing and three retained real showcase entry paths`);
   } catch (error) {
     await screenshot(page, `homepage-${width}-failure`, true);
     report.cases.push({page:'homepage', width, result:'FAIL', error:error.message});
