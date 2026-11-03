@@ -5,9 +5,27 @@ from pathlib import Path
 from chapter08_extension import (ROOT,PREFIX,SCOPE,encoded,digest,require,
  assert_1083_preserved,check_evidence,PARAGRAPHS,sha)
 
+def historical_viii_projection(bundle,scope):
+ bundle,scope=deepcopy(bundle),deepcopy(scope)
+ if any(c['chapter']==9 for c in scope['chapters']):
+  bundle['lessons']=[r for r in bundle['lessons'] if r['source']['chapter']!='IX']
+  bundle['catalog']['entries']=[r for r in bundle['catalog']['entries'] if r['source']['chapter']!='IX']
+  bundle['build']['chapters']=[c for c in bundle['build']['chapters'] if c['chapter']!=9]
+  bundle['build']['authoredCards']-=160;bundle['build']['numberedExercises']-=87
+  scope['chapters']=[c for c in scope['chapters'] if c['chapter']!=9];scope['totalCards']-=160
+  authored=deepcopy(bundle['lessons'])
+  for row in authored:row.pop('review');row['status']='draft'
+  bundle['build']['authoredContentSha256']=digest(authored)
+  bundle['build']['publicationReviewMatches']=all(c['publicationReviewMatches'] for c in bundle['build']['chapters']+bundle['build']['supplements'])
+ return bundle,scope
+
 def validate_release(bundle,root=ROOT,course=None,require_review=True,scope=None):
  course=course or root/PREFIX
  scope=scope or json.loads((root/'tools/geometry-textbook/release-scope.json').read_bytes())
+ if any(c['chapter']==9 for c in scope['chapters']):
+  from chapter09_release import validate_release as validate_ix_release
+  validate_ix_release(bundle,root,course,require_review,scope)
+  bundle,scope=historical_viii_projection(bundle,scope)
  assert_1083_preserved(bundle,root,course,scope)
  require(set(bundle)=={'catalog','lessons','sourceInventory','build'},'Unknown release envelope metadata')
  require(set(bundle['catalog'])=={'schemaVersion','book','inventoryComplete','entries'},'Unknown catalog metadata')

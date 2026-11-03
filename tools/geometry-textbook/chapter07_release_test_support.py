@@ -24,6 +24,8 @@ def fixture(root):
  base=frozen()
  for name in set(base['immutableFiles'])|{FIXTURE,'tools/geometry-textbook/chapter-07-source-map.json'}:
   p=root/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(historical_bytes(ROOT/name))
+ from chapter09_release_test_support import strip_ix_for_historical_fixture
+ strip_ix_for_historical_fixture(root)
  # Strip the later chapter only in this synthetic historical test root.
  from chapter08_extension import (has_viii,previous_inventory as before_viii,
   BINDING as VIII_BINDING,restore_manifest as before_viii_manifest,

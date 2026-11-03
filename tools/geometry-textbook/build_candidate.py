@@ -25,6 +25,10 @@ def build(chapter,output):
         from chapter08_extension import SCOPE, PARAGRAPHS
         if candidate != {'chapter': 8, 'scope': SCOPE, 'paragraphs': PARAGRAPHS}:
             raise ValueError('Chapter VIII candidate must use its exact source scope and paragraphs')
+    if chapter == 9 and candidate is not None:
+        from chapter09_extension import SCOPE, PARAGRAPHS
+        if candidate != {'chapter': 9, 'scope': SCOPE, 'paragraphs': PARAGRAPHS}:
+            raise ValueError('Chapter IX candidate must use its exact source scope and paragraphs')
     target=output/'geometry-course/textbook'
     shutil.copytree(COURSE,target)
     inventory=read(target/'source-inventory.json')

@@ -92,14 +92,16 @@ def restore_manifest(name,raw,root=ROOT,course=None):
 
 def assert_893_preserved(bundle,root=ROOT,course=None,scope=None):
  course=course or root/PREFIX;base=frozen(root)
- rows=[x for x in bundle['lessons'] if x['source']['chapter'] not in ('VII','VIII')]
- entries=[x for x in bundle['catalog']['entries'] if x['source']['chapter'] not in ('VII','VIII')]
+ rows=[x for x in bundle['lessons'] if x['source']['chapter'] not in ('VII','VIII','IX')]
+ entries=[x for x in bundle['catalog']['entries'] if x['source']['chapter'] not in ('VII','VIII','IX')]
  require(len(rows)==len(entries)==893,'Unexpected old-card scope')
  require(digest(rows)==base['lessonsSha256'],'Previous893 lesson/order/status/review/storage identity changed')
  require(digest(entries)==base['catalogEntriesSha256'],'Previous893 catalog changed')
  review,_=validate_extension(root,course)
  from chapter08_extension import has_viii,validate_extension as validate_viii
  if has_viii((course/'source-inventory.json').read_bytes()):review,_=validate_viii(root,course)
+ from chapter09_extension import has_ix,validate_extension as validate_ix
+ if has_ix((course/'source-inventory.json').read_bytes()):review,_=validate_ix(root,course)
  require(bundle['build']['implementationSha256']==review['implementationSha256'],'Stale bundle VII runtime')
  require(bundle['sourceInventory']==json.loads((course/'source-inventory.json').read_bytes()),'Stale bundle source index')
  scope=scope or json.loads((root/'tools/geometry-textbook/release-scope.json').read_bytes())

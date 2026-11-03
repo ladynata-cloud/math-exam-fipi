@@ -5,6 +5,7 @@ on:
       - 'geometry-course/textbook/**'
       - 'docs/reviews/ATANASYAN_7_9_CHAPTER_VI*'
       - 'docs/reviews/ATANASYAN_7_9_CHAPTER_VIII*'
+      - 'docs/reviews/ATANASYAN_7_9_CHAPTER_IX*'
       - 'geometry-course/index.html'
       - 'tools/geometry-textbook/**'
       - 'tools/geometry/check_textbook_preparation.py'
@@ -41,6 +42,12 @@ jobs:
           python3 tools/geometry-textbook/chapter07-theory-math.test.py
           python3 tools/geometry-textbook/chapter08-candidate.test.py
           python3 tools/geometry-textbook/chapter08-release.test.py
+          python3 tools/geometry-textbook/chapter09-candidate.test.py
+          python3 tools/geometry-textbook/chapter09-release.test.py
+          python3 tools/geometry-textbook/chapter09-a-independent.test.py
+          python3 tools/geometry-textbook/chapter09-b-independent.test.py
+          python3 tools/geometry-textbook/chapter09-c-independent.test.py
+          python3 tools/geometry-textbook/chapter09-theory-independent.test.py
           python3 tools/geometry-textbook/chapter08-a-independent.test.py
           python3 tools/geometry-textbook/chapter08-b-independent.test.py
           python3 tools/geometry-textbook/chapter08-c-independent.test.py
@@ -67,16 +74,18 @@ jobs:
           node-version: '22'
       - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1
       - run: npx playwright install --with-deps chromium
-      - name: First viewport, all1247 cards, four screens and before-after evidence
+      - name: First viewport, all published cards, four screens and before-after evidence
         env:
           GEOMETRY_VIEWPORT_ARTIFACTS: artifacts/geometry-textbook/first-viewport
         run: node tools/geometry-textbook/first-viewport.browser.cjs
       - name: All source-audited cards, every drawing, mobile and desktop, actual saved work
         env:
           GEOMETRY_TEXTBOOK_ARTIFACTS: artifacts/geometry-textbook
-          GEOMETRY_TEXTBOOK_CAPTURE_CHAPTERS: 'VIII,VII,VI,7 класс · повышенная трудность'
           GEOMETRY_TEXTBOOK_HEAD: ${{ github.event.pull_request.head.sha }}
-        run: node tools/geometry-textbook/browser_check.js
+        run: |
+          # IX is isolated until promotion; every published requested section is captured.
+          export GEOMETRY_TEXTBOOK_CAPTURE_CHAPTERS="$(node -e "const b=require('./geometry-course/textbook/data/course.json');const labels=new Set(b.lessons.map(l=>l.source.chapter));process.stdout.write(['IX','VIII','VII','VI','7 класс · повышенная трудность'].filter(x=>labels.has(x)).join(','))")"
+          node tools/geometry-textbook/browser_check.js
       - name: Preserve actual browser evidence even on failure
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -179,7 +188,7 @@ jobs:
           python3 tools/geometry-textbook/build_candidate.py --chapter 8 --output "$RUNNER_TEMP/chapter08-review"
           node tools/geometry-textbook/chapter08-captions.test.cjs "$RUNNER_TEMP/chapter08-review"
           python3 tools/geometry-textbook/build_course.py --check
-      - name: All 1247 isolated cards, every view and actual saved work
+      - name: All isolated release cards, every view and actual saved work
         env:
           GEOMETRY_TEXTBOOK_ROOT: ${{ runner.temp }}/chapter08-review
           GEOMETRY_TEXTBOOK_ARTIFACTS: artifacts/chapter08-candidate
@@ -194,5 +203,42 @@ jobs:
           path: |
             artifacts/chapter08-candidate/
             ${{ runner.temp }}/chapter08-review/geometry-course/textbook/
+          retention-days: 7
+          if-no-files-found: error
+
+  chapter-ix-candidate:
+    needs: source-and-models
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+      - run: npx playwright install --with-deps chromium
+      - name: Reproduce the isolated IX snapshot without changing the public bundle
+        run: |
+          python3 tools/geometry-textbook/build_candidate.py --chapter 9 --output "$RUNNER_TEMP/chapter09-review"
+          node tools/geometry-textbook/chapter09-captions.test.cjs "$RUNNER_TEMP/chapter09-review"
+          python3 tools/geometry-textbook/build_course.py --check
+      - name: All isolated release cards, every view and actual saved work
+        env:
+          GEOMETRY_TEXTBOOK_ROOT: ${{ runner.temp }}/chapter09-review
+          GEOMETRY_TEXTBOOK_ARTIFACTS: artifacts/chapter09-candidate
+          GEOMETRY_TEXTBOOK_CAPTURE_CHAPTERS: IX
+          GEOMETRY_TEXTBOOK_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: node tools/geometry-textbook/browser_check.js
+      - name: Preserve candidate evidence and explicit preview
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: atanasyan-chapter09-candidate
+          path: |
+            artifacts/chapter09-candidate/
+            ${{ runner.temp }}/chapter09-review/geometry-course/textbook/
           retention-days: 7
           if-no-files-found: error

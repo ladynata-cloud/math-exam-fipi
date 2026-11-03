@@ -90,7 +90,7 @@ class ChapterVIIPublishedBoundary(unittest.TestCase):
    course=Path(name)/'course';shutil.copytree(COURSE,course)
    p=course/'candidate-chapters.json';r=read(p);r['chapters'].append({'chapter':6});p.write_text(json.dumps(r))
    with self.assertRaisesRegex(ValueError,'cannot hide'):compose(course)
-  with self.assertRaisesRegex(ValueError,'registered'):compose(include_candidates=[9])
+  with self.assertRaisesRegex(ValueError,'registered'):compose(include_candidates=[10])
 
 
 class ChapterVIICompleteCandidate(unittest.TestCase):

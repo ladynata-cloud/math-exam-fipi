@@ -1,0 +1,345 @@
+{
+  "schemaVersion": 1,
+  "status": "local-infrastructure-gates-passed-cloud-browser-review-pending",
+  "at": "2026-11-03T00:47:24.812538+00:00",
+  "reviewer": "Codex subagent ix_infrastructure",
+  "baseCommit": "d74b8d599a5031a0620679a76dd08151fa171661",
+  "scope": "Restore chapter IX candidate/release infrastructure onto current main while preserving the exact PR419 first-viewport amendment and all1247 published records.",
+  "independence": {
+    "recoveredScaffold": "Reviewed independently of the authors who prepared the2026-10-30 scaffold; this review discovered and fixed inherited test defects.",
+    "currentIntegration": "Self-review: this agent authored the current-base/PR419 composition and fixes. Independent root review is recorded separately in ATANASYAN_7_9_CHAPTER_IX_ROOT_TECHNICAL_REVIEW.json; no browser/publication approval is implied.",
+    "contentAndDrawings": "Not reviewed by this agent.",
+    "publicationApprovalGranted": false
+  },
+  "preservation": {
+    "publishedCards": 1247,
+    "publishedBundleSha256": "af1e3a373745d3a66e3e6f71b14d02de4cd81f0c688a8929c0475277cc22b574",
+    "frozenFiles": 243,
+    "frozenOracleUnchanged": true,
+    "historicalReceiptsUnchanged": true,
+    "normalization": "Only the existing exact reversible PR419 engine/style delta through layout_amendment.historical_bytes. Unknown bytes still fail; no wildcard exemptions."
+  },
+  "findings": [
+    {
+      "id": "INFRA-1",
+      "status": "fixed",
+      "description": "Recovered IX expected eight prior manifests; actual frozen publication has nine, including the advanced-grade7 supplement."
+    },
+    {
+      "id": "INFRA-2",
+      "status": "fixed",
+      "description": "The historical-gate foreign-chapter negative probe performed no mutation (IX→IX); it now changes IX→X."
+    },
+    {
+      "id": "INFRA-3",
+      "status": "fixed",
+      "description": "Public browser capture list unconditionally included unpublished IX. It now selects requested captures from actual declared bundle chapters; isolated IX job always captures IX."
+    },
+    {
+      "id": "INFRA-4",
+      "status": "fixed",
+      "description": "Global source-caption test stopped at VIII. Exact IX Roman mapping and independently inventoried paragraphs are now included only after IX publication."
+    },
+    {
+      "id": "INFRA-5",
+      "status": "fixed",
+      "description": "PR419 layout test assumed the whole course forever contains1247 cards. On IX publication it now validates the exact1407 union and unchanged old1247 records."
+    }
+  ],
+  "checksPassed": [
+    {
+      "command": "python3 tools/geometry-textbook/build_course.py --check",
+      "result": "Exact published1247-byte reproduction."
+    },
+    {
+      "command": "python3 -m compileall -q tools/geometry-textbook",
+      "result": "Python syntax passes."
+    },
+    {
+      "command": "python3 tools/geometry-textbook/chapter09-candidate.test.py ChapterIXPublishedBoundary",
+      "tests": 3
+    },
+    {
+      "command": "python3 tools/geometry-textbook/chapter09-release.test.py ChapterIXRelease.test_stager_rejects_working_tree_existing_output_and_absent_receipts ChapterIXRelease.test_current_declared_candidate_or_release_stage",
+      "tests": 2
+    },
+    {
+      "command": "python3 tools/geometry-textbook/chapter09-release.test.py ChapterIXRelease.test_exact_existing_layout_amendment_preserves_ix_chain_but_unknown_bytes_fail ChapterIXRelease.test_all_nine_previous_manifests_restore_exact_git_snapshot_bytes",
+      "tests": 2
+    },
+    {
+      "command": "python3 tools/geometry-textbook/layout-amendment.test.py",
+      "tests": 5
+    },
+    {
+      "command": "python3 tools/geometry-textbook/review_scope_test.py",
+      "tests": 13
+    },
+    {
+      "command": "python3 tools/geometry-textbook/chapter06-candidate.test.py",
+      "tests": 6
+    },
+    {
+      "command": "python3 tools/geometry-textbook/chapter06-release.test.py",
+      "tests": 6
+    },
+    {
+      "command": "python3 tools/geometry-textbook/chapter07-candidate.test.py",
+      "tests": 8
+    },
+    {
+      "command": "python3 tools/geometry-textbook/chapter07-release.test.py",
+      "tests": 9
+    },
+    {
+      "command": "python3 tools/geometry-textbook/chapter08-candidate.test.py",
+      "tests": 8
+    },
+    {
+      "command": "python3 tools/geometry-textbook/chapter08-release.test.py",
+      "tests": 13
+    },
+    {
+      "command": "git diff --check",
+      "result": "Pass."
+    },
+    {
+      "command": "YAML parse of .github/workflows/atanasyan-planimetry.yml",
+      "result": "Six jobs parse, including isolated IX job and retained first-viewport step."
+    },
+    {
+      "command": "node tools/geometry-textbook/captions.test.cjs",
+      "result": "1247 titles,26DOM journeys,stable work keys."
+    },
+    {
+      "command": "python3 tools/geometry-textbook/chapter09-a-independent.test.py",
+      "result": "57cards,285independent assertions,218views,258claims."
+    },
+    {
+      "command": "python3 tools/geometry-textbook/chapter09-b-independent.test.py",
+      "tests": 12
+    },
+    {
+      "command": "Workflow capture selection shell command",
+      "result": "Unpublished IX excluded; captures VIII,VII,VI,advanced7, retaining strict browser scope assertion."
+    },
+    {
+      "command": "python3 tools/geometry-textbook/chapter09-candidate.test.py",
+      "tests": 8,
+      "result": "Root reran after final C810 tangent-step and802 combined-label corrections; all160 source cards and isolated1407 union pass.",
+      "seconds": 14.264
+    },
+    {
+      "command": "python3 tools/geometry-textbook/chapter09-release.test.py",
+      "tests": 14,
+      "result": "Root reran the complete synthetic1407 release and negative-probe suite after the final C corrections; pass, not publication approval.",
+      "seconds": 87.9
+    },
+    {
+      "command": "python3 tools/geometry-textbook/chapter09-c-independent.test.py",
+      "tests": 9
+    },
+    {
+      "command": "python3 tools/geometry-textbook/chapter09-theory-independent.test.py",
+      "result": "27cards,631independent assertions,186views,329claims."
+    },
+    {
+      "command": "node tools/geometry-textbook/chapter09-captions.test.cjs <isolated IX candidate>",
+      "result": "Root verified160 IX card DOM journeys with exact paragraph/chapter/point captions and public/candidate boundary."
+    }
+  ],
+  "notRun": [
+    "Cloud browser/whole-image review: local Chromium launch is restricted; root will run the committed candidate through GitHub CI.",
+    "Actual release receipts, promotion, merge and live publication."
+  ],
+  "files": [
+    {
+      "path": ".github/workflows/atanasyan-planimetry.yml",
+      "sha256": "a5f161240fa48c38521ebf940c3a32511c3255b4cc9c3d92a2eee80cd44c2a2c"
+    },
+    {
+      "path": "geometry-course/textbook/candidate-chapters.json",
+      "sha256": "0144f613b6507894bc4ef7fbe244ad3112c671935278379e1e0e8343f4a2298b"
+    },
+    {
+      "path": "tools/geometry-textbook/build_candidate.py",
+      "sha256": "3af1aedafd2df89ec13e3f788a17ef95edb66dbef31a495fc68f52ddfd146a38"
+    },
+    {
+      "path": "tools/geometry-textbook/build_course.py",
+      "sha256": "1f20bd020a8da3b7b114d73367958d3f63d18a4b25a5f668b5c7d78dd7af5773"
+    },
+    {
+      "path": "tools/geometry-textbook/captions.test.cjs",
+      "sha256": "7c5c74c28d77860bc82a38c4529cac1214bc91f3cdf025f4218238d78e03ecd4"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter06-candidate.test.py",
+      "sha256": "3e72bfb45b05d73d09788e15ac869726ce07e8fc85100f3cc471db742a1a2d3c"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter06-release.test.py",
+      "sha256": "6bf04ef014681932d4b7cb6a33cc0c1fb8b62160bddd255da90d4c1f333ea5f5"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter06_extension.py",
+      "sha256": "4250afad079a4aa116cfca32fee335ac25a249997578d5df8442d970cac5c4b6"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter07-candidate.test.py",
+      "sha256": "2c09c3f8d3ff7b22eda1859a0a0cb16f08d913c01a7574516eb7b21e56732699"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter07-captions.test.cjs",
+      "sha256": "d3a6f17658d9c71aa5a7aef481f301e87d6d8766cd2e5ac29bfa401692a54bae"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter07_extension.py",
+      "sha256": "09ce3049646d8f7222f3b0bd934dd37ea80da9904845eab7a5f7761e5b17aed3"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter07_release.py",
+      "sha256": "4723d247aff492149991797f36032caf96fde4e1e55e743e02a1b548e9b62ebf"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter07_release_test_support.py",
+      "sha256": "81e30e7ec6408c5cfabef9a3920347103e478572c11bedc933853a7ee4c78712"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter08-candidate.test.py",
+      "sha256": "55b5fbb370e258b5a311e939d1891cc8a6d9a23fe62983138d351210118b39db"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter08-captions.test.cjs",
+      "sha256": "c133c8bf2f2b6c322447288211fa7168a622d909e666de57bd3130f4993356a3"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter08_extension.py",
+      "sha256": "c2357f1e20651e43bd7cf29b00a791848d080a5dcaddd527552a072e8a9f9de8"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter08_release.py",
+      "sha256": "cfe616d5e750edb07042f9decf8370a572366eb0815355962d10d6794b3cc9fc"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter08_release_test_support.py",
+      "sha256": "f69c35676650ca3d675a382db15f2756515d2ab88ec7783e6e490d8882b6da3c"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter09-candidate.test.py",
+      "sha256": "0f9d8df4f9006441200033628c4ed905c7676dd58a43fd9a851b009517bbab98"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter09-captions.test.cjs",
+      "sha256": "8b067f25fb7d53f10291e38acceed0a8fad6e2704a51fbedebb3e4a27ad69f79"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter09-release.test.py",
+      "sha256": "ad802a947cd983fbc80ed50894e185b767e82ce05c658890e83f86c158570887"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter09_common.py",
+      "sha256": "c12b882aefc17d6285cb6f36f4314f6629f80e72f116407bf02bd7a421f63002"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter09_extension.py",
+      "sha256": "97dfe98ca80b7bbcbd3fe9a5649aa425d558290a1fea394a60b27f1e64db5a00"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter09_preservation.py",
+      "sha256": "cea8d13aaf8198277c07122889f3ae172a490b1816010b9911cef7445a2bed71"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter09_release.py",
+      "sha256": "2b0bb9cfa1d515df8fc240f498739e7e3a670c994cfcf0bb6cc53b37305f7714"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter09_release_test_support.py",
+      "sha256": "76ea8deefbffaa4d8a5f5ec0006d86137e2f5705b5a69ae58cbe1f32234fc8e1"
+    },
+    {
+      "path": "tools/geometry-textbook/layout-amendment.test.py",
+      "sha256": "2cef1197213ce123b6a16a5e25f6cf4b32bceba3443bdee99c465924df72fdfd"
+    },
+    {
+      "path": "tools/geometry-textbook/published-through-736.json",
+      "sha256": "b68fe9b0e0e0f0281683f11d319beecce281c71d745748039df255609c390e65"
+    },
+    {
+      "path": "tools/geometry-textbook/published_preservation.py",
+      "sha256": "a6871752b9c24da225a2bb41cbadafb200a6c6e1f197d07f27cd80a6ac6d8836"
+    },
+    {
+      "path": "tools/geometry-textbook/review_scope_test.py",
+      "sha256": "551aa6f81637edfc8ce0e1e658cac32dc99a8079d48df39a8391870006ed5f8e"
+    },
+    {
+      "path": "tools/geometry-textbook/stage_chapter09_release.py",
+      "sha256": "12cf5c972f8db879b93a9450a9acb7c9d8858e0bf576d43b259f43761e3d443e"
+    }
+  ],
+  "next": [
+    "Run exact committed-head source/models and browser CI with all four independent mathematics test commands.",
+    "Review every new model view and retained-work evidence from the cloud candidate.",
+    "Create actual hash-bound content/runtime review receipts only after completed independent review and browser evidence.",
+    "Keep all1247 existing records and exact PR419 UI amendment intact through staging and release."
+  ],
+  "failuresObserved": [
+    {
+      "command": "python3 tools/geometry-textbook/chapter09-candidate.test.py",
+      "result": "Initial run failed for visible D/O label coincidence in801case1; full scan also found802a/bcase1. Author corrected all three;8-test rerun passed."
+    }
+  ],
+  "limitations": [
+    "Final candidate/release reruns validate the160-card source/model snapshot listed in gateInputs. Final committed-head CI and actual screenshot review remain required. This report does not itself approve mathematics, browser behavior or publication."
+  ],
+  "gateInputs": [
+    {
+      "path": "geometry-course/textbook/models/chapter-09-a.json",
+      "sha256": "84c114bc6b1fb9187af75897be85e02d78a9e4dd73933ffd6f41c94efb04c6f6"
+    },
+    {
+      "path": "geometry-course/textbook/models/chapter-09-b.json",
+      "sha256": "19ec1a58cbf56c83e7af6fcc27eab6bf0789ede92ab8f3a286986cc15b0ef444"
+    },
+    {
+      "path": "geometry-course/textbook/models/chapter-09-c.json",
+      "sha256": "af23d86086a1368aa2dd2b0fca21a2f83c9c8f804d1c1c91f2bc609778e77e35"
+    },
+    {
+      "path": "geometry-course/textbook/models/chapter-09-theory.json",
+      "sha256": "40eb230a8b6b9745fd8bb109064440c369b56e3fce1c4188fe66ad079834684a"
+    },
+    {
+      "path": "geometry-course/textbook/preparation/chapter-09-a.json",
+      "sha256": "4113dd07985f80f110ef91d39d23ffbc311b6085b45b422405b77f17951e68e5"
+    },
+    {
+      "path": "geometry-course/textbook/preparation/chapter-09-b.json",
+      "sha256": "e488b65d84a05e838b710ada27c7397a76e5a83925891403d1428c9fb3cdd584"
+    },
+    {
+      "path": "geometry-course/textbook/preparation/chapter-09-c.json",
+      "sha256": "fb3040e8e74711514384d9339db59be8674e736e68a29a3880fdb7a5cffc7f55"
+    },
+    {
+      "path": "geometry-course/textbook/preparation/chapter-09-theory.json",
+      "sha256": "5113f1cfc35e6aa96ec23896ed214801cfd89ea700feb025989fedb648a04413"
+    },
+    {
+      "path": "tools/geometry-textbook/chapter-09-source-map.json",
+      "sha256": "f26eec981425ca0cbf4161540394a4b1e86b860c158c53de8c4881f1639a73c9"
+    }
+  ],
+  "gateExecutionProvenance": "The final candidate8, captions160 and release14 reruns were executed by root after the last C corrections; root reported all passed. Infrastructure author verified local logs below and refreshed bindings only.",
+  "finalGateLogs": [
+    {
+      "name": "ix-candidate-final.log",
+      "sha256": "e704f0f95933a7b08b7a6b81cc14953cdba45b65c35f854fe72d6941d8b80434"
+    },
+    {
+      "name": "ix-release-final.log",
+      "sha256": "2d439684bced18b239612659c0112627329a65ed6d6e980983ea073fc0929972"
+    }
+  ]
+}
