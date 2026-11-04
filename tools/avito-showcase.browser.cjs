@@ -21,10 +21,14 @@ const demos = [
   {id:'demo-cone', route:'/stereo-course/textbook/#ex-main-0346', ready:'[data-main-model] svg'}
 ];
 const contacts = ['https://t.me/ladynata3000', 'https://vk.ru/ladynata3000'];
+const reviewProfiles = new Map([
+  ['https://profi.ru/profile/AlyabevaNM/', /профи\.ру/i],
+  ['https://www.avito.ru/brands/b497d42ca3b63662decb1cf108440ec7', /авито/i]
+]);
 const directions = {school:'demo-division', oge:'demo-graphs', ege:'demo-ege'};
 const mime = {'.html':'text/html; charset=utf-8', '.css':'text/css', '.js':'application/javascript',
   '.json':'application/json', '.svg':'image/svg+xml', '.png':'image/png', '.jpg':'image/jpeg',
-  '.jpeg':'image/jpeg', '.woff2':'font/woff2'};
+  '.jpeg':'image/jpeg', '.webp':'image/webp', '.woff2':'font/woff2'};
 const report = {widths, homepageWidths:[320,390,1280], cases:[], errors:[], failedRequests:[], unexpectedExternal:[], inheritedFontsIntercepted:[]};
 let base;
 let server;
@@ -101,18 +105,24 @@ async function metadataAndLinks(page) {
   assert.match(await page.locator('meta[name="viewport"]').getAttribute('content'), /width=device-width/);
   assert.match(await page.locator('meta[name="description"]').getAttribute('content'), /5–11.*ОГЭ.*ЕГЭ/);
   const links = await page.locator('a[href]').evaluateAll(nodes => nodes.map(a => ({href:a.getAttribute('href'), target:a.target, rel:a.rel})));
-  const allowed = new Set([...demos.map(d => d.route), ...contacts, 'mailto:nata4os@bk.ru']);
+  const allowed = new Set([...demos.map(d => d.route), ...contacts, ...reviewProfiles.keys(), 'mailto:nata4os@bk.ru']);
   for (const link of links) {
     if (link.href.startsWith('#')) {
       assert(link.href.length > 1 && await page.locator(link.href).count() === 1, 'native anchor has one real target: ' + link.href);
     } else {
-      assert(allowed.has(link.href), 'showcase exposes only checked examples and direct contacts: ' + link.href);
+      assert(allowed.has(link.href), 'showcase exposes only checked examples, direct contacts and approved review profiles: ' + link.href);
       if (!link.href.startsWith('mailto:')) {
         assert.equal(link.target, '_blank');
         assert(link.rel.split(/\s+/).includes('noopener'));
         assert(link.rel.split(/\s+/).includes('noreferrer'));
       }
     }
+  }
+  for (const [href, platform] of reviewProfiles) {
+    const review = page.locator('a[href="' + href + '"]');
+    assert.equal(await review.count(), 1, 'one review link to the approved teacher profile: ' + href);
+    assert(await review.isVisible(), 'review link is visible: ' + href);
+    assert.match(await review.innerText(), platform, 'review link names its platform');
   }
   assert.equal(await page.locator('.demo-link').count(), demos.length);
   assert.match(await page.locator('#examples-note').innerText(), /новой вкладке/);
