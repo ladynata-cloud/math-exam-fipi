@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - 'index.html'
+      - 'oge/index.html'
+      - 'assets/math-home.css'
       - 'lessons/**'
       - 'assets/lesson-showcase.css'
       - 'assets/oge-home.*'

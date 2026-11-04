@@ -74,7 +74,7 @@ test('both hubs retain all previous navigation destinations and resolve local li
  }
 });
 test('secondary OGE hub keeps informatics reachable and leads to mathematics course',()=>{
- const d=load(files[1]).window.document;assert.equal(new URL(d.querySelector('.primary-link').href).pathname,'/trainers/oge-course/');
+ const d=load(files[1]).window.document;assert.equal(new URL(d.querySelector('.hero .btn').href).pathname,'/trainers/oge-course/');
  const informatics=d.querySelector('a[href="../trainers/oge-informatics-1-10-tutor.html"]');assert(informatics);assert(informatics.closest('details'));
  assert.doesNotMatch(d.querySelector('main').textContent,/зубрёжка/);
  for(const a of d.querySelectorAll('.topic-links a'))assert(!/^(Открыть|Открыть модуль|Пройти)$/.test(a.textContent.trim()),'Topic link has a meaningful label');
