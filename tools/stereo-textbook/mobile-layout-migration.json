@@ -1,0 +1,21 @@
+{
+  "base": "0d96ad84f0dd9dcadf123b3845db75c5476be93a",
+  "purpose": "Owner-requested reading layout; retain exact historical UI assertions and pin the new layout. Lesson mathematics and stored work are unchanged.",
+  "files": {
+    "stereo-course/textbook/assets/engine.js": {
+      "beforeSHA256": "9da6fb10924d50793521740ea779d81ef78fe3dfee5dbd71ab138b7d345dba74",
+      "afterSHA256": "14cb7f4c44b7e6aa78da563503592cd97a8f62ae7d6e57dc23942565a7d3a413",
+      "beforeFixture": "tools/stereo-textbook/fixtures/mobile-layout-before/engine.js"
+    },
+    "stereo-course/textbook/assets/style.css": {
+      "beforeSHA256": "56b3ec43f680dde578320a9ea1c5969a9a15d2d0344bfa1eda903f5bd3e09f51",
+      "afterSHA256": "a105ca117d3a452d04788042c1c7b417336705c3677139f878d084edaf77d98b",
+      "beforeFixture": "tools/stereo-textbook/fixtures/mobile-layout-before/style.css"
+    },
+    "stereo-course/textbook/index.html": {
+      "beforeSHA256": "af453fa854b9995f3a41bbf1a476564116a8efff43cee2234716e2c5489b5e55",
+      "afterSHA256": "9539a3f97374f41fd9caa49b6d25c4922096afd7d52d5010184f66536839fb3c",
+      "beforeFixture": "tools/stereo-textbook/fixtures/mobile-layout-before/index.html"
+    }
+  }
+}
