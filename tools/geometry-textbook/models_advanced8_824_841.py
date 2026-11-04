@@ -150,6 +150,10 @@ pp=dict(A=pa,B=pb,C=pc,D=pd,E=pe,M=(bp,0),K=(pd[0],0))
 saved=CARDS.pop()
 extra=phase(pp,deepcopy(view),[equal(('A','B'),('B','C')),col('B','D','C'),perp('A','D','D','E'),ratio('M','K','A','E',.25)])
 add(829,saved['condition'],saved['answer'],steps,repeat(v,5),notes=saved['notes'],cases=[(extra,'E на продолжении AC за C',4)])
+CARDS[-1]['model']['labelOffsets'].update({k+'__v5':offset for k,offset in
+    {'A':[0,-5.2],'M':[0,-5.2],'K':[0,-5.2],'C':[-1,-5.2],'E':[2,-5.2],'B':[2,1.5]}.items()})
+for key,xyz in CARDS[-1]['model']['points'].items():
+    if key.endswith('__v5'):xyz[1]+=2
 
 p={'A':(0,4),'B':(-3,0),'C':(5,0)};p.update(M=mid(p['B'],p['C']),N=mid(p['A'],p['C']),K=mid(p['A'],p['B']))
 b=phase(p,sc(p,tri()+[['A','M'],['B','N'],['C','K']]),[equal(('B','M'),('M','C')),equal(('A','N'),('N','C')),equal(('A','K'),('K','B'))])
@@ -270,17 +274,19 @@ p=task839();squares=[poly('BCDE'),poly('ACTM'),poly('BAHK')]
 b=phase(p,sc(p,sum(squares,[])+poly('TCDQ')+poly('EBKP')),
     [par('T','C','Q','D'),par('C','D','T','Q'),par('E','B','P','K'),par('B','K','E','P')])
 q={**p,'O':mid(p['B'],p['D'])}
-centre=phase(q,sc('BCDEO',poly('BCDE')+[['B','D'],['C','E']]),[equal(('O','B'),('O','C'),('O','D'),('O','E')),perp('O','E','O','B')])
-first=phase(q,sc('ABEKPO',poly('BAHK')+poly('EBKP')+[['O','E'],['O','B'],['O','P'],['O','A']],highlightSegments=[['E','P'],['B','A']]),
+centre=phase({k:q[k] for k in 'BCDEO'},sc('BCDEO',poly('BCDE')+[['B','D'],['C','E']]),[equal(('O','B'),('O','C'),('O','D'),('O','E')),perp('O','E','O','B')])
+first=phase({k:q[k] for k in 'ABEHKPO'},sc('ABEKPO',poly('BAHK')+poly('EBKP')+[['O','E'],['O','B'],['O','P'],['O','A']],highlightSegments=[['E','P'],['B','A']]),
     [equal(('E','P'),('B','A')),perp('E','P','B','A'),equal(('O','P'),('O','A')),perp('O','P','O','A')])
-second=phase(q,sc('ACDTQO',poly('ACTM')+poly('TCDQ')+[['O','C'],['O','D'],['O','A'],['O','Q']],highlightSegments=[['C','A'],['D','Q']]),
+second=phase({k:q[k] for k in 'ACDTQOM'},sc('ACDTQO',poly('ACTM')+poly('TCDQ')+[['O','C'],['O','D'],['O','A'],['O','Q']],highlightSegments=[['C','A'],['D','Q']]),
     [equal(('C','A'),('D','Q')),perp('C','A','D','Q'),equal(('O','A'),('O','Q')),perp('O','A','O','Q')])
 focus=phase({k:q[k] for k in 'APQO'},sc('APQO',tri('A','P','Q'),dashSegments=[['O','A'],['O','P'],['O','Q']]),
     [equal(('A','P'),('A','Q')),perp('A','P','A','Q'),equal(('O','P'),('O','A'),('O','Q')),col('P','O','Q')])
 def full839(u):
-    z=task839(u=u);z['O']=mid(z['B'],z['D'])
-    return phase(z,sc(z,sum(squares,[])+poly('TCDQ')+poly('EBKP')+tri('A','P','Q')),
-        [equal(('A','P'),('A','Q')),perp('A','P','A','Q'),equal(('O','P'),('O','A'),('O','Q')),col('P','O','Q')])
+    z={k:value for k,value in task839(u=u).items() if k in 'ABCPQ'}
+    # At the final optional case, retain the source triangle and conclusion.
+    # The full squares and each correspondence already have their own steps.
+    return phase(z,sc(z,tri()+tri('A','P','Q'),highlightSegments=tri('A','P','Q')),
+        [equal(('A','P'),('A','Q')),perp('A','P','A','Q')])
 steps=[step('Как повернуть рисунок на четверть оборота без координат?', 'Обозначим центр квадрата BCDE через O. Повернём рисунок вокруг O на 90° в направлении E → B → C → D. Каждая точка X переходит в X′: OX′=OX, луч OX поворачивается на 90°. Почему сохраняются отрезки и углы? Для двух точек треугольники OXY и OX′Y′ равны по двум сторонам и углу между ними. При совмещении их соответствующие стороны поворачиваются на те же 90°. Это объяснение через равенство треугольников; теоремы главы о движениях не нужны.', 'Равенство треугольников по двум сторонам и углу между ними; свойства центра квадрата.',[15,52]),
  step('Куда переходит точка P?', 'Точка E переходит в B. В параллелограмме EBKP отрезок EP равен BK и направлен так же. В квадрате BAHK четверть оборота в выбранном направлении переводит направление BK в BA; BK=BA. Поэтому образ отрезка EP начинается в B, идёт по лучу BA и имеет длину BA. Его конец — A: точка P переходит в A.', 'Противоположные стороны параллелограмма; равные перпендикулярные стороны квадрата.',[48,52]),
  step('Куда переходит точка A?', 'Точка C переходит в D. В квадрате ACTM четверть оборота переводит направление CA в CT, причём CA=CT. В параллелограмме TCDQ отрезок DQ равен CT и направлен так же. Значит, образ отрезка CA — отрезок DQ, а точка A переходит в Q.', 'Проверка направления по порядку вершин внешнего квадрата и параллелограмма.',[48,52]),

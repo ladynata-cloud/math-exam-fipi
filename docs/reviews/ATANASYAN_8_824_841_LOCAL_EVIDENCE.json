@@ -1,0 +1,182 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Editor audit and local browser evidence; not independent release approval",
+  "sourceSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "reviewedOriginalHead": "2d5e77c58a4ea53a0a50ef4186b0aafce9f61b06",
+  "mergedMain": "0d96ad84f0dd9dcadf123b3845db75c5476be93a",
+  "authoredFileSha256": "7a03279c6f71aa4b08be01d90b2d420e8982c1342638c7a80e2c8716bf16ffeb",
+  "generatorSha256": "5de49bf2a99d43823dff14ede3b2a1dffdeae1937b4283f2aadd25c2cbdf23e4",
+  "candidateBundleSha256": "dacccad3373f2721697eb8df49a3e55c1bd1078751e90fe4e3bc81089af2a836",
+  "productionBundleSha256": "84563ef900b15174be7f4dcb03bd450254bcce7789a90a364ae4b9ddf2de4911",
+  "counts": {
+    "cards": 18,
+    "steps": 72,
+    "modelViews": 94,
+    "modelAssertions": 220,
+    "publicCards": 1407,
+    "previewCards": 1425
+  },
+  "sourcePages": {
+    "printed": [
+      214,
+      215
+    ],
+    "pdf": [
+      215,
+      216
+    ],
+    "allConditionsVisuallyCompared": true
+  },
+  "localBrowser": "Chromium 153.0.8010.0",
+  "views": {
+    "completed": true,
+    "count": 188,
+    "widths": [
+      320,
+      1280
+    ],
+    "errors": [],
+    "rawReportSha256": "1ca77db739750e1cfc97b0afa0d0f57f08135055e8b63a33a8beaae45bbb62c4",
+    "visualInspection": "editor only; contact sheets plus six final changed views; no independent sign-off"
+  },
+  "journeys": {
+    "completed": true,
+    "count": 36,
+    "preservedOldWork": 2,
+    "errors": [],
+    "firstViewport": {
+      "widths": [
+        320,
+        1280
+      ],
+      "height": 900,
+      "conditionAndDrawingFullyVisible": true
+    },
+    "rawReportSha256": "dbbcaefcd79678451e052c70a9dc11575ffcfe62e3db51947cd536ec2f50010c"
+  },
+  "board": {
+    "completed": true,
+    "actualBoardShell": true,
+    "previewCases": 36,
+    "canonicalRouteCases": 2,
+    "allDraftsRestored": true,
+    "allModelsVisibleAfterScroll": true,
+    "firstFrameClippedModelCount": 23,
+    "firstFrameClippedModels": [
+      {
+        "number": 825,
+        "width": 320
+      },
+      {
+        "number": 826,
+        "width": 320
+      },
+      {
+        "number": 828,
+        "width": 320
+      },
+      {
+        "number": 829,
+        "width": 320
+      },
+      {
+        "number": 833,
+        "width": 320
+      },
+      {
+        "number": 835,
+        "width": 320
+      },
+      {
+        "number": 837,
+        "width": 320
+      },
+      {
+        "number": 839,
+        "width": 320
+      },
+      {
+        "number": 824,
+        "width": 1280
+      },
+      {
+        "number": 825,
+        "width": 1280
+      },
+      {
+        "number": 826,
+        "width": 1280
+      },
+      {
+        "number": 828,
+        "width": 1280
+      },
+      {
+        "number": 829,
+        "width": 1280
+      },
+      {
+        "number": 830,
+        "width": 1280
+      },
+      {
+        "number": 831,
+        "width": 1280
+      },
+      {
+        "number": 832,
+        "width": 1280
+      },
+      {
+        "number": 833,
+        "width": 1280
+      },
+      {
+        "number": 834,
+        "width": 1280
+      },
+      {
+        "number": 835,
+        "width": 1280
+      },
+      {
+        "number": 836,
+        "width": 1280
+      },
+      {
+        "number": 837,
+        "width": 1280
+      },
+      {
+        "number": 839,
+        "width": 1280
+      },
+      {
+        "number": 840,
+        "width": 1280
+      }
+    ],
+    "canonicalRouteSupported": false,
+    "serverSynchronizationTested": false,
+    "sharedActionsSupported": false,
+    "reason": "Canonical textbook URL goes to grade 7 wrapper; grade 8 is outside its 619-card registry. Explicit unapproved preview fits horizontally and works locally; board frame and review notice require vertical scrolling in listed cases.",
+    "rawReportSha256": "85cbd189c4613f5df30ed630c762724a291e9fa27d72fa8569e214db9ff6f162",
+    "errors": []
+  },
+  "technicalTests": {
+    "mathematicalAndProtectionTests": 16,
+    "reviewScopeTests": 13,
+    "runtimeRetentionChecks": 27,
+    "publishedRuntimeDomCheckpoints": 4879,
+    "reproduciblePublicBuild": true
+  },
+  "independentApproval": false,
+  "publicationAuthorized": false,
+  "note": "Owner authorization already exists. publicationAuthorized=false here means no final subject release approval, not a request to repeat owner permission.",
+  "remaining": [
+    "Separate reviewer validates final source, proofs, pedagogy and models against these bytes",
+    "Successful required exact-head CI",
+    "Normal promotion/build/publication verification after independent sign-off",
+    "Board route and two-client integration require separate implementation and verification"
+  ]
+}
