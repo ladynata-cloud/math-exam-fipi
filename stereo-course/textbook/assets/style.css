@@ -44,6 +44,7 @@ button{max-width:100%;white-space:normal}
 .textbook-reading .atanasyan-model>.am-controls{order:1;margin-top:.4rem}
 .textbook-reading .atanasyan-model>p{order:2}
 .textbook-reading .textbook-help{order:initial}
+.textbook-reading .am-controls .am-button:last-child:not(.am-expand){flex-basis:4.3rem;padding-inline:.3rem;white-space:nowrap}
 @media(max-width:850px){
  .textbook-reading .textbook-main{display:flex;flex-direction:column;padding:.6rem;gap:0}
  .textbook-reading .textbook-main>*{width:100%}

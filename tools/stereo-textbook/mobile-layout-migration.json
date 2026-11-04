@@ -9,7 +9,7 @@
     },
     "stereo-course/textbook/assets/style.css": {
       "beforeSHA256": "56b3ec43f680dde578320a9ea1c5969a9a15d2d0344bfa1eda903f5bd3e09f51",
-      "afterSHA256": "8f60ab987f7fcb22f576563e2eb6a8fdf02c4e16736bf074ca750d2f4bd5d7a5",
+      "afterSHA256": "a105ca117d3a452d04788042c1c7b417336705c3677139f878d084edaf77d98b",
       "beforeFixture": "tools/stereo-textbook/fixtures/mobile-layout-before/style.css"
     },
     "stereo-course/textbook/index.html": {
