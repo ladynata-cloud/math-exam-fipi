@@ -1,0 +1,11 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{JSDOM}=require('jsdom'),catalog=require('../learning/catalog');
+const dom=new JSDOM('<main></main>',{url:'https://example.test/learning/#route',runScripts:'outside-only'}),w=dom.window,host=w.document.querySelector('main'),calls=[];
+w.eval(fs.readFileSync(path.resolve(__dirname,'../learning/route.js'),'utf8'));
+const ctx=id=>({account:{id,role:'student'},attempts:[],labels:{},catalog,openContent:(...args)=>calls.push(args),api:async()=>({items:[],progress:[]})});
+let dispose=w.LearningRoute.mount(host,ctx('pupil-a'));assert.equal(host.querySelector('[data-route-library]').open,false);
+host.querySelector('[data-route-library]').open=true;dispose();dispose=w.LearningRoute.mount(host,ctx('pupil-a'));assert.equal(host.querySelector('[data-route-library]').open,true,'Background remount preserves the opened topic list');
+const topic=host.querySelector('[data-route-item="path:practice-percent-rate"]');assert(topic);assert.equal(topic.closest('[data-route-library]').open,true);topic.click();assert.equal(calls.length,1);assert.equal(calls[0][0],'path:practice-percent-rate');
+host.querySelector('[data-route-library]').open=false;dispose();dispose=w.LearningRoute.mount(host,ctx('pupil-a'));assert.equal(host.querySelector('[data-route-library]').open,false,'An intentionally closed list remains closed');
+host.querySelector('[data-route-library]').open=true;dispose();dispose=w.LearningRoute.mount(host,ctx('pupil-b'));assert.equal(host.querySelector('[data-route-library]').open,false,'Another pupil does not inherit disclosure state');assert.equal(calls.length,1,'Remounts create no attempts');dispose();w.close();
+console.log('LEARNING_ROUTE_LIBRARY_OK: open/closed restoration, exact percent topic, account isolation, no unsolicited attempts');

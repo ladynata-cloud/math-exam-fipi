@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Проверка моделей стереометрии</title>
+<link rel="stylesheet" href="../../stereo-course/assets/task-scenes.css">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f7f4;color:#233e37;font:19px/1.65 system-ui,sans-serif}main{max-width:1080px;margin:auto;padding:16px}header{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}label{display:flex;flex-direction:column;gap:4px;min-width:0}select,input,button{font:inherit;min-width:0;max-width:100%;min-height:44px;padding:6px 12px;border:1px solid #b6cbbb;border-radius:9px;background:white;color:inherit}article{min-width:0;background:white;border:1px solid #d4e1d7;border-radius:20px;padding:16px;margin-top:22px}h1{font-size:1.7rem;line-height:1.3}#q{font-size:1.2rem;overflow-wrap:anywhere}#model{max-width:850px;min-width:0;margin:auto}#stepq{min-height:2em}summary{cursor:pointer;min-height:44px}button:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #16715b;outline-offset:3px}@media(min-width:700px){header{grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);align-items:end}}@media(max-width:480px){main{padding:10px}article{padding:10px}h1{font-size:1.4rem}}
+</style>
+</head>
+<body>
+<main>
+<h1>Задача и её модель</h1>
+<header>
+<label>Семейство<select id="kind" aria-label="Семейство модели"></select></label>
+<label>Вариант<input id="seed" type="number" min="0" step="1" value="0"></label>
+<button id="next" type="button">Другие числа</button>
+</header>
+<article>
+<p id="q"></p>
+<div id="model"></div>
+<details id="help"><summary>Хочешь подсказку?</summary><p id="stepq"></p><button id="advance" type="button">Следующий шаг</button></details>
+</article>
+<p id="status" role="status">Загружаем проверочную сцену…</p>
+</main>
+<script src="../../stereo-course/assets/space.js"></script>
+<script src="../../stereo-course/assets/tasks.js"></script>
+<script src="../../stereo-course/assets/task-scene-viewer.js"></script>
+<script src="../../stereo-course/assets/task-scenes.js"></script>
+<script src="../../stereo-course/assets/task-proof-scenes.js"></script>
+<script>
+(async function(){
+ 'use strict';
+ const fixture=window.StereoSceneFixture={ready:false,error:null,proofs:null};
+ const kind=document.querySelector('#kind'),seed=document.querySelector('#seed'),help=document.querySelector('#help'),status=document.querySelector('#status'),next=document.querySelector('#next');
+ let viewer=null,task=null,index=-1;
+ function render(){
+  viewer?.destroy();
+  const proofMode=kind.value.startsWith('proof:'),key=proofMode?kind.value.slice(6):kind.value;
+  task=proofMode?fixture.proofs[key]:StereoTasks.make(key,Number(seed.value));
+  document.querySelector('#q').textContent=proofMode?task.given+' '+task.goal:task.q;
+  viewer=proofMode?StereoTaskScenes.mountProof(document.querySelector('#model'),{key,proof:task}):StereoTaskScenes.mount(document.querySelector('#model'),{kind:key,task});
+  help.open=false;index=-1;document.querySelector('#stepq').textContent='';seed.disabled=next.disabled=proofMode;
+  document.querySelector('main').dataset.scene=kind.value;
+ }
+ function updateStep(){
+  index=help.open?Math.max(0,index):-1;
+  viewer.setStep(index);
+  document.querySelector('#stepq').textContent=index<0?'':task.steps[index].q||'Рассмотри выделенные объекты шага '+(index+1)+'.';
+ }
+ try{
+  const response=await fetch('../../stereo-course/data/proofs.json');if(!response.ok)throw Error('Не удалось загрузить банк доказательств');fixture.proofs=await response.json();
+  const numeric=document.createElement('optgroup');numeric.label='Числовые задачи';for(const name of StereoTaskScenes.families)numeric.append(new Option(name,name));kind.append(numeric);
+  const proofs=document.createElement('optgroup');proofs.label='Доказательства';for(const [key,proof]of Object.entries(fixture.proofs))proofs.append(new Option(proof.title,'proof:'+key));kind.append(proofs);
+  kind.onchange=seed.onchange=render;
+  next.onclick=()=>{seed.value=Number(seed.value)+1;render();};
+  help.ontoggle=updateStep;
+  document.querySelector('#advance').onclick=()=>{index=(index+1)%task.steps.length;updateStep();};
+  render();fixture.ready=true;status.textContent='Проверочная страница использует рабочие модели и банки курса.';
+ }catch(error){fixture.error=error.message;status.textContent=error.message;throw error;}
+})();
+</script>
+</body>
+</html>

@@ -5,18 +5,18 @@
 <meta name="yandex-verification" content="9aa99c095bf28e3b" />
 <meta name="google-site-verification" content="paEBFA2bkE7PARsDDCyY4OXupsgtIY44ZeYaZmVCCkA" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MathExam — подготовка к ОГЭ по математике шаг за шагом</title>
-<meta name="description" content="Подготовка к ОГЭ по математике: курс по заданиям, пошаговые тренажёры, повторение основ и практические задачи. Учитесь понимать решение и работать самостоятельно.">
+<title>Тренажёры по математике онлайн: 5–11 классы, ОГЭ и ЕГЭ | MathExam</title>
+<meta name="description" content="Бесплатные тренажёры по математике для 5–11 классов: счёт, дроби, уравнения, геометрия, ОГЭ и ЕГЭ. Выберите тему или учебный курс и занимайтесь в своём темпе.">
 <link rel="canonical" href="https://mathexam.space/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="MathExam — подготовка к ОГЭ по математике шаг за шагом">
-<meta property="og:description" content="Подготовка к ОГЭ по математике: курс по заданиям, пошаговые тренажёры, повторение основ и практические задачи. Учитесь понимать решение и работать самостоятельно.">
+<meta property="og:title" content="Тренажёры по математике онлайн: 5–11 классы, ОГЭ и ЕГЭ | MathExam">
+<meta property="og:description" content="Бесплатные тренажёры по математике для 5–11 классов: счёт, дроби, уравнения, геометрия, ОГЭ и ЕГЭ. Выберите тему или учебный курс и занимайтесь в своём темпе.">
 <meta property="og:url" content="https://mathexam.space/">
 <meta property="og:site_name" content="MathExam">
 <meta property="og:locale" content="ru_RU">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MathExam — подготовка к ОГЭ по математике шаг за шагом">
-<meta name="twitter:description" content="Подготовка к ОГЭ по математике: курс по заданиям, пошаговые тренажёры, повторение основ и практические задачи. Учитесь понимать решение и работать самостоятельно.">
+<meta name="twitter:title" content="Тренажёры по математике онлайн: 5–11 классы, ОГЭ и ЕГЭ | MathExam">
+<meta name="twitter:description" content="Бесплатные тренажёры по математике для 5–11 классов: счёт, дроби, уравнения, геометрия, ОГЭ и ЕГЭ. Выберите тему или учебный курс и занимайтесь в своём темпе.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -24,7 +24,7 @@
   "@id": "https://mathexam.space/#website",
   "url": "https://mathexam.space/",
   "name": "MathExam",
-  "description": "Подготовка к ОГЭ по математике: курс по заданиям, пошаговые тренажёры, повторение основ и практические задачи. Учитесь понимать решение и работать самостоятельно.",
+  "description": "Бесплатные тренажёры по математике для 5–11 классов: счёт, дроби, уравнения, геометрия, ОГЭ и ЕГЭ. Выберите тему или учебный курс и занимайтесь в своём темпе.",
   "inLanguage": "ru-RU",
   "creator": {
     "@type": "Person",
@@ -37,19 +37,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/math-home.css?v=20261105">
 <style>
   .actions { display:flex; flex-wrap:wrap; gap:12px; margin:24px 0; }
   #where-to-start { margin-top:36px; }
   #where-to-start, #other-courses { scroll-margin-top:100px; }
-  .entry-grid.start-routes { grid-template-columns:repeat(2,minmax(0,1fr)); }
-  .start-routes .entry { padding:24px; border-top:3px solid var(--pen); }
-  .start-routes h3 { font-size:1.45rem; }
-  .route-action { margin-top:12px; }
   .route-more { font-size:.95rem; margin-top:6px; }
   .lab-link { font-size:.88rem; color:var(--ink-soft); }
   .skip-link { position:fixed; left:16px; top:-80px; z-index:30; background:white; padding:10px; }
   .skip-link:focus { top:10px; }
-  @media(max-width:650px) { .entry-grid.start-routes { grid-template-columns:1fr; } }
   .entry-grid { grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr)); }
   @media (max-width:520px) {
     .site-header { position:static; }
@@ -59,8 +55,10 @@
     .actions .btn { width:100%; text-align:center; }
   }
 </style>
+<link rel="stylesheet" href="/assets/lesson-contacts.css?v=20261025">
+<script defer src="/assets/lesson-funnel.js?v=20261026"></script>
 </head>
-<body>
+<body class="math-home">
 <a class="skip-link" href="#main-content">К содержанию</a>
 
 <!-- ==================== ШАПКА (единая для всего сайта) ==================== -->
@@ -72,80 +70,42 @@
     </a>
     <nav class="site-nav" aria-label="Основные разделы">
       <a href="/" aria-current="page">Главная</a>
-      <a href="/trainers/oge-course/">ОГЭ</a>
-      <a href="/foundations/">Математические основы</a>
+      <a href="/trainers/">Все тренажёры</a>
+      <a href="/oge/">ОГЭ</a>
+      <a href="/courses/">Учебные курсы</a>
       <a href="https://mathexam-board-ladynata.msk1.amvera.tech/learning/#route">Мой кабинет</a>
+      <a href="/lessons/">Занятия с преподавателем</a>
     </nav>
   </div>
 </header>
 
 <main id="main-content">
-<section class="hero">
-  <div class="container">
-    <div class="hero-inner">
-      <p class="kicker">Подготовка к ОГЭ по математике</p>
-      <h1>ОГЭ по математике.<br>Понять каждый шаг.<br>Решать самостоятельно.</h1>
-      <p class="lead">Разбирайте задания, повторяйте то, что забыли, и тренируйтесь.
-        Начните с нужной темы — постепенно переходите от решения с подсказками
-        к самостоятельной работе.</p>
-      <div class="actions">
-        <a class="btn" href="/trainers/oge-course/">Открыть курс ОГЭ</a>
-        <a class="btn secondary" href="/foundations/">Сначала восстановить основы</a>
-      </div>
-      <p class="byline">Автор — Наталья Михайловна, учитель математики и репетитор.
-        Тренажёры выросли из живых занятий с учениками.</p>
-    </div>
-    <h2 id="where-to-start">С чего начнём?</h2>
-    <div class="entry-grid start-routes">
-      <article class="entry">
-        <span class="kicker">Решать экзаменационные задачи</span>
-        <h3>ОГЭ</h3>
-        <p>Выберите номер или тему. Разберите пример, попробуйте с подсказками и перейдите к самостоятельному решению.</p>
-        <div class="route-action"><a class="btn" href="/trainers/oge-course/">К заданиям ОГЭ</a></div>
-        <a class="route-more" href="/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html">Диагностика практических задач 1–5</a>
-      </article>
-      <article class="entry">
-        <span class="kicker">Отдельный базовый курс</span>
-        <h3>Математические основы</h3>
-        <p>От вычислений и дробей до уравнений, задач и геометрии. Проходите задания по маршруту или исследуйте модели в лаборатории.</p>
-        <div class="route-action"><a class="btn" href="/foundations/">Открыть базовый курс</a></div>
-        <a class="route-more" href="/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html">Начать с деления уголком</a>
-      </article>
-    </div>
+<section class="hero" aria-labelledby="math-heading"><div class="container">
+  <div class="hero-inner">
+    <p class="kicker">5–11 классы · Бесплатно · В своём темпе</p>
+    <h1 id="math-heading">Тренажёры по математике</h1>
+    <p class="lead">От деления уголком до ОГЭ и ЕГЭ.<br>Выберите тему, разберите пример и попробуйте сами.</p>
+    <div class="actions"><a class="btn" href="/trainers/">Выбрать тренажёр</a><a class="btn secondary" href="/foundations/">Начать с основ</a></div>
   </div>
-</section>
-
-<section class="section alt">
-  <div class="container">
-    <h2>Что будем разбирать</h2>
-    <div class="entry-grid">
-      <article class="entry">
-        <span class="kicker">планы, таблицы и расчёты</span>
-        <h3><a href="/trainers/oge-1-5-trainers/practice-1-5-map.html">Практические задачи</a></h3>
-        <p>Учимся читать условие, находить данные и проверять единицы измерения.</p>
-        <a class="go" href="/trainers/oge-1-5-trainers/practice-1-5-map.html">Выбрать сюжет</a>
-      </article>
-      <article class="entry">
-        <span class="kicker">числа и выражения</span>
-        <h3><a href="/trainers/oge-course/#part1">Алгебра</a></h3>
-        <p>Вычисления, уравнения, неравенства, графики и другие темы первой части.</p>
-        <a class="go" href="/trainers/oge-course/#part1">Открыть темы</a>
-      </article>
-      <article class="entry">
-        <span class="kicker">рисунки и свойства фигур</span>
-        <h3><a href="/trainers/oge-course/#geometry">Геометрия</a></h3>
-        <p>Углы, треугольники, окружности и площади. Связываем условие с чертежом.</p>
-        <a class="go" href="/trainers/oge-course/#geometry">Перейти к геометрии</a>
-      </article>
-      <article class="entry">
-        <span class="kicker">самостоятельная работа</span>
-        <h3><a href="/trainers/oge-2027-analogue-1.html">Тренировочный вариант</a></h3>
-        <p>Попробуйте авторский вариант, затем вернитесь к темам, которые вызвали затруднения.</p>
-        <a class="go" href="/trainers/oge-2027-analogue-1.html">Открыть вариант</a>
-      </article>
-    </div>
+</div></section>
+<section class="section home-directions" aria-labelledby="where-to-start"><div class="container">
+  <h2 id="where-to-start">Что будем изучать?</h2>
+  <div class="entry-grid">
+    <article class="entry"><span class="kicker">Начать с простого</span><h3><a href="/foundations/">Математические основы</a></h3><p>Счёт, дроби, проценты и уравнения. Можно вернуться к трудному шагу.</p><a class="go" href="/foundations/">Подтянуть основы</a><a class="route-more" href="/trainers/long-division-stepwise.html">Деление уголком</a></article>
+    <article class="entry"><span class="kicker">Школьная программа</span><h3><a href="/courses/">Курсы по учебникам</a></h3><p>Выберите класс и учебник: Виленкин, Петерсон, Макарычев, Атанасян и другие.</p><a class="go" href="/courses/">Найти свой учебник</a></article>
+    <article class="entry" id="oge-models"><span class="kicker">9 класс</span><h3><a href="/oge/">ОГЭ по математике</a></h3><p>Шины, квартиры, графики и геометрия. Наглядные модели, задания 1–25 и пробники.</p><a class="go" href="/oge/">Перейти к ОГЭ</a><a class="route-more" href="/oge/#oge-models">Рассмотреть модели ОГЭ</a><a class="route-more" href="/oge/variants/2027/">Пробники с ответами · PDF</a></article>
+    <article class="entry"><span class="kicker">11 класс</span><h3><a href="/ege-baza/">ЕГЭ · базовый уровень</a></h3><p>Повторение нужных навыков, задания по номерам и справочные листы.</p><a class="go" href="/ege-baza/">Открыть базовый ЕГЭ</a></article>
+    <article class="entry"><span class="kicker">10–11 классы</span><h3><a href="/ege-profil/">ЕГЭ · профильный уровень</a></h3><p>Алгебра, геометрия и задачи с развёрнутым решением.</p><a class="go" href="/ege-profil/">Открыть профильный ЕГЭ</a></article>
+    <article class="entry"><span class="kicker">7–11 классы</span><h3><a href="/geometry-course/">Геометрия</a></h3><p>Чертежи, построения и доказательства. От первых признаков равенства до стереометрии.</p><a class="go" href="/geometry-course/">Геометрия 7–9 классов</a><a class="route-more" href="/stereo-course/textbook/">Геометрия 10–11 классов</a></article>
   </div>
-</section>
+  <p class="home-catalog-link"><a href="/trainers/">Все тренажёры — поиск по теме →</a></p>
+</div></section>
+<section class="section lesson-entry" aria-labelledby="other-lessons-title"><div class="container">
+  <p class="kicker">5–11 классы · ОГЭ · ЕГЭ базовый и профильный</p>
+  <h2 id="other-lessons-title">Если нужна помощь преподавателя</h2>
+  <p>Индивидуальные онлайн-занятия с Натальей Михайловной: от школьных тем до экзаменационных задач.</p>
+  <div class="actions"><a class="btn" href="/lessons/">Занятия для 5–11 классов</a><a class="btn secondary" href="/lessons/#examples">Попробовать задания</a><a class="btn secondary" href="/lessons/#contact">Обсудить занятия</a></div>
+</div></section>
 
 <!-- seo-topic-links:start -->
 <section class="section" aria-labelledby="topic-explanations">
@@ -159,7 +119,7 @@
       <article class="entry"><h3><a href="/topics/lineynye-uravneniya/">Линейные уравнения</a></h3><p>Скобки, подобные слагаемые, перенос и проверка корня.</p></article>
       <article class="entry"><h3><a href="/topics/oge-geometriya/">Геометрия ОГЭ</a></h3><p>Связываем условие, чертёж и нужное свойство фигуры.</p></article>
     </div>
-    <p><a href="/topics/">Все разборы по темам →</a></p>
+    <p><a href="/topics/">Все разборы по темам →</a> · <a href="/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html">Диагностика практических задач ОГЭ</a></p>
   </div>
 </section>
 <!-- seo-topic-links:end -->
@@ -177,6 +137,25 @@
   </div>
 </section>
 
+<div class="container">
+<!-- lesson-contacts:start -->
+<section class="me-contacts" aria-label="Занятия и новые материалы">
+  <div class="me-contact-grid">
+    <div class="me-contact-card"><p class="me-contact-label">Индивидуальные онлайн-занятия</p>
+      <h2>Нужна помощь с математикой?</h2>
+      <p>Разберём трудные шаги, вернёмся к нужным основам и потренируемся на похожих задачах. Занятия ведёт Наталья Михайловна, автор MathExam.</p>
+      <div class="me-contact-actions"><a class="me-contact-button" href="https://t.me/ladynata3000" target="_blank" rel="noopener noreferrer">Написать в Telegram</a><a class="me-contact-button me-contact-secondary" href="https://vk.ru/ladynata3000" target="_blank" rel="noopener noreferrer">Написать во ВКонтакте</a></div>
+      <p class="me-contact-note"><a href="/lessons/">Как проходят занятия →</a> · Можно написать класс и тему, с которой нужна помощь.</p>
+    </div>
+    <div class="me-contact-card me-contact-channel"><p class="me-contact-label">Материалы для самостоятельной работы</p>
+      <h2>Хотите другие задачи и новые темы?</h2>
+      <p>Подписывайтесь на разборы и тренажёры там, где вам удобно.</p>
+      <div class="me-contact-actions"><a class="me-contact-button me-contact-secondary" href="https://t.me/mathexamspace" target="_blank" rel="noopener noreferrer">Канал в Telegram</a><a class="me-contact-button me-contact-secondary" href="https://max.ru/join/KKMgzGoEUezcYD_sJGMdvP1hcy90-3sTiZvkRk1_I3c" target="_blank" rel="noopener noreferrer">Канал в MAX</a></div><p class="me-contact-note">Также <a href="https://vk.com/mathexamspace" target="_blank" rel="noopener noreferrer">группа ВКонтакте</a> и <a href="https://dzen.ru/mathexamspace" target="_blank" rel="noopener noreferrer">Дзен</a>.</p>
+    </div>
+  </div>
+</section>
+<!-- lesson-contacts:end -->
+</div>
 <!-- ==================== ОБ АВТОРЕ ==================== -->
 <section class="section">
   <div class="container">
@@ -219,17 +198,26 @@
     <div>
       <h4>Разделы</h4>
       <ul>
+        <li><a href="/pedagogam/">Педагогам — материалы для урока</a></li>
         <li><a href="/">Главная</a></li>
-        <li><a href="/trainers/oge-course/">Курс ОГЭ по математике</a></li>
+        <li><a href="/trainers/">Каталог тренажёров</a></li>
+        <li><a href="/courses/">Курсы по учебникам</a></li>
+        <li><a href="/oge/">ОГЭ по математике</a></li>
+        <li><a href="/ege-baza/">ЕГЭ база</a></li>
+        <li><a href="/ege-profil/">ЕГЭ профиль</a></li>
         <li><a href="/foundations/">Математические основы — отдельный курс</a></li>
         <li><a href="/trainers/oge-basics/">ПредОГЭ — быстрый выбор навыка</a></li>
         <li><a href="https://mathexam-board-ladynata.msk1.amvera.tech/learning/#route">Мой кабинет</a></li>
       </ul>
     </div>
     <div>
-      <h4>Автор на связи</h4>
+      <h4>Запись на занятия</h4>
       <ul>
-        <li><a href="https://vk.com/mathexamspace" rel="noopener">ВКонтакте</a></li>
+        <li><a href="https://t.me/ladynata3000">Написать в Telegram</a></li>
+        <li><a href="https://vk.ru/ladynata3000">Написать во ВКонтакте</a></li>
+        <li><a href="https://t.me/mathexamspace">Канал в Telegram</a></li>
+        <li><a href="https://max.ru/join/KKMgzGoEUezcYD_sJGMdvP1hcy90-3sTiZvkRk1_I3c">Канал в MAX</a></li>
+        <li><a href="https://vk.com/mathexamspace" rel="noopener">Группа ВКонтакте</a></li>
         <li><a href="https://dzen.ru/mathexamspace" rel="noopener">Дзен</a></li>
         <li><a href="mailto:nata4os@bk.ru">Написать письмо</a></li>
       </ul>

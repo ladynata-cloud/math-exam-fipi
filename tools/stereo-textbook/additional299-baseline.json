@@ -1,0 +1,31 @@
+{
+  "commit": "6c7339a730ba3591859bd4c8c0d8ce9be64efd7c",
+  "cards": 495,
+  "reviewBatches": 25,
+  "screenshotCases": 1099,
+  "bundleBytesSHA256": "ef3c30c8c415dfd79dccb393584f01899797bb2de73bfd0fe24a7d4929abb37e",
+  "canonicalBundleSHA256": "c0efbcaa16844e477278625a9ccbb11bf2dc69a9cf1ef6e85b0a6cdc2f954ec8",
+  "rawLessonManifestSHA256": "05486f4e8a3b929f5643fe97205733d63c0f80dd3da0e98cb248a44aeacbdeb5",
+  "registrySHA256": "fde218362c9f92bec761fde12086543f33379f842b19d876af683fbbd050288d",
+  "reviewRowsSHA256": "ac19dce759f648783f19971db49a6eac223d3349869b010e96307ce077edb3dd",
+  "reviewBatchesSHA256": "c0291574b6a100f68eb60bdb42545640ea368488ec2405a913fdc5f87f4dcc2b",
+  "sourceIndexSHA256": "05733377ad676b16e682356f4c551ad9f959d751a756ab84bb5f1f520e8967d9",
+  "screenshotCasesSHA256": "c831bcbbc808556806285a185dc8f3d4a7ff6b5b8522e20fb42b51cc8e7d2d01",
+  "immutableFiles": {
+    "stereo-course/textbook/assets/engine.js": "3b2f3c3fae68a9c8e6f532d32a19df1fb1c5749b60253c75d9241ff639066ad4",
+    "stereo-course/textbook/assets/style.css": "268af771d4e1fe44d69fddb966f5a4bf2e5d6febc2102425675b0ba8aca92740",
+    "stereo-course/textbook/index.html": "daee3fb225e5b7a0d5129af24d2cdf5961eb5b74d195a863e22317313d1e1825",
+    "stereo-course/assets/task-scene-viewer.js": "a3e470e55b45d658cb74b2e32b5f1e9479785fa9b014be3929591bdcd55cefe6",
+    "stereo-course/assets/task-scenes.css": "5dbecdc2c98fbb030bcc4dba224f3b4ae89af292579a5136942810be75fd2cbf",
+    "stereo-course/assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+    "stereo-course/textbook/schema/lesson.schema.json": "0afbe8ada69985cda31e8c77168ac101aac05f04ae53c401b91c1bfd969972ba",
+    "stereo-course/textbook/schema/catalog.schema.json": "a497a09012767582238db69a7966f43d08f293b6a43f1ffc70ce6b15ed5a6e08",
+    "tools/stereo-textbook/build_textbook.py": "96e1e919ae6f231ae63ef5ba9fa57819e820a325ab128fd129a53c25b2aa9dc3"
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-10-26T11:42:15.435Z",
+    "registeredAt": "2026-10-26T11:43:25.075Z",
+    "scope": "Introduction and chapters I–III: main exercises 1–298, theory points 1–37, all 40 chapter self-check questions. Additional exercises 299 onward remain pending. Not the complete book."
+  }
+}

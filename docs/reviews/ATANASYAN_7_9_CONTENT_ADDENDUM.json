@@ -1,0 +1,1808 @@
+{
+  "schemaVersion": 1,
+  "bookId": "atanasyan-2023-7-9",
+  "chapter": 1,
+  "reviewDate": "2026-10-23",
+  "reviewTimezone": "Asia/Novosibirsk",
+  "reviewerRole": "Independent AI content reviewer, separate from solution/model authors",
+  "verdict": "passed-for-content-with-explicit-manual-interpretation-cases",
+  "reviewedFiles": [
+    {
+      "path": "geometry-course/textbook/preparation/chapter-01.json",
+      "sha256": "460fd91d5ab2e6c245a75872ee04be27a20cb86340b39ef924b89d78c1e5f57f"
+    },
+    {
+      "path": "geometry-course/textbook/preparation/chapter-01-review.json",
+      "sha256": "f49120c3ce6863ae9ae4758905e0b55081b2fedd7017b131e1da912f75aee282"
+    },
+    {
+      "path": "geometry-course/textbook/preparation/chapter-01-corrections.json",
+      "sha256": "1c6d32ceb9f5b820f28f4ad75682c59a9a0de500e0d5076bde18838f33572d61"
+    },
+    {
+      "path": "geometry-course/textbook/preparation/chapter-01-theory.json",
+      "sha256": "c12e0ea1a911b30bcab2ecd22369e86fb6f628b3336d95c58d013b26118b5983"
+    },
+    {
+      "path": "geometry-course/textbook/models/chapter-01-theory.json",
+      "sha256": "74a34c6c441f65e3c957a6c46ef99cdb265a2442ee85db5f99743ee5fa7143ff"
+    }
+  ],
+  "source": {
+    "edition": "Atanasyan et al., Geometry 7–9, 14th revised edition, 2023",
+    "sourcePdfSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+    "printedPagesVisuallyInspected": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28
+    ],
+    "pdfPageOffset": 1,
+    "method": "Source-page images inspected directly; OCR used only for navigation. Source images are not published."
+  },
+  "coverage": {
+    "mainExerciseNumbers": 91,
+    "mainParts": 134,
+    "correctionRecords": 68,
+    "theoryPoints": 13,
+    "selfcheckQuestions": 26,
+    "theoryAndSelfcheckModelsReviewedForContent": 39,
+    "allMainModelsBrowserReviewedByThisReport": false
+  },
+  "checks": [
+    {
+      "area": "main conditions",
+      "result": "passed after corrections",
+      "detail": "Every one of 134 parts was checked for self-contained givens and a concrete question.68 exact override records restore omitted questions, common conditions, source labels or figure relations. No fabricated measured book dimensions."
+    },
+    {
+      "area": "main mathematics",
+      "result": "passed with manual qualifications",
+      "detail": "All 134 answers and explanations were reread alongside source conditions. The unchanged prior independent mathematical review remains bound to its frozen preparation SHA; this addendum resolves the three interpretation blockers through explicit conventions and manual discussion, not by inventing a unique answer."
+    },
+    {
+      "area": "source symbols",
+      "result": "passed after correction",
+      "detail": "Exercise 5в uses original K,R, not the draft substitution R,S; runtime statement, answer and two explanation steps are corrected and the model author was notified."
+    },
+    {
+      "area": "theory and selfchecks",
+      "result": "passed",
+      "detail": "13 theory points and 26 selfcheck questions were compared with their source sections and checked mathematically. Both one-letter and two-letter ray notation are now included. Historical metre-standard claims are not repeated as current metrology."
+    },
+    {
+      "area": "theory model/text consistency",
+      "result": "passed for mathematics",
+      "detail": "All 39 configurations were read against explanations. An independent numeric check verified 35 right-angle marks, 2 groups of equal-angle marks and 3 groups of equal-length marks across views. These counts include repeated step views and are not distinct theorems."
+    },
+    {
+      "area": "diagram semantics",
+      "result": "passed after author fixes",
+      "detail": "Ordinary angle arcs use marks 0; positive marks identify actual equal-angle groups. Impossible contradiction configurations are described in text instead of rendering false right angles. Extraneous point C was removed from selfcheck 1."
+    }
+  ],
+  "manualInterpretations": [
+    {
+      "number": 9,
+      "result": "resolved for manual discussion",
+      "conditions": [
+        "Each stroke in a selected tracing is used once.",
+        "A straight passage stays a single link.",
+        "Repeated nonadjacent vertices are allowed by the source definition."
+      ],
+      "evidence": [
+        "Explicit eight-tracing paths contain 6 and 7 links respectively and cover the same elementary strokes exactly once.",
+        "The two paths have no collinear successive links.",
+        "The complete 0 is a closed rectangular polyline; closed subparts also exist in 6, 8, 9."
+      ],
+      "singleAutomaticAnswerAllowed": false
+    },
+    {
+      "number": 10,
+      "result": "resolved for manual discussion",
+      "conditions": [
+        "The basic construction uses diagonals AC and AD.",
+        "Additional-point examples are labelled separately."
+      ],
+      "evidence": [
+        "Three triangles ABC,ACD,ADE; additional quadrilaterals ABCD,ACDE.",
+        "Four triangles ABC,OCD,ODE,OEA with O inside AC.",
+        "Five triangles from an interior O joined to all five vertices.",
+        "Independent convex-polygon clipping calculation verified positive areas, complete area coverage, disjoint interiors and a complete original side for every triangle in all three examples."
+      ],
+      "singleAutomaticAnswerAllowed": false
+    },
+    {
+      "number": 44,
+      "result": "resolved for manual discussion",
+      "conditions": [
+        "Use each of the five drawn segments no more than once.",
+        "Distinguish the maximum among closed paths from the maximum allowing open paths."
+      ],
+      "evidence": [
+        "Enumeration of no-repeated-edge closed trails gives lengths 9 and 12 cm.",
+        "The open trail B–A–D–C–B–D uses all five edges and has length 15 cm.",
+        "If repeated edges are allowed, no finite maximum exists."
+      ],
+      "singleAutomaticAnswerAllowed": false
+    }
+  ],
+  "entries": [
+    {
+      "collection": "main",
+      "number": 1,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        8
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 2,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        8
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 3,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        8
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 4,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        8
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 5,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        8
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 6,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        8
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 7,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        9
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 8,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        9
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 9,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        9
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed-manual-interpretation",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 10,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        9
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed-manual-interpretation",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 11,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        10
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 12,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        11
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 13,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        11
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 14,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        11
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 15,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        11
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 16,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        11
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 17,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        11
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 18,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        11
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 19,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        11
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 20,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        11
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 21,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        13
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 22,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        13
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 23,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        13
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 24,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        13
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 25,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        14
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 26,
+      "parts": [
+        "а",
+        "б",
+        "сравнение"
+      ],
+      "printedPages": [
+        14
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 27,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        17
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 28,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        17
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 29,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        17
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 30,
+      "parts": [
+        "2AB",
+        "1/2AB",
+        "1/4AB"
+      ],
+      "printedPages": [
+        17
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 31,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        17
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 32,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        17
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 33,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        18
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 34,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        18
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 35,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        18
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 36,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        18
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 37,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        18
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 38,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        18
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 39,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        18
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 40,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        18
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 41,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        18
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 42,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        18
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 43,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        18
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 44,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        19
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed-manual-interpretation",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 45,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        21
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 46,
+      "parts": [
+        "AOB",
+        "AOC",
+        "AOD"
+      ],
+      "printedPages": [
+        21
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 47,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        21
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 48,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        21
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 49,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        22
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 50,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "printedPages": [
+        22
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 51,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        22
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 52,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        22
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 53,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        22
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 54,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        22
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 55,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        22
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 56,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        22
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 57,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        22
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 58,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        25
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 59,
+      "parts": [
+        "острый",
+        "прямой",
+        "тупой"
+      ],
+      "printedPages": [
+        25
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 60,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        25
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 61,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        25
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 62,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        25
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 63,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        25
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 64,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        25
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 65,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д"
+      ],
+      "printedPages": [
+        25
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 66,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        25
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 67,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        25
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 68,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        25
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 69,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        25
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 70,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        26
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 71,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        26
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 72,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        26
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 73,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        26
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 74,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        26
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 75,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        27
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 76,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        27
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 77,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        27
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 78,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        27
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 79,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        27
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 80,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        27
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 81,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        27
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 82,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        28
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 83,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        28
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 84,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        28
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 85,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        28
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 86,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        28
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 87,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        28
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 88,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        28
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 89,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        28
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 90,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        28
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "main",
+      "number": 91,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "printedPages": [
+        28
+      ],
+      "sourceCondition": "passed-with-recorded-overrides",
+      "mathematics": "passed",
+      "requiresManualAssessment": true
+    },
+    {
+      "collection": "theory",
+      "number": 1,
+      "printedPages": [
+        5,
+        6,
+        7
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "theory",
+      "number": 2,
+      "printedPages": [
+        7,
+        8
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "theory",
+      "number": 3,
+      "printedPages": [
+        9
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "theory",
+      "number": 4,
+      "printedPages": [
+        10
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "theory",
+      "number": 5,
+      "printedPages": [
+        11,
+        12
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "theory",
+      "number": 6,
+      "printedPages": [
+        12,
+        13
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "theory",
+      "number": 7,
+      "printedPages": [
+        14,
+        15,
+        16
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "theory",
+      "number": 8,
+      "printedPages": [
+        16,
+        17
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "theory",
+      "number": 9,
+      "printedPages": [
+        19,
+        20
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "theory",
+      "number": 10,
+      "printedPages": [
+        21
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "theory",
+      "number": 11,
+      "printedPages": [
+        22,
+        23
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "theory",
+      "number": 12,
+      "printedPages": [
+        23,
+        24
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "theory",
+      "number": 13,
+      "printedPages": [
+        24,
+        25
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 1,
+      "printedPages": [
+        26
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 2,
+      "printedPages": [
+        26
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 3,
+      "printedPages": [
+        26
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 4,
+      "printedPages": [
+        26
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 5,
+      "printedPages": [
+        26
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 6,
+      "printedPages": [
+        26
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 7,
+      "printedPages": [
+        26
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 8,
+      "printedPages": [
+        26
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 9,
+      "printedPages": [
+        26
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 10,
+      "printedPages": [
+        26
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 11,
+      "printedPages": [
+        26
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 12,
+      "printedPages": [
+        26
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 13,
+      "printedPages": [
+        26
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 14,
+      "printedPages": [
+        26
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 15,
+      "printedPages": [
+        26
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 16,
+      "printedPages": [
+        26
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 17,
+      "printedPages": [
+        26
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 18,
+      "printedPages": [
+        26
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 19,
+      "printedPages": [
+        27
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 20,
+      "printedPages": [
+        27
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 21,
+      "printedPages": [
+        27
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 22,
+      "printedPages": [
+        27
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 23,
+      "printedPages": [
+        27
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 24,
+      "printedPages": [
+        27
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 25,
+      "printedPages": [
+        27
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 26,
+      "printedPages": [
+        27
+      ],
+      "source": "passed",
+      "mathematics": "passed",
+      "pedagogicalExplanation": "passed"
+    }
+  ],
+  "residualContentBlockers": [],
+  "notCertifiedByThisReport": [
+    "Publication or deployment",
+    "Complete coverage of the entire 1431-number textbook",
+    "Browser behaviour or visual layout at 320 px and desktop",
+    "Independent inspection of all executable main-exercise models; separate cross-review and invariant gates cover them",
+    "Student learning outcomes or classroom trials"
+  ],
+  "requiredPublicationConditions": [
+    "Apply chapter-01-corrections.json exactly, retaining frozen source-preparation evidence.",
+    "Keep 9, 10, 44 and practical/construction/proof answers in manual assessment mode.",
+    "Pass separate executable-model cross-review, geometry invariant checks and browser checks.",
+    "Do not convert reading or use of help into a claim of independent solution."
+  ],
+  "subsequentIndependentChecks": [
+    {
+      "subject": "theory 6 shared model description",
+      "previousModelFileSha256": "3ae620025b5875c9d687b33bd504bcd7a707913d93b008f2639e683da9f31479",
+      "reviewedModelFileSha256": "74a34c6c441f65e3c957a6c46ef99cdb265a2442ee85db5f99743ee5fa7143ff",
+      "change": "The shared caption now names separate views for comparing segments and angles, a segment midpoint and an angle bisector.",
+      "independentVerification": [
+        "Read all five theory6 views: neutral and step1 compare segments, step2 shows the midpoint, step3 compares angles, step4 shows the bisector. The new generic caption is accurate in all five states.",
+        "Replacing only the new description with the previous description reconstructs the exact previously reviewed file SHA256. Coordinates, views, invariants and the other 38 models are byte-for-byte unchanged."
+      ],
+      "result": "passed-for-content",
+      "visualReview": "The changed caption requires final screenshot review; the previous screenshot report remains tied to its original hashes."
+    }
+  ]
+}

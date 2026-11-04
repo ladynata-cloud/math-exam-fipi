@@ -1,0 +1,266 @@
+{
+  "widths": [
+    320,
+    390,
+    1280
+  ],
+  "routes": {
+    "division": "/trainers/long-division-stepwise.html#start",
+    "graphs": "/trainers/oge-task11-graphs-trainer.html",
+    "triangle": "/ege-profil/start/index.html#practice/geo-right/guided",
+    "cone": "/stereo-course/textbook/#ex-main-0346"
+  },
+  "cases": [
+    {
+      "id": "division",
+      "width": 320,
+      "result": "PASS",
+      "acceptedSteps": 14,
+      "expectedAnswer": 24,
+      "checks": [
+        "wrong answer",
+        "hint",
+        "draft reload",
+        "complete",
+        "result reload",
+        "next example"
+      ]
+    },
+    {
+      "id": "graphs",
+      "width": 320,
+      "result": "PASS",
+      "acceptedMatches": 3,
+      "expectedMapping": "321",
+      "checks": [
+        "plot shapes independently classified",
+        "enlarge",
+        "wrong answer",
+        "interactive hint",
+        "correct",
+        "result reload"
+      ]
+    },
+    {
+      "id": "triangle",
+      "width": 320,
+      "result": "PASS",
+      "acceptedSteps": 2,
+      "expectedAnswer": 15,
+      "checks": [
+        "wrong answer",
+        "hint",
+        "intermediate history",
+        "draft reload",
+        "complete",
+        "result reload"
+      ]
+    },
+    {
+      "id": "cone",
+      "width": 320,
+      "result": "PASS",
+      "explainedSteps": 3,
+      "expectedAnswer": 17,
+      "assessment": "saved reasoning; teacher assesses justification",
+      "checks": [
+        "rotate",
+        "expand and keyboard close",
+        "three explained/model steps",
+        "save reasoning",
+        "reload"
+      ]
+    },
+    {
+      "id": "division",
+      "width": 390,
+      "result": "PASS",
+      "acceptedSteps": 14,
+      "expectedAnswer": 24,
+      "checks": [
+        "wrong answer",
+        "hint",
+        "draft reload",
+        "complete",
+        "result reload",
+        "next example"
+      ]
+    },
+    {
+      "id": "graphs",
+      "width": 390,
+      "result": "PASS",
+      "acceptedMatches": 3,
+      "expectedMapping": "213",
+      "checks": [
+        "plot shapes independently classified",
+        "enlarge",
+        "wrong answer",
+        "interactive hint",
+        "correct",
+        "result reload"
+      ]
+    },
+    {
+      "id": "triangle",
+      "width": 390,
+      "result": "PASS",
+      "acceptedSteps": 2,
+      "expectedAnswer": 15,
+      "checks": [
+        "wrong answer",
+        "hint",
+        "intermediate history",
+        "draft reload",
+        "complete",
+        "result reload"
+      ]
+    },
+    {
+      "id": "cone",
+      "width": 390,
+      "result": "PASS",
+      "explainedSteps": 3,
+      "expectedAnswer": 17,
+      "assessment": "saved reasoning; teacher assesses justification",
+      "checks": [
+        "rotate",
+        "expand and keyboard close",
+        "three explained/model steps",
+        "save reasoning",
+        "reload"
+      ]
+    },
+    {
+      "id": "division",
+      "width": 1280,
+      "result": "PASS",
+      "acceptedSteps": 14,
+      "expectedAnswer": 24,
+      "checks": [
+        "wrong answer",
+        "hint",
+        "draft reload",
+        "complete",
+        "result reload",
+        "next example"
+      ]
+    },
+    {
+      "id": "graphs",
+      "width": 1280,
+      "result": "PASS",
+      "acceptedMatches": 3,
+      "expectedMapping": "132",
+      "checks": [
+        "plot shapes independently classified",
+        "enlarge",
+        "wrong answer",
+        "interactive hint",
+        "correct",
+        "result reload"
+      ]
+    },
+    {
+      "id": "triangle",
+      "width": 1280,
+      "result": "PASS",
+      "acceptedSteps": 2,
+      "expectedAnswer": 15,
+      "checks": [
+        "wrong answer",
+        "hint",
+        "intermediate history",
+        "draft reload",
+        "complete",
+        "result reload"
+      ]
+    },
+    {
+      "id": "cone",
+      "width": 1280,
+      "result": "PASS",
+      "explainedSteps": 3,
+      "expectedAnswer": 17,
+      "assessment": "saved reasoning; teacher assesses justification",
+      "checks": [
+        "rotate",
+        "expand and keyboard close",
+        "three explained/model steps",
+        "save reasoning",
+        "reload"
+      ]
+    }
+  ],
+  "errors": [],
+  "failedRequests": [],
+  "browser": "140.0.7339.16",
+  "source": "local worktree",
+  "resources": [
+    "/assets/download-panel.css",
+    "/ege-profil/learning/data.js",
+    "/ege-profil/learning/route.js",
+    "/ege-profil/learning/style.css",
+    "/ege-profil/start/algebra-data.js?v=20261009-final-answer",
+    "/ege-profil/start/algebra-models.js?v=20261024-added-board",
+    "/ege-profil/start/app.js?v=20261024-added-board",
+    "/ege-profil/start/applied-data.js?v=20261009-readiness",
+    "/ege-profil/start/applied-tasks.js?v=20261010-readable-help",
+    "/ege-profil/start/calm-data.js?v=20261009",
+    "/ege-profil/start/calm-micro.js?v=20261009",
+    "/ege-profil/start/calm-ui.js?v=20261023-board",
+    "/ege-profil/start/checkpoint.js?v=20261009",
+    "/ege-profil/start/checks.js",
+    "/ege-profil/start/course-links.js?v=20261010-unified",
+    "/ege-profil/start/equations-data.js?v=20261007",
+    "/ege-profil/start/equations-tasks.js?v=20261023-board",
+    "/ege-profil/start/functions-data.js?v=20261007",
+    "/ege-profil/start/functions-tasks.js?v=20261009-calm",
+    "/ege-profil/start/geometry-data.js",
+    "/ege-profil/start/geometry-models.js?v=20261024-added-board",
+    "/ege-profil/start/index.html",
+    "/ege-profil/start/planimetry-tasks.js?v=20261024-added-board",
+    "/ege-profil/start/probability-data.js?v=20261007",
+    "/ege-profil/start/probability-tasks.js?v=20261024-added-board",
+    "/ege-profil/start/readiness-data.js?v=20261010-unified",
+    "/ege-profil/start/readiness.js?v=20261009",
+    "/ege-profil/start/solution-details.js?v=20261010-all-steps",
+    "/ege-profil/start/solutions.js?v=20261023-board",
+    "/ege-profil/start/state.js?v=20261009-calm",
+    "/ege-profil/start/stereo-data.js",
+    "/ege-profil/start/stereo-tasks.js?v=20261030-hidden-lines",
+    "/ege-profil/start/style.css?v=20261022-fractions",
+    "/ege-profil/start/task-first.js?v=20261022",
+    "/ege-profil/start/vector-tasks.js?v=20261024-added-board",
+    "/stereo-course/assets/math-text.js",
+    "/stereo-course/assets/task-scene-viewer.js",
+    "/stereo-course/assets/task-scenes.css",
+    "/stereo-course/textbook/",
+    "/stereo-course/textbook/assets/engine.js",
+    "/stereo-course/textbook/assets/style.css",
+    "/stereo-course/textbook/data/course.json",
+    "/trainers/long-division-entry.js?v=20261028",
+    "/trainers/long-division-stepwise.html",
+    "/trainers/oge-basics/arithmetic-route.js?v=20261008",
+    "/trainers/oge-basics/basics-help.css?v=basics-context-20261020",
+    "/trainers/oge-basics/basics-help.js?v=basics-context-20261020",
+    "/trainers/oge-basics/multiplication-division/decimal-shift.css?v=20261009-decimal-goal",
+    "/trainers/oge-basics/multiplication-division/decimal-shift.js?v=20261009-decimal-goal",
+    "/trainers/oge-basics/multiplication-division/division-guided-core.js?v=20261007-notebook",
+    "/trainers/oge-basics/multiplication-division/division-guided.css?v=20261030-clear-steps",
+    "/trainers/oge-basics/multiplication-division/division-guided.js?v=20261030-clear-steps",
+    "/trainers/oge-basics/multiplication-division/division-lab-core.js",
+    "/trainers/oge-basics/multiplication-division/multiplication-refresh.css?v=20261009",
+    "/trainers/oge-basics/multiplication-division/multiplication-refresh.js?v=20261009",
+    "/trainers/oge-basics/navigation-minimal.css?v=20261020",
+    "/trainers/oge-basics/navigation-minimal.js?v=20261020",
+    "/trainers/oge-course-algebra-reference.js",
+    "/trainers/oge-course-reference-entry.js",
+    "/trainers/oge-course-reference.css",
+    "/trainers/oge-course-reference.js",
+    "/trainers/oge-course-reference/parabola-vertex.png",
+    "/trainers/oge-task11-graphs-trainer.html",
+    "/trainers/task19-reference/fipi-oge-2027-page-03.png"
+  ],
+  "externalResources": []
+}

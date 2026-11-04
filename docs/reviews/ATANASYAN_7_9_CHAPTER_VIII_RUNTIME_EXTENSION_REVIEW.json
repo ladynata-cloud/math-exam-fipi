@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "browser": "passed",
+  "reviewer": "Independent technical reviewer viii_c; root accepts exact runtime scope and completed browser evidence",
+  "at": "2026-10-30T00:26:23.009264+00:00",
+  "previousSourceCommit": "884d1b646cb67a115f4bf70c2c0ce2ed7b987e52",
+  "preservedCards": 1083,
+  "contentApprovalGranted": false,
+  "publicationApprovalGranted": false,
+  "oldImplementationSha256": "06f892e4142242b6e1f22331479c884924d5e6690f18ca0fb3d6202bac0c319c",
+  "implementationSha256": "b831d68dbdaaf2e696a99699e228cb646ba03d76c7333f799a9c10e4bb904ad7",
+  "implementationFiles": {
+    "index.html": "098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804",
+    "assets/engine.js": "85d395dbfb66f8a1409f1d2f930fbb6f742c0085239d34d18ec2a901f3bd6492",
+    "assets/planar-viewer.js": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061",
+    "assets/style.css": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b",
+    "assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+    "source-inventory.json": "de0d2f2c7762df3e9fb0851ad27d1ba82fb826b8b3727c6fc386e462c9433224",
+    "assets/board-adapter.js": "e1c366fd77f2cc822894be7e21139ce99b9e7b3c568392b122f2a3b386b7545b"
+  },
+  "paragraphsAdded": [
+    {
+      "chapter": 8,
+      "number": 1,
+      "title": "Определение подобных треугольников",
+      "pointNumbers": [
+        63,
+        65
+      ],
+      "exerciseNumbers": [
+        640,
+        656
+      ],
+      "printedPages": [
+        163,
+        167
+      ]
+    },
+    {
+      "chapter": 8,
+      "number": 2,
+      "title": "Признаки подобия треугольников",
+      "pointNumbers": [
+        66,
+        68
+      ],
+      "exerciseNumbers": [
+        657,
+        671
+      ],
+      "printedPages": [
+        167,
+        171
+      ]
+    },
+    {
+      "chapter": 8,
+      "number": 3,
+      "title": "Применение подобия к доказательству теорем и решению задач",
+      "pointNumbers": [
+        69,
+        73
+      ],
+      "exerciseNumbers": [
+        672,
+        696
+      ],
+      "printedPages": [
+        171,
+        180
+      ]
+    },
+    {
+      "chapter": 8,
+      "number": 4,
+      "title": "Соотношения между сторонами и углами прямоугольного треугольника",
+      "pointNumbers": [
+        74,
+        75
+      ],
+      "exerciseNumbers": [
+        697,
+        709
+      ],
+      "printedPages": [
+        181,
+        185
+      ]
+    }
+  ],
+  "previousRuntimeReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_RUNTIME_EXTENSION_REVIEW.json",
+    "sha256": "9bb1b9a34a45f26e21484ae90ec7f42dc1094ad9e06beca9851939243d80b4cc"
+  },
+  "scope": "Only four exact chapter VIII paragraph metadata rows; restores all eight prior approval manifests against209 frozen files and1083 complete published records.",
+  "evidence": [
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_TECHNICAL_REVIEW.md",
+      "sha256": "e94a1f5ccc3e150b3d2a01ec438eddfdec1b3853a13eb04c1eec67137b257692"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_TECHNICAL_PROBES.json",
+      "sha256": "4c100f38f8b6471388f3b7ce93aa6c3cff54335d05a68aecd8d46c36a8381717"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_BROWSER_REVIEW.json",
+      "sha256": "f790843f93d722e9748b90f0442fd3a7747e7138dd1efb47d84a1aa548d861ba"
+    }
+  ]
+}

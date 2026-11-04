@@ -1,0 +1,791 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "independent agent /root/lessons_para1",
+  "author": "agent /root",
+  "reviewedAt": "2026-10-22T22:39:22.662394+00:00",
+  "scope": {
+    "collection": "selfcheck",
+    "paragraphs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "lessonCards": 97,
+    "reviewDimensions": [
+      "pedagogy"
+    ]
+  },
+  "verdicts": {
+    "pedagogy": "PASS"
+  },
+  "method": [
+    "Read all 97 question statements, all answer and model-connection steps, all hints, all chosen step views, and the coordinates, edges and faces of all 25 distinct model configurations present before revisions.",
+    "Checked definitions for necessary conditions, distinctions between a line and segment and between a drawn fragment and a full plane, legitimate use of examples and counterexamples, and the progression of concepts at the relevant school level.",
+    "Checked that a numerical model illustrates rather than claims to prove a general theorem, and that a view draws attention to the geometric object named by the current explanation.",
+    "Re-read the nine revised cards after the author freeze, including the perpendicular skew-line example and three dimensions of a rectangular parallelepiped. Exact final hashes of all 97 cards are recorded below.",
+    "Independent source and mathematical checks are recorded separately in selfcheck-review.json; this report adds pedagogical assessment only."
+  ],
+  "findings": [
+    {
+      "id": "PSELF-001",
+      "status": "resolved",
+      "cards": [
+        "question-01-03"
+      ],
+      "finding": "The crossing-line definition was illustrated by a different plane and its common line, rather than AD crossing ABC.",
+      "resolution": "The intersection view now shows AD, the ABC plane fragment and their sole common point A."
+    },
+    {
+      "id": "PSELF-002",
+      "status": "resolved",
+      "cards": [
+        "question-04-04",
+        "question-10-02"
+      ],
+      "finding": "The first part of a multi-part definition showed the object belonging to the later part.",
+      "resolution": "The first views now show parallel segments and the perpendicular MO respectively; later steps show skew segments and the incline MA."
+    },
+    {
+      "id": "PSELF-003",
+      "status": "resolved",
+      "cards": [
+        "question-08-03",
+        "question-08-04"
+      ],
+      "finding": "The shared 60-degree skew-line illustration did not directly demonstrate the perpendicular objects being defined.",
+      "resolution": "The author provided a 90-degree example: AE is parallel to CD and perpendicular to AB; the angle view and explanation now directly exhibit perpendicular skew lines and segments."
+    },
+    {
+      "id": "PSELF-004",
+      "status": "resolved",
+      "cards": [
+        "question-17-03",
+        "question-17-04",
+        "question-17-05"
+      ],
+      "finding": "Height, rectangularity and the three dimensions were illustrated using diagonal or base-only views.",
+      "resolution": "The straight-parallelepiped view now shows AA1 with the base; the rectangularity and dimensions views show the three pairwise perpendicular edges AB, AD and AA1."
+    },
+    {
+      "id": "PSELF-005",
+      "status": "resolved",
+      "cards": [
+        "question-18-06"
+      ],
+      "finding": "The lateral surface definition highlighted the base, which its explanation excludes.",
+      "resolution": "The new side view highlights SAB and explicitly identifies it as one of the four lateral faces, with the base excluded."
+    }
+  ],
+  "nonBlockingObservations": [
+    "Hints are deliberately general recall prompts rather than individual worked subsolutions. This is suitable for these definition/theorem selfcheck cards; the answer steps supply the requested content and connect it to a concrete model."
+  ],
+  "unresolvedFindings": [],
+  "checks": [
+    "Runtime lesson validation: 97/97 PASS.",
+    "Model geometry: 516 planar simple polygons and 1148 nonzero segments PASS.",
+    "Independent selfcheck-models-review.test.py: 4911 numerical/structural checks PASS."
+  ],
+  "limitations": [
+    "No browser pixel/layout inspection is claimed by this report.",
+    "This report does not change lesson review flags or supply merge/deployment authorization."
+  ],
+  "cards": [
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-01-01.json",
+      "lessonId": "merz-question-01-01",
+      "exercise": "1.1",
+      "sha256": "77f55ef4e724b211987ee270bccc49a9162e791f5044889b608b3c9738a98d6d",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-01-02.json",
+      "lessonId": "merz-question-01-02",
+      "exercise": "1.2",
+      "sha256": "5e5efd0d609fe71a4cb60fdfda9673e369c2effff1d7fca831e7604cb3c9620e",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-01-03.json",
+      "lessonId": "merz-question-01-03",
+      "exercise": "1.3",
+      "sha256": "d7668600e5097726be082e72567925d59e1552db8f36fd2d1482476506966624",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-01-04.json",
+      "lessonId": "merz-question-01-04",
+      "exercise": "1.4",
+      "sha256": "40014e47330dfdb7dae23fe8dff7c91ed98585d5cf1e2a3de60ad5a3e0a2ac47",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-01-05.json",
+      "lessonId": "merz-question-01-05",
+      "exercise": "1.5",
+      "sha256": "d8547bf183a3294b935565df9e924af9b02101de3167190f7703457e76eba710",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-02-01.json",
+      "lessonId": "merz-question-02-01",
+      "exercise": "2.1",
+      "sha256": "c24d2e4ee89b3ec9755b4d62485853070c79875f54428519f83d447aa5cbd9a2",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-02-02.json",
+      "lessonId": "merz-question-02-02",
+      "exercise": "2.2",
+      "sha256": "7440e6bb83d11653c1adc004f56180bfe43e698e0ec1d7bf98b99cb5746be12f",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-03-01.json",
+      "lessonId": "merz-question-03-01",
+      "exercise": "3.1",
+      "sha256": "5ff001f6f19fce76b7818aca316d11db98e831304f479e353da7977a5117253f",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-03-02.json",
+      "lessonId": "merz-question-03-02",
+      "exercise": "3.2",
+      "sha256": "7c48f4646c937fb9349e3d9a5a4ae1ad6d8413732b3e4320f153ad78f41ebc24",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-03-03.json",
+      "lessonId": "merz-question-03-03",
+      "exercise": "3.3",
+      "sha256": "169d9b7b5ad7c857a58a77438a738dfe3cb408c876ccdd0efb9a5cbf44a2f1f9",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-03-04.json",
+      "lessonId": "merz-question-03-04",
+      "exercise": "3.4",
+      "sha256": "9e41062527eadf837039f2e890ee5f9926a6e78f4e3896fe0895ad2a1fda2bbc",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-04-01.json",
+      "lessonId": "merz-question-04-01",
+      "exercise": "4.1",
+      "sha256": "bcaed435d1cdf9f0b9b291ba92ba62b95451c016ebb50e19dc1db6c984b5f1d1",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-04-02.json",
+      "lessonId": "merz-question-04-02",
+      "exercise": "4.2",
+      "sha256": "418aac3222a482ca0e95aab3150bf60f10295e298a90939358d90fed86f17e87",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-04-03.json",
+      "lessonId": "merz-question-04-03",
+      "exercise": "4.3",
+      "sha256": "2f8127479345b320fe3fcf8404a222f73acd929fac8bf2fc44d1b81cce753e74",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-04-04.json",
+      "lessonId": "merz-question-04-04",
+      "exercise": "4.4",
+      "sha256": "59672a6eb3fcbccd09a2398feb9ca3b1a59c572638b1780d8cbd36dbaebfcae0",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-04-05.json",
+      "lessonId": "merz-question-04-05",
+      "exercise": "4.5",
+      "sha256": "d79acdcee8e6ece46cf5d19082b6ad2b25313805bf72a3294742ab06e7c635fd",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-04-06.json",
+      "lessonId": "merz-question-04-06",
+      "exercise": "4.6",
+      "sha256": "cf59e10052592d3e9d194fe4bef5e9ab687670e7e13ddd8fefd85a4918151533",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-04-07.json",
+      "lessonId": "merz-question-04-07",
+      "exercise": "4.7",
+      "sha256": "7903d12fba4f7fb60a31a2593d025161c3a7881e65cffad7d27d2541b74589b7",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-05-01.json",
+      "lessonId": "merz-question-05-01",
+      "exercise": "5.1",
+      "sha256": "26714bd32eb6e7a0ced08f9dec9af797b5661d74137c096a1639e27ff0bebbaf",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-05-02.json",
+      "lessonId": "merz-question-05-02",
+      "exercise": "5.2",
+      "sha256": "a49b7097853e90aa0d9e1e8176b3fb95e2285acd6fce87cbf390352dd87a607e",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-05-03.json",
+      "lessonId": "merz-question-05-03",
+      "exercise": "5.3",
+      "sha256": "b02f8b8188572c998cf2313af01728c672100f058e42de459363ff574bb8ee67",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-05-04.json",
+      "lessonId": "merz-question-05-04",
+      "exercise": "5.4",
+      "sha256": "8116b3a52369f19e9fcf432810643ded298b30d23b9e3df9fd661c20c9931c22",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-06-01.json",
+      "lessonId": "merz-question-06-01",
+      "exercise": "6.1",
+      "sha256": "3115f5ab9c456066b289ab602e3a8baf4455cb1399510b9b5e986978d7fe9aa9",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-06-02.json",
+      "lessonId": "merz-question-06-02",
+      "exercise": "6.2",
+      "sha256": "ebde295bde09f084823a8751c86044b1895c9869d2bec96045de3b69fd22bd25",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-06-03.json",
+      "lessonId": "merz-question-06-03",
+      "exercise": "6.3",
+      "sha256": "dee4b6cde7907acd3a0aec872abda45c00fdf234408650a2a077840600fe9976",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-06-04.json",
+      "lessonId": "merz-question-06-04",
+      "exercise": "6.4",
+      "sha256": "1d0cec5c955c0e63446967efd74c9ee09c8d290095628a176d0229b3b0a0528c",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-07-01.json",
+      "lessonId": "merz-question-07-01",
+      "exercise": "7.1",
+      "sha256": "9c21f907af0c23ff3cd39b6e64a1b604ba4de4870421fa9b4f9fe75dcae6525d",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-07-02.json",
+      "lessonId": "merz-question-07-02",
+      "exercise": "7.2",
+      "sha256": "6a67dc5911bf2e5fc6031d989c686e4f6c18e56b6a6dc47dd9317f3f7d3f42b9",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-07-03.json",
+      "lessonId": "merz-question-07-03",
+      "exercise": "7.3",
+      "sha256": "64c4f4ad6aeb38f58cd427d51f9633120dd1f66186c0f82424c62bd316d19e7c",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-07-04.json",
+      "lessonId": "merz-question-07-04",
+      "exercise": "7.4",
+      "sha256": "6b019f456c8990b2c13a1c82375cf8c059263ec03cc1346ed5e15f6c41bd3eab",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-07-05.json",
+      "lessonId": "merz-question-07-05",
+      "exercise": "7.5",
+      "sha256": "139c731606bb1e729d7f658f94fd195ec2ca7afaad1e6303745ce446f385432b",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-07-06.json",
+      "lessonId": "merz-question-07-06",
+      "exercise": "7.6",
+      "sha256": "829acdb0b88dd7a04e793ba44352bfd7aadf1bf05abb4030c648c9324248092a",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-07-07.json",
+      "lessonId": "merz-question-07-07",
+      "exercise": "7.7",
+      "sha256": "b485a383965c943483e6b2d35ea51149481deee3d6364db8c76f3ec525e85679",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-08-01.json",
+      "lessonId": "merz-question-08-01",
+      "exercise": "8.1",
+      "sha256": "fbd7b0f119b991a5dda161ce8145aea9955f452bb5e6f27882917cedee6796cf",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-08-02.json",
+      "lessonId": "merz-question-08-02",
+      "exercise": "8.2",
+      "sha256": "51ca271d62a97821716cf64e863330b3f11c5b76512d355da859d29ab6acd647",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-08-03.json",
+      "lessonId": "merz-question-08-03",
+      "exercise": "8.3",
+      "sha256": "f395f686f0875632aa9163ebb0067ff11b43d1196d3eef7987b584886844ccbf",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-08-04.json",
+      "lessonId": "merz-question-08-04",
+      "exercise": "8.4",
+      "sha256": "31d4d1642261faada68fad1727f922e3077e105db391647c5df22459df706f1c",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-09-01.json",
+      "lessonId": "merz-question-09-01",
+      "exercise": "9.1",
+      "sha256": "605a187cb7a69ca42b27e5605481e03e3101c45ecc067d43dd6e9719000e9bc1",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-09-02.json",
+      "lessonId": "merz-question-09-02",
+      "exercise": "9.2",
+      "sha256": "a92fca9ca4f9ce0e87def8564588675576bf6989cac339f7ede701d42077c8c9",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-09-03.json",
+      "lessonId": "merz-question-09-03",
+      "exercise": "9.3",
+      "sha256": "1d93ce9f50e5f1a54be6b955edf3514afd828dda0aee095254423f43b388d08c",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-09-04.json",
+      "lessonId": "merz-question-09-04",
+      "exercise": "9.4",
+      "sha256": "4557951f72ba44b0e40e185d8a16a69209d133167c31b8ad6bfb6303cc657ddf",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-09-05.json",
+      "lessonId": "merz-question-09-05",
+      "exercise": "9.5",
+      "sha256": "f9e54e3134a008592516afe05fe7a015ef9bcbb1b11080a2539883ed9c3bd3be",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-09-06.json",
+      "lessonId": "merz-question-09-06",
+      "exercise": "9.6",
+      "sha256": "673f7bd5eb787c54682abe93dbe08ead06894a8d3cf3741433ff4d533805899a",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-09-07.json",
+      "lessonId": "merz-question-09-07",
+      "exercise": "9.7",
+      "sha256": "298b8e0a64a04f85238cc4fc6070b17862c8a72b47425d9c5c8533c601845fae",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-09-08.json",
+      "lessonId": "merz-question-09-08",
+      "exercise": "9.8",
+      "sha256": "20706dab967ed7535fbd06f8a673cdd9aa028f70b9d92b55b0cc8d382a713fa4",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-10-01.json",
+      "lessonId": "merz-question-10-01",
+      "exercise": "10.1",
+      "sha256": "9028c3ebbae0eed71ab337144cc6bf6f5bca596e6889d24fdbd301312b4b55ef",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-10-02.json",
+      "lessonId": "merz-question-10-02",
+      "exercise": "10.2",
+      "sha256": "6097ce86015620ee953efafed3c204f3686762fcd4a0757b13d92da002d702b1",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-10-03.json",
+      "lessonId": "merz-question-10-03",
+      "exercise": "10.3",
+      "sha256": "bdf1b14e5472bc83f540b98fe8db2bb21e78a1d32d3bfaea34641fb3cffe094b",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-10-04.json",
+      "lessonId": "merz-question-10-04",
+      "exercise": "10.4",
+      "sha256": "3e36553437ccd53f3ac74aad1eecade1cb3bda52e6f6ca23073caf6f7a9198f6",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-10-05.json",
+      "lessonId": "merz-question-10-05",
+      "exercise": "10.5",
+      "sha256": "e3e413c82a3fa4b60f760519a9c25980739a98cb180a4775e15f8fc5bad40fd4",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-10-06.json",
+      "lessonId": "merz-question-10-06",
+      "exercise": "10.6",
+      "sha256": "15d3c07471439b17a056531ecb6c5418b0ae8782475b2b7df644c2b4004d7607",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-10-07.json",
+      "lessonId": "merz-question-10-07",
+      "exercise": "10.7",
+      "sha256": "1300492635e0845a996d6b0fc9f56d882bbe8987cce22ca5eb5d19db7f621dd8",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-10-08.json",
+      "lessonId": "merz-question-10-08",
+      "exercise": "10.8",
+      "sha256": "d59dd70dd16be3b3e195bcc6acf0bf384c1d1c4b87c9b11704e1a3de121fe1e4",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-11-01.json",
+      "lessonId": "merz-question-11-01",
+      "exercise": "11.1",
+      "sha256": "cfb70d07a789dff552aa760b2b4c3be51a886fd3ed78129daa4c3bc34563d44d",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-12-01.json",
+      "lessonId": "merz-question-12-01",
+      "exercise": "12.1",
+      "sha256": "d31834802fb497edeb20079d2a6227bb0b5cdcc19a5cd0887da493c46777e980",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-13-01.json",
+      "lessonId": "merz-question-13-01",
+      "exercise": "13.1",
+      "sha256": "6c6d2dd7f8c0f1fcf254ca0fcc6b0a03e70989f395e224399aa4a47610f6de8a",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-13-02.json",
+      "lessonId": "merz-question-13-02",
+      "exercise": "13.2",
+      "sha256": "ceda4db726c34de2b32fa238773c8992c5489bb7e422196094840b991782258d",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-13-03.json",
+      "lessonId": "merz-question-13-03",
+      "exercise": "13.3",
+      "sha256": "d508692b4bbdb2243d0dac3d23b4b4de442a9bd529f9116c560ec9e3a6281b79",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-13-04.json",
+      "lessonId": "merz-question-13-04",
+      "exercise": "13.4",
+      "sha256": "05d151e6daab2f1904dfab00e27ee6ed9b479bbb71013e969a25303ddf4ea12c",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-13-05.json",
+      "lessonId": "merz-question-13-05",
+      "exercise": "13.5",
+      "sha256": "c7e79b0180c9d7463914d41cf6c479f0a7843344621a99ad9e445254b2af42b7",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-13-06.json",
+      "lessonId": "merz-question-13-06",
+      "exercise": "13.6",
+      "sha256": "49cc6be72b114ea6227355c8598aed6e6b6b6915ef2dd940208ed6708ad3c521",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-13-07.json",
+      "lessonId": "merz-question-13-07",
+      "exercise": "13.7",
+      "sha256": "7fdd7d4d85f7cfbca2af0e23c809d84fa2f8e9efb2ab97ee05db1179bc496a24",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-14-01.json",
+      "lessonId": "merz-question-14-01",
+      "exercise": "14.1",
+      "sha256": "a71522ccb2edd59c227f5405fb8536de69441c94ed5548b0242a49f5e5110f04",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-14-02.json",
+      "lessonId": "merz-question-14-02",
+      "exercise": "14.2",
+      "sha256": "da566c775637d5e28303b18162bbd80d85ce3ba7b29fec981415d1dee667027b",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-14-03.json",
+      "lessonId": "merz-question-14-03",
+      "exercise": "14.3",
+      "sha256": "3c154c431e329942fce3dc69f5fed829b4179674c1fe5cb109fbdd4b3896c4c9",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-15-01.json",
+      "lessonId": "merz-question-15-01",
+      "exercise": "15.1",
+      "sha256": "95b336757f75e49c95e088349ae2b3c3ad53fd54a3bcbf8c07050d3bb4bef7e7",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-16-01.json",
+      "lessonId": "merz-question-16-01",
+      "exercise": "16.1",
+      "sha256": "4a24217861f6840a5249c5a53783a3cdaebb2060095fcbcd7fbe3bf9a3657bff",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-16-02.json",
+      "lessonId": "merz-question-16-02",
+      "exercise": "16.2",
+      "sha256": "714d7ad698c5cfe057a61ac44b4ef8f8330a0556d871161f568c385ea096ff31",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-16-03.json",
+      "lessonId": "merz-question-16-03",
+      "exercise": "16.3",
+      "sha256": "0625b7d2a74df90c3f9d73a9eef7fd48304f45261ead2f083276f40986dcb0b0",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-16-04.json",
+      "lessonId": "merz-question-16-04",
+      "exercise": "16.4",
+      "sha256": "a74e3bb5f3e32edc93192b2cf768c350abc7a223c4ec273960efca0e3f01091e",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-16-05.json",
+      "lessonId": "merz-question-16-05",
+      "exercise": "16.5",
+      "sha256": "8c38876992a226b9c4ec35079c968865017de640c383c6e48d0f01a4a143b5f2",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-16-06.json",
+      "lessonId": "merz-question-16-06",
+      "exercise": "16.6",
+      "sha256": "f14674d0debbedb5590d08a68eec2219bc3297661c36fbfc5dc68b35e7081844",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-16-07.json",
+      "lessonId": "merz-question-16-07",
+      "exercise": "16.7",
+      "sha256": "488cd4233e970462026fd856319dcd187361df5eec9aa98b6b94e53da98ca978",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-16-08.json",
+      "lessonId": "merz-question-16-08",
+      "exercise": "16.8",
+      "sha256": "ed058fba084219bbc8245d2195067923c7d23275423c92c66c79bd7490a62687",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-16-09.json",
+      "lessonId": "merz-question-16-09",
+      "exercise": "16.9",
+      "sha256": "30f799291136fee8deff9df42ddf1fa9b8c8f3cbf23d9d8d5235e12a922c7276",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-16-10.json",
+      "lessonId": "merz-question-16-10",
+      "exercise": "16.10",
+      "sha256": "bf110ec3f94d484f1ccb1ac4ea5c3a155051e0e9456e351297346e52867aa565",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-16-11.json",
+      "lessonId": "merz-question-16-11",
+      "exercise": "16.11",
+      "sha256": "d26917f9fb054454e8ff0739779e644f42a027afee648b3e598880bc92941387",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-17-01.json",
+      "lessonId": "merz-question-17-01",
+      "exercise": "17.1",
+      "sha256": "8b4c69cc0bd23e7b1ba9568650b04479816ab3f8472845c96cad8a3b1bab6c4b",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-17-02.json",
+      "lessonId": "merz-question-17-02",
+      "exercise": "17.2",
+      "sha256": "caadc75d1eacb0cbfeac15e2c67f47d3d65905b45357593b34418a09e3ad4b20",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-17-03.json",
+      "lessonId": "merz-question-17-03",
+      "exercise": "17.3",
+      "sha256": "a5efea5143d445b47759f9a30b57fb92f2d3daa01c3ca7832fd1ddc4aa4a149c",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-17-04.json",
+      "lessonId": "merz-question-17-04",
+      "exercise": "17.4",
+      "sha256": "3d7dcadc775e8fa07841cfd29154d58aba2e605a847755e0db1efcb479f50f73",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-17-05.json",
+      "lessonId": "merz-question-17-05",
+      "exercise": "17.5",
+      "sha256": "dac0f8c9203c121a7d1159a8d2cdc42aaf8ee972ba6e779b67a841cc6a9bc18b",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-17-06.json",
+      "lessonId": "merz-question-17-06",
+      "exercise": "17.6",
+      "sha256": "05a449d943635d2f91229b3d37df1a18c52782249c1e8070aece8fa055715060",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-17-07.json",
+      "lessonId": "merz-question-17-07",
+      "exercise": "17.7",
+      "sha256": "065d20ce6dfef6857aa0afd403c4c397b8294af92c8788f794d1c383bf7c0396",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-18-01.json",
+      "lessonId": "merz-question-18-01",
+      "exercise": "18.1",
+      "sha256": "7dc7d5ddd014da5aa0fa39cb8231772aa9c973755ad40c0e2b0596a34d3f1d2f",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-18-02.json",
+      "lessonId": "merz-question-18-02",
+      "exercise": "18.2",
+      "sha256": "4ce9553b012b5887383a5eb61f871a61e6caf7c5e7db7f74acc92c8579d3cba9",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-18-03.json",
+      "lessonId": "merz-question-18-03",
+      "exercise": "18.3",
+      "sha256": "d02cc2da83b28dec5eaeae67861c2597d51a02651153698abc2efec1685a6140",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-18-04.json",
+      "lessonId": "merz-question-18-04",
+      "exercise": "18.4",
+      "sha256": "4ec9fcd0ab619b16400d6e575d79db2cf080500a2bc35e9a8f5124676d313e54",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-18-05.json",
+      "lessonId": "merz-question-18-05",
+      "exercise": "18.5",
+      "sha256": "d06eaca1d6d160ac6d5f19a0eca4ff679d10c2881b8f599e5460330a52aff7bc",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-18-06.json",
+      "lessonId": "merz-question-18-06",
+      "exercise": "18.6",
+      "sha256": "e6e4c9fd478c87b202bb297ffa1dbd8df4c8fda14a2096a0e669bc8ca1a12d26",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-18-07.json",
+      "lessonId": "merz-question-18-07",
+      "exercise": "18.7",
+      "sha256": "dcceba77943cf023e6720f63a3226df4683bdf21ae0eac714e071c699cff4d94",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-19-01.json",
+      "lessonId": "merz-question-19-01",
+      "exercise": "19.1",
+      "sha256": "047366b5d73dad81e50f404f6964eecf997a66fac416554b559db6f255906365",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-19-02.json",
+      "lessonId": "merz-question-19-02",
+      "exercise": "19.2",
+      "sha256": "2e6979bd39ea4273dedbdd0b93eb4be20eab365593b9c98681c71e38e3b70412",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-19-03.json",
+      "lessonId": "merz-question-19-03",
+      "exercise": "19.3",
+      "sha256": "9be77659f6700371aedd08cd79ce6db7d39cd3f826e92c5f56c9065d5f8ec465",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-19-04.json",
+      "lessonId": "merz-question-19-04",
+      "exercise": "19.4",
+      "sha256": "74ea63c3d7e169ab4d5f78d63e31ccddf4798e75e248f69e802a8a2e0c3f898b",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-19-05.json",
+      "lessonId": "merz-question-19-05",
+      "exercise": "19.5",
+      "sha256": "74b9f08600e5d95b9bf56b1e4a4512af3d3accdaecc67a5312c9033c0398abd0",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-19-06.json",
+      "lessonId": "merz-question-19-06",
+      "exercise": "19.6",
+      "sha256": "b89a584cba0495384bd35fbfc2d5fae0848eb70a28f111e0841cc168575de4eb",
+      "pedagogy": "PASS"
+    }
+  ],
+  "releaseApproval": false
+}

@@ -1,0 +1,1364 @@
+{
+  "schemaVersion": 1,
+  "book": {
+    "id": "atanasyan-2023-7-9",
+    "title": "Математика. Геометрия. 7–9 классы. Базовый уровень",
+    "authors": [
+      "Л. С. Атанасян",
+      "В. Ф. Бутузов",
+      "С. Б. Кадомцев",
+      "Э. Г. Позняк",
+      "И. И. Юдина"
+    ],
+    "publisher": "Просвещение",
+    "year": 2023,
+    "edition": "14-е, переработанное",
+    "isbn": "978-5-09-102538-5",
+    "printedPageCount": 416,
+    "pdfPageCount": 417,
+    "pdfPageOffset": 1,
+    "sourceFilename": "1701411644_geometrija_-uchebnik_-7-9-kl_-atanasjan_compressed.pdf",
+    "sourceSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+    "bibliographicEvidencePrintedPages": [
+      1,
+      2
+    ]
+  },
+  "status": {
+    "numberingInventoryComplete": true,
+    "numberingInventoryScope": "section-level ranges and separate numbering namespaces; not per-item source mapping",
+    "everyExerciseSourcePageVerified": false,
+    "subpartInventoryComplete": false,
+    "solutionsComplete": false,
+    "fullCourseReady": false,
+    "appendixTaskInventoryComplete": false,
+    "theoryWorkedExampleInventoryComplete": false
+  },
+  "summary": {
+    "chapterCount": 15,
+    "theoryPointCount": 137,
+    "continuousExerciseNumbers": [
+      1,
+      1431
+    ],
+    "continuousNumberCount": 1431,
+    "reviewQuestionCount": 315,
+    "researchTaskCount": 14,
+    "reportTopicCount": 14,
+    "complexTaskCount": 6,
+    "complexTaskSubpartCount": 24,
+    "appendixSectionCount": 3
+  },
+  "chapters": [
+    {
+      "chapter": 1,
+      "grade": 7,
+      "title": "Начальные геометрические сведения",
+      "printedPages": [
+        5,
+        28
+      ],
+      "exerciseNumbers": [
+        1,
+        91
+      ],
+      "numberCount": 91,
+      "additionalExerciseNumbers": [
+        75,
+        91
+      ],
+      "additionalStartsPrintedPage": 27,
+      "reviewQuestions": {
+        "namespace": "chapter-1-review",
+        "numbers": [
+          1,
+          26
+        ],
+        "count": 26,
+        "printedPages": [
+          26,
+          27
+        ]
+      },
+      "verification": "chapter and section endpoints checked; interior numbers and every subpart are not individually checked",
+      "numberEndpointEvidencePrintedPages": [
+        8,
+        28
+      ]
+    },
+    {
+      "chapter": 2,
+      "grade": 7,
+      "title": "Треугольники",
+      "printedPages": [
+        29,
+        52
+      ],
+      "exerciseNumbers": [
+        92,
+        190
+      ],
+      "numberCount": 99,
+      "additionalExerciseNumbers": [
+        161,
+        190
+      ],
+      "additionalStartsPrintedPage": 50,
+      "reviewQuestions": {
+        "namespace": "chapter-2-review",
+        "numbers": [
+          1,
+          21
+        ],
+        "count": 21,
+        "printedPages": [
+          49,
+          50
+        ]
+      },
+      "verification": "chapter and section endpoints checked; interior numbers and every subpart are not individually checked",
+      "numberEndpointEvidencePrintedPages": [
+        31,
+        52
+      ]
+    },
+    {
+      "chapter": 3,
+      "grade": 7,
+      "title": "Параллельные прямые",
+      "printedPages": [
+        53,
+        68
+      ],
+      "exerciseNumbers": [
+        191,
+        227
+      ],
+      "numberCount": 37,
+      "additionalExerciseNumbers": [
+        218,
+        227
+      ],
+      "additionalStartsPrintedPage": 68,
+      "reviewQuestions": {
+        "namespace": "chapter-3-review",
+        "numbers": [
+          1,
+          17
+        ],
+        "count": 17,
+        "printedPages": [
+          67,
+          68
+        ]
+      },
+      "verification": "chapter and section endpoints checked; interior numbers and every subpart are not individually checked",
+      "numberEndpointEvidencePrintedPages": [
+        57,
+        68
+      ]
+    },
+    {
+      "chapter": 4,
+      "grade": 7,
+      "title": "Соотношения между сторонами и углами треугольника",
+      "printedPages": [
+        69,
+        90
+      ],
+      "exerciseNumbers": [
+        228,
+        330
+      ],
+      "numberCount": 103,
+      "additionalExerciseNumbers": [
+        304,
+        330
+      ],
+      "additionalStartsPrintedPage": 89,
+      "reviewQuestions": {
+        "namespace": "chapter-4-review",
+        "numbers": [
+          1,
+          23
+        ],
+        "count": 23,
+        "printedPages": [
+          87,
+          89
+        ]
+      },
+      "verification": "chapter and section endpoints checked; interior numbers and every subpart are not individually checked",
+      "numberEndpointEvidencePrintedPages": [
+        71,
+        90
+      ]
+    },
+    {
+      "chapter": 5,
+      "grade": 7,
+      "title": "Геометрические места точек. Симметричные фигуры",
+      "printedPages": [
+        91,
+        115
+      ],
+      "exerciseNumbers": [
+        331,
+        412
+      ],
+      "numberCount": 82,
+      "additionalExerciseNumbers": [
+        394,
+        412
+      ],
+      "additionalStartsPrintedPage": 114,
+      "reviewQuestions": {
+        "namespace": "chapter-5-review",
+        "numbers": [
+          1,
+          30
+        ],
+        "count": 30,
+        "printedPages": [
+          112,
+          114
+        ]
+      },
+      "verification": "chapter and section endpoints checked; interior numbers and every subpart are not individually checked",
+      "numberEndpointEvidencePrintedPages": [
+        95,
+        115
+      ]
+    },
+    {
+      "chapter": 6,
+      "grade": 8,
+      "title": "Четырёхугольники",
+      "printedPages": [
+        121,
+        138
+      ],
+      "exerciseNumbers": [
+        462,
+        540
+      ],
+      "numberCount": 79,
+      "additionalExerciseNumbers": [
+        520,
+        540
+      ],
+      "additionalStartsPrintedPage": 137,
+      "reviewQuestions": {
+        "namespace": "chapter-6-review",
+        "numbers": [
+          1,
+          22
+        ],
+        "count": 22,
+        "printedPages": [
+          135,
+          136
+        ]
+      },
+      "verification": "chapter and section endpoints checked; interior numbers and every subpart are not individually checked",
+      "numberEndpointEvidencePrintedPages": [
+        123,
+        138
+      ]
+    },
+    {
+      "chapter": 7,
+      "grade": 8,
+      "title": "Площадь",
+      "printedPages": [
+        139,
+        162
+      ],
+      "exerciseNumbers": [
+        541,
+        639
+      ],
+      "numberCount": 99,
+      "additionalExerciseNumbers": [
+        605,
+        639
+      ],
+      "additionalStartsPrintedPage": 159,
+      "reviewQuestions": {
+        "namespace": "chapter-7-review",
+        "numbers": [
+          1,
+          12
+        ],
+        "count": 12,
+        "printedPages": [
+          158,
+          158
+        ]
+      },
+      "verification": "chapter and section endpoints checked; interior numbers and every subpart are not individually checked",
+      "numberEndpointEvidencePrintedPages": [
+        144,
+        162
+      ]
+    },
+    {
+      "chapter": 8,
+      "grade": 8,
+      "title": "Подобные треугольники",
+      "printedPages": [
+        163,
+        188
+      ],
+      "exerciseNumbers": [
+        640,
+        736
+      ],
+      "numberCount": 97,
+      "additionalExerciseNumbers": [
+        710,
+        736
+      ],
+      "additionalStartsPrintedPage": 186,
+      "reviewQuestions": {
+        "namespace": "chapter-8-review",
+        "numbers": [
+          1,
+          18
+        ],
+        "count": 18,
+        "printedPages": [
+          185,
+          186
+        ]
+      },
+      "verification": "chapter and section endpoints checked; interior numbers and every subpart are not individually checked",
+      "numberEndpointEvidencePrintedPages": [
+        165,
+        188
+      ]
+    },
+    {
+      "chapter": 9,
+      "grade": 8,
+      "title": "Окружность",
+      "printedPages": [
+        189,
+        213
+      ],
+      "exerciseNumbers": [
+        737,
+        823
+      ],
+      "numberCount": 87,
+      "additionalExerciseNumbers": [
+        796,
+        823
+      ],
+      "additionalStartsPrintedPage": 210,
+      "reviewQuestions": {
+        "namespace": "chapter-9-review",
+        "numbers": [
+          1,
+          19
+        ],
+        "count": 19,
+        "printedPages": [
+          209,
+          210
+        ]
+      },
+      "verification": "chapter and section endpoints checked; interior numbers and every subpart are not individually checked",
+      "numberEndpointEvidencePrintedPages": [
+        197,
+        213
+      ]
+    },
+    {
+      "chapter": 10,
+      "grade": 9,
+      "title": "Векторы",
+      "printedPages": [
+        224,
+        245
+      ],
+      "exerciseNumbers": [
+        926,
+        997
+      ],
+      "numberCount": 72,
+      "additionalExerciseNumbers": [
+        988,
+        997
+      ],
+      "additionalStartsPrintedPage": 244,
+      "reviewQuestions": {
+        "namespace": "chapter-10-review",
+        "numbers": [
+          1,
+          20
+        ],
+        "count": 20,
+        "printedPages": [
+          243,
+          244
+        ]
+      },
+      "verification": "chapter and section endpoints checked; interior numbers and every subpart are not individually checked",
+      "numberEndpointEvidencePrintedPages": [
+        228,
+        245
+      ]
+    },
+    {
+      "chapter": 11,
+      "grade": 9,
+      "title": "Метод координат",
+      "printedPages": [
+        246,
+        270
+      ],
+      "exerciseNumbers": [
+        998,
+        1097
+      ],
+      "numberCount": 100,
+      "additionalExerciseNumbers": [
+        1076,
+        1097
+      ],
+      "additionalStartsPrintedPage": 269,
+      "reviewQuestions": {
+        "namespace": "chapter-11-review",
+        "numbers": [
+          1,
+          24
+        ],
+        "count": 24,
+        "printedPages": [
+          267,
+          268
+        ]
+      },
+      "verification": "chapter and section endpoints checked; interior numbers and every subpart are not individually checked",
+      "numberEndpointEvidencePrintedPages": [
+        251,
+        270
+      ]
+    },
+    {
+      "chapter": 12,
+      "grade": 9,
+      "title": "Соотношения между сторонами и углами треугольника. Скалярное произведение векторов",
+      "printedPages": [
+        271,
+        293
+      ],
+      "exerciseNumbers": [
+        1098,
+        1166
+      ],
+      "numberCount": 69,
+      "additionalExerciseNumbers": [
+        1146,
+        1166
+      ],
+      "additionalStartsPrintedPage": 291,
+      "reviewQuestions": {
+        "namespace": "chapter-12-review",
+        "numbers": [
+          1,
+          22
+        ],
+        "count": 22,
+        "printedPages": [
+          290,
+          291
+        ]
+      },
+      "verification": "chapter and section endpoints checked; interior numbers and every subpart are not individually checked",
+      "numberEndpointEvidencePrintedPages": [
+        275,
+        293
+      ]
+    },
+    {
+      "chapter": 13,
+      "grade": 9,
+      "title": "Длина окружности и площадь круга",
+      "printedPages": [
+        294,
+        312
+      ],
+      "exerciseNumbers": [
+        1167,
+        1239
+      ],
+      "numberCount": 73,
+      "additionalExerciseNumbers": [
+        1221,
+        1239
+      ],
+      "additionalStartsPrintedPage": 311,
+      "reviewQuestions": {
+        "namespace": "chapter-13-review",
+        "numbers": [
+          1,
+          16
+        ],
+        "count": 16,
+        "printedPages": [
+          310,
+          311
+        ]
+      },
+      "verification": "chapter and section endpoints checked; interior numbers and every subpart are not individually checked",
+      "numberEndpointEvidencePrintedPages": [
+        300,
+        312
+      ]
+    },
+    {
+      "chapter": 14,
+      "grade": 9,
+      "title": "Преобразования плоскости. Движения",
+      "printedPages": [
+        313,
+        331
+      ],
+      "exerciseNumbers": [
+        1240,
+        1295
+      ],
+      "numberCount": 56,
+      "additionalExerciseNumbers": [
+        1286,
+        1295
+      ],
+      "additionalStartsPrintedPage": 329,
+      "reviewQuestions": {
+        "namespace": "chapter-14-review",
+        "numbers": [
+          1,
+          24
+        ],
+        "count": 24,
+        "printedPages": [
+          328,
+          329
+        ]
+      },
+      "verification": "chapter and section endpoints checked; interior numbers and every subpart are not individually checked",
+      "numberEndpointEvidencePrintedPages": [
+        318,
+        331
+      ]
+    },
+    {
+      "chapter": 15,
+      "grade": 9,
+      "title": "Преобразование подобия. Подобие фигур",
+      "printedPages": [
+        332,
+        357
+      ],
+      "exerciseNumbers": [
+        1296,
+        1367
+      ],
+      "numberCount": 72,
+      "additionalExerciseNumbers": [
+        1342,
+        1367
+      ],
+      "additionalStartsPrintedPage": 354,
+      "reviewQuestions": {
+        "namespace": "chapter-15-review",
+        "numbers": [
+          1,
+          21
+        ],
+        "count": 21,
+        "printedPages": [
+          353,
+          354
+        ]
+      },
+      "verification": "chapter and section endpoints checked; interior numbers and every subpart are not individually checked",
+      "numberEndpointEvidencePrintedPages": [
+        337,
+        357
+      ]
+    }
+  ],
+  "advanced": [
+    {
+      "grade": 7,
+      "printedPages": [
+        115,
+        120
+      ],
+      "exerciseNumbers": [
+        413,
+        461
+      ],
+      "numberCount": 49
+    },
+    {
+      "grade": 8,
+      "printedPages": [
+        214,
+        223
+      ],
+      "exerciseNumbers": [
+        824,
+        925
+      ],
+      "numberCount": 102
+    },
+    {
+      "grade": 9,
+      "printedPages": [
+        357,
+        364
+      ],
+      "exerciseNumbers": [
+        1368,
+        1431
+      ],
+      "numberCount": 64,
+      "chapterGroups": [
+        {
+          "chapter": 10,
+          "numberRange": [
+            1368,
+            1375
+          ],
+          "printedPages": [
+            357,
+            359
+          ]
+        },
+        {
+          "chapter": 11,
+          "numberRange": [
+            1376,
+            1388
+          ],
+          "printedPages": [
+            359,
+            360
+          ]
+        },
+        {
+          "chapter": 12,
+          "numberRange": [
+            1389,
+            1398
+          ],
+          "printedPages": [
+            361,
+            362
+          ]
+        },
+        {
+          "chapter": 13,
+          "numberRange": [
+            1399,
+            1410
+          ],
+          "printedPages": [
+            362,
+            363
+          ]
+        },
+        {
+          "chapter": 14,
+          "numberRange": [
+            1411,
+            1423
+          ],
+          "printedPages": [
+            363,
+            364
+          ]
+        },
+        {
+          "chapter": 15,
+          "numberRange": [
+            1424,
+            1431
+          ],
+          "printedPages": [
+            364,
+            364
+          ]
+        }
+      ]
+    }
+  ],
+  "research": [
+    {
+      "namespace": "research-grade-7",
+      "grade": 7,
+      "numbers": [
+        1,
+        4
+      ],
+      "printedPages": [
+        365,
+        365
+      ]
+    },
+    {
+      "namespace": "research-grade-8",
+      "grade": 8,
+      "numbers": [
+        1,
+        5
+      ],
+      "printedPages": [
+        365,
+        366
+      ]
+    },
+    {
+      "namespace": "research-grade-9",
+      "grade": 9,
+      "numbers": [
+        1,
+        5
+      ],
+      "printedPages": [
+        366,
+        366
+      ]
+    }
+  ],
+  "reportTopics": {
+    "namespace": "report-topic",
+    "numbers": [
+      1,
+      14
+    ],
+    "printedPages": [
+      366,
+      367
+    ]
+  },
+  "complexTasks": {
+    "namespace": "complex",
+    "heading": "Комплексные задания",
+    "numbers": [
+      1,
+      6
+    ],
+    "printedPages": [
+      368,
+      371
+    ],
+    "subpartCounts": [
+      4,
+      3,
+      3,
+      8,
+      2,
+      4
+    ],
+    "labelledOGE": false
+  },
+  "appendices": [
+    {
+      "number": 1,
+      "title": "Об аксиомах планиметрии",
+      "printedPages": [
+        372,
+        376
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Некоторые сведения о развитии геометрии",
+      "printedPages": [
+        377,
+        379
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Уголковый отражатель",
+      "printedPages": [
+        380,
+        381
+      ]
+    }
+  ],
+  "referenceSections": {
+    "answersAndHintsPrintedPages": [
+      382,
+      405
+    ],
+    "subjectIndexPrintedPages": [
+      406,
+      409
+    ],
+    "tableOfContentsPrintedPages": [
+      410,
+      416
+    ]
+  },
+  "notes": [
+    "Practical exercises and advanced exercises share continuous numbering 1–1431.",
+    "Review questions restart at 1 in each chapter; research tasks restart at 1 for each grade.",
+    "Some chapter final pages are shared with the following advanced section.",
+    "The full course must also inventory theoretical worked examples and appendix content; no exhaustive subpart/example count is claimed.",
+    "Raw OCR files are uncorrected and cannot be used as authoritative mathematics or source statements.",
+    "All printed-page ranges are inclusive; PDF page numbers are printed page + 1."
+  ],
+  "paragraphs": [
+    {
+      "chapter": 1,
+      "number": 1,
+      "title": "Прямая и отрезок",
+      "pointNumbers": [
+        1,
+        2
+      ],
+      "exerciseNumbers": [
+        1,
+        10
+      ],
+      "printedPages": [
+        5,
+        9
+      ]
+    },
+    {
+      "chapter": 1,
+      "number": 2,
+      "title": "Луч и угол",
+      "pointNumbers": [
+        3,
+        4
+      ],
+      "exerciseNumbers": [
+        11,
+        20
+      ],
+      "printedPages": [
+        9,
+        11
+      ]
+    },
+    {
+      "chapter": 1,
+      "number": 3,
+      "title": "Сравнение отрезков и углов",
+      "pointNumbers": [
+        5,
+        6
+      ],
+      "exerciseNumbers": [
+        21,
+        26
+      ],
+      "printedPages": [
+        11,
+        14
+      ]
+    },
+    {
+      "chapter": 1,
+      "number": 4,
+      "title": "Измерение отрезков",
+      "pointNumbers": [
+        7,
+        8
+      ],
+      "exerciseNumbers": [
+        27,
+        44
+      ],
+      "printedPages": [
+        14,
+        19
+      ]
+    },
+    {
+      "chapter": 1,
+      "number": 5,
+      "title": "Измерение углов",
+      "pointNumbers": [
+        9,
+        10
+      ],
+      "exerciseNumbers": [
+        45,
+        57
+      ],
+      "printedPages": [
+        19,
+        22
+      ]
+    },
+    {
+      "chapter": 1,
+      "number": 6,
+      "title": "Перпендикулярные прямые",
+      "pointNumbers": [
+        11,
+        13
+      ],
+      "exerciseNumbers": [
+        58,
+        74
+      ],
+      "printedPages": [
+        22,
+        26
+      ]
+    },
+    {
+      "chapter": 2,
+      "number": 1,
+      "title": "Первый признак равенства треугольников",
+      "pointNumbers": [
+        14,
+        15
+      ],
+      "exerciseNumbers": [
+        92,
+        104
+      ],
+      "printedPages": [
+        29,
+        32
+      ]
+    },
+    {
+      "chapter": 2,
+      "number": 2,
+      "title": "Медианы, биссектрисы и высоты треугольника",
+      "pointNumbers": [
+        16,
+        18
+      ],
+      "exerciseNumbers": [
+        105,
+        125
+      ],
+      "printedPages": [
+        33,
+        38
+      ]
+    },
+    {
+      "chapter": 2,
+      "number": 3,
+      "title": "Второй и третий признаки равенства треугольников",
+      "pointNumbers": [
+        19,
+        20
+      ],
+      "exerciseNumbers": [
+        126,
+        147
+      ],
+      "printedPages": [
+        38,
+        43
+      ]
+    },
+    {
+      "chapter": 2,
+      "number": 4,
+      "title": "Задачи на построение",
+      "pointNumbers": [
+        21,
+        23
+      ],
+      "exerciseNumbers": [
+        148,
+        160
+      ],
+      "printedPages": [
+        43,
+        49
+      ]
+    },
+    {
+      "chapter": 3,
+      "number": 1,
+      "title": "Признаки параллельности двух прямых",
+      "pointNumbers": [
+        24,
+        26
+      ],
+      "exerciseNumbers": [
+        191,
+        200
+      ],
+      "printedPages": [
+        53,
+        57
+      ]
+    },
+    {
+      "chapter": 3,
+      "number": 2,
+      "title": "Аксиома параллельных прямых",
+      "pointNumbers": [
+        27,
+        30
+      ],
+      "exerciseNumbers": [
+        201,
+        217
+      ],
+      "printedPages": [
+        58,
+        67
+      ]
+    },
+    {
+      "chapter": 4,
+      "number": 1,
+      "title": "Сумма углов треугольника",
+      "pointNumbers": [
+        31,
+        32
+      ],
+      "exerciseNumbers": [
+        228,
+        240
+      ],
+      "printedPages": [
+        69,
+        71
+      ]
+    },
+    {
+      "chapter": 4,
+      "number": 2,
+      "title": "Соотношения между сторонами и углами треугольника",
+      "pointNumbers": [
+        33,
+        34
+      ],
+      "exerciseNumbers": [
+        241,
+        258
+      ],
+      "printedPages": [
+        72,
+        75
+      ]
+    },
+    {
+      "chapter": 4,
+      "number": 3,
+      "title": "Прямоугольные треугольники",
+      "pointNumbers": [
+        35,
+        36
+      ],
+      "exerciseNumbers": [
+        259,
+        278
+      ],
+      "printedPages": [
+        75,
+        80
+      ]
+    },
+    {
+      "chapter": 4,
+      "number": 4,
+      "title": "Построение треугольника по трём элементам",
+      "pointNumbers": [
+        37,
+        38
+      ],
+      "exerciseNumbers": [
+        279,
+        303
+      ],
+      "printedPages": [
+        80,
+        87
+      ]
+    },
+    {
+      "chapter": 5,
+      "number": 1,
+      "title": "Геометрические места точек",
+      "pointNumbers": [
+        39,
+        40
+      ],
+      "exerciseNumbers": [
+        331,
+        335
+      ],
+      "printedPages": [
+        91,
+        95
+      ]
+    },
+    {
+      "chapter": 5,
+      "number": 2,
+      "title": "Окружность. Касательная к окружности",
+      "pointNumbers": [
+        41,
+        43
+      ],
+      "exerciseNumbers": [
+        336,
+        373
+      ],
+      "printedPages": [
+        95,
+        106
+      ]
+    },
+    {
+      "chapter": 5,
+      "number": 3,
+      "title": "Симметричные фигуры",
+      "pointNumbers": [
+        44,
+        45
+      ],
+      "exerciseNumbers": [
+        374,
+        393
+      ],
+      "printedPages": [
+        106,
+        112
+      ]
+    },
+    {
+      "chapter": 6,
+      "number": 1,
+      "title": "Многоугольники",
+      "pointNumbers": [
+        46,
+        47
+      ],
+      "exerciseNumbers": [
+        462,
+        470
+      ],
+      "printedPages": [
+        121,
+        123
+      ]
+    },
+    {
+      "chapter": 6,
+      "number": 2,
+      "title": "Параллелограмм и трапеция",
+      "pointNumbers": [
+        48,
+        50
+      ],
+      "exerciseNumbers": [
+        471,
+        501
+      ],
+      "printedPages": [
+        124,
+        131
+      ]
+    },
+    {
+      "chapter": 6,
+      "number": 3,
+      "title": "Прямоугольник, ромб, квадрат",
+      "pointNumbers": [
+        51,
+        53
+      ],
+      "exerciseNumbers": [
+        502,
+        519
+      ],
+      "printedPages": [
+        131,
+        135
+      ]
+    },
+    {
+      "chapter": 7,
+      "number": 1,
+      "title": "Площадь многоугольника",
+      "pointNumbers": [
+        54,
+        56
+      ],
+      "exerciseNumbers": [
+        541,
+        554
+      ],
+      "printedPages": [
+        139,
+        145
+      ]
+    },
+    {
+      "chapter": 7,
+      "number": 2,
+      "title": "Площади параллелограмма, треугольника и трапеции",
+      "pointNumbers": [
+        57,
+        59
+      ],
+      "exerciseNumbers": [
+        555,
+        580
+      ],
+      "printedPages": [
+        146,
+        152
+      ]
+    },
+    {
+      "chapter": 7,
+      "number": 3,
+      "title": "Теорема Пифагора",
+      "pointNumbers": [
+        60,
+        62
+      ],
+      "exerciseNumbers": [
+        581,
+        604
+      ],
+      "printedPages": [
+        152,
+        158
+      ]
+    },
+    {
+      "chapter": 8,
+      "number": 1,
+      "title": "Определение подобных треугольников",
+      "pointNumbers": [
+        63,
+        65
+      ],
+      "exerciseNumbers": [
+        640,
+        656
+      ],
+      "printedPages": [
+        163,
+        167
+      ]
+    },
+    {
+      "chapter": 8,
+      "number": 2,
+      "title": "Признаки подобия треугольников",
+      "pointNumbers": [
+        66,
+        68
+      ],
+      "exerciseNumbers": [
+        657,
+        671
+      ],
+      "printedPages": [
+        167,
+        171
+      ]
+    },
+    {
+      "chapter": 8,
+      "number": 3,
+      "title": "Применение подобия к доказательству теорем и решению задач",
+      "pointNumbers": [
+        69,
+        73
+      ],
+      "exerciseNumbers": [
+        672,
+        696
+      ],
+      "printedPages": [
+        171,
+        180
+      ]
+    },
+    {
+      "chapter": 8,
+      "number": 4,
+      "title": "Соотношения между сторонами и углами прямоугольного треугольника",
+      "pointNumbers": [
+        74,
+        75
+      ],
+      "exerciseNumbers": [
+        697,
+        709
+      ],
+      "printedPages": [
+        181,
+        185
+      ]
+    },
+    {
+      "chapter": 9,
+      "number": 1,
+      "title": "Окружность и прямые",
+      "pointNumbers": [
+        76,
+        78
+      ],
+      "exerciseNumbers": [
+        737,
+        761
+      ],
+      "printedPages": [
+        189,
+        199
+      ]
+    },
+    {
+      "chapter": 9,
+      "number": 2,
+      "title": "Центральные и вписанные углы",
+      "pointNumbers": [
+        79,
+        81
+      ],
+      "exerciseNumbers": [
+        762,
+        783
+      ],
+      "printedPages": [
+        199,
+        206
+      ]
+    },
+    {
+      "chapter": 9,
+      "number": 3,
+      "title": "Вписанная и описанная окружности четырёхугольников",
+      "pointNumbers": [
+        82,
+        83
+      ],
+      "exerciseNumbers": [
+        784,
+        795
+      ],
+      "printedPages": [
+        206,
+        209
+      ]
+    }
+  ]
+}

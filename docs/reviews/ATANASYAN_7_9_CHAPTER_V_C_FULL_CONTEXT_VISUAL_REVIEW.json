@@ -1,0 +1,4205 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "supplemental independent rendered-image review in the actual full-course page context",
+  "reviewedAt": "2026-10-28T07:48:48.914536+00:00",
+  "reviewer": "visual_b; independent of fragment C model author",
+  "authorReviewed": "visual_c",
+  "scope": {
+    "chapter": 5,
+    "exercises": [
+      385,
+      412
+    ],
+    "cards": 33,
+    "views": 194,
+    "widths": [
+      320,
+      1280
+    ],
+    "viewWidthPairs": 388
+  },
+  "verdict": "PASS",
+  "findings": [],
+  "supplements": {
+    "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_C_VISUAL_REVIEW.json",
+    "sha256": "9a600b2c26b83ac4e0808293c7dbae872c6f66721c0886f6f24e47fb9b816698",
+    "relationship": "The earlier focused visual/semantic review remains separate. This report adds direct inspection of every actual-page rendering; no approval is transferred on an assumed visual equivalence."
+  },
+  "reviewedTree": {
+    "binding": "Exact authored model and renderer hashes below. The actual-page capture started before the final caption-only change in exercise 408; its four affected renderings were replaced by the fresh actual-page targeted captures. The remaining 384 images are from the complete course run.",
+    "files": [
+      {
+        "path": "tools/geometry-textbook/models_ch5_c.py",
+        "sha256": "c3b2b12eb9efb7517155961aad6293fa50128c54e78a7d18923deb8d6d8f283c"
+      },
+      {
+        "path": "geometry-course/textbook/preparation/chapter-05-c.json",
+        "sha256": "31f8b5b78af98e80fb5a32ac1f63276dab9d3f88f54d22b4e7ebc1df2a1368c8"
+      },
+      {
+        "path": "geometry-course/textbook/models/chapter-05-c.json",
+        "sha256": "431d8b0a402f13faf9f40a24efae092999623fbe1823a1f8bee262481a8a1090"
+      },
+      {
+        "path": "geometry-course/textbook/assets/style.css",
+        "sha256": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b"
+      },
+      {
+        "path": "geometry-course/textbook/assets/planar-viewer.js",
+        "sha256": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061"
+      },
+      {
+        "path": "tools/geometry-textbook/browser_check.js",
+        "sha256": "07b49df556ebb6ee97ddcabbd3a4e3d12d570c7d4816446555356e214fd12577"
+      },
+      {
+        "path": "tools/geometry-textbook/check_models.py",
+        "sha256": "43b473df652fcfb66cf9a90030725bdfdfd5f50063bb50f62467b8c12f0709ad"
+      },
+      {
+        "path": "geometry-course/textbook/index.html",
+        "sha256": "4ad96a76e0b5e3f791aca172a884a2e66c93fcd75cb2efd83cbfb393a7a8fe5b"
+      },
+      {
+        "path": "geometry-course/textbook/assets/engine.js",
+        "sha256": "a774e1204d0b26b2969589cfcff28b70cc8c8841f33230c1d511e3d7c4ee2c28"
+      },
+      {
+        "path": "geometry-course/textbook/data/course.json",
+        "sha256": "58cec7c15c71b92c87c896427d9a550023a8c0a44ac139705394907ff4f9dee7"
+      }
+    ]
+  },
+  "captureSets": [
+    {
+      "id": "full-candidate",
+      "source": "Complete actual index-page browser run",
+      "reviewedScreenshots": 384
+    },
+    {
+      "id": "full-caption-408",
+      "source": "Fresh actual index-page targeted exercise-408 browser capture after the A₁B₁ caption correction",
+      "reviewedScreenshots": 4,
+      "replacedViews": [
+        "case-1",
+        "step-1"
+      ],
+      "widths": [
+        320,
+        1280
+      ],
+      "targetedEvidenceFile": "browser-evidence.json",
+      "targetedEvidenceSha256": "f1a13b654f7130a5712907e46e74a9ccacb55da83b0d970dd0c21d1c1a905b26",
+      "targetedGateCompleted": true,
+      "targetedViews": 16,
+      "errors": []
+    }
+  ],
+  "renderedImageReview": {
+    "method": "All 388 full model-region screenshots from the actual course index page were opened through the image viewer in 34 contact sheets, including geometry, tools, currently unlocked case controls and captions. No region was cropped from the source screenshots. Desktop images were proportionally reduced in the sheets; mobile images retained their original width. The replacement exercise-408 desktop captions were also opened at original size. Every final screenshot hash was rechecked after viewing.",
+    "coverage": 388,
+    "exactByteTransferFromFocusedReview": false,
+    "deduplicationUsed": false,
+    "criteria": [
+      "labels readable and attributable to geometry",
+      "no visible collisions or clipping",
+      "complete circles and constructions",
+      "correct neutral, step and alternative scenes",
+      "case controls fit the actual page layout and reflect unlock state",
+      "coincident-point and exceptional-case captions legible",
+      "corrected A₁B₁ caption visible in both affected exercise-408 views at both widths"
+    ],
+    "contactSheets": [
+      {
+        "file": "C-full-320-01.png",
+        "sha256": "71f3fbadb029133f55589861391be7e37e86653b4f4cd0adfc6a90279d4369ab",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-320-02.png",
+        "sha256": "9c079e18da99a22cd5a8a84d1f9c83e3eba574db61305716b240c35983e4bec2",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-320-03.png",
+        "sha256": "07dea5373be60df278bc416eed1390feac0cc8d26df1445807d332b2d40cbd02",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-320-04.png",
+        "sha256": "38adb52f85f70ab4407398b485ffbf9a24c04cec9c8baa6994c3b49876138813",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-320-05.png",
+        "sha256": "b7b3b823b4e99a8b91597e6f5b50fc054881ad5da049a7856ac9a77528466b62",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-320-06.png",
+        "sha256": "e83d4d9e108fe59cd2afc964a67bf56236abde35becb59c2e769bcffc91609ce",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-320-07.png",
+        "sha256": "36170857e10f4cc23a343df9d44c82098f95c9c7877b3519b5aff464617ce091",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-320-08.png",
+        "sha256": "43f9247d38b7e6a93be31ca01fd6013faf127f3b63987a663375c8687efa4cca",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-320-09.png",
+        "sha256": "4b3548beff1dffe77acfae00afe1d381e8a6165a40c61a6b62154b3c84359645",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-320-10.png",
+        "sha256": "f1cc177de1b3527193fa03ddff20633c3cad4e6c40c1ece05dc5f0f53bcdf8f6",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-320-11.png",
+        "sha256": "c7ef3aa0b70f386344f9ef0c4fee3a7ec4a1f6a007c67f205fa7f5c391557766",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-320-12.png",
+        "sha256": "b7ae7e5f7788a9e00a25cb63e17cc5ef09fdfa85a1194ac1e461e0290abc7242",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-320-13.png",
+        "sha256": "0e39410646f0e41ef6d3947a845d7ecfc01b7b5da461c0662446c9b1b68c0fed",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-320-14.png",
+        "sha256": "855130861065e312732380f2df083512c402ad6d26d61f3b4a961585d2daf392",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-320-15.png",
+        "sha256": "9fcd16c87e63094b79aa14f08e0f831306722897a10473dfe033eba457296e7d",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-320-16.png",
+        "sha256": "ee19404587fb9433374f2cf2e3ed91ab1201751feedbc2597d2029af00e838e3",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-320-17.png",
+        "sha256": "3a659a1470bccccf54a3d18805e7108147e937a080117a5f3e301e9ca38242f4",
+        "sourceImageCount": 2,
+        "viewed": true
+      },
+      {
+        "file": "C-full-1280-01.png",
+        "sha256": "d172a8c9a27b407a777e2c14bb55b02b15003edb58b290453c0c9c4bc7264bc0",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-1280-02.png",
+        "sha256": "f9272068073350dc2373f4678f65037649fd85beaf09b5d2e5c0f3b2f32fe238",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-1280-03.png",
+        "sha256": "4d9b358c543bf40f4d31ded5c78af570f8a338cac7e976c8b1d8de2a7db47d25",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-1280-04.png",
+        "sha256": "27925c19bf5aeb395b3da0d8bcadde211f4ff7d4b5844fec7af399634747cbe4",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-1280-05.png",
+        "sha256": "b16e684e19b2d9fa87b185889ce85234af77e0eebf69360f125da2b5ba96d92f",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-1280-06.png",
+        "sha256": "cf4c3ca2dad4aad6fc3a5c4018061280e0130ace376149c950bcaaae20a1df36",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-1280-07.png",
+        "sha256": "72e3d3957969f038c911c4444aa8bd27c79a5cc1446260584776c4b99fd6a559",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-1280-08.png",
+        "sha256": "db2b47355b03249c69997a8ad4f0797ad82fa6c5e26f1f0223f0e8a3453572f5",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-1280-09.png",
+        "sha256": "6b59ee215d60a803bd683fec851fd79cb884b2203ce0befc69bd3bd8e4d6bd5c",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-1280-10.png",
+        "sha256": "779698c28372c769d83990928eabcdbf632408509505015f1828a45b2be1c022",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-1280-11.png",
+        "sha256": "82534f1b0935a9fc7c1d111b8bfe29eaa1c189b5303782ff6a29d7c19f1ae6ff",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-1280-12.png",
+        "sha256": "609accc0431f6106dcfc08ce1b863b41e525209b6a45cb5b082f91360f983c10",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-1280-13.png",
+        "sha256": "b1fc7a453d9a27b2f00fa459eb6915614812661977b48eb3277a3c1b038d51f5",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-1280-14.png",
+        "sha256": "94a0b5580e5cebd7457154bc08ce2a4278b07737ffe49a7ccbee273f16b6118f",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-1280-15.png",
+        "sha256": "b70c28d8951a043e67179a5b72866ea7fa27a2c69c054b719d348ce7224804d4",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-1280-16.png",
+        "sha256": "cf0d99b2de72c84aad2feb7434de9bc71416cf9a176c874fa045c7e74955b4db",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "C-full-1280-17.png",
+        "sha256": "55af1ab20a7b7aeb8d3b958e32d809668ed4addeafb22e53a19ac8c64f061d08",
+        "sourceImageCount": 2,
+        "viewed": true
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "review-atanasyan-7-9-main-385-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "a229dda96475d058dabee34a53f46c2b407643de0d64b3c290733aac658bdf5c",
+        "number": 385,
+        "part": "а",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "fb5eafd80ea1e4376ba8331d87e4f2063e6b139acec9b69cb3c38a69cb1464d1",
+        "number": 385,
+        "part": "а",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "fb5eafd80ea1e4376ba8331d87e4f2063e6b139acec9b69cb3c38a69cb1464d1",
+        "number": 385,
+        "part": "а",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "fb5eafd80ea1e4376ba8331d87e4f2063e6b139acec9b69cb3c38a69cb1464d1",
+        "number": 385,
+        "part": "а",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-2-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "c80200916429c05ed19bfe9b4bcb54cc3ac175245997278a82f595018ee5e410",
+        "number": 385,
+        "part": "б",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-2-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "df25ae5d4d72349ce73d03031e64227d0bf875454b3c0e8b556ec27d923010e3",
+        "number": 385,
+        "part": "б",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-2-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "397d7a24250dba88aedf346ba270720c8be459a0441a09fe197ce3068f60550f",
+        "number": 385,
+        "part": "б",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-2-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "397d7a24250dba88aedf346ba270720c8be459a0441a09fe197ce3068f60550f",
+        "number": 385,
+        "part": "б",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-3-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "3f755db515b7c375e17cd738b3d9b60a9fdece7d932d62468b41d4ea35a11ef7",
+        "number": 385,
+        "part": "в",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-3-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "8cacec5e8b7482a35f1a1c8ad9836922498b4c706bc3cd18b086b5471607f923",
+        "number": 385,
+        "part": "в",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-3-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "8cacec5e8b7482a35f1a1c8ad9836922498b4c706bc3cd18b086b5471607f923",
+        "number": 385,
+        "part": "в",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-3-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "8cacec5e8b7482a35f1a1c8ad9836922498b4c706bc3cd18b086b5471607f923",
+        "number": 385,
+        "part": "в",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-386-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "f7d19ba9cb1be6ab10a78c8fcdec7ca23b03b2b2bbc4c76e479fff93ac077966",
+        "number": 386,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-386-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "0c27a6e4f4dc24f6a3f745144c5d7a6639553cbe60493728366759a682d87b1e",
+        "number": 386,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-386-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "0c27a6e4f4dc24f6a3f745144c5d7a6639553cbe60493728366759a682d87b1e",
+        "number": 386,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-386-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "0c27a6e4f4dc24f6a3f745144c5d7a6639553cbe60493728366759a682d87b1e",
+        "number": 386,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-387-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "df3b9459776e7aa0776e9f57776c1de4320831c2d4d6f36fabbfd93fa3e61b8e",
+        "number": 387,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-387-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "c4b25999bede80b79663275d7bb9fc8e38bfe822f6a38ba9bcea6a2baad23fbd",
+        "number": 387,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-387-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "318cbea70675c97aa1d45dd9774a0fe79692784e9fa4b58498dcfa355c8ccbeb",
+        "number": 387,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-387-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "318cbea70675c97aa1d45dd9774a0fe79692784e9fa4b58498dcfa355c8ccbeb",
+        "number": 387,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-388-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "036a36e22a237d60db629f5fc8e8fff292f0713043f6d0058fe8c6faddf0f964",
+        "number": 388,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-388-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "d0a1cd3cc379f1aa65bb771c45b1746f50880698d513ff04b9e8991b1b465621",
+        "number": 388,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-388-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "14ad307d77157ea468597dd7c8c273ac01a415bee8bd4d393b11ce32154f6161",
+        "number": 388,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-388-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "dbf874dad4d5988eb2bb44b402b47b462f6328ae160d5b7e439ffa584f6446a6",
+        "number": 388,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-389-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "d1e5e89ae1710da3e82b8e169e1da6600247ce4a7b759d91eae93cbb6d96dcd9",
+        "number": 389,
+        "part": "а",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-389-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "87f56a358d5fc8a087a28504c33888e5eb10d0236c88f027cf60544c216b78db",
+        "number": 389,
+        "part": "а",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-389-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "cd8314a5b247b61ee22dd8bbdff1103b38c822c4b44af2b51688ca73c4587735",
+        "number": 389,
+        "part": "а",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-389-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "34980a51cf54cd365a0af963662cf0e738214e6caa96869973e54343548d6002",
+        "number": 389,
+        "part": "а",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-389-part-2-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "36c08eaf43fd6e1418bad42d5fb220793a6e59e8db521c6b64fb32f0a28e2b4f",
+        "number": 389,
+        "part": "б",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-389-part-2-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "16a494aec7a9c86a8c461b38dfc54e249f11c5c81864f42b9f1dc63152a0933f",
+        "number": 389,
+        "part": "б",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-389-part-2-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "16a494aec7a9c86a8c461b38dfc54e249f11c5c81864f42b9f1dc63152a0933f",
+        "number": 389,
+        "part": "б",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-389-part-2-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "3d0f9863c56e9b23e74dbc5e42f3d510c0d1dee7b8040fd38ae18bdda1e2abbe",
+        "number": 389,
+        "part": "б",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-case-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "fe0b57ef700bdd5cffb6584c5984892a045287bc34b9aa079ea0ce1c0a5d7124",
+        "number": 390,
+        "part": "single",
+        "view": "case-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-case-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "6e2ba07a699c251ca0d5376a8ed4cfc20efff381e07f2b17d27fe88b20f5d920",
+        "number": 390,
+        "part": "single",
+        "view": "case-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-case-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "4742ae126d40b02a1edf607d750de64281bbcc6612059c7bd5acf2ba085fe33b",
+        "number": 390,
+        "part": "single",
+        "view": "case-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-case-4-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "e67beff81573fc0920d344faddad32e5b47cf502d1343c4e44a8edcd8b3da376",
+        "number": 390,
+        "part": "single",
+        "view": "case-4",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-case-5-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "7b7ee7ac332c922636fd63c6862ba2681a0e89d7c9b0fd29d745e09f971e9478",
+        "number": 390,
+        "part": "single",
+        "view": "case-5",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-case-6-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "caea733aedae022459223d6e868b12413e910ec1328cce975b667a9d93dff348",
+        "number": 390,
+        "part": "single",
+        "view": "case-6",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "84c2b5132d762f56982773eadda78d617995b8ba7de2cc23cd6f6abe3b0e0cc4",
+        "number": 390,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "84c2b5132d762f56982773eadda78d617995b8ba7de2cc23cd6f6abe3b0e0cc4",
+        "number": 390,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "dd2cb6f2b282ee8328fdbf90f8ccdc72ce09936b117f00ececc2b15276ba3ce2",
+        "number": 390,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "0d57150272794a857963c4b5d162b0996e09b546ca683bea6f4fdc45308f8039",
+        "number": 390,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-step-4-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "bea30f6a5e0eeb7ea2bac7083956c98692c62c6c2762ea07faf3fc56c891184b",
+        "number": 390,
+        "part": "single",
+        "view": "step-4",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-step-5-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "cc5ba91b8b8588505bcf7bdee1b74e670446ad5ca8b7e042749b7594cfee19d9",
+        "number": 390,
+        "part": "single",
+        "view": "step-5",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-step-6-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "8ae38182652825555d6ab5288143a2115843f053e35f407671dd52a6dff0024d",
+        "number": 390,
+        "part": "single",
+        "view": "step-6",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-391-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "6e14900c0d06c2277780fb56f1df936e33e3aee6512adb94461102606c74ec72",
+        "number": 391,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-391-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "20260483c6fcd9760b42bc48ceee30d1b52ff3606874b45aa4693de7c55394eb",
+        "number": 391,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-391-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "20260483c6fcd9760b42bc48ceee30d1b52ff3606874b45aa4693de7c55394eb",
+        "number": 391,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-392-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "5b705de96a1cf3167d73f60c233cf1cd37a5b6b8a4fe7011dea7980ef4408343",
+        "number": 392,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-392-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "d8ee1c0d3c4dea86b1723bc926155528ce0e849d63e72b9906634dc5d7250cf3",
+        "number": 392,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-392-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "d8ee1c0d3c4dea86b1723bc926155528ce0e849d63e72b9906634dc5d7250cf3",
+        "number": 392,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-392-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "a153219bd8acedf0882a86763155b6b8eb14cb2646d75ba7c8cd1257c607ba5f",
+        "number": 392,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-392-part-1-step-4-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "a153219bd8acedf0882a86763155b6b8eb14cb2646d75ba7c8cd1257c607ba5f",
+        "number": 392,
+        "part": "single",
+        "view": "step-4",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-393-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "3c5485faa61c3a4c54b976d9bddd1758e95b1ce0db6717db8b24ae36213ba4da",
+        "number": 393,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-393-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "9401ce16879472e149a9707083e96e2cfbaefd39089a1f30a057e9966802996e",
+        "number": 393,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-393-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "cc2f09cf622cc7c4bd6200c2ae210c4cc07dc723b367d2f918826a0dd2ad85e5",
+        "number": 393,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-393-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "6fa34cf0d4538e94c27261ddb9b38117e01ed3f2feb1caf363012e064ccd347f",
+        "number": 393,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-393-part-1-step-4-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "de6d526eadfabe8c8859afe72311937477c687bdbc3ac28439226ce49e82b285",
+        "number": 393,
+        "part": "single",
+        "view": "step-4",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-394-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "0000f3536c1bac5ca92ea379cc5c05779862975e76bf2d8f0bdf562719a6faf5",
+        "number": 394,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-394-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "cf9e83a0870cb8b1bc6d409d10bdd3e3191bfcdc21a83d7af7c3edb9f01407f7",
+        "number": 394,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-394-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "28d564a7b1baa78c19babc5dcaecb20a38320ef19a0e5f3d06ac0e537b81be0e",
+        "number": 394,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-394-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "28d564a7b1baa78c19babc5dcaecb20a38320ef19a0e5f3d06ac0e537b81be0e",
+        "number": 394,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-394-part-1-step-4-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "84b82a8291e6976c25f224905d40c1a7d2349f0a473ba3da651ebee04f382139",
+        "number": 394,
+        "part": "single",
+        "view": "step-4",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-395-part-1-case-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "0bf9131a3a08f72546b97e5c6067277d45b77c8c5f71d8814e5d927e593ec596",
+        "number": 395,
+        "part": "single",
+        "view": "case-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-395-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "df9786f2595c55d58c800d0545c54ec1f6edfd34c046d4c1473c89a983f4f4ad",
+        "number": 395,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-395-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "5a30e02f6f718964b2974b16b4b4822349e8430a91b92c2f5acc6553e58a713b",
+        "number": 395,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-395-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "9ead8e24ad3831cce653aa316aa6551a98ad4808dae3b845eabb28c11e3a6e52",
+        "number": 395,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-395-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "9e698e722e33100fe7d09ea4e34c7b212ff5cac8873aeacd5b150fbe34eb3d05",
+        "number": 395,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-395-part-1-step-4-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "9e698e722e33100fe7d09ea4e34c7b212ff5cac8873aeacd5b150fbe34eb3d05",
+        "number": 395,
+        "part": "single",
+        "view": "step-4",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-395-part-1-step-5-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "8acfe3a03de2fbc2ddf2406bd25178afe20de25e0b59e7e35d78d24493590be8",
+        "number": 395,
+        "part": "single",
+        "view": "step-5",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-395-part-1-step-6-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "8acfe3a03de2fbc2ddf2406bd25178afe20de25e0b59e7e35d78d24493590be8",
+        "number": 395,
+        "part": "single",
+        "view": "step-6",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-396-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "be8bdd57850d7d0c6871cd19a0429ff101753b996a09e69bcadf664f13a9a82a",
+        "number": 396,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-396-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "4314d25d5c55c0a05c960ae9fea9b57925f3ab61f48e9598fe18b3719793fddb",
+        "number": 396,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-396-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "cdc40022ba90d2bec6dbf66b64a4d4fcda34ec7a4d8f3276b1b18f7bdebaa387",
+        "number": 396,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-396-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "cdc40022ba90d2bec6dbf66b64a4d4fcda34ec7a4d8f3276b1b18f7bdebaa387",
+        "number": 396,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-396-part-1-step-4-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "ea93925ec18f1db51d09b0d88800350065811bfaacc9d1c77f16eae7fe2bc9c3",
+        "number": 396,
+        "part": "single",
+        "view": "step-4",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-396-part-1-step-5-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "ea93925ec18f1db51d09b0d88800350065811bfaacc9d1c77f16eae7fe2bc9c3",
+        "number": 396,
+        "part": "single",
+        "view": "step-5",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-397-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "b3fdc012d232b3e39dec942d1850fb76c90d26974ff95331f1dff2397fe89066",
+        "number": 397,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-397-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "17430bf1ac6046545c0bc9cfeb05555e7bbe7c4afd2fd0d83fe037b7e3f48679",
+        "number": 397,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-397-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "36560a8a558e598e4925697854f7ce1402d4c8eb6d79de4b30357dc8bdf8144e",
+        "number": 397,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-397-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "0e0dfe0d221d7e536c68c3b6248081e285c0331a5a3257f1a3d673beec176d78",
+        "number": 397,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-397-part-1-step-4-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "0e0dfe0d221d7e536c68c3b6248081e285c0331a5a3257f1a3d673beec176d78",
+        "number": 397,
+        "part": "single",
+        "view": "step-4",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-398-part-1-case-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "89afc9044b27aad726a5d837ba54ef188a7dfd9993a7763506768e6ce4c73745",
+        "number": 398,
+        "part": "single",
+        "view": "case-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-398-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "83b3b3cc2bd9b7700b76cc36e56fe52bb67fad93dd38376e2de6b3e4bb29dc9d",
+        "number": 398,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-398-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "ca5643b61af7ce3c0e681013fed1ddd5e07487c9229fe91eec5920e83a5e045d",
+        "number": 398,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-398-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "cd195a7009366c936073eaf5aed67ec5dbf4c6d4bae40a2375326650f6c03818",
+        "number": 398,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-398-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "0a31a13f10861d91cdb0e66167d0a93528ce18c5b646c321dd5a1e1ad1954e92",
+        "number": 398,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-399-part-1-case-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "503eb40bed4abfe78608a49354846cf914fc869695dfee7d614a53e6ca4c7659",
+        "number": 399,
+        "part": "single",
+        "view": "case-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-399-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "d9885e5c067793baf1786c0f1726f78c500f0c1e77cf340eb6dbd2b1339739dd",
+        "number": 399,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-399-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "a6a0151ad8b8d5bdf40ccbea69958b0ff79b3dd1035e6a5077c49e0d45d9e15c",
+        "number": 399,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-399-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "8270e7c9de075a6f918420ebdff1739bb594e8a4d5e7f28f8fce50a46cd4643b",
+        "number": 399,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-399-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "852887fd77f560020086d58cbd198da6b9976c78ea7f7614b401e9c90afceb6e",
+        "number": 399,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-399-part-1-step-4-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "852887fd77f560020086d58cbd198da6b9976c78ea7f7614b401e9c90afceb6e",
+        "number": 399,
+        "part": "single",
+        "view": "step-4",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-400-part-1-case-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "b43af036e972b051e7d8d00fe0cac3dbff0ced5eeef8e66819f43c0f1b237956",
+        "number": 400,
+        "part": "single",
+        "view": "case-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-400-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "317cdc3739e047771d8b12062bd00bd8b5afe25d3e5d1e271cbed3b64be81183",
+        "number": 400,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-400-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "6bce07b3cc5818e9d629aab89bbc97df28322771fe015c041aba6e82797e3a54",
+        "number": 400,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-400-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "490101f89bf3dd89d9836bda401521106ca892c388b4777049518ade8538b1d3",
+        "number": 400,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-400-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "490101f89bf3dd89d9836bda401521106ca892c388b4777049518ade8538b1d3",
+        "number": 400,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-400-part-1-step-4-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "a33df7ee2702853ca32c9f861b66a894379719100e6cc8da6321285d26a9cfc4",
+        "number": 400,
+        "part": "single",
+        "view": "step-4",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-401-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "8b364ffce23e8a95de0c15972e19292e7a76dce91e95f604cc6d9fb5a0500256",
+        "number": 401,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-401-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "56378a11db34a3eef7c5b0ea7cd341227cc124a3ff27fbabcde615374774ce9e",
+        "number": 401,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-401-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "e20c46f2b48715cdea91232f756b1c62a8cae1d0e4799842fce506967f362c6e",
+        "number": 401,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-401-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "e12e58b7a2faa933368e0419e1b55ca8d988ae739ecdb07f94ea205c9256e92a",
+        "number": 401,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-401-part-1-step-4-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "e993ddb8ceceef635d87d5756e32ad917269072c30901e1c10f910ce99c32925",
+        "number": 401,
+        "part": "single",
+        "view": "step-4",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-401-part-1-step-5-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "e993ddb8ceceef635d87d5756e32ad917269072c30901e1c10f910ce99c32925",
+        "number": 401,
+        "part": "single",
+        "view": "step-5",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-402-part-1-case-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "4689116ae5dcfac43cb91d0e001af610ca5997515bf13acf9110849ff20cb99c",
+        "number": 402,
+        "part": "single",
+        "view": "case-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-402-part-1-case-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "e7135b916cd3487f6c084476c14a564ccccac5a6a6fa59e8aeb05ff766f03f01",
+        "number": 402,
+        "part": "single",
+        "view": "case-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-402-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "973534e885aaa7d954860a47e023c37b9040695b575627c7089718e5e38f3934",
+        "number": 402,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-402-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "1c06a1cae14a145865f59db6a25f1fb9fef5e136bc97539e5c2f1ef5bb642247",
+        "number": 402,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-402-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "c655a8d19d9274eb786148652eb9829f81fee186bbf413094a5559614ea2415b",
+        "number": 402,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-402-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "ca9d5ee057921b62717a9c2912257aa880be04bb06b24ec957e733a6852a65f1",
+        "number": 402,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-402-part-1-step-4-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "ca9d5ee057921b62717a9c2912257aa880be04bb06b24ec957e733a6852a65f1",
+        "number": 402,
+        "part": "single",
+        "view": "step-4",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-402-part-1-step-5-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "396534d57bc0f3749af60b2f354bce43516991e7549670023020aec0f20315f9",
+        "number": 402,
+        "part": "single",
+        "view": "step-5",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-402-part-1-step-6-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "9b4a5c96bcbfe277df45a20d67e97077d8da1575cde90c483b1e8b8bf8f697fd",
+        "number": 402,
+        "part": "single",
+        "view": "step-6",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-403-part-1-case-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "592555084a26022c7b7167376e889dd047469a81f00e5301b329ceeed5c86516",
+        "number": 403,
+        "part": "single",
+        "view": "case-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-403-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "9b0ed25d19349cde0ff7d9a025974a498acdcc9a1d788529155b5140fa22b571",
+        "number": 403,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-403-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "5ea58d169dfce898ac5c898f46fafbe0bdbc1f0226c587f53f6924a619b93c3c",
+        "number": 403,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-403-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "5ea58d169dfce898ac5c898f46fafbe0bdbc1f0226c587f53f6924a619b93c3c",
+        "number": 403,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-403-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "ab1e450560eff15fbc81809b2dbcc0912fac8ef139e7e88cff4ac39285fe2550",
+        "number": 403,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-404-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "c3257f3da353ef2899d175f12728a59e46eb279b82c520412fd219d9abad1d74",
+        "number": 404,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-404-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "deb0a39cb9b90dbd314b3e24ababe472bda0ed64af9b80dc07e2d807e3b1056d",
+        "number": 404,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-404-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "be27a95a3e12c0a82c85c5b822aa8870ddb619386eae2e952509b703cf996a04",
+        "number": 404,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-404-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "e92f684b97c7bac21210bfdd867030a939b652d723f3b50baf503aa404b564e8",
+        "number": 404,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-405-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "9bca7c479eba64afb44d6d9e368397f0c7887e12347da80a04a4b77be43f22dd",
+        "number": 405,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-405-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "a9de56adb00a3ac9b6e0f34459dc901d6795dd8b1831d04ac3838c2f6a0e2fb9",
+        "number": 405,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-405-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "a9de56adb00a3ac9b6e0f34459dc901d6795dd8b1831d04ac3838c2f6a0e2fb9",
+        "number": 405,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-405-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "a9de56adb00a3ac9b6e0f34459dc901d6795dd8b1831d04ac3838c2f6a0e2fb9",
+        "number": 405,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-406-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "94915df32b1febd41ccfef40eefb965eddc0e55d78fcecb76259b285ed51aaa1",
+        "number": 406,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-406-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "1a629869d22f93f87703ba6b62204ba3ca74da15f6b3b036e598f55b474ccb5e",
+        "number": 406,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-406-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "e5abf6768173a6d969721bce61a471ac7ff029d2d0522c19a2abc0ed58966ec6",
+        "number": 406,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-406-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "e5abf6768173a6d969721bce61a471ac7ff029d2d0522c19a2abc0ed58966ec6",
+        "number": 406,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-407-part-1-case-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "abd10f738f59aa5783f35ef72a0aa78418838a34be3429a3b375c2648a7c30bc",
+        "number": 407,
+        "part": "single",
+        "view": "case-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-407-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "3be8f5196a2583050b0c5d031c01564a86d92b2fcfd9a26fad96ee8d28c01f69",
+        "number": 407,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-407-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "30c7d80f407134ec89139f2b5aec04e061288cff99e19e3051bb0ebf724054d3",
+        "number": 407,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-407-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "da42bbfbe5f1563cba614ebc12b663b9c3aae50a6a3840b739c6bdb6dd804a4c",
+        "number": 407,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-407-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "c9b76a6d7a34c64f70fd92d8bed9b3196cf0c41f59e96af208b0beaa854fe3cf",
+        "number": 407,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-407-part-1-step-4-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "1c364ce98427209cb7b79a7285488e2392e2700512a95100103cccb639189198",
+        "number": 407,
+        "part": "single",
+        "view": "step-4",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-408-part-1-case-1-320.png",
+        "captureSet": "full-caption-408",
+        "sha256": "a4dc31e2d71b997b66cc71d114953e6db8bd9b9b169c386922a7e7a8c42b74a0",
+        "number": 408,
+        "part": "single",
+        "view": "case-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-408-part-1-case-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "a1f3290625e688fc44bbf32a4aa1ec95825e4bccdb39fc243f8128f5da4ea557",
+        "number": 408,
+        "part": "single",
+        "view": "case-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-408-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "83612176b05baa433e37177014d867833dfbd1233c53e6a96df82b5b9c117d99",
+        "number": 408,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-408-part-1-step-1-320.png",
+        "captureSet": "full-caption-408",
+        "sha256": "8cee1b780d73bb7a37a11d0375f2d120d830cd734d5f4cbd2805219d828bf53a",
+        "number": 408,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-408-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "4847dec6088f3cdc621fc409d6c9cb3b78de437d19066a92ba61937b721889a4",
+        "number": 408,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-408-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "e7173626a4b7e7e563e0bab26d406c9f7b4c75558b106e6f967f865ded966b29",
+        "number": 408,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-408-part-1-step-4-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "da412498ae0fdce747f285179de2557c7a42322582fcff0f50fb02f308242f72",
+        "number": 408,
+        "part": "single",
+        "view": "step-4",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-408-part-1-step-5-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "cca4f0e6d04e03c0dc1f87fc14b0eb9c55d1049b3eec74cc60c3e3629bac1e45",
+        "number": 408,
+        "part": "single",
+        "view": "step-5",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-409-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "c5cdf8658f89bc427f7528a64c9e3f7bd172b0aead24f144f7ab678e6bba589a",
+        "number": 409,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-409-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "81106c7fa77f672949a09c826be3c8a5d4180fb9b69e4d49b7bb5f688e15d9ac",
+        "number": 409,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-409-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "d94f2bf470b04370b33bab8600e0bae189e477d6c694d4a23e053dedd0d58287",
+        "number": 409,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-409-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "2bd5418b654ed43b2741452cbd9e14fd8f6f91b617f722fc3d45ce8b2ba0bae7",
+        "number": 409,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-1-case-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "b6f0747734e9b6ed56f1120b7f14ad88c52a7b2878b5091ecaec892d635e3eea",
+        "number": 410,
+        "part": "а",
+        "view": "case-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-1-case-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "d56cfb1ff3ebcf56aa415e896f2c65a482df552176174758337256cc9b40e852",
+        "number": 410,
+        "part": "а",
+        "view": "case-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-1-case-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "f3f3c50c3fae229c1567eb2a1add1334d11d7ea55409b872f838b525ed5e2ef6",
+        "number": 410,
+        "part": "а",
+        "view": "case-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "a4d895a183cfcb645012cbf019aacbabb8acc21740f4a9a67e03934918bb04f3",
+        "number": 410,
+        "part": "а",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "6c4e42e02b50a159184e9beb3b31342ab705f03fc16c166cd827f1fe7831ec65",
+        "number": 410,
+        "part": "а",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "fded33fcc0a1b85a23eee5011834600be5f7b16a6eff470ae67c6dd41b931fb3",
+        "number": 410,
+        "part": "а",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "2c1b1fc6c41ebb54c94cdd77c64f0219bf5aa9017b5f646d6ea3d5c34bfcf5ca",
+        "number": 410,
+        "part": "а",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-1-step-4-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "768dce08e364e99b199b404b7b3381299005a9e6d51a9a855a9c812a355f4751",
+        "number": 410,
+        "part": "а",
+        "view": "step-4",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-2-case-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "630c0208ae5e9c2f2b10d501730dc26e34234ea5d694369544666ad54ee47eac",
+        "number": 410,
+        "part": "б",
+        "view": "case-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-2-case-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "5af92579d2b58a74d6db7536339e8ba450414de38872cd3f190b8482928ceb58",
+        "number": 410,
+        "part": "б",
+        "view": "case-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-2-case-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "0c57cad8a29c0a7ca48ca8faa91025775e8330e958d1ade6295eec00a89f42fa",
+        "number": 410,
+        "part": "б",
+        "view": "case-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-2-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "4e719064c988b675123d615299bf4ed91346e80ec4ec0e025fab97c9e126300b",
+        "number": 410,
+        "part": "б",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-2-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "f4657c88806cbdeb0616c9ebea58dd0ed981896dede3cb0ea01dfb0428c8caec",
+        "number": 410,
+        "part": "б",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-2-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "adc35c6c7d464314ac8ca8114e12c245fb201107c6ade778997fc43907739273",
+        "number": 410,
+        "part": "б",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-2-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "8d58d7a2d4c2c55ad1dd3eb7f43375b6253089cf86a917bde2f279f6cd3807af",
+        "number": 410,
+        "part": "б",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-2-step-4-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "ecc43d246b99d908cfb5bdc592bd802e6704685713d6621c2497393c3f9a3f4a",
+        "number": 410,
+        "part": "б",
+        "view": "step-4",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-2-step-5-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "ecc43d246b99d908cfb5bdc592bd802e6704685713d6621c2497393c3f9a3f4a",
+        "number": 410,
+        "part": "б",
+        "view": "step-5",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-2-step-6-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "cfd1d3c39387b41469e4c10aaba752f78f5694b421a52bd00bd70158e9c3de04",
+        "number": 410,
+        "part": "б",
+        "view": "step-6",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-1-case-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "74ed609015e7f6476a793e8e001ad391b0a436839963525c9189b6433011bb2a",
+        "number": 411,
+        "part": "а",
+        "view": "case-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-1-case-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "3fec47db6c32bfeaafe8cf8434d3625b8586cefd923ec174915841b382b76a77",
+        "number": 411,
+        "part": "а",
+        "view": "case-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "e4a056aa80cedc6f11f9764c8aae31817f785a5cd41e484bae035b3ccc5754d5",
+        "number": 411,
+        "part": "а",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "caabf7bd2386d0e73f0217cd5d12c4bee76aaa989130c8a62bfbb674e7e41cda",
+        "number": 411,
+        "part": "а",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "9e09daa48decb3c33e6cde27380ecc51aa692b7c3b9c9866eb99ec41fedcb251",
+        "number": 411,
+        "part": "а",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "aedad83070350afdf106f83bb992dc9764ae77db2c82e93057a4a5f5eb2da810",
+        "number": 411,
+        "part": "а",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-1-step-4-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "1059667d9ba065c95a0249948868a548ff861fe7ac54f1951e2079e37a4995ab",
+        "number": 411,
+        "part": "а",
+        "view": "step-4",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-case-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "38c3a8b54b0e4b4c74f71fa0866f21ca5dce26d0e148af524b1a075731cf0f05",
+        "number": 411,
+        "part": "б",
+        "view": "case-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-case-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "c293b816d8690bc48afe97a46a1fb876f768c8204fed8088739b68a2d92fa02b",
+        "number": 411,
+        "part": "б",
+        "view": "case-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-case-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "a6620f08884eab8b512ff20f3f14a557c312a79c0ca310399fef48ed7f395052",
+        "number": 411,
+        "part": "б",
+        "view": "case-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-case-4-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "f6fe4cef22d4f98b3c5c8ba85045d764834e3ccdfb5c1149f5764586cb9e64fe",
+        "number": 411,
+        "part": "б",
+        "view": "case-4",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-case-5-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "b67cf2ae926dbea52cf08937c2d02d10888ff1216ba926e536a4dd730d6113ce",
+        "number": 411,
+        "part": "б",
+        "view": "case-5",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "2d685c0de03a764c65a437dcb49e39387ba26e86dcb0466ab9ee39a48f079cc9",
+        "number": 411,
+        "part": "б",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "aac27a854a41e4746e7bf9a33ebb2d88800ad44a50819e5d426c1002213c910e",
+        "number": 411,
+        "part": "б",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "394ca2a1947c41c780e57f540d9b7c29b4fb7e42ca84199a8b8799bc257d9539",
+        "number": 411,
+        "part": "б",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "394ca2a1947c41c780e57f540d9b7c29b4fb7e42ca84199a8b8799bc257d9539",
+        "number": 411,
+        "part": "б",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-step-4-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "a92baa69a0135d772963092436eecaeff3a51072109e97ca12e91862c6c94320",
+        "number": 411,
+        "part": "б",
+        "view": "step-4",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-step-5-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "cc5165ecdf5864adfe8a822fda98924efbd09383cf3088c7d644c36ca5527e94",
+        "number": 411,
+        "part": "б",
+        "view": "step-5",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-step-6-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "d958c640965395e4ceb81c89d9a657cc53304db12a7ef6e351139240359eb0ae",
+        "number": 411,
+        "part": "б",
+        "view": "step-6",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-412-part-1-case-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "d0cf47377aa8efe305f99173035232bef67c4ac08adc458049229a7b097c12b0",
+        "number": 412,
+        "part": "single",
+        "view": "case-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-412-part-1-neutral-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "92a40f29d050903ce6ef9d248fd7410a939741e21d57939eb7ae3563bd83b35d",
+        "number": 412,
+        "part": "single",
+        "view": "neutral",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-412-part-1-step-1-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "92a40f29d050903ce6ef9d248fd7410a939741e21d57939eb7ae3563bd83b35d",
+        "number": 412,
+        "part": "single",
+        "view": "step-1",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-412-part-1-step-2-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "87686a25b9d6e98195940dad7e5562620080df36615de1bc7c681aff7d7096cf",
+        "number": 412,
+        "part": "single",
+        "view": "step-2",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-412-part-1-step-3-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "3443a30729aef9a50c0562bae22577a6939c9c53fd03c4e00668b8b56c47f6f4",
+        "number": 412,
+        "part": "single",
+        "view": "step-3",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-412-part-1-step-4-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "472ce6e13a10df52e49eda582fc7df7640e28306a05d00e7e47d95456e5216d0",
+        "number": 412,
+        "part": "single",
+        "view": "step-4",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-412-part-1-step-5-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "0b552ad0872f213b26e9067e278d502c90bfb7d6d2b6a3ad3abc141b5a188d80",
+        "number": 412,
+        "part": "single",
+        "view": "step-5",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-412-part-1-step-6-320.png",
+        "captureSet": "full-candidate",
+        "sha256": "403769579cd4fe4fc054a6194b10e01506c3244d53d36def2c8f9205be1f013e",
+        "number": 412,
+        "part": "single",
+        "view": "step-6",
+        "width": 320,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "c55f4e06593baafbeafe71e4bf94f1096c88b0b9db56ec68c577fdfbf2e78264",
+        "number": 385,
+        "part": "а",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "c55f4e06593baafbeafe71e4bf94f1096c88b0b9db56ec68c577fdfbf2e78264",
+        "number": 385,
+        "part": "а",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "c55f4e06593baafbeafe71e4bf94f1096c88b0b9db56ec68c577fdfbf2e78264",
+        "number": 385,
+        "part": "а",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "c55f4e06593baafbeafe71e4bf94f1096c88b0b9db56ec68c577fdfbf2e78264",
+        "number": 385,
+        "part": "а",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-2-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "04618c868029ccb41c13905ba883fcd6de1acf5a07aa892b19b1d7b2d365db5f",
+        "number": 385,
+        "part": "б",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-2-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "04618c868029ccb41c13905ba883fcd6de1acf5a07aa892b19b1d7b2d365db5f",
+        "number": 385,
+        "part": "б",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-2-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "974a7bd0945196e63cbe1541bc40473387dce522093fbcf846b146f5779bb1e5",
+        "number": 385,
+        "part": "б",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-2-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "974a7bd0945196e63cbe1541bc40473387dce522093fbcf846b146f5779bb1e5",
+        "number": 385,
+        "part": "б",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-3-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "bd2d90fb7e67311bcdfcb7fa3eb776da1a2b21f6785b95837861727528ddc55c",
+        "number": 385,
+        "part": "в",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-3-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "bd2d90fb7e67311bcdfcb7fa3eb776da1a2b21f6785b95837861727528ddc55c",
+        "number": 385,
+        "part": "в",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-3-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "bd2d90fb7e67311bcdfcb7fa3eb776da1a2b21f6785b95837861727528ddc55c",
+        "number": 385,
+        "part": "в",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-385-part-3-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "bd2d90fb7e67311bcdfcb7fa3eb776da1a2b21f6785b95837861727528ddc55c",
+        "number": 385,
+        "part": "в",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-386-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "d5589c6dad32fbca8d0c67c44d44a9ce0860f77a1946724bc7b9f66f86c34502",
+        "number": 386,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-386-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "f0210ca7b704b059adf755e2cee0287b3fd26e9c261f046e136a2ec10746e7b9",
+        "number": 386,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-386-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "f0210ca7b704b059adf755e2cee0287b3fd26e9c261f046e136a2ec10746e7b9",
+        "number": 386,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-386-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "f0210ca7b704b059adf755e2cee0287b3fd26e9c261f046e136a2ec10746e7b9",
+        "number": 386,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-387-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "c1212aaaa18da4ecf67a2042e2e3eaae2825bdba888aadc055b7a10d09e07d13",
+        "number": 387,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-387-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "bbf1de4c8561cfba0e4baca9b2fbf6edb5a1e3662c7fee7bb5ba035dace953c7",
+        "number": 387,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-387-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "9cb06029ed85ba7d8518e4306d37328186b0ff08f616f1d2c4d464c6b925e13c",
+        "number": 387,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-387-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "9cb06029ed85ba7d8518e4306d37328186b0ff08f616f1d2c4d464c6b925e13c",
+        "number": 387,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-388-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "0719c7663755afb3922e7b4876002812ef80bb85f1c7dff584cab5c77bba0b5b",
+        "number": 388,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-388-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "3726791d8086bb06e710f73382af034bd21d51bd8da40914fe60225bdc6a5665",
+        "number": 388,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-388-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "7f90e2bc2e9f2e9610edfaf1edab91cab991473b05257d5c5d5918e0d6498a53",
+        "number": 388,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-388-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "e65d7e445aa4c22ae49436d422223ff012927f934485f47a835d246ceb6a84e8",
+        "number": 388,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-389-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "27e6078a33e37bbbb894788f7f93b759de7a7d5411fb5ce249fbb4022ae3c786",
+        "number": 389,
+        "part": "а",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-389-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "b584031a467530fe825557def5a495fdc7c9b5548901a1a247273e84151f7c77",
+        "number": 389,
+        "part": "а",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-389-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "7d8eff85f8096180fc4f8ec68fbc7aca4e883a4037c4cd8f30ad8c5e9c7567be",
+        "number": 389,
+        "part": "а",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-389-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "dc8010d399d4375bbe558a9fa9b9b0ed1a73101285d9e47a286f27556fc5c437",
+        "number": 389,
+        "part": "а",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-389-part-2-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "da14b9fabb9f92c2ad1ce0eebb18633175ee43ad36387c99e894684dcbd1f4a4",
+        "number": 389,
+        "part": "б",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-389-part-2-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "51845588a12886176e393039d91410dd3c05c5c8d525a7be3ecfae10f8438e87",
+        "number": 389,
+        "part": "б",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-389-part-2-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "51845588a12886176e393039d91410dd3c05c5c8d525a7be3ecfae10f8438e87",
+        "number": 389,
+        "part": "б",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-389-part-2-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "9400f8dc8fed82433a8e70235637213f42e32f222f664fdcb73743b15ce94160",
+        "number": 389,
+        "part": "б",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-case-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "dc097f6337c363c2593125fc5df051cd94e6d6391ce430caf8dc2be41296a1a9",
+        "number": 390,
+        "part": "single",
+        "view": "case-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-case-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "ae08748b269d1e74d54e3b58d5627021b413d425c20fcf1d5751eb9c5dc9afe9",
+        "number": 390,
+        "part": "single",
+        "view": "case-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-case-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "b4e7e6c6854a3f4eccdb4b4d8b003a359b74f5d931716caf9e706ecdca34dc43",
+        "number": 390,
+        "part": "single",
+        "view": "case-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-case-4-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "17f270e6a4a36b5f578b6303d61005e1c6dac5f80ecd093eed864b72578ca7d9",
+        "number": 390,
+        "part": "single",
+        "view": "case-4",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-case-5-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "c695c892b4841fb63db5191a70a7cb16be5edccdb010614312f0e0b1faf631e3",
+        "number": 390,
+        "part": "single",
+        "view": "case-5",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-case-6-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "3c15e6cbf20f528219934000ed0dd777fbc1a3d85c5222d47bebff73604f47df",
+        "number": 390,
+        "part": "single",
+        "view": "case-6",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "e25bdc25f060f9b886ac2ceead0dc46d94aaf61bde1d8c6fbc90efe1875e99a5",
+        "number": 390,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "e25bdc25f060f9b886ac2ceead0dc46d94aaf61bde1d8c6fbc90efe1875e99a5",
+        "number": 390,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "df9c89bf2a50b2d878354d98cf4a537ad7e86282519211f47aed1b54cbc44725",
+        "number": 390,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "d608f4d7205fdf4efa9a51a62b652be1e21081da848aea2bb645457abe764d73",
+        "number": 390,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-step-4-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "43c3258b212cdec461631073d525d68e39ccc58a9ba9e21a2691e1b5e8acde84",
+        "number": 390,
+        "part": "single",
+        "view": "step-4",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-step-5-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "b04048d590f0f5fb37ff38c27c1ad1bc4fb3a34690ff9b09bc42304d572b2523",
+        "number": 390,
+        "part": "single",
+        "view": "step-5",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-390-part-1-step-6-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "b6db3d100290fb9e4a1101348533a8f993c323dda77d369124246f14260398d9",
+        "number": 390,
+        "part": "single",
+        "view": "step-6",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-391-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "2b81b527ed4781dec1497ead299120cfc8cc60667e62d5856497c97dbdab602b",
+        "number": 391,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-391-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "98c87e269b16758bcae7c22ece64e23504e4a2c914c33f8b7531afe536653b59",
+        "number": 391,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-391-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "98c87e269b16758bcae7c22ece64e23504e4a2c914c33f8b7531afe536653b59",
+        "number": 391,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-392-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "3418701b09edf49a991ff40dacf2c990270ccd77b057495ceb701b873f31a309",
+        "number": 392,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-392-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "bcdf101a2941249442d8f1aaaaaa7b8febc1e03d29a1024fa7227bf269eae8dc",
+        "number": 392,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-392-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "bcdf101a2941249442d8f1aaaaaa7b8febc1e03d29a1024fa7227bf269eae8dc",
+        "number": 392,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-392-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "1515338825bfa8025e7df5c4d9d8a3691dd25cc19890190a27e81773f5b34c54",
+        "number": 392,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-392-part-1-step-4-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "1515338825bfa8025e7df5c4d9d8a3691dd25cc19890190a27e81773f5b34c54",
+        "number": 392,
+        "part": "single",
+        "view": "step-4",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-393-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "6d4b80458082d8cb88d03396e2001f894bfb3e056c6bf38530de4654d5ffbb7a",
+        "number": 393,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-393-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "2915b67ee13535b07722239bdb8394f2b46718d7575585fa8fb936ee9edc511c",
+        "number": 393,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-393-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "2915b67ee13535b07722239bdb8394f2b46718d7575585fa8fb936ee9edc511c",
+        "number": 393,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-393-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "df77208a9a29cc79f8e7ed66ecefeb022e5fcabe113f555d408a3988db9a3645",
+        "number": 393,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-393-part-1-step-4-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "d73987e55bbb2fd96bf98146c1dfd695f863e16bd04ef0cbb67fde5c9e8ea032",
+        "number": 393,
+        "part": "single",
+        "view": "step-4",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-394-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "70f09ae8026dfc897880bd7dfab4fc5411abb5e87862656eb8576278da84cb98",
+        "number": 394,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-394-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "757b9f1aef7b737c7da75a008f8d79534fc5561f85000799aa0f196d94c24a5e",
+        "number": 394,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-394-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "757b9f1aef7b737c7da75a008f8d79534fc5561f85000799aa0f196d94c24a5e",
+        "number": 394,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-394-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "757b9f1aef7b737c7da75a008f8d79534fc5561f85000799aa0f196d94c24a5e",
+        "number": 394,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-394-part-1-step-4-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "d3540b84d3d48f5bcce7aa8b11cd7a083cba52d63b7c798174450dcf6a7fc3af",
+        "number": 394,
+        "part": "single",
+        "view": "step-4",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-395-part-1-case-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "b258d6b0e440d10af222017b10e6b67e47b2a1e4dc6a57511ba290e74ac36cc1",
+        "number": 395,
+        "part": "single",
+        "view": "case-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-395-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "46f834c7e4c5224d7936339f83bb398c5e4b1b6d25f5a25fd5931e50b2528b45",
+        "number": 395,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-395-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "db78f572c9db2258d01ee6a49f8e385e3b4ae368be1c0991339555f183b1a911",
+        "number": 395,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-395-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "7dfdc4620604756d86d7b5b794b6ad2af4e745120de69750bdf4220df02732bb",
+        "number": 395,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-395-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "23c9e8252e411d0ace4d02aab4867772db4ff678d0f34906546f4979b1cd64a4",
+        "number": 395,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-395-part-1-step-4-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "23c9e8252e411d0ace4d02aab4867772db4ff678d0f34906546f4979b1cd64a4",
+        "number": 395,
+        "part": "single",
+        "view": "step-4",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-395-part-1-step-5-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "d1bed6e6432ad29fcd6a62d050075bd6717811819c15ad8ff0add352bc973e62",
+        "number": 395,
+        "part": "single",
+        "view": "step-5",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-395-part-1-step-6-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "d1bed6e6432ad29fcd6a62d050075bd6717811819c15ad8ff0add352bc973e62",
+        "number": 395,
+        "part": "single",
+        "view": "step-6",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-396-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "3005fcc4b457dc4a417a02589b1532d2118fe22d53717790b342ef83d750131a",
+        "number": 396,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-396-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "bbea39373f0bab1a1a99e32f6aafdef52d1e9ff9b7eb50798cb93ed0010f8d63",
+        "number": 396,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-396-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "6e42918714e76a9e9d0ed6ee70ffd8bf469986cedb57cb4cde46569fdfb3bf2a",
+        "number": 396,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-396-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "6e42918714e76a9e9d0ed6ee70ffd8bf469986cedb57cb4cde46569fdfb3bf2a",
+        "number": 396,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-396-part-1-step-4-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "1563ab2ae6aa8441a077cc6c6521810e7830f96a956a733e08ba70ad427a4c5e",
+        "number": 396,
+        "part": "single",
+        "view": "step-4",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-396-part-1-step-5-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "1563ab2ae6aa8441a077cc6c6521810e7830f96a956a733e08ba70ad427a4c5e",
+        "number": 396,
+        "part": "single",
+        "view": "step-5",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-397-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "3fbad974eca7de083dcf3006722713c1ef759f10814e9f57651ddedd156625ff",
+        "number": 397,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-397-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "a1381ebde4b8b061835d17fc0e5ec030fc81beb39a22bb366094c6ab12949707",
+        "number": 397,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-397-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "db57c8d8367eff2f08d74c047f3c6783af35295588a0191373bd62858cbd5f0b",
+        "number": 397,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-397-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "d3e4ea83511e7785af68ce699d0a521341237777b855dbc838f0320002d2f2f8",
+        "number": 397,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-397-part-1-step-4-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "d3e4ea83511e7785af68ce699d0a521341237777b855dbc838f0320002d2f2f8",
+        "number": 397,
+        "part": "single",
+        "view": "step-4",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-398-part-1-case-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "c0cf5ee1e2a33a69339e2d1d64957bcef54d946caac5b4720955ed361236251c",
+        "number": 398,
+        "part": "single",
+        "view": "case-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-398-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "a251e48315683340fe83efde4fa43f5a81fa3d5448add0b3284d651506ee237c",
+        "number": 398,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-398-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "6f11d23687d7b4b98ac0cf64620897e77c52e09b088220eb9d1b81214b1881cd",
+        "number": 398,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-398-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "52ad24acb1a87b5f4df671c710e9b4b90082066fe0b591c18b939b1a696754ca",
+        "number": 398,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-398-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "1be769c259534b5e46151f683105fa63245528df8ccd66bf0cb4b3904a3c778a",
+        "number": 398,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-399-part-1-case-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "af6051164293c3d70c14622cbc6c446dc2cb7540098d887f8c713a9816c75d60",
+        "number": 399,
+        "part": "single",
+        "view": "case-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-399-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "cca5120e56229094df5d99e8c9819471ff81e3a63e07d2b54c4b3919aa783248",
+        "number": 399,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-399-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "8fb41e5d069f29edcc6f95007bf265277bf3fdd519d9f309cfa2b8d1b1dac958",
+        "number": 399,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-399-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "cb8495ee5543d32c7e92b4f69d12d8df6d379a08a1155609caf487c699e3af73",
+        "number": 399,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-399-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "108e72a65d02a72efd92cc7031933de5b17560ad93c6555e2b4675138362affd",
+        "number": 399,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-399-part-1-step-4-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "108e72a65d02a72efd92cc7031933de5b17560ad93c6555e2b4675138362affd",
+        "number": 399,
+        "part": "single",
+        "view": "step-4",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-400-part-1-case-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "1aa99e6f1c134dddb7d84dc861a83bd57ed316c554f2bab1bd9b2a44a32e00d6",
+        "number": 400,
+        "part": "single",
+        "view": "case-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-400-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "e6877fb3b28712025956992822f27f83ab0c9872779bc57586ec62a97dbb2a77",
+        "number": 400,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-400-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "edb9c12c260d61a0c3ec11cf324004421c1a14c8a564e7197daeb8b7381b91e5",
+        "number": 400,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-400-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "cf54f023edafe66b914fc2b20b59ef35924c07714f81dd3c4cbbabe8acbeca49",
+        "number": 400,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-400-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "cf54f023edafe66b914fc2b20b59ef35924c07714f81dd3c4cbbabe8acbeca49",
+        "number": 400,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-400-part-1-step-4-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "ac34d6c6eedf7675df5b92088ae09b9744d441caecc77e0a6d2ac363df64e024",
+        "number": 400,
+        "part": "single",
+        "view": "step-4",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-401-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "24c1d80b6b410c647f64f8ec875da24787e0114de043aee1dbfd21f5d5b60fc2",
+        "number": 401,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-401-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "532684278b00713f5ba6cb1b4c788c6a603c236284fd5bb8305a03209d472e17",
+        "number": 401,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-401-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "35fb0cf9a65084d3edc185c8c299be0fa72e3675012bb4a8cb2c337a34eb4d47",
+        "number": 401,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-401-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "50246d06a05eee198e989f97eda51b45a194c9dfbb411117341e7a3d8447f20d",
+        "number": 401,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-401-part-1-step-4-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "c419ec6c900099920089499e95c9d91897ffa2ea8d347c48715e8d83fa42d74c",
+        "number": 401,
+        "part": "single",
+        "view": "step-4",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-401-part-1-step-5-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "c419ec6c900099920089499e95c9d91897ffa2ea8d347c48715e8d83fa42d74c",
+        "number": 401,
+        "part": "single",
+        "view": "step-5",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-402-part-1-case-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "214b476b1ec44f213209c1fa48c249ff5b197a3b9bb128bfc9629d1b91187662",
+        "number": 402,
+        "part": "single",
+        "view": "case-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-402-part-1-case-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "eff7d176b998b9cc8513c158d9d3a2eb8cca6e3b338dd301bc95b251803f29cc",
+        "number": 402,
+        "part": "single",
+        "view": "case-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-402-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "304ea7405c1bd60d0306718b60263c33586fbd85c1625c655b8a092f1c4452d0",
+        "number": 402,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-402-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "d022eb66c6ef5a0a946c2ebd8a3831c30f84b9a55da653f77dd4acba4b99bc37",
+        "number": 402,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-402-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "cfa141bb7d0fe4ce2c5c85b677825e86ae999aeb9352540e31f49a9c6ea0c8f4",
+        "number": 402,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-402-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "b3f17b2dc717b82663d861ad7914212f830d03585c8ca92350550837aba9f0be",
+        "number": 402,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-402-part-1-step-4-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "b3f17b2dc717b82663d861ad7914212f830d03585c8ca92350550837aba9f0be",
+        "number": 402,
+        "part": "single",
+        "view": "step-4",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-402-part-1-step-5-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "540bb3d3852c020cef2508ce54e53c2d05fcaf7f8c3ac4e17557a4e91982249f",
+        "number": 402,
+        "part": "single",
+        "view": "step-5",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-402-part-1-step-6-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "566349ad3b426089db4655fc711e243fe5a85e78f3ca3bd91d568029167dcd1b",
+        "number": 402,
+        "part": "single",
+        "view": "step-6",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-403-part-1-case-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "0d1db6899e3edb971db24a742ebeaf632fbae88b4d82358f0e48b1c725fad26d",
+        "number": 403,
+        "part": "single",
+        "view": "case-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-403-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "3160284ba507ae4ca10fdbd285e8521fdd610531e48db1d0aa336f8055d72951",
+        "number": 403,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-403-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "be9e1dc588ff6a50a64fee9352dfa5cdcff30aca4fe5a11adfd3b8b2bce9b74a",
+        "number": 403,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-403-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "be9e1dc588ff6a50a64fee9352dfa5cdcff30aca4fe5a11adfd3b8b2bce9b74a",
+        "number": 403,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-403-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "dace69c117e2f0be66cf1f6ceed18ce0f77d4d569ba33f7b45ddceaff849a6f8",
+        "number": 403,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-404-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "f4876edb8a994faa55b7321cc74b6cf9ec3f3e817ee54af466ed4b5d28d3a1db",
+        "number": 404,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-404-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "dc711185109a99ff988c4690fdd8a30cfff70ec9b1b68269f13c98f29fd7e2f4",
+        "number": 404,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-404-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "ca560b54164b4554f21de74fa0d27e709b16c9e790cd9a84a5f31eba0aeae656",
+        "number": 404,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-404-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "39d284a36d8382123ef933b32d861375d41dd3ce2f04c6b09a27cdaf9155048a",
+        "number": 404,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-405-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "e0d320966a84aeb9aec0952357938ac0a0442da821813415305a42aa9e72f3f9",
+        "number": 405,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-405-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "172e12cf431d870569647e6594d0756d4d6a9cbff49bfeb90a6816a5d6e9cd39",
+        "number": 405,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-405-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "172e12cf431d870569647e6594d0756d4d6a9cbff49bfeb90a6816a5d6e9cd39",
+        "number": 405,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-405-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "172e12cf431d870569647e6594d0756d4d6a9cbff49bfeb90a6816a5d6e9cd39",
+        "number": 405,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-406-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "039a1f1842ed83dd36cd6e31bc631ff08ad226082cc333122968974b3e98086b",
+        "number": 406,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-406-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "8535953f17ab25a4e92492f4b2433ca4d5c55ec38150eb47f07f0578031286f1",
+        "number": 406,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-406-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "a58909710bc362cd4f36c5817b45d15ebb13feef38e7d17a46f98e443a76533d",
+        "number": 406,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-406-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "a58909710bc362cd4f36c5817b45d15ebb13feef38e7d17a46f98e443a76533d",
+        "number": 406,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-407-part-1-case-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "d64ed75157155b46c3e30b9617fd7609e76586a5d82f590549ac396d28d96c53",
+        "number": 407,
+        "part": "single",
+        "view": "case-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-407-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "9375c755962a2e89f57c31ff50907e66d6d2040373b3add2f204cf95ecc06167",
+        "number": 407,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-407-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "55c3c388620f18a8ceb01d692e160009ccd42df68016e835b8909988689a492d",
+        "number": 407,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-407-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "ac99264a03a0c7452b427ac69556478768c2e8fe33cd1b588c224583f336b421",
+        "number": 407,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-407-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "42d1c9a3bcdefc588960f36b31d356661cd26b5af8749ced0c624a68be8e2981",
+        "number": 407,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-407-part-1-step-4-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "0bf7fcd27f70fc5a69ec6c8b26665efb8d89b5f51eab17343cc2d9e5d919d3c7",
+        "number": 407,
+        "part": "single",
+        "view": "step-4",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-408-part-1-case-1-1280.png",
+        "captureSet": "full-caption-408",
+        "sha256": "a255fbd52eb163f9886abcf61bed50a6e2afde77fdcc6043aa95036126e72d8d",
+        "number": 408,
+        "part": "single",
+        "view": "case-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-408-part-1-case-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "c98b6dc56ffc1f790f92d59a0504fe60ef123806cff92efc66e7c99b9f8d5e16",
+        "number": 408,
+        "part": "single",
+        "view": "case-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-408-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "1b13cca3e7a5a37ab8d3906a92d8aa83310859396d70798d50c6f6dd4945e6bf",
+        "number": 408,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-408-part-1-step-1-1280.png",
+        "captureSet": "full-caption-408",
+        "sha256": "633885401c2482c0621e32633d801929c3cecbe342fae9afb1f9fdcb90a2278c",
+        "number": 408,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-408-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "a334837010208efa89581fcf5638a37ae4d1f53764b8c3f66212b5c8cc6da254",
+        "number": 408,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-408-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "8c42c1e549a8a8a52d3ce286cd4117dd70cb319e265cd6c816d751f6eca2cf37",
+        "number": 408,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-408-part-1-step-4-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "2503c83b7181d97bbb510e9d50cc2c41d5c5d4efa0ce5d3e13299836bf3c8731",
+        "number": 408,
+        "part": "single",
+        "view": "step-4",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-408-part-1-step-5-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "a75be9d1160daf2025327992937497c3151c8c3d07643be6d38f3d13e97649c2",
+        "number": 408,
+        "part": "single",
+        "view": "step-5",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-409-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "b758c2bab6e8d31c5607b1255efdf13c4b2b71c472c2cba08264a045b673163e",
+        "number": 409,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-409-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "eb7be597524369f4a941027fb8ff378a768cbf37bb76acfa8aa0c7db1e008889",
+        "number": 409,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-409-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "e91e076b096d63472d91dcbf4bfd30fa93f7be7c028d714b7d6a526a31870340",
+        "number": 409,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-409-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "5c45cde8160901af9781541c18bcd021c264212921425ba1977247fb8de434eb",
+        "number": 409,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-1-case-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "b2f3e07ec3c517ae219fd1d08211df95ab55b2d600b6f013cfa0006a0350b746",
+        "number": 410,
+        "part": "а",
+        "view": "case-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-1-case-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "7cae268962ef9959e25bdc6fa54e146d7e08c282367ede26125f5e7cc0ee2181",
+        "number": 410,
+        "part": "а",
+        "view": "case-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-1-case-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "6c9c275d8a49fe175aa59c8e16debd3fb78b0f2aadb66fa79008fbc069321f27",
+        "number": 410,
+        "part": "а",
+        "view": "case-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "649142c8975e51675c2587a02757cf69a5fc729ce26e0971b8ce9ccf4b2ed716",
+        "number": 410,
+        "part": "а",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "8b097ff165bc74bab3e4e3d3dec19cdbb061db980df736565eb0dff300f417ee",
+        "number": 410,
+        "part": "а",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "683d0b0e62f5634743a28ab393e8ef59c06a2f35769ad31dc4e23adfac9a5160",
+        "number": 410,
+        "part": "а",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "8d842c605d2073f9c87f64347c16c97a56dd45b976836e49cfa76d17fad325a3",
+        "number": 410,
+        "part": "а",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-1-step-4-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "876104c2a4dbe86cb176c8e57dd4d511a65c7e4a7d5f0780bbf6b1657c0e90a1",
+        "number": 410,
+        "part": "а",
+        "view": "step-4",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-2-case-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "54f82f7225135cba7a99cec87e3f84c716e614e608c2d28859d39943bbe7418f",
+        "number": 410,
+        "part": "б",
+        "view": "case-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-2-case-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "d09694719531879bb10353388e7f448d76776bd26385d46779b51456f7d832d8",
+        "number": 410,
+        "part": "б",
+        "view": "case-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-2-case-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "aac0600618de2b356f0aff9a78c6dfcfec0eab9a95fed648d889cdc67a6f0752",
+        "number": 410,
+        "part": "б",
+        "view": "case-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-2-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "bbb5f1de0ee8b3ec68b47c09098bba86443e2444b64e6abc0f959a02e70542d9",
+        "number": 410,
+        "part": "б",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-2-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "fc90a6c7b4b375e6928599e9918e0642e7d3269401b8d1bdc76d5379e2a17d63",
+        "number": 410,
+        "part": "б",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-2-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "c35c8bb64f48185545506533ac07a5beac86cf94c480319f38338bf3171ae790",
+        "number": 410,
+        "part": "б",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-2-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "0d0fb9f411766653637385b065c89871ded0294389cc3dae8dcab1038b975bee",
+        "number": 410,
+        "part": "б",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-2-step-4-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "e8ce7282304838f7eee1472a3e21919409887f6ef2454c86e6dffeb3059f7e1f",
+        "number": 410,
+        "part": "б",
+        "view": "step-4",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-2-step-5-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "e8ce7282304838f7eee1472a3e21919409887f6ef2454c86e6dffeb3059f7e1f",
+        "number": 410,
+        "part": "б",
+        "view": "step-5",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-410-part-2-step-6-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "8bcaf63c6d4784efb419f505b6a42b2438816d5c828f54c541ab14e643bf065d",
+        "number": 410,
+        "part": "б",
+        "view": "step-6",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-1-case-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "f5e2adf483956277ca17e5552f0e6c8f49bf03213e42543e215713fa1672d870",
+        "number": 411,
+        "part": "а",
+        "view": "case-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-1-case-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "0382a8ef8b24262833f7b6af43170532357a30efebd714dd80135b8cf18dcb00",
+        "number": 411,
+        "part": "а",
+        "view": "case-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "c469c3c500f9d0c0209370fab6b504fa1aeb9892bd6364b9a704526ce5147b48",
+        "number": 411,
+        "part": "а",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "85c0e4d1399bcd8d9cae1cb520401e51107c364c87cdf5f36002e2ceb735a78f",
+        "number": 411,
+        "part": "а",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "660897e956e4fae307a7c430e18b96eb45d7b61b8c0fc97e7619daecddb9b935",
+        "number": 411,
+        "part": "а",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "279aa37529fe6f610bbe9de39cbeb9a252d9e0f47ac0ece951e002e94afc333d",
+        "number": 411,
+        "part": "а",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-1-step-4-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "dd1e9bc66d630ba4e8361897d2f206c4e48a94eaf971cc968a8731fda78f966c",
+        "number": 411,
+        "part": "а",
+        "view": "step-4",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-case-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "2a7f4c3099c3015c2b0b186628caf9e5e0655c10ab324ff1e8c72d7797fdca0f",
+        "number": 411,
+        "part": "б",
+        "view": "case-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-case-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "440f82c0a4905962677457d71bc3dcbea247bfcdf128d7beac1a2adc79f23137",
+        "number": 411,
+        "part": "б",
+        "view": "case-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-case-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "ce19a585cc200e42d0d043d5ac0e9827e8f6688e1f3e02aa046da3eaaab9be8c",
+        "number": 411,
+        "part": "б",
+        "view": "case-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-case-4-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "62bd27a21b80e894e447e94fb8e30ff56defd2bfb9626a052b618977b68b122d",
+        "number": 411,
+        "part": "б",
+        "view": "case-4",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-case-5-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "f6f1a906cfc079d4a5f1e4fbc05f1c2dce5b8c55cf170526e366a50233c12d80",
+        "number": 411,
+        "part": "б",
+        "view": "case-5",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "be08c89caed409b6dcc12c1992b7c647d931ab51dc13be1ee670c9f27f0085ab",
+        "number": 411,
+        "part": "б",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "63c381a8df0de95f3358c36b3efff1bd9cde0cd417fc87354f5765239fe50493",
+        "number": 411,
+        "part": "б",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "7ff7b648781925eb632d34875ae398764afb91b4ceee0ec96f39c572e9391934",
+        "number": 411,
+        "part": "б",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "7ff7b648781925eb632d34875ae398764afb91b4ceee0ec96f39c572e9391934",
+        "number": 411,
+        "part": "б",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-step-4-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "a5f1086fdaeb89b035538ea69996e8a621c3386a51de4e6fa31b9714550cbcfa",
+        "number": 411,
+        "part": "б",
+        "view": "step-4",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-step-5-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "b19bbc2c3fe559a2346c7e669976fd8817a7649ea76b9619b9d947acd6c47a9a",
+        "number": 411,
+        "part": "б",
+        "view": "step-5",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-411-part-2-step-6-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "9f6e98873b8e6446a287d388ece10f775e5fe4df1d41b95c7ea7ba359da3089f",
+        "number": 411,
+        "part": "б",
+        "view": "step-6",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-412-part-1-case-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "02f830a9e614cdf1d3703a1e562bbbe21c2d0425f3e619826fa1f6505a800b99",
+        "number": 412,
+        "part": "single",
+        "view": "case-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-412-part-1-neutral-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "0d11674d97c8d7b0deed46f4d64d4f1c4e9f782e4c49057d32171bf767f08239",
+        "number": 412,
+        "part": "single",
+        "view": "neutral",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-412-part-1-step-1-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "0d11674d97c8d7b0deed46f4d64d4f1c4e9f782e4c49057d32171bf767f08239",
+        "number": 412,
+        "part": "single",
+        "view": "step-1",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-412-part-1-step-2-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "28c9db719ecec714842de69cb1a5b2584b26495337c96c466391a6f216bedc52",
+        "number": 412,
+        "part": "single",
+        "view": "step-2",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-412-part-1-step-3-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "dccc8f9e86a21fe8a60d8d9094cf5692d6e9b4595061303059188eacde6afc86",
+        "number": 412,
+        "part": "single",
+        "view": "step-3",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-412-part-1-step-4-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "867ec8fd6bf41ea2336a22d28bc9f1afdee28b077be6033bb663ff902b2c2129",
+        "number": 412,
+        "part": "single",
+        "view": "step-4",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-412-part-1-step-5-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "7efdcdcf1b9c598bad24661a2b7c1c7befbd0e6e1eeabbcbc9095e1919e9afec",
+        "number": 412,
+        "part": "single",
+        "view": "step-5",
+        "width": 1280,
+        "viewed": true
+      },
+      {
+        "file": "review-atanasyan-7-9-main-412-part-1-step-6-1280.png",
+        "captureSet": "full-candidate",
+        "sha256": "96aee47bf603a67892f641f3601ec1e160d3389e0290a1f5f7243c72ccaa6428",
+        "number": 412,
+        "part": "single",
+        "view": "step-6",
+        "width": 1280,
+        "viewed": true
+      }
+    ]
+  },
+  "limitations": [
+    "This report reviews model-region screenshots within the actual page context. It does not claim independent execution of the full interaction gate, a complete surrounding-page accessibility review, physical-device testing or learner testing.",
+    "The complete-course gate outcome is recorded separately by the integrator."
+  ]
+}

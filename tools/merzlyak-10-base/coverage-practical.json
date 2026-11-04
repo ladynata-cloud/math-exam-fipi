@@ -1,0 +1,266 @@
+{
+  "entries": [
+    {
+      "sourceEntryId": "source-computer-1",
+      "requiredParts": [
+        "плоскости",
+        "1.1",
+        "1.2",
+        "1.3",
+        "1.4"
+      ],
+      "sourcePdfPages": [
+        196
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/computer-01-01.json",
+        "stereo-course/merzlyak-10-base/lessons/computer-01-02.json",
+        "stereo-course/merzlyak-10-base/lessons/computer-01-03.json",
+        "stereo-course/merzlyak-10-base/lessons/computer-01-04.json",
+        "stereo-course/merzlyak-10-base/lessons/computer-01-05.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-computer-2",
+      "requiredParts": [
+        "алгоритмы"
+      ],
+      "sourcePdfPages": [
+        196
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/computer-02-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-computer-3",
+      "requiredParts": [
+        "3.3",
+        "3.4",
+        "3.5",
+        "3.19-алгоритм"
+      ],
+      "sourcePdfPages": [
+        196,
+        197
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/computer-03-01.json",
+        "stereo-course/merzlyak-10-base/lessons/computer-03-02.json",
+        "stereo-course/merzlyak-10-base/lessons/computer-03-03.json",
+        "stereo-course/merzlyak-10-base/lessons/computer-03-04.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-computer-4",
+      "requiredParts": [
+        "алгоритм"
+      ],
+      "sourcePdfPages": [
+        197
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/computer-04-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-computer-5",
+      "requiredParts": [
+        "алгоритм"
+      ],
+      "sourcePdfPages": [
+        197
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/computer-05-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-computer-6",
+      "requiredParts": [
+        "алгоритм"
+      ],
+      "sourcePdfPages": [
+        197
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/computer-06-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-computer-7",
+      "requiredParts": [
+        "проектирование",
+        "цилиндр",
+        "конус"
+      ],
+      "sourcePdfPages": [
+        197
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/computer-07-01.json",
+        "stereo-course/merzlyak-10-base/lessons/computer-07-02.json",
+        "stereo-course/merzlyak-10-base/lessons/computer-07-03.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-computer-8",
+      "requiredParts": [
+        "контрпример"
+      ],
+      "sourcePdfPages": [
+        197
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/computer-08-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-computer-9",
+      "requiredParts": [
+        "9.19 · 1",
+        "9.19 · 2",
+        "9.19 · 3",
+        "9.19 · 4",
+        "9.19 · 5",
+        "9.19 · 6"
+      ],
+      "sourcePdfPages": [
+        197
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/computer-09-01.json",
+        "stereo-course/merzlyak-10-base/lessons/computer-09-02.json",
+        "stereo-course/merzlyak-10-base/lessons/computer-09-03.json",
+        "stereo-course/merzlyak-10-base/lessons/computer-09-04.json",
+        "stereo-course/merzlyak-10-base/lessons/computer-09-05.json",
+        "stereo-course/merzlyak-10-base/lessons/computer-09-06.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-computer-10",
+      "requiredParts": [
+        "цилиндр",
+        "конус",
+        "многогранник"
+      ],
+      "sourcePdfPages": [
+        197
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/computer-10-01.json",
+        "stereo-course/merzlyak-10-base/lessons/computer-10-02.json",
+        "stereo-course/merzlyak-10-base/lessons/computer-10-03.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-computer-12",
+      "requiredParts": [
+        "обратные-функции"
+      ],
+      "sourcePdfPages": [
+        197,
+        198
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/computer-12-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-computer-13",
+      "requiredParts": [
+        "угол-плоскостей"
+      ],
+      "sourcePdfPages": [
+        198
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/computer-13-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-computer-14",
+      "requiredParts": [
+        "изображение"
+      ],
+      "sourcePdfPages": [
+        198
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/computer-14-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-computer-15",
+      "requiredParts": [
+        "площадь",
+        "обратная-классификация"
+      ],
+      "sourcePdfPages": [
+        198
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/computer-15-01.json",
+        "stereo-course/merzlyak-10-base/lessons/computer-15-02.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-computer-16",
+      "requiredParts": [
+        "прямая-призма",
+        "наклонная-призма",
+        "сечения",
+        "проекции"
+      ],
+      "sourcePdfPages": [
+        198
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/computer-16-01.json",
+        "stereo-course/merzlyak-10-base/lessons/computer-16-02.json",
+        "stereo-course/merzlyak-10-base/lessons/computer-16-03.json",
+        "stereo-course/merzlyak-10-base/lessons/computer-16-04.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-computer-17",
+      "requiredParts": [
+        "прямоугольный",
+        "наклонный"
+      ],
+      "sourcePdfPages": [
+        198
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/computer-17-01.json",
+        "stereo-course/merzlyak-10-base/lessons/computer-17-02.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-computer-18",
+      "requiredParts": [
+        "построение"
+      ],
+      "sourcePdfPages": [
+        198
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/computer-18-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-computer-19",
+      "requiredParts": [
+        "классификация"
+      ],
+      "sourcePdfPages": [
+        198
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/computer-19-01.json"
+      ]
+    }
+  ],
+  "unresolved": [],
+  "publicationApproval": false
+}

@@ -1,0 +1,64 @@
+name: OGE exam variants and reasoning
+on:
+  pull_request:
+    paths:
+      - 'trainers/oge-1-5-trainers/**'
+      - 'trainers/oge-course*'
+      - 'trainers/oge-task*.html'
+      - 'trainers/oge13-inequalities-series.html'
+      - 'oge/geometry/task-15-external-angle.html'
+      - 'tools/oge-course-*'
+      - 'tools/oge-practical-variant*'
+      - 'tools/oge-practical-tire*'
+      - 'downloads/trainers/oge-1-5-trainers/**'
+      - '.github/workflows/oge-exam-variants.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: oge-exam-variants-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  actual-presentation:
+    name: Actual ${{ matrix.family }} presentation
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        family: [practical-variant, practical-tire-structure-quiz, course-algebra, course-geometry, course-proof]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated cloud verification tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/oge-exam" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/oge-exam/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/oge-exam/node_modules" >> "$GITHUB_ENV"
+      - name: Native validation, source and draft contracts
+        env:
+          FAMILY: ${{ matrix.family }}
+        run: |
+          if [ "$FAMILY" = practical-variant ]; then
+            node --test tools/oge-practical-variant-*.test.cjs
+          else
+            node --test "tools/oge-$FAMILY.test.cjs"
+          fi
+          if [ "$FAMILY" = course-geometry ]; then node --test tools/oge-course-reference-entry.test.cjs; fi
+          git diff --check
+      - name: Actual production page on mobile and desktop
+        env:
+          FAMILY: ${{ matrix.family }}
+        run: node "tools/oge-$FAMILY.browser.cjs"
+      - name: Save actual screenshots and coverage
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: oge-exam-${{ matrix.family }}
+          path: artifacts/oge-${{ matrix.family }}
+          if-no-files-found: error
+          retention-days: 14

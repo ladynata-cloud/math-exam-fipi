@@ -1,0 +1,15 @@
+{
+  "automaticRequestAllowed": false,
+  "reason": "The preceding bounded Anthropic request returned HTTP400 without a verdict. Do not automatically repeat the same failed provider request. This continuation has no new authorized credential or retry decision.",
+  "previousFailure": {
+    "provider": "Anthropic",
+    "at": "2026-10-23T21:33:48.175820+00:00",
+    "pr": 324,
+    "head": "2c4a85ad64c9f287c39e18ba34b658c46d1d7158",
+    "run": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40027652366",
+    "artifact": 12533327246,
+    "status": "failed",
+    "verdict": null
+  },
+  "releaseMeaning": "No external approval. The new HIGH content release still requires external review or an explicit justified owner exception. An evidence-recording job is not approval."
+}

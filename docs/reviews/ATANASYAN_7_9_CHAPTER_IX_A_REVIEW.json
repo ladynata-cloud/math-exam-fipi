@@ -1,0 +1,928 @@
+{
+  "reviewId": "ATANASYAN_7_9_CHAPTER_IX_A_REVIEW",
+  "reviewer": "/root/review_ab",
+  "date": "2026-11-03",
+  "scope": "Chapter IX exercises737–765, every one of57 explicit-part cards",
+  "independentOfAuthor": true,
+  "verdict": "PASS",
+  "sourceFidelity": "PASS",
+  "mathematicsAndPedagogy": "PASS",
+  "coordinateModels": "PASS",
+  "sourceEdition": "2023 fourteenth revised edition",
+  "sourceSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "sourcePagesActuallyViewed": [
+    197,
+    198,
+    199,
+    204,
+    205
+  ],
+  "sourcePageImageSha256": {
+    "197": "1272a7874358df179d626f90faf649e5b2366da354e1a84ec4b2f9f25867f131",
+    "198": "9db5181bd3ee3486093dd8bd9f4630e45e60abf40d05fa1ff3b05725f6dc6b54",
+    "199": "331fe1ef9f4f7aab54dbe6a0dfdad5d33bf9005ac4c730c4a9c90828817b2417",
+    "204": "3ad419631a29f319ee2ea2dff4f24728377ba1ca4c464a568bf51abbd46628ed",
+    "205": "097ddb6a26fffda7857f16b8b4d41151c01972a56cdd997a751461d24a5fd4cc"
+  },
+  "method": "Read actual page images and all authored conditions, answers, complete proof sequences and model definitions. Independent source-conditioned numeric/geometric oracles cover all57 parts. No author generator or author expected claims are imported for those assertions; generic model validator is a supplementary gate.",
+  "cards": 57,
+  "views": 218,
+  "claims": 258,
+  "independentAssertions": 285,
+  "command": "python3 tools/geometry-textbook/chapter09-a-independent.test.py",
+  "result": "PASS",
+  "files": {
+    "tools/geometry-textbook/models_ch9_a.py": "0a20c79275733841e2778c89b1a2bcb4310d77d90a87b785f5a1861abd4ea727",
+    "geometry-course/textbook/preparation/chapter-09-a.json": "4113dd07985f80f110ef91d39d23ffbc311b6085b45b422405b77f17951e68e5",
+    "geometry-course/textbook/models/chapter-09-a.json": "84c114bc6b1fb9187af75897be85e02d78a9e4dd73933ffd6f41c94efb04c6f6",
+    "tools/geometry-textbook/chapter09-a-independent.test.py": "bb6b680bceb0c87133b98fe4decb4a40f6f174db00a85c46b02a988d7f73009e"
+  },
+  "cardsReviewed": [
+    {
+      "number": 737,
+      "part": "а",
+      "result": "PASS",
+      "reason": "Positive radius on the required side of the distance; constructive answer appears only at the construction step."
+    },
+    {
+      "number": 737,
+      "part": "б",
+      "result": "PASS",
+      "reason": "Positive radius on the required side of the distance; constructive answer appears only at the construction step."
+    },
+    {
+      "number": 737,
+      "part": "в",
+      "result": "PASS",
+      "reason": "Positive radius on the required side of the distance; constructive answer appears only at the construction step."
+    },
+    {
+      "number": 738,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 739,
+      "part": "а",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 739,
+      "part": "б",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 739,
+      "part": "в",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 739,
+      "part": "г",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 739,
+      "part": "д",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 740,
+      "part": "а",
+      "result": "PASS",
+      "reason": "Source lengths including 1.2 dm→12 cm and 50 mm→5 cm checked before the distance-radius comparison."
+    },
+    {
+      "number": 740,
+      "part": "б",
+      "result": "PASS",
+      "reason": "Source lengths including 1.2 dm→12 cm and 50 mm→5 cm checked before the distance-radius comparison."
+    },
+    {
+      "number": 740,
+      "part": "в",
+      "result": "PASS",
+      "reason": "Source lengths including 1.2 dm→12 cm and 50 mm→5 cm checked before the distance-radius comparison."
+    },
+    {
+      "number": 740,
+      "part": "г",
+      "result": "PASS",
+      "reason": "Source lengths including 1.2 dm→12 cm and 50 mm→5 cm checked before the distance-radius comparison."
+    },
+    {
+      "number": 740,
+      "part": "д",
+      "result": "PASS",
+      "reason": "Source lengths including 1.2 dm→12 cm and 50 mm→5 cm checked before the distance-radius comparison."
+    },
+    {
+      "number": 741,
+      "part": "single",
+      "result": "PASS",
+      "reason": "General d≤OA<r proof covers arbitrary lines, equality of foot with A, and lines through O."
+    },
+    {
+      "number": 742,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 743,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Valid SSS proof for the non-diameter chord; explicit diameter counterexample independently checked, not silently excluded."
+    },
+    {
+      "number": 744,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 745,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 746,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Two right-triangle congruences establish the angle through MB; actual 75° counterexample yields ordinary AMC135° rather than225°."
+    },
+    {
+      "number": 747,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Direct congruent-right-triangle and rectangle proof replaces an unsupported Thales cross-link; parallel-diameter degeneracy has a separate exact scene and proof."
+    },
+    {
+      "number": 748,
+      "part": "а",
+      "result": "PASS",
+      "reason": "The book defines a trapezoid with exactly one parallel-side pair; rectangle exception is excluded explicitly in the proof."
+    },
+    {
+      "number": 748,
+      "part": "б",
+      "result": "PASS",
+      "reason": "The book defines a trapezoid with exactly one parallel-side pair; rectangle exception is excluded explicitly in the proof."
+    },
+    {
+      "number": 748,
+      "part": "в",
+      "result": "PASS",
+      "reason": "The book defines a trapezoid with exactly one parallel-side pair; rectangle exception is excluded explicitly in the proof."
+    },
+    {
+      "number": 749,
+      "part": "а",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 749,
+      "part": "б",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 749,
+      "part": "в",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 750,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 751,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 752,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 753,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 754,
+      "part": "а",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 754,
+      "part": "б",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 754,
+      "part": "в",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 754,
+      "part": "г",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 755,
+      "part": "а",
+      "result": "PASS",
+      "reason": "Independent perpendicular-distance oracle checks each drawn line touches both circles and the textbook count is exact."
+    },
+    {
+      "number": 755,
+      "part": "б",
+      "result": "PASS",
+      "reason": "Independent perpendicular-distance oracle checks each drawn line touches both circles and the textbook count is exact."
+    },
+    {
+      "number": 755,
+      "part": "в",
+      "result": "PASS",
+      "reason": "Independent perpendicular-distance oracle checks each drawn line touches both circles and the textbook count is exact."
+    },
+    {
+      "number": 755,
+      "part": "г",
+      "result": "PASS",
+      "reason": "Independent perpendicular-distance oracle checks each drawn line touches both circles and the textbook count is exact."
+    },
+    {
+      "number": 755,
+      "part": "д",
+      "result": "PASS",
+      "reason": "Independent perpendicular-distance oracle checks each drawn line touches both circles and the textbook count is exact."
+    },
+    {
+      "number": 756,
+      "part": "а",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 756,
+      "part": "б",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 757,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 758,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Existence/uniqueness and triangle-inequality proof checked for arbitrary circle points; collinear equality and concentric cases are explicit."
+    },
+    {
+      "number": 759,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Existence/uniqueness and triangle-inequality proof checked for arbitrary circle points; collinear equality and concentric cases are explicit."
+    },
+    {
+      "number": 760,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Existence/uniqueness and triangle-inequality proof checked for arbitrary circle points; collinear equality and concentric cases are explicit."
+    },
+    {
+      "number": 761,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Both tangent points, circle intersections, d>R existence inequality, and completeness argument checked."
+    },
+    {
+      "number": 762,
+      "part": "а",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 762,
+      "part": "б",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 762,
+      "part": "в",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 762,
+      "part": "г",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 763,
+      "part": "а",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 763,
+      "part": "б",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 763,
+      "part": "в",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    },
+    {
+      "number": 764,
+      "part": "а",
+      "result": "PASS",
+      "reason": "SSS proof checks both smaller and larger arcs; diameter case separately avoids degenerate triangles."
+    },
+    {
+      "number": 764,
+      "part": "б",
+      "result": "PASS",
+      "reason": "SSS proof checks both smaller and larger arcs; diameter case separately avoids degenerate triangles."
+    },
+    {
+      "number": 765,
+      "part": "single",
+      "result": "PASS",
+      "reason": "Source condition, complete argument and coordinate model checked."
+    }
+  ],
+  "specificCases": [
+    "743 source does not exclude a diameter: the ordinary proof is expressly limited to H≠O and a 45-degree counterexample is shown separately.",
+    "746 the angle through MB is3β; the ordinary angle is3β for β≤60° and360°−3β otherwise. The β75° model independently yields135° instead of225°.",
+    "748в uses the book definition of trapezoid with exactly one pair of parallel sides.",
+    "750 both strict endpoints excluded and all integer distances3–7 checked.",
+    "753 r>0 and external tangency endpoint6 excluded.",
+    "755 every drawn common tangent independently checked by distances to both centres, with exact counts2,3,4,1,2.",
+    "761 existence and both solutions checked, and completeness uses the circle on diameterOM.",
+    "764 equal-chord proof covers both arc choices and treats diameter chords separately.",
+    "747 revised proof independently spot-checked by /root; final model includes BQ on the extension only from its justified step, initial unchanged."
+  ],
+  "changesMadeToAuthoredContent": [
+    "Corrected36 didactic theory cross-links after independent comparison with exact2023 catalog; proofs and geometric views unchanged.",
+    "Replaced747 unsupported Thales→point50 reference by complete right-triangle congruence/rectangle proof with separate parallel-diameter case. Root independently checked the revised proof; then its requested explicit line wording and missing BQ extension were added at step2 only."
+  ],
+  "openContentFindings": [],
+  "limits": [
+    "No rendered browser panel or screenshot was inspected in this review. All218 views still require the separate full320/1280 visual review.",
+    "This report is not chapter-wide source approval, runtime approval, release approval, a Claude/provider verdict, or exact-head CI evidence.",
+    "SourceVerified/mathVerified fields in preparation remain author metadata; this independently bound report supplies the separate content review."
+  ],
+  "referenceCorrections": [
+    {
+      "number": 737,
+      "part": "а",
+      "step": 1,
+      "before": [
+        12,
+        76
+      ],
+      "after": [
+        37,
+        76
+      ],
+      "reason": "Расстояние от точки до прямой."
+    },
+    {
+      "number": 737,
+      "part": "б",
+      "step": 1,
+      "before": [
+        12,
+        76
+      ],
+      "after": [
+        37,
+        76
+      ],
+      "reason": "Расстояние от точки до прямой."
+    },
+    {
+      "number": 737,
+      "part": "в",
+      "step": 1,
+      "before": [
+        12,
+        76
+      ],
+      "after": [
+        37,
+        76
+      ],
+      "reason": "Расстояние от точки до прямой."
+    },
+    {
+      "number": 738,
+      "part": "single",
+      "step": 2,
+      "before": [
+        20,
+        76
+      ],
+      "after": [
+        21,
+        22,
+        76
+      ],
+      "reason": "Построение окружности по центру и радиусу."
+    },
+    {
+      "number": 739,
+      "part": "а",
+      "step": 2,
+      "before": [
+        30,
+        77
+      ],
+      "after": [
+        21,
+        22,
+        72,
+        77
+      ],
+      "reason": "Построение отрезков и окружностей."
+    },
+    {
+      "number": 739,
+      "part": "б",
+      "step": 2,
+      "before": [
+        30,
+        77
+      ],
+      "after": [
+        21,
+        22,
+        72,
+        77
+      ],
+      "reason": "Построение отрезков и окружностей."
+    },
+    {
+      "number": 739,
+      "part": "в",
+      "step": 2,
+      "before": [
+        30,
+        77
+      ],
+      "after": [
+        21,
+        22,
+        72,
+        77
+      ],
+      "reason": "Построение отрезков и окружностей."
+    },
+    {
+      "number": 739,
+      "part": "г",
+      "step": 2,
+      "before": [
+        30,
+        77
+      ],
+      "after": [
+        21,
+        22,
+        72,
+        77
+      ],
+      "reason": "Построение отрезков и окружностей."
+    },
+    {
+      "number": 739,
+      "part": "д",
+      "step": 2,
+      "before": [
+        30,
+        77
+      ],
+      "after": [
+        21,
+        22,
+        72,
+        77
+      ],
+      "reason": "Построение отрезков и окружностей."
+    },
+    {
+      "number": 741,
+      "part": "single",
+      "step": 1,
+      "before": [
+        12,
+        60
+      ],
+      "after": [
+        37,
+        60
+      ],
+      "reason": "Перпендикуляр — кратчайшее расстояние до прямой."
+    },
+    {
+      "number": 743,
+      "part": "single",
+      "step": 1,
+      "before": [
+        20
+      ],
+      "after": [
+        21
+      ],
+      "reason": "Радиусы одной окружности равны."
+    },
+    {
+      "number": 743,
+      "part": "single",
+      "step": 2,
+      "before": [
+        15,
+        21
+      ],
+      "after": [
+        20,
+        11
+      ],
+      "reason": "Третий признак равенства треугольников и смежные углы."
+    },
+    {
+      "number": 747,
+      "part": "single",
+      "step": 1,
+      "before": [
+        76,
+        25
+      ],
+      "after": [
+        21,
+        25,
+        76
+      ],
+      "reason": "Свойство касательной, равенство радиусов и параллельность перпендикуляров."
+    },
+    {
+      "number": 747,
+      "part": "single",
+      "step": 2,
+      "before": [
+        20
+      ],
+      "after": [
+        11,
+        36,
+        51
+      ],
+      "reason": "Вертикальные углы, равенство прямоугольных треугольников по гипотенузе и острому углу, противоположные стороны прямоугольника."
+    },
+    {
+      "number": 747,
+      "part": "single",
+      "step": 3,
+      "before": [
+        50
+      ],
+      "after": [
+        21,
+        51
+      ],
+      "reason": "Свойства прямоугольника и середины диаметра."
+    },
+    {
+      "number": 748,
+      "part": "а",
+      "step": 1,
+      "before": [
+        20
+      ],
+      "after": [
+        21
+      ],
+      "reason": "Определение окружности."
+    },
+    {
+      "number": 748,
+      "part": "б",
+      "step": 1,
+      "before": [
+        20
+      ],
+      "after": [
+        21
+      ],
+      "reason": "Определение окружности."
+    },
+    {
+      "number": 749,
+      "part": "а",
+      "step": 1,
+      "before": [
+        12
+      ],
+      "after": [
+        37
+      ],
+      "reason": "Расстояние от точки до прямой."
+    },
+    {
+      "number": 749,
+      "part": "б",
+      "step": 1,
+      "before": [
+        12
+      ],
+      "after": [
+        37
+      ],
+      "reason": "Расстояние от точки до прямой."
+    },
+    {
+      "number": 749,
+      "part": "в",
+      "step": 1,
+      "before": [
+        12
+      ],
+      "after": [
+        37
+      ],
+      "reason": "Расстояние от точки до прямой."
+    },
+    {
+      "number": 753,
+      "part": "single",
+      "step": 2,
+      "before": [
+        20
+      ],
+      "after": [
+        21
+      ],
+      "reason": "Положительность радиуса."
+    },
+    {
+      "number": 758,
+      "part": "single",
+      "step": 1,
+      "before": [
+        4,
+        20
+      ],
+      "after": [
+        7,
+        21
+      ],
+      "reason": "Сложение отрезков и определение окружности."
+    },
+    {
+      "number": 759,
+      "part": "single",
+      "step": 1,
+      "before": [
+        20
+      ],
+      "after": [
+        21
+      ],
+      "reason": "Определение окружности."
+    },
+    {
+      "number": 760,
+      "part": "single",
+      "step": 1,
+      "before": [
+        20
+      ],
+      "after": [
+        21
+      ],
+      "reason": "Выбор обозначений и определение окружности."
+    },
+    {
+      "number": 761,
+      "part": "single",
+      "step": 1,
+      "before": [
+        22
+      ],
+      "after": [
+        23
+      ],
+      "reason": "Построение середины отрезка."
+    },
+    {
+      "number": 762,
+      "part": "а",
+      "step": 1,
+      "before": [
+        22,
+        15
+      ],
+      "after": [
+        18,
+        23,
+        11
+      ],
+      "reason": "Построения углов 60°, 90° и смежных углов."
+    },
+    {
+      "number": 762,
+      "part": "а",
+      "step": 2,
+      "before": [
+        20,
+        79
+      ],
+      "after": [
+        21,
+        79
+      ],
+      "reason": "Определение хорды и центрального угла."
+    },
+    {
+      "number": 762,
+      "part": "б",
+      "step": 1,
+      "before": [
+        22,
+        15
+      ],
+      "after": [
+        18,
+        23,
+        11
+      ],
+      "reason": "Построения углов 60°, 90° и смежных углов."
+    },
+    {
+      "number": 762,
+      "part": "б",
+      "step": 2,
+      "before": [
+        20,
+        79
+      ],
+      "after": [
+        21,
+        79
+      ],
+      "reason": "Определение хорды и центрального угла."
+    },
+    {
+      "number": 762,
+      "part": "в",
+      "step": 1,
+      "before": [
+        22,
+        15
+      ],
+      "after": [
+        18,
+        23,
+        11
+      ],
+      "reason": "Построения углов 60°, 90° и смежных углов."
+    },
+    {
+      "number": 762,
+      "part": "в",
+      "step": 2,
+      "before": [
+        20,
+        79
+      ],
+      "after": [
+        21,
+        79
+      ],
+      "reason": "Определение хорды и центрального угла."
+    },
+    {
+      "number": 762,
+      "part": "г",
+      "step": 1,
+      "before": [
+        22,
+        15
+      ],
+      "after": [
+        18,
+        23,
+        11
+      ],
+      "reason": "Построения углов 60°, 90° и смежных углов."
+    },
+    {
+      "number": 762,
+      "part": "г",
+      "step": 2,
+      "before": [
+        20,
+        79
+      ],
+      "after": [
+        21,
+        79
+      ],
+      "reason": "Определение хорды и центрального угла."
+    },
+    {
+      "number": 763,
+      "part": "а",
+      "step": 1,
+      "before": [
+        20
+      ],
+      "after": [
+        21
+      ],
+      "reason": "Равенство радиусов."
+    },
+    {
+      "number": 763,
+      "part": "б",
+      "step": 1,
+      "before": [
+        20
+      ],
+      "after": [
+        21
+      ],
+      "reason": "Равенство радиусов."
+    },
+    {
+      "number": 763,
+      "part": "в",
+      "step": 1,
+      "before": [
+        20
+      ],
+      "after": [
+        21
+      ],
+      "reason": "Равенство радиусов."
+    },
+    {
+      "number": 764,
+      "part": "а",
+      "step": 1,
+      "before": [
+        21
+      ],
+      "after": [
+        20
+      ],
+      "reason": "Третий признак равенства треугольников."
+    },
+    {
+      "number": 764,
+      "part": "б",
+      "step": 1,
+      "before": [
+        21
+      ],
+      "after": [
+        20
+      ],
+      "reason": "Третий признак равенства треугольников."
+    }
+  ],
+  "reviewHistory": [
+    "Initial math/source review passed but did not include semantic cross-link audit. Reopened on discovering wrong edition-point links, corrected them and reran complete independent oracles plus link regression."
+  ],
+  "crossLinkAudit": "PASS: all151 step reference sets checked against exact2023 theory titles; subsequent747 proof replaces unmatched Thales reference completely."
+}

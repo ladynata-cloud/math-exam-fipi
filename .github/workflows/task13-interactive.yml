@@ -1,0 +1,54 @@
+name: Task 13 interactive inequalities
+
+on:
+  pull_request:
+    paths:
+      - 'trainers/oge13-inequalities-series.html'
+      - 'trainers/oge-task13-inequalities.html'
+      - 'tools/task13-*.test.cjs'
+      - 'tools/task13-interactive.browser.cjs'
+      - 'tools/oge-special-minimal.test.cjs'
+      - 'tools/oge-special-minimal.browser.cjs'
+      - '.github/workflows/task13-interactive.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: task13-interactive-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  every-prototype:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated browser tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/task13-browser" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/task13-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/task13-browser/node_modules" >> "$GITHUB_ENV"
+      - name: Independent mathematics and retained learner contracts
+        run: |
+          node --test tools/task13-*.test.cjs
+          node --test tools/oge-special-minimal.test.cjs
+          git diff --check
+      - name: Every prototype, live experiments, return paths and mobile layout
+        env:
+          TASK13_BROWSER_ARTIFACTS: artifacts/task13-interactive
+        run: node tools/task13-interactive.browser.cjs
+      - name: Save coverage, screenshots and browser traces
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: task13-interactive
+          path: artifacts/task13-interactive
+          if-no-files-found: ignore
+          retention-days: 7

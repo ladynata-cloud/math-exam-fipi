@@ -1,0 +1,429 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0132",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Перенос перпендикулярности на параллельную плоскость",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "132",
+    "chapter": "II. Перпендикулярность прямых и плоскостей",
+    "printedPages": [
+      42
+    ],
+    "pdfPages": [
+      44
+    ]
+  },
+  "statement": {
+    "text": "Плоскости α и β параллельны. Прямая a перпендикулярна α.",
+    "goal": "Докажи, что a⊥β."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "Поверни рисунок и найди данные условия. Нужное дополнительное построение появится в соответствующем шаге.",
+    "model": {
+      "points": {
+        "_a0": [
+          0,
+          0,
+          -2
+        ],
+        "_a1": [
+          0,
+          0,
+          6
+        ],
+        "A": [
+          0,
+          0,
+          0
+        ],
+        "B": [
+          0,
+          0,
+          4
+        ],
+        "C": [
+          3,
+          0,
+          4
+        ],
+        "D": [
+          0,
+          3,
+          4
+        ],
+        "C1": [
+          3,
+          0,
+          0
+        ],
+        "D1": [
+          0,
+          3,
+          0
+        ],
+        "_alpha0": [
+          -5,
+          -4,
+          0
+        ],
+        "_alpha1": [
+          5,
+          -4,
+          0
+        ],
+        "_alpha2": [
+          5,
+          4,
+          0
+        ],
+        "_alpha3": [
+          -5,
+          4,
+          0
+        ],
+        "_alphalabel": [
+          -5,
+          4,
+          0
+        ],
+        "_beta0": [
+          -5,
+          -4,
+          4
+        ],
+        "_beta1": [
+          5,
+          -4,
+          4
+        ],
+        "_beta2": [
+          5,
+          4,
+          4
+        ],
+        "_beta3": [
+          -5,
+          4,
+          4
+        ],
+        "_betalabel": [
+          -5,
+          4,
+          4
+        ]
+      },
+      "edges": [
+        [
+          "_a0",
+          "_a1"
+        ]
+      ],
+      "faces": [
+        [
+          "_alpha0",
+          "_alpha1",
+          "_alpha2",
+          "_alpha3"
+        ],
+        [
+          "_beta0",
+          "_beta1",
+          "_beta2",
+          "_beta3"
+        ]
+      ],
+      "labelNames": [
+        "_a1",
+        "_alphalabel",
+        "_betalabel"
+      ],
+      "neutralPoints": [
+        "_a1",
+        "_alphalabel",
+        "_betalabel"
+      ],
+      "labels": {
+        "C1": "C₁",
+        "D1": "D₁",
+        "_a1": "a",
+        "_alphalabel": "α",
+        "_betalabel": "β"
+      },
+      "views": {
+        "neutral": {
+          "label": "Данные задачи"
+        },
+        "first": {
+          "label": "Первая пара параллельных следов",
+          "segments": [
+            [
+              "A",
+              "B"
+            ],
+            [
+              "B",
+              "C"
+            ],
+            [
+              "A",
+              "C1"
+            ]
+          ],
+          "polygon": [
+            "A",
+            "B",
+            "C",
+            "C1"
+          ]
+        },
+        "second": {
+          "label": "Вторая пара параллельных следов",
+          "segments": [
+            [
+              "A",
+              "B"
+            ],
+            [
+              "B",
+              "D"
+            ],
+            [
+              "A",
+              "D1"
+            ]
+          ],
+          "polygon": [
+            "A",
+            "B",
+            "D",
+            "D1"
+          ]
+        },
+        "both": {
+          "label": "Две прямые через B",
+          "segments": [
+            [
+              "B",
+              "C"
+            ],
+            [
+              "B",
+              "D"
+            ],
+            [
+              "A",
+              "B"
+            ]
+          ]
+        },
+        "transversal": {
+          "label": "Пересечения с плоскостями",
+          "segments": [
+            [
+              "A",
+              "B"
+            ]
+          ],
+          "points": [
+            "A",
+            "B"
+          ]
+        }
+      },
+      "note": "Изображён один допустимый пример. Поворот меняет вид, но не условия. Общий вывод нужно обосновать в решении."
+    }
+  },
+  "help": [
+    {
+      "question": "Можно ли просто судить по рисунку?",
+      "text": "Нет. Выбери в β две пересекающиеся прямые и перенеси их направления в α с помощью следов вспомогательных плоскостей.",
+      "theoryIds": [
+        "theory-011",
+        "theory-017"
+      ],
+      "view": "first",
+      "id": "h1"
+    }
+  ],
+  "steps": [
+    {
+      "title": "Найди точки пересечения",
+      "prompt": "Почему a пересекает и вторую плоскость?",
+      "explanation": "Прямая a пересекает α в точке A. Прямая, пересекающая одну из параллельных плоскостей, пересекает и другую; обозначим B=a∩β. Это свойство было доказано в №55.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Прямая, пересекающая одну из двух параллельных плоскостей, пересекает и другую.",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "main",
+            "exercise": "55",
+            "chapter": "I. Параллельность прямых и плоскостей",
+            "printedPages": [
+              23
+            ],
+            "pdfPages": [
+              25
+            ]
+          }
+        }
+      ],
+      "view": "transversal",
+      "id": "step-1"
+    },
+    {
+      "title": "Выбери первую прямую в β",
+      "prompt": "Как перенести её направление в α?",
+      "explanation": "Возьми через B прямую BC в β и плоскость γ через пересекающиеся a и BC. Она пересекает α по прямой AC₁. Следы γ на параллельных плоскостях параллельны: AC₁∥BC. Так как a⊥α, то a⊥AC₁, а значит a⊥BC.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Линии пересечения третьей плоскости с двумя параллельными плоскостями параллельны.",
+          "theoryId": "theory-011",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "11",
+            "chapter": "I. Параллельность прямых и плоскостей",
+            "printedPages": [
+              22
+            ],
+            "pdfPages": [
+              24
+            ]
+          }
+        },
+        {
+          "kind": "theorem",
+          "text": "Определение перпендикулярности прямой и плоскости.",
+          "theoryId": "theory-016",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "16",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              36,
+              37,
+              38
+            ],
+            "pdfPages": [
+              38,
+              39,
+              40
+            ]
+          }
+        },
+        {
+          "kind": "theorem",
+          "text": "Перпендикулярность к параллельным прямым.",
+          "theoryId": "theory-015",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "15",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              36
+            ],
+            "pdfPages": [
+              38
+            ]
+          }
+        }
+      ],
+      "view": "first",
+      "id": "step-2"
+    },
+    {
+      "title": "Повтори для другой прямой",
+      "prompt": "Как получить второе направление через B?",
+      "explanation": "В β выбери BD, отличную от BC. Для плоскости через a и BD тем же способом получим AD₁∥BD и a⊥AD₁, откуда a⊥BD.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Свойство следов на параллельных плоскостях.",
+          "theoryId": "theory-011",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "11",
+            "chapter": "I. Параллельность прямых и плоскостей",
+            "printedPages": [
+              22
+            ],
+            "pdfPages": [
+              24
+            ]
+          }
+        },
+        {
+          "kind": "theorem",
+          "text": "Лемма о перпендикулярности к параллельным прямым.",
+          "theoryId": "theory-015",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "15",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              36
+            ],
+            "pdfPages": [
+              38
+            ]
+          }
+        }
+      ],
+      "view": "second",
+      "id": "step-3"
+    },
+    {
+      "title": "Примени признак",
+      "prompt": "Почему достаточно прямых BC и BD?",
+      "explanation": "BC и BD пересекаются в B и лежат в β; a перпендикулярна обеим. Следовательно a⊥β.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Признак перпендикулярности прямой и плоскости.",
+          "theoryId": "theory-017",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "17",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              38,
+              39,
+              40
+            ],
+            "pdfPages": [
+              40,
+              41,
+              42
+            ],
+            "subpart": "criterion"
+          }
+        }
+      ],
+      "view": "both",
+      "id": "step-4"
+    }
+  ],
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex ege_base_inventory; geometry_scene_math_review",
+    "at": "2026-10-21T21:45:45Z"
+  },
+  "answer": {
+    "mode": "manual",
+    "prompt": "Докажи, что a⊥β. Запиши решение с обоснованием каждого вывода."
+  }
+}

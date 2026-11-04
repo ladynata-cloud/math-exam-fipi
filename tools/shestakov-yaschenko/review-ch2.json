@@ -1,0 +1,102 @@
+{
+  "reviewer": "/root/chapter3",
+  "at": "2026-10-23T21:21:36.960399+00:00",
+  "sha256": "6e8531f60ed0433253429361806fd180c890146e1b029ba17149ac83576c6891",
+  "file": "stereo-course/shestakov-yaschenko-10-11/chapters/ch2.json",
+  "verdict": "passed",
+  "scope": {
+    "sourceVariants": 48,
+    "sourceNumberPairs": 24,
+    "theoryCompanions": 4,
+    "source": "Supplied 2021 third edition; all selected raw PDF text statements matched; visually rendered PDF pages 40,55,56 for roof and coordinate/vector notation.",
+    "mathematics": "All 46 numeric/symbolic final answers independently derived from source data; both manual proof solutions read and checked; all authored step explanations and theory companions read.",
+    "models": "Inspected all 52 model coordinate definitions. 110 independent source-derived answer/model assertions passed; 14 additional assertions checked revised geometry and no-answer-reveal diagrams. Re-read all 48 initial models against source statements after 25 source-given line/point additions; independently checked the added distances/diagonals and step-only auxiliaries. C2 perimeter views reviewed.",
+    "pedagogy": "Task-specific prompts, completed solutions, staged auxiliary constructions and distinction between manual proofs and exact answers inspected."
+  },
+  "checks": {
+    "independentSourceDerivedAnswerAndGeometryAssertions": 110,
+    "additionalChangedGeometryAssertions": 14,
+    "failures": 0,
+    "postInitialGivensAndPerimeterAssertions": 93
+  },
+  "resolvedFindings": [
+    {
+      "cards": [
+        "2.3-A1-a",
+        "2.3-A1-b",
+        "2.3-A5-a",
+        "2.3-A5-b"
+      ],
+      "finding": "Initial full polygon showed the unknown number of sides, allowing counting instead of solving.",
+      "fix": "A1 now displays only an accurately angled local corner. A5 displays candidate integers; the answer point is highlighted only after the final logical step."
+    },
+    {
+      "cards": [
+        "2.2-C1-a",
+        "2.2-C1-b"
+      ],
+      "finding": "A proposed parallel auxiliary line was named in the explanation but absent from the model.",
+      "fix": "Added Q on AD and G on EF, BQ parallel CD; step view now shows the construction. Independently checked EG/AQ = BE/BA = CF/CD and GF = BC. Corrected the cyclic vertex order of the parallelogram to BCDQ."
+    },
+    {
+      "cards": [
+        "2.3-A2-a",
+        "2.3-A2-b"
+      ],
+      "finding": "Source does not explicitly impose convexity; blanket fan triangulation justification was too narrow.",
+      "fix": "Explanation now uses triangulation of a simple n-gon; displayed convex example is explicitly labelled as such."
+    },
+    {
+      "cards": [
+        "2.4-B3-b"
+      ],
+      "finding": "Russian relative-pronoun gender error.",
+      "fix": "Corrected to «вершины которой»."
+    },
+    {
+      "cards": [
+        "2.1-A2-b",
+        "2.1-A7-a",
+        "2.1-A7-b",
+        "2.1-A10-a",
+        "2.1-A10-b",
+        "2.1-B1-a",
+        "2.1-B1-b",
+        "2.1-B2-a",
+        "2.1-B2-b",
+        "2.1-C2-a",
+        "2.1-C2-b",
+        "2.2-A1-a",
+        "2.2-A1-b",
+        "2.2-A4-a",
+        "2.2-A4-b",
+        "2.2-B2-a",
+        "2.2-B2-b",
+        "2.2-C1-a",
+        "2.2-C1-b",
+        "2.3-B2-a",
+        "2.3-B2-b",
+        "2.3-B3-a",
+        "2.3-B3-b",
+        "2.4-A3-a",
+        "2.4-A3-b"
+      ],
+      "finding": "Some explicitly given lines or named points were previously visible only in solution steps.",
+      "fix": "Initial models now show exactly those given diagonals, distances, midpoint connectors and intersections. Solution-only Q/G, decomposition and unknown altitudes remain staged. No new derived numerical labels were introduced."
+    },
+    {
+      "cards": [
+        "2.3-C2-a",
+        "2.3-C2-b"
+      ],
+      "finding": "The triangulation fan was unrelated to this perimeter argument.",
+      "fix": "Replaced it with a one-side highlight for the side-length step and the whole boundary for the final perimeter step. The caption explicitly presents a regular example, without assuming equal angles in the proof."
+    }
+  ],
+  "remainingFindings": [],
+  "limits": [
+    "This review did not exercise the browser UI; root is responsible for browser/layout/state tests.",
+    "No external-provider or release approval is claimed.",
+    "Learning gains require classroom validation; a mathematical/content review does not establish them."
+  ]
+}

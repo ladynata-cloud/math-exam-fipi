@@ -1,0 +1,345 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "independent agent /root/theory_course (not the supplementary author)",
+  "reviewScope": "All 13 supplementary research exercises: exact source statements, every solution step and subpart, task-specific coordinate models, highlighted geometry and school-level methods.",
+  "reviewedAt": "2026-10-22T22:27:45.972673+00:00",
+  "sourceEvidence": {
+    "printedPages": [
+      30,
+      142
+    ],
+    "pdfPages": [
+      31,
+      143
+    ],
+    "method": "Independently inspected supplied source page images, then read complete current lesson JSON."
+  },
+  "verdictWithinScope": "pass after corrections",
+  "releaseApproval": false,
+  "reviewFlagsChanged": false,
+  "independentCheckCommand": "python tools/merzlyak-10-base/reviewer-supplementary-checks.py",
+  "checkResult": "pass (13 task-specific model groups plus every edge/base face/highlighted polygon)",
+  "resolvedFindings": [
+    {
+      "id": "sections-2-method",
+      "finding": "Unexplained plane equation used before coordinate methods.",
+      "resolution": "Replaced with middle-line theorem and three parallelograms with common center O; independently reread and tested new O incidences."
+    },
+    {
+      "id": "sections-4-method",
+      "finding": "Affine plane equation obscured the elementary counterexample.",
+      "resolution": "Two explicit admissible prisms are now compared by similar triangles, giving2:3 and1:3; tested added F and FX incidence."
+    },
+    {
+      "id": "sections-5-method",
+      "finding": "Final ratio relied on unintroduced plane equation.",
+      "resolution": "Three explicit similarities give QC1=a/3, CR=a/3, CP=a/4 and BP:PC=3:1; tested new U and intermediate ratios."
+    },
+    {
+      "id": "skew6-antecedent",
+      "finding": "Ambiguous phrase for the intersection O.",
+      "resolution": "Explicitly identifies O=A1B∩AB1 and its role as the line-plane intersection."
+    }
+  ],
+  "sourceExceptions": [
+    {
+      "lessonId": "research-sections-004",
+      "finding": "Printed condition specifies a general quadrilateral prism; requested edge ratio is not unique.",
+      "handling": "Card preserves the condition, supplies a construction and two exact admissible counterexamples. It does not silently assume a parallelogram base."
+    }
+  ],
+  "unresolved": [],
+  "limits": [
+    "This is independent agent review, not a separate external-provider or release approval.",
+    "Browser rendering/accessibility was not exercised here; geometric validity of every supplied highlighted polygon and segment was checked.",
+    "Numerical checks verify the concrete models; general proofs were assessed by reading, not formal theorem proving."
+  ],
+  "lessons": [
+    {
+      "lessonId": "research-sections-001",
+      "file": "stereo-course/merzlyak-10-base/lessons/research-sections-001.json",
+      "sha256": "2db94346c392eba953aa0c0a43403b77000ea00ec288eaf740ef4a96963357e9",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "research",
+        "exercise": "sections-1",
+        "printedPages": [
+          30
+        ],
+        "pdfPages": [
+          31
+        ],
+        "chapter": "Дополнительные задачи"
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "research-sections-002",
+      "file": "stereo-course/merzlyak-10-base/lessons/research-sections-002.json",
+      "sha256": "5110112ac53493fd702aafb827db2f181459f96e2e21cd645cee47f63fabed5c",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "research",
+        "exercise": "sections-2",
+        "printedPages": [
+          30
+        ],
+        "pdfPages": [
+          31
+        ],
+        "chapter": "Дополнительные задачи"
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 5
+    },
+    {
+      "lessonId": "research-sections-003",
+      "file": "stereo-course/merzlyak-10-base/lessons/research-sections-003.json",
+      "sha256": "20aaba4d4604625db4a2c07936c83dc7d32a310b309fbf7f824ca5555cc6f3ab",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "research",
+        "exercise": "sections-3",
+        "printedPages": [
+          30
+        ],
+        "pdfPages": [
+          31
+        ],
+        "chapter": "Дополнительные задачи"
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "research-sections-004",
+      "file": "stereo-course/merzlyak-10-base/lessons/research-sections-004.json",
+      "sha256": "c13d5d3857e377685b73e2b13ea510cae05cd55d81e5e2ec96e31902629f0943",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "research",
+        "exercise": "sections-4",
+        "printedPages": [
+          30
+        ],
+        "pdfPages": [
+          31
+        ],
+        "chapter": "Дополнительные задачи"
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 6
+    },
+    {
+      "lessonId": "research-sections-005",
+      "file": "stereo-course/merzlyak-10-base/lessons/research-sections-005.json",
+      "sha256": "9b34acb63e5fc6af9e77e39ba6c6577db09ebd9d2e3960f9afb04b536ee9d0f8",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "research",
+        "exercise": "sections-5",
+        "printedPages": [
+          30
+        ],
+        "pdfPages": [
+          31
+        ],
+        "chapter": "Дополнительные задачи"
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 6
+    },
+    {
+      "lessonId": "research-sections-006",
+      "file": "stereo-course/merzlyak-10-base/lessons/research-sections-006.json",
+      "sha256": "fec71285f0ddf4bfdf0a784ecf3b0938ad241e89d3245ead5485be5e2a1a369d",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "research",
+        "exercise": "sections-6",
+        "printedPages": [
+          30
+        ],
+        "pdfPages": [
+          31
+        ],
+        "chapter": "Дополнительные задачи"
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 4
+    },
+    {
+      "lessonId": "research-skew-lines-001",
+      "file": "stereo-course/merzlyak-10-base/lessons/research-skew-lines-001.json",
+      "sha256": "48c0359ff950fba6d5c25a3b985be4cb76d92132af5c00694cafafe4ecd51a9a",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "research",
+        "exercise": "skew-lines-1",
+        "printedPages": [
+          142
+        ],
+        "pdfPages": [
+          143
+        ],
+        "chapter": "Дополнительные задачи"
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "research-skew-lines-002",
+      "file": "stereo-course/merzlyak-10-base/lessons/research-skew-lines-002.json",
+      "sha256": "2e9baf07e8aaae7fe223c9cb97707ad668997746e528f753df0edc3851804b8e",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "research",
+        "exercise": "skew-lines-2",
+        "printedPages": [
+          142
+        ],
+        "pdfPages": [
+          143
+        ],
+        "chapter": "Дополнительные задачи"
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "research-skew-lines-003",
+      "file": "stereo-course/merzlyak-10-base/lessons/research-skew-lines-003.json",
+      "sha256": "0741418b0e7e65c33caab1228b24dc841064e46cb08d897008c204be3f19c34f",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "research",
+        "exercise": "skew-lines-3",
+        "printedPages": [
+          142
+        ],
+        "pdfPages": [
+          143
+        ],
+        "chapter": "Дополнительные задачи"
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "research-skew-lines-004",
+      "file": "stereo-course/merzlyak-10-base/lessons/research-skew-lines-004.json",
+      "sha256": "9cc60ad80a736d3e5432d0b77a9571181e680d0c0003dccf5bd9f79de96c839d",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "research",
+        "exercise": "skew-lines-4",
+        "printedPages": [
+          142
+        ],
+        "pdfPages": [
+          143
+        ],
+        "chapter": "Дополнительные задачи"
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 4
+    },
+    {
+      "lessonId": "research-skew-lines-005",
+      "file": "stereo-course/merzlyak-10-base/lessons/research-skew-lines-005.json",
+      "sha256": "0c2dab6b0b11a97fe1acb25074e57a7337eb66d5df8e9c08a6e4f35f5b4b5ed0",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "research",
+        "exercise": "skew-lines-5",
+        "printedPages": [
+          142
+        ],
+        "pdfPages": [
+          143
+        ],
+        "chapter": "Дополнительные задачи"
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 4
+    },
+    {
+      "lessonId": "research-skew-lines-006",
+      "file": "stereo-course/merzlyak-10-base/lessons/research-skew-lines-006.json",
+      "sha256": "341fe3a97b754603eab4bd1b3c000a33f039f4622c4ddac3a35b15b936242390",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "research",
+        "exercise": "skew-lines-6",
+        "printedPages": [
+          142
+        ],
+        "pdfPages": [
+          143
+        ],
+        "chapter": "Дополнительные задачи"
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 4
+    },
+    {
+      "lessonId": "research-skew-lines-007",
+      "file": "stereo-course/merzlyak-10-base/lessons/research-skew-lines-007.json",
+      "sha256": "5a15fbaab26c0023574c813536a4f2d2b383647aadf6deb67bd1471f144c7797",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "research",
+        "exercise": "skew-lines-7",
+        "printedPages": [
+          142
+        ],
+        "pdfPages": [
+          143
+        ],
+        "chapter": "Дополнительные задачи"
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 4
+    }
+  ]
+}

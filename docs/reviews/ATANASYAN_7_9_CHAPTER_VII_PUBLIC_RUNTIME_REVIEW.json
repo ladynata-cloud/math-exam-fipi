@@ -1,0 +1,3671 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "completed": true,
+  "reviewer": "independent non-author OpenAI agent vii_public_smoke",
+  "reviewedAt": "2026-10-29T21:01:22.375280+00:00",
+  "scope": "actual public index.html on the locally served reviewed 1083-card snapshot; no preview injection or content rewriting",
+  "baseCommit": "6fb959fc0130a0bb8842601d19297e305ac91ac0",
+  "gitHead": null,
+  "headBinding": "Exact working-tree payload hashes; final committed CI and deployment checks are separate.",
+  "startedAt": "2026-10-29T20:56:54.521Z",
+  "finishedAt": "2026-10-29T20:59:13.766Z",
+  "browserVersion": "153.0.8010.0",
+  "widths": [
+    320,
+    1280
+  ],
+  "counts": {
+    "reviewedCards": 1083,
+    "inReviewCards": 0,
+    "blockedCards": 0,
+    "chapterVIICards": 190,
+    "chapterVIIColdLinks": 380,
+    "catalogueFullTraversals": 2,
+    "cataloguePagesPerWidth": 8,
+    "interactionAndPreservedLinkChecks": 17,
+    "actualScreenshotsViewed": 6,
+    "errors": 0
+  },
+  "bindings": {
+    "bundleSha256": "9730c6446a1503b460f40e6951458714730a7a731298fa22ff09fd49d03ec01c",
+    "implementationSha256": "06f892e4142242b6e1f22331479c884924d5e6690f18ca0fb3d6202bac0c319c",
+    "authoredContentSha256": "d68d1165bcbd9edc2901d78c46301da041c44ed7bba75da7d2a66d86961f3430",
+    "chapterVIIAuthoredContentSha256": "a1cfeeeafcd14b8ff5266380883709aec6635e004104f2407afe35c40ae2ac21",
+    "sourceInventorySha256": "2c7afd7f801e3dc282fe4cfe85b86342d9d17e961986ce663beb3443f17bf3f3",
+    "chapterVIIManifestSha256": "bfeb67b70fcbd75341f0d4163e27e433880918ce13f13fdcd6a9323c97fa4d07",
+    "scriptSha256": "91052e9dff604583e39ab32d7f7e0c71a9481bb77153539552bc2ed22c7bb07b"
+  },
+  "runtimeFiles": [
+    {
+      "path": "geometry-course/textbook/index.html",
+      "sha256": "098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804"
+    },
+    {
+      "path": "geometry-course/textbook/assets/engine.js",
+      "sha256": "85d395dbfb66f8a1409f1d2f930fbb6f742c0085239d34d18ec2a901f3bd6492"
+    },
+    {
+      "path": "geometry-course/textbook/assets/planar-viewer.js",
+      "sha256": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061"
+    },
+    {
+      "path": "geometry-course/textbook/assets/style.css",
+      "sha256": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b"
+    },
+    {
+      "path": "geometry-course/textbook/assets/math-text.js",
+      "sha256": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b"
+    },
+    {
+      "path": "geometry-course/textbook/source-inventory.json",
+      "sha256": "2c7afd7f801e3dc282fe4cfe85b86342d9d17e961986ce663beb3443f17bf3f3"
+    },
+    {
+      "path": "geometry-course/textbook/assets/board-adapter.js",
+      "sha256": "e1c366fd77f2cc822894be7e21139ce99b9e7b3c568392b122f2a3b386b7545b"
+    }
+  ],
+  "contentManifestEvidenceFilesVerified": 26,
+  "rawEvidence": {
+    "artifact": "vii-public-approved-smoke/evidence.json",
+    "sha256": "8d0cfaa84c48733be109b95a05474aa0948ed526d10efbdd943bb9ab8e6a3e61"
+  },
+  "independentScript": {
+    "artifact": "vii-public-approved-smoke.cjs",
+    "sha256": "91052e9dff604583e39ab32d7f7e0c71a9481bb77153539552bc2ed22c7bb07b"
+  },
+  "fontEnvironment": {
+    "note": "Standard Playwright Liberation dependency supplied by existing Liberation2.1.5 through isolated fontconfig; no application, CSS, font aliases or gate changes.",
+    "fontConfigurationArtifact": "vii-font-diagnostic/liberation.conf",
+    "sha256": "5799e9e1ee3756a0a995507a7cb327b4eaea1847b611956c7d7e9986470b0ab2"
+  },
+  "freshTemporaryBrowserContext": true,
+  "realLearnerDataAccessed": false,
+  "previewInjected": false,
+  "reviewFlagsRewritten": false,
+  "coldLinks": [
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-541-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-541-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-541-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-542-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-542-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-542-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-543-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-544-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-545-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-545-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-545-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-546-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-546-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-546-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-547-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-547-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-548-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-548-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-548-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-548-part-4",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-549-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-549-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-549-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-550-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-550-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-551-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-552-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-553-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-554-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-555-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-555-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-555-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-555-part-4",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-556-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-557-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-558-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-559-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-560-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-560-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-560-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-561-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-562-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-563-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-564-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-564-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-564-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-564-part-4",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-565-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-566-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-567-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-567-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-568-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-569-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-569-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-569-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-570-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-571-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-572-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-573-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-574-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-574-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-575-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-576-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-577-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-577-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-578-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-578-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-578-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-579-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-580-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-581-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-581-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-581-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-581-part-4",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-582-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-582-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-582-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-582-part-4",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-582-part-5",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-583-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-584-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-584-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-584-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-585-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-586-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-586-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-587-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-587-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-587-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-588-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-588-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-588-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-589-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-589-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-590-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-591-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-592-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-593-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-593-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-593-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-594-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-595-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-596-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-596-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-596-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-596-part-4",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-596-part-5",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-596-part-6",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-596-part-7",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-597-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-597-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-598-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-599-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-599-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-600-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-600-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-601-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-602-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-603-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-604-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-605-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-606-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-606-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-607-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-608-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-609-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-610-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-611-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-612-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-613-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-614-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-615-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-616-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-616-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-616-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-617-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-618-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-619-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-620-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-620-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-621-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-622-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-623-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-623-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-624-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-625-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-626-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-627-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-628-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-629-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-630-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-631-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-632-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-633-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-634-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-635-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-636-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-637-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-637-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-638-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-638-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-638-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-638-part-4",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-638-part-5",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-639-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-639-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-639-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-639-part-4",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-main-639-part-5",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-theory-54-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-theory-55-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-theory-56-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-theory-57-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-theory-58-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-theory-59-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-theory-60-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-theory-61-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-theory-62-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-1-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-2-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-3-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-4-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-5-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-6-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-7-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-8-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-9-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-10-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-11-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 320,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-12-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-541-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-541-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-541-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-542-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-542-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-542-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-543-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-544-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-545-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-545-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-545-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-546-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-546-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-546-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-547-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-547-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-548-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-548-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-548-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-548-part-4",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-549-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-549-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-549-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-550-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-550-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-551-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-552-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-553-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-554-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-555-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-555-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-555-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-555-part-4",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-556-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-557-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-558-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-559-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-560-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-560-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-560-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-561-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-562-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-563-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-564-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-564-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-564-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-564-part-4",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-565-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-566-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-567-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-567-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-568-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-569-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-569-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-569-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-570-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-571-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-572-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-573-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-574-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-574-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-575-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-576-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-577-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-577-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-578-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-578-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-578-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-579-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-580-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-581-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-581-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-581-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-581-part-4",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-582-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-582-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-582-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-582-part-4",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-582-part-5",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-583-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-584-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-584-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-584-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-585-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-586-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-586-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-587-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-587-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-587-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-588-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-588-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-588-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-589-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-589-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-590-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-591-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-592-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-593-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-593-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-593-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-594-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-595-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-596-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-596-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-596-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-596-part-4",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-596-part-5",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-596-part-6",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-596-part-7",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-597-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-597-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-598-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-599-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-599-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-600-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-600-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-601-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-602-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-603-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-604-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-605-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-606-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-606-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-607-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-608-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-609-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-610-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-611-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-612-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-613-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-614-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-615-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-616-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-616-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-616-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-617-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-618-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-619-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-620-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-620-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-621-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-622-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-623-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-623-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-624-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-625-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-626-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-627-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-628-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-629-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-630-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-631-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-632-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-633-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-634-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-635-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-636-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-637-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-637-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-638-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-638-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-638-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-638-part-4",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-638-part-5",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-639-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-639-part-2",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-639-part-3",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-639-part-4",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-main-639-part-5",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-theory-54-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-theory-55-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-theory-56-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-theory-57-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-theory-58-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-theory-59-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-theory-60-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-theory-61-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-theory-62-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-1-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-2-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-3-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-4-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-5-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-6-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-7-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-8-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-9-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-10-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-11-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    },
+    {
+      "width": 1280,
+      "id": "atanasyan-7-9-selfcheck-chapter-7-12-part-1",
+      "heading": true,
+      "chapterAndParagraph": true,
+      "sourceDisclosure": true,
+      "model": true,
+      "publicAvailability": true
+    }
+  ],
+  "catalogues": [
+    {
+      "width": 320,
+      "all190InSourceOrder": true,
+      "pages": 8,
+      "pending": 0
+    },
+    {
+      "width": 1280,
+      "all190InSourceOrder": true,
+      "pages": 8,
+      "pending": 0
+    }
+  ],
+  "flows": [
+    {
+      "width": 320,
+      "name": "catalogue-search541-navigation",
+      "passed": true
+    },
+    {
+      "width": 320,
+      "name": "real-paragraph3-search",
+      "count": 53,
+      "passed": true
+    },
+    {
+      "width": 320,
+      "name": "draft-and-two-steps-reload",
+      "id": "atanasyan-7-9-main-603-part-1",
+      "passed": true
+    },
+    {
+      "width": 320,
+      "name": "chapterVII-theory-return-keeps-draft",
+      "exercise": "atanasyan-7-9-main-541-part-1",
+      "theory": "atanasyan-7-9-theory-54-part-1",
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "name": "catalogue-search541-navigation",
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "name": "real-paragraph3-search",
+      "count": 53,
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "name": "draft-and-two-steps-reload",
+      "id": "atanasyan-7-9-main-603-part-1",
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "name": "chapterVII-theory-return-keeps-draft",
+      "exercise": "atanasyan-7-9-main-541-part-1",
+      "theory": "atanasyan-7-9-theory-54-part-1",
+      "passed": true
+    },
+    {
+      "name": "all-seven-selfcheck-drafts-independent-after-page-close",
+      "keys": [
+        "mathExamTextbook.v1:atanasyan-2023-7-9:atanasyan-7-9-selfcheck-1-part-1:r1",
+        "mathExamTextbook.v1:atanasyan-2023-7-9:atanasyan-7-9-selfcheck-chapter-2-1-part-1:r1",
+        "mathExamTextbook.v1:atanasyan-2023-7-9:atanasyan-7-9-selfcheck-chapter-3-1-part-1:r1",
+        "mathExamTextbook.v1:atanasyan-2023-7-9:atanasyan-7-9-selfcheck-chapter-4-1-part-1:r1",
+        "mathExamTextbook.v1:atanasyan-2023-7-9:atanasyan-7-9-selfcheck-chapter-5-1-part-1:r1",
+        "mathExamTextbook.v1:atanasyan-2023-7-9:atanasyan-7-9-selfcheck-chapter-6-1-part-1:r1",
+        "mathExamTextbook.v1:atanasyan-2023-7-9:atanasyan-7-9-selfcheck-chapter-7-1-part-1:r1"
+      ],
+      "passed": true
+    },
+    {
+      "name": "native-storage-event-freezes-old-editor-and-recovers-new-draft",
+      "passed": true
+    },
+    {
+      "name": "preserved-chapter-cold-link",
+      "id": "atanasyan-7-9-main-1-part-1",
+      "passed": true
+    },
+    {
+      "name": "preserved-chapter-cold-link",
+      "id": "atanasyan-7-9-main-92-part-1",
+      "passed": true
+    },
+    {
+      "name": "preserved-chapter-cold-link",
+      "id": "atanasyan-7-9-main-191-part-1",
+      "passed": true
+    },
+    {
+      "name": "preserved-chapter-cold-link",
+      "id": "atanasyan-7-9-main-228-part-1",
+      "passed": true
+    },
+    {
+      "name": "preserved-chapter-cold-link",
+      "id": "atanasyan-7-9-main-331-part-1",
+      "passed": true
+    },
+    {
+      "name": "preserved-chapter-cold-link",
+      "id": "atanasyan-7-9-main-462-part-1",
+      "passed": true
+    },
+    {
+      "name": "preserved-advanced7-cold-link",
+      "id": "atanasyan-7-9-main-413-part-1",
+      "passed": true
+    }
+  ],
+  "screenshotsActuallyViewed": [
+    {
+      "file": "catalog-paragraph3-320.png",
+      "sha256": "65bed168d97077c968f62a77baef8bfb0fd926baaee71b8989d0f46b86afbfe3",
+      "verdict": "PASS",
+      "notes": "Visible controls, source labels, text and drawing readable; no clipping within expected scrollable page/dialog content."
+    },
+    {
+      "file": "task603-restored-model-320.png",
+      "sha256": "2f8e32fcd759b158e1fd45db96719fdf8992c5799301ba2f9305e01df9a51eec",
+      "verdict": "PASS",
+      "notes": "Visible controls, source labels, text and drawing readable; no clipping within expected scrollable page/dialog content."
+    },
+    {
+      "file": "theory-return-dialog-320.png",
+      "sha256": "f4c4f9fd8f92a27792d07dc450c05858a1baa5ea3db61efaf4758e5db2e93935",
+      "verdict": "PASS",
+      "notes": "Visible controls, source labels, text and drawing readable; no clipping within expected scrollable page/dialog content."
+    },
+    {
+      "file": "catalog-paragraph3-1280.png",
+      "sha256": "6ff269a9d527a3436f878d6ddc140eb5a01d4ad9f4757568cfbbbf93690fa215",
+      "verdict": "PASS",
+      "notes": "Actual native-resolution view_image inspection: visible public controls, source text and drawing readable. Page/dialog scrolling limits captured area; exhaustive model views are reviewed separately."
+    },
+    {
+      "file": "task603-restored-model-1280.png",
+      "sha256": "d3bc5d6f5e303d3d3f46d0b064803c3c4d18742fee372bce29c4d946c703d2e8",
+      "verdict": "PASS",
+      "notes": "Actual native-resolution view_image inspection: visible public controls, source text and drawing readable. Page/dialog scrolling limits captured area; exhaustive model views are reviewed separately."
+    },
+    {
+      "file": "theory-return-dialog-1280.png",
+      "sha256": "de20c04ccbc1ad22f5788558fc201f904d5ba51b0b3812e7185e2305c39ad997",
+      "verdict": "PASS",
+      "notes": "Actual native-resolution view_image inspection: visible public controls, source text and drawing readable. Page/dialog scrolling limits captured area; exhaustive model views are reviewed separately."
+    }
+  ],
+  "errors": [],
+  "unresolvedFindings": [],
+  "limitations": [
+    "Local serving of the actual public index and reviewed bundle, not a production deployment claim.",
+    "Public entry, attribution and retained-work smoke; source, mathematics, pedagogy and exhaustive all-view image review remain separate.",
+    "Viewport captures inspect visible content; scrollable regions outside a screenshot are not claimed as visually inspected by this smoke."
+  ],
+  "mergeOrDeploymentAuthorization": false
+}

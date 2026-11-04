@@ -1,0 +1,8 @@
+/* Board frames may be narrow even on a large screen. Preserve the full model. */
+@media(max-width:850px){
+ body{padding:10px!important} .main,.mainArea,#mainArea,.layout,.grid{grid-template-columns:minmax(0,1fr)!important;gap:16px!important}
+ canvas{max-width:100%;height:auto}button,input,select{min-height:44px}button{font-size:15px!important}
+ .side,.panel,.right{min-width:0!important} h1{font-size:22px!important}
+}
+.geometry7-reasoning{max-width:1080px;margin:24px auto;padding:20px;background:#fff;border:1px solid #cbd9d0;border-radius:12px;font:16px/1.6 system-ui;color:#182e43}
+.geometry7-reasoning h2{font-size:21px}.geometry7-reasoning label{display:block;margin-top:16px;font-weight:600}.geometry7-reasoning textarea{display:block;box-sizing:border-box;width:100%;font:16px/1.5 system-ui;padding:10px;border:1px solid #82958b;border-radius:6px}.geometry7-reasoning summary{cursor:pointer;min-height:44px}.geometry7-reasoning li{margin:10px 0}.geometry7-reasoning p{font:inherit}

@@ -118,6 +118,7 @@ async function main() {
         ok(m.sw <= 360, 'B', url + ': горизонтальный вылет ' + m.sw + ' px');
         ok(m.text > 200, 'B', url + ': страница пустая');
         ok(m.y === 0, 'B', url + ': страница при загрузке уехала вниз на ' + m.y + ' px');
+        if (t.n === 11) await page.locator("#task11-more summary").tap();
         const tabs = await page.locator(t.tabs).count();
         for (let i = 0; i < tabs; i++) {
           await page.locator(t.tabs).nth(i).tap(); await sleep(150);
@@ -382,7 +383,9 @@ async function main() {
   await run('C11. ОГЭ-режим 11: «верно 1 из 3» без букв; тот же ответ — не попытка; разбор по пунктам; две ошибки — не в счёт', async () => {
     const t = TBn(11);
     const ctx = await fresh(); const { page, errs } = await openPage(ctx, base + t.file);
+    await page.locator('#task11-more summary').tap();
     await page.locator('#tabs button[data-m=m4]').tap();
+    await page.locator('#task11-settings summary').tap();
     await page.locator('#m4-chips .btn[data-t=t41]').tap();
     const key = await page.evaluate(() => M4.task.key);
     await page.locator('#m4-answer').fill([key[1], key[0], key[2]].join('')); await page.locator('#m4-check').tap();
@@ -520,6 +523,7 @@ async function main() {
         }
       } else if (n === 11) {
         await page.evaluate(() => { const o = buildQuiz11; buildQuiz11 = function () { const l = o(); window.__q = l; return l; }; });
+        await page.locator('#task11-more summary').tap();
         await page.locator('#tabs button[data-m=m6]').tap(); await page.locator('#m6-start').tap();
         for (let i = 0; i < 10; i++) {
           const k = await page.evaluate(i => window.__q[i].key.join(''), i);
@@ -583,7 +587,7 @@ async function main() {
   await run('MB. миграция и сброс с подтверждением на странице (10, 11, 12, 14)', async () => {
     const CASES = {
       10: { old: 'oge10_progress_v1', val: { correct: 3, byType: { '10.1': { correct: 3 } } }, open: async (p) => { await p.locator('#tabb-mar').tap(); await p.locator('#mar-reset').tap(); }, confirm: '#mar-confirm', yes: '#mar-yes' },
-      11: { old: 'mathexam_oge11_stats_v1', val: { skills: { oge: { total: 2, first: 1 } }, errors: {} }, open: async (p) => { await p.locator('#tabs button[data-m=m5]').tap(); await p.locator('#m5-reset').tap(); }, confirm: '#m5-confirm', yes: '#m5-yes' },
+      11: { old: 'mathexam_oge11_stats_v1', val: { skills: { oge: { total: 2, first: 1 } }, errors: {} }, open: async (p) => { await p.locator('#task11-more summary').tap(); await p.locator('#tabs button[data-m=m5]').tap(); await p.locator('#m5-reset').tap(); }, confirm: '#m5-confirm', yes: '#m5-yes' },
       12: { old: 'mx-oge12-v1', val: { byType: { 1: { a: 2, c: 2 } }, bestDiag: 9 }, open: async (p) => { await p.locator('#resetBtn').tap(); }, confirm: '#copyArea', yes: '#resetYes' },
       14: { old: 'oge14_progress_v1', val: { totalOk: 2, okByCode: { TAXI: 2 } }, open: async (p) => { await p.locator('#tabs .tab[data-page=marathon]').tap(); await p.locator('#m-reset').tap(); }, confirm: '#m-confirm', yes: '#rs-yes' },
     };

@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "browser": "passed",
+  "reviewer": "Independent infrastructure reviewer and root exact-scope review, with actual full-course browser evidence",
+  "at": "2026-11-03T08:52:25.932522+00:00",
+  "previousSourceCommit": "3411acd7df5ebfbd4179cce85c2300c59677ddf7",
+  "preservedCards": 1247,
+  "contentApprovalGranted": false,
+  "publicationApprovalGranted": false,
+  "oldImplementationSha256": "b831d68dbdaaf2e696a99699e228cb646ba03d76c7333f799a9c10e4bb904ad7",
+  "implementationSha256": "ca0345494ebd9b0f150f07effd91baa777d6cf3c70bb55e9412ccf17f3ab588b",
+  "implementationFiles": {
+    "index.html": "098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804",
+    "assets/engine.js": "85d395dbfb66f8a1409f1d2f930fbb6f742c0085239d34d18ec2a901f3bd6492",
+    "assets/planar-viewer.js": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061",
+    "assets/style.css": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b",
+    "assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+    "source-inventory.json": "2e9889681ce87a13b4cec641c7087c065de1d19298e94c10397240d4206157a2",
+    "assets/board-adapter.js": "e1c366fd77f2cc822894be7e21139ce99b9e7b3c568392b122f2a3b386b7545b"
+  },
+  "paragraphsAdded": [
+    {
+      "chapter": 9,
+      "number": 1,
+      "title": "Окружность и прямые",
+      "pointNumbers": [
+        76,
+        78
+      ],
+      "exerciseNumbers": [
+        737,
+        761
+      ],
+      "printedPages": [
+        189,
+        199
+      ]
+    },
+    {
+      "chapter": 9,
+      "number": 2,
+      "title": "Центральные и вписанные углы",
+      "pointNumbers": [
+        79,
+        81
+      ],
+      "exerciseNumbers": [
+        762,
+        783
+      ],
+      "printedPages": [
+        199,
+        206
+      ]
+    },
+    {
+      "chapter": 9,
+      "number": 3,
+      "title": "Вписанная и описанная окружности четырёхугольников",
+      "pointNumbers": [
+        82,
+        83
+      ],
+      "exerciseNumbers": [
+        784,
+        795
+      ],
+      "printedPages": [
+        206,
+        209
+      ]
+    }
+  ],
+  "previousRuntimeReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_RUNTIME_EXTENSION_REVIEW.json",
+    "sha256": "fb8cafb8b3b839b763d3041d51e54b24c93f57291119333fdcd0da847daa106a"
+  },
+  "scope": "Only three IX paragraph metadata rows; all nine previous manifest approvals are exactly restorable against243 frozen files and1247 cards. PR419 raw layout bytes remain bound by its independent amendment.",
+  "testedHead": "4a97f329f0965c47eb1b0c21c9708458675de579",
+  "evidence": [
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_INFRASTRUCTURE_REVIEW.json",
+      "sha256": "3d21bc08a8b45f77379c023f9f6859b0af36d48f6c5f4cbf79f5128b195dc160"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_ROOT_TECHNICAL_REVIEW.json",
+      "sha256": "025fe08511ce519bba2d52d9fa7737d9bcdf2864289388c2fcd39b5c5d49386d"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_BROWSER_REVIEW.json",
+      "sha256": "463ccbf471ef408e15e8279b05776851f78c2b7a8036e25f0da0e5957ce75278"
+    }
+  ]
+}

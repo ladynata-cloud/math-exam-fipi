@@ -89,3 +89,8 @@ Local preparation completed:
   screenshots and a rendered MP4 are retained as workflow artifacts.
 - CI results, independent review and remaining release decisions belong to
   the exact-head PR record. Production Amvera is still unverified by a job.
+
+
+## Continuation, 2026-11-05
+
+Owner requested completion of all outstanding work except Peterson and deferred assistant work. Standing publication permission applies. Current main was merged without dropping arithmetic continuation links or the modern home page. The CI image had an executable sandbox helper with the wrong mode; the workflow now restores the signed Chrome distribution package before checking root ownership and mode 4755. Browser sandbox, production launch arguments, Chromium identity, worker API and mathematical gates are unchanged. The real queued MP4 job remains a required gate. Localhost CI rendering is not evidence of an authenticated Amvera production export.

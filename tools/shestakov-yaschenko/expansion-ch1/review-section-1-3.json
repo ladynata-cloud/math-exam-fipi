@@ -1,0 +1,108 @@
+{
+  "author": "/root/chapter3",
+  "reviewer": "/root/chapter2",
+  "at": "2026-10-24T06:49:23.418231+00:00",
+  "verdict": "passed",
+  "remainingFindings": [],
+  "checkedIds": [
+    "1.3-A1-a",
+    "1.3-A1-b",
+    "1.3-A10-a",
+    "1.3-A10-b",
+    "1.3-A11-a",
+    "1.3-A11-b",
+    "1.3-A12-a",
+    "1.3-A12-b",
+    "1.3-A13-a",
+    "1.3-A13-b",
+    "1.3-A14-a",
+    "1.3-A14-b",
+    "1.3-A15-a",
+    "1.3-A15-b",
+    "1.3-A16-a",
+    "1.3-A16-b",
+    "1.3-A2-a",
+    "1.3-A2-b",
+    "1.3-A3-a",
+    "1.3-A3-b",
+    "1.3-A5-a",
+    "1.3-A5-b",
+    "1.3-A6-a",
+    "1.3-A6-b",
+    "1.3-A9-a",
+    "1.3-A9-b",
+    "1.3-B3-a",
+    "1.3-B3-b",
+    "1.3-B4-a",
+    "1.3-B4-b",
+    "1.3-C1-a",
+    "1.3-C1-b",
+    "1.3-C2-a",
+    "1.3-C2-b",
+    "1.3-C3-a",
+    "1.3-C3-b",
+    "1.3-C5-a",
+    "1.3-C5-b"
+  ],
+  "sha256": "edefd2bb002bd1107778d4b5509b242c8ec0edba079707faa4cf045742414872",
+  "recordsSHA256": "58f726cec2df57a639137a568666b0a2aa0e7455c65d06149b035aec351b5b3e",
+  "coverage": {
+    "sourceVariants": 38,
+    "sourceNumberPairs": 19,
+    "exactAnswerCards": 36,
+    "manualReasoningCards": 2,
+    "sourcePages": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ],
+    "independentAssertions": 943,
+    "scope": "Every source condition, authored explanation/reason, final and intermediate accepted answer, model coordinate set, given segment/label and auxiliary sequencing checked. Original PDF pages13–18 rendered and actually viewed, including schematic diagrams, radicals and fractions."
+  },
+  "method": [
+    "Compared all38 new conditions directly with original PDF/source extraction; page mappings verified. Page16 confirms √13,√17,2√5,5√17 and reciprocal radicals; page17 confirms4√10 and√73; page18 confirms2√3 and2√7.",
+    "Independently derived all36 numeric answers from source constants using trigonometric identities, Pythagoras, independent median/bisector identities and area calculations; all final and intermediate aliases parsed with a restricted arithmetic evaluator and checked for numerical equivalence.",
+    "Computed distances, angles, determinants, medians, bisector ratios and triangle areas from coordinates. Verified each task model satisfies its actual givens, including source-named points/segments visible initially and actual auxiliary points hidden where appropriate.",
+    "For C1a proved outside by contradiction under either finite-segment or supporting-line distance convention. For C1b computed finite-segment distances for insideM(3,6) and outsideM′(−3,3√3), confirming real underdetermination in the original wording.",
+    "For C2 checked same-sign line directions required by intersection with the hypotenuse segment, excluded the third quadrant via unequal finite-segment distances, and verified projection bounds. Both line-distance and segment-distance interpretations yield the stated ratio once the asked intersection is required.",
+    "Read every step and reason, checked target-side/angle naming and input prompts for final-answer disclosure. Rechecked the final author fixes against the latest module before writing this hash-bound report."
+  ],
+  "resolvedFindings": [
+    {
+      "cards": [
+        "1.3-C2-a",
+        "1.3-C2-b"
+      ],
+      "finding": "Input example 3:5 disclosed the exact answer of variant a.",
+      "fix": "Goal now states «Отношение AK:KB, считая от A» without an example answer. Rechecked final records."
+    },
+    {
+      "cards": [
+        "1.3-C2-a",
+        "1.3-C2-b"
+      ],
+      "finding": "Initial explanation used a point inside the right angle without fully deriving that location for distances to finite cathetus segments.",
+      "fix": "Author added the same-sign direction argument, exclusion of the opposite quadrant by unequal distances, and coordinate upper bounds placing perpendicular feet on both finite segments. Corrected new angle name to ACB. No numeric answers changed."
+    }
+  ],
+  "validatedExistingCorrections": [
+    {
+      "cards": [
+        "1.3-C1-b"
+      ],
+      "sourceIssue": "The original text does not specify M inside the right angle. Both internal and external points satisfy the given distances.",
+      "treatment": "Condition preserved with an explicitly separated clarification; manual reasoning card asks for underdetermination and the conditional inside-angle answer. No silent assumption or automatic grading."
+    }
+  ],
+  "checks": [
+    "python tools/shestakov-yaschenko/expansion-ch1/review-section-1-3-checks.py — PASS,943 independent assertions over all38 variants; author check script not imported or reused."
+  ],
+  "limitations": [
+    "This approval covers source, mathematical reasoning, exact-answer contracts and model definitions, not a human learner trial.",
+    "The reviewer did not claim an exhaustive rendered-model/browser review; root owns integrated browser checks. Original source PDF pages were actually viewed.",
+    "No external-provider approval or release permission is asserted."
+  ]
+}

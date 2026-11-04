@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "at": "2026-10-22T23:49:59.810333+00:00",
+  "reviewer": "Primary coordinator; synthesis of independent authored-content, mathematics, integration and actual image reviews",
+  "status": "passed-local-content-and-browser-review",
+  "scope": {
+    "chapter": "II",
+    "mainNumbers": 99,
+    "mainParts": 132,
+    "theory": 10,
+    "selfchecks": 21,
+    "cards": 163,
+    "steps": 554,
+    "views": 803,
+    "coordinateClaims": 604
+  },
+  "base": "c62e5047fa2e774d43899e4ee20d5e1127c53e64",
+  "authoredContentSha256": "4867af61bb95cd42b259afde9d507c7183d4c2942bceedf25580ecbbae23aab3",
+  "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
+  "independentReviews": [
+    {
+      "path": "docs/reviews/ATANASYAN_CHAPTER_II_INDEPENDENT_REVIEW.json",
+      "sha256": "e33c2925fd615c76332a462ae249fd93ba6b77aa66a8122284096b34556de09b"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_II_A_CROSS_REVIEW.json",
+      "sha256": "de65e058494c6897b587e8bd967dc33c1c9d734aaaf827e99b2051381edb14ed"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_II_B_VISUAL_REVIEW.json",
+      "sha256": "15ec22427520afe97456c70a8b6a13127b8ec0938781778521f3aba11021c8f0"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_II_C_CROSS_REVIEW.json",
+      "sha256": "627d77e4a2b439645fe3642f7956cc4bf20ee671652ae2c966f7caea41599fae"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_II_INTEGRATION_REVIEW.json",
+      "sha256": "7fb85261558ea15bc9ac54f8a705f01b38af08c39105d68d2709aaf88214ffe9"
+    }
+  ],
+  "browserEvidence": {
+    "artifact": "chapter2-browser-v4/browser-evidence.json",
+    "sha256": "646e694d2411c2283c7f5daaf2ddbf3a7885a8c5b3ec740997b46acea27a3007",
+    "bundleSha256": "49bb8653fd166efbfa1ead90bf44980b72b72e3a2de356387ef59c720c77260f",
+    "gateScriptSha256": "20b78be634195f6da9f4d612d9a3e73eb890e0270f87bb0cf4f9f04b7d99f62d",
+    "mode": "Explicit labelled engineering preview before chapter-II publication review; unchanged authored content and runtime are bound by hashes.",
+    "widths": [
+      320,
+      1280
+    ],
+    "cards": 336,
+    "viewChecks": 3296,
+    "stepFlows": 672,
+    "initialFinalScreenshots": 1344,
+    "interactions": [
+      "expansion-lesson-320-button-and-Escape",
+      "expansion-lesson-1280-button-and-Escape",
+      "notes-and-steps-reload",
+      "expansion-theory-1280-button-and-Escape",
+      "theory-return-retains-answer",
+      "manual-answer-honesty",
+      "two-tab-conflict-preserves-work",
+      "chapter-selfcheck-draft-isolation-and-reload",
+      "chapter-II-theory-return-and-saved-step"
+    ],
+    "pageErrors": 0,
+    "geometryIssues": 0
+  },
+  "manualImageReview": {
+    "newChapterViewsAtBothWidths": 1606,
+    "exerciseViews": 1224,
+    "theoryAndSelfcheckViews": 382,
+    "provenance": "All 612 exercise views at both widths reviewed on frozen v3; each independent block reviewer verified byte-identical source/model/rendering files and equal compiled lessons on v4. All 191 theory/selfcheck views at both widths reviewed on frozen v2, with all 56 affected images of the two corrected cards re-captured and viewed on v4; the 29 unchanged lessons and renderer were compared exactly. Reports distinguish new viewing from identical-image reuse.",
+    "allExerciseViewsManifestSha256": "1d3fa7c75697f4f5fa01f8beec2f191d0d7e0eacfef7d3455e540953f479eb7a",
+    "openFindings": 0
+  },
+  "regression": {
+    "artifact": "chapter2-gates-v4.json",
+    "sha256": "4c6d5da442c8acd8d410a1480807952065f8680572cab0d7aa372c3a2c9bdfac",
+    "checks": [
+      {
+        "command": [
+          "python",
+          "tools/geometry/check_textbook_preparation.py"
+        ],
+        "exitCode": 0
+      },
+      {
+        "command": [
+          "python",
+          "tools/geometry-textbook/build_course.py",
+          "--check"
+        ],
+        "exitCode": 0
+      },
+      {
+        "command": [
+          "python",
+          "tools/geometry-textbook/review_scope_test.py"
+        ],
+        "exitCode": 0
+      },
+      {
+        "command": [
+          "python",
+          "tools/geometry-textbook/check_models.py"
+        ],
+        "exitCode": 0
+      },
+      {
+        "command": [
+          "python",
+          "tools/geometry-textbook/model_claims_test.py"
+        ],
+        "exitCode": 0
+      },
+      {
+        "command": [
+          "node",
+          "tools/geometry-textbook/check_course.cjs"
+        ],
+        "exitCode": 0
+      },
+      {
+        "command": [
+          "node",
+          "tools/geometry-textbook/runtime_check.cjs"
+        ],
+        "exitCode": 0
+      },
+      {
+        "command": [
+          "node",
+          "tools/geometry-textbook/reviewer_runtime_check.cjs"
+        ],
+        "exitCode": 0
+      },
+      {
+        "command": [
+          "node",
+          "tools/geometry/check.js"
+        ],
+        "exitCode": 0
+      },
+      {
+        "command": [
+          "python",
+          "tools/seo-check.py"
+        ],
+        "exitCode": 0
+      },
+      {
+        "command": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "exitCode": 0
+      }
+    ],
+    "old173LessonsAndCatalogEntriesExactlyPreserved": true,
+    "generatorReproducibility": {
+      "artifact": "chapter2-generator-reproducibility.json",
+      "sha256": "076ebf477da0caea31089528d74a13311d3f62911a16f39d7107a4ad9ef9850c",
+      "allEightFilesByteExact": true
+    }
+  },
+  "resolvedFindings": "Source OCR corrections, premature equality marks, missing early-step constructions, crowded labels in147, desktop viewport clipping, nearly degenerate187/188 examples, and painted circle-stroke clipping were corrected and independently rechecked. Earlier failed or interrupted snapshots are not final passes.",
+  "notClaimed": [
+    "Exact GitHub head CI and virtual merge review (recorded separately after commit)",
+    "Owner merge/deployment authorization",
+    "Production publication",
+    "Real-pupil validation",
+    "Server synchronization",
+    "Completion of later textbook chapters"
+  ],
+  "claude": "Owner full-course exception applies; no Claude consultation or external verdict claimed.",
+  "publicCandidateVerification": {
+    "bundleSha256": "36ea62397d06aa5a8e56a03afe56db62cd27c4bb8e9611f968fbb69e7efa95a7",
+    "publicationReviewMatches": true,
+    "requireReviewedContentGate": "passed",
+    "unchanged173LessonsAndEntries": "passed",
+    "reproducibleBuild": "passed",
+    "reviewScopeNegativeTests": 6,
+    "retainedWorkChecks": 13,
+    "reviewerStepCheckpoints": 1053,
+    "publicBrowserInteractions": 7,
+    "previewNotice": false,
+    "pageErrors": 0,
+    "evidenceArtifact": "chapter2-browser-reviewed-interactions/browser-evidence.json",
+    "evidenceSha256": "d96f71ee080f3d2bebf5c3bacc9f5f7a51bd2b77550cd31b6bafdffc8f038992"
+  }
+}

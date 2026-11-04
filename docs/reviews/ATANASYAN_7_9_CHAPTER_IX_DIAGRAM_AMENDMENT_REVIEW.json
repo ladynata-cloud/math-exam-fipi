@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "status": "independent-source-and-model-delta-reviewed-browser-pending",
+  "reviewer": "root: independent of both model correction authors",
+  "at": "2026-11-03T01:50:25.344213+00:00",
+  "previousTestedHead": "848f3af7d0193157d31bd940e211ba8a4a5f7cf7",
+  "browserApprovalGranted": false,
+  "releaseApprovalGranted": false,
+  "counts": {
+    "cards": 160,
+    "steps": 509,
+    "views": 740,
+    "coordinateClaims": 995
+  },
+  "bindings": [
+    {
+      "path": "tools/geometry-textbook/models_ch9_a.py",
+      "beforeSha256": "0a20c79275733841e2778c89b1a2bcb4310d77d90a87b785f5a1861abd4ea727",
+      "sha256": "e2a87a5ee8c79b68993c26e78b19a38068af4ddce07209e5ccaa75ff40cda99b"
+    },
+    {
+      "path": "tools/geometry-textbook/models_ch9_b.py",
+      "beforeSha256": "7a9d7d0ca35ada5a6f0130a3b86460878081eec3a40593118fe4f7f0157c3699",
+      "sha256": "a7a9ed0f3733db66775482c556be54eda625b429739aa4736ee4a96de20b9103"
+    },
+    {
+      "path": "tools/geometry-textbook/models_ch9_c.py",
+      "beforeSha256": "1e396f8e575b6c6e4ac9d9b3879e8ed56dfabd81df265cba6552c2c60b96c33c",
+      "sha256": "653f5795d05529f24d169ca0f74cac23aca7593d95a522ab784ce9084b36c6ea"
+    },
+    {
+      "path": "tools/geometry-textbook/models_ch9_theory.py",
+      "beforeSha256": "7ca10cc9b8a28fca7f8f93e34c3d7031a80516d123423c205fdc22b0e1b910c2",
+      "sha256": "8441bc3034a610fed638b4e616495e2b8b0e2279b1a7f6aec2a813116fe30701"
+    },
+    {
+      "path": "geometry-course/textbook/models/chapter-09-a.json",
+      "beforeSha256": "84c114bc6b1fb9187af75897be85e02d78a9e4dd73933ffd6f41c94efb04c6f6",
+      "sha256": "42ee47d5125b89465f0d1c6533761f2ae5a46f5140e012518a696edb57cc13f8"
+    },
+    {
+      "path": "geometry-course/textbook/models/chapter-09-b.json",
+      "beforeSha256": "19ec1a58cbf56c83e7af6fcc27eab6bf0789ede92ab8f3a286986cc15b0ef444",
+      "sha256": "b620fbca7abc58e4cd4ab806f698edc06b7dc31051ac2fe11a26745771301652"
+    },
+    {
+      "path": "geometry-course/textbook/models/chapter-09-c.json",
+      "beforeSha256": "af23d86086a1368aa2dd2b0fca21a2f83c9c8f804d1c1c91f2bc609778e77e35",
+      "sha256": "eec831824b6361bce6250cec89f31fa577383f14590622846e971edce8d92321"
+    },
+    {
+      "path": "geometry-course/textbook/models/chapter-09-theory.json",
+      "beforeSha256": "40eb230a8b6b9745fd8bb109064440c369b56e3fce1c4188fe66ad079834684a",
+      "sha256": "4015d87636937b70baf8091441e80b5ff734074e55f3d7d9b8967e5ce8593c25"
+    }
+  ],
+  "preparationUnchanged": [
+    {
+      "path": "geometry-course/textbook/preparation/chapter-09-a.json",
+      "sha256": "4113dd07985f80f110ef91d39d23ffbc311b6085b45b422405b77f17951e68e5"
+    },
+    {
+      "path": "geometry-course/textbook/preparation/chapter-09-b.json",
+      "sha256": "e488b65d84a05e838b710ada27c7397a76e5a83925891403d1428c9fb3cdd584"
+    },
+    {
+      "path": "geometry-course/textbook/preparation/chapter-09-c.json",
+      "sha256": "fb3040e8e74711514384d9339db59be8674e736e68a29a3880fdb7a5cffc7f55"
+    },
+    {
+      "path": "geometry-course/textbook/preparation/chapter-09-theory.json",
+      "sha256": "5113f1cfc35e6aa96ec23896ed214801cfd89ea700feb025989fedb648a04413"
+    }
+  ],
+  "independentReview": [
+    "All four preparation files remain byte-identical to the content-reviewed original head; didactics and answers unchanged.",
+    "A/B/C coordinate-claim arrays are unchanged; shorter helper vectors define the same infinite rays/lines, normalization preserves shape, and bounds/offsets change framing only.",
+    "769/772 steps3–4 now select the already verified alternative-case geometry; view identifiers/counts stay unchanged.",
+    "798a/b introduce H and QH only atstep2; internal798b also draws MH so triangle OQH is complete.",
+    "802b draws AB,BC,BD fromstep1 and the new circle only atstep3;808 delays H/height tostep2;816 delays BH tostep3.",
+    "78/q5 explicitly show K and its radii/right-angle at the proof step. For R=4,r=2 the common point K=(4,0), with center distance6 externally and2 internally, lies on both circles; horizontal radii are perpendicular to vertical tangent. Sixteen added claims validate these repeated source cases.",
+    "82/q16 show contact points K,L,M,N in step1 as named by the text; radii remain delayed untilstep2.",
+    "All visible model points/circles lie within declared bounds in every IX view. Actual painted-stroke/label/viewport behavior remains a cloud check."
+  ],
+  "checks": {
+    "candidateBoundary": "8 tests PASS on exact corrected2 files",
+    "captions": "160 DOM journeys PASS, three paragraphs",
+    "authorIndependentRegressions": "A285 assertions; B12 test methods; C10 test methods; theory631 assertions PASS",
+    "predictiveLayout": "Unchanged renderer with measured cloud font metrics reproduces original12 failures; all corrected A/B/C/theory views report zero unresolved labels. This is not actual browser evidence.",
+    "fullGate": "Required on the new committed head; original full candidate failed and is recorded separately."
+  },
+  "candidateAuthoredContentSha256": "ee11ccb7255517a9ea166351e65fed50b50ebf4bf79dc40491a3e2d24372ca98",
+  "sourceModelCaseApproval": "Only source/coordinate/didactic delta reviewed here. New actual images and full committed-head CI are still required."
+}

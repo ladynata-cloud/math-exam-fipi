@@ -1,0 +1,203 @@
+{
+  "version": 1,
+  "origin": "https://mathexam.space",
+  "source": "Approved MathExam strategy, 2026-10-30: 20-row URL matrix. Records existing addresses, not search rankings.",
+  "baselineCommit": "6fb959fc0130a0bb8842601d19297e305ac91ac0",
+  "entries": [
+    {
+      "path": "/trainers/oge-basics/arithmetic-route.html",
+      "canonicalPath": "/trainers/oge-basics/arithmetic-route.html"
+    },
+    {
+      "path": "/trainers/long-division-stepwise.html",
+      "canonicalPath": "/trainers/long-division-stepwise.html",
+      "engine": "guided-division"
+    },
+    {
+      "path": "/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html",
+      "canonicalPath": "/trainers/long-division-stepwise.html",
+      "engine": "guided-division"
+    },
+    {
+      "path": "/trainers/oge-basics/multiplication-division/decimal-divisor-shift.html",
+      "canonicalPath": "/trainers/oge-basics/multiplication-division/decimal-divisor-shift.html",
+      "inlineConfig": {
+        "binding": "CONFIG",
+        "topicId": "ogeBasicsDecimalDivisorShift",
+        "storageKey": "mathExamBasics.decimal-divisor-shift.v1",
+        "levels": [
+          "decimalDivisor"
+        ]
+      }
+    },
+    {
+      "path": "/trainers/oge-basics/multiplication-division/decimal-division-natural.html",
+      "canonicalPath": "/trainers/oge-basics/multiplication-division/decimal-division-natural.html",
+      "inlineConfig": {
+        "binding": "CONFIG",
+        "topicId": "ogeBasicsDecimalDivisionNatural",
+        "storageKey": "mathExamBasics.decimal-division-natural.v1",
+        "levels": [
+          "decimalNatural"
+        ]
+      }
+    },
+    {
+      "path": "/trainers/oge-basics/multiplication-division/division-append-zeros.html",
+      "canonicalPath": "/trainers/oge-basics/multiplication-division/division-append-zeros.html",
+      "inlineConfig": {
+        "binding": "CONFIG",
+        "topicId": "ogeBasicsDivisionAppendZeros",
+        "storageKey": "mathExamBasics.division-append-zeros.v1",
+        "levels": [
+          "appendZeros"
+        ]
+      }
+    },
+    {
+      "path": "/trainers/oge-basics/multiplication-division/long-division-quotient-digit.html",
+      "canonicalPath": "/trainers/oge-basics/multiplication-division/long-division-quotient-digit.html",
+      "inlineConfig": {
+        "binding": "CONFIG",
+        "topicId": "ogeBasicsLongDivisionQuotientDigit",
+        "storageKey": "mathExamBasics.long-division-quotient-digit.v1",
+        "levels": [
+          "quotientDigit"
+        ]
+      }
+    },
+    {
+      "path": "/trainers/oge-basics/multiplication-division/quotient-estimate.html",
+      "canonicalPath": "/trainers/oge-basics/multiplication-division/quotient-estimate.html"
+    },
+    {
+      "path": "/trainers/oge-basics/multiplication-division/long-division-one-digit.html",
+      "canonicalPath": "/trainers/oge-basics/multiplication-division/long-division-one-digit.html",
+      "inlineConfig": {
+        "binding": "CONFIG",
+        "topicId": "ogeBasicsLongDivisionOneDigit",
+        "storageKey": "mathExamBasics.long-division-one-digit.v1",
+        "levels": [
+          "oneDigit"
+        ]
+      }
+    },
+    {
+      "path": "/trainers/oge-basics/multiplication-division/long-division-two-digit.html",
+      "canonicalPath": "/trainers/oge-basics/multiplication-division/long-division-two-digit.html",
+      "inlineConfig": {
+        "binding": "CONFIG",
+        "topicId": "ogeBasicsLongDivisionTwoDigit",
+        "storageKey": "mathExamBasics.long-division-two-digit.v1",
+        "levels": [
+          "twoDigit"
+        ]
+      }
+    },
+    {
+      "path": "/trainers/oge-basics/multiplication-division/long-division-zero-in-quotient.html",
+      "canonicalPath": "/trainers/oge-basics/multiplication-division/long-division-zero-in-quotient.html",
+      "inlineConfig": {
+        "binding": "CONFIG",
+        "topicId": "ogeBasicsLongDivisionZeroInQuotient",
+        "storageKey": "mathExamBasics.long-division-zero-in-quotient.v1",
+        "levels": [
+          "zero"
+        ]
+      }
+    },
+    {
+      "path": "/trainers/oge-basics/multiplication-division/long-division-with-remainder.html",
+      "canonicalPath": "/trainers/oge-basics/multiplication-division/long-division-with-remainder.html",
+      "inlineConfig": {
+        "binding": "CONFIG",
+        "topicId": "ogeBasicsLongDivisionWithRemainder",
+        "storageKey": "mathExamBasics.long-division-with-remainder.v1",
+        "levels": [
+          "remainder"
+        ]
+      }
+    },
+    {
+      "path": "/trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html",
+      "canonicalPath": "/trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html",
+      "inlineConfig": {
+        "binding": "SPEC",
+        "topicId": "ogeBasicsColumnMulOneDigit",
+        "storageKey": "mathExamBasics.column-multiplication-one-digit.v1"
+      }
+    },
+    {
+      "path": "/trainers/oge-basics/multiplication-division/column-multiplication-two-digit.html",
+      "canonicalPath": "/trainers/oge-basics/multiplication-division/column-multiplication-two-digit.html",
+      "inlineConfig": {
+        "binding": "SPEC",
+        "topicId": "ogeBasicsColumnMulTwoDigit",
+        "storageKey": "mathExamBasics.column-multiplication-two-digit.v1"
+      }
+    },
+    {
+      "path": "/trainers/oge-basics/multiplication-division/multiplication-ladder.html",
+      "canonicalPath": "/trainers/oge-basics/multiplication-division/multiplication-ladder.html",
+      "inlineConfig": {
+        "binding": "SPEC",
+        "topicId": "ogeBasicsMultiplicationLadder",
+        "storageKey": "mathExamBasics.multiplication-ladder.v1"
+      }
+    },
+    {
+      "path": "/trainers/oge-basics/multiplication-division/tabular-division.html",
+      "canonicalPath": "/trainers/oge-basics/multiplication-division/tabular-division.html",
+      "inlineConfig": {
+        "binding": "SPEC",
+        "topicId": "ogeBasicsTabularDivision",
+        "storageKey": "mathExamBasics.tabular-division.v1"
+      }
+    },
+    {
+      "path": "/trainers/rounding-stepwise.html",
+      "canonicalPath": "/trainers/rounding-stepwise.html"
+    },
+    {
+      "path": "/rounding-fresh-v8.html",
+      "canonicalPath": "/rounding-fresh-v8.html"
+    },
+    {
+      "path": "/trainers/grade6-nod.html",
+      "canonicalPath": "/trainers/grade6-nod.html",
+      "bodyKind": "nod"
+    },
+    {
+      "path": "/trainers/grade6-nok.html",
+      "canonicalPath": "/trainers/grade6-nok.html",
+      "bodyKind": "nok"
+    }
+  ],
+  "guidedTopics": [
+    "start",
+    "oneDigit",
+    "zero",
+    "remainder",
+    "twoDigit",
+    "decimalNatural",
+    "appendZeros",
+    "decimalDivisor",
+    "quotientDigit"
+  ],
+  "guidedLevelTopics": {
+    "n2e": "quotientDigit",
+    "n3e": "start",
+    "n3d": "remainder",
+    "n3f": "remainder",
+    "n4c": "zero",
+    "n4d": "twoDigit",
+    "n4e": "twoDigit",
+    "n5d": "decimalNatural",
+    "n5e": "appendZeros",
+    "n5f": "decimalDivisor"
+  },
+  "progress": {
+    "guidedKey": "mathExamBasics.guidedDivision.v1",
+    "attemptPrefix": "mathExamBasics.arithmeticAttempts.v1."
+  }
+}

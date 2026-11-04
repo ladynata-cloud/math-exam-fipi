@@ -10,7 +10,7 @@ permissions:
   contents: read
 jobs:
   soviet-math:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # Includes one complete 90–150 second worker render in addition to the catalog.
     timeout-minutes: 20
     env:
@@ -32,6 +32,12 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y ffmpeg
           fi
+      - name: Restore the signed Chrome package sandbox helper
+        # The runner image's preinstalled helper was mode 777. Reinstall its
+        # signed distribution package; retain the strict owner/mode gate below.
+        run: |
+          sudo apt-get update
+          sudo apt-get install --reinstall --no-install-recommends -y google-chrome-stable
       - name: Exact arithmetic and unchanged division core
         run: |
           node tools/soviet-math-content.test.cjs

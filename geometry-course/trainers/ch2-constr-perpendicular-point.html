@@ -1,9 +1,12 @@
 <!doctype html>
 <html lang="ru">
 <head>
+<script src="/geometry-course/board/native-session.js"></script>
+<link rel="stylesheet" href="/geometry-course/board/native.css">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Перпендикуляр к прямой через точку — циркуль и линейка</title>
+<link rel="canonical" href="https://mathexam.space/geometry-course/trainers/ch2-constr-perpendicular-point.html">
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
@@ -165,14 +168,14 @@ function loadSnap(s){ const o=JSON.parse(s); P.length=0;o.P.forEach(p=>P.push(p)
 function pushUndo(){ undoStack.push(takeSnap()); }
 
 function setupRound(n){
-  round=n; P.length=0;L.length=0;C.length=0; pid=0; opening=null; step=0; phase='build'; proofStep=0;
+  round=n; P.length=0;L.length=0;C.length=0; pid=0; opening=null; step=0; phase='build'; proofStep=0; tool='compass';
   armed=null; comp=null; lastReject=null; undoStack=[];
   addPtXY(ROUNDS[n].P.x, ROUNDS[n].P.y, 'given', 'P');
   initSnap=takeSnap();
 }
 
 /* ───────── ПРИВЯЗКА ───────── */
-function worldPos(e){ const r=cv.getBoundingClientRect(); const k=Math.max(1,W/r.width); return {x:(e.clientX-r.left)*k, y:(e.clientY-r.top)*k}; }
+function worldPos(e){ const r=cv.getBoundingClientRect(); const k=W/r.width; return {x:(e.clientX-r.left)*k, y:(e.clientY-r.top)*k}; }
 function pick(w){ const r=cv.getBoundingClientRect(); const k=Math.max(1,W/r.width); const R=28*k; let best=null,bd=R;
   for(const p of P){ const dd=Math.hypot(p.x-w.x,p.y-w.y); if(dd<bd){bd=dd;best=p;} } return best; }
 
@@ -331,10 +334,10 @@ function updateUI(){
   } else if(phase==='proof'){
     sc.style.display='none'; why.style.display='block'; pb.style.display='inline-block'; law.style.display='none'; succ.style.display='none';
     if(round===1 && proofStep===0){ why.innerHTML='<b>Почему PQ ⟂ a?</b><br>PA = PB — радиусы первой дуги; QA = QB — радиусы второй дуги. Значит и P, и Q одинаково удалены от A и B.'; pb.textContent='Дальше →'; }
-    else if(round===1){ why.innerHTML='А прямая через две точки, равноудалённые от A и B, — это <b>серединный перпендикуляр</b> к AB (мы его уже строили). Значит PQ перпендикулярна прямой a и проходит через P. Основание H — середина AB.'; pb.textContent='Дальше: точка на прямой →'; }
+    else if(round===1){ why.innerHTML='PA = PB — радиусы первой дуги; QA = QB — радиусы дуг одинакового раствора. Поэтому P и Q равноудалены от A и B.<br>Прямая через эти две точки — <b>серединный перпендикуляр</b> к AB (мы его уже строили). Значит PQ перпендикулярна прямой a и проходит через P. Основание H — середина AB.'; pb.textContent='Дальше: точка на прямой →'; }
     else { why.innerHTML='<b>Тот же приём.</b> PA = PB и QA = QB ⟹ PQ — серединный перпендикуляр к AB ⟹ PQ ⟂ a. Точка P лежит на прямой, поэтому основание H совпало с P — перпендикуляр восставлен в самой точке.'; pb.textContent='Завершить →'; }
   } else {
-    sc.style.display='none'; why.style.display='none'; pb.style.display='none'; law.style.display='block'; succ.style.display='block';
+    sc.style.display='none'; why.style.display='block'; why.textContent='PA = PB — радиусы первой окружности, QA = QB — радиусы дуг одинакового раствора. Поэтому P и Q лежат на серединном перпендикуляре к AB. Прямая PQ и есть этот перпендикуляр. Так как A и B лежат на a, получаем PQ ⟂ a. Для точки P на прямой отрезки PA и PB лежат на противоположных лучах.'; pb.style.display='none'; law.style.display='block'; succ.style.display='block';
     succ.textContent='Готово — перпендикуляр построен в обоих случаях.';
     law.innerHTML='<b>Закон.</b> Перпендикуляр к прямой через точку строят одним приёмом — и когда точка <b>вне</b> прямой, и когда она <b>на</b> ней: дугой из точки засекают прямую в двух точках A и B, затем <b>равными дугами</b> из A и B получают точку Q и проводят прямую PQ. Она перпендикулярна прямой.'+
       '<div class="nb">Через данную точку к данной прямой перпендикуляр единственный.</div>'+
@@ -348,6 +351,7 @@ setMsg('Дано: прямая a и точка P над ней. Возьми ц�
 updateUI();
 (function loop(){draw();requestAnimationFrame(loop)})();
 </script>
+<script src="/geometry-course/board/learning-support.js"></script>
 </body>
 </html>
 

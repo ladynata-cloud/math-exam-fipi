@@ -8,21 +8,63 @@ const { JSDOM } = require('jsdom');
 
 const root = path.resolve(__dirname, '..');
 const files = ['index.html', 'laboratory/index.html', 'oge/index.html',
-  'trainers/oge-course/index.html', 'trainers/oge-basics/index.html'];
+  'trainers/oge-course/index.html', 'trainers/oge-basics/index.html', 'foundations/index.html'];
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const doc = file => new JSDOM(read(file), { url: 'https://mathexam.space/' + file }).window.document;
-const home = doc('index.html'), lab = doc('laboratory/index.html');
-const division = '/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html';
+const home = doc('index.html'), oge = doc('oge/index.html'), lab = doc('laboratory/index.html');
+const legacyDivision = '/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html';
+const division = '/trainers/long-division-stepwise.html';
 const cabinet = 'https://mathexam-board-ladynata.msk1.amvera.tech/learning/#route';
-const allowedNav = new Set(['/', '/trainers/oge-course/', '/trainers/oge-basics/', '/laboratory/', cabinet]);
-
-assert.match(home.title, /ОГЭ/);
-assert.equal(home.querySelectorAll('h1').length, 1);
-assert.doesNotMatch(home.querySelector('main').textContent, /ЕГЭ|Атанасян|Макарычев|ДВИ|7 класс/);
-for (const href of ['/trainers/oge-course/', '/trainers/oge-basics/']) {
-  assert(home.querySelector('.hero a[href="' + href + '"]'), 'Primary route: ' + href);
+// Private-lesson contact is an owner-requested service entry, not another course.
+const allowedNav = new Set(['/oge/', '/trainers/', '/', '/foundations/', '/trainers/oge-course/', '/trainers/oge-basics/', '/laboratory/', '/lessons/', cabinet]);
+const lessons = doc('lessons/index.html');
+assert.equal(lessons.querySelector('link[rel="canonical"]').href, 'https://mathexam.space/lessons/');
+assert(lessons.getElementById('contact'), 'Lesson invitation has a contact destination');
+for (const href of ['https://t.me/ladynata3000', 'https://vk.ru/ladynata3000']) {
+  assert(lessons.querySelector('#contact a[href="' + href + '"]'), 'Owner-supplied lesson contact: ' + href);
 }
-assert(home.querySelector('main a[href="' + division + '"]'), 'Division is directly reachable from home');
+
+assert.match(home.title, /Тренажёры по математике.*5–11.*ОГЭ.*ЕГЭ/);
+assert.equal(home.querySelectorAll('.home-directions article').length, 6);
+for (const href of ['/foundations/', '/courses/', '/oge/', '/ege-baza/', '/ege-profil/', '/geometry-course/']) {
+  assert(home.querySelector('.home-directions a[href="' + href + '"]'), 'General home direction: ' + href);
+}
+assert(home.querySelector('.hero a[href="/trainers/"]'), 'General home opens the catalog');
+assert.equal(home.querySelectorAll('script[src*="oge-home"], script[src*="three.min.js"]').length, 0);
+assert.equal(oge.querySelector('link[rel="canonical"]').href, 'https://mathexam.space/oge/');
+assert(oge.querySelector('#oge-models canvas'), 'Models live on the OGE landing');
+assert.equal(home.querySelectorAll('h1').length, 1);
+// The general home retains the owner-requested grade 5–11 lesson invitation.
+// The relocated OGE landing retains its independent starting routes.
+const invitation = home.querySelector('.lesson-entry');
+assert(invitation, 'Published lesson invitation remains on home');
+assert.match(invitation.textContent, /5–11 классы · ОГЭ · ЕГЭ базовый и профильный/);
+for (const href of ['/lessons/', '/lessons/#examples', '/lessons/#contact']) {
+  assert(invitation.querySelector('a[href="' + href + '"]'), 'Lesson invitation entry: ' + href);
+}
+assert.doesNotMatch(oge.querySelector('main').textContent, /Атанасян|Макарычев|ДВИ|7 класс/);
+const ogeEntry = oge.querySelector('.start-routes a[href="/trainers/oge-course/"]')?.closest('article');
+assert(ogeEntry, 'OGE retains its own starting route');
+assert.equal(ogeEntry.querySelector('h3').textContent.trim(), 'Разобраться в одной теме');
+assert.doesNotMatch(ogeEntry.textContent, /ЕГЭ|Атанасян|Макарычев|ДВИ|7 класс/);
+// The independent foundations course became the home entry before this UI release.
+// Keep its canonical entry and the older quick-skill map separately reachable.
+assert(oge.querySelector('.hero a[href="/trainers/oge-course/"]'), 'The primary invitation opens the OGE course');
+for (const href of ['/trainers/oge-course/', '/trainers/oge-basics/', '/foundations/', '/oge/variants/2027/']) {
+  assert(oge.querySelector('.start-routes a[href="' + href + '"]'), 'Starting route: ' + href);
+}
+assert.equal(oge.querySelectorAll('.start-routes article').length, 3, 'Three clear starting purposes');
+assert(home.querySelector('footer a[href="/trainers/oge-basics/"]'), 'Quick-skill map remains directly reachable');
+assert.equal(doc('foundations/index.html').querySelector('link[rel="canonical"]').href, 'https://mathexam.space/foundations/');
+// PR #365 published the short entry across home and lab; both URLs keep the same engine.
+assert(home.querySelector('main a[href="' + division + '"]'), 'Published division entry is directly reachable from home');
+assert.equal(doc(division.slice(1)).querySelector('link[rel="canonical"]').href,
+  'https://mathexam.space' + division);
+for (const file of [division.slice(1), legacyDivision.slice(1)]) {
+  assert([...doc(file).scripts].some(script => script.src && new URL(script.src).pathname ===
+    '/trainers/oge-basics/multiplication-division/division-guided-core.js'),
+  file + ' retains the guided division engine');
+}
 assert.equal(home.querySelectorAll('a[href="/laboratory/"]').length, 1);
 assert(home.querySelector('footer a[href="/laboratory/"]'), 'Lab remains a discreet footer entry');
 assert(!home.querySelector('main a[href="/laboratory/"]'));
@@ -45,13 +87,15 @@ for (const file of ['index.html', 'oge/index.html', 'trainers/oge-course/index.h
   for (const anchor of page.querySelectorAll('.site-nav a, footer a')) {
     const href = anchor.getAttribute('href');
     if (!href.startsWith('/') && href !== cabinet) continue;
-    assert(allowedNav.has(href), file + ' must not foreground another course: ' + href);
+    const permitted = file === 'index.html' ? new Set([...allowedNav, '/courses/', '/ege-baza/', '/ege-profil/']) : allowedNav;
+    assert(permitted.has(href), file + ' has an unexpected navigation destination: ' + href);
   }
 }
 assert.equal(doc('trainers/oge-course/index.html').querySelector('[aria-current="page"]').getAttribute('href'), '/trainers/oge-course/');
 const foundations = doc('trainers/oge-basics/index.html');
 assert.match(foundations.title, /ПредОГЭ/);
-assert.equal(new URL(foundations.querySelector('.map-hero .btn.primary').href).pathname, division);
+// The skill map starts with its existing arithmetic route; direct division stays on home.
+assert.equal(new URL(foundations.querySelector('.map-hero .btn.primary').href).pathname, '/trainers/oge-basics/arithmetic-route.html');
 for (const id of ['arithmetic', 'fractions', 'negative', 'measurement', 'percentages']) {
   assert(foundations.getElementById(id), 'Foundation module remains: ' + id);
   assert(foundations.querySelector('a[href="#' + id + '"]'), 'Foundation navigation remains: ' + id);
@@ -78,4 +122,4 @@ for (const file of files) {
     links++;
   }
 }
-console.log('OGE_FOCUS_NAVIGATION_OK: two public routes, discreet lab, retained destinations, complete foundations, exact shared navigation, ' + links + ' internal links.');
+console.log('OGE_FOCUS_NAVIGATION_OK: general home and dedicated OGE routes, discreet lab, retained destinations, complete foundations, scoped navigation, ' + links + ' internal links.');

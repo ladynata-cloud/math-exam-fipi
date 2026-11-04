@@ -1,0 +1,40 @@
+name: Alimov 10–11 course quality
+on:
+  pull_request:
+    paths:
+      - 'school/alimov10-11/**'
+      - 'school/peterson6/math.js'
+      - '.github/workflows/alimov10-11-quality.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'school/alimov10-11/**'
+      - 'school/peterson6/math.js'
+permissions:
+  contents: read
+jobs:
+  course:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Build, syntax and mathematical contracts
+        run: |
+          node school/alimov10-11/build.cjs
+          git diff --exit-code -- school/alimov10-11/data.js
+          node --check school/alimov10-11/app.js
+          node --check school/alimov10-11/check.js
+          node --check school/alimov10-11/models.js
+          node school/alimov10-11/test-course.cjs
+          node school/alimov10-11/test-models.cjs
+          node school/alimov10-11/test-state.cjs
+          git diff --check
+      - name: Isolated DOM test dependency
+        run: npm install --prefix "$RUNNER_TEMP/alimov-qa" --no-audit --no-fund --ignore-scripts jsdom@26.1.0
+      - name: Every worked solution and saved-work journey
+        run: |
+          NODE_PATH="$RUNNER_TEMP/alimov-qa/node_modules" node school/alimov10-11/test-ui.cjs
+          NODE_PATH="$RUNNER_TEMP/alimov-qa/node_modules" node school/alimov10-11/test-import.cjs

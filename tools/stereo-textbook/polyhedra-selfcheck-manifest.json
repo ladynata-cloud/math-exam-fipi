@@ -1,0 +1,80 @@
+{
+  "status": "reviewed",
+  "cards": [
+    "ex-selfcheck-iii-01",
+    "ex-selfcheck-iii-02",
+    "ex-selfcheck-iii-03",
+    "ex-selfcheck-iii-04",
+    "ex-selfcheck-iii-05",
+    "ex-selfcheck-iii-06",
+    "ex-selfcheck-iii-07-a",
+    "ex-selfcheck-iii-07-b",
+    "ex-selfcheck-iii-08",
+    "ex-selfcheck-iii-09",
+    "ex-selfcheck-iii-10-zero",
+    "ex-selfcheck-iii-10-one",
+    "ex-selfcheck-iii-10-two",
+    "ex-selfcheck-iii-10-nonconvex",
+    "ex-selfcheck-iii-11",
+    "ex-selfcheck-iii-12",
+    "ex-selfcheck-iii-13",
+    "ex-selfcheck-iii-14"
+  ],
+  "reviewedSourceContracts": {
+    "1": [
+      null
+    ],
+    "2": [
+      null
+    ],
+    "3": [
+      null
+    ],
+    "4": [
+      null
+    ],
+    "5": [
+      null
+    ],
+    "6": [
+      null
+    ],
+    "7": [
+      "а",
+      "б"
+    ],
+    "8": [
+      null
+    ],
+    "9": [
+      null
+    ],
+    "10": [
+      "внутренняя точка",
+      "точка на стороне",
+      "точка в вершине",
+      "невыпуклое основание"
+    ],
+    "11": [
+      null
+    ],
+    "12": [
+      null
+    ],
+    "13": [
+      null
+    ],
+    "14": [
+      null
+    ]
+  },
+  "expected": {
+    "cards": 18,
+    "exerciseCards": 18,
+    "totalCards": 474,
+    "completeTheoryPoints": 37,
+    "completeExercises": 282,
+    "selfchecks": 40,
+    "catalogEntries": 1368
+  }
+}

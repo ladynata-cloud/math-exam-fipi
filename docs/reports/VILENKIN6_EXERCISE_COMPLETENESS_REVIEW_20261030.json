@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-30",
+  "timezone": "Asia/Novosibirsk",
+  "reviewer": "vilenkin_runtime_audit",
+  "status": "PASS",
+  "source": {
+    "file": "courses/vilenkin-6-part-1/textbook.pdf",
+    "sha256": "4d00b6a2515f3e3b2e3de02ce53754f179d3f54b7347065484fe699293aad96f",
+    "edition": "Vilenkin et al., Mathematics grade 6, part 1, 2024, fourth stereotyped edition"
+  },
+  "content": {
+    "file": "courses/vilenkin-6-part-1/textbook-data/units-B.json",
+    "sha256": "b564ee22a3e450b9a497ca038be21fe35ad76c992e8d991fd8527a4ff88d38c7"
+  },
+  "exercises": [
+    {
+      "status": "PASS",
+      "reviewer": "vilenkin_runtime_audit",
+      "author": "vilenkin_pedagogy",
+      "scope": "candidate exercise 2.97 additions д and ж, source coverage of eight subparts",
+      "sourceVisual": "Independently visually inspected the supplied 2024 part 1 PDF at printed page 56 / PDF page 57: all eight operand sets and Cyrillic subpart labels match the coverage mapping.",
+      "sourcePdfSha256": "4d00b6a2515f3e3b2e3de02ce53754f179d3f54b7347065484fe699293aad96f",
+      "candidateSha256": "460fb8620696b50ea0e032052275ca894c6ab104c4f737d7a21633cd5c21ac49",
+      "snapshotSha256": "d332b7175386cc8629d61270f7e96acd801515b35cb755dddecde8a6b61b6b35",
+      "baselineSha256": "cada8c284729108b444f0c38c6a28e5f54e5cf517e30eddb0386d9a8b9a96b80",
+      "sourceSubpartsChecked": 8,
+      "finalAnswersIndependentlyComputed": 8,
+      "existingTasksUnchanged": 6,
+      "newTasks": 2,
+      "newSteps": 10,
+      "primeMultiplicityAssertions": 40,
+      "newFinalAnswers": {
+        "д": 30,
+        "ж": 18
+      },
+      "pedagogicalRead": "New explanations distinguish smallest positive common multiple, show factor counts concretely, explain why the largest given number is minimal when divisible by the others. No content blocker found.",
+      "limitations": [
+        "Not a release verdict or a live pupil comprehension study.",
+        "Only exercise 2.97 source page was visually reviewed for this candidate.",
+        "No claim that other exercises or either whole textbook are complete."
+      ],
+      "validatorChecks": {
+        "canonicalAnswersAccepted": 12,
+        "alternateAndWrongAnswerProbes": 14,
+        "allPassed": true
+      },
+      "exerciseNumber": "2.97",
+      "printedPage": 56,
+      "pdfPage": 57,
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д",
+        "е",
+        "ж",
+        "з"
+      ],
+      "taskIds": [
+        "v6-book-2-97-а",
+        "v6-book-2-97-б",
+        "v6-book-2-97-в",
+        "v6-book-2-97-г",
+        "v6-book-2-97-д",
+        "v6-book-2-97-е",
+        "v6-book-2-97-ж",
+        "v6-book-2-97-з"
+      ],
+      "integration": {
+        "status": "PASS",
+        "currentUnitsBSha256": "b564ee22a3e450b9a497ca038be21fe35ad76c992e8d991fd8527a4ff88d38c7",
+        "verification": "Removing only the two reviewed additions from integrated units-B and serializing in its unchanged format reproduces the exact prior SHA256 cada8c284729108b444f0c38c6a28e5f54e5cf517e30eddb0386d9a8b9a96b80. Added task objects equal the independently reviewed candidate; existing cards and source subpart order are preserved."
+      },
+      "sourceId": "p1-exercise-2-97",
+      "canonicalTaskSha256": {
+        "v6-book-2-97-а": "9575515b1df40092d421fbf92523f4f35575e2871ce528df87097bab363def2f",
+        "v6-book-2-97-б": "27da8c463c366526aff583ad106339b54208c30fdaccef2156c71dd72bb3bce7",
+        "v6-book-2-97-в": "e6bf1c16d5e02d40f861587eb34a5bd006abb82b48feb830b26a2861056ec7ab",
+        "v6-book-2-97-г": "f3f6b95095cbf628f85e7a17604ed0841022c887716963fec47ec676749f3fce",
+        "v6-book-2-97-д": "903d7927d2793ff8f6a41c3b0e0fb845dc5152ddc7959149cdc87717e5908902",
+        "v6-book-2-97-е": "4f7ef5c1804d97ef8db399ac4be147abfc3048e59831ec1f247eb10f7f88c38c",
+        "v6-book-2-97-ж": "e4bcc18579f572178756ef150b6c846b997d14c45b672a4969fafc3f51fc863c",
+        "v6-book-2-97-з": "dc5209f5e12cd828155475cea2deac067257cc1ed5277662a11e2a97133ef00d"
+      },
+      "contentSha256": "6c57af8ec2a5679b4fd6374980e6da2e5424c349f2dbe11f2c7f33745c289620"
+    },
+    {
+      "exerciseNumber": "2.134",
+      "status": "PASS",
+      "printedPage": 62,
+      "pdfPage": 63,
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д",
+        "е",
+        "ж",
+        "з"
+      ],
+      "taskIds": [
+        "v6-book-2-134-а",
+        "v6-book-2-134-б",
+        "v6-book-2-134-в",
+        "v6-book-2-134-г",
+        "v6-book-2-134-д",
+        "v6-book-2-134-е",
+        "v6-book-2-134-ж",
+        "v6-book-2-134-з"
+      ],
+      "sourceVisual": "Independently inspected printed page 62 / PDF page 63. The source has exactly eight subparts а–з; all sixteen numerator/denominator pairs and their order match the existing eight cards.",
+      "sourceSubpartsChecked": 8,
+      "finalAnswersIndependentlyComputed": 8,
+      "guidedAnswersIndependentlyComputed": 48,
+      "method": "Calculated LCM of the given denominators with Python integer math.lcm, then exact integer multipliers and resulting numerators. Application validators were not used as the arithmetic oracle.",
+      "promptClarification": "Current prompts explicitly retain the given denominators without prior reduction. This follows the recorded textbook convention and prevents ambiguous independent-answer instructions.",
+      "newTasks": 0,
+      "limitations": [
+        "This review establishes source subpart coverage and arithmetic for number 2.134, not learning efficacy or coverage of neighboring numbers.",
+        "No new source definition review is claimed: the prior source-review evidence for printed pages 60-61 is retained."
+      ],
+      "sourceId": "p1-exercise-2-134",
+      "sourcePdfSha256": "4d00b6a2515f3e3b2e3de02ce53754f179d3f54b7347065484fe699293aad96f",
+      "reviewer": "vilenkin_runtime_audit",
+      "author": "Historical course authors; current prompt clarifications: vilenkin_pedagogy",
+      "canonicalTaskSha256": {
+        "v6-book-2-134-а": "ff065c62c98a3abf7e9bbf08fee54dab919bffc5df73f11641a0a8e24b737a85",
+        "v6-book-2-134-б": "77cee2d2f9157d6118b3a8deacf03bdaace5fc43d27e4dcb0f5571d34cffd474",
+        "v6-book-2-134-в": "eec4b2f2b0db578a1db97fb09b3db4d7046e607e926417764efe98b292a429d0",
+        "v6-book-2-134-г": "1ed711919587d7360c795072a5e28ce4f9e54c3b083c1dd02c35d1e7d99d40be",
+        "v6-book-2-134-д": "3ee1cfc78c0b6143f248218e27cb8ed70e31528e64a3972e6bb0fee8d4226638",
+        "v6-book-2-134-е": "8970f8ab62f90a8b4f7780208271a76cea530fc14007ddc5b8c3360a6bd31adc",
+        "v6-book-2-134-ж": "b975c3bfeeabd1d1f4dfe5b69f54cb6ae38288ba47c81b862183c3701728569c",
+        "v6-book-2-134-з": "429841a45260397cdf717714c54dbb028ed4cc67690a647c05b555c9071cee7a"
+      },
+      "contentSha256": "c59fc1c199c012f8f52afa9924f72efd24221d3bd062f52ed906cf629ab80aaa"
+    }
+  ],
+  "limitations": [
+    "Completeness is asserted only for exercises 2.97 and 2.134 in the reviewed first-part edition, not for entire chapters or the whole two-part course.",
+    "This is internal independent content evidence, not an external exact-head release verdict, browser assessment, or live pupil trial."
+  ],
+  "sourcePdfSha256": "4d00b6a2515f3e3b2e3de02ce53754f179d3f54b7347065484fe699293aad96f",
+  "author": "Historical course authors; current task additions and clarifications: vilenkin_pedagogy",
+  "canonicalTaskSerialization": "UTF-8 JSON with recursively sorted keys, ensure_ascii=False, separators=(comma, colon), no trailing newline"
+}

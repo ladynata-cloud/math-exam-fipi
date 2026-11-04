@@ -1,0 +1,1985 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "independent agent /root/theory_course (not the §§16–17 author)",
+  "reviewScope": "All76 numbered exercises in §§16–17, including every source subpart: exact givens, full steps/justifications, task-specific models, school-level pedagogy.",
+  "reviewedAt": "2026-10-22T22:37:03.303901+00:00",
+  "sourceEvidence": {
+    "printedPages": [
+      153,
+      154,
+      155,
+      156,
+      157,
+      160,
+      161,
+      162
+    ],
+    "pdfPages": [
+      154,
+      155,
+      156,
+      157,
+      158,
+      161,
+      162,
+      163
+    ],
+    "method": "Independently inspected actual source page images and compared every authored statement and its subparts; read all current solution steps, prompts, help and models."
+  },
+  "verdictWithinScope": "pass after corrections",
+  "releaseApproval": false,
+  "reviewFlagsChanged": false,
+  "independentCheckCommand": "python tools/merzlyak-10-base/reviewer-16-17-checks.py",
+  "checkResult": "pass:76 task-specific model/source-page checks plus every base edge and highlighted polygon; symbolic formulas compared with concrete model values",
+  "resolvedFindings": [
+    {
+      "id": "16.37-38-section-scope",
+      "finding": "A plane perpendicular to the lateral edges need not intersect all finite edge segments in an arbitrary inclined prism.",
+      "resolution": "Construction now explicitly permits edge and face extensions; distances supply the corresponding parallelogram heights. Independently reread both corrected proofs."
+    },
+    {
+      "id": "16.45-method",
+      "finding": "The conditional corrected example used an unexplained dot-product method.",
+      "resolution": "Now translates AC1 to CE and proves triangle CEB1 equilateral using three square diagonals. New E and the three equal lengths independently checked."
+    },
+    {
+      "id": "17.29-point-D",
+      "finding": "Initial D=(2,8√2,0) did not lie on BC.",
+      "resolution": "Author corrected D=(6,8√2,0); independent checks verify incidence, angle bisection, BD:DC=2:3 and AD=8√6."
+    }
+  ],
+  "sourceExceptions": [
+    {
+      "lessonId": "ex-16-045",
+      "finding": "All lateral faces square force an equilateral base, incompatible with the printed isosceles right base.",
+      "handling": "Literal answer is no nondegenerate prism. A separately labelled conditional correction (only faces above the two legs square) explains the60° example. Model caption and steps explicitly exclude full literal fulfillment."
+    }
+  ],
+  "unresolved": [],
+  "limits": [
+    "This independent agent review is not external-provider or release approval; all authored cards remain draft/pending.",
+    "No browser visual/accessibility check was performed in this review; supplied geometry and view references were inspected and numerically verified.",
+    "General mathematical proofs were read and independently reasoned through, not machine-formalized."
+  ],
+  "lessons": [
+    {
+      "lessonId": "ex-16-001",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-001.json",
+      "sha256": "849bb055ca37adddef689ab9759e4532af07fcf64e7eb9ed4a0eb4fa521b04c9",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.1",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          153
+        ],
+        "pdfPages": [
+          154
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-002",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-002.json",
+      "sha256": "bd17aec9de9ebda3bb945bce9e20b13fa578c9757e5f9529fd78688b08f672d9",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.2",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          153
+        ],
+        "pdfPages": [
+          154
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-003",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-003.json",
+      "sha256": "ca7b9cf6d6cf176b8a8ab93ff74a5db273575483e118c1204127990debb03e6a",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.3",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          153
+        ],
+        "pdfPages": [
+          154
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-004",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-004.json",
+      "sha256": "2773e0e9b88c135c9a6a9a7c8bd93b2101304bd1e3ab1e45bfa15c4950770de4",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.4",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          153
+        ],
+        "pdfPages": [
+          154
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-005",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-005.json",
+      "sha256": "3a1bb0240852002c6961edcb99df155e148c8c4b9a1d9cbd709172c5b21e2983",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.5",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          153
+        ],
+        "pdfPages": [
+          154
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-006",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-006.json",
+      "sha256": "b2dd9311a80b9449ee5633602674a450950440c86d86d8ebf8f6dacb8999995f",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.6",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          153
+        ],
+        "pdfPages": [
+          154
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-007",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-007.json",
+      "sha256": "b7f3178c5ef112697e0c702ecfaa9394eed381281d0641dcd83ea16dca92f8af",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.7",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          153
+        ],
+        "pdfPages": [
+          154
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-008",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-008.json",
+      "sha256": "e9375d24566e3ed21439ef094491e46a6178cf8c41a4431d6745e68a3255a001",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.8",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          153
+        ],
+        "pdfPages": [
+          154
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-009",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-009.json",
+      "sha256": "d9ac6d50aa108c1343270d2117c0583bb6efb70e0e09c8733481a050a0055a54",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.9",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          153
+        ],
+        "pdfPages": [
+          154
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-010",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-010.json",
+      "sha256": "9cd13239f7ef18289ee368add1740ee56ba09f83683ff47b576db7c97bcf5985",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.10",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          153
+        ],
+        "pdfPages": [
+          154
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3,
+      "contentSha256": "aea9d9391d4b14ddf67fc395af6cbc733fcae9e662a9a0af6e7fcd1b3f599cc8",
+      "orientationFollowup": {
+        "reviewer": "independent agent /root/theory_course",
+        "reviewedAt": "2026-10-22T23:37:32.292995+00:00",
+        "scope": "Coordinates-only initial orientation repair; original source, solutions, answers, help, topology and view definitions are unchanged.",
+        "previousReviewedDraftSha256": "788bde30899251095c0f930df0f11ee77a306fbfaeca51720c4c2567090d3ebe",
+        "baselineReviewedSha256": "eb9d7e34092d57fb3631de8e383460146b00362d2f3727edd89d4022b5838718",
+        "baselineContentSha256": "e8e1ebc3044e9f6c90085b30c0067a81ea7f43e04460f4cc67685c15c8911e5d",
+        "currentDraftSha256": "9cd13239f7ef18289ee368add1740ee56ba09f83683ff47b576db7c97bcf5985",
+        "currentContentSha256": "aea9d9391d4b14ddf67fc395af6cbc733fcae9e662a9a0af6e7fcd1b3f599cc8",
+        "nonCoordinateContentSha256": "b5a946769fdea379aef3d03192f1b8d45a13a4bd15a93a7db2b3e392a44c8be1",
+        "rigidTransform": {
+          "axis": "Z",
+          "angleDegrees": 165,
+          "zUnchanged": true,
+          "properIsometry": true,
+          "preservedPairDistances": 45,
+          "tolerance": 2e-09
+        },
+        "pedagogyEvidence": {
+          "sceneWidthPx": 280,
+          "camera": {
+            "yaw": -0.62,
+            "pitch": 0.43
+          },
+          "allHighlightedPolygonMinimumWidthsExceedPx": 20,
+          "projectedGeometry": {
+            "projection": {
+              "areaPx2": 831.3003957714383,
+              "minWidthPx": 24.778716921259655
+            },
+            "angle": {
+              "areaPx2": 699.5618772089834,
+              "minWidthPx": 21.556804838217438
+            },
+            "section": {
+              "areaPx2": 1496.6330278147798,
+              "minWidthPx": 39.506030239105556
+            }
+          },
+          "method": "Independent orthographic area/width and point-separation calculations using the unchanged viewer default camera; no browser accessibility verdict claimed.",
+          "includedSegmentTriangle": "A closed highlighted triangle drawn as three segments is included in the minimum-width checks."
+        },
+        "checks": [
+          {
+            "command": "python tools/merzlyak-10-base/orientation-models.test.py",
+            "sha256": "b7d05f29a8b0d45308f0f06a53c338534167936456807e985b8ce321b49836f4",
+            "result": "PASS:4 models,137 pair distances, unchanged non-coordinate content, all highlighted polygons and closed segment triangles>20px minimum width, D/B1 gap>20px,5 negative regressions"
+          },
+          {
+            "command": "python tools/merzlyak-10-base/reviewer-16-17-checks.py",
+            "sha256": "8e45ea0a9b3fb3384ac46e3628212817de7ec06787d0a49ec36a7cb6f88e0322",
+            "result": "PASS:all76 source-page and mathematical model regressions, including these4 rotated configurations"
+          }
+        ],
+        "verdicts": {
+          "source": "PASS",
+          "mathematics": "PASS",
+          "pedagogy": "PASS"
+        },
+        "reviewFlagsChanged": false,
+        "releaseApproval": false,
+        "unresolvedFindings": []
+      }
+    },
+    {
+      "lessonId": "ex-16-011",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-011.json",
+      "sha256": "5d34b2a53cd26026e1cd789e9fe312fe215dcc57b1aa8524248d7bde1163d308",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.11",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          154
+        ],
+        "pdfPages": [
+          155
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-012",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-012.json",
+      "sha256": "8e225bd9610b04908961382ee49acf5c050c0ef8a221aaa3eed263efd80e0655",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.12",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          154
+        ],
+        "pdfPages": [
+          155
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-013",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-013.json",
+      "sha256": "675facf22d29e0d922bf346d9a600edf7b02fa781e43b4b33f4497c5404d6fe2",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.13",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          154
+        ],
+        "pdfPages": [
+          155
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-014",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-014.json",
+      "sha256": "dac864271f214fda9f9ad706d287f8f44ace7af548962b12bd61cc7b6d0200cb",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.14",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          154
+        ],
+        "pdfPages": [
+          155
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-015",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-015.json",
+      "sha256": "a1e13cbeb0a531c4caaf05555e66c6eba3c0936346449f6c9d9173b4f080e2f5",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.15",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          154
+        ],
+        "pdfPages": [
+          155
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-016",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-016.json",
+      "sha256": "ba2df397eca8a2b00e72dad0df7c647c3203d72d3fcaa6adffe1622186898cbc",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.16",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          154
+        ],
+        "pdfPages": [
+          155
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-017",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-017.json",
+      "sha256": "f5ad82fbc4a3f4a3953274e595ee0b47772a28c878371eee33a8b5807933649b",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.17",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          154
+        ],
+        "pdfPages": [
+          155
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-018",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-018.json",
+      "sha256": "8c18c3cb985fae9c54d7dd502a41e3e41f62d8cd28fdb985e9921a45a0ba3554",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.18",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          154
+        ],
+        "pdfPages": [
+          155
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-019",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-019.json",
+      "sha256": "830e974d8038fb685635978eeca0c19aa4e15b574c0ed26558504108661e5826",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.19",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          154
+        ],
+        "pdfPages": [
+          155
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-020",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-020.json",
+      "sha256": "498237c8be61c8fdba519824df764c4c533eea0ea39cff145691081c0c4d35eb",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.20",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          154
+        ],
+        "pdfPages": [
+          155
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-021",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-021.json",
+      "sha256": "b2c9e0f7a902df3e9f6558e914fa5148fe7e63ac26c37eda392b737c5e5e84ab",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.21",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          154
+        ],
+        "pdfPages": [
+          155
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3,
+      "contentSha256": "c4c614364661cf8db473fe9d20512eb5b957be456cecbc5347db0803bbc57f5c",
+      "orientationFollowup": {
+        "reviewer": "independent agent /root/theory_course",
+        "reviewedAt": "2026-10-22T23:37:32.292995+00:00",
+        "scope": "Coordinates-only initial orientation repair; original source, solutions, answers, help, topology and view definitions are unchanged.",
+        "previousReviewedDraftSha256": "bd1a4481e27a47f075f17d3188eccae1b65e07200ebd5504e56ca49389d4fde5",
+        "baselineReviewedSha256": "789d0788af54b1cfe798894eada11ad1e71d7b301c866e5f785cf861d7457f49",
+        "baselineContentSha256": "06344bafa109eb350c41882fb33d78c3d5ea8cd2d89a48bb1c11401c3ce04a7a",
+        "currentDraftSha256": "b2c9e0f7a902df3e9f6558e914fa5148fe7e63ac26c37eda392b737c5e5e84ab",
+        "currentContentSha256": "c4c614364661cf8db473fe9d20512eb5b957be456cecbc5347db0803bbc57f5c",
+        "nonCoordinateContentSha256": "2db927eef6e57e883fff27dc3cf6fc8bab57bcea775c2fe9a18dbbd1393dfb4a",
+        "rigidTransform": {
+          "axis": "Z",
+          "angleDegrees": 330,
+          "zUnchanged": true,
+          "properIsometry": true,
+          "preservedPairDistances": 28,
+          "tolerance": 2e-09
+        },
+        "pedagogyEvidence": {
+          "sceneWidthPx": 280,
+          "camera": {
+            "yaw": -0.62,
+            "pitch": 0.43
+          },
+          "allHighlightedPolygonMinimumWidthsExceedPx": 20,
+          "projectedGeometry": {
+            "large": {
+              "areaPx2": 6509.6669239684725,
+              "minWidthPx": 66.67930643534514
+            },
+            "small": {
+              "areaPx2": 2683.1255913881196,
+              "minWidthPx": 58.56834418215723
+            }
+          },
+          "method": "Independent orthographic area/width and point-separation calculations using the unchanged viewer default camera; no browser accessibility verdict claimed.",
+          "includedSegmentTriangle": "A closed highlighted triangle drawn as three segments is included in the minimum-width checks."
+        },
+        "checks": [
+          {
+            "command": "python tools/merzlyak-10-base/orientation-models.test.py",
+            "sha256": "b7d05f29a8b0d45308f0f06a53c338534167936456807e985b8ce321b49836f4",
+            "result": "PASS:4 models,137 pair distances, unchanged non-coordinate content, all highlighted polygons and closed segment triangles>20px minimum width, D/B1 gap>20px,5 negative regressions"
+          },
+          {
+            "command": "python tools/merzlyak-10-base/reviewer-16-17-checks.py",
+            "sha256": "8e45ea0a9b3fb3384ac46e3628212817de7ec06787d0a49ec36a7cb6f88e0322",
+            "result": "PASS:all76 source-page and mathematical model regressions, including these4 rotated configurations"
+          }
+        ],
+        "verdicts": {
+          "source": "PASS",
+          "mathematics": "PASS",
+          "pedagogy": "PASS"
+        },
+        "reviewFlagsChanged": false,
+        "releaseApproval": false,
+        "unresolvedFindings": []
+      }
+    },
+    {
+      "lessonId": "ex-16-022",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-022.json",
+      "sha256": "2470479cdfe9a0ffd3a2ec9594dc599748c27d09301547ed9d6a0e9c800cfae4",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.22",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          155
+        ],
+        "pdfPages": [
+          156
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-023",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-023.json",
+      "sha256": "c9f04ec90ddc5a7a2ba9a17106bee1d3e4bd4bde4b64a93ec400b9d68763bc02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.23",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          155
+        ],
+        "pdfPages": [
+          156
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-024",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-024.json",
+      "sha256": "9dca015f5627a767d8e259c5e41eb1687dc41108aa82c048c6d578b90f78b74e",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.24",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          155
+        ],
+        "pdfPages": [
+          156
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-025",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-025.json",
+      "sha256": "48700fa945383fa9a762eb222a468c278f41eadd064e873433f40aeaf9c635ff",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.25",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          155
+        ],
+        "pdfPages": [
+          156
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 4
+    },
+    {
+      "lessonId": "ex-16-026",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-026.json",
+      "sha256": "9f1f57cf74fa014bc7caa54fa7c4b54102447016be2e089310c3a2ba754def4c",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.26",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          155
+        ],
+        "pdfPages": [
+          156
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 4
+    },
+    {
+      "lessonId": "ex-16-027",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-027.json",
+      "sha256": "6d107669cbec2b91c5f05040ec2b13f168e507070dd96476b3179f46b3760170",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.27",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          155
+        ],
+        "pdfPages": [
+          156
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3,
+      "contentSha256": "e6a060841c15b96b56a4176e45da76dfb54a680954ee2e6e3419529af6324871",
+      "orientationFollowup": {
+        "reviewer": "independent agent /root/theory_course",
+        "reviewedAt": "2026-10-22T23:37:32.292995+00:00",
+        "scope": "Coordinates-only initial orientation repair; original source, solutions, answers, help, topology and view definitions are unchanged.",
+        "previousReviewedDraftSha256": "c902cc5e58fa92af708852a721c8d595fd464488fd886a41365e1c180ad75660",
+        "baselineReviewedSha256": "fe4cedb873e92000bd88e0c9d52a125abaa0ce8306032ccf3dd96c5ddd292d09",
+        "baselineContentSha256": "31b50853fa53c2565bf3ec483f7bfcc566388443e9cd3224e0b9f9f8f1fcaed2",
+        "currentDraftSha256": "6d107669cbec2b91c5f05040ec2b13f168e507070dd96476b3179f46b3760170",
+        "currentContentSha256": "e6a060841c15b96b56a4176e45da76dfb54a680954ee2e6e3419529af6324871",
+        "nonCoordinateContentSha256": "42723277da3ece14c0fe438e16ac6460a5bc37138811d724e825d35994b6cf8c",
+        "rigidTransform": {
+          "axis": "Z",
+          "angleDegrees": 90,
+          "zUnchanged": true,
+          "properIsometry": true,
+          "preservedPairDistances": 36,
+          "tolerance": 2e-09
+        },
+        "pedagogyEvidence": {
+          "sceneWidthPx": 280,
+          "camera": {
+            "yaw": -0.62,
+            "pitch": 0.43
+          },
+          "allHighlightedPolygonMinimumWidthsExceedPx": 20,
+          "projectedGeometry": {
+            "angle": {
+              "areaPx2": 2146.5004731107238,
+              "minWidthPx": 34.58341072436947
+            },
+            "section": {
+              "areaPx2": 5428.196448009374,
+              "minWidthPx": 78.83548974191216
+            }
+          },
+          "method": "Independent orthographic area/width and point-separation calculations using the unchanged viewer default camera; no browser accessibility verdict claimed.",
+          "includedSegmentTriangle": "A closed highlighted triangle drawn as three segments is included in the minimum-width checks."
+        },
+        "checks": [
+          {
+            "command": "python tools/merzlyak-10-base/orientation-models.test.py",
+            "sha256": "b7d05f29a8b0d45308f0f06a53c338534167936456807e985b8ce321b49836f4",
+            "result": "PASS:4 models,137 pair distances, unchanged non-coordinate content, all highlighted polygons and closed segment triangles>20px minimum width, D/B1 gap>20px,5 negative regressions"
+          },
+          {
+            "command": "python tools/merzlyak-10-base/reviewer-16-17-checks.py",
+            "sha256": "8e45ea0a9b3fb3384ac46e3628212817de7ec06787d0a49ec36a7cb6f88e0322",
+            "result": "PASS:all76 source-page and mathematical model regressions, including these4 rotated configurations"
+          }
+        ],
+        "verdicts": {
+          "source": "PASS",
+          "mathematics": "PASS",
+          "pedagogy": "PASS"
+        },
+        "reviewFlagsChanged": false,
+        "releaseApproval": false,
+        "unresolvedFindings": []
+      }
+    },
+    {
+      "lessonId": "ex-16-028",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-028.json",
+      "sha256": "695950eaa61589cce82e55ea4dab9770c9298f821918744197388d695a476a33",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.28",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          155
+        ],
+        "pdfPages": [
+          156
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-029",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-029.json",
+      "sha256": "49296a8e0b0fb860c52c0ef036e1e002fe22195d59c32e71ff84b88f8fe755c1",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.29",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          155
+        ],
+        "pdfPages": [
+          156
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-030",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-030.json",
+      "sha256": "112d67a91f30324447e704a3b5879dd4550b0e349b485d4231209d137d95fefe",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.30",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          155
+        ],
+        "pdfPages": [
+          156
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-031",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-031.json",
+      "sha256": "18b2974c4a8e9eac48d99d1806d7438e5dd30c75e04cd7d731aed852f66d2728",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.31",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          155
+        ],
+        "pdfPages": [
+          156
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-032",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-032.json",
+      "sha256": "e2cef29af0b2460bec621bb1b4ae3436b7706455308bb602c67acf2897188a23",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.32",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          156
+        ],
+        "pdfPages": [
+          157
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-033",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-033.json",
+      "sha256": "7a200fa2e78269cbbd2c8897331227adcbe142e2ecf729c7e149b9852bedbe6d",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.33",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          156
+        ],
+        "pdfPages": [
+          157
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-034",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-034.json",
+      "sha256": "f81239d46f34efc89d149e9f8c5272bffb112d51a798f2af34481cfd3f49e038",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.34",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          156
+        ],
+        "pdfPages": [
+          157
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-035",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-035.json",
+      "sha256": "317df88fbf96fdd300504e70cfc118dbc50fb715e694f1fc151710c0bc5d0252",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.35",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          156
+        ],
+        "pdfPages": [
+          157
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 4
+    },
+    {
+      "lessonId": "ex-16-036",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-036.json",
+      "sha256": "54248bcf0d67fece84b678fba02b562fe38044557fd510a6cfae3054ff5905df",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.36",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          156
+        ],
+        "pdfPages": [
+          157
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-037",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-037.json",
+      "sha256": "0d460a13e1433c5d0a5cd7d363a17fba4a395d75c80c1a6005ce2dc9fc173406",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.37",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          156
+        ],
+        "pdfPages": [
+          157
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-038",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-038.json",
+      "sha256": "8012f1ad716b751d271cbd37ebec9aed6fc15c9491929a3ae7bf785dda7c91ae",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.38",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          156
+        ],
+        "pdfPages": [
+          157
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-039",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-039.json",
+      "sha256": "ea260267f38ddf5dcae0fedb9c80c255bc825eff2b41e291ef041129465bd91a",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.39",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          156
+        ],
+        "pdfPages": [
+          157
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-040",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-040.json",
+      "sha256": "ff0d161383577f8cd7ea98fb1555034d25ee9a23f2ba90ccef46331c11527568",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.40",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          156
+        ],
+        "pdfPages": [
+          157
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-041",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-041.json",
+      "sha256": "91981efc95eaf70a5da21cac6ed6a2c1850b2906053ec587961c226ce50cde8c",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.41",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          156
+        ],
+        "pdfPages": [
+          157
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-042",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-042.json",
+      "sha256": "f539aabf3771051bf7dc142f1870015a225925f8f3fe9307fbd5ac33c8ea48fe",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.42",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          156
+        ],
+        "pdfPages": [
+          157
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-043",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-043.json",
+      "sha256": "391b1113778c4eb09e81f17c2cd7bfeae3c8e8d4a14a54dc8b795478dcc442ef",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.43",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          157
+        ],
+        "pdfPages": [
+          158
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 4
+    },
+    {
+      "lessonId": "ex-16-044",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-044.json",
+      "sha256": "e74a09ccca7a85d3f0553356b235988e67e0827b016970d8b643b8a5c80cce67",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.44",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          157
+        ],
+        "pdfPages": [
+          158
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-045",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-045.json",
+      "sha256": "1732da675f70c179c00ec5151aaaebc9df3c8a614f20c37951e9f7a7d8ffbe0b",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.45",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          157
+        ],
+        "pdfPages": [
+          158
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 4
+    },
+    {
+      "lessonId": "ex-16-046",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-046.json",
+      "sha256": "124a924b1b41f68ce338798cf8dc8b5b566bb3b4595d9a5aa9c4578ca7c09d48",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.46",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          157
+        ],
+        "pdfPages": [
+          158
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-16-047",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-16-047.json",
+      "sha256": "5a68add41d066604c96082cc233dbfd425de185bda3d2a86bf9c0889257806de",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "16.47",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          157
+        ],
+        "pdfPages": [
+          158
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 4
+    },
+    {
+      "lessonId": "ex-17-001",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-001.json",
+      "sha256": "9cd3599f3dd88a40ffd7ce8407afa62d4c29443ec47b3ff95b99a7f924f54b6d",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.1",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          160
+        ],
+        "pdfPages": [
+          161
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-002",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-002.json",
+      "sha256": "24c6eef69177a277c9913d5e7eb93dd30c0c81aa9d2a42b5d2cac97f86d4e293",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.2",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          160
+        ],
+        "pdfPages": [
+          161
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-003",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-003.json",
+      "sha256": "3e96cf54d11b3ebca03139d520be058edd2dfbe47fdafb1a8e7168f8460fb6d1",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.3",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          160
+        ],
+        "pdfPages": [
+          161
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-004",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-004.json",
+      "sha256": "e8c5d8a70333c1b2cfcdbb0e55fdecb694e72d6570f7edd0595e80a1fb20d919",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.4",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          160
+        ],
+        "pdfPages": [
+          161
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-005",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-005.json",
+      "sha256": "e53ec3f3916a4602c252fcb8423a4256a93e70a33347fe7d534d5e7b5776da74",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.5",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          160
+        ],
+        "pdfPages": [
+          161
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-006",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-006.json",
+      "sha256": "8d1321fe84b84260b8be8c69ae7cf79ba4a9a796b356c1880c848849d8d672d5",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.6",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          160
+        ],
+        "pdfPages": [
+          161
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-007",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-007.json",
+      "sha256": "e94563767336b39429eb338cf0a68398266e94abfdb7c6ab77b1592a080c4c3a",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.7",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          160
+        ],
+        "pdfPages": [
+          161
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-008",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-008.json",
+      "sha256": "a59b6c6998e2a0e0b355b5f3eb0678b73d35f762a50bf5f010b9579107bc2ecb",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.8",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          161
+        ],
+        "pdfPages": [
+          162
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-009",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-009.json",
+      "sha256": "67483a9b56ad80eac881b7f42a22da0b7b9a214c495f37691b41a30e28b8ff85",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.9",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          161
+        ],
+        "pdfPages": [
+          162
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-010",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-010.json",
+      "sha256": "3476ded7357c520a644cf6f3aa7acafc1229f9c489deefaea56e3b1ba6a26ef2",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.10",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          161
+        ],
+        "pdfPages": [
+          162
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-011",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-011.json",
+      "sha256": "140505471dfefe1d9b66eedb9aabf35f169d227f90ff8abd22eb9c1b197f87c4",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.11",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          161
+        ],
+        "pdfPages": [
+          162
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-012",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-012.json",
+      "sha256": "8c88f4bf331f5fc0c26b910e68aee40992211256a7f658c58c14f58122d4f56c",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.12",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          161
+        ],
+        "pdfPages": [
+          162
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-013",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-013.json",
+      "sha256": "b52e44ac8df771d11747c4ded27db0a9c4610f9f60fdea1262c39ac675b3ace4",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.13",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          161
+        ],
+        "pdfPages": [
+          162
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-014",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-014.json",
+      "sha256": "099ad2962271808046e0488701633ac2f88fcc36f0f4facdb30a6bb30286bf81",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.14",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          161
+        ],
+        "pdfPages": [
+          162
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-015",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-015.json",
+      "sha256": "0c2f9adf3b1f94b3db537ec01aa61d99ada24d176f98015ce0e99068ecb1b1c8",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.15",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          161
+        ],
+        "pdfPages": [
+          162
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-016",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-016.json",
+      "sha256": "00513050721f02c725683f588321e0382cb36bdb5e9bf4cac6e1d05898990acc",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.16",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          161
+        ],
+        "pdfPages": [
+          162
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-017",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-017.json",
+      "sha256": "ecb0efb8aaeaffba1f89527bce8b0ed83289f5b9bb47a20ed7c8e5e4c186357a",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.17",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          161
+        ],
+        "pdfPages": [
+          162
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-018",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-018.json",
+      "sha256": "43c5699119f08b957fcf8665a683c54cd90d42cb2bcfe4af22d33fd8980712be",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.18",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          161
+        ],
+        "pdfPages": [
+          162
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-019",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-019.json",
+      "sha256": "02034f0aa0575a0fb34fe72a2d76c5f092dab2cc33e2c34c9388a71accc4592a",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.19",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          161
+        ],
+        "pdfPages": [
+          162
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-020",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-020.json",
+      "sha256": "3b4f71ebf1328c28b07816767d3fa9dab98d116fc9066ca15373efc5a2734d77",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.20",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          161
+        ],
+        "pdfPages": [
+          162
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-021",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-021.json",
+      "sha256": "1ab819c08d8fe003b905892f2ea7ed6df5950fdd109a0869d4b1096506a34221",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.21",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          162
+        ],
+        "pdfPages": [
+          163
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-022",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-022.json",
+      "sha256": "c0844f005ef025f421ac06eabac70335797017cda2958b0d50f631307ba9f6eb",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.22",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          162
+        ],
+        "pdfPages": [
+          163
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-023",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-023.json",
+      "sha256": "ea2a1d7e13ace109769622eb4d75f061769b41a809431a5ee9820c92c3437c3b",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.23",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          162
+        ],
+        "pdfPages": [
+          163
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-024",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-024.json",
+      "sha256": "b076679a68e9ea8304560159d427daac5e25c429709b686c5da960598e7e541e",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.24",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          162
+        ],
+        "pdfPages": [
+          163
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-025",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-025.json",
+      "sha256": "6480d51abd93d980833e482f468d8632f714c23be692add22c47d534910ccd14",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.25",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          162
+        ],
+        "pdfPages": [
+          163
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-026",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-026.json",
+      "sha256": "bebe16dd9b5e22d1ebd4350218adbe13fea7603ab7bac278cf0de828056e2f45",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.26",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          162
+        ],
+        "pdfPages": [
+          163
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-027",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-027.json",
+      "sha256": "e990940328730e037886e4286fcaf9b74db6f92db2ba2cf1eefe1345b6c02c3c",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.27",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          162
+        ],
+        "pdfPages": [
+          163
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3,
+      "contentSha256": "a342820c31f294b5a79975eee9cc4a2f3dba7bfb179dd88d92b2834625e6848d",
+      "orientationFollowup": {
+        "reviewer": "independent agent /root/theory_course",
+        "reviewedAt": "2026-10-22T23:37:32.292995+00:00",
+        "scope": "Coordinates-only initial orientation repair; original source, solutions, answers, help, topology and view definitions are unchanged.",
+        "previousReviewedDraftSha256": "c2d3914dbca22fe5ca3347d5d579336cb66b7d313e28822c9e03ed13203888e2",
+        "baselineReviewedSha256": "e93e6e13e63760ff52bda3dbae03d3341cc625007e91c71b1a25b7cb4c11030b",
+        "baselineContentSha256": "69820a81406c64a3ffc35ed8afa5ee95f43e4f174c9d57c85666d771052ba3de",
+        "currentDraftSha256": "e990940328730e037886e4286fcaf9b74db6f92db2ba2cf1eefe1345b6c02c3c",
+        "currentContentSha256": "a342820c31f294b5a79975eee9cc4a2f3dba7bfb179dd88d92b2834625e6848d",
+        "nonCoordinateContentSha256": "87df16a60eca1a12c6a72b9d4b88d801ee87c1e6d926e8468be5cf578fa873d5",
+        "rigidTransform": {
+          "axis": "Z",
+          "angleDegrees": 180,
+          "zUnchanged": true,
+          "properIsometry": true,
+          "preservedPairDistances": 28,
+          "tolerance": 2e-09
+        },
+        "pedagogyEvidence": {
+          "sceneWidthPx": 280,
+          "camera": {
+            "yaw": -0.62,
+            "pitch": 0.43
+          },
+          "allHighlightedPolygonMinimumWidthsExceedPx": 20,
+          "projectedGeometry": {
+            "perp": {
+              "areaPx2": 4647.309847373009,
+              "minWidthPx": 46.1060794107301
+            },
+            "target": {
+              "areaPx2": 8627.50399896587,
+              "minWidthPx": 85.5936870053039
+            },
+            "D-B1": {
+              "gapPx": 155.17233059910492
+            }
+          },
+          "method": "Independent orthographic area/width and point-separation calculations using the unchanged viewer default camera; no browser accessibility verdict claimed.",
+          "includedSegmentTriangle": "A closed highlighted triangle drawn as three segments is included in the minimum-width checks."
+        },
+        "checks": [
+          {
+            "command": "python tools/merzlyak-10-base/orientation-models.test.py",
+            "sha256": "b7d05f29a8b0d45308f0f06a53c338534167936456807e985b8ce321b49836f4",
+            "result": "PASS:4 models,137 pair distances, unchanged non-coordinate content, all highlighted polygons and closed segment triangles>20px minimum width, D/B1 gap>20px,5 negative regressions"
+          },
+          {
+            "command": "python tools/merzlyak-10-base/reviewer-16-17-checks.py",
+            "sha256": "8e45ea0a9b3fb3384ac46e3628212817de7ec06787d0a49ec36a7cb6f88e0322",
+            "result": "PASS:all76 source-page and mathematical model regressions, including these4 rotated configurations"
+          }
+        ],
+        "verdicts": {
+          "source": "PASS",
+          "mathematics": "PASS",
+          "pedagogy": "PASS"
+        },
+        "reviewFlagsChanged": false,
+        "releaseApproval": false,
+        "unresolvedFindings": []
+      }
+    },
+    {
+      "lessonId": "ex-17-028",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-028.json",
+      "sha256": "926c353b4a7ed81660c9297765f6874d062c26cfa6c86f3d3d5b844d00ad6630",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.28",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          162
+        ],
+        "pdfPages": [
+          163
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    },
+    {
+      "lessonId": "ex-17-029",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-17-029.json",
+      "sha256": "76ebc3ac98016a2ea8aa9efb7cb3fdf1ee74a11e4783ff57109f0c0de2334670",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "17.29",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          162
+        ],
+        "pdfPages": [
+          163
+        ]
+      },
+      "sourceStatementAndParts": "pass",
+      "solutionMathematics": "pass",
+      "taskModel": "pass",
+      "schoolLevelPedagogy": "pass",
+      "stepCount": 3
+    }
+  ]
+}

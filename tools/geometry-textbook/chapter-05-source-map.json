@@ -1,0 +1,1175 @@
+{
+  "schemaVersion": 1,
+  "bookId": "atanasyan-2023-7-9",
+  "edition": "2023, 14-е издание, переработанное",
+  "chapter": 5,
+  "title": "Геометрические места точек. Симметричные фигуры",
+  "source": {
+    "sha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+    "printedPages": [
+      91,
+      115
+    ],
+    "pdfPages": [
+      92,
+      116
+    ],
+    "pdfPageOffset": 1,
+    "inspection": "Independent inventory reviewer visually read all 25 source page images, printed 91–115, before reading chapter-V authored preparations. Number, subpart, theory and review-question counts were derived directly from the source. Page 115 was checked through the end of chapter V, before the separate advanced-exercise section beginning at 413."
+  },
+  "exercises": [
+    {
+      "number": 331,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        95
+      ]
+    },
+    {
+      "number": 332,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        95
+      ]
+    },
+    {
+      "number": 333,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        95
+      ]
+    },
+    {
+      "number": 334,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        95
+      ]
+    },
+    {
+      "number": 335,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        95
+      ]
+    },
+    {
+      "number": 336,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        103
+      ]
+    },
+    {
+      "number": 337,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        103
+      ]
+    },
+    {
+      "number": 338,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        103
+      ]
+    },
+    {
+      "number": 339,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        103
+      ]
+    },
+    {
+      "number": 340,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        103
+      ]
+    },
+    {
+      "number": 341,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        103
+      ]
+    },
+    {
+      "number": 342,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        103
+      ]
+    },
+    {
+      "number": 343,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        103
+      ]
+    },
+    {
+      "number": 344,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        103
+      ]
+    },
+    {
+      "number": 345,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        103
+      ]
+    },
+    {
+      "number": 346,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        103
+      ]
+    },
+    {
+      "number": 347,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        103,
+        104
+      ]
+    },
+    {
+      "number": 348,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        104
+      ]
+    },
+    {
+      "number": 349,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        104
+      ]
+    },
+    {
+      "number": 350,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        104
+      ]
+    },
+    {
+      "number": 351,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        104
+      ]
+    },
+    {
+      "number": 352,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        104
+      ]
+    },
+    {
+      "number": 353,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        104
+      ]
+    },
+    {
+      "number": 354,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        99,
+        104
+      ]
+    },
+    {
+      "number": 355,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        104
+      ]
+    },
+    {
+      "number": 356,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        104
+      ]
+    },
+    {
+      "number": 357,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        104
+      ]
+    },
+    {
+      "number": 358,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        104
+      ]
+    },
+    {
+      "number": 359,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        104
+      ]
+    },
+    {
+      "number": 360,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        104
+      ]
+    },
+    {
+      "number": 361,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        104
+      ]
+    },
+    {
+      "number": 362,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        104,
+        105
+      ]
+    },
+    {
+      "number": 363,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        105
+      ]
+    },
+    {
+      "number": 364,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        105
+      ]
+    },
+    {
+      "number": 365,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        105
+      ]
+    },
+    {
+      "number": 366,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        105
+      ]
+    },
+    {
+      "number": 367,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        105
+      ]
+    },
+    {
+      "number": 368,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        105
+      ]
+    },
+    {
+      "number": 369,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        106
+      ]
+    },
+    {
+      "number": 370,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        106
+      ]
+    },
+    {
+      "number": 371,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        106
+      ]
+    },
+    {
+      "number": 372,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        106
+      ]
+    },
+    {
+      "number": 373,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        106
+      ]
+    },
+    {
+      "number": 374,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        110
+      ]
+    },
+    {
+      "number": 375,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        110
+      ]
+    },
+    {
+      "number": 376,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        110
+      ]
+    },
+    {
+      "number": 377,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        110
+      ]
+    },
+    {
+      "number": 378,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        110
+      ]
+    },
+    {
+      "number": 379,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д"
+      ],
+      "printedPages": [
+        110
+      ]
+    },
+    {
+      "number": 380,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        110
+      ]
+    },
+    {
+      "number": 381,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "printedPages": [
+        110
+      ]
+    },
+    {
+      "number": 382,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        110
+      ]
+    },
+    {
+      "number": 383,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        111
+      ]
+    },
+    {
+      "number": 384,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        111
+      ]
+    },
+    {
+      "number": 385,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        111
+      ]
+    },
+    {
+      "number": 386,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        111
+      ]
+    },
+    {
+      "number": 387,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        111
+      ]
+    },
+    {
+      "number": 388,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        111
+      ]
+    },
+    {
+      "number": 389,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        111
+      ]
+    },
+    {
+      "number": 390,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        111,
+        112
+      ]
+    },
+    {
+      "number": 391,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        111
+      ]
+    },
+    {
+      "number": 392,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        112
+      ]
+    },
+    {
+      "number": 393,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        112
+      ]
+    },
+    {
+      "number": 394,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        114
+      ]
+    },
+    {
+      "number": 395,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        114
+      ]
+    },
+    {
+      "number": 396,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        114
+      ]
+    },
+    {
+      "number": 397,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        114
+      ]
+    },
+    {
+      "number": 398,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        114
+      ]
+    },
+    {
+      "number": 399,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        114
+      ]
+    },
+    {
+      "number": 400,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        114
+      ]
+    },
+    {
+      "number": 401,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        114
+      ]
+    },
+    {
+      "number": 402,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        114
+      ]
+    },
+    {
+      "number": 403,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        115
+      ]
+    },
+    {
+      "number": 404,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        115
+      ]
+    },
+    {
+      "number": 405,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        115
+      ]
+    },
+    {
+      "number": 406,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        115
+      ]
+    },
+    {
+      "number": 407,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        115
+      ]
+    },
+    {
+      "number": 408,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        115
+      ]
+    },
+    {
+      "number": 409,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        115
+      ]
+    },
+    {
+      "number": 410,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        115
+      ]
+    },
+    {
+      "number": 411,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        115
+      ]
+    },
+    {
+      "number": 412,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        115
+      ]
+    }
+  ],
+  "theory": [
+    {
+      "number": 39,
+      "title": "Свойства биссектрисы угла",
+      "printedPages": [
+        91,
+        92,
+        93
+      ]
+    },
+    {
+      "number": 40,
+      "title": "Свойства серединного перпендикуляра к отрезку",
+      "printedPages": [
+        93,
+        94,
+        95
+      ]
+    },
+    {
+      "number": 41,
+      "title": "Свойства диаметров и хорд окружности",
+      "printedPages": [
+        95,
+        96,
+        97
+      ]
+    },
+    {
+      "number": 42,
+      "title": "Взаимное расположение окружности и прямой. Касательная к окружности",
+      "printedPages": [
+        97,
+        98,
+        99,
+        100
+      ]
+    },
+    {
+      "number": 43,
+      "title": "Вписанная и описанная окружности треугольника",
+      "printedPages": [
+        100,
+        101,
+        102,
+        103
+      ]
+    },
+    {
+      "number": 44,
+      "title": "Фигуры, симметричные относительно прямой",
+      "printedPages": [
+        106,
+        107,
+        108
+      ]
+    },
+    {
+      "number": 45,
+      "title": "Осевая симметрия и её свойства",
+      "printedPages": [
+        108,
+        109
+      ]
+    }
+  ],
+  "selfchecks": [
+    {
+      "number": 1,
+      "printedPages": [
+        112
+      ]
+    },
+    {
+      "number": 2,
+      "printedPages": [
+        112
+      ]
+    },
+    {
+      "number": 3,
+      "printedPages": [
+        112
+      ]
+    },
+    {
+      "number": 4,
+      "printedPages": [
+        112
+      ]
+    },
+    {
+      "number": 5,
+      "printedPages": [
+        112
+      ]
+    },
+    {
+      "number": 6,
+      "printedPages": [
+        113
+      ]
+    },
+    {
+      "number": 7,
+      "printedPages": [
+        113
+      ]
+    },
+    {
+      "number": 8,
+      "printedPages": [
+        113
+      ]
+    },
+    {
+      "number": 9,
+      "printedPages": [
+        113
+      ]
+    },
+    {
+      "number": 10,
+      "printedPages": [
+        113
+      ]
+    },
+    {
+      "number": 11,
+      "printedPages": [
+        113
+      ]
+    },
+    {
+      "number": 12,
+      "printedPages": [
+        113
+      ]
+    },
+    {
+      "number": 13,
+      "printedPages": [
+        113
+      ]
+    },
+    {
+      "number": 14,
+      "printedPages": [
+        113
+      ]
+    },
+    {
+      "number": 15,
+      "printedPages": [
+        113
+      ]
+    },
+    {
+      "number": 16,
+      "printedPages": [
+        113
+      ]
+    },
+    {
+      "number": 17,
+      "printedPages": [
+        113
+      ]
+    },
+    {
+      "number": 18,
+      "printedPages": [
+        113
+      ]
+    },
+    {
+      "number": 19,
+      "printedPages": [
+        113
+      ]
+    },
+    {
+      "number": 20,
+      "printedPages": [
+        113
+      ]
+    },
+    {
+      "number": 21,
+      "printedPages": [
+        113
+      ]
+    },
+    {
+      "number": 22,
+      "printedPages": [
+        113
+      ]
+    },
+    {
+      "number": 23,
+      "printedPages": [
+        113
+      ]
+    },
+    {
+      "number": 24,
+      "printedPages": [
+        113
+      ]
+    },
+    {
+      "number": 25,
+      "printedPages": [
+        113
+      ]
+    },
+    {
+      "number": 26,
+      "printedPages": [
+        113
+      ]
+    },
+    {
+      "number": 27,
+      "printedPages": [
+        114
+      ]
+    },
+    {
+      "number": 28,
+      "printedPages": [
+        114
+      ]
+    },
+    {
+      "number": 29,
+      "printedPages": [
+        114
+      ]
+    },
+    {
+      "number": 30,
+      "printedPages": [
+        114
+      ]
+    }
+  ],
+  "counts": {
+    "mainNumbers": 82,
+    "mainParts": 99,
+    "theory": 7,
+    "selfchecks": 30,
+    "cards": 136
+  },
+  "caseRequirements": {
+    "331": "The locus includes all plane points equidistant from two intersecting supporting lines: both perpendicular angle-bisector lines and their common intersection; prove both inclusions.",
+    "332": "Two distinct parallel lines give their middle parallel line; prove both inclusions.",
+    "333": "Intersect perpendicular bisectors of AB and CD; distinguish one solution, no solution for distinct parallel bisectors, and infinitely many for coincident bisectors.",
+    "334": "The source does not explicitly require M inside the angle. Distances to angle sides mean distances to supporting lines, as specified in point 39. Preserve the request to construct a point with MA=MB and account for admissible bisector/perpendicular-bisector intersections.",
+    "335": "The bisectors are those of the exterior angles at B and C; the conclusion is equidistance from the three supporting lines AB, BC and CA.",
+    "336": "The chord explicitly does not pass through the center; inequality against diameter is strict.",
+    "337": "The two chords AB and AC are distinct chords of the same circle; retain their shared endpoint and justify neither can be a diameter.",
+    "338": "C is inside the circle and not on diameter AB; prove angle ACB is obtuse.",
+    "339": "C is outside the circle and not on the supporting line AB; prove angle ACB is acute.",
+    "340": "Parallel-chord midpoints lie on one diameter; a chord that is itself a diameter has midpoint O and must not invoke a nondegenerate center-chord triangle.",
+    "341": "Equal chords are equidistant from the center; handle zero distance when both chords are diameters.",
+    "342": "Chords equidistant from the center are equal; include the zero-distance diameter case.",
+    "347": "The entire source spans pages 103–104: B,A,C,D occur in that order on the tangent line, up to reversal. Part а classifies segments AC,BC,CD; part б classifies rays AC,CA,CD,DB. A tangent segment/ray must contain the contact point A.",
+    "348": "Two circles are inscribed in the same angle; match A/B on one side and D/C on the other, and consider their relative distances from the vertex.",
+    "349": "Distinguish the conventional smaller angle between the tangent line and chord from its supplementary angle if directed tangent rays are discussed.",
+    "354": "Use figure162 on printed page99 as well as the statement on104: the requested angles3 and4 are at A on the two sides of AO; OB=3cm and OA=6cm. Preserve the tangent and radius relationships from that figure.",
+    "356": "Three separate parts: tangency to circle(A,AB), tangency to circle(C,CB), and nontangency of AC to both circle(B,BA) and circle(B,BC).",
+    "357": "Chord AH=8cm and central angle AOH=90degrees; the target is the center-to-supporting-line distance.",
+    "358": "Construct the two tangent candidates at the endpoints of the diameter perpendicular to the given line. Parallel lines are distinct and have no common point: if the given line is itself a tangent, the coincident candidate is not parallel to it and must be excluded, leaving exactly one admissible tangent. Otherwise both candidates are admissible. Preserve this boundary case without changing the printed condition.",
+    "359": "Both tangent lines perpendicular to the given line are admissible. Use the diameter on the line through the center with the same direction as the given line: when the center lies off the given line, construct its parallel through the center; when the center lies on the given line, use that line itself, rather than claiming to construct a distinct parallel through one of its points. The endpoint tangents are perpendicular to the given line in both cases.",
+    "360": "Given hypotenuse and its altitude: analyze feasibility h<=c/2, equality and the mirror arrangements, excluding h=0 for a triangle.",
+    "361": "Given median and altitude to the hypotenuse: hypotenuse is twice the median; analyze h<=m and the equality case.",
+    "362": "The printed source includes its own construction and proof across pages104–105; retain the complete source page range.",
+    "363": "The three given points are explicitly noncollinear; construct and justify their unique circumcircle.",
+    "364": "One unlettered exercise contains three complete cases: obtuse, right and acute triangle circumcircles, including the position of each center.",
+    "365": "One unlettered exercise contains obtuse, right and acute incircle constructions and the position of each center.",
+    "366": "Prove coincidence of incenter and circumcenter for an equilateral triangle.",
+    "367": "Reproduce the relevant topology of figure169 and classify all shown triangles: ABC, EFG and NUH; lying inside a disk alone is not inscribed.",
+    "368": "Classify all four named figure170 triangles ABC,CED,LMN,CTS using tangency on each actual side segment; tangency only to extensions is insufficient.",
+    "369": "The circumcenter of a right triangle is the midpoint of its hypotenuse; retain the right-angle hypothesis.",
+    "371": "Given hypotenuse26cm and inradius4cm, find the perimeter using tangent lengths; do not assume an unintroduced Pythagorean/area formula.",
+    "372": "The requested quantity is the diameter of the incircle, with hypotenuse c and sum of legs m, not the radius.",
+    "373": "The isosceles triangle incircle center O and circumcircle center E may coincide in the equilateral special case; both lie on the perpendicular bisector of the base.",
+    "374": "A and B are off the axis, C is on it, so C1=C. Preserve all three segment-length comparisons AB/A1B1,AC/A1C1,BC/B1C1 as a practical construction and measurement activity.",
+    "375": "Construct the reflected point using a compass only; a ruler/perpendicular construction is not the requested method.",
+    "376": "Construct the symmetry axis of two distinct points; if coincidence is discussed, it does not determine one axis.",
+    "377": "Recover the axis from the given distinct reflected pair A,B and then reflect arbitrary M, including M on the axis.",
+    "378": "Retain both requested practical triangle constructions: axis disjoint from sides and axis crossing two sides, with corresponding side/angle comparison using ruler and protractor.",
+    "379": "Five printed parts: segment, angle, isosceles triangle, scalene triangle, equilateral triangle. A segment has two axes (supporting line and perpendicular bisector); distinguish none/one/three axes for the triangle cases.",
+    "380": "Two printed parts request examples with exactly one axis and with several axes; include an explanation of the chosen figures.",
+    "381": "Four parts: segment, line, ray, angle. A line has infinitely many axes: itself and every perpendicular line; a ray has its supporting line; use a nonstraight angle for the usual one-axis case.",
+    "382": "One unlettered table exercise requires examples for all five columns: zero,one,two,three,and infinitely many symmetry axes. Do not silently reduce it to a single example.",
+    "383": "Classify the exact displayed uppercase letters А,Б,Г,Е,О,F with their intended geometric glyph shapes; an arbitrary decorative font can change symmetry and must not be treated as a theorem about every font.",
+    "384": "Two parts use figure179: identify the reflected candidate for A and for B among M,N,C,Q,S. Equal distance from the axis alone is not sufficient; corresponding feet must coincide.",
+    "385": "Three labelled distance pairs:4/6cm,7/7cm,11.3/11.4cm. The question asks whether symmetry is possible, not whether equal distances guarantee it.",
+    "386": "B lies between A and C; preserve that order when using AC=5cm,BC=3cm.",
+    "387": "Figure180а fixes the order A,B,H,B1,A1 along the perpendicular to p; use AH=27.3cm and B1H=7.8cm.",
+    "388": "Figure180б fixes B1,A,H,A1,B, so reflected pairs straddle the axis with A and B on opposite sides; use AA1=5cm and BB1=15cm.",
+    "389": "Two labelled collinearity questions; convert mixed units in а (2dm,10dm,80cm) and use reflection to interpret B1C1 in б (AB=1.1cm,B1C1=5cm,CA=6cm).",
+    "390": "Statement on page111 depends on figure181 on page112; inventory both pages. Classify all pictured line,triangle,segment,ray and circle pair candidates by their actual geometry, not merely paired labels.",
+    "391": "Preserve side lengths4.5cm,5.5cm,8.1cm; reflected triangle has equal perimeter.",
+    "392": "BO is the angle's symmetry axis, so reflected vertices fall on the opposite angle sides; convert BA=5.4cm and BC=35mm before finding both A1C and AC1.",
+    "393": "The source includes a full proof. An axis of a nondegenerate triangle fixes one vertex and exchanges the other two; cover the isosceles conclusion and the perpendicular-bisector identity, including each possible axis of an equilateral triangle.",
+    "394": "Chord is explicitly not a diameter; prove the endpoint tangents intersect rather than treating the parallel-diameter exception as a counterexample.",
+    "395": "The tangent at X must intersect the actual segments AB and AC. This selects the admissible open arc; exclude endpoint degeneracy and retain both invariants, perimeter AMN and angle MON.",
+    "396": "The starred exercise remains one unlettered part. Distinct circles share contact M and its tangent; common tangent AB has distinct contacts A and B. Treat the nondegenerate configuration needed for the circle with diameter AB.",
+    "397": "AB is a diameter and BC is parallel to AD; preserve these named chords in proving that CD is a diameter.",
+    "398": "The triangle is scalene; a vertex cannot lie on the perpendicular bisector of any of its sides, and the endpoint-versus-opposite-vertex possibilities require explanation.",
+    "399": "The circumcenter lies on a median. Separate coincidence with its midpoint (right triangle) from a distinct center (isosceles); do not exclude the right case.",
+    "400": "Both centers of an isosceles triangle lie on the perpendicular bisector of the base; do not infer that the two centers must be distinct.",
+    "401": "A is on the given line and B is off it. Intersect the perpendicular at A with the perpendicular bisector of AB and justify the unique nonzero-radius circle.",
+    "402": "The point is off both distinct parallel lines; distinguish a point in the open strip (two circles) from outside the strip (no circle). Centers lie on the middle parallel and radius is half the separation.",
+    "403": "Reflection preserves parallelism of the two distinct given parallel lines. A reflected line may coincide with its own source when that source is the axis or perpendicular to it; do not assume every original/image pair is distinct.",
+    "404": "Reflection preserves perpendicularity. Include cases with the intersection on the axis and original lines individually fixed or exchanged.",
+    "405": "The full line containing the altitude to the base of an isosceles triangle is the symmetry axis; the proof includes the equal-side correspondence and fixed altitude foot.",
+    "406": "The point is inside angle CDE. Reflected points lie across DE and DC respectively; use the indicated angles A1DE=24 degrees and A2DC=48 degrees with their specified rays.",
+    "407": "Every line through the circle centre is an axis, including its two fixed circle points; prove the whole circumference maps to itself, not only a selected chord.",
+    "408": "The printed statement needs a boundary qualification: when the chord intersection is the centre, both equal chords can be diameters and an arbitrary diameter through that point need not exchange them. Preserve and identify the source wording issue; the usual proof requires intersection different from the centre. For the central case, only appropriate bisector diameter lines exchange the two distinct diameter chords.",
+    "409": "Two distinct axes of a triangle imply that it is equilateral and therefore has its third axis; do not assume the result from an isosceles drawing.",
+    "410": "Two lettered tasks. Part а constructs the reflected line b1 for every position relative to p, including a coincident image. Part б asks p to be an axis of the segment, not necessarily its perpendicular bisector. Include exchanged endpoints found through a intersection b1, excluding zero-length choices, and distinct fixed endpoints lying on p (a segment along the axis). Classify no, finite or infinitely many constructions where applicable.",
+    "411": "Two lettered tasks. Part а reflects a in b including invariant lines. Part б requires b specifically to be the perpendicular bisector, so reflected-endpoint candidates from a1 intersect circle must be off b and give a nonzero segment. Tangency/intersection/disjoint cases alone are insufficient when a candidate lies on b.",
+    "412": "For a pair of distinct intersecting lines regarded as their union, the two angle-bisector lines are axes. If the given lines are perpendicular, each given line is also an axis, giving four axes rather than two. Explain exchanged-line and individually fixed-line possibilities."
+  },
+  "theoryRequirements": [
+    "39 defines locus through both implications; equal distances are to supporting lines; converse assumes point inside nonstraight angle; triangle bisector concurrence included.",
+    "40 treats coincidence with segment midpoint and converse points on/off supporting line; perpendicular-bisector concurrence proof continues next page.",
+    "41 direct diameter-through-chord-midpoint assertion needs non-diameter chord qualification; otherwise midpoint is circle center and the stated perpendicular conclusion does not follow. Converse perpendicular-diameter-bisects-chord holds also for diameter chord. Point41 also proves both right-angle diameter implications and excludes diameter endpoints from the locus.",
+    "42 includes secant/tangent/disjoint configurations, tangent-radius perpendicularity, equal tangent segments and equal angles with center line, converse tangent criterion, tangent construction at a given point on circle.",
+    "43 defines tangency of segments/rays with the contact point on the segment/ray; inscribed-in-angle circle centers are on the internal bisector.",
+    "43 includes existence and uniqueness of incircle and circumcircle, with contact on actual triangle sides, plus definitions of both inverse descriptions triangle/circle.",
+    "44 includes fixed points on the axis, figures and pairs of figures, examples with zero/one/three/infinitely-many axes, and equal distances from reflected points to axis points.",
+    "45 property1 needs the coincident reflected-line case in addition to distinct parallel/intersecting lines; a line perpendicular to the axis and the axis itself map to themselves.",
+    "45 includes all reflected-point configurations in figure177б (collinear perpendicular to axis, crossing sides, parallel to axis, fixed on axis) and practical monotype/folded-paint example; retain elementary distance proof rather than merely asserting a coordinate transform."
+  ],
+  "selfcheckRequirements": {
+    "8": "Cover the diameter and chord properties of point41, identifying the non-diameter qualification of its direct midpoint assertion.",
+    "14": "Cover both equality of tangent segments and the equal angles they form with the line through the external point and circle center.",
+    "18": "Cover the circle-inscribed-in-angle definition, how many such circles exist, and the locus of their centers.",
+    "20": "Prove existence and uniqueness of the triangle incircle.",
+    "22": "Prove existence and uniqueness of the triangle circumcircle.",
+    "30": "The single printed selfcheck includes both ruler-and-compass and compass-only reflection construction requests; keep both within its one card."
+  },
+  "sourceCaveats": [
+    {
+      "id": "V-SOURCE-041-MIDPOINT",
+      "kind": "missing-boundary-qualification",
+      "source": {
+        "collection": "theory",
+        "number": 41,
+        "printedPages": [
+          96
+        ]
+      },
+      "observation": "The printed direct property says a diameter through the midpoint of a chord is perpendicular to that chord without excluding a chord that is itself a diameter.",
+      "mathematicalBoundary": "If the chord is a diameter, its midpoint is the center and every diameter passes through it; the claimed perpendicular conclusion is false in general. The printed center/endpoints triangle proof is degenerate.",
+      "requiredTreatment": "Preserve and identify the printed statement, then explicitly qualify this implication by a non-diameter chord. Do not silently present the qualification as text supplied by the source. The converse, a perpendicular diameter bisects the chord, remains valid for a diameter chord."
+    },
+    {
+      "id": "V-SOURCE-045-COINCIDENT",
+      "kind": "omitted-case",
+      "source": {
+        "collection": "theory",
+        "number": 45,
+        "printedPages": [
+          108,
+          109
+        ]
+      },
+      "observation": "The discussion of a line and its reflection treats parallel lines and lines intersecting on the axis; an invariant line may coincide with its reflected line.",
+      "mathematicalBoundary": "The axis itself and every line perpendicular to the axis are invariant. A coincident original/image pair must not be classified as two distinct parallel lines or as having exactly one intersection.",
+      "requiredTreatment": "State and illustrate the coincident case alongside the two cases discussed in the source; apply it to line-construction exercises as needed."
+    },
+    {
+      "id": "V-SOURCE-408-CENTER",
+      "kind": "missing-boundary-qualification",
+      "source": {
+        "collection": "main",
+        "number": 408,
+        "printedPages": [
+          115
+        ]
+      },
+      "observation": "The source asks to prove symmetry of two equal intersecting chords about the line of a diameter containing their intersection, without excluding intersection at the circle center.",
+      "mathematicalBoundary": "Two distinct diameters are equal chords intersecting at the center, but an arbitrary diameter through that center need not exchange them. The given condition therefore does not imply the conclusion in this boundary case.",
+      "requiredTreatment": "Keep the printed condition identifiable and explain its missing qualification. Prove the ordinary statement for intersection different from the center; for the central case state that only the appropriate bisector axes exchange the two distinct diameter chords. Do not repair the source invisibly."
+    }
+  ],
+  "reviewScope": "Source structure and source-condition inventory only. No authored solution, model, learner interaction, screenshot, CI or release approval is conferred by this map."
+}

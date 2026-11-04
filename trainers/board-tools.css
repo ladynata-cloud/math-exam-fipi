@@ -1,0 +1,197 @@
+/* Classic individual lesson only. Load after board-picker.css. */
+.workspace-bar:has(#workspaceModes) { height: auto; min-height: 56px; flex-wrap: wrap; gap: 8px 14px; padding-top: 8px; padding-bottom: 8px; }
+#workspaceModes { display: flex; align-items: stretch; gap: 2px; max-width: 100%; padding: 3px; border: 1px solid #dfe7e2; border-radius: 10px; background: #f2f6f3; }
+#workspaceModes button { min-width: 0; min-height: 30px; padding: 5px 10px; border: 1px solid transparent; border-radius: 7px; background: transparent; color: #58665f; font: inherit; font-size: 12px; font-weight: 600; line-height: 1.2; white-space: nowrap; cursor: pointer; }
+#workspaceModes button[aria-pressed="true"] { border-color: #cbded1; color: #215d42; background: #fff; box-shadow: 0 1px 3px #214b3210; }
+#workspaceModes button:hover { background: #fff; }
+#workspaceModes button:focus-visible { outline: 3px solid #93b4ff; outline-offset: 2px; }
+
+#lesson {
+  --trainer-share: 50fr;
+  --board-share: 50fr;
+  gap: 0;
+  grid-template-columns: minmax(0, var(--trainer-share)) 14px minmax(0, var(--board-share));
+  grid-template-rows: minmax(0, 1fr);
+}
+
+#boardDivider {
+  position: relative;
+  z-index: 4;
+  display: block;
+  align-self: stretch;
+  min-width: 0;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: col-resize;
+  touch-action: none;
+  user-select: none;
+}
+#boardDivider::after { content: ''; position: absolute; inset: 0 -5px; }
+#boardDivider::before {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 54px;
+  left: 5px;
+  top: calc(50% - 27px);
+  border-radius: 4px;
+  background: #cbd5df;
+}
+#boardDivider:hover::before,
+#boardDivider:focus-visible::before,
+#boardDivider.is-dragging::before { background: #39735c; }
+#boardDivider:focus-visible { outline: 2px solid #39735c; outline-offset: -2px; }
+#boardDivider[hidden],
+#lesson.hide-trainer > #boardDivider,
+#lesson.trainer-only > #boardDivider,
+#lesson.trainer-only > .board { display: none; }
+#lesson.hide-trainer,
+#lesson.trainer-only { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
+body.board-divider-dragging { cursor: col-resize; user-select: none; }
+body.board-divider-dragging #trainerFrame { pointer-events: none !important; }
+.board-divider-shield { position: fixed; inset: 0; z-index: 1100; cursor: col-resize; touch-action: none; }
+
+#lesson > .board { border-color: #dbe3e2; container-type: inline-size; container-name: classic-board; }
+#lesson .board-head { min-height: 48px; padding: 7px 12px; gap: 8px; }
+#lesson .board-heading { flex: 1; min-width: 0; }
+#lesson .board-head h1 { font-size: 14px; line-height: 1.3; }
+#lesson .board-control { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 7px; min-width: 0; font-size: 11px; line-height: 1.3; color: #61706a; }
+#lesson .board-control .btn,
+#lesson .board-control button { min-height: 24px; padding: 3px 6px; border-color: transparent; background: #f0f6f2; font-size: 11px; font-weight: 600; }
+#lesson .board-control button:disabled { background: transparent; }
+#lesson .sheet { flex-shrink: 0; }
+#lesson .sheet-count { min-width: 70px; font-size: 11px; }
+#lesson .sheet .btn { width: 28px; height: 30px; min-height: 30px; }
+#lesson .board-head > .icon-button { width: 30px; height: 30px; min-height: 30px; }
+
+#lesson .toolbar { position: relative; min-height: 49px; padding: 4px 8px; gap: 5px; align-items: center; }
+#lesson .toolbar > .tools { min-width: 0; gap: 1px; flex-wrap: wrap; }
+#lesson .toolbar .tool { min-width: 33px; min-height: 40px; gap: 3px; padding: 4px 3px; border-radius: 7px; }
+#lesson .toolbar .tool svg { width: 17px; height: 17px; }
+#lesson .toolbar .tool span { font-size: 9px; }
+#lesson .toolbar #addBoardImage { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; min-width: 36px; min-height: 40px; gap: 3px; padding: 4px 3px; border-radius: 7px; }
+#lesson .toolbar #addBoardImage svg { width: 17px; height: 17px; }
+#lesson .toolbar #addBoardImage span { font-size: 9px; }
+#lesson .toolbar > .actions { margin-left: auto; gap: 1px; }
+#lesson .toolbar > .actions .btn { width: 29px; height: 32px; min-height: 32px; }
+#lesson .tool[aria-pressed="true"],
+#lesson .board-tools button[aria-pressed="true"] { color: #1a684b; background: #eaf4ee; border-color: #96bea7; }
+#lesson .tool:hover:not(:disabled),
+#lesson .board-tools button:hover:not(:disabled) { background-color: #f1f6f3; }
+
+#lesson .shape-menu { position: static; align-self: center; }
+#lesson .shape-menu > summary { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-width: 43px; min-height: 40px; padding: 4px 9px 4px 4px; border: 1px solid transparent; border-radius: 7px; cursor: pointer; list-style: none; font-size: 9px; color: #52616c; user-select: none; }
+#lesson .shape-menu > summary svg { width: 17px; height: 17px; }
+#lesson .shape-menu > summary::-webkit-details-marker { display: none; }
+#lesson .shape-menu > summary::after { content: '⌄'; position: absolute; right: 1px; top: 7px; font-size: 11px; }
+#lesson .shape-menu[open] > summary { background: #eef4f0; border-color: #cbded1; }
+#lesson .shape-menu .shape-options { position: absolute; z-index: 20; top: calc(100% + 5px); right: 8px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; width: 206px; max-width: calc(100% - 16px); padding: 8px; border: 1px solid #d8e2db; border-radius: 10px; background: #fff; box-shadow: 0 8px 24px #203b2c1f; }
+#lesson .shape-menu .shape-options button { white-space: normal; overflow-wrap: anywhere; min-width: 0; min-height: 42px; padding: 5px; font-size: 11px; }
+#lesson .shape-menu .shape-options .tool span { font-size: 10px; }
+#lesson .shape-menu .shape-options .tool span[aria-hidden] { font-size: 22px; line-height: 1; }
+#lesson .shape-menu .shape-options small { grid-column: 1 / -1; color: #61706a; font-size: 10px; line-height: 1.4; padding: 4px 2px 0; }
+
+#lesson .board-tools { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px 10px; min-height: 35px; padding: 3px 10px 4px; border-bottom: 1px solid #e2e8e3; background: #fff; }
+#lesson .tool-palette,
+#lesson .pen-widths { display: flex; align-items: center; gap: 3px; min-width: 0; }
+#lesson .board-tools button { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; min-width: 27px; width: 27px; min-height: 27px; height: 27px; padding: 3px; border: 1px solid transparent; border-radius: 7px; background: #fff; cursor: pointer; }
+#lesson .tool-palette button[data-color]::before { content: ''; width: 15px; height: 15px; border: 1px solid #00000018; border-radius: 50%; background: var(--swatch, currentColor); }
+#lesson .tool-palette button[data-color][aria-pressed="true"] { border-color: #86ad96; background: #eaf4ee; }
+#lesson .tool-palette input[type="color"] { width: 28px; height: 27px; margin: 0 0 0 3px; padding: 3px; border: 1px solid #dce4de; border-radius: 7px; background: #fff; cursor: pointer; }
+#lesson .pen-widths { border-left: 1px solid #e3e8e4; padding-left: 8px; }
+#lesson .pen-widths button { color: #294a3a; }
+#lesson .pen-widths button > span,
+#lesson .pen-widths button > i { display: block; border-radius: 50%; background: currentColor; }
+#lesson .pen-widths button[data-pen-size="2"] > span,
+#lesson .pen-widths button[data-pen-size="2"] > i { width: 3px; height: 3px; }
+#lesson .pen-widths button[data-pen-size="5"] > span,
+#lesson .pen-widths button[data-pen-size="5"] > i { width: 6px; height: 6px; }
+#lesson .pen-widths button[data-pen-size="9"] > span,
+#lesson .pen-widths button[data-pen-size="9"] > i { width: 10px; height: 10px; }
+#lesson .board-tools button:disabled,
+#lesson .board-tools input:disabled { opacity: .45; cursor: default; }
+.student-mode:not(.control-owner) #lesson .board-tools { display: none; }
+
+#lesson .canvas-wrap { min-height: 220px; padding: 8px; background: #edf2ef; }
+#lesson .canvas-wrap canvas { border-color: #d9e1dc; border-radius: 7px; }
+#lesson .board-message { margin: 0; padding: 7px 12px; color: #40594b; background: #f1f7f2; font-size: 12px; line-height: 1.4; }
+#lesson .board-message[hidden] { display: none; }
+#lesson .shape-menu.selected > summary { color: #1a684b; background: #eaf4ee; border-color: #96bea7; }
+#lesson .board-viewbar { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 4px; min-height: 34px; padding: 3px 8px; border-top: 1px solid #e3e8e5; background: #fff; font-size: 11px; color: #5d6c65; }
+#lesson .board-viewbar .tool,
+#lesson .board-viewbar .btn,
+#lesson .board-viewbar button { display: inline-flex; flex-direction: row; align-items: center; justify-content: center; min-width: 28px; min-height: 27px; height: 27px; gap: 4px; padding: 3px 6px; border-radius: 7px; font-size: 11px; }
+#lesson .board-viewbar .tool svg { width: 15px; height: 15px; }
+#lesson .board-viewbar .tool span { font-size: 11px; }
+#lesson .board-viewbar [data-tool="hand"] { margin-right: auto; }
+#lesson .board-viewbar .zoom-controls { display: flex; align-items: center; gap: 2px; }
+#lesson .board-viewbar [aria-live],
+#lesson .board-viewbar output { min-width: 34px; text-align: center; font-variant-numeric: tabular-nums; }
+#lesson .board-viewbar .board-sr-only { position: absolute; width: 1px; min-width: 0; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+
+/* A deliberately narrow board still keeps every heading control reachable. */
+@container classic-board (max-width: 360px) {
+  #lesson > .board .board-head { flex-wrap: wrap; gap: 4px; }
+  #lesson .board-heading { flex: 1 1 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  #lesson .board-heading h1 { margin-right: 0; }
+  #lesson .board-control { flex-wrap: nowrap; }
+  #lesson .sheet { margin-left: auto; }
+}
+
+/* Override the older 1050px stacking rule: landscape tablets keep two panes. */
+@media (min-width: 901px) {
+  #lesson { height: calc(100dvh - var(--workspace-header-height, 56px)); min-height: 590px; }
+  #lesson > .trainer,
+  #lesson > .board { height: auto; min-height: 0; }
+  #lesson > .trainer > .frame { min-height: 0; flex: 1 1 0; }
+  #lesson .board-head { flex-wrap: nowrap; }
+  #boardPanel .board-layout::after { display: none; }
+}
+
+@media (max-width: 900px) {
+  #lesson,
+  #lesson.hide-trainer,
+  #lesson.trainer-only { height: auto; min-height: 0; gap: 10px; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto; }
+  #boardDivider { display: none; }
+  #lesson > .trainer { height: calc(100dvh - 80px); min-height: 640px; }
+  #lesson > .board { height: 700px; min-height: 0; }
+  #lesson.hide-trainer,
+  #lesson.trainer-only { grid-template-rows: auto; }
+  #lesson.hide-trainer > .board { height: calc(100dvh - var(--workspace-header-height, 56px) - 24px); min-height: 500px; }
+  #lesson.trainer-only > .trainer { height: calc(100dvh - var(--workspace-header-height, 56px) - 24px); min-height: 480px; }
+  #lesson .board-head { display: flex; }
+}
+
+@media (max-width: 720px) {
+  .workspace-bar:has(#workspaceModes) { gap: 8px 9px; }
+  #workspaceModes { order: 3; flex: 1 0 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  #workspaceModes button { min-height: 32px; padding: 6px; }
+  .workspace-bar:has(#workspaceModes) .workspace-session { flex: 1 1 0; }
+  .workspace-bar:has(#workspaceModes) .workspace-session .status { min-width: 0; overflow-wrap: anywhere; }
+  .workspace-bar:has(#workspaceModes) .workspace-session .btn { flex-shrink: 0; }
+  #lesson.hide-trainer > .board,
+  #lesson.trainer-only > .trainer { height: calc(100dvh - var(--workspace-header-height, 56px) - 16px); }
+}
+
+@media (max-width: 480px) {
+  .workspace-bar:has(#workspaceModes) .workspace-session .status { max-width: 100px; }
+  #lesson .board-head { gap: 5px; padding: 7px 8px; }
+  #lesson .board-head h1 { font-size: 13px; }
+  #lesson .board-control { gap: 2px 4px; font-size: 10px; }
+  #lesson .board-control button { font-size: 10px; padding: 3px 4px; }
+  #lesson .sheet-count { min-width: 64px; font-size: 10px; }
+  #lesson .sheet .btn { width: 25px; }
+  #lesson .board-head > .icon-button { width: 25px; }
+  #lesson .toolbar { padding: 4px 6px; }
+  #lesson .toolbar > .tools { flex: 1 1 auto; justify-content: flex-start; }
+  #lesson .toolbar .tool { min-width: 32px; }
+  #lesson .toolbar > .actions { flex-shrink: 0; }
+  #lesson .board-tools { padding-right: 7px; padding-left: 7px; gap: 4px; }
+  #lesson .pen-widths { padding-left: 5px; }
+  #lesson .canvas-wrap { padding: 6px; }
+  #lesson .board-viewbar { padding-right: 6px; padding-left: 6px; }
+}

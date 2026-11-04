@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "change": "external-contextual-navigation-shell",
+  "baseSha": "59ca8d215312831a21494e3b67099b30b1e6013d",
+  "injection": "<!-- BEGIN OGE BASICS CONTEXTUAL SHELL -->\n<link rel=\"stylesheet\" href=\"../navigation-minimal.css?v=20261020\">\n<script defer src=\"../navigation-minimal.js?v=20261020\"></script>\n<!-- END OGE BASICS CONTEXTUAL SHELL -->",
+  "files": [
+    {
+      "path": "trainers/oge-basics/percentages/index.html",
+      "baseSha256": "b96987d35550d8c9eba4654d652c3276aaa629f99f6e4e29ec033a5b6153ae96",
+      "currentSha256": "b81f6545376ed9b821cf16aa410dcc98859644b9abb69ecc5e009de2c9f03a3e"
+    },
+    {
+      "path": "trainers/oge-basics/percentages/percent-change.html",
+      "baseSha256": "4c5f53d97a43ee869a84a1e72ed2e3b31648fe94ed1589644735c70f3a86bdd1",
+      "currentSha256": "4c5f53d97a43ee869a84a1e72ed2e3b31648fe94ed1589644735c70f3a86bdd1"
+    },
+    {
+      "path": "trainers/oge-basics/percentages/percent-choose-question.html",
+      "baseSha256": "b945a114fa67cea29510b42ad160370248971761c0021764765ea99c449ef72d",
+      "currentSha256": "b945a114fa67cea29510b42ad160370248971761c0021764765ea99c449ef72d"
+    },
+    {
+      "path": "trainers/oge-basics/percentages/percent-final-checkpoint.html",
+      "baseSha256": "5def1a6b8d8016715737c30af46fb8631c7d128bbfaa364ba8a8c45b2363b034",
+      "currentSha256": "5def1a6b8d8016715737c30af46fb8631c7d128bbfaa364ba8a8c45b2363b034"
+    },
+    {
+      "path": "trainers/oge-basics/percentages/percent-meaning.html",
+      "baseSha256": "7466ab857d20dc33bc8bc7be22019be081d5b123c31cabe2d2a9891246997920",
+      "currentSha256": "7466ab857d20dc33bc8bc7be22019be081d5b123c31cabe2d2a9891246997920"
+    },
+    {
+      "path": "trainers/oge-basics/percentages/percent-of-number-and-whole.html",
+      "baseSha256": "eecc6154fdd11ceed728f24be6d417557dac972c79ce59df0ca36a354a9c04db",
+      "currentSha256": "eecc6154fdd11ceed728f24be6d417557dac972c79ce59df0ca36a354a9c04db"
+    },
+    {
+      "path": "trainers/oge-basics/percentages/proportion.html",
+      "baseSha256": "a424146f87a58fb036e26c1736c2fc92d96987a36758dcb2f13cc40ccbf19660",
+      "currentSha256": "a424146f87a58fb036e26c1736c2fc92d96987a36758dcb2f13cc40ccbf19660"
+    }
+  ],
+  "unchangedTrainerCount": 6,
+  "historicalFixture": "oge-basics-percentages-v2-sha256.json",
+  "historicalFixtureSha256": "6297b3accffcac36020784c4980be5ff5952612c482df979c8601429b85b7941",
+  "historyNote": "The historical fixture matches c1217cd (#97). Later reviewed releases added shared-loader guards, course links, corrected hints, and SEO. This fixture binds the current UI-only delta to its real parent; historical files are not rewritten."
+}

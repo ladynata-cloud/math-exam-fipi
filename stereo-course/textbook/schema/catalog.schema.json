@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathexam.space/schemas/atanasyan-catalog-v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "book",
+    "inventoryComplete",
+    "entries"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "book": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "edition",
+        "pdfPageCount"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "edition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pdfPageCount": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "inventoryComplete": {
+      "type": "boolean"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "revision",
+          "kind",
+          "title",
+          "status",
+          "source"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "kind": {
+            "enum": [
+              "exercise",
+              "theory"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "in-review",
+              "reviewed"
+            ]
+          },
+          "source": {
+            "$ref": "#/$defs/source"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "bookId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "collection": {
+          "enum": [
+            "main",
+            "ege",
+            "practical",
+            "research",
+            "selfcheck",
+            "theory",
+            "example"
+          ]
+        },
+        "printedPages": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "pdfPages": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "point": {
+          "type": "string",
+          "minLength": 1
+        },
+        "exercise": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subpart": {
+          "type": "string",
+          "minLength": 1
+        },
+        "chapter": {
+          "type": "string",
+          "minLength": 1
+        },
+        "examTask": {
+          "enum": [
+            3,
+            6,
+            8,
+            14,
+            16
+          ]
+        }
+      },
+      "required": [
+        "bookId",
+        "collection",
+        "printedPages",
+        "pdfPages"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "collection": {
+                "const": "ege"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "examTask"
+            ],
+            "type": "object",
+            "properties": {
+              "examTask": {}
+            }
+          }
+        }
+      ]
+    }
+  }
+}

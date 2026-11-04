@@ -1,0 +1,678 @@
+{
+  "audit": "Anonymous live HTTP audit of new course discovery/indexing signals",
+  "started_at_utc": "2026-10-25T14:00:09+00:00",
+  "completed_at_utc": "2026-10-25T14:00:45+00:00",
+  "repository": "https://github.com/ladynata-cloud/math-exam-fipi",
+  "repository_base_sha": "fbacc5b14cca8f698733212c91823ff82437e65b",
+  "origin": "https://mathexam.space",
+  "method": {
+    "concurrency": 3,
+    "timeout_seconds": 20,
+    "cookies": false,
+    "tls_verification": true,
+    "requests": "GET with normal HTTP redirects; no browser/JavaScript rendering",
+    "hub_sample": [
+      "/",
+      "/courses/",
+      "/school/",
+      "/geometry-course/",
+      "/stereo-course/",
+      "/ege-profil/atanasyan-10-11/"
+    ]
+  },
+  "limits": [
+    "Technical availability is not evidence that Google indexed a URL.",
+    "No authenticated Search Console URL inspection was performed by this audit.",
+    "Inbound links are sampled from the six named hubs, not an exhaustive live web crawl.",
+    "Canonical and meta-robots are parsed from static response HTML, not a JavaScript-rendered document.",
+    "Noindex is an indexing restriction; absence from a sitemap is only a discovery omission."
+  ],
+  "live_sitemap_count": 521,
+  "live_sitemap_error": null,
+  "responses": {
+    "/courses/vilenkin-6-part-1/": {
+      "requested_url": "https://mathexam.space/courses/vilenkin-6-part-1/",
+      "fetched_at_utc": "2026-10-25T14:00:09+00:00",
+      "request_method": "GET",
+      "cookies_sent": false,
+      "redirect_chain": [],
+      "status": 200,
+      "final_url": "https://mathexam.space/courses/vilenkin-6-part-1/",
+      "content_type": "text/html; charset=utf-8",
+      "x_robots_tag": [],
+      "body_sha256": "246c61bcd71182fbbc530a46041e6de53c66a082d172b68e3ab4debaf14b30e5",
+      "body_bytes": 3254,
+      "completed_at_utc": "2026-10-25T14:00:16+00:00",
+      "canonical": [
+        "https://mathexam.space/courses/vilenkin-6-part-1/"
+      ],
+      "meta_robots": [],
+      "meta_refresh": [],
+      "live_sitemap_member": true,
+      "known_hub_links_live": [
+        {
+          "hub": "https://mathexam.space/courses/",
+          "href": "/courses/vilenkin-6-part-1/",
+          "hub_meta_robots": []
+        },
+        {
+          "hub": "https://mathexam.space/courses/",
+          "href": "/courses/vilenkin-6-part-1/",
+          "hub_meta_robots": []
+        },
+        {
+          "hub": "https://mathexam.space/courses/",
+          "href": "/courses/vilenkin-6-part-1/#book",
+          "hub_meta_robots": []
+        }
+      ],
+      "known_hub_links_baseline": [
+        {
+          "hub": "https://mathexam.space/courses/",
+          "href": "/courses/vilenkin-6-part-1/",
+          "hub_meta_robots": []
+        },
+        {
+          "hub": "https://mathexam.space/courses/",
+          "href": "/courses/vilenkin-6-part-1/",
+          "hub_meta_robots": []
+        },
+        {
+          "hub": "https://mathexam.space/courses/",
+          "href": "/courses/vilenkin-6-part-1/#book",
+          "hub_meta_robots": []
+        }
+      ],
+      "repository_baseline": {
+        "file": "courses/vilenkin-6-part-1/index.html",
+        "body_sha256": "246c61bcd71182fbbc530a46041e6de53c66a082d172b68e3ab4debaf14b30e5",
+        "canonical": [
+          "https://mathexam.space/courses/vilenkin-6-part-1/"
+        ],
+        "meta_robots": [],
+        "sitemap_member": true
+      },
+      "live_body_matches_repository_baseline": true
+    },
+    "/school/peterson6/": {
+      "requested_url": "https://mathexam.space/school/peterson6/",
+      "fetched_at_utc": "2026-10-25T14:00:09+00:00",
+      "request_method": "GET",
+      "cookies_sent": false,
+      "redirect_chain": [],
+      "status": 200,
+      "final_url": "https://mathexam.space/school/peterson6/",
+      "content_type": "text/html; charset=utf-8",
+      "x_robots_tag": [],
+      "body_sha256": "4887c4fe222ec34ef51ea568a71eb37bf49e837f12c89dd7df9d48117f5a49fb",
+      "body_bytes": 2026,
+      "completed_at_utc": "2026-10-25T14:00:16+00:00",
+      "canonical": [
+        "https://mathexam.space/school/peterson6/"
+      ],
+      "meta_robots": [],
+      "meta_refresh": [],
+      "live_sitemap_member": false,
+      "known_hub_links_live": [
+        {
+          "hub": "https://mathexam.space/school/",
+          "href": "peterson6/",
+          "hub_meta_robots": [
+            {
+              "name": "robots",
+              "content": "noindex,nofollow"
+            }
+          ]
+        }
+      ],
+      "known_hub_links_baseline": [
+        {
+          "hub": "https://mathexam.space/school/",
+          "href": "peterson6/",
+          "hub_meta_robots": [
+            {
+              "name": "robots",
+              "content": "noindex,nofollow"
+            }
+          ]
+        }
+      ],
+      "repository_baseline": {
+        "file": "school/peterson6/index.html",
+        "body_sha256": "4887c4fe222ec34ef51ea568a71eb37bf49e837f12c89dd7df9d48117f5a49fb",
+        "canonical": [
+          "https://mathexam.space/school/peterson6/"
+        ],
+        "meta_robots": [],
+        "sitemap_member": false
+      },
+      "live_body_matches_repository_baseline": true
+    },
+    "/school/makarychev7/": {
+      "requested_url": "https://mathexam.space/school/makarychev7/",
+      "fetched_at_utc": "2026-10-25T14:00:09+00:00",
+      "request_method": "GET",
+      "cookies_sent": false,
+      "redirect_chain": [],
+      "status": 200,
+      "final_url": "https://mathexam.space/school/makarychev7/",
+      "content_type": "text/html; charset=utf-8",
+      "x_robots_tag": [],
+      "body_sha256": "ee41be76237e0750c18d941cd98a1bf91f5faa4e7d28895f1302161d217b27c0",
+      "body_bytes": 3047,
+      "completed_at_utc": "2026-10-25T14:00:16+00:00",
+      "canonical": [
+        "https://mathexam.space/school/makarychev7/"
+      ],
+      "meta_robots": [],
+      "meta_refresh": [],
+      "live_sitemap_member": true,
+      "known_hub_links_live": [
+        {
+          "hub": "https://mathexam.space/courses/",
+          "href": "/school/makarychev7/",
+          "hub_meta_robots": []
+        },
+        {
+          "hub": "https://mathexam.space/courses/",
+          "href": "/school/makarychev7/",
+          "hub_meta_robots": []
+        }
+      ],
+      "known_hub_links_baseline": [
+        {
+          "hub": "https://mathexam.space/courses/",
+          "href": "/school/makarychev7/",
+          "hub_meta_robots": []
+        },
+        {
+          "hub": "https://mathexam.space/courses/",
+          "href": "/school/makarychev7/",
+          "hub_meta_robots": []
+        }
+      ],
+      "repository_baseline": {
+        "file": "school/makarychev7/index.html",
+        "body_sha256": "ee41be76237e0750c18d941cd98a1bf91f5faa4e7d28895f1302161d217b27c0",
+        "canonical": [
+          "https://mathexam.space/school/makarychev7/"
+        ],
+        "meta_robots": [],
+        "sitemap_member": true
+      },
+      "live_body_matches_repository_baseline": true
+    },
+    "/school/makarychev8/": {
+      "requested_url": "https://mathexam.space/school/makarychev8/",
+      "fetched_at_utc": "2026-10-25T14:00:16+00:00",
+      "request_method": "GET",
+      "cookies_sent": false,
+      "redirect_chain": [],
+      "status": 200,
+      "final_url": "https://mathexam.space/school/makarychev8/",
+      "content_type": "text/html; charset=utf-8",
+      "x_robots_tag": [],
+      "body_sha256": "e8165b8bbf39b08f85e12a7626441128ccf665e58394a89e4d06f1e82ff583e0",
+      "body_bytes": 1974,
+      "completed_at_utc": "2026-10-25T14:00:22+00:00",
+      "canonical": [
+        "https://mathexam.space/school/makarychev8/"
+      ],
+      "meta_robots": [],
+      "meta_refresh": [],
+      "live_sitemap_member": true,
+      "known_hub_links_live": [
+        {
+          "hub": "https://mathexam.space/courses/",
+          "href": "/school/makarychev8/",
+          "hub_meta_robots": []
+        },
+        {
+          "hub": "https://mathexam.space/courses/",
+          "href": "/school/makarychev8/",
+          "hub_meta_robots": []
+        }
+      ],
+      "known_hub_links_baseline": [
+        {
+          "hub": "https://mathexam.space/courses/",
+          "href": "/school/makarychev8/",
+          "hub_meta_robots": []
+        },
+        {
+          "hub": "https://mathexam.space/courses/",
+          "href": "/school/makarychev8/",
+          "hub_meta_robots": []
+        }
+      ],
+      "repository_baseline": {
+        "file": "school/makarychev8/index.html",
+        "body_sha256": "e8165b8bbf39b08f85e12a7626441128ccf665e58394a89e4d06f1e82ff583e0",
+        "canonical": [
+          "https://mathexam.space/school/makarychev8/"
+        ],
+        "meta_robots": [],
+        "sitemap_member": true
+      },
+      "live_body_matches_repository_baseline": true
+    },
+    "/school/alimov10-11/": {
+      "requested_url": "https://mathexam.space/school/alimov10-11/",
+      "fetched_at_utc": "2026-10-25T14:00:16+00:00",
+      "request_method": "GET",
+      "cookies_sent": false,
+      "redirect_chain": [],
+      "status": 200,
+      "final_url": "https://mathexam.space/school/alimov10-11/",
+      "content_type": "text/html; charset=utf-8",
+      "x_robots_tag": [],
+      "body_sha256": "f067b8e9c2fd646d9512d8229da7759e825e18da1c3182ec5538f210e8235094",
+      "body_bytes": 2553,
+      "completed_at_utc": "2026-10-25T14:00:22+00:00",
+      "canonical": [
+        "https://mathexam.space/school/alimov10-11/"
+      ],
+      "meta_robots": [],
+      "meta_refresh": [],
+      "live_sitemap_member": true,
+      "known_hub_links_live": [
+        {
+          "hub": "https://mathexam.space/courses/",
+          "href": "/school/alimov10-11/",
+          "hub_meta_robots": []
+        },
+        {
+          "hub": "https://mathexam.space/courses/",
+          "href": "/school/alimov10-11/",
+          "hub_meta_robots": []
+        }
+      ],
+      "known_hub_links_baseline": [
+        {
+          "hub": "https://mathexam.space/courses/",
+          "href": "/school/alimov10-11/",
+          "hub_meta_robots": []
+        },
+        {
+          "hub": "https://mathexam.space/courses/",
+          "href": "/school/alimov10-11/",
+          "hub_meta_robots": []
+        }
+      ],
+      "repository_baseline": {
+        "file": "school/alimov10-11/index.html",
+        "body_sha256": "f067b8e9c2fd646d9512d8229da7759e825e18da1c3182ec5538f210e8235094",
+        "canonical": [
+          "https://mathexam.space/school/alimov10-11/"
+        ],
+        "meta_robots": [],
+        "sitemap_member": true
+      },
+      "live_body_matches_repository_baseline": true
+    },
+    "/school/nikolsky10/": {
+      "requested_url": "https://mathexam.space/school/nikolsky10/",
+      "fetched_at_utc": "2026-10-25T14:00:16+00:00",
+      "request_method": "GET",
+      "cookies_sent": false,
+      "redirect_chain": [],
+      "status": 200,
+      "final_url": "https://mathexam.space/school/nikolsky10/",
+      "content_type": "text/html; charset=utf-8",
+      "x_robots_tag": [],
+      "body_sha256": "fe483d9a9d47d5cfaa14afeba5d820f58dfe3cda3ae78a17d86ac2e0b066b2b8",
+      "body_bytes": 1985,
+      "completed_at_utc": "2026-10-25T14:00:22+00:00",
+      "canonical": [
+        "https://mathexam.space/school/nikolsky10/"
+      ],
+      "meta_robots": [],
+      "meta_refresh": [],
+      "live_sitemap_member": false,
+      "known_hub_links_live": [
+        {
+          "hub": "https://mathexam.space/courses/",
+          "href": "/school/nikolsky10/",
+          "hub_meta_robots": []
+        },
+        {
+          "hub": "https://mathexam.space/courses/",
+          "href": "/school/nikolsky10/",
+          "hub_meta_robots": []
+        }
+      ],
+      "known_hub_links_baseline": [
+        {
+          "hub": "https://mathexam.space/courses/",
+          "href": "/school/nikolsky10/",
+          "hub_meta_robots": []
+        },
+        {
+          "hub": "https://mathexam.space/courses/",
+          "href": "/school/nikolsky10/",
+          "hub_meta_robots": []
+        }
+      ],
+      "repository_baseline": {
+        "file": "school/nikolsky10/index.html",
+        "body_sha256": "fe483d9a9d47d5cfaa14afeba5d820f58dfe3cda3ae78a17d86ac2e0b066b2b8",
+        "canonical": [
+          "https://mathexam.space/school/nikolsky10/"
+        ],
+        "meta_robots": [],
+        "sitemap_member": false
+      },
+      "live_body_matches_repository_baseline": true
+    },
+    "/geometry-course/textbook/": {
+      "requested_url": "https://mathexam.space/geometry-course/textbook/",
+      "fetched_at_utc": "2026-10-25T14:00:22+00:00",
+      "request_method": "GET",
+      "cookies_sent": false,
+      "redirect_chain": [],
+      "status": 200,
+      "final_url": "https://mathexam.space/geometry-course/textbook/",
+      "content_type": "text/html; charset=utf-8",
+      "x_robots_tag": [],
+      "body_sha256": "4ad96a76e0b5e3f791aca172a884a2e66c93fcd75cb2efd83cbfb393a7a8fe5b",
+      "body_bytes": 1660,
+      "completed_at_utc": "2026-10-25T14:00:27+00:00",
+      "canonical": [
+        "https://mathexam.space/geometry-course/textbook/"
+      ],
+      "meta_robots": [],
+      "meta_refresh": [],
+      "live_sitemap_member": false,
+      "known_hub_links_live": [
+        {
+          "hub": "https://mathexam.space/geometry-course/",
+          "href": "textbook/",
+          "hub_meta_robots": []
+        }
+      ],
+      "known_hub_links_baseline": [
+        {
+          "hub": "https://mathexam.space/geometry-course/",
+          "href": "textbook/",
+          "hub_meta_robots": []
+        }
+      ],
+      "repository_baseline": {
+        "file": "geometry-course/textbook/index.html",
+        "body_sha256": "4ad96a76e0b5e3f791aca172a884a2e66c93fcd75cb2efd83cbfb393a7a8fe5b",
+        "canonical": [
+          "https://mathexam.space/geometry-course/textbook/"
+        ],
+        "meta_robots": [],
+        "sitemap_member": false
+      },
+      "live_body_matches_repository_baseline": true
+    },
+    "/stereo-course/textbook/": {
+      "requested_url": "https://mathexam.space/stereo-course/textbook/",
+      "fetched_at_utc": "2026-10-25T14:00:22+00:00",
+      "request_method": "GET",
+      "cookies_sent": false,
+      "redirect_chain": [],
+      "status": 200,
+      "final_url": "https://mathexam.space/stereo-course/textbook/",
+      "content_type": "text/html; charset=utf-8",
+      "x_robots_tag": [],
+      "body_sha256": "daee3fb225e5b7a0d5129af24d2cdf5961eb5b74d195a863e22317313d1e1825",
+      "body_bytes": 1787,
+      "completed_at_utc": "2026-10-25T14:00:27+00:00",
+      "canonical": [
+        "https://mathexam.space/stereo-course/textbook/"
+      ],
+      "meta_robots": [],
+      "meta_refresh": [],
+      "live_sitemap_member": true,
+      "known_hub_links_live": [
+        {
+          "hub": "https://mathexam.space/stereo-course/",
+          "href": "textbook/",
+          "hub_meta_robots": []
+        },
+        {
+          "hub": "https://mathexam.space/ege-profil/atanasyan-10-11/",
+          "href": "../../stereo-course/textbook/",
+          "hub_meta_robots": []
+        }
+      ],
+      "known_hub_links_baseline": [
+        {
+          "hub": "https://mathexam.space/stereo-course/",
+          "href": "textbook/",
+          "hub_meta_robots": []
+        },
+        {
+          "hub": "https://mathexam.space/ege-profil/atanasyan-10-11/",
+          "href": "../../stereo-course/textbook/",
+          "hub_meta_robots": []
+        }
+      ],
+      "repository_baseline": {
+        "file": "stereo-course/textbook/index.html",
+        "body_sha256": "daee3fb225e5b7a0d5129af24d2cdf5961eb5b74d195a863e22317313d1e1825",
+        "canonical": [
+          "https://mathexam.space/stereo-course/textbook/"
+        ],
+        "meta_robots": [],
+        "sitemap_member": true
+      },
+      "live_body_matches_repository_baseline": true
+    },
+    "/stereo-course/merzlyak-10-base/": {
+      "requested_url": "https://mathexam.space/stereo-course/merzlyak-10-base/",
+      "fetched_at_utc": "2026-10-25T14:00:22+00:00",
+      "request_method": "GET",
+      "cookies_sent": false,
+      "redirect_chain": [],
+      "status": 200,
+      "final_url": "https://mathexam.space/stereo-course/merzlyak-10-base/",
+      "content_type": "text/html; charset=utf-8",
+      "x_robots_tag": [],
+      "body_sha256": "a9da6498f42936ac165b7694a102e1372d11f06a1b265482479de4d340de381b",
+      "body_bytes": 2270,
+      "completed_at_utc": "2026-10-25T14:00:27+00:00",
+      "canonical": [
+        "https://mathexam.space/stereo-course/merzlyak-10-base/"
+      ],
+      "meta_robots": [],
+      "meta_refresh": [],
+      "live_sitemap_member": false,
+      "known_hub_links_live": [],
+      "known_hub_links_baseline": [],
+      "repository_baseline": {
+        "file": "stereo-course/merzlyak-10-base/index.html",
+        "body_sha256": "a9da6498f42936ac165b7694a102e1372d11f06a1b265482479de4d340de381b",
+        "canonical": [
+          "https://mathexam.space/stereo-course/merzlyak-10-base/"
+        ],
+        "meta_robots": [],
+        "sitemap_member": false
+      },
+      "live_body_matches_repository_baseline": true
+    },
+    "/stereo-course/shestakov-yaschenko-10-11/": {
+      "requested_url": "https://mathexam.space/stereo-course/shestakov-yaschenko-10-11/",
+      "fetched_at_utc": "2026-10-25T14:00:27+00:00",
+      "request_method": "GET",
+      "cookies_sent": false,
+      "redirect_chain": [],
+      "status": 200,
+      "final_url": "https://mathexam.space/stereo-course/shestakov-yaschenko-10-11/",
+      "content_type": "text/html; charset=utf-8",
+      "x_robots_tag": [],
+      "body_sha256": "c91324c93b1c9e686690c537a2c190dac349df8112677bd7b181133c3c0a3780",
+      "body_bytes": 2789,
+      "completed_at_utc": "2026-10-25T14:00:33+00:00",
+      "canonical": [],
+      "meta_robots": [
+        {
+          "name": "robots",
+          "content": "noindex,nofollow"
+        }
+      ],
+      "meta_refresh": [],
+      "live_sitemap_member": false,
+      "known_hub_links_live": [],
+      "known_hub_links_baseline": [],
+      "repository_baseline": {
+        "file": "stereo-course/shestakov-yaschenko-10-11/index.html",
+        "body_sha256": "c91324c93b1c9e686690c537a2c190dac349df8112677bd7b181133c3c0a3780",
+        "canonical": [],
+        "meta_robots": [
+          {
+            "name": "robots",
+            "content": "noindex,nofollow"
+          }
+        ],
+        "sitemap_member": false
+      },
+      "live_body_matches_repository_baseline": true
+    },
+    "/": {
+      "requested_url": "https://mathexam.space/",
+      "fetched_at_utc": "2026-10-25T14:00:27+00:00",
+      "request_method": "GET",
+      "cookies_sent": false,
+      "redirect_chain": [],
+      "status": 200,
+      "final_url": "https://mathexam.space/",
+      "content_type": "text/html; charset=utf-8",
+      "x_robots_tag": [],
+      "body_sha256": "08fdebd707d9acd6e472511660902601ec4ffcdd46a2184e0293cb8cf31748e7",
+      "body_bytes": 15477,
+      "completed_at_utc": "2026-10-25T14:00:33+00:00",
+      "canonical": [
+        "https://mathexam.space/"
+      ],
+      "meta_robots": [],
+      "meta_refresh": []
+    },
+    "/courses/": {
+      "requested_url": "https://mathexam.space/courses/",
+      "fetched_at_utc": "2026-10-25T14:00:27+00:00",
+      "request_method": "GET",
+      "cookies_sent": false,
+      "redirect_chain": [],
+      "status": 200,
+      "final_url": "https://mathexam.space/courses/",
+      "content_type": "text/html; charset=utf-8",
+      "x_robots_tag": [],
+      "body_sha256": "2ad16182a04c0ce9df380f465a11e91973604b93665e6bb5002d96cc7d7efc20",
+      "body_bytes": 18266,
+      "completed_at_utc": "2026-10-25T14:00:33+00:00",
+      "canonical": [
+        "https://mathexam.space/courses/"
+      ],
+      "meta_robots": [],
+      "meta_refresh": []
+    },
+    "/school/": {
+      "requested_url": "https://mathexam.space/school/",
+      "fetched_at_utc": "2026-10-25T14:00:33+00:00",
+      "request_method": "GET",
+      "cookies_sent": false,
+      "redirect_chain": [],
+      "status": 200,
+      "final_url": "https://mathexam.space/school/",
+      "content_type": "text/html; charset=utf-8",
+      "x_robots_tag": [],
+      "body_sha256": "f3925a8162b68f4cbc9c914e21b5210f44704a1c4dea816adf1de4e4586f538c",
+      "body_bytes": 4224,
+      "completed_at_utc": "2026-10-25T14:00:39+00:00",
+      "canonical": [],
+      "meta_robots": [
+        {
+          "name": "robots",
+          "content": "noindex,nofollow"
+        }
+      ],
+      "meta_refresh": []
+    },
+    "/geometry-course/": {
+      "requested_url": "https://mathexam.space/geometry-course/",
+      "fetched_at_utc": "2026-10-25T14:00:33+00:00",
+      "request_method": "GET",
+      "cookies_sent": false,
+      "redirect_chain": [],
+      "status": 200,
+      "final_url": "https://mathexam.space/geometry-course/",
+      "content_type": "text/html; charset=utf-8",
+      "x_robots_tag": [],
+      "body_sha256": "26330fc2598e555e569e5a2cb0ccd24ca828ddb6f73806cd5a801b13e1d48bb6",
+      "body_bytes": 82545,
+      "completed_at_utc": "2026-10-25T14:00:39+00:00",
+      "canonical": [
+        "https://mathexam.space/geometry-course/"
+      ],
+      "meta_robots": [],
+      "meta_refresh": []
+    },
+    "/stereo-course/": {
+      "requested_url": "https://mathexam.space/stereo-course/",
+      "fetched_at_utc": "2026-10-25T14:00:33+00:00",
+      "request_method": "GET",
+      "cookies_sent": false,
+      "redirect_chain": [],
+      "status": 200,
+      "final_url": "https://mathexam.space/stereo-course/",
+      "content_type": "text/html; charset=utf-8",
+      "x_robots_tag": [],
+      "body_sha256": "a023bcc3a011bb30bdc06a4f31a8af342dd4eef530727e2d41d8d588c23333b8",
+      "body_bytes": 278109,
+      "completed_at_utc": "2026-10-25T14:00:39+00:00",
+      "canonical": [],
+      "meta_robots": [],
+      "meta_refresh": []
+    },
+    "/ege-profil/atanasyan-10-11/": {
+      "requested_url": "https://mathexam.space/ege-profil/atanasyan-10-11/",
+      "fetched_at_utc": "2026-10-25T14:00:39+00:00",
+      "request_method": "GET",
+      "cookies_sent": false,
+      "redirect_chain": [],
+      "status": 200,
+      "final_url": "https://mathexam.space/ege-profil/atanasyan-10-11/",
+      "content_type": "text/html; charset=utf-8",
+      "x_robots_tag": [],
+      "body_sha256": "5f7e88fe0bd5a5d6145c0db8d9786c848e8743a0aca60d3d7c40d398e00040c5",
+      "body_bytes": 6898,
+      "completed_at_utc": "2026-10-25T14:00:44+00:00",
+      "canonical": [],
+      "meta_robots": [],
+      "meta_refresh": []
+    },
+    "/sitemap.xml": {
+      "requested_url": "https://mathexam.space/sitemap.xml",
+      "fetched_at_utc": "2026-10-25T14:00:39+00:00",
+      "request_method": "GET",
+      "cookies_sent": false,
+      "redirect_chain": [],
+      "status": 200,
+      "final_url": "https://mathexam.space/sitemap.xml",
+      "content_type": "application/xml",
+      "x_robots_tag": [],
+      "body_sha256": "59e91caa5a22523b7da7dc1c7195679ba98a875fff920f91e2148af1c3a345a3",
+      "body_bytes": 52854,
+      "completed_at_utc": "2026-10-25T14:00:45+00:00"
+    },
+    "/robots.txt": {
+      "requested_url": "https://mathexam.space/robots.txt",
+      "fetched_at_utc": "2026-10-25T14:00:39+00:00",
+      "request_method": "GET",
+      "cookies_sent": false,
+      "redirect_chain": [],
+      "status": 200,
+      "final_url": "https://mathexam.space/robots.txt",
+      "content_type": "text/plain; charset=utf-8",
+      "x_robots_tag": [],
+      "body_sha256": "84a1b2da3e72a2331bee1f7d155bb6723a43624f68ef80d834ab3ebc4ca22660",
+      "body_bytes": 68,
+      "completed_at_utc": "2026-10-25T14:00:44+00:00",
+      "text": "User-agent: *\nAllow: /\n\nSitemap: https://mathexam.space/sitemap.xml\n"
+    }
+  }
+}

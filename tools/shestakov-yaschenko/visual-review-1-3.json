@@ -1,0 +1,1484 @@
+{
+  "reviewer": "/root/chapter2",
+  "at": "2026-10-23T21:27:47.075128+00:00",
+  "verdict": "passed-within-declared-visual-sample",
+  "scope": {
+    "chapters": [
+      1,
+      2,
+      3
+    ],
+    "cards": 47,
+    "theoryCards": 12,
+    "sourceTaskCards": 35,
+    "screenshotsInspected": 200,
+    "selection": "Every theory card and first available A, B, C card in each subsection; §1.1 has no C. Neutral and last model-view screenshots at1280; every theory neutral also at320.",
+    "method": "Actually viewed27 initial contact sheets covering106 source screenshots, then24 final contact sheets covering94 fresh screenshots. Each source screenshot appeared in full without cropping.200 image inspections span two render snapshots;165 distinct filenames including the obsolete C2 fan screenshot.",
+    "screenshotRoot": "artifacts/shestakov-models",
+    "notExhaustive": true,
+    "limits": [
+      "This is a representative visual review, not an exhaustive review of all351 screenshots or all task views.",
+      "Last view means final model.views entry used by the model-only screenshot harness; not necessarily last solution step.",
+      "Images cover the model-only harness; full app navigation/state/runtime wrapper checked separately by root.",
+      "Final visual pass is limited to the exact94 images listed; unchanged original evidence is carried forward only after byte-hash comparison. No claim that all351cards or all2318render states were manually viewed."
+    ],
+    "contactSheetHandling": "Temporary contact sheets only; durable evidence is the exact source screenshot filenames and SHA256 hashes in filesInspected.",
+    "initialPassScreenshots": 106,
+    "finalPassScreenshots": 94,
+    "distinctScreenshotFilenames": 165,
+    "finalPassChangedInitialCards": 70,
+    "finalPassChangedInitialCardsByChapter": {
+      "1": 34,
+      "2": 25,
+      "3": 11
+    },
+    "finalPassExtraViewScreenshots": 24,
+    "finalSelection": "All70 changed initial diagrams (chapter1:34, chapter2:25, chapter3:11) plus10 relevant final states and14 other changed last-view screenshots from the original sample. Every changed image in the original sample was reinspected; obsolete C2 fan was replaced by perimeter."
+  },
+  "cardsInspected": [
+    {
+      "id": "sy-1-1-theory",
+      "lastView": "whole"
+    },
+    {
+      "id": "sy-1-2-theory",
+      "lastView": "half"
+    },
+    {
+      "id": "sy-1-3-theory",
+      "lastView": "both"
+    },
+    {
+      "id": "sy-1-4-theory",
+      "lastView": "sides"
+    },
+    {
+      "id": "sy-1-5-theory",
+      "lastView": "mid"
+    },
+    {
+      "id": "sy-1-1-a1-a",
+      "lastView": "whole"
+    },
+    {
+      "id": "sy-1-1-b1-a",
+      "lastView": "focus"
+    },
+    {
+      "id": "sy-1-2-a1-a",
+      "lastView": "top"
+    },
+    {
+      "id": "sy-1-2-b2-a",
+      "lastView": "half"
+    },
+    {
+      "id": "sy-1-2-c3-a",
+      "lastView": "answer"
+    },
+    {
+      "id": "sy-1-3-a4-a",
+      "lastView": "answer"
+    },
+    {
+      "id": "sy-1-3-b1-a",
+      "lastView": "height"
+    },
+    {
+      "id": "sy-1-3-c4-a",
+      "lastView": "focus"
+    },
+    {
+      "id": "sy-1-4-a1-a",
+      "lastView": "focus"
+    },
+    {
+      "id": "sy-1-4-b2-a",
+      "lastView": "height"
+    },
+    {
+      "id": "sy-1-4-c6-a",
+      "lastView": "focus"
+    },
+    {
+      "id": "sy-1-5-a4-a",
+      "lastView": "vector"
+    },
+    {
+      "id": "sy-1-5-b2-a",
+      "lastView": "new"
+    },
+    {
+      "id": "sy-1-5-c2-a",
+      "lastView": "reflection"
+    },
+    {
+      "id": "sy-2-1-theory",
+      "lastView": "height"
+    },
+    {
+      "id": "sy-2-2-theory",
+      "lastView": "height"
+    },
+    {
+      "id": "sy-2-3-theory",
+      "lastView": "fan"
+    },
+    {
+      "id": "sy-2-4-theory",
+      "lastView": "route"
+    },
+    {
+      "id": "sy-2-1-a2-a",
+      "lastView": "diag"
+    },
+    {
+      "id": "sy-2-1-b1-a",
+      "lastView": "tri"
+    },
+    {
+      "id": "sy-2-1-c2-a",
+      "lastView": "trap"
+    },
+    {
+      "id": "sy-2-2-a1-a",
+      "lastView": "middle"
+    },
+    {
+      "id": "sy-2-2-b1-a",
+      "lastView": "leg"
+    },
+    {
+      "id": "sy-2-2-c1-a",
+      "lastView": "construction"
+    },
+    {
+      "id": "sy-2-3-a1-a",
+      "lastView": "edge"
+    },
+    {
+      "id": "sy-2-3-b2-a",
+      "lastView": "orig"
+    },
+    {
+      "id": "sy-2-3-c2-a",
+      "lastView": "fan"
+    },
+    {
+      "id": "sy-2-4-a3-a",
+      "lastView": "diags"
+    },
+    {
+      "id": "sy-2-4-b2-a",
+      "lastView": "side"
+    },
+    {
+      "id": "sy-2-4-c1-a",
+      "lastView": "two"
+    },
+    {
+      "id": "sy-3-1-theory",
+      "lastView": "tangent"
+    },
+    {
+      "id": "sy-3-2-theory",
+      "lastView": "inner"
+    },
+    {
+      "id": "sy-3-3-theory",
+      "lastView": "arcs"
+    },
+    {
+      "id": "sy-3-1-a3-a",
+      "lastView": "inscribed"
+    },
+    {
+      "id": "sy-3-1-b1-a",
+      "lastView": "second"
+    },
+    {
+      "id": "sy-3-1-c1-a",
+      "lastView": "triangles"
+    },
+    {
+      "id": "sy-3-2-a1-a",
+      "lastView": "radii"
+    },
+    {
+      "id": "sy-3-2-b1-a",
+      "lastView": "side"
+    },
+    {
+      "id": "sy-3-2-c17-a",
+      "lastView": "outside"
+    },
+    {
+      "id": "sy-3-3-a1-a",
+      "lastView": "sum"
+    },
+    {
+      "id": "sy-3-3-b2-a",
+      "lastView": "bases"
+    },
+    {
+      "id": "sy-3-3-c4-a",
+      "lastView": "proved"
+    }
+  ],
+  "contactSheetsInspected": [
+    "sheet-01.jpg",
+    "sheet-02.jpg",
+    "sheet-03.jpg",
+    "sheet-04.jpg",
+    "sheet-05.jpg",
+    "sheet-06.jpg",
+    "sheet-07.jpg",
+    "sheet-08.jpg",
+    "sheet-09.jpg",
+    "sheet-10.jpg",
+    "sheet-11.jpg",
+    "sheet-12.jpg",
+    "sheet-13.jpg",
+    "sheet-14.jpg",
+    "sheet-15.jpg",
+    "sheet-16.jpg",
+    "sheet-17.jpg",
+    "sheet-18.jpg",
+    "sheet-19.jpg",
+    "sheet-20.jpg",
+    "sheet-21.jpg",
+    "sheet-22.jpg",
+    "sheet-23.jpg",
+    "sheet-24.jpg",
+    "sheet-25.jpg",
+    "sheet-26.jpg",
+    "sheet-27.jpg"
+  ],
+  "observations": [
+    "All12 theory diagrams remained readable in neutral320 screenshots; titles wrap without clipping.",
+    "No label collision or major diagram crowding observed in selected neutral/last views, except irrelevant fan noted below.",
+    "Solution highlights generally isolate relevant triangle, side, radius or construction; auxiliary lines appear in their steps.",
+    "Previously corrected2.3A1 local corner avoids revealing unknown side count; 3.3C4 correctly hides circle until cyclicity proof.",
+    "The extended secant in3.1C1 is now visible beyond both circles; source geometry remains intact.",
+    "Fresh2.3C2perimeter highlights the mathematical object being summed without unrelated diagonals.",
+    "Fresh2.2C1construction remains readable with sourceEF visible and newly derivedBQ/G highlighted.",
+    "Fresh given-geometry diagrams have no numerical answer labels; requested derived radius/circle/coordinate values remain in solution steps."
+  ],
+  "findings": [
+    {
+      "id": "V123-01",
+      "cards": [
+        "sy-1-2-c3-a",
+        "sy-1-3-c4-a",
+        "sy-1-4-b2-a",
+        "sy-1-4-c6-a",
+        "sy-1-5-b2-a"
+      ],
+      "finding": "Neutral diagrams omit source-given M, H or median/altitude segments, so initial condition cannot be read fully from diagram.",
+      "status": "resolved-and-visually-rechecked",
+      "evidence": [
+        "sy-1-2-c3-a-neutral-1280.png",
+        "sy-1-3-c4-a-neutral-1280.png",
+        "sy-1-4-b2-a-neutral-1280.png",
+        "sy-1-4-c6-a-neutral-1280.png",
+        "sy-1-5-b2-a-neutral-1280.png"
+      ],
+      "fix": "Chapter1 author audited60 tasks and updated34 initial figures. All34 fresh neutral images and9 changed original-sample last views were actually inspected: given objects visible, labels readable, no new crowding or answer-value leaks."
+    },
+    {
+      "id": "V123-02",
+      "cards": [
+        "sy-2-1-b1-a",
+        "sy-2-1-c2-a",
+        "sy-2-2-a1-a",
+        "sy-2-2-c1-a",
+        "sy-2-3-b2-a",
+        "sy-2-4-a3-a"
+      ],
+      "finding": "Neutral diagrams hide several objects already stated in source: a distance, bisectorAK, middle line, sectionEF, midpoint connectors, diagonal intersection. Full chapter audit also found A7 distances, B2 height, roof middle support and B3 midline distances.",
+      "status": "resolved-and-visually-rechecked",
+      "fix": "Updated generator and ch2.json:25 source variants now show given points/segments initially; derived auxiliaries remain staged. All48 task conditions audited.",
+      "evidence": [
+        "sy-2-1-b1-a-neutral-1280.png",
+        "sy-2-1-c2-a-neutral-1280.png",
+        "sy-2-2-a1-a-neutral-1280.png",
+        "sy-2-2-c1-a-neutral-1280.png",
+        "sy-2-3-b2-a-neutral-1280.png",
+        "sy-2-4-a3-a-neutral-1280.png"
+      ],
+      "verification": "All25 changed ch2 neutral images plus relevant final highlights actually inspected. A7 diagonals and distances remain legible; roof has three supports; source EF visible before Q/G construction; midpoint connectors and P visible."
+    },
+    {
+      "id": "V123-03",
+      "cards": [
+        "sy-2-3-c2-a",
+        "sy-2-3-c2-b"
+      ],
+      "finding": "Generic last fan view introduces many diagonals irrelevant to perimeter proof. Actual solution steps currently use neutral view, so this is an unused-view clarity issue.",
+      "status": "resolved-and-visually-rechecked",
+      "evidence": [
+        "sy-2-3-c2-a-fan-1280.png"
+      ],
+      "fix": "Removed irrelevant fan. Step2 now highlights one equal side; last step highlights all perimeter edges. Both variants changed.",
+      "verification": "Both fresh perimeter images viewed: all perimeter edges highlighted, no irrelevant fan diagonals."
+    },
+    {
+      "id": "V123-04",
+      "cards": [
+        "sy-3-3-a1-a",
+        "sy-3-3-c4-a"
+      ],
+      "finding": "Neutral figures omit AC/BD used as arms of explicitly source-named angles. C4 correctly hides its not-yet-proved circle.",
+      "status": "resolved-and-visually-rechecked",
+      "evidence": [
+        "sy-3-3-a1-a-neutral-1280.png",
+        "sy-3-3-c4-a-neutral-1280.png"
+      ],
+      "fix": "Chapter3 author audited36source variants and exposed16 source-given segments across11cards. Reviewer checked source definitions and retained hidden derived objects; fresh screenshots pending.",
+      "verification": "All11 fresh changed ch3 neutral diagrams viewed. Given chord/distance/angle arms are visible. Both C4 neutral images hide circle; both proved images reveal it clearly."
+    },
+    {
+      "id": "V123-05",
+      "cards": [
+        "all-planar-harness-cards"
+      ],
+      "finding": "Model-only footer claims givens are labelled on drawing while numerical givens are in text.",
+      "status": "resolved-runtime-wrapper-by-root",
+      "fix": "Root reports actual app wrapper now says «Плоский чертёж. Числа и отношения даны в условии.» and verified actual app screenshot. Harness directly renders sharedrenderer, so old wording remains only in these engineering screenshots.",
+      "verification": "Reported and owned by root; not independently claimed as image reinspection here."
+    }
+  ],
+  "fixesAppliedByReviewer": [
+    "ch2 initial source-given geometry for25 variants, reproducibly in tools/shestakov-yaschenko/author-2.py; no condition/coordinate/answer changes.",
+    "ch2C2ab: replaced unused polygon fan with single-side/perimeter highlights; final step now highlights perimeter."
+  ],
+  "finalDataHashesAtReport": {
+    "ch1.json": "aa4304d0ef6cabe7695b6afc73565be5a454b66a3a6b0f09d8393ce95cdb7829",
+    "ch2.json": "6e8531f60ed0433253429361806fd180c890146e1b029ba17149ac83576c6891",
+    "ch3.json": "9a83248d91a8309b0017e8c7b9f0ea1876c78ff1d6567514e5c8989a070fe611"
+  },
+  "initialPassFilesInspected": [
+    {
+      "file": "sy-1-1-theory-neutral-1280.png",
+      "sha256": "66900b1df79a338ab92c3cf690232b530e721aa520f307b4ffe52158593f6235"
+    },
+    {
+      "file": "sy-1-1-theory-whole-1280.png",
+      "sha256": "82492e5ec54c4ebe9f92c9928d6441f264565300324a1dcf53f5be9dcc4d2c05"
+    },
+    {
+      "file": "sy-1-1-theory-neutral-320.png",
+      "sha256": "4d4ac33e0066ea760cba752edf6b57ed9f38e67ae59b0aa0f3c93394301a7e38"
+    },
+    {
+      "file": "sy-1-2-theory-neutral-1280.png",
+      "sha256": "263d96455211f78cdf014c55bf491f76b5eead8e9487c960d76d4f7626513806"
+    },
+    {
+      "file": "sy-1-2-theory-half-1280.png",
+      "sha256": "db6cae02b53e7497651d892272c5e293a580702304eb7f76a021db94e8c01945"
+    },
+    {
+      "file": "sy-1-2-theory-neutral-320.png",
+      "sha256": "c53701c2a7c34ea7a37bbf7676a6b5b81ca0e8f50c9d3cbe5e15de4bb664cb0a"
+    },
+    {
+      "file": "sy-1-3-theory-neutral-1280.png",
+      "sha256": "70697dba4390b2fb716dc0ce28e63e7393339f1448f1eef290fcb06e3724b440"
+    },
+    {
+      "file": "sy-1-3-theory-both-1280.png",
+      "sha256": "e20e8b68367e41a63b054cf6f990954d4e92e2cb61b49900de5fe8399bf07cff"
+    },
+    {
+      "file": "sy-1-3-theory-neutral-320.png",
+      "sha256": "e5c238e1047330fb1449c2a5021fdb0321e0f4b890a19966a9442b58dc1061ca"
+    },
+    {
+      "file": "sy-1-4-theory-neutral-1280.png",
+      "sha256": "9b22d112aeb312567ba0290d39b4e119e07d716b18366019530290cbef305580"
+    },
+    {
+      "file": "sy-1-4-theory-sides-1280.png",
+      "sha256": "ab9409cc1a0ee425228bf9e2dfdc65520b36fc72ccbab8be6eb2475268f509d2"
+    },
+    {
+      "file": "sy-1-4-theory-neutral-320.png",
+      "sha256": "da8cedfd163a639b836701aa379418b0d5a2676f03136b92e5d025b4f3d027c0"
+    },
+    {
+      "file": "sy-1-5-theory-neutral-1280.png",
+      "sha256": "659162c83cfd3642b710e07e210df5cbbb798fb35462003a20436969021b2d6e"
+    },
+    {
+      "file": "sy-1-5-theory-mid-1280.png",
+      "sha256": "356d8b74ff92a79b14b73f349ef894e09742e7ae5ac8be7b2eb513164155e571"
+    },
+    {
+      "file": "sy-1-5-theory-neutral-320.png",
+      "sha256": "13c03ef7a2f1d61024799dfdffda320288e8b6dd510c98f25cccc7eb9a7fc97b"
+    },
+    {
+      "file": "sy-1-1-a1-a-neutral-1280.png",
+      "sha256": "1b91d2b81c0a0c896c0b873242f84812d41a6dc9e556fde1a7a0acfcd17f754a"
+    },
+    {
+      "file": "sy-1-1-a1-a-whole-1280.png",
+      "sha256": "e04cafb5c3088b2a4ccec72e255cbd1fc9ae7671a34643b0e9c930887954eb7c"
+    },
+    {
+      "file": "sy-1-1-b1-a-neutral-1280.png",
+      "sha256": "3dc2225efff3aa807467b3543eb863a4d30d333e5dd24ccd2febadec5ea8d966"
+    },
+    {
+      "file": "sy-1-1-b1-a-focus-1280.png",
+      "sha256": "e22b1ce20119313578ec58823168a3b9241ad1d3c8845d6154dbf41e076f6632"
+    },
+    {
+      "file": "sy-1-2-a1-a-neutral-1280.png",
+      "sha256": "476c5c43f1ea6e301991732236dd56d2ea997f9513b1b29e293d9a545c979940"
+    },
+    {
+      "file": "sy-1-2-a1-a-top-1280.png",
+      "sha256": "d073546f56fce8b814dcdf3d09d01aba0e8b9c201f8c7d3a40dc5d575ef3b423"
+    },
+    {
+      "file": "sy-1-2-b2-a-neutral-1280.png",
+      "sha256": "17c8dd32209114d1f9127fe3bd4a2934b2ab8fb45467a26f8e1bf5c056799e8b"
+    },
+    {
+      "file": "sy-1-2-b2-a-half-1280.png",
+      "sha256": "89a8d01633b354983f32bc51b3dc778df25724a64a9a32109b0d64f1397ee51e"
+    },
+    {
+      "file": "sy-1-2-c3-a-neutral-1280.png",
+      "sha256": "b3344ae0c1ae7c93924a7a9ccd17bdd06236eff35d7b0c75c5e0cb4799bc073f"
+    },
+    {
+      "file": "sy-1-2-c3-a-answer-1280.png",
+      "sha256": "2fc3f009208eab757151e9d03218e3626ebedf403cc57fdb8bc7815012bc5502"
+    },
+    {
+      "file": "sy-1-3-a4-a-neutral-1280.png",
+      "sha256": "01ea54299dd8caa0718d58130473290ebe15b15b6e7d38fc3190727bf0a4a1c3"
+    },
+    {
+      "file": "sy-1-3-a4-a-answer-1280.png",
+      "sha256": "932ddfc521fc7cc5a64328f832a1159fe2808e59a3c1b1758a117dfeeab2fd70"
+    },
+    {
+      "file": "sy-1-3-b1-a-neutral-1280.png",
+      "sha256": "1b79c56291a771c71296f4321d45031b1c904599126fe085247a0e241101afb5"
+    },
+    {
+      "file": "sy-1-3-b1-a-height-1280.png",
+      "sha256": "99e43a604455e90e33f514c8cb1fb78a02be283fa070d993ef1ba570e2fd4074"
+    },
+    {
+      "file": "sy-1-3-c4-a-neutral-1280.png",
+      "sha256": "c6aca17915abece4f75b1ce60fe8619cb9716f9b18c4dda22bbc562dfdf513fb"
+    },
+    {
+      "file": "sy-1-3-c4-a-focus-1280.png",
+      "sha256": "40ccf9737dcb59ab63fe4b384c0b0dce02412716583719e9f34a98d34ae29696"
+    },
+    {
+      "file": "sy-1-4-a1-a-neutral-1280.png",
+      "sha256": "0e2cf8dd08127a8452ef42453813e16f0edb1b3e1362010ea015a30f8f1c82e0"
+    },
+    {
+      "file": "sy-1-4-a1-a-focus-1280.png",
+      "sha256": "2f63c7787e478be3b54164ec9a9377046798a19e1e68a19d62477e131ba4bd7a"
+    },
+    {
+      "file": "sy-1-4-b2-a-neutral-1280.png",
+      "sha256": "79de9be5bd5d189bf2c55b03c1aae1048cbca536a0dc6d5a5f11ea92f60c98d8"
+    },
+    {
+      "file": "sy-1-4-b2-a-height-1280.png",
+      "sha256": "5ffe762cf9ef0e056f4c168ee340c5bca9d64a3e56ffbb0b613e3b877c80ef06"
+    },
+    {
+      "file": "sy-1-4-c6-a-neutral-1280.png",
+      "sha256": "b1ebed0215dcdcf1b36198c71365d9c00aa755c9166306f4ead6a4ccd5afa64a"
+    },
+    {
+      "file": "sy-1-4-c6-a-focus-1280.png",
+      "sha256": "ef15a63f350e4335fd66d3bca4fea189d68f71c9e3411cc2e1874d6860ebae9d"
+    },
+    {
+      "file": "sy-1-5-a4-a-neutral-1280.png",
+      "sha256": "cdaeaee743410085344c52405bb85f3fb8dfb231dffa4ba78460352e93ec18c8"
+    },
+    {
+      "file": "sy-1-5-a4-a-vector-1280.png",
+      "sha256": "56be3c9c68c408be99b166dfdde861b023654b6864f7629ec324a8f0f53150c4"
+    },
+    {
+      "file": "sy-1-5-b2-a-neutral-1280.png",
+      "sha256": "aad61f71db2b6bcd9b7ac49d49f1b4f6c475bfcc5e3dc26fa22c31210ace06fd"
+    },
+    {
+      "file": "sy-1-5-b2-a-new-1280.png",
+      "sha256": "6fc50feba25fb923c9532ef7feca09f4a9217f8d9fc6cdf9890b8a40fa76a20b"
+    },
+    {
+      "file": "sy-1-5-c2-a-neutral-1280.png",
+      "sha256": "b70cee705d650218086ebac5fb69fb922f8a6738ff97907c2194d88e038584c5"
+    },
+    {
+      "file": "sy-1-5-c2-a-reflection-1280.png",
+      "sha256": "8c2564b8256aa4f13d96fea8191c761101cd28a9aefa4ac907033960f00e0fce"
+    },
+    {
+      "file": "sy-2-1-theory-neutral-1280.png",
+      "sha256": "de75218b9e1b058cfd6ba6dee3ed9e260886d68af396579749646deeaa02b87c"
+    },
+    {
+      "file": "sy-2-1-theory-height-1280.png",
+      "sha256": "d07121fa1f3cb93b95c81890d2c1e01a4e9a64e9aa4abed5714ab293f2888b97"
+    },
+    {
+      "file": "sy-2-1-theory-neutral-320.png",
+      "sha256": "b941dbc8f777a9b66c4d36c8edbdeece27e89f2d6094099bf85476d51dc85884"
+    },
+    {
+      "file": "sy-2-2-theory-neutral-1280.png",
+      "sha256": "3ea2a7c39e390828b4181edbf3c987fb6c367cb460fac827b1bc91698987bf8e"
+    },
+    {
+      "file": "sy-2-2-theory-height-1280.png",
+      "sha256": "ffa1478f5e39e4ce0ab57cacbedcafd97697f046ba2b4b18e1d49355504c8d46"
+    },
+    {
+      "file": "sy-2-2-theory-neutral-320.png",
+      "sha256": "dfa5e6fc71246a80b25086db7a8d748873f462407628f6a6fd966553d4cd8271"
+    },
+    {
+      "file": "sy-2-3-theory-neutral-1280.png",
+      "sha256": "50feac04b376b1867edc7554909d720de528a2e7dfab1666458a7657ad39264e"
+    },
+    {
+      "file": "sy-2-3-theory-fan-1280.png",
+      "sha256": "580cf676a448660dbc8b1051f5a2620fd3cdc44ac5e65104ed54ae3bb06b3132"
+    },
+    {
+      "file": "sy-2-3-theory-neutral-320.png",
+      "sha256": "6e726196579da56d08a7e41443bfe5cdc7c692845ca850df5ed9b5b56905daed"
+    },
+    {
+      "file": "sy-2-4-theory-neutral-1280.png",
+      "sha256": "e39febbe91ce755cd310865bf547e44e05f7b2ecb69639d83432d571ea0ab5b5"
+    },
+    {
+      "file": "sy-2-4-theory-route-1280.png",
+      "sha256": "8a8ae3a23c25565c164f94c133abbedf7656c0456a5c7b5ab565d13e8a00be90"
+    },
+    {
+      "file": "sy-2-4-theory-neutral-320.png",
+      "sha256": "7c64124502ec14ced10a38d85237fdbaf32c3da7971977368407e3b77b105112"
+    },
+    {
+      "file": "sy-2-1-a2-a-neutral-1280.png",
+      "sha256": "e2668361d689b738cd22e2b1d69029644a850c54e9c8a015a66c066c2f79591e"
+    },
+    {
+      "file": "sy-2-1-a2-a-diag-1280.png",
+      "sha256": "3dd1cdadc73ea73d0a437806a2827b7de4399b42e07b78015ecbf26ad0bd3529"
+    },
+    {
+      "file": "sy-2-1-b1-a-neutral-1280.png",
+      "sha256": "cac9dfc40a8af48b563317bd685a00036ada75a67641dbe0e7883f9d5a56e9cd"
+    },
+    {
+      "file": "sy-2-1-b1-a-tri-1280.png",
+      "sha256": "3058add1a8c62f312a29e49a38bd8f98f72f99a0f2a215f87ea81b4e4f3584a5"
+    },
+    {
+      "file": "sy-2-1-c2-a-neutral-1280.png",
+      "sha256": "4e3dbf084e8808c24cbc341c61989fbdf2df3123e0078a2df0d92c220f9fc7bc"
+    },
+    {
+      "file": "sy-2-1-c2-a-trap-1280.png",
+      "sha256": "b5bc7a9c14026dd957de09f169a2d9621975f4ad70c1f17d43246ad29c65c989"
+    },
+    {
+      "file": "sy-2-2-a1-a-neutral-1280.png",
+      "sha256": "9311ee5f44f4995ad43be20337f237e669083e7c0f81f489cec551f4a73b0d8c"
+    },
+    {
+      "file": "sy-2-2-a1-a-middle-1280.png",
+      "sha256": "8cc2990efe6f6806964c0bfb6c858422274263e852711515175b7bf8c7082445"
+    },
+    {
+      "file": "sy-2-2-b1-a-neutral-1280.png",
+      "sha256": "aa358f5716d7fef2a265d461abed1ed525faf94a878510d8e7a3751aa8a0b40d"
+    },
+    {
+      "file": "sy-2-2-b1-a-leg-1280.png",
+      "sha256": "5262908cfd603e7b20009a41a6ec154098ca34a11d2843ab9f32f7e771f181d0"
+    },
+    {
+      "file": "sy-2-2-c1-a-neutral-1280.png",
+      "sha256": "4c9ea23a814c73c6b37a2cb20e3b704a5fa8441caafc8717a8fdec1da282e652"
+    },
+    {
+      "file": "sy-2-2-c1-a-construction-1280.png",
+      "sha256": "3ed2649a531d7d7d00df973bd0405c60400429d890ffc2d175f310fa1b03889c"
+    },
+    {
+      "file": "sy-2-3-a1-a-neutral-1280.png",
+      "sha256": "f37c7f38992a77cff21d449ce650a67fad29101f64d7e2c9f1f846454d3dcc84"
+    },
+    {
+      "file": "sy-2-3-a1-a-edge-1280.png",
+      "sha256": "dbfe45293d0a3709c5905ad43992791e138c2d72685ecd3abf5a926556dffc63"
+    },
+    {
+      "file": "sy-2-3-b2-a-neutral-1280.png",
+      "sha256": "d90d2db44e3cd191f82e138649fa77bb815f5b630d147768b5fd483056603dbe"
+    },
+    {
+      "file": "sy-2-3-b2-a-orig-1280.png",
+      "sha256": "f7c79e46732a5c049c59188d54ac62c05a14923f7f38dfe8f5a69079efc6133b"
+    },
+    {
+      "file": "sy-2-3-c2-a-neutral-1280.png",
+      "sha256": "02d516f67dd860524977a44c21e395fc37445786085c4e885caf116b15bec0f8"
+    },
+    {
+      "file": "sy-2-3-c2-a-fan-1280.png",
+      "sha256": "3cd9909d86ff0df3a0be7d34a085df61d958e748fa5956582301715bc9277291"
+    },
+    {
+      "file": "sy-2-4-a3-a-neutral-1280.png",
+      "sha256": "51d9c763ef1501a21ed15cd1e26d6d6d120a171e6e6e778b2e18a5f11ad905f4"
+    },
+    {
+      "file": "sy-2-4-a3-a-diags-1280.png",
+      "sha256": "978bc1d209445d66e90c8a422ec27a03b423a9e19fa1707f1b7187a726437704"
+    },
+    {
+      "file": "sy-2-4-b2-a-neutral-1280.png",
+      "sha256": "f5972dc454d07233839bee96b07c6a27c168c31a54d3467827fe458126f85c62"
+    },
+    {
+      "file": "sy-2-4-b2-a-side-1280.png",
+      "sha256": "4b4587266361b4ea1782a817d0e1f18d15b61064fba74bbf8826aefc6ce708d2"
+    },
+    {
+      "file": "sy-2-4-c1-a-neutral-1280.png",
+      "sha256": "456f7f92dafc07852dfc305c2886065a70ad4cf4bdf2ca99d1af938a078265fe"
+    },
+    {
+      "file": "sy-2-4-c1-a-two-1280.png",
+      "sha256": "9cd651c38d4baf18a556e59bf87256d38ec5d1e16dedbf011120ceac651abbe2"
+    },
+    {
+      "file": "sy-3-1-theory-neutral-1280.png",
+      "sha256": "9efea316426aae7da5f0f6e0d1889e6a81cabf1fed6db4407bbfe7a1233c463a"
+    },
+    {
+      "file": "sy-3-1-theory-tangent-1280.png",
+      "sha256": "ffd06a4d4921556ae72d6ed0e1a18e8736833555e6598239834e034a154a5da8"
+    },
+    {
+      "file": "sy-3-1-theory-neutral-320.png",
+      "sha256": "02e993d4f00d3aa8416933fa270211165ad1068e853616e1164464f4d497b31f"
+    },
+    {
+      "file": "sy-3-2-theory-neutral-1280.png",
+      "sha256": "93566146bb200dd2f51598840c2c56ec1652a8323c827020c5e482debe4a1e7f"
+    },
+    {
+      "file": "sy-3-2-theory-inner-1280.png",
+      "sha256": "a23af3654582a0705dd7578750e217c871dc13cd8d001e2e0941282a57002ad9"
+    },
+    {
+      "file": "sy-3-2-theory-neutral-320.png",
+      "sha256": "e2f7440be04be81a3fa5523e5a4696ff245ea7bdcf8a18fb08ef2dca35d51175"
+    },
+    {
+      "file": "sy-3-3-theory-neutral-1280.png",
+      "sha256": "9aa60cb5baf5a01b7d82824ea120b718e810e100e7be3b4704c1d12d7ffa522d"
+    },
+    {
+      "file": "sy-3-3-theory-arcs-1280.png",
+      "sha256": "f6ec275bd3ed8416416d4fffff58b4c102598834e31a6433b99f0aeb053220c5"
+    },
+    {
+      "file": "sy-3-3-theory-neutral-320.png",
+      "sha256": "55aabc6cb280f095c91da9103bd3f53aff357646d2836fee8d8b3d2ff6a99928"
+    },
+    {
+      "file": "sy-3-1-a3-a-neutral-1280.png",
+      "sha256": "2ea5eab038b217744718faeee7c05080b35f547f23b2982855f9c2a086909551"
+    },
+    {
+      "file": "sy-3-1-a3-a-inscribed-1280.png",
+      "sha256": "2d63cc2b11197aff6a6741d7392ea72e7c95de3a65fc956d3df52a2f46cbd77b"
+    },
+    {
+      "file": "sy-3-1-b1-a-neutral-1280.png",
+      "sha256": "a042a5b2b126a96b651f6e33a1c529c02459d2030f07a462ed302f9ee11a3a69"
+    },
+    {
+      "file": "sy-3-1-b1-a-second-1280.png",
+      "sha256": "2c0771a862e7857451f27e5408f7342eaf403b999c6b1714e43b0ec483e19f57"
+    },
+    {
+      "file": "sy-3-1-c1-a-neutral-1280.png",
+      "sha256": "bd7891e9ad0bfa2e0d196867fe07494a7ea030d7a42889929d5e7c595e31cacf"
+    },
+    {
+      "file": "sy-3-1-c1-a-triangles-1280.png",
+      "sha256": "50eec9c0fc79a042a811b0e0e5589529e0a3fbd7186710969885e53fb1a0cb5d"
+    },
+    {
+      "file": "sy-3-2-a1-a-neutral-1280.png",
+      "sha256": "3a20f801cd01bd49f2522fe4c27fff1579e4ecb019c66dfa005fb33937093f6f"
+    },
+    {
+      "file": "sy-3-2-a1-a-radii-1280.png",
+      "sha256": "affff93516fe084564b6795fdee7f5a96a20cb0f0c66f8b8a826a449f946aea3"
+    },
+    {
+      "file": "sy-3-2-b1-a-neutral-1280.png",
+      "sha256": "f5c640349aa0c9d23027b33cc934bea2f60ed0aab29540954688b4521aa4ccdd"
+    },
+    {
+      "file": "sy-3-2-b1-a-side-1280.png",
+      "sha256": "d259bbfdd17221ce6fff167427744087dfcf7d1536daa5651b32823037adf363"
+    },
+    {
+      "file": "sy-3-2-c17-a-neutral-1280.png",
+      "sha256": "d596d880906e30ffd701bde969ea69d2792676b4d22771debf190c3a667fdf99"
+    },
+    {
+      "file": "sy-3-2-c17-a-outside-1280.png",
+      "sha256": "1667b70f9ea1b9931f5b21ecabaa0dabdffe14f8118ae44d6e3a7ea1f670180b"
+    },
+    {
+      "file": "sy-3-3-a1-a-neutral-1280.png",
+      "sha256": "141d2556d2c1ecab5fef38f62fe8a9283340e4f4745f5767a722d8b84042bba0"
+    },
+    {
+      "file": "sy-3-3-a1-a-sum-1280.png",
+      "sha256": "8fb94e5e87b08181a4dbcb0870a556c23a18bdd9552678c149099cc1f1071d50"
+    },
+    {
+      "file": "sy-3-3-b2-a-neutral-1280.png",
+      "sha256": "31834de95c36db955c16e5c8038789ee484621284b2037cbbd0d1c38f6dfa38e"
+    },
+    {
+      "file": "sy-3-3-b2-a-bases-1280.png",
+      "sha256": "92d754b433e80f41893014a599a7f94036fe7c8722052a3d5948dde9a795b269"
+    },
+    {
+      "file": "sy-3-3-c4-a-neutral-1280.png",
+      "sha256": "8c377117aaa8fb407c7c064b2252726fb7ee35fa5c574301a6b0bfbbc25fc53f"
+    },
+    {
+      "file": "sy-3-3-c4-a-proved-1280.png",
+      "sha256": "9b59edfc65193a2538ff42fd5f37e4ccbbd256524c3b8f2f4813c6168c084674"
+    }
+  ],
+  "finalPassFilesInspected": [
+    {
+      "file": "sy-1-1-a8-a-neutral-1280.png",
+      "sha256": "06c80d706d4dc05b1e81920144b88d4812929df884f94abe9ff977d1340185d0"
+    },
+    {
+      "file": "sy-1-1-a8-b-neutral-1280.png",
+      "sha256": "5ae9f634c9b60ae22e2bd516033a2bf0180a9545f9835f07d46cd7ba6c88a941"
+    },
+    {
+      "file": "sy-1-2-a1-a-neutral-1280.png",
+      "sha256": "224350469853f18d155836cb3d018df231e5a0c781f20aab236506548cca25be"
+    },
+    {
+      "file": "sy-1-2-a1-b-neutral-1280.png",
+      "sha256": "8762a4631e400027b25947e45fbcefd9116c92b902ec0064eba98ce825f29012"
+    },
+    {
+      "file": "sy-1-2-a8-a-neutral-1280.png",
+      "sha256": "d8ce4f28bdcfd192b8089220f8209836401dfdf9192cc83fd8ab66dce77f5877"
+    },
+    {
+      "file": "sy-1-2-a8-b-neutral-1280.png",
+      "sha256": "09d78ad8c23bc6ddec6b92e2dd984e2f4082b5c0b80e99953a107ca30020b210"
+    },
+    {
+      "file": "sy-1-2-a9-a-neutral-1280.png",
+      "sha256": "24a8735d170678b535cc9b44fa2c2b8ddcbb563fd6d99d92395c25943aef2380"
+    },
+    {
+      "file": "sy-1-2-a9-b-neutral-1280.png",
+      "sha256": "096befb7d4c7ff2dc114333341c57f28ebe733a04c89b41943a352e9939e26a6"
+    },
+    {
+      "file": "sy-1-2-b2-a-neutral-1280.png",
+      "sha256": "7259b0e4e58010cf816e24b3bda77ff377076dec044faddb021a5c9f0a160dce"
+    },
+    {
+      "file": "sy-1-2-b2-b-neutral-1280.png",
+      "sha256": "fe796e7de2dc03736d37c918d8b3bac056b07830041adb4536d6f6c8dab6e1b6"
+    },
+    {
+      "file": "sy-1-2-b3-a-neutral-1280.png",
+      "sha256": "4d415ebf6945f808a21b042fae2fffac5e29cd341fe172f7cf89759c748ca4a5"
+    },
+    {
+      "file": "sy-1-2-b3-b-neutral-1280.png",
+      "sha256": "ba5a83df931a628d4e0e02b458073443e2cd9d9ec6f16dc01615a1ba8446f128"
+    },
+    {
+      "file": "sy-1-2-c3-a-neutral-1280.png",
+      "sha256": "9d6c68331efdcbfa2ef6a6d83391e7df88022fec5dd4400b8d09b6b183f6d07d"
+    },
+    {
+      "file": "sy-1-2-c3-b-neutral-1280.png",
+      "sha256": "68b89c7aaacd2c6decb8a29bb8a7558b2ca50008d5937e2a859f2a2958b1c5c3"
+    },
+    {
+      "file": "sy-1-3-a8-a-neutral-1280.png",
+      "sha256": "8c9306637288b13d63a125e1e5910689b1aae1f2670713c0f24006636b299733"
+    },
+    {
+      "file": "sy-1-3-a8-b-neutral-1280.png",
+      "sha256": "0512bcaee96b9ea4422b9758979052aea498f1c8baf5aa702858037ef2a4d420"
+    },
+    {
+      "file": "sy-1-3-b1-a-neutral-1280.png",
+      "sha256": "de4b0a287eb41f4755fd3f836bda003325f4038c272a3e21a73aacba6cb6019b"
+    },
+    {
+      "file": "sy-1-3-b1-b-neutral-1280.png",
+      "sha256": "5b3ecd02b44d09dcb1d081f827c19bd0e2d33d9c9dc9212b62371bdad6f89c45"
+    },
+    {
+      "file": "sy-1-3-b2-a-neutral-1280.png",
+      "sha256": "9a1ecf956da94a5751144bdfe9845abf531951bee870f33a3f934666997dec99"
+    },
+    {
+      "file": "sy-1-3-b2-b-neutral-1280.png",
+      "sha256": "0fd65c6e4ef28159c5ebf3ddcc6119613935d0af0513a893ab1b207a94aa3d9b"
+    },
+    {
+      "file": "sy-1-3-c4-a-neutral-1280.png",
+      "sha256": "aa39b7ad40f741c6416c3f4b744b34ada545f684d8009d1660a0e1698ee32923"
+    },
+    {
+      "file": "sy-1-3-c4-b-neutral-1280.png",
+      "sha256": "53a43c1a946e43d1e81123610e45e8c2a3e70b4b4077cd8bb08b3973adcc7d1e"
+    },
+    {
+      "file": "sy-1-4-a2-a-neutral-1280.png",
+      "sha256": "137e3073b0a3822b1fa25724cd6fc30469c07d36b2288ce5c437fb4dda0fce16"
+    },
+    {
+      "file": "sy-1-4-a2-b-neutral-1280.png",
+      "sha256": "6160b8dfad20ca521738d17f3c3142514747a25a9875e33fd0eab8ebfac19dad"
+    },
+    {
+      "file": "sy-1-4-a14-a-neutral-1280.png",
+      "sha256": "755acc7ac238178289d234d2d98d406a85729eb2b430e8602050ae652e75d783"
+    },
+    {
+      "file": "sy-1-4-a14-b-neutral-1280.png",
+      "sha256": "8027534b66e3c33f0765135cb027c7c3278eb6dd861e2119ebb25f2f11ade96a"
+    },
+    {
+      "file": "sy-1-4-b2-a-neutral-1280.png",
+      "sha256": "f9683be39b0b8411c3ed42992d1042c4d45083c1621c34b4bf43df6a06eecf9d"
+    },
+    {
+      "file": "sy-1-4-b2-b-neutral-1280.png",
+      "sha256": "88a5a14e2f6b5315cd46303e246ddec8dfd1cdfc5537b797cb0730a0426b0bc4"
+    },
+    {
+      "file": "sy-1-4-c6-a-neutral-1280.png",
+      "sha256": "0be37ae758e0abb0168154ea26e98574ab5f0760ce18f14faaf017e392706df5"
+    },
+    {
+      "file": "sy-1-4-c6-b-neutral-1280.png",
+      "sha256": "d2090113cff8b8408331e93a2cad173417404d6b826b8470dee342546e5fadad"
+    },
+    {
+      "file": "sy-1-5-b2-a-neutral-1280.png",
+      "sha256": "428cc74f956c9c1583a22daf1ea03c7a69e93e5a3e30925afa6c05e88321e678"
+    },
+    {
+      "file": "sy-1-5-b2-b-neutral-1280.png",
+      "sha256": "091ca781ac8e5f1e086554f0e3331174d7c489e7abf586942473e83d4cf86ec4"
+    },
+    {
+      "file": "sy-1-5-c2-a-neutral-1280.png",
+      "sha256": "3d6480e5aaeeda069993a7021e3c2d87eda4b9b8352d2502f75e6cbb0fb97a2d"
+    },
+    {
+      "file": "sy-1-5-c2-b-neutral-1280.png",
+      "sha256": "316238fade7c6d957f5a0316396feec6a3b4cdfd67581524e0bfd4a9e9ae457a"
+    },
+    {
+      "file": "sy-2-1-a2-b-neutral-1280.png",
+      "sha256": "2b4f4edd826917c07dd031cf9ab38a31eddac5e03b8cd35fa7fd257bcb37e2e0"
+    },
+    {
+      "file": "sy-2-1-a7-a-neutral-1280.png",
+      "sha256": "84a6b271dceaae4c45d1709fe6c245e997647d8418a05ea2904c96cfa4c73b88"
+    },
+    {
+      "file": "sy-2-1-a7-b-neutral-1280.png",
+      "sha256": "71a9718bfdb90013328dc43a19ad30055ca95bbbd3c357f4b94688322a4c9785"
+    },
+    {
+      "file": "sy-2-1-a10-a-neutral-1280.png",
+      "sha256": "8b4dd9150def43b85a0fca80b91fec1e9377ebaa28addde779c86de8afa94ee6"
+    },
+    {
+      "file": "sy-2-1-a10-b-neutral-1280.png",
+      "sha256": "2aaafbc27e720261711e863be0ee57055c1992fcc0518d1e3b59f93e0947838e"
+    },
+    {
+      "file": "sy-2-1-b1-a-neutral-1280.png",
+      "sha256": "0c46222e8540f7c554a9dc98f74f2e8f81de2d7446f1d34112edf8c78aaffdcb"
+    },
+    {
+      "file": "sy-2-1-b1-b-neutral-1280.png",
+      "sha256": "796daa4b33588269b2c119dd5425e60d7cd2edcd61d6659480398af776a9d847"
+    },
+    {
+      "file": "sy-2-1-b2-a-neutral-1280.png",
+      "sha256": "bb4689f8680ebe14e406b4f5442391d335c902861eb57eaa4756084b0cea96b5"
+    },
+    {
+      "file": "sy-2-1-b2-b-neutral-1280.png",
+      "sha256": "9a6686b09a65dd5db0a92c107c4f39f3c5abab794370aa56651bca9b943ee05b"
+    },
+    {
+      "file": "sy-2-1-c2-a-neutral-1280.png",
+      "sha256": "3679da519c674a47198ccaec994d58a4ca0480741d45c3e5eaf3e5dbd7043022"
+    },
+    {
+      "file": "sy-2-1-c2-b-neutral-1280.png",
+      "sha256": "f9b22c622c2430e1cd11a73c3ab6e58d1c21cd27fe840640a60cb931394b08f8"
+    },
+    {
+      "file": "sy-2-2-a1-a-neutral-1280.png",
+      "sha256": "2a85cedd6840383c6b9f28760d48ba17001815f999bdbd8c9d19de1f48432d20"
+    },
+    {
+      "file": "sy-2-2-a1-b-neutral-1280.png",
+      "sha256": "fb1e6c8df99872bf41d1a4b47ed4573aef546957a605fd8102d5bc782421fb39"
+    },
+    {
+      "file": "sy-2-2-b2-a-neutral-1280.png",
+      "sha256": "3b7f9e8bec6e08200a2c319e7a931d511ffae4e6dd9b09f89d831712359f68b6"
+    },
+    {
+      "file": "sy-2-2-b2-b-neutral-1280.png",
+      "sha256": "35bb447f6b18a4ffc4a76beb063b397294aa17bd7ebbf1a574f627c104ffc1f4"
+    },
+    {
+      "file": "sy-2-2-a4-a-neutral-1280.png",
+      "sha256": "5e425b9483fb2bcf67f3ae0b41e726bf245afb90d6cc0b4dd9b1a9f2904408ac"
+    },
+    {
+      "file": "sy-2-2-a4-b-neutral-1280.png",
+      "sha256": "e95268c361f02bb1836eea41cfe39b019c8cc2a5448a3664e87b6276dd763caa"
+    },
+    {
+      "file": "sy-2-2-c1-a-neutral-1280.png",
+      "sha256": "bcf138f80c31207813e97b166ea6351a3fb2f72f728e1f18981bcd4483fad124"
+    },
+    {
+      "file": "sy-2-2-c1-b-neutral-1280.png",
+      "sha256": "9987078ede493bb5fa340abb67d01ee3985b93669716a31c7502e30dda123063"
+    },
+    {
+      "file": "sy-2-3-b2-a-neutral-1280.png",
+      "sha256": "a3df696dc19b6a183451445788ee6c4d863dd21ae1bc597795073f40fd536da0"
+    },
+    {
+      "file": "sy-2-3-b2-b-neutral-1280.png",
+      "sha256": "ea934e3f43aa34e3f6075130e462510c6a70332a91e71b3b86bd44b9783a662d"
+    },
+    {
+      "file": "sy-2-3-b3-a-neutral-1280.png",
+      "sha256": "cd2be5939d375dd3de13fe005053963b91a1ca146b84ae3bb93a9cacede56de0"
+    },
+    {
+      "file": "sy-2-3-b3-b-neutral-1280.png",
+      "sha256": "099ac88742ab9eb37059b61d2f5647488006feaaf198abfdf7b0cd24ae74a3c9"
+    },
+    {
+      "file": "sy-2-4-a3-a-neutral-1280.png",
+      "sha256": "27ad045cbe570c0123446651cc7ed2e01bf216376655b52b0fbc1c9c8d4872a7"
+    },
+    {
+      "file": "sy-2-4-a3-b-neutral-1280.png",
+      "sha256": "8125ce9b845902cfbd976f1b5ec8dbe847add6462d0d2f86498eaef35bf9198d"
+    },
+    {
+      "file": "sy-3-1-b1-a-neutral-1280.png",
+      "sha256": "c84386d77896173c46c556ab0b379365c0c278871c6319b1fc1f0302d1d0373c"
+    },
+    {
+      "file": "sy-3-1-b1-b-neutral-1280.png",
+      "sha256": "7013e2492ca486b3d1cd538b586834b71880adbf4585e5c385b316645644fc93"
+    },
+    {
+      "file": "sy-3-2-b10-a-neutral-1280.png",
+      "sha256": "ff1d28756bff4dc6e990d3ed42a8575744c09151552c5114dd852c2a9cd89f39"
+    },
+    {
+      "file": "sy-3-2-b10-b-neutral-1280.png",
+      "sha256": "fd3c0b017054c2d73db139ce7b7926e608b87a4bfd29790c40d5ae2368cfc013"
+    },
+    {
+      "file": "sy-3-3-a1-a-neutral-1280.png",
+      "sha256": "d3d3514ea077b439cbef4571d55ed71d07b89bb108d48b0f516ec2f3a9e17ee9"
+    },
+    {
+      "file": "sy-3-3-a1-b-neutral-1280.png",
+      "sha256": "a251543d9bc03ec2ad3db65b06895210898345c2e4ac96c2ab4202d01adf9765"
+    },
+    {
+      "file": "sy-3-3-a3-a-neutral-1280.png",
+      "sha256": "6d60aa60689c3631f3dc6b69736b2a9247192a1d5d091734247d54a560a646c2"
+    },
+    {
+      "file": "sy-3-3-a3-b-neutral-1280.png",
+      "sha256": "23770d53142bbfe1d3fbc98349552bba59854d737f7a6ca2bc5955d695882e62"
+    },
+    {
+      "file": "sy-3-3-b3-b-neutral-1280.png",
+      "sha256": "f0dcd1bd50533af63f1d611f73e2df1c6c7a42f4cbee4f568376d2e49879dc73"
+    },
+    {
+      "file": "sy-3-3-c4-a-neutral-1280.png",
+      "sha256": "741c485d2650945b98d23b50cb83b97c8e3e4d65188a252bb9d7e13354667767"
+    },
+    {
+      "file": "sy-3-3-c4-b-neutral-1280.png",
+      "sha256": "8dd40453dbe4f9f22b8e412e8769a7122492fbe981e2f54658bc138d9a894061"
+    },
+    {
+      "file": "sy-2-3-c2-a-perimeter-1280.png",
+      "sha256": "85faac843a669e00f2ff8dbfe28536e8e05f557c74b39b52af5eb08e7b38e51c"
+    },
+    {
+      "file": "sy-2-3-c2-b-perimeter-1280.png",
+      "sha256": "b3a87c0b3d77332dd583304a25f76cefe55daef1ce0ff04d8b57a0d8932a309f"
+    },
+    {
+      "file": "sy-3-3-c4-a-proved-1280.png",
+      "sha256": "6d4822d62dad68dbff27cc7c2a4a81e31df6cce67c3933364366743843edaea0"
+    },
+    {
+      "file": "sy-3-3-c4-b-proved-1280.png",
+      "sha256": "00e9b5ab0361134a3c1d951d6b3dc98d3662879b5abf012b4b490bc6be1d2cd1"
+    },
+    {
+      "file": "sy-2-1-a7-a-height-1280.png",
+      "sha256": "3e4ac925eab4dd62f38a96a0cee2902a0eec75eef3d77ad5229070af1d1d240b"
+    },
+    {
+      "file": "sy-2-1-a7-b-height-1280.png",
+      "sha256": "684798c1e0c782a809e3628b16a4ff1470a18f0ee1bf93664fab574399fbe122"
+    },
+    {
+      "file": "sy-2-3-b2-a-orig-1280.png",
+      "sha256": "21600e63df5f763e0c3973a074c6c7ff85710d498f910821402381e980b2a4e3"
+    },
+    {
+      "file": "sy-2-3-b2-b-orig-1280.png",
+      "sha256": "f2bc130cfb73d2ddd115cddd508eb10455f85d90b405f1f462b73575e7538756"
+    },
+    {
+      "file": "sy-2-2-c1-a-construction-1280.png",
+      "sha256": "3ed2649a531d7d7d00df973bd0405c60400429d890ffc2d175f310fa1b03889c"
+    },
+    {
+      "file": "sy-2-2-c1-b-construction-1280.png",
+      "sha256": "0e1419b43e2e115f0e472de4e2f7e067bf55c2c8c990318e916120012f3c2b65"
+    },
+    {
+      "file": "sy-1-2-a1-a-top-1280.png",
+      "sha256": "88e318e0e0ae4177b4c98c6559b77fd3d96799272ba685a100ac7af55276e94c"
+    },
+    {
+      "file": "sy-1-2-b2-a-half-1280.png",
+      "sha256": "56ae668c002bb8020cb8f747320faae024e378a3f39363b276c8fc7be2b8f6b6"
+    },
+    {
+      "file": "sy-1-2-c3-a-answer-1280.png",
+      "sha256": "5f07dfdacc600141d5150ddbaa9c84eb633873b00e13f5c536f0279daef175e3"
+    },
+    {
+      "file": "sy-1-3-b1-a-height-1280.png",
+      "sha256": "36adeb0aabeb4257069ad926dcff6a9ebcbc171dcf0e9e759e2fe14d4d854423"
+    },
+    {
+      "file": "sy-1-3-c4-a-focus-1280.png",
+      "sha256": "9df9064001a2aab88a54fd1fb365ab8492325057f8a392fb73b7bd5da39fc6ed"
+    },
+    {
+      "file": "sy-1-4-b2-a-height-1280.png",
+      "sha256": "6d66d4c28a759857cce172778ef6482aaa1746801383770ad90da2a0e13ee2f2"
+    },
+    {
+      "file": "sy-1-4-c6-a-focus-1280.png",
+      "sha256": "c133572307e6a05722e078c75426d06d36ea69cd45b788425a74f1c861aab853"
+    },
+    {
+      "file": "sy-1-5-b2-a-new-1280.png",
+      "sha256": "363059284c6f749ffcfcc37afd6376022cca71aa34f9352cecc34093058fa58f"
+    },
+    {
+      "file": "sy-1-5-c2-a-reflection-1280.png",
+      "sha256": "dfe9efe4682f68c190aff7f94c49e6582a0b92814b9d556d210d51b32b87d5b0"
+    },
+    {
+      "file": "sy-2-1-b1-a-tri-1280.png",
+      "sha256": "41d7c4387e57af95a97bfac268eb724631101bafa40ae52c738bfb48d82e9db7"
+    },
+    {
+      "file": "sy-2-1-c2-a-trap-1280.png",
+      "sha256": "f9169bad3d8a1eb861b0939a7f1f51b85216cc37320e2f9b3c69aa6ffce52ca0"
+    },
+    {
+      "file": "sy-2-4-a3-a-diags-1280.png",
+      "sha256": "970c35d4f4b997490089b797e47bd2a21070bdf3afa6a525da7fb33ca94d7015"
+    },
+    {
+      "file": "sy-3-1-b1-a-second-1280.png",
+      "sha256": "b4763692d7ef7289d04dc5404e267c62e496a21ccbaa96c491f2fbcf8bca1b54"
+    },
+    {
+      "file": "sy-3-3-a1-a-sum-1280.png",
+      "sha256": "a3559ec65d60f822b42f34a71ddd97441294e70cc75b60a940dab5d02be1631f"
+    }
+  ],
+  "remainingFindings": [],
+  "finalContactSheetsInspected": [
+    "sheet-01.jpg",
+    "sheet-02.jpg",
+    "sheet-03.jpg",
+    "sheet-04.jpg",
+    "sheet-05.jpg",
+    "sheet-06.jpg",
+    "sheet-07.jpg",
+    "sheet-08.jpg",
+    "sheet-09.jpg",
+    "sheet-10.jpg",
+    "sheet-11.jpg",
+    "sheet-12.jpg",
+    "sheet-13.jpg",
+    "sheet-14.jpg",
+    "sheet-15.jpg",
+    "sheet-16.jpg",
+    "sheet-17.jpg",
+    "sheet-18.jpg",
+    "sheet-19.jpg",
+    "sheet-20.jpg",
+    "extra-01.jpg",
+    "extra-02.jpg",
+    "extra-03.jpg",
+    "extra-04.jpg"
+  ],
+  "finalBundle": {
+    "file": "stereo-course/shestakov-yaschenko-10-11/data/course.json",
+    "sha256": "a79e4df90570693454a010b1e74de5a3742c0861b143d3eeca68cc652525f054"
+  },
+  "unchangedOriginalEvidenceCarriedForward": [
+    {
+      "file": "sy-1-1-theory-neutral-1280.png",
+      "sha256": "66900b1df79a338ab92c3cf690232b530e721aa520f307b4ffe52158593f6235"
+    },
+    {
+      "file": "sy-1-1-theory-whole-1280.png",
+      "sha256": "82492e5ec54c4ebe9f92c9928d6441f264565300324a1dcf53f5be9dcc4d2c05"
+    },
+    {
+      "file": "sy-1-1-theory-neutral-320.png",
+      "sha256": "4d4ac33e0066ea760cba752edf6b57ed9f38e67ae59b0aa0f3c93394301a7e38"
+    },
+    {
+      "file": "sy-1-2-theory-neutral-1280.png",
+      "sha256": "263d96455211f78cdf014c55bf491f76b5eead8e9487c960d76d4f7626513806"
+    },
+    {
+      "file": "sy-1-2-theory-half-1280.png",
+      "sha256": "db6cae02b53e7497651d892272c5e293a580702304eb7f76a021db94e8c01945"
+    },
+    {
+      "file": "sy-1-2-theory-neutral-320.png",
+      "sha256": "c53701c2a7c34ea7a37bbf7676a6b5b81ca0e8f50c9d3cbe5e15de4bb664cb0a"
+    },
+    {
+      "file": "sy-1-3-theory-neutral-1280.png",
+      "sha256": "70697dba4390b2fb716dc0ce28e63e7393339f1448f1eef290fcb06e3724b440"
+    },
+    {
+      "file": "sy-1-3-theory-both-1280.png",
+      "sha256": "e20e8b68367e41a63b054cf6f990954d4e92e2cb61b49900de5fe8399bf07cff"
+    },
+    {
+      "file": "sy-1-3-theory-neutral-320.png",
+      "sha256": "e5c238e1047330fb1449c2a5021fdb0321e0f4b890a19966a9442b58dc1061ca"
+    },
+    {
+      "file": "sy-1-4-theory-neutral-1280.png",
+      "sha256": "9b22d112aeb312567ba0290d39b4e119e07d716b18366019530290cbef305580"
+    },
+    {
+      "file": "sy-1-4-theory-sides-1280.png",
+      "sha256": "ab9409cc1a0ee425228bf9e2dfdc65520b36fc72ccbab8be6eb2475268f509d2"
+    },
+    {
+      "file": "sy-1-4-theory-neutral-320.png",
+      "sha256": "da8cedfd163a639b836701aa379418b0d5a2676f03136b92e5d025b4f3d027c0"
+    },
+    {
+      "file": "sy-1-5-theory-neutral-1280.png",
+      "sha256": "659162c83cfd3642b710e07e210df5cbbb798fb35462003a20436969021b2d6e"
+    },
+    {
+      "file": "sy-1-5-theory-mid-1280.png",
+      "sha256": "356d8b74ff92a79b14b73f349ef894e09742e7ae5ac8be7b2eb513164155e571"
+    },
+    {
+      "file": "sy-1-5-theory-neutral-320.png",
+      "sha256": "13c03ef7a2f1d61024799dfdffda320288e8b6dd510c98f25cccc7eb9a7fc97b"
+    },
+    {
+      "file": "sy-1-1-a1-a-neutral-1280.png",
+      "sha256": "1b91d2b81c0a0c896c0b873242f84812d41a6dc9e556fde1a7a0acfcd17f754a"
+    },
+    {
+      "file": "sy-1-1-a1-a-whole-1280.png",
+      "sha256": "e04cafb5c3088b2a4ccec72e255cbd1fc9ae7671a34643b0e9c930887954eb7c"
+    },
+    {
+      "file": "sy-1-1-b1-a-neutral-1280.png",
+      "sha256": "3dc2225efff3aa807467b3543eb863a4d30d333e5dd24ccd2febadec5ea8d966"
+    },
+    {
+      "file": "sy-1-1-b1-a-focus-1280.png",
+      "sha256": "e22b1ce20119313578ec58823168a3b9241ad1d3c8845d6154dbf41e076f6632"
+    },
+    {
+      "file": "sy-1-3-a4-a-neutral-1280.png",
+      "sha256": "01ea54299dd8caa0718d58130473290ebe15b15b6e7d38fc3190727bf0a4a1c3"
+    },
+    {
+      "file": "sy-1-3-a4-a-answer-1280.png",
+      "sha256": "932ddfc521fc7cc5a64328f832a1159fe2808e59a3c1b1758a117dfeeab2fd70"
+    },
+    {
+      "file": "sy-1-4-a1-a-neutral-1280.png",
+      "sha256": "0e2cf8dd08127a8452ef42453813e16f0edb1b3e1362010ea015a30f8f1c82e0"
+    },
+    {
+      "file": "sy-1-4-a1-a-focus-1280.png",
+      "sha256": "2f63c7787e478be3b54164ec9a9377046798a19e1e68a19d62477e131ba4bd7a"
+    },
+    {
+      "file": "sy-1-5-a4-a-neutral-1280.png",
+      "sha256": "cdaeaee743410085344c52405bb85f3fb8dfb231dffa4ba78460352e93ec18c8"
+    },
+    {
+      "file": "sy-1-5-a4-a-vector-1280.png",
+      "sha256": "56be3c9c68c408be99b166dfdde861b023654b6864f7629ec324a8f0f53150c4"
+    },
+    {
+      "file": "sy-2-1-theory-neutral-1280.png",
+      "sha256": "de75218b9e1b058cfd6ba6dee3ed9e260886d68af396579749646deeaa02b87c"
+    },
+    {
+      "file": "sy-2-1-theory-height-1280.png",
+      "sha256": "d07121fa1f3cb93b95c81890d2c1e01a4e9a64e9aa4abed5714ab293f2888b97"
+    },
+    {
+      "file": "sy-2-1-theory-neutral-320.png",
+      "sha256": "b941dbc8f777a9b66c4d36c8edbdeece27e89f2d6094099bf85476d51dc85884"
+    },
+    {
+      "file": "sy-2-2-theory-neutral-1280.png",
+      "sha256": "3ea2a7c39e390828b4181edbf3c987fb6c367cb460fac827b1bc91698987bf8e"
+    },
+    {
+      "file": "sy-2-2-theory-height-1280.png",
+      "sha256": "ffa1478f5e39e4ce0ab57cacbedcafd97697f046ba2b4b18e1d49355504c8d46"
+    },
+    {
+      "file": "sy-2-2-theory-neutral-320.png",
+      "sha256": "dfa5e6fc71246a80b25086db7a8d748873f462407628f6a6fd966553d4cd8271"
+    },
+    {
+      "file": "sy-2-3-theory-neutral-1280.png",
+      "sha256": "50feac04b376b1867edc7554909d720de528a2e7dfab1666458a7657ad39264e"
+    },
+    {
+      "file": "sy-2-3-theory-fan-1280.png",
+      "sha256": "580cf676a448660dbc8b1051f5a2620fd3cdc44ac5e65104ed54ae3bb06b3132"
+    },
+    {
+      "file": "sy-2-3-theory-neutral-320.png",
+      "sha256": "6e726196579da56d08a7e41443bfe5cdc7c692845ca850df5ed9b5b56905daed"
+    },
+    {
+      "file": "sy-2-4-theory-neutral-1280.png",
+      "sha256": "e39febbe91ce755cd310865bf547e44e05f7b2ecb69639d83432d571ea0ab5b5"
+    },
+    {
+      "file": "sy-2-4-theory-route-1280.png",
+      "sha256": "8a8ae3a23c25565c164f94c133abbedf7656c0456a5c7b5ab565d13e8a00be90"
+    },
+    {
+      "file": "sy-2-4-theory-neutral-320.png",
+      "sha256": "7c64124502ec14ced10a38d85237fdbaf32c3da7971977368407e3b77b105112"
+    },
+    {
+      "file": "sy-2-1-a2-a-neutral-1280.png",
+      "sha256": "e2668361d689b738cd22e2b1d69029644a850c54e9c8a015a66c066c2f79591e"
+    },
+    {
+      "file": "sy-2-1-a2-a-diag-1280.png",
+      "sha256": "3dd1cdadc73ea73d0a437806a2827b7de4399b42e07b78015ecbf26ad0bd3529"
+    },
+    {
+      "file": "sy-2-2-a1-a-middle-1280.png",
+      "sha256": "8cc2990efe6f6806964c0bfb6c858422274263e852711515175b7bf8c7082445"
+    },
+    {
+      "file": "sy-2-2-b1-a-neutral-1280.png",
+      "sha256": "aa358f5716d7fef2a265d461abed1ed525faf94a878510d8e7a3751aa8a0b40d"
+    },
+    {
+      "file": "sy-2-2-b1-a-leg-1280.png",
+      "sha256": "5262908cfd603e7b20009a41a6ec154098ca34a11d2843ab9f32f7e771f181d0"
+    },
+    {
+      "file": "sy-2-3-a1-a-neutral-1280.png",
+      "sha256": "f37c7f38992a77cff21d449ce650a67fad29101f64d7e2c9f1f846454d3dcc84"
+    },
+    {
+      "file": "sy-2-3-a1-a-edge-1280.png",
+      "sha256": "dbfe45293d0a3709c5905ad43992791e138c2d72685ecd3abf5a926556dffc63"
+    },
+    {
+      "file": "sy-2-3-c2-a-neutral-1280.png",
+      "sha256": "02d516f67dd860524977a44c21e395fc37445786085c4e885caf116b15bec0f8"
+    },
+    {
+      "file": "sy-2-4-b2-a-neutral-1280.png",
+      "sha256": "f5972dc454d07233839bee96b07c6a27c168c31a54d3467827fe458126f85c62"
+    },
+    {
+      "file": "sy-2-4-b2-a-side-1280.png",
+      "sha256": "4b4587266361b4ea1782a817d0e1f18d15b61064fba74bbf8826aefc6ce708d2"
+    },
+    {
+      "file": "sy-2-4-c1-a-neutral-1280.png",
+      "sha256": "456f7f92dafc07852dfc305c2886065a70ad4cf4bdf2ca99d1af938a078265fe"
+    },
+    {
+      "file": "sy-2-4-c1-a-two-1280.png",
+      "sha256": "9cd651c38d4baf18a556e59bf87256d38ec5d1e16dedbf011120ceac651abbe2"
+    },
+    {
+      "file": "sy-3-1-theory-neutral-1280.png",
+      "sha256": "9efea316426aae7da5f0f6e0d1889e6a81cabf1fed6db4407bbfe7a1233c463a"
+    },
+    {
+      "file": "sy-3-1-theory-tangent-1280.png",
+      "sha256": "ffd06a4d4921556ae72d6ed0e1a18e8736833555e6598239834e034a154a5da8"
+    },
+    {
+      "file": "sy-3-1-theory-neutral-320.png",
+      "sha256": "02e993d4f00d3aa8416933fa270211165ad1068e853616e1164464f4d497b31f"
+    },
+    {
+      "file": "sy-3-2-theory-neutral-1280.png",
+      "sha256": "93566146bb200dd2f51598840c2c56ec1652a8323c827020c5e482debe4a1e7f"
+    },
+    {
+      "file": "sy-3-2-theory-inner-1280.png",
+      "sha256": "a23af3654582a0705dd7578750e217c871dc13cd8d001e2e0941282a57002ad9"
+    },
+    {
+      "file": "sy-3-2-theory-neutral-320.png",
+      "sha256": "e2f7440be04be81a3fa5523e5a4696ff245ea7bdcf8a18fb08ef2dca35d51175"
+    },
+    {
+      "file": "sy-3-3-theory-neutral-1280.png",
+      "sha256": "9aa60cb5baf5a01b7d82824ea120b718e810e100e7be3b4704c1d12d7ffa522d"
+    },
+    {
+      "file": "sy-3-3-theory-arcs-1280.png",
+      "sha256": "f6ec275bd3ed8416416d4fffff58b4c102598834e31a6433b99f0aeb053220c5"
+    },
+    {
+      "file": "sy-3-3-theory-neutral-320.png",
+      "sha256": "55aabc6cb280f095c91da9103bd3f53aff357646d2836fee8d8b3d2ff6a99928"
+    },
+    {
+      "file": "sy-3-1-a3-a-neutral-1280.png",
+      "sha256": "2ea5eab038b217744718faeee7c05080b35f547f23b2982855f9c2a086909551"
+    },
+    {
+      "file": "sy-3-1-a3-a-inscribed-1280.png",
+      "sha256": "2d63cc2b11197aff6a6741d7392ea72e7c95de3a65fc956d3df52a2f46cbd77b"
+    },
+    {
+      "file": "sy-3-1-c1-a-neutral-1280.png",
+      "sha256": "bd7891e9ad0bfa2e0d196867fe07494a7ea030d7a42889929d5e7c595e31cacf"
+    },
+    {
+      "file": "sy-3-1-c1-a-triangles-1280.png",
+      "sha256": "50eec9c0fc79a042a811b0e0e5589529e0a3fbd7186710969885e53fb1a0cb5d"
+    },
+    {
+      "file": "sy-3-2-a1-a-neutral-1280.png",
+      "sha256": "3a20f801cd01bd49f2522fe4c27fff1579e4ecb019c66dfa005fb33937093f6f"
+    },
+    {
+      "file": "sy-3-2-a1-a-radii-1280.png",
+      "sha256": "affff93516fe084564b6795fdee7f5a96a20cb0f0c66f8b8a826a449f946aea3"
+    },
+    {
+      "file": "sy-3-2-b1-a-neutral-1280.png",
+      "sha256": "f5c640349aa0c9d23027b33cc934bea2f60ed0aab29540954688b4521aa4ccdd"
+    },
+    {
+      "file": "sy-3-2-b1-a-side-1280.png",
+      "sha256": "d259bbfdd17221ce6fff167427744087dfcf7d1536daa5651b32823037adf363"
+    },
+    {
+      "file": "sy-3-2-c17-a-neutral-1280.png",
+      "sha256": "d596d880906e30ffd701bde969ea69d2792676b4d22771debf190c3a667fdf99"
+    },
+    {
+      "file": "sy-3-2-c17-a-outside-1280.png",
+      "sha256": "1667b70f9ea1b9931f5b21ecabaa0dabdffe14f8118ae44d6e3a7ea1f670180b"
+    },
+    {
+      "file": "sy-3-3-b2-a-neutral-1280.png",
+      "sha256": "31834de95c36db955c16e5c8038789ee484621284b2037cbbd0d1c38f6dfa38e"
+    },
+    {
+      "file": "sy-3-3-b2-a-bases-1280.png",
+      "sha256": "92d754b433e80f41893014a599a7f94036fe7c8722052a3d5948dde9a795b269"
+    }
+  ],
+  "currentEvidenceScreenshotCount": 164,
+  "obsoleteEvidence": [
+    {
+      "file": "sy-2-3-c2-a-fan-1280.png",
+      "reason": "Unused generic fan removed from current card model; final perimeter screenshots inspected for both variants."
+    }
+  ]
+}

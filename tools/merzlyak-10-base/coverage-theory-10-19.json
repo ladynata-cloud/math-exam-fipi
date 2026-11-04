@@ -1,0 +1,3092 @@
+{
+  "schemaVersion": 1,
+  "bookId": "merzlyak-2022-10-base",
+  "scope": "Theory paragraphs 10–19: definitions, named theorems with proofs, key tasks, embedded worked problems, explicit proof prompts, geometric examples and mathematical remarks. Photographs and decorative context are not separate tasks.",
+  "sourceReading": "All theoretical pages in the listed ranges were read as actual PDF page images; OCR was used only as an aid.",
+  "sourcePdfPagesVisuallyChecked": [
+    99,
+    100,
+    101,
+    102,
+    103,
+    108,
+    109,
+    113,
+    114,
+    115,
+    119,
+    120,
+    121,
+    122,
+    123,
+    128,
+    129,
+    130,
+    131,
+    132,
+    136,
+    137,
+    138,
+    148,
+    149,
+    150,
+    151,
+    152,
+    153,
+    158,
+    159,
+    160,
+    161,
+    163,
+    164,
+    165,
+    166,
+    167,
+    172,
+    173,
+    174
+  ],
+  "inventoryComplete": true,
+  "contentAuthoredComplete": true,
+  "releaseReady": false,
+  "status": "draft_pending_independent_source_mathematics_pedagogy_review",
+  "notes": [
+    "Existing reviewed overview cards were read and mapped, never modified.",
+    "New concrete models illustrate named configurations; general proofs state and use the general hypotheses.",
+    "§16 strict general definition of a geometric body is explicitly outside this school text; the lesson preserves its intuitive scope.",
+    "§15 existence of triangulation for an arbitrary nonconvex polygon is explicitly not proved in the textbook; the lesson labels that limitation.",
+    "§19 full three-dimensional similarity theory is deferred in the textbook; the apothem proof uses only similarity of plane triangles."
+  ],
+  "counts": {
+    "paragraphs": 10,
+    "newDetailCards": 27,
+    "inventoriedUnits": 94,
+    "authorEnrichments": 1,
+    "existingOverviewCardsMapped": 10
+  },
+  "entries": [
+    {
+      "sourceId": "source-theory-10",
+      "paragraph": 10,
+      "requiredParts": [
+        "обзор",
+        "примеры: проекция основания и расстояние в кубе",
+        "ключевая задача 1: центр описанной окружности",
+        "ключевые задачи 2–3: равноудалённость параллельных объектов",
+        "ключевая задача 4: существование общего перпендикуляра"
+      ],
+      "sourcePdfPages": [
+        99,
+        100,
+        101,
+        102,
+        103
+      ],
+      "theoryUnits": [
+        "definition-orthogonal-projection",
+        "example-projection-parallelepiped-base",
+        "definition-perpendicular-incline-projection",
+        "theorem-10.1",
+        "proof-comparison-inclines",
+        "key-task-10-1",
+        "definition-point-plane-distance",
+        "key-task-10-2",
+        "definition-line-plane-distance",
+        "key-task-10-3",
+        "definition-parallel-plane-distance",
+        "definition-skew-distance",
+        "example-cube-skew-distance",
+        "key-task-10-4",
+        "common-perpendicular-distance-property"
+      ],
+      "existingOverview": {
+        "lessonId": "merz-theory-10",
+        "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10.json"
+      },
+      "newLessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/theory-10-detail-01.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-10-detail-02.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-10-detail-03.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-10-detail-04.json"
+      ],
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "sourceId": "source-theory-11",
+      "paragraph": 11,
+      "requiredParts": [
+        "обзор",
+        "ключевая задача: центр вписанной окружности"
+      ],
+      "sourcePdfPages": [
+        108,
+        109
+      ],
+      "theoryUnits": [
+        "theorem-11.1-direct",
+        "theorem-11.1-reverse",
+        "three-perpendiculars-iff",
+        "key-task-11"
+      ],
+      "existingOverview": {
+        "lessonId": "merz-theory-11",
+        "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-11.json"
+      },
+      "newLessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/theory-11-detail-01.json"
+      ],
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "sourceId": "source-theory-12",
+      "paragraph": 12,
+      "requiredParts": [
+        "обзор",
+        "пример: диагональ грани куба",
+        "ключевая задача: равные углы наклонных"
+      ],
+      "sourcePdfPages": [
+        113,
+        114,
+        115
+      ],
+      "theoryUnits": [
+        "definition-line-plane-angle",
+        "embedded-example-12.3",
+        "definition-segment-plane-angle",
+        "key-task-12"
+      ],
+      "existingOverview": {
+        "lessonId": "merz-theory-12",
+        "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-12.json"
+      },
+      "newLessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/theory-12-detail-01.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-12-detail-02.json"
+      ],
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "sourceId": "source-theory-13",
+      "paragraph": 13,
+      "requiredParts": [
+        "обзор",
+        "доказательство: равенство линейных углов",
+        "пример: двугранный угол куба",
+        "задача 1: двугранный угол при общем основании",
+        "задача 2: наклонная и двугранный угол"
+      ],
+      "sourcePdfPages": [
+        119,
+        120,
+        121,
+        122,
+        123
+      ],
+      "theoryUnits": [
+        "definition-dihedral-region-faces-edge",
+        "definition-linear-angle",
+        "proof-equal-linear-angles",
+        "definition-dihedral-measure",
+        "embedded-example-13.6",
+        "classification-dihedral-angles",
+        "four-dihedral-angles",
+        "definition-plane-plane-angle",
+        "definition-polygon-plane-angle",
+        "worked-task-13-1",
+        "worked-task-13-2"
+      ],
+      "existingOverview": {
+        "lessonId": "merz-theory-13",
+        "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-13.json"
+      },
+      "newLessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/theory-13-detail-01.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-13-detail-02.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-13-detail-03.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-13-detail-04.json"
+      ],
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "sourceId": "source-theory-14",
+      "paragraph": 14,
+      "requiredParts": [
+        "обзор",
+        "пример: перпендикулярные грани параллелепипеда",
+        "теорема 14.2 и ключевые задачи 1–2",
+        "ключевая задача 3: расстояние между скрещивающимися прямыми"
+      ],
+      "sourcePdfPages": [
+        128,
+        129,
+        130,
+        131,
+        132
+      ],
+      "theoryUnits": [
+        "definition-perpendicular-planes",
+        "theorem-14.1",
+        "embedded-example-14.4",
+        "theorem-14.2",
+        "key-task-14-1",
+        "key-task-14-2",
+        "key-task-14-3"
+      ],
+      "existingOverview": {
+        "lessonId": "merz-theory-14",
+        "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-14.json"
+      },
+      "newLessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/theory-14-detail-01.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-14-detail-02.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-14-detail-03.json"
+      ],
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "sourceId": "source-theory-15",
+      "paragraph": 15,
+      "requiredParts": [
+        "обзор",
+        "доказательство: общий треугольник и разбиение многоугольника"
+      ],
+      "sourcePdfPages": [
+        136,
+        137,
+        138
+      ],
+      "theoryUnits": [
+        "theorem-15.1-special-triangle",
+        "proof-15.1-general-triangle",
+        "proof-15.1-polygon",
+        "remark-nonconvex-projection"
+      ],
+      "existingOverview": {
+        "lessonId": "merz-theory-15",
+        "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-15.json"
+      },
+      "newLessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/theory-15-detail-01.json"
+      ],
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "sourceId": "source-theory-16",
+      "paragraph": 16,
+      "requiredParts": [
+        "обзор",
+        "определения: тело, углы и диагонали многогранника",
+        "контрпример: выпуклые грани невыпуклого многогранника",
+        "доказательства: боковые рёбра и диагональное сечение призмы",
+        "ключевая задача: боковая площадь наклонной призмы",
+        "пример: правильная треугольная призма",
+        "пример: правильная шестиугольная призма"
+      ],
+      "sourcePdfPages": [
+        148,
+        149,
+        150,
+        151,
+        152,
+        153
+      ],
+      "theoryUnits": [
+        "definition-body-context",
+        "definition-polyhedron-elements",
+        "definition-plane-angle-polyhedron",
+        "definition-dihedral-polyhedron",
+        "definition-diagonal-polyhedron",
+        "definition-convex-polyhedron",
+        "proof-convex-polyhedron-faces",
+        "counterexample-convex-faces",
+        "definition-polyhedron-surface-area",
+        "definition-prism-elements",
+        "proof-prism-lateral-edges",
+        "definition-prism-height-kinds",
+        "embedded-example-regular-triangular-prism",
+        "embedded-example-regular-hexagonal-prism",
+        "embedded-example-cube-as-prism",
+        "definition-prism-diagonal-section",
+        "proof-prism-diagonal-section",
+        "definition-prism-surface-areas",
+        "theorem-16.1",
+        "key-task-16-oblique-prism-area"
+      ],
+      "existingOverview": {
+        "lessonId": "merz-theory-16",
+        "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16.json"
+      },
+      "newLessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/theory-16-detail-01.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-16-detail-02.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-16-detail-03.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-16-detail-04.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-16-detail-05.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-16-detail-06.json"
+      ],
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "sourceId": "source-theory-17",
+      "paragraph": 17,
+      "requiredParts": [
+        "обзор",
+        "доказательства: грани, диагонали и центр параллелепипеда"
+      ],
+      "sourcePdfPages": [
+        158,
+        159,
+        160,
+        161
+      ],
+      "theoryUnits": [
+        "definition-parallelepiped",
+        "proof-opposite-faces-parallelepiped",
+        "definition-parallelepiped-kinds-dimensions",
+        "theorem-17.1",
+        "proof-auxiliary-parallelogram-17",
+        "proof-central-symmetry-parallelepiped",
+        "theorem-17.2"
+      ],
+      "existingOverview": {
+        "lessonId": "merz-theory-17",
+        "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-17.json"
+      },
+      "newLessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/theory-17-detail-01.json"
+      ],
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "sourceId": "source-theory-18",
+      "paragraph": 18,
+      "requiredParts": [
+        "обзор",
+        "доказательства: боковые грани и апофемы правильной пирамиды",
+        "ключевая задача: равные двугранные углы при основании",
+        "определения: высота и диагональное сечение пирамиды",
+        "пример: правильный тетраэдр"
+      ],
+      "sourcePdfPages": [
+        163,
+        164,
+        165,
+        166,
+        167
+      ],
+      "theoryUnits": [
+        "definition-pyramid-elements",
+        "definition-pyramid-height-outside",
+        "definition-pyramid-diagonal-section",
+        "definition-regular-pyramid",
+        "embedded-example-regular-triangular-pyramid",
+        "embedded-example-regular-square-pyramid",
+        "definition-regular-tetrahedron",
+        "proof-regular-pyramid-edges-faces-apothems",
+        "definition-apothem-pyramid",
+        "definition-pyramid-surface-areas",
+        "theorem-18.1",
+        "equal-edges-or-angles-circumcenter",
+        "key-task-18-part-1",
+        "key-task-18-part-2"
+      ],
+      "existingOverview": {
+        "lessonId": "merz-theory-18",
+        "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18.json"
+      },
+      "newLessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/theory-18-detail-01.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-18-detail-02.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-18-detail-03.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-18-detail-04.json"
+      ],
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "sourceId": "source-theory-19",
+      "paragraph": 19,
+      "requiredParts": [
+        "обзор",
+        "доказательства: равенство апофем и теорема 19.1"
+      ],
+      "sourcePdfPages": [
+        172,
+        173,
+        174
+      ],
+      "theoryUnits": [
+        "definition-frustum-elements",
+        "remark-frustum-similar-bases",
+        "definition-frustum-height",
+        "definition-regular-frustum",
+        "definition-frustum-apothem",
+        "proof-equal-frustum-apothems",
+        "embedded-example-square-frustum",
+        "definition-frustum-surface-areas",
+        "theorem-19.1"
+      ],
+      "existingOverview": {
+        "lessonId": "merz-theory-19",
+        "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19.json"
+      },
+      "newLessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-01.json"
+      ],
+      "authoringStatus": "draft_pending_independent_review"
+    }
+  ],
+  "units": [
+    {
+      "paragraph": 10,
+      "unitId": "definition-orthogonal-projection",
+      "title": "Ортогональное проектирование; проекция точки и фигуры",
+      "kind": "definition",
+      "sourcePdfPages": [
+        99
+      ],
+      "sourcePrintedPages": [
+        98
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-10",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10.json",
+          "steps": [
+            "step-1"
+          ],
+          "role": "existing_overview_content"
+        },
+        {
+          "lessonId": "merz-theory-10-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 10,
+      "unitId": "example-projection-parallelepiped-base",
+      "title": "Проекция верхнего основания прямоугольного параллелепипеда",
+      "kind": "worked_example",
+      "sourcePdfPages": [
+        99
+      ],
+      "sourcePrintedPages": [
+        98
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-10-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 10,
+      "unitId": "definition-perpendicular-incline-projection",
+      "title": "Перпендикуляр, наклонная и проекция наклонной",
+      "kind": "definition",
+      "sourcePdfPages": [
+        100
+      ],
+      "sourcePrintedPages": [
+        99
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-10",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10.json",
+          "steps": [
+            "step-1",
+            "step-2"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 10,
+      "unitId": "theorem-10.1",
+      "title": "Перпендикуляр короче любой наклонной; полное доказательство",
+      "kind": "theorem_proof",
+      "sourcePdfPages": [
+        100
+      ],
+      "sourcePrintedPages": [
+        99
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-10",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10.json",
+          "steps": [
+            "step-3"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 10,
+      "unitId": "proof-comparison-inclines",
+      "title": "Авторское дополнение: сравнение наклонных и их проекций",
+      "kind": "author_enrichment",
+      "sourcePdfPages": [
+        100
+      ],
+      "sourcePrintedPages": [
+        99
+      ],
+      "sourceReading": "theorem_context_visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-10",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10.json",
+          "steps": [
+            "step-4"
+          ],
+          "role": "existing_overview_content"
+        }
+      ],
+      "isPrintedSourceUnit": false,
+      "provenanceNote": "This comparison is an author-derived consequence of the Pythagorean identity in theorem 10.1, not a printed proof prompt on PDF100. It is separated from the count of textbook theoretical units."
+    },
+    {
+      "paragraph": 10,
+      "unitId": "key-task-10-1",
+      "title": "Равные расстояния до вершин: центр описанной окружности",
+      "kind": "key_task",
+      "sourcePdfPages": [
+        100
+      ],
+      "sourcePrintedPages": [
+        99
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-10-detail-02",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10-detail-02.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 10,
+      "unitId": "definition-point-plane-distance",
+      "title": "Расстояние от точки до плоскости, включая точку плоскости",
+      "kind": "definition",
+      "sourcePdfPages": [
+        101
+      ],
+      "sourcePrintedPages": [
+        100
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-10",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10.json",
+          "steps": [
+            "step-3"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 10,
+      "unitId": "key-task-10-2",
+      "title": "Равноудалённость точек прямой, параллельной плоскости",
+      "kind": "key_task",
+      "sourcePdfPages": [
+        101
+      ],
+      "sourcePrintedPages": [
+        100
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-10-detail-03",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10-detail-03.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 10,
+      "unitId": "definition-line-plane-distance",
+      "title": "Расстояние между параллельными прямой и плоскостью",
+      "kind": "definition",
+      "sourcePdfPages": [
+        101
+      ],
+      "sourcePrintedPages": [
+        100
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-10",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10.json",
+          "steps": [
+            "step-5"
+          ],
+          "role": "existing_overview_content"
+        },
+        {
+          "lessonId": "merz-theory-10-detail-03",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10-detail-03.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 10,
+      "unitId": "key-task-10-3",
+      "title": "Равноудалённость точек двух параллельных плоскостей",
+      "kind": "key_task",
+      "sourcePdfPages": [
+        101,
+        102
+      ],
+      "sourcePrintedPages": [
+        100,
+        101
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-10-detail-03",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10-detail-03.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 10,
+      "unitId": "definition-parallel-plane-distance",
+      "title": "Расстояние между параллельными плоскостями",
+      "kind": "definition",
+      "sourcePdfPages": [
+        102
+      ],
+      "sourcePrintedPages": [
+        101
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-10",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10.json",
+          "steps": [
+            "step-5"
+          ],
+          "role": "existing_overview_content"
+        },
+        {
+          "lessonId": "merz-theory-10-detail-03",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10-detail-03.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 10,
+      "unitId": "definition-skew-distance",
+      "title": "Расстояние между скрещивающимися прямыми",
+      "kind": "definition",
+      "sourcePdfPages": [
+        102
+      ],
+      "sourcePrintedPages": [
+        101
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-10",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10.json",
+          "steps": [
+            "step-6"
+          ],
+          "role": "existing_overview_content"
+        },
+        {
+          "lessonId": "merz-theory-10-detail-04",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10-detail-04.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 10,
+      "unitId": "example-cube-skew-distance",
+      "title": "Расстояние между прямыми AA₁ и CD куба",
+      "kind": "worked_example",
+      "sourcePdfPages": [
+        102
+      ],
+      "sourcePrintedPages": [
+        101
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-10-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 10,
+      "unitId": "key-task-10-4",
+      "title": "Существование общего перпендикуляра скрещивающихся прямых",
+      "kind": "key_task",
+      "sourcePdfPages": [
+        102,
+        103
+      ],
+      "sourcePrintedPages": [
+        101,
+        102
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-10-detail-04",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10-detail-04.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 10,
+      "unitId": "common-perpendicular-distance-property",
+      "title": "Общий перпендикуляр; равенство его длины расстоянию прямых",
+      "kind": "definition_and_proof",
+      "sourcePdfPages": [
+        103
+      ],
+      "sourcePrintedPages": [
+        102
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-10",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10.json",
+          "steps": [
+            "step-6"
+          ],
+          "role": "existing_overview_content"
+        },
+        {
+          "lessonId": "merz-theory-10-detail-04",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10-detail-04.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 11,
+      "unitId": "theorem-11.1-direct",
+      "title": "Теорема о трёх перпендикулярах: прямая часть",
+      "kind": "theorem_proof",
+      "sourcePdfPages": [
+        108,
+        109
+      ],
+      "sourcePrintedPages": [
+        107,
+        108
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-11",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-11.json",
+          "steps": [
+            "step-1",
+            "step-2",
+            "step-3"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 11,
+      "unitId": "theorem-11.1-reverse",
+      "title": "Теорема о трёх перпендикулярах: обратная часть",
+      "kind": "theorem_proof",
+      "sourcePdfPages": [
+        109
+      ],
+      "sourcePrintedPages": [
+        108
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-11",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-11.json",
+          "steps": [
+            "step-4"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 11,
+      "unitId": "three-perpendiculars-iff",
+      "title": "Эквивалентная формулировка «тогда и только тогда»",
+      "kind": "theorem_statement",
+      "sourcePdfPages": [
+        109
+      ],
+      "sourcePrintedPages": [
+        108
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-11",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-11.json",
+          "steps": [
+            "step-5"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 11,
+      "unitId": "key-task-11",
+      "title": "Равные расстояния до прямых сторон: центр вписанной окружности",
+      "kind": "key_task",
+      "sourcePdfPages": [
+        109
+      ],
+      "sourcePrintedPages": [
+        108
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-11-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-11-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 12,
+      "unitId": "definition-line-plane-angle",
+      "title": "Угол прямой с плоскостью, крайние случаи и диапазон",
+      "kind": "definition",
+      "sourcePdfPages": [
+        113,
+        114
+      ],
+      "sourcePrintedPages": [
+        112,
+        113
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-12",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-12.json",
+          "steps": [
+            "step-1",
+            "step-2",
+            "step-3"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 12,
+      "unitId": "embedded-example-12.3",
+      "title": "Диагональ боковой грани куба образует с основанием угол 45°",
+      "kind": "worked_example",
+      "sourcePdfPages": [
+        114
+      ],
+      "sourcePrintedPages": [
+        113
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-12-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-12-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 12,
+      "unitId": "definition-segment-plane-angle",
+      "title": "Угол отрезка и плоскости",
+      "kind": "definition",
+      "sourcePdfPages": [
+        114
+      ],
+      "sourcePrintedPages": [
+        113
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-12-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-12-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 12,
+      "unitId": "key-task-12",
+      "title": "Равные углы наклонных: равные расстояния до их оснований",
+      "kind": "key_task",
+      "sourcePdfPages": [
+        114,
+        115
+      ],
+      "sourcePrintedPages": [
+        113,
+        114
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-12",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-12.json",
+          "steps": [
+            "step-5"
+          ],
+          "role": "existing_overview_content"
+        },
+        {
+          "lessonId": "merz-theory-12-detail-02",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-12-detail-02.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 13,
+      "unitId": "definition-dihedral-region-faces-edge",
+      "title": "Двугранный угол включает часть пространства; грани, ребро, выпуклая конвенция",
+      "kind": "definition",
+      "sourcePdfPages": [
+        119,
+        120
+      ],
+      "sourcePrintedPages": [
+        118,
+        119
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-13",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-13.json",
+          "steps": [
+            "step-1"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 13,
+      "unitId": "definition-linear-angle",
+      "title": "Линейный угол двугранного угла",
+      "kind": "definition",
+      "sourcePdfPages": [
+        120
+      ],
+      "sourcePrintedPages": [
+        119
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-13",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-13.json",
+          "steps": [
+            "step-2"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 13,
+      "unitId": "proof-equal-linear-angles",
+      "title": "Равенство всех линейных углов; самостоятельное доказательство",
+      "kind": "proof_prompt",
+      "sourcePdfPages": [
+        120
+      ],
+      "sourcePrintedPages": [
+        119
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-13-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-13-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 13,
+      "unitId": "definition-dihedral-measure",
+      "title": "Величина двугранного угла",
+      "kind": "definition",
+      "sourcePdfPages": [
+        121
+      ],
+      "sourcePrintedPages": [
+        120
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-13",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-13.json",
+          "steps": [
+            "step-3"
+          ],
+          "role": "existing_overview_content"
+        },
+        {
+          "lessonId": "merz-theory-13-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-13-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 13,
+      "unitId": "embedded-example-13.6",
+      "title": "Двугранный угол куба при DD₁",
+      "kind": "worked_example",
+      "sourcePdfPages": [
+        121
+      ],
+      "sourcePrintedPages": [
+        120
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-13-detail-02",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-13-detail-02.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 13,
+      "unitId": "classification-dihedral-angles",
+      "title": "Острый, прямой, тупой и развёрнутый двугранные углы",
+      "kind": "definition",
+      "sourcePdfPages": [
+        121
+      ],
+      "sourcePrintedPages": [
+        120
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-13-detail-02",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-13-detail-02.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 13,
+      "unitId": "four-dihedral-angles",
+      "title": "Четыре двугранных угла пересекающихся плоскостей",
+      "kind": "property",
+      "sourcePdfPages": [
+        121
+      ],
+      "sourcePrintedPages": [
+        120
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-13-detail-02",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-13-detail-02.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 13,
+      "unitId": "definition-plane-plane-angle",
+      "title": "Угол между плоскостями; параллельные плоскости",
+      "kind": "definition",
+      "sourcePdfPages": [
+        121,
+        122
+      ],
+      "sourcePrintedPages": [
+        120,
+        121
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-13",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-13.json",
+          "steps": [
+            "step-4",
+            "step-5"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 13,
+      "unitId": "definition-polygon-plane-angle",
+      "title": "Углы многоугольников и плоскостей через содержащие их плоскости",
+      "kind": "definition",
+      "sourcePdfPages": [
+        122
+      ],
+      "sourcePrintedPages": [
+        121
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-13",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-13.json",
+          "steps": [
+            "step-5"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 13,
+      "unitId": "worked-task-13-1",
+      "title": "Задача 1: два равнобедренных треугольника с общим основанием",
+      "kind": "worked_problem",
+      "sourcePdfPages": [
+        122
+      ],
+      "sourcePrintedPages": [
+        121
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-13-detail-03",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-13-detail-03.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 13,
+      "unitId": "worked-task-13-2",
+      "title": "Задача 2: перпендикуляр, наклонная и угол плоскостей",
+      "kind": "worked_problem",
+      "sourcePdfPages": [
+        122,
+        123
+      ],
+      "sourcePrintedPages": [
+        121,
+        122
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-13-detail-04",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-13-detail-04.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 14,
+      "unitId": "definition-perpendicular-planes",
+      "title": "Перпендикулярные плоскости; четыре прямых двугранных угла",
+      "kind": "definition",
+      "sourcePdfPages": [
+        128,
+        129
+      ],
+      "sourcePrintedPages": [
+        127,
+        128
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-14",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-14.json",
+          "steps": [
+            "step-1"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 14,
+      "unitId": "theorem-14.1",
+      "title": "Признак перпендикулярности плоскостей; полное доказательство",
+      "kind": "theorem_proof",
+      "sourcePdfPages": [
+        129
+      ],
+      "sourcePrintedPages": [
+        128
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-14",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-14.json",
+          "steps": [
+            "step-2",
+            "step-3"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 14,
+      "unitId": "embedded-example-14.4",
+      "title": "Перпендикулярные грани прямоугольного параллелепипеда",
+      "kind": "worked_example",
+      "sourcePdfPages": [
+        129
+      ],
+      "sourcePrintedPages": [
+        128
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-14-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-14-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 14,
+      "unitId": "theorem-14.2",
+      "title": "Перпендикуляр к линии пересечения внутри одной из перпендикулярных плоскостей",
+      "kind": "theorem_proof",
+      "sourcePdfPages": [
+        130
+      ],
+      "sourcePrintedPages": [
+        129
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-14-detail-02",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-14-detail-02.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 14,
+      "unitId": "key-task-14-1",
+      "title": "Нормаль через точку первой плоскости принадлежит ей",
+      "kind": "key_task",
+      "sourcePdfPages": [
+        130
+      ],
+      "sourcePrintedPages": [
+        129
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-14-detail-02",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-14-detail-02.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 14,
+      "unitId": "key-task-14-2",
+      "title": "Линия пересечения двух плоскостей, перпендикулярных третьей",
+      "kind": "key_task",
+      "sourcePdfPages": [
+        130,
+        131
+      ],
+      "sourcePrintedPages": [
+        129,
+        130
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-14-detail-02",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-14-detail-02.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 14,
+      "unitId": "key-task-14-3",
+      "title": "Расстояние между AC и BD в тетраэдре",
+      "kind": "key_task",
+      "sourcePdfPages": [
+        131,
+        132
+      ],
+      "sourcePrintedPages": [
+        130,
+        131
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-14-detail-03",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-14-detail-03.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 15,
+      "unitId": "theorem-15.1-special-triangle",
+      "title": "Формула площади проекции: треугольник с основанием на линии пересечения",
+      "kind": "theorem_proof",
+      "sourcePdfPages": [
+        136,
+        137
+      ],
+      "sourcePrintedPages": [
+        135,
+        136
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-15",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-15.json",
+          "steps": [
+            "step-1",
+            "step-2",
+            "step-3"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 15,
+      "unitId": "proof-15.1-general-triangle",
+      "title": "Переход к произвольному треугольнику",
+      "kind": "theorem_proof",
+      "sourcePdfPages": [
+        137
+      ],
+      "sourcePrintedPages": [
+        136
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-15",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-15.json",
+          "steps": [
+            "step-4"
+          ],
+          "role": "existing_overview_content"
+        },
+        {
+          "lessonId": "merz-theory-15-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-15-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 15,
+      "unitId": "proof-15.1-polygon",
+      "title": "Переход к выпуклому многоугольнику; граничные углы",
+      "kind": "theorem_proof",
+      "sourcePdfPages": [
+        137
+      ],
+      "sourcePrintedPages": [
+        136
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-15",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-15.json",
+          "steps": [
+            "step-5",
+            "step-6"
+          ],
+          "role": "existing_overview_content"
+        },
+        {
+          "lessonId": "merz-theory-15-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-15-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 15,
+      "unitId": "remark-nonconvex-projection",
+      "title": "Расширение на невыпуклый многоугольник; триангуляция за рамками курса",
+      "kind": "remark",
+      "sourcePdfPages": [
+        137,
+        138
+      ],
+      "sourcePrintedPages": [
+        136,
+        137
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-15-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-15-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 16,
+      "unitId": "definition-body-context",
+      "title": "Наглядное понятие тела, поверхности и внутренней области; без формального определения",
+      "kind": "concept",
+      "sourcePdfPages": [
+        148,
+        149
+      ],
+      "sourcePrintedPages": [
+        147,
+        148
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-16-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 16,
+      "unitId": "definition-polyhedron-elements",
+      "title": "Многогранник, грани, рёбра, вершины и соседние грани",
+      "kind": "definition",
+      "sourcePdfPages": [
+        149
+      ],
+      "sourcePrintedPages": [
+        148
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-16",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16.json",
+          "steps": [
+            "step-1"
+          ],
+          "role": "existing_overview_content"
+        },
+        {
+          "lessonId": "merz-theory-16-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 16,
+      "unitId": "definition-plane-angle-polyhedron",
+      "title": "Плоский угол многогранника",
+      "kind": "definition",
+      "sourcePdfPages": [
+        149
+      ],
+      "sourcePrintedPages": [
+        148
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-16-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 16,
+      "unitId": "definition-dihedral-polyhedron",
+      "title": "Двугранный угол многогранника: полуплоскости содержат соседние грани",
+      "kind": "definition",
+      "sourcePdfPages": [
+        149
+      ],
+      "sourcePrintedPages": [
+        148
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-16-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 16,
+      "unitId": "definition-diagonal-polyhedron",
+      "title": "Диагональ многогранника в отличие от диагонали грани",
+      "kind": "definition",
+      "sourcePdfPages": [
+        149
+      ],
+      "sourcePrintedPages": [
+        148
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-16-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 16,
+      "unitId": "definition-convex-polyhedron",
+      "title": "Выпуклый многогранник через плоскости граней",
+      "kind": "definition",
+      "sourcePdfPages": [
+        149
+      ],
+      "sourcePrintedPages": [
+        148
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-16",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16.json",
+          "steps": [
+            "step-1"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 16,
+      "unitId": "proof-convex-polyhedron-faces",
+      "title": "Грани выпуклого многогранника выпуклы",
+      "kind": "proof_prompt",
+      "sourcePdfPages": [
+        150
+      ],
+      "sourcePrintedPages": [
+        149
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-16-detail-02",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-02.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 16,
+      "unitId": "counterexample-convex-faces",
+      "title": "Выпуклость всех граней недостаточна для выпуклости тела",
+      "kind": "counterexample",
+      "sourcePdfPages": [
+        150
+      ],
+      "sourcePrintedPages": [
+        149
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-16-detail-02",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-02.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 16,
+      "unitId": "definition-polyhedron-surface-area",
+      "title": "Площадь поверхности многогранника",
+      "kind": "definition",
+      "sourcePdfPages": [
+        150
+      ],
+      "sourcePrintedPages": [
+        149
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-16",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16.json",
+          "steps": [
+            "step-1"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 16,
+      "unitId": "definition-prism-elements",
+      "title": "Призма, основания, боковые грани и боковые рёбра",
+      "kind": "definition",
+      "sourcePdfPages": [
+        150
+      ],
+      "sourcePrintedPages": [
+        149
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-16",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16.json",
+          "steps": [
+            "step-2"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 16,
+      "unitId": "proof-prism-lateral-edges",
+      "title": "Параллельность и равенство боковых рёбер призмы",
+      "kind": "proof_prompt",
+      "sourcePdfPages": [
+        150,
+        151
+      ],
+      "sourcePrintedPages": [
+        149,
+        150
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-16-detail-03",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-03.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 16,
+      "unitId": "definition-prism-height-kinds",
+      "title": "Высота, прямая, наклонная и правильная призмы; классификация",
+      "kind": "definition",
+      "sourcePdfPages": [
+        151,
+        153
+      ],
+      "sourcePrintedPages": [
+        150,
+        152
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-16",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16.json",
+          "steps": [
+            "step-3",
+            "step-4"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 16,
+      "unitId": "embedded-example-regular-triangular-prism",
+      "title": "Правильная треугольная призма",
+      "kind": "example",
+      "sourcePdfPages": [
+        151
+      ],
+      "sourcePrintedPages": [
+        150
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-16-detail-05",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-05.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 16,
+      "unitId": "embedded-example-regular-hexagonal-prism",
+      "title": "Правильная шестиугольная призма",
+      "kind": "example",
+      "sourcePdfPages": [
+        151
+      ],
+      "sourcePrintedPages": [
+        150
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-16-detail-06",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-06.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 16,
+      "unitId": "embedded-example-cube-as-prism",
+      "title": "Куб как правильная четырёхугольная призма",
+      "kind": "example",
+      "sourcePdfPages": [
+        151
+      ],
+      "sourcePrintedPages": [
+        150
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-17",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-17.json",
+          "steps": [
+            "step-2"
+          ],
+          "role": "existing_definition"
+        },
+        {
+          "lessonId": "merz-theory-13-detail-02",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-13-detail-02.json",
+          "role": "concrete_cube_model"
+        }
+      ]
+    },
+    {
+      "paragraph": 16,
+      "unitId": "definition-prism-diagonal-section",
+      "title": "Диагональное сечение призмы",
+      "kind": "definition",
+      "sourcePdfPages": [
+        151
+      ],
+      "sourcePrintedPages": [
+        150
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-16",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16.json",
+          "steps": [
+            "step-5"
+          ],
+          "role": "existing_overview_content"
+        },
+        {
+          "lessonId": "merz-theory-16-detail-03",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-03.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 16,
+      "unitId": "proof-prism-diagonal-section",
+      "title": "Диагональное сечение — параллелограмм; для прямой призмы прямоугольник",
+      "kind": "proof_prompt",
+      "sourcePdfPages": [
+        151
+      ],
+      "sourcePrintedPages": [
+        150
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-16-detail-03",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-03.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 16,
+      "unitId": "definition-prism-surface-areas",
+      "title": "Боковая и полная поверхность призмы",
+      "kind": "definition",
+      "sourcePdfPages": [
+        152
+      ],
+      "sourcePrintedPages": [
+        151
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-16",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16.json",
+          "steps": [
+            "step-6",
+            "step-7"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 16,
+      "unitId": "theorem-16.1",
+      "title": "Площадь боковой поверхности прямой призмы; полное доказательство",
+      "kind": "theorem_proof",
+      "sourcePdfPages": [
+        152
+      ],
+      "sourcePrintedPages": [
+        151
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-16",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16.json",
+          "steps": [
+            "step-6"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 16,
+      "unitId": "key-task-16-oblique-prism-area",
+      "title": "Площадь боковой поверхности через перпендикулярное сечение",
+      "kind": "key_task",
+      "sourcePdfPages": [
+        152,
+        153
+      ],
+      "sourcePrintedPages": [
+        151,
+        152
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-16-detail-04",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-04.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 17,
+      "unitId": "definition-parallelepiped",
+      "title": "Параллелепипед и противоположные грани",
+      "kind": "definition",
+      "sourcePdfPages": [
+        158
+      ],
+      "sourcePrintedPages": [
+        157
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-17",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-17.json",
+          "steps": [
+            "step-1"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 17,
+      "unitId": "proof-opposite-faces-parallelepiped",
+      "title": "Противоположные грани равны и параллельны",
+      "kind": "proof",
+      "sourcePdfPages": [
+        158,
+        159
+      ],
+      "sourcePrintedPages": [
+        157,
+        158
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-17-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-17-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 17,
+      "unitId": "definition-parallelepiped-kinds-dimensions",
+      "title": "Прямой, наклонный, прямоугольный параллелепипед; куб; измерения; классификация",
+      "kind": "definition",
+      "sourcePdfPages": [
+        159
+      ],
+      "sourcePrintedPages": [
+        158
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-17",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-17.json",
+          "steps": [
+            "step-2",
+            "step-5"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 17,
+      "unitId": "theorem-17.1",
+      "title": "Четыре диагонали пересекаются и делятся пополам",
+      "kind": "theorem_proof",
+      "sourcePdfPages": [
+        159,
+        160
+      ],
+      "sourcePrintedPages": [
+        158,
+        159
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-17-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-17-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 17,
+      "unitId": "proof-auxiliary-parallelogram-17",
+      "title": "Самостоятельное обоснование вспомогательного параллелограмма AB₁C₁D",
+      "kind": "proof_prompt",
+      "sourcePdfPages": [
+        160
+      ],
+      "sourcePrintedPages": [
+        159
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-17-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-17-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 17,
+      "unitId": "proof-central-symmetry-parallelepiped",
+      "title": "Самостоятельное доказательство центральной симметрии всего тела",
+      "kind": "proof_prompt",
+      "sourcePdfPages": [
+        160
+      ],
+      "sourcePrintedPages": [
+        159
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-17-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-17-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 17,
+      "unitId": "theorem-17.2",
+      "title": "Квадрат диагонали равен сумме квадратов трёх измерений",
+      "kind": "theorem_proof",
+      "sourcePdfPages": [
+        160,
+        161
+      ],
+      "sourcePrintedPages": [
+        159,
+        160
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-17",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-17.json",
+          "steps": [
+            "step-5",
+            "step-6"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 18,
+      "unitId": "definition-pyramid-elements",
+      "title": "Пирамида, основание, вершина, боковые грани и рёбра",
+      "kind": "definition",
+      "sourcePdfPages": [
+        163,
+        164
+      ],
+      "sourcePrintedPages": [
+        162,
+        163
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-18",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18.json",
+          "steps": [
+            "step-1"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 18,
+      "unitId": "definition-pyramid-height-outside",
+      "title": "Высота пирамиды; её основание может лежать вне основания тела",
+      "kind": "definition",
+      "sourcePdfPages": [
+        164
+      ],
+      "sourcePrintedPages": [
+        163
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-18",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18.json",
+          "steps": [
+            "step-1"
+          ],
+          "role": "existing_overview_content"
+        },
+        {
+          "lessonId": "merz-theory-18-detail-03",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18-detail-03.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 18,
+      "unitId": "definition-pyramid-diagonal-section",
+      "title": "Диагональное сечение выпуклой пирамиды",
+      "kind": "definition",
+      "sourcePdfPages": [
+        164
+      ],
+      "sourcePrintedPages": [
+        163
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-18-detail-03",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18-detail-03.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 18,
+      "unitId": "definition-regular-pyramid",
+      "title": "Правильная пирамида",
+      "kind": "definition",
+      "sourcePdfPages": [
+        164
+      ],
+      "sourcePrintedPages": [
+        163
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-18",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18.json",
+          "steps": [
+            "step-2"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 18,
+      "unitId": "embedded-example-regular-triangular-pyramid",
+      "title": "Центр правильного треугольника; высота правильной треугольной пирамиды",
+      "kind": "example",
+      "sourcePdfPages": [
+        164,
+        165
+      ],
+      "sourcePrintedPages": [
+        163,
+        164
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-18-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 18,
+      "unitId": "embedded-example-regular-square-pyramid",
+      "title": "Центр квадрата; высота правильной четырёхугольной пирамиды",
+      "kind": "example",
+      "sourcePdfPages": [
+        165
+      ],
+      "sourcePrintedPages": [
+        164
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-18",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18.json",
+          "steps": [
+            "step-2"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 18,
+      "unitId": "definition-regular-tetrahedron",
+      "title": "Правильный тетраэдр",
+      "kind": "definition",
+      "sourcePdfPages": [
+        165
+      ],
+      "sourcePrintedPages": [
+        164
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-18",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18.json",
+          "steps": [
+            "step-6"
+          ],
+          "role": "existing_overview_content"
+        },
+        {
+          "lessonId": "merz-theory-18-detail-04",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18-detail-04.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 18,
+      "unitId": "proof-regular-pyramid-edges-faces-apothems",
+      "title": "Равенство рёбер, равнобедренных боковых граней и апофем; самостоятельные обоснования",
+      "kind": "proof_prompt",
+      "sourcePdfPages": [
+        165
+      ],
+      "sourcePrintedPages": [
+        164
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-18-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 18,
+      "unitId": "definition-apothem-pyramid",
+      "title": "Апофема правильной пирамиды",
+      "kind": "definition",
+      "sourcePdfPages": [
+        165
+      ],
+      "sourcePrintedPages": [
+        164
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-18",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18.json",
+          "steps": [
+            "step-4"
+          ],
+          "role": "existing_overview_content"
+        },
+        {
+          "lessonId": "merz-theory-18-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 18,
+      "unitId": "definition-pyramid-surface-areas",
+      "title": "Боковая и полная поверхность пирамиды",
+      "kind": "definition",
+      "sourcePdfPages": [
+        165
+      ],
+      "sourcePrintedPages": [
+        164
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-18",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18.json",
+          "steps": [
+            "step-5"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 18,
+      "unitId": "theorem-18.1",
+      "title": "Площадь боковой поверхности правильной пирамиды",
+      "kind": "theorem_proof",
+      "sourcePdfPages": [
+        165,
+        166
+      ],
+      "sourcePrintedPages": [
+        164,
+        165
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-18",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18.json",
+          "steps": [
+            "step-5"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 18,
+      "unitId": "equal-edges-or-angles-circumcenter",
+      "title": "Равные рёбра или равные углы рёбер с основанием: центр описанной окружности",
+      "kind": "property",
+      "sourcePdfPages": [
+        166
+      ],
+      "sourcePrintedPages": [
+        165
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-18",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18.json",
+          "steps": [
+            "step-7"
+          ],
+          "role": "existing_overview_content"
+        },
+        {
+          "lessonId": "merz-theory-10-detail-02",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10-detail-02.json",
+          "role": "complete_equal_edges_argument"
+        },
+        {
+          "lessonId": "merz-theory-12-detail-02",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-12-detail-02.json",
+          "role": "complete_equal_angles_argument"
+        }
+      ]
+    },
+    {
+      "paragraph": 18,
+      "unitId": "key-task-18-part-1",
+      "title": "Равные двугранные углы при основании: основание высоты — инцентр",
+      "kind": "key_task",
+      "sourcePdfPages": [
+        166,
+        167
+      ],
+      "sourcePrintedPages": [
+        165,
+        166
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-18-detail-02",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18-detail-02.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 18,
+      "unitId": "key-task-18-part-2",
+      "title": "Равные двугранные углы при основании: Sбок=Sосн/cos α",
+      "kind": "key_task",
+      "sourcePdfPages": [
+        167
+      ],
+      "sourcePrintedPages": [
+        166
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-18-detail-02",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18-detail-02.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 19,
+      "unitId": "definition-frustum-elements",
+      "title": "Усечённая пирамида, основания, боковые грани и боковые рёбра",
+      "kind": "definition",
+      "sourcePdfPages": [
+        172,
+        173
+      ],
+      "sourcePrintedPages": [
+        171,
+        172
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19.json",
+          "steps": [
+            "step-1",
+            "step-2"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 19,
+      "unitId": "remark-frustum-similar-bases",
+      "title": "Подобие оснований; более подробное изучение подобия пространственных фигур отнесено к 11 классу",
+      "kind": "remark",
+      "sourcePdfPages": [
+        173
+      ],
+      "sourcePrintedPages": [
+        172
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19.json",
+          "steps": [
+            "step-2"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 19,
+      "unitId": "definition-frustum-height",
+      "title": "Высота усечённой пирамиды",
+      "kind": "definition",
+      "sourcePdfPages": [
+        173
+      ],
+      "sourcePrintedPages": [
+        172
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19.json",
+          "steps": [
+            "step-3"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 19,
+      "unitId": "definition-regular-frustum",
+      "title": "Правильная усечённая пирамида; боковые грани — равнобокие трапеции",
+      "kind": "definition",
+      "sourcePdfPages": [
+        173
+      ],
+      "sourcePrintedPages": [
+        172
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19.json",
+          "steps": [
+            "step-4"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 19,
+      "unitId": "definition-frustum-apothem",
+      "title": "Апофема правильной усечённой пирамиды",
+      "kind": "definition",
+      "sourcePdfPages": [
+        173
+      ],
+      "sourcePrintedPages": [
+        172
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19.json",
+          "steps": [
+            "step-4"
+          ],
+          "role": "existing_overview_content"
+        },
+        {
+          "lessonId": "merz-theory-19-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 19,
+      "unitId": "proof-equal-frustum-apothems",
+      "title": "Самостоятельное доказательство равенства апофем",
+      "kind": "proof_prompt",
+      "sourcePdfPages": [
+        173
+      ],
+      "sourcePrintedPages": [
+        172
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 19,
+      "unitId": "embedded-example-square-frustum",
+      "title": "Правильная четырёхугольная усечённая пирамида, высота и апофема",
+      "kind": "example",
+      "sourcePdfPages": [
+        173,
+        174
+      ],
+      "sourcePrintedPages": [
+        172,
+        173
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19.json",
+          "steps": [
+            "step-3",
+            "step-4"
+          ],
+          "role": "existing_overview_content"
+        },
+        {
+          "lessonId": "merz-theory-19-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    },
+    {
+      "paragraph": 19,
+      "unitId": "definition-frustum-surface-areas",
+      "title": "Боковая и полная поверхность усечённой пирамиды",
+      "kind": "definition",
+      "sourcePdfPages": [
+        174
+      ],
+      "sourcePrintedPages": [
+        173
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19.json",
+          "steps": [
+            "step-5",
+            "step-6"
+          ],
+          "role": "existing_overview_content"
+        }
+      ]
+    },
+    {
+      "paragraph": 19,
+      "unitId": "theorem-19.1",
+      "title": "Самостоятельное доказательство формулы боковой площади",
+      "kind": "theorem_proof",
+      "sourcePdfPages": [
+        174
+      ],
+      "sourcePrintedPages": [
+        173
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19.json",
+          "steps": [
+            "step-5",
+            "step-6"
+          ],
+          "role": "existing_overview_content"
+        },
+        {
+          "lessonId": "merz-theory-19-detail-01",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-01.json",
+          "role": "new_complete_explanation_draft"
+        }
+      ]
+    }
+  ],
+  "newCards": [
+    {
+      "paragraph": 10,
+      "part": "примеры: проекция основания и расстояние в кубе",
+      "lessonId": "merz-theory-10-detail-01",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10-detail-01.json",
+      "sourcePdfPages": [
+        99,
+        102
+      ],
+      "sourceUnits": [
+        "example-projection-parallelepiped-base",
+        "example-cube-skew-distance"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 10,
+      "part": "ключевая задача 1: центр описанной окружности",
+      "lessonId": "merz-theory-10-detail-02",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10-detail-02.json",
+      "sourcePdfPages": [
+        100
+      ],
+      "sourceUnits": [
+        "key-task-10-1"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 10,
+      "part": "ключевые задачи 2–3: равноудалённость параллельных объектов",
+      "lessonId": "merz-theory-10-detail-03",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10-detail-03.json",
+      "sourcePdfPages": [
+        101,
+        102
+      ],
+      "sourceUnits": [
+        "key-task-10-2",
+        "key-task-10-3"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 10,
+      "part": "ключевая задача 4: существование общего перпендикуляра",
+      "lessonId": "merz-theory-10-detail-04",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10-detail-04.json",
+      "sourcePdfPages": [
+        102,
+        103
+      ],
+      "sourceUnits": [
+        "key-task-10-4",
+        "common-perpendicular-distance-property"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 11,
+      "part": "ключевая задача: центр вписанной окружности",
+      "lessonId": "merz-theory-11-detail-01",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-11-detail-01.json",
+      "sourcePdfPages": [
+        109
+      ],
+      "sourceUnits": [
+        "key-task-11"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 12,
+      "part": "пример: диагональ грани куба",
+      "lessonId": "merz-theory-12-detail-01",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-12-detail-01.json",
+      "sourcePdfPages": [
+        114
+      ],
+      "sourceUnits": [
+        "embedded-example-12.3",
+        "definition-segment-plane-angle"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 12,
+      "part": "ключевая задача: равные углы наклонных",
+      "lessonId": "merz-theory-12-detail-02",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-12-detail-02.json",
+      "sourcePdfPages": [
+        114,
+        115
+      ],
+      "sourceUnits": [
+        "key-task-12"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 13,
+      "part": "доказательство: равенство линейных углов",
+      "lessonId": "merz-theory-13-detail-01",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-13-detail-01.json",
+      "sourcePdfPages": [
+        120
+      ],
+      "sourceUnits": [
+        "proof-equal-linear-angles"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 13,
+      "part": "пример: двугранный угол куба",
+      "lessonId": "merz-theory-13-detail-02",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-13-detail-02.json",
+      "sourcePdfPages": [
+        121
+      ],
+      "sourceUnits": [
+        "embedded-example-13.6",
+        "classification-dihedral-angles",
+        "four-dihedral-angles"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 13,
+      "part": "задача 1: двугранный угол при общем основании",
+      "lessonId": "merz-theory-13-detail-03",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-13-detail-03.json",
+      "sourcePdfPages": [
+        122
+      ],
+      "sourceUnits": [
+        "worked-task-13-1"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 13,
+      "part": "задача 2: наклонная и двугранный угол",
+      "lessonId": "merz-theory-13-detail-04",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-13-detail-04.json",
+      "sourcePdfPages": [
+        122,
+        123
+      ],
+      "sourceUnits": [
+        "worked-task-13-2"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 14,
+      "part": "пример: перпендикулярные грани параллелепипеда",
+      "lessonId": "merz-theory-14-detail-01",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-14-detail-01.json",
+      "sourcePdfPages": [
+        129
+      ],
+      "sourceUnits": [
+        "embedded-example-14.4"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 14,
+      "part": "теорема 14.2 и ключевые задачи 1–2",
+      "lessonId": "merz-theory-14-detail-02",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-14-detail-02.json",
+      "sourcePdfPages": [
+        130,
+        131
+      ],
+      "sourceUnits": [
+        "theorem-14.2",
+        "key-task-14-1",
+        "key-task-14-2"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 14,
+      "part": "ключевая задача 3: расстояние между скрещивающимися прямыми",
+      "lessonId": "merz-theory-14-detail-03",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-14-detail-03.json",
+      "sourcePdfPages": [
+        131,
+        132
+      ],
+      "sourceUnits": [
+        "key-task-14-3"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 15,
+      "part": "доказательство: общий треугольник и разбиение многоугольника",
+      "lessonId": "merz-theory-15-detail-01",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-15-detail-01.json",
+      "sourcePdfPages": [
+        136,
+        137,
+        138
+      ],
+      "sourceUnits": [
+        "proof-15.1-general-triangle",
+        "proof-15.1-polygon",
+        "remark-nonconvex-projection"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 16,
+      "part": "определения: тело, углы и диагонали многогранника",
+      "lessonId": "merz-theory-16-detail-01",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-01.json",
+      "sourcePdfPages": [
+        148,
+        149
+      ],
+      "sourceUnits": [
+        "definition-body-context",
+        "definition-plane-angle-polyhedron",
+        "definition-dihedral-polyhedron",
+        "definition-diagonal-polyhedron"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 16,
+      "part": "контрпример: выпуклые грани невыпуклого многогранника",
+      "lessonId": "merz-theory-16-detail-02",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-02.json",
+      "sourcePdfPages": [
+        149,
+        150
+      ],
+      "sourceUnits": [
+        "proof-convex-polyhedron-faces",
+        "counterexample-convex-faces"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 16,
+      "part": "доказательства: боковые рёбра и диагональное сечение призмы",
+      "lessonId": "merz-theory-16-detail-03",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-03.json",
+      "sourcePdfPages": [
+        150,
+        151
+      ],
+      "sourceUnits": [
+        "proof-prism-lateral-edges",
+        "proof-prism-diagonal-section"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 16,
+      "part": "ключевая задача: боковая площадь наклонной призмы",
+      "lessonId": "merz-theory-16-detail-04",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-04.json",
+      "sourcePdfPages": [
+        152,
+        153
+      ],
+      "sourceUnits": [
+        "key-task-16-oblique-prism-area"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 16,
+      "part": "пример: правильная треугольная призма",
+      "lessonId": "merz-theory-16-detail-05",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-05.json",
+      "sourcePdfPages": [
+        151
+      ],
+      "sourceUnits": [
+        "embedded-example-regular-triangular-prism"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 16,
+      "part": "пример: правильная шестиугольная призма",
+      "lessonId": "merz-theory-16-detail-06",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-06.json",
+      "sourcePdfPages": [
+        151
+      ],
+      "sourceUnits": [
+        "embedded-example-regular-hexagonal-prism"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 17,
+      "part": "доказательства: грани, диагонали и центр параллелепипеда",
+      "lessonId": "merz-theory-17-detail-01",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-17-detail-01.json",
+      "sourcePdfPages": [
+        158,
+        159,
+        160
+      ],
+      "sourceUnits": [
+        "proof-opposite-faces-parallelepiped",
+        "theorem-17.1",
+        "proof-auxiliary-parallelogram-17",
+        "proof-central-symmetry-parallelepiped"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 18,
+      "part": "доказательства: боковые грани и апофемы правильной пирамиды",
+      "lessonId": "merz-theory-18-detail-01",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18-detail-01.json",
+      "sourcePdfPages": [
+        164,
+        165
+      ],
+      "sourceUnits": [
+        "embedded-example-regular-triangular-pyramid",
+        "proof-regular-pyramid-edges-faces-apothems"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 18,
+      "part": "ключевая задача: равные двугранные углы при основании",
+      "lessonId": "merz-theory-18-detail-02",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18-detail-02.json",
+      "sourcePdfPages": [
+        166,
+        167
+      ],
+      "sourceUnits": [
+        "key-task-18-part-1",
+        "key-task-18-part-2"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 18,
+      "part": "определения: высота и диагональное сечение пирамиды",
+      "lessonId": "merz-theory-18-detail-03",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18-detail-03.json",
+      "sourcePdfPages": [
+        164
+      ],
+      "sourceUnits": [
+        "definition-pyramid-height-outside",
+        "definition-pyramid-diagonal-section"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 18,
+      "part": "пример: правильный тетраэдр",
+      "lessonId": "merz-theory-18-detail-04",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18-detail-04.json",
+      "sourcePdfPages": [
+        165
+      ],
+      "sourceUnits": [
+        "definition-regular-tetrahedron"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    },
+    {
+      "paragraph": 19,
+      "part": "доказательства: равенство апофем и теорема 19.1",
+      "lessonId": "merz-theory-19-detail-01",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-01.json",
+      "sourcePdfPages": [
+        173,
+        174
+      ],
+      "sourceUnits": [
+        "proof-equal-frustum-apothems",
+        "theorem-19.1"
+      ],
+      "sourceReading": "visually_checked",
+      "authoringStatus": "draft_pending_independent_review"
+    }
+  ]
+}

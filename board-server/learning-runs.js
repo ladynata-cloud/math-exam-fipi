@@ -105,7 +105,7 @@ function createLearningRunsRouter(learning) {
         const at = store.clock(), byPosition = [];
         const disclosed = store.row(`SELECT MAX(CASE WHEN json_extract(e.payload_json,'$.after.assistance.teacher')=1 THEN 1 ELSE 0 END) AS teacher,
           MAX(CASE WHEN e.type='hint' OR json_extract(e.payload_json,'$.after.assistance.hints')=1 THEN 1 ELSE 0 END) AS hints
-          FROM events e JOIN attempts a ON a.id=e.attempt_id WHERE a.learner_id=? AND e.id>? AND e.type IN ('state','hint','check','stroke')`, auth.id, row.start_event_id);
+          FROM events e JOIN attempts a ON a.id=e.attempt_id WHERE a.learner_id=? AND e.id>? AND e.type IN ('state','hint','check','stroke','textbook-help')`, auth.id, row.start_event_id);
         const assistance = { teacher: !!disclosed.teacher, hints: !!disclosed.hints };
         for (const question of questions) {
           const attemptRow = store.row('SELECT * FROM attempts WHERE id=?', question.attemptId), attempt = store.attemptDTO(attemptRow);

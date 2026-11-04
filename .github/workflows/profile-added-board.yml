@@ -1,0 +1,89 @@
+name: Profile START — five added board trainers
+on:
+  pull_request:
+    paths:
+      - 'ege-profil/start/**'
+      - 'trainers/ege-profile-planimetry.html'
+      - 'trainers/ege-profile-vectors.html'
+      - 'trainers/ege-profile-probability.html'
+      - 'trainers/ege-profile-random-variables.html'
+      - 'trainers/ege-profile-equations.html'
+      - 'trainers/board-bridge.js'
+      - 'trainers/board-picker.js'
+      - 'trainers/board-picker-data.json'
+      - 'trainers/board-compat.json'
+      - 'trainers/board-workspace.js'
+      - 'trainers/trainer-board.html'
+      - 'trainers/board-ink.js'
+      - 'trainers/board-images.js'
+      - 'trainers/board-writing.js'
+      - 'trainers/board-layout.js'
+      - 'trainers/board-tools.css'
+      - 'board-server/**'
+      - 'tools/profile-added-*'
+      - '.github/workflows/profile-added-board.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'ege-profil/start/**'
+      - 'trainers/ege-profile-planimetry.html'
+      - 'trainers/ege-profile-vectors.html'
+      - 'trainers/ege-profile-probability.html'
+      - 'trainers/ege-profile-random-variables.html'
+      - 'trainers/ege-profile-equations.html'
+      - 'trainers/board-bridge.js'
+      - 'trainers/board-picker.js'
+      - 'trainers/board-picker-data.json'
+      - 'trainers/board-compat.json'
+      - 'trainers/board-workspace.js'
+      - 'trainers/trainer-board.html'
+      - 'trainers/board-ink.js'
+      - 'trainers/board-images.js'
+      - 'trainers/board-writing.js'
+      - 'trainers/board-layout.js'
+      - 'trainers/board-tools.css'
+      - 'board-server/**'
+      - 'tools/profile-added-*'
+      - '.github/workflows/profile-added-board.yml'
+permissions:
+  contents: read
+concurrency:
+  group: profile-added-board-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  added-board:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: board-server/package-lock.json
+      - name: Install locked server and pinned browser tools
+        run: |
+          npm ci --prefix board-server --include=optional
+          npm install --prefix "$RUNNER_TEMP/profile-added-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/profile-added-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/profile-added-browser/node_modules" >> "$GITHUB_ENV"
+      - name: Five adapters, all authored models and picker contracts
+        run: node --test tools/profile-added-board.test.cjs tools/profile-added-board-models.test.cjs tools/profile-added-picker.test.cjs
+      - name: Shared adapter regression for existing stereometry and expressions
+        run: node --test tools/profile-stereo-board.test.cjs tools/profile-stereo-board-models.test.cjs tools/profile-stereo-picker.test.cjs tools/profile-expressions-board.test.cjs tools/profile-expressions-picker.test.cjs
+      - name: Authoritative registry and live server contracts
+        run: node --test board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js
+      - name: Five trainers in real isolated teacher and student browsers
+        env:
+          PROFILE_ADDED_BOARD_SHOTS: ${{ runner.temp }}/profile-added-board-shots
+        run: node tools/profile-added-board.browser.cjs
+      - name: Save local acceptance screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: profile-added-board
+          path: ${{ runner.temp }}/profile-added-board-shots
+          if-no-files-found: ignore
+          retention-days: 7

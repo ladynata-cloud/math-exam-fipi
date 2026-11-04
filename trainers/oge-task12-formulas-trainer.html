@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ОГЭ, задание 12 — расчёты по формулам. Тренажёр</title>
+<link rel="canonical" href="https://mathexam.space/trainers/oge-task12-formulas-trainer.html">
 <style>
 :root{
   --paper:#f3f5f7;
@@ -218,7 +219,13 @@ input.ans:focus-visible{outline:3px solid var(--blue-dark);outline-offset:2px}
   input.ans{width:140px;font-size:18px}
   header h1{font-size:22px}
 }
+
+/* Minimal task-first course presentation. Math and progress stay in their existing engines. */
+:root{--bg:#f6f7f5;--paper:#fff;--ink:#202820;--muted:#626b63;--accent:#216342;--green:#216342;--blue:#216342;--line:#dbe1da;--ui:system-ui,-apple-system,"Segoe UI",sans-serif;--hand:var(--ui)}
+body{background:#f6f7f5!important;color:#202820;font-family:var(--ui);font-size:18px;line-height:1.75}.margin-line{display:none}.wrap,body>main,body>header{max-width:860px;margin-left:auto;margin-right:auto;padding-left:20px;padding-right:20px}body>header{background:transparent;border:0;box-shadow:none;padding-top:24px}header,h1,h2,h3,.hand{font-family:var(--ui)!important}header{margin-bottom:24px}h1{font-size:25px!important;line-height:1.4;margin:10px 0 22px!important}.crumbs{font:15px/1.6 var(--ui);color:#216342}.card,.task-card,.mtask,.panel{background:#fff!important;border:1px solid #dbe1da!important;border-radius:14px;box-shadow:none!important;padding:28px!important;margin-bottom:22px}.card:before,.card:after{display:none!important}.card p,.task-card p,.mtask p{line-height:1.8}.taskline,.task-text,.task-q,.story{font-size:19px!important;line-height:1.8!important}.taskline{margin:16px 0}.svgbox,svg{max-width:100%}.expr,.formula-box{margin:24px 0;font-size:27px;overflow-x:auto}.btn,.act,.btn-check,button.primary{background:#216342!important;color:white!important;border-color:#216342!important;font-family:var(--ui)!important;font-size:16px;min-height:46px}.ghost,.btn.ghost,.btn-ghost,.act.sec,.act.ghost,.btn.show,.btn-hint{background:#fff!important;color:#216342!important;border-color:#b9cbbb!important}button,input,select,summary{font-family:var(--ui);min-height:44px}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid #78a98c;outline-offset:3px}input.ans,.ansfield input,.field input{font-size:21px!important;max-width:100%;border-radius:7px}.btnrow,.btn-row,.mrow,.steprow,.answer-row{gap:12px;margin-top:18px!important}.tabs{display:flex;flex-wrap:wrap;gap:9px;border:0}.tabs button,.chip,.pill,.fchip,#modes button,#types button{background:white;color:#216342;border:1px solid #dbe1da;min-height:44px;padding:9px 13px;font-size:15px}.tabs .active,.tabs .on,.chip.active,.chip.on,.pill.on,.fchip.on,#modes .active,#types .active{background:#216342!important;color:#fff!important}.minimal-settings,.minimal-options{margin:24px 0;border-top:1px solid #dbe1da;padding:18px 2px}.minimal-settings>summary,.minimal-options>summary{color:#216342;cursor:pointer;font-size:16px;padding:5px 0}.minimal-settings>summary+*,.minimal-options>summary+*{margin-top:18px}.minimal-settings .card{padding:18px!important}.minimal-settings .sub,.minimal-settings .subtitle{font-size:15px;line-height:1.75}.minimal-hint{margin:24px 0!important}.minimal-hint-panel{margin:20px 0;padding:20px;background:#f0f5ee;border-radius:12px}.minimal-task-nav{margin:20px 0}.minimal-task-nav label{display:block;font-size:15px}.minimal-task-nav select{max-width:100%;padding:8px;border:1px solid #b9cbbb;border-radius:8px;background:white;font-size:17px}.minimal-task-nav .minimal-next{display:block;margin-top:18px}.mgrid{display:block!important}.score{position:static!important;background:transparent!important;box-shadow:none!important;padding:12px!important}.minimal-meta{font-size:14px;color:#626b63}.minimal-task-title{font-size:20px;margin:0 0 24px}.minimal-task-nav [hidden],[hidden]{display:none!important}@media(max-width:560px){.wrap,body>main,body>header{padding-left:12px;padding-right:12px}.card,.task-card,.mtask,.panel{padding:22px 16px!important}h1{font-size:22px!important}.taskline,.task-text,.task-q,.story{font-size:18px!important}.minimal-hint-panel{padding:16px 12px}.expr,.formula-box{font-size:24px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 </style>
+<link rel="stylesheet" href="oge-course-reference.css">
+<link rel="stylesheet" href="oge-course-algebra.css">
 </head>
 <body>
 <div class="wrap">
@@ -267,7 +274,40 @@ input.ans:focus-visible{outline:3px solid var(--blue-dark);outline-offset:2px}
 <p class="note">Тренажёр принимает и запятую, и точку в десятичных дробях. В бланке ОГЭ пишем только число, без единиц измерения: десятичные дроби — через запятую.</p>
 </div>
 
+<script src="oge-course-shared-mode.js"></script>
 <script>
+"use strict";
+
+/* Presentation helpers only: nodes are moved, never cloned, so their handlers and progress survive. */
+const OGEMinimal={
+  group(root,nodes,label,cls){
+    if(!root||typeof root.appendChild!=="function")return null;
+    nodes=nodes.filter(Boolean);if(!nodes.length)return null;
+    const details=document.createElement('details');details.className=cls||'minimal-options';
+    const summary=document.createElement('summary');summary.textContent=label;details.appendChild(summary);
+    nodes.forEach(node=>details.appendChild(node));root.appendChild(details);return details;
+  },
+  shell(root,selectors,title){
+    if(!root||!document.body||!document.body.querySelector)return;
+    const heading=document.querySelector('h1');if(heading)heading.textContent=title;
+    const nodes=selectors.map(s=>document.querySelector(s)).filter(Boolean);
+    this.group(root,nodes,'Темы, режимы и результаты','minimal-settings');
+  },
+  paginate(grid,selector){
+    if(!grid||!grid.querySelectorAll)return;
+    const cards=Array.from(grid.querySelectorAll(selector));if(!cards.length)return;
+    const old=grid.nextElementSibling;if(old&&old.classList.contains('minimal-task-nav'))old.remove();
+    const nav=document.createElement('div');nav.className='minimal-task-nav';
+    const next=document.createElement('button');next.type='button';next.className='btn minimal-next';next.textContent='Другое задание →';nav.appendChild(next);
+    const options=document.createElement('details');options.className='minimal-options';
+    const summary=document.createElement('summary');summary.textContent='Выбрать задание';options.appendChild(summary);
+    const label=document.createElement('label');label.textContent='Задание ';const select=document.createElement('select');select.setAttribute('aria-label','Выбрать задание');label.appendChild(select);options.appendChild(label);nav.appendChild(options);
+    cards.forEach((card,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=String(i+1)+' из '+cards.length;select.appendChild(option);});
+    let current=0;const activate=i=>{current=i;cards.forEach((card,j)=>{card.hidden=j!==i;});select.value=String(i);};
+    select.onchange=()=>activate(Number(select.value));next.onclick=()=>activate((current+1)%cards.length);activate(0);grid.after(nav);
+  }
+};
+
 'use strict';
 /* ===================== helpers ===================== */
 var $=function(s){return document.querySelector(s)};
@@ -311,12 +351,13 @@ const CP=(function(){
   function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
   function num(v){ return (typeof v === "number" && isFinite(v) && v > 0) ? Math.floor(v) : 0; }
   function readAll(){
+    if (window.OgeCourseSharedMode) return {};
     try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(o) ? o : {}; }
     catch (e) { return {}; }
   }
   /* меняет только свою ветку: читает ключ заново прямо перед записью */
   function saveRec(fn){
-    if (RO) return;
+    if (RO || window.OgeCourseSharedMode) return;
     try {
       var all = readAll();
       var rec = isObj(all[TID]) ? all[TID] : {};
@@ -340,7 +381,7 @@ const CP=(function(){
   /* журнал: промах открывает тип, три верных подряд закрывают;
      верный ответ по типу без промахов записи не заводит */
   function mlog(type, ok){
-    if (RO) return;
+    if (RO || window.OgeCourseSharedMode) return;
     try {
       var all = readAll();
       var key = TID + "|" + type;
@@ -366,7 +407,7 @@ const CP=(function(){
   /* §6: старый ключ читается один раз; переносится сопоставимое с ядром; ставится
      migratedFrom; старый ключ не удаляется и не переписывается */
   function migrate(fn){
-    if (RO) return;
+    if (RO || window.OgeCourseSharedMode) return;
     try {
       var raw = localStorage.getItem(OLD_KEY);
       if (raw === null) return;
@@ -383,7 +424,7 @@ const CP=(function(){
   /* «Сбросить прогресс»: своя ветка и свои записи журнала (по префиксу TID|);
      отметка миграции остаётся — иначе старый ключ перенёсся бы снова */
   function resetOwn(){
-    if (RO) return;
+    if (RO || window.OgeCourseSharedMode) return;
     try {
       var all = readAll(), rec = all[TID];
       if (isObj(rec) && typeof rec.migratedFrom === "string") all[TID] = { v:1, solvedByType:{}, migratedFrom:rec.migratedFrom, updatedAt:Date.now() };
@@ -396,7 +437,7 @@ const CP=(function(){
   /* своя статистика панели тренажёра — поле ext ветки (адаптер курса его не читает) */
   function ext(){ var r = readAll()[TID]; return isObj(r) && isObj(r.ext) ? r.ext : {}; }
   function saveExt(fn){ saveRec(function(rec){ if (!isObj(rec.ext)) rec.ext = {}; fn(rec.ext); }); }
-  var REVIEW = /[?&]mode=review(&|$)/.test(location.search || "");
+  var REVIEW = !window.OgeCourseSharedMode && /[?&]mode=review(&|$)/.test(location.search || "");
   return { RO:RO, REVIEW:REVIEW, KEY:KEY, isObj:isObj, num:num, readAll:readAll, saveRec:saveRec,
     solvedOne:solvedOne, finishQuiz:finishQuiz, mlog:mlog, openTypes:openTypes,
     migrate:migrate, resetOwn:resetOwn, ext:ext, saveExt:saveExt };
@@ -1076,7 +1117,7 @@ var MODES=[
 /* режимы, которые пишут прогресс курса (решение D38): задания с числом или подстановкой в ответе */
 var WRITES={quick:true,subst:true,steps:true,exam:true};
 
-var mode='quick';
+var mode='exam';
 var typeFilter=0; // 0 = все
 var cur=null;      // текущая задача
 var A=null;        // состояние задачи: промах, показ, попытки
@@ -1184,6 +1225,7 @@ var TWO_MISSES='Две ошибки — задание в счёт не идёт
 
 /* ===================== проверка числового ответа ===================== */
 function checkNumeric(inputEl,task){
+  if(A.done)return;
   var p=parseAns(inputEl.value);
   if(p.value===null){showFeedback('info','Введи число. Десятичную дробь можно писать и через запятую, и через точку.');return}
   var unitNote=p.hadUnit?' Кстати: в бланке ОГЭ пишем только число, без единиц измерения.':'';
@@ -1192,6 +1234,8 @@ function checkNumeric(inputEl,task){
     if(WRITES[mode])finishTask(task.t,ok);else A.done=true;
     var extra=(!ok&&!wasDone)?' (Разбор был показан — задание в счёт решённых не идёт, но главное, что разобрались.)':'';
     showFeedback('ok','Верно! Ответ: '+fmt(task.answer)+'.'+unitNote+extra);
+    inputEl.disabled=true;
+    var acceptedCheck=$('#checkBtn');if(acceptedCheck)acceptedCheck.disabled=true;
     return;
   }
   /* неверно: первый промах — в журнал; сообщение адресное, если ответ совпал с ловушкой */
@@ -1247,9 +1291,42 @@ function bindPlain(task,onNext){
   $('#nextBtn').onclick=onNext;
   focusInput('#ansIn');
 }
+function mountFormulaHint(host,task){
+  const steps=buildSteps(task);let index=0;
+  const history=document.createElement('div');history.className='minimal-step-history';
+  const current=document.createElement('div');current.className='minimal-step-current';host.appendChild(history);host.appendChild(current);
+  function draw(){
+    current.replaceChildren();
+    if(index>=steps.length){const p=document.createElement('p');p.textContent='Все шаги выполнены. Запиши ответ к заданию.';current.appendChild(p);return;}
+    const step=steps[index];const prompt=document.createElement('p');prompt.innerHTML=step.prompt;current.appendChild(prompt);
+    const feedback=document.createElement('p');feedback.setAttribute('role','status');feedback.setAttribute('aria-live','polite');
+    function advance(){const done=document.createElement('div');done.className='step-done';done.innerHTML='✓ '+step.doneText;history.appendChild(done);index++;draw();}
+    function wrong(){missTask(task.t);feedback.textContent='Пока не сходится. Проверь этот шаг и попробуй ещё раз.';}
+    if(step.kind==='mc'){
+      const options=step.correctByFlag?step.options:step.options.map((html,i)=>({html,ok:i===step.correct}));
+      const choices=document.createElement('div');choices.className='mc';
+      options.forEach(option=>{const button=document.createElement('button');button.type='button';button.innerHTML=option.html;button.onclick=()=>{if(option.ok)advance();else wrong();};choices.appendChild(button);});current.appendChild(choices);
+    }else{
+      const row=document.createElement('div');row.className='answer-row';const input=document.createElement('input');input.className='ans';input.type='text';input.setAttribute('aria-label','Ответ на шаг');input.autocomplete='off';input.maxLength=128;
+      const button=document.createElement('button');button.type='button';button.className='btn btn-check';button.textContent='Проверить шаг';
+      const check=()=>{const parsed=parseAns(input.value);if(parsed.value===null){feedback.textContent='Введи число.';return;}if(near(parsed.value,step.answer))advance();else wrong();};
+      button.onclick=check;input.onkeydown=event=>{if(event.key==='Enter'&&!event.isComposing){event.preventDefault();if(!event.repeat)check();}};row.appendChild(input);row.appendChild(button);current.appendChild(row);
+    }
+    current.appendChild(feedback);
+  }
+  draw();
+}
+
 function renderPlain(){
   $('#taskArea').innerHTML=plainCardHTML(cur);
   bindPlain(cur,nextTask);
+  const card=$('#taskArea').querySelector('.card'),row=card.querySelector('.answer-row');
+  const toggle=document.createElement('button');toggle.type='button';toggle.className='btn btn-ghost minimal-hint';toggle.textContent='Хочешь подсказку?';toggle.setAttribute('aria-expanded','false');card.insertBefore(toggle,row);
+  const panel=document.createElement('div');panel.className='minimal-hint-panel';panel.hidden=true;card.appendChild(panel);
+  const extra=document.createElement('details');extra.className='minimal-options';const summary=document.createElement('summary');summary.textContent='Ещё помощь и готовый разбор';extra.appendChild(summary);
+  extra.appendChild($('#hintBtn'));extra.appendChild($('#solBtn'));extra.appendChild(card.querySelector('.ladder-note'));extra.appendChild($('#sol'));
+  let built=false;toggle.onclick=function(){panel.hidden=!panel.hidden;toggle.setAttribute('aria-expanded',String(!panel.hidden));if(!built){built=true;mountFormulaHint(panel,cur);panel.appendChild(extra);}};
+  OGEMinimal.group(card,[card.querySelector('.badge')],'Об этом задании');
 }
 function nextTask(){userActed=true;newTask()}
 
@@ -1853,6 +1930,7 @@ function start12(){
   renderTypes();
   renderProgress();
   newTask();
+  OGEMinimal.shell(document.querySelector('.wrap'),['#modes','#modeDesc','#typesWrap','#focus','#progressPanel','header .sub','.teacher','.wrap>.note'],'ОГЭ №12 · Расчёты по формулам');
   if(CP.RO)selftest12();   // ?selftest=1 — маркер OGE12_SELFTEST_OK в консоли
 }
 
@@ -1990,5 +2068,9 @@ function selftest12(){
 
 start12();
 </script>
+<script src="oge-course-reference.js"></script>
+<script src="oge-course-algebra.js?v=20261025-oge-course-mirror" data-oge-task="12"></script>
+<script src="board-bridge.js"></script>
+<script src="oge-native-10-14-board.js" data-oge-native="12"></script>
 </body>
 </html>

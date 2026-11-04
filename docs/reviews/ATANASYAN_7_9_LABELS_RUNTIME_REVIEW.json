@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "browser": "passed",
+  "source": "unchanged",
+  "mathematics": "unchanged",
+  "models": "unchanged",
+  "reviewer": "Independent integration reviewer (regression) and source-label reviewer; coordinator records completed evidence",
+  "at": "2026-10-28T16:29:28.995076+00:00",
+  "oldImplementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
+  "implementationSha256": "f358f65b5955ad8ae2443bc8916aadda8f502a07e6274e90b9b21d727979813c",
+  "implementationFiles": {
+    "index.html": "098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804",
+    "assets/engine.js": "85d395dbfb66f8a1409f1d2f930fbb6f742c0085239d34d18ec2a901f3bd6492",
+    "assets/planar-viewer.js": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061",
+    "assets/style.css": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b",
+    "assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+    "source-inventory.json": "e01036d2efaea5591e874b0669f8cbfba0ab8c9a67170042f78bb73efc9c10b6",
+    "assets/board-adapter.js": "e1c366fd77f2cc822894be7e21139ce99b9e7b3c568392b122f2a3b386b7545b"
+  },
+  "scope": "Caption-only runtime amendment for all 705 published I–V cards; no authored lesson/model/storage identity change",
+  "independentReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_INTEGRATION_REVIEW.md",
+    "sha256": "44f034b18e862f0dfd3bd7f1a76dd2a2bb6802adef3903400df9879bd4f6d3ec"
+  },
+  "sourceLabels": {
+    "path": "docs/reviews/ATANASYAN_7_9_SOURCE_LABELS_REVIEW.md",
+    "sha256": "05856221a39bf7e52d747ae7a5d4672732d4d5ed8cd50d53dcf2470521772c97"
+  },
+  "fullCourseBrowser": {
+    "artifact": "course-final/browser-evidence.json",
+    "sha256": "3ee26d0f1c7e6c3ac8a5dbef2c1cf650ca22135adbedd26050cf8b16f9cac6ce",
+    "scope": "full-course",
+    "bundleSha256": "72f479d9476032497ac481910aab37fadbb02e78e6884250d50c7b54b77313db",
+    "implementationSha256": "78104fd5f8898d64c29e67013496fb5eb44efea93ad39eae12873bdd75cadf59",
+    "authoredContentSha256": "6de92f7f2a91f94b806ea917b262b20a66733afa6f4078460d58fb3f2be9a1b8",
+    "lessons": 755,
+    "completed": true,
+    "views": 8202,
+    "stepFlows": 1510,
+    "screenshots": 3020,
+    "interactions": 16,
+    "errors": 0
+  },
+  "captionChecks": {
+    "cards": 755,
+    "domJourneys": 17,
+    "status": "passed"
+  },
+  "adapterChecks": {
+    "tests": 9,
+    "status": "passed",
+    "negativeControl": "Old raw-title lookup fails as expected",
+    "scope": "Current adapter, isolated fixture of five genuinely published reviewed cards; final generated bundle also checked before PR"
+  },
+  "snapshotBoundary": {
+    "changedSinceBrowserSnapshot": [
+      "assets/board-adapter.js"
+    ],
+    "explanation": "Only the board wrapper note changed after the main-course snapshot: both modes now show К задаче №92а. The primary index does not load board-adapter.js; all six primary-page inputs and the authored content match the completed full-course run. Exact current adapter independently passed nine tests. CI repeats the full-course gate on the final seven-input binding."
+  },
+  "externalClaudeReview": false,
+  "publicationAuthorized": false
+}

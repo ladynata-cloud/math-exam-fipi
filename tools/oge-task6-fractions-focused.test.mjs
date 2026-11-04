@@ -1,14 +1,20 @@
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
+import bookCorrections from './oge-book-exam-corrections.cjs';
+import taskScope from './task6-scope.cjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const trainerPath = 'trainers/oge-task6-fractions.html';
-const baselineSha = 'fbd46afd92a58875b1b89af329b9d37a676abe52';
+// Keep the independent mathematical bank comparison against the reviewed fix.
+const baselineSha = '4b56350c35a67e41add8f2b25cf2bf7d73d1f71f';
+// The board integration leaves the complete reviewed native engine unchanged.
+const nativeScriptSha256 = 'fc2803edad40c7548979c656b37a2709a853f96467beb53ceb6144a779af0ce9';
 const git = (...args) => execFileSync('git',
   ['-c', 'safe.directory=' + root, ...args], { cwd: root, encoding: 'utf8' });
 const html = fs.readFileSync(path.join(root, trainerPath), 'utf8');
@@ -19,9 +25,24 @@ const tasksBlock = source => {
   return { bytes: Buffer.from(matches[0][0], 'utf8'), tasks: JSON.parse(matches[0][1]) };
 };
 const tasks = tasksBlock(html).tasks;
-const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)];
-assert.equal(scripts.length, 1, 'One self-contained inline script');
-const script = scripts[0][1];
+const scripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)];
+const localScripts = [
+  'oge-course-shared-mode.js?v=20261025',
+  'board-bridge.js',
+  'oge-foundation-board.js?v=20261025',
+];
+const inlineScripts = scripts.filter(([, attributes]) => !/\bsrc\s*=/i.test(attributes));
+assert.equal(inlineScripts.length, 1, 'Exactly one native inline script');
+assert.deepEqual(scripts.map(([, attributes]) => attributes.trim()), [
+  'src="' + localScripts[0] + '"',
+  '',
+  'src="' + localScripts[1] + '"',
+  'src="' + localScripts[2] + '"',
+], 'Only the reviewed local scripts, without extra attributes, may surround the native engine in this order');
+for (const [, attributes, body] of scripts) {
+  if (attributes.trim()) assert.equal(body.trim(), '', 'External script tags cannot carry inline payloads');
+}
+const script = inlineScripts[0][2];
 // Validate the actual inline script before evaluating any trainer functions.
 const syntaxResult = spawnSync(process.execPath, ['--check', '--input-type=commonjs'], {
   input: script, encoding: 'utf8', timeout: 10000,
@@ -34,7 +55,7 @@ const context = vm.createContext({
 const initialization = script.search(/\n(?:\/\/ Initialize trainer[^\n]*\n)?\$\('shuffle'\)\.(?:onchange|addEventListener)/);
 assert.ok(initialization > 0, 'Find the explicit initialization boundary without executing DOM wiring');
 vm.runInContext(script.slice(0, initialization), context, { timeout: 1000 });
-const api = vm.runInContext('({ parseInput, eqFrac, createRecord, applyTaskEvent, summarizeRecords })', context);
+const api = vm.runInContext('({ parseInput, eqFrac, createRecord, applyTaskEvent, summarizeRecords, Task6Hints })', context);
 const plain = value => JSON.parse(JSON.stringify(value));
 const sourceMatches = (pattern, message = String(pattern)) => assert.ok(pattern.test(html), message);
 const sourceRejects = (pattern, message = String(pattern)) => assert.ok(!pattern.test(html), message);
@@ -242,6 +263,80 @@ test('all 174 displayed expressions independently match n/d, display, terminatio
   assert.equal(verified, 174);
 });
 
+function pairValue(pair, label) {
+  assert.ok(Array.isArray(pair) && pair.length === 2, label + ': rational pair');
+  assert.equal(typeof pair[0], 'bigint', label + ': exact numerator');
+  assert.equal(typeof pair[1], 'bigint', label + ': exact denominator');
+  assert.ok(pair[1] > 0n, label + ': positive denominator');
+  return rational(pair[0], pair[1]);
+}
+function evaluateAudit(audit, label) {
+  assert.ok(audit && typeof audit.op === 'string' && Array.isArray(audit.args), label + ': audit contract');
+  const args = audit.args.map((pair, index) => pairValue(pair, label + ' argument ' + index));
+  const arithmetic = { add, sub: subtract, mul: multiply, div: divide }[audit.op];
+  if (arithmetic) {
+    assert.equal(args.length, 2, label);
+    return arithmetic(...args);
+  }
+  if (audit.op === 'identity') { assert.equal(args.length, 1, label); return args[0]; }
+  if (audit.op === 'numerator') { assert.equal(args.length, 1, label); return rational(args[0].n); }
+  if (audit.op === 'pow') {
+    assert.equal(args.length, 2, label);
+    assert.equal(args[1].d, 1n, label);
+    const exponent = args[1].n;
+    assert.ok(exponent >= -100n && exponent <= 100n, label);
+    return exponent < 0n
+      ? rational(args[0].d ** -exponent, args[0].n ** -exponent)
+      : rational(args[0].n ** exponent, args[0].d ** exponent);
+  }
+  if (audit.op === 'gcd' || audit.op === 'lcm') {
+    assert.equal(args.length, 2, label);
+    for (const value of args) assert.equal(value.d, 1n, label + ': integer operands');
+    const divisor = gcd(args[0].n, args[1].n);
+    if (audit.op === 'gcd') return rational(divisor);
+    const multiple = divisor === 0n ? 0n : args[0].n / divisor * args[1].n;
+    return rational(multiple < 0n ? -multiple : multiple);
+  }
+  assert.fail(label + ': unsupported audit operation ' + audit.op);
+}
+
+test('all 174 pure hint plans and intermediate calculations agree with independent exact arithmetic', () => {
+  let verifiedSteps = 0;
+  const kinds = new Set();
+  for (const task of tasks) {
+    const id = task.code || task.cat + '#' + task.num;
+    const original = JSON.stringify(task);
+    const plan = api.Task6Hints.plan(Object.freeze({ ...task }));
+    const actual = evaluateHtml(task.html);
+    assert.equal(asFraction(pairValue(plan.final, id)), asFraction(actual), id + ': final value');
+    const requested = task.mode === 'numerator' ? rational(actual.n) : actual;
+    assert.equal(asFraction(pairValue(plan.answer, id)), asFraction(requested), id + ': requested answer');
+    assert.equal(plan.mode, task.mode, id + ': task mode');
+    assert.ok(Array.isArray(plan.steps) && plan.steps.length > 0 && plan.steps.length < 60, id + ': useful bounded plan');
+    for (const [index, step] of plan.steps.entries()) {
+      const label = id + ' step ' + (index + 1);
+      assert.ok(typeof step.prompt === 'string' && step.prompt.trim(), label + ': question');
+      assert.ok(typeof step.expressionHtml === 'string' && step.expressionHtml.trim(), label + ': visual expression');
+      assert.ok(typeof step.kind === 'string' && step.kind, label + ': meaningful kind');
+      assert.doesNotMatch(step.expressionHtml, /<(?:script|iframe|img)\b|\son\w+\s*=/i, label + ': closed markup');
+      assert.doesNotMatch(step.expressionHtml.replace(/<[^>]*>/g, ''), /\d\s*\/\s*\d/, label + ': use a fraction bar');
+      const expected = pairValue(step.expected, label);
+      assert.equal(asFraction(expected), asFraction(evaluateAudit(step.audit, label)), label + ': independently verified operation');
+      kinds.add(step.kind);
+      verifiedSteps++;
+    }
+    const tampered = api.Task6Hints.plan({ ...task, n: 99991, d: 99989, ansDisp: 'untrusted stored answer' });
+    assert.equal(asFraction(pairValue(tampered.final, id)), asFraction(actual), id + ': parse the displayed expression, not the stored answer');
+    assert.equal(tampered.steps.length, plan.steps.length, id + ': stable reasoning');
+    for (let index = 0; index < plan.steps.length; index++) {
+      assert.equal(asFraction(pairValue(tampered.steps[index].expected, id)), asFraction(pairValue(plan.steps[index].expected, id)), id + ': no intermediate depends on stored answer');
+    }
+    assert.equal(JSON.stringify(task), original, id + ': bank is immutable');
+  }
+  assert.ok(verifiedSteps > 174, 'The bank receives intermediate reasoning, not only final answers');
+  assert.ok(kinds.size >= 6, 'Plans distinguish several prerequisite skills');
+});
+
 const validInputs = [
   ['0,5', 1n, 2n], ['0.5', 1n, 2n], ['1/2', 1n, 2n], ['2/4', 1n, 2n],
   ['-0,5', -1n, 2n], ['−0.5', -1n, 2n], ['-1/2', -1n, 2n],
@@ -410,11 +505,24 @@ test('summary gives disjoint counts for current order and all-skipped truth', ()
     { first: 0, retry: 0, revealed: 0, skipped: 0, unseen: 0, independent: 0, total: 0 });
 });
 
-test('trainer remains offline, dependency-free and without storage APIs or dynamic code evaluation', () => {
-  sourceRejects(/<script\b[^>]*\bsrc\s*=/i);
-  sourceRejects(/<link\b[^>]*\bhref\s*=\s*["'](?:https?:)?\/\//i);
+test('native trainer remains offline with only the reviewed local board integration', () => {
+  for (const source of localScripts) {
+    assert.match(source, /^[a-z0-9-]+\.js(?:\?v=20261025)?$/, 'Script paths stay local with only the reviewed version query');
+    assert.ok(fs.statSync(path.join(root, 'trainers', source.split('?')[0])).isFile(), source);
+  }
+  // Current main already carries canonical SEO metadata. It does not load a
+  // resource; every other remote link (stylesheet, preload, etc.) stays banned.
+  for (const [tag] of html.matchAll(/<link\b[^>]*>/gi)) {
+    const href = tag.match(/\bhref\s*=\s*["']([^"']*)["']/i)?.[1] || '';
+    if (!/^(?:https?:)?\/\//i.test(href)) continue;
+    assert.match(tag, /\brel\s*=\s*["']canonical["']/i, 'Remote resource links are not allowed');
+    assert.equal(href, 'https://mathexam.space/trainers/oge-task6-fractions.html');
+    assert.ok(baseline.includes(tag), 'Canonical metadata must already exist in the reviewed base');
+  }
   sourceRejects(/@import\b|url\(\s*["']?(?:https?:)?\/\//i);
-  scriptRejects(/\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|sendBeacon|localStorage|sessionStorage|indexedDB)\b/);
+  scriptRejects(/\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|sendBeacon|sessionStorage|indexedDB)\b/);
+  const historical=bookCorrections.restoreHistoricalBytes(trainerPath,html.replace('  if(window.OgeCourseSharedMode)return;\n','').replace('  if(window.OgeCourseSharedMode)return false;\n',''));
+  assert.doesNotMatch(historical,/\blocalStorage\b/,'Only the exact reviewed adapter may use localStorage');
   scriptRejects(/\beval\s*\(|\bnew\s+Function\b|\bimport\s*(?:\(|["'{*])/);
   scriptRejects(/document\.cookie|navigator\.serviceWorker/);
 });
@@ -428,7 +536,7 @@ test('format contract, accessible navigation and disclosure exist in source', ()
   sourceMatches(/focus-visible/);
   sourceMatches(/<select\b[^>]*id=["'][^"']+["']/);
   sourceMatches(/Перейти к задаче/);
-  sourceMatches(/Прогресс хранится только до обновления страницы/);
+  sourceMatches(/Прогресс сохраняется в этом браузере после обновления страницы/);
   sourceMatches(/Смена раздела или режима/);
   sourceMatches(/Раздел завершён/);
   sourceRejects(/Раздел пройден|с подсказкой/i);
@@ -451,18 +559,12 @@ test('two scoped relative help links resolve to existing offline files', () => {
   sourceMatches(/Потренировать общий знаменатель/);
 });
 
-test('only the six approved paths differ from the approved base', () => {
-  const allowed = new Set([
-    trainerPath,
-    'tools/oge-task6-fractions-focused.test.mjs',
-    'tools/oge-task6-fractions-focused.browser.mjs',
-    'docs/tasks/OGE_TASK6_FRACTIONS_FOCUSED_FIX.md',
-    'tools/trainer-inventory/test/inventory.test.mjs',
-    'docs/tasks/TRAINER_INVENTORY_HASH_BASIS_V1.md',
-  ]);
-  const changed = [
-    ...git('diff', '--name-only', baselineSha).trim().split(/\r?\n/),
-    ...git('ls-files', '--others', '--exclude-standard').trim().split(/\r?\n/),
-  ].filter(Boolean);
-  for (const file of changed) assert.ok(allowed.has(file), 'Out-of-scope change: ' + file);
+test('the reviewed native engine and isolated progress adapter remain byte-identical', () => {
+  // A whole-repository diff against the historical interactive-help release
+  // misclassified later published courses and integrations as task-6 changes.
+  // Pin the actual native engine instead; retain the frozen TASKS comparison,
+  // independent arithmetic, local-script allowlist and offline/API checks.
+  assert.equal(taskScope.auditHistoricalTask6(root).status, 'PASS');
+  assert.equal(createHash('sha256').update(script, 'utf8').digest('hex'), nativeScriptSha256,
+    'The board integration must not alter the reviewed native task-6 engine');
 });

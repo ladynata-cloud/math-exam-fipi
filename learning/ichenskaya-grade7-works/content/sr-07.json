@@ -1,0 +1,594 @@
+[
+  {
+    "id": "ichenskaya-7-sr-07-v1-task-01",
+    "source": {
+      "bookId": "ichenskaya-2018-geometry-7",
+      "collection": "sr",
+      "work": 7,
+      "variant": 1,
+      "exercise": "1",
+      "printedPages": [
+        9
+      ],
+      "pdfPages": [
+        7
+      ]
+    },
+    "title": "С-7 · вариант 1 · задача 1",
+    "condition": "Докажите равенство треугольников ABD и ACD, если AB = AC и ∠1 = ∠2. На рисунке ∠1 = ∠DAB, ∠2 = ∠CAD, а D находится внутри угла BAC. Найдите ∠ABD и ∠ADB, если ∠ACD = 38°, ∠ADC = 102°.",
+    "steps": [
+      {
+        "prompt": "Какие стороны равны в двух треугольниках?",
+        "explanation": "AB = AC по условию, а AD — общая сторона треугольников ABD и ACD.",
+        "reason": "В первый признак входят две стороны каждого треугольника."
+      },
+      {
+        "prompt": "Равны ли углы между выбранными сторонами?",
+        "explanation": "∠BAD = ∠CAD по условию. Это углы между AB и AD, а также AC и AD.",
+        "reason": "Для первого признака нужен именно угол между равными сторонами."
+      },
+      {
+        "prompt": "Запишите равенство с верным соответствием вершин.",
+        "explanation": "△ABD = △ACD: A соответствует A, B — C, D — D.",
+        "reason": "Первый признак равенства треугольников: две стороны и угол между ними."
+      },
+      {
+        "prompt": "Перенесите известные углы.",
+        "explanation": "∠ABD = ∠ACD = 38°; ∠ADB = ∠ADC = 102°.",
+        "reason": "В равных треугольниках соответствующие углы равны."
+      }
+    ],
+    "answer": "△ABD = △ACD; ∠ABD = 38°, ∠ADB = 102°.",
+    "drawing": {
+      "points": {
+        "A": [
+          0,
+          1
+        ],
+        "D": [
+          0,
+          0
+        ],
+        "C": [
+          -1.0212449266274615,
+          -0.217072310226887
+        ],
+        "B": [
+          1.0212449266274615,
+          -0.217072310226887
+        ]
+      },
+      "segments": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "B",
+          "D"
+        ],
+        [
+          "D",
+          "C"
+        ],
+        [
+          "C",
+          "A"
+        ],
+        [
+          "A",
+          "D"
+        ]
+      ],
+      "description": "AD — общая сторона; луч AD делит угол BAC на два равных угла.",
+      "equalSegments": [
+        {
+          "a": "A",
+          "b": "B",
+          "marks": 1
+        },
+        {
+          "a": "A",
+          "b": "C",
+          "marks": 1
+        }
+      ],
+      "angleArcs": [
+        {
+          "vertex": "A",
+          "from": "B",
+          "to": "D",
+          "marks": 1
+        },
+        {
+          "vertex": "A",
+          "from": "D",
+          "to": "C",
+          "marks": 1
+        }
+      ]
+    },
+    "reviewStatus": "draft",
+    "checks": [
+      {
+        "type": "equal",
+        "segments": [
+          [
+            "A",
+            "B"
+          ],
+          [
+            "A",
+            "C"
+          ]
+        ]
+      },
+      {
+        "type": "angle",
+        "points": [
+          "A",
+          "C",
+          "D"
+        ],
+        "value": 38
+      },
+      {
+        "type": "angle",
+        "points": [
+          "A",
+          "D",
+          "C"
+        ],
+        "value": 102
+      }
+    ]
+  },
+  {
+    "id": "ichenskaya-7-sr-07-v1-task-02",
+    "source": {
+      "bookId": "ichenskaya-2018-geometry-7",
+      "collection": "sr",
+      "work": 7,
+      "variant": 1,
+      "exercise": "2",
+      "printedPages": [
+        9
+      ],
+      "pdfPages": [
+        7
+      ]
+    },
+    "title": "С-7 · вариант 1 · задача 2",
+    "condition": "Докажите равенство треугольников MNE и KNF, если MN = NK и EN = NF. На рисунке M, N, K лежат на одной прямой, E, N, F — на другой, N находится между концами обоих отрезков. Найдите ME и MN, если MK = 10 см, KF = 8 см.",
+    "steps": [
+      {
+        "prompt": "Какие углы образованы при пересечении прямых?",
+        "explanation": "∠MNE и ∠KNF — вертикальные, поэтому они равны.",
+        "reason": "Свойство вертикальных углов."
+      },
+      {
+        "prompt": "Какие две стороны прилегают к этим углам?",
+        "explanation": "MN = NK и NE = NF по условию. Следовательно, △MNE = △KNF.",
+        "reason": "Первый признак: две стороны и угол между ними."
+      },
+      {
+        "prompt": "Какая сторона соответствует ME?",
+        "explanation": "Сторона KF. Поэтому ME = KF = 8 см.",
+        "reason": "Соответствие M ↔ K, N ↔ N, E ↔ F."
+      },
+      {
+        "prompt": "Как найти половину MK?",
+        "explanation": "N находится между M и K, а MN = NK. Значит, MN = MK : 2 = 10 : 2 = 5 см.",
+        "reason": "Сложение длин и равенство половин."
+      }
+    ],
+    "answer": "△MNE = △KNF; ME = 8 см, MN = 5 см.",
+    "drawing": {
+      "points": {
+        "M": [
+          -5,
+          0
+        ],
+        "N": [
+          0,
+          0
+        ],
+        "K": [
+          5,
+          0
+        ],
+        "E": [
+          -2,
+          7.416198487095663
+        ],
+        "F": [
+          2,
+          -7.416198487095663
+        ]
+      },
+      "segments": [
+        [
+          "M",
+          "K"
+        ],
+        [
+          "E",
+          "F"
+        ],
+        [
+          "M",
+          "E"
+        ],
+        [
+          "K",
+          "F"
+        ]
+      ],
+      "description": "Прямые MK и EF пересекаются в N; N делит оба указанных отрезка пополам.",
+      "equalSegments": [
+        {
+          "a": "M",
+          "b": "N",
+          "marks": 1
+        },
+        {
+          "a": "N",
+          "b": "K",
+          "marks": 1
+        },
+        {
+          "a": "E",
+          "b": "N",
+          "marks": 2
+        },
+        {
+          "a": "N",
+          "b": "F",
+          "marks": 2
+        }
+      ]
+    },
+    "reviewStatus": "draft",
+    "checks": [
+      {
+        "expression": "10/2",
+        "expected": 5
+      },
+      {
+        "type": "distance",
+        "points": [
+          "M",
+          "K"
+        ],
+        "value": 10
+      },
+      {
+        "type": "distance",
+        "points": [
+          "K",
+          "F"
+        ],
+        "value": 8
+      },
+      {
+        "type": "equal",
+        "segments": [
+          [
+            "M",
+            "N"
+          ],
+          [
+            "N",
+            "K"
+          ]
+        ]
+      },
+      {
+        "type": "equal",
+        "segments": [
+          [
+            "E",
+            "N"
+          ],
+          [
+            "N",
+            "F"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ichenskaya-7-sr-07-v2-task-01",
+    "source": {
+      "bookId": "ichenskaya-2018-geometry-7",
+      "collection": "sr",
+      "work": 7,
+      "variant": 2,
+      "exercise": "1",
+      "printedPages": [
+        11
+      ],
+      "pdfPages": [
+        8
+      ]
+    },
+    "title": "С-7 · вариант 2 · задача 1",
+    "condition": "Докажите равенство треугольников ABC и ADC, если BC = AD и ∠1 = ∠2. На рисунке ∠1 = ∠BCA, ∠2 = ∠CAD. Найдите ∠ACD и ∠ADC, если ∠ABC = 108°, ∠BAC = 32°.",
+    "steps": [
+      {
+        "prompt": "Найдите общую сторону.",
+        "explanation": "AC — общая сторона, а BC = AD по условию.",
+        "reason": "Для первого признака выбираем две пары сторон."
+      },
+      {
+        "prompt": "Где находятся углы между ними?",
+        "explanation": "В треугольнике BCA это ∠BCA, в DAC — ∠CAD. Они равны по условию.",
+        "reason": "Это углы между BC и CA, а также DA и AC."
+      },
+      {
+        "prompt": "Установите соответствие треугольников.",
+        "explanation": "△ABC = △CDA: A ↔ C, B ↔ D, C ↔ A.",
+        "reason": "Первый признак равенства треугольников."
+      },
+      {
+        "prompt": "Найдите требуемые углы.",
+        "explanation": "∠ACD = ∠BAC = 32°, а ∠ADC = ∠ABC = 108°.",
+        "reason": "Равенство соответствующих углов."
+      }
+    ],
+    "answer": "△ABC = △CDA; ∠ACD = 32°, ∠ADC = 108°.",
+    "drawing": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          5.731676291448036,
+          3.5815488495911914
+        ],
+        "C": [
+          10,
+          0
+        ],
+        "D": [
+          4.268323708551964,
+          -3.5815488495911914
+        ]
+      },
+      "segments": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "C",
+          "D"
+        ],
+        [
+          "D",
+          "A"
+        ],
+        [
+          "A",
+          "C"
+        ]
+      ],
+      "description": "Диагональ AC делит фигуру на два треугольника; углы BCA и CAD равны.",
+      "equalSegments": [
+        {
+          "a": "B",
+          "b": "C",
+          "marks": 1
+        },
+        {
+          "a": "A",
+          "b": "D",
+          "marks": 1
+        }
+      ],
+      "angleArcs": [
+        {
+          "vertex": "C",
+          "from": "B",
+          "to": "A",
+          "marks": 1
+        },
+        {
+          "vertex": "A",
+          "from": "C",
+          "to": "D",
+          "marks": 1
+        }
+      ]
+    },
+    "reviewStatus": "draft",
+    "checks": [
+      {
+        "type": "equal",
+        "segments": [
+          [
+            "B",
+            "C"
+          ],
+          [
+            "A",
+            "D"
+          ]
+        ]
+      },
+      {
+        "type": "angle",
+        "points": [
+          "A",
+          "B",
+          "C"
+        ],
+        "value": 108
+      },
+      {
+        "type": "angle",
+        "points": [
+          "B",
+          "A",
+          "C"
+        ],
+        "value": 32
+      }
+    ]
+  },
+  {
+    "id": "ichenskaya-7-sr-07-v2-task-02",
+    "source": {
+      "bookId": "ichenskaya-2018-geometry-7",
+      "collection": "sr",
+      "work": 7,
+      "variant": 2,
+      "exercise": "2",
+      "printedPages": [
+        11
+      ],
+      "pdfPages": [
+        8
+      ]
+    },
+    "title": "С-7 · вариант 2 · задача 2",
+    "condition": "Докажите равенство треугольников ACE и ADB, если AC = AD и AB = AE. На рисунке B лежит на AC, E — на AD. Найдите AB и BD, если CE = 7 см, AE = 3 см.",
+    "steps": [
+      {
+        "prompt": "Какие стороны образуют угол A?",
+        "explanation": "В ACE — AC и AE; в ADB — AD и AB. Даны AC = AD и AE = AB.",
+        "reason": "Две пары равных сторон."
+      },
+      {
+        "prompt": "Почему углы между ними совпадают?",
+        "explanation": "Лучи AB и AC совпадают; лучи AE и AD совпадают. Поэтому ∠CAE = ∠DAB.",
+        "reason": "Угол определяется направлениями своих сторон."
+      },
+      {
+        "prompt": "Какое равенство треугольников получаем?",
+        "explanation": "△ACE = △ADB, где C ↔ D, E ↔ B.",
+        "reason": "Первый признак равенства треугольников."
+      },
+      {
+        "prompt": "Найдите обе стороны.",
+        "explanation": "AB = AE = 3 см уже дано; BD = CE = 7 см следует из равенства треугольников.",
+        "reason": "Данное равенство и равенство соответствующих сторон."
+      }
+    ],
+    "answer": "△ACE = △ADB; AB = 3 см, BD = 7 см.",
+    "drawing": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "E": [
+          3,
+          0
+        ],
+        "D": [
+          7,
+          0
+        ],
+        "B": [
+          0.6428571428571429,
+          2.930313070966574
+        ],
+        "C": [
+          1.5,
+          6.837397165588672
+        ]
+      },
+      "segments": [
+        [
+          "A",
+          "C"
+        ],
+        [
+          "A",
+          "D"
+        ],
+        [
+          "C",
+          "E"
+        ],
+        [
+          "B",
+          "D"
+        ]
+      ],
+      "description": "B лежит на AC, E — на AD; AC = AD и AB = AE.",
+      "equalSegments": [
+        {
+          "a": "A",
+          "b": "B",
+          "marks": 1
+        },
+        {
+          "a": "A",
+          "b": "E",
+          "marks": 1
+        }
+      ]
+    },
+    "reviewStatus": "draft",
+    "checks": [
+      {
+        "type": "equal",
+        "segments": [
+          [
+            "A",
+            "C"
+          ],
+          [
+            "A",
+            "D"
+          ]
+        ]
+      },
+      {
+        "type": "equal",
+        "segments": [
+          [
+            "A",
+            "B"
+          ],
+          [
+            "A",
+            "E"
+          ]
+        ]
+      },
+      {
+        "type": "distance",
+        "points": [
+          "C",
+          "E"
+        ],
+        "value": 7
+      },
+      {
+        "type": "distance",
+        "points": [
+          "A",
+          "E"
+        ],
+        "value": 3
+      },
+      {
+        "type": "distance",
+        "points": [
+          "B",
+          "D"
+        ],
+        "value": 7
+      }
+    ]
+  }
+]

@@ -1,0 +1,97 @@
+{
+  "reviewer": "/root/chapter4",
+  "at": "2026-10-24T06:54:07.112373+00:00",
+  "verdict": "no-blocking-visual-findings-in-sampled-images",
+  "method": "Used view_image to visually inspect all eight existing PNG files produced by the ongoing root model-browser run; did not launch another browser or generate replacement screenshots. Compared grid figures to previously viewed source PDF24–25 and other configurations to reviewed source statements.",
+  "samples": [
+    {
+      "file": "artifacts/shestakov-models/sy-1-4-b3-a-neutral-1280.png",
+      "sha256": "bd28736765c4e73a13b737c751f3e8fdcd974d8f5581d4bf8f1092f7f3507526",
+      "pixelWidth": 1280,
+      "pixelHeight": 1186,
+      "viewed": true
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-1-4-b3-a-angle-1280.png",
+      "sha256": "2aa76456f96c1cbac83a0172ac92a240d374a74a68858309eaf12104acef9e80",
+      "pixelWidth": 1280,
+      "pixelHeight": 1217,
+      "viewed": true
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-1-4-b7-a-neutral-1280.png",
+      "sha256": "4596e42dc1f92e367e36cda496a030ec8e7d589ba2e59e1fd30b225973ae0aa8",
+      "pixelWidth": 1280,
+      "pixelHeight": 1240,
+      "viewed": true
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-1-4-b7-a-ratio-1280.png",
+      "sha256": "f1e8c6af3fdbfd766de3d8b5f84ba8dad068a0630e1bd4bee723454b29b2a57c",
+      "pixelWidth": 1280,
+      "pixelHeight": 1271,
+      "viewed": true
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-1-4-b18-b-neutral-1280.png",
+      "sha256": "9d5434f207162bfc7890de0de6cfa21aaadcb76c7826cfea13e6bb28bf09229b",
+      "pixelWidth": 1280,
+      "pixelHeight": 1244,
+      "viewed": true
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-1-4-b18-b-area-1280.png",
+      "sha256": "1f4b531a2714283caca345506ae0da99f5661599b2bce5a1df6bce34e3e8531d",
+      "pixelWidth": 1280,
+      "pixelHeight": 1244,
+      "viewed": true
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-1-4-b19-a-neutral-1280.png",
+      "sha256": "fbecf33f311827a9ef1ca6218a5eb4dfb0babc35d3fb0477e7574e40b7bc4101",
+      "pixelWidth": 1280,
+      "pixelHeight": 1244,
+      "viewed": true
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-1-4-b19-a-angle-1280.png",
+      "sha256": "9e25ff2ff5a5ac5a86bbb601fc50df4875078ce551ee3c1caaaf49e9bf76696b",
+      "pixelWidth": 1280,
+      "pixelHeight": 1244,
+      "viewed": true
+    }
+  ],
+  "observations": [
+    {
+      "ids": [
+        "sy-1-4-b3-a"
+      ],
+      "notes": "Triangle and exterior continuation visible initially; A/B/C labels readable and separated. Angle view emphasizes the correct three rays. Caption identifies the chosen acute-A configuration and does not claim uniqueness."
+    },
+    {
+      "ids": [
+        "sy-1-4-b7-a"
+      ],
+      "notes": "Both source-given triangles and M,K,P collinearity are visible initially. Height feet are absent initially as intended. Ratio view highlights MK and KP without obscuring A,B,K,M,P labels."
+    },
+    {
+      "ids": [
+        "sy-1-4-b18-b"
+      ],
+      "notes": "A=(0,0),B=(4,1),C=(0,4) aligns with source grid. One-cell spacing is clear; triangle edges distinguishable from grid. Auxiliary H remains hidden in neutral; available area view highlights AC. No screenshot of the height view was present in the requested existing sample set."
+    },
+    {
+      "ids": [
+        "sy-1-4-b19-a"
+      ],
+      "notes": "Source positions C=(0,0),A=(0,5),B=(3,6) are preserved on a square grid. Labels remain legible; highlighted BA/BC identify the intended angle B."
+    }
+  ],
+  "remainingFindings": [],
+  "limits": [
+    "Eight desktop PNG samples at1280px only, covering four of the34 independently reviewed B variants; this is not a visual review of all543 course cards or all mobile views.",
+    "The saved area view for B18b is the last view by authored model insertion order, not the last solution step height view. No claim is made to have seen the unexported height screenshot.",
+    "These are engineering model-preview images, not full learner-flow screenshots; interaction, automatic geometric assertions and final whole-course browser completion remain root-owned checks.",
+    "Visual inspection was performed by an AI agent, not a human teacher or pupil. No external provider review or publication permission is implied."
+  ]
+}

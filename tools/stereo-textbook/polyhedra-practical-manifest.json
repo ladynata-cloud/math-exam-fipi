@@ -1,0 +1,47 @@
+{
+  "status": "reviewed",
+  "cards": [
+    "ex-main-0271",
+    "ex-main-0272",
+    "ex-main-0273",
+    "ex-main-0274",
+    "ex-main-0275"
+  ],
+  "reviewedSourceContracts": {
+    "271": [
+      null
+    ],
+    "272": [
+      null
+    ],
+    "273": [
+      null
+    ],
+    "274": [
+      null
+    ],
+    "275": [
+      null
+    ]
+  },
+  "expected": {
+    "cards": 5,
+    "exerciseCards": 5,
+    "totalCards": 479,
+    "completeTheoryPoints": 37,
+    "completeExercises": 287,
+    "selfchecks": 40,
+    "catalogEntries": 1368
+  },
+  "steps": 37,
+  "views": 75,
+  "totalSteps": 1730,
+  "totalViews": 1784,
+  "sourceFigures": {
+    "271": 95,
+    "272": 96,
+    "273": 97,
+    "274": 98,
+    "275": 99
+  }
+}

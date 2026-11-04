@@ -1,0 +1,730 @@
+{
+  "task": "ATANASYAN_CONE_346_371",
+  "reviewer": "Codex cone_integration; author of preservation and integration tests, not an independent reviewer of those tests",
+  "reviewedAt": "2026-10-29T14:12:38.876Z",
+  "authorBase": "6b25302788f36d92723e487e92afa7044ced3ad3",
+  "verdict": "PASS_LOCAL_INTEGRATION_AND_HISTORICAL_PRESERVATION",
+  "content": {
+    "cards": 594,
+    "newCards": 40,
+    "newExerciseCards": 37,
+    "newTheoryCards": 3,
+    "sourcePositions": 1253,
+    "catalogEntries": 1394,
+    "steps": 2300,
+    "modelStates": 2399,
+    "newSteps": 166,
+    "newModelStates": 171,
+    "availableMainExercises": 371,
+    "availableTheoryPoints": 42,
+    "availableSelfchecks": 40,
+    "pendingSourceGroups": 800,
+    "partiallyAvailable": 0,
+    "bundleBytes": 5623495,
+    "bundleSHA256": "a72afcbd8dcb3279cda2f452ee84ded625c128a90f4fe2825db10d707507b1a3",
+    "companionJustificationCaptions": 1188
+  },
+  "preservation": {
+    "priorCards": 554,
+    "priorCatalogEntries": 1383,
+    "priorReviewRows": 554,
+    "priorReviewBatches": 28,
+    "priorCaptureCases": 1478,
+    "unchangedRuntimeSchemaBuilderFiles": 9,
+    "baselineManifest": "tools/stereo-textbook/cone-baseline.json",
+    "baselineManifestSHA256": "5b3972ec357ff1a51c1c1b19f904a4dc7aa054934d6a01d593011e917c930a2d",
+    "basis": "The fixture was extracted directly from exact published Git commit 6b25302788f36d92723e487e92afa7044ced3ad3. The bounded test-only projection removes only the 40 explicit cone IDs and restores only the 29 new completeness contracts. The entire old bundle, registry, source index, raw lesson-file manifest and ordered capture inventory must match their fixed hashes. Every historical fixture and historical literal hash remains unchanged.",
+    "sourceChange": "Only requiredParts added at 26 main exercise and 3 theory positions; all other source metadata retained.",
+    "immutableFiles": {
+      "stereo-course/textbook/assets/engine.js": "9da6fb10924d50793521740ea779d81ef78fe3dfee5dbd71ab138b7d345dba74",
+      "stereo-course/textbook/assets/style.css": "56b3ec43f680dde578320a9ea1c5969a9a15d2d0344bfa1eda903f5bd3e09f51",
+      "stereo-course/textbook/index.html": "af453fa854b9995f3a41bbf1a476564116a8efff43cee2234716e2c5489b5e55",
+      "stereo-course/assets/task-scene-viewer.js": "a3e470e55b45d658cb74b2e32b5f1e9479785fa9b014be3929591bdcd55cefe6",
+      "stereo-course/assets/task-scenes.css": "5dbecdc2c98fbb030bcc4dba224f3b4ae89af292579a5136942810be75fd2cbf",
+      "stereo-course/assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+      "stereo-course/textbook/schema/lesson.schema.json": "0afbe8ada69985cda31e8c77168ac101aac05f04ae53c401b91c1bfd969972ba",
+      "stereo-course/textbook/schema/catalog.schema.json": "a497a09012767582238db69a7966f43d08f293b6a43f1ffc70ce6b15ed5a6e08",
+      "tools/stereo-textbook/build_textbook.py": "96e1e919ae6f231ae63ef5ba9fa57819e820a325ab128fd129a53c25b2aa9dc3"
+    }
+  },
+  "independentFixtureReview": {
+    "reviewer": "Codex root; did not author the preservation fixtures or helper",
+    "result": "MATCH",
+    "scope": "Root separately recomputed the published Git-base bundle bytes and canonical content, source index, complete registry, 29 original source positions, all 554 raw lesson hashes and 9 runtime/schema/builder hashes. Root inspected the bounded projection and negative controls and found no weakened historical boundary.",
+    "limitation": "This is the named independent fixture/projection review, not an external-provider or exact committed-head CI verdict."
+  },
+  "independentScopeProjectionReview": {
+    "reviewer": "Codex cone_source; did not author integration fixtures, projection helpers or adapters",
+    "verdict": "PASS_INDEPENDENT_SCOPE_AND_PROJECTION_REVIEW",
+    "basis": "Read-only comparison with exact Git base 6b25302788f36d92723e487e92afa7044ced3ad3 and inspection of the scoped diff.",
+    "preserved": {
+      "priorRawLessonFiles": 554,
+      "immutableRuntimeSchemaBuilderFiles": 9,
+      "historicalFixtures": 6,
+      "priorReviewRows": 554,
+      "priorReviewBatches": 28,
+      "priorBrowserCases": 1478
+    },
+    "findings": [],
+    "scope": "The projection reproduces the complete prior source index, course and review registry. The exact 40-card allowlist is enforced; source-index edits add requiredParts only at 29 target positions. Historical assertions and hashes are not weakened. Scoped diff and sanitized handoff were checked.",
+    "separation": "The reviewer excluded their own mathematical oracle and source review report from this independent integration review.",
+    "cleanup": "The only notified extraneous files were two generated Python cache files; both were removed after testing."
+  },
+  "independentContentReview": {
+    "path": "docs/reviews/ATANASYAN_CONE_CONTENT.json",
+    "reviewer": "Codex independent source/math reviewer /root/cone_source; no lesson authorship",
+    "reviewedAt": "2026-10-29T14:01:28.953776+00:00",
+    "aggregateSHA256": "5db18f931a8a0b2833495cd3f2ee05f38570597af894cd463ec47ae7cec20875",
+    "reviewerAuthoredLessons": false,
+    "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+    "oracle": {
+      "path": "tools/stereo-textbook/cone-math.test.py",
+      "sha256": "4f2eb38a98a5a877316dbf71c7346a22b36405ca043e8dc5b7c41d97b57925d5"
+    },
+    "parameterCases": 3120,
+    "cards": 40,
+    "steps": 166,
+    "views": 171,
+    "lateralFacetsChecked": 2576,
+    "openFindings": []
+  },
+  "browserPlanning": {
+    "status": "PASS_BROWSER_FREE_PLANNING_ONLY",
+    "captureCases": 1685,
+    "newCaptureCases": 207,
+    "newCaptureInventorySHA256": "b940525a643803ead741693531ffbcd562881b57fa6f6cea356993d6f91fc496",
+    "plannedCardJourneys": 1188,
+    "plannedLabelMeasurements": 9434,
+    "plannedOrdinaryScreenshots": 3370,
+    "plannedExpandedScreenshots": 4,
+    "plannedTotalScreenshots": 3374,
+    "plannedExpandedRestoreScenarios": 8,
+    "plannedRealTwoTabScenarios": 2,
+    "partitionCardCounts": [
+      149,
+      149,
+      148,
+      148
+    ],
+    "collectorPositiveNegativeChecks": 56,
+    "reverseDirections": [
+      true,
+      false
+    ]
+  },
+  "environment": {
+    "node": "v24.22.1",
+    "jsdom": "26.1.0",
+    "ajv": "8.17.1",
+    "ajvFormats": "3.0.1",
+    "python": "3.12.14",
+    "numpy": "2.2.6",
+    "playwright": "1.62.1",
+    "chromium": "153.0.8010.0",
+    "note": "Pinned dependencies were installed only in scratch targets. CI uses Node 22; this local run used Node 24.22.1. The cone oracle is standard-library-only."
+  },
+  "checksSummary": {
+    "uniqueCommands": 52,
+    "finalPass": 52,
+    "unresolvedFailures": 0,
+    "initialFailedCommands": 1,
+    "coneNegativeControls": 20,
+    "globalModelGeometry": {
+      "cards": 594,
+      "planarSimplePolygons": 7633,
+      "nonzeroSegments": 21113
+    }
+  },
+  "checks": [
+    {
+      "command": [
+        "python3",
+        "<in-memory byte-equivalence script using the unchanged build_textbook.build API>"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "ATANASYAN_CONE_BUILD_BYTE_EQUIVALENCE_OK 594 5623495"
+      ]
+    },
+    {
+      "command": [
+        "node",
+        "tools/stereo/check.js"
+      ],
+      "result": "PASS",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "node",
+        "tools/stereo/regression-check.js"
+      ],
+      "result": "PASS",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "node",
+        "tools/stereo/math-text.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "STEREO_MATH_TEXT_OK: fractions, indivisible atoms/mixed numbers, explicit trigonometric denominators, live controls; 32429 authored strings preserved"
+      ]
+    },
+    {
+      "command": [
+        "node",
+        "tools/stereo/stale-state.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "STEREO_STALE_STATE_OK: other seed, same-seed help, CAS no-write, monotonic revisions, legacy/import"
+      ]
+    },
+    {
+      "command": [
+        "node",
+        "tools/stereo/task-first.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "STEREO_TASK_FIRST_DOM_OK: 39 units, separated drafts, actual-model retention, legacy stages, honest first credit, proof return"
+      ]
+    },
+    {
+      "command": [
+        "node",
+        "tools/stereo/task-first.integration.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "STEREO_TASK_FIRST_INTEGRATION_OK:39realnumeric scenes, 24 proof destinations, retained DOM/camera, exactreturnwhitelist"
+      ]
+    },
+    {
+      "command": [
+        "node",
+        "tools/stereo/proof-choice-fractions.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "STEREO_PROOF_CHOICE_FRACTIONS_OK: 19 proofs, 60 steps, 123 authored choices, 180 reason buttons; exact accessible labels and delegated child clicks"
+      ]
+    },
+    {
+      "command": [
+        "node",
+        "tools/stereo/task-scenes-math.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "node",
+        "tools/stereo/task-scenes.dom.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "node",
+        "tools/stereo/task-scene-expansion.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "node",
+        "tools/stereo/task-proof-scenes.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "node",
+        "tools/stereo/task-proof-scenes.dom.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "node",
+        "tools/atanasyan-profile15-a.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "node",
+        "tools/atanasyan-profile15-b.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "node",
+        "tools/atanasyan-profile15.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "ATANASYAN_PROFILE15_STATIC_OK {\"lessons\":12,\"families\":6,\"steps\":124,\"fields\":124,\"modelViews\":68,\"links\":28,\"textbookPages\":true}"
+      ]
+    },
+    {
+      "command": [
+        "node",
+        "tools/profile-stereo.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "node",
+        "tools/profile-stereo-board.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "node",
+        "tools/profile-stereo-board-models.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "node",
+        "tools/profile-stereo-picker.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "python3",
+        "tools/seo-check.py"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "SEO_ENTRANCES_OK: 30 distinct titles/descriptions/canonicals; 6 static topic pages; 191 valid local links.",
+        "SEO_CANONICAL_SIGNALS_OK: 556 public-path canonical declarations; 4 consistent refresh destinations.",
+        "SEO_SITEMAP_CANONICALS_OK: 529 public URLs retain their self-canonical."
+      ]
+    },
+    {
+      "command": [
+        "python3",
+        "tools/seo-sitemap.test.py"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "OK"
+      ]
+    },
+    {
+      "command": [
+        "node",
+        "tools/seo-catalog.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "SEO_CATALOG_OK: 69 existing destinations available without JavaScript; Vilenkin canonical/sitemap agree."
+      ]
+    },
+    {
+      "command": [
+        "node",
+        "tools/atanasyan-profile15-model.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "ATANASYAN_MODEL_OK {\"models\":12,\"views\":68,\"width\":360,\"keyboard\":true,\"drag\":true,\"hiddenEdges\":true,\"preservedCamera\":true,\"immutableCoordinates\":true}"
+      ]
+    },
+    {
+      "command": [
+        "python3",
+        "tools/stereo-textbook/catalog.test.py"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "OK"
+      ]
+    },
+    {
+      "command": [
+        "node",
+        "tools/stereo-textbook/schema.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "TEXTBOOK_JSON_SCHEMA_OK 1394 catalog entries; 594 authored cards"
+      ]
+    },
+    {
+      "command": [
+        "node",
+        "tools/stereo-textbook/companion-migration.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "ATANASYAN_COMPANION_MIGRATION_OK: nine historical files; three explicit UI migrations; 16 negative controls"
+      ]
+    },
+    {
+      "command": [
+        "node",
+        "tools/stereo-textbook/companion-labels.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "initialAttempt": {
+        "result": "FAIL",
+        "exitCode": 1,
+        "reason": "New test expected the pending paragraph title Sphere and Ball; the unchanged source mapping correctly says Sphere."
+      },
+      "rerunEvidence": "ATANASYAN_COMPANION_LABELS_OK: 594 available cards, 800 pending source groups, 27 paragraphs, 1188 justification captions, contextual theory and retained draft"
+    },
+    {
+      "command": [
+        "node",
+        "tools/stereo-textbook/runtime.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "ATANASYAN_TEXTBOOK_RUNTIME_OK: publication gate, source identities, exact models, help/camera/drafts, proof honesty, revision and stale recovery"
+      ]
+    },
+    {
+      "command": [
+        "node",
+        "tools/stereo-textbook/model-geometry.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "TEXTBOOK_MODEL_GEOMETRY_OK 594 cards, 7633 planar simple polygons, 21113 nonzero segments"
+      ]
+    },
+    {
+      "command": [
+        "node",
+        "tools/stereo-textbook/parallel-content.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "PASS 35: one parallel plus one skew, and the unpictured both-skew case",
+        "PASS actual viewer preserves source geometry and keeps proof constructions out of neutral views",
+        "ATANASYAN_PARALLEL_CONTENT_OK 24 cards; 15 mathematical/geometry/viewer groups"
+      ]
+    },
+    {
+      "command": [
+        "node",
+        "tools/stereo-textbook/browser-shards.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "TEXTBOOK_BROWSER_SHARDS_TEST_OK: 56 positive/negative checks, 594 cards, all four partitions, no browser"
+      ]
+    },
+    {
+      "command": [
+        "python3",
+        "tools/stereo-textbook/regular-polyhedra-math.test.py"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "ATANASYAN_REGULAR_POLYHEDRA_MATH_OK: all66diagonal pairs, both sections, counterexample, five solids, Euler and constructions"
+      ]
+    },
+    {
+      "command": [
+        "python3",
+        "tools/stereo-textbook/polyhedra-symmetry-math.test.py"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "ATANASYAN_POLYHEDRA_SYMMETRY_MATH_OK: full orthogonal groups, cube erratum,11exercise cases and actual sections/distances"
+      ]
+    },
+    {
+      "command": [
+        "python3",
+        "tools/stereo-textbook/polyhedra-selfcheck-math.test.py"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "ATANASYAN_POLYHEDRA_SELFCHECK_MATH_OK 18 cards; prism counterexamples, 3:5 surfaces, equilateral faces, vertical-face counts and k=3..12 nonconvex construction, external height, four right faces, impossible wire budget, cut topology/volume"
+      ]
+    },
+    {
+      "command": [
+        "python3",
+        "tools/stereo-textbook/polyhedra-practical-math.test.py"
+      ],
+      "result": "PASS",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "python3",
+        "tools/stereo-textbook/additional288-math.test.py"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "ATANASYAN_ADDITIONAL_288_293_MATH_OK: six actual models; 400 parameter boxes; exact common perpendicular; diagonal-centre proof"
+      ]
+    },
+    {
+      "command": [
+        "python3",
+        "tools/stereo-textbook/additional294-math.test.py"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "ATANASYAN_ADDITIONAL_294_298_MATH_OK: 10 actual models; 400 parameter families; all six294 diagonal pairs; source296 midline; all four298 upper vertices"
+      ]
+    },
+    {
+      "command": [
+        "python3",
+        "tools/stereo-textbook/additional299-math.test.py"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "ATANASYAN_PYRAMIDS_299_309_MATH_OK 1320 independent families;120 each;all12 actual coordinate models;plane intersections,face areas,interior angles,exterior foot"
+      ]
+    },
+    {
+      "command": [
+        "python3",
+        "tools/stereo-textbook/additional310-math.test.py"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "ATANASYAN_ADDITIONAL_310_319_MATH_OK 1320 parameter families; {'310': 120, '311a': 120, '311b': 120, '312': 120, '313': 120, '314': 120, '315': 120, '316': 120, '317': 120, '318': 120, '319': 120} ; actual models {'models': 11, 'states': 84, 'polygons': 103, 'segments': 343}"
+      ]
+    },
+    {
+      "command": [
+        "python3",
+        "tools/stereo-textbook/symmetry-math.test.py"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "ATANASYAN_SYMMETRY_MATH_OK: finite groups, constructions, infinite family and special cases"
+      ]
+    },
+    {
+      "command": [
+        "env",
+        "TEXTBOOK_CHECK_ONLY=1",
+        "node",
+        "tools/stereo-textbook/browser.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "TEXTBOOK_BROWSER_PREFLIGHT_OK: 594 authored cards; shard 0/1 has 594 cards, 3370 screenshots; no browser launched, no review flags changed"
+      ]
+    },
+    {
+      "command": [
+        "env",
+        "TEXTBOOK_CHECK_ONLY=1",
+        "TEXTBOOK_SHARD_COUNT=4",
+        "TEXTBOOK_SHARD_INDEX=0",
+        "node",
+        "tools/stereo-textbook/browser.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "TEXTBOOK_BROWSER_PREFLIGHT_OK: 594 authored cards; shard 0/4 has 149 cards, 878 screenshots; no browser launched, no review flags changed"
+      ]
+    },
+    {
+      "command": [
+        "env",
+        "TEXTBOOK_CHECK_ONLY=1",
+        "TEXTBOOK_SHARD_COUNT=4",
+        "TEXTBOOK_SHARD_INDEX=1",
+        "node",
+        "tools/stereo-textbook/browser.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "TEXTBOOK_BROWSER_PREFLIGHT_OK: 594 authored cards; shard 1/4 has 149 cards, 856 screenshots; no browser launched, no review flags changed"
+      ]
+    },
+    {
+      "command": [
+        "env",
+        "TEXTBOOK_CHECK_ONLY=1",
+        "TEXTBOOK_SHARD_COUNT=4",
+        "TEXTBOOK_SHARD_INDEX=2",
+        "node",
+        "tools/stereo-textbook/browser.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "TEXTBOOK_BROWSER_PREFLIGHT_OK: 594 authored cards; shard 2/4 has 148 cards, 824 screenshots; no browser launched, no review flags changed"
+      ]
+    },
+    {
+      "command": [
+        "env",
+        "TEXTBOOK_CHECK_ONLY=1",
+        "TEXTBOOK_SHARD_COUNT=4",
+        "TEXTBOOK_SHARD_INDEX=3",
+        "node",
+        "tools/stereo-textbook/browser.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "TEXTBOOK_BROWSER_PREFLIGHT_OK: 594 authored cards; shard 3/4 has 148 cards, 812 screenshots; no browser launched, no review flags changed"
+      ]
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "result": "PASS",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "node",
+        "tools/stereo-textbook/cylinder-content.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "ATANASYAN_CYLINDER_CONTENT_OK 36 cards 165 steps 178 states; 15 negative controls; prior 518 exact; full paragraph1, exercises1–345, theory1–39"
+      ]
+    },
+    {
+      "command": [
+        "node",
+        "tools/stereo-textbook/content.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "ATANASYAN_PYRAMID_EX239_253_CONTENT_OK 20 cards, 20 source-derived regression groups",
+        "ATANASYAN_PYRAMID_THEORY32_34_EX254_270_CONTENT_OK 32 cards, 25 source-derived regression groups",
+        "ATANASYAN_TEXTBOOK_CONTENT_OK 594 cards, 2300 justified steps, 2399 views; source identities/theory links/fig8+9 incidences/DOM finite"
+      ]
+    },
+    {
+      "command": [
+        "python3",
+        "tools/stereo-textbook/cylinder-math.test.py"
+      ],
+      "result": "PASS",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "python3",
+        "tools/stereo-textbook/cone-math.test.py"
+      ],
+      "result": "PASS",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "node",
+        "tools/stereo-textbook/cone-content.test.cjs"
+      ],
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": [
+        "ATANASYAN_CONE_CONTENT_OK 40 cards 166 steps 171 states; 20 negative controls; prior 554 exact; full paragraph2, exercises1–371, theory1–42"
+      ]
+    }
+  ],
+  "resolvedFindings": [
+    {
+      "finding": "Cone/frustum models originally enumerated only selected generatrices, sometimes through aliases that were not actual face vertices. Rotation could retain arbitrary internal edges and omit the true silhouette.",
+      "resolution": "Root corrected the model helper to enumerate all actual rim-to-apex or corresponding rim-to-rim mesh edges. Author C applied the same repair to both tips of bicone 365 and the open bucket 371. The unchanged smooth renderer now selects the true silhouette; planar net theory 41 was unaffected. The independent oracle explicitly checks face adjacency of every mesh edge and passes on all 40 models."
+    },
+    {
+      "finding": "Early rendered DOM checks found raw outer division in 354c step 4 and theory 42 step 6, and raw ratio strings in SVG labels for 356 and theory 42.",
+      "resolution": "Authors rewrote the equivalent explanation expressions and replaced SVG ratio labels with readable words. Actual combined DOM text and SVG label checks pass. Five real malformed fraction forms plus an SVG ratio negative control remain in cone-content.test.cjs; historical cylinder controls and hashes are unchanged."
+    },
+    {
+      "finding": "The actual renderer displayed (2h)²/2 in task 351 as (2h) followed by a fraction with numerator only ², changing the mathematical grouping despite showing a fraction bar.",
+      "resolution": "Author A rewrote the reasoning through l²=4h² and S=l²/2=4h²/2. A structural DOM guard rejects exponent-only numerators or denominators. The actual malformed expression is a negative control and 4h²/2 is a positive control. No renderer change was made."
+    },
+    {
+      "finding": "The new companion-label test initially guessed the pending paragraph 3 caption as «Сфера и шар». The unchanged source mapping and rendered caption are «Сфера».",
+      "resolution": "Only the new test expectation was corrected to the existing exact paragraph title «Сфера». The complete caption test then passed on 594 available cards, 800 pending source groups, 27 paragraphs and 1188 justification captions. The initial failed result is retained in the check record."
+    }
+  ],
+  "reviewedTestFileHashes": {
+    "tools/stereo-textbook/cone-baseline.json": "5b3972ec357ff1a51c1c1b19f904a4dc7aa054934d6a01d593011e917c930a2d",
+    "tools/stereo-textbook/cone-baseline.cjs": "6a4e4eb4bc36611030ff9f44a27c7ce79052955bb17d2cd50c127e8b739e34dd",
+    "tools/stereo-textbook/cone-content.test.cjs": "1c893f151b3b1483d4ca6f2014da3e45d48ea65544b31c5fcd0df653615129af",
+    "tools/stereo-textbook/cylinder-baseline.cjs": "70ca4689ca72a60f9da3d41634f66d67519007d10aa97770c4e4ec30b11699ed",
+    "tools/stereo-textbook/cylinder-content.test.cjs": "4877c14b8d997bc9e423e784ba8bb41f8fc9141d20830dbd1a300c09011d5231",
+    "tools/stereo-textbook/additional288-content.test.cjs": "62b20ea3fa224bdac7a0d1db50497ad4e66fcb02b0f13ebd47bacf0957a91b24",
+    "tools/stereo-textbook/additional294-content.test.cjs": "ba2acf6a60a08407cf365cc76ef1a779ec1cdd8bafb0b88c0a4f6fd01d2f6d9e",
+    "tools/stereo-textbook/additional299-content.test.cjs": "3a2239604d1c21604ff3a8d0a83b6e3bf7422160ab388a7c9e7bd0da4f82caea",
+    "tools/stereo-textbook/additional310-content.test.cjs": "a43f22c437ad63bf404a68b1e342294afa6c46d9b5ea1418c731f6e20a49e708",
+    "tools/stereo-textbook/polyhedra-practical-content.test.cjs": "2a3641f320d602e8e893766946df3ee89b90aa13d36bc22c2be6a15744634c5c",
+    "tools/stereo-textbook/polyhedra-selfcheck-content.test.cjs": "327a3eeac140f8c3e1ccf11a92612be9ccbc1eab76d47010a3d7ca5a365afa7a",
+    "tools/stereo-textbook/content.test.cjs": "a6209cb6a5f726076ed41bde86fed99df32813e878a57e7c33e52ad79c4a857a",
+    "tools/stereo-textbook/companion-labels.test.cjs": "3b9eef70c1b2d88e4ed2cea3b0b64af80541cce37bcf08fb9bccce3c1772fd6b",
+    "tools/stereo-textbook/browser-shards.cjs": "54a44bfef687208675ffe7c141e5b4f31c9611ad5844a32d1c53e646932d85e8"
+  },
+  "limits": [
+    "This report is local integration and historical-preservation evidence; its author also authored the integration tests.",
+    "The focused 80-journey cone browser run was still in progress when this report was written. No PASS for that focused run or for the cone visual review is claimed here.",
+    "The full 594-card desktop/mobile browser journeys, exact committed-head CI and overall release review remain separate required evidence. Browser-free preflight is not a browser test.",
+    "No real-pupil trial, physical-device test or external paid-provider review is claimed.",
+    "This report does not authorize merge or deployment. Chapter IV paragraph 3 and later book material remain unfinished."
+  ]
+}

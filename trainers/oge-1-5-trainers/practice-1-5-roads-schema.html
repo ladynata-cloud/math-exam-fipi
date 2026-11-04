@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Тренажёр ОГЭ · Задания 1–5 «Дороги» (Антоновка → Богданово)</title>
+<link rel="canonical" href="https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-roads-schema.html">
 <style>
   :root{
     --paper:#eaeef2; --card:#ffffff; --line:#d6dde4;
@@ -203,8 +204,15 @@
 
   @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
+<link rel="stylesheet" href="practical-minimal.css">
+<script src="../oge-course-shared-mode.js"></script>
+<script src="../board-bridge.js"></script>
+<script src="practical-board.js"></script>
+<script src="practical-discovery.js?v=20261025-oge-course-mirror"></script>
+<script src="practical-minimal.js?v=20261021-exam-variants"></script>
+<link rel="stylesheet" href="practical-variant.css">
 </head>
-<body>
+<body data-practical-page="roads-schema" data-practical-variant="1">
 <div class="wrap">
   <header class="top">
     <p class="kicker">ОГЭ · математика · задания 1–5</p>
@@ -655,8 +663,8 @@ y = ${ru(D*g)} / ${ru(VIA_VAN-H)} = ${ru(y)} л</div>
 //  PROGRESS (localStorage)
 // ============================================================
 const PKEY='ogeRoadsTrainer.v2';
-function loadP(){ try{ return JSON.parse(localStorage.getItem(PKEY)||'{}'); }catch(e){ return {}; } }
-function saveP(p){ try{ localStorage.setItem(PKEY, JSON.stringify(p)); }catch(e){} try{var _mp=JSON.parse(localStorage.getItem('mathExamCourseProgress.v1')||'{}');_mp['practiceRoadsSchemaTrainer']={solved:solvedCount(),total:SCREENS.length};localStorage.setItem('mathExamCourseProgress.v1',JSON.stringify(_mp));}catch(e){} }
+function loadP(){ try{ return JSON.parse((window.PracticalPageStorage || localStorage).getItem(PKEY)||'{}'); }catch(e){ return {}; } }
+function saveP(p){ try{ (window.PracticalPageStorage || localStorage).setItem(PKEY, JSON.stringify(p)); }catch(e){} try{var _mp=JSON.parse((window.PracticalPageStorage || localStorage).getItem('mathExamCourseProgress.v1')||'{}');_mp['practiceRoadsSchemaTrainer']={solved:solvedCount(),total:SCREENS.length};(window.PracticalPageStorage || localStorage).setItem('mathExamCourseProgress.v1',JSON.stringify(_mp));}catch(e){} }
 let prog = Object.assign({ solved:{}, streak:0 }, loadP());
 const solvedKey = (vi,task) => VARIANTS[vi].id+'#'+task;
 const solvedCount = () => Object.keys(prog.solved).length;
@@ -664,7 +672,7 @@ const solvedCount = () => Object.keys(prog.solved).length;
 // ============================================================
 //  STATE + RENDER
 // ============================================================
-let mode='learn';
+let mode='practice';
 let cur = 0;          // index into SCREENS
 let showNames=false;  // village names hidden on the plan until the student reveals them
 let placed={};        // nodeId -> villageKey (labelling board)
@@ -769,6 +777,7 @@ function render(){
 
   app.innerHTML = `<div class="grid">${mapPanel}${right}</div>`;
   wire();
+  if(mode==='practice' && window.PracticalMinimal) PracticalMinimal.mountHint(document.querySelector('#app .qtext'),'roads',task,p.text);
 }
 
 function wire(){
@@ -791,8 +800,9 @@ function wire(){
       let good;
       if(task===1){ good = raw.replace(/\s/g,'')===answer(v,1); }
       else {
-        const num=parseFloat(raw.replace(',','.').replace(/[^0-9.\-]/g,''));
-        good = isFinite(num) && Math.abs(num-answer(v,task))<0.05;
+        const normalized=raw.replace(/\s/g,'').replace(',','.');
+        const num=/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(normalized)?Number(normalized):NaN;
+        good = Number.isFinite(num) && Math.abs(num-answer(v,task))<1e-9;
       }
       if(good){
         fb.className='feedback show ok'; fb.textContent='Верно! ✓';
@@ -969,5 +979,7 @@ document.querySelectorAll('.tab[data-mode]').forEach(b=>{
 buildVarbar();
 render();
 </script>
+<script src="practical-variant.js?v=20261025-oge-course-mirror"></script>
+<script src="practical-variant-roads.js?v=20261025-oge-course-mirror"></script>
 </body>
 </html>

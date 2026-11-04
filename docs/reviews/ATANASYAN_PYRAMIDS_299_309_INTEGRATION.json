@@ -1,0 +1,35 @@
+{
+  "verdict": "PASS",
+  "base": "6c7339a730ba3591859bd4c8c0d8ce9be64efd7c",
+  "baselineFields": 14,
+  "rawLessons": 495,
+  "immutableFiles": 9,
+  "historicalCases": 1099,
+  "addedCases": 89,
+  "chain": [
+    [
+      "additional294-baseline.cjs",
+      485
+    ],
+    [
+      "additional288-baseline.cjs",
+      479
+    ],
+    [
+      "practical-baseline.cjs",
+      474
+    ],
+    [
+      "selfcheck-baseline.cjs",
+      456
+    ]
+  ],
+  "mutationCases": 12,
+  "notes": [
+    "No authored lessons changed by this review",
+    "All historical hashes remain enforced; projections strip only exact registered new IDs/contracts",
+    "Full integrated runner awaits independent report/registry completion"
+  ],
+  "reviewer": "author_299_302 (no integration-test authorship)",
+  "reviewedAt": "2026-10-26T12:52:27.702480+00:00"
+}

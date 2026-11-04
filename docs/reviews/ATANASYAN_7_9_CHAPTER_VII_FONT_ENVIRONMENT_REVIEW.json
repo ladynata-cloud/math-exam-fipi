@@ -1,0 +1,1480 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "/root/vii_final_b; independent read-only environment diagnosis",
+  "reviewedAt": "2026-10-29T20:27:29.987800+00:00",
+  "verdict": "PASS for isolated font-dependency diagnosis only",
+  "scope": "Fourteen historical320px view failures in the full6 preview run; five representative views reproduced on each of published893 and preview1083 (10 baseline failures); all14 views then checked on both surfaces (28 passes) without app/content/check changes after exposing the missing documented browser dependency.",
+  "publicationApproval": false,
+  "fullCourseGateApproval": false,
+  "originalFailure": {
+    "artifact": "vii-full-6/browser-evidence.json",
+    "sha256": "bce5c9c1011fe9e5d275d2158a4ad6f977e4cdf8f74dd58b810453969cd58156",
+    "completed": false,
+    "issueViews": 14,
+    "consoleErrors": [],
+    "cases": [
+      {
+        "id": "atanasyan-7-9-main-494-part-1",
+        "view": "case-1",
+        "width": 320,
+        "issues": [
+          "unresolved label placement A__case1",
+          "unresolved label placement B__case1",
+          "unresolved label placement C__case1",
+          "unresolved label placement D__case1",
+          "unresolved label placement E__case1",
+          "unresolved label placement F__case1",
+          "line through label A__case1",
+          "line through label B__case1",
+          "line through label C__case1",
+          "line through label D__case1",
+          "line through label E__case1",
+          "line through label F__case1"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-main-536-part-1",
+        "view": "step-2",
+        "width": 320,
+        "issues": [
+          "unresolved label placement A",
+          "unresolved label placement C",
+          "unresolved label placement P",
+          "unresolved label placement Q",
+          "unresolved label placement M",
+          "line through label A",
+          "line through label C",
+          "line through label P",
+          "line through label Q",
+          "line through label M"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-main-536-part-1",
+        "view": "step-3",
+        "width": 320,
+        "issues": [
+          "unresolved label placement A",
+          "unresolved label placement C",
+          "unresolved label placement P",
+          "unresolved label placement Q",
+          "unresolved label placement M",
+          "line through label A",
+          "line through label C",
+          "line through label P",
+          "line through label Q",
+          "line through label M"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-main-536-part-1",
+        "view": "step-4",
+        "width": 320,
+        "issues": [
+          "unresolved label placement A",
+          "unresolved label placement C",
+          "unresolved label placement P",
+          "unresolved label placement Q",
+          "unresolved label placement M",
+          "line through label A",
+          "line through label C",
+          "line through label P",
+          "line through label Q",
+          "line through label M"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "step-1",
+        "width": 320,
+        "issues": [
+          "unresolved label placement O"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "step-2",
+        "width": 320,
+        "issues": [
+          "unresolved label placement O"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "step-3",
+        "width": 320,
+        "issues": [
+          "unresolved label placement O"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "step-4",
+        "width": 320,
+        "issues": [
+          "unresolved label placement O"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "case-1",
+        "width": 320,
+        "issues": [
+          "unresolved label placement O0",
+          "unresolved label placement C0",
+          "line through label O0",
+          "line through label C0",
+          "circle through label C0"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "case-2",
+        "width": 320,
+        "issues": [
+          "unresolved label placement O1",
+          "unresolved label placement C1",
+          "unresolved label placement P11",
+          "overlapping labels C1/P11",
+          "line through label O1",
+          "line through label P11",
+          "circle through label C1",
+          "circle through label P11"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "case-3",
+        "width": 320,
+        "issues": [
+          "unresolved label placement O2",
+          "unresolved label placement C2",
+          "unresolved label placement P12",
+          "unresolved label placement P22",
+          "line through label O2",
+          "line through label C2",
+          "line through label P12",
+          "line through label P22"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "case-4",
+        "width": 320,
+        "issues": [
+          "unresolved label placement O3",
+          "unresolved label placement C3",
+          "unresolved label placement P23",
+          "unresolved label placement P33",
+          "line through label O3",
+          "line through label C3",
+          "line through label P23",
+          "circle through label P23",
+          "circle through label P33"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-main-452-part-1",
+        "view": "step-4",
+        "width": 320,
+        "issues": [
+          "unresolved label placement A",
+          "unresolved label placement N",
+          "unresolved label placement C",
+          "line through label A",
+          "line through label N",
+          "line through label C",
+          "circle through label N"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-main-454-part-1",
+        "view": "case-4",
+        "width": 320,
+        "issues": [
+          "unresolved label placement O1n",
+          "unresolved label placement O2n",
+          "circle through label O1n",
+          "circle through label O2n"
+        ]
+      }
+    ],
+    "failureRetained": true
+  },
+  "baselineReproduction": {
+    "artifact": "vii-historical-diagnostic/diagnostic.json",
+    "sha256": "369a57d2f36ec56d3e6ec6d967818d801d62f799ae7acb9070fa9e3a3e504e02",
+    "fiveRepresentativeViewsOnEachSurface": 10,
+    "allTenFail": true,
+    "actualPlatformFont": "DejaVu Serif / DejaVuSerif regular face under requested italic CSS (synthetic italic inferred)",
+    "source": "Actual CDP CSS.getPlatformFontsForNode; Georgia and Times New Roman requested by unchanged CSS."
+  },
+  "missingDependency": {
+    "package": "fonts-liberation",
+    "playwrightVersion": "1.62.1",
+    "workflow": ".github/workflows/atanasyan-planimetry.yml",
+    "workflowInstallCommand": "npx playwright install --with-deps chromium",
+    "dependencyDeclaration": "playwright-core/lib/coreBundle.js, nativeDeps ubuntu24.04-x64 tools list",
+    "installedInSystemFontconfig": false,
+    "aptCacheCandidateAvailable": false,
+    "availableLocalSource": "Existing Codex primary runtime LibreOffice font resources",
+    "fontVersion": "Liberation Serif2.1.5; complete exposed family inventory below",
+    "fonts": [
+      {
+        "file": "LiberationMono-Bold.ttf",
+        "versions": [
+          "Version 2.1.5"
+        ],
+        "sha256": "bd62a0672d0b9b6710b01df434c80ad54fa5f0835207eb7b17b7a761463067bb"
+      },
+      {
+        "file": "LiberationMono-BoldItalic.ttf",
+        "versions": [
+          "Version 2.1.5"
+        ],
+        "sha256": "79451f3c09fe25116098853b7a2ca6e2436220ccc11af022979adbcf195be130"
+      },
+      {
+        "file": "LiberationMono-Italic.ttf",
+        "versions": [
+          "Version 2.1.5"
+        ],
+        "sha256": "605c01c711b44480a7508d349dfbf3264e81fa43d69e61cfa7d10b86e764c4d1"
+      },
+      {
+        "file": "LiberationMono-Regular.ttf",
+        "versions": [
+          "Version 2.1.5"
+        ],
+        "sha256": "f2b83c763e8afd21709333370bed4774337fae82267937e2b5aea7e2fbd922c1"
+      },
+      {
+        "file": "LiberationSans-Bold.ttf",
+        "versions": [
+          "Version 2.1.5"
+        ],
+        "sha256": "788abee4c806d660e8aee46689dd8540cd4bb98da03dcc9d171ce3efd99a9173"
+      },
+      {
+        "file": "LiberationSans-BoldItalic.ttf",
+        "versions": [
+          "Version 2.1.5"
+        ],
+        "sha256": "698da70fc191cc5f33ad4d6d3fe830fe4624b898ea2e3169955928b7c491f1ee"
+      },
+      {
+        "file": "LiberationSans-Italic.ttf",
+        "versions": [
+          "Version 2.1.5"
+        ],
+        "sha256": "e5bae5c4cde31f22142753855f4f8fb86da6ff39955ed3c0a11248b0d16948b0"
+      },
+      {
+        "file": "LiberationSans-Regular.ttf",
+        "versions": [
+          "Version 2.1.5"
+        ],
+        "sha256": "76d04c18ea243f426b7de1f3ad208e927008f961dc5945e5aad352d0dfde8ee8"
+      },
+      {
+        "file": "LiberationSansNarrow-Bold.ttf",
+        "versions": [
+          "Version 1.07.5"
+        ],
+        "sha256": "8e5eb5090ef4a3143794c230b82f174f7f2fbbfcd6cb789ccfa1f90bf8795d54"
+      },
+      {
+        "file": "LiberationSansNarrow-BoldItalic.ttf",
+        "versions": [
+          "Version 1.07.5"
+        ],
+        "sha256": "57fe1513fa84379d36e7da6fd9a45d053ded5e895042ab36692d8d05a8c4f4d8"
+      },
+      {
+        "file": "LiberationSansNarrow-Italic.ttf",
+        "versions": [
+          "Version 1.07.5"
+        ],
+        "sha256": "c5de4127c273dbcfc173414d170448cbe800c3a7fb1f97beaeee1b076d6a5eea"
+      },
+      {
+        "file": "LiberationSansNarrow-Regular.ttf",
+        "versions": [
+          "Version 1.07.5"
+        ],
+        "sha256": "546e8957e5dccece4ac07ea02f57a5cdb3dc3b0e902ea75a837a7784ba4b7eef"
+      },
+      {
+        "file": "LiberationSerif-Bold.ttf",
+        "versions": [
+          "Version 2.1.5"
+        ],
+        "sha256": "d754ba427cfe0bca54ae052384baa8f842da5bd6550ad4da024ac441e7a7d5ce"
+      },
+      {
+        "file": "LiberationSerif-BoldItalic.ttf",
+        "versions": [
+          "Version 2.1.5"
+        ],
+        "sha256": "f17db8af71e24d2066b587546021d4f0b296be389512b658dec3c09affeb11a7"
+      },
+      {
+        "file": "LiberationSerif-Italic.ttf",
+        "versions": [
+          "Version 2.1.5"
+        ],
+        "sha256": "0e3dea9f8d613e006ccfa62201f33e265d19167bd0907725c3e145368b04fc2e"
+      },
+      {
+        "file": "LiberationSerif-Regular.ttf",
+        "versions": [
+          "Version 2.1.5"
+        ],
+        "sha256": "058ea80864aef09a23f45cbec2bb5400bc3dfbdea01c3f10538a21fcb497fb74"
+      }
+    ]
+  },
+  "environmentCorrection": {
+    "browser": "153.0.8010.0",
+    "artifactConfig": "vii-font-diagnostic/liberation.conf",
+    "configSha256": "5799e9e1ee3756a0a995507a7cb327b4eaea1847b611956c7d7e9986470b0ab2",
+    "FONTCONFIG_PATH": "/etc/fonts",
+    "method": "A scratch-only Fontconfig file includes the unchanged system /etc/fonts/fonts.conf and adds a directory containing symlinks to16 already installed Liberation TTF files. Uses their actual family/style metadata and normal system aliases.",
+    "arbitraryAliasesAdded": false,
+    "fontFamilyOverridesAdded": false,
+    "repoOrAppOrModelEdits": false,
+    "systemFontInstallOrChanges": false,
+    "downloadedFontFiles": false,
+    "appCssFontStack": "Georgia, \"Times New Roman\", serif; italic",
+    "actualPlatformFont": "Liberation Serif / LiberationSerif-Italic",
+    "fcMatchAloneIsNotProof": "fc-match Georgia still chooses DejaVu Serif; actual Chromium CDP selects the newly available Times New Roman metric substitute LiberationSerif-Italic from the existing CSS fallback stack."
+  },
+  "diagnostic": {
+    "artifact": "vii-font-diagnostic/liberation-run/diagnostic.json",
+    "sha256": "c2651d2d6fde86133503a4333db24e9d3e3d332090eff123482485a39e08976e",
+    "scriptArtifact": "vii-font-diagnostic/liberation-diagnostic.cjs",
+    "scriptSha256": "9ec47d0ee4495bf0f60e1f9dd351bfb20e44d32ccd06515284aada7c205f4103",
+    "inspectorBodySha256": "23feca4b6f73959770ebbe3d7875f36dedb837414e6afe5b7c19d11eee16acef",
+    "inspectorCopiedUnchanged": true,
+    "casesDerivedExactlyFromFull6Failure": true,
+    "public893Views": 14,
+    "preview1083Views": 14,
+    "totalViews": 28,
+    "issueViews": 0,
+    "completed": true,
+    "records": [
+      {
+        "surface": "public",
+        "id": "atanasyan-7-9-main-494-part-1",
+        "view": "case-1",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "A",
+          "box": {
+            "x": 7.084968566894531,
+            "y": -54.205841064453125,
+            "width": 4.782949924468994,
+            "height": 7.358384609222412
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "public-494-case-1-320.png",
+          "sha256": "d04b7628e8593f8b0544a07d7416c2af3a1b570f62b2596ddc6e71bc51fb9a9a"
+        }
+      },
+      {
+        "surface": "public",
+        "id": "atanasyan-7-9-main-536-part-1",
+        "view": "step-2",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "A",
+          "box": {
+            "x": 57.281436920166016,
+            "y": -51.04147720336914,
+            "width": 4.782949924468994,
+            "height": 7.358384609222412
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "public-536-step-2-320.png",
+          "sha256": "eb571856006101d9708709b21bbf7b5685caff60f9ffe52515bfab8a30e87646"
+        }
+      },
+      {
+        "surface": "public",
+        "id": "atanasyan-7-9-main-536-part-1",
+        "view": "step-3",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "A",
+          "box": {
+            "x": 57.281436920166016,
+            "y": -51.04147720336914,
+            "width": 4.782949924468994,
+            "height": 7.358384609222412
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "public-536-step-3-320.png",
+          "sha256": "eb571856006101d9708709b21bbf7b5685caff60f9ffe52515bfab8a30e87646"
+        }
+      },
+      {
+        "surface": "public",
+        "id": "atanasyan-7-9-main-536-part-1",
+        "view": "step-4",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "A",
+          "box": {
+            "x": 57.281436920166016,
+            "y": -51.04147720336914,
+            "width": 4.782949924468994,
+            "height": 7.358384609222412
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "public-536-step-4-320.png",
+          "sha256": "eb571856006101d9708709b21bbf7b5685caff60f9ffe52515bfab8a30e87646"
+        }
+      },
+      {
+        "surface": "public",
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "step-1",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "O",
+          "box": {
+            "x": 59.20000076293945,
+            "y": -50.37916946411133,
+            "width": 4.782918453216553,
+            "height": 7.358335971832275
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "public-450-step-1-320.png",
+          "sha256": "41955b4465c07e0e566406f3db447eb5477af6b7c209adddc0b2a94f287a407b"
+        }
+      },
+      {
+        "surface": "public",
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "step-2",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "O",
+          "box": {
+            "x": 59.20000076293945,
+            "y": -50.37916946411133,
+            "width": 4.782918453216553,
+            "height": 7.358335971832275
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "public-450-step-2-320.png",
+          "sha256": "c4153292f1f196b83e29063ec58f62426745e940da247fd6f8e9ba6328357cd7"
+        }
+      },
+      {
+        "surface": "public",
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "step-3",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "O",
+          "box": {
+            "x": 59.20000076293945,
+            "y": -50.37916946411133,
+            "width": 4.782918453216553,
+            "height": 7.358335971832275
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "public-450-step-3-320.png",
+          "sha256": "c4153292f1f196b83e29063ec58f62426745e940da247fd6f8e9ba6328357cd7"
+        }
+      },
+      {
+        "surface": "public",
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "step-4",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "O",
+          "box": {
+            "x": 59.20000076293945,
+            "y": -50.37916946411133,
+            "width": 4.782918453216553,
+            "height": 7.358335971832275
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "public-450-step-4-320.png",
+          "sha256": "4fc5fb4f27fa65a10875f679538b7a91cd0c695c1dce7a666583cd7649dcb446"
+        }
+      },
+      {
+        "surface": "public",
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "case-1",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "O",
+          "box": {
+            "x": 31.713668823242188,
+            "y": -48.568058013916016,
+            "width": 4.782918453216553,
+            "height": 7.358335971832275
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "public-450-case-1-320.png",
+          "sha256": "af0c71388eae1205b3f594ea2f37e2238c85b575a77db9fcefdbe15e0a2e1f1f"
+        }
+      },
+      {
+        "surface": "public",
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "case-2",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "O",
+          "box": {
+            "x": 31.713668823242188,
+            "y": -48.568058013916016,
+            "width": 4.782918453216553,
+            "height": 7.358335971832275
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "public-450-case-2-320.png",
+          "sha256": "20652ebbc1deef8ce2b10a6424b5ed7a0841102d78fbadf5a11b1e280d1b9bb0"
+        }
+      },
+      {
+        "surface": "public",
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "case-3",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "O",
+          "box": {
+            "x": 27.046998977661133,
+            "y": -48.568058013916016,
+            "width": 4.782918453216553,
+            "height": 7.358335971832275
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "public-450-case-3-320.png",
+          "sha256": "46b6a2e9bcc178d347a7728b12a272a4b36da0afd517ac2dafe731d6d461734b"
+        }
+      },
+      {
+        "surface": "public",
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "case-4",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "O",
+          "box": {
+            "x": 26.74892234802246,
+            "y": -43.60331344604492,
+            "width": 4.782918453216553,
+            "height": 7.358335971832275
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "public-450-case-4-320.png",
+          "sha256": "6542275e3984d2ef4c5c656de16dd84b1a3d4eab541724b7596950406791535b"
+        }
+      },
+      {
+        "surface": "public",
+        "id": "atanasyan-7-9-main-452-part-1",
+        "view": "step-4",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "A",
+          "box": {
+            "x": 44.084999084472656,
+            "y": -48.277244567871094,
+            "width": 4.782918453216553,
+            "height": 7.358335971832275
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "public-452-step-4-320.png",
+          "sha256": "37b6506dd171c05103d2fb610a9269fdda4ee4d12c69d7f0310b67c534f0972f"
+        }
+      },
+      {
+        "surface": "public",
+        "id": "atanasyan-7-9-main-454-part-1",
+        "view": "case-4",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "O₁",
+          "box": {
+            "x": 41.4176025390625,
+            "y": -48.277244567871094,
+            "width": 7.082398414611816,
+            "height": 7.358335971832275
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 2
+          }
+        ],
+        "png": {
+          "file": "public-454-case-4-320.png",
+          "sha256": "f262b4481ac4cc9ed9ba6382d35c80d1e0983a1dc84e1b18944fa32d556e7395"
+        }
+      },
+      {
+        "surface": "preview",
+        "id": "atanasyan-7-9-main-494-part-1",
+        "view": "case-1",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "A",
+          "box": {
+            "x": 7.084968566894531,
+            "y": -54.205841064453125,
+            "width": 4.782949924468994,
+            "height": 7.358384609222412
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "preview-494-case-1-320.png",
+          "sha256": "4819682928514c9afd4f7130630b9f5be0fcad7f5b4f792b7b4a2bef6f048ca6"
+        }
+      },
+      {
+        "surface": "preview",
+        "id": "atanasyan-7-9-main-536-part-1",
+        "view": "step-2",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "A",
+          "box": {
+            "x": 57.281436920166016,
+            "y": -51.04147720336914,
+            "width": 4.782949924468994,
+            "height": 7.358384609222412
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "preview-536-step-2-320.png",
+          "sha256": "07763dcb4aa1e4c1307ce37e2b1c2560523710300ad9685a1dbe47f59514ab3b"
+        }
+      },
+      {
+        "surface": "preview",
+        "id": "atanasyan-7-9-main-536-part-1",
+        "view": "step-3",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "A",
+          "box": {
+            "x": 57.281436920166016,
+            "y": -51.04147720336914,
+            "width": 4.782949924468994,
+            "height": 7.358384609222412
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "preview-536-step-3-320.png",
+          "sha256": "07763dcb4aa1e4c1307ce37e2b1c2560523710300ad9685a1dbe47f59514ab3b"
+        }
+      },
+      {
+        "surface": "preview",
+        "id": "atanasyan-7-9-main-536-part-1",
+        "view": "step-4",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "A",
+          "box": {
+            "x": 57.281436920166016,
+            "y": -51.04147720336914,
+            "width": 4.782949924468994,
+            "height": 7.358384609222412
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "preview-536-step-4-320.png",
+          "sha256": "07763dcb4aa1e4c1307ce37e2b1c2560523710300ad9685a1dbe47f59514ab3b"
+        }
+      },
+      {
+        "surface": "preview",
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "step-1",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "O",
+          "box": {
+            "x": 59.20000076293945,
+            "y": -50.37916946411133,
+            "width": 4.782918453216553,
+            "height": 7.358335971832275
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "preview-450-step-1-320.png",
+          "sha256": "b6a7a007333703292dedc7ca3361188d849a83f46498e6dd63d6eab2147888b4"
+        }
+      },
+      {
+        "surface": "preview",
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "step-2",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "O",
+          "box": {
+            "x": 59.20000076293945,
+            "y": -50.37916946411133,
+            "width": 4.782918453216553,
+            "height": 7.358335971832275
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "preview-450-step-2-320.png",
+          "sha256": "69fe6f49ea6985219fa97e63e6164fb2de99f80d6dbe096a200654c36d766810"
+        }
+      },
+      {
+        "surface": "preview",
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "step-3",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "O",
+          "box": {
+            "x": 59.20000076293945,
+            "y": -50.37916946411133,
+            "width": 4.782918453216553,
+            "height": 7.358335971832275
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "preview-450-step-3-320.png",
+          "sha256": "69fe6f49ea6985219fa97e63e6164fb2de99f80d6dbe096a200654c36d766810"
+        }
+      },
+      {
+        "surface": "preview",
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "step-4",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "O",
+          "box": {
+            "x": 59.20000076293945,
+            "y": -50.37916946411133,
+            "width": 4.782918453216553,
+            "height": 7.358335971832275
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "preview-450-step-4-320.png",
+          "sha256": "7f9f4a3426860bace9b37301a3d869c36987b89374e4622a0a6a524347917ef6"
+        }
+      },
+      {
+        "surface": "preview",
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "case-1",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "O",
+          "box": {
+            "x": 31.713668823242188,
+            "y": -48.568058013916016,
+            "width": 4.782918453216553,
+            "height": 7.358335971832275
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "preview-450-case-1-320.png",
+          "sha256": "514d9f0d67ea1cc4c19c040521d09bc1eb033198418ee1d3ba20207183a960ef"
+        }
+      },
+      {
+        "surface": "preview",
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "case-2",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "O",
+          "box": {
+            "x": 31.713668823242188,
+            "y": -48.568058013916016,
+            "width": 4.782918453216553,
+            "height": 7.358335971832275
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "preview-450-case-2-320.png",
+          "sha256": "feddb75495efe9f2e086a3987b884e3af2e0d89c4e6bf8f689b892ac51f5a512"
+        }
+      },
+      {
+        "surface": "preview",
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "case-3",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "O",
+          "box": {
+            "x": 27.046998977661133,
+            "y": -48.568058013916016,
+            "width": 4.782918453216553,
+            "height": 7.358335971832275
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "preview-450-case-3-320.png",
+          "sha256": "d4ad13b47d399254a169f0a4611123117e8fdbc852c4f5f6a0b4db3359ad1030"
+        }
+      },
+      {
+        "surface": "preview",
+        "id": "atanasyan-7-9-main-450-part-1",
+        "view": "case-4",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "O",
+          "box": {
+            "x": 26.74892234802246,
+            "y": -43.60331344604492,
+            "width": 4.782918453216553,
+            "height": 7.358335971832275
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "preview-450-case-4-320.png",
+          "sha256": "ce36148604c3d6e59b5de4a4526f7ecb87f9af90ef4f450ddf32cc0aa794e952"
+        }
+      },
+      {
+        "surface": "preview",
+        "id": "atanasyan-7-9-main-452-part-1",
+        "view": "step-4",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "A",
+          "box": {
+            "x": 44.084999084472656,
+            "y": -48.277244567871094,
+            "width": 4.782918453216553,
+            "height": 7.358335971832275
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "png": {
+          "file": "preview-452-step-4-320.png",
+          "sha256": "866a1a621220e70b7ed63e49daa8068fd0010a0a55c974ebea3f0e17b4cdd4b2"
+        }
+      },
+      {
+        "surface": "preview",
+        "id": "atanasyan-7-9-main-454-part-1",
+        "view": "case-4",
+        "width": 320,
+        "issues": [],
+        "computedCss": {
+          "fontFamily": "Georgia, \"Times New Roman\", serif",
+          "fontStyle": "italic",
+          "fontSize": "6.62221px",
+          "text": "O₁",
+          "box": {
+            "x": 41.4176025390625,
+            "y": -48.277244567871094,
+            "width": 7.082398414611816,
+            "height": 7.358335971832275
+          }
+        },
+        "platformFonts": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Italic",
+            "isCustomFont": false,
+            "glyphCount": 2
+          }
+        ],
+        "png": {
+          "file": "preview-454-case-4-320.png",
+          "sha256": "be3dbc8df5fbdb5e9fe67876ba7a4e768f8efa21107688ba19baf0eea71e2e0a"
+        }
+      }
+    ]
+  },
+  "manualInspection": {
+    "files": 28,
+    "uniqueWholePngsActuallyViewed": 22,
+    "verdict": "PASS",
+    "findings": [],
+    "observations": "Actual labels, case controls and descriptions are legible; no overlaps/clipping in all22unique full PNGs, including450 cases,452 small construction,454 nested circles,494 parquet and536 rotated figures.",
+    "groups": [
+      {
+        "sha256": "514d9f0d67ea1cc4c19c040521d09bc1eb033198418ee1d3ba20207183a960ef",
+        "representative": "preview-450-case-1-320.png",
+        "equivalentFrames": [
+          "preview-450-case-1-320.png"
+        ]
+      },
+      {
+        "sha256": "feddb75495efe9f2e086a3987b884e3af2e0d89c4e6bf8f689b892ac51f5a512",
+        "representative": "preview-450-case-2-320.png",
+        "equivalentFrames": [
+          "preview-450-case-2-320.png"
+        ]
+      },
+      {
+        "sha256": "d4ad13b47d399254a169f0a4611123117e8fdbc852c4f5f6a0b4db3359ad1030",
+        "representative": "preview-450-case-3-320.png",
+        "equivalentFrames": [
+          "preview-450-case-3-320.png"
+        ]
+      },
+      {
+        "sha256": "ce36148604c3d6e59b5de4a4526f7ecb87f9af90ef4f450ddf32cc0aa794e952",
+        "representative": "preview-450-case-4-320.png",
+        "equivalentFrames": [
+          "preview-450-case-4-320.png"
+        ]
+      },
+      {
+        "sha256": "b6a7a007333703292dedc7ca3361188d849a83f46498e6dd63d6eab2147888b4",
+        "representative": "preview-450-step-1-320.png",
+        "equivalentFrames": [
+          "preview-450-step-1-320.png"
+        ]
+      },
+      {
+        "sha256": "69fe6f49ea6985219fa97e63e6164fb2de99f80d6dbe096a200654c36d766810",
+        "representative": "preview-450-step-2-320.png",
+        "equivalentFrames": [
+          "preview-450-step-2-320.png",
+          "preview-450-step-3-320.png"
+        ]
+      },
+      {
+        "sha256": "7f9f4a3426860bace9b37301a3d869c36987b89374e4622a0a6a524347917ef6",
+        "representative": "preview-450-step-4-320.png",
+        "equivalentFrames": [
+          "preview-450-step-4-320.png"
+        ]
+      },
+      {
+        "sha256": "866a1a621220e70b7ed63e49daa8068fd0010a0a55c974ebea3f0e17b4cdd4b2",
+        "representative": "preview-452-step-4-320.png",
+        "equivalentFrames": [
+          "preview-452-step-4-320.png"
+        ]
+      },
+      {
+        "sha256": "be3dbc8df5fbdb5e9fe67876ba7a4e768f8efa21107688ba19baf0eea71e2e0a",
+        "representative": "preview-454-case-4-320.png",
+        "equivalentFrames": [
+          "preview-454-case-4-320.png"
+        ]
+      },
+      {
+        "sha256": "4819682928514c9afd4f7130630b9f5be0fcad7f5b4f792b7b4a2bef6f048ca6",
+        "representative": "preview-494-case-1-320.png",
+        "equivalentFrames": [
+          "preview-494-case-1-320.png"
+        ]
+      },
+      {
+        "sha256": "07763dcb4aa1e4c1307ce37e2b1c2560523710300ad9685a1dbe47f59514ab3b",
+        "representative": "preview-536-step-2-320.png",
+        "equivalentFrames": [
+          "preview-536-step-2-320.png",
+          "preview-536-step-3-320.png",
+          "preview-536-step-4-320.png"
+        ]
+      },
+      {
+        "sha256": "af0c71388eae1205b3f594ea2f37e2238c85b575a77db9fcefdbe15e0a2e1f1f",
+        "representative": "public-450-case-1-320.png",
+        "equivalentFrames": [
+          "public-450-case-1-320.png"
+        ]
+      },
+      {
+        "sha256": "20652ebbc1deef8ce2b10a6424b5ed7a0841102d78fbadf5a11b1e280d1b9bb0",
+        "representative": "public-450-case-2-320.png",
+        "equivalentFrames": [
+          "public-450-case-2-320.png"
+        ]
+      },
+      {
+        "sha256": "46b6a2e9bcc178d347a7728b12a272a4b36da0afd517ac2dafe731d6d461734b",
+        "representative": "public-450-case-3-320.png",
+        "equivalentFrames": [
+          "public-450-case-3-320.png"
+        ]
+      },
+      {
+        "sha256": "6542275e3984d2ef4c5c656de16dd84b1a3d4eab541724b7596950406791535b",
+        "representative": "public-450-case-4-320.png",
+        "equivalentFrames": [
+          "public-450-case-4-320.png"
+        ]
+      },
+      {
+        "sha256": "41955b4465c07e0e566406f3db447eb5477af6b7c209adddc0b2a94f287a407b",
+        "representative": "public-450-step-1-320.png",
+        "equivalentFrames": [
+          "public-450-step-1-320.png"
+        ]
+      },
+      {
+        "sha256": "c4153292f1f196b83e29063ec58f62426745e940da247fd6f8e9ba6328357cd7",
+        "representative": "public-450-step-2-320.png",
+        "equivalentFrames": [
+          "public-450-step-2-320.png",
+          "public-450-step-3-320.png"
+        ]
+      },
+      {
+        "sha256": "4fc5fb4f27fa65a10875f679538b7a91cd0c695c1dce7a666583cd7649dcb446",
+        "representative": "public-450-step-4-320.png",
+        "equivalentFrames": [
+          "public-450-step-4-320.png"
+        ]
+      },
+      {
+        "sha256": "37b6506dd171c05103d2fb610a9269fdda4ee4d12c69d7f0310b67c534f0972f",
+        "representative": "public-452-step-4-320.png",
+        "equivalentFrames": [
+          "public-452-step-4-320.png"
+        ]
+      },
+      {
+        "sha256": "f262b4481ac4cc9ed9ba6382d35c80d1e0983a1dc84e1b18944fa32d556e7395",
+        "representative": "public-454-case-4-320.png",
+        "equivalentFrames": [
+          "public-454-case-4-320.png"
+        ]
+      },
+      {
+        "sha256": "d04b7628e8593f8b0544a07d7416c2af3a1b570f62b2596ddc6e71bc51fb9a9a",
+        "representative": "public-494-case-1-320.png",
+        "equivalentFrames": [
+          "public-494-case-1-320.png"
+        ]
+      },
+      {
+        "sha256": "eb571856006101d9708709b21bbf7b5685caff60f9ffe52515bfab8a30e87646",
+        "representative": "public-536-step-2-320.png",
+        "equivalentFrames": [
+          "public-536-step-2-320.png",
+          "public-536-step-3-320.png",
+          "public-536-step-4-320.png"
+        ]
+      }
+    ],
+    "nativePixelMontages": [
+      {
+        "file": "font-diagnostic-01.png",
+        "sha256": "1b4865ea732adc6bc31ee85da3a48b2a757b77257252706f03e21afeafb595d4",
+        "fullPngHashes": [
+          "514d9f0d67ea1cc4c19c040521d09bc1eb033198418ee1d3ba20207183a960ef",
+          "feddb75495efe9f2e086a3987b884e3af2e0d89c4e6bf8f689b892ac51f5a512",
+          "d4ad13b47d399254a169f0a4611123117e8fdbc852c4f5f6a0b4db3359ad1030",
+          "ce36148604c3d6e59b5de4a4526f7ecb87f9af90ef4f450ddf32cc0aa794e952",
+          "b6a7a007333703292dedc7ca3361188d849a83f46498e6dd63d6eab2147888b4",
+          "69fe6f49ea6985219fa97e63e6164fb2de99f80d6dbe096a200654c36d766810",
+          "7f9f4a3426860bace9b37301a3d869c36987b89374e4622a0a6a524347917ef6",
+          "866a1a621220e70b7ed63e49daa8068fd0010a0a55c974ebea3f0e17b4cdd4b2"
+        ],
+        "actuallyViewed": true,
+        "verdict": "PASS",
+        "method": "Complete PNGs pasted at native pixels without rescaling/cropping; all three contact sheets actually opened through view_image(detail=original)."
+      },
+      {
+        "file": "font-diagnostic-02.png",
+        "sha256": "7c786503b64fb13cac71c5ee2a2ea588e4ad96be177fdda4bf8130d32ad9b514",
+        "fullPngHashes": [
+          "be3dbc8df5fbdb5e9fe67876ba7a4e768f8efa21107688ba19baf0eea71e2e0a",
+          "4819682928514c9afd4f7130630b9f5be0fcad7f5b4f792b7b4a2bef6f048ca6",
+          "07763dcb4aa1e4c1307ce37e2b1c2560523710300ad9685a1dbe47f59514ab3b",
+          "af0c71388eae1205b3f594ea2f37e2238c85b575a77db9fcefdbe15e0a2e1f1f",
+          "20652ebbc1deef8ce2b10a6424b5ed7a0841102d78fbadf5a11b1e280d1b9bb0",
+          "46b6a2e9bcc178d347a7728b12a272a4b36da0afd517ac2dafe731d6d461734b",
+          "6542275e3984d2ef4c5c656de16dd84b1a3d4eab541724b7596950406791535b",
+          "41955b4465c07e0e566406f3db447eb5477af6b7c209adddc0b2a94f287a407b"
+        ],
+        "actuallyViewed": true,
+        "verdict": "PASS",
+        "method": "Complete PNGs pasted at native pixels without rescaling/cropping; all three contact sheets actually opened through view_image(detail=original)."
+      },
+      {
+        "file": "font-diagnostic-03.png",
+        "sha256": "8c5d41ff49af616c30f45baa1ffdbd1554fc9b703f5a543c1821a89714c229b6",
+        "fullPngHashes": [
+          "c4153292f1f196b83e29063ec58f62426745e940da247fd6f8e9ba6328357cd7",
+          "4fc5fb4f27fa65a10875f679538b7a91cd0c695c1dce7a666583cd7649dcb446",
+          "37b6506dd171c05103d2fb610a9269fdda4ee4d12c69d7f0310b67c534f0972f",
+          "f262b4481ac4cc9ed9ba6382d35c80d1e0983a1dc84e1b18944fa32d556e7395",
+          "d04b7628e8593f8b0544a07d7416c2af3a1b570f62b2596ddc6e71bc51fb9a9a",
+          "eb571856006101d9708709b21bbf7b5685caff60f9ffe52515bfab8a30e87646"
+        ],
+        "actuallyViewed": true,
+        "verdict": "PASS",
+        "method": "Complete PNGs pasted at native pixels without rescaling/cropping; all three contact sheets actually opened through view_image(detail=original)."
+      }
+    ]
+  },
+  "reviewedRepoFiles": [
+    {
+      "path": "geometry-course/textbook/assets/planar-viewer.js",
+      "sha256": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061"
+    },
+    {
+      "path": "geometry-course/textbook/assets/style.css",
+      "sha256": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b"
+    },
+    {
+      "path": "tools/geometry-textbook/browser_check.js",
+      "sha256": "d5d1e5af7e377d5921c86e84c36e81489c150b78db6442a2b71f1c0aba817be7"
+    },
+    {
+      "path": "geometry-course/textbook/data/course.json",
+      "sha256": "d15bb793245f20b9f1b8d4bac726637192c816922effd45d209618a0c244f3fc"
+    }
+  ],
+  "limitations": [
+    "The original full6 failure remains a failure in its missing-dependency environment; it was not rewritten as a pass.",
+    "This proves the missing declared font dependency changes actual fallback and resolves these14legacy failures on both surfaces. It does not prove all fonts are supported, nor erase the DejaVu fallback limitation.",
+    "The complete unchanged full-course gate must be rerun with the documented dependency available. ChapterVII fresh PNGs in that environment require their own actual full-image review.",
+    "No merge, deployment, chapter content approval or whole-course gate PASS is granted by this diagnostic."
+  ]
+}

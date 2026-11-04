@@ -1,7 +1,7 @@
 (function (root) {
   'use strict';
   const groups = [
-    {id:'division', title:'Деление уголком', example:'3848 : 37', lead:'Выбираем первое неполное делимое, делим и записываем каждый шаг.', easier:'multiply', checkpoint:'multiplication-division/long-division-mixed-checkpoint.html', levels:[
+    {id:'division', title:'Деление уголком', example:'3848 : 37', lead:'Начинаем с маленьких действий и постепенно учимся решать весь пример.', easier:'multiply', checkpoint:'multiplication-division/long-division-mixed-checkpoint.html', levels:[
       ['n3e','Уголком — по шагам'], ['n3d','Понимаем остаток'], ['n3f','Делим с остатком'], ['n4c','Не теряем ноль в ответе'], ['n4d','Делим на двузначное — с опорой'], ['n4e','Делим на двузначное — самостоятельно']]},
     {id:'multiply', title:'Умножение и таблица', example:'6 × 7', lead:'Сначала видим равные группы, затем вспоминаем таблицу и считаем столбиком.', easier:'count', checkpoint:'multiplication-division.html', levels:[
       ['t2a','Умножение на рисунке'], ['t2b','Одна таблица за раз'], ['t2c','Заполняем таблицу'], ['n2d','Вспоминаем без рисунка'], ['t2e','Находим неизвестный множитель'], ['n2e','Делим по таблице'], ['n3c','Умножаем столбиком на одну цифру'], ['n4b','Умножаем столбиком на две цифры']]},
@@ -93,7 +93,13 @@
       }
       return all;
     }
-    return {recordAttempt, summaries, summaryForLevel:level => summaries()[level] || {solved:0,independent:0,viewed:0,guidedSolved:0,guidedIndependent:0}, notice:() => warning};
+    function lastActivity() {
+      // Derive a continuation from existing finished work; never create or migrate progress.
+      const attempts = read().map(r => ({level:r.level, at:r.at, source:'practice'}));
+      const guided = guidedRecords().map(r => ({level:guidedMap[r.topic], at:r.at, source:'guided', topic:r.topic}));
+      return [...attempts, ...guided].reduce((latest, item) => !latest || item.at > latest.at ? item : latest, null);
+    }
+    return {recordAttempt, summaries, lastActivity, summaryForLevel:level => summaries()[level] || {solved:0,independent:0,viewed:0,guidedSolved:0,guidedIndependent:0}, notice:() => warning};
   }
   let storage; try { storage = root.localStorage; } catch (_) {}
   const api = {

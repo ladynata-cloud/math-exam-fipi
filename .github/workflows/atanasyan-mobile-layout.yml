@@ -1,0 +1,63 @@
+name: Atanasyan reading viewport
+on:
+  pull_request:
+    paths: ['stereo-course/textbook/**', 'stereo-course/assets/**', 'tools/stereo-textbook/**', '.github/workflows/atanasyan-mobile-layout.yml']
+  push:
+    branches: [main]
+    paths: ['stereo-course/textbook/**', 'stereo-course/assets/**', 'tools/stereo-textbook/**', '.github/workflows/atanasyan-mobile-layout.yml']
+permissions:
+  contents: read
+jobs:
+  reading-viewport:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+      - run: npx playwright install --with-deps chromium
+      - name: Initial viewport, source, controls, prior steps and persistence
+        run: node tools/stereo-textbook/mobile-layout.browser.cjs
+      - name: Wait for exact deployed runtime and content
+        if: github.event_name == 'push'
+        run: |
+          python3 - <<'PY'
+          import hashlib, pathlib, time, urllib.request
+          files = ['index.html', 'assets/style.css', 'assets/engine.js', 'data/course.json']
+          expected = {p: hashlib.sha256(pathlib.Path('stereo-course/textbook', p).read_bytes()).hexdigest() for p in files}
+          deadline = time.monotonic() + 480
+          while True:
+              try:
+                  for p in files:
+                      req = urllib.request.Request('https://mathexam.space/stereo-course/textbook/' + p + '?layout=' + str(time.time_ns()), headers={'Cache-Control': 'no-cache'})
+                      with urllib.request.urlopen(req, timeout=30) as response:
+                          assert response.status == 200
+                          assert hashlib.sha256(response.read()).hexdigest() == expected[p], p
+                  print('ATANASYAN_LAYOUT_PUBLISHED_BYTES_OK', expected)
+                  break
+              except Exception as error:
+                  print(type(error).__name__, str(error), flush=True)
+              if time.monotonic() >= deadline:
+                  raise RuntimeError('Published runtime did not match release')
+              time.sleep(10)
+          PY
+      - name: Verify live initial viewport and interactions
+        if: github.event_name == 'push'
+        env:
+          MOBILE_LAYOUT_LIVE_URL: https://mathexam.space/stereo-course/textbook/
+          MOBILE_LAYOUT_ARTIFACTS: artifacts/atanasyan-mobile-layout-live
+        run: node tools/stereo-textbook/mobile-layout.browser.cjs
+      - name: Preserve dimensions and screenshots including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: atanasyan-mobile-layout
+          path: |
+            artifacts/atanasyan-mobile-layout/
+            artifacts/atanasyan-mobile-layout-live/
+          retention-days: 14
+          if-no-files-found: error

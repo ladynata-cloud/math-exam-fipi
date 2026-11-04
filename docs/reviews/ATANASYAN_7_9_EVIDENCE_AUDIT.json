@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 1,
+  "at": "2026-10-22T21:56:56.009066+00:00",
+  "reviewerRole": "Evidence auditor separate from the release-manifest author; previously authored the theory/selfcheck cards and reviewed frontend behavior. This audit verifies the separate reviewers’ evidence and hash bindings, not a new independent mathematics verdict on the auditor’s own content.",
+  "verdict": "passed-evidence-integrity-for-hash-bound-chapter-I-release-candidate",
+  "releaseReview": {
+    "path": "geometry-course/textbook/release-review.json",
+    "sha256": "56719fa424d1aaacb2738d7d7ac7d7ce21800ca3e557c100f4ffcce95a5ec2d6"
+  },
+  "scope": {
+    "chapter": "I",
+    "mainNumbers": 91,
+    "mainParts": 134,
+    "theory": 13,
+    "selfchecks": 26,
+    "cards": 173,
+    "models": 173,
+    "views": 845,
+    "steps": 499,
+    "coordinateClaims": 453,
+    "sourcePdfPageOffset": 1,
+    "fullBookComplete": false
+  },
+  "sourcePdfSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "authoredContentSha256": "12525e9093c143c4ee6570a9fea00c7f9ccf15eb0a7ef4ab274cc62a982fa4da",
+  "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
+  "candidateToReviewedBundle": {
+    "candidateSha256": "4453db2a52e310aa5f0335da2221794713759f09f6e980f565b673ab29afff90",
+    "reviewedSha256": "c8fee8a373b5fd00b883794066fd82857e9a10ee4890b6e0a2695086fba10daf",
+    "exactCandidateReconstructionPassed": true,
+    "onlyDifferences": [
+      "173 lesson status values: in-review to reviewed",
+      "173 lesson review metadata objects: pending/empty to the matching release review",
+      "173 catalog entry status values: in-review to reviewed",
+      "build.publicationReviewMatches: false to true"
+    ],
+    "method": "Reversed only those approval metadata fields in memory and serialized with the builder’s exact format. The full SHA256 equals the browser-tested candidate bundle. Separately normalized lessons back to pre-review draft metadata and reproduced the authored-content digest. No task text, geometry, steps, help, answers or source information changed."
+  },
+  "currentReferenceAudit": {
+    "verifiedHashEdges": 53,
+    "uniqueReferencedFiles": 37,
+    "mismatches": 0,
+    "files": {
+      "docs/reviews/ATANASYAN_7_9_CONTENT_ADDENDUM.json": "68903676e57bbfa6594fe2039f16e171e31d313966937d31aa8461c39e9721fd",
+      "docs/reviews/ATANASYAN_7_9_BUILD_REVIEW.json": "ca46f57abcc3100a0e070fe141bfeeced45f0e61d00f6fb2bb540eac19fdda3b",
+      "docs/reviews/ATANASYAN_7_9_MODEL_CROSS_REVIEW.json": "dd97057df1384ac98ae8d585d46908024e449ff1bb4c6e13ea6e6c218eb1c870",
+      "docs/reviews/ATANASYAN_7_9_FRONTEND_REVIEW.json": "67ef657c517aa28fff1b8d5aad23dc9ab857a394e526cca760a682dc1b1b4ace",
+      "docs/reviews/ATANASYAN_7_9_BROWSER_REVIEW.json": "e64640506c09d54dc0d0afe01dcab04319570e14a81779f931d6b529698a1ffd",
+      "docs/reviews/ATANASYAN_7_9_THEORY_VISUAL_REVIEW.json": "f673d6c39a230ef7d96eb8c678842c047bb8f63181721f83664f0ca6e308034a",
+      "geometry-course/textbook/preparation/chapter-01-models-a-visual-review.json": "bbf01b26fe0f9c2fe6306173fb53502e0d0a4c1d2224ecba66263ef889bdb61e",
+      "geometry-course/textbook/preparation/chapter-01-models-b-visual-review.json": "80918247de1b585a233f05613ea01766ba7560bbd988248d7d5c63683bf071bc",
+      "geometry-course/textbook/preparation/chapter-01-models-c-visual-review.json": "90a2bb182f800b45bb90363f3d5d79c31327a28191abf6fb852fe68993f82fd4",
+      "geometry-course/textbook/preparation/chapter-01.json": "460fd91d5ab2e6c245a75872ee04be27a20cb86340b39ef924b89d78c1e5f57f",
+      "geometry-course/textbook/preparation/chapter-01-review.json": "f49120c3ce6863ae9ae4758905e0b55081b2fedd7017b131e1da912f75aee282",
+      "geometry-course/textbook/preparation/chapter-01-corrections.json": "1c6d32ceb9f5b820f28f4ad75682c59a9a0de500e0d5076bde18838f33572d61",
+      "geometry-course/textbook/preparation/chapter-01-theory.json": "c12e0ea1a911b30bcab2ecd22369e86fb6f628b3336d95c58d013b26118b5983",
+      "geometry-course/textbook/models/chapter-01-theory.json": "74a34c6c441f65e3c957a6c46ef99cdb265a2442ee85db5f99743ee5fa7143ff",
+      "tools/geometry-textbook/build_course.py": "8fb0c24aeed6c98789151922fb32680a5317666eb0cd263be51e6637ec76d89f",
+      "tools/geometry-textbook/check_course.cjs": "77239627238fbaa9fc93384f1844789a6dc7b543bf6eba5f064ac1e7f973bddd",
+      "tools/geometry-textbook/check_models.py": "3d9335bd10cdbe88ccbb2fa32487e7a4d75de792ac655f60625904f547234feb",
+      "tools/geometry-textbook/model_claims_test.py": "a2ceb02506280224fd30e195d510cbcd2f62b0ef7f38c859e2dd988b65be6b74",
+      ".github/workflows/atanasyan-planimetry.yml": "4b0fd555b2cddad93073f7e2e40813add0119a3f1a2bb22e08517c1f76e70173",
+      "tools/geometry/build_site.py": "991d058ef763a3e34fa71866e3ef8640caab0afa4825b6ca459d452c5676c20c",
+      "tools/geometry/check_textbook_preparation.py": "9c2b88446ac4ca54c5fbf7002369320b4051e00a9072c5f422557c5fcd1315b9",
+      "tools/geometry-textbook/reviewer_runtime_check.cjs": "9b7028f3c32bbbfd170ebaf84139a8c0f2ab91f511e16239e1a342418eea271d",
+      "geometry-course/textbook/assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+      "geometry-course/index.html": "26330fc2598e555e569e5a2cb0ccd24ca828ddb6f73806cd5a801b13e1d48bb6",
+      "geometry-course/textbook/source-inventory.json": "3c45623e571ae18495ffa11088d25068c50da586cbbab20e9ec88bbd26bf4bfd",
+      "geometry-course/textbook/models/chapter-01-a.json": "b01c8ec4cc2c621dd360a547ffe314e901c0fa3f446b97bb2cb2a844f8e8ea52",
+      "geometry-course/textbook/preparation/chapter-01-models-a-review.json": "49546d37d1ee064ed8ddbae722239fb173dc82a14fa85f022e55b722ba6165e1",
+      "geometry-course/textbook/models/chapter-01-b.json": "49dab55e0d1c497c91fbf6a400d055387ac9a589a2c835f1bf14c48682d7bb11",
+      "geometry-course/textbook/preparation/chapter-01-models-b-review.json": "c24624bea14d1b4d30362bcdcf172b300cfec205ecfa72516ab4a4e5cb5d3290",
+      "geometry-course/textbook/models/chapter-01-c.json": "fda759f01529544b6ce35bef458c425a294b695560c0bb6cd535683d69643731",
+      "geometry-course/textbook/preparation/chapter-01-models-c-review.json": "66512ac7db24b1a3d047b653068a1f973d3e512db3f6402a74dfcada437c9bc8",
+      "geometry-course/textbook/assets/engine.js": "a774e1204d0b26b2969589cfcff28b70cc8c8841f33230c1d511e3d7c4ee2c28",
+      "geometry-course/textbook/assets/planar-viewer.js": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061",
+      "geometry-course/textbook/assets/style.css": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b",
+      "geometry-course/textbook/index.html": "4ad96a76e0b5e3f791aca172a884a2e66c93fcd75cb2efd83cbfb393a7a8fe5b",
+      "tools/geometry-textbook/browser_check.js": "4b3a08ac710668c0b894ec1c39280e4bc9ce69f83d0b4a5ca5b23d714d00b427",
+      "tools/geometry-textbook/runtime_check.cjs": "fa63abb955c7004ade1fed49fa5464939ac970da735b011f66f9b228a731b2d8"
+    }
+  },
+  "browserEvidence": [
+    {
+      "artifactSet": "geometry-browser-final-candidate",
+      "sha256": "859d72f106c2c37363ddf93deeee17095148ec27480c6f60cb6030e49b951a0b",
+      "scope": "full-course candidate",
+      "head": null,
+      "completed": true,
+      "renderedViews": 1690,
+      "fullStepJourneys": 346,
+      "initialFinalScreenshots": 692,
+      "interactionScenarios": 7,
+      "pageErrors": 0,
+      "viewIssues": 0,
+      "verified": "Exact expected card/view/width and card/stage/width matrices; no missing, extra or duplicate entries. All PNG files exist. Content, implementation and candidate bundle hashes match."
+    },
+    {
+      "artifactSet": "geometry-browser-public-interactions",
+      "sha256": "e175ce41f54832f6e83cd24677223cd7d47994d2b78e166ae2d09ea9830c9dda",
+      "scope": "interactions-only reviewed bundle",
+      "head": null,
+      "completed": true,
+      "interactionScenarios": 5,
+      "pageErrors": 0,
+      "previewBannerAbsentAssertionPassed": true,
+      "reviewedBundleSha256": "c8fee8a373b5fd00b883794066fd82857e9a10ee4890b6e0a2695086fba10daf",
+      "verified": "The actual public-mode run retains notes, steps and theory state, does not certify manual proofs correct, and freezes the stale second tab. The reviewed branch of the unchanged harness asserts zero engineering-preview banners."
+    }
+  ],
+  "visualEvidenceAudit": {
+    "uniqueFinalPngHashesVerified": 692,
+    "missing": 0,
+    "duplicates": 0,
+    "hashMismatches": 0,
+    "changedFromFirstRun": 304,
+    "byteIdenticalToFirstRun": 388,
+    "actuallyReexaminedFinalImagesByVisualReviewers": 519,
+    "priorReviewReusedOnlyByExactByteIdentity": 173,
+    "groups": [
+      {
+        "report": "docs/reviews/ATANASYAN_7_9_THEORY_VISUAL_REVIEW.json",
+        "screenshots": 156,
+        "changed": 47,
+        "unchanged": 109,
+        "contactSheetsHashed": 20
+      },
+      {
+        "report": "geometry-course/textbook/preparation/chapter-01-models-a-visual-review.json",
+        "screenshots": 180,
+        "changed": 112,
+        "unchanged": 68,
+        "contactSheetsHashed": 24
+      },
+      {
+        "report": "geometry-course/textbook/preparation/chapter-01-models-b-visual-review.json",
+        "screenshots": 164,
+        "changed": 22,
+        "unchanged": 142,
+        "contactSheetsHashed": 14
+      },
+      {
+        "report": "geometry-course/textbook/preparation/chapter-01-models-c-visual-review.json",
+        "screenshots": 192,
+        "changed": 123,
+        "unchanged": 69,
+        "contactSheetsHashed": 24
+      }
+    ],
+    "contactSheetAndMembershipHashesVerified": true,
+    "additionalFinalExercise71ImageAndMetadataHashesVerified": true,
+    "scope": "Audited the reported inspection coverage and actual image/contact-sheet hashes. This evidence auditor does not claim to have personally re-viewed all 692 images. Each changed image is covered by a reported actual final visual inspection; prior review is reused only for exact matching PNG bytes."
+  },
+  "checksExecutedDuringAudit": [
+    "python tools/geometry-textbook/build_course.py --check: passed with publicationReviewMatches=true",
+    "node tools/geometry-textbook/check_course.cjs --require-reviewed: passed for all 173 cards",
+    "Independent hash, screenshot-matrix, contact-sheet membership, source-PDF identity and approval-only bundle transition assertions: passed"
+  ],
+  "claimBoundaries": [
+    "The source addendum explicitly resolves 9, 10 and 44 through manual interpretation, not a fabricated unique automatic answer. All 160 answer cards use manual assessment.",
+    "The original frozen preparation and component reports retain historical pending/not-release statements; current scoped addenda and the separate manifest provide the subsequent evidence.",
+    "Browser evidence has head=null and was produced in the cloud development environment. Exact GitHub-head CI, virtual-main verification and deployment remain separate.",
+    "Manual visual review covers every initial/final image plus recorded targeted originals. All 845 authored views are automatically inspected at both widths; not every intermediate/case image was manually viewed.",
+    "This is chapter I only. The 1431-number inventory is not a complete textbook-solution claim. No Claude consultation, pupil trial or deployed production verification is asserted."
+  ],
+  "resolvedDocumentationFindings": [
+    "Browser review field corrected from consoleErrors to pageErrors to match the actual pageerror listener.",
+    "README distinguishes initial/final PNG capture from all-view reports and now reflects the reviewed candidate while keeping CI/deployment separate."
+  ],
+  "unresolvedEvidenceFindings": [],
+  "exactHeadCiVerified": false,
+  "mergeOrDeploymentAuthorization": false
+}

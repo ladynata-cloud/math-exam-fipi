@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "631d2d644d87162d60585c3efb8365af8311a3f5",
+  "cards": 336,
+  "chapters": [
+    {
+      "chapter": 1,
+      "label": "I",
+      "cards": 173,
+      "normalizedLessonsSha256": "6a6d0cd2bbb9e08423839e7b783b351ef65b6b3644a5503d551e8199442dd2eb",
+      "normalizedCatalogEntriesSha256": "4485a6f65ffeaaa363063412fabe1ac5c47c94b5d0d22cd230e504315d7f9ec4",
+      "authoredContentSha256": "12525e9093c143c4ee6570a9fea00c7f9ccf15eb0a7ef4ab274cc62a982fa4da"
+    },
+    {
+      "chapter": 2,
+      "label": "II",
+      "cards": 163,
+      "normalizedLessonsSha256": "698410d84467ba8031a43977b57d574b1df49293e904988e42615fa9f3fbad34",
+      "normalizedCatalogEntriesSha256": "794c3cd946e711720e926cb1b47601182c2e7f49d7a2ecfb5e2e8b21768dbeb0",
+      "authoredContentSha256": "4867af61bb95cd42b259afde9d507c7183d4c2942bceedf25580ecbbae23aab3"
+    }
+  ],
+  "normalizedLessonsSha256": "60587ace530087e7489ac7b6d367c3113bc0ffc20ea27a37a52222269a21329c",
+  "normalizedCatalogEntriesSha256": "78a418970852786a5a137f5e0edcf728682a190dbd06de64b091f3ddbdafa9dd",
+  "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07"
+}

@@ -1,0 +1,81 @@
+'use strict';
+const {test}=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const path=require('node:path');
+const {execFileSync}=require('node:child_process');
+const vm=require('node:vm');
+const {JSDOM}=require('jsdom');
+const root=path.resolve(__dirname,'..');
+const base=process.env.OGE_BASE_ROOT||root;
+const files=['trainers/oge-course/index.html','oge/index.html'];
+const read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const load=(f,hash='')=>new JSDOM(read(f),{url:'https://mathexam.space/'+f+hash,runScripts:'dangerously'});
+const legacyInequalities='https://mathexam.space/trainers/oge-task13-inequalities.html';
+const currentInequalities='https://mathexam.space/trainers/oge13-inequalities-series.html';
+test('OGE-13 direct route retains the legacy redirect and both task/download destinations',()=>{
+ const legacy=new JSDOM(read('trainers/oge-task13-inequalities.html'),{url:legacyInequalities});
+ const d=legacy.window.document;
+ assert.equal(d.querySelector('link[rel="canonical"]').href,currentInequalities);
+ assert.equal(d.querySelector('meta[http-equiv="refresh"]').content,'0; url=/trainers/oge13-inequalities-series.html');
+ // Retain the reviewed destination while carrying a shared-room query/hash.
+ const redirect=d.querySelector('script').textContent;
+ for(const [search,hash] of [['',''],['?board=1','#synthetic-room'],['?board=1&seed=42','#task']]){
+  let destination;const location={search,hash,replace(value){destination=value;}};
+  vm.runInNewContext(redirect,{window:{location}});
+  assert.equal(destination,'/trainers/oge13-inequalities-series.html'+search+hash);
+ }
+ assert(d.querySelector('main a[href="/trainers/oge13-inequalities-series.html"]'));
+ const course=load(files[0]);
+ assert(course.window.document.querySelector('h3 a[href="/trainers/oge13-inequalities-series.html"]'));
+ assert(course.window.document.querySelector('#downloads a[download][href="/trainers/oge13-inequalities-series.html"]'));
+ assert(![...course.window.document.querySelectorAll('a[href]')].some(a=>a.href===legacyInequalities));
+ legacy.window.close();course.window.close();
+});
+test('course keeps every task route and the required honest trainer/variant labels',()=>{
+ const d=load(files[0]).window.document;
+ assert.equal(d.querySelectorAll('h1').length,1);
+ for(let n=6;n<=25;n++){
+  const links=[...d.querySelectorAll('h3 a')].filter(a=>a.textContent.trim()==='Задание '+n);
+  assert.equal(links.length,1,'line '+n);
+ }
+ assert(d.querySelector('h3 a[href="/trainers/oge-1-5-trainers/"]'));
+ const trainer=d.querySelector('a[href="/trainers/oge-task15-triangles.html"]').closest('article');
+ assert.match(trainer.textContent,/биссектрисы.*по шагам/);
+ assert(d.querySelector('#gaps a[href="/oge/geometry/task-15-external-angle.html"]'));
+ assert.match(d.querySelector('#full-variants').textContent,/Не является официальным материалом ФИПИ/);
+ assert(d.querySelector('#full-variants h3 a[href="/trainers/oge-2027-analogue-1.html"]'));
+ assert.match(d.querySelector('#geometry').textContent,/рисунки и контрпримеры/);
+});
+test('extra practice and downloads are accessible disclosures; no inactive buttons or unsolicited prompts',()=>{
+ const d=load(files[0]).window.document;
+ for(const id of ['gaps','full-variants','downloads','practical-extra']){const el=d.getElementById(id);assert.equal(el.tagName,'DETAILS');assert.equal(el.open,false);assert(el.querySelector('summary'));}
+ assert.equal(d.querySelectorAll('button[disabled]').length,0);
+ assert(d.querySelectorAll('#downloads a[download]').length>=24);
+ assert(!/localStorage|sessionStorage|fetch\(/.test(read(files[0])));
+});
+test('hash links open their optional destination for direct links and keyboard navigation',()=>{
+ const dom=load(files[0],'#gaps');assert(dom.window.document.querySelector('#gaps').open);
+ dom.window.location.hash='#downloads';dom.window.dispatchEvent(new dom.window.HashChangeEvent('hashchange'));assert(dom.window.document.querySelector('#downloads').open);dom.window.close();
+});
+test('both hubs retain all previous navigation destinations and resolve local links',()=>{
+ for(const f of files){
+  const d=load(f).window.document;const ids=[...d.querySelectorAll('[id]')].map(e=>e.id);assert.equal(ids.length,new Set(ids).size);
+  const old=execFileSync('git',['show','4b56350c35a67e41add8f2b25cf2bf7d73d1f71f:'+f],{cwd:base,encoding:'utf8'});
+  const od=new JSDOM(old,{url:'https://mathexam.space/'+f}).window.document;
+  const dest=new Set([...d.querySelectorAll('a[href]')].map(a=>a.href));
+  // Only this explicitly verified compatibility redirect has a direct replacement.
+  // Every other historical destination must remain exactly as before.
+  for(const a of od.querySelectorAll('a[href]')){
+   const expected=a.href===legacyInequalities?currentInequalities:a.href;
+   assert(dest.has(expected),'Retain '+a.href+' via '+expected);
+  }
+  for(const a of d.querySelectorAll('a[href]')){const u=new URL(a.href);if(u.origin!=='https://mathexam.space')continue;let target=decodeURIComponent(u.pathname).slice(1);if(!target||target.endsWith('/'))target+='index.html';assert(fs.existsSync(path.join(root,target))||fs.existsSync(path.join(base,target)),f+' broken '+a.href);if(u.pathname==='/'+f&&u.hash)assert(d.getElementById(u.hash.slice(1)));}
+ }
+});
+test('secondary OGE hub keeps informatics reachable and leads to mathematics course',()=>{
+ const d=load(files[1]).window.document;assert.equal(new URL(d.querySelector('.hero .btn').href).pathname,'/trainers/oge-course/');
+ const informatics=d.querySelector('a[href="../trainers/oge-informatics-1-10-tutor.html"]');assert(informatics);assert(informatics.closest('details'));
+ assert.doesNotMatch(d.querySelector('main').textContent,/зубрёжка/);
+ for(const a of d.querySelectorAll('.topic-links a'))assert(!/^(Открыть|Открыть модуль|Пройти)$/.test(a.textContent.trim()),'Topic link has a meaningful label');
+});

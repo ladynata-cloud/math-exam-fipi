@@ -1,18 +1,73 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Тренажёры для подготовки к ОГЭ по математике и информатике | MathExam</title>
-  <meta name="description" content="Интерактивная отработка заданий ОГЭ: практические задачи 1–5, прогрессии, задание 19, информатика. С проверкой ответов и прогрессом.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ОГЭ по математике — наглядный курс и тренажёры | MathExam</title>
+<meta name="description" content="Подготовка к ОГЭ по математике: шины, квартиры, графики и геометрия в наглядных моделях. Бесплатные тренажёры, пошаговые подсказки и варианты с решениями.">
 <link rel="canonical" href="https://mathexam.space/oge/">
-  <link rel="stylesheet" href="/assets/site.css">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ОГЭ по математике — наглядный курс и тренажёры | MathExam">
+<meta property="og:description" content="Подготовка к ОГЭ по математике: шины, квартиры, графики и геометрия в наглядных моделях. Бесплатные тренажёры, пошаговые подсказки и варианты с решениями.">
+<meta property="og:url" content="https://mathexam.space/oge/">
+<meta property="og:site_name" content="MathExam">
+<meta property="og:locale" content="ru_RU">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ОГЭ по математике — наглядный курс и тренажёры | MathExam">
+<meta name="twitter:description" content="Подготовка к ОГЭ по математике: шины, квартиры, графики и геометрия в наглядных моделях. Бесплатные тренажёры, пошаговые подсказки и варианты с решениями.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "@id": "https://mathexam.space/oge/#webpage",
+  "url": "https://mathexam.space/oge/",
+  "name": "ОГЭ по математике — наглядный курс",
+  "isPartOf": {"@id": "https://mathexam.space/#website"},
+  "description": "Подготовка к ОГЭ по математике: шины, квартиры, графики и геометрия в наглядных моделях. Бесплатные тренажёры, пошаговые подсказки и варианты с решениями.",
+  "inLanguage": "ru-RU",
+  "creator": {
+    "@type": "Person",
+    "name": "Наталья Михайловна",
+    "jobTitle": "Учитель математики и репетитор"
+  }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/oge-home.css?v=20261104b-25-orbits">
+<script defer src="/trainers/ege-profile-stereometry-3d/js/three.min.js"></script>
+<script defer src="/assets/oge-home-topics.js?v=20261104-25-orbits"></script>
+<script defer src="/assets/oge-home.js?v=20261104b-25-orbits"></script>
 <style>
-    :root{color-scheme:light;--bg:#f6f7fb;--panel:#fff;--ink:#172033;--muted:#647086;--line:#dfe5ef;--blue:#2563eb;--teal:#0f766e;--rose:#be123c;--amber:#b45309;--violet:#6d28d9;--green:#15803d;--shadow:0 10px 24px rgba(23,32,51,.08)}
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.5}.wrap{width:min(1180px,94vw);margin:0 auto}.topbar{border-bottom:1px solid var(--line);background:rgba(255,255,255,.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:20}.topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 0}.brand{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font-weight:900}.brand-mark{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--teal));display:grid;place-items:center;color:#fff;font-weight:900}.brand-sub{font-size:12px;color:var(--muted);font-weight:800}.nav{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.nav a{color:#334155;text-decoration:none;font-weight:800;font-size:14px;padding:8px 10px;border-radius:8px}.nav a:hover,.nav a.active{background:#eef4ff;color:var(--blue)}.hero{padding:44px 0 26px}.hero-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:22px;align-items:stretch}.hero-copy h1{font-size:clamp(34px,5vw,60px);line-height:1.02;margin:0 0 14px;letter-spacing:0}.hero-copy p{font-size:18px;color:var(--muted);max-width:720px;margin:0}.quick{background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:18px}.quick h2{font-size:18px;margin:0 0 12px}.quick-list{display:grid;gap:10px}.quick-list a{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);text-decoration:none;font-weight:900}.quick-list a:hover{border-color:#b8c7df;background:#f8fbff}.arrow{font-size:20px;color:var(--blue)}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:18px}.stat{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px}.stat b{display:block;font-size:24px;line-height:1}.stat span{display:block;margin-top:4px;color:var(--muted);font-size:13px;font-weight:800}.section{padding:22px 0}.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:14px}.section h2{margin:0;font-size:26px;line-height:1.1}.section-note{color:var(--muted);font-weight:700}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:16px;min-height:184px;display:flex;flex-direction:column}.card h3{margin:0 0 8px;font-size:18px;line-height:1.22}.card p{margin:0;color:var(--muted)}.meta{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 0}.tag{display:inline-flex;align-items:center;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:900;background:#eef2ff;color:#3730a3}.tag.teal{background:#ccfbf1;color:#115e59}.tag.amber{background:#fef3c7;color:#92400e}.tag.rose{background:#ffe4e6;color:#9f1239}.tag.green{background:#dcfce7;color:#166534}.tag.violet{background:#ede9fe;color:#5b21b6}.actions{margin-top:auto;padding-top:14px;display:flex;gap:8px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:10px 12px;border-radius:8px;background:var(--ink);color:#fff;text-decoration:none;font-weight:900;border:1px solid var(--ink)}.btn:hover{background:#0f172a}.btn.secondary{background:#fff;color:var(--ink);border-color:var(--line)}.btn.secondary:hover{border-color:#b8c7df;background:#f8fbff}.tools{position:sticky;top:63px;z-index:10;background:rgba(246,247,251,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 0}.search{width:100%;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font:inherit;font-weight:700;padding:12px 14px}.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.chip{border:1px solid var(--line);border-radius:999px;background:#fff;color:#334155;font-weight:900;padding:8px 10px;cursor:pointer}.chip.active{background:var(--teal);border-color:var(--teal);color:#fff}.hidden{display:none!important}.empty{display:none;margin:22px 0;padding:18px;border:1px dashed var(--line);border-radius:8px;background:#fff;color:var(--muted);font-weight:900;text-align:center}.footer{border-top:1px solid var(--line);margin-top:28px;padding:24px 0 42px;color:var(--muted);font-weight:800}.path{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;color:#778399;word-break:break-word;margin-top:8px}@media(max-width:820px){.hero-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.topbar-inner{align-items:flex-start;flex-direction:column}.tools{top:0}.section-head{display:block}.section-note{margin-top:6px}.card{min-height:auto}}@media(max-width:520px){.stats{grid-template-columns:1fr}.nav{justify-content:flex-start}.hero{padding-top:28px}}
-  </style>
+  .oge-more details { border-top:1px solid var(--line); padding:16px 0; }
+  .oge-more summary { cursor:pointer; min-height:44px; font-weight:700; }
+  .topic-links { display:grid; gap:12px; margin-top:12px; }
+  .topic-links a { min-height:44px; display:flex; align-items:center; }
+  .actions { display:flex; flex-wrap:wrap; gap:12px; margin:24px 0; }
+  #where-to-start { margin-top:36px; }
+  #where-to-start, #other-courses { scroll-margin-top:100px; }
+  .route-more { font-size:.95rem; margin-top:6px; }
+  .lab-link { font-size:.88rem; color:var(--ink-soft); }
+  .skip-link { position:fixed; left:16px; top:-80px; z-index:30; background:white; padding:10px; }
+  .skip-link:focus { top:10px; }
+  .entry-grid { grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr)); }
+  @media (max-width:520px) {
+    .site-header { position:static; }
+    .hero { padding-top:28px; }
+    .hero-inner { padding-left:16px; }
+    .author { flex-wrap:wrap; padding:18px; }
+    .actions .btn { width:100%; text-align:center; }
+  }
+</style>
+<link rel="stylesheet" href="/assets/lesson-contacts.css?v=20261025">
+<script defer src="/assets/lesson-funnel.js?v=20261026"></script>
 </head>
-<body>
+<body class="oge-home">
+<a class="skip-link" href="#main-content">К содержанию</a>
+
+<!-- ==================== ШАПКА (единая для всего сайта) ==================== -->
 <header class="site-header">
   <div class="container">
     <a class="logo" href="/">
@@ -21,31 +76,203 @@
     </a>
     <nav class="site-nav" aria-label="Основные разделы">
       <a href="/">Главная</a>
-      <a href="/trainers/oge-course/">ОГЭ</a>
-      <a href="/trainers/oge-basics/">ПредОГЭ</a>
+      <a href="/trainers/">Каталог тренажёров</a>
+      <a href="/oge/" aria-current="page">ОГЭ</a>
+      <a href="/foundations/">Математические основы</a>
       <a href="https://mathexam-board-ladynata.msk1.amvera.tech/learning/#route">Мой кабинет</a>
+      <a href="/lessons/">Занятия с преподавателем</a>
     </nav>
   </div>
 </header>
-<main class="wrap">
-  <section class="hero"><div class="hero-grid"><div class="hero-copy"><h1>ОГЭ</h1><p>Страница для быстрого входа в тренажёры ОГЭ по математике и информатике. Здесь только рабочие учебные ссылки, без архивных дублей.</p><div class="stats"><div class="stat"><b>2</b><span>предмета</span></div><div class="stat"><b>1-25</b><span>курс по математике</span></div><div class="stat"><b>1-10</b><span>информатика</span></div><div class="stat"><b>5</b><span>тренажёров для пробелов</span></div></div></div><aside class="quick"><h2>Быстро</h2><div class="quick-list"><a href="../trainers/oge-course/"><span>Курс ОГЭ по математике</span><span class="arrow">›</span></a><a href="../trainers/oge-basics/"><span>Математическая база</span><span class="arrow">›</span></a><a href="../trainers/oge-1-5-trainers/"><span>Практические 1–5</span><span class="arrow">›</span></a><a href="../trainers/oge-informatics-1-10-tutor.html"><span>Информатика 1-10</span><span class="arrow">›</span></a><a href="../trainers/task19-trainer.html"><span>Математика №19</span><span class="arrow">›</span></a></div></aside></div></section>
-  <section class="section"><div class="section-head"><h2>ОГЭ по математике</h2><div class="section-note">Алгебра, вероятность, геометрия</div></div><div class="grid">
-    <article class="card" data-card data-title="курс подготовки к огэ по математике задания 1-25 пробелы арифметика дроби отрицательные числа округление ../trainers/oge-course/"><h3>Курс подготовки к ОГЭ</h3><p>Единая карта тренажёров: задания 1-25 и блоки для закрытия пробелов.</p><div class="meta"><span class="tag rose">ОГЭ</span><span class="tag green">курс</span></div><div class="actions"><a class="btn" href="../trainers/oge-course/">Открыть курс</a></div></article>
-    <article class="card" data-card data-title="математическая база для огэ ликбез арифметика дроби отрицательные числа округление единицы умножение деление ../trainers/oge-basics/"><h3>Математическая база для ОГЭ</h3><p>Короткие маршруты по базовым навыкам, которые мешают решать экзаменационные задачи.</p><div class="meta"><span class="tag rose">ОГЭ</span><span class="tag green">база</span></div><div class="actions"><a class="btn" href="../trainers/oge-basics/">Открыть ликбез</a></div></article>
-    <article class="card" data-card data-title="проценты и пропорции математическая база огэ часть целое процент изменения ../trainers/oge-basics/percentages/"><h3>Проценты и пропорции</h3><p>Последовательный маршрут: смысл процента, три типа задач, изменение величины и пропорция.</p><div class="meta"><span class="tag rose">ОГЭ</span><span class="tag green">проценты</span></div><div class="actions"><a class="btn" href="../trainers/oge-basics/percentages/">Открыть модуль</a></div></article>
-    <article class="card" data-card data-title="огэ 1–5 практические задачи шины печи дороги квартиры тарифы планы бумага ../trainers/oge-1-5-trainers/"><h3>Задания 1–5: практические задачи</h3><p>Полная линейка сюжетных тренажёров с картой и прогрессом.</p><div class="meta"><span class="tag rose">ОГЭ</span><span class="tag green">прогресс</span></div><div class="actions"><a class="btn" href="../trainers/oge-1-5-trainers/">Открыть</a></div></article>
-    <article class="card" data-card data-title="огэ 2026 входная диагностика задания 1–5 десять заданий сильные темы ../trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html"><h3>Входная диагностика 1–5</h3><p>Десять заданий определяют сильные темы и помогают выбрать порядок тренировки.</p><div class="meta"><span class="tag rose">ОГЭ-2026</span><span class="tag green">диагностика</span></div><div class="actions"><a class="btn" href="../trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html">Пройти</a></div></article>
-    <article class="card" data-card data-title="№14: прогрессии арифметические и геометрические прогрессии. ../trainers/oge-task14-progressions.html алгебра"><h3>№14: прогрессии</h3><p>Арифметические и геометрические прогрессии.</p><div class="meta"><span class="tag violet">алгебра</span></div><div class="actions"><a class="btn" href="../trainers/oge-task14-progressions.html">Открыть</a></div></article>
-    <article class="card" data-card data-title="№19: утверждения умная зубрёжка верных и неверных утверждений. ../trainers/task19-trainer.html геометрия"><h3>№19: утверждения</h3><p>Умная зубрёжка верных и неверных утверждений.</p><div class="meta"><span class="tag violet">геометрия</span></div><div class="actions"><a class="btn" href="../trainers/task19-trainer.html">Открыть</a></div></article>
-    <article class="card" data-card data-title="№10: вероятность генератор задач с разбором по шагам. ../trainers/oge-task10-probability.html вероятность"><h3>№10: вероятность</h3><p>Генератор задач с разбором по шагам.</p><div class="meta"><span class="tag teal">вероятность</span></div><div class="actions"><a class="btn" href="../trainers/oge-task10-probability.html">Открыть</a></div></article>
-    <article class="card" data-card data-title="№9: уравнения линейные, квадратные и дробно-рациональные с разбором по шагам. ../trainers/oge-task9-equations.html алгебра"><h3>№9: уравнения</h3><p>Линейные, квадратные и дробно-рациональные с разбором по шагам.</p><div class="meta"><span class="tag violet">алгебра</span></div><div class="actions"><a class="btn" href="../trainers/oge-task9-equations.html">Открыть</a></div></article>
-    <article class="card" data-card data-title="№15: внешний угол треугольника геометрический тренажёр по внешнему углу. ./geometry/task-15-external-angle.html геометрия"><h3>№15: внешний угол треугольника</h3><p>Геометрический тренажёр по внешнему углу.</p><div class="meta"><span class="tag violet">геометрия</span></div><div class="actions"><a class="btn" href="./geometry/task-15-external-angle.html">Открыть</a></div></article>
-  </div></section>
-  <section class="section"><div class="section-head"><h2>ОГЭ по информатике</h2><div class="section-note">Первая часть</div></div><div class="grid">
-    <article class="card" data-card data-title="задания 1-10 тьютор-тренажёр по первой части огэ. ../trainers/oge-informatics-1-10-tutor.html информатика"><h3>Задания 1-10</h3><p>Тьютор-тренажёр по первой части ОГЭ.</p><div class="meta"><span class="tag teal">информатика</span></div><div class="actions"><a class="btn" href="../trainers/oge-informatics-1-10-tutor.html">Открыть</a></div></article>
-  </div></section>
+
+<main id="main-content">
+<section class="hero oge-hero" aria-labelledby="oge-heading">
+  <div class="container hero-grid">
+    <div class="hero-inner">
+      <p class="kicker">Бесплатный курс · 9 класс</p>
+      <h1 id="oge-heading">ОГЭ по математике.<br><em>Сначала — понять.</em></h1>
+      <p class="lead">Покрутить колесо. Рассмотреть квартиру. Увидеть, как улыбается парабола.<br>А потом — решить задачу самому.</p>
+      <div class="actions">
+        <a class="btn" href="/trainers/oge-course/">Начни уже с чего-нибудь! <span aria-hidden="true">↗</span></a>
+        <a class="btn secondary" href="#oge-models">Рассмотреть модели</a>
+      </div>
+      <p class="hero-note"><span aria-hidden="true">✓</span> Без регистрации · В своём темпе · С подсказками</p>
+      <p class="hero-author">Курс Натальи Михайловны<br><span>Из живых занятий — в понятные тренажёры.</span></p>
+    </div>
+    <div class="model-exhibit" id="oge-models" aria-label="Объёмные модели из тем ОГЭ">
+      <div class="exhibit-top"><span><i aria-hidden="true"></i> Наглядный курс ОГЭ</span><button type="button" id="model-pause" hidden aria-pressed="false">Пауза</button></div>
+      <div class="model-stage" id="model-stage">
+        <svg class="model-fallback" viewBox="0 0 600 440" role="img" aria-label="Шина, объёмный план квартиры и две параболы: ветвями вверх и вниз">
+          <defs><linearGradient id="tire-shade" x2="1" y2="1"><stop stop-color="#52665f"/><stop offset="1" stop-color="#173b31"/></linearGradient></defs>
+          <g transform="translate(182 226) rotate(-24)"><ellipse rx="97" ry="121" fill="url(#tire-shade)"/><ellipse rx="66" ry="91" fill="#aabeb0"/><ellipse rx="49" ry="71" fill="#f3f5e9"/><g stroke="#648374" stroke-width="10"><path d="M0 -71V71M-49 0H49M-34 -50L34 50M-34 50L34 -50"/></g><circle r="16" fill="#e9eddd"/></g>
+          <g transform="translate(365 245)"><path d="M-35 30L75 -20L165 30L55 85Z" fill="#d2dfc5" stroke="#759279"/><path d="M-35 30V-20L75 -70V-20Z" fill="#e0cbb0"/><path d="M75 -70L165 -20V30L75 -20Z" fill="#f4e5ce"/><path d="M25 2V-40L75 -18V27M75 -18L120 -40" fill="none" stroke="#91ab91" stroke-width="7"/></g>
+          <g fill="none" stroke-linecap="round" stroke-width="7"><path d="M320 65Q368 180 416 65" stroke="#4e8c6d"/><path d="M440 151Q488 36 536 151" stroke="#c68c59"/></g>
+          <g fill="#315747"><circle cx="354" cy="82" r="4"/><circle cx="382" cy="82" r="4"/><circle cx="475" cy="83" r="4"/><circle cx="500" cy="83" r="4"/></g>
+        </svg>
+        <canvas id="oge-model-canvas" hidden role="img" aria-label="ОГЭ: 25 наклонённых орбит с моделями типов задач"></canvas>
+        <span class="orbit-label" aria-hidden="true">ОГЭ</span>
+      </div>
+      <div class="orbit-picker" role="group" aria-label="Выбрать номер задания" hidden>
+        <div class="exhibit-views"><button type="button" data-orbit="intro" aria-pressed="true">Крупные модели</button><button type="button" data-orbit="all" aria-pressed="false">Все 25 орбит</button></div>
+        <div class="orbit-numbers">
+          <button type="button" data-orbit="1" aria-pressed="false" aria-label="№1 — Практические задачи" title="Практические задачи">1</button>
+          <button type="button" data-orbit="2" aria-pressed="false" aria-label="№2 — Практические задачи" title="Практические задачи">2</button>
+          <button type="button" data-orbit="3" aria-pressed="false" aria-label="№3 — Практические задачи" title="Практические задачи">3</button>
+          <button type="button" data-orbit="4" aria-pressed="false" aria-label="№4 — Практические задачи" title="Практические задачи">4</button>
+          <button type="button" data-orbit="5" aria-pressed="false" aria-label="№5 — Практические задачи" title="Практические задачи">5</button>
+          <button type="button" data-orbit="6" aria-pressed="false" aria-label="№6 — Дроби" title="Дроби">6</button>
+          <button type="button" data-orbit="7" aria-pressed="false" aria-label="№7 — Числовая прямая" title="Числовая прямая">7</button>
+          <button type="button" data-orbit="8" aria-pressed="false" aria-label="№8 — Степени и корни" title="Степени и корни">8</button>
+          <button type="button" data-orbit="9" aria-pressed="false" aria-label="№9 — Уравнения" title="Уравнения">9</button>
+          <button type="button" data-orbit="10" aria-pressed="false" aria-label="№10 — Вероятность" title="Вероятность">10</button>
+          <button type="button" data-orbit="11" aria-pressed="false" aria-label="№11 — Графики" title="Графики">11</button>
+          <button type="button" data-orbit="12" aria-pressed="false" aria-label="№12 — Расчёты по формулам" title="Расчёты по формулам">12</button>
+          <button type="button" data-orbit="13" aria-pressed="false" aria-label="№13 — Неравенства" title="Неравенства">13</button>
+          <button type="button" data-orbit="14" aria-pressed="false" aria-label="№14 — Прогрессии" title="Прогрессии">14</button>
+          <button type="button" data-orbit="15" aria-pressed="false" aria-label="№15 — Треугольники" title="Треугольники">15</button>
+          <button type="button" data-orbit="16" aria-pressed="false" aria-label="№16 — Окружность" title="Окружность">16</button>
+          <button type="button" data-orbit="17" aria-pressed="false" aria-label="№17 — Четырёхугольники" title="Четырёхугольники">17</button>
+          <button type="button" data-orbit="18" aria-pressed="false" aria-label="№18 — Клетчатая бумага" title="Клетчатая бумага">18</button>
+          <button type="button" data-orbit="19" aria-pressed="false" aria-label="№19 — Утверждения" title="Утверждения">19</button>
+          <button type="button" data-orbit="20" aria-pressed="false" aria-label="№20 — Алгебра, часть 2" title="Алгебра, часть 2">20</button>
+          <button type="button" data-orbit="21" aria-pressed="false" aria-label="№21 — Текстовые задачи" title="Текстовые задачи">21</button>
+          <button type="button" data-orbit="22" aria-pressed="false" aria-label="№22 — Функции и параметры" title="Функции и параметры">22</button>
+          <button type="button" data-orbit="23" aria-pressed="false" aria-label="№23 — Геометрия: вычисления" title="Геометрия: вычисления">23</button>
+          <button type="button" data-orbit="24" aria-pressed="false" aria-label="№24 — Доказательства" title="Доказательства">24</button>
+          <button type="button" data-orbit="25" aria-pressed="false" aria-label="№25 — Сложная геометрия" title="Сложная геометрия">25</button>
+        </div>
+      </div>
+      <div class="feature-picker" role="group" aria-label="Рассмотреть модель" hidden><button type="button" data-feature="tires">Шины</button><button type="button" data-feature="apartment">Квартира</button><button type="button" data-feature="graphs">Графики</button><button type="button" data-feature="geometry">Окружность</button><button type="button" data-feature="dice">Вероятность</button></div>
+      <div class="model-tabs" role="group" aria-label="Типы задач на выбранной орбите" hidden></div>
+      <div class="model-caption" aria-live="polite" aria-atomic="true"><div><span id="model-number">Знакомые сюжеты — понятные решения</span><p id="model-description">Выберите тему и попробуйте её в деле.</p></div><a id="model-link" href="/trainers/oge-course/">К заданиям <span aria-hidden="true">↗</span></a></div>
+      <p class="model-hint" id="model-hint" hidden>Модель можно повернуть мышью или пальцем ↔</p>
+    </div>
+  </div>
+</section>
+<section class="oge-topics section" aria-labelledby="oge-topics-title">
+  <div class="container">
+    <div class="section-intro"><div><p class="kicker">От картинки к решению</p><h2 id="oge-topics-title">Вот с чего можно начать</h2></div><a href="/trainers/oge-course/">Весь курс ОГЭ <span aria-hidden="true">↗</span></a></div>
+    <div class="topic-strip">
+      <a class="topic-tile" href="/trainers/oge-1-5-trainers/practice-1-5-tires.html"><img class="topic-art" src="/assets/oge-illustrations/tires.svg" width="240" height="140" alt="" loading="lazy"><span class="topic-number">№ 1–5</span><h3>Шины</h3><p>Прочитать маркировку и рассчитать диаметр.</p><span class="topic-arrow" aria-hidden="true">↗</span></a>
+      <a class="topic-tile" href="/trainers/oge-1-5-trainers/practice-1-5-apartments.html"><img class="topic-art" src="/assets/oge-illustrations/apartment.svg" width="240" height="140" alt="" loading="lazy"><span class="topic-number">№ 1–5</span><h3>Квартиры</h3><p>План, масштаб и площадь — по порядку.</p><span class="topic-arrow" aria-hidden="true">↗</span></a>
+      <a class="topic-tile" href="/trainers/oge-task11-graphs-trainer.html"><img class="topic-art" src="/assets/oge-illustrations/graphs.svg" width="240" height="140" alt="" loading="lazy"><span class="topic-number">№ 11</span><h3>Графики</h3><p>Сопоставить график с формулой функции.</p><span class="topic-arrow" aria-hidden="true">↗</span></a>
+      <a class="topic-tile" href="/trainers/oge-course/#geometry"><img class="topic-art" src="/assets/oge-illustrations/geometry.svg" width="240" height="140" alt="" loading="lazy"><span class="topic-number">№ 15–19</span><h3>Геометрия</h3><p>Увидеть на чертеже то, что нужно для решения.</p><span class="topic-arrow" aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+</section>
+<section class="section start-section" aria-labelledby="where-to-start">
+  <div class="container">
+    <p class="kicker">У каждого своя точка старта</p>
+    <h2 id="where-to-start">Что сейчас нужно?</h2>
+    <div class="entry-grid start-routes">
+      <article class="entry"><span class="route-index" aria-hidden="true">01</span><h3>Разобраться в одной теме</h3><p>Выберите номер задания. Решайте с подсказками, пока не станет понятно.</p><a class="go" href="/trainers/oge-course/">Выбрать задание</a></article>
+      <article class="entry"><span class="route-index" aria-hidden="true">02</span><h3>Подтянуть основы</h3><p>Если мешают дроби, вычисления или уравнения — начните с нужного навыка.</p><a class="go" href="/trainers/oge-basics/">Повторить основы</a><a class="route-more" href="/foundations/">Математические основы — отдельный курс</a><a class="route-more" href="/trainers/long-division-stepwise.html">Начать с деления уголком</a></article>
+      <article class="entry"><span class="route-index" aria-hidden="true">03</span><h3>Проверить себя целиком</h3><p>Распечатайте вариант. Решите самостоятельно и сверьтесь с подробным разбором.</p><a class="go" href="/oge/variants/2027/">Выбрать вариант PDF</a></article>
+    </div>
+  </div>
+</section>
+
+<section class="section alt course-map" aria-labelledby="course-map-title">
+  <div class="container">
+    <div class="section-intro"><div><p class="kicker">Все разделы курса</p><h2 id="course-map-title">От первой задачи до доказательства</h2></div><a href="/trainers/oge-course/">Все задания ↗</a></div>
+    <div class="course-chapters">
+      <a href="/trainers/oge-course/#part1"><span>01—14</span><strong>Числа, алгебра и практические задачи</strong><span aria-hidden="true">↗</span></a>
+      <a href="/trainers/oge-course/#geometry"><span>15—19</span><strong>Геометрия</strong><span aria-hidden="true">↗</span></a>
+      <a href="/trainers/oge-course/#part2"><span>20—25</span><strong>Задачи с развёрнутым решением</strong><span aria-hidden="true">↗</span></a>
+    </div>
+    <p class="course-map-note">Сложно начать с практических задач? <a href="/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html">Попробуйте диагностику №1–5.</a></p>
+  </div>
+</section>
+
+<section class="section lesson-entry" aria-labelledby="other-lessons-title"><div class="container">
+  <p class="kicker">5–11 классы · ОГЭ · ЕГЭ базовый и профильный</p>
+  <h2 id="other-lessons-title">Если нужна помощь преподавателя</h2>
+  <p>Индивидуальные онлайн-занятия с Натальей Михайловной: от школьных тем до экзаменационных задач.</p>
+  <div class="actions"><a class="btn" href="/lessons/">Занятия для 5–11 классов</a><a class="btn secondary" href="/lessons/#examples">Попробовать задания</a><a class="btn secondary" href="/lessons/#contact">Обсудить занятия</a></div>
+</div></section>
+
+<section class="section"><div class="container oge-more"><details><summary>Быстрый переход к теме</summary><nav class="topic-links" aria-label="Темы математики"><a href="../trainers/oge-basics/">Математическая база</a><a href="../trainers/oge-1-5-trainers/">Практические задачи 1–5</a><a href="../trainers/task19-trainer.html">№19 · утверждения, рисунки и контрпримеры</a><a href="../trainers/oge-basics/percentages/">Проценты и пропорции</a><a href="../trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html">Входная диагностика 1–5</a><a href="../trainers/oge-task14-progressions.html">№14 · Прогрессии</a><a href="../trainers/oge-task10-probability.html">№10 · Вероятность</a><a href="../trainers/oge-task9-equations.html">№9 · Уравнения</a><a href="./geometry/task-15-external-angle.html">№15 · урок о внешнем угле треугольника</a></nav></details><details><summary>Информатика</summary><nav class="topic-links"><a href="../trainers/oge-informatics-1-10-tutor.html">ОГЭ по информатике · задания 1–10 →</a></nav></details></div></section>
+<!-- seo-topic-links:start -->
+<section class="section" aria-labelledby="topic-explanations">
+  <div class="container">
+    <h2 id="topic-explanations">Разобраться в одной теме</h2>
+    <p>Короткий разбор, понятный пример и переход к тренировке. Выберите то, что сейчас вызывает затруднение.</p>
+    <div class="entry-grid">
+      <article class="entry"><h3><a href="/topics/delenie-ugolkom/">Деление уголком</a></h3><p>От выбора первой цифры частного до деления десятичных дробей.</p></article>
+      <article class="entry"><h3><a href="/topics/obyknovennye-drobi/">Обыкновенные дроби</a></h3><p>Общий знаменатель, четыре действия и сокращение ответа.</p></article>
+      <article class="entry"><h3><a href="/topics/procenty/">Задачи на проценты</a></h3><p>Часть, целое и процент — три типа задач через пропорции.</p></article>
+      <article class="entry"><h3><a href="/topics/lineynye-uravneniya/">Линейные уравнения</a></h3><p>Скобки, подобные слагаемые, перенос и проверка корня.</p></article>
+      <article class="entry"><h3><a href="/topics/oge-geometriya/">Геометрия ОГЭ</a></h3><p>Связываем условие, чертёж и нужное свойство фигуры.</p></article>
+    </div>
+    <p><a href="/topics/">Все разборы по темам →</a></p>
+  </div>
+</section>
+<!-- seo-topic-links:end -->
+
+<section class="section">
+  <div class="container">
+    <h2>Как заниматься</h2>
+    <div class="cols-3">
+      <div><h3>1. Разберите пример</h3><p>Прочитайте условие. Проследите, откуда берётся каждый шаг решения.</p></div>
+      <div><h3>2. Попробуйте сами</h3><p>Решите похожее задание. Если застряли, воспользуйтесь доступной подсказкой или повторите основу.</p></div>
+      <div><h3>3. Проверьте понимание</h3><p>Решите новое задание без подсказок. При ошибке найдите трудный шаг и потренируйтесь ещё.</p></div>
+    </div>
+    <p class="byline">На занятиях с преподавателем начинайте с выданной ссылки.
+      Для самостоятельной работы выбирайте одну тему за раз.</p>
+  </div>
+</section>
+
+<div class="container">
+<!-- lesson-contacts:start -->
+<section class="me-contacts" aria-label="Занятия и новые материалы">
+  <div class="me-contact-grid">
+    <div class="me-contact-card"><p class="me-contact-label">Индивидуальные онлайн-занятия</p>
+      <h2>Нужна помощь с математикой?</h2>
+      <p>Разберём трудные шаги, вернёмся к нужным основам и потренируемся на похожих задачах. Занятия ведёт Наталья Михайловна, автор MathExam.</p>
+      <div class="me-contact-actions"><a class="me-contact-button" href="https://t.me/ladynata3000" target="_blank" rel="noopener noreferrer">Написать в Telegram</a><a class="me-contact-button me-contact-secondary" href="https://vk.ru/ladynata3000" target="_blank" rel="noopener noreferrer">Написать во ВКонтакте</a></div>
+      <p class="me-contact-note"><a href="/lessons/">Как проходят занятия →</a> · Можно написать класс и тему, с которой нужна помощь.</p>
+    </div>
+    <div class="me-contact-card me-contact-channel"><p class="me-contact-label">Материалы для самостоятельной работы</p>
+      <h2>Хотите другие задачи и новые темы?</h2>
+      <p>Подписывайтесь на разборы и тренажёры там, где вам удобно.</p>
+      <div class="me-contact-actions"><a class="me-contact-button me-contact-secondary" href="https://t.me/mathexamspace" target="_blank" rel="noopener noreferrer">Канал в Telegram</a><a class="me-contact-button me-contact-secondary" href="https://max.ru/join/KKMgzGoEUezcYD_sJGMdvP1hcy90-3sTiZvkRk1_I3c" target="_blank" rel="noopener noreferrer">Канал в MAX</a></div><p class="me-contact-note">Также <a href="https://vk.com/mathexamspace" target="_blank" rel="noopener noreferrer">группа ВКонтакте</a> и <a href="https://dzen.ru/mathexamspace" target="_blank" rel="noopener noreferrer">Дзен</a>.</p>
+    </div>
+  </div>
+</section>
+<!-- lesson-contacts:end -->
+</div>
+<!-- ==================== ОБ АВТОРЕ ==================== -->
+<section class="section">
+  <div class="container">
+    <div class="author">
+      <div class="author-mark" aria-hidden="true">НМ</div>
+      <div>
+        <h2>От автора</h2>
+        <p>
+          Меня зовут Наталья Михайловна. Много лет я работала учителем математики
+          в школе, сейчас занимаюсь с учениками как репетитор и делаю интерактивные
+          тренажёры — по тем темам, где детям нужнее всего спокойная,
+          многократная отработка.
+        </p>
+        <p>
+          Тренажёры не заменяют учителя. Объяснить, увлечь, заметить, где ребёнок
+          «поплыл», — это работа живого человека. Тренажёр берёт на себя рутину:
+          терпеливо проверяет, подсказывает и даёт столько попыток, сколько нужно,
+          чтобы навык закрепился.
+        </p>
+        <p class="byline">
+          Новые тренажёры и разборы — в группе
+          <a href="https://vk.com/mathexamspace" rel="noopener">ВКонтакте</a> и на канале в
+          <a href="https://dzen.ru/mathexamspace" rel="noopener">Дзене</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
 </main>
 
+<!-- ==================== ФУТЕР (единый для всего сайта) ==================== -->
 <footer class="site-footer">
   <div class="container">
     <div>
@@ -57,23 +284,30 @@
       <h4>Разделы</h4>
       <ul>
         <li><a href="/">Главная</a></li>
-        <li><a href="/trainers/oge-course/">ОГЭ по математике</a></li>
-        <li><a href="/trainers/oge-basics/">ПредОГЭ — восстановить основы</a></li>
-        <li><a href="/laboratory/">Лаборатория репетитора</a></li>
+        <li><a href="/trainers/oge-course/">Курс ОГЭ по математике</a></li>
+        <li><a href="/foundations/">Математические основы — отдельный курс</a></li>
+        <li><a href="/trainers/oge-basics/">ПредОГЭ — быстрый выбор навыка</a></li>
+        <li><a href="https://mathexam-board-ladynata.msk1.amvera.tech/learning/#route">Мой кабинет</a></li>
       </ul>
     </div>
     <div>
-      <h4>Автор на связи</h4>
+      <h4>Запись на занятия</h4>
       <ul>
-        <li><a href="https://vk.com/mathexamspace" rel="noopener">ВКонтакте</a></li>
+        <li><a href="https://t.me/ladynata3000">Написать в Telegram</a></li>
+        <li><a href="https://vk.ru/ladynata3000">Написать во ВКонтакте</a></li>
+        <li><a href="https://t.me/mathexamspace">Канал в Telegram</a></li>
+        <li><a href="https://max.ru/join/KKMgzGoEUezcYD_sJGMdvP1hcy90-3sTiZvkRk1_I3c">Канал в MAX</a></li>
+        <li><a href="https://vk.com/mathexamspace" rel="noopener">Группа ВКонтакте</a></li>
         <li><a href="https://dzen.ru/mathexamspace" rel="noopener">Дзен</a></li>
         <li><a href="mailto:nata4os@bk.ru">Написать письмо</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
+    <p id="other-courses"><a class="lab-link" href="/laboratory/">Лаборатория репетитора</a></p>
     MathExam · mathexam.space · Наталья Михайловна
   </div>
 </footer>
+
 </body>
 </html>

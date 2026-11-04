@@ -1,0 +1,206 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0117",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Середины двух рёбер тетраэдра",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "117",
+    "chapter": "II. Перпендикулярность прямых и плоскостей",
+    "printedPages": [
+      41
+    ],
+    "pdfPages": [
+      43
+    ]
+  },
+  "statement": {
+    "text": "В тетраэдре ABCD рёбра BC и AD перпендикулярны. M и N — середины AB и AC.",
+    "goal": "Докажи, что AD⊥MN."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "Поверни рисунок и найди данные условия. Нужное дополнительное построение появится в соответствующем шаге.",
+    "model": {
+      "points": {
+        "A": [
+          0,
+          1,
+          2
+        ],
+        "B": [
+          -3,
+          0,
+          0
+        ],
+        "C": [
+          3,
+          0,
+          0
+        ],
+        "D": [
+          0,
+          4,
+          3
+        ],
+        "M": [
+          -1.5,
+          0.5,
+          1
+        ],
+        "N": [
+          1.5,
+          0.5,
+          1
+        ]
+      },
+      "edges": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "A",
+          "C"
+        ],
+        [
+          "A",
+          "D"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "B",
+          "D"
+        ],
+        [
+          "C",
+          "D"
+        ]
+      ],
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A",
+          "B",
+          "D"
+        ],
+        [
+          "A",
+          "C",
+          "D"
+        ],
+        [
+          "B",
+          "C",
+          "D"
+        ]
+      ],
+      "labelNames": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "M",
+        "N"
+      ],
+      "neutralPoints": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "M",
+        "N"
+      ],
+      "labels": {},
+      "views": {
+        "neutral": {
+          "label": "Данные задачи"
+        },
+        "midline": {
+          "label": "Средняя линия грани ABC",
+          "segments": [
+            [
+              "M",
+              "N"
+            ]
+          ]
+        }
+      },
+      "note": "Изображён один допустимый пример. Поворот меняет вид, но не условия. Общий вывод нужно обосновать в решении."
+    }
+  },
+  "help": [
+    {
+      "question": "Как связать MN с данным BC?",
+      "text": "Соедини середины двух сторон треугольника ABC и вспомни свойство средней линии.",
+      "view": "midline",
+      "id": "h1"
+    }
+  ],
+  "steps": [
+    {
+      "title": "Найди среднюю линию",
+      "prompt": "В каком треугольнике лежат обе середины?",
+      "explanation": "M и N лежат в треугольнике ABC и делят AB и AC пополам. Поэтому MN — его средняя линия, MN∥BC.",
+      "justifications": [
+        {
+          "kind": "given",
+          "text": "M и N — середины AB и AC."
+        },
+        {
+          "kind": "theorem",
+          "text": "Средняя линия треугольника параллельна третьей стороне."
+        }
+      ],
+      "view": "midline",
+      "id": "step-1"
+    },
+    {
+      "title": "Сравни углы между направлениями",
+      "prompt": "Что следует из BC⊥AD и MN∥BC?",
+      "explanation": "Перпендикулярность сохраняется при замене BC параллельной ей прямой MN. Значит, AD⊥MN.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Лемма о перпендикулярности прямой к параллельным прямым.",
+          "theoryId": "theory-015",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "15",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              36
+            ],
+            "pdfPages": [
+              38
+            ]
+          }
+        }
+      ],
+      "view": "midline",
+      "id": "step-2"
+    }
+  ],
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex ege_base_inventory; geometry_scene_math_review",
+    "at": "2026-10-21T21:45:45Z"
+  },
+  "answer": {
+    "mode": "manual",
+    "prompt": "Докажи, что AD⊥MN. Запиши решение с обоснованием каждого вывода."
+  }
+}

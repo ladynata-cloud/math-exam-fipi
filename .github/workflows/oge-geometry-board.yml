@@ -1,0 +1,82 @@
+name: OGE geometry 15–19 shared practice
+on:
+  pull_request:
+    paths:
+      - 'trainers/oge-task1[5-8]*'
+      - 'trainers/oge-geometry-board*'
+      - 'trainers/oge-course-geometry*'
+      - 'trainers/task19-*'
+      - 'trainers/board-compat.json'
+      - 'learning/preparation.js'
+      - 'tools/oge-*board*'
+      - 'tools/oge-geometry-*'
+      - 'tools/oge-course-geometry-model-sync.test.cjs'
+      - 'tools/task19-board.test.cjs'
+      - 'tools/learning-oge-geometry-plan.dom.cjs'
+      - 'docs/tasks/OGE_15_19_SHARED_BOARD*'
+      - '.github/workflows/oge-geometry-board.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'trainers/oge-task1[5-8]*'
+      - 'trainers/oge-geometry-board*'
+      - 'trainers/oge-course-geometry*'
+      - 'trainers/task19-*'
+      - 'trainers/board-compat.json'
+      - 'learning/preparation.js'
+      - 'tools/oge-*board*'
+      - 'tools/oge-geometry-*'
+      - 'tools/task19-board.test.cjs'
+      - '.github/workflows/oge-geometry-board.yml'
+permissions:
+  contents: read
+jobs:
+  mathematics-state-and-transport:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install locked server and pinned DOM tools
+        run: |
+          npm ci --prefix board-server --include=optional
+          npm install --prefix "$RUNNER_TEMP/oge-geometry" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0
+          echo "NODE_PATH=$RUNNER_TEMP/oge-geometry/node_modules:$GITHUB_WORKSPACE/board-server/node_modules" >> "$GITHUB_ENV"
+      - name: Mathematics, retained work, semantic models and real room transport
+        run: |
+          node --test tools/oge-task15-board.test.cjs tools/oge-geometry-board.test.cjs tools/oge-course-geometry-model-sync.test.cjs tools/task19-board.test.cjs tools/oge-geometry-transport.test.cjs
+          node --test tools/oge-course-geometry.test.cjs tools/task19-*.test.cjs
+          node --test tools/learning-oge-geometry-plan.dom.cjs tools/learning-number-theory-plan.dom.cjs tools/learning-peterson-plan.dom.cjs tools/learning-focus-links.dom.cjs tools/merzlyak-cabinet.test.cjs
+          node --test board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js board-server/test/learning-profiles.test.js
+          git diff --check
+  external-review:
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'feat/oge-15-19-board'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Fetch exact base
+        env:
+          REVIEW_BASE: ${{ github.event.pull_request.base.sha }}
+        run: git fetch --no-tags --depth=1 origin "$REVIEW_BASE"
+      - name: One bounded read-only external review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          REVIEW_BASE: ${{ github.event.pull_request.base.sha }}
+          REVIEW_HEAD: ${{ github.event.pull_request.head.sha }}
+          REVIEW_PR: ${{ github.event.pull_request.number }}
+        run: python3 tools/oge-geometry-external-review.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: oge-geometry-external-review
+          path: artifacts/oge-geometry-external-review.json
+          if-no-files-found: warn
+          retention-days: 30

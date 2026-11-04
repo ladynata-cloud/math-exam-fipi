@@ -41,26 +41,50 @@ const server = http.createServer((req,res)=>{try{
   const choiceFocusEvent=await change('a',f=>f.locator('[data-answer-choice]').first().press('Space'));
   await hydrate('b',choiceFocusSpec,choiceFocusEvent.state,true);
   assert.equal(await frame('b').locator('#answer').inputValue(),choiceFocusEvent.state.work.draft,'choice draft restores after input type transition');
-  const ids=await frame('a').evaluate(()=>PathData.meta.map(m=>m.id)), kinds=new Set();assert.equal(ids.length,169);
-  for(const id of ids){const taskSpec=await spec(id);await hydrate('a',taskSpec);const raw=await frame('a').locator('#answer').getAttribute('type')==='hidden'?await frame('a').locator('[data-answer-choice]').first().getAttribute('data-answer-choice'):'−3/7';let event=await change('a',f=>raw==='−3/7'?f.locator('#answer').fill(raw):f.locator('[data-answer-choice]').first().click());assert.equal(event.state.work.draft,raw);assert.equal(event.kind,'input');event=await change('a',f=>f.locator('[data-stage="1"]').click());assert.equal(event.kind,'hint');assert.equal(event.state.work.help,true);kinds.add(taskSpec.task.model.kind);assert((await frame('a').locator('#model').innerText()).length>0);await hydrate('b',taskSpec,event.state,true);assert.equal(await frame('a').locator('#model').innerText(),await frame('b').locator('#model').innerText(),id);assert.deepEqual(await frame('a').evaluate(()=>[...document.querySelectorAll('#model input,#model select')].map(x=>x.value)),await frame('b').evaluate(()=>[...document.querySelectorAll('#model input,#model select')].map(x=>x.value)),id);}
+  const ids=await frame('a').evaluate(()=>PathData.meta.map(m=>m.id)), kinds=new Set();assert.equal(ids.filter(id=>!id.startsWith('grade7-r-')).length,173);assert.equal(ids.length,173+await frame('a').evaluate(()=>PathData.geometryRebuild.families.length));
+  for(const id of ids){
+    const taskSpec=await spec(id);await hydrate('a',taskSpec);
+    if(id.startsWith('grade7-r-photo-proof-')){
+      assert.equal(await frame('a').locator('.stage-nav').count(),0,'photo proof has one flow');
+      let event=await change('a',f=>f.locator('[data-proof-start]').click());assert.equal(event.kind,'hint');assert.equal(event.state.work.help,true);
+      const raw=await frame('a').locator('[data-answer-choice]').first().getAttribute('data-answer-choice');
+      event=await change('a',f=>f.locator('[data-answer-choice]').first().click());assert.equal(event.state.work.draft,raw);assert.equal(event.kind,'input');
+      kinds.add(taskSpec.task.model.kind);await hydrate('b',taskSpec,event.state,true);
+      assert.equal(await frame('b').locator('#answer').inputValue(),raw,id+' photo draft restores');
+      assert.equal(await frame('a').locator('[data-proof-drawing]').innerHTML(),await frame('b').locator('[data-proof-drawing]').innerHTML(),id+' selected figure restores');
+      assert.equal(await frame('b').locator('[data-answer-choice][aria-pressed="true"]').getAttribute('data-answer-choice'),raw);
+      const count=await page.evaluate(()=>messages.filter(m=>m.id==='b'&&m.data.type==='change').length);
+      await frame('b').locator('[data-answer-choice]').first().evaluate(el=>el.click());
+      assert.equal(await page.evaluate(()=>messages.filter(m=>m.id==='b'&&m.data.type==='change').length),count,id+' observer emits no input');
+    }else{
+      const raw=await frame('a').locator('#answer').getAttribute('type')==='hidden'?await frame('a').locator('[data-answer-choice]').first().getAttribute('data-answer-choice'):'−3/7';
+      let event=await change('a',f=>raw==='−3/7'?f.locator('#answer').fill(raw):f.locator('[data-answer-choice]').first().click());assert.equal(event.state.work.draft,raw);assert.equal(event.kind,'input');
+      event=await change('a',f=>f.locator('[data-stage="1"]').click());assert.equal(event.kind,'hint');assert.equal(event.state.work.help,true);kinds.add(taskSpec.task.model.kind);
+      assert((await frame('a').locator('#model').innerText()).length>0);await hydrate('b',taskSpec,event.state,true);
+      assert.equal(await frame('a').locator('#model').innerText(),await frame('b').locator('#model').innerText(),id);
+      assert.deepEqual(await frame('a').evaluate(()=>[...document.querySelectorAll('#model input,#model select')].map(x=>x.value)),await frame('b').evaluate(()=>[...document.querySelectorAll('#model input,#model select')].map(x=>x.value)),id);
+    }
+  }
   // Each new curriculum item preserves exact drafts, help and a checked prefix.
   for(const id of ids.filter(id=>id.startsWith('grade7-')||id.startsWith('pre7-'))){
-    const taskSpec=await spec(id,23);await hydrate('a',taskSpec);
-    await change('a',f=>f.locator('[data-stage="2"]').click());
+    const taskSpec=await spec(id,23),photo=id.startsWith('grade7-r-photo-proof-');await hydrate('a',taskSpec);
+    await change('a',f=>f.locator(photo?'[data-proof-start]':'[data-stage="2"]').click());
     let event=await change('a',f=>f.locator('#hint').click());
-    assert.equal(event.state.view.hintText,taskSpec.task.steps[0].why,id);
+    const hint=photo?await frame('a').evaluate(task=>PathPracticeView.photoProof.lesson(task).hints[0],taskSpec.task):taskSpec.task.steps[0].why;
+    assert.equal(event.state.view.hintText,hint,id);
     await hydrate('b',taskSpec,event.state,true);
-    assert.equal(await frame('b').locator('#hintText').innerText(),taskSpec.task.steps[0].why,id);
+    assert.equal(await frame('b').locator('#hintText').textContent(),hint,id);
     const answer=await frame('a').evaluate(task=>PathData.answerText(task.steps[0]),taskSpec.task);
     const choice=taskSpec.task.steps[0].choices?.find(c=>c.value===answer);
     await change('a',f=>choice?f.locator('[data-answer-choice="'+answer+'"]').click():f.locator('#answer').fill(answer));
     event=await change('a',f=>f.locator('#answerForm').evaluate(el=>el.requestSubmit()));
     assert.equal(event.details.step,0,id);assert.equal(event.state.work.step,1,id);assert.deepEqual(event.state.work.answers,[answer],id);
     await hydrate('b',taskSpec,event.state,true);
-    assert.equal(await frame('b').locator('.steps').innerText(),await frame('a').locator('.steps').innerText(),id);
-    assert.equal(await frame('b').locator('.steps li').count(),1,id);
-    if(choice)assert.ok((await frame('b').locator('.steps').innerText()).includes(choice.label),id+' retains the meaningful choice label');
-    assert(!/ЕГЭ база|Задание null/.test(await frame('b').locator('#main > .eyebrow').innerText()),id+' uses grade7 heading');
+    const record=photo?'.photo-proof-record':'.steps';
+    assert.equal(await frame('b').locator(record).innerText(),await frame('a').locator(record).innerText(),id);
+    assert.equal(await frame('b').locator(record+' li').count(),1,id);
+    if(choice)assert.ok((await frame('b').locator(record).innerText()).includes(photo?choice.label.replace(/Δ/g,'△'):choice.label),id+' retains the meaningful choice label');
+    assert(!/ЕГЭ база|Задание null/.test(await frame('b').locator(photo?'.photo-proof-heading':'#main > .eyebrow').innerText()),id+' uses grade7 heading');
     const count=await page.evaluate(()=>messages.filter(m=>m.id==='b'&&m.data.type==='change').length);
     await hydrate('b',taskSpec,event.state,true);
     assert.equal(await page.evaluate(()=>messages.filter(m=>m.id==='b'&&m.data.type==='change').length),count,id+' silent restore');
@@ -115,7 +139,7 @@ const server = http.createServer((req,res)=>{try{
   }
   // Exact raw draft, rejected answer, hint, step progression and silent restore.
   let taskSpec=await spec('equations-fractions',80);await hydrate('a',taskSpec);await change('a',f=>f.locator('#answer').fill('0,333333'));let event=await change('a',f=>f.locator('#answerForm').evaluate(el=>el.requestSubmit()));assert.equal(event.kind,'check');assert.equal(event.details.answer,'0,333333');assert.equal(event.state.work.done,false);await hydrate('b',taskSpec,event.state,true);assert.equal(await frame('b').locator('#answer').inputValue(),'0,333333');assert.match(await frame('b').locator('#feedback').innerText(),/неверно/);
-  await change('a',f=>f.locator('[data-stage="2"]').click());event=await change('a',f=>f.locator('#hint').click());assert.equal(event.details.level,1);await hydrate('b',taskSpec,event.state,true);assert.equal(await frame('b').locator('#hintText').innerText(),taskSpec.task.steps[0].why);
+  await change('a',f=>f.locator('[data-stage="2"]').click());event=await change('a',f=>f.locator('#hint').click());assert.equal(event.details.level,1);await hydrate('b',taskSpec,event.state,true);assert.equal(await frame('b').locator('#hintText').textContent(),taskSpec.task.steps[0].why);
   await change('a',f=>f.locator('#answer').fill(String(taskSpec.task.steps[0].a)));event=await change('a',f=>f.locator('#answerForm').evaluate(el=>el.requestSubmit()));assert.equal(event.details.scope,'step');assert.equal(event.details.step,0);assert.equal(event.state.work.step,1);assert.deepEqual(event.details.answers,[]);assert.deepEqual(event.state.work.answers,[String(taskSpec.task.steps[0].a)]);await hydrate('b',taskSpec,event.state,true);
   let count=await page.evaluate(()=>messages.filter(m=>m.id==='b'&&m.data.type==='change').length);await frame('b').locator('#answer').evaluate(el=>{el.value='99';el.dispatchEvent(new Event('input',{bubbles:true}));el.closest('form').requestSubmit();});assert.equal(await page.evaluate(()=>messages.filter(m=>m.id==='b'&&m.data.type==='change').length),count,'read-only cannot emit changes');
   await hydrate('b',taskSpec,event.state,true);assert.equal(await page.evaluate(()=>messages.filter(m=>m.id==='b'&&m.data.type==='change').length),count,'hydrate must not fabricate events');
@@ -136,6 +160,6 @@ const server = http.createServer((req,res)=>{try{
   // Hydration renders the pinned task, not an updated client generator.
   await frame('a').evaluate(()=>PathData.task=()=>{throw Error('must not regenerate pinned task');});await hydrate('a',taskSpec,saved,false);
   await page.setViewportSize({width:390,height:844});await page.evaluate(()=>{framesById.a.style.width='100%';framesById.b.hidden=true;});assert(await frame('a').evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
-  assert.deepEqual(errors,[]);console.log('LEARNING_PATH_BROWSER_OK: 169 routes; '+kinds.size+' model kinds; semantic controls/figures, teacher read-only, exact drafts/feedback/hints/steps, silent hydrate, reload, parent new-task, pinned task and standalone isolation.');
+  assert.deepEqual(errors,[]);console.log('LEARNING_PATH_BROWSER_OK: '+ids.length+' routes; '+kinds.size+' model kinds; semantic controls/figures, teacher read-only, exact drafts/feedback/hints/steps, silent hydrate, reload, parent new-task, pinned task and standalone isolation.');
  }finally{await browser.close();server.close();}
 })().catch(error=>{console.error(error);server.close();process.exitCode=1;});

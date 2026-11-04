@@ -1,0 +1,72 @@
+name: Basic EGE 11 and 13 shared board
+on:
+  pull_request:
+    paths:
+      - 'ege-baza/path/**'
+      - 'trainers/ege-baza-*.html'
+      - 'trainers/board-compat.json'
+      - 'trainers/board-picker*'
+      - 'trainers/trainer-board.html'
+      - 'trainers/board-bridge.js'
+      - 'learning/attached-course.js'
+      - 'learning/index.html'
+      - 'tools/ege-baza-board*'
+      - 'tools/ege-baza-stereo-figures*'
+      - 'tools/learning-ege-base-cards*'
+      - '.github/workflows/ege-base-board.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'ege-baza/path/**'
+      - 'trainers/ege-baza-*.html'
+      - 'trainers/board-compat.json'
+      - 'trainers/board-picker*'
+      - 'trainers/trainer-board.html'
+      - 'trainers/board-bridge.js'
+      - 'learning/attached-course.js'
+      - 'learning/index.html'
+      - 'tools/ege-baza-board*'
+      - 'tools/ege-baza-stereo-figures*'
+      - 'tools/learning-ege-base-cards*'
+      - '.github/workflows/ege-base-board.yml'
+permissions:
+  contents: read
+jobs:
+  base-stereometry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: board-server/package-lock.json
+      - name: Install locked server and pinned test tools
+        run: |
+          npm ci --prefix board-server --include=optional
+          npm install --prefix "$RUNNER_TEMP/ege-base-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/ege-base-qa/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/ege-base-qa/node_modules" >> "$GITHUB_ENV"
+      - name: Mathematics, strict state, diagrams and cabinet regressions
+        run: |
+          node --test tools/ege-baza-board.test.cjs tools/ege-baza-stereo-figures.test.cjs tools/learning-ege-base-cards.test.cjs tools/learning-number-theory-plan.dom.cjs tools/learning-number-theory-route.dom.cjs tools/merzlyak-cabinet.test.cjs
+          node tools/ege-baza-practice.test.cjs
+          node tools/ege-baza-task-first.test.cjs
+          node --test board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js
+          node tools/board-picker-smoke.cjs
+          git diff --check
+      - name: Real shared board, isolated teacher and pupil
+        env:
+          EGE_BAZA_BOARD_SHOTS: artifacts/ege-base-board
+        run: node tools/ege-baza-board.browser.cjs
+      - name: Keep browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ege-base-board-evidence
+          path: artifacts/ege-base-board
+          if-no-files-found: warn
+          retention-days: 14
