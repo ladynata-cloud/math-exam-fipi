@@ -4,7 +4,7 @@ const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),asse
 const root=path.resolve(__dirname,'..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const course=require('../learning/division-course-map.js'),server=require('../board-server/learning-contracts.js'),soviet=require('../soviet-math/course.js'),equations=require('../equations/data.js'),extra=require('../soviet-math/arithmetic-practice.js');
 const school={};school.window=school;vm.createContext(school);
-for(const m of read('school/index.html').matchAll(/<script[^>]+src="([^"]+)"/g)){const file=m[1].split('?')[0];if(file!=='app.js')vm.runInContext(read('school/'+file),school,{filename:'school/'+file});}
+for(const m of read('school/index.html').matchAll(/<script[^>]+src="([^"]+)"/g)){const file=m[1].split('?')[0];if(file==='/assets/oge-wayfinding.js'){assert(fs.existsSync(path.join(root,file)),'Navigation dependency exists; real DOM/browser gate executes it');continue;}if(file!=='app.js')vm.runInContext(read('school/'+file),school,{filename:'school/'+file});}
 const seeds=Array.from({length:200},(_,i)=>i);
 const textTask=t=>JSON.stringify({prompt:t.task?.prompt||t.task?.q||t.prompt||t.q,items:t.items?.map(q=>q.prompt||q.q),steps:t.steps?.map(q=>q.prompt||q.q)});
 function sample(make){const tasks=seeds.map(make),prints=tasks.map(textTask);return {seeds:'0..199',count:seeds.length,uniqueConditions:new Set(prints).size,examples:[...new Set(tasks.map(t=>t.task?.prompt||t.task?.q||t.prompt||t.q))].slice(0,3)};}
