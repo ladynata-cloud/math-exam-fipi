@@ -398,7 +398,7 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
     }
     const learningStatus = await (await fetch(`${server.baseUrl}/api/learning/status`)).json();
     const originalTrainers = new Set(['ege-path', 'oge-basics', 'motion-grade6']);
-    assert.equal(learningStatus.trainers.filter(item => originalTrainers.has(item.trainerId) && !item.geometryRebuild).length, 244); // Preserve the previous non-geometry bank.
+    assert.equal(learningStatus.trainers.filter(item => originalTrainers.has(item.trainerId) && !item.geometryRebuild).length, 248); // The previous bank plus four EGE reasoning families.
     assert.deepEqual(learningStatus.trainers.filter(item => item.trainerId === 'vilenkin6-part1').map(item => item.contentId).sort(),
       Array.from({ length: 27 }, (_, id) => 'lesson-' + id).sort());
     assert.deepEqual(learningStatus.trainers.filter(item => item.trainerId === 'atanasyan-7-9').map(item => item.contentId),

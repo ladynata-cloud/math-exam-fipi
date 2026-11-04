@@ -38,3 +38,12 @@ const mix=task('p20b');assert.equal(mix.lab.solute+mix.lab.water0,6);assert.equa
 const average=task('p20c');assert.deepEqual(Array.from(average.lab.dist),[120,180,150]);assert.deepEqual(Array.from(average.lab.speed),[60,90,75]);assert.equal(average.lab.dist.reduce((a,b)=>a+b)/average.lab.dist.reduce((a,d,i)=>a+d/average.lab.speed[i],0),average.answer);
 const towards=task('p20d');assert.equal(towards.lab.L,300);assert.equal(towards.lab.L-towards.lab.meeting,180);assert.equal(towards.lab.meeting/towards.lab.t,towards.answer);
 console.log(`EGE_153_MATH_OK: 360000 candidate answers and guided alternatives; ${reconstructed} exhaustive ring reconstructions; unequal-speed and first-meeting checks; p20a–d condition/model consistency.`);
+
+const State=require('../ege-baza/path/managed-state.js');
+for(let seed=0;seed<12;seed++){
+ const t=D.task('practice-ring-meeting',seed),value={kind:'ring-motion',time:t.answer};
+ assert.deepEqual(State.model(value,t),value);
+ for(const bad of [-1,Infinity,NaN,'4',t.answer*1.5+.01])assert.throws(()=>State.model({...value,time:bad},t));
+ assert.throws(()=>State.model({...value,extra:1},t));assert.throws(()=>State.model({kind:'ring',mode:1},t));
+}
+console.log('EGE_153_STATE_OK: bounded ring time round trip; invalid, foreign and extra fields rejected.');
