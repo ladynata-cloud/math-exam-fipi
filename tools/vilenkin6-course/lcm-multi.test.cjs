@@ -50,7 +50,9 @@ test('the published 194 source records, revisions, order and A–D bytes are imm
   }
   assert.deepEqual(catalog.items.filter(row => row.trainerId === 'vilenkin6-textbook'), manifest);
   assert.equal(catalog.items.filter(row => row.trainerId === 'vilenkin6-part1').length, 27);
-  const old = catalog.items.filter(row => row.trainerId !== 'vilenkin6-textbook');
+  const newEgeIds = new Set(['practice-digits-delete', 'practice-average-three', 'practice-ring-route', 'practice-ring-meeting'].map(id => 'path:' + id));
+  assert.equal(catalog.items.filter(row => newEgeIds.has(row.id)).length, 4);
+  const old = catalog.items.filter(row => row.trainerId !== 'vilenkin6-textbook' && !newEgeIds.has(row.id));
   assert.equal(old.length, 378);
   assert.equal(sha256(JSON.stringify(old)), '86c3504c2d170b3afb208b96c4dc0a0fa689290fe646935683ab8c29691bf439');
 });

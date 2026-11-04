@@ -223,15 +223,16 @@ if(['iso','triangle','trapezoid','chord','rectangle'].includes(kind)){shell(fram
 if(kind==='digits'){let kept=v.kept?[...v.kept]:[...m.digits].map(()=>true);v.kept=kept;shell(`<p>Нажимай цифры, которые нужно вычеркнуть. Повторное нажатие возвращает цифру.</p><div class="digit-row">${[...m.digits].map((v,i)=>`<button data-digit="${i}" aria-pressed="false">${v}</button>`).join('')}</div><p id="digitread" aria-live="polite"></p>`);let draw=()=>{let s=[...m.digits].filter((_,i)=>kept[i]).join(''),diff=[...s].reduce((a,c,i)=>a+(i%2?-1:1)*+c,0);el.querySelector('#digitread').textContent=`Осталось ${s.length} цифр: ${s||'—'}. Чередующаяся сумма: ${diff}. ${s.length===5&&PathData.digits22(s,m.digits)?'Все условия выполнены.':'Нужны ровно пять цифр, чётный конец и чередующаяся сумма, кратная 11.'}`;};el.querySelectorAll('[data-digit]').forEach(b=>b.onclick=()=>{kept[+b.dataset.digit]=!kept[+b.dataset.digit];b.setAttribute('aria-pressed',String(!kept[+b.dataset.digit]));draw();changed();});el.querySelectorAll('[data-digit]').forEach(b=>b.setAttribute('aria-pressed',String(!kept[+b.dataset.digit])));draw();return session;}
 if(kind==='journey'){
  const segments=m.dist.map((d,i)=>({d,speed:m.speed[i]})).filter(x=>x.d>0);v.part=Math.max(1,Math.min(segments.length,v.part??1));
- shell(frame+slider('part','Показать участок',1,segments.length,v.part));svg=el.querySelector('svg');
+ shell(frame+'<ol class="journey-legend">'+segments.map(({d,speed})=>`<li>${d} км; ${speed} км/ч</li>`).join('')+'</ol>'+slider('part','Показать участок',1,segments.length,v.part));svg=el.querySelector('svg');svg.setAttribute('viewBox','0 70 600 160');
  const draw=n=>{v.part=n;const sum=segments.reduce((a,b)=>a+b.d,0);let x=40;
- svg.innerHTML=segments.map(({d,speed},i)=>{const w=d/sum*520,part=`<rect x="${x}" y="100" width="${w}" height="60" fill="${i===n-1?'#c36b34':'#b7d4c0'}" stroke="white"/><text x="${x+w/2}" y="200" text-anchor="middle">${d} км</text><text x="${x+w/2}" y="230" text-anchor="middle">${speed} км/ч</text>`;x+=w;return part;}).join('');
+ svg.innerHTML=segments.map(({d,speed},i)=>{const w=d/sum*520,part=`<rect x="${x}" y="100" width="${w}" height="60" fill="${i===n-1?'#c36b34':'#b7d4c0'}" stroke="white"/><text x="${x+w/2}" y="205" text-anchor="middle" font-size="32">${i+1}</text>`;x+=w;return part;}).join('');
  const part=segments[n-1];el.querySelector('#modelread').textContent=`Участок ${n}: ${part.d} / ${part.speed} = ${PathData.answerText(part.d/part.speed)} ч. Ширина полосы показывает путь. Для средней скорости сложи времена всех участков.`;};
  bind('part',draw);draw(v.part);return session;
 }
 if(kind==='ring'){
  const half=m.half??110*m.scale,ac=m.ac??85*m.scale,ad=m.ad??55*m.scale,cd=m.cd??80*m.scale,L=2*half;
  shell(frame+'<button id="opposite">Разместить C и D по разные стороны от A</button><button id="length">Восстановить длину кольца</button>');svg=el.querySelector('svg');let mode=v.mode??0;v.mode=mode;
+ svg.setAttribute('viewBox','140 0 320 350');
  const draw=()=>{const positions=mode?[0,half,ac,L-ad]:[0,half,ac,ad],pt=s=>[300+125*Math.sin(2*Math.PI*s/L),175-125*Math.cos(2*Math.PI*s/L)];
  svg.innerHTML='<circle cx="300" cy="175" r="125" fill="none" stroke="#16715b" stroke-width="4"/>'+positions.map((s,i)=>{const[x,y]=pt(s);return `<circle cx="${x}" cy="${y}" r="7" fill="#c36b34"/><text x="${300+(x-300)*1.17}" y="${181+(y-175)*1.17}" text-anchor="middle">${'ABCD'[i]}</text>`;}).join('');
  el.querySelector('#modelread').textContent=mode===0?`Пробуем C и D с одной стороны: расстояние не больше AC−AD=${ac-ad} км, а по условию CD=${cd} км. Масштаб рисунка пока гипотеза.`:mode===1?`C и D с разных сторон. Дуга через A равна ${ac}+${ad}=${ac+ad} км. Она длиннее CD=${cd} км, значит CD — другая дуга.`:`Длина кольца ${L} км. AB=${half} км — половина кольца. B напротив A, поэтому BC=${half-ac} км.`;};
@@ -240,6 +241,7 @@ if(kind==='ring'){
 if(kind==='ring-motion'){
  const relative=m.same?m.fast-m.slow:m.fast+m.slow,meeting=m.L/relative;v.time=Math.max(0,Math.min(meeting*1.5,v.time??0));
  shell(frame+slider('ringTime','Время, с',0,meeting*1.5,v.time,.5)+'<button id="firstMeeting">Показать первую новую встречу</button><button id="ringStart">Вернуться к старту</button>');svg=el.querySelector('svg');
+ svg.setAttribute('viewBox','140 0 320 350');
  const draw=time=>{v.time=time;const point=s=>{const a=2*Math.PI*s/m.L;return[300+120*Math.sin(a),175-120*Math.cos(a)];},positions=[m.fast*time,(m.same?1:-1)*m.slow*time];
  svg.innerHTML='<circle cx="300" cy="175" r="120" fill="none" stroke="#b7d4c0" stroke-width="5"/>'+positions.map((s,i)=>{const[x,y]=point(s);return `<circle cx="${x}" cy="${y}" r="${i?7:12}" fill="${i?'#c36b34':'#16715b'}"/><text x="${x}" y="${y+(i?30:-22)}" text-anchor="middle">${i?'Б':'А'}</text>`;}).join('');
  el.querySelector('#modelread').textContent=`А: ${m.fast} м/с, Б: ${m.slow} м/с; ${m.same?'одно направление':'противоположные направления'}. За ${F(time)} с пройдены пути ${F(m.fast*time)} м и ${F(m.slow*time)} м. Относительный путь ${F(relative*time)} м, круг ${m.L} м.${time===0?' Это старт: ищем следующую встречу.':Math.abs(time-meeting)<1e-8?' Первая новая встреча: относительный путь равен кругу.':''}`;
