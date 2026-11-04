@@ -81,3 +81,12 @@ publication or provider-review consent is needed.
 ## Execution record
 Candidate, checks, exact base/head, CI artefacts, deployment and live verification
 are recorded in the task PR. Scope deviations: none.
+
+## Validation correction
+The broader minimal-course CI exposed a stale focus-navigation test still
+requiring the pre-PR428 lessons hero and the old two-route layout. The updated
+assertions require the same lesson invitation/three service links in its actual
+section, an OGE primary CTA and all four course/skills/foundations/PDF links
+in the three starting purposes. The direct division entry is retained inside
+the foundations card. No destination or negative-navigation assertion is removed.
+The failed run remains recorded; repeat all applicable gates on the corrected head.
