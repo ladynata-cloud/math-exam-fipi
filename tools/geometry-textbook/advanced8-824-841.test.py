@@ -55,6 +55,9 @@ class SourceAndBoundary(unittest.TestCase):
                     visible=[x for x in v['points'] if not x.startswith('_')]
                     for i,x in enumerate(visible):
                         for y in visible[i+1:]:self.assertGreater(math.dist(c['model']['points'][x],c['model']['points'][y]),1e-6)
+        fig=next(c for c in data['cards'] if c['number']==837)['model']['points']
+        self.assertLess(fig['A__v0'][1],fig['B__v0'][1],'Figure274: A is below B in math-up renderer coordinates')
+        self.assertEqual(fig['A__v0'][1],fig['E__v0'][1])
     def test_1407_cards_and_release_receipts_preserved(self):
         raw=(COURSE/'data/course.json').read_bytes();self.assertEqual(hashlib.sha256(raw).hexdigest(),BASELINE)
         old=json.loads(raw);b=candidate()

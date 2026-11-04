@@ -36,6 +36,14 @@ async function serve(){return new Promise(resolve=>{
    assert.equal(await page.locator('[data-main-model] svg').getAttribute('data-view'),'neutral');
    assert.equal(await page.locator('[data-step]').count(),0,'No solved step at cold entry');
    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+   await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+   const first=await page.evaluate(()=>{
+    const box=s=>{const r=document.querySelector(s).getBoundingClientRect();return {top:r.top,bottom:r.bottom,width:r.width,height:r.height};};
+    return {scrollY,height:innerHeight,condition:box('.textbook-condition'),svg:box('[data-main-model] svg')};
+   });
+   assert.equal(first.scrollY,0,'Measure before any locator can scroll');
+   assert(first.condition.top>=0&&first.condition.bottom<=first.height,'Complete condition in first viewport: '+l.source.exercise+' '+width);
+   assert(first.svg.top>=first.condition.bottom&&first.svg.bottom<=first.height,'Complete drawing in first viewport: '+l.source.exercise+' '+width+' '+JSON.stringify(first));
    await page.screenshot({path:path.join(out,l.source.exercise+'-initial-'+width+'.png'),fullPage:true});
    const draft='Моё доказательство '+l.source.exercise;await page.locator('#final-answer').fill(draft);
    await page.locator('[data-main-help] > summary').click();
@@ -61,7 +69,7 @@ async function serve(){return new Promise(resolve=>{
     assert.equal(await page.locator('[data-step]').count(),l.steps.length);
    }
    await page.locator('[data-final-form] button').click();assert.match(await page.locator('[data-final-feedback]').innerText(),/обсудить с учителем/);
-   evidence.journeys.push({number:l.source.exercise,width,steps:l.steps.length,coldLink:true,reload:true,theoryReturn:!!refs,manualAssessment:true});
+   evidence.journeys.push({number:l.source.exercise,width,steps:l.steps.length,coldLink:true,firstViewport:first,reload:true,theoryReturn:!!refs,manualAssessment:true});
   }
   await page.goto(base+'#'+oldId);await page.waitForFunction(()=>window.textbookApp);
   assert.equal(await page.locator('#final-answer').inputValue(),'Сохранённый черновик задачи 823');

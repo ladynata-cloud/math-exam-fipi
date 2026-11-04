@@ -23,7 +23,7 @@ def phase(p, v, checks=(), labels=None, labelonly=()):
 
 def add(n, condition, answer, steps, phases, notes=(), cases=()):
     assert len(phases) == len(steps)+1, n
-    model = dict(points={}, edges=[], planar=True, bounds=[0,0,100,82],
+    model = dict(points={}, edges=[], planar=True, bounds=[0,0,100,70],
                  views={}, checks=[], labels={}, labelOffsets={}, labelOnly=[],
                  description='Чертёж к этой задаче. Дополнительные построения появляются по шагам; измерение на экране не заменяет доказательство.')
     rows = [('neutral', phases[0], 'Условие', None)]
@@ -37,6 +37,10 @@ def add(n, condition, answer, steps, phases, notes=(), cases=()):
             if isinstance(x,dict): return {k:rename(v) for k,v in x.items()}
             return x
         normalized=normalize(p['points'],[p['view']])
+        # normalize() uses screen-down y, whereas PlanarViewer projects math-up y.
+        # Preserve authored/source orientation and fit the same geometry in a
+        # shorter 100×70 frame; the 52-unit geometry extent stays unchanged.
+        normalized={k:[v[0],75-v[1],0] for k,v in normalized.items()}
         model['points'].update({names[k]:v for k,v in normalized.items()})
         model['labels'].update({names[k]:p['labels'].get(k,k) for k in names if not k.startswith('_')})
         model['labelOnly'] += [names[k] for k in p.get('labelOnly',[])]
