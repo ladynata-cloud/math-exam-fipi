@@ -41,7 +41,7 @@ function assertHistoricalFile(file, expected, read = name => fs.readFileSync(pat
   assert.equal(row.beforeFixture, 'tools/stereo-textbook/fixtures/companion-before/' + path.basename(file));
   assert.equal(hash(read(row.beforeFixture)), expected, 'archived original UI is byte-identical: ' + file);
   assert.match(row.afterSHA256, /^[a-f0-9]{64}$/, 'specific reviewed UI hash is required');
-  assert.equal(hash(read(file)), row.afterSHA256, 'exact reviewed companion migration: ' + file);
+  assert.equal(hash(require('./mobile-layout-migration.cjs').historicalRead(file, read)), row.afterSHA256, 'exact reviewed companion migration: ' + file);
 }
 
 module.exports = {assertHistoricalFile};
