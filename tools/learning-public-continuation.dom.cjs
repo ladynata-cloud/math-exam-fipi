@@ -47,7 +47,7 @@ function mount(t, id, initial = {}, { failWrites = false, failHistoryWrites = fa
         register(adapter);
       };
     }
-    window.eval(fs.readFileSync(path.resolve(repo, path.dirname(relative), src), 'utf8'));
+    window.eval(fs.readFileSync((src.startsWith('/') ? path.join(repo, src) : path.resolve(repo, path.dirname(relative), src)), 'utf8'));
   }
   assert(bridge); assert.deepEqual(errors, []);
   window.document.getElementById('practice').click();

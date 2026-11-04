@@ -87,7 +87,7 @@ for (const file of ['index.html', 'oge/index.html', 'trainers/oge-course/index.h
   for (const anchor of page.querySelectorAll('.site-nav a, footer a')) {
     const href = anchor.getAttribute('href');
     if (!href.startsWith('/') && href !== cabinet) continue;
-    const permitted = file === 'index.html' ? new Set([...allowedNav, '/courses/', '/ege-baza/', '/ege-profil/']) : allowedNav;
+    const permitted = file === 'index.html' ? new Set([...allowedNav, '/courses/', '/ege-baza/', '/ege-profil/', '/pedagogam/']) : allowedNav;
     assert(permitted.has(href), file + ' has an unexpected navigation destination: ' + href);
   }
 }
