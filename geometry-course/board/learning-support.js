@@ -5,7 +5,7 @@
 const name=location.pathname.split('/').pop(),construction=/constr|construct/.test(name),parallel=name.startsWith('ch3-')||name.includes('distance-parallels');
 const section=doc.createElement('section');section.className='geometry7-reasoning';section.setAttribute('aria-label','Объясни решение своими словами');
 const heading=doc.createElement('h2');heading.textContent=construction?'Построение и его обоснование':parallel?'От условия к выводу о параллельности':'Как записать доказательство';section.append(heading);
-const intro=doc.createElement('p');intro.textContent=construction?'После каждого действия объясни, что оно гарантирует. Линейка проводит прямую через две точки; циркуль переносит длину. Измерение по экрану не заменяет обоснование.':'Сначала назови, что дано и что требуется доказать. У каждой использованного равенства должна быть причина; похожий вид рисунка сам по себе ничего не доказывает.';section.append(intro);
+const intro=doc.createElement('p');intro.textContent=construction?'После каждого действия объясни, что оно гарантирует. Линейка проводит прямую через две точки; циркуль переносит длину. Измерение по экрану не заменяет обоснование.':'Сначала назови, что дано и что требуется доказать. Каждое равенство нужно обосновать; похожий вид рисунка сам по себе ничего не доказывает.';section.append(intro);
 const details=doc.createElement('details'),summary=doc.createElement('summary');summary.textContent='Опора для рассуждения';details.append(summary);
 const items=construction?[
  'Дуги одного раствора циркуля задают равные расстояния от своих центров. Сначала проверь, что точки пересечения действительно существуют.',
