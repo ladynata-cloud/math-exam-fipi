@@ -3,6 +3,7 @@
 (function (root) {
   'use strict';
   const LESSONS = Object.freeze({
+    7: Object.freeze((root.PathData?.meta||[]).filter(item=>item.grade7&&item.subject==='geometry').map(item=>item.id)),
     11: Object.freeze(['box', 'practice-displacement', 'practice-pour', 'practice-joined-surface', 'practice-faces']),
     13: Object.freeze(['roundbody', 'pyramid', 'scale', 'practice-cone-area', 'practice-pyramid-lateral', 'practice-box-diagonal', 'practice-similar-volume'])
   });
@@ -79,7 +80,8 @@
   if (typeof module !== 'undefined') module.exports = exported;
   if (!root.document) return;
   const position = Number(root.document.body.dataset.bazaBoard);
-  if (!LESSONS[position] || root.location.pathname !== '/trainers/ege-baza-' + position + '.html') return;
+  const trainerId=position===7?'geometry7-rebuild':'ege-baza-'+position;
+  if (!LESSONS[position]?.length || root.location.pathname !== '/trainers/' + trainerId + '.html') return;
   const D = root.PathData, api = create(position, D, root.PathManagedState), main = root.document.getElementById('main');
   let route = routeValid(root.location.hash, position) ? root.location.hash : '#map';
   let serial = 11, lesson = route === '#map' ? null : fresh(serial), optionsOpen = false, applying = false, rendering = false, notify = () => {}, last = '';
@@ -123,7 +125,7 @@
     rendering = true;
     try {
       if (route === '#map') {
-        main.innerHTML = '<p class="eyebrow">ЕГЭ 2027 · Базовый уровень · Общая доска</p><h1>Задание №' + position + '</h1><p class="lead">Выберите тип задачи. Ответы, подсказки и работа с моделью будут общими.</p><div class="cards">' + LESSONS[position].map(id => {
+        main.innerHTML = '<p class="eyebrow">'+(position===7?'Геометрия · 7 класс':'ЕГЭ 2027 · Базовый уровень')+' · Общая доска</p><h1>'+(position===7?'От первых понятий к доказательствам':'Задание №'+position)+'</h1><p class="lead">Выберите тип задачи. Ответы, подсказки и работа с моделью будут общими.</p><div class="cards">' + LESSONS[position].map(id => {
           const meta = D.meta.find(item => item.id === id);
           return '<section class="card"><h2><a href="#lesson=' + id + '">' + root.PathPracticeView.math(meta.title) + '</a></h2><p>' + root.PathPracticeView.math(meta.idea) + '</p></section>';
         }).join('') + '</div>';
@@ -132,12 +134,18 @@
       const id = route.slice(8), meta = D.meta.find(item => item.id === id), task = D.task(id, lesson.seed);
       root.PathTaskFirst.mount(main, { meta, task, lesson, save, seen: () => lesson.help || lesson.attempted, expose() {}, fresh: () => navigate(route, true),
         remediationId: () => '', equationPracticeLinks: () => '', fractionPracticeLink: () => '', setHash: value => navigate('#' + value) });
+      if(position===7){
+        main.querySelector('.task-first-heading .eyebrow').textContent='Геометрия · 7 класс · Общая доска';
+        const choice=main.querySelector('#typeSelect');
+        choice.replaceChildren(...LESSONS[7].map(value=>{const option=root.document.createElement('option');option.value=value;option.textContent=D.meta.find(item=>item.id===value).title;option.selected=value===id;return option;}));
+      }
       main.querySelectorAll('input').forEach(el => { if (el.type !== 'range') el.maxLength = 200; });
       main.querySelector('#note').maxLength = 4000;
       const options = main.querySelector('.task-first-options'); options.open = optionsOpen;
       options.ontoggle = () => { if (!options.isConnected) return; optionsOpen = options.open; save(); };
       const report = main.querySelector('a[href="#report"]'); if (report) { report.href = '#map'; report.textContent = 'Типы этого задания'; }
-      const source = main.querySelector('a[href^="../sources/"]'); if (source) { source.href = '/ege-baza/sources/index.html#p' + position; source.target = '_blank'; source.rel = 'noopener'; }
+      const source = main.querySelector('a[href^="../sources/"]'); if(position===7&&source)source.remove();
+      if (source&&position!==7) { source.href = '/ege-baza/sources/index.html#p' + position; source.target = '_blank'; source.rel = 'noopener'; }
       const note = main.querySelector('.task-first-options .muted'); if (note) note.textContent = 'Авторские учебные задачи из актуального курса. Совместное решение не начисляет личный прогресс.';
       if (lesson.taskFirst.stepFeedback) main.querySelector('#stepFeedback')?.classList.add('bad');
     } finally { rendering = false; }
@@ -175,6 +183,6 @@
   }
   render(); last = JSON.stringify(getState());
   root.__bazaBoard = Object.freeze({ getState, applyState, validateState: api.validateState, navigate });
-  root.MathExamBoard.register({ id: 'ege-baza-' + position, version: '1.0.0', stateSchemaVersion: 1, parentOrigin: root.location.origin, getState, applyState,
+  root.MathExamBoard.register({ id: trainerId, version: '1.0.0', stateSchemaVersion: 1, parentOrigin: root.location.origin, getState, applyState,
     subscribe(callback) { notify = callback; return () => { notify = () => {}; }; } });
 })(typeof window !== 'undefined' ? window : globalThis);

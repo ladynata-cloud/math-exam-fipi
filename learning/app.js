@@ -544,8 +544,9 @@ function programCardsMarkup(profile,{previewStudentId=''}={}){
   const nativePreview=previewStudentId&&course.id==='atanasyan-first-steps';
   const href=nativePreview?'#atanasyan-course&preview='+encodeURIComponent(previewStudentId):!course.route?course.publicURL:'#'+course.route;
   const external=!href.startsWith('#');
+  const geometry7=course.id==='atanasyan7-9'?'<p><a class="button" data-geometry7-hub href="https://mathexam.space/geometry-course/grade7/" target="_blank" rel="noopener noreferrer">7 класс · доказательства, построения и общая доска →</a></p>':'';
   const action=preview&&!nativePreview?'<p class="form-hint" data-program-preview-only>Курс назначен ученику. Здесь показана его программа; занятия открываются в ученическом кабинете.</p>':`<a class="button primary" data-program-open href="${E(href)}"${external?' target="_blank" rel="noopener noreferrer"':''}>${nativePreview?'Посмотреть курс без изменений':'Открыть курс'} →</a>`;
-  return `<article class="card program-course-card" data-program-course="${E(course.id)}"><span class="badge neutral">${course.grades.length?E(course.grades.join(', '))+' класс':'Дополнительный курс'}</span><h3>${E(course.title)}</h3><p>${E(course.description)}</p>${action}<p class="form-hint program-storage">${E(course.storageLabel)}</p></article>`;
+  return `<article class="card program-course-card" data-program-course="${E(course.id)}"><span class="badge neutral">${course.grades.length?E(course.grades.join(', '))+' класс':'Дополнительный курс'}</span><h3>${E(course.title)}</h3><p>${E(course.description)}</p>${action}${geometry7}<p class="form-hint program-storage">${E(course.storageLabel)}</p></article>`;
  }).join('')}</div>`;
 }
 function programHome(){

@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="ru">
 <head>
+<script src="/geometry-course/board/native-session.js"></script>
+<link rel="stylesheet" href="/geometry-course/board/native.css">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Расстояние от точки до прямой</title>
@@ -159,8 +161,8 @@ function lenPM(){ return dist(Pp,M); }
 function lenPH(){ return dist(Pp,Hp); }
 
 /* ───────── УКАЗАТЕЛЬ (тащим M по прямой) ───────── */
-function worldPos(e){ const r=cv.getBoundingClientRect(); const k=Math.max(1,W/r.width); return {x:(e.clientX-r.left)*k, y:(e.clientY-r.top)*k}; }
-function nearM(w){ const r=cv.getBoundingClientRect(); const k=Math.max(1,W/r.width); return Math.hypot(w.x-M.x,w.y-M.y) < 30*k; }
+function worldPos(e){ const r=cv.getBoundingClientRect(); const k=W/r.width; return {x:(e.clientX-r.left)*k, y:(e.clientY-r.top)*k}; }
+function nearM(w){ const r=cv.getBoundingClientRect(); const k=W/r.width; return Math.hypot(w.x-M.x,w.y-M.y) < 30*k; }
 cv.addEventListener('pointerdown',e=>{ const w=worldPos(e); if(nearM(w)){ dragging=true; try{cv.setPointerCapture(e.pointerId)}catch{} cv.style.cursor='grabbing'; } });
 cv.addEventListener('pointermove',e=>{ if(!dragging) return; const w=worldPos(e); let x=Math.max(XMIN,Math.min(XMAX,w.x));
   if(Math.abs(x-Hp.x)<8){ x=Hp.x; if(!reachedH){reachedH=true; logE('reached_foot');} }
@@ -253,5 +255,6 @@ setMsg('Тяни точку M по прямой и следи за длинам�
 updateLive(); updateUI();
 (function loop(){draw();requestAnimationFrame(loop)})();
 </script>
+<script src="/geometry-course/board/learning-support.js"></script>
 </body>
 </html>
