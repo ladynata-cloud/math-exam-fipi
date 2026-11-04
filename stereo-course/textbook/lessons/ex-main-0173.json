@@ -1,0 +1,344 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0173",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Три двугранных угла тетраэдра",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "173",
+    "chapter": "II. Перпендикулярность прямых и плоскостей",
+    "printedPages": [
+      58
+    ],
+    "pdfPages": [
+      60
+    ]
+  },
+  "statement": {
+    "text": "В тетраэдре ABCD ребро CD перпендикулярно плоскости ABC. AB=BC=AC=6, BD=3√7.",
+    "goal": "Найди двугранные углы DACB, DABC и BDCA."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "Сначала сопоставь точки, линии и плоскости модели с условием. Нужные дополнительные построения появятся по кнопкам помощи и в шагах.",
+    "model": {
+      "points": {
+        "A": [
+          -3,
+          0,
+          0
+        ],
+        "B": [
+          3,
+          0,
+          0
+        ],
+        "C": [
+          0,
+          5.196152422706632,
+          0
+        ],
+        "D": [
+          0,
+          5.196152422706632,
+          5.196152422706632
+        ],
+        "H": [
+          0,
+          0,
+          0
+        ]
+      },
+      "edges": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "C",
+          "A"
+        ],
+        [
+          "D",
+          "A"
+        ],
+        [
+          "D",
+          "B"
+        ],
+        [
+          "D",
+          "C"
+        ]
+      ],
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A",
+          "B",
+          "D"
+        ],
+        [
+          "A",
+          "C",
+          "D"
+        ],
+        [
+          "B",
+          "C",
+          "D"
+        ]
+      ],
+      "labelNames": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "neutralPoints": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "labels": {},
+      "views": {
+        "neutral": {
+          "label": "Данные задачи",
+          "segments": [],
+          "points": []
+        },
+        "height": {
+          "label": "Прямоугольный BCD",
+          "segments": [
+            [
+              "B",
+              "D"
+            ],
+            [
+              "B",
+              "C"
+            ],
+            [
+              "C",
+              "D"
+            ]
+          ],
+          "points": []
+        },
+        "ac": {
+          "label": "Грань ACD содержит CD⊥ABC",
+          "segments": [
+            [
+              "C",
+              "D"
+            ],
+            [
+              "C",
+              "A"
+            ]
+          ],
+          "points": [],
+          "polygon": [
+            "A",
+            "C",
+            "D"
+          ]
+        },
+        "ab": {
+          "label": "Линейный угол при ребре AB",
+          "segments": [
+            [
+              "D",
+              "H"
+            ],
+            [
+              "C",
+              "H"
+            ]
+          ],
+          "points": [
+            "H"
+          ]
+        },
+        "cd": {
+          "label": "Линейный угол при ребре CD",
+          "segments": [
+            [
+              "C",
+              "A"
+            ],
+            [
+              "C",
+              "B"
+            ]
+          ],
+          "points": []
+        }
+      },
+      "note": "Вращай модель, чтобы рассмотреть данные. Геометрия при повороте не меняется; доказательство приведено в шагах."
+    }
+  },
+  "help": [
+    {
+      "id": "start",
+      "question": "Как читать четыре буквы двугранного угла?",
+      "text": "Две средние буквы задают ребро. DACB — ребро AC, DABC — ребро AB, BDCA — ребро DC.",
+      "view": "height",
+      "children": [
+        {
+          "id": "deeper",
+          "question": "Нужно ли одинаково вычислять все три угла?",
+          "text": "Нет. Для одного помогает признак перпендикулярности плоскостей, для другого нужна высота, а третий уже виден как угол основания.",
+          "view": "ac"
+        }
+      ],
+      "theoryIds": [
+        "theory-016",
+        "theory-023",
+        "theory-020",
+        "theory-022"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Найдём CD",
+      "prompt": "Какая грань даёт прямоугольный треугольник с известной гипотенузой?",
+      "explanation": "В BCD угол C прямой, поэтому CD=√(BD²−BC²)=√(63−36)=3√3.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Перпендикуляр к плоскости перпендикулярен BC; теорема Пифагора.",
+          "theoryId": "theory-016",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "16",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              36,
+              37,
+              38
+            ],
+            "pdfPages": [
+              38,
+              39,
+              40
+            ]
+          }
+        }
+      ],
+      "view": "height"
+    },
+    {
+      "id": "step-2",
+      "title": "Угол DACB",
+      "prompt": "Почему грань ACD перпендикулярна основанию ABC?",
+      "explanation": "Плоскость ACD содержит прямую CD⊥(ABC). По признаку эти плоскости перпендикулярны. Значит двугранный угол DACB при ребре AC равен 90°.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Признак перпендикулярности плоскостей.",
+          "theoryId": "theory-023",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "23",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              52,
+              53
+            ],
+            "pdfPages": [
+              54,
+              55
+            ],
+            "subpart": "criterion-and-corollary"
+          }
+        }
+      ],
+      "view": "ac"
+    },
+    {
+      "id": "step-3",
+      "title": "Угол DABC",
+      "prompt": "Как построить линейный угол при ребре AB?",
+      "explanation": "Пусть H — середина AB. В равностороннем ABC высота CH=3√3 и CH⊥AB. По теореме о трёх перпендикулярах DH⊥AB; поэтому ∠DHC — нужный линейный угол. В прямоугольном DCH катеты CD=CH=3√3, так что ∠DHC=45°.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Свойства равностороннего треугольника; теорема о трёх перпендикулярах; свойство равнобедренного прямоугольного треугольника.",
+          "theoryId": "theory-020",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "20",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              44,
+              45
+            ],
+            "pdfPages": [
+              46,
+              47
+            ]
+          }
+        }
+      ],
+      "view": "ab"
+    },
+    {
+      "id": "step-4",
+      "title": "Угол BDCA",
+      "prompt": "Какие два ребра уже перпендикулярны CD?",
+      "explanation": "CD⊥CA и CD⊥CB. Поэтому ∠BCA — линейный угол двугранного угла BDCA. Треугольник ABC равносторонний, так что угол равен 60°. Ответ в порядке условия: 90°, 45°, 60°.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Определение линейного угла; углы равностороннего треугольника.",
+          "theoryId": "theory-022",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "22",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              50,
+              51
+            ],
+            "pdfPages": [
+              52,
+              53
+            ],
+            "subpart": "definition-and-linear-angle"
+          }
+        }
+      ],
+      "view": "cd"
+    }
+  ],
+  "answer": {
+    "mode": "manual",
+    "prompt": "Найди двугранные углы DACB, DABC и BDCA. Запиши решение с обоснованием каждого вывода."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex ege_independent_review",
+    "at": "2026-10-21T22:13:35.809431+00:00"
+  }
+}

@@ -87,7 +87,7 @@
   };
   const groups = [];
   for (const [subject, title, subtitle] of subjects) {
-    const entries = catalog.items.filter(item => item.grade7 && (subject === 'pre7' ? item.pre7 : !item.pre7 && item.subject === subject));
+    const entries = catalog.items.filter(item => item.grade7 && !item.geometryRebuild && (subject === 'pre7' ? item.pre7 : !item.pre7 && item.subject === subject));
     const section = node('section', '', 'practice-strand');
     section.id = 'new-' + subject;
     section.append(node('h3', title), node('p', subtitle, 'small'));
@@ -99,7 +99,7 @@
       card.append(node('p', descriptions[suffix] || item.title));
       const actions = node('div', '', 'practice-actions');
       const cabinet = node('a', 'Открыть в кабинете →', 'practice-primary');
-      cabinet.href = 'https://mathexam-board-ladynata.amvera.io/learning/#practice=' + encodeURIComponent(item.id);
+      cabinet.href = 'https://mathexam-board-ladynata.msk1.amvera.tech/learning/#practice=' + encodeURIComponent(item.id);
       const preview = node('a', 'Попробовать без входа', 'practice-preview');
       const url = new URL(item.url, 'https://mathexam.space');
       url.searchParams.set('practice', '1');

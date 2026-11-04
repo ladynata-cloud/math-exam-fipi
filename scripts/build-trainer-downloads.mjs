@@ -11,6 +11,16 @@ const panelCssHref = "/assets/download-panel.css";
 const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
 const warnings = [];
 const built = [];
+const args = process.argv.slice(2);
+const onlyArg = args.find(arg => arg.startsWith("--only="));
+const onlySlug = onlyArg ? onlyArg.slice("--only=".length) : null;
+const downloadsOnly = args.includes("--downloads-only");
+if (args.some(arg => arg !== "--downloads-only" && arg !== onlyArg)) {
+  throw new Error("Usage: node scripts/build-trainer-downloads.mjs [--only=slug] [--downloads-only]");
+}
+if (onlyArg && !(manifest.trainers || []).some(entry => entry.slug === onlySlug && entry.public)) {
+  throw new Error(`Unknown public trainer: ${onlySlug}`);
+}
 
 function repoPath(sitePath) {
   const clean = sitePath.replace(/^[\\/]+/, "");
@@ -41,6 +51,34 @@ function copyDir(src, dest) {
   }
 }
 
+// Folder bundles may use a shared script from their parent directory (for
+// example the roads trainer's Board Bridge). Keep it inside the archive and
+// rewrite only the packaged HTML; URL cache versions remain unchanged.
+function includeFolderParentScripts(sourceDir, pkgDir) {
+  const visit = folder => {
+    for (const entry of fs.readdirSync(folder, { withFileTypes: true })) {
+      const file = path.join(folder, entry.name);
+      if (entry.isDirectory()) { visit(file); continue; }
+      if (!entry.isFile() || !entry.name.endsWith('.html')) continue;
+      const original = fs.readFileSync(file, 'utf8');
+      const html = original.replace(/<script\b[^>]*\bsrc=(["'])(\.\.\/[^"']+)\1[^>]*>/gi, (tag, quote, ref) => {
+        const [, pathname, suffix = ''] = ref.match(/^([^?#]+)([?#].*)?$/);
+        const source = path.resolve(sourceDir, path.dirname(path.relative(pkgDir, file)), pathname);
+        if (source.startsWith(sourceDir + path.sep)) return tag;
+        if (!source.startsWith(root + path.sep) || !fs.existsSync(source) || !fs.statSync(source).isFile()) {
+          throw new Error(`Missing shared folder script: ${ref} in ${file}`);
+        }
+        const target = path.join(pkgDir, '_shared', path.relative(root, source));
+        copyFile(source, target);
+        const localRef = path.relative(path.dirname(file), target).split(path.sep).join('/') + suffix;
+        return tag.replace(ref, localRef);
+      });
+      if (html !== original) fs.writeFileSync(file, html, 'utf8');
+    }
+  };
+  visit(pkgDir);
+}
+
 function stripDownloadPanel(html) {
   return html
     .replace(/\n?<!-- download-panel:start:[\s\S]*?<!-- download-panel:end:[\s\S]*?-->\n?/g, "\n")
@@ -51,6 +89,55 @@ function fixLocalAssetLinks(html) {
   return html
     .replace(/href="\/assets\/site\.css"/g, 'href="assets/site.css"')
     .replace(/href="\/assets\/download-panel\.css"/g, 'href="assets/download-panel.css"');
+}
+
+// Opt-in bundles keep the downloadable HTML usable by itself, including file://.
+// Scripts are appended in manifest order after the DOM, preserving deferred startup.
+function inlineTrainerAssets(html, entry) {
+  if (!Array.isArray(entry.inlineAssets) || !entry.inlineAssets.length) return html;
+  const sources = new Map(entry.inlineAssets.map(sitePath => [sitePath, fs.readFileSync(repoPath(sitePath), "utf8")]));
+  // Optional reference screenshots stay available in the standalone HTML offline.
+  for (const imagePath of entry.inlineImageAssets || []) {
+    if (!imagePath.endsWith('.png')) throw new Error(`Unsupported inline image: ${imagePath}`);
+    const embedded = 'data:image/png;base64,' + fs.readFileSync(repoPath(imagePath)).toString('base64');
+    let found = false;
+    for (const [key, value] of sources) {
+      if (value.includes(JSON.stringify(imagePath))) {
+        sources.set(key, value.replaceAll(JSON.stringify(imagePath), JSON.stringify(embedded)));
+        found = true;
+      }
+    }
+    if (!found) throw new Error(`Inline image not referenced: ${imagePath}`);
+  }
+  const used = new Set();
+  const siteRef = ref => path.posix.resolve(path.posix.dirname(entry.sourceHtml), ref.split(/[?#]/)[0]);
+  html = html.replace(/<script\b[^>]*\bsrc="([^"]+)"[^>]*>\s*<\/script>/gi, (tag, ref) => {
+    const key = siteRef(ref);
+    if (!sources.has(key)) return tag;
+    used.add(key);
+    return "";
+  });
+  // Removed indented tags must not leave whitespace-only lines in generated HTML.
+  html = html.replace(/^[\t ]+$/gm, "");
+  html = html.replace(/<link\b[^>]*\brel="stylesheet"[^>]*\bhref="([^"]+)"[^>]*>/gi, (tag, ref) => {
+    const key = siteRef(ref);
+    if (!sources.has(key)) return tag;
+    used.add(key);
+    return `<style data-inline-source="${key}">\n${sources.get(key).replace(/<\/style/gi, "<\\/style")}\n</style>`;
+  });
+  for (const key of sources.keys()) {
+    if (!used.has(key)) throw new Error(`Inline asset is not referenced by ${entry.sourceHtml}: ${key}`);
+  }
+  const scripts = entry.inlineAssets.filter(key => key.endsWith(".js")).map(key =>
+    `<script data-inline-source="${key}">\n${sources.get(key).replace(/<\/script/gi, "<\\/script")}\n</script>`
+  ).join("\n");
+  html = html.replace(/<\/body>/i, () => `${scripts}\n</body>`);
+  // Archive/navigation links remain useful when this single file is downloaded.
+  html = html.replace(/(<a\b[^>]*\bhref=")([^"#][^"]*)(")/gi, (tag, before, ref, after) => {
+    if (/^(?:[a-z]+:|\/\/)/i.test(ref)) return tag;
+    return `${before}${new URL(ref, `https://mathexam.space${entry.sourceHtml}`).href}${after}`;
+  });
+  return html;
 }
 
 function ensurePanelCss(html) {
@@ -87,6 +174,16 @@ function injectPanel(sourceFile, entry) {
 }
 
 function promptFor(entry) {
+  const interfaceRequirements = entry.interfaceRequirements || [
+    "короткая инструкция для ученика;",
+    "область задания;",
+    "поле или кнопки для ответа;",
+    "кнопка «Проверить»;",
+    "кнопка «Следующее задание»;",
+    "блок результата;",
+    "мягкая подсказка после ошибки;",
+    "счётчик прогресса или серия заданий, если это уместно."
+  ];
   return `# Промпт для адаптации тренажёра в DeepSeek
 
 Этот файл не является исходным промптом, по которому был создан тренажёр. Это аккуратный промпт для создания похожего HTML-тренажёра или адаптации идеи под другую тему.
@@ -129,14 +226,7 @@ ${entry.description}
 
 Нужны:
 
-- короткая инструкция для ученика;
-- область задания;
-- поле или кнопки для ответа;
-- кнопка «Проверить»;
-- кнопка «Следующее задание»;
-- блок результата;
-- мягкая подсказка после ошибки;
-- счётчик прогресса или серия заданий, если это уместно.
+${interfaceRequirements.map(item => `- ${item}`).join("\n")}
 
 ## Генерация заданий
 
@@ -177,6 +267,23 @@ function copyAssetToPackage(assetPath, pkgDir, preserveRoot = false) {
 
 function createZip(sourceDir, zipPath) {
   fs.rmSync(zipPath, { force: true });
+  if (process.platform !== "win32") {
+    // Python's standard library keeps the existing builder usable on cloud/Linux.
+    const result = spawnSync("python3", ["-c", `
+from pathlib import Path
+import sys, zipfile
+source, output = map(Path, sys.argv[1:])
+with zipfile.ZipFile(output, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
+    for file in sorted(source.rglob('*')):
+        if file.is_file():
+            info = zipfile.ZipInfo(file.relative_to(source).as_posix(), (2020, 1, 1, 0, 0, 0))
+            info.compress_type = zipfile.ZIP_DEFLATED
+            info.external_attr = 0o644 << 16
+            archive.writestr(info, file.read_bytes())
+`, sourceDir, zipPath], { cwd: root, encoding: "utf8" });
+    if (result.status !== 0) throw new Error(`Cannot create ZIP ${zipPath}: ${result.stderr || result.error || result.stdout}`);
+    return;
+  }
   const ps = `
 $ErrorActionPreference = 'Stop'
 $src = ${JSON.stringify(sourceDir)}
@@ -197,7 +304,7 @@ Compress-Archive -Path $items.FullName -DestinationPath $dst -Force
 function prepareTrainer(entry) {
   if (!entry.public) return;
 
-  for (const cleanupPath of entry.cleanupHtml || []) {
+  for (const cleanupPath of downloadsOnly ? [] : entry.cleanupHtml || []) {
     const cleanupFile = repoPath(cleanupPath);
     if (fs.existsSync(cleanupFile)) {
       fs.writeFileSync(cleanupFile, stripDownloadPanel(fs.readFileSync(cleanupFile, "utf8")), "utf8");
@@ -209,6 +316,7 @@ function prepareTrainer(entry) {
     warnings.push(`Не найден HTML: ${entry.sourceHtml}`);
     return;
   }
+  const cleanHtml = inlineTrainerAssets(fixLocalAssetLinks(stripDownloadPanel(fs.readFileSync(sourceFile, "utf8"))), entry);
 
   const destDir = path.join(downloadsRoot, entry.slug);
   const pkgDir = path.join(tmpRoot, entry.slug);
@@ -221,12 +329,12 @@ function prepareTrainer(entry) {
     const sourceDir = repoPath(entry.sourceDir);
     if (fs.existsSync(sourceDir)) {
       copyDir(sourceDir, pkgDir);
+      if (entry.slug === 'oge-1-5-trainers') includeFolderParentScripts(sourceDir, pkgDir);
     } else {
       warnings.push(`Не найдена папка: ${entry.sourceDir}`);
     }
   }
 
-  const cleanHtml = fixLocalAssetLinks(stripDownloadPanel(fs.readFileSync(sourceFile, "utf8")));
   const htmlName = `${entry.slug}.html`;
   fs.writeFileSync(path.join(destDir, htmlName), cleanHtml, "utf8");
   fs.writeFileSync(path.join(pkgDir, htmlName), cleanHtml, "utf8");
@@ -249,7 +357,7 @@ function prepareTrainer(entry) {
   const zipName = `${entry.slug}-package.zip`;
   createZip(pkgDir, path.join(destDir, zipName));
 
-  injectPanel(sourceFile, entry);
+  if (!downloadsOnly) injectPanel(sourceFile, entry);
 
   entry.downloadHtml = `/downloads/trainers/${entry.slug}/${htmlName}`;
   entry.prompt = `/downloads/trainers/${entry.slug}/${promptName}`;
@@ -346,10 +454,11 @@ removeDir(tmpRoot);
 ensureDir(downloadsRoot);
 
 for (const entry of manifest.trainers || []) {
+  if (onlySlug && entry.slug !== onlySlug) continue;
   prepareTrainer(entry);
 }
 
-updateSitePages();
+if (!onlySlug && !downloadsOnly) updateSitePages();
 
 manifest.updated = new Date().toISOString().slice(0, 10);
 fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");

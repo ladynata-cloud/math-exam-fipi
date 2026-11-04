@@ -1,0 +1,2633 @@
+{
+  "bookId": "atanasyan-2023-7-9",
+  "chapter": 8,
+  "sourceSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "printedPageRange": [
+    163,
+    188
+  ],
+  "exercises": [
+    {
+      "number": 640,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        165
+      ],
+      "pdfPages": [
+        166
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "AB=15см,CD=20см. НайтиAB/CD; объяснить, изменится ли отношение при выражении длин в миллиметрах."
+    },
+    {
+      "number": 641,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        165
+      ],
+      "pdfPages": [
+        166
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "sourceFigure": 221,
+      "canonicalCondition": "По рис.221а проверить пропорциональность в указанном порядке: а)AC,CD иM₁M₂,MM₁; б)AB,BC,CD иMM₂,MM₁,M₁M₂; в)AB,BD иMM₁,M₁M₂. Единичные позиции:A0,B6,C9,D18;M0,M₁1,M₂3."
+    },
+    {
+      "number": 642,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        165,
+        166
+      ],
+      "pdfPages": [
+        166,
+        167
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "sourceFigure": 221,
+      "canonicalCondition": "Доказать, что биссектриса треугольника делит противоположную сторону на отрезки, пропорциональные прилежащим сторонам. В источникеAD — биссектрисаABC, требуетсяBD/AB=CD/AC; решение/рис.221б продолжаются на166."
+    },
+    {
+      "number": 643,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        166
+      ],
+      "pdfPages": [
+        167
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "BD — биссектрисаABC. а)НайтиAB приBC=9см,AD=7,5см,DC=4,5см; б)найтиDC приAB=30,AD=20,BC=16."
+    },
+    {
+      "number": 644,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        166
+      ],
+      "pdfPages": [
+        167
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "AD — биссектрисаABC;AB=14см,BC=20см,AC=21см. НайтиBD,DC."
+    },
+    {
+      "number": 645,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        166
+      ],
+      "pdfPages": [
+        167
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "AD — биссектрисаABC;CD=4,5см,BD=13,5см;периметрABC=42см. НайтиAB,AC."
+    },
+    {
+      "number": 646,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        166
+      ],
+      "pdfPages": [
+        167
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "РомбMDEF вписан вMNK;D∈MN,E∈NK,F∈MK. MN=7см,NK=6см,MK=5см. НайтиNE,EK."
+    },
+    {
+      "number": 647,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        166
+      ],
+      "pdfPages": [
+        167
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "ПериметрCDE=55см;ромбDMFN вписан так, чтоM∈CD,F∈CE,N∈DE. CF=8см,EF=12см. НайтиCD,DE."
+    },
+    {
+      "number": 648,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        166
+      ],
+      "pdfPages": [
+        167
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Проверить подобиеABC,DEF при∠A=106°,∠B=34°,∠E=106°,∠F=40°;AC=4,4см,AB=5,2см,BC=7,6см,DE=15,6см,DF=22,8см,EF=13,2см. Сохранить и объяснить несовместимость точных длин с точными углами."
+    },
+    {
+      "number": 649,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        166
+      ],
+      "pdfPages": [
+        167
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "ABC иKMN подобны;AB↔KM,BC↔MN;AB=4см,BC=5см,CA=7см;KM/AB=2,1. Найти стороныKMN."
+    },
+    {
+      "number": 650,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        166
+      ],
+      "pdfPages": [
+        167
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Доказать: отношение соответственных сторон подобных треугольников равно отношению высот, проведённых к этим сторонам."
+    },
+    {
+      "number": 651,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        166
+      ],
+      "pdfPages": [
+        167
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Площади подобных треугольников75м² и300м². Сторона второго9м;найти соответственную сторону первого."
+    },
+    {
+      "number": 652,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        166
+      ],
+      "pdfPages": [
+        167
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "ABC~A₁B₁C₁;соответственные стороны6:5;площадьABC больше площадиA₁B₁C₁ на77см². Найти обе площади."
+    },
+    {
+      "number": 653,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        167
+      ],
+      "pdfPages": [
+        168
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Треугольник на плане имеет площадь87,5см²;масштаб1:100000. Найти площадь земельного участка."
+    },
+    {
+      "number": 654,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        167
+      ],
+      "pdfPages": [
+        168
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Доказать: отношение периметров подобных треугольников равно коэффициенту подобия."
+    },
+    {
+      "number": 655,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        167
+      ],
+      "pdfPages": [
+        168
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "ABC~A₁B₁C₁;BC=1,4м,B₁C₁=56см — соответственные стороны. Найти отношение периметровABC иA₁B₁C₁."
+    },
+    {
+      "number": 656,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        167
+      ],
+      "pdfPages": [
+        168
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Стороны треугольника15см,20см,30см;найти стороны подобного ему треугольника с периметром26см."
+    },
+    {
+      "number": 657,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        169
+      ],
+      "pdfPages": [
+        170
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "sourceFigure": 224,
+      "canonicalCondition": "По двум рисункам224 найтиx иy. Верх: прямоугольные треугольники, левый имеет вертикальный катет8 и горизонтальный12, правый — горизонтальный6 и вертикальныйx;отмечены равные острые углы. Низ: большой прямоугольный треугольник с вертикальнымy и основанием20+8, малая правая часть имеет основание8 и гипотенузу10."
+    },
+    {
+      "number": 658,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        169
+      ],
+      "pdfPages": [
+        170
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "E∈CD параллелограммаABCD;прямыеAE,BC пересекаютсяF. а)НайтиEF,FC приDE=8см,EC=4см,BC=7см,AE=10см; б)найтиDE,EC приAB=8см,AD=5см,CF=2см."
+    },
+    {
+      "number": 659,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        169
+      ],
+      "pdfPages": [
+        170
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Диагонали трапецииABCD с основаниямиAB,CD пересекаютсяO. а)НайтиAB приOB=4см,OD=10см,DC=25см; б)найтиAO/OC иBO/OD приAB=a,DC=b; в)найтиAO приAB=9,6дм,DC=24см,AC=15см."
+    },
+    {
+      "number": 660,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        169
+      ],
+      "pdfPages": [
+        170
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Обосновать, подобны ли два равнобедренных треугольника, имеющих: а)равный острый угол; б)равный тупой угол; в)прямой угол."
+    },
+    {
+      "number": 661,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        170
+      ],
+      "pdfPages": [
+        171
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Основания трапеции5см,8см;боковые стороны3,6см,3,9см продолжены до пересеченияM. Найти расстояния отM до концов меньшего основания."
+    },
+    {
+      "number": 662,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        170
+      ],
+      "pdfPages": [
+        171
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "M∈AB,N∈BC,P∈CA треугольникаABC;MN∥AC,NP∥AB. Найти стороныAMNP: а)AB=10см,AC=15см,PN:MN=2:3; б)AM=AP,AB=a,AC=b."
+    },
+    {
+      "number": 663,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        170
+      ],
+      "pdfPages": [
+        171
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "sourceFigure": 225,
+      "canonicalCondition": "Стороны углаO пересечены параллельнымиAB,CD. ДоказатьOA/OB=AC/BD (рис.225;A,C на одном луче,B,D на другом)."
+    },
+    {
+      "number": 664,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        170
+      ],
+      "pdfPages": [
+        171
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Стороны углаA пересечены параллельнымиBC,DE;B,D на одном луче,C,E на другом,порядок не задан. а)НайтиAC приCE=10см,AD=22см,BD=8см; б)найтиBD,DE приAB=10см,AC=8см,BC=4см,CE=4см; в)найтиBC приAB:BD=2:1,DE=12см."
+    },
+    {
+      "number": 665,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        170
+      ],
+      "pdfPages": [
+        171
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Прямыеa,b пересечены параллельнымиAA₁,BB₁,CC₁;A,B,C∈a,A₁,B₁,C₁∈b. ДоказатьAB/BC=A₁B₁/B₁C₁."
+    },
+    {
+      "number": 666,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        170
+      ],
+      "pdfPages": [
+        171
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "На одном луче углаA отложеныAB=5см,AC=16см;на другомAD=8см,AF=10см. Подобны лиACD иAFB? Обосновать."
+    },
+    {
+      "number": 667,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        170
+      ],
+      "pdfPages": [
+        171
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Проверить подобиеABC,A₁B₁C₁: а)AB=3см,BC=5см,CA=7см,A₁B₁=4,5см,B₁C₁=7,5см,C₁A₁=10,5см; б)AB=1,7см,BC=3см,CA=4,2см,A₁B₁=34дм,B₁C₁=60дм,C₁A₁=84дм."
+    },
+    {
+      "number": 668,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        170
+      ],
+      "pdfPages": [
+        171
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Доказать подобие любых двух равносторонних треугольников."
+    },
+    {
+      "number": 669,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        170
+      ],
+      "pdfPages": [
+        171
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Центр вписанной окружности равнобедренного треугольника делит высоту к основанию12:5,считая от вершины;боковая сторона60см. Найти основание."
+    },
+    {
+      "number": 670,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        171
+      ],
+      "pdfPages": [
+        172
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "ВABC сторонаAB=a,высотаCH=h. Найти сторону вписанного квадрата: две соседние вершины наAB,две другие соответственно наAC,BC. Условие не оговаривает положениеH;расположение возможно только приH∈[A,B]."
+    },
+    {
+      "number": 671,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        171
+      ],
+      "pdfPages": [
+        172
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "M лежит на медианеAD треугольникаABC;прямаяBM пересекаетAC вK. НайтиAK/KC: а)M — серединаAD; б)AM/MD=1/2."
+    },
+    {
+      "number": 672,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        178
+      ],
+      "pdfPages": [
+        179
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Стороны треугольника8см,5см,7см. Найти периметр треугольника из середин его сторон."
+    },
+    {
+      "number": 673,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        178
+      ],
+      "pdfPages": [
+        179
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Расстояние от пересечения диагоналей прямоугольника до прямой большей стороны2,5см. Найти меньшую сторону."
+    },
+    {
+      "number": 674,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        178
+      ],
+      "pdfPages": [
+        179
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "P,Q — серединыAB,AC треугольникаABC;периметрAPQ=21см. Найти периметрABC."
+    },
+    {
+      "number": 675,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        178
+      ],
+      "pdfPages": [
+        179
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Доказать: отрезок, соединяющий середины диагоналей трапеции, параллелен основаниям и равен их полуразности."
+    },
+    {
+      "number": 676,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        178
+      ],
+      "pdfPages": [
+        179
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "AC=18см — диагональ параллелограммаABCD;M — серединаAB. Найти частиAC,на которые её делитDM."
+    },
+    {
+      "number": 677,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        178
+      ],
+      "pdfPages": [
+        179
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "МедианыAA₁,BB₁ треугольникаABC пересекаютсяO;площадьABO=S. Найти площадьABC."
+    },
+    {
+      "number": 678,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д"
+      ],
+      "printedPages": [
+        178,
+        179
+      ],
+      "pdfPages": [
+        179,
+        180
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "partPages": {
+        "а": {
+          "printedPages": [
+            178
+          ],
+          "pdfPages": [
+            179
+          ]
+        },
+        "б": {
+          "printedPages": [
+            178
+          ],
+          "pdfPages": [
+            179
+          ]
+        },
+        "в": {
+          "printedPages": [
+            178
+          ],
+          "pdfPages": [
+            179
+          ]
+        },
+        "г": {
+          "printedPages": [
+            179
+          ],
+          "pdfPages": [
+            180
+          ]
+        },
+        "д": {
+          "printedPages": [
+            179
+          ],
+          "pdfPages": [
+            180
+          ]
+        }
+      },
+      "canonicalCondition": "ABC прямоугольный приC;CH — высота;BC=a,CA=b,AB=c,CH=h,AH=b_c,HB=a_c. а)Найтиh,a,b приb_c=25,a_c=16; б)h,a,b приb_c=36,a_c=64; в)a,c,a_c приb=12,b_c=6; г)b,c,b_c приa=8,a_c=4; д)h,b,a_c,b_c приa=6,c=9."
+    },
+    {
+      "number": 679,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        178,
+        179
+      ],
+      "pdfPages": [
+        179,
+        180
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "sharedNotationPrintedPages": [
+        178
+      ],
+      "sharedNotationPdfPages": [
+        179
+      ],
+      "canonicalCondition": "При общих обозначениях678–680 выразитьa_c,b_c черезa,b,c.",
+      "conditionPrintedPages": [
+        179
+      ],
+      "conditionPdfPages": [
+        180
+      ]
+    },
+    {
+      "number": 680,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        178,
+        179
+      ],
+      "pdfPages": [
+        179,
+        180
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "sharedNotationPrintedPages": [
+        178
+      ],
+      "sharedNotationPdfPages": [
+        179
+      ],
+      "canonicalCondition": "При общих обозначениях678–680 доказать: а)h=ab/c; б)a²/a_c=b²/b_c.",
+      "conditionPrintedPages": [
+        179
+      ],
+      "conditionPdfPages": [
+        180
+      ]
+    },
+    {
+      "number": 681,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        179
+      ],
+      "pdfPages": [
+        180
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Катеты прямоугольного треугольника относятся3:4;гипотенуза50мм. Найти части гипотенузы,на которые её делит высота из прямого угла."
+    },
+    {
+      "number": 682,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        179
+      ],
+      "pdfPages": [
+        180
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Высота из прямого угла делит гипотенузу на отрезки,разность которых11см;катеты относятся6:5. Найти гипотенузу."
+    },
+    {
+      "number": 683,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        179
+      ],
+      "pdfPages": [
+        180
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Стороны треугольника5см,12см,13см. Найти отрезки,на которые высота к большей стороне делит эту сторону."
+    },
+    {
+      "number": 684,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        179
+      ],
+      "pdfPages": [
+        180
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "sourceFigure": 230,
+      "canonicalCondition": "Используя утверждение2° пункта71,доказать теоремуПифагора: вABC при∠C=90° AC²+BC²=AB²."
+    },
+    {
+      "number": 685,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        177,
+        179
+      ],
+      "pdfPages": [
+        178,
+        180
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "sourceFigure": 232,
+      "canonicalCondition": "Для определения высотыA₁C₁ столба использован шестAC с вращающейся планкой (рис.232,p177). BC₁=6,3м,BC=3,4м,AC=1,7м. Найти высоту столба.",
+      "conditionPrintedPages": [
+        179
+      ],
+      "conditionPdfPages": [
+        180
+      ],
+      "referencedFigurePrintedPages": [
+        177
+      ],
+      "referencedFigurePdfPages": [
+        178
+      ]
+    },
+    {
+      "number": 686,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        179
+      ],
+      "pdfPages": [
+        180
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Тень дерева10,2м;тень человека2,5м при росте1,7м. Найти высоту дерева."
+    },
+    {
+      "number": 687,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        179
+      ],
+      "pdfPages": [
+        180
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "sourceFigure": 234,
+      "canonicalCondition": "ЗеркалоD отражает лучFD от вершины дереваF в глазB;∠1=∠2. На рис.234 AC=165см,BC=12см,AD=120см,DE=4,8м. НайтиEF,учитываяAB=AC−BC."
+    },
+    {
+      "number": 688,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        180
+      ],
+      "pdfPages": [
+        181
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Чтобы найтиAB до недоступной точкиB,измерилиAC,∠BAC,∠ACB и построили подобныйA₁B₁C₁. AC=42м,A₁C₁=6,3см,A₁B₁=7,2см. НайтиAB."
+    },
+    {
+      "number": 689,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        180
+      ],
+      "pdfPages": [
+        181
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "sourceFigure": 235,
+      "canonicalCondition": "По рис.235 ABC~AB₁C₁,AC=100м,AC₁=32м,AB₁=34м. Найти ширину рекиBB₁."
+    },
+    {
+      "number": 690,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        180
+      ],
+      "pdfPages": [
+        181
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "sourceFigure": 236,
+      "canonicalCondition": "Разделить данныйAB наAX,XB,пропорциональные даннымP₁Q₁,P₂Q₂. Источник показывает построение на вспомогательном луче с параллельной прямой (рис.236)."
+    },
+    {
+      "number": 691,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        180
+      ],
+      "pdfPages": [
+        181
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "НачертитьAB и разделить в отношении: а)2:5; б)3:7; в)4:3."
+    },
+    {
+      "number": 692,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        180
+      ],
+      "pdfPages": [
+        181
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Построить треугольник по двум углам и биссектрисе,проведённой из вершины меньшего из данных углов."
+    },
+    {
+      "number": 693,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        180
+      ],
+      "pdfPages": [
+        181
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Построить треугольник по двум углам и высоте из вершины третьего угла."
+    },
+    {
+      "number": 694,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        180
+      ],
+      "pdfPages": [
+        181
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "ПостроитьABC по углуA и медианеAM приAB:AC=2:3."
+    },
+    {
+      "number": 695,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        180
+      ],
+      "pdfPages": [
+        181
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "ПостроитьABC по углуA и сторонеBC приAB:AC=2:1."
+    },
+    {
+      "number": 696,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        180
+      ],
+      "pdfPages": [
+        181
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Построить прямоугольный треугольник по гипотенузе и отношению катетов,равному отношению двух данных отрезков."
+    },
+    {
+      "number": 697,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "printedPages": [
+        184
+      ],
+      "pdfPages": [
+        185
+      ],
+      "paragraph": 4,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "ВABC при∠C=90° найтиsin,cos,tg обоих угловA,B: а)BC=8,AB=17; б)BC=21,AC=20; в)BC=1,AC=2; г)AC=24,AB=25."
+    },
+    {
+      "number": 698,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д",
+        "е"
+      ],
+      "printedPages": [
+        184
+      ],
+      "pdfPages": [
+        185
+      ],
+      "paragraph": 4,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Построить острый уголα: а)tgα=1/2; б)tgα=3/4; в)cosα=0,2; г)cosα=2/3; д)sinα=1/2; е)sinα=0,4."
+    },
+    {
+      "number": 699,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "printedPages": [
+        184
+      ],
+      "pdfPages": [
+        185
+      ],
+      "paragraph": 4,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Найти: а)sinα,tgα приcosα=1/2; б)sinα,tgα приcosα=2/3; в)cosα,tgα приsinα=√3/2; г)cosα,tgα приsinα=1/4. Острый угол в контексте§4."
+    },
+    {
+      "number": 700,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        184
+      ],
+      "pdfPages": [
+        185
+      ],
+      "paragraph": 4,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "В прямоугольном треугольнике катетb противолежит углуβ. а)Выразить второй катет,противолежащий ему угол,гипотенузу черезb,β; б)найти их приb=10см,β=50°."
+    },
+    {
+      "number": 701,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        184
+      ],
+      "pdfPages": [
+        185
+      ],
+      "paragraph": 4,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "В прямоугольном треугольнике катетb прилежит к углуα. а)Выразить второй катет,прилежащий к нему острый угол,гипотенузу черезb,α; б)найти их приb=12см,α=42°."
+    },
+    {
+      "number": 702,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        184
+      ],
+      "pdfPages": [
+        185
+      ],
+      "paragraph": 4,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Гипотенузаc и острый уголα прямоугольного треугольника. Выразить второй острый угол и оба катета черезc,α;найти приc=24см,α=35°."
+    },
+    {
+      "number": 703,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        184
+      ],
+      "pdfPages": [
+        185
+      ],
+      "paragraph": 4,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Катеты прямоугольного треугольникаa,b. Выразить гипотенузу и тангенсы обоих острых углов черезa,b;найти приa=12,b=15."
+    },
+    {
+      "number": 704,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        184
+      ],
+      "pdfPages": [
+        185
+      ],
+      "paragraph": 4,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Найти площадь равнобедренного треугольника с угломα при основании: а)боковая сторонаb; б)основаниеa."
+    },
+    {
+      "number": 705,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        185
+      ],
+      "pdfPages": [
+        186
+      ],
+      "paragraph": 4,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Найти площадь равнобедренной трапеции с основаниями2см,6см и угломα при большем основании."
+    },
+    {
+      "number": 706,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        185
+      ],
+      "pdfPages": [
+        186
+      ],
+      "paragraph": 4,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "sourceFigure": 240,
+      "canonicalCondition": "Поперечный разрез дорожной насыпи: ширина сверху60м,высота12м,оба откоса под60° к горизонту (рис.240). Найти ширину снизу."
+    },
+    {
+      "number": 707,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        185
+      ],
+      "pdfPages": [
+        186
+      ],
+      "paragraph": 4,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Найти углы ромба с диагоналями2√3 и2."
+    },
+    {
+      "number": 708,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        185
+      ],
+      "pdfPages": [
+        186
+      ],
+      "paragraph": 4,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Стороны прямоугольника3см и√3см. Найти углы диагонали со сторонами."
+    },
+    {
+      "number": 709,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        185
+      ],
+      "pdfPages": [
+        186
+      ],
+      "paragraph": 4,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "В параллелограммеABCD AD=12см,∠BAD=47°50′,BD⊥AB. Найти площадь."
+    },
+    {
+      "number": 710,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        186
+      ],
+      "pdfPages": [
+        187
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "ABC~A₁B₁C₁;AB=6см,BC=9см,CA=10см;наибольшая сторонаA₁B₁C₁=7,5см. Найти две другие стороны."
+    },
+    {
+      "number": 711,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        186
+      ],
+      "pdfPages": [
+        187
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "ДиагональAC трапецииABCD делит её на два подобных треугольника. ДоказатьAC²=ab,гдеa,b — основания."
+    },
+    {
+      "number": 712,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        186
+      ],
+      "pdfPages": [
+        187
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "БиссектрисыMD,NK треугольникаMNP пересекаютсяO;MN=5см,NP=3см,MP=7см. НайтиOK:ON."
+    },
+    {
+      "number": 713,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        186
+      ],
+      "pdfPages": [
+        187
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "В равнобедренном треугольнике основание:боковая сторона=4:3,высота к основанию30см. Найти части высоты,на которые её делит биссектриса угла при основании."
+    },
+    {
+      "number": 714,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        186
+      ],
+      "pdfPages": [
+        187
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "В равнобедренномAOB с основаниемAB точкаC на продолженииOB заB. AC пересекает биссектрису∠AOB вM. ДоказатьAM<MC."
+    },
+    {
+      "number": 715,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        186
+      ],
+      "pdfPages": [
+        187
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "D∈BC треугольникаABC иBD/AB=DC/AC. Доказать,чтоAD — биссектрисаABC."
+    },
+    {
+      "number": 716,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        187
+      ],
+      "pdfPages": [
+        188
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Прямая∥AB пересекаетAC в отношении2:7 отA. AB=10см,BC=18см,CA=21,6см. Найти стороны отсечённого треугольника."
+    },
+    {
+      "number": 717,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        187
+      ],
+      "pdfPages": [
+        188
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Доказать: медианаAM треугольникаABC делит пополам всякий отрезок,параллельныйBC,концы которого наAB,AC."
+    },
+    {
+      "number": 718,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        187
+      ],
+      "pdfPages": [
+        188
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "sourceFigure": 241,
+      "canonicalCondition": "По рис.241 вертикальные шестыAB=a,CD=b (разной длины),AC=d;верёвкиAD,BC пересекаютсяO на высотеx;проекцияO делитAC наm,n. а)Доказатьm/d=x/b иn/d=x/a; б)доказатьx/a+x/b=1. Общая заключительная задача: найтиx и доказать независимость отd."
+    },
+    {
+      "number": 719,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        187
+      ],
+      "pdfPages": [
+        188
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "ДоказатьABC~A₁B₁C₁: а)AB/A₁B₁=AC/A₁C₁=BM/B₁M₁,гдеBM,B₁M₁ — медианы; б)∠A=∠A₁,AC/A₁C₁=BH/B₁H₁,гдеBH,B₁H₁ — высоты."
+    },
+    {
+      "number": 720,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        187
+      ],
+      "pdfPages": [
+        188
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "В прямоугольной трапецииABCD ∠A=90°,диагонали взаимно перпендикулярны;основаниеAB=6см,боковаяAD=4см. НайтиDC,DB,CB."
+    },
+    {
+      "number": 721,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        187
+      ],
+      "pdfPages": [
+        188
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Отрезок с концами на боковых сторонах трапеции параллелен основаниям и проходит через пересечение диагоналей. Найти его длину при основанияхa,b."
+    },
+    {
+      "number": 722,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        187
+      ],
+      "pdfPages": [
+        188
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Доказать: вершины треугольника равноудалены от прямой,содержащей его среднюю линию."
+    },
+    {
+      "number": 723,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        187
+      ],
+      "pdfPages": [
+        188
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Доказать: середины сторон ромба являются вершинами прямоугольника."
+    },
+    {
+      "number": 724,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        187
+      ],
+      "pdfPages": [
+        188
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "M,N — серединыCD,BC параллелограммаABCD. Доказать,что прямыеAM,AN делятBD на три равные части."
+    },
+    {
+      "number": 725,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        187
+      ],
+      "pdfPages": [
+        188
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Биссектриса внешнего углаA треугольникаABC пересекает прямуюBC вD. ДоказатьBD/AB=DC/AC."
+    },
+    {
+      "number": 726,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        188
+      ],
+      "pdfPages": [
+        189
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "ВABC,AB≠AC,через серединуBC проведена прямая∥биссектрисе∠A;она пересекает прямыеAB,AC вD,E. ДоказатьBD=CE."
+    },
+    {
+      "number": 727,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        188
+      ],
+      "pdfPages": [
+        189
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "В трапецииABCD основанияAD,BC имеют суммуb;диагональAC=a,∠ACB=α. Найти площадь."
+    },
+    {
+      "number": 728,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        188
+      ],
+      "pdfPages": [
+        189
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "K∈AD параллелограммаABCD,AK=KD/4;P=AC∩BK;площадьAPK=1см². Найти площадьABCD."
+    },
+    {
+      "number": 729,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        188
+      ],
+      "pdfPages": [
+        189
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "В прямоугольной трапецииABCD основанияAD,BC;∠A=∠B=90°,∠ACD=90°,BC=4см,AD=16см. Найти углыC,D."
+    },
+    {
+      "number": 730,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        188
+      ],
+      "pdfPages": [
+        189
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Доказать: медианы треугольника разбивают его на шесть треугольников,площади которых попарно равны."
+    },
+    {
+      "number": 731,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        188
+      ],
+      "pdfPages": [
+        189
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Равнобедренная трапецияABCD,AD=5BC;высотаBH пересекаетAC вM;площадьAMH=4см². Найти площадь трапеции."
+    },
+    {
+      "number": 732,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        188
+      ],
+      "pdfPages": [
+        189
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "starred": true,
+      "canonicalCondition": "ДоказатьABC~A₁B₁C₁,еслиAB/A₁B₁=AC/A₁C₁=AD/A₁D₁,гдеAD,A₁D₁ — биссектрисы. Задача отмечена звёздочкой."
+    },
+    {
+      "number": 733,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        188
+      ],
+      "pdfPages": [
+        189
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "ДанABC. Построить подобныйA₁B₁C₁ с площадью вдвое больше площадиABC."
+    },
+    {
+      "number": 734,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        188
+      ],
+      "pdfPages": [
+        189
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Даны три отрезка длинамиa,b,c. Построить отрезок длиныab/c."
+    },
+    {
+      "number": 735,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        188
+      ],
+      "pdfPages": [
+        189
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Построить треугольник по трём серединам его сторон."
+    },
+    {
+      "number": 736,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        188
+      ],
+      "pdfPages": [
+        189
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-and-authored-condition-fidelity-reviewed; exact file bindings in chapter VIII source review",
+      "canonicalCondition": "Построить треугольник по стороне и медианам,проведённым к двум другим сторонам."
+    }
+  ],
+  "theory": [
+    {
+      "number": 63,
+      "title": "Пропорциональные отрезки",
+      "printedPages": [
+        163
+      ],
+      "pdfPages": [
+        164
+      ],
+      "paragraph": 1,
+      "starred": false,
+      "canonicalScope": "Отношение длин отрезков;пропорциональность двух и трёх пар отрезков."
+    },
+    {
+      "number": 64,
+      "title": "Определение подобных треугольников",
+      "printedPages": [
+        164
+      ],
+      "pdfPages": [
+        165
+      ],
+      "paragraph": 1,
+      "starred": false,
+      "canonicalScope": "Равенство соответственных углов и пропорциональность соответственных сторон;коэффициентподобия;порядоквершин."
+    },
+    {
+      "number": 65,
+      "title": "Отношение площадей подобных треугольников",
+      "printedPages": [
+        165
+      ],
+      "pdfPages": [
+        166
+      ],
+      "paragraph": 1,
+      "starred": false,
+      "canonicalScope": "Отношение площадей подобных треугольников равно квадрату коэффициентаподобия;доказательство."
+    },
+    {
+      "number": 66,
+      "title": "Первый признак подобия треугольников",
+      "printedPages": [
+        167,
+        168
+      ],
+      "pdfPages": [
+        168,
+        169
+      ],
+      "paragraph": 2,
+      "starred": false,
+      "canonicalScope": "Первыйпризнак:равенство двух углов;доказательство."
+    },
+    {
+      "number": 67,
+      "title": "Второй признак подобия треугольников",
+      "printedPages": [
+        168
+      ],
+      "pdfPages": [
+        169
+      ],
+      "paragraph": 2,
+      "starred": false,
+      "canonicalScope": "Второйпризнак:пропорциональность двух сторон и равенство угла между ними;доказательство."
+    },
+    {
+      "number": 68,
+      "title": "Третий признак подобия треугольников",
+      "printedPages": [
+        169
+      ],
+      "pdfPages": [
+        170
+      ],
+      "paragraph": 2,
+      "starred": false,
+      "canonicalScope": "Третийпризнак:пропорциональность трёх сторон;доказательство."
+    },
+    {
+      "number": 69,
+      "title": "Средняя линия треугольника",
+      "printedPages": [
+        171,
+        172
+      ],
+      "pdfPages": [
+        172,
+        173
+      ],
+      "paragraph": 3,
+      "starred": false,
+      "canonicalScope": "Определение и теорема среднейлинии;доказательство. Применение:все три медианы пересекаются и делятся2:1 отсчитая от вершины;центроид/центрмасс."
+    },
+    {
+      "number": 70,
+      "title": "Четыре замечательные точки треугольника",
+      "printedPages": [
+        173,
+        174
+      ],
+      "pdfPages": [
+        174,
+        175
+      ],
+      "paragraph": 3,
+      "starred": false,
+      "canonicalScope": "Четыре замечательные точки:центры вписанной/описанной окружностей,центроид,ортоцентр. Доказательство пересечения высот или их продолжений через треугольник из параллельных противоположным сторонам прямых."
+    },
+    {
+      "number": 71,
+      "title": "Пропорциональные отрезки в прямоугольном треугольнике",
+      "printedPages": [
+        174,
+        175
+      ],
+      "pdfPages": [
+        175,
+        176
+      ],
+      "paragraph": 3,
+      "starred": false,
+      "canonicalScope": "Подобие исходного прямоугольного треугольника и двух,полученных высотой к гипотенузе. Среднее геометрическое;высота²=произведение частей гипотенузы,катет²=гипотенуза×проекция катета;доказательства."
+    },
+    {
+      "number": 72,
+      "title": "Метод подобия в задачах на построение",
+      "printedPages": [
+        175,
+        176
+      ],
+      "pdfPages": [
+        176,
+        177
+      ],
+      "paragraph": 3,
+      "starred": false,
+      "canonicalScope": "Методподобия:вспомогательный треугольник и масштабирование;построение по двум углам и биссектрисе третьего угла,существование при положительных углах с суммой<180°,единственность с точностью до равенства."
+    },
+    {
+      "number": 73,
+      "title": "Применение подобия треугольников в измерительных работах на местности",
+      "printedPages": [
+        176,
+        177,
+        178
+      ],
+      "pdfPages": [
+        177,
+        178,
+        179
+      ],
+      "paragraph": 3,
+      "starred": false,
+      "canonicalScope": "Оба измерения:высота предмета с шестом и визированием;расстояние до недоступной точки через измерение доступной базы и двух углов/подобный чертёж. Масштаб и согласованныеединицы. Численныйпример153м содержит расхождение с точными146,0777м."
+    },
+    {
+      "number": 74,
+      "title": "Синус, косинус и тангенс острого угла прямоугольного треугольника",
+      "printedPages": [
+        181,
+        182
+      ],
+      "pdfPages": [
+        182,
+        183
+      ],
+      "paragraph": 4,
+      "starred": false,
+      "canonicalScope": "Определенияsin,cos,tg острого угла;tg=sin/cos;независимостьотношений от выбора прямоугольного треугольника;sin²+cos²=1 и доказательства."
+    },
+    {
+      "number": 75,
+      "title": "Значения синуса, косинуса и тангенса для углов 30°, 45° и 60°",
+      "printedPages": [
+        182,
+        183,
+        184
+      ],
+      "pdfPages": [
+        183,
+        184,
+        185
+      ],
+      "paragraph": 4,
+      "starred": false,
+      "canonicalScope": "Обоснованный выводsin,cos,tg для30°,45°,60° и полнаятаблица."
+    }
+  ],
+  "selfchecks": [
+    {
+      "number": 1,
+      "topic": "Отношение двух отрезков",
+      "printedPages": [
+        185
+      ],
+      "pdfPages": [
+        186
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 2,
+      "topic": "Пропорциональность двух пар отрезков",
+      "printedPages": [
+        185
+      ],
+      "pdfPages": [
+        186
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 3,
+      "topic": "Определение подобных треугольников",
+      "printedPages": [
+        185
+      ],
+      "pdfPages": [
+        186
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 4,
+      "topic": "Отношение площадей подобных треугольников: формулировка и доказательство",
+      "printedPages": [
+        185
+      ],
+      "pdfPages": [
+        186
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 5,
+      "topic": "Первый признак подобия: формулировка и доказательство",
+      "printedPages": [
+        185
+      ],
+      "pdfPages": [
+        186
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 6,
+      "topic": "Второй признак подобия: формулировка и доказательство",
+      "printedPages": [
+        185
+      ],
+      "pdfPages": [
+        186
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 7,
+      "topic": "Третий признак подобия: формулировка и доказательство",
+      "printedPages": [
+        185
+      ],
+      "pdfPages": [
+        186
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 8,
+      "topic": "Средняя линия треугольника: определение, теорема и доказательство",
+      "printedPages": [
+        185
+      ],
+      "pdfPages": [
+        186
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 9,
+      "topic": "Пересечение медиан и отношение 2:1 от вершины",
+      "printedPages": [
+        185
+      ],
+      "pdfPages": [
+        186
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 10,
+      "topic": "Высота к гипотенузе и подобие трёх прямоугольных треугольников",
+      "printedPages": [
+        185
+      ],
+      "pdfPages": [
+        186
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 11,
+      "topic": "Пропорциональные отрезки в прямоугольном треугольнике: оба утверждения и доказательства",
+      "printedPages": [
+        185
+      ],
+      "pdfPages": [
+        186
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 12,
+      "topic": "Пример построения методом подобия",
+      "printedPages": [
+        186
+      ],
+      "pdfPages": [
+        187
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 13,
+      "topic": "Определение высоты предмета и расстояния до недоступной точки",
+      "printedPages": [
+        186
+      ],
+      "pdfPages": [
+        187
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 14,
+      "topic": "Подобные фигуры и коэффициент подобия фигур",
+      "printedPages": [
+        186
+      ],
+      "pdfPages": [
+        187
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 15,
+      "topic": "Синус, косинус и тангенс острого угла прямоугольного треугольника",
+      "printedPages": [
+        186
+      ],
+      "pdfPages": [
+        187
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 16,
+      "topic": "Независимость тригонометрических отношений от выбора прямоугольного треугольника",
+      "printedPages": [
+        186
+      ],
+      "pdfPages": [
+        187
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 17,
+      "topic": "Основное тригонометрическое тождество",
+      "printedPages": [
+        186
+      ],
+      "pdfPages": [
+        187
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 18,
+      "topic": "Синус, косинус и тангенс 30°,45°,60° с обоснованием",
+      "printedPages": [
+        186
+      ],
+      "pdfPages": [
+        187
+      ],
+      "paragraph": null
+    }
+  ],
+  "paragraphs": [
+    {
+      "chapter": 8,
+      "number": 1,
+      "title": "Определение подобных треугольников",
+      "pointNumbers": [
+        63,
+        65
+      ],
+      "exerciseNumbers": [
+        640,
+        656
+      ],
+      "printedPages": [
+        163,
+        167
+      ]
+    },
+    {
+      "chapter": 8,
+      "number": 2,
+      "title": "Признаки подобия треугольников",
+      "pointNumbers": [
+        66,
+        68
+      ],
+      "exerciseNumbers": [
+        657,
+        671
+      ],
+      "printedPages": [
+        167,
+        171
+      ]
+    },
+    {
+      "chapter": 8,
+      "number": 3,
+      "title": "Применение подобия к доказательству теорем и решению задач",
+      "pointNumbers": [
+        69,
+        73
+      ],
+      "exerciseNumbers": [
+        672,
+        696
+      ],
+      "printedPages": [
+        171,
+        180
+      ]
+    },
+    {
+      "chapter": 8,
+      "number": 4,
+      "title": "Соотношения между сторонами и углами прямоугольного треугольника",
+      "pointNumbers": [
+        74,
+        75
+      ],
+      "exerciseNumbers": [
+        697,
+        709
+      ],
+      "printedPages": [
+        181,
+        185
+      ]
+    }
+  ],
+  "source": {
+    "sha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+    "printedPageRange": [
+      163,
+      188
+    ],
+    "pdfPageRange": [
+      164,
+      189
+    ],
+    "pageOffset": 1
+  },
+  "counts": {
+    "mainNumbers": 97,
+    "mainParts": 133,
+    "theoryPoints": 13,
+    "selfcheckQuestions": 18,
+    "cards": 164
+  },
+  "audit": {
+    "reviewer": "Independent non-author OpenAI source reviewer /root/viii_source",
+    "date": "2026-10-30",
+    "scope": "Exact inventory of all26 actual source pages, every numbered exercise and explicit subpart, theory titles/ranges, all18 selfchecks, chapter-local paragraphs and source figures. This is not approval of authored content or a future bundle.",
+    "sourceActuallyViewed": true,
+    "ocrUsed": false,
+    "pageImages": [
+      {
+        "printedPage": 163,
+        "pdfPage": 164,
+        "sha256": "3b47c399766dcaeed5cc663cb9b3f898012c667e928bf4215bbabb7a6b7ab201",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 164,
+        "pdfPage": 165,
+        "sha256": "3a9cde5f3f7197a4528f84e0185376745c52f3ddd4348d0e0f2ba2c5c8bfd5bd",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 165,
+        "pdfPage": 166,
+        "sha256": "1dd95fe4de65360bff35ce25e3b1007d2d3e144fb89f2ae2d2ab1014a7f7e3c0",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 166,
+        "pdfPage": 167,
+        "sha256": "95484da9377d5c8bd05cb9663a376279f50d053c6fe37da740c7190ae0cb0d6e",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 167,
+        "pdfPage": 168,
+        "sha256": "797c10182ae597fe0dd983c5dc1a6f2180c575c32a4c583f287eaecad8c05192",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 168,
+        "pdfPage": 169,
+        "sha256": "a1392838dc244040508133d0819add25525694c636259c2cf8a6bd5581919c0b",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 169,
+        "pdfPage": 170,
+        "sha256": "80aab8d1d3c470f52269a1bd9cc34c4aa7e20083b026c54b5c301a444dbb2fb1",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 170,
+        "pdfPage": 171,
+        "sha256": "0d64e2c0f574c7cc24e01bbdf55b26012b023c4b6604bae450631f4805e1490a",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 171,
+        "pdfPage": 172,
+        "sha256": "d02c84dea8894deffac73d539617a7dae6ac7f46abd789a94cc331c7adf8504c",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 172,
+        "pdfPage": 173,
+        "sha256": "84e351e993f86c4d4c477e63570c5df06203c7846e6de67085d14cbf3fc5e7d0",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 173,
+        "pdfPage": 174,
+        "sha256": "967abd54944629ff2c6aaec3212f55f76c3191589fbed49f7fca5ec346c04cf2",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 174,
+        "pdfPage": 175,
+        "sha256": "04b11bc1c0dda7a0afd4c927fb45f0c007f557393d52371ad7129de1399dd364",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 175,
+        "pdfPage": 176,
+        "sha256": "09cefaf8b8ed7408811c4006cda9362aeec46661890972871ce50daf650b4318",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 176,
+        "pdfPage": 177,
+        "sha256": "aaecd983efd18d51c021f870c2c6c5f4f4d1dcc10f6311410462b78762b6bc0f",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 177,
+        "pdfPage": 178,
+        "sha256": "7765cbf880246ab7d8a4507b22a96737fd79dd0ca11eaee6f14cdcc06b10503a",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 178,
+        "pdfPage": 179,
+        "sha256": "bb0599008586ef06b0276b74fd45e22fdc884fa784e2bcae885c227a8687ee1c",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 179,
+        "pdfPage": 180,
+        "sha256": "cd16911d0a796c857e96276c1468d917894de20578be3c9467db346d0974fdbc",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 180,
+        "pdfPage": 181,
+        "sha256": "87a3abb56d6ab4a482e425d7292ff09dbd23eebaa75fef639ab208db2e121e2d",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 181,
+        "pdfPage": 182,
+        "sha256": "1d252047931ef569727a1fb73035830ea9c031d39cc31a63ed18181545b9c087",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 182,
+        "pdfPage": 183,
+        "sha256": "0477f805a686da3e45b59134b08d77595f1471930fd689de64e4885a0a2afcec",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 183,
+        "pdfPage": 184,
+        "sha256": "077c2c97abac184c5c9930abb55602b4c14a41d3d94e7affc5d081855379339a",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 184,
+        "pdfPage": 185,
+        "sha256": "e82ed357075e50ca7c383e2715c15ced3c32f3b89b9e8fa3322e057a327b514a",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 185,
+        "pdfPage": 186,
+        "sha256": "e4cabf2527720e8d1cdfac2585144e6dae448579e0ea9dad7b5f5799ad2c1edf",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 186,
+        "pdfPage": 187,
+        "sha256": "610005a05a2d1444307b1b253c5949185676ef07feefd6bd57339076842c904e",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 187,
+        "pdfPage": 188,
+        "sha256": "96ecb45d5e2cb31831dd37b0b4c0de5f3bd395476d3921f326b71e743dcbd038",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 188,
+        "pdfPage": 189,
+        "sha256": "b39653b9fdb1af0a13f7ae0cedbbf596f193d5b3b6ab089d0c6f78eb59f99f05",
+        "actuallyViewed": true
+      }
+    ],
+    "authoredSourceFidelityReview": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_SOURCE_REVIEW.json",
+    "canonicalConditions": "All97 exercise records independently summarize exact source quantities, explicit subparts and unlettered demands; concise source adaptations, not verbatim transcription.",
+    "authoredConditionReview": {
+      "cards": 164,
+      "status": "PASS",
+      "report": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_SOURCE_REVIEW.json",
+      "scope": "Only actual condition/statement fidelity and listed selected source-model checks; no future bundle or release approval."
+    }
+  },
+  "sourceIssues": [
+    {
+      "exercise": 648,
+      "part": "single",
+      "printedPages": [
+        166
+      ],
+      "kind": "inconsistent-data",
+      "finding": "Точные стороны AB=5,2, AC=4,4, BC=7,6 дают ∠A=arccos((5,2²+4,4²−7,6²)/(2·5,2·4,4))≈104,374083739°, а напечатано106°. Соответственные стороны второго треугольника втрое больше; угловое соответствие A↔E, B↔D, C↔F формально согласуется с напечатанными углами.",
+      "requiredHandling": "Не менять исходные числа молча. Разделить формальную проверку подобия и невозможность точной реализации всех длин и углов одновременно; раскрыть, какие данные реализует модель."
+    },
+    {
+      "theoryPoint": 73,
+      "printedPages": [
+        178
+      ],
+      "kind": "measurement-example-discrepancy",
+      "finding": "При AC=130м,∠A=73°,∠C=58° источник сообщает измерение A₁B₁=153мм и ответ153м. Точные данные дают AB=130·sin58°/sin49°≈146,077717031м.",
+      "requiredHandling": "Если численный пример включён, сохранить и объяснить расхождение измерения по рисунку с точной геометрией; не выдавать153м за точный результат."
+    },
+    {
+      "theoryPoint": 64,
+      "printedPages": [
+        164
+      ],
+      "kind": "editorial-cross-reference",
+      "finding": "Первое упоминание соответственных сторон ссылается на рис.219, но показан рис.220.",
+      "requiredHandling": "В авторском изложении использовать фактический рисунок220."
+    },
+    {
+      "exercise": 684,
+      "printedPages": [
+        179
+      ],
+      "kind": "editorial-cross-reference",
+      "finding": "Условие правильно ссылается на утверждение2° пункта71; решение ошибочно печатает пункт65.",
+      "requiredHandling": "Использовать правильную ссылку на пункт71."
+    }
+  ],
+  "sourceSpecificNotes": [
+    {
+      "exercise": 640,
+      "note": "Два неразмеченных вопроса: отношение15см/20см и его неизменность после перехода к миллиметрам; одна карточка."
+    },
+    {
+      "exercise": 641,
+      "note": "Рис.221а: равные единичные деления задают A=0,B=6,C=9,D=18 и M=0,M₁=1,M₂=3. Порядок пар в каждой части существенен."
+    },
+    {
+      "exercise": 657,
+      "note": "Одна задача с двумя неразмеченными рисунками. Верхний: прямоугольные треугольники, катеты8,12 и6,x с отмеченными равными углами; нижний: основание20+8, малая гипотенуза10, полная высотаy. Сохранить оба требования."
+    },
+    {
+      "exercise": 664,
+      "note": "Порядок B,D и C,E на сторонах угла не задан. Нужны оба порядка параллельных сечений: а)AC=17,5 или37,5; б)BD=5,DE=6 или2; в)BC=8 или24."
+    },
+    {
+      "exercise": 670,
+      "note": "Две нижние вершины квадрата должны лежать именно на отрезкеAB. Формула ah/(a+h) реализуется при основании высотыH∈[A,B]; еслиH внеAB, такого вписанного квадрата данного расположения нет."
+    },
+    {
+      "exercise": 678,
+      "note": "Частиа–в напечатаны178,частиг–д179. Общие обозначения678–680: ∠C=90°,CH⊥AB,BC=a,CA=b,AB=c,CH=h,AH=b_c,HB=a_c."
+    },
+    {
+      "exercise": 679,
+      "note": "Обозначения условия заданы на предыдущей странице178; a_c проекция катетаa, b_c проекция катетаb."
+    },
+    {
+      "exercise": 680,
+      "note": "Обозначения условия заданы на предыдущей странице178; не менять местамиa_c,b_c."
+    },
+    {
+      "exercise": 687,
+      "note": "Рис.234: высота глазAB=AC−BC=165−12=153см; AD=120см,DE=4,8м. BC здесь вертикальная разность между макушкой и глазами."
+    },
+    {
+      "exercise": 689,
+      "note": "Рис.235: A,B₁,B коллинеарны в этом порядке; A,C₁,C коллинеарны; B₁C₁∥BC. Требуется BB₁, не AB."
+    },
+    {
+      "exercise": 702,
+      "note": "Одна карточка включает символические выражения второго угла/обоих катетов и подстановку c=24см,α=35°."
+    },
+    {
+      "exercise": 703,
+      "note": "Одна карточка включает гипотенузу и оба тангенса черезa,b, затем a=12,b=15."
+    },
+    {
+      "exercise": 718,
+      "note": "Две буквенные частиа/б плюс общий заключительный вопрос: найтиx и доказать независимость отd. Рис.241: AB=a,CD=b,AC=d; пересечение AD и BC вO на высотеx; отрезки основанияm,n, m+n=d."
+    },
+    {
+      "exercise": 725,
+      "note": "Биссектриса внешнего угла пересекает прямуюBC, а не внутренний отрезок. ДляAB=AC она параллельнаBC, так что заданного пересеченияD нет."
+    },
+    {
+      "exercise": 726,
+      "note": "AB≠AC указано явно; пересеченияD,E берутся с прямымиAB,AC, возможны продолжения сторон."
+    },
+    {
+      "exercise": 730,
+      "note": "Требуется равенство площадей всех шести малых треугольников, а не только трёх отдельных пар."
+    },
+    {
+      "exercise": 736,
+      "note": "Даны сторона и медианы к двум другим сторонам. Не заменять данными медианами к заданной стороне."
+    },
+    {
+      "exercise": 659,
+      "part": "в",
+      "note": "В увеличенном фрагменте источника явно напечатано AB=9,6 дм, а DC=24 см и AC=15 см. Требуется перевести AB=96 см; отношение оснований4 и AO=12 см. Не заменять дециметры сантиметрами."
+    }
+  ],
+  "sourceFigures": [
+    {
+      "figure": 221,
+      "exercise": 641,
+      "printedPages": [
+        165
+      ],
+      "part": "а",
+      "definition": "Две одинаково размеченные линейки отрезков",
+      "coordinatesInSourceUnits": {
+        "A": 0,
+        "B": 6,
+        "C": 9,
+        "D": 18,
+        "M": 0,
+        "M₁": 1,
+        "M₂": 3
+      }
+    },
+    {
+      "figure": 224,
+      "exercise": 657,
+      "printedPages": [
+        169
+      ],
+      "definition": "Два неразмеченных чертежа, оба обязательны",
+      "requiredFeatures": [
+        "Верх: общий нижний контакт;левый вертикальный катет8,основание12;правый горизонтальный катет6,вертикальныйx;равные острые углы у нижней вершины слева и верхней справа.",
+        "Низ: большой прямоугольный треугольник;вертикальный катетy;горизонтальное основание20+8;внутренний вертикальный катет от точки разбиения;гипотенуза малого треугольника10."
+      ]
+    },
+    {
+      "figure": 234,
+      "exercise": 687,
+      "printedPages": [
+        179
+      ],
+      "definition": "Зеркало между человеком и деревом;A,D,E на земле;C вышеB;AB высота глаз;EF высота дерева."
+    },
+    {
+      "figure": 235,
+      "exercise": 689,
+      "printedPages": [
+        180
+      ],
+      "definition": "A нижеB₁ нижеB;A,C₁,C на одной наклонной;B₁C₁∥BC;ширина рекиBB₁."
+    },
+    {
+      "figure": 240,
+      "exercise": 706,
+      "printedPages": [
+        185
+      ],
+      "definition": "Поперечный разрез насыпи: верхнее основание60м,высота12м,оба нижних угла60°."
+    },
+    {
+      "figure": 241,
+      "exercise": 718,
+      "printedPages": [
+        187
+      ],
+      "definition": "Две вертикальные стойкиAB=a иCD=b;A,C на земле в расстоянииd;верёвкиAD,BC пересекаютсяO;высотаO равнаx,проекция делитAC наm,n."
+    }
+  ],
+  "notes": [
+    "№640–736:97 сквозных номеров,133 явно выделенные части;13 теоретических пунктов63–75 и18 вопросов повторения дают164карточки.",
+    "Дополнительные задачи710–736 и вопросы повторения относятся к главе без выдуманного параграфа.",
+    "Звёздочкой отмечена задача732. Неразмеченные дополнительные требования640,657,702,703,718 не добавляют карточек, но обязательны.",
+    "Все26изображений исходных страниц фактически прочитаны этим независимым рецензентом. PDF,изображения,OCR и абсолютные частные пути не включаются в репозиторий."
+  ]
+}

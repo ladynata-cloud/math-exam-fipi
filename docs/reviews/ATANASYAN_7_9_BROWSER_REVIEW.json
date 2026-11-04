@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "reviewDate": "2026-10-23",
+  "reviewTimezone": "Asia/Novosibirsk",
+  "verdict": "passed-real-browser-candidate; independent final image reviews recorded separately",
+  "provider": "Chromium 153.0.8010.0 with Playwright in a cloud development environment",
+  "publicationApproval": false,
+  "authoredContentSha256": "12525e9093c143c4ee6570a9fea00c7f9ccf15eb0a7ef4ab274cc62a982fa4da",
+  "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
+  "bundleSha256": "4453db2a52e310aa5f0335da2221794713759f09f6e980f565b673ab29afff90",
+  "evidenceSha256": "859d72f106c2c37363ddf93deeee17095148ec27480c6f60cb6030e49b951a0b",
+  "executionMode": "Explicit labelled engineering preview; no publication flags bypassed or written by the harness",
+  "coverage": {
+    "cards": 173,
+    "widths": [
+      320,
+      1280
+    ],
+    "uniqueAuthoredViews": 845,
+    "renderedViews": 1690,
+    "fullStepJourneys": 346,
+    "authoredSteps": 499,
+    "initialAndFinalScreenshots": 692,
+    "interactionScenarios": 7,
+    "layoutFailures": 0,
+    "pageErrors": 0
+  },
+  "interactions": [
+    "expansion-lesson-320-button-and-Escape",
+    "expansion-lesson-1280-button-and-Escape",
+    "notes-and-steps-reload",
+    "expansion-theory-1280-button-and-Escape",
+    "theory-return-retains-answer",
+    "manual-answer-honesty",
+    "two-tab-conflict-preserves-work"
+  ],
+  "layoutChecks": [
+    "Minimum actual label font size",
+    "Labels inside viewport",
+    "No overlapping letter bounds",
+    "No letters crossed by figure lines, angle arcs, right-angle markers or equality ticks",
+    "Every visible authored label present",
+    "No unresolved placement",
+    "No non-finite SVG coordinates",
+    "No horizontal document overflow with all explanations open"
+  ],
+  "independentCodeAndReflowReview": "docs/reviews/ATANASYAN_7_9_FRONTEND_REVIEW.json",
+  "rootInterfaceSpotReview": {
+    "method": "Actual full-page images and native-width tiles; these are representative UI checks, not a claim to inspect every full page manually.",
+    "images": [
+      {
+        "file": "sample-atanasyan-7-9-main-61-part-1-1280.png",
+        "sha256": "7b2b84ec217edd1e2f75f70309622dbbd95e20d7e0b9d46cd43eb55cd55d9de7"
+      },
+      {
+        "file": "sample-atanasyan-7-9-main-89-part-1-320.png",
+        "sha256": "797980c1e7feef75f225cbf701b2be08c0c9016bf74716f07ced744fa8a4e0d7"
+      },
+      {
+        "file": "sample-atanasyan-7-9-main-91-part-4-320.png",
+        "sha256": "f58eba3fa32fc7e3c53a9b0c0c6915ef859d252264a589aa7f735d06bd43fc1e"
+      }
+    ],
+    "result": "Readable conditions and controls; diagrams separate from explanations; no clipping found in inspected regions."
+  },
+  "resolvedFailures": [
+    "First browser pass exposed mobile label overlaps and clipping; authored offsets and deterministic bounded placement corrected them.",
+    "Strict line/marker checks exposed geometry71 O against angle arcs; only arc display radii changed.",
+    "First full pass reproduced a two-tab stale no-op save; guarded no-op save and regression verified independently in30 cycles, then full run passed."
+  ],
+  "limitations": [
+    "Manual geometry image review covers initial and final states plus explicit targeted scenes; all845 views undergo automated actual-browser geometry checks.",
+    "Exact GitHub commit CI and virtual-main verification still pending at the time of this record.",
+    "No pupil trial or production deployment is claimed."
+  ]
+}

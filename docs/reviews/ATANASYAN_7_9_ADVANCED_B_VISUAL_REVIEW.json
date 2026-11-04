@@ -1,0 +1,3799 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-28",
+  "reviewer": "advanced_a; author of exercises413–429, independent of block430–445",
+  "scope": {
+    "book": "Atanasyan7–9(2023)",
+    "exercises": [
+      430,
+      445
+    ],
+    "cards": 16,
+    "modelViews": 103,
+    "widths": [
+      320,
+      1280
+    ],
+    "modelViewWidthPairs": 206,
+    "fullPageInitialFinalCaptures": 64,
+    "environment": "Local actual textbook route and runtime with explicit in-review engineering fixture; not a live pupil session or publication."
+  },
+  "verdict": "pass_with_minor_observation",
+  "openBlockers": [],
+  "bundleSha256": "72f479d9476032497ac481910aab37fadbb02e78e6884250d50c7b54b77313db",
+  "artifactSha256": {
+    "geometry-course/textbook/preparation/grade-07-advanced-b.json": "1e3e832b0aa84e7f18bfab882b9ca37b7b1342edfe5b72ad0c38deecc27b5a2a",
+    "geometry-course/textbook/models/grade-07-advanced-b.json": "0abda31e287a2b30ae4f6c1e8444bea11f11e6c00aee0aa2b15b0ca8b7ce2027",
+    "tools/geometry-textbook/models_advanced7_b.py": "e2e473c24ea32e4766fd5bf28bb28e306eaea04df366657461bd2e7a467138c3",
+    "geometry-course/textbook/data/course.json": "72f479d9476032497ac481910aab37fadbb02e78e6884250d50c7b54b77313db"
+  },
+  "focusedEvidence": {
+    "path": "advanced-final/browser-evidence.json",
+    "sha256": "02a9bcc165a11c0e23ed7e7a717e9d5119568c4f35a7f245595caf56807c2fc7",
+    "completed": true,
+    "errors": [],
+    "implementationSha256": "78104fd5f8898d64c29e67013496fb5eb44efea93ad39eae12873bdd75cadf59",
+    "authoredContentSha256": "6de92f7f2a91f94b806ea917b262b20a66733afa6f4078460d58fb3f2be9a1b8"
+  },
+  "manualReview": {
+    "models": {
+      "initialRepresentativePngCount": 170,
+      "initialContactSheetsRead": [
+        "b-001.jpg",
+        "b-002.jpg",
+        "b-003.jpg",
+        "b-004.jpg",
+        "b-005.jpg",
+        "b-006.jpg",
+        "b-007.jpg",
+        "b-008.jpg",
+        "b-009.jpg",
+        "b-010.jpg",
+        "b-011.jpg",
+        "b-012.jpg",
+        "b-013.jpg",
+        "b-014.jpg",
+        "b-015.jpg",
+        "b-016.jpg",
+        "b-017.jpg",
+        "b-018.jpg",
+        "b-019.jpg",
+        "b-020.jpg",
+        "b-021.jpg",
+        "b-022.jpg",
+        "b-023.jpg",
+        "b-024.jpg",
+        "b-025.jpg",
+        "b-026.jpg",
+        "b-027.jpg",
+        "b-028.jpg",
+        "b-029.jpg",
+        "b-030.jpg",
+        "b-031.jpg",
+        "b-032.jpg",
+        "b-033.jpg",
+        "b-034.jpg",
+        "b-035.jpg",
+        "b-036.jpg",
+        "b-037.jpg",
+        "b-038.jpg",
+        "b-039.jpg",
+        "b-040.jpg",
+        "b-041.jpg",
+        "b-042.jpg",
+        "b-043.jpg"
+      ],
+      "initialManifest": "advanced-visual/contacts/b-manifest.json",
+      "initialManifestSha256": "5a3a8b695aceeedd14e4edcb307c8b555213d66dfa4a6ef7061ae52df8950cd2",
+      "deduplication": "Only exact PNG SHA-256 matches. Full current expected set from final B model JSON equals the 206 reviewed files. 31 changed PNGs were independently re-read; 175 state PNGs were reused only when their exact bytes matched.",
+      "finalDeltaSheetsRead": [
+        "delta-01.jpg",
+        "delta-02.jpg",
+        "delta-03.jpg",
+        "delta-04.jpg",
+        "delta-05.jpg",
+        "delta-06.jpg",
+        "delta-07.jpg",
+        "delta-08.jpg"
+      ],
+      "deltaManifest": "b-model-delta/manifest.json",
+      "deltaManifestSha256": "95ad834349878395c48552bac394a1e32122d7be45f369bba821cba30ebb647c",
+      "originalsReadToResolveContactCropping": [
+        "review-atanasyan-7-9-main-435-part-1-step-3-1280.png",
+        "review-atanasyan-7-9-main-445-part-1-case-4-1280.png"
+      ],
+      "checks": [
+        "Letters are visibly associated with the correct points and do not conceal incidence.",
+        "Perpendicular and equal-angle/segment marks agree with the shown rays and sides.",
+        "Neutral drawings show conditions; new constructions appear in the corresponding steps.",
+        "Alternative cases have distinguishable geometry and readable labels at320/1280.",
+        "Circles, intersections, exterior altitude feet and degeneracies remain meaningful."
+      ]
+    },
+    "pageContext": {
+      "captureScript": "review_b_pages_final.cjs",
+      "captureScriptSha256": "1fedaed41787566e8122592c8101efa74fa758eb11ae54243c20daee5195fa0f",
+      "evidence": "b-pages-final/evidence.json",
+      "evidenceSha256": "879cf044122c0340935297610ac784dcfd08cdbb630ebb8d86e9341a63d976a9",
+      "captureCompleted": true,
+      "errors": [],
+      "manuallyRead": "All32 initial full pages (bothwidths), all16 final mobile full pages via consecutive nonoverlapping strips, and all16 final desktop explanation columns via consecutive strips. Final desktop diagrams were reviewed in the complete model-view pass. The48 contact images430–445 each initial/final320/final1280 were read.",
+      "contactScript": "b_pages_contact.py",
+      "contactScriptSha256": "64466b2a48faa4d327866077c30a56a7de75c942e1d60c58a0540773e04d4a25",
+      "finalRecapture": "64 of64 final-bundle PNGs are byte-identical to the already manually reviewed prior capture; all hashes compared, no visual inference from a merely similar screenshot.",
+      "limitations": "The full-page pass covers initial and fully expanded final states, not full-page screenshots of every intermediate view. Every model intermediate view is covered separately above.",
+      "records": [
+        {
+          "number": 430,
+          "id": "atanasyan-7-9-main-430-part-1",
+          "width": 320,
+          "state": "initial",
+          "file": "430-initial-320.png",
+          "sha256": "332bab3600f1166c93de4f8f41f69d50f77cbeda1a9f07a4ef2b3c6ea8291265",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №430",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "В треугольнике ABC отрезок BB₁ — биссектриса, B₁ лежит на AC. Докажите: BA > B₁A и BC > B₁C.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 430,
+          "id": "atanasyan-7-9-main-430-part-1",
+          "width": 320,
+          "state": "final",
+          "file": "430-final-320.png",
+          "sha256": "0a6ed2e8dc2d62eea88e74a0dfcbaa99eab466e6725fd79de82e9725861a3968",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №430",
+            "steps": 4,
+            "conditions": [
+              {
+                "text": "В треугольнике ABC отрезок BB₁ — биссектриса, B₁ лежит на AC. Докажите: BA > B₁A и BC > B₁C.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "step-4"
+          }
+        },
+        {
+          "number": 431,
+          "id": "atanasyan-7-9-main-431-part-1",
+          "width": 320,
+          "state": "initial",
+          "file": "431-initial-320.png",
+          "sha256": "79f32ad3f692d26873dff1d000799148df31d0c9e6de58c40efd2fafdb79d2ce",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №431",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "Точка D находится внутри треугольника ABC, причём AD = AB. Докажите, что AC > AB.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 431,
+          "id": "atanasyan-7-9-main-431-part-1",
+          "width": 320,
+          "state": "final",
+          "file": "431-final-320.png",
+          "sha256": "f507fb065eadc6a61c3245b60abf9be543d5a25d2f53edcd38661a78d5f5b67d",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №431",
+            "steps": 4,
+            "conditions": [
+              {
+                "text": "Точка D находится внутри треугольника ABC, причём AD = AB. Докажите, что AC > AB.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "step-4"
+          }
+        },
+        {
+          "number": 432,
+          "id": "atanasyan-7-9-main-432-part-1",
+          "width": 320,
+          "state": "initial",
+          "file": "432-initial-320.png",
+          "sha256": "0e9a0bd64eacf43b1c435f1e19e6c0e72233422b42ce89ea7f82ed062c0c268f",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №432",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "В треугольнике ABC дано AB > AC, а AD — биссектриса. Докажите, что ∠ADB > ∠ADC и BD > CD.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 432,
+          "id": "atanasyan-7-9-main-432-part-1",
+          "width": 320,
+          "state": "final",
+          "file": "432-final-320.png",
+          "sha256": "0efd8c7ef06660ef747fbae1c2f735bf68416b491ad45d2210aea9f3bd2d949b",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №432",
+            "steps": 4,
+            "conditions": [
+              {
+                "text": "В треугольнике ABC дано AB > AC, а AD — биссектриса. Докажите, что ∠ADB > ∠ADC и BD > CD.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "step-4"
+          }
+        },
+        {
+          "number": 433,
+          "id": "atanasyan-7-9-main-433-part-1",
+          "width": 320,
+          "state": "initial",
+          "file": "433-initial-320.png",
+          "sha256": "3cbf2782f24e5cde63d2fa95988751e98c73ee5361735320e34ad7ff79539238",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №433",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "Докажите: если биссектриса треугольника одновременно является медианой, то треугольник равнобедренный.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 433,
+          "id": "atanasyan-7-9-main-433-part-1",
+          "width": 320,
+          "state": "final",
+          "file": "433-final-320.png",
+          "sha256": "708a5c0561f39ae6c84fe2693065db059b6a052ebebb607df017185a7b8d8785",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №433",
+            "steps": 4,
+            "conditions": [
+              {
+                "text": "Докажите: если биссектриса треугольника одновременно является медианой, то треугольник равнобедренный.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "step-4"
+          }
+        },
+        {
+          "number": 434,
+          "id": "atanasyan-7-9-main-434-part-1",
+          "width": 320,
+          "state": "initial",
+          "file": "434-initial-320.png",
+          "sha256": "9400db4ab726caa8d7bc92973232d4820196831b4b2bbb63ea31a646fe4e35a8",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №434",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "Две стороны треугольника не равны. Докажите: медиана из их общей вершины образует больший угол с меньшей стороной.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 434,
+          "id": "atanasyan-7-9-main-434-part-1",
+          "width": 320,
+          "state": "final",
+          "file": "434-final-320.png",
+          "sha256": "150cf6b706ef62d9256c56508a4f54e72a9263d15ccbfb1f58695629c62984af",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №434",
+            "steps": 4,
+            "conditions": [
+              {
+                "text": "Две стороны треугольника не равны. Докажите: медиана из их общей вершины образует больший угол с меньшей стороной.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "step-4"
+          }
+        },
+        {
+          "number": 435,
+          "id": "atanasyan-7-9-main-435-part-1",
+          "width": 320,
+          "state": "initial",
+          "file": "435-initial-320.png",
+          "sha256": "95c8ac5f6d0d044f51adec9a54ecda4fe357c626f52a48da5d4c0e683b86ec8b",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №435",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "В треугольнике ABC стороны AB и AC не равны. Точка M лежит на стороне BC. Докажите, что треугольники AMB и AMC не равны.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 435,
+          "id": "atanasyan-7-9-main-435-part-1",
+          "width": 320,
+          "state": "final",
+          "file": "435-final-320.png",
+          "sha256": "d7ec160281c93efea7bedabca1ab22063a6f3865348cb085a8f362e1d1f8daab",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №435",
+            "steps": 5,
+            "conditions": [
+              {
+                "text": "В треугольнике ABC стороны AB и AC не равны. Точка M лежит на стороне BC. Докажите, что треугольники AMB и AMC не равны.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "step-5"
+          }
+        },
+        {
+          "number": 436,
+          "id": "atanasyan-7-9-main-436-part-1",
+          "width": 320,
+          "state": "initial",
+          "file": "436-initial-320.png",
+          "sha256": "8309b629fa7fcac232eca5c4cfacb81147990bd5086446e9a56693828b7e2282",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №436",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "Через A проведена прямая, перпендикулярная биссектрисе угла A треугольника ABC. Из B опущен перпендикуляр BH к этой прямой. Докажите: периметр BCH больше периметра ABC.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 436,
+          "id": "atanasyan-7-9-main-436-part-1",
+          "width": 320,
+          "state": "final",
+          "file": "436-final-320.png",
+          "sha256": "951bdb83295c168f6f132e1a4901586c8733d936d956995ee24eb9ed2ddbc9c2",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №436",
+            "steps": 4,
+            "conditions": [
+              {
+                "text": "Через A проведена прямая, перпендикулярная биссектрисе угла A треугольника ABC. Из B опущен перпендикуляр BH к этой прямой. Докажите: периметр BCH больше периметра ABC.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "step-4"
+          }
+        },
+        {
+          "number": 437,
+          "id": "atanasyan-7-9-main-437-part-1",
+          "width": 320,
+          "state": "initial",
+          "file": "437-initial-320.png",
+          "sha256": "6d58846066de37d5114a286df150b2bf1f771e5e73fec72cec50ee4ad436f9a1",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №437",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "В треугольнике ABC дано AB < AC; AD — биссектриса, AH — высота. Докажите, что H лежит на луче DB.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 437,
+          "id": "atanasyan-7-9-main-437-part-1",
+          "width": 320,
+          "state": "final",
+          "file": "437-final-320.png",
+          "sha256": "3652f8c72472e2aaf410c7abb8b91512721f453022b4db71aa8c4e7bd956b18a",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №437",
+            "steps": 4,
+            "conditions": [
+              {
+                "text": "В треугольнике ABC дано AB < AC; AD — биссектриса, AH — высота. Докажите, что H лежит на луче DB.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "step-4"
+          }
+        },
+        {
+          "number": 438,
+          "id": "atanasyan-7-9-main-438-part-1",
+          "width": 320,
+          "state": "initial",
+          "file": "438-initial-320.png",
+          "sha256": "333168cd0e993f8826dc3d2ee93da2aa4b691bf1117103207adcc60e54042a9f",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №438",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "В неравнобедренном треугольнике из одной вершины проведены биссектриса, медиана и высота. Докажите: основание биссектрисы лежит между основаниями медианы и высоты.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 438,
+          "id": "atanasyan-7-9-main-438-part-1",
+          "width": 320,
+          "state": "final",
+          "file": "438-final-320.png",
+          "sha256": "4b6f3f36b21b9bb308d43247c84a968768200a0c8e5ddbb1a2a06f6b7af1dd55",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №438",
+            "steps": 4,
+            "conditions": [
+              {
+                "text": "В неравнобедренном треугольнике из одной вершины проведены биссектриса, медиана и высота. Докажите: основание биссектрисы лежит между основаниями медианы и высоты.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "step-4"
+          }
+        },
+        {
+          "number": 439,
+          "id": "atanasyan-7-9-main-439-part-1",
+          "width": 320,
+          "state": "initial",
+          "file": "439-initial-320.png",
+          "sha256": "170c70c87e52b883e5827ca376c294c020698dd5a83c37b06ed9b4d6ba00658d",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №439",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "В прямоугольном треугольнике с неравными катетами биссектриса прямого угла, высота и медиана выходят из одной вершины. Докажите: биссектриса делит пополам угол между высотой и медианой.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 439,
+          "id": "atanasyan-7-9-main-439-part-1",
+          "width": 320,
+          "state": "final",
+          "file": "439-final-320.png",
+          "sha256": "b62e40610362260e1983cba83c669f285d6b7a89c4e6528cb323f9707bac98e3",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №439",
+            "steps": 5,
+            "conditions": [
+              {
+                "text": "В прямоугольном треугольнике с неравными катетами биссектриса прямого угла, высота и медиана выходят из одной вершины. Докажите: биссектриса делит пополам угол между высотой и медианой.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "step-5"
+          }
+        },
+        {
+          "number": 440,
+          "id": "atanasyan-7-9-main-440-part-1",
+          "width": 320,
+          "state": "initial",
+          "file": "440-initial-320.png",
+          "sha256": "8ac08dcd4996de4670f3f813058a5c990dfc8b8438be6ac39f612839db48c5c0",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №440",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "Медиана и высота, проведённые из одной вершины треугольника, делят угол при этой вершине на три равные части. Докажите, что треугольник прямоугольный.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 440,
+          "id": "atanasyan-7-9-main-440-part-1",
+          "width": 320,
+          "state": "final",
+          "file": "440-final-320.png",
+          "sha256": "b12a3b43ccacb643ee1f62af4ffea72eb0ef7fd90493014ab6a7911bb8e0fa2a",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №440",
+            "steps": 6,
+            "conditions": [
+              {
+                "text": "Медиана и высота, проведённые из одной вершины треугольника, делят угол при этой вершине на три равные части. Докажите, что треугольник прямоугольный.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "step-6"
+          }
+        },
+        {
+          "number": 441,
+          "id": "atanasyan-7-9-main-441-part-1",
+          "width": 320,
+          "state": "initial",
+          "file": "441-initial-320.png",
+          "sha256": "9b0db5ff56cee3489ffdd1fa36bd90c6e8a501050b7618261f84068e36a398ca",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №441",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "В треугольнике ABC высота AA₁ не меньше BC, а высота BB₁ не меньше AC. Докажите, что ABC — равнобедренный прямоугольный треугольник.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 441,
+          "id": "atanasyan-7-9-main-441-part-1",
+          "width": 320,
+          "state": "final",
+          "file": "441-final-320.png",
+          "sha256": "2c009137b676a4feb4c2c3265f3dc7b9b6143253ea0ece6d951c518294d8c3bf",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №441",
+            "steps": 4,
+            "conditions": [
+              {
+                "text": "В треугольнике ABC высота AA₁ не меньше BC, а высота BB₁ не меньше AC. Докажите, что ABC — равнобедренный прямоугольный треугольник.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "step-4"
+          }
+        },
+        {
+          "number": 442,
+          "id": "atanasyan-7-9-main-442-part-1",
+          "width": 320,
+          "state": "initial",
+          "file": "442-initial-320.png",
+          "sha256": "51c7126ff89b9156c548182a2885145e8c5911074d9e263ddc5b8691e1019176",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №442",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "Постройте треугольник по двум данным сторонам и высоте, проведённой к третьей стороне. Исследуйте существование и число решений.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 442,
+          "id": "atanasyan-7-9-main-442-part-1",
+          "width": 320,
+          "state": "final",
+          "file": "442-final-320.png",
+          "sha256": "b3e5b2c798640780e72e907d421e29c4a2f5a650cc033294bb2ba34245970a80",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №442",
+            "steps": 5,
+            "conditions": [
+              {
+                "text": "Постройте треугольник по двум данным сторонам и высоте, проведённой к третьей стороне. Исследуйте существование и число решений.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "step-5"
+          }
+        },
+        {
+          "number": 443,
+          "id": "atanasyan-7-9-main-443-part-1",
+          "width": 320,
+          "state": "initial",
+          "file": "443-initial-320.png",
+          "sha256": "68f55408296d3fdd25e8294ec8366d0f03c71e62136c9ba0a72f831feaa5536e",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №443",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "Постройте прямоугольный треугольник ABC по острому углу B и длине биссектрисы BD.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 443,
+          "id": "atanasyan-7-9-main-443-part-1",
+          "width": 320,
+          "state": "final",
+          "file": "443-final-320.png",
+          "sha256": "a4e2d88beedd27f4387353dd8e9947343706326ef77cdfc6c54d41f59cd717a2",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №443",
+            "steps": 5,
+            "conditions": [
+              {
+                "text": "Постройте прямоугольный треугольник ABC по острому углу B и длине биссектрисы BD.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "step-5"
+          }
+        },
+        {
+          "number": 444,
+          "id": "atanasyan-7-9-main-444-part-1",
+          "width": 320,
+          "state": "initial",
+          "file": "444-initial-320.png",
+          "sha256": "2514d6452ffc342559e70eee637ddbd1a4fc5c57f4545b7e4b7c7d08668561f0",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №444",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "Даны окружность с центром O и точка A вне неё. Проведите через A прямую, пересекающую окружность в B и C так, чтобы AB = BC.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 444,
+          "id": "atanasyan-7-9-main-444-part-1",
+          "width": 320,
+          "state": "final",
+          "file": "444-final-320.png",
+          "sha256": "659f25097decbf416ef330a8c7fa2d623ae0ecdf2b51158dfc519179832bc08b",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №444",
+            "steps": 5,
+            "conditions": [
+              {
+                "text": "Даны окружность с центром O и точка A вне неё. Проведите через A прямую, пересекающую окружность в B и C так, чтобы AB = BC.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "step-5"
+          }
+        },
+        {
+          "number": 445,
+          "id": "atanasyan-7-9-main-445-part-1",
+          "width": 320,
+          "state": "initial",
+          "file": "445-initial-320.png",
+          "sha256": "24f9924c8e27def0639513804edb3ffbb91ae813010cad580a78eb306c81886d",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №445",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "Постройте треугольник по данному периметру, одному углу и высоте, проведённой из вершины другого угла.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 445,
+          "id": "atanasyan-7-9-main-445-part-1",
+          "width": 320,
+          "state": "final",
+          "file": "445-final-320.png",
+          "sha256": "57ed3d3f311189c2d3c8cb1f907d9193314ad3e5c72b66d63c1b7b8d0ff7be98",
+          "layout": {
+            "width": 320,
+            "scrollWidth": 320,
+            "title": "К задаче №445",
+            "steps": 5,
+            "conditions": [
+              {
+                "text": "Постройте треугольник по данному периметру, одному углу и высоте, проведённой из вершины другого угла.",
+                "width": 273.8125,
+                "scroll": 274
+              }
+            ],
+            "view": "step-5"
+          }
+        },
+        {
+          "number": 430,
+          "id": "atanasyan-7-9-main-430-part-1",
+          "width": 1280,
+          "state": "initial",
+          "file": "430-initial-1280.png",
+          "sha256": "a1b0de98234230036c097b5a1d7972cd4bd7fb1d334b7b5dc370e56b8d58c506",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №430",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "В треугольнике ABC отрезок BB₁ — биссектриса, B₁ лежит на AC. Докажите: BA > B₁A и BC > B₁C.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 430,
+          "id": "atanasyan-7-9-main-430-part-1",
+          "width": 1280,
+          "state": "final",
+          "file": "430-final-1280.png",
+          "sha256": "a2853c4d75c7b648eff2d40ca398df5195928a22cfb43f11ab9ede9a24cf9890",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №430",
+            "steps": 4,
+            "conditions": [
+              {
+                "text": "В треугольнике ABC отрезок BB₁ — биссектриса, B₁ лежит на AC. Докажите: BA > B₁A и BC > B₁C.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "step-4"
+          }
+        },
+        {
+          "number": 431,
+          "id": "atanasyan-7-9-main-431-part-1",
+          "width": 1280,
+          "state": "initial",
+          "file": "431-initial-1280.png",
+          "sha256": "10a9a8df85a98164e2b761d787411047dea3a1ea7a256777b72b987fc6278c5c",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №431",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "Точка D находится внутри треугольника ABC, причём AD = AB. Докажите, что AC > AB.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 431,
+          "id": "atanasyan-7-9-main-431-part-1",
+          "width": 1280,
+          "state": "final",
+          "file": "431-final-1280.png",
+          "sha256": "19813e184595eda2a73780a89128bcb54068cbd4d476d0aa086cfedf54042552",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №431",
+            "steps": 4,
+            "conditions": [
+              {
+                "text": "Точка D находится внутри треугольника ABC, причём AD = AB. Докажите, что AC > AB.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "step-4"
+          }
+        },
+        {
+          "number": 432,
+          "id": "atanasyan-7-9-main-432-part-1",
+          "width": 1280,
+          "state": "initial",
+          "file": "432-initial-1280.png",
+          "sha256": "eb2bf2be0cfb55d548e420985fce5bc03f5f207931e481bec577220d7dcfe763",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №432",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "В треугольнике ABC дано AB > AC, а AD — биссектриса. Докажите, что ∠ADB > ∠ADC и BD > CD.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 432,
+          "id": "atanasyan-7-9-main-432-part-1",
+          "width": 1280,
+          "state": "final",
+          "file": "432-final-1280.png",
+          "sha256": "899e06c4a1d7a8d2bb5faa301bbabcdf6d283a7cc5927a3a9a0ae9e3dfd2caf5",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №432",
+            "steps": 4,
+            "conditions": [
+              {
+                "text": "В треугольнике ABC дано AB > AC, а AD — биссектриса. Докажите, что ∠ADB > ∠ADC и BD > CD.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "step-4"
+          }
+        },
+        {
+          "number": 433,
+          "id": "atanasyan-7-9-main-433-part-1",
+          "width": 1280,
+          "state": "initial",
+          "file": "433-initial-1280.png",
+          "sha256": "1ef81217d040cd51f4ce3e8cf7dae40aa8a9060ee0c858e59e92e288619cdd1e",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №433",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "Докажите: если биссектриса треугольника одновременно является медианой, то треугольник равнобедренный.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 433,
+          "id": "atanasyan-7-9-main-433-part-1",
+          "width": 1280,
+          "state": "final",
+          "file": "433-final-1280.png",
+          "sha256": "6c6ad6423ee06cafcb25e691094d1be05332c26745a37472553067a8867309e2",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №433",
+            "steps": 4,
+            "conditions": [
+              {
+                "text": "Докажите: если биссектриса треугольника одновременно является медианой, то треугольник равнобедренный.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "step-4"
+          }
+        },
+        {
+          "number": 434,
+          "id": "atanasyan-7-9-main-434-part-1",
+          "width": 1280,
+          "state": "initial",
+          "file": "434-initial-1280.png",
+          "sha256": "66ecef3b358db09ce4bbb240082747875c2256defa3539dfc6c2211fbdc9dfbb",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №434",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "Две стороны треугольника не равны. Докажите: медиана из их общей вершины образует больший угол с меньшей стороной.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 434,
+          "id": "atanasyan-7-9-main-434-part-1",
+          "width": 1280,
+          "state": "final",
+          "file": "434-final-1280.png",
+          "sha256": "0840ed9cb896a795619306337cd23fbe6a019f56e1b84a34e76fe09e60942b23",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №434",
+            "steps": 4,
+            "conditions": [
+              {
+                "text": "Две стороны треугольника не равны. Докажите: медиана из их общей вершины образует больший угол с меньшей стороной.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "step-4"
+          }
+        },
+        {
+          "number": 435,
+          "id": "atanasyan-7-9-main-435-part-1",
+          "width": 1280,
+          "state": "initial",
+          "file": "435-initial-1280.png",
+          "sha256": "1b55a4e2e455df24edb090e9e199a1b2018a057b93104984c1547856581603bc",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №435",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "В треугольнике ABC стороны AB и AC не равны. Точка M лежит на стороне BC. Докажите, что треугольники AMB и AMC не равны.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 435,
+          "id": "atanasyan-7-9-main-435-part-1",
+          "width": 1280,
+          "state": "final",
+          "file": "435-final-1280.png",
+          "sha256": "ddf28a3b3629a0fa8646a1024288c5fe90eefdd024c2a9783cf72b5521da24ce",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №435",
+            "steps": 5,
+            "conditions": [
+              {
+                "text": "В треугольнике ABC стороны AB и AC не равны. Точка M лежит на стороне BC. Докажите, что треугольники AMB и AMC не равны.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "step-5"
+          }
+        },
+        {
+          "number": 436,
+          "id": "atanasyan-7-9-main-436-part-1",
+          "width": 1280,
+          "state": "initial",
+          "file": "436-initial-1280.png",
+          "sha256": "7c0c5ea3c328e974b7f7bde06791bd95053534b5382c444ac84af3bde60e264b",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №436",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "Через A проведена прямая, перпендикулярная биссектрисе угла A треугольника ABC. Из B опущен перпендикуляр BH к этой прямой. Докажите: периметр BCH больше периметра ABC.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 436,
+          "id": "atanasyan-7-9-main-436-part-1",
+          "width": 1280,
+          "state": "final",
+          "file": "436-final-1280.png",
+          "sha256": "1af8305d357c9cfb09aa9898fa49325d12587076ce504ad2fb478b5505b432e9",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №436",
+            "steps": 4,
+            "conditions": [
+              {
+                "text": "Через A проведена прямая, перпендикулярная биссектрисе угла A треугольника ABC. Из B опущен перпендикуляр BH к этой прямой. Докажите: периметр BCH больше периметра ABC.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "step-4"
+          }
+        },
+        {
+          "number": 437,
+          "id": "atanasyan-7-9-main-437-part-1",
+          "width": 1280,
+          "state": "initial",
+          "file": "437-initial-1280.png",
+          "sha256": "a9f90aae3ea019bbb28d92f5745e518d3660d1239a58e425bdc851600ef94c9c",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №437",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "В треугольнике ABC дано AB < AC; AD — биссектриса, AH — высота. Докажите, что H лежит на луче DB.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 437,
+          "id": "atanasyan-7-9-main-437-part-1",
+          "width": 1280,
+          "state": "final",
+          "file": "437-final-1280.png",
+          "sha256": "20e6dfaaf63d9d705b8bccb6f1d4b582039be79d6e0218c07d3e6c19f1bb7911",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №437",
+            "steps": 4,
+            "conditions": [
+              {
+                "text": "В треугольнике ABC дано AB < AC; AD — биссектриса, AH — высота. Докажите, что H лежит на луче DB.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "step-4"
+          }
+        },
+        {
+          "number": 438,
+          "id": "atanasyan-7-9-main-438-part-1",
+          "width": 1280,
+          "state": "initial",
+          "file": "438-initial-1280.png",
+          "sha256": "b948b75caab62c9709e671e89c73dc028beaf08b88cd36141f7507a721f021df",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №438",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "В неравнобедренном треугольнике из одной вершины проведены биссектриса, медиана и высота. Докажите: основание биссектрисы лежит между основаниями медианы и высоты.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 438,
+          "id": "atanasyan-7-9-main-438-part-1",
+          "width": 1280,
+          "state": "final",
+          "file": "438-final-1280.png",
+          "sha256": "9a052279513c8d6b4e9153cf82d7eebf446e15ad01ebd18e763f8cfff375d2e3",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №438",
+            "steps": 4,
+            "conditions": [
+              {
+                "text": "В неравнобедренном треугольнике из одной вершины проведены биссектриса, медиана и высота. Докажите: основание биссектрисы лежит между основаниями медианы и высоты.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "step-4"
+          }
+        },
+        {
+          "number": 439,
+          "id": "atanasyan-7-9-main-439-part-1",
+          "width": 1280,
+          "state": "initial",
+          "file": "439-initial-1280.png",
+          "sha256": "19dedae3126ce4caa6759a96dc06f850441b45f92adbee58757d351f59251b87",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №439",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "В прямоугольном треугольнике с неравными катетами биссектриса прямого угла, высота и медиана выходят из одной вершины. Докажите: биссектриса делит пополам угол между высотой и медианой.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 439,
+          "id": "atanasyan-7-9-main-439-part-1",
+          "width": 1280,
+          "state": "final",
+          "file": "439-final-1280.png",
+          "sha256": "27ed721a205ffd1915d20de7ead2a16f10d0d19d03e3d8b9aed8c36e781159ba",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №439",
+            "steps": 5,
+            "conditions": [
+              {
+                "text": "В прямоугольном треугольнике с неравными катетами биссектриса прямого угла, высота и медиана выходят из одной вершины. Докажите: биссектриса делит пополам угол между высотой и медианой.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "step-5"
+          }
+        },
+        {
+          "number": 440,
+          "id": "atanasyan-7-9-main-440-part-1",
+          "width": 1280,
+          "state": "initial",
+          "file": "440-initial-1280.png",
+          "sha256": "980f206b93b3ed69a5c4badd023bd5bf892b2039efc605373bc537ff77bf1c00",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №440",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "Медиана и высота, проведённые из одной вершины треугольника, делят угол при этой вершине на три равные части. Докажите, что треугольник прямоугольный.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 440,
+          "id": "atanasyan-7-9-main-440-part-1",
+          "width": 1280,
+          "state": "final",
+          "file": "440-final-1280.png",
+          "sha256": "877cfef5a50e0950f3b0d636165f6d6a8a70611c5be3113f0d54b28a9abd4533",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №440",
+            "steps": 6,
+            "conditions": [
+              {
+                "text": "Медиана и высота, проведённые из одной вершины треугольника, делят угол при этой вершине на три равные части. Докажите, что треугольник прямоугольный.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "step-6"
+          }
+        },
+        {
+          "number": 441,
+          "id": "atanasyan-7-9-main-441-part-1",
+          "width": 1280,
+          "state": "initial",
+          "file": "441-initial-1280.png",
+          "sha256": "d5a184ecfc6a16a738176c6d5e0dcf6ffe58a218563274193606f93a8eb2585e",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №441",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "В треугольнике ABC высота AA₁ не меньше BC, а высота BB₁ не меньше AC. Докажите, что ABC — равнобедренный прямоугольный треугольник.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 441,
+          "id": "atanasyan-7-9-main-441-part-1",
+          "width": 1280,
+          "state": "final",
+          "file": "441-final-1280.png",
+          "sha256": "093b5447758b51cd560f4306a9ab10673827cba7401c88a13dc4f0e26d692375",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №441",
+            "steps": 4,
+            "conditions": [
+              {
+                "text": "В треугольнике ABC высота AA₁ не меньше BC, а высота BB₁ не меньше AC. Докажите, что ABC — равнобедренный прямоугольный треугольник.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "step-4"
+          }
+        },
+        {
+          "number": 442,
+          "id": "atanasyan-7-9-main-442-part-1",
+          "width": 1280,
+          "state": "initial",
+          "file": "442-initial-1280.png",
+          "sha256": "3599608b6de975deea9b7296e53d2aa24de3c5b5e03f96bd61f0db7cf10b885d",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №442",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "Постройте треугольник по двум данным сторонам и высоте, проведённой к третьей стороне. Исследуйте существование и число решений.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 442,
+          "id": "atanasyan-7-9-main-442-part-1",
+          "width": 1280,
+          "state": "final",
+          "file": "442-final-1280.png",
+          "sha256": "688e0148eff8117f7cc4168738ee44269332e364c5fe8f7dda69a99307a39d1c",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №442",
+            "steps": 5,
+            "conditions": [
+              {
+                "text": "Постройте треугольник по двум данным сторонам и высоте, проведённой к третьей стороне. Исследуйте существование и число решений.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "step-5"
+          }
+        },
+        {
+          "number": 443,
+          "id": "atanasyan-7-9-main-443-part-1",
+          "width": 1280,
+          "state": "initial",
+          "file": "443-initial-1280.png",
+          "sha256": "ee5c4452283c0afee4570209848e0f7be00b7dcad549d69ee5e2c9bf96470c5e",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №443",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "Постройте прямоугольный треугольник ABC по острому углу B и длине биссектрисы BD.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 443,
+          "id": "atanasyan-7-9-main-443-part-1",
+          "width": 1280,
+          "state": "final",
+          "file": "443-final-1280.png",
+          "sha256": "af7ab1dd572eeabe5aaed526c2cca958af5922c74a3d833a2f7e5a5c9d77e66f",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №443",
+            "steps": 5,
+            "conditions": [
+              {
+                "text": "Постройте прямоугольный треугольник ABC по острому углу B и длине биссектрисы BD.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "step-5"
+          }
+        },
+        {
+          "number": 444,
+          "id": "atanasyan-7-9-main-444-part-1",
+          "width": 1280,
+          "state": "initial",
+          "file": "444-initial-1280.png",
+          "sha256": "5092f0ef126e6fda045d17e3dfe8925ca4c22569b7b0fc3c7a05cb975a223d65",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №444",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "Даны окружность с центром O и точка A вне неё. Проведите через A прямую, пересекающую окружность в B и C так, чтобы AB = BC.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 444,
+          "id": "atanasyan-7-9-main-444-part-1",
+          "width": 1280,
+          "state": "final",
+          "file": "444-final-1280.png",
+          "sha256": "46353ff7e6bddc726d43ed36e8263ef215555369d519853330827028ae9481c6",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №444",
+            "steps": 5,
+            "conditions": [
+              {
+                "text": "Даны окружность с центром O и точка A вне неё. Проведите через A прямую, пересекающую окружность в B и C так, чтобы AB = BC.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "step-5"
+          }
+        },
+        {
+          "number": 445,
+          "id": "atanasyan-7-9-main-445-part-1",
+          "width": 1280,
+          "state": "initial",
+          "file": "445-initial-1280.png",
+          "sha256": "5b03a1d6a558463d82aed90ae842e701a2118af80e5274743cbb45b71fe832ee",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №445",
+            "steps": 0,
+            "conditions": [
+              {
+                "text": "Постройте треугольник по данному периметру, одному углу и высоте, проведённой из вершины другого угла.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "neutral"
+          }
+        },
+        {
+          "number": 445,
+          "id": "atanasyan-7-9-main-445-part-1",
+          "width": 1280,
+          "state": "final",
+          "file": "445-final-1280.png",
+          "sha256": "17ad8f0066d73876154798339d596cbfe2db649abd33f63602002bbd4515e98f",
+          "layout": {
+            "width": 1280,
+            "scrollWidth": 1280,
+            "title": "К задаче №445",
+            "steps": 5,
+            "conditions": [
+              {
+                "text": "Постройте треугольник по данному периметру, одному углу и высоте, проведённой из вершины другого угла.",
+                "width": 747.875,
+                "scroll": 748
+              }
+            ],
+            "view": "step-5"
+          }
+        }
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "B-VIS-437-438",
+      "severity": "blocker",
+      "status": "closed",
+      "description": "In exterior-altitude case1, H had a right-angle mark without the base extension connecting H to B.",
+      "fix": "Author added dashed BH in both437 and438 case1.",
+      "verification": "Fresh final actual-page model PNGs at320 and1280 were read directly and again in delta sheets04/05. H is visibly on the extension of BC and the right-angle mark has both rays."
+    },
+    {
+      "id": "B-VIS-442-SCALE",
+      "severity": "minor",
+      "status": "accepted_nonblocking",
+      "description": "On320px pages some construction-case triangles are small because the common scale includes the complete auxiliary circles. Labels remain readable and the enlarge/fullscreen controls are present.",
+      "decision": "No change after final freeze; retained coherent circle extent. This is an optional future usability refinement, not a mathematical or rendering blocker."
+    },
+    {
+      "id": "REVIEW-CONTACT-CROP",
+      "severity": "review_artifact",
+      "status": "resolved",
+      "description": "Two old contact-sheet cells appeared clipped at the right edge.",
+      "verification": "Opened original435step3desktop and445case4desktop PNGs; no actualpage clipping. Fresh delta sheets use fit-only thumbnails."
+    }
+  ],
+  "modelViewRecords": [
+    {
+      "file": "review-atanasyan-7-9-main-430-part-1-neutral-1280.png",
+      "sha256": "d554a1e6ac7ae241476d8f418cb0a722de006df5fc3f6a682c76be369a01dece",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-430-part-1-neutral-1280.png",
+        "sheet": "b-001.jpg",
+        "priorSha256": "d554a1e6ac7ae241476d8f418cb0a722de006df5fc3f6a682c76be369a01dece"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-430-part-1-neutral-320.png",
+      "sha256": "f15a9382186d2a43f1f5b715c4bc79e59ffd5cfca91582beac250d8cd17723b5",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-430-part-1-neutral-320.png",
+        "sheet": "b-001.jpg",
+        "priorSha256": "f15a9382186d2a43f1f5b715c4bc79e59ffd5cfca91582beac250d8cd17723b5"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-430-part-1-step-1-1280.png",
+      "sha256": "d554a1e6ac7ae241476d8f418cb0a722de006df5fc3f6a682c76be369a01dece",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-430-part-1-neutral-1280.png",
+        "sheet": "b-001.jpg",
+        "priorSha256": "d554a1e6ac7ae241476d8f418cb0a722de006df5fc3f6a682c76be369a01dece"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-430-part-1-step-1-320.png",
+      "sha256": "f15a9382186d2a43f1f5b715c4bc79e59ffd5cfca91582beac250d8cd17723b5",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-01.jpg",
+        "priorSha256": "80b027cc4bf626ec0ac3a9d84662261780e36d63bf7138503a349747ce8699f5"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-430-part-1-step-2-1280.png",
+      "sha256": "447d0660d739c033fee7903ea32705f6d921ab53cd849c55f5ecbb27e99d6516",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-430-part-1-step-2-1280.png",
+        "sheet": "b-001.jpg",
+        "priorSha256": "447d0660d739c033fee7903ea32705f6d921ab53cd849c55f5ecbb27e99d6516"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-430-part-1-step-2-320.png",
+      "sha256": "8bff2dc9dad3277027b4ed501b6f2684fff0229cf157a894004f679e0416f0c6",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-430-part-1-step-2-320.png",
+        "sheet": "b-002.jpg",
+        "priorSha256": "8bff2dc9dad3277027b4ed501b6f2684fff0229cf157a894004f679e0416f0c6"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-430-part-1-step-3-1280.png",
+      "sha256": "4908123aed63ff0066dc5e3ab436ed7ac0db7b8a1195bd99cd6b7e73b71b1785",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-430-part-1-step-3-1280.png",
+        "sheet": "b-002.jpg",
+        "priorSha256": "4908123aed63ff0066dc5e3ab436ed7ac0db7b8a1195bd99cd6b7e73b71b1785"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-430-part-1-step-3-320.png",
+      "sha256": "09aafdba92b467d0dcc7fafa73fa322986cc874ee764b936388c82fa8f39f142",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-430-part-1-step-3-320.png",
+        "sheet": "b-002.jpg",
+        "priorSha256": "09aafdba92b467d0dcc7fafa73fa322986cc874ee764b936388c82fa8f39f142"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-430-part-1-step-4-1280.png",
+      "sha256": "92e4ebe49a90eea2dbc46ac556c2eed533a4e9217973718ed5f925434791f721",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-430-part-1-step-4-1280.png",
+        "sheet": "b-002.jpg",
+        "priorSha256": "92e4ebe49a90eea2dbc46ac556c2eed533a4e9217973718ed5f925434791f721"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-430-part-1-step-4-320.png",
+      "sha256": "2dd30b0a702eac8eebd08de8b29402a90a97ec33a3d614d86add60a49d7a044c",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-430-part-1-step-4-320.png",
+        "sheet": "b-003.jpg",
+        "priorSha256": "2dd30b0a702eac8eebd08de8b29402a90a97ec33a3d614d86add60a49d7a044c"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-431-part-1-neutral-1280.png",
+      "sha256": "5037920253450a6f365c3d5906c2c6a3fb0c8af8ae2c838223b6095d84f4d2c5",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-431-part-1-neutral-1280.png",
+        "sheet": "b-003.jpg",
+        "priorSha256": "5037920253450a6f365c3d5906c2c6a3fb0c8af8ae2c838223b6095d84f4d2c5"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-431-part-1-neutral-320.png",
+      "sha256": "602667aa2f033511cc5b86a8570c2b092c9df5f770ae017c279a8e3a7759d83a",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-431-part-1-neutral-320.png",
+        "sheet": "b-003.jpg",
+        "priorSha256": "602667aa2f033511cc5b86a8570c2b092c9df5f770ae017c279a8e3a7759d83a"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-431-part-1-step-1-1280.png",
+      "sha256": "850620550f89a2c507bc013a87b9b446169a9ee68b748deaeada44c2b54beb13",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-431-part-1-step-1-1280.png",
+        "sheet": "b-003.jpg",
+        "priorSha256": "850620550f89a2c507bc013a87b9b446169a9ee68b748deaeada44c2b54beb13"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-431-part-1-step-1-320.png",
+      "sha256": "de53ce3f85a9e9d46be81196e99fa93b4e8ccd95c5954e807f8d2c975f21af4d",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-01.jpg",
+        "priorSha256": "44bdefc129bce4d6ee4eca36dbe47827190761bebca6076595db37180693353a"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-431-part-1-step-2-1280.png",
+      "sha256": "850620550f89a2c507bc013a87b9b446169a9ee68b748deaeada44c2b54beb13",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-431-part-1-step-1-1280.png",
+        "sheet": "b-003.jpg",
+        "priorSha256": "850620550f89a2c507bc013a87b9b446169a9ee68b748deaeada44c2b54beb13"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-431-part-1-step-2-320.png",
+      "sha256": "44bdefc129bce4d6ee4eca36dbe47827190761bebca6076595db37180693353a",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-431-part-1-step-1-320.png",
+        "sheet": "b-004.jpg",
+        "priorSha256": "44bdefc129bce4d6ee4eca36dbe47827190761bebca6076595db37180693353a"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-431-part-1-step-3-1280.png",
+      "sha256": "f53471b0f1e3306efd8cd96b58bd215aecb891f6442ae388e1360b306353cc4d",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-431-part-1-step-3-1280.png",
+        "sheet": "b-004.jpg",
+        "priorSha256": "f53471b0f1e3306efd8cd96b58bd215aecb891f6442ae388e1360b306353cc4d"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-431-part-1-step-3-320.png",
+      "sha256": "c7faa050ef17dd3a50f8229a2dd7d168b6e9a91224c9900134bf603d14d375bd",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-431-part-1-step-3-320.png",
+        "sheet": "b-004.jpg",
+        "priorSha256": "c7faa050ef17dd3a50f8229a2dd7d168b6e9a91224c9900134bf603d14d375bd"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-431-part-1-step-4-1280.png",
+      "sha256": "d9e20bfbfc25c9c26c11c5565c90449d3a94d92706f9dedbf14e1e220a68056b",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-431-part-1-step-4-1280.png",
+        "sheet": "b-004.jpg",
+        "priorSha256": "d9e20bfbfc25c9c26c11c5565c90449d3a94d92706f9dedbf14e1e220a68056b"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-431-part-1-step-4-320.png",
+      "sha256": "07e095161e93657b248bab0b7121625b10d7f7ff4fa387ac57fd48fc2948962c",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-431-part-1-step-4-320.png",
+        "sheet": "b-005.jpg",
+        "priorSha256": "07e095161e93657b248bab0b7121625b10d7f7ff4fa387ac57fd48fc2948962c"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-432-part-1-neutral-1280.png",
+      "sha256": "eaf858b58eb207e69e754e34ab79eb25587fe02aa42e4c049545d5e98867a899",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-432-part-1-neutral-1280.png",
+        "sheet": "b-005.jpg",
+        "priorSha256": "eaf858b58eb207e69e754e34ab79eb25587fe02aa42e4c049545d5e98867a899"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-432-part-1-neutral-320.png",
+      "sha256": "3c8aa9256534fc65162ba86bb6790f5bdcffdafda72552aaa42ecf072f3a5e1b",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-432-part-1-neutral-320.png",
+        "sheet": "b-005.jpg",
+        "priorSha256": "3c8aa9256534fc65162ba86bb6790f5bdcffdafda72552aaa42ecf072f3a5e1b"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-432-part-1-step-1-1280.png",
+      "sha256": "39c7e5ba3d1a71eaaac45f8e7d05d2c3b06559da62e5e899598426cf19f27c31",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-432-part-1-step-1-1280.png",
+        "sheet": "b-005.jpg",
+        "priorSha256": "39c7e5ba3d1a71eaaac45f8e7d05d2c3b06559da62e5e899598426cf19f27c31"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-432-part-1-step-1-320.png",
+      "sha256": "3c8aa9256534fc65162ba86bb6790f5bdcffdafda72552aaa42ecf072f3a5e1b",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-432-part-1-neutral-320.png",
+        "sheet": "b-005.jpg",
+        "priorSha256": "3c8aa9256534fc65162ba86bb6790f5bdcffdafda72552aaa42ecf072f3a5e1b"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-432-part-1-step-2-1280.png",
+      "sha256": "d538fc60ca69f94ce033fcafa9eabdfebc9bc1135bef0c4957553fbf0c2eef00",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-01.jpg",
+        "priorSha256": "39c7e5ba3d1a71eaaac45f8e7d05d2c3b06559da62e5e899598426cf19f27c31"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-432-part-1-step-2-320.png",
+      "sha256": "de27273a8fc49e65bc38c0f2b846b33d9ed27f0c7451407b9dfd4a0d33b52d25",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-01.jpg",
+        "priorSha256": "3c8aa9256534fc65162ba86bb6790f5bdcffdafda72552aaa42ecf072f3a5e1b"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-432-part-1-step-3-1280.png",
+      "sha256": "d70388950ffc8c08cf1a2f2627e451de3559af1267ff4bee02abc7ded7c8c2d7",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-02.jpg",
+        "priorSha256": "d16dec1c9210457ff9e1d23d0e4975e4e52b98e3bb49afe6a66c18b94507b0a3"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-432-part-1-step-3-320.png",
+      "sha256": "f56b39c3531957f0a72c136c746163c31595031344f34a6c75d380bd881b64c6",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-02.jpg",
+        "priorSha256": "34559dfc7c5b33664566aec59f287f832ba43b568d7137cfe3daf419dbce5e71"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-432-part-1-step-4-1280.png",
+      "sha256": "657f6c8825a6461c7d1e62c86d540911ac8608027ac49e8d421b166a867a41bd",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-432-part-1-step-4-1280.png",
+        "sheet": "b-006.jpg",
+        "priorSha256": "657f6c8825a6461c7d1e62c86d540911ac8608027ac49e8d421b166a867a41bd"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-432-part-1-step-4-320.png",
+      "sha256": "e6d17f0d6b04efbca2096cb093e736f064882edc358869f4a4419fa969ba0538",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-432-part-1-step-4-320.png",
+        "sheet": "b-006.jpg",
+        "priorSha256": "e6d17f0d6b04efbca2096cb093e736f064882edc358869f4a4419fa969ba0538"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-433-part-1-neutral-1280.png",
+      "sha256": "c6996c7966ff41f8fb345786771c7603f933d1da7fdded3266c83f236b178646",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-433-part-1-neutral-1280.png",
+        "sheet": "b-007.jpg",
+        "priorSha256": "c6996c7966ff41f8fb345786771c7603f933d1da7fdded3266c83f236b178646"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-433-part-1-neutral-320.png",
+      "sha256": "f2ce6a40e7a919a08c676c4cf4ad970b5c528f39fa7bd33841d4a784284324fb",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-433-part-1-neutral-320.png",
+        "sheet": "b-007.jpg",
+        "priorSha256": "f2ce6a40e7a919a08c676c4cf4ad970b5c528f39fa7bd33841d4a784284324fb"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-433-part-1-step-1-1280.png",
+      "sha256": "c6996c7966ff41f8fb345786771c7603f933d1da7fdded3266c83f236b178646",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-433-part-1-neutral-1280.png",
+        "sheet": "b-007.jpg",
+        "priorSha256": "c6996c7966ff41f8fb345786771c7603f933d1da7fdded3266c83f236b178646"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-433-part-1-step-1-320.png",
+      "sha256": "a4d37e703b04c03788053f8346b1923b020e9f8f9883e10745a038f3e233c17b",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-02.jpg",
+        "priorSha256": "f2ce6a40e7a919a08c676c4cf4ad970b5c528f39fa7bd33841d4a784284324fb"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-433-part-1-step-2-1280.png",
+      "sha256": "508e59253fe4373176e12f9fefbca3fbf8f1b7a01ed054ca4eb499cf4093a0f2",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-433-part-1-step-2-1280.png",
+        "sheet": "b-007.jpg",
+        "priorSha256": "508e59253fe4373176e12f9fefbca3fbf8f1b7a01ed054ca4eb499cf4093a0f2"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-433-part-1-step-2-320.png",
+      "sha256": "59deae4e1353b002c20749527237853b1983a2f4c00f077584d6644f7d0cc1b5",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-433-part-1-step-2-320.png",
+        "sheet": "b-007.jpg",
+        "priorSha256": "59deae4e1353b002c20749527237853b1983a2f4c00f077584d6644f7d0cc1b5"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-433-part-1-step-3-1280.png",
+      "sha256": "508e59253fe4373176e12f9fefbca3fbf8f1b7a01ed054ca4eb499cf4093a0f2",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-433-part-1-step-2-1280.png",
+        "sheet": "b-007.jpg",
+        "priorSha256": "508e59253fe4373176e12f9fefbca3fbf8f1b7a01ed054ca4eb499cf4093a0f2"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-433-part-1-step-3-320.png",
+      "sha256": "59deae4e1353b002c20749527237853b1983a2f4c00f077584d6644f7d0cc1b5",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-433-part-1-step-2-320.png",
+        "sheet": "b-007.jpg",
+        "priorSha256": "59deae4e1353b002c20749527237853b1983a2f4c00f077584d6644f7d0cc1b5"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-433-part-1-step-4-1280.png",
+      "sha256": "3af2c05458108a348876ba369ef5e5a1573871bfc933d33875075ccc6d9fe348",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-433-part-1-step-4-1280.png",
+        "sheet": "b-008.jpg",
+        "priorSha256": "3af2c05458108a348876ba369ef5e5a1573871bfc933d33875075ccc6d9fe348"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-433-part-1-step-4-320.png",
+      "sha256": "1d83635d6a2620541246fc80ea34ff6b590f424ee59bd33900de62ad9e24a409",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-433-part-1-step-4-320.png",
+        "sheet": "b-008.jpg",
+        "priorSha256": "1d83635d6a2620541246fc80ea34ff6b590f424ee59bd33900de62ad9e24a409"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-434-part-1-neutral-1280.png",
+      "sha256": "6206ea0e55b28ac08635b500a6b381d139f23711cf273ddf6788fba1c0286a0d",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-434-part-1-neutral-1280.png",
+        "sheet": "b-008.jpg",
+        "priorSha256": "6206ea0e55b28ac08635b500a6b381d139f23711cf273ddf6788fba1c0286a0d"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-434-part-1-neutral-320.png",
+      "sha256": "fc2b479ae1a7965136185a5c901564bbde55480fa174f89dd5bcb39d332f3707",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-434-part-1-neutral-320.png",
+        "sheet": "b-008.jpg",
+        "priorSha256": "fc2b479ae1a7965136185a5c901564bbde55480fa174f89dd5bcb39d332f3707"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-434-part-1-step-1-1280.png",
+      "sha256": "1ef3712a494c440587adb2d6c3d68b2593e7f740eea9f6d232db77005fe7c4be",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-02.jpg",
+        "priorSha256": "6206ea0e55b28ac08635b500a6b381d139f23711cf273ddf6788fba1c0286a0d"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-434-part-1-step-1-320.png",
+      "sha256": "fc2b479ae1a7965136185a5c901564bbde55480fa174f89dd5bcb39d332f3707",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-434-part-1-neutral-320.png",
+        "sheet": "b-008.jpg",
+        "priorSha256": "fc2b479ae1a7965136185a5c901564bbde55480fa174f89dd5bcb39d332f3707"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-434-part-1-step-2-1280.png",
+      "sha256": "295c1d72c6170bb7393d524d9cc2e4f40c9eac68710cd2603a3ffeba6aa8472e",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-03.jpg",
+        "priorSha256": "a615c161704aa909eb4a911f554e50a2fc31479565ac012abaebe6a7bbf7bcc5"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-434-part-1-step-2-320.png",
+      "sha256": "be28f8868f227fc120131c4b1c61165ae419b89ade5b94a9897f98d9c0685352",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-434-part-1-step-2-320.png",
+        "sheet": "b-009.jpg",
+        "priorSha256": "be28f8868f227fc120131c4b1c61165ae419b89ade5b94a9897f98d9c0685352"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-434-part-1-step-3-1280.png",
+      "sha256": "295c1d72c6170bb7393d524d9cc2e4f40c9eac68710cd2603a3ffeba6aa8472e",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-434-part-1-step-3-1280.png",
+        "sheet": "b-009.jpg",
+        "priorSha256": "295c1d72c6170bb7393d524d9cc2e4f40c9eac68710cd2603a3ffeba6aa8472e"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-434-part-1-step-3-320.png",
+      "sha256": "be28f8868f227fc120131c4b1c61165ae419b89ade5b94a9897f98d9c0685352",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-434-part-1-step-2-320.png",
+        "sheet": "b-009.jpg",
+        "priorSha256": "be28f8868f227fc120131c4b1c61165ae419b89ade5b94a9897f98d9c0685352"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-434-part-1-step-4-1280.png",
+      "sha256": "4c1aa35df277914451998bc044918a4f1158b24ccef214abc8f175fcc7f8997c",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-434-part-1-step-4-1280.png",
+        "sheet": "b-009.jpg",
+        "priorSha256": "4c1aa35df277914451998bc044918a4f1158b24ccef214abc8f175fcc7f8997c"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-434-part-1-step-4-320.png",
+      "sha256": "ee4a497292b0e03938189f9297b945d832500feeb759b82301f7f45e0bfaf250",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-434-part-1-step-4-320.png",
+        "sheet": "b-010.jpg",
+        "priorSha256": "ee4a497292b0e03938189f9297b945d832500feeb759b82301f7f45e0bfaf250"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-435-part-1-neutral-1280.png",
+      "sha256": "d8a317f8510e15c3ebf78c709bdffe6c8f542b0b4ca1753666d0237a88809f68",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-435-part-1-neutral-1280.png",
+        "sheet": "b-010.jpg",
+        "priorSha256": "d8a317f8510e15c3ebf78c709bdffe6c8f542b0b4ca1753666d0237a88809f68"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-435-part-1-neutral-320.png",
+      "sha256": "ed20a666aca06c2fd6a3156bbc8ad059f46a4311b7e1c138a5ba4b55863c00e3",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-435-part-1-neutral-320.png",
+        "sheet": "b-010.jpg",
+        "priorSha256": "ed20a666aca06c2fd6a3156bbc8ad059f46a4311b7e1c138a5ba4b55863c00e3"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-435-part-1-step-1-1280.png",
+      "sha256": "755b4ef2fac4380db395d923be731bb0eaa9911de3236901fa3adb044461ccf9",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-03.jpg",
+        "priorSha256": "d8a317f8510e15c3ebf78c709bdffe6c8f542b0b4ca1753666d0237a88809f68"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-435-part-1-step-1-320.png",
+      "sha256": "ed20a666aca06c2fd6a3156bbc8ad059f46a4311b7e1c138a5ba4b55863c00e3",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-03.jpg",
+        "priorSha256": "b62c1477eb6e6b9655562d193bac29b65b44a4e05b4304b5374fbe01d1944bf1"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-435-part-1-step-2-1280.png",
+      "sha256": "755b4ef2fac4380db395d923be731bb0eaa9911de3236901fa3adb044461ccf9",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-435-part-1-step-2-1280.png",
+        "sheet": "b-011.jpg",
+        "priorSha256": "755b4ef2fac4380db395d923be731bb0eaa9911de3236901fa3adb044461ccf9"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-435-part-1-step-2-320.png",
+      "sha256": "b62c1477eb6e6b9655562d193bac29b65b44a4e05b4304b5374fbe01d1944bf1",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-435-part-1-step-1-320.png",
+        "sheet": "b-010.jpg",
+        "priorSha256": "b62c1477eb6e6b9655562d193bac29b65b44a4e05b4304b5374fbe01d1944bf1"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-435-part-1-step-3-1280.png",
+      "sha256": "bc970d67311da6373d1cf708efd06d132e1fb3c56a696212795186cd7a9bc8b1",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-435-part-1-step-3-1280.png",
+        "sheet": "b-011.jpg",
+        "priorSha256": "bc970d67311da6373d1cf708efd06d132e1fb3c56a696212795186cd7a9bc8b1"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-435-part-1-step-3-320.png",
+      "sha256": "e73bdbae1183530f9a6ae115679493b862f5e80be22bb7b2c914d877e752913e",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-435-part-1-step-3-320.png",
+        "sheet": "b-011.jpg",
+        "priorSha256": "e73bdbae1183530f9a6ae115679493b862f5e80be22bb7b2c914d877e752913e"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-435-part-1-step-4-1280.png",
+      "sha256": "d2aa5cd8ce7748a5291c888afe29588bdb2febadbc7f7151bdb5164719125c03",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-435-part-1-step-4-1280.png",
+        "sheet": "b-011.jpg",
+        "priorSha256": "d2aa5cd8ce7748a5291c888afe29588bdb2febadbc7f7151bdb5164719125c03"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-435-part-1-step-4-320.png",
+      "sha256": "854d9ded1d545c497299bb143053c327a415d4596016a753978d239d21b68c3b",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-435-part-1-step-4-320.png",
+        "sheet": "b-012.jpg",
+        "priorSha256": "854d9ded1d545c497299bb143053c327a415d4596016a753978d239d21b68c3b"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-435-part-1-step-5-1280.png",
+      "sha256": "755b4ef2fac4380db395d923be731bb0eaa9911de3236901fa3adb044461ccf9",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-435-part-1-step-2-1280.png",
+        "sheet": "b-011.jpg",
+        "priorSha256": "755b4ef2fac4380db395d923be731bb0eaa9911de3236901fa3adb044461ccf9"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-435-part-1-step-5-320.png",
+      "sha256": "b62c1477eb6e6b9655562d193bac29b65b44a4e05b4304b5374fbe01d1944bf1",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-435-part-1-step-1-320.png",
+        "sheet": "b-010.jpg",
+        "priorSha256": "b62c1477eb6e6b9655562d193bac29b65b44a4e05b4304b5374fbe01d1944bf1"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-436-part-1-neutral-1280.png",
+      "sha256": "ddb74cff961e74c2b5854efcbde38bc108466cf1d3ae1f0a10912dc6d0203819",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-436-part-1-neutral-1280.png",
+        "sheet": "b-012.jpg",
+        "priorSha256": "ddb74cff961e74c2b5854efcbde38bc108466cf1d3ae1f0a10912dc6d0203819"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-436-part-1-neutral-320.png",
+      "sha256": "e5e449ce98a15fed5242a8c0f08ad66c36d1129515a802b53a7fad230276d66c",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-436-part-1-neutral-320.png",
+        "sheet": "b-012.jpg",
+        "priorSha256": "e5e449ce98a15fed5242a8c0f08ad66c36d1129515a802b53a7fad230276d66c"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-436-part-1-step-1-1280.png",
+      "sha256": "e0f7ec1546c27cdb64d7ed6770699d4320e119cba92deb64061abfa969a7caf1",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-03.jpg",
+        "priorSha256": "7d7e271e589ea52249d7fe9d8def727083e9bbd033b528ec6b2c3c8cdbcc69c2"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-436-part-1-step-1-320.png",
+      "sha256": "769572f69cf1831afc60352778cdb7984353e07d3e201d24a6a68be7d7951697",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-04.jpg",
+        "priorSha256": "836c6844096f191af945763f03a13a585292518f39b932edcc63c3a16d0ec760"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-436-part-1-step-2-1280.png",
+      "sha256": "7d7e271e589ea52249d7fe9d8def727083e9bbd033b528ec6b2c3c8cdbcc69c2",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-436-part-1-step-1-1280.png",
+        "sheet": "b-012.jpg",
+        "priorSha256": "7d7e271e589ea52249d7fe9d8def727083e9bbd033b528ec6b2c3c8cdbcc69c2"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-436-part-1-step-2-320.png",
+      "sha256": "836c6844096f191af945763f03a13a585292518f39b932edcc63c3a16d0ec760",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-436-part-1-step-1-320.png",
+        "sheet": "b-013.jpg",
+        "priorSha256": "836c6844096f191af945763f03a13a585292518f39b932edcc63c3a16d0ec760"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-436-part-1-step-3-1280.png",
+      "sha256": "bf5cfa4a203c6f75a0f2a8501dd5a0b6d4ae778037d58d47ba2ec04d5c9a952b",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-436-part-1-step-3-1280.png",
+        "sheet": "b-013.jpg",
+        "priorSha256": "bf5cfa4a203c6f75a0f2a8501dd5a0b6d4ae778037d58d47ba2ec04d5c9a952b"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-436-part-1-step-3-320.png",
+      "sha256": "5a21980577cfd3d703613472eec6076f8d9e3bab4bf8e15322eea6e3b1cba512",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-436-part-1-step-3-320.png",
+        "sheet": "b-013.jpg",
+        "priorSha256": "5a21980577cfd3d703613472eec6076f8d9e3bab4bf8e15322eea6e3b1cba512"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-436-part-1-step-4-1280.png",
+      "sha256": "7af1a937460cb99f2769442bcbe3a2fcc1458acfdc41cd19b6afe1a15932864f",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-436-part-1-step-4-1280.png",
+        "sheet": "b-013.jpg",
+        "priorSha256": "7af1a937460cb99f2769442bcbe3a2fcc1458acfdc41cd19b6afe1a15932864f"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-436-part-1-step-4-320.png",
+      "sha256": "359f6a33ed149424d4164348dc11fa93d518b0b6606921a644b479db9b667b8c",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-436-part-1-step-4-320.png",
+        "sheet": "b-014.jpg",
+        "priorSha256": "359f6a33ed149424d4164348dc11fa93d518b0b6606921a644b479db9b667b8c"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-437-part-1-case-1-1280.png",
+      "sha256": "7a21e24fa0efdad0e8dc15981f9247b869ee89db4344d1c92eecec9d2906b48a",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-04.jpg",
+        "priorSha256": "89924ad31120eb1995edbbc72ef6e29bf7b96e309413ac898f7253bc8a920ede"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-437-part-1-case-1-320.png",
+      "sha256": "5e3e344f01cf82678545110af2471b06fad1a45551050762bfdd31eba5c96d65",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-04.jpg",
+        "priorSha256": "83513d4147c2ffba7a4c26d0940c29822219bc3da866ae929ccc8bd41bb7edaf"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-437-part-1-case-2-1280.png",
+      "sha256": "d35036f62732ebc2bd29644018200e9be04ba99067ed8d3a6c05a9d877ffff57",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-437-part-1-case-2-1280.png",
+        "sheet": "b-014.jpg",
+        "priorSha256": "d35036f62732ebc2bd29644018200e9be04ba99067ed8d3a6c05a9d877ffff57"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-437-part-1-case-2-320.png",
+      "sha256": "adfa6bd97f287968c628315ee1d61ad05ae1d86d1595f1a7ede66e44652a2877",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-437-part-1-case-2-320.png",
+        "sheet": "b-015.jpg",
+        "priorSha256": "adfa6bd97f287968c628315ee1d61ad05ae1d86d1595f1a7ede66e44652a2877"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-437-part-1-neutral-1280.png",
+      "sha256": "d6d7ab3485853702e93973b2f82b9b3aa1848419b38826142584b2aa7b721b4d",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-437-part-1-neutral-1280.png",
+        "sheet": "b-015.jpg",
+        "priorSha256": "d6d7ab3485853702e93973b2f82b9b3aa1848419b38826142584b2aa7b721b4d"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-437-part-1-neutral-320.png",
+      "sha256": "216239f50727bcac929a26a0efa0a1881331c0a5fab9c7ec3979ae75da25964f",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-437-part-1-neutral-320.png",
+        "sheet": "b-015.jpg",
+        "priorSha256": "216239f50727bcac929a26a0efa0a1881331c0a5fab9c7ec3979ae75da25964f"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-437-part-1-step-1-1280.png",
+      "sha256": "cb95613fe234d07416edac7ae480ff6929694013b4e5436a85004d72d4cba93f",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-437-part-1-step-1-1280.png",
+        "sheet": "b-015.jpg",
+        "priorSha256": "cb95613fe234d07416edac7ae480ff6929694013b4e5436a85004d72d4cba93f"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-437-part-1-step-1-320.png",
+      "sha256": "216239f50727bcac929a26a0efa0a1881331c0a5fab9c7ec3979ae75da25964f",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-04.jpg",
+        "priorSha256": "c3e0d7919e35a22a586161eee6701d3c10f86a4cf15e5423b2339c7029e71747"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-437-part-1-step-2-1280.png",
+      "sha256": "15505d29730c6c8a4dcee779f0bd9b3c3159f0c561d994ffea1f14b9af2e6f01",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-437-part-1-step-2-1280.png",
+        "sheet": "b-016.jpg",
+        "priorSha256": "15505d29730c6c8a4dcee779f0bd9b3c3159f0c561d994ffea1f14b9af2e6f01"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-437-part-1-step-2-320.png",
+      "sha256": "5fadc5853382289d8987d3466a2f9d7c4658b97964867e0da145f40fc7b347fc",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-05.jpg",
+        "priorSha256": "58fc281438b21610f7391c39b3bd5c52b445db2436471687e5cfde6e49fceace"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-437-part-1-step-3-1280.png",
+      "sha256": "5eeb9fe9a0e18f029c0bc43484e1ec2639063a9e0b3af0499b250366921e43c3",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-437-part-1-step-3-1280.png",
+        "sheet": "b-016.jpg",
+        "priorSha256": "5eeb9fe9a0e18f029c0bc43484e1ec2639063a9e0b3af0499b250366921e43c3"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-437-part-1-step-3-320.png",
+      "sha256": "2472e186d21821acae7b41adb9b30b2298b636b91441535be7e1796f1dec3aa2",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-437-part-1-step-3-320.png",
+        "sheet": "b-017.jpg",
+        "priorSha256": "2472e186d21821acae7b41adb9b30b2298b636b91441535be7e1796f1dec3aa2"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-437-part-1-step-4-1280.png",
+      "sha256": "9ca094aaecf50d397a4ee52e760e450a80fcaeebeca1f457f2e805ae996f0986",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-437-part-1-step-4-1280.png",
+        "sheet": "b-017.jpg",
+        "priorSha256": "9ca094aaecf50d397a4ee52e760e450a80fcaeebeca1f457f2e805ae996f0986"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-437-part-1-step-4-320.png",
+      "sha256": "346a4427562bc813bb2ae742b4b9248d6b753b312f6942b325c2671c59d63756",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-437-part-1-step-4-320.png",
+        "sheet": "b-017.jpg",
+        "priorSha256": "346a4427562bc813bb2ae742b4b9248d6b753b312f6942b325c2671c59d63756"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-438-part-1-case-1-1280.png",
+      "sha256": "8a99984131ebcd0eb39f86bcda24ce53ad55d9461788f1dc555da246be724cc6",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-05.jpg",
+        "priorSha256": "a29a115bb31c011de718ab2b9bc03ebe96a2561b1273cca15c0703aeb26a8e3c"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-438-part-1-case-1-320.png",
+      "sha256": "db93b426ec653499d2540ba9ec0344c8d883fb695b8b58b4a8d3ae511a04bfa2",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-05.jpg",
+        "priorSha256": "9df012268d522b2ad27eaf23e3fa6d51e881f3bee1550cc10c9098bce04f6fa1"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-438-part-1-neutral-1280.png",
+      "sha256": "8a7d414f94285f6a8b8813444589d0c02fa6b1a8ca746ad500b764b70ac85423",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-438-part-1-neutral-1280.png",
+        "sheet": "b-018.jpg",
+        "priorSha256": "8a7d414f94285f6a8b8813444589d0c02fa6b1a8ca746ad500b764b70ac85423"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-438-part-1-neutral-320.png",
+      "sha256": "09609244cae53208e488d3ba7c330b3b5e18765e61e0775b7aafbe44cfb428ed",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-438-part-1-neutral-320.png",
+        "sheet": "b-018.jpg",
+        "priorSha256": "09609244cae53208e488d3ba7c330b3b5e18765e61e0775b7aafbe44cfb428ed"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-438-part-1-step-1-1280.png",
+      "sha256": "8a7d414f94285f6a8b8813444589d0c02fa6b1a8ca746ad500b764b70ac85423",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-438-part-1-neutral-1280.png",
+        "sheet": "b-018.jpg",
+        "priorSha256": "8a7d414f94285f6a8b8813444589d0c02fa6b1a8ca746ad500b764b70ac85423"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-438-part-1-step-1-320.png",
+      "sha256": "a312f90d36f1f3b09e8b7ade7e56880417aff69dae5bd1a645e642e6534c651f",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-05.jpg",
+        "priorSha256": "09609244cae53208e488d3ba7c330b3b5e18765e61e0775b7aafbe44cfb428ed"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-438-part-1-step-2-1280.png",
+      "sha256": "41ef90942953b1136cc890280b588ad59757769b5c6fabd3d83510e5a94a5ffe",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-438-part-1-step-2-1280.png",
+        "sheet": "b-018.jpg",
+        "priorSha256": "41ef90942953b1136cc890280b588ad59757769b5c6fabd3d83510e5a94a5ffe"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-438-part-1-step-2-320.png",
+      "sha256": "f6a15343ad8e8f5bddbab4b2cf8ee96b88d677251df7fd1cf51da0eb4ed48842",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-06.jpg",
+        "priorSha256": "67889b8fd85233ec98542dc6da7d9d7c6a5649497b3d50762bf9cc11b9927e2b"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-438-part-1-step-3-1280.png",
+      "sha256": "d189d56e2064ca6c8a0ae5a3cbb4e7812aad6549901d20123b9fc620e09a0043",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-438-part-1-step-3-1280.png",
+        "sheet": "b-019.jpg",
+        "priorSha256": "d189d56e2064ca6c8a0ae5a3cbb4e7812aad6549901d20123b9fc620e09a0043"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-438-part-1-step-3-320.png",
+      "sha256": "f554d9944178f5e83231cbc59cc6ee805250b0b7371aa8e89baad91dcc68ee00",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-438-part-1-step-3-320.png",
+        "sheet": "b-019.jpg",
+        "priorSha256": "f554d9944178f5e83231cbc59cc6ee805250b0b7371aa8e89baad91dcc68ee00"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-438-part-1-step-4-1280.png",
+      "sha256": "35137d233811cb8a83ce56a8270b808f8e4fe146c83db93e2f0da83d71391f37",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-438-part-1-step-4-1280.png",
+        "sheet": "b-019.jpg",
+        "priorSha256": "35137d233811cb8a83ce56a8270b808f8e4fe146c83db93e2f0da83d71391f37"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-438-part-1-step-4-320.png",
+      "sha256": "664ab395364e631351bf5c6858ebfb98a531802cd688b81b43c475a84c9e13fa",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-438-part-1-step-4-320.png",
+        "sheet": "b-020.jpg",
+        "priorSha256": "664ab395364e631351bf5c6858ebfb98a531802cd688b81b43c475a84c9e13fa"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-439-part-1-neutral-1280.png",
+      "sha256": "e39f35c472732dbe01d2c87f5bda10f9aa864c45fafc8d1d4a81959b67c9ac17",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-439-part-1-neutral-1280.png",
+        "sheet": "b-020.jpg",
+        "priorSha256": "e39f35c472732dbe01d2c87f5bda10f9aa864c45fafc8d1d4a81959b67c9ac17"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-439-part-1-neutral-320.png",
+      "sha256": "6e868d476798594280bfdf3c76fe21daf7c88ca2d1f5d983f5f04fd0f18565d5",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-439-part-1-neutral-320.png",
+        "sheet": "b-020.jpg",
+        "priorSha256": "6e868d476798594280bfdf3c76fe21daf7c88ca2d1f5d983f5f04fd0f18565d5"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-439-part-1-step-1-1280.png",
+      "sha256": "e39f35c472732dbe01d2c87f5bda10f9aa864c45fafc8d1d4a81959b67c9ac17",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-439-part-1-neutral-1280.png",
+        "sheet": "b-020.jpg",
+        "priorSha256": "e39f35c472732dbe01d2c87f5bda10f9aa864c45fafc8d1d4a81959b67c9ac17"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-439-part-1-step-1-320.png",
+      "sha256": "6e868d476798594280bfdf3c76fe21daf7c88ca2d1f5d983f5f04fd0f18565d5",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-06.jpg",
+        "priorSha256": "006406262ed17251f473f60bc22cddd756464f45dac505b2f4dddc29c7586c40"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-439-part-1-step-2-1280.png",
+      "sha256": "938043c2626cac9f9de220b89889357cba14c0897793b289b8b7ca597c8c79cb",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-439-part-1-step-2-1280.png",
+        "sheet": "b-021.jpg",
+        "priorSha256": "938043c2626cac9f9de220b89889357cba14c0897793b289b8b7ca597c8c79cb"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-439-part-1-step-2-320.png",
+      "sha256": "aa6a3430bf356af899bce652c8d421ebd1bfda55184fcd0cff4a0bb7bba768ae",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-439-part-1-step-2-320.png",
+        "sheet": "b-021.jpg",
+        "priorSha256": "aa6a3430bf356af899bce652c8d421ebd1bfda55184fcd0cff4a0bb7bba768ae"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-439-part-1-step-3-1280.png",
+      "sha256": "2b76b74256442a51556b125eee7344386080068b889c5c58dbc6654cd1d57548",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-439-part-1-step-3-1280.png",
+        "sheet": "b-021.jpg",
+        "priorSha256": "2b76b74256442a51556b125eee7344386080068b889c5c58dbc6654cd1d57548"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-439-part-1-step-3-320.png",
+      "sha256": "c2537d3c679d4b31f1a2e2a1b741693b79e3d271acaa23c4c391605f8502bbfa",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-439-part-1-step-3-320.png",
+        "sheet": "b-021.jpg",
+        "priorSha256": "c2537d3c679d4b31f1a2e2a1b741693b79e3d271acaa23c4c391605f8502bbfa"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-439-part-1-step-4-1280.png",
+      "sha256": "e39f35c472732dbe01d2c87f5bda10f9aa864c45fafc8d1d4a81959b67c9ac17",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-439-part-1-neutral-1280.png",
+        "sheet": "b-020.jpg",
+        "priorSha256": "e39f35c472732dbe01d2c87f5bda10f9aa864c45fafc8d1d4a81959b67c9ac17"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-439-part-1-step-4-320.png",
+      "sha256": "006406262ed17251f473f60bc22cddd756464f45dac505b2f4dddc29c7586c40",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-439-part-1-step-1-320.png",
+        "sheet": "b-020.jpg",
+        "priorSha256": "006406262ed17251f473f60bc22cddd756464f45dac505b2f4dddc29c7586c40"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-439-part-1-step-5-1280.png",
+      "sha256": "0e647f907a31cbb04b7edc1a4e1c66b36acbd97d9e68c94cace54a2f75b0148c",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-439-part-1-step-5-1280.png",
+        "sheet": "b-022.jpg",
+        "priorSha256": "0e647f907a31cbb04b7edc1a4e1c66b36acbd97d9e68c94cace54a2f75b0148c"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-439-part-1-step-5-320.png",
+      "sha256": "b1ece39df35d73c67890467c46951a6310e1ee73fdb7efb84cf09c0d8fa79e5f",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-439-part-1-step-5-320.png",
+        "sheet": "b-022.jpg",
+        "priorSha256": "b1ece39df35d73c67890467c46951a6310e1ee73fdb7efb84cf09c0d8fa79e5f"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-440-part-1-neutral-1280.png",
+      "sha256": "93f9eef21d6bf114b6f5e6288cd43d09c8397eb33b58dc40dd92a709a217d5dc",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-440-part-1-neutral-1280.png",
+        "sheet": "b-022.jpg",
+        "priorSha256": "93f9eef21d6bf114b6f5e6288cd43d09c8397eb33b58dc40dd92a709a217d5dc"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-440-part-1-neutral-320.png",
+      "sha256": "757345a26094dcc70b5cdd3687e7919c5fccb298a88b42ab4d75495e3a530413",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-440-part-1-neutral-320.png",
+        "sheet": "b-022.jpg",
+        "priorSha256": "757345a26094dcc70b5cdd3687e7919c5fccb298a88b42ab4d75495e3a530413"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-440-part-1-step-1-1280.png",
+      "sha256": "59421987c4d37d506e15612ae659ced440d4bfc4b235922d69a682f82d4685c0",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-06.jpg",
+        "priorSha256": "93f9eef21d6bf114b6f5e6288cd43d09c8397eb33b58dc40dd92a709a217d5dc"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-440-part-1-step-1-320.png",
+      "sha256": "768004ac3d2b0f310fa2ed11145a4fa2b653abc7b56af30731fb910cdd8271d2",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-440-part-1-step-1-320.png",
+        "sheet": "b-023.jpg",
+        "priorSha256": "768004ac3d2b0f310fa2ed11145a4fa2b653abc7b56af30731fb910cdd8271d2"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-440-part-1-step-2-1280.png",
+      "sha256": "635205756ea328e9ff4f6ab95cc364ab36bad1ee0c50229bfa45ad030065be26",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-440-part-1-step-2-1280.png",
+        "sheet": "b-023.jpg",
+        "priorSha256": "635205756ea328e9ff4f6ab95cc364ab36bad1ee0c50229bfa45ad030065be26"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-440-part-1-step-2-320.png",
+      "sha256": "ced16b1d1d4c2182376d41e244db9f98aa78d43a1e51ff969e8e149d13cc9a54",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-440-part-1-step-2-320.png",
+        "sheet": "b-023.jpg",
+        "priorSha256": "ced16b1d1d4c2182376d41e244db9f98aa78d43a1e51ff969e8e149d13cc9a54"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-440-part-1-step-3-1280.png",
+      "sha256": "61146563ad91ed5d6073f752be1a170afe0802215887ba5619efd4161c7f212c",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-440-part-1-step-3-1280.png",
+        "sheet": "b-023.jpg",
+        "priorSha256": "61146563ad91ed5d6073f752be1a170afe0802215887ba5619efd4161c7f212c"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-440-part-1-step-3-320.png",
+      "sha256": "ba9ba4b31cfec23f8f78c11d6aa535646684403b3f05489d126cc78b970015e9",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-440-part-1-step-3-320.png",
+        "sheet": "b-024.jpg",
+        "priorSha256": "ba9ba4b31cfec23f8f78c11d6aa535646684403b3f05489d126cc78b970015e9"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-440-part-1-step-4-1280.png",
+      "sha256": "8c5da2a1a1e1d7f4479caf460d24a9ef8a29578146be19f55a5e0838f79eff82",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-440-part-1-step-4-1280.png",
+        "sheet": "b-024.jpg",
+        "priorSha256": "8c5da2a1a1e1d7f4479caf460d24a9ef8a29578146be19f55a5e0838f79eff82"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-440-part-1-step-4-320.png",
+      "sha256": "e7e08383db38d94b4762c1dff3db6b33110f4ab110875cb404ec7246b23b7697",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-440-part-1-step-4-320.png",
+        "sheet": "b-024.jpg",
+        "priorSha256": "e7e08383db38d94b4762c1dff3db6b33110f4ab110875cb404ec7246b23b7697"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-440-part-1-step-5-1280.png",
+      "sha256": "61146563ad91ed5d6073f752be1a170afe0802215887ba5619efd4161c7f212c",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-440-part-1-step-3-1280.png",
+        "sheet": "b-023.jpg",
+        "priorSha256": "61146563ad91ed5d6073f752be1a170afe0802215887ba5619efd4161c7f212c"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-440-part-1-step-5-320.png",
+      "sha256": "ba9ba4b31cfec23f8f78c11d6aa535646684403b3f05489d126cc78b970015e9",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-440-part-1-step-3-320.png",
+        "sheet": "b-024.jpg",
+        "priorSha256": "ba9ba4b31cfec23f8f78c11d6aa535646684403b3f05489d126cc78b970015e9"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-440-part-1-step-6-1280.png",
+      "sha256": "630b8258e7a48ab977d1f415a2dfa3e248647db0d8ca8b6bcfd574cb12fd5859",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-440-part-1-step-6-1280.png",
+        "sheet": "b-024.jpg",
+        "priorSha256": "630b8258e7a48ab977d1f415a2dfa3e248647db0d8ca8b6bcfd574cb12fd5859"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-440-part-1-step-6-320.png",
+      "sha256": "74b53aca8c39d74eb0a7026349b63eeef038d20e6432e4d12766f2c8d49e83b6",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-440-part-1-step-6-320.png",
+        "sheet": "b-025.jpg",
+        "priorSha256": "74b53aca8c39d74eb0a7026349b63eeef038d20e6432e4d12766f2c8d49e83b6"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-441-part-1-neutral-1280.png",
+      "sha256": "683a19103ea884c9be5d271812875a8c7ce18884bc94e1fd073f6c243e1f2108",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-441-part-1-neutral-1280.png",
+        "sheet": "b-025.jpg",
+        "priorSha256": "683a19103ea884c9be5d271812875a8c7ce18884bc94e1fd073f6c243e1f2108"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-441-part-1-neutral-320.png",
+      "sha256": "16699cfc6f37db616f528f9c6db0d661ab62a2b37b7bf34959350c61f6c03b3d",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-441-part-1-neutral-320.png",
+        "sheet": "b-025.jpg",
+        "priorSha256": "16699cfc6f37db616f528f9c6db0d661ab62a2b37b7bf34959350c61f6c03b3d"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-441-part-1-step-1-1280.png",
+      "sha256": "683a19103ea884c9be5d271812875a8c7ce18884bc94e1fd073f6c243e1f2108",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-441-part-1-neutral-1280.png",
+        "sheet": "b-025.jpg",
+        "priorSha256": "683a19103ea884c9be5d271812875a8c7ce18884bc94e1fd073f6c243e1f2108"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-441-part-1-step-1-320.png",
+      "sha256": "5fdbaa6fb4b2a18a1fae10d52249467fcbea25715ced1ab87bd39c8133dbbb3f",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-06.jpg",
+        "priorSha256": "16699cfc6f37db616f528f9c6db0d661ab62a2b37b7bf34959350c61f6c03b3d"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-441-part-1-step-2-1280.png",
+      "sha256": "683a19103ea884c9be5d271812875a8c7ce18884bc94e1fd073f6c243e1f2108",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-441-part-1-neutral-1280.png",
+        "sheet": "b-025.jpg",
+        "priorSha256": "683a19103ea884c9be5d271812875a8c7ce18884bc94e1fd073f6c243e1f2108"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-441-part-1-step-2-320.png",
+      "sha256": "5fdbaa6fb4b2a18a1fae10d52249467fcbea25715ced1ab87bd39c8133dbbb3f",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-441-part-1-step-2-320.png",
+        "sheet": "b-025.jpg",
+        "priorSha256": "5fdbaa6fb4b2a18a1fae10d52249467fcbea25715ced1ab87bd39c8133dbbb3f"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-441-part-1-step-3-1280.png",
+      "sha256": "9e9774d3fd9c1e63a29ce1d323b60ad456c383ee44a5c2927119ac9f960479e6",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-441-part-1-step-3-1280.png",
+        "sheet": "b-026.jpg",
+        "priorSha256": "9e9774d3fd9c1e63a29ce1d323b60ad456c383ee44a5c2927119ac9f960479e6"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-441-part-1-step-3-320.png",
+      "sha256": "facc7bc9fd6a21ec9d3e784d833e9df62fbcdf950758d2c85a11346aabe3a686",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-441-part-1-step-3-320.png",
+        "sheet": "b-026.jpg",
+        "priorSha256": "facc7bc9fd6a21ec9d3e784d833e9df62fbcdf950758d2c85a11346aabe3a686"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-441-part-1-step-4-1280.png",
+      "sha256": "18d357dbdc2621a84b3b6b9f39e093995326d6c1ccf05f2e12097d80047e8842",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-441-part-1-step-4-1280.png",
+        "sheet": "b-026.jpg",
+        "priorSha256": "18d357dbdc2621a84b3b6b9f39e093995326d6c1ccf05f2e12097d80047e8842"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-441-part-1-step-4-320.png",
+      "sha256": "8b20c9831f12ff0e5048688aa228bfb04cb91679ced4abe6f37c469bf96ec78f",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-441-part-1-step-4-320.png",
+        "sheet": "b-026.jpg",
+        "priorSha256": "8b20c9831f12ff0e5048688aa228bfb04cb91679ced4abe6f37c469bf96ec78f"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-442-part-1-case-1-1280.png",
+      "sha256": "c8b6e8a0d6dc00d21f397c3d32a9f2eedaff8ab260bcd8d4b75c72c3fa861dce",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-442-part-1-case-1-1280.png",
+        "sheet": "b-027.jpg",
+        "priorSha256": "c8b6e8a0d6dc00d21f397c3d32a9f2eedaff8ab260bcd8d4b75c72c3fa861dce"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-442-part-1-case-1-320.png",
+      "sha256": "5563ae68f14a8dc557e1f30b3829a71dc575336c1d4b0fa12b926abd88ff41e2",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-442-part-1-case-1-320.png",
+        "sheet": "b-027.jpg",
+        "priorSha256": "5563ae68f14a8dc557e1f30b3829a71dc575336c1d4b0fa12b926abd88ff41e2"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-442-part-1-case-2-1280.png",
+      "sha256": "16ce0b36a0c9ecf99b49ed03e66858e7d49fd4dcad65db0c993e817b77903056",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-442-part-1-case-2-1280.png",
+        "sheet": "b-027.jpg",
+        "priorSha256": "16ce0b36a0c9ecf99b49ed03e66858e7d49fd4dcad65db0c993e817b77903056"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-442-part-1-case-2-320.png",
+      "sha256": "97db3265d4fd62d899ae89969e79c9658f6d21484c7a7981e024a946f07e66f2",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-442-part-1-case-2-320.png",
+        "sheet": "b-027.jpg",
+        "priorSha256": "97db3265d4fd62d899ae89969e79c9658f6d21484c7a7981e024a946f07e66f2"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-442-part-1-case-3-1280.png",
+      "sha256": "2a4ae69ba2165315f391bb4895ce1654f87498768a1cee539099b4f988bf553b",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-442-part-1-case-3-1280.png",
+        "sheet": "b-028.jpg",
+        "priorSha256": "2a4ae69ba2165315f391bb4895ce1654f87498768a1cee539099b4f988bf553b"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-442-part-1-case-3-320.png",
+      "sha256": "98eaa11b468a562dbd69f2f4fa3666b4560344210185934794d0723454451984",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-442-part-1-case-3-320.png",
+        "sheet": "b-028.jpg",
+        "priorSha256": "98eaa11b468a562dbd69f2f4fa3666b4560344210185934794d0723454451984"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-442-part-1-case-4-1280.png",
+      "sha256": "4a9a84858b56b35c8dd57caaaceeaec34de51062e8d35765d1d33ba0f9c67453",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-442-part-1-case-4-1280.png",
+        "sheet": "b-028.jpg",
+        "priorSha256": "4a9a84858b56b35c8dd57caaaceeaec34de51062e8d35765d1d33ba0f9c67453"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-442-part-1-case-4-320.png",
+      "sha256": "473cd5104327f08e370d88ab339a55f3e52f3f04ed36c8b0af8baf13f21aefaa",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-442-part-1-case-4-320.png",
+        "sheet": "b-028.jpg",
+        "priorSha256": "473cd5104327f08e370d88ab339a55f3e52f3f04ed36c8b0af8baf13f21aefaa"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-442-part-1-case-5-1280.png",
+      "sha256": "3e6463d921673e8626f08b6ea6091a3724e5740d595d95ca46691ed53dbafe5b",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-442-part-1-case-5-1280.png",
+        "sheet": "b-029.jpg",
+        "priorSha256": "3e6463d921673e8626f08b6ea6091a3724e5740d595d95ca46691ed53dbafe5b"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-442-part-1-case-5-320.png",
+      "sha256": "b2bb6f1bd9f481ea96b92b95b1ec4ac6bba9259aec8d3a7bed2ccba527233110",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-442-part-1-case-5-320.png",
+        "sheet": "b-029.jpg",
+        "priorSha256": "b2bb6f1bd9f481ea96b92b95b1ec4ac6bba9259aec8d3a7bed2ccba527233110"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-442-part-1-neutral-1280.png",
+      "sha256": "f3524ad8c7d7333affab90354b4f1257e0dc5c045983b28d5b7abddaf1aef24a",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-442-part-1-neutral-1280.png",
+        "sheet": "b-029.jpg",
+        "priorSha256": "f3524ad8c7d7333affab90354b4f1257e0dc5c045983b28d5b7abddaf1aef24a"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-442-part-1-neutral-320.png",
+      "sha256": "556af54f2e02b40f42db883f36f0f9b2ceca0c421c9947ccb2f3194ee1e921e3",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-442-part-1-neutral-320.png",
+        "sheet": "b-029.jpg",
+        "priorSha256": "556af54f2e02b40f42db883f36f0f9b2ceca0c421c9947ccb2f3194ee1e921e3"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-442-part-1-step-1-1280.png",
+      "sha256": "1e37fc4549db50d3d834b8841059347881860b59940cbdefd34fb7bb7edc99e9",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-442-part-1-step-1-1280.png",
+        "sheet": "b-030.jpg",
+        "priorSha256": "1e37fc4549db50d3d834b8841059347881860b59940cbdefd34fb7bb7edc99e9"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-442-part-1-step-1-320.png",
+      "sha256": "4822e1a6257917b4e749e362960a45916a2d9d347cbaa891cc1766a66e1bbb9b",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-07.jpg",
+        "priorSha256": "432b4bfe4a7ae0be4ab82eface1fddc411b9c5e097b336d375063a36af71bb6f"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-442-part-1-step-2-1280.png",
+      "sha256": "f8cd88dc51baa71620d3ebbf1257853bbecf9783cbcc7cf59d78912a7d0dd285",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-442-part-1-step-2-1280.png",
+        "sheet": "b-030.jpg",
+        "priorSha256": "f8cd88dc51baa71620d3ebbf1257853bbecf9783cbcc7cf59d78912a7d0dd285"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-442-part-1-step-2-320.png",
+      "sha256": "97cb53b79a5182184bd4486a37d1c8ba3c1f20dc38c648f08e02ae344dcedd75",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-07.jpg",
+        "priorSha256": "757f62a8f2a4c45688b835738da53e513f1eb9dbfeb44c617d301ccadc240cba"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-442-part-1-step-3-1280.png",
+      "sha256": "8ce0992171be227c19209927ebaadcf190c1b99325f0afd05f37cc6a29371fa2",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-442-part-1-step-3-1280.png",
+        "sheet": "b-031.jpg",
+        "priorSha256": "8ce0992171be227c19209927ebaadcf190c1b99325f0afd05f37cc6a29371fa2"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-442-part-1-step-3-320.png",
+      "sha256": "c3d6d26c9f46a4294ea645b0999d0c529ada19a452825aa948527ed7439ea196",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-442-part-1-step-3-320.png",
+        "sheet": "b-031.jpg",
+        "priorSha256": "c3d6d26c9f46a4294ea645b0999d0c529ada19a452825aa948527ed7439ea196"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-442-part-1-step-4-1280.png",
+      "sha256": "1e37fc4549db50d3d834b8841059347881860b59940cbdefd34fb7bb7edc99e9",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-442-part-1-step-1-1280.png",
+        "sheet": "b-030.jpg",
+        "priorSha256": "1e37fc4549db50d3d834b8841059347881860b59940cbdefd34fb7bb7edc99e9"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-442-part-1-step-4-320.png",
+      "sha256": "432b4bfe4a7ae0be4ab82eface1fddc411b9c5e097b336d375063a36af71bb6f",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-442-part-1-step-1-320.png",
+        "sheet": "b-030.jpg",
+        "priorSha256": "432b4bfe4a7ae0be4ab82eface1fddc411b9c5e097b336d375063a36af71bb6f"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-442-part-1-step-5-1280.png",
+      "sha256": "992e6ba50db9bf020040aa2b14e32eaa7b9ef6a57dd29140186c13e0c5701816",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-442-part-1-step-5-1280.png",
+        "sheet": "b-031.jpg",
+        "priorSha256": "992e6ba50db9bf020040aa2b14e32eaa7b9ef6a57dd29140186c13e0c5701816"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-442-part-1-step-5-320.png",
+      "sha256": "418439f86a953ce35bb9bb10e9334389f6ccdfddbf5c79f53c7dcb7a0e031962",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-442-part-1-step-5-320.png",
+        "sheet": "b-031.jpg",
+        "priorSha256": "418439f86a953ce35bb9bb10e9334389f6ccdfddbf5c79f53c7dcb7a0e031962"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-443-part-1-neutral-1280.png",
+      "sha256": "950f30878f4ce15b056aefbf61cabf195d1c88bb9f90322c36bd075ad5c7c220",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-443-part-1-neutral-1280.png",
+        "sheet": "b-032.jpg",
+        "priorSha256": "950f30878f4ce15b056aefbf61cabf195d1c88bb9f90322c36bd075ad5c7c220"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-443-part-1-neutral-320.png",
+      "sha256": "90558bfd7e29f306be8f24aa6d42a523126153a96afd1345199d5f3f92f1094e",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-443-part-1-neutral-320.png",
+        "sheet": "b-032.jpg",
+        "priorSha256": "90558bfd7e29f306be8f24aa6d42a523126153a96afd1345199d5f3f92f1094e"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-443-part-1-step-1-1280.png",
+      "sha256": "babdbdafbaeb5783a5370082c46a9837ffd52cc86464a0ea7afd39b3b83488e1",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-443-part-1-step-1-1280.png",
+        "sheet": "b-032.jpg",
+        "priorSha256": "babdbdafbaeb5783a5370082c46a9837ffd52cc86464a0ea7afd39b3b83488e1"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-443-part-1-step-1-320.png",
+      "sha256": "f11d8658c8ce4356973687dbc146cfe253b570012bddc4d88216e19d4e938bb6",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-07.jpg",
+        "priorSha256": "1f5046050e3765570c0ce852ffa150aea5c0dbd7263a4eb8e4e10c9a4a4b118a"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-443-part-1-step-2-1280.png",
+      "sha256": "a41a1df550afb7c5d81bbfc3ebbe85645bf52cb3d974d4bad72b9036bd78ef04",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-443-part-1-step-2-1280.png",
+        "sheet": "b-033.jpg",
+        "priorSha256": "a41a1df550afb7c5d81bbfc3ebbe85645bf52cb3d974d4bad72b9036bd78ef04"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-443-part-1-step-2-320.png",
+      "sha256": "ebe70a73ca738b204ae9ff8ffbb06cb13175892ea5139bace297a1744f26849a",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-443-part-1-step-2-320.png",
+        "sheet": "b-033.jpg",
+        "priorSha256": "ebe70a73ca738b204ae9ff8ffbb06cb13175892ea5139bace297a1744f26849a"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-443-part-1-step-3-1280.png",
+      "sha256": "3c3d17d571b4d75710c9635d1c4e4dbd9fb55769bcc5234823f6a0afa51e4943",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-443-part-1-step-3-1280.png",
+        "sheet": "b-033.jpg",
+        "priorSha256": "3c3d17d571b4d75710c9635d1c4e4dbd9fb55769bcc5234823f6a0afa51e4943"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-443-part-1-step-3-320.png",
+      "sha256": "3e4fdfdec9c5ef62119ab1cf8c40243004c70969e345c30cf28e8bcbb7264895",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-443-part-1-step-3-320.png",
+        "sheet": "b-033.jpg",
+        "priorSha256": "3e4fdfdec9c5ef62119ab1cf8c40243004c70969e345c30cf28e8bcbb7264895"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-443-part-1-step-4-1280.png",
+      "sha256": "3c3d17d571b4d75710c9635d1c4e4dbd9fb55769bcc5234823f6a0afa51e4943",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-443-part-1-step-3-1280.png",
+        "sheet": "b-033.jpg",
+        "priorSha256": "3c3d17d571b4d75710c9635d1c4e4dbd9fb55769bcc5234823f6a0afa51e4943"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-443-part-1-step-4-320.png",
+      "sha256": "3e4fdfdec9c5ef62119ab1cf8c40243004c70969e345c30cf28e8bcbb7264895",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-443-part-1-step-3-320.png",
+        "sheet": "b-033.jpg",
+        "priorSha256": "3e4fdfdec9c5ef62119ab1cf8c40243004c70969e345c30cf28e8bcbb7264895"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-443-part-1-step-5-1280.png",
+      "sha256": "3c3d17d571b4d75710c9635d1c4e4dbd9fb55769bcc5234823f6a0afa51e4943",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-443-part-1-step-3-1280.png",
+        "sheet": "b-033.jpg",
+        "priorSha256": "3c3d17d571b4d75710c9635d1c4e4dbd9fb55769bcc5234823f6a0afa51e4943"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-443-part-1-step-5-320.png",
+      "sha256": "3e4fdfdec9c5ef62119ab1cf8c40243004c70969e345c30cf28e8bcbb7264895",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-443-part-1-step-3-320.png",
+        "sheet": "b-033.jpg",
+        "priorSha256": "3e4fdfdec9c5ef62119ab1cf8c40243004c70969e345c30cf28e8bcbb7264895"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-444-part-1-case-1-1280.png",
+      "sha256": "7e063432cc67d846b46cc2542cc20e02a0bbdf67313e4529480c445ea9db828d",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-444-part-1-case-1-1280.png",
+        "sheet": "b-034.jpg",
+        "priorSha256": "7e063432cc67d846b46cc2542cc20e02a0bbdf67313e4529480c445ea9db828d"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-444-part-1-case-1-320.png",
+      "sha256": "0792bb5b3d36991d9f908db6a1a207beb28ca4ad44b5a8f40881acdacca3ea11",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-444-part-1-case-1-320.png",
+        "sheet": "b-034.jpg",
+        "priorSha256": "0792bb5b3d36991d9f908db6a1a207beb28ca4ad44b5a8f40881acdacca3ea11"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-444-part-1-case-2-1280.png",
+      "sha256": "66bf3d079d85f66ac50f69383391cce1045cd20d54e622d101026347c2e7ca9c",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-444-part-1-case-2-1280.png",
+        "sheet": "b-034.jpg",
+        "priorSha256": "66bf3d079d85f66ac50f69383391cce1045cd20d54e622d101026347c2e7ca9c"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-444-part-1-case-2-320.png",
+      "sha256": "6161f6d7a6385e1b263c154805a239e081ff9d2eaa1e915f6e82cc7cdc91a049",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-444-part-1-case-2-320.png",
+        "sheet": "b-034.jpg",
+        "priorSha256": "6161f6d7a6385e1b263c154805a239e081ff9d2eaa1e915f6e82cc7cdc91a049"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-444-part-1-case-3-1280.png",
+      "sha256": "5920d03c70ac5ccdb1ac59502aa28dbfe47f7988cf251e5fbf1f190a963a3afc",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-444-part-1-case-3-1280.png",
+        "sheet": "b-035.jpg",
+        "priorSha256": "5920d03c70ac5ccdb1ac59502aa28dbfe47f7988cf251e5fbf1f190a963a3afc"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-444-part-1-case-3-320.png",
+      "sha256": "4d30de79a8fc918ab05fe0249db9fc466325268195f6fe48f55f6541d9a57e2c",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-444-part-1-case-3-320.png",
+        "sheet": "b-035.jpg",
+        "priorSha256": "4d30de79a8fc918ab05fe0249db9fc466325268195f6fe48f55f6541d9a57e2c"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-444-part-1-neutral-1280.png",
+      "sha256": "b61bd1dcb63439eeae2139579494f9799eca74ceb76f0bb468430bf004cbfac7",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-444-part-1-neutral-1280.png",
+        "sheet": "b-035.jpg",
+        "priorSha256": "b61bd1dcb63439eeae2139579494f9799eca74ceb76f0bb468430bf004cbfac7"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-444-part-1-neutral-320.png",
+      "sha256": "040c8f4a9bb77b62dadea0bf696c2d1bdb14ebfdd95bb7d35d77aa1252d56b51",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-444-part-1-neutral-320.png",
+        "sheet": "b-035.jpg",
+        "priorSha256": "040c8f4a9bb77b62dadea0bf696c2d1bdb14ebfdd95bb7d35d77aa1252d56b51"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-444-part-1-step-1-1280.png",
+      "sha256": "18230d7e74a2f0aaa91cd7de67243da5c149da9cd1d6379b2f0512563edc156a",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-444-part-1-step-1-1280.png",
+        "sheet": "b-036.jpg",
+        "priorSha256": "18230d7e74a2f0aaa91cd7de67243da5c149da9cd1d6379b2f0512563edc156a"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-444-part-1-step-1-320.png",
+      "sha256": "d31213387ee11d1d3ccf92a2523e56ae25de33ec42d41a45f57d1ab0933a5c29",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-07.jpg",
+        "priorSha256": "55d325637c1be0eba5e9dbdac0f0ee9ca1e7ab5ea4dad98b15687806196a2160"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-444-part-1-step-2-1280.png",
+      "sha256": "6c02ecd73038ed5b3b587a9b9bb4b3955abe1e9c2727fef7267e5f1dd87cd6cd",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-444-part-1-step-2-1280.png",
+        "sheet": "b-036.jpg",
+        "priorSha256": "6c02ecd73038ed5b3b587a9b9bb4b3955abe1e9c2727fef7267e5f1dd87cd6cd"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-444-part-1-step-2-320.png",
+      "sha256": "22ec63b67b9428193c3411e17f09193c5a2cc4d5bbb61c536a189130ea476676",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-444-part-1-step-2-320.png",
+        "sheet": "b-036.jpg",
+        "priorSha256": "22ec63b67b9428193c3411e17f09193c5a2cc4d5bbb61c536a189130ea476676"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-444-part-1-step-3-1280.png",
+      "sha256": "83a969e88e8cc340f1dbef7f44e682abb7bf6379f04cbfdb20a3c43a6c52a1eb",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-444-part-1-step-3-1280.png",
+        "sheet": "b-037.jpg",
+        "priorSha256": "83a969e88e8cc340f1dbef7f44e682abb7bf6379f04cbfdb20a3c43a6c52a1eb"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-444-part-1-step-3-320.png",
+      "sha256": "37dad2e0c86bb5c0fc5d963ca5809ee1dfcbfceed6a4d74c8212bfc2e1b79cda",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-444-part-1-step-3-320.png",
+        "sheet": "b-037.jpg",
+        "priorSha256": "37dad2e0c86bb5c0fc5d963ca5809ee1dfcbfceed6a4d74c8212bfc2e1b79cda"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-444-part-1-step-4-1280.png",
+      "sha256": "5c82a42f243a31c3d578a06d32867d7e61cf5e8e9f44552d0368abc4b54e4332",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-444-part-1-step-4-1280.png",
+        "sheet": "b-037.jpg",
+        "priorSha256": "5c82a42f243a31c3d578a06d32867d7e61cf5e8e9f44552d0368abc4b54e4332"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-444-part-1-step-4-320.png",
+      "sha256": "b39a4fc3c7bb0c53b77a3d72168da556a56b7e9632c58b6ca2c240e3d9ce259c",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-444-part-1-step-4-320.png",
+        "sheet": "b-037.jpg",
+        "priorSha256": "b39a4fc3c7bb0c53b77a3d72168da556a56b7e9632c58b6ca2c240e3d9ce259c"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-444-part-1-step-5-1280.png",
+      "sha256": "5eefd294ea13bf00482974af7237fdc76c66c325c1a2443118f9da854f93bd11",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-444-part-1-step-5-1280.png",
+        "sheet": "b-038.jpg",
+        "priorSha256": "5eefd294ea13bf00482974af7237fdc76c66c325c1a2443118f9da854f93bd11"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-444-part-1-step-5-320.png",
+      "sha256": "3b69f9e6182950c4f8d902253ea3741d4f63f16b316144b11f2b367372814e84",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-444-part-1-step-5-320.png",
+        "sheet": "b-038.jpg",
+        "priorSha256": "3b69f9e6182950c4f8d902253ea3741d4f63f16b316144b11f2b367372814e84"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-445-part-1-case-1-1280.png",
+      "sha256": "e2bd44fe392333d093f38d978bd189b3317022fad5152d6d64349966e9946c13",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-445-part-1-case-1-1280.png",
+        "sheet": "b-038.jpg",
+        "priorSha256": "e2bd44fe392333d093f38d978bd189b3317022fad5152d6d64349966e9946c13"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-445-part-1-case-1-320.png",
+      "sha256": "abd285542a238372b4b4305123678b448e81bb8112df79ea01804d6f54808071",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-445-part-1-case-1-320.png",
+        "sheet": "b-038.jpg",
+        "priorSha256": "abd285542a238372b4b4305123678b448e81bb8112df79ea01804d6f54808071"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-445-part-1-case-2-1280.png",
+      "sha256": "ac756c89dc7b46c63bcbabcd4a545a99bfdc0cfb3e574ab4e37a81c99dd12754",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-445-part-1-case-2-1280.png",
+        "sheet": "b-039.jpg",
+        "priorSha256": "ac756c89dc7b46c63bcbabcd4a545a99bfdc0cfb3e574ab4e37a81c99dd12754"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-445-part-1-case-2-320.png",
+      "sha256": "38b94a40207456a699efe1bb4cfedc19cfd9456e509fbc6aad901cd67ebff004",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-445-part-1-case-2-320.png",
+        "sheet": "b-039.jpg",
+        "priorSha256": "38b94a40207456a699efe1bb4cfedc19cfd9456e509fbc6aad901cd67ebff004"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-445-part-1-case-3-1280.png",
+      "sha256": "4f95d170def192d06d84940b37164f7d6d1262a3a6ebf8150fcd30ede64313d7",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-445-part-1-case-3-1280.png",
+        "sheet": "b-039.jpg",
+        "priorSha256": "4f95d170def192d06d84940b37164f7d6d1262a3a6ebf8150fcd30ede64313d7"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-445-part-1-case-3-320.png",
+      "sha256": "d3b60fbed572efe35c7430869ded742d16c60b767a551440b1d9e84e03f4777f",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-445-part-1-case-3-320.png",
+        "sheet": "b-039.jpg",
+        "priorSha256": "d3b60fbed572efe35c7430869ded742d16c60b767a551440b1d9e84e03f4777f"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-445-part-1-case-4-1280.png",
+      "sha256": "ea76cf3263b5fc57b3a171c354fda53e0c1ffbc01c78b89c6a3d175c913b82eb",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-445-part-1-case-4-1280.png",
+        "sheet": "b-040.jpg",
+        "priorSha256": "ea76cf3263b5fc57b3a171c354fda53e0c1ffbc01c78b89c6a3d175c913b82eb"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-445-part-1-case-4-320.png",
+      "sha256": "548bf5752e03f5d26593ac50e5b6be9aad57abfec2fe7879e05ae9bfd22f4d9a",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-445-part-1-case-4-320.png",
+        "sheet": "b-040.jpg",
+        "priorSha256": "548bf5752e03f5d26593ac50e5b6be9aad57abfec2fe7879e05ae9bfd22f4d9a"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-445-part-1-neutral-1280.png",
+      "sha256": "3cbc0c0ec5835dba4a23152a17ca389685743100313d0b43e72264d916287b4e",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-445-part-1-neutral-1280.png",
+        "sheet": "b-040.jpg",
+        "priorSha256": "3cbc0c0ec5835dba4a23152a17ca389685743100313d0b43e72264d916287b4e"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-445-part-1-neutral-320.png",
+      "sha256": "965ddab9149c75d974d84b39685c2422d9ccb06aa4544e19bfad8e1abd428b69",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-445-part-1-neutral-320.png",
+        "sheet": "b-040.jpg",
+        "priorSha256": "965ddab9149c75d974d84b39685c2422d9ccb06aa4544e19bfad8e1abd428b69"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-445-part-1-step-1-1280.png",
+      "sha256": "33d4395e2af7c4ad17b82fbcf6d60b01cc0506c15be099d0accce0f41de665e2",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-08.jpg",
+        "priorSha256": "4543f4f8e5a194fc02d487198a7e823793930868fcf627304bbc773042112d08"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-445-part-1-step-1-320.png",
+      "sha256": "18eb487a54be655d118cd0e9a04fe96aec2c8fa80e67adda274ee9a93ccd8c76",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-08.jpg",
+        "priorSha256": "2caae12188a79ea759bd9fdf3ea76ee7696de9b97ac83571ccb8332afcf09515"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-445-part-1-step-2-1280.png",
+      "sha256": "9e1100f127eb4fa8414c4ba6b208d80389344ba3cf1105ad88fb0d1e4ab901c3",
+      "review": {
+        "type": "fresh_delta_manual_review",
+        "sheet": "delta-08.jpg",
+        "priorSha256": "a12a82270d614273e594678f7103835dfe8c2969087e1d2ac02b3bc3e833df4c"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-445-part-1-step-2-320.png",
+      "sha256": "94d03d8118fdeaeb3d4a89a4463c46b178ce52c5f5646b6b7b5f1197d21ce721",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-445-part-1-step-2-320.png",
+        "sheet": "b-041.jpg",
+        "priorSha256": "94d03d8118fdeaeb3d4a89a4463c46b178ce52c5f5646b6b7b5f1197d21ce721"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-445-part-1-step-3-1280.png",
+      "sha256": "37ee81190b5e425702a9aee707c226477342b2a4ba7e4cf4fa663c32b44034c2",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-445-part-1-step-3-1280.png",
+        "sheet": "b-042.jpg",
+        "priorSha256": "37ee81190b5e425702a9aee707c226477342b2a4ba7e4cf4fa663c32b44034c2"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-445-part-1-step-3-320.png",
+      "sha256": "6bbcd3082ebf37fb6c5b4b2f21dd0fe382b65f10d6c3303b3c14d497c04566ef",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-445-part-1-step-3-320.png",
+        "sheet": "b-042.jpg",
+        "priorSha256": "6bbcd3082ebf37fb6c5b4b2f21dd0fe382b65f10d6c3303b3c14d497c04566ef"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-445-part-1-step-4-1280.png",
+      "sha256": "664fa16372db6ca6b7f9fee80540b44f16fa0ba1f395579e02fff8d4411cb09d",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-445-part-1-step-4-1280.png",
+        "sheet": "b-042.jpg",
+        "priorSha256": "664fa16372db6ca6b7f9fee80540b44f16fa0ba1f395579e02fff8d4411cb09d"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-445-part-1-step-4-320.png",
+      "sha256": "5683bca5e81ff44737d5553efedaeb86c4dde0f09fd8bea60f2607e66fce7663",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-445-part-1-step-4-320.png",
+        "sheet": "b-042.jpg",
+        "priorSha256": "5683bca5e81ff44737d5553efedaeb86c4dde0f09fd8bea60f2607e66fce7663"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-445-part-1-step-5-1280.png",
+      "sha256": "f2a12ceea766fc2f21c4fe810c3c31ab2248ea6f475994ab77b080cb85ed8999",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-445-part-1-step-5-1280.png",
+        "sheet": "b-043.jpg",
+        "priorSha256": "f2a12ceea766fc2f21c4fe810c3c31ab2248ea6f475994ab77b080cb85ed8999"
+      },
+      "verdict": "pass"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-445-part-1-step-5-320.png",
+      "sha256": "de050b6046dfddc253576eafeab70c527aee8c69660aa6b13facae576bd1f4d6",
+      "review": {
+        "type": "exact_png_sha256_reuse",
+        "representative": "review-atanasyan-7-9-main-445-part-1-step-5-320.png",
+        "sheet": "b-043.jpg",
+        "priorSha256": "de050b6046dfddc253576eafeab70c527aee8c69660aa6b13facae576bd1f4d6"
+      },
+      "verdict": "pass"
+    }
+  ],
+  "artifactPathConvention": "Capture paths identify temporary review artifacts by relative name; they are not committed repository files. Machine-specific prefixes were removed by the coordinator without changing evidence hashes or review findings."
+}

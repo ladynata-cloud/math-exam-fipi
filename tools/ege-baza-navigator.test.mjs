@@ -110,7 +110,7 @@ try{
  ok(q('[data-stat="independent"]').textContent.trim().startsWith('0'),'Assistance displayed honestly');
  ok(text().includes('Результаты этого браузера')&&text().includes('Автоматической отправки нет.'),'Standalone progress remains browser-local with manual report sharing');
  await go('#teacher');
- const cabinetHref='https://mathexam-board-ladynata.amvera.io/learning/';
+ const cabinetHref='https://mathexam-board-ladynata.msk1.amvera.tech/learning/';
  const cabinetLink=q('#content a[href="'+cabinetHref+'"]');
  ok(cabinetLink&&q('.top-links a[href="'+cabinetHref+'"]'),'Teacher page and header open the actual separate cabinet');
  ok(cabinetLink.parentElement.textContent.includes('постоянная история ученика, задания и групповая доска'),'Shared history and group board are explicitly scoped to the cabinet');

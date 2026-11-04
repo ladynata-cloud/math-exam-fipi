@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Дороги по клеткам · тренажёр 1–5 (ОГЭ 2026)</title>
+<title>Дороги по клеткам · тренажёр 1–5 (ОГЭ 2027)</title>
+<link rel="canonical" href="https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-roads-grid.html">
 <style>
   :root {
     --bg: #faf7f2; --bg-card: #ffffff; --bg-soft: #f5f1e8;
@@ -258,8 +259,12 @@
     .side-card { padding: 14px; }
   }
 </style>
+<link rel="stylesheet" href="practical-minimal.css">
+<script src="practical-discovery.js?v=20261021-exam-variants"></script>
+<script src="practical-minimal.js?v=20261021-exam-variants"></script>
+<link rel="stylesheet" href="practical-variant.css">
 </head>
-<body data-mode="learn">
+<body data-mode="learn" data-practical-page="roads-grid" data-practical-variant="1">
 
 <nav class="topnav">
   <div class="topnav-inner">
@@ -278,7 +283,7 @@
 
 <div class="wrap">
   <div class="title-block">
-    <div class="eyebrow">ОГЭ 2026 · задачи 1–5 · дороги</div>
+    <div class="eyebrow">ОГЭ 2027 · задачи 1–5 · дороги</div>
     <h1>Дороги <em>по клеткам</em></h1>
     <p class="subtitle">Карта на клетчатой сетке. Лесная дорожка и тропинка с шоссе образуют прямоугольные треугольники. Нужно определить пункты, найти расстояния по шоссе и по прямой, время в пути и самый дешёвый магазин.</p>
   </div>
@@ -1654,7 +1659,7 @@ function pathWordOf(s){ return s.pathWord; }
 
 function commonButtonsHTML(lastLabel){
   return '<div class="button-row">'+
-    '<button class="btn btn-gold" id="hint-btn">Подсказка</button>'+
+    '<button class="btn btn-gold" id="hint-btn">Хочешь подсказку?</button>'+
     '<button class="btn btn-secondary" id="show-btn">Показать решение</button>'+
     '<button class="btn btn-secondary" id="next-btn">'+lastLabel+'</button></div>';
 }
@@ -2001,7 +2006,7 @@ function syncSelectorUI(){
     progressState.solved=Number.isFinite(Number(progress[TOPIC].solved))?Math.max(0,Math.trunc(Number(progress[TOPIC].solved))):0;
     progressState.streak=Number.isFinite(Number(progress[TOPIC].streak))?Math.max(0,Math.trunc(Number(progress[TOPIC].streak))):0;
   }
-  sessionState=loadStoredSession()||catalogSession(0,0,'learn','off');
+  sessionState=loadStoredSession()||catalogSession(0,0,'practice','off');
   const chips=document.getElementById('scenario-chips');
   SCENARIOS.forEach((s,i)=>{
     const b=document.createElement('button');
@@ -2069,5 +2074,7 @@ function syncSelectorUI(){
   });
 })();
 </script>
+<script src="practical-variant.js"></script>
+<script src="practical-variant-roads.js"></script>
 </body>
 </html>

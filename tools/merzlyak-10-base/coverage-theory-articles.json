@@ -1,0 +1,1252 @@
+{
+  "schemaVersion": 1,
+  "bookId": "merzlyak-2022-10-base",
+  "scope": "Only the three supplemental articles following paragraphs15 and19, including all mathematical definitions, statements, proof prompts, worked examples/methods, standalone exercises and short context mappings. This supplements the explicitly paragraph-only coverage-theory-10-19.json.",
+  "inventoryCompleteForDeclaredScope": true,
+  "wholeBookInventoryComplete": false,
+  "contentAuthoredCompleteForDeclaredScope": true,
+  "releaseReady": false,
+  "status": "draft_pending_independent_source_mathematics_pedagogy_review",
+  "sourcePdfPagesVisuallyChecked": [
+    140,
+    141,
+    142,
+    143,
+    176,
+    177,
+    178,
+    179,
+    180,
+    181,
+    182,
+    183,
+    148
+  ],
+  "priorGap": "The original theory10–19 manifest covered only numbered paragraphs; its95 mapped units did not inventory these three articles. Standalone skew-line exercises and a partial project5 treatment did not replace their missing explanations.",
+  "articles": [
+    {
+      "title": "«Стереометрическое» расположение двух прямых",
+      "printedPages": [
+        139,
+        140,
+        141,
+        142
+      ],
+      "pdfPages": [
+        140,
+        141,
+        142,
+        143
+      ],
+      "workedExampleNumbers": 3,
+      "workedSolutionMethods": 4,
+      "standaloneExercises": 7,
+      "extraExplicitProofPrompts": [
+        "whole midpoint plane"
+      ],
+      "newLessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/theory-15-detail-02.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-15-detail-03.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-15-detail-04.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-15-detail-05.json"
+      ]
+    },
+    {
+      "title": "Платоновы тела",
+      "printedPages": [
+        175,
+        176,
+        177,
+        178,
+        179
+      ],
+      "pdfPages": [
+        176,
+        177,
+        178,
+        179,
+        180
+      ],
+      "newLessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-02.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-03.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-04.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-05.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-06.json"
+      ],
+      "fiveActualModels": [
+        "theory-18-detail-04.json",
+        "theory-19-detail-02.json",
+        "theory-19-detail-03.json",
+        "theory-19-detail-04.json",
+        "theory-19-detail-05.json"
+      ]
+    },
+    {
+      "title": "Геометрическое тело",
+      "printedPages": [
+        179,
+        180,
+        181,
+        182
+      ],
+      "pdfPages": [
+        180,
+        181,
+        182,
+        183
+      ],
+      "strictDefinitions": [
+        "open",
+        "bounded",
+        "adherent point",
+        "connected",
+        "boundary/surface",
+        "geometric body"
+      ],
+      "newLessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-07.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-08.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-09.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-10.json"
+      ]
+    }
+  ],
+  "counts": {
+    "newCards": 13,
+    "articleUnitsMapped": 46,
+    "existingStandaloneExercisesMapped": 7,
+    "strictBodyDefinitions": 6,
+    "platonicModels": 5
+  },
+  "entries": [
+    {
+      "sourceId": "source-theory-15",
+      "paragraph": 15,
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/theory-15.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-15-detail-01.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-15-detail-02.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-15-detail-03.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-15-detail-04.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-15-detail-05.json"
+      ],
+      "sourcePdfPages": [
+        136,
+        137,
+        138,
+        140,
+        141,
+        142,
+        143
+      ],
+      "requiredParts": [
+        "обзор",
+        "доказательство: общий треугольник и разбиение многоугольника",
+        "статья: множество середин между скрещивающимися прямыми",
+        "статья: общий перпендикуляр — кратчайшее соединение",
+        "статья: расстояние A₁C₁ и B₁C через параллельные плоскости",
+        "статья: проекция для расстояния и второй способ задачи 3"
+      ],
+      "requiredPartsToAppend": [
+        "статья: множество середин между скрещивающимися прямыми",
+        "статья: общий перпендикуляр — кратчайшее соединение",
+        "статья: расстояние A₁C₁ и B₁C через параллельные плоскости",
+        "статья: проекция для расстояния и второй способ задачи 3"
+      ],
+      "newLessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/theory-15-detail-02.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-15-detail-03.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-15-detail-04.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-15-detail-05.json"
+      ],
+      "sourcePdfPagesToInclude": [
+        140,
+        141,
+        142,
+        143
+      ]
+    },
+    {
+      "sourceId": "source-theory-19",
+      "paragraph": 19,
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/theory-19.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-01.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-02.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-03.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-04.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-05.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-06.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-07.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-08.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-09.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-10.json"
+      ],
+      "sourcePdfPages": [
+        148,
+        172,
+        173,
+        174,
+        176,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182,
+        183
+      ],
+      "requiredParts": [
+        "обзор",
+        "доказательства: равенство апофем и теорема 19.1",
+        "статья: определение правильного многогранника и первые примеры",
+        "статья: додекаэдр и его свойства",
+        "статья: октаэдр и его свойства",
+        "статья: икосаэдр и его свойства",
+        "статья: почему возможны только пять типов",
+        "статья: открытая фигура и примеры",
+        "статья: ограниченность и точки прикосновения",
+        "статья: связность и поверхность",
+        "статья: строгое определение тела и контрпримеры"
+      ],
+      "requiredPartsToAppend": [
+        "статья: определение правильного многогранника и первые примеры",
+        "статья: додекаэдр и его свойства",
+        "статья: октаэдр и его свойства",
+        "статья: икосаэдр и его свойства",
+        "статья: почему возможны только пять типов",
+        "статья: открытая фигура и примеры",
+        "статья: ограниченность и точки прикосновения",
+        "статья: связность и поверхность",
+        "статья: строгое определение тела и контрпримеры"
+      ],
+      "newLessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-02.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-03.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-04.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-05.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-06.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-07.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-08.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-09.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-10.json"
+      ],
+      "sourcePdfPagesToInclude": [
+        148,
+        176,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182,
+        183
+      ]
+    }
+  ],
+  "units": [
+    {
+      "unitId": "skew-midpoints-containment",
+      "article": "«Стереометрическое» расположение двух прямых",
+      "title": "Задача1: середины лежат в одной плоскости",
+      "kind": "worked_example",
+      "sourcePdfPages": [
+        140
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-15-detail-02",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-15-detail-02.json"
+        }
+      ]
+    },
+    {
+      "unitId": "skew-midpoints-whole-plane",
+      "article": "«Стереометрическое» расположение двух прямых",
+      "title": "Самостоятельное усиление: множество середин — вся плоскость",
+      "kind": "proof_prompt",
+      "sourcePdfPages": [
+        141
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-15-detail-02",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-15-detail-02.json"
+        }
+      ]
+    },
+    {
+      "unitId": "skew-common-perpendicular-minimum",
+      "article": "«Стереометрическое» расположение двух прямых",
+      "title": "Задача2: общий перпендикуляр минимален",
+      "kind": "worked_example",
+      "sourcePdfPages": [
+        141
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-15-detail-03",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-15-detail-03.json"
+        }
+      ]
+    },
+    {
+      "unitId": "skew-cube-worked-3-first",
+      "article": "«Стереометрическое» расположение двух прямых",
+      "title": "Задача3: расстояние через параллельные плоскости",
+      "kind": "worked_example",
+      "sourcePdfPages": [
+        141,
+        142
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-15-detail-04",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-15-detail-04.json"
+        }
+      ]
+    },
+    {
+      "unitId": "skew-perpendicular-projection-method",
+      "article": "«Стереометрическое» расположение двух прямых",
+      "title": "Метод проекции на плоскость, перпендикулярную одной прямой",
+      "kind": "theorem_proof",
+      "sourcePdfPages": [
+        142
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-15-detail-05",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-15-detail-05.json"
+        }
+      ]
+    },
+    {
+      "unitId": "skew-cube-worked-3-second",
+      "article": "«Стереометрическое» расположение двух прямых",
+      "title": "Второе решение задачи3 с помощью проекции",
+      "kind": "worked_example",
+      "sourcePdfPages": [
+        142,
+        143
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-15-detail-05",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-15-detail-05.json"
+        }
+      ]
+    },
+    {
+      "unitId": "plato-definition",
+      "article": "Платоновы тела",
+      "title": "Правильный многогранник: полное определение",
+      "kind": "definition",
+      "sourcePdfPages": [
+        176
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-02",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-02.json"
+        }
+      ]
+    },
+    {
+      "unitId": "plato-cube-example",
+      "article": "Платоновы тела",
+      "title": "Куб/гексаэдр как правильный многогранник",
+      "kind": "example",
+      "sourcePdfPages": [
+        177
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-02",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-02.json"
+        }
+      ]
+    },
+    {
+      "unitId": "plato-tetrahedron-example",
+      "article": "Платоновы тела",
+      "title": "Самостоятельная проверка правильности тетраэдра",
+      "kind": "proof_prompt",
+      "sourcePdfPages": [
+        177
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-02",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-02.json"
+        },
+        {
+          "lessonId": "merz-theory-18-detail-04",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18-detail-04.json"
+        }
+      ]
+    },
+    {
+      "unitId": "plato-history-name",
+      "article": "Платоновы тела",
+      "title": "Платоновы тела: название и исторический контекст",
+      "kind": "context",
+      "sourcePdfPages": [
+        178
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-02",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-02.json"
+        }
+      ]
+    },
+    {
+      "unitId": "plato-додекаэдр",
+      "article": "Платоновы тела",
+      "title": "Додекаэдр: определение, пример и свойства",
+      "kind": "example",
+      "sourcePdfPages": [
+        176,
+        177,
+        178,
+        179,
+        180
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-03",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-03.json"
+        }
+      ]
+    },
+    {
+      "unitId": "plato-октаэдр",
+      "article": "Платоновы тела",
+      "title": "Октаэдр: определение, пример и свойства",
+      "kind": "example",
+      "sourcePdfPages": [
+        177,
+        178
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-04",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-04.json"
+        }
+      ]
+    },
+    {
+      "unitId": "plato-octahedron-two-pyramids",
+      "article": "Платоновы тела",
+      "title": "Построение октаэдра из двух квадратных пирамид",
+      "kind": "construction",
+      "sourcePdfPages": [
+        177,
+        178
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-04",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-04.json"
+        }
+      ]
+    },
+    {
+      "unitId": "plato-икосаэдр",
+      "article": "Платоновы тела",
+      "title": "Икосаэдр: определение, пример и свойства",
+      "kind": "example",
+      "sourcePdfPages": [
+        177,
+        178,
+        179
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-05",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-05.json"
+        }
+      ]
+    },
+    {
+      "unitId": "plato-vertex-angle-sum",
+      "article": "Платоновы тела",
+      "title": "Сумма плоских углов при выпуклой вершине меньше360°",
+      "kind": "theorem",
+      "sourcePdfPages": [
+        178
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-06",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-06.json"
+        },
+        {
+          "lessonId": "merz-project-3",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/project-3.json",
+          "role": "Complete proof of the trihedral face-angle inequality used in the extension."
+        }
+      ]
+    },
+    {
+      "unitId": "plato-five-pairs-proof",
+      "article": "Платоновы тела",
+      "title": "Вывод пяти допустимых типов правильных многогранников",
+      "kind": "proof",
+      "sourcePdfPages": [
+        178,
+        179
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-06",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-06.json"
+        }
+      ]
+    },
+    {
+      "unitId": "plato-five-existence-models",
+      "article": "Платоновы тела",
+      "title": "Пять конкретных платоновых тел",
+      "kind": "examples",
+      "sourcePdfPages": [
+        178
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-06",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-06.json"
+        },
+        {
+          "lessonId": "merz-theory-18-detail-04",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-18-detail-04.json"
+        },
+        {
+          "lessonId": "merz-theory-19-detail-02",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-02.json"
+        },
+        {
+          "lessonId": "merz-theory-19-detail-03",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-03.json"
+        },
+        {
+          "lessonId": "merz-theory-19-detail-04",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-04.json"
+        },
+        {
+          "lessonId": "merz-theory-19-detail-05",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-05.json"
+        }
+      ]
+    },
+    {
+      "unitId": "plato-nature-architecture",
+      "article": "Платоновы тела",
+      "title": "Примеры природных и архитектурных форм",
+      "kind": "context",
+      "sourcePdfPages": [
+        179,
+        180
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-06",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-06.json"
+        }
+      ]
+    },
+    {
+      "unitId": "body-open-definition",
+      "article": "Геометрическое тело",
+      "title": "Определение открытой фигуры",
+      "kind": "definition",
+      "sourcePdfPages": [
+        180
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-07",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-07.json"
+        }
+      ]
+    },
+    {
+      "unitId": "body-space-open",
+      "article": "Геометрическое тело",
+      "title": "Всё пространство — открытая фигура",
+      "kind": "example",
+      "sourcePdfPages": [
+        180
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-07",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-07.json"
+        }
+      ]
+    },
+    {
+      "unitId": "body-open-ball-proof",
+      "article": "Геометрическое тело",
+      "title": "Открытый шар: полный пример с радиусом(R−OX)/2",
+      "kind": "worked_example",
+      "sourcePdfPages": [
+        180
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-07",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-07.json"
+        }
+      ]
+    },
+    {
+      "unitId": "body-line-plane-not-open",
+      "article": "Геометрическое тело",
+      "title": "Прямая и непустые плоские фигуры не открыты в пространстве",
+      "kind": "counterexample",
+      "sourcePdfPages": [
+        181
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-07",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-07.json"
+        }
+      ]
+    },
+    {
+      "unitId": "body-bounded-definition",
+      "article": "Геометрическое тело",
+      "title": "Определение ограниченной фигуры",
+      "kind": "definition",
+      "sourcePdfPages": [
+        181
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-08",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-08.json"
+        }
+      ]
+    },
+    {
+      "unitId": "body-bounded-examples",
+      "article": "Геометрическое тело",
+      "title": "Отрезок, пирамида и шар ограничены; прямая, плоскость и двугранный угол неограничены",
+      "kind": "examples",
+      "sourcePdfPages": [
+        181
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-08",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-08.json"
+        }
+      ]
+    },
+    {
+      "unitId": "body-adherence-definition",
+      "article": "Геометрическое тело",
+      "title": "Определение точки прикосновения",
+      "kind": "definition",
+      "sourcePdfPages": [
+        181
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-08",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-08.json"
+        }
+      ]
+    },
+    {
+      "unitId": "body-own-points-adherence",
+      "article": "Геометрическое тело",
+      "title": "Каждая точка фигуры — точка её прикосновения",
+      "kind": "example",
+      "sourcePdfPages": [
+        181
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-08",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-08.json"
+        }
+      ]
+    },
+    {
+      "unitId": "body-open-segment-endpoints",
+      "article": "Геометрическое тело",
+      "title": "Концы удалённого отрезка остаются точками прикосновения",
+      "kind": "worked_example",
+      "sourcePdfPages": [
+        181
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-08",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-08.json"
+        }
+      ]
+    },
+    {
+      "unitId": "body-exterior-ball-gap",
+      "article": "Геометрическое тело",
+      "title": "Точка вне шара: непересекающаяся окрестность радиуса(OA−R)/2",
+      "kind": "worked_example",
+      "sourcePdfPages": [
+        181
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-08",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-08.json"
+        }
+      ]
+    },
+    {
+      "unitId": "body-connected-definition",
+      "article": "Геометрическое тело",
+      "title": "Определение связной фигуры",
+      "kind": "definition",
+      "sourcePdfPages": [
+        182
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-09",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-09.json"
+        }
+      ]
+    },
+    {
+      "unitId": "body-two-balls-disconnected",
+      "article": "Геометрическое тело",
+      "title": "Два раздельных шара — несвязная фигураF",
+      "kind": "counterexample",
+      "sourcePdfPages": [
+        182
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-09",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-09.json"
+        }
+      ]
+    },
+    {
+      "unitId": "body-connected-examples",
+      "article": "Геометрическое тело",
+      "title": "Прямая, плоскость и конус — связные фигуры",
+      "kind": "examples",
+      "sourcePdfPages": [
+        182
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-09",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-09.json"
+        }
+      ]
+    },
+    {
+      "unitId": "body-boundary-definition",
+      "article": "Геометрическое тело",
+      "title": "Определение поверхности фигуры",
+      "kind": "definition",
+      "sourcePdfPages": [
+        182
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-09",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-09.json"
+        }
+      ]
+    },
+    {
+      "unitId": "body-boundary-examples",
+      "article": "Геометрическое тело",
+      "title": "Сфера — поверхность шара; объединение граней — поверхность многогранника",
+      "kind": "examples",
+      "sourcePdfPages": [
+        182
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-09",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-09.json"
+        }
+      ]
+    },
+    {
+      "unitId": "body-solid-definition",
+      "article": "Геометрическое тело",
+      "title": "Строгое определение тела",
+      "kind": "definition",
+      "sourcePdfPages": [
+        182
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-10",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-10.json"
+        }
+      ]
+    },
+    {
+      "unitId": "body-solid-positive-examples",
+      "article": "Геометрическое тело",
+      "title": "Шар, многогранник, конус как тела",
+      "kind": "examples",
+      "sourcePdfPages": [
+        180,
+        182
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-10",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-10.json"
+        }
+      ]
+    },
+    {
+      "unitId": "body-solid-nonexamples",
+      "article": "Геометрическое тело",
+      "title": "Прямая, плоскость, двугранный угол и фигурыF,G не являются телами",
+      "kind": "proof_prompt",
+      "sourcePdfPages": [
+        182,
+        148
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-10",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-10.json"
+        }
+      ]
+    },
+    {
+      "unitId": "body-topology-context",
+      "article": "Геометрическое тело",
+      "title": "Топология и исторические справки Александрова/Урысона",
+      "kind": "context",
+      "sourcePdfPages": [
+        182,
+        183
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-19-detail-10",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-10.json"
+        }
+      ]
+    },
+    {
+      "unitId": "skew-parallel-support-planes-reference",
+      "article": "«Стереометрическое» расположение двух прямых",
+      "title": "Повторение свойства единственной пары параллельных плоскостей через скрещивающиеся прямые",
+      "kind": "prior_theorem_reference",
+      "sourcePdfPages": [
+        140
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "ex-06-025",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/ex-06-025.json"
+        }
+      ]
+    },
+    {
+      "unitId": "skew-common-perpendicular-reference",
+      "article": "«Стереометрическое» расположение двух прямых",
+      "title": "Повторение существования общего перпендикуляра",
+      "kind": "prior_theorem_reference",
+      "sourcePdfPages": [
+        141
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "merz-theory-10-detail-04",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-10-detail-04.json"
+        }
+      ]
+    },
+    {
+      "unitId": "skew-exercise-1",
+      "article": "«Стереометрическое» расположение двух прямых",
+      "title": "Упражнение1 после статьи",
+      "kind": "standalone_exercise",
+      "sourcePdfPages": [
+        143
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "research-skew-lines-001",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/research-skew-lines-001.json"
+        }
+      ]
+    },
+    {
+      "unitId": "skew-exercise-2",
+      "article": "«Стереометрическое» расположение двух прямых",
+      "title": "Упражнение2 после статьи",
+      "kind": "standalone_exercise",
+      "sourcePdfPages": [
+        143
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "research-skew-lines-002",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/research-skew-lines-002.json"
+        }
+      ]
+    },
+    {
+      "unitId": "skew-exercise-3",
+      "article": "«Стереометрическое» расположение двух прямых",
+      "title": "Упражнение3 после статьи",
+      "kind": "standalone_exercise",
+      "sourcePdfPages": [
+        143
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "research-skew-lines-003",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/research-skew-lines-003.json"
+        }
+      ]
+    },
+    {
+      "unitId": "skew-exercise-4",
+      "article": "«Стереометрическое» расположение двух прямых",
+      "title": "Упражнение4 после статьи",
+      "kind": "standalone_exercise",
+      "sourcePdfPages": [
+        143
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "research-skew-lines-004",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/research-skew-lines-004.json"
+        }
+      ]
+    },
+    {
+      "unitId": "skew-exercise-5",
+      "article": "«Стереометрическое» расположение двух прямых",
+      "title": "Упражнение5 после статьи",
+      "kind": "standalone_exercise",
+      "sourcePdfPages": [
+        143
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "research-skew-lines-005",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/research-skew-lines-005.json"
+        }
+      ]
+    },
+    {
+      "unitId": "skew-exercise-6",
+      "article": "«Стереометрическое» расположение двух прямых",
+      "title": "Упражнение6 после статьи",
+      "kind": "standalone_exercise",
+      "sourcePdfPages": [
+        143
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "research-skew-lines-006",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/research-skew-lines-006.json"
+        }
+      ]
+    },
+    {
+      "unitId": "skew-exercise-7",
+      "article": "«Стереометрическое» расположение двух прямых",
+      "title": "Упражнение7 после статьи",
+      "kind": "standalone_exercise",
+      "sourcePdfPages": [
+        143
+      ],
+      "sourceReading": "visually_checked",
+      "coveredBy": [
+        {
+          "lessonId": "research-skew-lines-007",
+          "lessonFile": "stereo-course/merzlyak-10-base/lessons/research-skew-lines-007.json"
+        }
+      ]
+    }
+  ],
+  "newCards": [
+    {
+      "paragraph": 15,
+      "article": "«Стереометрическое» расположение двух прямых",
+      "part": "статья: множество середин между скрещивающимися прямыми",
+      "lessonId": "merz-theory-15-detail-02",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-15-detail-02.json",
+      "sourcePdfPages": [
+        140,
+        141
+      ],
+      "sourceUnits": [
+        "skew-midpoints-containment",
+        "skew-midpoints-whole-plane"
+      ]
+    },
+    {
+      "paragraph": 15,
+      "article": "«Стереометрическое» расположение двух прямых",
+      "part": "статья: общий перпендикуляр — кратчайшее соединение",
+      "lessonId": "merz-theory-15-detail-03",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-15-detail-03.json",
+      "sourcePdfPages": [
+        141
+      ],
+      "sourceUnits": [
+        "skew-common-perpendicular-minimum"
+      ]
+    },
+    {
+      "paragraph": 15,
+      "article": "«Стереометрическое» расположение двух прямых",
+      "part": "статья: расстояние A₁C₁ и B₁C через параллельные плоскости",
+      "lessonId": "merz-theory-15-detail-04",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-15-detail-04.json",
+      "sourcePdfPages": [
+        141,
+        142
+      ],
+      "sourceUnits": [
+        "skew-cube-worked-3-first"
+      ]
+    },
+    {
+      "paragraph": 15,
+      "article": "«Стереометрическое» расположение двух прямых",
+      "part": "статья: проекция для расстояния и второй способ задачи 3",
+      "lessonId": "merz-theory-15-detail-05",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-15-detail-05.json",
+      "sourcePdfPages": [
+        142,
+        143
+      ],
+      "sourceUnits": [
+        "skew-perpendicular-projection-method",
+        "skew-cube-worked-3-second"
+      ]
+    },
+    {
+      "paragraph": 19,
+      "article": "Платоновы тела",
+      "part": "статья: определение правильного многогранника и первые примеры",
+      "lessonId": "merz-theory-19-detail-02",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-02.json",
+      "sourcePdfPages": [
+        176,
+        177,
+        178
+      ],
+      "sourceUnits": [
+        "plato-definition",
+        "plato-cube-example",
+        "plato-tetrahedron-example",
+        "plato-history-name"
+      ]
+    },
+    {
+      "paragraph": 19,
+      "article": "Платоновы тела",
+      "part": "статья: додекаэдр и его свойства",
+      "lessonId": "merz-theory-19-detail-03",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-03.json",
+      "sourcePdfPages": [
+        176,
+        177,
+        178,
+        179,
+        180
+      ],
+      "sourceUnits": [
+        "plato-додекаэдр"
+      ]
+    },
+    {
+      "paragraph": 19,
+      "article": "Платоновы тела",
+      "part": "статья: октаэдр и его свойства",
+      "lessonId": "merz-theory-19-detail-04",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-04.json",
+      "sourcePdfPages": [
+        177,
+        178
+      ],
+      "sourceUnits": [
+        "plato-октаэдр",
+        "plato-octahedron-two-pyramids"
+      ]
+    },
+    {
+      "paragraph": 19,
+      "article": "Платоновы тела",
+      "part": "статья: икосаэдр и его свойства",
+      "lessonId": "merz-theory-19-detail-05",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-05.json",
+      "sourcePdfPages": [
+        177,
+        178,
+        179
+      ],
+      "sourceUnits": [
+        "plato-икосаэдр"
+      ]
+    },
+    {
+      "paragraph": 19,
+      "article": "Платоновы тела",
+      "part": "статья: почему возможны только пять типов",
+      "lessonId": "merz-theory-19-detail-06",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-06.json",
+      "sourcePdfPages": [
+        178,
+        179,
+        180
+      ],
+      "sourceUnits": [
+        "plato-vertex-angle-sum",
+        "plato-five-pairs-proof",
+        "plato-five-existence-models",
+        "plato-nature-architecture"
+      ]
+    },
+    {
+      "paragraph": 19,
+      "article": "Геометрическое тело",
+      "part": "статья: открытая фигура и примеры",
+      "lessonId": "merz-theory-19-detail-07",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-07.json",
+      "sourcePdfPages": [
+        180,
+        181
+      ],
+      "sourceUnits": [
+        "body-open-definition",
+        "body-space-open",
+        "body-open-ball-proof",
+        "body-line-plane-not-open"
+      ]
+    },
+    {
+      "paragraph": 19,
+      "article": "Геометрическое тело",
+      "part": "статья: ограниченность и точки прикосновения",
+      "lessonId": "merz-theory-19-detail-08",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-08.json",
+      "sourcePdfPages": [
+        181
+      ],
+      "sourceUnits": [
+        "body-bounded-definition",
+        "body-bounded-examples",
+        "body-adherence-definition",
+        "body-own-points-adherence",
+        "body-open-segment-endpoints",
+        "body-exterior-ball-gap"
+      ]
+    },
+    {
+      "paragraph": 19,
+      "article": "Геометрическое тело",
+      "part": "статья: связность и поверхность",
+      "lessonId": "merz-theory-19-detail-09",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-09.json",
+      "sourcePdfPages": [
+        182
+      ],
+      "sourceUnits": [
+        "body-connected-definition",
+        "body-two-balls-disconnected",
+        "body-connected-examples",
+        "body-boundary-definition",
+        "body-boundary-examples"
+      ]
+    },
+    {
+      "paragraph": 19,
+      "article": "Геометрическое тело",
+      "part": "статья: строгое определение тела и контрпримеры",
+      "lessonId": "merz-theory-19-detail-10",
+      "lessonFile": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-10.json",
+      "sourcePdfPages": [
+        180,
+        182,
+        183,
+        148
+      ],
+      "sourceUnits": [
+        "body-solid-definition",
+        "body-solid-positive-examples",
+        "body-solid-nonexamples",
+        "body-topology-context"
+      ]
+    }
+  ],
+  "notes": [
+    "All previous27 detail cards and19 overview cards are untouched.",
+    "General body definitions are outside the scope of paragraph16 itself but explicitly included by this later article; they are now taught here.",
+    "The five-pair inequality is distinguished from existence; five actual regular models are provided. A separate full rigidity/uniqueness theorem is not claimed as proved by the inequality.",
+    "The supplemental article states the general convex vertex-angle bound without a separate formal proof. The new explanation supplies an argument from the trihedral angle inequality already fully proved in project3.",
+    "The open-interval connectedness explanation is a clearly identified explanatory enrichment using the completeness of the real interval.",
+    "Historical photographs and portraits are summarized in context steps, not copied. The brief Urysohn volume reference has no precise constraints or proof task in the source and is not presented as a new proved theorem.",
+    "F is disconnected; G is connected but has disconnected open interior. The two counterexamples are distinguished explicitly."
+  ]
+}

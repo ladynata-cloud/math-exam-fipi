@@ -1,8 +1,20 @@
 (function(root){'use strict';
 const E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+// Format authored mathematical text only; never alter answers or saved work.
+function math(text) {
+ const source=String(text), pattern=/(?<![\p{L}\p{N}_/.:])(?:(\d+)[ \u00a0]+)?(\d+)\/(\d+)(?![\p{L}\p{N}_/])/gu;
+ let html='',end=0;
+ for(const match of source.matchAll(pattern)) {
+  const [raw,whole,num,den]=match;
+  html+=E(source.slice(end,match.index));
+  html+='<span class="math-number" role="math" aria-label="'+E((whole?whole+' целых, ':'')+num+' / '+den)+'">'+(whole?E(whole)+' ':'')+'<span class="math-fraction" aria-hidden="true"><span class="numerator">'+num+'</span><span class="fraction-slash">/</span><span class="denominator">'+den+'</span></span></span>';
+  end=match.index+raw.length;
+ }
+ return html+E(source.slice(end));
+}
 const F=PathData.F;
 function table(headers,rows,caption='Данные задачи'){
- return `<div class="scroll"><table class="task-table"><caption>${E(caption)}</caption><thead><tr>${headers.map(h=>`<th scope="col">${E(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((v,i)=>i?`<td>${E(v)}</td>`:`<th scope="row">${E(v)}</th>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+ return `<div class="scroll"><table class="task-table"><caption>${E(caption)}</caption><thead><tr>${headers.map(h=>`<th scope="col">${E(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((v,i)=>i?`<td>${math(v)}</td>`:`<th scope="row">${math(v)}</th>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 }
 function chart(d){
  const lo=Math.min(0,...d.values),hi=Math.max(1,...d.values),span=hi-lo||1,n=d.values.length;
@@ -27,11 +39,21 @@ function answerText(item) {
  const choices=answerChoices(item), value=String(item?.a ?? item?.answer);
  return choices?.find(choice=>choice.value===value)?.label ?? PathData.answerText(item);
 }
+// Authored plain text for a known choice or canonical finite number; checking stays in PathData.
+function wrongFeedback(item,answer,fallback) {
+ const input=String(answer).trim(),choices=answerChoices(item),map=item?.feedback;
+ let value=input;
+ if(choices){if(!choices.some(choice=>choice.value===value))return fallback;}
+ else{const number=PathData.parse(input);if(!input||!Number.isFinite(number))return fallback;value=String(number);}
+ if(!map||typeof map!=='object'||Array.isArray(map)||!Object.prototype.hasOwnProperty.call(map,value))return fallback;
+ const text=map[value];
+ return typeof text==='string'&&text.trim()&&text.length<=4000?text:fallback;
+}
 function answerForm(item,limit=4000) {
  const choices=answerChoices(item);
- if(choices)return `<form id="answerForm"><fieldset><legend>Твой ответ: выбери вариант</legend><input id="answer" type="hidden" value=""><div class="actions answer-choices">${choices.map((choice,index)=>`<button type="button" id="answer-choice-${index}" data-answer-choice="${E(choice.value)}" aria-pressed="false">${E(choice.label)}</button>`).join('')}</div></fieldset><button class="primary" type="submit">Проверить</button></form>`;
- const placeholder=item?.answerKind==='match'?'Четыре цифры, например 2413':item?.answerKind==='multi'?'Номера, например 134':item?.answerKind==='solutions'?'Любое подходящее число':'Число или дробь, например 2/3';
- return `<form id="answerForm"><label for="answer">Твой ответ</label><div class="actions"><input id="answer" maxlength="${limit}" autocomplete="off" placeholder="${placeholder}"><button class="primary" type="submit">Проверить</button></div></form>`;
+ if(choices)return `<form id="answerForm"><fieldset><legend>Твой ответ: выбери вариант</legend><input id="answer" type="hidden" value=""><div class="actions answer-choices">${choices.map((choice,index)=>`<button type="button" id="answer-choice-${index}" data-answer-choice="${E(choice.value)}" aria-pressed="false">${math(choice.label)}</button>`).join('')}</div></fieldset><button class="primary" type="submit">Проверить</button></form>`;
+ const placeholder=item?.answerKind==='match'?'Четыре цифры, например 2413':item?.answerKind==='multi'?'Номера, например 134':item?.answerKind==='solutions'?'Любое подходящее число':'Введи число или дробь';
+ return `<form id="answerForm"><label for="answer">Твой ответ</label><div class="actions"><input id="answer" maxlength="${limit}" autocomplete="off" placeholder="${placeholder}" aria-describedby="fraction-input-help"><button class="primary" type="submit">Проверить</button></div><p id="fraction-input-help" class="muted">Дробь ${math("2/3")} вводи с клавиатуры как <code>2/3</code>.</p></form>`;
 }
 function bindChoices(host,onChange) {
  const input=host.querySelector('#answer');if(!input)return;
@@ -39,16 +61,16 @@ function bindChoices(host,onChange) {
  const draw=()=>buttons.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.answerChoice===input.value)));
  buttons.forEach(button=>button.onclick=()=>{if(host.inert)return;input.value=button.dataset.answerChoice;draw();onChange(input.value);});draw();
 }
-function markup(t,omitVisual=false){return `<div class="task-support">${omitVisual?'':visual(t)}${t.labels?`<ol class="match-labels" type="A">${t.labels.map(x=>`<li>${E(x)}</li>`).join('')}</ol>`:''}${t.choices&&!answerChoices(t)?`<ol class="task-choices">${t.choices.map(x=>`<li>${E(x)}</li>`).join('')}</ol>`:''}</div>`;}
-root.PathPracticeView={markup,visual,polygon,answerChoices,answerText,answerForm,bindChoices};
+function markup(t,omitVisual=false){return `<div class="task-support">${omitVisual?'':visual(t)}${t.labels?`<ol class="match-labels" type="A">${t.labels.map(x=>`<li>${math(x)}</li>`).join('')}</ol>`:''}${t.choices&&!answerChoices(t)?`<ol class="task-choices">${t.choices.map(x=>`<li>${math(x)}</li>`).join('')}</ol>`:''}</div>`;}
+root.PathPracticeView={math,markup,visual,polygon,answerChoices,answerText,answerForm,bindChoices,wrongFeedback};
 if(!root.PathModels)return;
 const previous=PathModels.mount;
 PathModels.mount=function(el,t,options={}){
  const m=t.model,session=PathModels.session(el,m.kind,options),v=session.value,changed=session.changed;
  if(m.kind==='fraction-bars'){
   const [num,den]=m.fractions[0];v.selected=v.selected||[];v.checked=!!v.checked;
-  el.innerHTML=`<p>Построй ${num}/${den} одного целого. Выбирай доли кнопками — мышью, касанием или клавишей пробела.</p><div class="fraction-builder">${Array.from({length:den},(_,i)=>`<button aria-label="Доля ${i+1} из ${den}" aria-pressed="false" data-share="${i}">${i+1}</button>`).join('')}</div><button id="checkShares">Проверить модель</button><p id="modelFeedback" role="status"></p><p>Знаменатель сообщает, на сколько равных частей разделено целое. Числитель — сколько таких частей взято.</p>`;
-  const draw=()=>{el.querySelectorAll('[data-share]').forEach(b=>b.setAttribute('aria-pressed',String(v.selected.includes(+b.dataset.share))));el.querySelector('#modelFeedback').textContent=!v.checked?'':v.checkedCount===num?`Построено верно: ${num} из ${den} равных долей.`:`Выбрано ${v.checkedCount} долей. Нужно ${num}; размер одной доли остаётся 1/${den}.`;};
+  el.innerHTML=`<p>Построй ${math(num+"/"+den)} одного целого. Выбирай доли кнопками — мышью, касанием или клавишей пробела.</p><div class="fraction-builder">${Array.from({length:den},(_,i)=>`<button aria-label="Доля ${i+1} из ${den}" aria-pressed="false" data-share="${i}">${i+1}</button>`).join('')}</div><button id="checkShares">Проверить модель</button><p id="modelFeedback" role="status"></p><p>Знаменатель сообщает, на сколько равных частей разделено целое. Числитель — сколько таких частей взято.</p>`;
+  const draw=()=>{el.querySelectorAll('[data-share]').forEach(b=>b.setAttribute('aria-pressed',String(v.selected.includes(+b.dataset.share))));el.querySelector('#modelFeedback').innerHTML=math(!v.checked?'':v.checkedCount===num?`Построено верно: ${num} из ${den} равных долей.`:`Выбрано ${v.checkedCount} долей. Нужно ${num}; размер одной доли остаётся 1/${den}.`);};
   el.querySelectorAll('[data-share]').forEach(b=>b.onclick=()=>{const n=+b.dataset.share;v.selected=v.selected.includes(n)?v.selected.filter(x=>x!==n):[...v.selected,n];draw();changed();});
   el.querySelector('#checkShares').onclick=()=>{v.checked=true;v.checkedCount=v.selected.length;draw();changed();};draw();return session;
  }
@@ -64,7 +86,7 @@ PathModels.mount=function(el,t,options={}){
  if(m.kind==='ratio-parts'){
   const n=m.a+m.b;v.chosen=v.chosen||[];v.checked=!!v.checked;
   el.innerHTML=`<p>Собери отношение ${m.a}:${m.b}. Первой группе нужны ${m.a} равных долей, второй — ${m.b}. Все ${n} долей составляют ${m.total}${m.unit?' '+E(m.unit):''}.</p><div class="fraction-builder">${Array.from({length:n},(_,i)=>`<button data-ratio="${i}" aria-pressed="false">${i+1}</button>`).join('')}</div><button id="checkRatio">Проверить первую группу</button><p id="ratioRead" role="status"></p>`;
-  const draw=()=>{el.querySelectorAll('[data-ratio]').forEach(b=>b.setAttribute('aria-pressed',String(v.chosen.includes(+b.dataset.ratio))));el.querySelector('#ratioRead').textContent=!v.checked?'':v.checkedCount===m.a?`Первая группа ${m.a}/${n} целого. Одна доля — ${F(m.total/n)}${m.unit?' '+m.unit:''}. Теперь вычисли вторую группу.`:`Выбрано ${v.checkedCount}. Первой группе нужны ${m.a} долей из ${n}, а не из ${m.b}.`;};
+  const draw=()=>{el.querySelectorAll('[data-ratio]').forEach(b=>b.setAttribute('aria-pressed',String(v.chosen.includes(+b.dataset.ratio))));el.querySelector('#ratioRead').innerHTML=math(!v.checked?'':v.checkedCount===m.a?`Первая группа ${m.a}/${n} целого. Одна доля — ${F(m.total/n)}${m.unit?' '+m.unit:''}. Теперь вычисли вторую группу.`:`Выбрано ${v.checkedCount}. Первой группе нужны ${m.a} долей из ${n}, а не из ${m.b}.`);};
   el.querySelectorAll('[data-ratio]').forEach(b=>b.onclick=()=>{const n=+b.dataset.ratio;v.chosen=v.chosen.includes(n)?v.chosen.filter(x=>x!==n):[...v.chosen,n];draw();changed();});el.querySelector('#checkRatio').onclick=()=>{v.checked=true;v.checkedCount=v.chosen.length;draw();changed();};draw();return session;
  }
  if(m.kind==='polygon-build'){
@@ -96,5 +118,129 @@ PathModels.mount=function(el,t,options={}){
  }
  return previous(el,t,options);
 };
-root.PathPracticeView={markup,visual,polygon,answerChoices,answerText,answerForm,bindChoices};
+root.PathPracticeView={math,markup,visual,polygon,answerChoices,answerText,answerForm,bindChoices,wrongFeedback};
+})(window);
+
+/* Presentation only: the saved photo task and its answer values stay intact. */
+(function(root){'use strict';
+const E=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function supports(task){return /^grade7-r-photo-proof-[123]$/.test(task?.id||'')&&task.params?.kind==='photo-proof'&&task.steps?.length===6&&task.steps.every(s=>Array.isArray(s.choices))&&!!root.PathGrade7Construction;}
+function lesson(task){
+ const cross=task.params.problem===3,sss=task.params.problem===2;
+ const pair=cross?'△DFE и △HFG':'△ABC и △ADC',equal=cross?'△DFE = △HFG':'△ABC = △ADC';
+ const first=cross?'DF = FH':sss?'AB = AD':'BC = CD';
+ const second=cross?'EF = FG':sss?'BC = CD':'AC — общая сторона';
+ const angles=cross?'∠DFE = ∠HFG':'∠BCA = ∠ACD';
+ const law=sss?'По трём сторонам — третий признак.':'По двум сторонам и углу между ними — первый признак.';
+ const reasons=[
+  cross?'Рассмотрим верхний △DFE и нижний △HFG.':'Рассмотрим △ABC и △ADC. У них есть общая сторона.',
+  first+' — по условию.',
+  cross?'EF = FG — по условию.':sss?'BC = CD — по условию.':'AC входит и в △ABC, и в △ADC. Это одна и та же сторона.',
+  sss?'AC входит в оба треугольника. Теперь есть три пары равных сторон.':cross?'Эти углы вертикальные, поэтому они равны. Каждый лежит между выбранными сторонами.':'Равенство углов дано. Они лежат между BC и AC, CD и AC.',
+  law,
+  equal+'. '+law
+ ];
+ return {
+  title:sss?'Третий признак равенства треугольников':'Первый признак равенства треугольников',pair,equal,law,
+  given:cross?'DF = FH, EF = FG. Точки D, F, H лежат на одной прямой; E, F, G — на другой.':sss?'AB = AD, BC = CD.':'BC = CD, ∠BCA = ∠ACD.',
+  questions:[
+   'Какие треугольники будем сравнивать?',
+   sss?'Какие стороны отмечены двумя штрихами?':'Какие стороны отмечены одним штрихом?',
+   cross?'Какие стороны отмечены двумя штрихами?':sss?'Какие стороны отмечены одним штрихом?':'Назови общую сторону треугольников ABC и ADC.',
+   sss?'Назови общую сторону треугольников ABC и ADC.':'Почему '+angles+'?',
+   'Какой признак равенства можно применить?',
+   'Выбери запись равенства треугольников.'
+  ],
+  reasons,
+  hints:[
+   cross?'Нужны треугольники по разные стороны от точки F.':'Найди верхний и нижний треугольники с вершинами A и C.',
+   'Посмотри на одинаковые штрихи на сторонах.',
+   cross||sss?'Найди стороны с одинаковым числом штрихов.':'Какая сторона принадлежит обоим треугольникам?',
+   sss?'Какая сторона принадлежит обоим треугольникам?':cross?'Углы образованы двумя пересекающимися прямыми.':'Посмотри, какие равенства записаны в условии.',
+   sss?'Мы нашли три пары равных сторон.':'Мы нашли две стороны и угол между ними.',
+   cross?'D соответствует H, F — F, E — G.':'A соответствует A, B — D, C — C.'
+  ],
+  wrong:[
+   cross?'Точки D, F, H лежат на одной прямой. Они не образуют треугольник.':'Нужны верхний △ABC и нижний △ADC.',
+   'Равенство этих сторон не дано. Найди одинаковые штрихи.',
+   cross||sss?'У этих сторон разные отметки. Найди одинаковые штрихи.':'AB есть только у △ABC. Найди сторону, которая есть и у △ADC.',
+   sss?'Равенство углов не дано. Здесь нам нужна общая сторона.':'Равенство треугольников мы ещё доказываем. Его пока нельзя использовать.',
+   sss?'Здесь известны три пары равных сторон. Углы в условии не даны.':'Для первого признака нужны две стороны и угол между ними. Три равных угла не гарантируют равенства треугольников.',
+   cross?'Проверь порядок: D ↔ H, F ↔ F, E ↔ G.':'Проверь порядок: A ↔ A, B ↔ D, C ↔ C.'
+  ],
+  lines:['Рассмотрим '+pair+'.',first+' (по условию).',second+(cross||sss?' (по условию).':'.'),sss?'AC — общая сторона.':angles+(cross?' (вертикальные).':' (по условию).')],
+  triangles:cross?['DFE','HFG']:['ABC','ADC']
+ };
+}
+function choices(task,index){
+ return task.steps[index].choices.map(choice=>{
+  let label=choice.label.replace(/Δ/g,'△').replace(/\.$/,'');
+  const common=task.params.problem===1&&index===2||task.params.problem===2&&index===3;
+  if(common){label=label.startsWith('AC = AC')?'AC':label.startsWith('AB = AC')?'AB':label;}
+  else if(index===1||index===2)label=label.split(' — ')[0];
+  else if(index===3&&task.params.problem!==2){
+   if(label.includes('вертикальные'))label='Это вертикальные углы';
+   else if(label.includes('дано'))label='Их равенство дано в условии';
+   else label='Потому что треугольники равны';
+  }
+  return {...choice,label};
+ });
+}
+function proof(task,count){
+ const data=lesson(task),lines=data.lines.slice(0,Math.min(count,4));
+ if(count===5)lines.push(data.law);
+ if(count>=6)lines.push(data.equal+'. '+data.law);
+ return lines.length?`<section class="photo-proof-record" aria-label="Наше доказательство"><h2>${count>=6?'Доказательство собрано':'Наше доказательство'}</h2><ol>${lines.map(line=>`<li>${E(line)}</li>`).join('')}</ol></section>`:'';
+}
+function markup(task,work){
+ const data=lesson(task),finished=work.step>=6,solving=work.stage===2&&!finished;
+ const pane=finished?`<p class="photo-proof-progress">6 из 6 шагов</p><h2 id="photo-question" tabindex="-1">Доказательство собрано</h2><p class="photo-proof-conclusion">${E(data.equal)}</p><p>${E(data.law)}</p>`:
+ solving?`<p class="photo-proof-progress">Шаг ${work.step+1} из 6</p><h2 id="photo-question" tabindex="-1">${E(data.questions[work.step])}</h2><form id="answerForm"><input id="answer" type="hidden"><div class="photo-proof-choices" role="group" aria-labelledby="photo-question">${choices(task,work.step).map((choice,i)=>`<button type="button" id="answer-choice-${i}" data-answer-choice="${E(choice.value)}" aria-pressed="false">${E(choice.label)}</button>`).join('')}</div><button class="primary" type="submit">Проверить</button></form><button type="button" id="hint" class="photo-proof-hint">Подсказка</button><p id="hintText" class="photo-proof-hint-text"></p>`:
+ `<h2 id="photo-question" tabindex="-1">Докажи, что треугольники равны</h2><p class="photo-proof-conclusion">${E(data.pair)}</p><p>Рассмотри рисунок. Будем собирать доказательство по одному шагу.</p><button type="button" class="primary" data-proof-start>${work.step?'Продолжить доказательство':'Начать доказательство'}</button>`;
+ return `<article class="photo-proof"><header class="photo-proof-heading"><p>Геометрия · рисунок ${task.params.problem}</p><h1>${E(data.title)}</h1></header><div class="photo-proof-layout"><div class="photo-proof-left"><div class="photo-proof-given"><strong>Дано:</strong> ${E(data.given)}</div><div class="photo-proof-drawing" data-proof-drawing></div>${proof(task,work.step)}</div><section class="photo-proof-step" aria-label="Текущий шаг">${pane}<p id="feedback" class="feedback" role="status"></p></section></div></article>`;
+}
+function diagram(host,task,step,draft){
+ const box=host.querySelector('[data-proof-drawing]');if(!box)return;
+ box.innerHTML=root.PathGrade7Construction.svg(task);
+ const svg=box.querySelector('svg'),points=task.model.diagram.points,values=Object.values(points),xs=values.map(p=>p.x),ys=values.map(p=>p.y);
+ svg.setAttribute('viewBox',[Math.min(...xs)-50,Math.min(...ys)-64,Math.max(...xs)-Math.min(...xs)+100,Math.max(...ys)-Math.min(...ys)+120].join(' '));
+ svg.style.maxWidth='none';svg.querySelectorAll('text').forEach(label=>label.setAttribute('font-size','36'));
+ const ns='http://www.w3.org/2000/svg',data=lesson(task),fills=document.createElementNS(ns,'g');fills.setAttribute('aria-hidden','true');fills.setAttribute('pointer-events','none');
+ for(const [i,names]of data.triangles.entries()){
+  const p=document.createElementNS(ns,'polygon');p.setAttribute('points',names.split('').map(name=>points[name].x+','+points[name].y).join(' '));p.setAttribute('fill',i?'#f1e6cc':'#deedf5');fills.append(p);
+ }
+ svg.prepend(fills);
+ const active=step<6?task.steps[step].choices.find(choice=>choice.value===draft)?.label||'':'';
+ const ids=new Set((active.match(/[A-Z]{2,3}/g)||[]));
+ if(step===3&&task.params.problem!==2&&draft){(task.params.problem===3?['DFE','HFG']:['BCA','ACD']).forEach(id=>ids.add(id));}
+ for(const group of svg.querySelectorAll('[data-core-part]'))group.classList.toggle('photo-proof-focus',ids.has(group.getAttribute('data-core-part')));
+ const triangles=[...active.matchAll(/[Δ△]([A-Z]{3})/g)].map(m=>m[1]);
+ for(const names of triangles){
+  if(!names.split('').every(name=>points[name]))continue;
+  const p=document.createElementNS(ns,'polygon');p.setAttribute('points',names.split('').map(name=>points[name].x+','+points[name].y).join(' '));p.setAttribute('fill','#d9892722');p.setAttribute('stroke','#a34d15');p.setAttribute('stroke-width','5');p.setAttribute('pointer-events','none');fills.append(p);
+ }
+}
+function bind(host,task,work,callbacks){
+ const locked=()=>host.inert||!!host.closest('[inert]');
+ const input=host.querySelector('#answer');if(input)input.value=work.draft||'';
+ function select(value){
+  if(locked())return;
+  input.value=value;
+  host.querySelectorAll('[data-answer-choice]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.answerChoice===value)));
+  diagram(host,task,work.step,value);callbacks.select?.(value);
+ }
+ host.querySelectorAll('[data-answer-choice]').forEach(b=>{b.setAttribute('aria-pressed',String(b.dataset.answerChoice===work.draft));b.onclick=()=>select(b.dataset.answerChoice);});
+ host.querySelector('[data-proof-drawing]').onclick=event=>{
+  if(!input||locked())return;
+  const id=event.target.closest('[data-core-part]')?.getAttribute('data-core-part');if(!id||id.length===1)return;
+  const options=choices(task,work.step).filter(c=>(c.label.match(/[A-Z]{2,3}/g)||[]).includes(id));
+  if(options.length===1)select(options[0].value);
+ };
+ const form=host.querySelector('#answerForm');
+ if(form){const check=event=>{event.preventDefault();if(!locked())callbacks.check?.(input.value);};form.onsubmit=check;const b=form.querySelector('[type=submit]');b.type='button';b.onclick=check;}
+ host.querySelector('[data-proof-start]')?.addEventListener('click',()=>{if(!locked())callbacks.start?.();});
+ host.querySelector('#hint')?.addEventListener('click',()=>{if(!locked())callbacks.hint?.();});
+ diagram(host,task,work.step,work.draft);
+}
+root.PathPracticeView.photoProof=Object.freeze({supports,lesson,choices,markup,bind});
 })(window);

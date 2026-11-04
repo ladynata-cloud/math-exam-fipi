@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "reviewDate": "2026-10-23",
+  "reviewTimezone": "Asia/Novosibirsk",
+  "reviewerType": "Independent AI agents separate from each batch author",
+  "scope": "Exact source relationships, coordinate mathematics, authored step scenes, initial/future construction distinction. Visual browser evidence is separate.",
+  "files": [
+    {
+      "path": "geometry-course/textbook/models/chapter-01-a.json",
+      "sha256": "b01c8ec4cc2c621dd360a547ffe314e901c0fa3f446b97bb2cb2a844f8e8ea52",
+      "reviewerRole": "independent model author for 61–91",
+      "parts": 45,
+      "views": 269,
+      "verdict": "passed-source-relationships-mathematics-and-scene-content",
+      "browser": "passed-final-hash-bound-real-browser-and-initial-final-visual-review",
+      "independentReport": {
+        "path": "geometry-course/textbook/preparation/chapter-01-models-a-review.json",
+        "sha256": "49546d37d1ee064ed8ddbae722239fb173dc82a14fa85f022e55b722ba6165e1"
+      },
+      "independentVisualReport": {
+        "path": "geometry-course/textbook/preparation/chapter-01-models-a-visual-review.json",
+        "sha256": "bbf01b26fe0f9c2fe6306173fb53502e0d0a4c1d2224ecba66263ef889bdb61e"
+      }
+    },
+    {
+      "path": "geometry-course/textbook/models/chapter-01-b.json",
+      "sha256": "49dab55e0d1c497c91fbf6a400d055387ac9a589a2c835f1bf14c48682d7bb11",
+      "reviewerRole": "independent model author for 1–30",
+      "parts": 41,
+      "views": 202,
+      "verdict": "passed-source-relationships-mathematics-and-scene-content",
+      "browser": "passed-final-hash-bound-real-browser-and-initial-final-visual-review",
+      "independentReport": {
+        "path": "geometry-course/textbook/preparation/chapter-01-models-b-review.json",
+        "sha256": "c24624bea14d1b4d30362bcdcf172b300cfec205ecfa72516ab4a4e5cb5d3290"
+      },
+      "independentVisualReport": {
+        "path": "geometry-course/textbook/preparation/chapter-01-models-b-visual-review.json",
+        "sha256": "80918247de1b585a233f05613ea01766ba7560bbd988248d7d5c63683bf071bc"
+      }
+    },
+    {
+      "path": "geometry-course/textbook/models/chapter-01-c.json",
+      "sha256": "fda759f01529544b6ce35bef458c425a294b695560c0bb6cd535683d69643731",
+      "reviewerRole": "independent model author for 31–60",
+      "parts": 48,
+      "views": 224,
+      "verdict": "passed-source-relationships-mathematics-and-scene-content",
+      "browser": "passed-final-hash-bound-real-browser-and-initial-final-visual-review",
+      "independentReport": {
+        "path": "geometry-course/textbook/preparation/chapter-01-models-c-review.json",
+        "sha256": "66512ac7db24b1a3d047b653068a1f973d3e512db3f6402a74dfcada437c9bc8"
+      },
+      "independentVisualReport": {
+        "path": "geometry-course/textbook/preparation/chapter-01-models-c-visual-review.json",
+        "sha256": "90a2bb182f800b45bb90363f3d5d79c31327a28191abf6fb852fe68993f82fd4"
+      }
+    }
+  ],
+  "claude": "owner-waived-2026-10-23",
+  "readyToPublish": false,
+  "verdict": "passed-source-mathematics-scene-content-and-final-visual-review",
+  "publicationNote": "This component review is evidence for the separate release-review; it is not merge or deployment authorization."
+}

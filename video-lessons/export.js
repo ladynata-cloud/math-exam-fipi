@@ -3,7 +3,7 @@
   // Operator-only enhancement. No credentials or job data enter a pupil account.
   const form = document.getElementById('mp4-form');
   if (!form) return;
-  const api = 'https://mathexam-video-ladynata.amvera.io';
+  const api = 'https://mathexam-video-ladynata.msk1.amvera.tech';
   const status = document.getElementById('mp4-status');
   const tokenField = document.getElementById('mp4-token');
   const submit = document.getElementById('mp4-submit');

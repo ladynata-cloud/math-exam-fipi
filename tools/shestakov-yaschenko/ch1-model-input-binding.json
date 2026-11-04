@@ -1,0 +1,11 @@
+{
+  "modelRunBundleSHA256": "43a3199080cd851a9f3465934992de96021bb25d5336e7e2c5145d657a1fc56c",
+  "finalBundleSHA256": "581f90697a950ce3bb1b17df9f1c3fc0808726238183c16d7da0c76b16ee9f44",
+  "modelInputSHA256": "4f570d935224facc3463c4a61d724bc20ef22c5a8c4fba4899dd9634a477f09f",
+  "finalModelInputSHA256": "4f570d935224facc3463c4a61d724bc20ef22c5a8c4fba4899dd9634a477f09f",
+  "identicalRenderingInputs": true,
+  "cards": 543,
+  "states": 3780,
+  "errors": [],
+  "explanation": "Only review provenance/status metadata changed after the full model run; all actual model-render inputs and dependencies are compared exactly. Final-head CI will repeat the full browser gate."
+}

@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "c62e5047fa2e774d43899e4ee20d5e1127c53e64",
+  "chapter": "I",
+  "cards": 173,
+  "normalizedLessonsSha256": "6a6d0cd2bbb9e08423839e7b783b351ef65b6b3644a5503d551e8199442dd2eb",
+  "normalizedCatalogEntriesSha256": "4485a6f65ffeaaa363063412fabe1ac5c47c94b5d0d22cd230e504315d7f9ec4",
+  "authoredContentSha256": "12525e9093c143c4ee6570a9fea00c7f9ccf15eb0a7ef4ab274cc62a982fa4da",
+  "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07"
+}

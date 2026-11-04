@@ -1,0 +1,470 @@
+{
+  "sourcePR": 153,
+  "sourceHead": "2dc564cd296c67b4a74c3e277a656ba763a550b5",
+  "main": "eb1eeef772a247bf00bac81a660cd2fb5a8b1878",
+  "commonAncestor": "010e89c75c0fe110b57c983c728b8216fb38cd9d",
+  "comparison": "tree-to-tree; not GitHub triple-dot ancestry statistics",
+  "summary": {
+    "identical": 53,
+    "evolved": 23,
+    "absent": 0
+  },
+  "files": [
+    {
+      "path": "docs/EGE_BAZA_ALGEBRA_FOUNDATIONS.md",
+      "sourceBlob": "cfc28e442975ceb61ccc246e40a48cd9178f58c3",
+      "mainBlob": "cfc28e442975ceb61ccc246e40a48cd9178f58c3",
+      "status": "identical"
+    },
+    {
+      "path": "docs/EGE_BAZA_BACKUP.md",
+      "sourceBlob": "322e9cd0ad0b0f76d220f79b9250701e16338aba",
+      "mainBlob": "322e9cd0ad0b0f76d220f79b9250701e16338aba",
+      "status": "identical"
+    },
+    {
+      "path": "docs/EGE_BAZA_COURSE.md",
+      "sourceBlob": "5a7b5be155c060a32bd2a5ae09afa5aebca8ea75",
+      "mainBlob": "5a7b5be155c060a32bd2a5ae09afa5aebca8ea75",
+      "status": "identical"
+    },
+    {
+      "path": "docs/EGE_BAZA_DATA_MODULE.md",
+      "sourceBlob": "d31f5d6088f92dfca1a0641a3a9da5409e3394fe",
+      "mainBlob": "d31f5d6088f92dfca1a0641a3a9da5409e3394fe",
+      "status": "identical"
+    },
+    {
+      "path": "docs/EGE_BAZA_DELIVERY.md",
+      "sourceBlob": "9235fdecd892ababed58265f823f0be49f3f4a7d",
+      "mainBlob": "9235fdecd892ababed58265f823f0be49f3f4a7d",
+      "status": "identical"
+    },
+    {
+      "path": "docs/EGE_BAZA_INTERACTIVE_LABS.md",
+      "sourceBlob": "db80d378bfa92da966628a356d343d5ef9d3bedd",
+      "mainBlob": "db80d378bfa92da966628a356d343d5ef9d3bedd",
+      "status": "identical"
+    },
+    {
+      "path": "docs/EGE_BAZA_NAVIGATOR.md",
+      "sourceBlob": "7c917bff84eb3b6ab4cc7698dd51b9f976417050",
+      "mainBlob": "7c917bff84eb3b6ab4cc7698dd51b9f976417050",
+      "status": "identical"
+    },
+    {
+      "path": "docs/EGE_BAZA_PRODUCT_PLAN.md",
+      "sourceBlob": "f1d17f8d24a6d6f94dbd7b7343b24294fa2e904f",
+      "mainBlob": "f1d17f8d24a6d6f94dbd7b7343b24294fa2e904f",
+      "status": "identical"
+    },
+    {
+      "path": "docs/EGE_BAZA_REVIEW_RU.txt",
+      "sourceBlob": "cf6eaeec2de77518c4b978794a4e419922380f78",
+      "mainBlob": "cf6eaeec2de77518c4b978794a4e419922380f78",
+      "status": "identical"
+    },
+    {
+      "path": "docs/PROJECT_STATUS.md",
+      "sourceBlob": "c2c5d5d32d33abc5ac81e3c1177b40354a641682",
+      "mainBlob": "fe62cff45a4f27862e48b4e7f5364864c9bc32a5",
+      "status": "evolved"
+    },
+    {
+      "path": "docs/adr/0004-ege-baza-construction-labs.md",
+      "sourceBlob": "5a29b888ffdb116e1d717f84d7b27284a8bccd9b",
+      "mainBlob": "5a29b888ffdb116e1d717f84d7b27284a8bccd9b",
+      "status": "identical"
+    },
+    {
+      "path": "docs/tasks/EGE_BAZA_ALGEBRA_FOUNDATIONS.md",
+      "sourceBlob": "eb334add1b7411cf31e0c02a7201a43193571ea6",
+      "mainBlob": "eb334add1b7411cf31e0c02a7201a43193571ea6",
+      "status": "identical"
+    },
+    {
+      "path": "docs/tasks/EGE_BAZA_COURSE_02_BLUEPRINT.md",
+      "sourceBlob": "3398890c3e5221576467a1ecc7b7f356563f7b7b",
+      "mainBlob": "3398890c3e5221576467a1ecc7b7f356563f7b7b",
+      "status": "identical"
+    },
+    {
+      "path": "docs/tasks/EGE_BAZA_COURSE_03_NAVIGATOR.md",
+      "sourceBlob": "710689792fa4a811da4ad05d4fd37eb4c7fd3e10",
+      "mainBlob": "710689792fa4a811da4ad05d4fd37eb4c7fd3e10",
+      "status": "identical"
+    },
+    {
+      "path": "docs/tasks/EGE_BAZA_COURSE_04_BACKUP.md",
+      "sourceBlob": "23fa4bf0a3b407ca5a271fc5fd3e272e63ab01bd",
+      "mainBlob": "23fa4bf0a3b407ca5a271fc5fd3e272e63ab01bd",
+      "status": "identical"
+    },
+    {
+      "path": "docs/tasks/EGE_BAZA_COURSE_05_DATA.md",
+      "sourceBlob": "7b6ea435ab597af550c88ac0ee1f23c60a06d686",
+      "mainBlob": "7b6ea435ab597af550c88ac0ee1f23c60a06d686",
+      "status": "identical"
+    },
+    {
+      "path": "docs/tasks/EGE_BAZA_FOUNDATION_MODULE_1.md",
+      "sourceBlob": "39f90da4d447ddcf82e37a7e63df45057a9a2cf1",
+      "mainBlob": "39f90da4d447ddcf82e37a7e63df45057a9a2cf1",
+      "status": "identical"
+    },
+    {
+      "path": "docs/tasks/EGE_BAZA_INTERACTIVE_LABS.md",
+      "sourceBlob": "5492e941f0531e38b74c8c37fe54ca3c2854d20c",
+      "mainBlob": "5492e941f0531e38b74c8c37fe54ca3c2854d20c",
+      "status": "identical"
+    },
+    {
+      "path": "ege-baza/algebra/app.js",
+      "sourceBlob": "e7a23079517ff7fa3c8682c409da31baede11d03",
+      "mainBlob": "dd1c34dbf32e3b8d5c8552ac0ae8425a2a987511",
+      "status": "evolved"
+    },
+    {
+      "path": "ege-baza/algebra/data.js",
+      "sourceBlob": "901d036a32362fa58763a9f9e06a16c41f56cf48",
+      "mainBlob": "901d036a32362fa58763a9f9e06a16c41f56cf48",
+      "status": "identical"
+    },
+    {
+      "path": "ege-baza/algebra/index.html",
+      "sourceBlob": "8fb808c9e75359b4c6b3167d62b1c1f5c8e3193b",
+      "mainBlob": "5e4d7730a0df0b29ffd8ddca66e65ce2d742e58f",
+      "status": "evolved"
+    },
+    {
+      "path": "ege-baza/algebra/math.js",
+      "sourceBlob": "86d3c0b082901a25cbd4d594031747b5da69f0d7",
+      "mainBlob": "86d3c0b082901a25cbd4d594031747b5da69f0d7",
+      "status": "identical"
+    },
+    {
+      "path": "ege-baza/algebra/primary.js",
+      "sourceBlob": "4359aafe9f0c4c9b4989b1cc3f5b805adb208f26",
+      "mainBlob": "4359aafe9f0c4c9b4989b1cc3f5b805adb208f26",
+      "status": "identical"
+    },
+    {
+      "path": "ege-baza/algebra/style.css",
+      "sourceBlob": "0d57722a5a583066344adaeaf4255dba0d732eca",
+      "mainBlob": "0d57722a5a583066344adaeaf4255dba0d732eca",
+      "status": "identical"
+    },
+    {
+      "path": "ege-baza/app.js",
+      "sourceBlob": "7b951c3a8679bc1de7fd0a27437d8ac9b9bafdd2",
+      "mainBlob": "043f75f027e2c7b1bf50e5f35907491ab3fe8f11",
+      "status": "evolved"
+    },
+    {
+      "path": "ege-baza/backup-ui.js",
+      "sourceBlob": "3030a373ccc8099494fbac8aa532ccfd617f97f0",
+      "mainBlob": "3030a373ccc8099494fbac8aa532ccfd617f97f0",
+      "status": "identical"
+    },
+    {
+      "path": "ege-baza/backup.js",
+      "sourceBlob": "b9630470e5ed50a17c8fd475a645e545bcd5357f",
+      "mainBlob": "b9630470e5ed50a17c8fd475a645e545bcd5357f",
+      "status": "identical"
+    },
+    {
+      "path": "ege-baza/course-definitions.js",
+      "sourceBlob": "6bf9228b139f9557dac71fc5b4b50ca2758c2a6f",
+      "mainBlob": "6bf9228b139f9557dac71fc5b4b50ca2758c2a6f",
+      "status": "identical"
+    },
+    {
+      "path": "ege-baza/course-state.js",
+      "sourceBlob": "1a2973e6f1ee90e121a64dda8975b9f6bc554ab4",
+      "mainBlob": "1a2973e6f1ee90e121a64dda8975b9f6bc554ab4",
+      "status": "identical"
+    },
+    {
+      "path": "ege-baza/course.css",
+      "sourceBlob": "ae308c8e28f3f3064c47018519bcc382d42fe195",
+      "mainBlob": "085e325bbe6bbaeed4eb2b5f09d63b4e65b76e68",
+      "status": "evolved"
+    },
+    {
+      "path": "ege-baza/data-reference.js",
+      "sourceBlob": "89aef07510da50ca93594b6b05593cb4fa90b111",
+      "mainBlob": "89aef07510da50ca93594b6b05593cb4fa90b111",
+      "status": "identical"
+    },
+    {
+      "path": "ege-baza/foundation-reference.js",
+      "sourceBlob": "d6770d91bb1d5320c85bb0c4e640bd660d97df14",
+      "mainBlob": "d6770d91bb1d5320c85bb0c4e640bd660d97df14",
+      "status": "identical"
+    },
+    {
+      "path": "ege-baza/index.html",
+      "sourceBlob": "4b524c377b0a604ae389e4f16b6fa7d2135b4775",
+      "mainBlob": "45b3151a990e89279d55789e73943ea17337bd8c",
+      "status": "evolved"
+    },
+    {
+      "path": "ege-baza/labs/index.html",
+      "sourceBlob": "edf8a7b4753add8d0d483319881b4b5c0e3f242a",
+      "mainBlob": "a1b9f5cfb91d8c0f84e58d05d3fc6a0988928d4c",
+      "status": "evolved"
+    },
+    {
+      "path": "ege-baza/labs/labs.js",
+      "sourceBlob": "42bf7c1960f25d788b17aa5a7ca8f7dae65013eb",
+      "mainBlob": "42bf7c1960f25d788b17aa5a7ca8f7dae65013eb",
+      "status": "identical"
+    },
+    {
+      "path": "ege-baza/labs/math.js",
+      "sourceBlob": "4a7883e1f5eef9f412856591f011e1847d255ae7",
+      "mainBlob": "4a7883e1f5eef9f412856591f011e1847d255ae7",
+      "status": "identical"
+    },
+    {
+      "path": "ege-baza/labs/stereo.js",
+      "sourceBlob": "4dff2fcba67eb01801b70d98b306e33805a1a21f",
+      "mainBlob": "9c00e53f07f06ae41eacda639589fed510e4cdf8",
+      "status": "evolved"
+    },
+    {
+      "path": "ege-baza/labs/style.css",
+      "sourceBlob": "271926d35c36e4b798bd7bcd9b942ab4f06d218f",
+      "mainBlob": "271926d35c36e4b798bd7bcd9b942ab4f06d218f",
+      "status": "identical"
+    },
+    {
+      "path": "ege-baza/percent/app.js",
+      "sourceBlob": "c7e3a29c4062e7c33c6c7d93c5cc642287f4c384",
+      "mainBlob": "c5b546a3872c74374b3a12c1af16728f9c50002b",
+      "status": "evolved"
+    },
+    {
+      "path": "ege-baza/percent/data.js",
+      "sourceBlob": "071d0ab6a4a8c3d3db26634be69646c7e0c8090b",
+      "mainBlob": "071d0ab6a4a8c3d3db26634be69646c7e0c8090b",
+      "status": "identical"
+    },
+    {
+      "path": "ege-baza/percent/index.html",
+      "sourceBlob": "635727501f7ded9102fb9f17b9f02d64ad972028",
+      "mainBlob": "c5857c3a824ed4757b4c5ab39a0180d4fc446af6",
+      "status": "evolved"
+    },
+    {
+      "path": "ege-baza/percent/math.js",
+      "sourceBlob": "5c496ab86eb5a24d7a41e2f7e80f8ebd17216b6e",
+      "mainBlob": "5c496ab86eb5a24d7a41e2f7e80f8ebd17216b6e",
+      "status": "identical"
+    },
+    {
+      "path": "ege-baza/percent/style.css",
+      "sourceBlob": "337e1ed085fd20b980c79182f5911546df1026d8",
+      "mainBlob": "337e1ed085fd20b980c79182f5911546df1026d8",
+      "status": "identical"
+    },
+    {
+      "path": "ege-baza/reasoning/app.js",
+      "sourceBlob": "cc96cc84cbf109dcadb205a3ebb63f644126d40e",
+      "mainBlob": "11a18853ed88574c8757dbbcb56035006cc313c7",
+      "status": "evolved"
+    },
+    {
+      "path": "ege-baza/reasoning/data.js",
+      "sourceBlob": "e146bbb6ff218ad0af3a50d5c88bdaea210f9173",
+      "mainBlob": "e146bbb6ff218ad0af3a50d5c88bdaea210f9173",
+      "status": "identical"
+    },
+    {
+      "path": "ege-baza/reasoning/index.html",
+      "sourceBlob": "980d789a05b6d997b6392e59636947fe7122a258",
+      "mainBlob": "54098d5426cc15155365f89ab2523715ea6a650f",
+      "status": "evolved"
+    },
+    {
+      "path": "ege-baza/reasoning/math.js",
+      "sourceBlob": "45239dd604ed12e8e949be2b6571b6175a6448f5",
+      "mainBlob": "45239dd604ed12e8e949be2b6571b6175a6448f5",
+      "status": "identical"
+    },
+    {
+      "path": "ege-baza/reasoning/style.css",
+      "sourceBlob": "8ad3d6c28be55eb09be8a3873a277a4c2de519b1",
+      "mainBlob": "8ad3d6c28be55eb09be8a3873a277a4c2de519b1",
+      "status": "identical"
+    },
+    {
+      "path": "ege-baza/registry.js",
+      "sourceBlob": "5a190642ab34c1f531660e7157ba393136b4f8ec",
+      "mainBlob": "e52b4d396b2b6b56a04f79329eb47e399cec42da",
+      "status": "evolved"
+    },
+    {
+      "path": "sitemap.xml",
+      "sourceBlob": "48c0304a4714ab2516ed84e7ce54d1c5bdc9e674",
+      "mainBlob": "9ae8e4bb77fe3522c5764c7cc1dd9d9c3faa019c",
+      "status": "evolved"
+    },
+    {
+      "path": "tools/build-ege-baza-labs-preview.py",
+      "sourceBlob": "62b998cc0cc7d956ab091efc3ac87d9727c54b9a",
+      "mainBlob": "62b998cc0cc7d956ab091efc3ac87d9727c54b9a",
+      "status": "identical"
+    },
+    {
+      "path": "tools/build-ege-baza-preview.py",
+      "sourceBlob": "a8a45bee0bf79faeb3950ec080ed4cd25b2e3664",
+      "mainBlob": "28dd00a868b59e5778c1003f9c4f41862437163d",
+      "status": "evolved"
+    },
+    {
+      "path": "tools/ege-baza-algebra-percent.browser.cjs",
+      "sourceBlob": "bbda32233e3249be2153cd5a38ee82817e3ffc03",
+      "mainBlob": "bbda32233e3249be2153cd5a38ee82817e3ffc03",
+      "status": "identical"
+    },
+    {
+      "path": "tools/ege-baza-algebra-percent.test.cjs",
+      "sourceBlob": "bd35a80019049810fdc349b8277a4f5b44b3197b",
+      "mainBlob": "bd35a80019049810fdc349b8277a4f5b44b3197b",
+      "status": "identical"
+    },
+    {
+      "path": "tools/ege-baza-assembled.browser.cjs",
+      "sourceBlob": "9b17eb60c6678dfc0c8d95c544731dadeb77d58b",
+      "mainBlob": "ce0df55a86e79cb107ce339c749bd55fe4b41a5f",
+      "status": "evolved"
+    },
+    {
+      "path": "tools/ege-baza-backup.browser.mjs",
+      "sourceBlob": "7d4bba255f4044a788beffa0f1204bc7f58b6736",
+      "mainBlob": "7d4bba255f4044a788beffa0f1204bc7f58b6736",
+      "status": "identical"
+    },
+    {
+      "path": "tools/ege-baza-backup.test.mjs",
+      "sourceBlob": "358a4a69646d53923a027faf2f6c9c133653fa2f",
+      "mainBlob": "358a4a69646d53923a027faf2f6c9c133653fa2f",
+      "status": "identical"
+    },
+    {
+      "path": "tools/ege-baza-data.browser.mjs",
+      "sourceBlob": "8ba1cdaf35135a0803368fec06f2d12c67d00264",
+      "mainBlob": "8ba1cdaf35135a0803368fec06f2d12c67d00264",
+      "status": "identical"
+    },
+    {
+      "path": "tools/ege-baza-data.dom.mjs",
+      "sourceBlob": "60c4a0c1f0405cf6c11254db7567a4a6808c7382",
+      "mainBlob": "60c4a0c1f0405cf6c11254db7567a4a6808c7382",
+      "status": "identical"
+    },
+    {
+      "path": "tools/ege-baza-data.test.mjs",
+      "sourceBlob": "5bf1ef961aa86b408467fc1b2dd77c27474e11ee",
+      "mainBlob": "fd96a3885db4022a55f444b26e829604d3b79893",
+      "status": "evolved"
+    },
+    {
+      "path": "tools/ege-baza-foundation.browser.mjs",
+      "sourceBlob": "88e67eb033a04f690b7bea8d87fc9f0644d2638c",
+      "mainBlob": "88e67eb033a04f690b7bea8d87fc9f0644d2638c",
+      "status": "identical"
+    },
+    {
+      "path": "tools/ege-baza-foundation.dom.mjs",
+      "sourceBlob": "46a342810ffcd2b15f5f201804724dd941062934",
+      "mainBlob": "46a342810ffcd2b15f5f201804724dd941062934",
+      "status": "identical"
+    },
+    {
+      "path": "tools/ege-baza-foundation.test.mjs",
+      "sourceBlob": "ed6bc8986c310e5a82feb75348c5a756a48cf495",
+      "mainBlob": "ed6bc8986c310e5a82feb75348c5a756a48cf495",
+      "status": "identical"
+    },
+    {
+      "path": "tools/ege-baza-labs.browser.cjs",
+      "sourceBlob": "18f39c5a95e798ab6000d702ff9a2d982e64fc8c",
+      "mainBlob": "18f39c5a95e798ab6000d702ff9a2d982e64fc8c",
+      "status": "identical"
+    },
+    {
+      "path": "tools/ege-baza-labs.test.cjs",
+      "sourceBlob": "cee7a5dc7fe5913fa96657979ef2128d769c73ef",
+      "mainBlob": "cee7a5dc7fe5913fa96657979ef2128d769c73ef",
+      "status": "identical"
+    },
+    {
+      "path": "tools/ege-baza-multi-module.dom.mjs",
+      "sourceBlob": "b1eb13ab4b7e7183402399102b3456e28c7c2416",
+      "mainBlob": "b1eb13ab4b7e7183402399102b3456e28c7c2416",
+      "status": "identical"
+    },
+    {
+      "path": "tools/ege-baza-navigator.browser.mjs",
+      "sourceBlob": "4ad0a02ab670a510467f654abec572b03e7b4ddf",
+      "mainBlob": "d77f4a3fe247cf71ecc68fcda54bad46e5469d22",
+      "status": "evolved"
+    },
+    {
+      "path": "tools/ege-baza-navigator.test.mjs",
+      "sourceBlob": "5c6cb98d5f8752ce4fc29f7bda47b96146f96790",
+      "mainBlob": "9cb3df048ce8828150d2097718f6e81852658dc6",
+      "status": "evolved"
+    },
+    {
+      "path": "tools/ege-baza-reasoning.browser.cjs",
+      "sourceBlob": "4154537d0ae8141c9126907584a43d87ec42c42b",
+      "mainBlob": "4154537d0ae8141c9126907584a43d87ec42c42b",
+      "status": "identical"
+    },
+    {
+      "path": "tools/ege-baza-reasoning.test.cjs",
+      "sourceBlob": "c7cc2f65ce2ef32d69203f04c09e2bf8ade6b3b4",
+      "mainBlob": "c7cc2f65ce2ef32d69203f04c09e2bf8ade6b3b4",
+      "status": "identical"
+    },
+    {
+      "path": "trainers/ege-baza/course/index.html",
+      "sourceBlob": "a8aaa20d61dfda39c882a1afd7e158a34c1b8b4b",
+      "mainBlob": "c57d999ff64c49aa2cf75745f527cf111a5155d8",
+      "status": "evolved"
+    },
+    {
+      "path": "trainers/ege-baza/data-course/content.js",
+      "sourceBlob": "a19e65d13198aefe3b99d2f6aed0582a6e9fb951",
+      "mainBlob": "a19e65d13198aefe3b99d2f6aed0582a6e9fb951",
+      "status": "identical"
+    },
+    {
+      "path": "trainers/ege-baza/data-course/index.html",
+      "sourceBlob": "b530dc46c19a1b64c9aa59f11ceb458e4035be37",
+      "mainBlob": "ddd01203510d17a6ea1db9da381fca1c94f16e59",
+      "status": "evolved"
+    },
+    {
+      "path": "trainers/ege-baza/data-course/visuals.js",
+      "sourceBlob": "8e186453c11131c3fc66ced999e8d0eaeb58c49c",
+      "mainBlob": "8e186453c11131c3fc66ced999e8d0eaeb58c49c",
+      "status": "identical"
+    },
+    {
+      "path": "trainers/ege-baza/index.html",
+      "sourceBlob": "b1155630c4f9466b374c9e12b68b8fae81aeb1c2",
+      "mainBlob": "202384f48b1d4f288e5244bd6cdda91669c536be",
+      "status": "evolved"
+    },
+    {
+      "path": "trainers/index.html",
+      "sourceBlob": "5a35f1085d4256ab45dfb531166b16fe01795a7e",
+      "mainBlob": "408fc84132001b40d695d8397013b61c70ed3168",
+      "status": "evolved"
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+name: Atanasyan first steps — source, work and cabinet
+
+on:
+  pull_request:
+    paths:
+      - 'learning/atanasyan-first-steps/**'
+      - 'geometry-course/first-steps/**'
+      - 'learning/app.js'
+      - 'learning/attached-course.js'
+      - 'learning/index.html'
+      - 'learning/assistant.js'
+      - 'board-server/assistant-course-context.js'
+      - 'assistant-service/src/course-context.js'
+      - 'assistant-service/knowledge/atanasyan-first-steps.json'
+      - 'assistant-service/scripts/build-course-knowledge.cjs'
+      - 'tools/atanasyan-first-steps/**'
+      - '.github/workflows/atanasyan-first-steps.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-work-and-browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Exact reviewed source and assistant projection
+        run: |
+          python3 tools/atanasyan-first-steps/build.py --check
+          node assistant-service/scripts/build-course-knowledge.cjs --check
+          node tools/atanasyan-first-steps/source.test.cjs
+          python3 tools/geometry-textbook/build_course.py --check
+      - name: Install pinned test tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/first-steps-tools" --no-audit --no-fund --ignore-scripts jsdom@26.1.0 playwright@1.55.0
+          node "$RUNNER_TEMP/first-steps-tools/node_modules/playwright/cli.js" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/first-steps-tools/node_modules" >> "$GITHUB_ENV"
+      - name: Records, course boundaries and cabinet isolation
+        run: node --test --test-isolation=none tools/atanasyan-first-steps/*.test.cjs
+      - name: Real desktop and mobile journeys
+        env:
+          ATANASYAN_FIRST_STEPS_ARTIFACTS: ${{ runner.temp }}/atanasyan-first-steps
+        run: node tools/atanasyan-first-steps/browser.cjs
+      - name: Browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: atanasyan-first-steps-browser
+          path: ${{ runner.temp }}/atanasyan-first-steps/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Scoped preparation gate
+        run: |
+          git diff --check
+          echo ATANASYAN_FIRST_STEPS_PREPARED_OK

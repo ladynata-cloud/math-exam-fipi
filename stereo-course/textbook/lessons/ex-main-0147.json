@@ -1,0 +1,280 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0147",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Точка над вершиной прямоугольника",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "147",
+    "chapter": "II. Перпендикулярность прямых и плоскостей",
+    "printedPages": [
+      48
+    ],
+    "pdfPages": [
+      50
+    ]
+  },
+  "statement": {
+    "text": "ABCD — прямоугольник. Из точки M проведён перпендикуляр MB к его плоскости.",
+    "goal": "Докажи, что треугольники AMD и MCD прямоугольные."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "Поверни рисунок и найди данные условия. Дополнительные отрезки появляются вместе с подсказкой или шагом.",
+    "model": {
+      "points": {
+        "A": [
+          0,
+          0,
+          0
+        ],
+        "B": [
+          5,
+          0,
+          0
+        ],
+        "C": [
+          5,
+          3,
+          0
+        ],
+        "D": [
+          0,
+          3,
+          0
+        ],
+        "M": [
+          5,
+          0,
+          4
+        ]
+      },
+      "edges": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "C",
+          "D"
+        ],
+        [
+          "D",
+          "A"
+        ],
+        [
+          "M",
+          "B"
+        ]
+      ],
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      ],
+      "labelNames": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "M"
+      ],
+      "neutralPoints": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "M"
+      ],
+      "labels": {},
+      "views": {
+        "neutral": {
+          "label": "Данные задачи"
+        },
+        "amd": {
+          "label": "Первый треугольник",
+          "segments": [
+            [
+              "M",
+              "A"
+            ],
+            [
+              "M",
+              "D"
+            ]
+          ],
+          "polygon": [
+            "A",
+            "M",
+            "D"
+          ]
+        },
+        "mcd": {
+          "label": "Второй треугольник",
+          "segments": [
+            [
+              "M",
+              "C"
+            ],
+            [
+              "M",
+              "D"
+            ]
+          ],
+          "polygon": [
+            "M",
+            "C",
+            "D"
+          ]
+        }
+      },
+      "note": "Модель показывает допустимое положение. Поверни рисунок, чтобы рассмотреть пространственную конфигурацию; выводы обосновывай по условию."
+    }
+  },
+  "help": [
+    {
+      "id": "help-start",
+      "question": "Как использовать прямоугольник?",
+      "text": "Для каждого треугольника сначала найди проекцию наклонной на ABCD, а затем сторону прямоугольника, перпендикулярную этой проекции.",
+      "theoryIds": [
+        "theory-020"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "title": "Рассмотри наклонную MA",
+      "prompt": "Как найти проекцию MA?",
+      "explanation": "Основание перпендикуляра из M — B, а A лежит в плоскости прямоугольника. Поэтому проекция MA — BA. Соседние стороны прямоугольника AB и AD перпендикулярны.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Определение проекции наклонной.",
+          "theoryId": "theory-019",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "19",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              43,
+              44
+            ],
+            "pdfPages": [
+              45,
+              46
+            ],
+            "subpart": "point-distance"
+          }
+        },
+        {
+          "kind": "given",
+          "text": "ABCD — прямоугольник."
+        }
+      ],
+      "view": "amd",
+      "id": "step-1"
+    },
+    {
+      "title": "Докажи утверждение для AMD",
+      "prompt": "Что следует из AD⊥AB?",
+      "explanation": "AD проходит через основание A наклонной MA и перпендикулярна её проекции BA. По теореме о трёх перпендикулярах AD⊥MA. Следовательно, треугольник AMD прямоугольный при A.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Теорема о трёх перпендикулярах.",
+          "theoryId": "theory-020",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "20",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              44,
+              45
+            ],
+            "pdfPages": [
+              46,
+              47
+            ]
+          }
+        }
+      ],
+      "view": "amd",
+      "id": "step-2"
+    },
+    {
+      "title": "Докажи утверждение для MCD",
+      "prompt": "Какая сторона прямоугольника перпендикулярна проекции MC?",
+      "explanation": "Проекция MC — BC, а CD⊥BC. Прямая CD проходит через основание C наклонной MC, поэтому по той же теореме CD⊥MC. Треугольник MCD прямоугольный при C.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Определение проекции наклонной.",
+          "theoryId": "theory-019",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "19",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              43,
+              44
+            ],
+            "pdfPages": [
+              45,
+              46
+            ],
+            "subpart": "point-distance"
+          }
+        },
+        {
+          "kind": "given",
+          "text": "CD⊥BC как соседние стороны прямоугольника."
+        },
+        {
+          "kind": "theorem",
+          "text": "Теорема о трёх перпендикулярах.",
+          "theoryId": "theory-020",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "20",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              44,
+              45
+            ],
+            "pdfPages": [
+              46,
+              47
+            ]
+          }
+        }
+      ],
+      "view": "mcd",
+      "id": "step-3"
+    }
+  ],
+  "answer": {
+    "mode": "manual",
+    "prompt": "Укажи прямой угол каждого из треугольников AMD и MCD и обоснуй оба вывода."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex ege_base_inventory; geometry_scene_math_review",
+    "at": "2026-10-21T21:45:45Z"
+  }
+}

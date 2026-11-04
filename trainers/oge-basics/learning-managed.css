@@ -1,4 +1,4 @@
-#learning-remediation-root{--lm-ink:#24374b;--lm-muted:#667c8d;--lm-line:#dce5e9;--lm-accent:#147d79;max-width:1020px;margin:0 auto;padding:clamp(14px,3vw,32px);font:16px/1.55 system-ui,-apple-system,sans-serif;color:var(--lm-ink);text-align:left}
+#learning-remediation-root{--lm-ink:#24374b;--lm-muted:#667c8d;--lm-line:#dce5e9;--lm-accent:#287148;max-width:1020px;margin:0 auto;padding:clamp(14px,3vw,32px);font:16px/1.55 system-ui,-apple-system,sans-serif;color:var(--lm-ink);text-align:left}
 #learning-remediation-root *{box-sizing:border-box}
 #learning-remediation-root button,#learning-remediation-root input,#learning-remediation-root textarea{font:inherit}
 #learning-remediation-root button{cursor:pointer;border:1px solid var(--lm-line);background:#fff;border-radius:10px;padding:9px 14px;color:var(--lm-ink);min-height:42px}
@@ -27,7 +27,10 @@
 #learning-remediation-root .lm-rail button{text-align:left;font-size:14px}
 #learning-remediation-root .lm-lesson{max-width:100%;overflow-x:auto}
 #learning-remediation-root .lm-note{display:block;width:100%;resize:vertical;min-height:110px;border:1px solid var(--lm-line);border-radius:12px;padding:12px;margin-top:8px;background:#fffcf3;color:var(--lm-ink)}
-#learning-remediation-root progress{display:block;width:100%;height:8px;border:0;accent-color:var(--lm-accent);margin:14px 0}
+#learning-remediation-root progress{display:block;width:100%;height:4px;border:0;border-radius:3px;overflow:hidden;appearance:none;-webkit-appearance:none;background:#e3ece5;accent-color:var(--lm-accent);margin:18px 0}
+#learning-remediation-root progress::-webkit-progress-bar{background:#e3ece5;border-radius:3px}
+#learning-remediation-root progress::-webkit-progress-value{background:var(--lm-accent);border-radius:3px}
+#learning-remediation-root progress::-moz-progress-bar{background:var(--lm-accent);border-radius:3px}
 #learning-remediation-root .lm-reference{padding:15px;border:1px dashed #acbfbf;border-radius:12px;background:#f7fbfa;margin:12px 0}
 #learning-remediation-root .lm-division-scroll{overflow:auto;padding:15px 0}
 #learning-remediation-root .lm-division{display:flex;align-items:flex-start;font:24px/1.5 ui-monospace,SFMono-Regular,monospace;width:max-content;max-width:none;gap:15px;letter-spacing:.03em}
@@ -53,8 +56,117 @@
 #learning-remediation-root .lm-scaffold-steps li{margin:8px 0}
 #learning-remediation-root .lm-scaffold-selected th,#learning-remediation-root .lm-scaffold-selected td{background:#dcf0e8;font-weight:700}
 #learning-remediation-root .lm-scaffold-result{font-weight:700}
+#learning-remediation-root .lm-help-number{display:inline;padding:.08em .2em;border-radius:.2em;background:#ffe9a6;color:#392d0a;font-weight:700;box-decoration-break:clone;-webkit-box-decoration-break:clone}
 @media(max-width:400px){#learning-remediation-root .lm-scaffold{padding:9px}#learning-remediation-root .lm-scaffold-table th,#learning-remediation-root .lm-scaffold-table td{padding:5px}}
 
 #learning-remediation-root .lm-scaffold-table:focus-visible{outline:3px solid #53bcb6;outline-offset:2px}
 #learning-remediation-root .lm-scaffold-table table{table-layout:auto;width:max-content;max-width:none;margin:0}
 #learning-remediation-root .lm-scaffold-table th,#learning-remediation-root .lm-scaffold-table td{overflow-wrap:normal;word-break:normal;white-space:nowrap}
+
+/* Plain-language division keeps the instruction and help in the main column. */
+#learning-remediation-root.lm-simple-division .lm-layout{grid-template-columns:minmax(0,1fr)}
+#learning-remediation-root.lm-simple-division .lm-feedback{font-size:18px;line-height:1.65}
+#learning-remediation-root.lm-simple-division .lm-scaffold h3{font-size:20px}
+#learning-remediation-root.lm-simple-division .lm-scaffold-table{font-size:18px}
+#learning-remediation-root.lm-simple-division .lm-scaffold{padding:clamp(8px,2vw,16px)}
+
+#learning-remediation-root .lm-digit-table table{width:100%;max-width:100%}
+#learning-remediation-root .lm-digit-table th,#learning-remediation-root .lm-digit-table td{text-align:left}
+#learning-remediation-root .lm-digit-note{display:block;font-weight:700}
+#learning-remediation-root .lm-digit-table .lm-scaffold-selected th,#learning-remediation-root .lm-digit-table .lm-scaffold-selected td{background:#d9f1df;color:#164b2b;border-top:2px solid #287a46;border-bottom:2px solid #287a46}
+#learning-remediation-root .lm-digit-too-much th,#learning-remediation-root .lm-digit-too-much td{background:#fff0eb;color:#793728}
+
+#learning-remediation-root .lm-digit-table table{table-layout:fixed}
+#learning-remediation-root .lm-digit-table th,#learning-remediation-root .lm-digit-table td{padding:6px 4px}
+#learning-remediation-root .lm-digit-table th[scope="col"]{white-space:normal;overflow-wrap:anywhere}
+#learning-remediation-root .lm-digit-table th:first-child{width:24%}
+#learning-remediation-root .lm-digit-table th:nth-child(2){width:36%}
+#learning-remediation-root .lm-digit-table .lm-digit-note{white-space:normal}
+
+/* Estimation keeps the accepted arithmetic beside the current question. */
+#learning-remediation-root .lm-estimate-trail{border-left:4px solid #7aaba0;padding:3px 12px;margin:14px 0;font-size:18px;line-height:1.6;overflow-wrap:anywhere}
+#learning-remediation-root .lm-estimate-trail p{margin:6px 0}
+#learning-remediation-root .lm-estimate-last{background:#d9f1df;color:#164b2b;padding:7px 10px;border-radius:7px;font-weight:700}
+
+/* One visible instruction; completed corner rows stay in place. */
+#learning-remediation-root .lm-course-cue{font-size:20px;line-height:1.5;padding:12px 16px;border-left:5px solid #287a46;background:#edf7f0;border-radius:6px}
+#learning-remediation-root .lm-current-row{background:#d9f1df;outline:2px solid #287a46;border-radius:3px;color:#164b2b}
+#learning-remediation-root .lm-number .active{outline:2px solid #287a46;background:#d9f1df;color:#164b2b}
+#learning-remediation-root .lm-course-footer{padding:16px;background:#edf7f0;border-radius:12px;font-size:18px}
+#learning-remediation-root .lm-course-footer a{display:inline-block;color:#145d57;font-weight:700;padding:8px 0}
+
+#learning-remediation-root .lm-course-visual{padding:14px 16px;border:1px solid var(--lm-line);border-radius:12px;background:#fafcfb;font-size:18px}
+#learning-remediation-root .lm-course-visual p{margin:6px 0}
+#learning-remediation-root .lm-course-digits{display:flex;flex-wrap:wrap;gap:5px;font:30px/1.5 ui-monospace,monospace;margin:14px 0}
+#learning-remediation-root .lm-course-digits span{padding:3px 6px}
+#learning-remediation-root .lm-course-digits .active{background:#d9f1df;outline:2px solid #287a46;border-radius:4px;color:#164b2b}
+#learning-remediation-root .lm-course-divisor{margin-left:10px}
+
+/* Continuing the same skill is the main action after a completed example. */
+#learning-remediation-root .lm-next-example{width:100%;min-height:56px;font-size:21px;font-weight:700;margin:4px 0 12px}
+
+/* Arithmetic instructions must be readable without zooming, including help. */
+#learning-remediation-root.lm-arithmetic{font-size:20px;line-height:1.6;overflow-wrap:anywhere}
+#learning-remediation-root.lm-arithmetic .lm-header>div{min-width:0}
+#learning-remediation-root.lm-arithmetic h1{font-size:clamp(26px,3vw,32px)}
+#learning-remediation-root.lm-arithmetic h2,#learning-remediation-root.lm-arithmetic .lm-prompt{font-size:24px;line-height:1.5}
+#learning-remediation-root.lm-arithmetic .lm-label,#learning-remediation-root.lm-arithmetic .lm-status,#learning-remediation-root.lm-arithmetic .lm-muted,#learning-remediation-root.lm-arithmetic .lm-readonly-note{font-size:18px;line-height:1.5}
+#learning-remediation-root.lm-arithmetic .lm-label{letter-spacing:0;text-transform:none}
+#learning-remediation-root.lm-arithmetic .lm-status{white-space:normal}
+#learning-remediation-root.lm-arithmetic button{font-size:20px;line-height:1.5;min-height:48px;max-width:100%;white-space:normal;overflow-wrap:anywhere}
+#learning-remediation-root.lm-arithmetic .lm-answer{font-size:24px}
+#learning-remediation-root.lm-arithmetic .lm-lesson,#learning-remediation-root.lm-arithmetic .lm-reference,#learning-remediation-root.lm-arithmetic .lm-feedback,#learning-remediation-root.lm-arithmetic .lm-scaffold,#learning-remediation-root.lm-arithmetic .lm-scaffold h3,#learning-remediation-root.lm-arithmetic .lm-scaffold-table,#learning-remediation-root.lm-arithmetic .lm-course-visual,#learning-remediation-root.lm-arithmetic .lm-course-footer,#learning-remediation-root.lm-arithmetic .lm-estimate-trail,#learning-remediation-root.lm-arithmetic .lm-worklog{font-size:20px;line-height:1.6}
+#learning-remediation-root.lm-arithmetic .lm-rail button{min-width:0}
+#learning-remediation-root.lm-arithmetic .lm-next-example{font-size:22px;min-height:56px}
+@media(max-width:650px){
+ #learning-remediation-root.lm-arithmetic{padding:14px}
+ #learning-remediation-root.lm-arithmetic .lm-card{padding:16px}
+ #learning-remediation-root.lm-arithmetic .lm-rail{display:grid;grid-template-columns:minmax(0,1fr);overflow:visible}
+}
+
+/* The column keeps accepted digits and carries aligned, including on phones. */
+#learning-remediation-root .lm-multiplication-board{margin:20px 0;padding:20px 12px;background:#f3f8f5;border:1px solid #bfd3c7;border-radius:14px;max-width:100%;overflow-x:auto}
+#learning-remediation-root .lm-mul-paper{display:table;margin:0 auto;font:700 clamp(24px,4vw,32px)/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;color:#183f2d}
+#learning-remediation-root .lm-mul-cell{display:inline-flex;align-items:center;justify-content:center;min-height:1.55em;border-radius:5px}
+#learning-remediation-root .lm-mul-active{background:#ffdf72;outline:2px solid #915707;color:#263313}
+#learning-remediation-root .lm-mul-line{border-top:3px solid #264735;margin:5px 0}
+#learning-remediation-root .lm-mul-carry{color:#315d89}
+#learning-remediation-root .lm-mul-carry-label{font:600 18px/1.5 system-ui,sans-serif;max-width:20ch;margin:12px 0 3px}
+#learning-remediation-root .lm-mul-sign{text-align:center}
+@media(max-width:420px){#learning-remediation-root .lm-multiplication-board{padding:16px 4px}#learning-remediation-root .lm-mul-paper{font-size:24px}}
+
+/* A public help detour leaves this example open in its original tab. */
+#learning-remediation-root .lm-multiplication-support{margin:20px 0;padding:16px;border:1px solid #bfd3c7;border-radius:12px;background:#f3f8f5;font-size:20px;line-height:1.5}
+#learning-remediation-root .lm-multiplication-support p{margin:8px 0}
+#learning-remediation-root .lm-multiplication-support a{display:inline-block;padding:10px 12px;min-height:48px;color:#145d57;text-underline-offset:3px;overflow-wrap:anywhere}
+
+/* The current task comes first; explanations and other actions open on request. */
+#learning-remediation-root.lm-task-first{max-width:900px}
+#learning-remediation-root.lm-task-first .lm-header{margin-bottom:12px}
+#learning-remediation-root.lm-task-first h1{font-size:clamp(22px,3vw,28px);line-height:1.4}
+#learning-remediation-root.lm-task-first .lm-layout{display:block}
+#learning-remediation-root .lm-task-heading{min-width:0}
+#learning-remediation-root .lm-task-heading>.lm-prompt{margin-bottom:10px}
+#learning-remediation-root .lm-help-slot{margin:8px 0 20px;min-width:0;max-width:100%}
+#learning-remediation-root .lm-help-root{min-width:0;overflow-wrap:anywhere}
+#learning-remediation-root .lm-help-root .lm-feedback:first-child{margin-top:0}
+#learning-remediation-root .lm-help-root>.lm-actions{margin-bottom:0}
+#learning-remediation-root .lm-secondary{margin-top:16px;border-top:1px solid var(--lm-line);padding:0 4px 12px}
+#learning-remediation-root .lm-secondary>summary,#learning-remediation-root .lm-help-fallback>summary{cursor:pointer;min-height:48px;padding:12px 0;font-weight:600;color:#145d57;line-height:1.5}
+#learning-remediation-root .lm-secondary>summary:focus-visible,#learning-remediation-root .lm-help-fallback>summary:focus-visible{outline:3px solid #53bcb6;outline-offset:2px;border-radius:6px}
+#learning-remediation-root .lm-help-fallback[open]{padding:0 12px 12px;border:1px solid var(--lm-line);border-radius:12px;background:#f7fbf9}
+#learning-remediation-root .lm-accepted-work{margin-top:24px;padding-top:16px;border-top:1px solid var(--lm-line)}
+#learning-remediation-root .lm-accepted-work>h2{font-size:18px;margin-bottom:8px}
+#learning-remediation-root .lm-accepted-work .lm-worklog{max-height:none;overflow:visible}
+#learning-remediation-root .lm-accepted-work p{margin:12px 0 20px}
+#learning-remediation-root .lm-fraction{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.25;min-width:1.2em;margin:0 .15em}
+#learning-remediation-root .lm-fraction>span{padding:.08em .2em}
+#learning-remediation-root .lm-fraction>span:first-child{border-bottom:1.5px solid currentColor}
+@media(max-width:420px){
+ #learning-remediation-root.lm-task-first{padding:12px}
+ #learning-remediation-root.lm-task-first .lm-card{padding:14px}
+ #learning-remediation-root .lm-help-root>.lm-actions{display:grid;grid-template-columns:minmax(0,1fr)}
+ #learning-remediation-root .lm-secondary{padding-left:0;padding-right:0}
+ #learning-remediation-root .lm-answer-row{gap:8px}
+ #learning-remediation-root .lm-answer{width:100%}
+}

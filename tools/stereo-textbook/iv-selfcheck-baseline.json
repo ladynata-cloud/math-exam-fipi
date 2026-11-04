@@ -1,0 +1,258 @@
+{
+  "base": "01e412d4314445366bcd4773a3789129aa7264bd",
+  "candidate": "cd75819969d48dd6f14a24d89029b9d00507a77a",
+  "cards": 640,
+  "catalogEntries": 1407,
+  "reviewBatches": 30,
+  "screenshotCases": 1940,
+  "canonicalBundleSHA256": "6698ca8514c4e3d3965b252a016787cc0ec381f37b81504845839004c2e52b57",
+  "sourceIndexSHA256": "6b1e68b0a722b8dcc2f1dc588563fe57aefe2ed691720cbe0abe7c32467d6395",
+  "registrySHA256": "5659db7fcea7f712342af61ad5957db4bd35c2a68f74a9c12492872220022be0",
+  "rawLessonManifestSHA256": "61efc13e2ebb75f481b91e455f5fb7da83abf788f0f721d0655afabed2b0fc23",
+  "screenshotCasesSHA256": "f5c187f657e77dfac37a6a322b1c272869623ed30b1d7005e61889780144c4d4",
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-10-31T01:04:51.530Z",
+    "registeredAt": "2026-10-31T01:05:36.250Z",
+    "scope": "Introduction and chapters I–III plus all three paragraphs of chapter IV: main exercises 1–395, theory 1–51 and 40 earlier chapter self-check questions. Chapter IV self-checks/additional exercises396 onward and later chapters remain pending. Not the complete book."
+  },
+  "originalSources": [
+    {
+      "id": "source-selfcheck-4-01",
+      "kind": "exercise",
+      "title": "Вопросы к главе IV · вопрос 1",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "1",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          111,
+          112
+        ],
+        "pdfPages": [
+          113,
+          114
+        ]
+      }
+    },
+    {
+      "id": "source-selfcheck-4-02",
+      "kind": "exercise",
+      "title": "Вопросы к главе IV · вопрос 2",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "2",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          111,
+          112
+        ],
+        "pdfPages": [
+          113,
+          114
+        ]
+      }
+    },
+    {
+      "id": "source-selfcheck-4-03",
+      "kind": "exercise",
+      "title": "Вопросы к главе IV · вопрос 3",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "3",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          111,
+          112
+        ],
+        "pdfPages": [
+          113,
+          114
+        ]
+      }
+    },
+    {
+      "id": "source-selfcheck-4-04",
+      "kind": "exercise",
+      "title": "Вопросы к главе IV · вопрос 4",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "4",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          111,
+          112
+        ],
+        "pdfPages": [
+          113,
+          114
+        ]
+      }
+    },
+    {
+      "id": "source-selfcheck-4-05",
+      "kind": "exercise",
+      "title": "Вопросы к главе IV · вопрос 5",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "5",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          111,
+          112
+        ],
+        "pdfPages": [
+          113,
+          114
+        ]
+      }
+    },
+    {
+      "id": "source-selfcheck-4-06",
+      "kind": "exercise",
+      "title": "Вопросы к главе IV · вопрос 6",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "6",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          111,
+          112
+        ],
+        "pdfPages": [
+          113,
+          114
+        ]
+      }
+    },
+    {
+      "id": "source-selfcheck-4-07",
+      "kind": "exercise",
+      "title": "Вопросы к главе IV · вопрос 7",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "7",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          111,
+          112
+        ],
+        "pdfPages": [
+          113,
+          114
+        ]
+      }
+    },
+    {
+      "id": "source-selfcheck-4-08",
+      "kind": "exercise",
+      "title": "Вопросы к главе IV · вопрос 8",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "8",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          111,
+          112
+        ],
+        "pdfPages": [
+          113,
+          114
+        ]
+      }
+    },
+    {
+      "id": "source-selfcheck-4-09",
+      "kind": "exercise",
+      "title": "Вопросы к главе IV · вопрос 9",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "9",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          111,
+          112
+        ],
+        "pdfPages": [
+          113,
+          114
+        ]
+      }
+    },
+    {
+      "id": "source-selfcheck-4-10",
+      "kind": "exercise",
+      "title": "Вопросы к главе IV · вопрос 10",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "10",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          111,
+          112
+        ],
+        "pdfPages": [
+          113,
+          114
+        ]
+      }
+    }
+  ],
+  "integratedHashes": {
+    "ex-selfcheck-iv-01": "c68632444a43bed02a43da9c2a9812d3f2ef84babb66d148c9b93aeda85ed971",
+    "ex-selfcheck-iv-02": "6f4699022557da40b9c5c61977323602ed3d8e078fbfb649a1a803b34bce1ccf",
+    "ex-selfcheck-iv-03-a": "12ce7914a3ff56ac99d8d2fce808385f4789ed0265a37953a766f80f1dd7eb34",
+    "ex-selfcheck-iv-03-b": "91c12e0be9d3640c6dacc61c053d8474a7c6f54013397068f303505d4d960f8f",
+    "ex-selfcheck-iv-03-c": "c3c63ddc3081a7cda8bb909fb48305f16bbdf939740774205cdcd331ee83504e",
+    "ex-selfcheck-iv-04": "330d760dbe9b6a23235b303e1581fd00529362aa68ebde97124f12c7e0332431",
+    "ex-selfcheck-iv-05-a": "2090d0e9c65dbbbf4dcaa8f5636861cdd0102096b88e03b997508603ca48aa66",
+    "ex-selfcheck-iv-05-b": "c8122bb6747039f74995c373bf437fd692362ce27d4006075e782a6ab394afde",
+    "ex-selfcheck-iv-06": "5d78b9237e710e5317af67eace1e9a638287b49124a3111252f6c479ee3cf157",
+    "ex-selfcheck-iv-07": "5b487c986a92ff15a7b95dcdae532bf1d07a9f1eafc03ee332107e3262fe874b",
+    "ex-selfcheck-iv-08": "2ec229c4421edc6e36252d611c6da08ae68668a9068dd945c3aa9239a2b9ee69",
+    "ex-selfcheck-iv-09": "629cc089a0b5ddeb98fb8b3e23001d46f8bf011b7fed40702d33625ceceac383",
+    "ex-selfcheck-iv-10": "21137e9d7253edf298b9fadad76709a0a1ce892f489e5f029abdbfbc8abbe0cc"
+  },
+  "contentHashes": {
+    "ex-selfcheck-iv-01": "6cfc2305c2662c041c3042010a40146f4a461ab3a4b17490b0ff3ff4fa16773c",
+    "ex-selfcheck-iv-02": "e401d501e1703df22b394740ee21a1b4903d98b1a89a9a51ef672beed789ef7d",
+    "ex-selfcheck-iv-03-a": "1acd4ab67a48147762c9b533ecb56c1e07e1206d5389ae096f6699b9d5e555e7",
+    "ex-selfcheck-iv-03-b": "5fbed209d7e9ed88b42e4d8ebcf1717236b9a7fe19c3948a6c22fc63805ea41f",
+    "ex-selfcheck-iv-03-c": "9e0849e4b577843a4d283a09647a58ff3c8e840cd3d650eb73b8f49cc604d7b5",
+    "ex-selfcheck-iv-04": "a01d6b8e228a2464d4f535880975daf4ccbd6351686d91abb9a25f1b2aaf6256",
+    "ex-selfcheck-iv-05-a": "76b37d314fa4714fd2e472460f5da91eaed4d12f75fe12832d809aed313c9445",
+    "ex-selfcheck-iv-05-b": "806a78a42c167f51c3e2ee8e94a2ac3c1a8270fbe168f50d04f2d57057eed6ee",
+    "ex-selfcheck-iv-06": "d8033527eb79b7eee7cfd762df8f068c82d26c30aff56fb812e189f65e2a1758",
+    "ex-selfcheck-iv-07": "455d100dd5ae48e093639da4bfd7ca3bd3e6d57cba8b93c0e3b5f126e4d99d77",
+    "ex-selfcheck-iv-08": "7cf11e7c1ec88e5a7dfdc0ddb21207747e3e7554bfd4b0fdd80d28f5e2dae4d1",
+    "ex-selfcheck-iv-09": "057caf70573b7bc7bbba3e17ef8d60c5640bd76ea9d532727cff8a0ea8eea77c",
+    "ex-selfcheck-iv-10": "8543f2ab87e9624d087dd20c57b27214fbf7ce01f72c2a27806b3a2f9b4734c9"
+  },
+  "candidateRawHashes": {
+    "ex-selfcheck-iv-01": "2ae3f61628262635ab8cfa14188990a222ceb967408e4d57af96cda1ba8f09a3",
+    "ex-selfcheck-iv-02": "2031455fbe108992d3d29d0555bbfcc5067383b1d3efb15e3f3e80c17b6e2f7c",
+    "ex-selfcheck-iv-03-a": "fb7c2a9c058c84f767bf4e8bad390dbd6b390aed76810888832db46cb322b782",
+    "ex-selfcheck-iv-03-b": "7f32ae75794081b548fa8f1711b0daf3d0a8a2f0a1cc00fffc53dbe313f96198",
+    "ex-selfcheck-iv-03-c": "bae7c000289fa1a7e87a3576f0cea90d0e318bf49de7635a869da3166066375e",
+    "ex-selfcheck-iv-04": "147be6d013f9654c83651cc430a862253ba41d9841e5988733ffd5c9cbd7d32c",
+    "ex-selfcheck-iv-05-a": "604950345447cb2b84bc8e47329f1abda46820ed651170460623d5ab63d42a9a",
+    "ex-selfcheck-iv-05-b": "0c2804b5c24a76f9a41a41fd83689f435e4082cb5095840bb37c57b408d900bc",
+    "ex-selfcheck-iv-06": "8c0f131cc1b8af0e5afe2791062255ab1bd48cc637c9ab7fe999ed9cc882f123",
+    "ex-selfcheck-iv-07": "e1ab212ae25d17d64174be54d15cb9898accb189432bce98e1b3f9ab4809c94a",
+    "ex-selfcheck-iv-08": "2f09d9fab3d535e9acbc1520648f02c71b9d5a806e1fe5d360e1c1eb8694f801",
+    "ex-selfcheck-iv-09": "e3db385053efdbb4cda56f7a5c0b9fa6ffa34fb41f9f7ac8e383e620366667df",
+    "ex-selfcheck-iv-10": "9cf271019723fae4b9f1e48502fb9fe8fa187b96b65fe5eefc90953528ecb1f1"
+  },
+  "reviewReport": "docs/reviews/ATANASYAN_CHAPTER_IV_SELFCHECK_INDEPENDENT.md",
+  "reviewReportSHA256": "3378cfbaf2b2769f9fbcb08041fdc345c7fd97b477ddac560c7fd4a7cea281dd"
+}

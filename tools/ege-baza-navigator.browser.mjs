@@ -31,7 +31,10 @@ try{
   }
  }
  await page.goto(url+'#today');await page.locator('[data-nav="map"]').focus();await page.keyboard.press('Enter');
- await page.waitForURL('**/#map');ok(await page.locator('#content').evaluate(el=>el===document.activeElement),'Keyboard route focuses content');
+ await page.waitForURL('**/#map');
+ // Hash navigation precedes the render handler that moves keyboard focus.
+ await page.waitForFunction(()=>document.activeElement===document.getElementById('content'));
+ ok(await page.locator('#content').evaluate(el=>el===document.activeElement),'Keyboard route focuses content');
  await page.click('[data-module="m01"] a');await page.click('.lesson a.btn');
  await page.waitForURL('**/trainers/ege-baza/course/#learn-decimal');ok(await page.locator('#slider').isVisible(),'Real lesson opens');
  await page.click('a[href="../../../ege-baza/#map"]');await page.waitForURL('**/ege-baza/#map');

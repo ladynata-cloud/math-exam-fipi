@@ -1,0 +1,276 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "independent delta review after cloud font-metrics failure",
+  "reviewer": "visual_a, independent of B author visual_b",
+  "reviewedAt": "2026-10-28T08:37:31.285938+00:00",
+  "scope": {
+    "exercise": "384б",
+    "id": "atanasyan-7-9-main-384-part-2",
+    "views": [
+      "neutral",
+      "step-1",
+      "step-2",
+      "step-3"
+    ],
+    "widths": [
+      320,
+      1280
+    ],
+    "fontEnvironments": [
+      "Liberation",
+      "Nimbus"
+    ],
+    "images": 16
+  },
+  "verdict": "PASS",
+  "findings": [],
+  "baseline": {
+    "head": "3075d06b16497d1f9e815c56c941dd41894a56c6",
+    "cloudFailureHead": "2ee67a47c108142b3caa0dd570fbe4fbfc1d216e",
+    "observedFailure": "H placement unresolved in Liberation mobile step-1, step-2 and step-3. Original cloud step-1 PNG was visually inspected."
+  },
+  "exactBinding": {
+    "files": [
+      {
+        "path": "tools/geometry-textbook/models_ch5_b.py",
+        "sha256": "319759ab19f1d2dc71878b83b882b251c1590f0e5aa06850e06084abafe432c4"
+      },
+      {
+        "path": "geometry-course/textbook/models/chapter-05-b.json",
+        "sha256": "fd845b4e97a122860533694ee9e4b3bd5e4a720c2e82de061d912f8da3acbdc1"
+      },
+      {
+        "path": "geometry-course/textbook/preparation/chapter-05-b.json",
+        "sha256": "fc4b0476a16bf2f433f17c514bd45165945fc0c3bbb4e783e0b0d9b4d1d892bc"
+      },
+      {
+        "path": "geometry-course/textbook/assets/planar-viewer.js",
+        "sha256": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061"
+      },
+      {
+        "path": "geometry-course/textbook/assets/style.css",
+        "sha256": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b"
+      },
+      {
+        "path": "tools/geometry-textbook/browser_check.js",
+        "sha256": "07b49df556ebb6ee97ddcabbd3a4e3d12d570c7d4816446555356e214fd12577"
+      }
+    ],
+    "candidateBundle": {
+      "file": "cloud-label-candidate-course.json",
+      "sha256": "0072ac07cb9bcd4372865aaa7eae311330d74c23906a330d4b91808e610cdaf6"
+    },
+    "fontConfiguration": {
+      "file": "fonts/fonts.conf",
+      "sha256": "6c7a185620d86a1b1fbd1a2071f8c13046ffbf3d63ed5da92349664e8ce329fc"
+    }
+  },
+  "semanticDelta": {
+    "onlySerializedChange": "384б model.labelOffsets.H: [0.4,6.2] to [-1.23,9]",
+    "allOtherModelsUnchanged": true,
+    "geometryUnchanged": true,
+    "scenePrimitivesUnchanged": true,
+    "coordinateAssertionsUnchanged": true,
+    "sourcePreparationByteIdentical": true,
+    "proofsAndDidacticsUnchanged": true,
+    "candidateCardModelEqualsReviewedAuthoredModel": true,
+    "reason": "Only the display position of the letter H changes. The foot H, axis p, reflected pair B/C and all perpendicular/equal-length marks retain their original coordinates and meaning."
+  },
+  "visualInspection": {
+    "method": "All 16 fresh actual-page PNGs were viewed at native image size in four uncropped contact sheets through the image viewer. Both fonts and both widths were inspected independently; no transfer from earlier focused images was used. Image and sheet hashes were rechecked after inspection.",
+    "HClarity": "H is clearly legible above and to the left of the perpendicular foot. It does not obscure axis p, the right-angle marker, equal-length marks, B or C. The dot and segment intersection still identify the foot unambiguously.",
+    "otherContent": "All other point labels, controls, descriptions and the source-position note remain visible without clipping. The neutral scene intentionally has no H."
+  },
+  "browserEvidence": [
+    {
+      "font": "liberation",
+      "file": "cloud-label-final-liberation/browser-evidence.json",
+      "sha256": "768246cf4f148cfa93657a55c69485cfb14128e23c95ea928ccc2b5e3883b86c",
+      "scopedViewWidthPairs": 8,
+      "issues": [],
+      "HPlacement": "authored in every step; absent in neutral as intended",
+      "completed": true
+    },
+    {
+      "font": "nimbus",
+      "file": "cloud-label-final-nimbus/browser-evidence.json",
+      "sha256": "28dab260654daa08e8227d4a98a68c131ee8ee504f94943252789d4528cabc8f",
+      "scopedViewWidthPairs": 8,
+      "issues": [],
+      "HPlacement": "authored in every step; absent in neutral as intended",
+      "completed": true
+    }
+  ],
+  "contactSheets": [
+    {
+      "file": "b-cloud-liberation-320.png",
+      "sha256": "0123707a5fa623fb3a18f8793297702f54459b7057ac2a8edbb02c4f1879b465",
+      "viewed": true
+    },
+    {
+      "file": "b-cloud-liberation-1280.png",
+      "sha256": "c3fba05d98fc432886f609f5dcc702aa9cd7f1f7398f0f8fc02711f09efae53e",
+      "viewed": true
+    },
+    {
+      "file": "b-cloud-nimbus-320.png",
+      "sha256": "0e627480349a6de7c6fec2e6d182abc1321bab6bfb4eb1a937a0c963a4a23cf6",
+      "viewed": true
+    },
+    {
+      "file": "b-cloud-nimbus-1280.png",
+      "sha256": "b22b9ab48c05e8e4b7060ef9c8ee0f3b5387634166015f8dee93589a4bb84bbd",
+      "viewed": true
+    }
+  ],
+  "images": [
+    {
+      "font": "liberation",
+      "width": 320,
+      "file": "cloud-label-final-liberation/review-atanasyan-7-9-main-384-part-2-neutral-320.png",
+      "sha256": "f7af78d6a8b6e9f75a476a20271332a239d0aee32638d77b4bb9c4c9e0fea764",
+      "view": "neutral",
+      "viewedInSheet": "b-cloud-liberation-320.png",
+      "verdict": "PASS"
+    },
+    {
+      "font": "liberation",
+      "width": 320,
+      "file": "cloud-label-final-liberation/review-atanasyan-7-9-main-384-part-2-step-1-320.png",
+      "sha256": "e474c77f903eecb7c5592b9f13894964413104d16db5ba01a22424e7d67f2cd1",
+      "view": "step-1",
+      "viewedInSheet": "b-cloud-liberation-320.png",
+      "verdict": "PASS"
+    },
+    {
+      "font": "liberation",
+      "width": 320,
+      "file": "cloud-label-final-liberation/review-atanasyan-7-9-main-384-part-2-step-2-320.png",
+      "sha256": "5a77ec635d1934b93858d8113d8686abb7b565ee1fcbe81ecd8cff742d5055a3",
+      "view": "step-2",
+      "viewedInSheet": "b-cloud-liberation-320.png",
+      "verdict": "PASS"
+    },
+    {
+      "font": "liberation",
+      "width": 320,
+      "file": "cloud-label-final-liberation/review-atanasyan-7-9-main-384-part-2-step-3-320.png",
+      "sha256": "5a77ec635d1934b93858d8113d8686abb7b565ee1fcbe81ecd8cff742d5055a3",
+      "view": "step-3",
+      "viewedInSheet": "b-cloud-liberation-320.png",
+      "verdict": "PASS"
+    },
+    {
+      "font": "liberation",
+      "width": 1280,
+      "file": "cloud-label-final-liberation/review-atanasyan-7-9-main-384-part-2-neutral-1280.png",
+      "sha256": "9cf65b0f324af4b88f3f8c89acb56a6153c00be40ea9064db62e073834e52c95",
+      "view": "neutral",
+      "viewedInSheet": "b-cloud-liberation-1280.png",
+      "verdict": "PASS"
+    },
+    {
+      "font": "liberation",
+      "width": 1280,
+      "file": "cloud-label-final-liberation/review-atanasyan-7-9-main-384-part-2-step-1-1280.png",
+      "sha256": "3f50c4cef5d701a68da0ee3d801bb17d08cebd6f7c09c4b5dadcdc6be4959282",
+      "view": "step-1",
+      "viewedInSheet": "b-cloud-liberation-1280.png",
+      "verdict": "PASS"
+    },
+    {
+      "font": "liberation",
+      "width": 1280,
+      "file": "cloud-label-final-liberation/review-atanasyan-7-9-main-384-part-2-step-2-1280.png",
+      "sha256": "86a7d329240bb7fd0708365f2c0d76bae463b9a052504d2780cdba2f349c88b2",
+      "view": "step-2",
+      "viewedInSheet": "b-cloud-liberation-1280.png",
+      "verdict": "PASS"
+    },
+    {
+      "font": "liberation",
+      "width": 1280,
+      "file": "cloud-label-final-liberation/review-atanasyan-7-9-main-384-part-2-step-3-1280.png",
+      "sha256": "86a7d329240bb7fd0708365f2c0d76bae463b9a052504d2780cdba2f349c88b2",
+      "view": "step-3",
+      "viewedInSheet": "b-cloud-liberation-1280.png",
+      "verdict": "PASS"
+    },
+    {
+      "font": "nimbus",
+      "width": 320,
+      "file": "cloud-label-final-nimbus/review-atanasyan-7-9-main-384-part-2-neutral-320.png",
+      "sha256": "ea55fa8873f6502079299634aff53169e1c2aff3dddd66f9563a1f2b84aa999e",
+      "view": "neutral",
+      "viewedInSheet": "b-cloud-nimbus-320.png",
+      "verdict": "PASS"
+    },
+    {
+      "font": "nimbus",
+      "width": 320,
+      "file": "cloud-label-final-nimbus/review-atanasyan-7-9-main-384-part-2-step-1-320.png",
+      "sha256": "631dcf8c3426a206b811f0e630e9de187592b8943a56ab02d7ddb901c981d439",
+      "view": "step-1",
+      "viewedInSheet": "b-cloud-nimbus-320.png",
+      "verdict": "PASS"
+    },
+    {
+      "font": "nimbus",
+      "width": 320,
+      "file": "cloud-label-final-nimbus/review-atanasyan-7-9-main-384-part-2-step-2-320.png",
+      "sha256": "5db528ec960a8742d3c20a33de137f370779a138b2f6b4a9fae3906a6c3e7245",
+      "view": "step-2",
+      "viewedInSheet": "b-cloud-nimbus-320.png",
+      "verdict": "PASS"
+    },
+    {
+      "font": "nimbus",
+      "width": 320,
+      "file": "cloud-label-final-nimbus/review-atanasyan-7-9-main-384-part-2-step-3-320.png",
+      "sha256": "5db528ec960a8742d3c20a33de137f370779a138b2f6b4a9fae3906a6c3e7245",
+      "view": "step-3",
+      "viewedInSheet": "b-cloud-nimbus-320.png",
+      "verdict": "PASS"
+    },
+    {
+      "font": "nimbus",
+      "width": 1280,
+      "file": "cloud-label-final-nimbus/review-atanasyan-7-9-main-384-part-2-neutral-1280.png",
+      "sha256": "c0212f5f0bfcd57eeee55db145a653241ea22052fe48d14d6958a3edbab83bd8",
+      "view": "neutral",
+      "viewedInSheet": "b-cloud-nimbus-1280.png",
+      "verdict": "PASS"
+    },
+    {
+      "font": "nimbus",
+      "width": 1280,
+      "file": "cloud-label-final-nimbus/review-atanasyan-7-9-main-384-part-2-step-1-1280.png",
+      "sha256": "c53b7c0aa871bf69864dc53bdb2f06db5c8f918b6eec0dd5f32a1a79b00c80e2",
+      "view": "step-1",
+      "viewedInSheet": "b-cloud-nimbus-1280.png",
+      "verdict": "PASS"
+    },
+    {
+      "font": "nimbus",
+      "width": 1280,
+      "file": "cloud-label-final-nimbus/review-atanasyan-7-9-main-384-part-2-step-2-1280.png",
+      "sha256": "153650c660d02e21a12ba5102e7d8756320f7fbd6641cb456f72e7101dc064c7",
+      "view": "step-2",
+      "viewedInSheet": "b-cloud-nimbus-1280.png",
+      "verdict": "PASS"
+    },
+    {
+      "font": "nimbus",
+      "width": 1280,
+      "file": "cloud-label-final-nimbus/review-atanasyan-7-9-main-384-part-2-step-3-1280.png",
+      "sha256": "153650c660d02e21a12ba5102e7d8756320f7fbd6641cb456f72e7101dc064c7",
+      "view": "step-3",
+      "viewedInSheet": "b-cloud-nimbus-1280.png",
+      "verdict": "PASS"
+    }
+  ],
+  "limitations": [
+    "This delta verdict supplements the previous B source/math and full-context review; it does not claim a repeated source-page reading.",
+    "Whole-course cloud CI completion, exact-head integration and publication remain the root workflow."
+  ]
+}

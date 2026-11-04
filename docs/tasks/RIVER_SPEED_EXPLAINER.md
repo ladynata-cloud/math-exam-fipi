@@ -49,3 +49,7 @@ that they are complete.
 The direct request authorizes implementation, validation, commit, push and a
 Draft PR. Separate merge authorization must identify the reviewed base/head
 under AGENTS.md. No merge or deployment is performed in the PR workflow.
+
+## Continuation, 5 November 2026
+
+Owner requested completion of outstanding work, excluding Peterson. Standing OWNER_RELEASE_AUTHORIZATION.md supersedes old per-release/external review requirements. Integrated with main 0d96ad84f0dd9dcadf123b3845db75c5476be93a using an ordinary merge; retained all modern workflow gates and added the river-specific check. Product code is unchanged from the prepared candidate. This entry does not claim release or passing checks.

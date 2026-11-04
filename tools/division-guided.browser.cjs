@@ -6,7 +6,7 @@ const path = require('node:path');
 const {chromium} = require('playwright');
 const root = path.resolve(__dirname, '..');
 const G = require('../trainers/oge-basics/multiplication-division/division-guided-core');
-const relative = '/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html';
+const relative = process.env.DIVISION_ENTRY_PATH || '/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html';
 const KEY = 'mathExamBasics.guidedDivision.v1';
 const types = {'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8'};
 const server = http.createServer((req, res) => {
@@ -17,10 +17,16 @@ const server = http.createServer((req, res) => {
 });
 async function ready(page, url) { await page.goto(url); await page.waitForFunction(() => window.__divisionGuidedDebug); }
 async function snapshot(page) { return page.evaluate(() => window.__divisionGuidedDebug.state()); }
+async function openGuidedHelp(page) {
+  const toggle = page.locator('.bh-toggle');
+  await toggle.waitFor({state:'visible'});
+  if (await toggle.getAttribute('aria-expanded') !== 'true') await toggle.click();
+  assert.equal(await toggle.getAttribute('aria-expanded'), 'true');
+  assert.equal(await page.locator('#help-content').isVisible(), true, 'The original step hint is inside the opened contextual panel');
+}
 async function one(page, wrong = false) {
   const state = await snapshot(page), s = state.sessions[state.active], p = G.plan(s.task);
   if (s.done) return false;
-  if (s.accepted) { await page.locator('#primary').click(); return true; }
   const a = p.actions[s.step];
   if (a.options) await page.locator('[data-option="' + (wrong ? 'нет' : a.answer) + '"]').click();
   else await page.locator('#answer').fill(wrong ? '9999' : a.answer);
@@ -50,13 +56,22 @@ async function topic(page, id) {
     await page.locator('#primary').click();
     assert.equal((await snapshot(page)).sessions.start.step, 0, 'empty input never accepted');
     await one(page, true); assert.equal((await snapshot(page)).sessions.start.errors, 1);
-    await page.locator('#help-toggle').click(); await page.locator('#reveal').click();
+    await one(page, true);
+    assert.equal((await snapshot(page)).sessions.start.step, 0);
+    assert.equal((await snapshot(page)).sessions.start.hints, 0, 'Offering help is not using help');
+    assert.match(await page.locator('#feedback').innerText(), /открой подсказку/);
+    assert.equal(await page.locator('#revealed').innerText(), '');
+    await openGuidedHelp(page); await page.locator('#reveal').click();
     assert.match(await page.locator('#revealed').innerText(), /4/);
     await page.locator('#answer').fill('4'); await page.locator('#primary').click();
-    assert.equal(await page.locator('#primary').innerText(), 'Дальше');
-    assert.equal((await snapshot(page)).sessions.start.step, 0, 'correct answer waits for deliberate continuation');
+    assert.equal(await page.locator('#primary').innerText(), 'Проверить');
+    assert.equal(await page.locator('.bh-panel').isVisible(), false, 'Accepted steps close contextual help');
+    assert.equal((await snapshot(page)).sessions.start.step, 1, 'one check immediately opens the next mathematical action');
+    assert.deepEqual((await snapshot(page)).sessions.start.answers, ['4']);
+    assert.equal(await page.locator('#answer').inputValue(), '');
+    assert.equal(await page.locator('#answer').evaluate(el => el === document.activeElement), true, 'The next input receives focus');
     await page.reload(); await page.waitForFunction(() => window.__divisionGuidedDebug);
-    assert.equal(await page.locator('#primary').innerText(), 'Дальше');
+    assert.equal(await page.locator('#primary').innerText(), 'Проверить');
     assert.equal((await snapshot(page)).sessions.start.reveals, 1);
     await finish(page);
     assert.equal(await page.locator('.quotient').innerText(), '24');
@@ -120,6 +135,6 @@ async function topic(page, id) {
     await finish(p); assert.equal(await p.evaluate(key => localStorage.getItem(key), KEY), '{broken');
     await broken.close();
     assert.deepEqual(errors, []);
-    console.log('DIVISION_GUIDED_NAVIGATION_OK: nine topics, explicit continuation, notebook, hints, exact resume, topic restore, report fallback, duplicate prevention, stale tabs, corrupt storage and 320/390px.');
+    console.log('DIVISION_GUIDED_NAVIGATION_OK: nine topics, single-submit continuation, notebook, hints, exact resume, topic restore, report fallback, duplicate prevention, stale tabs, corrupt storage and 320/390px.');
   } finally { await browser.close(); server.close(); }
 })().catch(error => { console.error(error); server.close(); process.exitCode = 1; });

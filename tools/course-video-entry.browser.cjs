@@ -34,7 +34,7 @@ const originalIds = Object.keys(routes), ids = [...originalIds, 'numeric-express
   'grade7-b-mixed-borrow', 'grade7-b-fraction-product-cancel', 'grade7-b-decimal-divisor-scale',
   'grade7-b-signed-fraction-sum', 'grade7-b-percent-proportion', 'pre7-place-value', 'pre7-natural-compare', 'pre7-add-carry', 'pre7-subtract-borrow', 'pre7-smart-calculation', 'pre7-inverse-components', 'pre7-divisibility', 'pre7-scale-reading', 'pre7-comparison-stories', 'pre7-fraction-line', 'pre7-equivalent-fractions', 'pre7-fraction-compare', 'pre7-fraction-part-whole', 'pre7-decimal-compare', 'pre7-mass-capacity', 'pre7-ruler-length', 'pre7-perimeter', 'pre7-grid-area', 'grade7-g-core-point-line-ray', 'grade7-g-core-perpendicular', 'grade7-g-core-angle-measure', 'grade7-g-core-triangle-elements', 'grade7-g-core-triangle-perimeter', 'grade7-g-core-sas', 'grade7-g-core-median', 'grade7-g-core-bisector', 'grade7-g-core-altitude', 'grade7-g-core-isosceles-elements', 'grade7-g-core-isosceles-base-angles', 'grade7-g-core-isosceles-vertex-line', 'grade7-g-practice-segment-equation', 'grade7-g-practice-angle-parts', 'grade7-g-practice-vertical-proof', 'grade7-g-practice-sas-common-side', 'grade7-g-practice-sas-vertical', 'grade7-g-practice-cevian-reason', 'grade7-g-practice-isosceles-perimeter', 'grade7-g-practice-isosceles-proof'];
 const guides = require('../learning/topic-guides');
-const newItems = require('../learning/catalog').items.filter(item => item.grade7);
+const newItems = require('../learning/catalog').items.filter(item => item.trainerId === 'ege-path' && item.grade7 && !item.geometryRebuild);
 assert.equal(newItems.length, 62);
 assert.equal(newItems.filter(item=>item.pre7).length,18);
 assert.equal(ids.length, 68);
@@ -65,7 +65,7 @@ async function main() {
       if (!['GET', 'HEAD'].includes(req.method)) { report.writes.push(req.method + ' ' + pathname); res.writeHead(405); return res.end(); }
       if (pathname === '/favicon.ico') { res.writeHead(204); return res.end(); }
       const allowed = ['/grade7/', '/assets/', '/video-lessons/', '/ege-baza/', '/trainers/oge-basics/', '/geometry-course/trainers/'].some(prefix => pathname.startsWith(prefix)) ||
-        ['/learning/grade7-route.css', '/learning/grade7-route-map.js', '/learning/catalog.js', '/learning/topic-guides.js', '/learning/practice-entry.js', '/trainers/learning-bridge.js'].includes(pathname);
+        ['/learning/grade7-route.css', '/learning/grade7-route-map.js', '/learning/catalog.js', '/learning/topic-guides.js', '/learning/practice-entry.js', '/learning/geometry-object-labels.js', '/trainers/learning-bridge.js', '/geometry-course/board/native-session.js', '/geometry-course/board/native.css', '/geometry-course/board/learning-support.js'].includes(pathname);
       const filename = path.resolve(ROOT, '.' + pathname), type = types[path.extname(pathname)];
       if (!allowed || !type || !filename.startsWith(ROOT + path.sep)) { res.writeHead(404); return res.end(); }
       const content = await fs.readFile(filename), range = /^bytes=(\d+)-(\d*)$/.exec(req.headers.range || '');
@@ -94,7 +94,7 @@ async function main() {
       page.on('console', message => {
         if (message.type() !== 'error') return;
         const expected = expectedMediaError && /\/video-lessons\/media\/[^/]+\.mp4/.test(message.location().url || '') && /Failed to load resource/.test(message.text());
-        if (!expected) report.errors.push(message.text());
+        if (!expected) report.errors.push(message.text() + ' [' + (message.location().url || 'unknown source') + ']');
       });
       return { context, page };
     }
@@ -112,7 +112,7 @@ async function main() {
       assert.match(await hub.page.locator('.progress-note').innerText(), /браузере/);
       assert.equal(await hub.page.locator('.practice-card').count(), 62);
       const cabinetLinks = await hub.page.locator('.practice-primary').evaluateAll(nodes => nodes.map(a => a.href));
-      assert.deepEqual(cabinetLinks.sort(), newItems.map(item => 'https://mathexam-board-ladynata.amvera.io/learning/#practice=' + encodeURIComponent(item.id)).sort());
+      assert.deepEqual(cabinetLinks.sort(), newItems.map(item => 'https://mathexam-board-ladynata.msk1.amvera.tech/learning/#practice=' + encodeURIComponent(item.id)).sort());
       const publicLinks = await hub.page.locator('.practice-preview').evaluateAll(nodes => nodes.map(a => new URL(a.href).pathname + new URL(a.href).search + new URL(a.href).hash));
       assert.deepEqual(publicLinks.sort(), newItems.map(item => { const u = new URL(item.url, 'https://mathexam.space'); u.searchParams.set('practice', '1'); return u.pathname + u.search + u.hash; }).sort());
       for (const subject of ['algebra', 'geometry', 'foundation', 'pre7']) {
@@ -255,13 +255,28 @@ async function main() {
       const normal = await open(), p = normal.page;
       await p.goto(origin + routes[id]);
       if (['negative-numbers', 'fractions', 'proportions', 'percentages'].includes(id)) {
-        await p.locator('#view-home').waitFor(); assert.equal(await p.locator('#view-practice').isVisible(), false);
+        // The standalone shell intentionally opens the first task after its
+        // asynchronous loader finishes. Wait for that shell, not legacy home.
+        const kind = ['proportions', 'percentages'].includes(id) ? 'percent' : 'basic';
+        await p.locator('body[data-basics-standalone="' + kind + '"] #view-practice').waitFor();
+        assert.equal(await p.locator('#view-home').isVisible(), false, id + ': ordinary entry is task-first');
+        assert.equal(await p.locator(kind === 'percent' ? '#p-q input' : '#practiceAnswer input, #practiceAnswer button').first().isVisible(), true, id + ': ordinary entry opens an answer control');
+        assert.equal(await p.locator(kind === 'percent' ? '#p-check' : '#checkTask').isVisible(), true, id + ': ordinary entry keeps its checker');
       } else if (id !== 'adjacent-angles') {
-        await p.locator('[data-stage="0"][aria-current="step"]').waitFor(); assert.equal(await p.locator('#answer').count(), 0);
+        await p.locator('.task-first-course #answer').waitFor();
+        assert.equal(await p.locator('#answerForm button[type="submit"]').isVisible(), true, id + ': ordinary entry keeps its checker');
+        assert.equal(await p.locator('#taskHelp').evaluate(node => node.open), false, id + ': help starts closed');
+        assert.equal(await p.evaluate(() => PathCourse.state().lessons[new URLSearchParams(location.hash.slice(1)).get('lesson')].help), false, id + ': entry does not count as using help');
+        assert.equal(await p.locator('#stepAnswer').isVisible(), false, id + ': guided work is not opened automatically');
+        assert.equal(await p.locator('#taskNote').evaluate(node => node.open), false, id + ': reflection starts closed');
       } else await p.locator('#pool button').first().waitFor();
       await normal.context.close();
       const actual = await open(), q = actual.page;
       await q.goto(origin + practicePath(id));
+      if (['negative-numbers', 'fractions', 'proportions', 'percentages'].includes(id)) {
+        const mode = ['proportions', 'percentages'].includes(id) ? 'percent' : 'basic';
+        await q.locator('body[data-basics-standalone="' + mode + '"]').waitFor();
+      }
       let input, check, feedback;
       if (['negative-numbers', 'fractions'].includes(id)) { input = q.locator('#practiceAnswer input, #practiceAnswer button').first(); check = '#checkTask'; feedback = '#practiceFeedback'; }
       else if (['proportions', 'percentages'].includes(id)) { input = q.locator('#p-q input').first(); check = '#p-check'; feedback = '#p-fb'; }
@@ -279,13 +294,63 @@ async function main() {
 
     const saved = await open(), savedPage = saved.page;
     await savedPage.goto(origin + routes.brackets);
-    for (const stage of [2, 3, 4]) {
-      await savedPage.locator('[data-stage="' + stage + '"]').click();
-      await savedPage.locator(stage === 4 ? '#note' : '#answer').fill(stage === 4 ? 'Моя сохранённая запись' : '317');
+    await savedPage.locator('.task-first-course #answer').waitFor();
+    await savedPage.locator('#answer').fill('271');
+    const unassisted = await savedPage.evaluate(() => PathCourse.state());
+    await savedPage.goto(origin + practicePath('brackets'));
+    await savedPage.locator('.task-first-course #answer').waitFor();
+    assert.deepEqual(await savedPage.evaluate(() => PathCourse.state()), unassisted, 'Practice entry preserves the full task before any help is used');
+    assert.equal(await savedPage.locator('#answer').inputValue(), '271', 'Unassisted final draft survives practice entry');
+    assert.equal(await savedPage.locator('#taskHelp').evaluate(node => node.open), false, 'Practice entry keeps unused help closed');
+    assert.equal(await savedPage.evaluate(() => PathCourse.state().lessons['equations-brackets'].help), false, 'Practice entry does not count as assistance');
+    await savedPage.locator('#answer').fill('');
+    await savedPage.locator('#taskHelp > summary').click();
+    await savedPage.locator('#taskSteps > summary').click();
+    const firstStep = await savedPage.evaluate(() => {
+      const lesson = PathCourse.state().lessons['equations-brackets'];
+      return PathData.answerText(PathData.task('equations-brackets', lesson.seed).steps[lesson.step]);
+    });
+    await savedPage.locator('#stepAnswer').fill(String(firstStep));
+    await savedPage.locator('#stepAnswerForm button[type="submit"]').click();
+    await savedPage.waitForFunction(() => PathCourse.state().lessons['equations-brackets'].step === 1);
+    assert.match(await savedPage.locator('#taskStepsBody h2').innerText(), /^Шаг 2 из \d+$/);
+    assert.equal(await savedPage.locator('#taskStepsBody .steps > li').count(), 1, 'The accepted guided step is shown before reopening');
+    // The current shell keeps these three independent drafts in one task,
+    // with guided work and notes behind saved disclosures, instead of stages.
+    for (const part of ['guided draft', 'final draft', 'reopened guidance', 'written reflection']) {
+      if (part === 'guided draft') await savedPage.locator('#stepAnswer').fill('19/');
+      else if (part === 'final draft') {
+        await savedPage.locator('#returnToAnswer').click();
+        await savedPage.locator('#answer').fill('271');
+      } else if (part === 'reopened guidance') {
+        await savedPage.locator('#taskHelp > summary').click();
+      } else {
+        await savedPage.locator('#taskNote > summary').click();
+        await savedPage.locator('#note').fill('Моя сохранённая запись');
+      }
+      // Disclosure toggle handlers save asynchronously. Capture only after
+      // their saved flags agree with the actual visible/open state.
+      await savedPage.waitForFunction(() => {
+        const ui = PathCourse.state().lessons['equations-brackets'].taskFirst;
+        return [['taskHelp', 'helpOpen'], ['taskSteps', 'stepsOpen'], ['taskNote', 'noteOpen']]
+          .every(([id, key]) => document.getElementById(id).open === ui[key]);
+      });
       const before = await savedPage.evaluate(() => PathCourse.state());
       await savedPage.goto(origin + practicePath('brackets'));
-      await savedPage.locator('[data-stage="' + stage + '"][aria-current="step"]').waitFor();
-      assert.deepEqual(await savedPage.evaluate(() => PathCourse.state()), before, 'Practice entry preserves the full saved task at stage ' + stage);
+      await savedPage.locator('.task-first-course #answer').waitFor();
+      assert.deepEqual(await savedPage.evaluate(() => PathCourse.state()), before, 'Practice entry preserves the full saved task with ' + part);
+      const lesson = before.lessons['equations-brackets'], ui = lesson.taskFirst;
+      assert.equal(ui.helpOpen, part !== 'final draft', 'Help stays closed after return and reopens with both drafts retained');
+      assert.equal(ui.stepsOpen, true, 'The guided section stays open within help');
+      assert.equal(await savedPage.locator('#answer').inputValue(), ui.finalDraft, 'Final draft remains in its own field');
+      assert.equal(await savedPage.locator('#answer').inputValue(), part === 'guided draft' ? '' : '271', 'Final draft retains the entered value');
+      assert.equal(ui.stepDraft, '19/', 'The incomplete guided draft was persisted');
+      assert.equal(await savedPage.locator('#stepAnswer').inputValue(), '19/', 'Guided draft remains distinct from the final draft');
+      assert.equal(await savedPage.locator('#note').inputValue(), lesson.note, 'Written reflection remains in its own field');
+      assert.equal(await savedPage.locator('#note').inputValue(), part === 'written reflection' ? 'Моя сохранённая запись' : '', 'Written reflection retains the entered text');
+      assert.equal(await savedPage.locator('#taskStepsBody .steps li').count(), 1, 'The accepted step remains in the saved work');
+      for (const [id, key] of [['taskHelp', 'helpOpen'], ['taskSteps', 'stepsOpen'], ['taskNote', 'noteOpen']])
+        assert.equal(await savedPage.locator('#' + id).evaluate(node => node.open), ui[key], 'Practice entry preserves ' + id);
     }
     await saved.context.close();
     const helper = await fs.readFile(path.join(ROOT, 'learning/practice-entry.js'), 'utf8');

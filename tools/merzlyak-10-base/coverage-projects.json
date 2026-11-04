@@ -1,0 +1,77 @@
+{
+  "entries": [
+    {
+      "sourceEntryId": "source-project-1",
+      "requiredParts": [
+        "исследовательский разбор"
+      ],
+      "sourcePdfPages": [
+        199
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/project-1.json"
+      ],
+      "openEnded": true,
+      "coverageMeaning": "Worked research guide; not a claim that a pupil has produced or defended a final project."
+    },
+    {
+      "sourceEntryId": "source-project-2",
+      "requiredParts": [
+        "исследовательский разбор"
+      ],
+      "sourcePdfPages": [
+        199
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/project-2.json"
+      ],
+      "openEnded": true,
+      "coverageMeaning": "Worked research guide; not a claim that a pupil has produced or defended a final project."
+    },
+    {
+      "sourceEntryId": "source-project-3",
+      "requiredParts": [
+        "исследовательский разбор"
+      ],
+      "sourcePdfPages": [
+        199
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/project-3.json"
+      ],
+      "openEnded": true,
+      "coverageMeaning": "Worked research guide; not a claim that a pupil has produced or defended a final project."
+    },
+    {
+      "sourceEntryId": "source-project-4",
+      "requiredParts": [
+        "исследовательский разбор"
+      ],
+      "sourcePdfPages": [
+        199
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/project-4.json"
+      ],
+      "openEnded": true,
+      "coverageMeaning": "Worked research guide; not a claim that a pupil has produced or defended a final project."
+    },
+    {
+      "sourceEntryId": "source-project-5",
+      "requiredParts": [
+        "исследовательский разбор"
+      ],
+      "sourcePdfPages": [
+        200
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/project-5.json"
+      ],
+      "openEnded": true,
+      "coverageMeaning": "Worked research guide; not a claim that a pupil has produced or defended a final project."
+    }
+  ],
+  "unresolved": [],
+  "publicationApproval": false,
+  "note": "All five open-ended topics have substantive worked research guides. These are not fabricated completed pupil reports."
+}

@@ -9,7 +9,7 @@ const {chromium} = require('playwright');
 const preparation = require('../learning/preparation-map.js');
 
 const root = path.resolve(__dirname, '..');
-const CABINET = 'https://mathexam-board-ladynata.amvera.io';
+const CABINET = 'https://mathexam-board-ladynata.msk1.amvera.tech';
 const VISITS_KEY = 'mathExamFoundations.visits.v1';
 const screenshots = process.env.FOUNDATIONS_SCREENSHOTS;
 const errors = [];

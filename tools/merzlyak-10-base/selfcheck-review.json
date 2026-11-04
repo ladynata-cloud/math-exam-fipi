@@ -1,0 +1,2029 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "independent source/mathematics review by textbook_inventory agent; author is root",
+  "reviewedAt": "2026-10-22T22:37:44.715274+00:00",
+  "scope": "All 97 self-check cards, including source question wording, complete requested answer components, correctness of definitions/theorem conditions, and actual numerical model relationships.",
+  "sourceQuestionPagesVisuallyChecked": [
+    11,
+    15,
+    22,
+    37,
+    38,
+    46,
+    56,
+    68,
+    69,
+    86,
+    95,
+    103,
+    109,
+    115,
+    123,
+    132,
+    138,
+    153,
+    161,
+    167,
+    174
+  ],
+  "additionalDefinitionPagesVisuallyChecked": [
+    148,
+    149,
+    119
+  ],
+  "sourceQuestionCount": 97,
+  "result": "pass_with_resolved_findings",
+  "checks": {
+    "independentNumericalAndStructuralChecks": 4911,
+    "script": "tools/merzlyak-10-base/selfcheck-models-review.test.py",
+    "command": "python tools/merzlyak-10-base/selfcheck-models-review.test.py",
+    "result": "pass"
+  },
+  "resolvedFindings": [
+    {
+      "lesson": "question-16-03",
+      "finding": "Original definition described local containment and containing planes, which was weaker than specifying the half-planes containing adjacent faces and problematic for nonconvex polyhedra.",
+      "resolution": "Author replaced it with the source-aligned condition: the two half-plane faces contain the adjacent polyhedron faces sharing edge AB. Independently re-read final text."
+    },
+    {
+      "lesson": "question-18-03",
+      "finding": "Answer referred to section SAC while the selected base view highlighted ABCD.",
+      "resolution": "Author added a dedicated section view highlighting triangle SAC and diagonal AC. Independently checked the final JSON polygon and segment."
+    },
+    {
+      "lesson": "question-13-01",
+      "finding": "Full source definition includes a selected part of space, not only its two bounding half-planes.",
+      "resolution": "Author added both regions and the convex-region convention. Independently checked against PDF119 and re-read final JSON."
+    }
+  ],
+  "openFindings": [],
+  "limitations": [
+    "Browser interaction, accessibility, and visual layout review are outside this source/mathematics review.",
+    "This internal independent review is not external-provider release approval.",
+    "All lesson workflow flags remain authored draft/pending until the integrating owner applies the review policy."
+  ],
+  "authorGenerator": {
+    "path": "tools/merzlyak-10-base/author-selfcheck.py",
+    "sha256": "b60a41642872d66c2c853294853f9a46269d98612481a8e83321264c522da064"
+  },
+  "entries": [
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-01-01.json",
+      "lessonId": "merz-question-01-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "1.1",
+        "chapter": "Глава 1. Введение в стереометрию",
+        "printedPages": [
+          10
+        ],
+        "pdfPages": [
+          11
+        ]
+      },
+      "sha256": "77f55ef4e724b211987ee270bccc49a9162e791f5044889b608b3c9738a98d6d",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-01-02.json",
+      "lessonId": "merz-question-01-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "1.2",
+        "chapter": "Глава 1. Введение в стереометрию",
+        "printedPages": [
+          10
+        ],
+        "pdfPages": [
+          11
+        ]
+      },
+      "sha256": "5e5efd0d609fe71a4cb60fdfda9673e369c2effff1d7fca831e7604cb3c9620e",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-01-03.json",
+      "lessonId": "merz-question-01-03",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "1.3",
+        "chapter": "Глава 1. Введение в стереометрию",
+        "printedPages": [
+          10
+        ],
+        "pdfPages": [
+          11
+        ]
+      },
+      "sha256": "d7668600e5097726be082e72567925d59e1552db8f36fd2d1482476506966624",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-01-04.json",
+      "lessonId": "merz-question-01-04",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "1.4",
+        "chapter": "Глава 1. Введение в стереометрию",
+        "printedPages": [
+          10
+        ],
+        "pdfPages": [
+          11
+        ]
+      },
+      "sha256": "40014e47330dfdb7dae23fe8dff7c91ed98585d5cf1e2a3de60ad5a3e0a2ac47",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-01-05.json",
+      "lessonId": "merz-question-01-05",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "1.5",
+        "chapter": "Глава 1. Введение в стереометрию",
+        "printedPages": [
+          10
+        ],
+        "pdfPages": [
+          11
+        ]
+      },
+      "sha256": "d8547bf183a3294b935565df9e924af9b02101de3167190f7703457e76eba710",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-02-01.json",
+      "lessonId": "merz-question-02-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "2.1",
+        "chapter": "Глава 1. Введение в стереометрию",
+        "printedPages": [
+          14
+        ],
+        "pdfPages": [
+          15
+        ]
+      },
+      "sha256": "c24d2e4ee89b3ec9755b4d62485853070c79875f54428519f83d447aa5cbd9a2",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-02-02.json",
+      "lessonId": "merz-question-02-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "2.2",
+        "chapter": "Глава 1. Введение в стереометрию",
+        "printedPages": [
+          14
+        ],
+        "pdfPages": [
+          15
+        ]
+      },
+      "sha256": "7440e6bb83d11653c1adc004f56180bfe43e698e0ec1d7bf98b99cb5746be12f",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-03-01.json",
+      "lessonId": "merz-question-03-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "3.1",
+        "chapter": "Глава 1. Введение в стереометрию",
+        "printedPages": [
+          21
+        ],
+        "pdfPages": [
+          22
+        ]
+      },
+      "sha256": "5ff001f6f19fce76b7818aca316d11db98e831304f479e353da7977a5117253f",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-03-02.json",
+      "lessonId": "merz-question-03-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "3.2",
+        "chapter": "Глава 1. Введение в стереометрию",
+        "printedPages": [
+          21
+        ],
+        "pdfPages": [
+          22
+        ]
+      },
+      "sha256": "7c48f4646c937fb9349e3d9a5a4ae1ad6d8413732b3e4320f153ad78f41ebc24",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-03-03.json",
+      "lessonId": "merz-question-03-03",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "3.3",
+        "chapter": "Глава 1. Введение в стереометрию",
+        "printedPages": [
+          21
+        ],
+        "pdfPages": [
+          22
+        ]
+      },
+      "sha256": "169d9b7b5ad7c857a58a77438a738dfe3cb408c876ccdd0efb9a5cbf44a2f1f9",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-03-04.json",
+      "lessonId": "merz-question-03-04",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "3.4",
+        "chapter": "Глава 1. Введение в стереометрию",
+        "printedPages": [
+          21
+        ],
+        "pdfPages": [
+          22
+        ]
+      },
+      "sha256": "9e41062527eadf837039f2e890ee5f9926a6e78f4e3896fe0895ad2a1fda2bbc",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-04-01.json",
+      "lessonId": "merz-question-04-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "4.1",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          36
+        ],
+        "pdfPages": [
+          37
+        ]
+      },
+      "sha256": "bcaed435d1cdf9f0b9b291ba92ba62b95451c016ebb50e19dc1db6c984b5f1d1",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-04-02.json",
+      "lessonId": "merz-question-04-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "4.2",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          36
+        ],
+        "pdfPages": [
+          37
+        ]
+      },
+      "sha256": "418aac3222a482ca0e95aab3150bf60f10295e298a90939358d90fed86f17e87",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-04-03.json",
+      "lessonId": "merz-question-04-03",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "4.3",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          36
+        ],
+        "pdfPages": [
+          37
+        ]
+      },
+      "sha256": "2f8127479345b320fe3fcf8404a222f73acd929fac8bf2fc44d1b81cce753e74",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-04-04.json",
+      "lessonId": "merz-question-04-04",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "4.4",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          36
+        ],
+        "pdfPages": [
+          37
+        ]
+      },
+      "sha256": "59672a6eb3fcbccd09a2398feb9ca3b1a59c572638b1780d8cbd36dbaebfcae0",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-04-05.json",
+      "lessonId": "merz-question-04-05",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "4.5",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          37
+        ],
+        "pdfPages": [
+          38
+        ]
+      },
+      "sha256": "d79acdcee8e6ece46cf5d19082b6ad2b25313805bf72a3294742ab06e7c635fd",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-04-06.json",
+      "lessonId": "merz-question-04-06",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "4.6",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          37
+        ],
+        "pdfPages": [
+          38
+        ]
+      },
+      "sha256": "cf59e10052592d3e9d194fe4bef5e9ab687670e7e13ddd8fefd85a4918151533",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-04-07.json",
+      "lessonId": "merz-question-04-07",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "4.7",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          37
+        ],
+        "pdfPages": [
+          38
+        ]
+      },
+      "sha256": "7903d12fba4f7fb60a31a2593d025161c3a7881e65cffad7d27d2541b74589b7",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-05-01.json",
+      "lessonId": "merz-question-05-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "5.1",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          45
+        ],
+        "pdfPages": [
+          46
+        ]
+      },
+      "sha256": "26714bd32eb6e7a0ced08f9dec9af797b5661d74137c096a1639e27ff0bebbaf",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-05-02.json",
+      "lessonId": "merz-question-05-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "5.2",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          45
+        ],
+        "pdfPages": [
+          46
+        ]
+      },
+      "sha256": "a49b7097853e90aa0d9e1e8176b3fb95e2285acd6fce87cbf390352dd87a607e",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-05-03.json",
+      "lessonId": "merz-question-05-03",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "5.3",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          45
+        ],
+        "pdfPages": [
+          46
+        ]
+      },
+      "sha256": "b02f8b8188572c998cf2313af01728c672100f058e42de459363ff574bb8ee67",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-05-04.json",
+      "lessonId": "merz-question-05-04",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "5.4",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          45
+        ],
+        "pdfPages": [
+          46
+        ]
+      },
+      "sha256": "8116b3a52369f19e9fcf432810643ded298b30d23b9e3df9fd661c20c9931c22",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-06-01.json",
+      "lessonId": "merz-question-06-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "6.1",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          55
+        ],
+        "pdfPages": [
+          56
+        ]
+      },
+      "sha256": "3115f5ab9c456066b289ab602e3a8baf4455cb1399510b9b5e986978d7fe9aa9",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-06-02.json",
+      "lessonId": "merz-question-06-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "6.2",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          55
+        ],
+        "pdfPages": [
+          56
+        ]
+      },
+      "sha256": "ebde295bde09f084823a8751c86044b1895c9869d2bec96045de3b69fd22bd25",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-06-03.json",
+      "lessonId": "merz-question-06-03",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "6.3",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          55
+        ],
+        "pdfPages": [
+          56
+        ]
+      },
+      "sha256": "dee4b6cde7907acd3a0aec872abda45c00fdf234408650a2a077840600fe9976",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-06-04.json",
+      "lessonId": "merz-question-06-04",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "6.4",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          55
+        ],
+        "pdfPages": [
+          56
+        ]
+      },
+      "sha256": "1d0cec5c955c0e63446967efd74c9ee09c8d290095628a176d0229b3b0a0528c",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-07-01.json",
+      "lessonId": "merz-question-07-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "7.1",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          67
+        ],
+        "pdfPages": [
+          68
+        ]
+      },
+      "sha256": "9c21f907af0c23ff3cd39b6e64a1b604ba4de4870421fa9b4f9fe75dcae6525d",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-07-02.json",
+      "lessonId": "merz-question-07-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "7.2",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          68
+        ],
+        "pdfPages": [
+          69
+        ]
+      },
+      "sha256": "6a67dc5911bf2e5fc6031d989c686e4f6c18e56b6a6dc47dd9317f3f7d3f42b9",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-07-03.json",
+      "lessonId": "merz-question-07-03",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "7.3",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          68
+        ],
+        "pdfPages": [
+          69
+        ]
+      },
+      "sha256": "64c4f4ad6aeb38f58cd427d51f9633120dd1f66186c0f82424c62bd316d19e7c",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-07-04.json",
+      "lessonId": "merz-question-07-04",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "7.4",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          68
+        ],
+        "pdfPages": [
+          69
+        ]
+      },
+      "sha256": "6b019f456c8990b2c13a1c82375cf8c059263ec03cc1346ed5e15f6c41bd3eab",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-07-05.json",
+      "lessonId": "merz-question-07-05",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "7.5",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          68
+        ],
+        "pdfPages": [
+          69
+        ]
+      },
+      "sha256": "139c731606bb1e729d7f658f94fd195ec2ca7afaad1e6303745ce446f385432b",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-07-06.json",
+      "lessonId": "merz-question-07-06",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "7.6",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          68
+        ],
+        "pdfPages": [
+          69
+        ]
+      },
+      "sha256": "829acdb0b88dd7a04e793ba44352bfd7aadf1bf05abb4030c648c9324248092a",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-07-07.json",
+      "lessonId": "merz-question-07-07",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "7.7",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          68
+        ],
+        "pdfPages": [
+          69
+        ]
+      },
+      "sha256": "b485a383965c943483e6b2d35ea51149481deee3d6364db8c76f3ec525e85679",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-08-01.json",
+      "lessonId": "merz-question-08-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "8.1",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          85
+        ],
+        "pdfPages": [
+          86
+        ]
+      },
+      "sha256": "fbd7b0f119b991a5dda161ce8145aea9955f452bb5e6f27882917cedee6796cf",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-08-02.json",
+      "lessonId": "merz-question-08-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "8.2",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          85
+        ],
+        "pdfPages": [
+          86
+        ]
+      },
+      "sha256": "51ca271d62a97821716cf64e863330b3f11c5b76512d355da859d29ab6acd647",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-08-03.json",
+      "lessonId": "merz-question-08-03",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "8.3",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          85
+        ],
+        "pdfPages": [
+          86
+        ]
+      },
+      "sha256": "f395f686f0875632aa9163ebb0067ff11b43d1196d3eef7987b584886844ccbf",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-08-04.json",
+      "lessonId": "merz-question-08-04",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "8.4",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          85
+        ],
+        "pdfPages": [
+          86
+        ]
+      },
+      "sha256": "31d4d1642261faada68fad1727f922e3077e105db391647c5df22459df706f1c",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-09-01.json",
+      "lessonId": "merz-question-09-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "9.1",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          94
+        ],
+        "pdfPages": [
+          95
+        ]
+      },
+      "sha256": "605a187cb7a69ca42b27e5605481e03e3101c45ecc067d43dd6e9719000e9bc1",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-09-02.json",
+      "lessonId": "merz-question-09-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "9.2",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          94
+        ],
+        "pdfPages": [
+          95
+        ]
+      },
+      "sha256": "a92fca9ca4f9ce0e87def8564588675576bf6989cac339f7ede701d42077c8c9",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-09-03.json",
+      "lessonId": "merz-question-09-03",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "9.3",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          94
+        ],
+        "pdfPages": [
+          95
+        ]
+      },
+      "sha256": "1d93ce9f50e5f1a54be6b955edf3514afd828dda0aee095254423f43b388d08c",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-09-04.json",
+      "lessonId": "merz-question-09-04",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "9.4",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          94
+        ],
+        "pdfPages": [
+          95
+        ]
+      },
+      "sha256": "4557951f72ba44b0e40e185d8a16a69209d133167c31b8ad6bfb6303cc657ddf",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-09-05.json",
+      "lessonId": "merz-question-09-05",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "9.5",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          94
+        ],
+        "pdfPages": [
+          95
+        ]
+      },
+      "sha256": "f9e54e3134a008592516afe05fe7a015ef9bcbb1b11080a2539883ed9c3bd3be",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-09-06.json",
+      "lessonId": "merz-question-09-06",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "9.6",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          94
+        ],
+        "pdfPages": [
+          95
+        ]
+      },
+      "sha256": "673f7bd5eb787c54682abe93dbe08ead06894a8d3cf3741433ff4d533805899a",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-09-07.json",
+      "lessonId": "merz-question-09-07",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "9.7",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          94
+        ],
+        "pdfPages": [
+          95
+        ]
+      },
+      "sha256": "298b8e0a64a04f85238cc4fc6070b17862c8a72b47425d9c5c8533c601845fae",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-09-08.json",
+      "lessonId": "merz-question-09-08",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "9.8",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          94
+        ],
+        "pdfPages": [
+          95
+        ]
+      },
+      "sha256": "20706dab967ed7535fbd06f8a673cdd9aa028f70b9d92b55b0cc8d382a713fa4",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-10-01.json",
+      "lessonId": "merz-question-10-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "10.1",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          102
+        ],
+        "pdfPages": [
+          103
+        ]
+      },
+      "sha256": "9028c3ebbae0eed71ab337144cc6bf6f5bca596e6889d24fdbd301312b4b55ef",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-10-02.json",
+      "lessonId": "merz-question-10-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "10.2",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          102
+        ],
+        "pdfPages": [
+          103
+        ]
+      },
+      "sha256": "6097ce86015620ee953efafed3c204f3686762fcd4a0757b13d92da002d702b1",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-10-03.json",
+      "lessonId": "merz-question-10-03",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "10.3",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          102
+        ],
+        "pdfPages": [
+          103
+        ]
+      },
+      "sha256": "bdf1b14e5472bc83f540b98fe8db2bb21e78a1d32d3bfaea34641fb3cffe094b",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-10-04.json",
+      "lessonId": "merz-question-10-04",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "10.4",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          102
+        ],
+        "pdfPages": [
+          103
+        ]
+      },
+      "sha256": "3e36553437ccd53f3ac74aad1eecade1cb3bda52e6f6ca23073caf6f7a9198f6",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-10-05.json",
+      "lessonId": "merz-question-10-05",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "10.5",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          102
+        ],
+        "pdfPages": [
+          103
+        ]
+      },
+      "sha256": "e3e413c82a3fa4b60f760519a9c25980739a98cb180a4775e15f8fc5bad40fd4",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-10-06.json",
+      "lessonId": "merz-question-10-06",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "10.6",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          102
+        ],
+        "pdfPages": [
+          103
+        ]
+      },
+      "sha256": "15d3c07471439b17a056531ecb6c5418b0ae8782475b2b7df644c2b4004d7607",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-10-07.json",
+      "lessonId": "merz-question-10-07",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "10.7",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          102
+        ],
+        "pdfPages": [
+          103
+        ]
+      },
+      "sha256": "1300492635e0845a996d6b0fc9f56d882bbe8987cce22ca5eb5d19db7f621dd8",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-10-08.json",
+      "lessonId": "merz-question-10-08",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "10.8",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          102
+        ],
+        "pdfPages": [
+          103
+        ]
+      },
+      "sha256": "d59dd70dd16be3b3e195bcc6acf0bf384c1d1c4b87c9b11704e1a3de121fe1e4",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-11-01.json",
+      "lessonId": "merz-question-11-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "11.1",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          108
+        ],
+        "pdfPages": [
+          109
+        ]
+      },
+      "sha256": "cfb70d07a789dff552aa760b2b4c3be51a886fd3ed78129daa4c3bc34563d44d",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-12-01.json",
+      "lessonId": "merz-question-12-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "12.1",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          114
+        ],
+        "pdfPages": [
+          115
+        ]
+      },
+      "sha256": "d31834802fb497edeb20079d2a6227bb0b5cdcc19a5cd0887da493c46777e980",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-13-01.json",
+      "lessonId": "merz-question-13-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "13.1",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          122
+        ],
+        "pdfPages": [
+          123
+        ]
+      },
+      "sha256": "6c6d2dd7f8c0f1fcf254ca0fcc6b0a03e70989f395e224399aa4a47610f6de8a",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-13-02.json",
+      "lessonId": "merz-question-13-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "13.2",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          122
+        ],
+        "pdfPages": [
+          123
+        ]
+      },
+      "sha256": "ceda4db726c34de2b32fa238773c8992c5489bb7e422196094840b991782258d",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-13-03.json",
+      "lessonId": "merz-question-13-03",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "13.3",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          122
+        ],
+        "pdfPages": [
+          123
+        ]
+      },
+      "sha256": "d508692b4bbdb2243d0dac3d23b4b4de442a9bd529f9116c560ec9e3a6281b79",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-13-04.json",
+      "lessonId": "merz-question-13-04",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "13.4",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          122
+        ],
+        "pdfPages": [
+          123
+        ]
+      },
+      "sha256": "05d151e6daab2f1904dfab00e27ee6ed9b479bbb71013e969a25303ddf4ea12c",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-13-05.json",
+      "lessonId": "merz-question-13-05",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "13.5",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          122
+        ],
+        "pdfPages": [
+          123
+        ]
+      },
+      "sha256": "c7e79b0180c9d7463914d41cf6c479f0a7843344621a99ad9e445254b2af42b7",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-13-06.json",
+      "lessonId": "merz-question-13-06",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "13.6",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          122
+        ],
+        "pdfPages": [
+          123
+        ]
+      },
+      "sha256": "49cc6be72b114ea6227355c8598aed6e6b6b6915ef2dd940208ed6708ad3c521",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-13-07.json",
+      "lessonId": "merz-question-13-07",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "13.7",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          122
+        ],
+        "pdfPages": [
+          123
+        ]
+      },
+      "sha256": "7fdd7d4d85f7cfbca2af0e23c809d84fa2f8e9efb2ab97ee05db1179bc496a24",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-14-01.json",
+      "lessonId": "merz-question-14-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "14.1",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          131
+        ],
+        "pdfPages": [
+          132
+        ]
+      },
+      "sha256": "a71522ccb2edd59c227f5405fb8536de69441c94ed5548b0242a49f5e5110f04",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-14-02.json",
+      "lessonId": "merz-question-14-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "14.2",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          131
+        ],
+        "pdfPages": [
+          132
+        ]
+      },
+      "sha256": "da566c775637d5e28303b18162bbd80d85ce3ba7b29fec981415d1dee667027b",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-14-03.json",
+      "lessonId": "merz-question-14-03",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "14.3",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          131
+        ],
+        "pdfPages": [
+          132
+        ]
+      },
+      "sha256": "3c154c431e329942fce3dc69f5fed829b4179674c1fe5cb109fbdd4b3896c4c9",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-15-01.json",
+      "lessonId": "merz-question-15-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "15.1",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          137
+        ],
+        "pdfPages": [
+          138
+        ]
+      },
+      "sha256": "95b336757f75e49c95e088349ae2b3c3ad53fd54a3bcbf8c07050d3bb4bef7e7",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-16-01.json",
+      "lessonId": "merz-question-16-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "16.1",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          152
+        ],
+        "pdfPages": [
+          153
+        ]
+      },
+      "sha256": "4a24217861f6840a5249c5a53783a3cdaebb2060095fcbcd7fbe3bf9a3657bff",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-16-02.json",
+      "lessonId": "merz-question-16-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "16.2",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          152
+        ],
+        "pdfPages": [
+          153
+        ]
+      },
+      "sha256": "714d7ad698c5cfe057a61ac44b4ef8f8330a0556d871161f568c385ea096ff31",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-16-03.json",
+      "lessonId": "merz-question-16-03",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "16.3",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          152
+        ],
+        "pdfPages": [
+          153
+        ]
+      },
+      "sha256": "0625b7d2a74df90c3f9d73a9eef7fd48304f45261ead2f083276f40986dcb0b0",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-16-04.json",
+      "lessonId": "merz-question-16-04",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "16.4",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          152
+        ],
+        "pdfPages": [
+          153
+        ]
+      },
+      "sha256": "a74e3bb5f3e32edc93192b2cf768c350abc7a223c4ec273960efca0e3f01091e",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-16-05.json",
+      "lessonId": "merz-question-16-05",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "16.5",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          152
+        ],
+        "pdfPages": [
+          153
+        ]
+      },
+      "sha256": "8c38876992a226b9c4ec35079c968865017de640c383c6e48d0f01a4a143b5f2",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-16-06.json",
+      "lessonId": "merz-question-16-06",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "16.6",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          152
+        ],
+        "pdfPages": [
+          153
+        ]
+      },
+      "sha256": "f14674d0debbedb5590d08a68eec2219bc3297661c36fbfc5dc68b35e7081844",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-16-07.json",
+      "lessonId": "merz-question-16-07",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "16.7",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          152
+        ],
+        "pdfPages": [
+          153
+        ]
+      },
+      "sha256": "488cd4233e970462026fd856319dcd187361df5eec9aa98b6b94e53da98ca978",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-16-08.json",
+      "lessonId": "merz-question-16-08",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "16.8",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          152
+        ],
+        "pdfPages": [
+          153
+        ]
+      },
+      "sha256": "ed058fba084219bbc8245d2195067923c7d23275423c92c66c79bd7490a62687",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-16-09.json",
+      "lessonId": "merz-question-16-09",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "16.9",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          152
+        ],
+        "pdfPages": [
+          153
+        ]
+      },
+      "sha256": "30f799291136fee8deff9df42ddf1fa9b8c8f3cbf23d9d8d5235e12a922c7276",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-16-10.json",
+      "lessonId": "merz-question-16-10",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "16.10",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          152
+        ],
+        "pdfPages": [
+          153
+        ]
+      },
+      "sha256": "bf110ec3f94d484f1ccb1ac4ea5c3a155051e0e9456e351297346e52867aa565",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-16-11.json",
+      "lessonId": "merz-question-16-11",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "16.11",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          152
+        ],
+        "pdfPages": [
+          153
+        ]
+      },
+      "sha256": "d26917f9fb054454e8ff0739779e644f42a027afee648b3e598880bc92941387",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-17-01.json",
+      "lessonId": "merz-question-17-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "17.1",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          160
+        ],
+        "pdfPages": [
+          161
+        ]
+      },
+      "sha256": "8b4c69cc0bd23e7b1ba9568650b04479816ab3f8472845c96cad8a3b1bab6c4b",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-17-02.json",
+      "lessonId": "merz-question-17-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "17.2",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          160
+        ],
+        "pdfPages": [
+          161
+        ]
+      },
+      "sha256": "caadc75d1eacb0cbfeac15e2c67f47d3d65905b45357593b34418a09e3ad4b20",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-17-03.json",
+      "lessonId": "merz-question-17-03",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "17.3",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          160
+        ],
+        "pdfPages": [
+          161
+        ]
+      },
+      "sha256": "a5efea5143d445b47759f9a30b57fb92f2d3daa01c3ca7832fd1ddc4aa4a149c",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-17-04.json",
+      "lessonId": "merz-question-17-04",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "17.4",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          160
+        ],
+        "pdfPages": [
+          161
+        ]
+      },
+      "sha256": "3d7dcadc775e8fa07841cfd29154d58aba2e605a847755e0db1efcb479f50f73",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-17-05.json",
+      "lessonId": "merz-question-17-05",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "17.5",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          160
+        ],
+        "pdfPages": [
+          161
+        ]
+      },
+      "sha256": "dac0f8c9203c121a7d1159a8d2cdc42aaf8ee972ba6e779b67a841cc6a9bc18b",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-17-06.json",
+      "lessonId": "merz-question-17-06",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "17.6",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          160
+        ],
+        "pdfPages": [
+          161
+        ]
+      },
+      "sha256": "05a449d943635d2f91229b3d37df1a18c52782249c1e8070aece8fa055715060",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-17-07.json",
+      "lessonId": "merz-question-17-07",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "17.7",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          160
+        ],
+        "pdfPages": [
+          161
+        ]
+      },
+      "sha256": "065d20ce6dfef6857aa0afd403c4c397b8294af92c8788f794d1c383bf7c0396",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-18-01.json",
+      "lessonId": "merz-question-18-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "18.1",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          166
+        ],
+        "pdfPages": [
+          167
+        ]
+      },
+      "sha256": "7dc7d5ddd014da5aa0fa39cb8231772aa9c973755ad40c0e2b0596a34d3f1d2f",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-18-02.json",
+      "lessonId": "merz-question-18-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "18.2",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          166
+        ],
+        "pdfPages": [
+          167
+        ]
+      },
+      "sha256": "4ce9553b012b5887383a5eb61f871a61e6caf7c5e7db7f74acc92c8579d3cba9",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-18-03.json",
+      "lessonId": "merz-question-18-03",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "18.3",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          166
+        ],
+        "pdfPages": [
+          167
+        ]
+      },
+      "sha256": "d02cc2da83b28dec5eaeae67861c2597d51a02651153698abc2efec1685a6140",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-18-04.json",
+      "lessonId": "merz-question-18-04",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "18.4",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          166
+        ],
+        "pdfPages": [
+          167
+        ]
+      },
+      "sha256": "4ec9fcd0ab619b16400d6e575d79db2cf080500a2bc35e9a8f5124676d313e54",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-18-05.json",
+      "lessonId": "merz-question-18-05",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "18.5",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          166
+        ],
+        "pdfPages": [
+          167
+        ]
+      },
+      "sha256": "d06eaca1d6d160ac6d5f19a0eca4ff679d10c2881b8f599e5460330a52aff7bc",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-18-06.json",
+      "lessonId": "merz-question-18-06",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "18.6",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          166
+        ],
+        "pdfPages": [
+          167
+        ]
+      },
+      "sha256": "e6e4c9fd478c87b202bb297ffa1dbd8df4c8fda14a2096a0e669bc8ca1a12d26",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-18-07.json",
+      "lessonId": "merz-question-18-07",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "18.7",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          166
+        ],
+        "pdfPages": [
+          167
+        ]
+      },
+      "sha256": "dcceba77943cf023e6720f63a3226df4683bdf21ae0eac714e071c699cff4d94",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-19-01.json",
+      "lessonId": "merz-question-19-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "19.1",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          173
+        ],
+        "pdfPages": [
+          174
+        ]
+      },
+      "sha256": "047366b5d73dad81e50f404f6964eecf997a66fac416554b559db6f255906365",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-19-02.json",
+      "lessonId": "merz-question-19-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "19.2",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          173
+        ],
+        "pdfPages": [
+          174
+        ]
+      },
+      "sha256": "2e6979bd39ea4273dedbdd0b93eb4be20eab365593b9c98681c71e38e3b70412",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-19-03.json",
+      "lessonId": "merz-question-19-03",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "19.3",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          173
+        ],
+        "pdfPages": [
+          174
+        ]
+      },
+      "sha256": "9be77659f6700371aedd08cd79ce6db7d39cd3f826e92c5f56c9065d5f8ec465",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-19-04.json",
+      "lessonId": "merz-question-19-04",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "19.4",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          173
+        ],
+        "pdfPages": [
+          174
+        ]
+      },
+      "sha256": "74ea63c3d7e169ab4d5f78d63e31ccddf4798e75e248f69e802a8a2e0c3f898b",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-19-05.json",
+      "lessonId": "merz-question-19-05",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "19.5",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          173
+        ],
+        "pdfPages": [
+          174
+        ]
+      },
+      "sha256": "74b9f08600e5d95b9bf56b1e4a4512af3d3accdaecc67a5312c9033c0398abd0",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/question-19-06.json",
+      "lessonId": "merz-question-19-06",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "selfcheck",
+        "exercise": "19.6",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          173
+        ],
+        "pdfPages": [
+          174
+        ]
+      },
+      "sha256": "b89a584cba0495384bd35fbfc2d5fae0848eb70a28f111e0841cc168575de4eb",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass"
+    }
+  ],
+  "followupReviews": [
+    {
+      "scope": "Independent mathematical recheck after focus/view improvements identified by lessons_para1.",
+      "changedLessons": [
+        "stereo-course/merzlyak-10-base/lessons/question-01-03.json",
+        "stereo-course/merzlyak-10-base/lessons/question-04-04.json",
+        "stereo-course/merzlyak-10-base/lessons/question-08-03.json",
+        "stereo-course/merzlyak-10-base/lessons/question-08-04.json",
+        "stereo-course/merzlyak-10-base/lessons/question-10-02.json",
+        "stereo-course/merzlyak-10-base/lessons/question-17-03.json",
+        "stereo-course/merzlyak-10-base/lessons/question-17-04.json",
+        "stereo-course/merzlyak-10-base/lessons/question-17-05.json",
+        "stereo-course/merzlyak-10-base/lessons/question-18-06.json"
+      ],
+      "checks": "All changed views and explanatory captions read. question08.03/04 now have AB perpendicular to AE, AE parallel to CD, and AB/CD skew; other §8 models retain 60 degrees. All97 models rechecked, 4911 assertions pass.",
+      "sourceQuestionWordingChanged": false
+    }
+  ]
+}

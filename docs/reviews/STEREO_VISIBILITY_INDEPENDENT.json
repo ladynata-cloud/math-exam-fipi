@@ -1,0 +1,263 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS_LOCAL_INDEPENDENT_PENDING_CI_AND_BROWSER",
+  "reviewer": "Codex independent reviewer /root/visibility_audit",
+  "independence": {
+    "authored": [
+      "tools/stereo-textbook/visibility-profiles/atanasyan.json"
+    ],
+    "reviewedOthers": [
+      "stereo-course/assets/task-scene-viewer.js",
+      "tools/stereo-textbook/visibility-profiles/merzlyak.json",
+      "tools/stereo-textbook/visibility-profiles/shestakov.json",
+      "stereo-course/assets/task-scenes.js (infinite cylindrical surface cap removal)",
+      "stereo-course/assets/viewer.js",
+      "geometry-merzlyak/assets/viewer.js",
+      "geometry-pogorelov/assets/viewer.js"
+    ],
+    "ownAtanasyanProfilesRequireAnotherReviewer": false,
+    "ownAtanasyanProfilesIndependentlyReviewedBy": [
+      "/root/visibility_shestakov",
+      "/root/visibility_merzlyak"
+    ]
+  },
+  "runtimeReview": {
+    "numericPolygonChecks": {
+      "result": "PASS",
+      "handCases": [
+        "square partial occlusion at parameters0.25–0.75",
+        "coplanar line remains visible",
+        "line outside tangent extent remains visible",
+        "concaveL-notch partial occlusion at0.25–0.5"
+      ],
+      "randomTriangles": 2000,
+      "independentBarycentricSamplePoints": 62000
+    },
+    "sphereAndPhaseChecks": {
+      "result": "PASS",
+      "sphereSamples": 116000,
+      "arcSamples": 29000,
+      "phaseSamples": 124000,
+      "visibilityCoreSHA256": "48a0448f301206f5792e1bf8cddfb8b0da8292ae0f4ab5f2505a34069cfdd392"
+    },
+    "findings": [
+      {
+        "id": "hidden-dash-phase",
+        "severity": "major",
+        "finding": "Overlapping reversed or subdivided dashed base/highlight strokes could fill each other’s gaps because each path started its own dash phase.",
+        "resolution": "Global canonical line phase added to stroke-dashoffset;124000 independently calculated paint-phase samples passed.",
+        "status": "RESOLVED_NUMERIC_PENDING_BROWSER"
+      },
+      {
+        "id": "multi-solid-smooth-normals",
+        "severity": "moderate",
+        "finding": "Each345a/b two-cylinder model has38faces oriented against the combined-body centre instead of its own connected component. Across18cameras this produced72extra-generatrix suppression mismatches per card.",
+        "recommendation": "Orient normals by face-connected component centre; retain analytic/geometric depth classification independently of normal sign.",
+        "status": "RESOLVED_NUMERIC_PENDING_BROWSER",
+        "resolution": "Normals now use their own face-connected component centre. Each345a/b model has zero reversed normals and exactly four silhouette generatrices at all18checked cameras."
+      }
+    ],
+    "smoothComponentChecks": {
+      "result": "PASS",
+      "checks": [
+        {
+          "id": "ex-main-0345-a",
+          "components": [
+            66,
+            66
+          ],
+          "wronglyOrientedFaces": 0,
+          "cameras": 18,
+          "silhouetteGeneratrices": 72,
+          "perCamera": 4
+        },
+        {
+          "id": "ex-main-0345-b",
+          "components": [
+            66,
+            66
+          ],
+          "wronglyOrientedFaces": 0,
+          "cameras": 18,
+          "silhouetteGeneratrices": 72,
+          "perCamera": 4
+        }
+      ],
+      "initialAuditIssue": "The first silhouette enumeration used only _Lc/_Lu and _Rc/_Ru generated names, omitting LA/LB/RA/RB aliases at yaw0. Corrected enumeration detects vertical generators by coordinates, with no runtime changes for this audit issue."
+    },
+    "finalCorePolygonRerun": {
+      "result": "PASS",
+      "randomTriangles": 2000,
+      "independentBarycentricSamples": 62000,
+      "note": "Rerun on frozen renderer including parameterTolerance endpoint normalization."
+    },
+    "sharedEdgeComponents": {
+      "result": "PASS",
+      "codeInspection": "Components union adjacent faces only through a shared complete edge. Two cone nappes sharing just S remain separate; each normal is oriented by its own component centre. Depth visibility remains invariant under normal sign.",
+      "generatedDoubleConeCases": 100,
+      "radiallyOutwardNormalChecks": 9600,
+      "fixture": "two-open-cone-nappes: both24face nappes have outward normals and retain two silhouette generators each."
+    },
+    "infiniteCylinderCapRemoval": {
+      "result": "PASS_INDEPENDENT_REVIEW",
+      "author": "/root/visibility_merzlyak",
+      "reviewer": "/root/visibility_audit",
+      "file": "stereo-course/assets/task-scenes.js",
+      "sha256": "20241c175a0db6ba2bd05ab0e91f95871e5ad5c8a7bda59880ac6e7a847c9db0",
+      "openCylindricalSurfaceCases": 20,
+      "closedCylinderControls": 8,
+      "checks": [
+        "The filter applies only to the complete cylindrical-surface conic branch.",
+        "Both constant-height clipping caps are removed; all48lateral rectangles and96section points remain.",
+        "Cylinder area/volume tasks retain50faces including bothcaps."
+      ],
+      "findings": []
+    },
+    "canvasFallback": {
+      "result": "PASS_LOCAL_INDEPENDENT_REVIEW",
+      "codeInspection": [
+        "Fallback core matches the SVG interval classifier exactly and all three offlinecanvas rendererfiles are identical.",
+        "Camera coordinate conversion is orthographic and preserves depth; all body/construction strokes pass through the classifier.",
+        "Only analytic sphere-section edges get surface-arc semantics; arbitrary chords remain interior.",
+        "Hidden strokes precede visible strokes; reversed/subdivided dash phases align.",
+        "Draw/redraw retain supplied learnerstate and emit no progresswrites."
+      ],
+      "mounts": 82,
+      "actualStrokeCalls": 4105,
+      "independentRaySamples": 11997,
+      "hiddenStrokes": 1278,
+      "visibleStrokes": 2827,
+      "phaseComparisons": 256,
+      "negativeControls": 3,
+      "browserPixelsReviewed": false
+    }
+  },
+  "otherProfileReview": {
+    "reviewer": "Codex independent reviewer /root/visibility_audit; no Merzlyak or Shestakov profile authorship",
+    "result": "PASS",
+    "filesSHA256": {
+      "tools/stereo-textbook/visibility-profiles/merzlyak.json": "10184ec658e1fec8e574c89cc898a58e118d99205ebdf367d324a64780639605",
+      "tools/stereo-textbook/visibility-profiles/shestakov.json": "34d7215adfe29e7af3e1dc86b7375525e88e1c746f26d9f04d70f37c211ff1f7"
+    },
+    "checks": {
+      "profiles": 177,
+      "surfaceSets": 191,
+      "faces": 1067,
+      "spheres": 9,
+      "sphereEdges": 648,
+      "sphereEndpointChecks": 1296
+    },
+    "manualReview": [
+      "Merzlyak ex07-019/020/021/022: reflected/translated second solid included only in image view; original static solid remains displayed.",
+      "Merzlyak research-sections-004: first model ABCD and alternate trapezoid ABED have corresponding top cycles; second example view names mapped exactly.",
+      "Shestakov sy-4-6-b2-a/b: second rectangle alternative C2D2 replaces C1D1; surfaces remain two open rectangles.",
+      "Every Merzlyak profile statement/title explicitly describes a solid; no generic complete graph is closed into an inferred opaque body.",
+      "Merzlyak packaging-only followup: new wrapper retains byte-identical175profile array serialization (SHA256341827ec560ee95b2a0c7f56e3b39ebd824bc9774f810e9c9998a3f3475b4434)."
+    ]
+  },
+  "finalFreeze": {
+    "reviewedAt": "2026-10-29T18:49:31.660366+00:00",
+    "sourceSHA256": {
+      "stereo-course/assets/task-scene-viewer.js": "91ef00cd15e0e831fa835c089116e5150813ce0bd6554280d3e9f76a5c547f64",
+      "stereo-course/assets/task-scenes.css": "1100ff4d47f419db531fc8f08d923e910c297413de4ccc572abe340a18fe972d",
+      "stereo-course/assets/task-scenes.js": "20241c175a0db6ba2bd05ab0e91f95871e5ad5c8a7bda59880ac6e7a847c9db0",
+      "stereo-course/assets/viewer.js": "73e5a58a693c56499bba10b5dc04346c6f8bcbe82a95673c8f177feca115aa6a",
+      "geometry-merzlyak/assets/viewer.js": "73e5a58a693c56499bba10b5dc04346c6f8bcbe82a95673c8f177feca115aa6a",
+      "geometry-pogorelov/assets/viewer.js": "73e5a58a693c56499bba10b5dc04346c6f8bcbe82a95673c8f177feca115aa6a",
+      "tools/stereo-textbook/visibility-profiles/atanasyan.json": "22d68e96f29b83e40997efc9f9e751370483f957bd1665754e3fd398b0633279",
+      "tools/stereo-textbook/visibility-profiles/merzlyak.json": "10184ec658e1fec8e574c89cc898a58e118d99205ebdf367d324a64780639605",
+      "tools/stereo-textbook/visibility-profiles/shestakov.json": "34d7215adfe29e7af3e1dc86b7375525e88e1c746f26d9f04d70f37c211ff1f7",
+      "tools/stereo-textbook/visibility-math.test.cjs": "83b5aecd69c786ef15dcef34609a5f5df13dab48eb8c9d20e38e70885a2a4def",
+      "tools/stereo/canvas-visibility.test.cjs": "cb1372e66cd1b54632238c7e27f3ba5bf2a00e6e712cff2fe8c1cf768ccbf895",
+      "tools/stereo/sync_canvas_visibility.cjs": "3a0a1d2e41c81ce337762e6491095e8aea102d952dcb04259e61447e6c686f52"
+    },
+    "status": "LOCAL_SOURCES_FROZEN_FOR_DRAFT_PR_CI"
+  },
+  "reviewedAt": "2026-10-29T18:49:31.660366+00:00",
+  "atanasyanCrossReview": {
+    "primary": {
+      "reviewer": "Codex independent cross-review /root/visibility_shestakov",
+      "reviewedAt": "2026-10-29T18:33:30.590Z",
+      "profilePath": "tools/stereo-textbook/visibility-profiles/atanasyan.json",
+      "profileSHA256": "22d68e96f29b83e40997efc9f9e751370483f957bd1665754e3fd398b0633279",
+      "profiles": 68,
+      "shells": 76,
+      "facesChecked": 404,
+      "verdict": "PASS_INDEPENDENT_GEOMETRY_AND_VIEW_SCOPE",
+      "findings": [],
+      "checks": [
+        "Read all68 associated conditions and explicit vertex labels; all65 static profile bodies match stated tetrahedron/prism/pyramid",
+        "Read allviews and explanations for theory014, selfcheckIII14, exercise284; active bodies match each separate example or retained cut piece",
+        "Independently triangulated every oriented shell; positive volume, zero oriented area vector, every edge incident twice",
+        "Verified exact model signatures against current554cardcourse; pendingcone is unaffected by profiles",
+        "Confirmed exercise284 retained thin original edges are explicitly contextual in existingmodelnote"
+      ],
+      "dynamicDecisions": {
+        "theory-014": "Box surfaces for boxexamples, distincttetrahedron surfaces onlytetra3/tetra4",
+        "ex-selfcheck-iii-14": "Fullprism neutral/section;A1ABC tetra andA1BCC1B1 quadrangularpyramid forisolatedparts",
+        "ex-main-0284": "Fulltetra neutral/corner;8faces of midpointoctahedron oldface/all/result;removedcorners do notocclude"
+      }
+    },
+    "additional": {
+      "reviewer": "/root/visibility_merzlyak",
+      "authoredProfiles": false,
+      "verdict": "PASS_INDEPENDENT_ATANASYAN_TOPOLOGY_REVIEW",
+      "file": "tools/stereo-textbook/visibility-profiles/atanasyan.json",
+      "sha256": "22d68e96f29b83e40997efc9f9e751370483f957bd1665754e3fd398b0633279",
+      "sourceCards": 554,
+      "profileModels": 68,
+      "closedMeshes": 76,
+      "faceInstances": 404,
+      "halfspaceVertexChecks": 2628,
+      "negativeControls": 3,
+      "manualReview": [
+        "All 65 static profiles matched named solid vertices and body kind in each authored condition.",
+        "theory-014 uses box faces for box examples and tetrahedral faces only for tetra3/tetra4.",
+        "ex-selfcheck-iii-14 separates original prism, tetrahedral piece and quadrangular pyramidal piece.",
+        "ex-main-0284 switches from original tetrahedron to the midpoint octahedron after all corner cuts. Original thin context edges do not constitute remaining material."
+      ],
+      "limitations": [
+        "This review checks the published authored conditions and coordinate models; it does not re-review the original textbook PDF.",
+        "Browser pixel review and the renderer visibility oracle are separate gates."
+      ]
+    }
+  },
+  "localFinalCommands": [
+    {
+      "command": "node tools/stereo-textbook/visibility-math.test.cjs --fixtures-only",
+      "status": "PASS",
+      "fixtures": 18,
+      "actualSVGPaths": 227,
+      "hiddenPaths": 78,
+      "splitLines": 38,
+      "raySamples": 3672,
+      "negativeControls": 4
+    },
+    {
+      "command": "node tools/stereo/canvas-visibility.test.cjs",
+      "status": "PASS",
+      "mounts": 82,
+      "actualStrokeCalls": 4105,
+      "raySamples": 11997,
+      "phaseComparisons": 256,
+      "negativeControls": 3
+    },
+    {
+      "command": "node tools/stereo/sync_canvas_visibility.cjs --check",
+      "status": "PASS",
+      "identicalCanvasRenderers": 3
+    }
+  ],
+  "verificationEnvironmentNote": "Initial fixture/canvas invocation used the primary runtime modulepath without jsdom and failed before running tests. Both commands then passed with the existing task dependency installation; no code change was made for that environment issue.",
+  "pending": {
+    "exactHeadCI": "PENDING_DRAFT_PR",
+    "browserScreenshots": "PENDING_ACTUAL_CI_ARTIFACT_REVIEW",
+    "publication": "NOT_AUTHORIZED_BY_THIS_REVIEW",
+    "externalPaidReview": "NOT_CLAIMED"
+  },
+  "limitations": [
+    "This is independent local geometry/code/DOM/canvas-call review, not browser-pixel approval.",
+    "The original textbook PDFs were not reread for the supplemental surface-topology profiles; reviewers used the unchanged authored conditions and coordinate models.",
+    "Final exact-head CI and actual screenshot inspection will be recorded separately after they run."
+  ]
+}

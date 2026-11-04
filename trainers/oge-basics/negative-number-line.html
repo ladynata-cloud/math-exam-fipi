@@ -4,7 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>MathExam</title>
+<title>Отрицательные числа на прямой · MathExam</title>
+<link rel="canonical" href="https://mathexam.space/trainers/oge-basics/negative-number-line.html">
+<meta name="description" content="Ноль, направление, сравнение, противоположные числа и модуль — без действий со знаками.">
 <style>
 :root{
   --bg:#f6f8fc;--card:#fff;--ink:#1e2943;--soft:#5b6680;--muted:#8e97aa;--line:#e3e8f1;
@@ -37,7 +39,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 @media(max-width:850px){.hero,.learn-layout,.task-layout{grid-template-columns:1fr}.hero-art{min-height:230px}.side{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard{grid-template-columns:1fr}.route-grid{grid-template-columns:1fr}.route p{min-height:0}.stats{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:560px){.wrap{padding:22px 12px 62px}.topbar-in{padding:8px 11px}.brand-copy{display:none}.hero-copy,.lesson,.task-card,.check-card,.result{padding:19px}.hero{gap:13px}.hero-art{min-height:190px}.big-symbol{width:145px;height:145px;font-size:58px}.side{grid-template-columns:1fr}.choice-grid{grid-template-columns:1fr}.stats,.status-row,.result-grid{grid-template-columns:1fr}.dashboard-main{align-items:flex-start}.ring{width:90px;height:90px}.task-prompt{font-size:18px}.head{align-items:flex-start;flex-direction:column}.practice-head{align-items:flex-start;flex-direction:column}.meter{width:100%}.number-line{min-width:410px}.route-grid{gap:10px}}
 </style>
-<script src="learning-loader.js"></script></head>
+<script src="learning-loader.js?v=arithmetic-robots-20261019"></script></head>
 <body>
 <header class="topbar"><div class="topbar-in"><a class="brand" id="mapBack"><span class="mark">∑</span><span class="brand-copy"><b>MathExam</b><span>математический ликбез</span></span></a><div class="nav-scroll"><nav class="nav"><button data-route="home">Старт</button><button data-route="learn">Разобраться</button><button data-route="practice">Практика</button><button data-route="check">Проверка</button></nav></div></div></header>
 <main class="wrap">
@@ -71,7 +73,7 @@ const SPEC = {"title": "Отрицательные числа на прямой"
   const plural=(n,a,b,c)=>{const x=Math.abs(n)%100,y=x%10;return (x>10&&x<20)?c:y===1?a:(y>=2&&y<=4)?b:c};
 
 function line(a,b){return `<div class="visual-box"><div class="number-line">${Array.from({length:11},(_,i)=>i-5).map(x=>`<span class="tick ${x===0?'zero':''}">${x}</span>`).join('')}</div></div>`}
-function makePracticeTask(){const type=Math.floor(Math.random()*4),a=-9+Math.floor(Math.random()*19),b=-9+Math.floor(Math.random()*19);
+function makePracticeTask(){const type=Math.floor(Math.random()*4),a=-9+Math.floor(Math.random()*19);let b=-9+Math.floor(Math.random()*19);while(type===0&&b===a)b=-9+Math.floor(Math.random()*19);
  if(type===0)return {kind:'choice',skill:'compare',label:'Сравнение на прямой',prompt:`Какое число больше: <strong>${a}</strong> или <strong>${b}</strong>?`,options:[{id:'a',html:String(a)},{id:'b',html:String(b)}],answer:a>b?'a':'b',hint1:'На прямой больше то число, которое правее.',hint2:`Сравните положение ${a} и ${b} относительно нуля.`,solution:`Больше число <strong>${Math.max(a,b)}</strong>.`};
  if(type===1)return {kind:'input',skill:'opposite',label:'Противоположное число',prompt:`Назовите число, противоположное <strong>${a}</strong>.`,answer:-a,hint1:'Поменяйте знак.',hint2:'Расстояние до нуля остаётся тем же.',solution:`Противоположное число: <strong>${-a}</strong>.`};
  if(type===2)return {kind:'input',skill:'abs',label:'Модуль',prompt:`Найдите: <strong>|${a}|</strong>`,answer:Math.abs(a),hint1:'Модуль — расстояние до нуля.',hint2:'Расстояние не бывает отрицательным.',solution:`|${a}| = <strong>${Math.abs(a)}</strong>.`};

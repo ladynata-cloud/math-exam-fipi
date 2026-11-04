@@ -1,10 +1,10 @@
 'use strict';
 const assert=require('node:assert/strict');
 const D=require('../ege-baza/path/data');
-for(const file of ['practice','equation-practice','grade7-algebra','grade7-geometry','grade7-foundations','pre7-arithmetic','pre7-applications','grade7-geometry-core','grade7-geometry-practice'])require('../ege-baza/path/'+file);
+for(const file of ['practice','equation-practice','grade7-algebra','grade7-geometry','grade7-foundations','pre7-arithmetic','pre7-applications','grade7-geometry-core','grade7-geometry-practice','grade7-geometry-rebuild-base','grade7-geometry-rebuild-foundations','grade7-geometry-rebuild-triangles','grade7-geometry-rebuild-relations','grade7-geometry-rebuild-workbook'])require('../ege-baza/path/'+file);
 const renderer=require('../ege-baza/path/grade7-geometry-core-models'),state=require('../ege-baza/path/managed-state');
 let cases=0,constructions=0,angles=0;
-for(const meta of D.meta.filter(x=>/^grade7-g-(?:core|practice)-/.test(x.id)))for(let seed=0;seed<216;seed++){
+for(const meta of D.meta.filter(x=>/^grade7-g-(?:core|practice)-/.test(x.id)||x.geometryRebuild))for(let seed=0;seed<(meta.geometryRebuild?D.geometryRebuild.count:216);seed++){
  const t=D.task(meta.id,seed),m=t.model,d=m.diagram,ids=m.elements.map(e=>e.id),builds=(m.constructions||[]).map(c=>c.id);
  assert.equal(m.kind,'grade7-construction');assert(ids.length>=2);assert.equal(ids.length,new Set(ids).size);assert.equal(builds.length,new Set(builds).size);assert(d.description);
  for(const point of Object.values(d.points)){assert(Number.isFinite(point.x)&&Number.isFinite(point.y));if(point.construction)assert(builds.includes(point.construction));}
@@ -16,4 +16,4 @@ for(const meta of D.meta.filter(x=>/^grade7-g-(?:core|practice)-/.test(x.id)))fo
  if(builds.length)assert.throws(()=>state.model({kind:'grade7-construction',selected:null,built:[builds[0],builds[0]],revealed:0},t));
  constructions+=builds.length;cases++;
 }
-assert.equal(cases,4320);console.log(`GRADE7_CONSTRUCTION_OK: ${cases} semantic diagrams; ${constructions} constructions; ${angles} valid angle records; exact restored state, forged/duplicate IDs rejected.`);
+assert.equal(cases,4320+D.geometryRebuild.families.length*D.geometryRebuild.count);console.log(`GRADE7_CONSTRUCTION_OK: ${cases} semantic diagrams; ${constructions} constructions; ${angles} valid angle records; exact restored state, forged/duplicate IDs rejected.`);

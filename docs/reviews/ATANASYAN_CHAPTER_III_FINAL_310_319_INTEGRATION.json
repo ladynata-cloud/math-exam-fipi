@@ -1,0 +1,262 @@
+{
+  "schemaVersion": 1,
+  "verdict": "PASS_INDEPENDENT_INTEGRATION_STRUCTURAL_REVIEW",
+  "reviewedAt": "2026-10-26T15:15:41.074Z",
+  "base": "72fb9861e2d333d92d4b55fb5d1c9f61c567f86a",
+  "reviewer": "Codex author_299_302 / integration reviewer",
+  "authorReviewerSeparation": {
+    "reviewerAuthoredIntegrationImplementation": false,
+    "reviewerAuthoredLessons": [
+      "ex-main-0310",
+      "ex-main-0311-a",
+      "ex-main-0311-b",
+      "ex-main-0312"
+    ],
+    "mathematicalLessonApprovalExcluded": true,
+    "independentMathematicalReviewer": "Codex independent_review"
+  },
+  "scope": "Read-only review of integration implementation, frozen published history, additive capture/CI contracts and failure controls. No source/mathematical approval or actual browser-image verdict.",
+  "reviewedFiles": [
+    {
+      "path": ".github/workflows/atanasyan-textbook.yml",
+      "sha256": "bc3a0cf253ad1123b5c345af4e734efe0ccf6b47fb73ea6d30272b31a5b41fc4"
+    },
+    {
+      "path": "tools/stereo-textbook/additional310-baseline.cjs",
+      "sha256": "6719a04045b33f5d32f85470ea042277938e2a76d8904a10deb244ce9eeed682"
+    },
+    {
+      "path": "tools/stereo-textbook/additional310-baseline.json",
+      "sha256": "81fd7a2a69d29b89f0561944df2f3d035d9ba73fb562bcd1649182ec1ea93ff4"
+    },
+    {
+      "path": "tools/stereo-textbook/additional310-content.test.cjs",
+      "sha256": "5c036886c87abfe3e7af80b39e290f229fc1fcb7794ad9e74335ed722204c912"
+    },
+    {
+      "path": "tools/stereo-textbook/additional299-baseline.cjs",
+      "sha256": "29f02c3d5d1fee5ae91345c7a40859c3128f674ffa35355f9b1aa14f567064f3"
+    },
+    {
+      "path": "tools/stereo-textbook/additional299-content.test.cjs",
+      "sha256": "d439bb9ba04f14f35a3e45d1e15e31ac416881151a4280083b53ce8e94a19407"
+    },
+    {
+      "path": "tools/stereo-textbook/additional294-content.test.cjs",
+      "sha256": "98de722055d35745d9aa3eb3101697b2ba4d237c361aa086a63cd0aa82caddab"
+    },
+    {
+      "path": "tools/stereo-textbook/additional288-content.test.cjs",
+      "sha256": "a1381e5c7e1c4b48b1d46481a7c03733e8e707834e7dd0b0e4a8025cc311f0bb"
+    },
+    {
+      "path": "tools/stereo-textbook/polyhedra-practical-content.test.cjs",
+      "sha256": "41b0b2c316ec20b7f87e34cfa8e1fa431d6ad9b11d002b74cdc9f9d7709f03ac"
+    },
+    {
+      "path": "tools/stereo-textbook/polyhedra-selfcheck-content.test.cjs",
+      "sha256": "8076db5196e2c3c9f27105e1cc794dc3a08859398d112eac3c09bc353b8ec93e"
+    },
+    {
+      "path": "tools/stereo-textbook/content.test.cjs",
+      "sha256": "ca85dc2fb69f46053a1b9e9f95ae4e315ed000fb5e92043959a7f6d1e07a8305"
+    },
+    {
+      "path": "tools/stereo-textbook/browser-shards.cjs",
+      "sha256": "b9ff41c6a94a58fab713454b7feb402f591a7fbfb2577cb754afcf38a8b2baa3"
+    },
+    {
+      "path": "stereo-course/textbook/source-index.json",
+      "sha256": "68b342f3e58b4158a89ef28dc44f6adfaa93fb1fa606b86b2a3e82aacdcfe4c4"
+    },
+    {
+      "path": "tools/stereo-textbook/browser-cases.cjs",
+      "sha256": "7edbf293526d06a231e73139d53102ccc38d1935186f083d41d2fc42c94e61fc"
+    },
+    {
+      "path": "tools/stereo-textbook/browser.cjs",
+      "sha256": "5c4ebb4a9ef5b24554244bd93d883b6bbcbf83f9ff0526824c4b180987782200"
+    }
+  ],
+  "directGitBaseRecomputation": {
+    "allFixtureFieldsExact": true,
+    "fixture": {
+      "commit": "72fb9861e2d333d92d4b55fb5d1c9f61c567f86a",
+      "cards": 507,
+      "reviewBatches": 26,
+      "screenshotCases": 1188,
+      "bundleBytesSHA256": "0aca5154f8f81edbc2df35d7bff112a0781c862b956d51fabc022ae2e00e6fa2",
+      "canonicalBundleSHA256": "27140a8729c5507a1c00d7e49c701a9e2a524e55f8f9cdbe6e9d44a72cd58ffd",
+      "rawLessonManifestSHA256": "ecb102ec67721ee040c5ee6996306ec0cdaf843b68d3c3bb24d72fdec0accad5",
+      "registrySHA256": "a1952425048539b8efa9c525166a36c03903a82151b6b3451e3205b85ca640c4",
+      "reviewRowsSHA256": "a940c37aa8c3f064e120c0f412b75889141158f366d6b4d0e36d6d9d598be74f",
+      "reviewBatchesSHA256": "bc2729f5156ca13f7c94174f460325e9303207ad35dd9113f7cffdb0f04467e3",
+      "sourceIndexSHA256": "76889580832cd56ad4250e394020b4dfbfdf99b9327e441028ee43b1e1f60e5e",
+      "screenshotCasesSHA256": "6ddf9b919117082d729f11a7fdce6f1e961479084aaa449917038b941b517eb0",
+      "immutableFiles": {
+        "stereo-course/textbook/assets/engine.js": "3b2f3c3fae68a9c8e6f532d32a19df1fb1c5749b60253c75d9241ff639066ad4",
+        "stereo-course/textbook/assets/style.css": "268af771d4e1fe44d69fddb966f5a4bf2e5d6febc2102425675b0ba8aca92740",
+        "stereo-course/textbook/index.html": "daee3fb225e5b7a0d5129af24d2cdf5961eb5b74d195a863e22317313d1e1825",
+        "stereo-course/assets/task-scene-viewer.js": "a3e470e55b45d658cb74b2e32b5f1e9479785fa9b014be3929591bdcd55cefe6",
+        "stereo-course/assets/task-scenes.css": "5dbecdc2c98fbb030bcc4dba224f3b4ae89af292579a5136942810be75fd2cbf",
+        "stereo-course/assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+        "stereo-course/textbook/schema/lesson.schema.json": "0afbe8ada69985cda31e8c77168ac101aac05f04ae53c401b91c1bfd969972ba",
+        "stereo-course/textbook/schema/catalog.schema.json": "a497a09012767582238db69a7966f43d08f293b6a43f1ffc70ce6b15ed5a6e08",
+        "tools/stereo-textbook/build_textbook.py": "96e1e919ae6f231ae63ef5ba9fa57819e820a325ab128fd129a53c25b2aa9dc3"
+      },
+      "registryMetadata": {
+        "reviewer": "Independent Codex content and coordinate reviews; see batches",
+        "reviewedAt": "2026-10-26T13:29:38.661Z",
+        "registeredAt": "2026-10-26T13:30:31.704Z",
+        "scope": "Introduction and chapters I–III: main exercises 1–309, theory points 1–37, all 40 chapter self-check questions. Additional exercises 310 onward remain pending. Not the complete book."
+      }
+    },
+    "historicalRawFilesByteIdentical": 507,
+    "historicalRuntimeSchemaBuilderFilesByteIdentical": 9,
+    "priorBaselineFixtureFilesByteIdentical": 4
+  },
+  "positiveStructuralChecks": {
+    "currentIndexRestoresExactly": true,
+    "currentCourseRestoresExactly": true,
+    "currentRegistryRestoresExactly": true,
+    "currentCaptureMapRestoresExactly": true,
+    "syntheticCompositionOnly": {
+      "cards": 518,
+      "catalogRows": 1375,
+      "steps": 1969,
+      "views": 2050,
+      "newCards": 11,
+      "newSteps": 73,
+      "newViews": 84
+    },
+    "historicalProjectionChain": [
+      {
+        "bridge": "additional310-baseline.cjs",
+        "cards": 507,
+        "catalog": 1374,
+        "reviewCards": 507,
+        "captureCases": 1188
+      },
+      {
+        "bridge": "additional299-baseline.cjs",
+        "cards": 495,
+        "catalog": 1373,
+        "reviewCards": 495,
+        "captureCases": 1099
+      },
+      {
+        "bridge": "additional294-baseline.cjs",
+        "cards": 485,
+        "catalog": 1368,
+        "reviewCards": 485,
+        "captureCases": 1033
+      },
+      {
+        "bridge": "additional288-baseline.cjs",
+        "cards": 479,
+        "catalog": 1368,
+        "reviewCards": 479,
+        "captureCases": 997
+      },
+      {
+        "bridge": "practical-baseline.cjs",
+        "cards": 474,
+        "catalog": 1368,
+        "reviewCards": 474,
+        "captureCases": 917
+      },
+      {
+        "bridge": "selfcheck-baseline.cjs",
+        "cards": 456,
+        "catalog": 1364
+      }
+    ],
+    "captureCases": {
+      "old": 1188,
+      "additive": 84,
+      "total": 1272,
+      "additiveSHA256": "7bcf6d3a5f08530a3fa861cae5ee230858e52584044f140acc441390f4ef9228",
+      "newImagesAtBothWidths": 168,
+      "totalImagesAtBothWidths": 2544
+    },
+    "fourShardPartition": {
+      "cards": 518,
+      "noDuplicates": true,
+      "noOmissions": true
+    }
+  },
+  "negativeMutationChecks": {
+    "count": 18,
+    "allRejected": true,
+    "cases": [
+      "old lesson title",
+      "old lesson step explanation",
+      "old lesson coordinate",
+      "old lesson review status",
+      "old lesson source page",
+      "missing old lesson",
+      "old catalogue title",
+      "old review row hash",
+      "old review row missing",
+      "old batch mutation",
+      "old batch order",
+      "old source title",
+      "old source omitted",
+      "wrong source311 subparts",
+      "wrong source310 required parts",
+      "old capture renamed",
+      "old capture deleted",
+      "unexpected historical capture"
+    ],
+    "wrongAnswerVerdictRegexPositiveAndNegativeControls": true
+  },
+  "codeReviewObservations": [
+    "All original historical hashes/assertions remain; caller exclusions are restricted to exact 11 new IDs and pass through a complete 507-card frozen projection first.",
+    "Source index changes only requiredParts for the ten printed exercise positions 310–319; only 311 has two source parts.",
+    "New content gate binds every new canonical card, independent report aggregate, oracle bytes, registry batch/reviewer/timestamp and whole-course counts.",
+    "Mounted DOM checks verify full numerator/denominator operands and reject raw arithmetic slashes; negative injected text is tested. Wrong numeric feedback cannot contain a positive verdict.",
+    "CI preserves existing source/model/runtime/shard/collector jobs, adds the independent math oracle and focused chapter3-final screenshot artifact; focused artifacts are not used as the authoritative exact-union collector.",
+    "Root browser extensions only add fraction and projection checks; every new step polygon must meet existing 16px apparent-altitude bound in both camera orientations."
+  ],
+  "openFindings": [],
+  "limitations": {
+    "currentPublishedBundleCards": 507,
+    "currentRegistryCards": 507,
+    "currentRegistryBatches": 26,
+    "newFullContentGateExecuted": false,
+    "reason": "Independent source report and final registry/bundle integration were not yet available at review time. This structural PASS is not full-gate or publication PASS.",
+    "notRun": [
+      "new full content gate",
+      "complete518-card schema/runtime/browser gates",
+      "actual browser captures and image review",
+      "final exact-head release verification"
+    ]
+  },
+  "executedHistoricalContentGates": [
+    {
+      "command": "node tools/stereo-textbook/additional288-content.test.cjs",
+      "exitCode": 0,
+      "verdict": "PASS"
+    },
+    {
+      "command": "node tools/stereo-textbook/additional294-content.test.cjs",
+      "exitCode": 0,
+      "verdict": "PASS"
+    },
+    {
+      "command": "node tools/stereo-textbook/additional299-content.test.cjs",
+      "exitCode": 0,
+      "verdict": "PASS"
+    },
+    {
+      "command": "node tools/stereo-textbook/polyhedra-practical-content.test.cjs",
+      "exitCode": 0,
+      "verdict": "PASS"
+    },
+    {
+      "command": "node tools/stereo-textbook/polyhedra-selfcheck-content.test.cjs",
+      "exitCode": 0,
+      "verdict": "PASS"
+    }
+  ]
+}

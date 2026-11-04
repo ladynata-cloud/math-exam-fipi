@@ -25,6 +25,25 @@ const artifacts = process.env.LEARNING_STANDARD_ARTIFACTS || path.join(os.tmpdir
 const api = (page, route, body) => page.evaluate(async ({ route, body }) => LearningApp.api(route,
   body === undefined ? {} : { method: 'POST', body: JSON.stringify(body) }), { route, body });
 const frame = page => page.frameLocator('#trainer-host iframe');
+// Use the same visible disclosures as a pupil; never force-click hidden help.
+async function revealManagedControl(frame, id) {
+  const target = frame.locator('#' + id);
+  if (await target.isVisible()) return target;
+  const disclosure = id === 'lm-note' ? '#lm-notes' :
+    ['lm-learn', 'lm-practice', 'lm-rule'].includes(id) ? '#lm-tools' : null;
+  if (disclosure) {
+    const details = frame.locator(disclosure);
+    if (await details.count() && await details.getAttribute('open') === null)
+      await details.locator('summary').first().click();
+  } else {
+    const toggle = frame.locator('#lm-help-slot .bh-toggle');
+    if (await toggle.count() && await toggle.getAttribute('aria-expanded') !== 'true') await toggle.click();
+    if (!await target.isVisible() && await frame.locator('#lm-help-slot .bh-root:visible').count())
+      await frame.locator('#lm-help-slot .bh-root:visible').click();
+  }
+  await target.waitFor({ state: 'visible' });
+  return target;
+}
 async function ready(page) { await page.locator('#trainer-host iframe').waitFor(); await page.waitForFunction(() => document.querySelector('#trainer-host .frame-status')?.hidden); }
 async function saved(page) { await page.waitForFunction(() => /^(Все изменения сохранены|Сохранено в кабинете)/.test(document.querySelector('#save-state')?.textContent || '')); }
 async function until(read, predicate, label) {
@@ -94,7 +113,7 @@ function fromVisibleHelp(view) {
     if (/вырезан/.test(question)) return { value: String(cut), reason: 'Use the visible cut-out rectangle dimensions' };
     if (/оставш/.test(question)) return { value: String(outer - cut), reason: 'Subtract the two rectangle areas shown in the task' };
   }
-  const literal = help.match(/(?:Ответ к действию|Ответ|Искомое число|Получаем)\s*[:=]\s*([−-]?\d+(?:[,.]\d+)?(?:\s*\/\s*\d+)?)/i);
+  const literal = help.match(/(?:На этом шаге запиши|Ответ к действию|Ответ|Искомое число|Получаем)\s*[:=]\s*([−-]?\d+(?:[,.]\d+)?(?:\s*\/\s*\d+)?)/i);
   if (literal) return { value: literal[1].replace(/\s/g, ''), reason: 'Read explicitly displayed worked answer' };
   const equalities = [...help.matchAll(/=\s*([−-]?\d+(?:[,.]\d+)?(?:\s*\/\s*\d+)?)/g)];
   if (equalities.length) return { value: equalities.at(-1)[1].replace(/\s/g, ''), reason: 'Read the final equality in visible worked help' };
@@ -122,7 +141,7 @@ async function answer(page, decision) {
   await f.locator('#lm-check:visible,#answerForm button.primary:visible').click();
   assert.equal((await response).status(), 200); await saved(page); return true;
 }
-function completed(view) { return view.headings.some(text => /(?:Задание завершено|Все \d+ .*проверены|Разбор завершён)/.test(text)) || view.feedback.some(text => /^Верно[!.].*(?:вариант решён|Результат будет сохранён)/.test(text)); }
+function completed(view) { return view.headings.some(text => /(?:Задание завершено|Пример решён|Все \d+ примера решены|Все \d+ .*проверены|Разбор завершён)/.test(text)) || view.feedback.some(text => /^Верно[!.].*(?:вариант решён|Результат будет сохранён)/.test(text)); }
 function signature(view) { return JSON.stringify([view.labels, view.prompts, view.headings]); }
 async function attemptTopic(page, entry) {
   const f = frame(page); entry.before = await visible(page); entry.steps = [];
@@ -142,12 +161,16 @@ async function attemptTopic(page, entry) {
     view = await visible(page);
     if (completed(view)) { entry.visibleComplete = true; return; }
     const observation = { before: view }; entry.steps.push(observation);
-    if (await f.locator('#lm-hint:visible,#hint:visible').count()) { await f.locator('#lm-hint:visible,#hint:visible').click(); await saved(page); observation.hint = await visible(page); }
-    if (await f.locator('#lm-solution:visible').count()) { await f.locator('#lm-solution').click(); await saved(page); }
+    if (await f.locator('#lm-hint').count()) {
+      await (await revealManagedControl(f, 'lm-hint')).click(); await saved(page); observation.hint = await visible(page);
+    } else if (await f.locator('#hint:visible').count()) {
+      await f.locator('#hint:visible').click(); await saved(page); observation.hint = await visible(page);
+    }
+    if (await f.locator('#lm-solution').count()) { await (await revealManagedControl(f, 'lm-solution')).click(); await saved(page); }
     observation.help = await visible(page);
     const decision = fromVisibleHelp(observation.help); observation.decision = decision;
     if (!decision) {
-      if (await f.locator('#lm-learn').count()) { await f.locator('#lm-learn').click(); await saved(page); observation.lesson = await visible(page); }
+      if (await f.locator('#lm-learn').count()) { await (await revealManagedControl(f, 'lm-learn')).click(); await saved(page); observation.lesson = await visible(page); }
       entry.blocker = 'Visible help did not give this policy a usable next arithmetic step'; return;
     }
     if (!await answer(page, decision)) { entry.blocker = 'Visible answer could not be matched to an available choice'; return; }

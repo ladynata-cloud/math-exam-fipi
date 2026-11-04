@@ -1,6 +1,6 @@
 {
   "stage": "1",
-  "updated": "2026-07-04",
+  "updated": "2026-11-03",
   "notes": "Первый этап: скачивание, промпты и архивы для ключевых публичных тренажёров. Служебные, тестовые и персональные страницы не включены.",
   "trainers": [
     {
@@ -125,18 +125,45 @@
     },
     {
       "slug": "long-division-stepwise",
-      "title": "Деление уголком",
+      "title": "Деление уголком (столбиком) — по шагам",
       "sourceHtml": "/trainers/long-division-stepwise.html",
       "subject": "математика",
       "level": "5–6 класс",
       "topic": "письменное деление",
-      "description": "Пошаговый тренажёр письменного деления.",
+      "description": "Настоящая запись деления уголком: выбор первого неполного делимого, число цифр частного, отдельные ответы при умножении, вычитании, проверке остатка и сносе. Все строки остаются видны; есть подсказки, нули в частном, остаток и десятичные дроби. Начатый пример сохраняется в этом браузере.",
       "mode": "single",
       "assets": [],
       "public": true,
       "downloadHtml": "/downloads/trainers/long-division-stepwise/long-division-stepwise.html",
       "prompt": "/downloads/trainers/long-division-stepwise/long-division-stepwise-deepseek-prompt.md",
-      "package": "/downloads/trainers/long-division-stepwise/long-division-stepwise-package.zip"
+      "package": "/downloads/trainers/long-division-stepwise/long-division-stepwise-package.zip",
+      "inlineAssets": [
+        "/trainers/oge-basics/multiplication-division/division-guided.css",
+        "/trainers/oge-basics/multiplication-division/decimal-shift.css",
+        "/trainers/oge-basics/multiplication-division/multiplication-refresh.css",
+        "/trainers/oge-basics/basics-help.css",
+        "/trainers/oge-basics/navigation-minimal.css",
+        "/trainers/oge-basics/multiplication-division/division-lab-core.js",
+        "/trainers/oge-basics/multiplication-division/division-guided-core.js",
+        "/trainers/oge-basics/arithmetic-route.js",
+        "/trainers/long-division-entry.js",
+        "/trainers/oge-basics/multiplication-division/decimal-shift.js",
+        "/trainers/oge-basics/multiplication-division/multiplication-refresh.js",
+        "/trainers/oge-basics/basics-help.js",
+        "/trainers/oge-basics/multiplication-division/division-guided.js",
+        "/trainers/oge-basics/navigation-minimal.js"
+      ],
+      "interfaceRequirements": [
+        "настоящая запись уголком с выравниванием цифр по разрядам, дугой первого блока и стрелкой сноса;",
+        "один текущий вопрос и одно основное действие; предыдущие строки решения остаются видны;",
+        "отдельный выбор первого неполного делимого и подсчёт мест для цифр частного;",
+        "самостоятельный ввод цифры частного, произведения, разности, сносимой цифры и нового неполного делимого;",
+        "проверка остатка и сохранение нуля в частном; пустое поле не считается нулём;",
+        "необязательная помощь к текущему шагу и раскрытие ответа только по запросу;",
+        "темы от простых натуральных чисел до остатка, нулей, двузначного делителя и десятичных дробей;",
+        "сохранение незавершённого примера и отдельный учёт подсказок, ошибок и повторов без завышения самостоятельных результатов;",
+        "доступные с клавиатуры кнопки и читаемая запись на узком экране."
+      ]
     },
     {
       "slug": "oge-1-5-trainers",
@@ -155,26 +182,68 @@
       "public": true,
       "downloadHtml": "/downloads/trainers/oge-1-5-trainers/oge-1-5-trainers.html",
       "prompt": "/downloads/trainers/oge-1-5-trainers/oge-1-5-trainers-deepseek-prompt.md",
-      "package": "/downloads/trainers/oge-1-5-trainers/oge-1-5-trainers-package.zip"
+      "package": "/downloads/trainers/oge-1-5-trainers/oge-1-5-trainers-package.zip",
+      "inlineAssets": [
+        "/trainers/oge-1-5-trainers/practical-minimal.css",
+        "/trainers/oge-1-5-trainers/practical-minimal.js"
+      ]
     },
     {
       "slug": "task19-trainer",
-      "title": "ОГЭ: задача 19",
+      "title": "ОГЭ №19 — утверждения с наглядными подсказками",
       "sourceHtml": "/trainers/task19-trainer.html",
       "subject": "математика",
       "level": "9 класс, ОГЭ",
       "topic": "утверждения и логика задачи 19",
-      "description": "Карточки для отработки задачи 19 ОГЭ с проверкой и пояснениями.",
+      "description": "Одно геометрическое утверждение, необязательная кнопка «Хочешь подсказку?» с интерактивной моделью и коротким действием, ответы «Верно / Неверно» и объяснение после ответа. Подсказка помогает исследовать условия, не сообщает готовый вердикт. Статистика и выбор темы спрятаны в дополнительном разделе.",
       "mode": "single",
-      "assets": [
-        "/trainers/solution-view.css",
-        "/trainers/solution-view.js",
-        "/trainers/task19-data.json"
-      ],
+      "assets": [],
       "public": true,
       "downloadHtml": "/downloads/trainers/task19-trainer/task19-trainer.html",
       "prompt": "/downloads/trainers/task19-trainer/task19-trainer-deepseek-prompt.md",
-      "package": "/downloads/trainers/task19-trainer/task19-trainer-package.zip"
+      "package": "/downloads/trainers/task19-trainer/task19-trainer-package.zip",
+      "inlineAssets": [
+        "/trainers/task19-visual.css",
+        "/trainers/board-bridge.js",
+        "/trainers/task19-board-session.js",
+        "/trainers/task19-visual-data.js",
+        "/trainers/task19-models-triangles.js",
+        "/trainers/task19-models-circles.js",
+        "/trainers/task19-models-lines-polygons.js",
+        "/trainers/task19-visual-models.js",
+        "/trainers/task19-reference.js",
+        "/trainers/task19-textbook-data.js",
+        "/trainers/task19-textbook-reference.js",
+        "/trainers/task19-visual-app.js"
+      ],
+      "interfaceRequirements": [
+        "одно геометрическое утверждение на экране, крупный текст и свободные промежутки между строками;",
+        "под утверждением — необязательная кнопка «Хочешь подсказку?», доступная до ответа;",
+        "после нажатия — интерактивная модель, ясное указание и вопрос для исследования; подсказка не сообщает готовый вердикт;",
+        "кнопки «Верно» и «Неверно» сразу проверяют ответ; отдельная кнопка «Проверить» не нужна;",
+        "после ответа — объяснение; для неверного утверждения приведи подходящий контрпример, для верного — обоснование;",
+        "кнопка для следующего утверждения;",
+        "выбор темы, результаты и повторение ошибок — в свёрнутом дополнительном разделе.",
+        "необязательный раздел «Для ценителей строгости и точности» на той же странице: краткое авторское пояснение и проверенные ссылки на конкретные места учебников; внешние учебники требуют доступа к интернету."
+      ],
+      "inlineImageAssets": [
+        "/trainers/task19-reference/areas.png",
+        "/trainers/task19-reference/circle.png",
+        "/trainers/task19-reference/equilateral-triangle.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-05.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-06.png",
+        "/trainers/task19-reference/midlines.png",
+        "/trainers/task19-reference/parallelogram-area.png",
+        "/trainers/task19-reference/polygon-angles.png",
+        "/trainers/task19-reference/pythagoras.png",
+        "/trainers/task19-reference/rhombus-area.png",
+        "/trainers/task19-reference/sine-cosine.png",
+        "/trainers/task19-reference/trapezoid-area.png",
+        "/trainers/task19-reference/triangle-area.png",
+        "/trainers/task19-reference/trig-values.png",
+        "/trainers/task19-textbook/atanasyan-parallel-third.png",
+        "/trainers/task19-textbook/merzlyak-parallel-third.png"
+      ]
     },
     {
       "slug": "task14-progressions-trainer",

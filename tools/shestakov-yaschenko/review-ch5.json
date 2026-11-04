@@ -1,0 +1,44 @@
+{
+  "reviewer": "/root/chapter4",
+  "at": "2026-10-23T21:20:57.147784+00:00",
+  "file": "stereo-course/shestakov-yaschenko-10-11/chapters/ch5.json",
+  "sha256": "a02706a57d214837c6c288bea44a8ec6ac909ff69cefbd3bffe41a0b369b1cb3",
+  "verdict": "passed",
+  "scope": {
+    "sourceVariants": 60,
+    "theoryCards": 5,
+    "sections": [
+      "5.1",
+      "5.2",
+      "5.3",
+      "5.4",
+      "5.5"
+    ],
+    "source": "Yashchenko–Shestakov 2021 third edition supplied PDF",
+    "sourceSha256": "bd125372e8cb96c0d99cb061f26eb6264ad66d0cd88bdf90484c52b11cb39115"
+  },
+  "method": [
+    "Read all 60 exercise conditions/solutions and five theory cards. Compared all 30 selected numbered source paragraphs, including both variants, against the supplied PDF extraction.",
+    "Visually inspected PDF pages 136,139,143,152,153 for radical notation and the split-page C6 variants. No selected exercise depends on a missing source figure.",
+    "Independently recalculated all 60 results from coordinates using cross products, plane/line distances, triangle areas, volumes, angles and ratios. Salient construction geometry was checked alongside symbolic derivations.",
+    "Read every authored justification for the scope of formula applicability, correct reference angle, distinction between edge/height/apothem, and all required source subquestions.",
+    "Checked proofs in section 5.3 C4 remain manually assessed, with the requested 60-degree proof and numerical distance both fully explained.",
+    "Confirmed intermediate work is separate from final answer prompts and that companion theory is identified as authored support rather than transcribed book theory.",
+    "Re-reviewed all neutral source-given configurations after the 42-card display audit: named midpoints, heights, given planes, diagonals and inner solids are visible initially; auxiliary feet, derived intersections and the overlap solid remain hidden until steps. Confirmed finite plane patches preserve the required directions."
+  ],
+  "fixedFindings": [],
+  "validatedExistingCorrections": [
+    "Section5.3 C4 uses A as the true foot on AB and angle SAE consistently, avoiding an overlapping H=A label.",
+    "Unreferenced helper views have been removed by the author, retaining only task-applicable constructions.",
+    "Neutral views updated in both variants of 5.1 A19/B2/B9/C6, 5.2 A12/B1/B5/C6, 5.3 B5/B6/C4, 5.4 A8/B9/B10/C2 and 5.5 A3/A4/A5/B1/B2/C1. For 5.1 C6, unlabeled finite-plane bounds are coplanar with the named given points and vertical as required."
+  ],
+  "tests": [
+    "python3 tools/shestakov-yaschenko/reviewer-ch5-checks.py — PASS: 60 independent coordinate-derived answers, both section 5.3 C4 plane-angle assertions, and 42 independent source-given neutral-view checks including hidden auxiliary points, plane directions and full inner-solid edge sets."
+  ],
+  "limitations": [
+    "This covers the selected 60 variants, not all 372 variants of chapter5.",
+    "No browser screenshots were reviewed in this source/math review. Root owns browser interaction and visual inspection.",
+    "No real-pupil pilot or external Claude review is claimed."
+  ],
+  "remainingFindings": []
+}

@@ -1,0 +1,303 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0163",
+  "revision": 2,
+  "kind": "exercise",
+  "title": "Длина проекции наклонной",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "163",
+    "chapter": "II. Перпендикулярность прямых и плоскостей",
+    "printedPages": [
+      49
+    ],
+    "pdfPages": [
+      51
+    ]
+  },
+  "statement": {
+    "text": "Из точки A к плоскости проведена наклонная AM длины d.",
+    "goal": "Найди длину проекции AM при угле с плоскостью: а) 45°; б) 60°; в) 30°."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "Сначала сопоставь точки, линии и плоскости модели с условием. Нужные дополнительные построения появятся по кнопкам помощи и в шагах.",
+    "model": {
+      "points": {
+        "M": [
+          0,
+          0,
+          0
+        ],
+        "Ha": [
+          2.8284271247461903,
+          0,
+          0
+        ],
+        "Aa": [
+          2.8284271247461903,
+          0,
+          2.82842712474619
+        ],
+        "Hb": [
+          2.0000000000000004,
+          0,
+          0
+        ],
+        "Ab": [
+          2.0000000000000004,
+          0,
+          3.4641016151377544
+        ],
+        "Hc": [
+          3.464101615137755,
+          0,
+          0
+        ],
+        "Ac": [
+          3.464101615137755,
+          0,
+          1.9999999999999998
+        ],
+        "_projection_plane0": [
+          -0.5,
+          -1.25,
+          0
+        ],
+        "_projection_plane1": [
+          4.5,
+          -1.25,
+          0
+        ],
+        "_projection_plane2": [
+          4.5,
+          1.25,
+          0
+        ],
+        "_projection_plane3": [
+          -0.5,
+          1.25,
+          0
+        ],
+        "_alpha": [
+          -0.2,
+          1,
+          0
+        ]
+      },
+      "edges": [],
+      "faces": [
+        [
+          "_projection_plane0",
+          "_projection_plane1",
+          "_projection_plane2",
+          "_projection_plane3"
+        ]
+      ],
+      "labelNames": [
+        "M",
+        "_alpha"
+      ],
+      "neutralPoints": [
+        "M",
+        "_alpha"
+      ],
+      "labels": {
+        "Ha": "H",
+        "Aa": "A",
+        "Hb": "H",
+        "Ab": "A",
+        "Hc": "H",
+        "Ac": "A",
+        "_alpha": "α"
+      },
+      "views": {
+        "neutral": {
+          "label": "Угол 45°; AM=d",
+          "segments": [
+            [
+              "M",
+              "Aa"
+            ],
+            [
+              "Aa",
+              "Ha"
+            ],
+            [
+              "Ha",
+              "M"
+            ]
+          ],
+          "points": [
+            "M"
+          ]
+        },
+        "a": {
+          "label": "Угол 45°; AM=d",
+          "segments": [
+            [
+              "M",
+              "Aa"
+            ],
+            [
+              "Aa",
+              "Ha"
+            ],
+            [
+              "Ha",
+              "M"
+            ]
+          ],
+          "points": [
+            "M"
+          ]
+        },
+        "b": {
+          "label": "Угол 60°; AM=d",
+          "segments": [
+            [
+              "M",
+              "Ab"
+            ],
+            [
+              "Ab",
+              "Hb"
+            ],
+            [
+              "Hb",
+              "M"
+            ]
+          ],
+          "points": [
+            "M"
+          ]
+        },
+        "c": {
+          "label": "Угол 30°; AM=d",
+          "segments": [
+            [
+              "M",
+              "Ac"
+            ],
+            [
+              "Ac",
+              "Hc"
+            ],
+            [
+              "Hc",
+              "M"
+            ]
+          ],
+          "points": [
+            "M"
+          ]
+        }
+      },
+      "note": "В каждом переключаемом виде AM имеет одну и ту же условную длину d. Показаны отдельные случаи 45°, 60° и 30°, а не три одновременных положения точки A."
+    }
+  },
+  "help": [
+    {
+      "id": "start",
+      "question": "Как найти проекцию?",
+      "text": "Опусти перпендикуляр AH к плоскости. Соедини его основание H с M: HM — искомый отрезок.",
+      "view": "a",
+      "children": [
+        {
+          "id": "deeper",
+          "question": "Нужен синус или косинус?",
+          "text": "Проекция HM прилежит к углу между AM и плоскостью. Поэтому HM/AM=cosφ.",
+          "view": "a"
+        }
+      ],
+      "theoryIds": [
+        "theory-021"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Запишем общую формулу",
+      "prompt": "Какая сторона прямоугольного AHM является проекцией?",
+      "explanation": "Опустим AH⊥α. Проекция наклонной AM — HM, а ∠AMH=φ. В прямоугольном AHM гипотенуза AM=d, поэтому HM=d·cosφ.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Определение угла прямой с плоскостью; косинус острого угла.",
+          "theoryId": "theory-021",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "21",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              45,
+              46,
+              47
+            ],
+            "pdfPages": [
+              47,
+              48,
+              49
+            ],
+            "subpart": "orthogonal"
+          }
+        }
+      ],
+      "view": "a"
+    },
+    {
+      "id": "step-2",
+      "title": "а) Случай 45°",
+      "prompt": "Подставь cos45° в общую формулу.",
+      "explanation": "При φ=45° получаем HM=d√2/2.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "cos45°=√2/2."
+        }
+      ],
+      "view": "a"
+    },
+    {
+      "id": "step-3",
+      "title": "б) Случай 60°",
+      "prompt": "Подставь cos60° в общую формулу.",
+      "explanation": "При φ=60° получаем HM=d/2.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "cos60°=1/2."
+        }
+      ],
+      "view": "b"
+    },
+    {
+      "id": "step-4",
+      "title": "в) Случай 30°",
+      "prompt": "Подставь cos30° в общую формулу.",
+      "explanation": "При φ=30° получаем HM=d√3/2. При одной и той же наклонной меньшему углу соответствует большая проекция.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "cos30°=√3/2."
+        }
+      ],
+      "view": "c"
+    }
+  ],
+  "answer": {
+    "mode": "manual",
+    "prompt": "Найди длину проекции AM при угле с плоскостью: а) 45°; б) 60°; в) 30°. Запиши решение с обоснованием каждого вывода."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex ege_independent_review",
+    "at": "2026-10-21T22:13:35.809431+00:00"
+  }
+}

@@ -6,9 +6,11 @@ The optional base check proves that metadata edits preserved trainer bodies,
 executable scripts, styles and existing indexing directives.
 """
 import argparse
+import importlib.util
 import json
 import re
 import subprocess
+import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urljoin, urlsplit
@@ -23,7 +25,7 @@ ENTRANCES = [
     "ege-profil/start/index.html", "geometry-course/index.html",
     "geometry-merzlyak/index.html", "geometry-pogorelov/index.html",
     "equations/index.html",
-    "trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html",
+    "trainers/long-division-stepwise.html",
     "trainers/oge-task6-fractions.html", "trainers/oge-task9-equations.html",
     "trainers/oge-basics/percentages/index.html",
     "trainers/oge-1-5-trainers/practice-1-5-map.html",
@@ -34,6 +36,10 @@ TOPICS = ["topics/index.html"] + [f"topics/{slug}/index.html" for slug in (
     "delenie-ugolkom", "obyknovennye-drobi", "procenty",
     "lineynye-uravneniya", "oge-geometriya",
 )]
+ALTERNATE_ENTRANCES = {
+    "trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html":
+        "trainers/long-division-stepwise.html",
+}
 
 
 class Page(HTMLParser):
@@ -101,6 +107,13 @@ def require(condition, message):
         raise ValueError(message)
 
 
+def is_lesson_funnel(script):
+    # This optional observer never renders lesson text. Keep other executable
+    # scripts prohibited on static topic explanations.
+    attrs, text = script
+    return attrs == {"defer": None, "src": "/assets/lesson-funnel.js?v=20261026"} and not text.strip()
+
+
 def public_url(path):
     return ORIGIN + "/" + path.removesuffix("index.html") if path.endswith("index.html") else ORIGIN + "/" + path
 
@@ -110,7 +123,62 @@ def local_path(url):
     return ROOT / (path + "index.html" if not path or path.endswith("/") else path)
 
 
+def check_canonical_signals(page, url, label):
+    """Check declared canonicals without making every HTML file indexable.
+
+    A noindex board wrapper can still have a valid canonical to its public
+    course. A refresh may navigate to a fragment, but a canonical identifies
+    the document, not an application state within that document.
+    """
+    base = urljoin(url, page.base or "")
+    canonicals = {urljoin(base, href) for href in page.canonicals}
+    require(len(canonicals) <= 1, label + ": conflicting canonical links")
+    for canonical in canonicals:
+        require(not urlsplit(canonical).fragment,
+                label + ": canonical must not contain a fragment")
+        if page.refresh_target:
+            destination = urlsplit(urljoin(base, page.refresh_target))._replace(fragment="").geturl()
+            require(canonical == destination,
+                    label + ": canonical conflicts with meta refresh destination " + destination)
+
+
+def check_public_canonical_signals(root=ROOT):
+    # Reuse the sitemap parser and its reviewed technical-path exclusions;
+    # do not add these files to the sitemap or change any noindex directive.
+    spec = importlib.util.spec_from_file_location("seo_sitemap", Path(__file__).with_name("build-sitemap.py"))
+    sitemap = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(sitemap)
+    checked, redirects = 0, 0
+    for file in sorted(root.rglob("*.html")):
+        path = "/" + file.relative_to(root).as_posix()
+        if sitemap.excluded_path(path):
+            continue
+        page = sitemap.Page(file.read_text(encoding="utf-8"))
+        if not page.canonicals:
+            continue
+        check_canonical_signals(page, ORIGIN + path, path)
+        checked += 1
+        redirects += bool(page.refresh_target)
+    return checked, redirects
+
+
 def run(base=None):
+    canonical_count, redirect_count = check_public_canonical_signals()
+    # Catch generated public pages that lose their canonical on a later rebuild.
+    # The existing sitemap policy still excludes technical and alternate routes.
+    sitemap_urls = [node.text for node in ET.parse(ROOT / "sitemap.xml").findall(
+        ".//{http://www.sitemaps.org/schemas/sitemap/0.9}loc")]
+    require(sitemap_urls, "public sitemap must not be empty")
+    for url in sitemap_urls:
+        page = Page(local_path(url).read_text(encoding="utf-8"))
+        require(page.canonicals == [url], url + ": sitemap entry needs one exact HTTPS self-canonical")
+    for alternate, primary in ALTERNATE_ENTRANCES.items():
+        page = Page((ROOT / alternate).read_text(encoding="utf-8"))
+        target = public_url(primary)
+        require(page.canonicals == [target], alternate + ": exact primary canonical")
+        require(page.meta.get("og:url") == [target], alternate + ": exact primary og:url")
+        require(public_url(alternate) not in sitemap_urls, alternate + ": duplicate in sitemap")
+        require(target in sitemap_urls, primary + ": primary entry missing from sitemap")
     titles, descriptions = set(), set()
     checked_links = 0
     for relative in ENTRANCES + TOPICS:
@@ -139,7 +207,8 @@ def run(base=None):
         if relative in TOPICS:
             require(page.h1 == 1, label + "one H1")
             require(len(page.ids) == len(set(page.ids)), label + "duplicate DOM IDs")
-            require(not page.scripts, label + "explanation must work without executable JavaScript")
+            require(len(page.scripts) <= 1 and all(is_lesson_funnel(s) for s in page.scripts),
+                    label + "explanation must remain static; only the optional deferred funnel observer is allowed")
             require(page.schemas, label + "missing breadcrumbs")
             graph = page.schemas[0]["@graph"]
             crumb = next(node for node in graph if node.get("@type") == "BreadcrumbList")
@@ -161,13 +230,34 @@ def run(base=None):
         if base and relative in ENTRANCES:
             old = subprocess.check_output(["git", "show", f"{base}:{relative}"], cwd=ROOT).decode("utf-8")
             before = Page(old)
-            require(before.scripts == page.scripts, label + "executable scripts changed")
+            preserved = text
+            script_text = text
+            # Catalog fallback is independently checked against the rendered
+            # data by seo-catalog.test.cjs. Permit only the bounded addition
+            # when comparing with a pre-fallback base.
+            container = {"trainers/index.html": "catalog",
+                         "trainers/oge-basics/percentages/index.html": "map"}.get(relative)
+            if container and f"<!-- seo-catalog-fallback:{container}:start -->" not in old:
+                preserved, count = re.subn(
+                    rf"<!-- seo-catalog-fallback:{container}:start -->.*?<!-- seo-catalog-fallback:{container}:end -->",
+                    "", preserved, flags=re.S)
+                require(count == 1, label + "one bounded catalog fallback addition")
+                if container == "map":
+                    preserved = preserved.replace("box.replaceChildren();\nTOPICS.forEach", "TOPICS.forEach", 1)
+                    script_text = script_text.replace("box.replaceChildren();\nTOPICS.forEach", "TOPICS.forEach", 1)
+                else:
+                    for ident in ("countCards", "countSections"):
+                        old_count = re.search(rf'<b id="{ident}">[^<]+', old).group()
+                        preserved = re.sub(rf'<b id="{ident}">[^<]+', old_count, preserved, count=1)
+            without_funnel = lambda scripts: [s for s in scripts if not is_lesson_funnel(s)]
+            require(without_funnel(before.scripts) == without_funnel(Page(script_text).scripts),
+                    label + "executable scripts changed outside scoped catalog/funnel additions")
             require(before.styles == page.styles, label + "existing styles changed")
             require(before.style_links == page.style_links, label + "existing stylesheet links changed")
             for key in ("robots", "googlebot", "yandex", "viewport"):
                 require(before.meta.get(key) == page.meta.get(key), label + "existing directive changed: " + key)
             old_body = re.split(r"</head\s*>", old, maxsplit=1, flags=re.I)[1]
-            new_body = re.split(r"</head\s*>", text, maxsplit=1, flags=re.I)[1]
+            new_body = re.split(r"</head\s*>", preserved, maxsplit=1, flags=re.I)[1]
             # The initial SEO change adds this block. Later bases already
             # contain it and must retain the complete body byte for byte.
             if relative == "index.html" and "<!-- seo-topic-links:start -->" not in old_body:
@@ -181,8 +271,10 @@ def run(base=None):
         require(urlsplit(public_url(topic)).path in home.links, "homepage missing topic link " + topic)
     require("ПредОГЭ" in Page((ROOT / "trainers/oge-basics/index.html").read_text()).title[0], "preserve PreOGE title")
     print(f"SEO_ENTRANCES_OK: {len(titles)} distinct titles/descriptions/canonicals; {len(TOPICS)} static topic pages; {checked_links} valid local links.")
+    print(f"SEO_CANONICAL_SIGNALS_OK: {canonical_count} public-path canonical declarations; {redirect_count} consistent refresh destinations.")
+    print(f"SEO_SITEMAP_CANONICALS_OK: {len(sitemap_urls)} public URLs retain their self-canonical.")
     if base:
-        print(f"SEO_PRESERVATION_OK: 24 existing pages retain executable scripts, styles and indexing directives against {base}.")
+        print(f"SEO_PRESERVATION_OK: 24 existing pages retain scripts/styles/directives outside bounded catalog additions against {base}.")
 
 
 if __name__ == "__main__":

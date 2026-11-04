@@ -58,7 +58,7 @@ assert.match(trainer, /id="progressCard"/);
 assert.match(trainer, /startProgressClient\(\);/);
 assert.match(trainer, /history\.replaceState\(null,'',url\.pathname\+url\.search\)/);
 assert.match(trainer, /Authorization:'Bearer '\+assignmentContext\.studentCode/);
-assert.match(trainer, /PRODUCTION_PROGRESS_API='https:\/\/mathexam-board-ladynata\.amvera\.io'/);
+assert.match(trainer, /PRODUCTION_PROGRESS_API='https:\/\/mathexam-board-ladynata\.msk1\.amvera\.tech'/);
 assert.match(trainer, /STORAGE_KEY_BASE\+\(assignmentContext\.assignmentId\?'@'\+assignmentContext\.assignmentId:''\)/);
 assert.match(trainer, /s1:\{id:'t1-1',line:1\},s4:\{id:'t1-2',line:1\}/);
 assert.match(trainer, /s2:\{id:'t2-1',line:2\},s3:\{id:'t2-2',line:2\}/);
@@ -77,7 +77,7 @@ for (const generator of ['genSimplify', 'genSystem', 'genGraph', 'genFactor']) {
 }
 
 assert.match(teacher, /<meta name="robots" content="noindex,nofollow">/);
-assert.match(teacher, /var PRODUCTION_API = "https:\/\/mathexam-board-ladynata\.amvera\.io"/);
+assert.match(teacher, /var PRODUCTION_API = "https:\/\/mathexam-board-ladynata\.msk1\.amvera\.tech"/);
 assert.match(teacher, /var TRAINER_ID = "algebra7-control"/);
 assert.match(teacher, /headers\.Authorization="Bearer "\+options\.teacherCode/);
 assert.match(teacher, /searchParams\.set\("workspace",workspaceId\)/);
@@ -106,7 +106,7 @@ for (const [file, html] of [[trainerPath, trainer], [teacherPath, teacher]]) {
   assert.equal(origins.every(value =>
     value.startsWith('http://www.w3.org/')
       || value.startsWith('http://127.0.0.1:3000')
-      || value.startsWith('https://mathexam-board-ladynata.amvera.io')
+      || value.startsWith('https://mathexam-board-ladynata.msk1.amvera.tech')
       || value.startsWith('https://fonts.googleapis.com')
       || value.startsWith('https://fonts.gstatic.com')
   ), true, `${file} has an undeclared external origin`);

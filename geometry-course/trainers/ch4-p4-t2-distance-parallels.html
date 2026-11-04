@@ -1,9 +1,12 @@
 <!doctype html>
 <html lang="ru">
 <head>
+<script src="/geometry-course/board/native-session.js"></script>
+<link rel="stylesheet" href="/geometry-course/board/native.css">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Расстояние между параллельными</title>
+<link rel="canonical" href="https://mathexam.space/geometry-course/trainers/ch4-p4-t2-distance-parallels.html">
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
@@ -504,7 +507,7 @@ function showHint(){
 }
 
 /* ───────── ПЕРЕТАСКИВАНИЕ (только в фазе lab) ───────── */
-function worldPos(e){ const r=cv.getBoundingClientRect(); const k=Math.max(1,W/r.width); return {x:(e.clientX-r.left)*k,y:(e.clientY-r.top)*k}; }
+function worldPos(e){ const r=cv.getBoundingClientRect(); const k=W/r.width; return {x:(e.clientX-r.left)*k,y:(e.clientY-r.top)*k}; }
 cv.addEventListener('pointerdown',e=>{ if(NM[ph]!=='lab')return; const p=worldPos(e); if(Math.hypot(p.x-Xpos.x,p.y-Xpos.y)<36){ dragging=true; try{cv.setPointerCapture(e.pointerId)}catch(_){} e.preventDefault(); } });
 cv.addEventListener('pointermove',e=>{ if(!dragging)return; const p=worldPos(e); Xpos.x=clamp(p.x,XMIN,XMAX); Xpos.y=YA; labMoved=true; e.preventDefault(); });
 window.addEventListener('pointerup',()=>{ dragging=false; });
@@ -513,5 +516,6 @@ window.addEventListener('pointerup',()=>{ dragging=false; });
 initPhase(0);
 (function loop(){draw();requestAnimationFrame(loop)})();
 </script>
+<script src="/geometry-course/board/learning-support.js"></script>
 </body>
 </html>

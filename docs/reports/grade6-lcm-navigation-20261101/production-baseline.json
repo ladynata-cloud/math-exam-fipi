@@ -1,0 +1,46 @@
+{
+  "checkedAt": "2026-11-01T03:14:23.318277+00:00",
+  "base": "37718f1c0138ba031314b8f4716b73c9d963bc81",
+  "results": [
+    {
+      "url": "https://mathexam.space/learning/atanasyan-first-steps/course.json",
+      "status": 200,
+      "redirected": false,
+      "bytes": 2805951,
+      "sha256": "0a55791957f465cf6f9c3736fe41ca8a4fb110601bbcf9c4e9843e38a3f5a0fe",
+      "matches_base": true
+    },
+    {
+      "url": "https://mathexam.space/learning/app.js",
+      "status": 200,
+      "redirected": false,
+      "bytes": 212839,
+      "sha256": "994a8de1138869ec0bc3a4618532945f172be41770422d1ff6a98f3112150eaa",
+      "matches_base": true
+    },
+    {
+      "url": "https://mathexam.space/courses/vilenkin-6-part-1/textbook-data/units-B.json",
+      "status": 200,
+      "redirected": false,
+      "bytes": 187195,
+      "sha256": "3ac7e7da0cde2668ba680c93c3d8d3475cac9c6f5f8821e76529821d9c64ca6e",
+      "matches_base": true
+    },
+    {
+      "url": "https://mathexam-board-ladynata.msk1.amvera.tech/learning/atanasyan-first-steps/course.json",
+      "status": 200,
+      "redirected": false,
+      "bytes": 2805951,
+      "sha256": "0a55791957f465cf6f9c3736fe41ca8a4fb110601bbcf9c4e9843e38a3f5a0fe",
+      "matches_base": true
+    },
+    {
+      "url": "https://mathexam-board-ladynata.msk1.amvera.tech/learning/app.js",
+      "status": 200,
+      "redirected": false,
+      "bytes": 212839,
+      "sha256": "994a8de1138869ec0bc3a4618532945f172be41770422d1ff6a98f3112150eaa",
+      "matches_base": true
+    }
+  ]
+}

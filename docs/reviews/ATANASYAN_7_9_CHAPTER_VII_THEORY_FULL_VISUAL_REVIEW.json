@@ -1,0 +1,4449 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "root: independent of theory author vii_theory",
+  "captureDataset": "vii-full-6",
+  "complete": true,
+  "verdict": "PASS for theory and selfcheck images only",
+  "scope": "21 cards,147 views,all294 view captures and84 initial/final captures at320/1280",
+  "expectedFileCount": 378,
+  "fileCount": 378,
+  "viewCaptureCount": 294,
+  "initialFinalCaptureCount": 84,
+  "viewportWidths": [
+    320,
+    1280
+  ],
+  "newActuallyViewedUniqueCount": 47,
+  "actualViewedMontageCount": 13,
+  "reusedFileCount": 312,
+  "newlyViewedFileCount": 66,
+  "modelSha256": "83f86c8ba72c86370ca6434bdae78f177e2cc376f6819a233b30f9a5c5af9cdb",
+  "previousReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_THEORY_VISUAL_REVIEW.json",
+    "sha256": "3701b76bc010d1c003282508a5239212ab669aae391d1e3fd3e4979565f33bd0"
+  },
+  "additionalPreviousActualReview": {
+    "dataset": "vii-full-5",
+    "actualViewedWholePng": [
+      {
+        "file": "atanasyan-7-9-selfcheck-chapter-7-12-part-1-last-320.png",
+        "sha256": "1440f43c4f8d1282d3f320e0416ab7f21a3f2e9e41013677d6c53d7503fafdbc",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "atanasyan-7-9-selfcheck-chapter-7-4-part-1-last-320.png",
+        "sha256": "07079c80235c6798c3d73c987b6137d01c949847bd8688bb0428fe323695145e",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "atanasyan-7-9-selfcheck-chapter-7-5-part-1-last-320.png",
+        "sha256": "8c63386764de5bc2b20da9cca1faf0d2137e8d20bba19916ed41ba62e03b4857",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "atanasyan-7-9-selfcheck-chapter-7-7-part-1-last-320.png",
+        "sha256": "cb3beea94e07cabbd2d8d36d8a3f331362c94f905977c9382dd78ae08d58b16a",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "atanasyan-7-9-selfcheck-chapter-7-9-part-1-last-320.png",
+        "sha256": "69ddb0dbe00e530d7e06112050b9f64be7ece0ed5dfad7d8f76f9d8a976c1f42",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "atanasyan-7-9-theory-56-part-1-last-320.png",
+        "sha256": "e1177578cf3beba95397b692ca722eadc3c6df703282826637526fe8149c418b",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "atanasyan-7-9-theory-57-part-1-last-320.png",
+        "sha256": "070bd5977fcebe9b192d14d229899dcafe408c7408c6e83aa4ebc8cfbd0e9e4c",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "atanasyan-7-9-theory-58-part-1-last-320.png",
+        "sha256": "9268f8c388fa1d0b27015e2da8ca71542f80d0e2eec70880844beb595abcbd80",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "atanasyan-7-9-theory-60-part-1-last-320.png",
+        "sha256": "141b7bc6bc9a008d5f41e9b155344d20e40dc12ebb3484e3051ca909444b05bf",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "atanasyan-7-9-theory-62-part-1-last-320.png",
+        "sha256": "eb73a15d1833d05e7dfd9a85f62bebe837198c653366bb5911881181a93db14b",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-1-part-1-step-2-320.png",
+        "sha256": "a407fd90263098e6aa8ef854960d4d89b8682d4e78ae491e2129e2790d03b285",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-1-320.png",
+        "sha256": "505cc8a204f648806aa60b52824d415c063eb4b59be05b7d8245922af4944894",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-7-part-1-step-1-320.png",
+        "sha256": "882d55d9842e450fcec8a6b19e0ba378cca09dc0e34bb81a05aafe3156fdee75",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-1-320.png",
+        "sha256": "d00fe529181d012855da7cd4725d3e04d5c957c5f3f40413a83eb7945359efd6",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "review-atanasyan-7-9-theory-55-part-1-step-1-320.png",
+        "sha256": "bd585f92ffcb668fa492e263c70f1168a69dee44d02ba7739d145d070b02c350",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "review-atanasyan-7-9-theory-57-part-1-case-1-320.png",
+        "sha256": "c3041e95bbbe699bad1229b31e1826f55085f9744c7b9454a366407cc8ebd91a",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "review-atanasyan-7-9-theory-57-part-1-case-2-320.png",
+        "sha256": "e1e430833c55aec360545c708e8954ebd9c4bc1efc741ae3e19d05d691fe9cb1",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "review-atanasyan-7-9-theory-57-part-1-case-3-320.png",
+        "sha256": "6d91c3af4f716d63613c08912e860f0aaa0beef57099df75d97c078fa6917b64",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "review-atanasyan-7-9-theory-57-part-1-step-2-320.png",
+        "sha256": "39441762cdb7fce3dad997a5e18af4759048e542f34431395d33b47c5a68cb44",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "review-atanasyan-7-9-theory-57-part-1-step-3-320.png",
+        "sha256": "896ea1983b1e615e5c705a7b9bfbf2e5bdd3d4801403f51ad2a17ed134550b98",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "review-atanasyan-7-9-theory-57-part-1-step-4-320.png",
+        "sha256": "515b5b80cf57b21d1afac4d6e3ea72b30f04b270d91807883a804700a326e523",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "review-atanasyan-7-9-theory-58-part-1-case-5-320.png",
+        "sha256": "daf00d5d6f78cf7b4bdea5923697b17fc9a96674952107ff52db316ec6167adf",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "review-atanasyan-7-9-theory-59-part-1-step-1-320.png",
+        "sha256": "9f9ec12c088aa60d12b601ae12cf75fb078ce0dca14f3238c8d54c9817360433",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "review-atanasyan-7-9-theory-62-part-1-step-1-320.png",
+        "sha256": "1eb11a4868a876284fd7ba985ee07c42379cecb0f28f7660025cff2960dbefa2",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      },
+      {
+        "file": "review-atanasyan-7-9-theory-62-part-1-step-2-320.png",
+        "sha256": "5ce3c80b2f83495282d332f80c8a85cc14db26bedebce2ecf476ba1f02df5744",
+        "width": 320,
+        "review": "root actual image inspection in full-theory-320 sheets01–04"
+      }
+    ],
+    "scope": "25 mobile whole PNG actually inspected by root in the interrupted full5 run; no broader gate pass claimed"
+  },
+  "method": "Actual native-pixel inspection of all47 novel whole PNGs in13 unscaled uncropped montages. Other files reuse only exact SHA256 of a previously actually viewed whole PNG. No approximate similarity transfer.",
+  "unresolvedVisualFindings": [],
+  "files": [
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-1-part-1-initial-1280.png",
+      "sha256": "90f20156c1f310de6bd67638fee043b3b37f5ab0f2b0cd7673ae7bcea41b6322",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-1-part-1-initial-320.png",
+      "sha256": "80ec5f29497578ddee67f9e34188d785c86a504cb30c8c2b96e9efb275a056d0",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-1-part-1-last-1280.png",
+      "sha256": "fdbf630ef9fa29e9d37b4c754833411986dadaf7c034e5370a1f9da4f3c4e365",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-1-part-1-step-3-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-1-part-1-last-320.png",
+      "sha256": "127ec32f84bfbe0bcd055b1e8a5f77587d249a7fbf650dc43180d09218605eb2",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-1-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-10-part-1-initial-1280.png",
+      "sha256": "5d6489dbee54cb8042c51df02cef8699d9f78f647d3fca4c07ff5c55c8a8c5ec",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-10-part-1-initial-320.png",
+      "sha256": "5a3ec60502115c96f017c061195cd95e7aaf46230fd1e1da50302a9322e9dd13",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-neutral-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-10-part-1-last-1280.png",
+      "sha256": "5db8f091999b7320c56ca63abf1d80324ca8c0cf47ae1edbed84b665008cc44c",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-step-3-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-10-part-1-last-320.png",
+      "sha256": "1412a4e1f57d2798a59a4f1fa5e6245c9dcaa41e1553e8ae7050e726d9137fc6",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-11-part-1-initial-1280.png",
+      "sha256": "61c71d3da1f5b14d419cd5afa492b88ec106b37aa2f3b409920ed8a1e467e530",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-11-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-11-part-1-initial-320.png",
+      "sha256": "b440a30184c438db66230b54476430d271a71393c117dce12aeaaa83b6ad26d6",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-11-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-11-part-1-last-1280.png",
+      "sha256": "c9cf3e811ee4ddaddff40ac94934c834f45b263d184e31adfab2d349f7f553b9",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-11-part-1-last-320.png",
+      "sha256": "024c2116fd2957d24c4795a54678e217347ffa4ac74c56cf62948abb93d9fdb6",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-11-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-12-part-1-initial-1280.png",
+      "sha256": "15ca7cf8e0f507ab29960f970b4264263c764ad8e10e4eedbb575d0d1abdb858",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-62-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-12-part-1-initial-320.png",
+      "sha256": "c26db2e1cc1f848f4964212ad5e9f27b194767831efc365ac9f0def54fee40d6",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-12-part-1-last-1280.png",
+      "sha256": "83114713d78abda8f1806110b99840c9d5a5943d5102daecb05d6b1de6559fe6",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-12-part-1-last-320.png",
+      "sha256": "1440f43c4f8d1282d3f320e0416ab7f21a3f2e9e41013677d6c53d7503fafdbc",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "atanasyan-7-9-selfcheck-chapter-7-12-part-1-last-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-2-part-1-initial-1280.png",
+      "sha256": "90f20156c1f310de6bd67638fee043b3b37f5ab0f2b0cd7673ae7bcea41b6322",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-2-part-1-initial-320.png",
+      "sha256": "80ec5f29497578ddee67f9e34188d785c86a504cb30c8c2b96e9efb275a056d0",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-2-part-1-last-1280.png",
+      "sha256": "01f9b6d0114ac4fd1eb51e886bcfb2b01d35232303aafe2172b58408fb10b662",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-3-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-2-part-1-last-320.png",
+      "sha256": "97449db8be8f8f0a8d315636d1dd4f5030a4909adcfaa503757958bb991b245e",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-3-part-1-initial-1280.png",
+      "sha256": "9c46bd16176c4310a6ad272610f91ccf79c2e5cac382f6deef02a443252ba4d9",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-3-part-1-initial-320.png",
+      "sha256": "c7e38ee72aa4b45411e1d3b721c65ec5a5c0a82797f7bd45cd9348aa060155af",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-3-part-1-last-1280.png",
+      "sha256": "d0bda7befc67e5b54a57307f76564158564c0957b45247fd1683055198e16760",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-step-3-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-3-part-1-last-320.png",
+      "sha256": "463d3cfa90510c270fb3d86cae5c9da07bb230b6b5158625787531ee6fd767b1",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-4-part-1-initial-1280.png",
+      "sha256": "14dfabb786098afd76cd5809c3eb491a777496512bc4bdff39d802f1e795ed27",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-4-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-4-part-1-initial-320.png",
+      "sha256": "9bb12121ce732f2997400d1f606fe6981b410b866988d1f7b101cdea2c5250d0",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-4-part-1-neutral-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-4-part-1-last-1280.png",
+      "sha256": "61d64f3cb96e341469ddafe58eaa765497db05c8de48bd2bbcd3e660aeadfc8d",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-4-part-1-last-320.png",
+      "sha256": "07079c80235c6798c3d73c987b6137d01c949847bd8688bb0428fe323695145e",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "atanasyan-7-9-selfcheck-chapter-7-4-part-1-last-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-5-part-1-initial-1280.png",
+      "sha256": "f46a8a9ff4376ecf809390c531898d13d267e215179d54a64e0a8d9f1b8c674f",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-5-part-1-initial-320.png",
+      "sha256": "1f92fba0d4a5535004eef75f488cb68ff55d0db4e9d66d88b2717e8260f1743f",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-5-part-1-last-1280.png",
+      "sha256": "6613b2fa28b4e23e0999228237c9c1bea84b72d7a293c9fc9369a17939360fca",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-5-part-1-last-320.png",
+      "sha256": "8c63386764de5bc2b20da9cca1faf0d2137e8d20bba19916ed41ba62e03b4857",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "atanasyan-7-9-selfcheck-chapter-7-5-part-1-last-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-6-part-1-initial-1280.png",
+      "sha256": "c48cfc1d3bcfc6b221d38de96554a27374764113f3c92d5ac58cfd073891559a",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-neutral-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-6-part-1-initial-320.png",
+      "sha256": "4c451097496bf5fde31432755e6b05b35d0da996f3a4963a2949e23665a4a020",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-neutral-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-6-part-1-last-1280.png",
+      "sha256": "4ebd2f52bf89146d74d26a9bb81035051a167ce14cf84c7946b765d3600353bf",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-6-part-1-last-320.png",
+      "sha256": "419f1ee1c0fada1ebd27a86892c571fa97fae35e0ebfde9d28b5d5e4f088eaa0",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-step-4-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-7-part-1-initial-1280.png",
+      "sha256": "2849d6567d00d5c254cb3d9a1fd5397465655e55e3bd3edf50a8a953b930c731",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-7-part-1-initial-320.png",
+      "sha256": "b8c63e003b5a15d94bd5d13b977d50d5046e3fb9da0a9e3e23076bef7f272bff",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-7-part-1-neutral-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-7-part-1-last-1280.png",
+      "sha256": "a8036621f8ecb708cdeb912555f8b7c340910fe35806a7ed2dc89d9629b307be",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-7-part-1-last-320.png",
+      "sha256": "cb3beea94e07cabbd2d8d36d8a3f331362c94f905977c9382dd78ae08d58b16a",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "atanasyan-7-9-selfcheck-chapter-7-7-part-1-last-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-8-part-1-initial-1280.png",
+      "sha256": "bb7a413372181825d5186e6d97724b0e18f5fafd679526ddf69388cbf4a97bd5",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-neutral-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-8-part-1-initial-320.png",
+      "sha256": "8de0b02dd9c0518f330591255ed2427d359e737dd01c5a7dddbbf530c3ed8024",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-neutral-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-8-part-1-last-1280.png",
+      "sha256": "af521e67a113b68980cef4a17410728d871b25fb2b68c07bc9830b46072651f0",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-8-part-1-last-320.png",
+      "sha256": "f7ee8c0bb226173e29571247f7b7eb642717a20fcd0a596ec34cabe0e9812a13",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-step-4-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-9-part-1-initial-1280.png",
+      "sha256": "0ae2c87846cfe8375ed4b5a361e4822b902bfbbba4e8d63d2cf79182d07d4682",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-9-part-1-initial-320.png",
+      "sha256": "37790ae8a9be66122a21791c8911550b8d417fb7f94dc325b91d9310a0eef425",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-9-part-1-last-1280.png",
+      "sha256": "aba09f169d22bf1f113d05b394c5a41ba3de09bc7fca8176e9aef03d0f69862b",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-selfcheck-chapter-7-9-part-1-last-320.png",
+      "sha256": "69ddb0dbe00e530d7e06112050b9f64be7ece0ed5dfad7d8f76f9d8a976c1f42",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "atanasyan-7-9-selfcheck-chapter-7-9-part-1-last-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-54-part-1-initial-1280.png",
+      "sha256": "f25e76e26b8fee9ea34c252db5abe57e21407335989aea1a61ef328d2e8af274",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-54-part-1-initial-320.png",
+      "sha256": "7d42fbd8aea3b42922d38f4bc4c2bd43c19943ff897b53dad704ecffb994009f",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-54-part-1-last-1280.png",
+      "sha256": "45b7331a8d3094388bc7e23cc41156cae32b84e6a48a9bcddf9f9ee9db62bb29",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-step-9-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-54-part-1-last-320.png",
+      "sha256": "011895719ab3f3612488ac420a883dbe2fb22cf2889fc265f046b28c9b2ec59a",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-step-9-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-55-part-1-initial-1280.png",
+      "sha256": "970c0f552a2cdb79daa0e2b1b5f4b8baa371367daeac0ac23b583319da60c538",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-55-part-1-neutral-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-55-part-1-initial-320.png",
+      "sha256": "b68d9f23d1c6eb0cb085ddc8dd4c1378d61950172e966bae1b68d5e5a297fe72",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-55-part-1-neutral-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-55-part-1-last-1280.png",
+      "sha256": "ebf1ff3b7d9622a9361353f725f69d5a19f91946b51f8bfc4ff91054049835eb",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-55-part-1-last-320.png",
+      "sha256": "e9e3e196dbeef105b4cdf2a995b6bcaac9988eab97c5680cbb94e7eca8d75f58",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-55-part-1-step-5-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-56-part-1-initial-1280.png",
+      "sha256": "bf32f42c106c8df051200cf641231602816b93642261e5c3f602c02aff0f5e45",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-56-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-56-part-1-initial-320.png",
+      "sha256": "79e58f0989ae2eefd4dcd6f8d5e0bacd08819c5ad142e4bc6246dd56ac8e13ee",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-56-part-1-neutral-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-56-part-1-last-1280.png",
+      "sha256": "fd0bdaa03417984ee0e0976bd8e02f904cde304a4f70c7dfca3891fd5c385b96",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-56-part-1-last-320.png",
+      "sha256": "e1177578cf3beba95397b692ca722eadc3c6df703282826637526fe8149c418b",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "atanasyan-7-9-theory-56-part-1-last-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-57-part-1-initial-1280.png",
+      "sha256": "f46a8a9ff4376ecf809390c531898d13d267e215179d54a64e0a8d9f1b8c674f",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-57-part-1-initial-320.png",
+      "sha256": "93c191e2c71833398f9e23e422bea0d9631f20fa0e99b5edbb5f75170bac3a85",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-57-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-57-part-1-last-1280.png",
+      "sha256": "d909a9171bf08ffcb6ecc9526a8feb46585151247b57406b20a0884dbe6b24aa",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-57-part-1-last-320.png",
+      "sha256": "070bd5977fcebe9b192d14d229899dcafe408c7408c6e83aa4ebc8cfbd0e9e4c",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "atanasyan-7-9-theory-57-part-1-last-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-58-part-1-initial-1280.png",
+      "sha256": "b3399112eab9ae8d040b5aafe6be20da510c1b60e83237cc8f0a465ed4f12e02",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-58-part-1-initial-320.png",
+      "sha256": "ba0f1903d476740687495902ef25fb31950fda9b10a4ada18f00de66b231aa64",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-neutral-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-58-part-1-last-1280.png",
+      "sha256": "cda5e493d326a9ddbd5a2b87b4433bf307d05e216c9ed912c292fe9e38da2238",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-step-9-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-58-part-1-last-320.png",
+      "sha256": "9268f8c388fa1d0b27015e2da8ca71542f80d0e2eec70880844beb595abcbd80",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "atanasyan-7-9-theory-58-part-1-last-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-59-part-1-initial-1280.png",
+      "sha256": "8748358e5eb26aefd773c867be44c865236f3374546a11bd7e6ef053fe952008",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-59-part-1-neutral-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-59-part-1-initial-320.png",
+      "sha256": "0277d52387a84f028874af3bdd8bec2b46a84171e5ee3c87736dca8d0d66c369",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-59-part-1-neutral-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-59-part-1-last-1280.png",
+      "sha256": "6fb578ca6f8c32a7c815d9004ac9fab8e5b6a6310bd89201a20bf009e402b478",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-59-part-1-step-4-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-59-part-1-last-320.png",
+      "sha256": "07de7298c9534b9a2e4e42f36dd1dbd3e3785f0d3af1a385a154ef210f5cdb5d",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-59-part-1-step-4-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-60-part-1-initial-1280.png",
+      "sha256": "27b2b391351cb59cc8f6b689ee4cd4050e07fdd71a92e39c3962a404c3468a5b",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-60-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-60-part-1-initial-320.png",
+      "sha256": "eeeaf5a1491f9dd61d769372333d37575e15393ab77b0377c82d3aba203ecd31",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-60-part-1-neutral-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-60-part-1-last-1280.png",
+      "sha256": "d062924fbb938784d29fd635d8bb0e61ebc41392c6dcc3bb07bde05035da0588",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-60-part-1-last-320.png",
+      "sha256": "141b7bc6bc9a008d5f41e9b155344d20e40dc12ebb3484e3051ca909444b05bf",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "atanasyan-7-9-theory-60-part-1-last-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-61-part-1-initial-1280.png",
+      "sha256": "ee99e66a190da6c4188b9bc03f14f135319c4e146b6f0619d01618556a455b5e",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-61-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-61-part-1-initial-320.png",
+      "sha256": "f79adc354c1e83d8224ac4b6155051948b7a78d16bc131f81d09ba19335f3137",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-61-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-61-part-1-last-1280.png",
+      "sha256": "07ed1ad67962b72d4b1eedf6fcf25e5004f0fa41f1f406a45ab13ff924f2f77e",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-61-part-1-last-320.png",
+      "sha256": "518766847048100f838b1bca3afc46dda4871bbaf96b0d815663c00d16bb6a7e",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-61-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-62-part-1-initial-1280.png",
+      "sha256": "15ca7cf8e0f507ab29960f970b4264263c764ad8e10e4eedbb575d0d1abdb858",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-62-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-62-part-1-initial-320.png",
+      "sha256": "1b0d516de6d0d3339ad1b40272d672462e86a78498cfb35ae10f3bcb0b2c5ad9",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-62-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-62-part-1-last-1280.png",
+      "sha256": "83114713d78abda8f1806110b99840c9d5a5943d5102daecb05d6b1de6559fe6",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "atanasyan-7-9-theory-62-part-1-last-320.png",
+      "sha256": "eb73a15d1833d05e7dfd9a85f62bebe837198c653366bb5911881181a93db14b",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "atanasyan-7-9-theory-62-part-1-last-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-1-part-1-case-1-1280.png",
+      "sha256": "dc491cf2b9c8831e38b1f6e67abad3e5f165e1b9b31bd0783133f10862e580cc",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-1-part-1-case-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-1-part-1-case-1-320.png",
+      "sha256": "511ad68a6297a8f51e55c9fec8ad30f48b98bc592d92759d3254646f8de9aaf4",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-1-part-1-case-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-1-part-1-neutral-1280.png",
+      "sha256": "90f20156c1f310de6bd67638fee043b3b37f5ab0f2b0cd7673ae7bcea41b6322",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-1-part-1-neutral-320.png",
+      "sha256": "80ec5f29497578ddee67f9e34188d785c86a504cb30c8c2b96e9efb275a056d0",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-1-part-1-step-1-1280.png",
+      "sha256": "90f20156c1f310de6bd67638fee043b3b37f5ab0f2b0cd7673ae7bcea41b6322",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-1-part-1-step-1-320.png",
+      "sha256": "80ec5f29497578ddee67f9e34188d785c86a504cb30c8c2b96e9efb275a056d0",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-1-part-1-step-2-1280.png",
+      "sha256": "bb600da59132d5c6af9d706b8a8c25666dff8471acd46ddb5b17406a6f3ec370",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-1-part-1-step-2-320.png",
+      "sha256": "a407fd90263098e6aa8ef854960d4d89b8682d4e78ae491e2129e2790d03b285",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-1-part-1-step-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-1-part-1-step-3-1280.png",
+      "sha256": "fdbf630ef9fa29e9d37b4c754833411986dadaf7c034e5370a1f9da4f3c4e365",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-1-part-1-step-3-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-1-part-1-step-3-320.png",
+      "sha256": "127ec32f84bfbe0bcd055b1e8a5f77587d249a7fbf650dc43180d09218605eb2",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-1-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-case-1-1280.png",
+      "sha256": "e95e03d81890adf5e8e6cdc6c5ac0ed5174dff3b97ccd89609583db81d6d89dd",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-case-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-case-1-320.png",
+      "sha256": "b8dc1ed74820ecb209dc08de2b38a766ca1d716b224866b9f1ab985c342f1921",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-case-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-neutral-1280.png",
+      "sha256": "5d6489dbee54cb8042c51df02cef8699d9f78f647d3fca4c07ff5c55c8a8c5ec",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-neutral-320.png",
+      "sha256": "5a3ec60502115c96f017c061195cd95e7aaf46230fd1e1da50302a9322e9dd13",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-neutral-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-step-1-1280.png",
+      "sha256": "5d6489dbee54cb8042c51df02cef8699d9f78f647d3fca4c07ff5c55c8a8c5ec",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-step-1-320.png",
+      "sha256": "5a3ec60502115c96f017c061195cd95e7aaf46230fd1e1da50302a9322e9dd13",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-neutral-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-step-2-1280.png",
+      "sha256": "7519acce0fa860004a35f54a66488836c56c633bf182168849fac8a3f9f8da83",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-step-2-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-step-2-320.png",
+      "sha256": "9c1e07fe77081bec1fb0f24e3f40ee6a8860361cd800f337fb633bb3b5f27e4c",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-step-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-step-3-1280.png",
+      "sha256": "5db8f091999b7320c56ca63abf1d80324ca8c0cf47ae1edbed84b665008cc44c",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-step-3-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-step-3-320.png",
+      "sha256": "1412a4e1f57d2798a59a4f1fa5e6245c9dcaa41e1553e8ae7050e726d9137fc6",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-10-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-11-part-1-case-1-1280.png",
+      "sha256": "4746991ad2b47fb37d1cd92bc74affd61f52e4302c1939437e19d4a7c8c0fd6b",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-11-part-1-case-1-320.png",
+      "sha256": "dd4790d1ef2a959b835c33eb5ad3ac1ed7b91d585e64887725f1ff85203464af",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-11-part-1-case-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-11-part-1-neutral-1280.png",
+      "sha256": "b7e1542f898a75abc254e9c6153fe1b6b4e423ff376b6d4498a61f846ccccf5a",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-11-part-1-neutral-320.png",
+      "sha256": "b440a30184c438db66230b54476430d271a71393c117dce12aeaaa83b6ad26d6",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-11-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-11-part-1-step-1-1280.png",
+      "sha256": "b7e1542f898a75abc254e9c6153fe1b6b4e423ff376b6d4498a61f846ccccf5a",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-11-part-1-step-1-320.png",
+      "sha256": "b440a30184c438db66230b54476430d271a71393c117dce12aeaaa83b6ad26d6",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-11-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-11-part-1-step-2-1280.png",
+      "sha256": "76a6a9d6504ecb2e03c0260927b870a6775f24bf48a38993bb306f7591194d2f",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-11-part-1-step-2-320.png",
+      "sha256": "7a95c5065a78ab7dafd0f9d7d73b050b7a1e79c57a8e707b3e757db18b3e521f",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-11-part-1-step-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-11-part-1-step-3-1280.png",
+      "sha256": "c9cf3e811ee4ddaddff40ac94934c834f45b263d184e31adfab2d349f7f553b9",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-11-part-1-step-3-320.png",
+      "sha256": "024c2116fd2957d24c4795a54678e217347ffa4ac74c56cf62948abb93d9fdb6",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-11-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-neutral-1280.png",
+      "sha256": "960171346a33818a227ff0dda8e1205db5f1a104e1f526b25d4af62af369b796",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-neutral-320.png",
+      "sha256": "c26db2e1cc1f848f4964212ad5e9f27b194767831efc365ac9f0def54fee40d6",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-1-1280.png",
+      "sha256": "a1c9b2c0adf35f0e4f9126c79fff4f27612eb84f8138ded47eed0507d2bb0666",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-1-320.png",
+      "sha256": "c26db2e1cc1f848f4964212ad5e9f27b194767831efc365ac9f0def54fee40d6",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-2-1280.png",
+      "sha256": "843bc682faa05c820f4edb114d7d25c2cdd9fae245d4250d7462a5fc743f18c1",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-6-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-2-320.png",
+      "sha256": "81c42cfb3974bee800b668463503dc91fb1d7d8c5cff6f94a680b87ac5955610",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-6-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-3-1280.png",
+      "sha256": "fce451ede25b3e16ec4587592b7253a4f988eceda42d3b97021db621c92853d9",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-3-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-3-320.png",
+      "sha256": "701de8cc430a3ac0f161952176946d7d5480afd98fea76bc09576295bc41f00f",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-4-1280.png",
+      "sha256": "c83c82a70830b160ae581ebe5f488118601f6abc8b4bd0f9512ac3d92a88d06d",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-4-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-4-320.png",
+      "sha256": "ac10a3000f9b5f87661939580fb85cf055a527be75c4cd4a0fef7800af669855",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-4-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-5-1280.png",
+      "sha256": "843bc682faa05c820f4edb114d7d25c2cdd9fae245d4250d7462a5fc743f18c1",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-6-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-5-320.png",
+      "sha256": "81c42cfb3974bee800b668463503dc91fb1d7d8c5cff6f94a680b87ac5955610",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-6-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-6-1280.png",
+      "sha256": "843bc682faa05c820f4edb114d7d25c2cdd9fae245d4250d7462a5fc743f18c1",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-6-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-6-320.png",
+      "sha256": "81c42cfb3974bee800b668463503dc91fb1d7d8c5cff6f94a680b87ac5955610",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-6-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-case-1-1280.png",
+      "sha256": "808c45278142a940f988bd047cc387821ecfd53a86d3f6ab86db5a16a2485128",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-case-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-case-1-320.png",
+      "sha256": "9ab40a2b2e8888ce92b86b9260085c7ad3944a37528818f08a1d46f3110fc5eb",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-case-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-neutral-1280.png",
+      "sha256": "90f20156c1f310de6bd67638fee043b3b37f5ab0f2b0cd7673ae7bcea41b6322",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-neutral-320.png",
+      "sha256": "80ec5f29497578ddee67f9e34188d785c86a504cb30c8c2b96e9efb275a056d0",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-1-1280.png",
+      "sha256": "90f20156c1f310de6bd67638fee043b3b37f5ab0f2b0cd7673ae7bcea41b6322",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-1-320.png",
+      "sha256": "80ec5f29497578ddee67f9e34188d785c86a504cb30c8c2b96e9efb275a056d0",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-2-1280.png",
+      "sha256": "bd591455ec0e1603269a93cdfa742581517d4107be30ab2cd11c68efcdeef8cd",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-2-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-2-320.png",
+      "sha256": "a9e644295113c9c4542bfb9125e1b5fe2a495bb0e91a8e3cc7fa9057ffe8e559",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-3-1280.png",
+      "sha256": "01f9b6d0114ac4fd1eb51e886bcfb2b01d35232303aafe2172b58408fb10b662",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-3-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-3-320.png",
+      "sha256": "97449db8be8f8f0a8d315636d1dd4f5030a4909adcfaa503757958bb991b245e",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-2-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-case-1-1280.png",
+      "sha256": "693dddb8f5b2f0474c43a1ba3f8fb968cbb39797c9b26023f731a491e8d652aa",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-case-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-case-1-320.png",
+      "sha256": "3a3acc4e7e56fb1b5957f29ee1b7201422a4d67e0289c2e7445a44e3c10037c3",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-case-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-neutral-1280.png",
+      "sha256": "9c46bd16176c4310a6ad272610f91ccf79c2e5cac382f6deef02a443252ba4d9",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-neutral-320.png",
+      "sha256": "c7e38ee72aa4b45411e1d3b721c65ec5a5c0a82797f7bd45cd9348aa060155af",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-step-1-1280.png",
+      "sha256": "9c46bd16176c4310a6ad272610f91ccf79c2e5cac382f6deef02a443252ba4d9",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-step-1-320.png",
+      "sha256": "c7e38ee72aa4b45411e1d3b721c65ec5a5c0a82797f7bd45cd9348aa060155af",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-step-2-1280.png",
+      "sha256": "d0bda7befc67e5b54a57307f76564158564c0957b45247fd1683055198e16760",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-step-3-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-step-2-320.png",
+      "sha256": "463d3cfa90510c270fb3d86cae5c9da07bb230b6b5158625787531ee6fd767b1",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-step-3-1280.png",
+      "sha256": "d0bda7befc67e5b54a57307f76564158564c0957b45247fd1683055198e16760",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-step-3-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-step-3-320.png",
+      "sha256": "463d3cfa90510c270fb3d86cae5c9da07bb230b6b5158625787531ee6fd767b1",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-3-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-4-part-1-neutral-1280.png",
+      "sha256": "bf32f42c106c8df051200cf641231602816b93642261e5c3f602c02aff0f5e45",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-56-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-4-part-1-neutral-320.png",
+      "sha256": "9bb12121ce732f2997400d1f606fe6981b410b866988d1f7b101cdea2c5250d0",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-4-part-1-neutral-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-4-part-1-step-1-1280.png",
+      "sha256": "03c2e069c6551172514bf2a3cba68b41c1792c4f95f5e8da56ba38a15255a8df",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-4-part-1-step-1-320.png",
+      "sha256": "5cfef5804cb8aef92a0ab5632b930276d121188ecf21a08422430e54ab9e5e61",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-4-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-4-part-1-step-2-1280.png",
+      "sha256": "6105b47a33d18f3b93fc0ad55611c11dba46197fd0fe0c91193262d48234926a",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-56-part-1-step-2-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-4-part-1-step-2-320.png",
+      "sha256": "f40b298266632800c8f140489af245c40ca75a4f755258aacbb0f3131ed42026",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-4-part-1-step-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-4-part-1-step-3-1280.png",
+      "sha256": "ae7b4a6eee9f399060a724628357f943c21da7a252d7aa90fbe8faa3c035964b",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-56-part-1-step-4-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-4-part-1-step-3-320.png",
+      "sha256": "8411e717fc28b65d91859919b9497e732acd89acd5de5e603a7385f1cf17c77a",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-4-part-1-step-4-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-4-part-1-step-4-1280.png",
+      "sha256": "ae7b4a6eee9f399060a724628357f943c21da7a252d7aa90fbe8faa3c035964b",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-56-part-1-step-4-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-4-part-1-step-4-320.png",
+      "sha256": "8411e717fc28b65d91859919b9497e732acd89acd5de5e603a7385f1cf17c77a",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-4-part-1-step-4-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-case-1-1280.png",
+      "sha256": "532780f1ce3d829ab2f2f03e0220ae5c5bf5ec1adc3d0c1fa2c3ee372f5d52c1",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-case-1-320.png",
+      "sha256": "b7a5302bf0ef649fb69588cb93f87344e0ac8a49bb54693106937b929ee66bcb",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-case-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-case-2-1280.png",
+      "sha256": "7de1122e0879c8c606ab603fc2a94c95576446faf2291feb80ab28119b0106cf",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-case-2-320.png",
+      "sha256": "af0344052864f7f5f348adb379e0c693305f0e8f0b65a67d4c58818e4bea8cf4",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-case-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-case-3-1280.png",
+      "sha256": "d6eec0444dc9204984d9656dc41d357c85e8c09808d8a46bb712674c78b97e37",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-case-3-320.png",
+      "sha256": "20b128c1f196b16497be71851eedcd9b9cba4f127b32490c9a7c627ec961e9bf",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-case-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-neutral-1280.png",
+      "sha256": "f46a8a9ff4376ecf809390c531898d13d267e215179d54a64e0a8d9f1b8c674f",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-neutral-320.png",
+      "sha256": "1f92fba0d4a5535004eef75f488cb68ff55d0db4e9d66d88b2717e8260f1743f",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-step-1-1280.png",
+      "sha256": "f46a8a9ff4376ecf809390c531898d13d267e215179d54a64e0a8d9f1b8c674f",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-step-1-320.png",
+      "sha256": "1f92fba0d4a5535004eef75f488cb68ff55d0db4e9d66d88b2717e8260f1743f",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-step-2-1280.png",
+      "sha256": "e9e3b18c01f69b5d159774ba4edefdb73d5f40a554a3dd2a9d27a9195bd8527f",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-step-2-320.png",
+      "sha256": "7966fa4359f418ade11cc526a11a0e1680c4f713cc1e59a9626c69a240467de0",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-step-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-step-3-1280.png",
+      "sha256": "e474c584d2599021336b6179aa83ac73de7bab19ca6827c7a37a54c35742fd6f",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-step-3-320.png",
+      "sha256": "d49d8ac16dddc3a9a132800d6c2a02392fb075fb9406c861356a83803ce203b5",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-step-4-1280.png",
+      "sha256": "cb59e007bc6776cd5d7d36795fac5457662bc9f0315a652a943b5d933d993db1",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-step-4-320.png",
+      "sha256": "bb7343f918ab5c84324e36660ebde4ddfaa53795ec476719fd86cfc26a0e9ea7",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-step-5-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-step-5-1280.png",
+      "sha256": "cb59e007bc6776cd5d7d36795fac5457662bc9f0315a652a943b5d933d993db1",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-step-5-320.png",
+      "sha256": "bb7343f918ab5c84324e36660ebde4ddfaa53795ec476719fd86cfc26a0e9ea7",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-step-5-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-case-1-1280.png",
+      "sha256": "f083de48d73c2361f14512397c63364a29748d1d3fbb591fdfc1aa771f3b6f4a",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-case-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-case-1-320.png",
+      "sha256": "9d28fb5615160906fa4218bbc5818bf38acc1e44b30f4c66b65629399a0c5afb",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-case-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-case-2-1280.png",
+      "sha256": "e2096aa1c34aa83493c1499231d933b2b1848aba0e7ace0d1058360b41302df9",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-case-2-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-case-2-320.png",
+      "sha256": "f9005e79ab9795a1ff6a2432dc29d9639a85c61f6e740ac13d48ec3c70fce5ce",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-case-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-neutral-1280.png",
+      "sha256": "c48cfc1d3bcfc6b221d38de96554a27374764113f3c92d5ac58cfd073891559a",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-neutral-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-neutral-320.png",
+      "sha256": "4c451097496bf5fde31432755e6b05b35d0da996f3a4963a2949e23665a4a020",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-neutral-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-step-1-1280.png",
+      "sha256": "3bfe51423b7ef4afd4332ec9c34f6e77e3b776b4e869c244ad593584d6cd1fcd",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-step-1-320.png",
+      "sha256": "4d298f4f148dfeb9db8e4c8b220cb6dcd5fe13af5430fddc67e2c421c4acfc44",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-step-2-1280.png",
+      "sha256": "3b65e1395b9b3c3b021572da754811cb44bf5b90ce8522b9f4e9cada04f6d60a",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-step-2-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-step-2-320.png",
+      "sha256": "f07bea283572a3a00aa0ddc99a70291113a23749c65640fef60d0e2a812a5821",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-step-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-step-3-1280.png",
+      "sha256": "60e0ad265bca7bf00f2d6390e83a4d3e8fed1521e6b47cdea19a52b86d670bb1",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-step-3-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-step-3-320.png",
+      "sha256": "75e5aaf1b31f69b116e9a6e7cd554bda1b108c99ba2c6344f4c7280ce5866b1a",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-step-4-1280.png",
+      "sha256": "56d316fc5b4afa12409381e17a2f963fe0792881a0a03bd84df1b2ea12f11272",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-step-4-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-step-4-320.png",
+      "sha256": "419f1ee1c0fada1ebd27a86892c571fa97fae35e0ebfde9d28b5d5e4f088eaa0",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-6-part-1-step-4-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-7-part-1-neutral-1280.png",
+      "sha256": "f3b9a25422dc7d07bb176ce3f744a5af47faba49c0ab5bb399e140c91ad60ec2",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-7-part-1-neutral-320.png",
+      "sha256": "b8c63e003b5a15d94bd5d13b977d50d5046e3fb9da0a9e3e23076bef7f272bff",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-7-part-1-neutral-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-7-part-1-step-1-1280.png",
+      "sha256": "9266739912325a6139f204be3aa2f1c6df51cf27f00083bea0d5d1964f2a8bbc",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-7-part-1-step-1-320.png",
+      "sha256": "6ec6e93981fe9edb7c489abc7e8f161735fbc7869a3ccdc44ab6bcf4d59bc2dd",
+      "width": 320,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-7-part-1-step-2-1280.png",
+      "sha256": "496d1f84ec7871c4b2f62f14df7567e4854febbff08bbadad94cbd39c828f9ef",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-7-part-1-step-3-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-7-part-1-step-2-320.png",
+      "sha256": "8db74792c91e968f64e0192e310a67f9c300614a7d799a999b6f54846fa62f75",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-7-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-7-part-1-step-3-1280.png",
+      "sha256": "496d1f84ec7871c4b2f62f14df7567e4854febbff08bbadad94cbd39c828f9ef",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-7-part-1-step-3-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-7-part-1-step-3-320.png",
+      "sha256": "8db74792c91e968f64e0192e310a67f9c300614a7d799a999b6f54846fa62f75",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-7-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-case-1-1280.png",
+      "sha256": "947b3b08ba34ee7059701e0c233212c18dcfef0f540ff9d88c0817aac36802d9",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-case-1-320.png",
+      "sha256": "06fa01f45cdf644990b78b50c25a96581efa3de4d1db4b5c3360ea4a870bdecc",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-case-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-neutral-1280.png",
+      "sha256": "8748358e5eb26aefd773c867be44c865236f3374546a11bd7e6ef053fe952008",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-59-part-1-neutral-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-neutral-320.png",
+      "sha256": "8de0b02dd9c0518f330591255ed2427d359e737dd01c5a7dddbbf530c3ed8024",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-neutral-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-step-1-1280.png",
+      "sha256": "d3b5cd0da50db7305a7659ee48cd76780a06b66d9359541f231778e961facc49",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-59-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-step-1-320.png",
+      "sha256": "0c8cf986b7896474f3065b25e2d703240db06a5f63ecad2b51d8c2dd785caac9",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-step-2-1280.png",
+      "sha256": "64883ee8f61986bdb615d9e649cc2f6ad0823b4b6ca2247f03b7d05f89b5d8f4",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-59-part-1-step-2-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-step-2-320.png",
+      "sha256": "74cdfde71dd9006f4fbfcb25157438446523c72bef2d2b936329c342462b7cd9",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-step-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-step-3-1280.png",
+      "sha256": "a8470361785bb550ee84430bc56fa5e7334fcd819ecb4d271600ac096b11995f",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-step-3-320.png",
+      "sha256": "ac6aac0a4ea609288d25ecc744a31f0d3415aa85ad6330539b66706e40d4c3de",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-step-4-1280.png",
+      "sha256": "3dc36da9decf269164ba293d8fce75b74b5ff1e2cec3ee0c8417af1a25b2f124",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-step-4-320.png",
+      "sha256": "f7ee8c0bb226173e29571247f7b7eb642717a20fcd0a596ec34cabe0e9812a13",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-step-4-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-neutral-1280.png",
+      "sha256": "0ae2c87846cfe8375ed4b5a361e4822b902bfbbba4e8d63d2cf79182d07d4682",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-neutral-320.png",
+      "sha256": "37790ae8a9be66122a21791c8911550b8d417fb7f94dc325b91d9310a0eef425",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-1-1280.png",
+      "sha256": "4a495acd29c46e0336bc1937e6ee0c87b9de1b099c1d1610b81d790889c7ba43",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-1-320.png",
+      "sha256": "d00fe529181d012855da7cd4725d3e04d5c957c5f3f40413a83eb7945359efd6",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-2-1280.png",
+      "sha256": "0224f78b058b7c49ab65dccb03b294a0512d9d296e64973f0a79e7905c86b191",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-2-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-2-320.png",
+      "sha256": "76b73b8743e3235a04af9e8da1daeb244476497f175d9f416da9e8484a300030",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-3-1280.png",
+      "sha256": "f81d830374e06f268dd3f492b7c21ae78c99c5a3fb65dceb7fd0a51ef691c5c7",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-5-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-3-320.png",
+      "sha256": "d3ccd8557a7551eca1c0b7c1e27646c605ffeb0103733cf4c13625aad29d8f70",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-5-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-4-1280.png",
+      "sha256": "f81d830374e06f268dd3f492b7c21ae78c99c5a3fb65dceb7fd0a51ef691c5c7",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-5-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-4-320.png",
+      "sha256": "d3ccd8557a7551eca1c0b7c1e27646c605ffeb0103733cf4c13625aad29d8f70",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-5-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-5-1280.png",
+      "sha256": "f81d830374e06f268dd3f492b7c21ae78c99c5a3fb65dceb7fd0a51ef691c5c7",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-5-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-5-320.png",
+      "sha256": "d3ccd8557a7551eca1c0b7c1e27646c605ffeb0103733cf4c13625aad29d8f70",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-5-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-case-1-1280.png",
+      "sha256": "5ae16b2bfd00b2427719b396eab2ee32f409b4fd2ee4953de7433deea1b5e5e5",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-case-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-case-1-320.png",
+      "sha256": "4619350540b1b4955748e3621d570581323e3d22a97f1576252558a14832101e",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-case-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-case-2-1280.png",
+      "sha256": "6f449aaaaee662aedbae3fa14ddabfb716306a6c93b1760e968a2ae8f2346812",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-case-2-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-case-2-320.png",
+      "sha256": "90c5b1abc35f0f0f88f821655a0ad9fb85326c9e0cfee004169228981de3efc5",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-case-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-case-3-1280.png",
+      "sha256": "e64feb83b1f201f605d20cff3674bb71ccf91277d8e201de501d4ea564ac539f",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-case-3-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-case-3-320.png",
+      "sha256": "000c7c27a7d6d58a0d0911da4c9724aa8f7be67ca3201079b91d77e690836393",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-case-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-neutral-1280.png",
+      "sha256": "f25e76e26b8fee9ea34c252db5abe57e21407335989aea1a61ef328d2e8af274",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-neutral-320.png",
+      "sha256": "7d42fbd8aea3b42922d38f4bc4c2bd43c19943ff897b53dad704ecffb994009f",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-step-1-1280.png",
+      "sha256": "f25e76e26b8fee9ea34c252db5abe57e21407335989aea1a61ef328d2e8af274",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-step-1-320.png",
+      "sha256": "7d42fbd8aea3b42922d38f4bc4c2bd43c19943ff897b53dad704ecffb994009f",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-step-2-1280.png",
+      "sha256": "751e228d2a7786bcfefa796c03a11445438c9e04c6a7a89e5ebe950653623787",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-step-2-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-step-2-320.png",
+      "sha256": "8f8129c0620067b4cf07a045799504facf29fdcfe8ba144b2104d2efe132a6fb",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-step-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-step-3-1280.png",
+      "sha256": "95d56875aec8f53e7086a9faaf8185cfa1cb438000706d278b62a7c6d661fff8",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-step-3-320.png",
+      "sha256": "ded3fad245b8fc889e8cf112a21484c1c3b0bc6f6d5ba2147659a9dd312d73a6",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-step-4-1280.png",
+      "sha256": "d276030a86b9c2f9c5498bda65ea10d3437668f984df77832c11643270754f1f",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-step-4-320.png",
+      "sha256": "439cfcd30244b072f4f8e0d7d6b403b22661d6653121d40450e5e5d4df95c573",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-step-4-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-step-5-1280.png",
+      "sha256": "d276030a86b9c2f9c5498bda65ea10d3437668f984df77832c11643270754f1f",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-step-5-320.png",
+      "sha256": "859edfc735a8544065515c178a09cb365a4ce8fe32396a13af66142c4f29db51",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-step-5-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-step-6-1280.png",
+      "sha256": "15ab7c62ce35f18e37f7829ede169b95748c4ef11af8c3e671cf3a4a8954850a",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-step-6-320.png",
+      "sha256": "d26a8ae12a063bfbe3b9dd3a816b2ee4b98bc52e10fb9068078fc01f26e00fb0",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-step-6-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-step-7-1280.png",
+      "sha256": "d94bacd2db2e347c541cb4cb5d911bfce4f088ba657a6abc07b9123293f7d5fb",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-step-7-320.png",
+      "sha256": "e2e4e645c3a627e86da63c0c1018da9026aa2cbe34545e00fec95dfc6c4401b8",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-step-7-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-step-8-1280.png",
+      "sha256": "45b7331a8d3094388bc7e23cc41156cae32b84e6a48a9bcddf9f9ee9db62bb29",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-step-9-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-step-8-320.png",
+      "sha256": "011895719ab3f3612488ac420a883dbe2fb22cf2889fc265f046b28c9b2ec59a",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-step-9-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-step-9-1280.png",
+      "sha256": "45b7331a8d3094388bc7e23cc41156cae32b84e6a48a9bcddf9f9ee9db62bb29",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-step-9-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-54-part-1-step-9-320.png",
+      "sha256": "011895719ab3f3612488ac420a883dbe2fb22cf2889fc265f046b28c9b2ec59a",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-54-part-1-step-9-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-55-part-1-case-1-1280.png",
+      "sha256": "3353d9768b14ed86c8482094ae1f37c0e7f069db7c48da90b1911fa9e0ac04b4",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-55-part-1-case-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-55-part-1-case-1-320.png",
+      "sha256": "f19287268dec44ed7785cd879412b5fd98fa5849b0c8a8dfd411cce36dac50d7",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-55-part-1-case-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-55-part-1-case-2-1280.png",
+      "sha256": "3b44d1f87fef148609e548d4c8c5d46b73ace07ab0cdcd4f3060d39619217ee1",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-55-part-1-case-2-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-55-part-1-case-2-320.png",
+      "sha256": "899975a0a5cf020ec9e61a2c3a616be66e210ad33c0fe7ea01a46a9f8ef37e78",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-55-part-1-case-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-55-part-1-neutral-1280.png",
+      "sha256": "970c0f552a2cdb79daa0e2b1b5f4b8baa371367daeac0ac23b583319da60c538",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-55-part-1-neutral-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-55-part-1-neutral-320.png",
+      "sha256": "b68d9f23d1c6eb0cb085ddc8dd4c1378d61950172e966bae1b68d5e5a297fe72",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-55-part-1-neutral-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-55-part-1-step-1-1280.png",
+      "sha256": "895bba048fd016e3bfed4ac2cfd50cfb3cdfa4d22c052e8e46590b6d00079b53",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-55-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-55-part-1-step-1-320.png",
+      "sha256": "bd585f92ffcb668fa492e263c70f1168a69dee44d02ba7739d145d070b02c350",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "review-atanasyan-7-9-theory-55-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-55-part-1-step-2-1280.png",
+      "sha256": "b84d0bad9818244fd7294893bcdd8309fe2bf5ae6c311adcd7054d23731df08e",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-55-part-1-step-2-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-55-part-1-step-2-320.png",
+      "sha256": "cf49d254586154047f221305c454c8b2d96eb829bf391f9f8c5c459c310e19f5",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-55-part-1-step-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-55-part-1-step-3-1280.png",
+      "sha256": "f69cf3f65f1af54653154c76ceafb42cb65ba1af6371832f5bdc05d752cbe3d3",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-55-part-1-step-3-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-55-part-1-step-3-320.png",
+      "sha256": "66cbf6a168fce4540fa216a3bc2011013415ad6ade4735b8ad5f1762ee124a8c",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-55-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-55-part-1-step-4-1280.png",
+      "sha256": "21764448438164bfd7f5a661fce2b5e7f3bc8ba22feea3c5a17fcbc73fa57280",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-55-part-1-step-4-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-55-part-1-step-4-320.png",
+      "sha256": "e9e3e196dbeef105b4cdf2a995b6bcaac9988eab97c5680cbb94e7eca8d75f58",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-55-part-1-step-5-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-55-part-1-step-5-1280.png",
+      "sha256": "2d84a91bff8adb77f278a704a5ad07edafa01b0038f55f3e71f6a87db2f01e79",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-55-part-1-step-5-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-55-part-1-step-5-320.png",
+      "sha256": "e9e3e196dbeef105b4cdf2a995b6bcaac9988eab97c5680cbb94e7eca8d75f58",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-55-part-1-step-5-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-56-part-1-neutral-1280.png",
+      "sha256": "935ffc997136be073e8499b5bbb759ca5b89dc841cae47c3e8515985f3eb3f98",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-56-part-1-neutral-320.png",
+      "sha256": "79e58f0989ae2eefd4dcd6f8d5e0bacd08819c5ad142e4bc6246dd56ac8e13ee",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-56-part-1-neutral-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-56-part-1-step-1-1280.png",
+      "sha256": "03c2e069c6551172514bf2a3cba68b41c1792c4f95f5e8da56ba38a15255a8df",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-56-part-1-step-1-320.png",
+      "sha256": "02eecb9ba7f8968cc63891f2a410e1bb397e9a5755b1232d0d1c7ee1c63b0341",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-56-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-56-part-1-step-2-1280.png",
+      "sha256": "6105b47a33d18f3b93fc0ad55611c11dba46197fd0fe0c91193262d48234926a",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-56-part-1-step-2-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-56-part-1-step-2-320.png",
+      "sha256": "d7efc854ce3e0f30b2d6481e7142d4326b414edde8f028d17ed6ace5e9a3a898",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-56-part-1-step-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-56-part-1-step-3-1280.png",
+      "sha256": "ae7b4a6eee9f399060a724628357f943c21da7a252d7aa90fbe8faa3c035964b",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-56-part-1-step-4-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-56-part-1-step-3-320.png",
+      "sha256": "f38c855b551ae2f391150f1819d1cedc63e9035aa6ef3861e4380027cac72c64",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-56-part-1-step-4-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-56-part-1-step-4-1280.png",
+      "sha256": "ae7b4a6eee9f399060a724628357f943c21da7a252d7aa90fbe8faa3c035964b",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-56-part-1-step-4-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-56-part-1-step-4-320.png",
+      "sha256": "f38c855b551ae2f391150f1819d1cedc63e9035aa6ef3861e4380027cac72c64",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-56-part-1-step-4-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-57-part-1-case-1-1280.png",
+      "sha256": "532780f1ce3d829ab2f2f03e0220ae5c5bf5ec1adc3d0c1fa2c3ee372f5d52c1",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-57-part-1-case-1-320.png",
+      "sha256": "c3041e95bbbe699bad1229b31e1826f55085f9744c7b9454a366407cc8ebd91a",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "review-atanasyan-7-9-theory-57-part-1-case-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-57-part-1-case-2-1280.png",
+      "sha256": "7de1122e0879c8c606ab603fc2a94c95576446faf2291feb80ab28119b0106cf",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-57-part-1-case-2-320.png",
+      "sha256": "e1e430833c55aec360545c708e8954ebd9c4bc1efc741ae3e19d05d691fe9cb1",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "review-atanasyan-7-9-theory-57-part-1-case-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-57-part-1-case-3-1280.png",
+      "sha256": "d6eec0444dc9204984d9656dc41d357c85e8c09808d8a46bb712674c78b97e37",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-57-part-1-case-3-320.png",
+      "sha256": "6d91c3af4f716d63613c08912e860f0aaa0beef57099df75d97c078fa6917b64",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "review-atanasyan-7-9-theory-57-part-1-case-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-57-part-1-neutral-1280.png",
+      "sha256": "f46a8a9ff4376ecf809390c531898d13d267e215179d54a64e0a8d9f1b8c674f",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-57-part-1-neutral-320.png",
+      "sha256": "93c191e2c71833398f9e23e422bea0d9631f20fa0e99b5edbb5f75170bac3a85",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-57-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-57-part-1-step-1-1280.png",
+      "sha256": "f46a8a9ff4376ecf809390c531898d13d267e215179d54a64e0a8d9f1b8c674f",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-57-part-1-step-1-320.png",
+      "sha256": "93c191e2c71833398f9e23e422bea0d9631f20fa0e99b5edbb5f75170bac3a85",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-57-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-57-part-1-step-2-1280.png",
+      "sha256": "e9e3b18c01f69b5d159774ba4edefdb73d5f40a554a3dd2a9d27a9195bd8527f",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-57-part-1-step-2-320.png",
+      "sha256": "39441762cdb7fce3dad997a5e18af4759048e542f34431395d33b47c5a68cb44",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "review-atanasyan-7-9-theory-57-part-1-step-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-57-part-1-step-3-1280.png",
+      "sha256": "e474c584d2599021336b6179aa83ac73de7bab19ca6827c7a37a54c35742fd6f",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-57-part-1-step-3-320.png",
+      "sha256": "896ea1983b1e615e5c705a7b9bfbf2e5bdd3d4801403f51ad2a17ed134550b98",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "review-atanasyan-7-9-theory-57-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-57-part-1-step-4-1280.png",
+      "sha256": "cb59e007bc6776cd5d7d36795fac5457662bc9f0315a652a943b5d933d993db1",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-57-part-1-step-4-320.png",
+      "sha256": "515b5b80cf57b21d1afac4d6e3ea72b30f04b270d91807883a804700a326e523",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "review-atanasyan-7-9-theory-57-part-1-step-4-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-57-part-1-step-5-1280.png",
+      "sha256": "cb59e007bc6776cd5d7d36795fac5457662bc9f0315a652a943b5d933d993db1",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-57-part-1-step-5-320.png",
+      "sha256": "515b5b80cf57b21d1afac4d6e3ea72b30f04b270d91807883a804700a326e523",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "review-atanasyan-7-9-theory-57-part-1-step-4-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-case-1-1280.png",
+      "sha256": "6c0a5dfac40a9bad436a73f890de10afe4e064d6cde70be90f666af497d2fd9b",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-case-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-case-1-320.png",
+      "sha256": "6030203585331ca90dde66b0f3e2348dd612f191871600c9873d84ac082f08ee",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-case-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-case-2-1280.png",
+      "sha256": "1b9b110a1999fe2d6a5059155520401038900ec8529b1e9ce73c80a2e86ef3e5",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-case-2-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-case-2-320.png",
+      "sha256": "d9abe0a741e5249098791a1a98484d60fadf0f09cef9d844d1aa4e481d472a05",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-case-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-case-3-1280.png",
+      "sha256": "45897bbdce622da9a83c22f4cbc0a138cd7dedc72a6725d445dd625b3a6cf602",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-case-3-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-case-3-320.png",
+      "sha256": "44e39f721458740d6c4beda14fb45b9821629281810343061dcd327d24e5ce34",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-case-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-case-4-1280.png",
+      "sha256": "643de26c019d2e841d3bbab0980c649dbbcaa2e967f163b2af7fc8382be2fcf2",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-case-4-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-case-4-320.png",
+      "sha256": "cd71a4ca4c7653e17f4f6a10e2b0fb6f0cc859a66b143b2cf921491f05c1dcaf",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-case-4-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-case-5-1280.png",
+      "sha256": "c8234520a68ca7a804585fdbe233ca5d42774deae29d3685b15756ef57f8c031",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-case-5-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-case-5-320.png",
+      "sha256": "daf00d5d6f78cf7b4bdea5923697b17fc9a96674952107ff52db316ec6167adf",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "review-atanasyan-7-9-theory-58-part-1-case-5-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-neutral-1280.png",
+      "sha256": "b3399112eab9ae8d040b5aafe6be20da510c1b60e83237cc8f0a465ed4f12e02",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-neutral-320.png",
+      "sha256": "ba0f1903d476740687495902ef25fb31950fda9b10a4ada18f00de66b231aa64",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-neutral-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-step-1-1280.png",
+      "sha256": "82a8f7ae4e358b27ec52ca8da268427bb0d3173fda8312b7cd5a76fb7c513619",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-step-1-320.png",
+      "sha256": "0f7eb59ea2b235c0b0babdf4b3a4686e4114cbe5087462b2f2aa05ab3387ce7a",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-step-10-1280.png",
+      "sha256": "cda5e493d326a9ddbd5a2b87b4433bf307d05e216c9ed912c292fe9e38da2238",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-step-9-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-step-10-320.png",
+      "sha256": "9268f8c388fa1d0b27015e2da8ca71542f80d0e2eec70880844beb595abcbd80",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "atanasyan-7-9-theory-58-part-1-last-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-step-2-1280.png",
+      "sha256": "3eccf3117378a6cc28ae25095ae654201d399f754a2fcc6d211d329b90b885a5",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-step-2-320.png",
+      "sha256": "95408c34c09cb44e268567a41522b646bc4fc47d307b18cd27c863db985684b8",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-step-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-step-3-1280.png",
+      "sha256": "721c77341e086f5f1a60647a963a1d9d78cc28d7967bfe9fde33afa5bd47942f",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-step-3-320.png",
+      "sha256": "b934a1b362ab1d12865cc290795a9dba0e7c5483d7b80214a97765715399304d",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-step-4-1280.png",
+      "sha256": "891860983c4f396fcf7bbd08bfd2d627828ae8e8063b9ce9d9dabe198fdb1fbb",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-step-4-320.png",
+      "sha256": "afea7963c66164c5f558b3c1c4c276dd9113d4cabaeea300d5088bf5bb93457d",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-step-4-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-step-5-1280.png",
+      "sha256": "ea9fbc2a5865734cb7adcdffe64bc14490825bdcdb4f71adc244af258f5d743e",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-step-5-320.png",
+      "sha256": "230aa504d8111f1bde6e38b2a7a34b565bb160ebb69a0d4066ba92a3ad2cb193",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-step-5-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-step-6-1280.png",
+      "sha256": "edb538417217376392ccdbf523dec32d7ac50c29220e7fc5fd7ea7cbea11834f",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-step-6-320.png",
+      "sha256": "67de17690faf8b4cc88c55b006ef055c75fea5d5197b0fb09f91cb3484b35cd5",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-step-6-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-step-7-1280.png",
+      "sha256": "f321739b423f85f98f612a9b3dfde27f2598510aa20324ad49beb9555000fa40",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-step-8-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-step-7-320.png",
+      "sha256": "9ce8f1b5b927cc91ef25391c5fbc2df4c7428675ff15df0ff5c1f4c62f3d9bbd",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-step-8-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-step-8-1280.png",
+      "sha256": "f321739b423f85f98f612a9b3dfde27f2598510aa20324ad49beb9555000fa40",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-step-8-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-step-8-320.png",
+      "sha256": "9ce8f1b5b927cc91ef25391c5fbc2df4c7428675ff15df0ff5c1f4c62f3d9bbd",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-step-8-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-step-9-1280.png",
+      "sha256": "cda5e493d326a9ddbd5a2b87b4433bf307d05e216c9ed912c292fe9e38da2238",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-58-part-1-step-9-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-58-part-1-step-9-320.png",
+      "sha256": "9268f8c388fa1d0b27015e2da8ca71542f80d0e2eec70880844beb595abcbd80",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "atanasyan-7-9-theory-58-part-1-last-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-59-part-1-case-1-1280.png",
+      "sha256": "d2476e5304e28fa66e5d8ad3fda36ef621609744bfa23d3e84c7ffe62c37a8fc",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-59-part-1-case-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-59-part-1-case-1-320.png",
+      "sha256": "b4f5bfce2d9621a6e662c616be050baef90aca83af6beb4cad353138625f7e93",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-59-part-1-case-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-59-part-1-neutral-1280.png",
+      "sha256": "8748358e5eb26aefd773c867be44c865236f3374546a11bd7e6ef053fe952008",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-59-part-1-neutral-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-59-part-1-neutral-320.png",
+      "sha256": "0277d52387a84f028874af3bdd8bec2b46a84171e5ee3c87736dca8d0d66c369",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-59-part-1-neutral-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-59-part-1-step-1-1280.png",
+      "sha256": "d3b5cd0da50db7305a7659ee48cd76780a06b66d9359541f231778e961facc49",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-59-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-59-part-1-step-1-320.png",
+      "sha256": "9f9ec12c088aa60d12b601ae12cf75fb078ce0dca14f3238c8d54c9817360433",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "review-atanasyan-7-9-theory-59-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-59-part-1-step-2-1280.png",
+      "sha256": "64883ee8f61986bdb615d9e649cc2f6ad0823b4b6ca2247f03b7d05f89b5d8f4",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-59-part-1-step-2-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-59-part-1-step-2-320.png",
+      "sha256": "92ab37bdac64676a6258c83b296bc552947993d33947ce0cf36406c698ad5195",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-59-part-1-step-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-59-part-1-step-3-1280.png",
+      "sha256": "2ad1043e005caa601cb8c3a353d8f9e269f177caa42027889ea88dee38169e40",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-59-part-1-step-3-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-59-part-1-step-3-320.png",
+      "sha256": "2d93290bb00d1de052e75157476a3b97db73fd49cc654de231ced5114147085f",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-59-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-59-part-1-step-4-1280.png",
+      "sha256": "6fb578ca6f8c32a7c815d9004ac9fab8e5b6a6310bd89201a20bf009e402b478",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-59-part-1-step-4-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-59-part-1-step-4-320.png",
+      "sha256": "07de7298c9534b9a2e4e42f36dd1dbd3e3785f0d3af1a385a154ef210f5cdb5d",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-59-part-1-step-4-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-60-part-1-neutral-1280.png",
+      "sha256": "27b2b391351cb59cc8f6b689ee4cd4050e07fdd71a92e39c3962a404c3468a5b",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-60-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-60-part-1-neutral-320.png",
+      "sha256": "eeeaf5a1491f9dd61d769372333d37575e15393ab77b0377c82d3aba203ecd31",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-60-part-1-neutral-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-60-part-1-step-1-1280.png",
+      "sha256": "85ef745f680860d93e3697e4b573754023af82c07bbb56eeb07a93d6608fb3eb",
+      "width": 1280,
+      "evidence": "new-whole-PNG-actually-viewed",
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-60-part-1-step-1-320.png",
+      "sha256": "eeeaf5a1491f9dd61d769372333d37575e15393ab77b0377c82d3aba203ecd31",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-60-part-1-neutral-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-60-part-1-step-2-1280.png",
+      "sha256": "16986111a465748a910e911a94b7c643b5f895ccd465149914bd9f0bd630851e",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-60-part-1-step-2-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-60-part-1-step-2-320.png",
+      "sha256": "16c545c1c99661303a08f9e1db9ea9bcb35460b9f1c295ac48ec926dd2554cb4",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-60-part-1-step-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-60-part-1-step-3-1280.png",
+      "sha256": "dde8280bd71522be89309fa992fb85006327301b2a0eb61b7b7de25c4446d85c",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-60-part-1-step-5-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-60-part-1-step-3-320.png",
+      "sha256": "5290ba3b37f17fcee9cefe327ee3797ba2d77eb6bf3bda8348538ed4840f3a71",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-60-part-1-step-5-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-60-part-1-step-4-1280.png",
+      "sha256": "dde8280bd71522be89309fa992fb85006327301b2a0eb61b7b7de25c4446d85c",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-60-part-1-step-5-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-60-part-1-step-4-320.png",
+      "sha256": "5290ba3b37f17fcee9cefe327ee3797ba2d77eb6bf3bda8348538ed4840f3a71",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-60-part-1-step-5-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-60-part-1-step-5-1280.png",
+      "sha256": "dde8280bd71522be89309fa992fb85006327301b2a0eb61b7b7de25c4446d85c",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-60-part-1-step-5-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-60-part-1-step-5-320.png",
+      "sha256": "5290ba3b37f17fcee9cefe327ee3797ba2d77eb6bf3bda8348538ed4840f3a71",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-60-part-1-step-5-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-61-part-1-case-1-1280.png",
+      "sha256": "7746e5eee20fba825318cdc8e9c4baf6092ae1bb73ec2100b282bf1fae4623ed",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-61-part-1-case-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-61-part-1-case-1-320.png",
+      "sha256": "bde79c08eb20c6eed915baa94709721feb364bb96d8ffe2f7020c24b0060f1c1",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-61-part-1-case-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-61-part-1-neutral-1280.png",
+      "sha256": "ee99e66a190da6c4188b9bc03f14f135319c4e146b6f0619d01618556a455b5e",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-61-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-61-part-1-neutral-320.png",
+      "sha256": "f79adc354c1e83d8224ac4b6155051948b7a78d16bc131f81d09ba19335f3137",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-61-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-61-part-1-step-1-1280.png",
+      "sha256": "ee99e66a190da6c4188b9bc03f14f135319c4e146b6f0619d01618556a455b5e",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-61-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-61-part-1-step-1-320.png",
+      "sha256": "f79adc354c1e83d8224ac4b6155051948b7a78d16bc131f81d09ba19335f3137",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-61-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-61-part-1-step-2-1280.png",
+      "sha256": "8fce800be3fbd39c38e20b695c9dbe4bc87c33a7f6d5e73ec963ab505ee0bae5",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-61-part-1-step-2-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-61-part-1-step-2-320.png",
+      "sha256": "ecabf57688e011c367f224dd71db00ff7d6fc66e323e76c49c6e6ce2d58416ba",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-61-part-1-step-2-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-61-part-1-step-3-1280.png",
+      "sha256": "e018176ceada8da064c52d19f35f7f69166c142ba4efc3ebc4fe427f1679d851",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-61-part-1-step-6-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-61-part-1-step-3-320.png",
+      "sha256": "518766847048100f838b1bca3afc46dda4871bbaf96b0d815663c00d16bb6a7e",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-61-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-61-part-1-step-4-1280.png",
+      "sha256": "e018176ceada8da064c52d19f35f7f69166c142ba4efc3ebc4fe427f1679d851",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-61-part-1-step-6-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-61-part-1-step-4-320.png",
+      "sha256": "907648c0998f395f1a08ac51184f4bfd7622be10ab902bf2603322aed133245c",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-61-part-1-step-6-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-61-part-1-step-5-1280.png",
+      "sha256": "e018176ceada8da064c52d19f35f7f69166c142ba4efc3ebc4fe427f1679d851",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-61-part-1-step-6-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-61-part-1-step-5-320.png",
+      "sha256": "907648c0998f395f1a08ac51184f4bfd7622be10ab902bf2603322aed133245c",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-61-part-1-step-6-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-61-part-1-step-6-1280.png",
+      "sha256": "e018176ceada8da064c52d19f35f7f69166c142ba4efc3ebc4fe427f1679d851",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-61-part-1-step-6-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-61-part-1-step-6-320.png",
+      "sha256": "907648c0998f395f1a08ac51184f4bfd7622be10ab902bf2603322aed133245c",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-61-part-1-step-6-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-62-part-1-neutral-1280.png",
+      "sha256": "960171346a33818a227ff0dda8e1205db5f1a104e1f526b25d4af62af369b796",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-62-part-1-neutral-320.png",
+      "sha256": "1b0d516de6d0d3339ad1b40272d672462e86a78498cfb35ae10f3bcb0b2c5ad9",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-62-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-62-part-1-step-1-1280.png",
+      "sha256": "960171346a33818a227ff0dda8e1205db5f1a104e1f526b25d4af62af369b796",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-1-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-62-part-1-step-1-320.png",
+      "sha256": "1eb11a4868a876284fd7ba985ee07c42379cecb0f28f7660025cff2960dbefa2",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-full-5",
+        "file": "review-atanasyan-7-9-theory-62-part-1-step-1-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-62-part-1-step-2-1280.png",
+      "sha256": "843bc682faa05c820f4edb114d7d25c2cdd9fae245d4250d7462a5fc743f18c1",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-6-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-62-part-1-step-2-320.png",
+      "sha256": "11514d72d31ff8c62bcdf4f7f4442e1966f4eb60def3e028c09523798f066383",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-62-part-1-step-6-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-62-part-1-step-3-1280.png",
+      "sha256": "fce451ede25b3e16ec4587592b7253a4f988eceda42d3b97021db621c92853d9",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-3-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-62-part-1-step-3-320.png",
+      "sha256": "cace1bfbf05a9a170a9bd65bfa1c17ca431ba368bd433d95ba0d3fee2dfa639a",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-62-part-1-step-3-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-62-part-1-step-4-1280.png",
+      "sha256": "c83c82a70830b160ae581ebe5f488118601f6abc8b4bd0f9512ac3d92a88d06d",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-4-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-62-part-1-step-4-320.png",
+      "sha256": "35c6c1815f6abd23aa08d96941c3f7f01a0be57240a25b927d497aac3d5a0513",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-62-part-1-step-4-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-62-part-1-step-5-1280.png",
+      "sha256": "843bc682faa05c820f4edb114d7d25c2cdd9fae245d4250d7462a5fc743f18c1",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-6-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-62-part-1-step-5-320.png",
+      "sha256": "11514d72d31ff8c62bcdf4f7f4442e1966f4eb60def3e028c09523798f066383",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-62-part-1-step-6-320.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-62-part-1-step-6-1280.png",
+      "sha256": "843bc682faa05c820f4edb114d7d25c2cdd9fae245d4250d7462a5fc743f18c1",
+      "width": 1280,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-6-1280.png"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "file": "review-atanasyan-7-9-theory-62-part-1-step-6-320.png",
+      "sha256": "11514d72d31ff8c62bcdf4f7f4442e1966f4eb60def3e028c09523798f066383",
+      "width": 320,
+      "evidence": "exact-whole-PNG-sha256-reuse",
+      "matched": {
+        "dataset": "vii-focused-1",
+        "file": "review-atanasyan-7-9-theory-62-part-1-step-6-320.png"
+      },
+      "verdict": "PASS"
+    }
+  ],
+  "actuallyViewedMontages": [
+    {
+      "file": "theory-320-01.png",
+      "sha256": "023b27a386a20b0536c1e5b4ce05ddfaab90117678101dd79c9c79888530e6c7",
+      "frames": [
+        {
+          "file": "review-atanasyan-7-9-selfcheck-chapter-7-7-part-1-step-1-320.png",
+          "sha256": "6ec6e93981fe9edb7c489abc7e8f161735fbc7869a3ccdc44ab6bcf4d59bc2dd",
+          "width": 320,
+          "evidence": "requires-actual-view"
+        }
+      ]
+    },
+    {
+      "file": "theory-1280-01.png",
+      "sha256": "90ee5d9cabc7e35b92644fe1f30f3e53da9cd73790debed8bc531389b55dbf29",
+      "frames": [
+        {
+          "file": "atanasyan-7-9-selfcheck-chapter-7-11-part-1-last-1280.png",
+          "sha256": "c9cf3e811ee4ddaddff40ac94934c834f45b263d184e31adfab2d349f7f553b9",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "atanasyan-7-9-selfcheck-chapter-7-12-part-1-last-1280.png",
+          "sha256": "83114713d78abda8f1806110b99840c9d5a5943d5102daecb05d6b1de6559fe6",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "atanasyan-7-9-selfcheck-chapter-7-4-part-1-last-1280.png",
+          "sha256": "61d64f3cb96e341469ddafe58eaa765497db05c8de48bd2bbcd3e660aeadfc8d",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "atanasyan-7-9-selfcheck-chapter-7-5-part-1-initial-1280.png",
+          "sha256": "f46a8a9ff4376ecf809390c531898d13d267e215179d54a64e0a8d9f1b8c674f",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        }
+      ]
+    },
+    {
+      "file": "theory-1280-02.png",
+      "sha256": "f9b126a4c10cd97db50d2845c9ae94a8a2864d034b93218c62c08aaf907abcb4",
+      "frames": [
+        {
+          "file": "atanasyan-7-9-selfcheck-chapter-7-5-part-1-last-1280.png",
+          "sha256": "6613b2fa28b4e23e0999228237c9c1bea84b72d7a293c9fc9369a17939360fca",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "atanasyan-7-9-selfcheck-chapter-7-6-part-1-last-1280.png",
+          "sha256": "4ebd2f52bf89146d74d26a9bb81035051a167ce14cf84c7946b765d3600353bf",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "atanasyan-7-9-selfcheck-chapter-7-7-part-1-initial-1280.png",
+          "sha256": "2849d6567d00d5c254cb3d9a1fd5397465655e55e3bd3edf50a8a953b930c731",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "atanasyan-7-9-selfcheck-chapter-7-7-part-1-last-1280.png",
+          "sha256": "a8036621f8ecb708cdeb912555f8b7c340910fe35806a7ed2dc89d9629b307be",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        }
+      ]
+    },
+    {
+      "file": "theory-1280-03.png",
+      "sha256": "5fcdeeabfe1052c73e3fa29d9c261458a5d02cb7dfeec7ee0bcc99f5abd7d85d",
+      "frames": [
+        {
+          "file": "atanasyan-7-9-selfcheck-chapter-7-8-part-1-last-1280.png",
+          "sha256": "af521e67a113b68980cef4a17410728d871b25fb2b68c07bc9830b46072651f0",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "atanasyan-7-9-selfcheck-chapter-7-9-part-1-last-1280.png",
+          "sha256": "aba09f169d22bf1f113d05b394c5a41ba3de09bc7fca8176e9aef03d0f69862b",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "atanasyan-7-9-theory-55-part-1-last-1280.png",
+          "sha256": "ebf1ff3b7d9622a9361353f725f69d5a19f91946b51f8bfc4ff91054049835eb",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "atanasyan-7-9-theory-56-part-1-last-1280.png",
+          "sha256": "fd0bdaa03417984ee0e0976bd8e02f904cde304a4f70c7dfca3891fd5c385b96",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        }
+      ]
+    },
+    {
+      "file": "theory-1280-04.png",
+      "sha256": "7ac1325d8f52e781c5f55a9ef3e66cb773b6d2b1e42a77b461198ee39dacabe5",
+      "frames": [
+        {
+          "file": "atanasyan-7-9-theory-57-part-1-last-1280.png",
+          "sha256": "d909a9171bf08ffcb6ecc9526a8feb46585151247b57406b20a0884dbe6b24aa",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "atanasyan-7-9-theory-58-part-1-initial-1280.png",
+          "sha256": "b3399112eab9ae8d040b5aafe6be20da510c1b60e83237cc8f0a465ed4f12e02",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "atanasyan-7-9-theory-60-part-1-last-1280.png",
+          "sha256": "d062924fbb938784d29fd635d8bb0e61ebc41392c6dcc3bb07bde05035da0588",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "atanasyan-7-9-theory-61-part-1-last-1280.png",
+          "sha256": "07ed1ad67962b72d4b1eedf6fcf25e5004f0fa41f1f406a45ab13ff924f2f77e",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        }
+      ]
+    },
+    {
+      "file": "theory-1280-05.png",
+      "sha256": "9039bc2037846ba678617434bfcfcda753c3326209b3fd7773dabac0802f35b1",
+      "frames": [
+        {
+          "file": "review-atanasyan-7-9-selfcheck-chapter-7-1-part-1-step-2-1280.png",
+          "sha256": "bb600da59132d5c6af9d706b8a8c25666dff8471acd46ddb5b17406a6f3ec370",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "review-atanasyan-7-9-selfcheck-chapter-7-11-part-1-case-1-1280.png",
+          "sha256": "4746991ad2b47fb37d1cd92bc74affd61f52e4302c1939437e19d4a7c8c0fd6b",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "review-atanasyan-7-9-selfcheck-chapter-7-11-part-1-neutral-1280.png",
+          "sha256": "b7e1542f898a75abc254e9c6153fe1b6b4e423ff376b6d4498a61f846ccccf5a",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "review-atanasyan-7-9-selfcheck-chapter-7-11-part-1-step-2-1280.png",
+          "sha256": "76a6a9d6504ecb2e03c0260927b870a6775f24bf48a38993bb306f7591194d2f",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        }
+      ]
+    },
+    {
+      "file": "theory-1280-06.png",
+      "sha256": "f1fb0dabe810c8cb6dccae3dbf9842c2674244119e50edd2b60f359f9e0a635b",
+      "frames": [
+        {
+          "file": "review-atanasyan-7-9-selfcheck-chapter-7-12-part-1-step-1-1280.png",
+          "sha256": "a1c9b2c0adf35f0e4f9126c79fff4f27612eb84f8138ded47eed0507d2bb0666",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "review-atanasyan-7-9-selfcheck-chapter-7-4-part-1-step-1-1280.png",
+          "sha256": "03c2e069c6551172514bf2a3cba68b41c1792c4f95f5e8da56ba38a15255a8df",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-case-1-1280.png",
+          "sha256": "532780f1ce3d829ab2f2f03e0220ae5c5bf5ec1adc3d0c1fa2c3ee372f5d52c1",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-case-2-1280.png",
+          "sha256": "7de1122e0879c8c606ab603fc2a94c95576446faf2291feb80ab28119b0106cf",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        }
+      ]
+    },
+    {
+      "file": "theory-1280-07.png",
+      "sha256": "89e63ee1168c69be022c2d21c0e9fac8e6385374768c2517456055fcd9f8c4ce",
+      "frames": [
+        {
+          "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-case-3-1280.png",
+          "sha256": "d6eec0444dc9204984d9656dc41d357c85e8c09808d8a46bb712674c78b97e37",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-step-2-1280.png",
+          "sha256": "e9e3b18c01f69b5d159774ba4edefdb73d5f40a554a3dd2a9d27a9195bd8527f",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-step-3-1280.png",
+          "sha256": "e474c584d2599021336b6179aa83ac73de7bab19ca6827c7a37a54c35742fd6f",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "review-atanasyan-7-9-selfcheck-chapter-7-5-part-1-step-4-1280.png",
+          "sha256": "cb59e007bc6776cd5d7d36795fac5457662bc9f0315a652a943b5d933d993db1",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        }
+      ]
+    },
+    {
+      "file": "theory-1280-08.png",
+      "sha256": "e574c63a1b2ab94315d1f8a190c84517116066b64afcbe988874f59e2169437d",
+      "frames": [
+        {
+          "file": "review-atanasyan-7-9-selfcheck-chapter-7-7-part-1-neutral-1280.png",
+          "sha256": "f3b9a25422dc7d07bb176ce3f744a5af47faba49c0ab5bb399e140c91ad60ec2",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "review-atanasyan-7-9-selfcheck-chapter-7-7-part-1-step-1-1280.png",
+          "sha256": "9266739912325a6139f204be3aa2f1c6df51cf27f00083bea0d5d1964f2a8bbc",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-case-1-1280.png",
+          "sha256": "947b3b08ba34ee7059701e0c233212c18dcfef0f540ff9d88c0817aac36802d9",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-step-3-1280.png",
+          "sha256": "a8470361785bb550ee84430bc56fa5e7334fcd819ecb4d271600ac096b11995f",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        }
+      ]
+    },
+    {
+      "file": "theory-1280-09.png",
+      "sha256": "d3a10fa943d18ae58a195914075eb45ffde47fc2960e8eee5d2d67749b535313",
+      "frames": [
+        {
+          "file": "review-atanasyan-7-9-selfcheck-chapter-7-8-part-1-step-4-1280.png",
+          "sha256": "3dc36da9decf269164ba293d8fce75b74b5ff1e2cec3ee0c8417af1a25b2f124",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "review-atanasyan-7-9-selfcheck-chapter-7-9-part-1-step-1-1280.png",
+          "sha256": "4a495acd29c46e0336bc1937e6ee0c87b9de1b099c1d1610b81d790889c7ba43",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "review-atanasyan-7-9-theory-54-part-1-step-3-1280.png",
+          "sha256": "95d56875aec8f53e7086a9faaf8185cfa1cb438000706d278b62a7c6d661fff8",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "review-atanasyan-7-9-theory-54-part-1-step-4-1280.png",
+          "sha256": "d276030a86b9c2f9c5498bda65ea10d3437668f984df77832c11643270754f1f",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        }
+      ]
+    },
+    {
+      "file": "theory-1280-10.png",
+      "sha256": "20efa48745d49efdbc7f45b9bf11b4302baeac5adda89dc79db40a2001b572de",
+      "frames": [
+        {
+          "file": "review-atanasyan-7-9-theory-54-part-1-step-6-1280.png",
+          "sha256": "15ab7c62ce35f18e37f7829ede169b95748c4ef11af8c3e671cf3a4a8954850a",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "review-atanasyan-7-9-theory-54-part-1-step-7-1280.png",
+          "sha256": "d94bacd2db2e347c541cb4cb5d911bfce4f088ba657a6abc07b9123293f7d5fb",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "review-atanasyan-7-9-theory-56-part-1-neutral-1280.png",
+          "sha256": "935ffc997136be073e8499b5bbb759ca5b89dc841cae47c3e8515985f3eb3f98",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "review-atanasyan-7-9-theory-58-part-1-step-1-1280.png",
+          "sha256": "82a8f7ae4e358b27ec52ca8da268427bb0d3173fda8312b7cd5a76fb7c513619",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        }
+      ]
+    },
+    {
+      "file": "theory-1280-11.png",
+      "sha256": "ba838b82973344808e9dc68efaf6fc71297b1ea22e8871433c0651195561d1c7",
+      "frames": [
+        {
+          "file": "review-atanasyan-7-9-theory-58-part-1-step-2-1280.png",
+          "sha256": "3eccf3117378a6cc28ae25095ae654201d399f754a2fcc6d211d329b90b885a5",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "review-atanasyan-7-9-theory-58-part-1-step-3-1280.png",
+          "sha256": "721c77341e086f5f1a60647a963a1d9d78cc28d7967bfe9fde33afa5bd47942f",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "review-atanasyan-7-9-theory-58-part-1-step-4-1280.png",
+          "sha256": "891860983c4f396fcf7bbd08bfd2d627828ae8e8063b9ce9d9dabe198fdb1fbb",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "review-atanasyan-7-9-theory-58-part-1-step-5-1280.png",
+          "sha256": "ea9fbc2a5865734cb7adcdffe64bc14490825bdcdb4f71adc244af258f5d743e",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        }
+      ]
+    },
+    {
+      "file": "theory-1280-12.png",
+      "sha256": "a4ace292f3441638c07d7561e9724c9f62987aacd1ff356e80ed728d5a1e5a2f",
+      "frames": [
+        {
+          "file": "review-atanasyan-7-9-theory-58-part-1-step-6-1280.png",
+          "sha256": "edb538417217376392ccdbf523dec32d7ac50c29220e7fc5fd7ea7cbea11834f",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        },
+        {
+          "file": "review-atanasyan-7-9-theory-60-part-1-step-1-1280.png",
+          "sha256": "85ef745f680860d93e3697e4b573754023af82c07bbb56eeb07a93d6608fb3eb",
+          "width": 1280,
+          "evidence": "requires-actual-view"
+        }
+      ]
+    }
+  ],
+  "browserEvidence": {
+    "artifact": "vii-full-6/browser-evidence.json",
+    "sha256": "bce5c9c1011fe9e5d275d2158a4ad6f977e4cdf8f74dd58b810453969cd58156",
+    "completed": false,
+    "fullCourseFailingViews": 14,
+    "theoryFailingViews": 0,
+    "limits": "The broader gate failed in historical exercises450/452/454/494/536. This scoped image review does not waive or approve those failures or publication."
+  }
+}

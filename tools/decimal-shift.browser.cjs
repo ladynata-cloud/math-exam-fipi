@@ -89,12 +89,11 @@ async function guidedReady(page) { await page.waitForFunction(() => window.__div
 async function guidedOne(page) {
   const all = await guidedState(page), s = all.sessions[all.active];
   if (s.done) return false;
-  if (s.accepted) { await page.locator('#primary').click(); return true; }
   const a = G.plan(s.task).actions[s.step];
   if (a.options) await page.locator('[data-option=' + JSON.stringify(a.answer) + ']').click();
   else await page.locator('#answer').fill(a.answer);
   await page.locator('#primary').click();
-  assert((await guidedState(page)).sessions[all.active].accepted, 'Correct guided response is accepted');
+  assert.equal((await guidedState(page)).sessions[all.active].answers.length, s.answers.length + 1, 'One check records the correct guided action exactly once');
   return true;
 }
 async function guidedFinish(page) {
@@ -128,7 +127,18 @@ async function legacyFinish(page) {
   for (let i = 0; i < 180; i++) if (!(await legacyOne(page))) return;
   throw Error('Legacy division failed to finish');
 }
+async function revealRefreshControl(page, button) {
+  const control = page.locator(button);
+  if (await control.isVisible()) return;
+  const toggle = page.locator('.bh-toggle:visible');
+  await toggle.waitFor({state:'visible'});
+  if (await toggle.getAttribute('aria-expanded') !== 'true') await toggle.click();
+  if (!await control.isVisible() && await page.locator('.bh-root:visible').count())
+    await page.locator('.bh-root:visible').click();
+  await control.waitFor({state:'visible'});
+}
 async function refresh(page, button) {
+  await revealRefreshControl(page, button);
   await page.locator(button).click();
   const dialog = page.locator('dialog.multiplication-refresh');
   assert(await dialog.isVisible(), 'Multiplication review opens beside division');
@@ -222,7 +232,8 @@ async function refresh(page, button) {
       await paired(p,1,'Restored paired commas');
       await p.locator('#primary').click();
       state = (await guidedState(p)).sessions.decimalDivisor;
-      assert.equal(state.accepted,true); assert.equal(state.step,0,'Check waits for deliberate continuation');
+      assert.equal(state.accepted,false); assert.equal(state.step,1,'One check advances to the multiplier question');
+      assert.deepEqual(state.answers,['1']); assert.equal(state.draft,'');
       // Complete the remaining preparation without changing its established four-step plan.
       for (let n = 0; n < 12; n++) {
         const s = (await guidedState(p)).sessions.decimalDivisor;
@@ -231,7 +242,13 @@ async function refresh(page, button) {
       }
       assert.equal((await guidedState(p)).sessions.decimalDivisor.step,4);
       await p.locator('#answer').fill('123');
+      const beforeHelp = await guidedState(p);
+      await revealRefreshControl(p, '#multiplication-refresh');
       const before = await guidedState(p), notebook = await notebookState(p);
+      assert.equal(before.sessions.decimalDivisor.hints, beforeHelp.sessions.decimalDivisor.hints + 1,
+        'Opening contextual division help is counted separately from a multiplication review visit');
+      for (const key of ['id','task','step','answers','accepted','done','draft','errors','reveals','repeated'])
+        assert.deepEqual(before.sessions.decimalDivisor[key], beforeHelp.sessions.decimalDivisor[key], 'Opening help preserves guided ' + key);
       await refresh(p,'#multiplication-refresh');
       const after = await guidedState(p);
       for (const key of ['id','task','step','answers','accepted','done','draft','errors','reveals','repeated']) assert.deepEqual(after.sessions.decimalDivisor[key],before.sessions.decimalDivisor[key],'Multiplication review preserves guided ' + key);

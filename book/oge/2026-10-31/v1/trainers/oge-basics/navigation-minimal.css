@@ -1,0 +1,42 @@
+/* Calm public navigation and the special practice shells. No task content is hidden. */
+body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543c;--accent-soft:#edf6f0;--green:#176447;--green-deep:#14543c;--blue:#176447;--blue-deep:#14543c;--line:#dce5df;--shadow:none;background:#fff;color:#23332b;line-height:1.65}
+.basics-navigation .wrap,.basics-navigation main{max-width:980px;margin:auto;padding:26px 20px 60px}
+.basics-navigation .topbar{position:static;background:#fff;backdrop-filter:none}
+.basics-navigation .mark,.basics-navigation .hero-art,.basics-navigation .route,.basics-navigation .eyebrow,.basics-navigation .topic-kicker,.basics-navigation .topic-icon,.basics-navigation .icon,.basics-navigation .symbol{display:none}
+.basics-navigation .hero,.basics-navigation .map-hero,.basics-navigation .percent-card{display:block;background:#fff;box-shadow:none;border:0;padding:0;margin:0 0 28px}
+.basics-navigation .hero-copy,.basics-navigation .section{padding:0}.basics-navigation .section{border:0;margin:32px 0}
+.basics-navigation h1{font-size:clamp(28px,4vw,38px);line-height:1.2;margin:0 0 14px;letter-spacing:-.025em}
+.basics-navigation h2{font-size:23px;line-height:1.35}.basics-navigation h3{font-size:19px;line-height:1.4}
+.basics-navigation .lead{font-size:18px}.basics-navigation .topic-grid,.basics-navigation .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.basics-navigation .topic-card,.basics-navigation .grid>.card{display:block;min-height:0;box-shadow:none;background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;transform:none}
+.basics-navigation .topic-card p,.basics-navigation .grid>.card p{min-height:0;font-size:16px;margin-top:7px;line-height:1.55}
+.basics-navigation .topic-foot a,.basics-navigation .meta{font-size:15px;color:#176447}
+.basics-navigation .card:not(a){box-shadow:none}.basics-navigation .card.flagship{background:#fff;border-color:var(--line)}
+.basics-navigation .section-head{display:block}.basics-navigation .section-head>p{margin-top:8px}
+.basics-navigation details,.basics-special details.basics-secondary{margin:18px 0;border:1px solid #dce5df;border-radius:12px;padding:14px 16px;background:#fff}
+.basics-navigation summary,.basics-special details.basics-secondary>summary{cursor:pointer;font-size:17px;font-weight:650;color:#176447;min-height:28px}
+.basics-navigation details>*:not(summary),.basics-special details.basics-secondary>*:not(summary){margin-top:14px}
+.basics-navigation .basics-nav-intro{font-size:18px;margin-bottom:20px;color:#52645a}
+.basics-navigation .nav-pills{margin:18px 0}.basics-navigation .nav-pills a{font-size:15px;background:#f4f8f5;color:#176447}
+.basics-navigation .division-course-heading>.lead{margin-top:16px}.basics-navigation .division-course-heading>p:not(.lead){font-size:16px}
+.basics-navigation .division-course,.basics-navigation .division-course-stages{max-width:100%}
+.basics-special main{max-width:980px}.basics-special h1{font-size:clamp(25px,4vw,34px);line-height:1.25}
+.basics-special .intro{padding:12px 0;margin:12px 0}.basics-special .intro h1{font-size:30px}.basics-special .intro .lead{font-size:17px}
+.basics-special #goal,.basics-special .note{font-size:16px}.basics-special #exercise{margin-top:18px}
+.basics-special .basics-help-host{margin:14px 0}.basics-special .basics-help-root{display:grid;gap:12px}
+.basics-special .basics-help-root button{justify-self:start;max-width:100%}
+.basics-special .estimate-page>header>p:not([role=status]){margin:6px 0}
+.basics-special .estimate-page>.estimate-card{margin-top:20px}
+.basics-special .estimate-actions{margin-top:18px}
+.basics-special .column{margin:24px auto}.basics-special h2#question{font-size:24px;line-height:1.5}
+.basics-foundations main>.eyebrow{display:none}.basics-foundations #exercise .in-mind:empty{display:none}
+.basics-lab .intro{padding:0;margin:0 0 18px}.basics-lab .intro h1{margin:0 0 18px}
+.basics-estimate #estimate-task{font-size:24px;line-height:1.45}.basics-estimate #estimate-prompt{font-size:21px;line-height:1.6}
+.basics-estimate #estimate-notice{margin:22px 0 12px}.basics-estimate .estimate-page>header h1{margin-bottom:18px}
+.basics-special button,.basics-navigation .btn,.basics-navigation .button{min-height:44px;font-size:16px;box-shadow:none}
+/* Keep each diagnostic's native large answer type; shared shells only set the hit area. */
+.basics-special input{min-height:48px}
+.basics-estimate input,.basics-lab input,.basics-foundations input{font-size:21px}
+.basics-special [hidden],.basics-navigation [hidden]{display:none!important}
+@media(max-width:600px){.basics-navigation .wrap,.basics-navigation main{padding:22px 14px 50px}.basics-navigation .topic-grid,.basics-navigation .grid{grid-template-columns:1fr}.basics-navigation .topic-card,.basics-navigation .grid>.card{padding:16px}.basics-navigation .topbar-in{padding:10px 14px;flex-wrap:wrap}.basics-special .estimate-page{padding:16px 12px}.basics-special .workspace{grid-template-columns:1fr}.basics-special .stage,.basics-special .paper{min-width:0}.basics-special .intro h1{font-size:26px}}
+@media(max-width:420px){.basics-estimate #estimate-task{font-size:22px}.basics-estimate #estimate-prompt{font-size:20px}.basics-estimate .estimate-card{padding:15px}.basics-foundations #exercise{padding:16px}.basics-foundations .column{margin:16px auto}}

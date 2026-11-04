@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "reviewDate": "2026-10-23",
+  "timezone": "Asia/Novosibirsk",
+  "reviewerRole": "Independent AI reviewer, separate from the author of batch B",
+  "reviewerTask": "models_01_30 independent review of models_31_60",
+  "target": "geometry-course/textbook/models/chapter-01-b.json",
+  "targetSha256": "49dab55e0d1c497c91fbf6a400d055387ac9a589a2c835f1bf14c48682d7bb11",
+  "sourceBookId": "atanasyan-2023-7-9",
+  "sourceSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "sourcePrintedPagesInspected": [
+    17,
+    18,
+    19,
+    21,
+    22,
+    25
+  ],
+  "coverage": {
+    "numberedExercises": 30,
+    "range": [
+      31,
+      60
+    ],
+    "explicitParts": 41,
+    "views": 202,
+    "coordinateClaims": 151
+  },
+  "checksPassed": [
+    "All 41 parts compared against the source exercise data and the source-verified correction addendum.",
+    "All coordinate claims passed check_models.validate; equal-angle mark groups also independently recomputed in every view.",
+    "Every part has its own explicit coordinates and every explanatory step has its own view.",
+    "Initial scenes contain no numeric solved answers; requested construction points and auxiliary directions are introduced in later views.",
+    "Alternate orders for collinear points are separated; no impossible collinear drawing is used for the 3-4-5 length contradiction.",
+    "Angle cases 48 include acute, right, obtuse and straight originals; failed constructions are explicitly identified.",
+    "The open Euler route and closed routes in 44 satisfy the stipulated edge-use convention and remain manually assessed.",
+    "Angular marks were checked as actual equality groups; ordinary highlighting arcs are not equality claims.",
+    "All identified content and coordinate review issues were corrected and rechecked."
+  ],
+  "resolvedFindings": [
+    {
+      "numbers": [
+        33,
+        34
+      ],
+      "finding": "Highlighted segment did not always match the explanatory step.",
+      "resolution": "Highlights now follow the converted, subtracted or requested length."
+    },
+    {
+      "numbers": [
+        45
+      ],
+      "finding": "Names h,k appeared as point dots.",
+      "resolution": "Ray labels are labelOnly."
+    },
+    {
+      "numbers": [
+        48
+      ],
+      "finding": "Coincident reflected endpoints B,C would have overlapping labels; failure cases needed explicit context.",
+      "resolution": "One joint B,C label in the final straight case; explicit notes identify the obtuse and straight failed constructions."
+    },
+    {
+      "numbers": [
+        52,
+        53,
+        54
+      ],
+      "finding": "Comparison arcs used hidden intermediate directions, leaving their boundaries unexplained.",
+      "resolution": "Thin auxiliary segments and explanatory notes appear only on the corresponding steps; initial and final views remain uncluttered."
+    },
+    {
+      "numbers": [
+        48
+      ],
+      "finding": "Mobile rendering placed C1 too close to A1 and the ray.",
+      "resolution": "Only labelOffsets.C1 changed to [-6,-6]. Reversing this one change in memory exactly reproduces the previous independently reviewed file hash. Geometry, view membership and explanations are unchanged; final browser evidence remains a separate gate."
+    },
+    {
+      "numbers": [
+        55
+      ],
+      "finding": "Manual mobile screenshot review found U touching OA and B touching OU in the final scene.",
+      "resolution": "Only labelOffsets.U and labelOffsets.B changed to [-2,6] and [-2,1]. Reversing these two changes in memory exactly reproduces the previous independently reviewed file hash. Corrected actual Chromium mobile screenshot inspected; geometry, view membership and explanations unchanged."
+    }
+  ],
+  "unresolvedMathematicalFindings": [],
+  "limitations": [
+    "This is a source, mathematics, and authored-scene review; it is not a desktop/mobile browser rendering verdict.",
+    "Actual font bounding boxes, clipping, collisions, controls and persistence require the separate browser gate.",
+    "No Claude consultation or external provider review is claimed.",
+    "No pupil trial, deployment verification or full-book completion is claimed."
+  ],
+  "verdict": "passed-source-mathematics-and-scene-content; browser gate still required",
+  "publicationApproval": false
+}

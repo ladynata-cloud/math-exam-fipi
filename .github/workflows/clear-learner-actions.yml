@@ -1,0 +1,54 @@
+name: Clear learner actions and equation transfer
+
+on:
+  pull_request:
+    paths:
+      - 'trainers/oge-1-5-trainers/percent-table-trainer.html'
+      - 'trainers/oge-task9-equations.html'
+      - 'tools/percent-action-clarity.test.cjs'
+      - 'tools/task9-clear-actions.test.cjs'
+      - 'tools/clear-learner-actions.browser.cjs'
+      - '.github/workflows/clear-learner-actions.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: clear-learner-actions-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  learner-actions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated browser tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/clear-actions-browser" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/clear-actions-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/clear-actions-browser/node_modules" >> "$GITHUB_ENV"
+      - name: Focused learner and existing mathematical contracts
+        run: |
+          node --test tools/percent-action-clarity.test.cjs tools/task9-clear-actions.test.cjs
+          node --test --test-name-pattern='500 generated|1000 advanced|legacy numeric' tools/oge-percent-guided-showcase-v2.test.mjs
+          node tools/oge-algebra-contract.test.mjs
+          git diff --check
+      - name: Desktop and mobile return paths, pointer drag, keyboard and touch
+        env:
+          CLEAR_ACTIONS_ARTIFACTS: artifacts/clear-learner-actions
+        run: node tools/clear-learner-actions.browser.cjs
+      - name: Save screenshots and browser traces
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: clear-learner-actions
+          path: artifacts/clear-learner-actions
+          if-no-files-found: ignore
+          retention-days: 7

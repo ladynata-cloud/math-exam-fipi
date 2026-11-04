@@ -1,0 +1,283 @@
+{
+  "author": "/root/chapter2",
+  "reviewer": "/root/chapter3",
+  "at": "2026-10-24T06:48:30.388572Z",
+  "sha256": "50aef7e30fc98bbc52e3b3a315e328bbbbf1bc60a9aeea9a3c8e8d3eaa9ef912",
+  "recordsSHA256": "1b126084fb172fb8e6b04b162a69fb29ebf5f75c1f1139b6aa9dbbf68835fed5",
+  "checkedIds": [
+    "1.2-A10-a",
+    "1.2-A10-b",
+    "1.2-A11-a",
+    "1.2-A11-b",
+    "1.2-A12-a",
+    "1.2-A12-b",
+    "1.2-A2-a",
+    "1.2-A2-b",
+    "1.2-A3-a",
+    "1.2-A3-b",
+    "1.2-A4-a",
+    "1.2-A4-b",
+    "1.2-A5-a",
+    "1.2-A5-b",
+    "1.2-A6-a",
+    "1.2-A6-b",
+    "1.2-A7-a",
+    "1.2-A7-b",
+    "1.2-B1-a",
+    "1.2-B1-b",
+    "1.2-C1-a",
+    "1.2-C1-b",
+    "1.2-C2-a",
+    "1.2-C2-b",
+    "1.2-C4-a",
+    "1.2-C4-b"
+  ],
+  "verdict": "passed",
+  "remainingFindings": [],
+  "sourcePages": [
+    9,
+    10,
+    11,
+    12,
+    13
+  ],
+  "source": "Supplied Shestakov–Yaschenko 10–11 Universalny zadachnik PDF; printed page numbers match PDF pages in this range. Pages rendered and visually read, including radicals and projector drawing.",
+  "method": [
+    "Read all 26 source conditions on PDF pages9–13 and compared with authored text, requested quantities, source pages and part designations.",
+    "Independently recalculated all26 answers from geometry; traced every explanation/reason, with explicit checks of B1 altitude assignment, C1 truth logic, C2 interior/exterior order and C4 base AC.",
+    "Executable review uses an independent expected-answer table, exact rational/radical arithmetic for every accepted spelling and step input, and coordinate checks for all geometric models. No author-check assertions used as sole evidence.",
+    "Verified source-given sides/altitudes/medians/bisectors/distances are initially visible and genuine constructions are staged. C1 is a labelled proposition diagram, not an asserted triangle.",
+    "Rendered all26 models in the actual task-scene viewer at900px viewport/600px model width, neutral and final-step view; inspected all52 screenshots on3 contact sheets. No page errors and no blocking crowding observed in these inspected states."
+  ],
+  "assertions": 1092,
+  "fixes": [],
+  "sourceNotes": [
+    "B1 second variant is printed with repeated а); logical b designation and caption explicitly document this source typo.",
+    "C1 requested numerical angles are exactly checked in specified ascending order; proof reasoning is not auto-graded. Initial logical diagram does not reveal the solved triangle."
+  ],
+  "visual": {
+    "modelCount": 26,
+    "renderedStates": 52,
+    "pageErrors": [],
+    "images": [
+      {
+        "file": "A2a-neutral.png",
+        "sha256": "d6962f83c8779809183305e2bc9bb04a84e0881776cc58678455bddf2bb6a8dd"
+      },
+      {
+        "file": "A2a-external.png",
+        "sha256": "ef57f4ccf5a1d53028fe40317609d400ce9025e8e90f5680291c1da2b6353d9a"
+      },
+      {
+        "file": "A2b-neutral.png",
+        "sha256": "39ea198fe1a490b27dae1e9983b95ff9ce1d0656e03f438499b8937d6136732e"
+      },
+      {
+        "file": "A2b-external.png",
+        "sha256": "579993b819c95fe6c7e2946f77fd70ee9b4639bdddd06106c109a8f4dc47ec24"
+      },
+      {
+        "file": "A3a-neutral.png",
+        "sha256": "a8621d6897c5bf61bf4a11937f5be5dad3ab47ec0d8e4b5df096da9f835dec0e"
+      },
+      {
+        "file": "A3a-height.png",
+        "sha256": "eb6932c9ec8779bb181ad7c53c61e11351341aa93529d78ea7d0ec214390fab1"
+      },
+      {
+        "file": "A3b-neutral.png",
+        "sha256": "ab778019fa06448c005731ece48b0fe1b3d08aeb071764acfe01bc3a55707f5e"
+      },
+      {
+        "file": "A3b-height.png",
+        "sha256": "7b25b6cfd8082aed0b2a6beb247e4fcc72684af03bc3c51b24b33a4435c38e87"
+      },
+      {
+        "file": "A4a-neutral.png",
+        "sha256": "6cd79aa88387c246431c927f1a54bcce84054350c71e6e27c12c0f698e5ca4d6"
+      },
+      {
+        "file": "A4a-middle.png",
+        "sha256": "48e89077b88e2ac981ec55c4e6c6a9f27190f33c5ad124f848bd9a847087ed44"
+      },
+      {
+        "file": "A4b-neutral.png",
+        "sha256": "4f7ca940d1a6feb0a86142d6835bee334a10dbbfa87c808ad811cfc045875cbf"
+      },
+      {
+        "file": "A4b-height.png",
+        "sha256": "5416b8441649b390d4ff1091a04c95e20f21419f0fca2e38f5a1dc15326bdc0c"
+      },
+      {
+        "file": "A5a-neutral.png",
+        "sha256": "301e92407156c96536b2fc4dc73e4575b4f83294b53e0a7f13053ea15fc93033"
+      },
+      {
+        "file": "A5a-same.png",
+        "sha256": "861dbf79974ec296ee2561a650d6e96cdef1e6e934ea3d82726a1bca0aeae83b"
+      },
+      {
+        "file": "A5b-neutral.png",
+        "sha256": "1a2afb46294f88d6d150fbd2eec62051313d1edeb7670d82d09bee6c8e8f1e50"
+      },
+      {
+        "file": "A5b-same.png",
+        "sha256": "dceb4fe4900efa279ca6332aa528cf2e3cf29bc71a0bd26f78311156fe75a28f"
+      },
+      {
+        "file": "A6a-neutral.png",
+        "sha256": "8d7ae4e32ceeb843711b40d7f9821cecde6d16025b9c72155695c76905973962"
+      },
+      {
+        "file": "A6a-angle.png",
+        "sha256": "0a5592322442b2487b66b0f5faad54c3e105e44ac9dba3a27d4f60fc63795d37"
+      },
+      {
+        "file": "A6b-neutral.png",
+        "sha256": "f55dcbfa8481dc06b1df3866dd6d73cf859223eedf08d42a71e264e87fcf07e7"
+      },
+      {
+        "file": "A6b-angle.png",
+        "sha256": "589604d867050618fc545247754655f24b872d0b0f4b42024eb161d5f1789fd2"
+      },
+      {
+        "file": "A7a-neutral.png",
+        "sha256": "c2d33a73803bb38318c92f3dc475f844c159acfec06d851f57058b5e3fb98a89"
+      },
+      {
+        "file": "A7a-large.png",
+        "sha256": "1d21c6000e7d9eb5b0190d7b9d10e6b48c9f954b0f02ff14e81ab74ed729559a"
+      },
+      {
+        "file": "A7b-neutral.png",
+        "sha256": "dbc4cd2a94d7bf0b61e14e723af46bff1e2b8bef23a5a2ca63f518f5f5f7325d"
+      },
+      {
+        "file": "A7b-large.png",
+        "sha256": "33f18c045862401b598f5eadd262e1aa9b3bdc71d222a439823cf2572967c761"
+      },
+      {
+        "file": "A10a-neutral.png",
+        "sha256": "c3e5bd0225fc80e11a10be688dd9351951ba8e79a4dea8397d24d0371d74adcd"
+      },
+      {
+        "file": "A10a-half.png",
+        "sha256": "2e3c0e6e1f323018dbb27cff70bd3771f8ac8a15fc6cf76efb3cf2b5762a046a"
+      },
+      {
+        "file": "A10b-neutral.png",
+        "sha256": "bd33fdab9eb31186b0dc20df5d1f638df85aa306f382d6d971816a9c5339de3d"
+      },
+      {
+        "file": "A10b-half.png",
+        "sha256": "1e91c490da0cd422f0a27d88e4d820c11ed905a6691c738133776fafa6ce6b9c"
+      },
+      {
+        "file": "A11a-neutral.png",
+        "sha256": "9aae0e89d93f472dc5e79430504d3e47a95dde72a8e788bd2d690505e4a48542"
+      },
+      {
+        "file": "A11a-half.png",
+        "sha256": "40ce005ba6fb20eb3cc82438380336f69f4b19061ae1cfed173d1a1441afca37"
+      },
+      {
+        "file": "A11b-neutral.png",
+        "sha256": "f6929166f53d7c63afcdde2e13e0712dbaa4f4f9307604448be22f8ba837491b"
+      },
+      {
+        "file": "A11b-half.png",
+        "sha256": "fc041314b0ae1bfe5ad332492097d6b03c3a7a2c0a52c6d330896c83b13ee295"
+      },
+      {
+        "file": "A12a-neutral.png",
+        "sha256": "8dc1ded1a14ea54322e8ffa8b38534e2b9822736630e56fdcf4f972d04bb5f4c"
+      },
+      {
+        "file": "A12a-half.png",
+        "sha256": "38016bfc1ae690610a39735d5846b80ddd58eeea2ae31e71a402c2b292ba9082"
+      },
+      {
+        "file": "A12b-neutral.png",
+        "sha256": "d76ae068cba1325bbcc6320197a6623774322d9989da999efecbc3e2eab69ba8"
+      },
+      {
+        "file": "A12b-half.png",
+        "sha256": "0592ed69c66f8b7b199e68edf461d766bc66e28e02e4a5c03f8f9cf9b9c6d632"
+      },
+      {
+        "file": "B1a-neutral.png",
+        "sha256": "68adfb61d7bb6c4ffc94c1189f29d8e1e304a44436467306495dd51548ea793d"
+      },
+      {
+        "file": "B1a-height.png",
+        "sha256": "db9622142e684c29d55d8301edbc6b41e6cb0842d1080f7ae700fe99d4b5543b"
+      },
+      {
+        "file": "B1b-neutral.png",
+        "sha256": "b4b79343df83cd5e69322fb168ad026c436ccf11b7af69128e7da803cd6e271c"
+      },
+      {
+        "file": "B1b-half.png",
+        "sha256": "3e8e589034e7d7b3a8dd47acefbfd4acb1e9f308cad150750d79bbd107a8b511"
+      },
+      {
+        "file": "C1a-neutral.png",
+        "sha256": "7aa4e024cd5fcd88d80b7177e9c43c9ac52e561403d1a2552b20873b5e227571"
+      },
+      {
+        "file": "C1a-true.png",
+        "sha256": "15f9baecd9a9751e39fafdee27d4610f752213f0aec9507a714b58fc79d8f957"
+      },
+      {
+        "file": "C1b-neutral.png",
+        "sha256": "ec01ed3b7c943e19df4bda055921e88ebb79614f72e3508a08baccd7991cf597"
+      },
+      {
+        "file": "C1b-true.png",
+        "sha256": "33d4efc5e0e31cf9563d0ac7cf89e26f4ee836bccfdcdeb38ae95e1d40a5deea"
+      },
+      {
+        "file": "C2a-neutral.png",
+        "sha256": "31f3652155960ce16c791b95984d0765de4d61fc649d64a87573fed0077ffd41"
+      },
+      {
+        "file": "C2a-areas.png",
+        "sha256": "01c532110816d4b4be0b0054df9e1a3c23238401d1299244a43e8164eef06765"
+      },
+      {
+        "file": "C2b-neutral.png",
+        "sha256": "1f4ecbe882c7801cf95ecee760933d9d771d1865fb8292d2b3acda113a556a66"
+      },
+      {
+        "file": "C2b-areas.png",
+        "sha256": "8bc63c2fc7dc6aafc6ba172a8dac413576dcac22a6697a7add6982b387ebb1ee"
+      },
+      {
+        "file": "C4a-neutral.png",
+        "sha256": "645ac607d9c6978322ed8aa39bc7b3f4c66c03d914160bad0e793801e21a7a17"
+      },
+      {
+        "file": "C4a-height.png",
+        "sha256": "07d9db68d4172cdf58e08247002f545cef29f865f19fe951d69725ccb3fc8a7a"
+      },
+      {
+        "file": "C4b-neutral.png",
+        "sha256": "4de040cf502dd21723d7125830cb52aa7174ac131737d4d438e9e2e588beef1a"
+      },
+      {
+        "file": "C4b-height.png",
+        "sha256": "b42d091e6ab02852a579e4706434b9eebfee5250ad85db0f20161cde1424ae4d"
+      }
+    ],
+    "contactSheets": [
+      "contact-1.png",
+      "contact-2.png",
+      "contact-3.png"
+    ]
+  },
+  "limitations": [
+    "This review covers only26 newly authored §1.2 variants, not preserved cards or other sections.",
+    "Independent visual inspection covers neutral and last-step states at one desktop model width; intermediate views,320px layout and full learner journeys belong to integration/browser checks.",
+    "Coordinate checks use tight floating-point tolerances for rendered geometry; every accepted scalar answer and step entry is checked by exact rational/radical arithmetic."
+  ]
+}

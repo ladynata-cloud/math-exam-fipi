@@ -1,0 +1,4269 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "supplemental independent rendered-image review of actual full-course context",
+  "reviewedAt": "2026-10-28T07:47:51.892250+00:00",
+  "reviewer": "visual_a; independent of fragment B visual-fix author",
+  "scope": {
+    "chapter": 5,
+    "exercises": [
+      358,
+      384
+    ],
+    "cards": 36,
+    "views": 202,
+    "widths": [
+      320,
+      1280
+    ],
+    "viewWidthPairs": 404,
+    "uniqueByteIdenticalImageGroups": 363
+  },
+  "verdict": "PASS",
+  "findings": [],
+  "supplements": {
+    "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_B_VISUAL_REVIEW.json",
+    "sha256": "75fe2e9322c25fc0dc1fc95308905f7efe7253ac2ee18541ef0846375e012b6d"
+  },
+  "evidenceBinding": {
+    "files": [
+      {
+        "path": "geometry-course/textbook/data/course.json",
+        "sha256": "58cec7c15c71b92c87c896427d9a550023a8c0a44ac139705394907ff4f9dee7"
+      },
+      {
+        "path": "geometry-course/textbook/models/chapter-05-b.json",
+        "sha256": "a9870ce8916e19d5d63b183c444906a0d2eafabb3a7f5d1b6947251f0759dc36"
+      },
+      {
+        "path": "geometry-course/textbook/assets/style.css",
+        "sha256": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b"
+      },
+      {
+        "path": "geometry-course/textbook/assets/planar-viewer.js",
+        "sha256": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061"
+      },
+      {
+        "path": "tools/geometry-textbook/browser_check.js",
+        "sha256": "07b49df556ebb6ee97ddcabbd3a4e3d12d570c7d4816446555356e214fd12577"
+      }
+    ],
+    "authoredContentSha256": "30336de85eefd4e9193053251371a5e6252544417166d6e08eab56b0748841b1",
+    "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
+    "source": "Actual full-course browser_check.js capture of the candidate bundle, not the isolated focused model fixture. Screenshot filenames and SHA-256 values below bind each inspected view."
+  },
+  "method": "Each distinct full PNG was visually inspected through the image viewer in contact sheets. Grouping was allowed only for exact whole-file SHA-256 identity. Mobile images were displayed at native width; desktop images proportionally reduced without cropping the model region, controls, descriptions or notes. All source and sheet hashes were checked again after inspection.",
+  "checked": [
+    "labels remain readable",
+    "no visible label collisions with lines or circles",
+    "no clipped geometry or labels",
+    "actual case controls display and wrap correctly",
+    "initial, step and alternate scenes remain legible",
+    "coincident-centre and construction notes visible",
+    "open drawing tasks retain their intended instructions"
+  ],
+  "coverageComplete": true,
+  "contactSheets": [
+    {
+      "file": "B-full-320-01.png",
+      "sha256": "610ceb684cb30c3b36190af6fe059db50323d1c7c65125b6c25cdd38553ed5e5",
+      "viewed": true
+    },
+    {
+      "file": "B-full-320-02.png",
+      "sha256": "59bfcbee34f73a1a058e2c0b751873b8a837b00971f3b0696c6b82a593c9c52d",
+      "viewed": true
+    },
+    {
+      "file": "B-full-320-03.png",
+      "sha256": "99ccb5bd8da1c7c8063f76910b47154ccaac9f57535e85e8ff11f65239a75da5",
+      "viewed": true
+    },
+    {
+      "file": "B-full-320-04.png",
+      "sha256": "374f2ac1194d8a94c16555f3dbc77c20cab16f672ba617e21de76606114fa8e7",
+      "viewed": true
+    },
+    {
+      "file": "B-full-320-05.png",
+      "sha256": "7a6d6a1c9fd1f7e40813e96e65f85e0874349903b61e206ed0946a4c80ce3f9f",
+      "viewed": true
+    },
+    {
+      "file": "B-full-320-06.png",
+      "sha256": "03a8d0164d86d5363c20f895af672fd53596fd852cd29809f9621b2d96694506",
+      "viewed": true
+    },
+    {
+      "file": "B-full-320-07.png",
+      "sha256": "ab20b6f8e955863e23d88dfaa397e058c7582c00b9db7c163eab3390e1db2b26",
+      "viewed": true
+    },
+    {
+      "file": "B-full-320-08.png",
+      "sha256": "c60040929020ef654aff2926e3e2efddeb38209028282947f9226cdfe30c781f",
+      "viewed": true
+    },
+    {
+      "file": "B-full-320-09.png",
+      "sha256": "9f69a7054759e9e5f77b99d3d0537b4adc327f7584b72ca5574adc352c58d081",
+      "viewed": true
+    },
+    {
+      "file": "B-full-320-10.png",
+      "sha256": "6bc807dd4a9822b04e3221b4b93479cdd0b079db67970ca71bfcc04760f56a53",
+      "viewed": true
+    },
+    {
+      "file": "B-full-320-11.png",
+      "sha256": "0e81229c52e1dcc96f2a9e10624d146c8911aa802c1fb1bb0d1078a161368b17",
+      "viewed": true
+    },
+    {
+      "file": "B-full-320-12.png",
+      "sha256": "f730475093bcc75d9cb8fc2e40e31fbe8cb0d95cd2deda773a6a20ac0dcba5e9",
+      "viewed": true
+    },
+    {
+      "file": "B-full-320-13.png",
+      "sha256": "e56534eb7a46cd393ea93a3cb666935145b87f4e8471f38eb3e76cff98cd4c6e",
+      "viewed": true
+    },
+    {
+      "file": "B-full-320-14.png",
+      "sha256": "64220a8f02d63888149f963b67b62485f07945ece43223a40e5b9acee7c26679",
+      "viewed": true
+    },
+    {
+      "file": "B-full-320-15.png",
+      "sha256": "9cdf096ef8045a36fc13ff4529a92fe7af12a034777123e73fc363abdcaef828",
+      "viewed": true
+    },
+    {
+      "file": "B-full-320-16.png",
+      "sha256": "1b7109ef1a56f1fe51da779b28ac6c20f91298f4415b792c053b142c8935c2d5",
+      "viewed": true
+    },
+    {
+      "file": "B-full-1280-01.png",
+      "sha256": "35a2d884b07cf7714f6ceb1a7629e941d5a076c6fb260f3e896e96e5d6b8fefd",
+      "viewed": true
+    },
+    {
+      "file": "B-full-1280-02.png",
+      "sha256": "d88fc7a6060e5b7be719b75dd2d76e869d3eb4fe859dbbc50addc54c4fe235db",
+      "viewed": true
+    },
+    {
+      "file": "B-full-1280-03.png",
+      "sha256": "600334294cc5825684b4742bfe84a9f95a58adee7bf077d7741f13b6b088a2a0",
+      "viewed": true
+    },
+    {
+      "file": "B-full-1280-04.png",
+      "sha256": "58e0d407d11b423ed156a76e82fb299c5691536f61b8091fb671f43cfc0483d3",
+      "viewed": true
+    },
+    {
+      "file": "B-full-1280-05.png",
+      "sha256": "6c8f37da7e499d229621278da3f022afdb711232128c4ccc39bd4a4857c8b9e3",
+      "viewed": true
+    },
+    {
+      "file": "B-full-1280-06.png",
+      "sha256": "14d6a6cc3a10bfe2597f88785c42709a360110147a8e8072d81526572933b50b",
+      "viewed": true
+    },
+    {
+      "file": "B-full-1280-07.png",
+      "sha256": "7c0c3206d0cc83f66b305af5c45982bd9b4ac0b4227736dd785cba3501b2684a",
+      "viewed": true
+    },
+    {
+      "file": "B-full-1280-08.png",
+      "sha256": "970b0b4d028e9a21ce7e27da9a76b223593c3df395f59adef105b55d7c44c44d",
+      "viewed": true
+    },
+    {
+      "file": "B-full-1280-09.png",
+      "sha256": "dca18ed6a5afc098327ebb58a9538e6b9e88920f659b1bc50bd9aac3bb536b3e",
+      "viewed": true
+    },
+    {
+      "file": "B-full-1280-10.png",
+      "sha256": "ca6413e73c7483800542db0c2fef5bec32f79babcf906a24daaa3c2f3c92c4f7",
+      "viewed": true
+    },
+    {
+      "file": "B-full-1280-11.png",
+      "sha256": "d512f9a4264fb85b1f9360d40c0b10b58ecb309835bc0af248ad19d7da02faba",
+      "viewed": true
+    },
+    {
+      "file": "B-full-1280-12.png",
+      "sha256": "bd1fd94f85c293fb0f6911dd21f2192f0181873c434510e41df5a96026be918b",
+      "viewed": true
+    },
+    {
+      "file": "B-full-1280-13.png",
+      "sha256": "fd4bc5b3b94f8117b276a4f2a11ef24d11c47bb8f53b40e72de4feb6bbd1b0e3",
+      "viewed": true
+    },
+    {
+      "file": "B-full-1280-14.png",
+      "sha256": "4eb31f119fbbf8caaf51fb9e46a510f2af1a7bcdf0d1f5c40ff4ac5963bc18e2",
+      "viewed": true
+    },
+    {
+      "file": "B-full-1280-15.png",
+      "sha256": "69d93d6fc6ed68665e430624477a6b5f96c8a06b8b1fa9bae876f19fef9bb16e",
+      "viewed": true
+    }
+  ],
+  "images": [
+    {
+      "id": "atanasyan-7-9-main-358-part-1",
+      "view": "case-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-358-part-1-case-1-320.png",
+      "sha256": "d0de7554324657bf2dce862083e70bf0132a8e91ced8055c023fbef639bebd0b",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-358-part-1-case-1-320.png",
+      "contactSheet": "B-full-320-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-358-part-1",
+      "view": "case-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-358-part-1-case-2-320.png",
+      "sha256": "d9f01d0bb40b795d06e2a342ec15e75970cf46e9a3610c8450343de549a5f2d4",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-358-part-1-case-2-320.png",
+      "contactSheet": "B-full-320-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-358-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-358-part-1-neutral-320.png",
+      "sha256": "602c5f06208d9576cdd8704eb09d66107f3743d23768108e9c092e3120c4241e",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-358-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-358-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-358-part-1-step-1-320.png",
+      "sha256": "f1d0766425e4add2d92be7da5dd183a8d14577b8460b68a5159f8083fe15106c",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-358-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-358-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-358-part-1-step-2-320.png",
+      "sha256": "3acb90b0180959d9e871e6835139f1d69bb6697799b3451768825d125fcee9ee",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-358-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-358-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-358-part-1-step-3-320.png",
+      "sha256": "3acb90b0180959d9e871e6835139f1d69bb6697799b3451768825d125fcee9ee",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-358-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-358-part-1",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-358-part-1-step-4-320.png",
+      "sha256": "8793f9fe1e832d134685291681d62c25b59f1874f259a7e027e2484a9f69086a",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-358-part-1-step-4-320.png",
+      "contactSheet": "B-full-320-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-359-part-1",
+      "view": "case-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-359-part-1-case-1-320.png",
+      "sha256": "12df9c2649b00ffb5d516f224a6cb78a159087c53161cf8b341a8665ebcc54b9",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-359-part-1-case-1-320.png",
+      "contactSheet": "B-full-320-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-359-part-1",
+      "view": "case-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-359-part-1-case-2-320.png",
+      "sha256": "85ef1d315d105e66c1daa86cdeef279055a2f0e8b935d20ccbd7d8c34f0f3a90",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-359-part-1-case-2-320.png",
+      "contactSheet": "B-full-320-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-359-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-359-part-1-neutral-320.png",
+      "sha256": "de8bc406afe0a170944cf7abfba912b3f010db6c79c7c56a1cc0c3193d4bd15d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-359-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-359-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-359-part-1-step-1-320.png",
+      "sha256": "68f0116a7ae4e6607b5b3bd3de88beb2ec86f60e6b4225a0c232d47059cb5283",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-359-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-359-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-359-part-1-step-2-320.png",
+      "sha256": "4d078aca025cac6108fbf73e0e39a7467fc65b58d48433349a3aadd4adcaa09f",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-359-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-359-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-359-part-1-step-3-320.png",
+      "sha256": "4d078aca025cac6108fbf73e0e39a7467fc65b58d48433349a3aadd4adcaa09f",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-359-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-359-part-1",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-359-part-1-step-4-320.png",
+      "sha256": "23244f6636658fa63fba728a1fd060603d875c43a708db2d31638f51230269bf",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-359-part-1-step-4-320.png",
+      "contactSheet": "B-full-320-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "case-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-360-part-1-case-1-320.png",
+      "sha256": "5a973c95fd982f6bfbd962b0a5e2ccace2d5b4e157f57ca025e457dacc55c2ac",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-case-1-320.png",
+      "contactSheet": "B-full-320-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "case-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-360-part-1-case-2-320.png",
+      "sha256": "d3276b9e8fc52f0c7e98f7f59e0e63f3e18f3a419a042e2c671b4c29c6fa6f9a",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-case-2-320.png",
+      "contactSheet": "B-full-320-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "case-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-360-part-1-case-3-320.png",
+      "sha256": "f9196e7e4b4ef60dbbc3d3a3b12882f3e8362f56331c3205e4e77a690c03e108",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-case-3-320.png",
+      "contactSheet": "B-full-320-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "case-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-360-part-1-case-4-320.png",
+      "sha256": "e9ad07399abb9dc9c3ea66b885df14e4af6db0c8b3d5467a11055c11a2e365ac",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-case-4-320.png",
+      "contactSheet": "B-full-320-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "case-5",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-360-part-1-case-5-320.png",
+      "sha256": "e75c4dfde551288e17ca0c048234e3c5fcb9f33e12cebc65d4687172f99db618",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-case-5-320.png",
+      "contactSheet": "B-full-320-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "case-6",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-360-part-1-case-6-320.png",
+      "sha256": "f03e3be32ed17afb3f33fb99d2dcbbe82cea79a69c8a3b5e3fe1c69463dd322a",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-case-6-320.png",
+      "contactSheet": "B-full-320-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-360-part-1-neutral-320.png",
+      "sha256": "600515f8641e003fdf79460929c788edb372bae5cec42b0fa824854801dfccdd",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-360-part-1-step-1-320.png",
+      "sha256": "c9e0467e72f46e9d50837d8d80310216253e4aa2ead5c3fdaf73eef848e68764",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-360-part-1-step-2-320.png",
+      "sha256": "facc8ef7c3751b7d644cc21e4f5994d299eafb595a1f86b537ef955efcc6f4ab",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-360-part-1-step-3-320.png",
+      "sha256": "691fd66ba7f32d834a0f3dd1baa5f6f6887a9afadebf45f9c86952395cd3cf7e",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-360-part-1-step-4-320.png",
+      "sha256": "4ae288aa9721e796ef137461c79eb945c4a6152f50fedfaa55697fa9ba43a7ea",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-step-4-320.png",
+      "contactSheet": "B-full-320-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "step-5",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-360-part-1-step-5-320.png",
+      "sha256": "dbb08ea7164bf4a67197d2b4e912d3aac3f19dfc1a2a89f9b0250ff264c31f04",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-step-5-320.png",
+      "contactSheet": "B-full-320-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "case-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-361-part-1-case-1-320.png",
+      "sha256": "1f7ea48ae7b03943a6939b5d1d3084c97972ccdf8ef31698aa9cc9c83ad69135",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-case-1-320.png",
+      "contactSheet": "B-full-320-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "case-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-361-part-1-case-2-320.png",
+      "sha256": "0ad2f2c56969fd874d3fcfd23e75445148b0b0545d7e98990e0673dc0c811873",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-case-2-320.png",
+      "contactSheet": "B-full-320-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "case-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-361-part-1-case-3-320.png",
+      "sha256": "da6c7a3f0a91bf1af01527f5f5e3a5c0229d5a32fe745c44e40cda89be681b57",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-case-3-320.png",
+      "contactSheet": "B-full-320-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "case-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-361-part-1-case-4-320.png",
+      "sha256": "681c460a8ab643faeae3229b02c7df1575ca8d1d9dc3ac6c37bcd47f202bd318",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-case-4-320.png",
+      "contactSheet": "B-full-320-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "case-5",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-361-part-1-case-5-320.png",
+      "sha256": "ef3f14a4ea54bc8c9d07de3cf286efa08d88d91ada190648e28b5dffbec4999e",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-case-5-320.png",
+      "contactSheet": "B-full-320-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "case-6",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-361-part-1-case-6-320.png",
+      "sha256": "a5339bf7d189d13bda5b78c8c044f2e9bb6703242cf3f40f40fdf0a6eaa16664",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-case-6-320.png",
+      "contactSheet": "B-full-320-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-361-part-1-neutral-320.png",
+      "sha256": "a5ea1aeafa1cdf6fb4e839c27aa8e46f4276c3b28b66a65eed21238729c8f894",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-361-part-1-step-1-320.png",
+      "sha256": "e1a8e2df3fdad7d5cc30421b4559e93f1e95ca9b48ccde1b88e5cb7a9de91987",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-361-part-1-step-2-320.png",
+      "sha256": "34f6fae31d7fe5c948742ce6d0fb618306205ad880b043e3480f481b44949bbe",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-361-part-1-step-3-320.png",
+      "sha256": "14b5d2e81de8825538db492e11e648605d26595531b6994b39b3c0b6560f0e42",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-361-part-1-step-4-320.png",
+      "sha256": "bd4a5828eb0185094103e2d21aba81bea2b7c496864c5a659474bce4ea27bdc1",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-step-4-320.png",
+      "contactSheet": "B-full-320-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "step-5",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-361-part-1-step-5-320.png",
+      "sha256": "be6ec28890faef453df0a7b2fad38807e44132f0ebf78d7c96eba436296275dc",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-step-5-320.png",
+      "contactSheet": "B-full-320-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-362-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-362-part-1-neutral-320.png",
+      "sha256": "141fe605713500a6e25ccd06e75f19cde26b259a2d7668bef438937bbe1cfadd",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-362-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-362-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-362-part-1-step-1-320.png",
+      "sha256": "8a7fded49c9a65897c066468e8d036e27c0e50b2f9747992ba0f6ae96e7b76a7",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-362-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-362-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-362-part-1-step-2-320.png",
+      "sha256": "68b78cc4027e7461361cf2b80e0fd5c9f097fd78a0f04d46c57b3873256ab6b4",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-362-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-362-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-362-part-1-step-3-320.png",
+      "sha256": "774a37ebef9959bd9f42f2c5fa6fdbefb953b1531f0a196409311a497a38f25d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-362-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-363-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-363-part-1-neutral-320.png",
+      "sha256": "91d2816e7b1ce2ba2d08a5636e35a770581e600b7dc321f7e70f7c9802bd71a2",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-363-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-363-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-363-part-1-step-1-320.png",
+      "sha256": "ad0273c1a5bdf9a4f8d69035912892e09c6fd1b193741521eceaf10ecc3b2f3e",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-363-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-363-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-363-part-1-step-2-320.png",
+      "sha256": "9907130b46be268f669197d02246ef0cd919fa1c513af9437700445e513b24d7",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-363-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-363-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-363-part-1-step-3-320.png",
+      "sha256": "2e10024989d8952dc97bbb7b312877ddf024189a63971fb4719e1ae272741443",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-363-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-364-part-1",
+      "view": "case-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-364-part-1-case-1-320.png",
+      "sha256": "a04518d6550158fc3cd85cb0ce1699a40cb9207c2023800b49c0f307c85ab75f",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-364-part-1-case-1-320.png",
+      "contactSheet": "B-full-320-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-364-part-1",
+      "view": "case-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-364-part-1-case-2-320.png",
+      "sha256": "b63a6c0d9ea04d8cc147b5cf0aae197af1a9e6db7917b0126f5335f7f060ff7e",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-364-part-1-case-2-320.png",
+      "contactSheet": "B-full-320-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-364-part-1",
+      "view": "case-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-364-part-1-case-3-320.png",
+      "sha256": "58b02a7c6f84042e4cb6f08b62847c80337984ad664041eaadb1fc0fa4e92812",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-364-part-1-case-3-320.png",
+      "contactSheet": "B-full-320-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-364-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-364-part-1-neutral-320.png",
+      "sha256": "aa2dbfaea29b6b67240900018a0c45f562cccef57915e6e291db848f69e355df",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-364-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-364-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-364-part-1-step-1-320.png",
+      "sha256": "e29ca639b5dd4f0817ef222704beb9ef40024d7b6f6104fafc3373cae9b3292e",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-364-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-364-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-364-part-1-step-2-320.png",
+      "sha256": "c3e4264469783528efdf2953bbb0cb54d1689742a260a40c2814bd1325533866",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-364-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-364-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-364-part-1-step-3-320.png",
+      "sha256": "cf0bd98536d16073c0cbccacb4df12f1423f201c43c85334580ad46734451a07",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-364-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-364-part-1",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-364-part-1-step-4-320.png",
+      "sha256": "1e5c1aaf022604b93f7edd0692165e6009c3219c8be4d1299aaa98fe30032fa0",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-364-part-1-step-4-320.png",
+      "contactSheet": "B-full-320-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-365-part-1",
+      "view": "case-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-365-part-1-case-1-320.png",
+      "sha256": "d63adcb51365d0087f8c909860ecb0339227f61795f8a0001e5b626090a114f0",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-365-part-1-case-1-320.png",
+      "contactSheet": "B-full-320-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-365-part-1",
+      "view": "case-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-365-part-1-case-2-320.png",
+      "sha256": "d935cdb790e147da6f17165b491544edc40f8e0afa114fc2367b85797c3c2d95",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-365-part-1-case-2-320.png",
+      "contactSheet": "B-full-320-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-365-part-1",
+      "view": "case-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-365-part-1-case-3-320.png",
+      "sha256": "7573ad5ce11ab37718c0c4fd5e961e7e68cdd05da2a4c2be8f9e996d61cb9f2b",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-365-part-1-case-3-320.png",
+      "contactSheet": "B-full-320-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-365-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-365-part-1-neutral-320.png",
+      "sha256": "cea257f633599d21dd870a2cbaafa9532d90b713093899d0319bb4c15546d1bb",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-365-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-365-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-365-part-1-step-1-320.png",
+      "sha256": "ec10fe4a66ce96706aaa76cd5c0ce611fbac127630e7dd940644b5338f48412a",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-365-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-365-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-365-part-1-step-2-320.png",
+      "sha256": "6be96d418276f9c3bf1a389859a93a7672b75ca5466cad7e28a74bbeb289af67",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-365-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-365-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-365-part-1-step-3-320.png",
+      "sha256": "235ff496a1a2bf01d91b1e85c5bcf6d7c7ae72b286668b8a946e0a4c859beced",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-365-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-365-part-1",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-365-part-1-step-4-320.png",
+      "sha256": "e688c65585de8e408319acd08f7280deb9eb67afb195d150c6cf810e36852ab9",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-365-part-1-step-4-320.png",
+      "contactSheet": "B-full-320-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-366-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-366-part-1-neutral-320.png",
+      "sha256": "fd1df207adff7c0dc89bce9748926a0623b4f2221747228c9647948a38de2a1f",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-366-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-366-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-366-part-1-step-1-320.png",
+      "sha256": "60aa0cb304961089fd71c4e50b059e468b7ec11ad14d121e1e3b511c58f29525",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-366-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-366-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-366-part-1-step-2-320.png",
+      "sha256": "06df074ca2853e553cae7c89dade86943fe842118feb819436cbd56e1ede6bc7",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-366-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-366-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-366-part-1-step-3-320.png",
+      "sha256": "50f631684cca40e4a5b63a60ac18fe0a8d65621beeb803d7ee1ff6d23f309e6a",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-366-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-367-part-1",
+      "view": "case-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-367-part-1-case-1-320.png",
+      "sha256": "69da126f4bd4652787fcabcc3dfa44f07be1b0966321a9a179741f855e427510",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-367-part-1-case-1-320.png",
+      "contactSheet": "B-full-320-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-367-part-1",
+      "view": "case-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-367-part-1-case-2-320.png",
+      "sha256": "c6df9d3f074cd0bff0aafa6b31decc5324a4d161e772c0a91930bcf52e80ed4d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-367-part-1-case-2-320.png",
+      "contactSheet": "B-full-320-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-367-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-367-part-1-neutral-320.png",
+      "sha256": "2fcff1289c97f187c63002feed01dd9c818ca6ef82ec1da476adb85b5b03f396",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-367-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-367-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-367-part-1-step-1-320.png",
+      "sha256": "b1969cbcb24fd0c1890bb1f3076691ce8503dc0a4dd24ce5332867739322edc5",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-367-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-367-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-367-part-1-step-2-320.png",
+      "sha256": "f9a3acbfbbdfec6ddf5ed4f8a1e773dc46a7ce9134cd4cfbbd37a9d3f4e9b12f",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-367-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-367-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-367-part-1-step-3-320.png",
+      "sha256": "8a5fe61352d15725acdd510d96867e3d14cadc9e5307d5b3716facc48f2438e5",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-367-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-368-part-1",
+      "view": "case-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-368-part-1-case-1-320.png",
+      "sha256": "e34bdf91d935503839664b3380396ac688bfb1374848c62ecfc664389b42f370",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-368-part-1-case-1-320.png",
+      "contactSheet": "B-full-320-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-368-part-1",
+      "view": "case-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-368-part-1-case-2-320.png",
+      "sha256": "769785ecbed8e45d3e443768e7073c5cb635e37c43e88a5b60b700f0092645c0",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-368-part-1-case-2-320.png",
+      "contactSheet": "B-full-320-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-368-part-1",
+      "view": "case-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-368-part-1-case-3-320.png",
+      "sha256": "6fbc9dd02520c2c434d41abe9cc27bcbc3442a42c996edf9381a0d8beb406050",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-368-part-1-case-3-320.png",
+      "contactSheet": "B-full-320-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-368-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-368-part-1-neutral-320.png",
+      "sha256": "5e8c1b048d558f7b73c44a66b5a62f3268e46a623d653224bbe89737a6c7b1e5",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-368-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-368-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-368-part-1-step-1-320.png",
+      "sha256": "807c302874db809b3fac588acc8c995ea27b19944d620d6864f7fef1b5dd86d4",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-368-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-368-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-368-part-1-step-2-320.png",
+      "sha256": "054c28f8290fb8a3766b6b2d38ecfa08d9eb17229aff5b96f4e37bab9c6a6f2d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-368-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-368-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-368-part-1-step-3-320.png",
+      "sha256": "78bb20a4634f0ad9ce21184f2fa907eff76feb7c0c7301868eedb6b88ec55ecb",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-368-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-368-part-1",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-368-part-1-step-4-320.png",
+      "sha256": "ce6d5d5bdf73a6698888f92314a83be4f672921ddbebdeda3e084fdd7a70b8d8",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-368-part-1-step-4-320.png",
+      "contactSheet": "B-full-320-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-369-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-369-part-1-neutral-320.png",
+      "sha256": "6bf011845a1ea93cf26fc7fdbb14dcfa6cc7b4b45f414ba7f1296eacaf4f3534",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-369-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-369-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-369-part-1-step-1-320.png",
+      "sha256": "d0cf272dc86a136de195e4e54ef669364f62d57dcab0aa3bf5eaaee0927a89ef",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-369-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-369-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-369-part-1-step-2-320.png",
+      "sha256": "b1afcb6a60454e22f7c5feff89ee1525904928c9af2b3e1b549b36eb2e8dd2fa",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-369-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-369-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-369-part-1-step-3-320.png",
+      "sha256": "b1afcb6a60454e22f7c5feff89ee1525904928c9af2b3e1b549b36eb2e8dd2fa",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-369-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-370-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-370-part-1-neutral-320.png",
+      "sha256": "0de0017533179b713c397e8311ff0155e4241616fe73175ea81fb3e6f4d53e39",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-370-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-370-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-370-part-1-step-1-320.png",
+      "sha256": "69058b3dab0a419d352f9d4598c18af285ab8d10144c3ae2131b35a6ec979e95",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-370-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-370-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-370-part-1-step-2-320.png",
+      "sha256": "9a6faaa9a3fe138ef4dd5a9fad4d14dc0063eb35824cd1ab37fd3fabb443fef0",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-370-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-370-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-370-part-1-step-3-320.png",
+      "sha256": "9a6faaa9a3fe138ef4dd5a9fad4d14dc0063eb35824cd1ab37fd3fabb443fef0",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-370-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-371-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-371-part-1-neutral-320.png",
+      "sha256": "4696ffe52a3a1777bef2d0715fa4b31f639085c11810188f22d8850e17561ee9",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-371-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-371-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-371-part-1-step-1-320.png",
+      "sha256": "cdaf37ba8dc384eea61e39f13dba6b4e04e8e5f2a41ecec0f3e3b3e0ce8233af",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-371-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-371-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-371-part-1-step-2-320.png",
+      "sha256": "3a88e4e933837fba94843b94079342ede28f2080c36a5e5bc87aac5c1d3aaaa8",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-371-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-371-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-371-part-1-step-3-320.png",
+      "sha256": "e1bfb79e7ea79a8546add28cf071756953fcc3c069ac7440ef027b2127bff12f",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-371-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-371-part-1",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-371-part-1-step-4-320.png",
+      "sha256": "e1bfb79e7ea79a8546add28cf071756953fcc3c069ac7440ef027b2127bff12f",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-371-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-372-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-372-part-1-neutral-320.png",
+      "sha256": "d80d35dc413555878fab84c940431fbe441b0e61b16e2f3144138862ddda8276",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-372-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-372-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-372-part-1-step-1-320.png",
+      "sha256": "6fdc634924e9e1110501aa3577d9d77eef0d82946680a1c2d6692348b829a9b5",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-372-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-372-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-372-part-1-step-2-320.png",
+      "sha256": "1df2146e7af8bf2a42d795ce7bda06d4d4fe3398c9bfe20aac141c22a620c03a",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-372-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-372-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-372-part-1-step-3-320.png",
+      "sha256": "b02ac686768d46489f1ef7a93bfe0311edbe608ec16e45a7f7d353a54d420102",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-372-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-372-part-1",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-372-part-1-step-4-320.png",
+      "sha256": "b02ac686768d46489f1ef7a93bfe0311edbe608ec16e45a7f7d353a54d420102",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-372-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-373-part-1",
+      "view": "case-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-373-part-1-case-1-320.png",
+      "sha256": "ac625ce510861a110aea4fc5fc573fa70e8878b1dec36432822ac062a9b61b81",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-373-part-1-case-1-320.png",
+      "contactSheet": "B-full-320-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-373-part-1",
+      "view": "case-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-373-part-1-case-2-320.png",
+      "sha256": "c3a32f493a9dfe18e3238cca18001ca491636063031396a5e7adc87ce271ded5",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-373-part-1-case-2-320.png",
+      "contactSheet": "B-full-320-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-373-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-373-part-1-neutral-320.png",
+      "sha256": "37cd700e9c49901e1b5484b14a047fc1ea2e608acb7f682faed0c337fee660d0",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-373-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-373-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-373-part-1-step-1-320.png",
+      "sha256": "31e6de2a86a4de6e67dc3171ad02586694934165847be1a474d1a8aee681858d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-373-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-373-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-373-part-1-step-2-320.png",
+      "sha256": "9611129539c12f892e7e2574273269d9a7fb417b28f345b9917d4f201a913581",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-373-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-373-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-373-part-1-step-3-320.png",
+      "sha256": "22ec502b2c31dc74ba2e9bcd03ac8a3ad4c13ec0db173c8c7405d5d6923670eb",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-373-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-374-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-374-part-1-neutral-320.png",
+      "sha256": "172edbba7b5dd64c7d5c4b94806348fd359acc7e08fbd72287d17509f21537a0",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-374-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-374-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-374-part-1-step-1-320.png",
+      "sha256": "635c9af7a81ff7ea5e8b59273c769e7ddbc392aed5b7e5c898ee920418d366d9",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-374-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-374-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-374-part-1-step-2-320.png",
+      "sha256": "327dc5aad74f27351f5a3173959075a0130639a8a935fe63e687c036178ec924",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-374-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-374-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-374-part-1-step-3-320.png",
+      "sha256": "85fe633c01081ca57412a39a9fa6dd1dbbf0ffb09417ac1a68475c84cd184421",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-374-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-374-part-1",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-374-part-1-step-4-320.png",
+      "sha256": "85fe633c01081ca57412a39a9fa6dd1dbbf0ffb09417ac1a68475c84cd184421",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-374-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-375-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-375-part-1-neutral-320.png",
+      "sha256": "2f09fe6e02f183b6b19b0f250effecbcabf2b678d5c382c772a02ea0f88937b5",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-375-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-375-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-375-part-1-step-1-320.png",
+      "sha256": "7461aa1c83c883ebc5009841a2940482a3232711e0a2dd52e7c1f28f068fea59",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-375-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-375-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-375-part-1-step-2-320.png",
+      "sha256": "871d259d829877b36467b9f0627fe5ce970702be7b479af7eec610d8d74618b6",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-375-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-375-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-375-part-1-step-3-320.png",
+      "sha256": "1d7425bf9668183ddb28b1612b3b9d970863d81cb9403a84ec36fb7abc55c516",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-375-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-375-part-1",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-375-part-1-step-4-320.png",
+      "sha256": "1d7425bf9668183ddb28b1612b3b9d970863d81cb9403a84ec36fb7abc55c516",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-375-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-376-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-376-part-1-neutral-320.png",
+      "sha256": "634e9cdad018a035c4c7574d3d4a2c9c55636d5f99bf79aac39f6e738034232c",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-376-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-376-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-376-part-1-step-1-320.png",
+      "sha256": "6b92425b5fa1f7ed9b9ff42663ee30c5984692bff1ebfba70f62ba630456abd5",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-376-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-376-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-376-part-1-step-2-320.png",
+      "sha256": "98aa805ff17e59f645e257de66c5ec51d1312b17e52f4b010211141e3b679da0",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-376-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-376-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-376-part-1-step-3-320.png",
+      "sha256": "98aa805ff17e59f645e257de66c5ec51d1312b17e52f4b010211141e3b679da0",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-376-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-377-part-1",
+      "view": "case-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-377-part-1-case-1-320.png",
+      "sha256": "d36bd3c6b09ed8420ec3c474215f43e7296afdf381023dec25ac7978638c63cd",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-377-part-1-case-1-320.png",
+      "contactSheet": "B-full-320-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-377-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-377-part-1-neutral-320.png",
+      "sha256": "07ab6b3ce6d9537eb6dd8475223874a8f3fbff4a9ddb792b2730dcb51d370eea",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-377-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-377-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-377-part-1-step-1-320.png",
+      "sha256": "651f483b3e308cebf9ce8a6d5b91f43a7baf218d4a825c62a14c0fb1192cf2fd",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-377-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-377-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-377-part-1-step-2-320.png",
+      "sha256": "bd715c40fa87cef89ce94a9b4b2eec4860b2a68a3a084ffaee3f28f14383b79a",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-377-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-377-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-377-part-1-step-3-320.png",
+      "sha256": "324e863775f2c06fc12a3ca8db49d25862aabdec961f300619fac77936b6d708",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-377-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-377-part-1",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-377-part-1-step-4-320.png",
+      "sha256": "04a1631a01f5fe82f8bd5d5fd30b131d8b80c9b717cec64d955cea5bdfd3b56f",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-377-part-1-step-4-320.png",
+      "contactSheet": "B-full-320-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-378-part-1",
+      "view": "case-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-378-part-1-case-1-320.png",
+      "sha256": "e370b2b98d1b4e7278ab1670e57e4a465d02df4d737c12934912aa48076e2b02",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-378-part-1-case-1-320.png",
+      "contactSheet": "B-full-320-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-378-part-1",
+      "view": "case-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-378-part-1-case-2-320.png",
+      "sha256": "cd180ef866fbd12e85965d061d9ddb7d7bb81f554adec7046160abed14d1f118",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-378-part-1-case-2-320.png",
+      "contactSheet": "B-full-320-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-378-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-378-part-1-neutral-320.png",
+      "sha256": "8349bb3184ee556419757349b5a51c5b9b0979f84bde36b6eafeed96302ff6a4",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-378-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-378-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-378-part-1-step-1-320.png",
+      "sha256": "4e18694cff87663ea6bc284a55b078af167a004a85e288f907f9eceb56c946e7",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-378-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-378-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-378-part-1-step-2-320.png",
+      "sha256": "a07718cc670a0e0cc0ceccb905c25acd3d0b5a488cf80ad6ac41109819efacec",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-378-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-378-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-378-part-1-step-3-320.png",
+      "sha256": "4070c2d54a9966cb4ec5d9ce0f057d8e7d6ec01bdb496e53504d55a92ba7baef",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-378-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-378-part-1",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-378-part-1-step-4-320.png",
+      "sha256": "4070c2d54a9966cb4ec5d9ce0f057d8e7d6ec01bdb496e53504d55a92ba7baef",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-378-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-379-part-1-neutral-320.png",
+      "sha256": "e6d77e067e497a669268cfc7299b9f8ac47595c20ea68b0a87199221a90fd55a",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-379-part-1-step-1-320.png",
+      "sha256": "496f8deb12d9f33304a1951edbed992778cffe646cfb2ec32a8ca195906958e9",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-379-part-1-step-2-320.png",
+      "sha256": "6239e25a97eafd0b0ead8398df3721846488d33fd70fe4e85048bbccc6321353",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-379-part-1-step-3-320.png",
+      "sha256": "6239e25a97eafd0b0ead8398df3721846488d33fd70fe4e85048bbccc6321353",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-2",
+      "view": "case-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-379-part-2-case-1-320.png",
+      "sha256": "0f5cc4fce576a4435adae0507612d4790b504f98cb84b93db823fbd49fa7ed5b",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-2-case-1-320.png",
+      "contactSheet": "B-full-320-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-2",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-379-part-2-neutral-320.png",
+      "sha256": "6199dffe2157c267f05db0dd2804ad14a9c6bf7a27903b539212cf7932657f3c",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-2-neutral-320.png",
+      "contactSheet": "B-full-320-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-2",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-379-part-2-step-1-320.png",
+      "sha256": "8493d905f79140a993c37b4c1047942c0ae6a318b9b22dd3e4be72060efb147e",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-2-step-1-320.png",
+      "contactSheet": "B-full-320-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-2",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-379-part-2-step-2-320.png",
+      "sha256": "662cc88335fd68822c91a751317a02711c76a3a716fb1f58479b0bf04cb58efc",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-2-step-2-320.png",
+      "contactSheet": "B-full-320-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-2",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-379-part-2-step-3-320.png",
+      "sha256": "c31e904c89407d5242364b6a7a2f8cbe69c07f66226122480d57e647fe1af240",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-2-step-3-320.png",
+      "contactSheet": "B-full-320-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-3",
+      "view": "case-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-379-part-3-case-1-320.png",
+      "sha256": "2c691ae5ff425a8da07b1ea9c287e4eab5afdebf49e6c4f110f9935b79f5e3ef",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-3-case-1-320.png",
+      "contactSheet": "B-full-320-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-3",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-379-part-3-neutral-320.png",
+      "sha256": "ca0df8c1b22e080883b1dfbe82ba669a270a7081f97305011e57303b9b06c6a8",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-3-neutral-320.png",
+      "contactSheet": "B-full-320-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-3",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-379-part-3-step-1-320.png",
+      "sha256": "b2d8693f9aa65cd507042e75e655588baa397f9854ac68046316e77b41890724",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-3-step-1-320.png",
+      "contactSheet": "B-full-320-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-3",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-379-part-3-step-2-320.png",
+      "sha256": "0b626cd42aaca6779eeb53950883573a57848c55607f6ba0ce450418fc5f72fc",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-3-step-2-320.png",
+      "contactSheet": "B-full-320-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-3",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-379-part-3-step-3-320.png",
+      "sha256": "358e4fed79a4aa814d678effdd1034a195c264e5b878953d286e5819516b2772",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-3-step-3-320.png",
+      "contactSheet": "B-full-320-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-4",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-379-part-4-neutral-320.png",
+      "sha256": "8abd7dafa4c7235da9cc243f466af7bc0f9451912fe5d4d1173eb2806a6a409f",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-4-neutral-320.png",
+      "contactSheet": "B-full-320-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-4",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-379-part-4-step-1-320.png",
+      "sha256": "7ffbeba4c3e8d21579765e7aabd9c919694fe727b1f6e5d1f01db2562b4545cc",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-4-step-1-320.png",
+      "contactSheet": "B-full-320-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-4",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-379-part-4-step-2-320.png",
+      "sha256": "7ffbeba4c3e8d21579765e7aabd9c919694fe727b1f6e5d1f01db2562b4545cc",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-4-step-1-320.png",
+      "contactSheet": "B-full-320-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-5",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-379-part-5-neutral-320.png",
+      "sha256": "d45fb1146f61d1d56da12136be97a74da52c927c4a5ac4b596391aecea5ca0b9",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-5-neutral-320.png",
+      "contactSheet": "B-full-320-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-5",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-379-part-5-step-1-320.png",
+      "sha256": "e6b82d4a0c6fea75f8eb0946d394ce0a47fa42be93a9aa7df44240bf0c807550",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-5-step-1-320.png",
+      "contactSheet": "B-full-320-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-5",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-379-part-5-step-2-320.png",
+      "sha256": "e81614906ed14045966aaebc9426067539b74622e5e248281e3bbcb13436de11",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-5-step-2-320.png",
+      "contactSheet": "B-full-320-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-5",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-379-part-5-step-3-320.png",
+      "sha256": "e81614906ed14045966aaebc9426067539b74622e5e248281e3bbcb13436de11",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-5-step-2-320.png",
+      "contactSheet": "B-full-320-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-380-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-380-part-1-neutral-320.png",
+      "sha256": "cda0ce8993a12211e1bcbfbf2332d1a00edf58a2f321c7af4445afd6cdf41e4f",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-380-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-380-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-380-part-1-step-1-320.png",
+      "sha256": "ef3226b4530d731f6e6bfadb8ed016b41890a1229a4da7dd410dd77b3837e8cb",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-380-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-380-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-380-part-1-step-2-320.png",
+      "sha256": "416e5ab5935227e56c5bed5774f9df08c94019201c326a583e28b580f56d8c20",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-380-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-380-part-2",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-380-part-2-neutral-320.png",
+      "sha256": "d962c97e6b30d5f51b69f9a2ff59e829d0c45d56c52aff3731e8366cec1e61e6",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-380-part-2-neutral-320.png",
+      "contactSheet": "B-full-320-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-380-part-2",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-380-part-2-step-1-320.png",
+      "sha256": "683c3fb8755d63c9598ed5e58d98cf52bbea991ff324de3cd6c0fbf10fc79f18",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-380-part-2-step-1-320.png",
+      "contactSheet": "B-full-320-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-380-part-2",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-380-part-2-step-2-320.png",
+      "sha256": "e4cfc926842f4400967445889a122d5aa62333e1d52adda352b2eb15d2ff9586",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-380-part-2-step-2-320.png",
+      "contactSheet": "B-full-320-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-381-part-1-neutral-320.png",
+      "sha256": "bafa9556e51493aca973a19b6232a00b673d2ca88dd4a8a7070b581805a3b1e5",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-381-part-1-step-1-320.png",
+      "sha256": "ac1bc4d07634bb348d5fe61f15741363a05c5e02b5497f322c1848b975f7282e",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-381-part-1-step-2-320.png",
+      "sha256": "ac1bc4d07634bb348d5fe61f15741363a05c5e02b5497f322c1848b975f7282e",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-2",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-381-part-2-neutral-320.png",
+      "sha256": "6656bbe6a97508e9adcca26fdbafd81ce62233246ab0c47a6935246abb892f6a",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-2-neutral-320.png",
+      "contactSheet": "B-full-320-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-2",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-381-part-2-step-1-320.png",
+      "sha256": "7325d57023dc13a9edccf76bb8357642511514808c7bdbbd1543e83c2282c719",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-2-step-1-320.png",
+      "contactSheet": "B-full-320-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-2",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-381-part-2-step-2-320.png",
+      "sha256": "7325d57023dc13a9edccf76bb8357642511514808c7bdbbd1543e83c2282c719",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-2-step-1-320.png",
+      "contactSheet": "B-full-320-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-3",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-381-part-3-neutral-320.png",
+      "sha256": "37bd1ec859549a030174c9ff0dae32f3e85dc13a68a29ef223766c2bc381a01a",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-3-neutral-320.png",
+      "contactSheet": "B-full-320-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-3",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-381-part-3-step-1-320.png",
+      "sha256": "0c305b43280eb77e4bbe0a23ae5eda8307cf35ec5b87cf1812bb578010e76cb8",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-3-step-1-320.png",
+      "contactSheet": "B-full-320-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-3",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-381-part-3-step-2-320.png",
+      "sha256": "0c305b43280eb77e4bbe0a23ae5eda8307cf35ec5b87cf1812bb578010e76cb8",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-3-step-1-320.png",
+      "contactSheet": "B-full-320-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-4",
+      "view": "case-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-381-part-4-case-1-320.png",
+      "sha256": "6b65b67a3f81a2cf3a699732c19b77b4b246d5020d6ecaeec2ec422df900a0b9",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-4-case-1-320.png",
+      "contactSheet": "B-full-320-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-4",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-381-part-4-neutral-320.png",
+      "sha256": "1a645f2bd4d56ae1c25e8225f6827cef8ee206e78252fc4f4633c8caa51ba74d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-4-neutral-320.png",
+      "contactSheet": "B-full-320-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-4",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-381-part-4-step-1-320.png",
+      "sha256": "57712facc4392292ea1deae435e35613a3352ce180e13e01350e4013cdccdf5d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-4-step-1-320.png",
+      "contactSheet": "B-full-320-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-4",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-381-part-4-step-2-320.png",
+      "sha256": "57712facc4392292ea1deae435e35613a3352ce180e13e01350e4013cdccdf5d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-4-step-1-320.png",
+      "contactSheet": "B-full-320-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-382-part-1",
+      "view": "case-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-382-part-1-case-1-320.png",
+      "sha256": "f8bc6dbbf98fa11b75e85c8f497d2624b7796373663c13726b7d46a4c3974bdf",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-382-part-1-case-1-320.png",
+      "contactSheet": "B-full-320-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-382-part-1",
+      "view": "case-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-382-part-1-case-2-320.png",
+      "sha256": "39594aca84e0bfafda30302058425f6414bb75d41b3b026bf5596ae3d482c3a8",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-382-part-1-case-2-320.png",
+      "contactSheet": "B-full-320-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-382-part-1",
+      "view": "case-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-382-part-1-case-3-320.png",
+      "sha256": "2bd630c3c05040313ee8d5057f74250eb33fc4ee4d38a45819d444bbf2409919",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-382-part-1-case-3-320.png",
+      "contactSheet": "B-full-320-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-382-part-1",
+      "view": "case-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-382-part-1-case-4-320.png",
+      "sha256": "97bfd32025d320933242dc7a45749b6362b84df7dc017cab3dc0eb4803ded11c",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-382-part-1-case-4-320.png",
+      "contactSheet": "B-full-320-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-382-part-1",
+      "view": "case-5",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-382-part-1-case-5-320.png",
+      "sha256": "87c11c07d91908f1dac7fe102daf6d4b9d4b831690eb79e52eb405e07ca43463",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-382-part-1-case-5-320.png",
+      "contactSheet": "B-full-320-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-382-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-382-part-1-neutral-320.png",
+      "sha256": "fc9738fc869485e551c4a115ba92f2179bb9a88de8f4462e0bfab032841e7f76",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-382-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-382-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-382-part-1-step-1-320.png",
+      "sha256": "118fb05a343b15df3213b4e14bbd810891eb4bb979f416ff37824d7d4b1c32c6",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-382-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-382-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-382-part-1-step-2-320.png",
+      "sha256": "c735585051a46f4b88227dfdbb2863d4dddf4922ea915bed36588ee434a04bf2",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-382-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-382-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-382-part-1-step-3-320.png",
+      "sha256": "94c6c4054bf6d90525f9a21381b7668fa89c38a250b1c9f2cd56739d482c0902",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-382-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-382-part-1",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-382-part-1-step-4-320.png",
+      "sha256": "3fd9e01a4f3ae334f4bfc6a1f60bda038c4a180bcd6c320e7c4c70742d8f0273",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-382-part-1-step-4-320.png",
+      "contactSheet": "B-full-320-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-382-part-1",
+      "view": "step-5",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-382-part-1-step-5-320.png",
+      "sha256": "3271d52f72e7856ed1e6880922742ff28f94a815926a810ab65e63f9a84bb36d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-382-part-1-step-5-320.png",
+      "contactSheet": "B-full-320-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "case-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-383-part-1-case-1-320.png",
+      "sha256": "6df486939fb94a96659b4e53db1329282bd50e69165cca68f7a63e60cda757d0",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-case-1-320.png",
+      "contactSheet": "B-full-320-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "case-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-383-part-1-case-2-320.png",
+      "sha256": "2fe5a6c04d4fcd5cb028ac12bfb8994142f06629652351d1f783c2c848017eca",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-case-2-320.png",
+      "contactSheet": "B-full-320-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "case-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-383-part-1-case-3-320.png",
+      "sha256": "7183aeb09e3059de0291903058e3b4ee65877cebaf40865bd53bb8b117267bc0",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-case-3-320.png",
+      "contactSheet": "B-full-320-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "case-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-383-part-1-case-4-320.png",
+      "sha256": "1e0ba1259046da6ec156e8b9c7d8de6fb8def7a7454ff0c6432423313a445127",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-case-4-320.png",
+      "contactSheet": "B-full-320-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "case-5",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-383-part-1-case-5-320.png",
+      "sha256": "db5708009779e013563d36c44f75cc2f5bce2be6bd4bc8ef27137c448fc659b0",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-case-5-320.png",
+      "contactSheet": "B-full-320-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-383-part-1-neutral-320.png",
+      "sha256": "1e07b10993d249fec9cb47d6f9ec3b6e546a96f7c2a31fdc31df40981a5cf2c4",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-383-part-1-step-1-320.png",
+      "sha256": "b0247231836eed95852ef0823b337fd9c010a944f213c1d6edb559caf28732cf",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-383-part-1-step-2-320.png",
+      "sha256": "0887c9a17f4e120330d601474d86367ef77eaca882d5b1919a9eb160b2173c3c",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-383-part-1-step-3-320.png",
+      "sha256": "c1289b869df33f6b336184e7d584c8bd499e5f3186cb87bb20d29b2f58c9ba1a",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-step-3-320.png",
+      "contactSheet": "B-full-320-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "step-4",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-383-part-1-step-4-320.png",
+      "sha256": "a2328a4d63f2cd8ec479abea7a7d6586d849cf01208a9a98f4afa936609f3db3",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-step-4-320.png",
+      "contactSheet": "B-full-320-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "step-5",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-383-part-1-step-5-320.png",
+      "sha256": "fa0920ae325e889932b0cdf56b82979e0cbe5dd56e9dd2c14645ea5ae38e7061",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-step-5-320.png",
+      "contactSheet": "B-full-320-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "step-6",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-383-part-1-step-6-320.png",
+      "sha256": "3d9a70329b1c12688788c7687798e9928e57103e290b34211dbf951a372b489e",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-step-6-320.png",
+      "contactSheet": "B-full-320-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-1",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-384-part-1-neutral-320.png",
+      "sha256": "459643ebc9eec9571bea5567282af31a8c4672f14983a45e424a07f43457b5a7",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-384-part-1-neutral-320.png",
+      "contactSheet": "B-full-320-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-1",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-384-part-1-step-1-320.png",
+      "sha256": "6b777deaf3b0bd4ce729e796b926cc60d56af84ce240992050ceb72f78e4c8e3",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-384-part-1-step-1-320.png",
+      "contactSheet": "B-full-320-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-1",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-384-part-1-step-2-320.png",
+      "sha256": "6b4a185cc233031b38cce436248213a0ff9d822062648a73b2bdd565d23f79d7",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-384-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-1",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-384-part-1-step-3-320.png",
+      "sha256": "6b4a185cc233031b38cce436248213a0ff9d822062648a73b2bdd565d23f79d7",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-384-part-1-step-2-320.png",
+      "contactSheet": "B-full-320-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "view": "neutral",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-384-part-2-neutral-320.png",
+      "sha256": "ea55fa8873f6502079299634aff53169e1c2aff3dddd66f9563a1f2b84aa999e",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-384-part-2-neutral-320.png",
+      "contactSheet": "B-full-320-16.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "view": "step-1",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-384-part-2-step-1-320.png",
+      "sha256": "777aab04316a63a92f55f2d39b1ac657615b503ade4179f23b1a3797dacf1ebf",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-384-part-2-step-1-320.png",
+      "contactSheet": "B-full-320-16.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "view": "step-2",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-384-part-2-step-2-320.png",
+      "sha256": "bfaae6e777da3c0496e0bb7a507738ed8ccd95fd2d3e8667bea0a7e5259e70c3",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-384-part-2-step-2-320.png",
+      "contactSheet": "B-full-320-16.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "view": "step-3",
+      "width": 320,
+      "file": "review-atanasyan-7-9-main-384-part-2-step-3-320.png",
+      "sha256": "bfaae6e777da3c0496e0bb7a507738ed8ccd95fd2d3e8667bea0a7e5259e70c3",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-384-part-2-step-2-320.png",
+      "contactSheet": "B-full-320-16.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-358-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-358-part-1-case-1-1280.png",
+      "sha256": "cd312dd33bd6fdfe5c7a4f8de70e9abb9a5e7cfe1901f368d8e08c95d217605a",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-358-part-1-case-1-1280.png",
+      "contactSheet": "B-full-1280-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-358-part-1",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-358-part-1-case-2-1280.png",
+      "sha256": "1a5cd40e87172a8ec755d61a99e2ed9200cbbb69ef4e6b264466da6254075b9d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-358-part-1-case-2-1280.png",
+      "contactSheet": "B-full-1280-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-358-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-358-part-1-neutral-1280.png",
+      "sha256": "6a461e39bdded56f92c3c5dd39579428501266bc940aeea0d35096180a9cb0d5",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-358-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-358-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-358-part-1-step-1-1280.png",
+      "sha256": "84eed521d9e3cf006958097d702888c67fdf794fc5734e954024db081958cfcf",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-358-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-358-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-358-part-1-step-2-1280.png",
+      "sha256": "123ecfd787a8b68e471d5cbc75e0d5f7111e0fab4366ec16eb4608826c819b05",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-358-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-358-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-358-part-1-step-3-1280.png",
+      "sha256": "123ecfd787a8b68e471d5cbc75e0d5f7111e0fab4366ec16eb4608826c819b05",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-358-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-358-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-358-part-1-step-4-1280.png",
+      "sha256": "dec4a6e9b1445ee86420aa7478b822f7de5e752c5aee00c69166719a8255e25f",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-358-part-1-step-4-1280.png",
+      "contactSheet": "B-full-1280-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-359-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-359-part-1-case-1-1280.png",
+      "sha256": "27f06c19120e4386192dbb1a974b9f5a42e7547666b2a5cb2f4cadb4d099bd87",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-359-part-1-case-1-1280.png",
+      "contactSheet": "B-full-1280-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-359-part-1",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-359-part-1-case-2-1280.png",
+      "sha256": "55c14eee92759df883e9853fdc7a02fa69e374f0a4fe0a9bc3a3bcab79b05e89",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-359-part-1-case-2-1280.png",
+      "contactSheet": "B-full-1280-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-359-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-359-part-1-neutral-1280.png",
+      "sha256": "722e877690143b9e7c6d6539dce5f638a1af5362bcefee6c7df042967a2561df",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-359-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-359-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-359-part-1-step-1-1280.png",
+      "sha256": "39af51a0668ef2027ed0c7db83523b401bb566fce5eec65b2af02a3e8583ac27",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-359-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-359-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-359-part-1-step-2-1280.png",
+      "sha256": "c6cc5edeeee640d793c410a53f363ee08b2c0723c3c2bd692f7a83977e9cb866",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-359-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-359-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-359-part-1-step-3-1280.png",
+      "sha256": "c6cc5edeeee640d793c410a53f363ee08b2c0723c3c2bd692f7a83977e9cb866",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-359-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-359-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-359-part-1-step-4-1280.png",
+      "sha256": "4b00d44e7dc28b0c1ab35e3bf654ec3b13db36aa04b01b74653d35f14ec5ee8d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-359-part-1-step-4-1280.png",
+      "contactSheet": "B-full-1280-01.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-360-part-1-case-1-1280.png",
+      "sha256": "3ce872e52f0d756ac7a07b27e3e55736d75c807b5ec628f196365d5f3f1856be",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-case-1-1280.png",
+      "contactSheet": "B-full-1280-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-360-part-1-case-2-1280.png",
+      "sha256": "7e3023498a36e7dfaa9468cf0140416357eb46a99c110fc0aeeefd49873a5789",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-case-2-1280.png",
+      "contactSheet": "B-full-1280-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "case-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-360-part-1-case-3-1280.png",
+      "sha256": "adf63f0f6fe86b3da1cf2db983846a0ba320675a8a3e0106a8cb8adb8ce8454f",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-case-3-1280.png",
+      "contactSheet": "B-full-1280-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "case-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-360-part-1-case-4-1280.png",
+      "sha256": "6df197b0b3440c5a4015389ce20d4627a041e04c206aee46552fb56af0de1bb2",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-case-4-1280.png",
+      "contactSheet": "B-full-1280-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "case-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-360-part-1-case-5-1280.png",
+      "sha256": "e0f8a0b4d7c9c6f1759da7d9276f92a2fd8564905bc4ec9c5786e354f6015bd4",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-case-5-1280.png",
+      "contactSheet": "B-full-1280-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "case-6",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-360-part-1-case-6-1280.png",
+      "sha256": "7a2dc3b06342d40a77c8512263d3c3488582a9e1bb21e1b618c91e95a8b9263c",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-case-6-1280.png",
+      "contactSheet": "B-full-1280-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-360-part-1-neutral-1280.png",
+      "sha256": "be185311b35d817729baf66b366aa5492066e95b7bd252c5266dd82e720fbb4a",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-360-part-1-step-1-1280.png",
+      "sha256": "8cb864037e1a2d5a983f3855c904e8ef2c0935c2140e3ccf806dc880dadc6970",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-360-part-1-step-2-1280.png",
+      "sha256": "c1a5db7330efbf6c0cb30946a312e38bdc0f40e549e905b69e6707309cff37d1",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-360-part-1-step-3-1280.png",
+      "sha256": "f9a4f98330695e2a11b34d40d806e74760dd1fc7576a68907c2957d61dca9649",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-360-part-1-step-4-1280.png",
+      "sha256": "d7dc8828a0dafa39928733f5cf86c0007637635a6e674447352a821be053313e",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-step-4-1280.png",
+      "contactSheet": "B-full-1280-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-360-part-1",
+      "view": "step-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-360-part-1-step-5-1280.png",
+      "sha256": "7ae0bece19e52e1a9ba776ff7f385e00c219874d998caf59eb6a23cd562c605f",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-360-part-1-step-5-1280.png",
+      "contactSheet": "B-full-1280-02.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-361-part-1-case-1-1280.png",
+      "sha256": "4a6077dd47492712084c2519a26e973c91ad891c44075f8d280fb34557217b36",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-case-1-1280.png",
+      "contactSheet": "B-full-1280-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-361-part-1-case-2-1280.png",
+      "sha256": "f16b7b0355b3671fe30be3cdd6afe140a38aad8220408064fd6f9442fc0a4501",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-case-2-1280.png",
+      "contactSheet": "B-full-1280-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "case-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-361-part-1-case-3-1280.png",
+      "sha256": "4c70341bc167771f8756715a206f9586523a3644fcc24891d67d882218d4eb0d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-case-3-1280.png",
+      "contactSheet": "B-full-1280-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "case-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-361-part-1-case-4-1280.png",
+      "sha256": "c27d9f33eedef8e20f1fe7ab626e9e0f0c4d17e4092b90e0e40404c0609165fc",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-case-4-1280.png",
+      "contactSheet": "B-full-1280-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "case-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-361-part-1-case-5-1280.png",
+      "sha256": "3c11db3668ca6bd450694244ba1822e9e0eca958fba03bcbdf88de115d8a477b",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-case-5-1280.png",
+      "contactSheet": "B-full-1280-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "case-6",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-361-part-1-case-6-1280.png",
+      "sha256": "295b1d358b98949e0c7263d6b0ef9f60278aad5bfb23bd0b2df5d5d700940207",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-case-6-1280.png",
+      "contactSheet": "B-full-1280-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-361-part-1-neutral-1280.png",
+      "sha256": "db1485ee1f925d1f95f7655fca725e6da20ef2490bdfc93abdb8c9ddfa5d7b75",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-361-part-1-step-1-1280.png",
+      "sha256": "1d335ea745e176b32b9593dbc3c67e5e56f069c5a790e8858b58e0f8df4b7eab",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-361-part-1-step-2-1280.png",
+      "sha256": "aadebe96d3c1c56648b535ed15abdf86cc8b99be2246bdb5a8f72f358b87805a",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-361-part-1-step-3-1280.png",
+      "sha256": "e2b849d465b96acfaf465fec6f4cb85dea1a92505f8ad514223e0e64b7a71636",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-361-part-1-step-4-1280.png",
+      "sha256": "104b3b63f48f536ec1f17fd6bf11ff09847374c3b6673061e93c5f3665dd947c",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-step-4-1280.png",
+      "contactSheet": "B-full-1280-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-361-part-1",
+      "view": "step-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-361-part-1-step-5-1280.png",
+      "sha256": "3e56579f3c28406d1f4b3ce961cc3605288c5777fb9cd93e1a4ab5ff73a8d8b3",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-361-part-1-step-5-1280.png",
+      "contactSheet": "B-full-1280-03.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-362-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-362-part-1-neutral-1280.png",
+      "sha256": "b507b1880deaf4372d7777dd6e97dd05303d33ec57fdd44fe553e0ed9e43f184",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-362-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-362-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-362-part-1-step-1-1280.png",
+      "sha256": "fa05efaa32a98a9c5c09789c7afdd85f598f6334d12f3937beaa42778fe072e6",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-362-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-362-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-362-part-1-step-2-1280.png",
+      "sha256": "649d0a0542807fd9d3fd33bdde0b809c990ee27a8511cdb25a4d38e7fb08a3d2",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-362-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-362-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-362-part-1-step-3-1280.png",
+      "sha256": "58facbd4273f50460bf4897da05fa1a49d7e19b7fdd777b9a67ddbd53e5acefe",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-362-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-363-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-363-part-1-neutral-1280.png",
+      "sha256": "c6977c58d1b050e33426baac54ec00cea34afafcbd30d79a011675c2819769dc",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-363-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-363-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-363-part-1-step-1-1280.png",
+      "sha256": "7a579cb61bd3fa569d0c25d63986633ceff871538ee2b256836576111dd316a8",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-363-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-363-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-363-part-1-step-2-1280.png",
+      "sha256": "0f5af7d0e8b145ca88721068ac240c3e11dc12d3bfce7a1c4f6ad564d56da96a",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-363-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-363-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-363-part-1-step-3-1280.png",
+      "sha256": "46da7b07d8af3c375da0bac2cc0e71635f0bb6ec7db255af45355d3f8ae386bf",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-363-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-364-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-364-part-1-case-1-1280.png",
+      "sha256": "48e293fd27a0b1099e58e69ddfdf4626433f2fe0850c2a719b3ad2a956bf8061",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-364-part-1-case-1-1280.png",
+      "contactSheet": "B-full-1280-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-364-part-1",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-364-part-1-case-2-1280.png",
+      "sha256": "84aaf9266e92838318f4b074ca70fc81d3c6a03c83500be9ec3de8bec0b244fe",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-364-part-1-case-2-1280.png",
+      "contactSheet": "B-full-1280-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-364-part-1",
+      "view": "case-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-364-part-1-case-3-1280.png",
+      "sha256": "434b4f20ba4b11ff9aa82cefe0b3f17b5bac65fe051dfcfe8fa7899cefc62e72",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-364-part-1-case-3-1280.png",
+      "contactSheet": "B-full-1280-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-364-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-364-part-1-neutral-1280.png",
+      "sha256": "7d4c46fe6906eb78199d3a0056b5385825579a366dd3901cb4d98895dd81ce75",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-364-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-04.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-364-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-364-part-1-step-1-1280.png",
+      "sha256": "282eb0ac849061d95f668e3123fb39067b9f159533ff305ad780d581191b721c",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-364-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-364-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-364-part-1-step-2-1280.png",
+      "sha256": "393c19106ec7dd3105fb328a44605c6e0a116fbfe2cac27defa4bbd141bf5f89",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-364-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-364-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-364-part-1-step-3-1280.png",
+      "sha256": "a79663b40d513c0b531a907985da753f799b5faf7e2b1f37e97bbb66f973a23c",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-364-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-364-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-364-part-1-step-4-1280.png",
+      "sha256": "d822145b57441e319aff849d02377df510ae9281db9e6bb680a5aa67ea099917",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-364-part-1-step-4-1280.png",
+      "contactSheet": "B-full-1280-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-365-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-365-part-1-case-1-1280.png",
+      "sha256": "b28edf155ef074975e2f9721381ad243c77f0f1748c15390ddcd8d7328237e14",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-365-part-1-case-1-1280.png",
+      "contactSheet": "B-full-1280-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-365-part-1",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-365-part-1-case-2-1280.png",
+      "sha256": "051a54d4a39c432b2985715e608e5977ad17627fc2e36ac145fcc692cf05c01f",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-365-part-1-case-2-1280.png",
+      "contactSheet": "B-full-1280-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-365-part-1",
+      "view": "case-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-365-part-1-case-3-1280.png",
+      "sha256": "b5b98b6bd445cbfd11724f179d549276e3ee69597c1fecb2a00d76d3d1638d3e",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-365-part-1-case-3-1280.png",
+      "contactSheet": "B-full-1280-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-365-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-365-part-1-neutral-1280.png",
+      "sha256": "ee54ae1ac59091fcd7dbdd4ee9fabfe51f49c2284c93d2951a00be8440688c21",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-365-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-365-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-365-part-1-step-1-1280.png",
+      "sha256": "b954a11501ae0432e7950599b8a4711de8392013f9ae11e0e564231ceb25264e",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-365-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-365-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-365-part-1-step-2-1280.png",
+      "sha256": "c24685dbb6a339e092e150093e64b0212d2c103ad6ea1b01b796cb2b8743542f",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-365-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-365-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-365-part-1-step-3-1280.png",
+      "sha256": "c2d7ce285672a49ee44da8392b0a059942224061f2bc32821458f4b2aa7260fe",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-365-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-365-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-365-part-1-step-4-1280.png",
+      "sha256": "1d72fe06fc8c025087afdbe0d45ece5c8e110ef41dd7877b98f386c9dec3c073",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-365-part-1-step-4-1280.png",
+      "contactSheet": "B-full-1280-05.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-366-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-366-part-1-neutral-1280.png",
+      "sha256": "5a34589365af4ab89b03a34fec5be51ae3084932b71271e3167eb1452bdcfeef",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-366-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-366-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-366-part-1-step-1-1280.png",
+      "sha256": "c87b17959c351b28e868dab94b939ace7348554205d04286973ced3014d5fe9f",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-366-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-366-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-366-part-1-step-2-1280.png",
+      "sha256": "babd66ecb869bf4a2605b055c8bf99c16926964e4d977ce75e62c4f95c4506d1",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-366-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-366-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-366-part-1-step-3-1280.png",
+      "sha256": "2f9aea6461f69ce949f7bb944a6cebf583a070144c01b0a980c3524d1f1d3ae8",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-366-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-367-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-367-part-1-case-1-1280.png",
+      "sha256": "1a9d5527baa41a74120a904fcca6dcfad78f443b974bfb45365165b191d83a7f",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-367-part-1-case-1-1280.png",
+      "contactSheet": "B-full-1280-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-367-part-1",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-367-part-1-case-2-1280.png",
+      "sha256": "b384ac9592803eed592e28c606c517c31be9e5a080db08348f57d2fa70c9d746",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-367-part-1-case-2-1280.png",
+      "contactSheet": "B-full-1280-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-367-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-367-part-1-neutral-1280.png",
+      "sha256": "b4743924c33c9b0e08ada5e67f533ba61aa057be245d7d7d2a6342a388287834",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-367-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-367-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-367-part-1-step-1-1280.png",
+      "sha256": "32400e2ba293ee2fd29d25a92e7a171691e48489eee185f9539cce2047909b41",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-367-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-367-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-367-part-1-step-2-1280.png",
+      "sha256": "2b203677e613f58b925fe52fb2ca3062a1c2b47f90d2935b82e85e2c331e8e2c",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-367-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-367-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-367-part-1-step-3-1280.png",
+      "sha256": "400d9cf75ce5aa72d467fbee60f6276a4e196c23abc1b9ed40d77bd788a3d727",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-367-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-368-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-368-part-1-case-1-1280.png",
+      "sha256": "ccd0b936df132d47bcaa82b41747c52f1c43f50f4cfb564620ab3d18df4cb890",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-368-part-1-case-1-1280.png",
+      "contactSheet": "B-full-1280-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-368-part-1",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-368-part-1-case-2-1280.png",
+      "sha256": "d4df55a01dabd9f9d0c8d73b8d07b5f67632ff8c9d9c2f34502f6b853fbd2f37",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-368-part-1-case-2-1280.png",
+      "contactSheet": "B-full-1280-06.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-368-part-1",
+      "view": "case-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-368-part-1-case-3-1280.png",
+      "sha256": "6443dcb045df6b460466ca32cedbc02e350fb905431b13c2e4eab89e4374e55b",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-368-part-1-case-3-1280.png",
+      "contactSheet": "B-full-1280-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-368-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-368-part-1-neutral-1280.png",
+      "sha256": "566fdc981c4b629cfebc41b3663e8193580a2ae6ddff5e9605433af61632087b",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-368-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-368-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-368-part-1-step-1-1280.png",
+      "sha256": "73a909ff8c8d0bac2bc082ebd3433d7d48418f77c9b40f41570ab07790b6f242",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-368-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-368-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-368-part-1-step-2-1280.png",
+      "sha256": "34f89fe511adda19924f8fdcb12e90d89777aef5d3e3e31d01ab9f92cb0c5ede",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-368-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-368-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-368-part-1-step-3-1280.png",
+      "sha256": "edd8e3d8277b25bfa764f650c16049e2f4af496485260f80b262016f469876ae",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-368-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-368-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-368-part-1-step-4-1280.png",
+      "sha256": "5ac43edb0d05f4780fd51dfd577aa1ce5cfd5711503bf97319e0afb467b0aa2d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-368-part-1-step-4-1280.png",
+      "contactSheet": "B-full-1280-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-369-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-369-part-1-neutral-1280.png",
+      "sha256": "2ebeaa4aa880a451280811cb8830da5e2705202e8c9b5d2aad2a3f7e9a611ded",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-369-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-369-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-369-part-1-step-1-1280.png",
+      "sha256": "b645fb940c4685920ea5001637446ff396ae1c82a0b8307de3bbda78840b800f",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-369-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-369-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-369-part-1-step-2-1280.png",
+      "sha256": "6df747911cee7edd996ff302d78f298251c874295ed090bb36bcf990f8ab650b",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-369-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-369-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-369-part-1-step-3-1280.png",
+      "sha256": "6df747911cee7edd996ff302d78f298251c874295ed090bb36bcf990f8ab650b",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-369-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-370-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-370-part-1-neutral-1280.png",
+      "sha256": "711715af6091381615edc9266a1846fd3b0aa343d19801359163ec80bf247560",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-370-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-370-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-370-part-1-step-1-1280.png",
+      "sha256": "3b07f249a670c51ac390be6a9abc2e92912be9be9f66ff2ec3a176ac4f35c75b",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-370-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-370-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-370-part-1-step-2-1280.png",
+      "sha256": "c83e28358c1fb32f38be6680f30de01eab3c4292ed6b84ed60466e9f8493eadc",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-370-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-370-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-370-part-1-step-3-1280.png",
+      "sha256": "c83e28358c1fb32f38be6680f30de01eab3c4292ed6b84ed60466e9f8493eadc",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-370-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-07.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-371-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-371-part-1-neutral-1280.png",
+      "sha256": "92403487f82023c4dd9e01b4c7e42c72a0e036112f44fb8a04d48ceac6e0eb1e",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-371-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-371-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-371-part-1-step-1-1280.png",
+      "sha256": "1ba4595bebe9f7e52bdcdd964d629e1f985a71deafb702d46d7f0d372c060a10",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-371-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-371-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-371-part-1-step-2-1280.png",
+      "sha256": "db883c50392ffdccdf09963fa4e0a23c1ba713f8fdf60ef58802a0567097b202",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-371-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-371-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-371-part-1-step-3-1280.png",
+      "sha256": "c807112adee16b1bfa768671d64cf8f6c25c512646d02c48906ed0ac89d5ac83",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-371-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-371-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-371-part-1-step-4-1280.png",
+      "sha256": "c807112adee16b1bfa768671d64cf8f6c25c512646d02c48906ed0ac89d5ac83",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-371-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-372-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-372-part-1-neutral-1280.png",
+      "sha256": "b173057163b0d7a72ff357e557128912fad0bd6d79feda98daef21477e49ac5c",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-372-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-372-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-372-part-1-step-1-1280.png",
+      "sha256": "1290a9c8f6c451900ea8b4a209ff16d2778ae37fc0d5858d94f6a111d0412c46",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-372-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-372-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-372-part-1-step-2-1280.png",
+      "sha256": "835294dd9c2e1fac5691927b2ef4066fb7ce89d7a58a2a62dde0614771561bf2",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-372-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-372-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-372-part-1-step-3-1280.png",
+      "sha256": "6930d6afa272f77bf6c04c3d0a29b440bb94c81bf6bbbbb645fb3f28231d3260",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-372-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-372-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-372-part-1-step-4-1280.png",
+      "sha256": "6930d6afa272f77bf6c04c3d0a29b440bb94c81bf6bbbbb645fb3f28231d3260",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-372-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-373-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-373-part-1-case-1-1280.png",
+      "sha256": "94a9305d11c6a4adefe69f79e9b51cac3b2147e82b14fb1f03df60d6c2926313",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-373-part-1-case-1-1280.png",
+      "contactSheet": "B-full-1280-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-373-part-1",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-373-part-1-case-2-1280.png",
+      "sha256": "a7e94faa093fa6952b16b2bcba6dcc030ec4ee5f15e8e70bf47c0f1356ed036d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-373-part-1-case-2-1280.png",
+      "contactSheet": "B-full-1280-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-373-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-373-part-1-neutral-1280.png",
+      "sha256": "8e71008f6951fe8454f5b5cbf726f1ac914630fff6ed313de2aa5ff1f44b0246",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-373-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-373-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-373-part-1-step-1-1280.png",
+      "sha256": "df764cd145228b90e0e9616847c38acf898b034bd9ba2bdd6df89a782b59c4e2",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-373-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-08.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-373-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-373-part-1-step-2-1280.png",
+      "sha256": "5f8ad50529b46fbcd5e5c7b8d23a9dffe91cd89cf949b732f8561a1fc1ca5ee9",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-373-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-373-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-373-part-1-step-3-1280.png",
+      "sha256": "2f6b85ce3d4def370c0cf2f07f1caf30a8483ae26ceede45df89d0172bf5041b",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-373-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-374-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-374-part-1-neutral-1280.png",
+      "sha256": "9e22c5b9abbd7135d70503f66b77e5d428170c1fc5699400c0619abab2e200e0",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-374-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-374-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-374-part-1-step-1-1280.png",
+      "sha256": "0709f3117a408ca4808366e719ee91088f534ae0b8dc3d236638c781aa2abb98",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-374-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-374-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-374-part-1-step-2-1280.png",
+      "sha256": "cc0458aabee9ca21095518eed8643f176d7052e63e8157a2498a1d7bbef607e2",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-374-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-374-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-374-part-1-step-3-1280.png",
+      "sha256": "9124eded7eec66fadcf6feb454a8bed39ff871ef07ca01e9c255227cc4f9eb40",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-374-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-374-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-374-part-1-step-4-1280.png",
+      "sha256": "9124eded7eec66fadcf6feb454a8bed39ff871ef07ca01e9c255227cc4f9eb40",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-374-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-375-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-375-part-1-neutral-1280.png",
+      "sha256": "c7e8a5821c0d98a400929a969fc57ba7fb42a2a44bbae9a9ef8d785535e231d0",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-375-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-375-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-375-part-1-step-1-1280.png",
+      "sha256": "c9d0a4081efb900d8bc3555d66a55534ad829a63ec63f66f4d2a62ef2eb9a5fd",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-375-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-375-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-375-part-1-step-2-1280.png",
+      "sha256": "5ec846983ffddbde351a40f60925dfb6e6cd16c0fcc173e4759e50e48c091528",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-375-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-375-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-375-part-1-step-3-1280.png",
+      "sha256": "24ff3da45c1c5d03a11f72ce1952466b56731901f3472bcb4de97cbcb84702b3",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-375-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-375-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-375-part-1-step-4-1280.png",
+      "sha256": "24ff3da45c1c5d03a11f72ce1952466b56731901f3472bcb4de97cbcb84702b3",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-375-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-376-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-376-part-1-neutral-1280.png",
+      "sha256": "fa474998095026ce391277e863dd45acd660dcf8a52beb088f860f47a2905b8d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-376-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-376-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-376-part-1-step-1-1280.png",
+      "sha256": "e9e693beed02c8001a30a8d4210bfe0e7e36da7601d13d881dc0792c96b13583",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-376-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-09.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-376-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-376-part-1-step-2-1280.png",
+      "sha256": "88c887b6f5a16052043b6d6b0fe726cf1a174d96fc76cfddcf583e4610d0bf49",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-376-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-376-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-376-part-1-step-3-1280.png",
+      "sha256": "88c887b6f5a16052043b6d6b0fe726cf1a174d96fc76cfddcf583e4610d0bf49",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-376-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-377-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-377-part-1-case-1-1280.png",
+      "sha256": "2c59d63fa5481060e2e5dc08737e226c54379b995b19b07396e663269ba1809e",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-377-part-1-case-1-1280.png",
+      "contactSheet": "B-full-1280-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-377-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-377-part-1-neutral-1280.png",
+      "sha256": "ff6f716829db2c3de5223109639a1df6a8665d7b67fa4ec75a3ef01422143fd9",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-377-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-377-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-377-part-1-step-1-1280.png",
+      "sha256": "99e079eb54637e2e2874683bc43de054854032929f461c383a811558f0feb6ab",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-377-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-377-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-377-part-1-step-2-1280.png",
+      "sha256": "9359a30f97fdafbf0712c86af8cd5d3114b612e4c9161715a1a2ccaa1c614344",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-377-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-377-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-377-part-1-step-3-1280.png",
+      "sha256": "0e8950440dece7f16ad76b86f5fb3bec2fad378b10e1d7c4adfde12ff95e54c5",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-377-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-377-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-377-part-1-step-4-1280.png",
+      "sha256": "017065582f8ac033d0b0288c1b56d2463504043f249ae1cc74dfc005a96891a2",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-377-part-1-step-4-1280.png",
+      "contactSheet": "B-full-1280-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-378-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-378-part-1-case-1-1280.png",
+      "sha256": "36c46c412c668cdfdd45301525e9444b7098bb4e89c0ded2dfd30b9299c2a631",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-378-part-1-case-1-1280.png",
+      "contactSheet": "B-full-1280-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-378-part-1",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-378-part-1-case-2-1280.png",
+      "sha256": "92f0eaab71794c98c42eb63f029f8ab2edcb0d2ee4d8b754cc5ed7f8c290253e",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-378-part-1-case-2-1280.png",
+      "contactSheet": "B-full-1280-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-378-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-378-part-1-neutral-1280.png",
+      "sha256": "b2e2f836cdb8f173c50bd76dfce7446dd62180545c69ae28435e4d085bc19307",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-378-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-378-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-378-part-1-step-1-1280.png",
+      "sha256": "6356788c6d7e0277d822a5a70b029c885edd7fb1ad020ccfaf56c244ad68c950",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-378-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-378-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-378-part-1-step-2-1280.png",
+      "sha256": "7ae9d6f5d17ba3ff122673ecece5d91df031ea5d44299c9f9c1445218b54bf7b",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-378-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-10.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-378-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-378-part-1-step-3-1280.png",
+      "sha256": "1122e649ccdcdff25b45ba1aded0b902f40e963ff4f2950076dec97c4f0fa618",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-378-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-378-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-378-part-1-step-4-1280.png",
+      "sha256": "1122e649ccdcdff25b45ba1aded0b902f40e963ff4f2950076dec97c4f0fa618",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-378-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-379-part-1-neutral-1280.png",
+      "sha256": "453436108b5b21ec35b396ac60b6d039593377df67a5d91125becd2e26f00ec8",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-379-part-1-step-1-1280.png",
+      "sha256": "5188b15ea3ac6cd50651b82f8dee11c113432ff0f98d9cbe95be555757608d7a",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-379-part-1-step-2-1280.png",
+      "sha256": "1499a57ffef56bddcf579eb85bd9a6f751d6275d6d6394e2ac37d08e7dbb6c70",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-379-part-1-step-3-1280.png",
+      "sha256": "1499a57ffef56bddcf579eb85bd9a6f751d6275d6d6394e2ac37d08e7dbb6c70",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-2",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-379-part-2-case-1-1280.png",
+      "sha256": "63dd9b4082fb3ccbca5986cc0d578b6a3bc7b8f9bf03c5c7e7828f56b7719636",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-2-case-1-1280.png",
+      "contactSheet": "B-full-1280-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-2",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-379-part-2-neutral-1280.png",
+      "sha256": "8adf498773bb9590f93c8c02a2b57c4059b0dd9fb5af24bbd2eac652885cbb8e",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-2-neutral-1280.png",
+      "contactSheet": "B-full-1280-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-2",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-379-part-2-step-1-1280.png",
+      "sha256": "f4d34e0bbb0239fa6c5e1236a9c7761c25ec4c0d8f57562345314ff2eed83f8d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-2-step-1-1280.png",
+      "contactSheet": "B-full-1280-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-2",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-379-part-2-step-2-1280.png",
+      "sha256": "f4d34e0bbb0239fa6c5e1236a9c7761c25ec4c0d8f57562345314ff2eed83f8d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-2-step-1-1280.png",
+      "contactSheet": "B-full-1280-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-2",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-379-part-2-step-3-1280.png",
+      "sha256": "85f34d9f4c3e2068be3b9a28db93b7075baca75eb7d739aa502a890ad7e68400",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-2-step-3-1280.png",
+      "contactSheet": "B-full-1280-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-3",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-379-part-3-case-1-1280.png",
+      "sha256": "2de8c1af62f977565d8127ed1af1e122b14b8188f77d36f604eb28c060c1de1b",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-3-case-1-1280.png",
+      "contactSheet": "B-full-1280-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-3",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-379-part-3-neutral-1280.png",
+      "sha256": "d873d27ff1b71b459fe712cf6b40fb7719639f1316f35135d1b7c97e2dce66d1",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-3-neutral-1280.png",
+      "contactSheet": "B-full-1280-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-3",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-379-part-3-step-1-1280.png",
+      "sha256": "7c7a667725a8929f35109337880be5756424fc4f604d7c6c6720443283af9b25",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-3-step-1-1280.png",
+      "contactSheet": "B-full-1280-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-3",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-379-part-3-step-2-1280.png",
+      "sha256": "7c7a667725a8929f35109337880be5756424fc4f604d7c6c6720443283af9b25",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-3-step-1-1280.png",
+      "contactSheet": "B-full-1280-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-3",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-379-part-3-step-3-1280.png",
+      "sha256": "4a8255f37c04fa4c6ba12d682113fe1703b884a873cd07597312e0cd59410463",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-3-step-3-1280.png",
+      "contactSheet": "B-full-1280-11.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-4",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-379-part-4-neutral-1280.png",
+      "sha256": "f136db56310e2eb2d451e32466ba8c6c156920be26c125e92adc0543a7fe9d4b",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-4-neutral-1280.png",
+      "contactSheet": "B-full-1280-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-4",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-379-part-4-step-1-1280.png",
+      "sha256": "f136db56310e2eb2d451e32466ba8c6c156920be26c125e92adc0543a7fe9d4b",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-4-neutral-1280.png",
+      "contactSheet": "B-full-1280-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-4",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-379-part-4-step-2-1280.png",
+      "sha256": "f136db56310e2eb2d451e32466ba8c6c156920be26c125e92adc0543a7fe9d4b",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-4-neutral-1280.png",
+      "contactSheet": "B-full-1280-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-5",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-379-part-5-neutral-1280.png",
+      "sha256": "00658f1a1b267931b96ce3285d38775a73957dfc6df5ff354fe2f77a6c5ae083",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-5-neutral-1280.png",
+      "contactSheet": "B-full-1280-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-5",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-379-part-5-step-1-1280.png",
+      "sha256": "468600714f78e76ac7239070bba20f62476f5673fb08bb147eb78fbb9b1e0ad3",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-5-step-1-1280.png",
+      "contactSheet": "B-full-1280-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-5",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-379-part-5-step-2-1280.png",
+      "sha256": "3c54235d6708f516cf65e22e5e642af6ec7c54df9fb30d2ca2a5e13f6727c1e4",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-5-step-2-1280.png",
+      "contactSheet": "B-full-1280-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-379-part-5",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-379-part-5-step-3-1280.png",
+      "sha256": "3c54235d6708f516cf65e22e5e642af6ec7c54df9fb30d2ca2a5e13f6727c1e4",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-379-part-5-step-2-1280.png",
+      "contactSheet": "B-full-1280-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-380-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-380-part-1-neutral-1280.png",
+      "sha256": "796a10a879e8ba300e347d98a5f3589c5c860cf74d153677eecaf3ce2db3f11c",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-380-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-380-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-380-part-1-step-1-1280.png",
+      "sha256": "5092a2843e0019a93621044f45f0a610290546bea148882a112b3337dde18d25",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-380-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-380-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-380-part-1-step-2-1280.png",
+      "sha256": "63cfba42c929a96d4fe78336406cd9b5b76636aed0c149f48855711de60733d4",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-380-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-380-part-2",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-380-part-2-neutral-1280.png",
+      "sha256": "83c9694a17ed612617d4e69dda5cc4496ba6e9360cb0f8b788fbc50f1b60284a",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-380-part-2-neutral-1280.png",
+      "contactSheet": "B-full-1280-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-380-part-2",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-380-part-2-step-1-1280.png",
+      "sha256": "0711b20b688cb3911b1bf8490effb7db4b9c411c5915bff293532ec5f6df3f42",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-380-part-2-step-1-1280.png",
+      "contactSheet": "B-full-1280-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-380-part-2",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-380-part-2-step-2-1280.png",
+      "sha256": "b71eec471ea8342259348dae9eb5d310cbc8e654f2d5a23be1c652e868143e33",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-380-part-2-step-2-1280.png",
+      "contactSheet": "B-full-1280-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-381-part-1-neutral-1280.png",
+      "sha256": "1dbf727ed5cfa4764e793b01182b7d1df167ed0822d93f8afbe861a60cc5f658",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-381-part-1-step-1-1280.png",
+      "sha256": "695f1fc2ca8c095e07bee03d982cd93a8a3ec6c6f05fd38a48e4b72899fb287d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-381-part-1-step-2-1280.png",
+      "sha256": "695f1fc2ca8c095e07bee03d982cd93a8a3ec6c6f05fd38a48e4b72899fb287d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-12.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-2",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-381-part-2-neutral-1280.png",
+      "sha256": "dbeda79bad9a75c9272a2cc19d44ef591546223fd668a81013578576ddedb732",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-2-neutral-1280.png",
+      "contactSheet": "B-full-1280-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-2",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-381-part-2-step-1-1280.png",
+      "sha256": "91bd88654357555dfca396ed2aa623b2f0ec6ab6068c07642f6bce1ff53ee6ab",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-2-step-1-1280.png",
+      "contactSheet": "B-full-1280-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-2",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-381-part-2-step-2-1280.png",
+      "sha256": "91bd88654357555dfca396ed2aa623b2f0ec6ab6068c07642f6bce1ff53ee6ab",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-2-step-1-1280.png",
+      "contactSheet": "B-full-1280-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-3",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-381-part-3-neutral-1280.png",
+      "sha256": "cda1bbf93d87d7339b1f2441c83ac31b79ebbe7dd3cc302cd2a2367b942836bb",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-3-neutral-1280.png",
+      "contactSheet": "B-full-1280-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-3",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-381-part-3-step-1-1280.png",
+      "sha256": "854ebb6249ac59f2daa315c98649702037c7dd96288692d0ade89d82c089e93d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-3-step-1-1280.png",
+      "contactSheet": "B-full-1280-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-3",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-381-part-3-step-2-1280.png",
+      "sha256": "854ebb6249ac59f2daa315c98649702037c7dd96288692d0ade89d82c089e93d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-3-step-1-1280.png",
+      "contactSheet": "B-full-1280-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-4",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-381-part-4-case-1-1280.png",
+      "sha256": "2eade237a66c0a7a0ff517f39f15fa4fa191888e20e1de0eccc13e37d6df1787",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-4-case-1-1280.png",
+      "contactSheet": "B-full-1280-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-4",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-381-part-4-neutral-1280.png",
+      "sha256": "b8d13a2a202b068bbcf1123cc5731e6842a14617095f57f0366ae808287c8a3e",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-4-neutral-1280.png",
+      "contactSheet": "B-full-1280-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-4",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-381-part-4-step-1-1280.png",
+      "sha256": "91b403f7316e04a544977d98bfae01fca121d133a9702ed8f5c52f3ec653cf5d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-4-step-1-1280.png",
+      "contactSheet": "B-full-1280-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-381-part-4",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-381-part-4-step-2-1280.png",
+      "sha256": "91b403f7316e04a544977d98bfae01fca121d133a9702ed8f5c52f3ec653cf5d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-381-part-4-step-1-1280.png",
+      "contactSheet": "B-full-1280-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-382-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-382-part-1-case-1-1280.png",
+      "sha256": "3aa79e0f467c16c867b2743643e7eba8c8d434f69f7aaf2e899fae937b1d2b49",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-382-part-1-case-1-1280.png",
+      "contactSheet": "B-full-1280-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-382-part-1",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-382-part-1-case-2-1280.png",
+      "sha256": "3bf241cf1401b6a15956140f53f8a41c520cedeaac88e48baf32beabf8400a7d",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-382-part-1-case-2-1280.png",
+      "contactSheet": "B-full-1280-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-382-part-1",
+      "view": "case-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-382-part-1-case-3-1280.png",
+      "sha256": "5198281e034c92b1b06ebd1d500913f1d6daef9914ca27da6d94559dd8a5c9a2",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-382-part-1-case-3-1280.png",
+      "contactSheet": "B-full-1280-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-382-part-1",
+      "view": "case-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-382-part-1-case-4-1280.png",
+      "sha256": "565c3ba6a351aa110eec29f743f5d8a77bb08a61c59f774ab415ef23e1099d92",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-382-part-1-case-4-1280.png",
+      "contactSheet": "B-full-1280-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-382-part-1",
+      "view": "case-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-382-part-1-case-5-1280.png",
+      "sha256": "db3979438050e61c8effe948051d321179b8d7d2fbb3eb91af9afe8dff4fac38",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-382-part-1-case-5-1280.png",
+      "contactSheet": "B-full-1280-13.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-382-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-382-part-1-neutral-1280.png",
+      "sha256": "fdeab52bccc4a8ca03426942bfa1ff4441192239bda2e747e88f8365bc528429",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-382-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-382-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-382-part-1-step-1-1280.png",
+      "sha256": "c2a52e9f0b806cc1cd3282f24dc64c8e9f5e567560ae93cb689316d65f75129e",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-382-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-382-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-382-part-1-step-2-1280.png",
+      "sha256": "24a0b10281689c13c878d742a187ee1c3e35036bbf1c37a389f7409009570279",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-382-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-382-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-382-part-1-step-3-1280.png",
+      "sha256": "aecb31d29f59aabd0fdb5afe8bb295ef03e59875a3083c2f51ddbc5659c2e205",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-382-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-382-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-382-part-1-step-4-1280.png",
+      "sha256": "bf0cc5d2609f4d28ceaddef61991cf0967d129718ca0b47d09a98a0f908c748b",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-382-part-1-step-4-1280.png",
+      "contactSheet": "B-full-1280-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-382-part-1",
+      "view": "step-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-382-part-1-step-5-1280.png",
+      "sha256": "cb2c4cddbd0ac52bcfa26ce7076e056acccf5ee685bded8c3ba886246910420f",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-382-part-1-step-5-1280.png",
+      "contactSheet": "B-full-1280-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "case-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-383-part-1-case-1-1280.png",
+      "sha256": "bb6d2a2ed5fd2187b3ce52947bd4a61814a31f8055ae9a668ebff42f8a8b6ce2",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-case-1-1280.png",
+      "contactSheet": "B-full-1280-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "case-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-383-part-1-case-2-1280.png",
+      "sha256": "ee40eab5f8b1de299bf06527cce78819540d10a6b86ed3e1403eccabe59a93a3",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-case-2-1280.png",
+      "contactSheet": "B-full-1280-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "case-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-383-part-1-case-3-1280.png",
+      "sha256": "128b8a2385da1ece66f30b92a84bf3a7d293c2a4023433453705e3cfb3a0ffb6",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-case-3-1280.png",
+      "contactSheet": "B-full-1280-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "case-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-383-part-1-case-4-1280.png",
+      "sha256": "06895000e3f9ade30c16197bb1eeecd02854d1f26270ad770b1cb0bcd169d2e3",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-case-4-1280.png",
+      "contactSheet": "B-full-1280-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "case-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-383-part-1-case-5-1280.png",
+      "sha256": "7cc843f8dfbd291701f5094a0782453723617cd58a6113a323a641f51d2b24ad",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-case-5-1280.png",
+      "contactSheet": "B-full-1280-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-383-part-1-neutral-1280.png",
+      "sha256": "72aa71f81b06add6ec4b7375b3d2c30771d6951d5f5b854598ca91e67bd181a5",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-14.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-383-part-1-step-1-1280.png",
+      "sha256": "2aeb56ed70d7553576861d03bccd108909294964782cd2bc0fe7884ef8d10d69",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-383-part-1-step-2-1280.png",
+      "sha256": "56dadafb4d3613c29b48f17ebce38121e9a3b8aec67ddfd66d6d518b6eccb10a",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-383-part-1-step-3-1280.png",
+      "sha256": "a5b045365891450b85fdbc99f727ad659156505cfa8f97cab7fc590a36ac9830",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-step-3-1280.png",
+      "contactSheet": "B-full-1280-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "step-4",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-383-part-1-step-4-1280.png",
+      "sha256": "e183b2d2504591f9de6158af0cce18a03f3ffb39c7094c59cf502e3834518e48",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-step-4-1280.png",
+      "contactSheet": "B-full-1280-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "step-5",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-383-part-1-step-5-1280.png",
+      "sha256": "7c5155dcf1faf7f88da8d93cb4f0dccb64fa8c5098b417f41a2c3e6bd199f9e9",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-step-5-1280.png",
+      "contactSheet": "B-full-1280-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-383-part-1",
+      "view": "step-6",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-383-part-1-step-6-1280.png",
+      "sha256": "eba82377bfe2cd501b89eeee8a0f0af15fbe3817a2ce65d8d422b6aad3d79114",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-383-part-1-step-6-1280.png",
+      "contactSheet": "B-full-1280-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-1",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-384-part-1-neutral-1280.png",
+      "sha256": "250f425b7cb0a5a92a8093ab606d33b11ebb8a9427f00ba722c745c9961b70f9",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-384-part-1-neutral-1280.png",
+      "contactSheet": "B-full-1280-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-1",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-384-part-1-step-1-1280.png",
+      "sha256": "626393d91c814dd395feb234c744e5706fe06436d9c050c4ba98286695935643",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-384-part-1-step-1-1280.png",
+      "contactSheet": "B-full-1280-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-1",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-384-part-1-step-2-1280.png",
+      "sha256": "461be1a7bf6f6e373e076db1abaf03cd6a7b06b0eb6ff032721bc23794d8db0f",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-384-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-1",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-384-part-1-step-3-1280.png",
+      "sha256": "461be1a7bf6f6e373e076db1abaf03cd6a7b06b0eb6ff032721bc23794d8db0f",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-384-part-1-step-2-1280.png",
+      "contactSheet": "B-full-1280-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "view": "neutral",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-384-part-2-neutral-1280.png",
+      "sha256": "ac929a624f04cb710196b3ac81fb262326ea0d030c2fcb7b4ba969097eeb2ea2",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-384-part-2-neutral-1280.png",
+      "contactSheet": "B-full-1280-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "view": "step-1",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-384-part-2-step-1-1280.png",
+      "sha256": "17fe8e510eea767c4a74fef31a56a3c1982d8d5040453dfba74a1ac7e43e4b91",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-384-part-2-step-1-1280.png",
+      "contactSheet": "B-full-1280-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "view": "step-2",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-384-part-2-step-2-1280.png",
+      "sha256": "8b573f186a083b763568d6b8e2dac05dbc2a569c611ce41e1041bce82eb27491",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-384-part-2-step-2-1280.png",
+      "contactSheet": "B-full-1280-15.png",
+      "verdict": "PASS"
+    },
+    {
+      "id": "atanasyan-7-9-main-384-part-2",
+      "view": "step-3",
+      "width": 1280,
+      "file": "review-atanasyan-7-9-main-384-part-2-step-3-1280.png",
+      "sha256": "8b573f186a083b763568d6b8e2dac05dbc2a569c611ce41e1041bce82eb27491",
+      "inspectedRepresentative": "review-atanasyan-7-9-main-384-part-2-step-2-1280.png",
+      "contactSheet": "B-full-1280-15.png",
+      "verdict": "PASS"
+    }
+  ],
+  "limits": [
+    "Source/math review was already completed and is not repeated or newly claimed here.",
+    "This report judges actual captured model pixels and case controls. The root full-course browser gate separately records navigation, step flows, automatic geometry checks and interactions.",
+    "No external-provider, merge or publication approval is claimed."
+  ]
+}

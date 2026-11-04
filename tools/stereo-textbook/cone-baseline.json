@@ -1,0 +1,586 @@
+{
+  "commit": "6b25302788f36d92723e487e92afa7044ced3ad3",
+  "cards": 554,
+  "catalogEntries": 1383,
+  "reviewBatches": 28,
+  "screenshotCases": 1478,
+  "bundleBytesSHA256": "d93c33514ac15fcfd1c9f6c8eb8d046570628794ce9b76d93ca3e59df7f2ceda",
+  "canonicalBundleSHA256": "ba7fe989f39f7fb30c6e57da1de116a9afa4366ed28384358f557c12391589d5",
+  "rawLessonManifestSHA256": "113f6338d925d9775b5c618e72c91f8a61291fb2b0da8b2aa6a668699e3f606e",
+  "registrySHA256": "58600c0ceedd31226f0bc508140e2b2e3a70c4d21c9a0c05734b52fcd70c9460",
+  "reviewRowsSHA256": "701e1721b1e4abd19977d0ad6cec76aa6defde0d0cbba6e9cf6925222d58d64b",
+  "reviewBatchesSHA256": "4de49171738c8ad11c16bc5f78a9493972ba07095ccff2034a0117502e6c4b8b",
+  "sourceIndexSHA256": "e6c545037123cb593e44aa6fd9ce06516840420fa542f404c2d9ceea36877b26",
+  "screenshotCasesSHA256": "76ec8e4241c1f3f2fb86ffa5a9d86567bd821d9da08c322957e8e2ff2aefc045",
+  "immutableFiles": {
+    "stereo-course/textbook/assets/engine.js": "9da6fb10924d50793521740ea779d81ef78fe3dfee5dbd71ab138b7d345dba74",
+    "stereo-course/textbook/assets/style.css": "56b3ec43f680dde578320a9ea1c5969a9a15d2d0344bfa1eda903f5bd3e09f51",
+    "stereo-course/textbook/index.html": "af453fa854b9995f3a41bbf1a476564116a8efff43cee2234716e2c5489b5e55",
+    "stereo-course/assets/task-scene-viewer.js": "a3e470e55b45d658cb74b2e32b5f1e9479785fa9b014be3929591bdcd55cefe6",
+    "stereo-course/assets/task-scenes.css": "5dbecdc2c98fbb030bcc4dba224f3b4ae89af292579a5136942810be75fd2cbf",
+    "stereo-course/assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+    "stereo-course/textbook/schema/lesson.schema.json": "0afbe8ada69985cda31e8c77168ac101aac05f04ae53c401b91c1bfd969972ba",
+    "stereo-course/textbook/schema/catalog.schema.json": "a497a09012767582238db69a7966f43d08f293b6a43f1ffc70ce6b15ed5a6e08",
+    "tools/stereo-textbook/build_textbook.py": "96e1e919ae6f231ae63ef5ba9fa57819e820a325ab128fd129a53c25b2aa9dc3"
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-10-28T18:45:47.625Z",
+    "registeredAt": "2026-10-28T18:45:47.625Z",
+    "scope": "Introduction and chapters I–III plus chapter IV paragraph1 Cylinder: main exercises1–345, theory1–39 and40 earlier chapter self-check questions. Chapter IV paragraph2 and main exercises346 onward remain pending. Not the complete book."
+  },
+  "originalSources": [
+    {
+      "id": "source-main-0346",
+      "kind": "exercise",
+      "title": "Задача № 346",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "346",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          98
+        ],
+        "pdfPages": [
+          100
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0347",
+      "kind": "exercise",
+      "title": "Задача № 347",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "347",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          98
+        ],
+        "pdfPages": [
+          100
+        ]
+      },
+      "sourceSubparts": [
+        "а",
+        "б",
+        "в"
+      ]
+    },
+    {
+      "id": "source-main-0348",
+      "kind": "exercise",
+      "title": "Задача № 348",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "348",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          98
+        ],
+        "pdfPages": [
+          100
+        ]
+      },
+      "sourceSubparts": [
+        "а",
+        "б"
+      ]
+    },
+    {
+      "id": "source-main-0349",
+      "kind": "exercise",
+      "title": "Задача № 349",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "349",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          98
+        ],
+        "pdfPages": [
+          100
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0350",
+      "kind": "exercise",
+      "title": "Задача № 350",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "350",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          98
+        ],
+        "pdfPages": [
+          100
+        ]
+      },
+      "sourceSubparts": [
+        "а",
+        "б",
+        "в"
+      ]
+    },
+    {
+      "id": "source-main-0351",
+      "kind": "exercise",
+      "title": "Задача № 351",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "351",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          98
+        ],
+        "pdfPages": [
+          100
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0352",
+      "kind": "exercise",
+      "title": "Задача № 352",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "352",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          98
+        ],
+        "pdfPages": [
+          100
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0353",
+      "kind": "exercise",
+      "title": "Задача № 353",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "353",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          98
+        ],
+        "pdfPages": [
+          100
+        ]
+      },
+      "sourceSubparts": [
+        "а",
+        "б"
+      ]
+    },
+    {
+      "id": "source-main-0354",
+      "kind": "exercise",
+      "title": "Задача № 354",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "354",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          98
+        ],
+        "pdfPages": [
+          100
+        ]
+      },
+      "sourceSubparts": [
+        "а",
+        "б",
+        "в"
+      ]
+    },
+    {
+      "id": "source-main-0355",
+      "kind": "exercise",
+      "title": "Задача № 355",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "355",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          98,
+          99
+        ],
+        "pdfPages": [
+          100,
+          101
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0356",
+      "kind": "exercise",
+      "title": "Задача № 356",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "356",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          99
+        ],
+        "pdfPages": [
+          101
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0357",
+      "kind": "exercise",
+      "title": "Задача № 357",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "357",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          99
+        ],
+        "pdfPages": [
+          101
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0358",
+      "kind": "exercise",
+      "title": "Задача № 358",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "358",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          99
+        ],
+        "pdfPages": [
+          101
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0359",
+      "kind": "exercise",
+      "title": "Задача № 359",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "359",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          99
+        ],
+        "pdfPages": [
+          101
+        ]
+      },
+      "sourceSubparts": [
+        "а",
+        "б",
+        "в"
+      ]
+    },
+    {
+      "id": "source-main-0360",
+      "kind": "exercise",
+      "title": "Задача № 360",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "360",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          99
+        ],
+        "pdfPages": [
+          101
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0361",
+      "kind": "exercise",
+      "title": "Задача № 361",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "361",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          99
+        ],
+        "pdfPages": [
+          101
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0362",
+      "kind": "exercise",
+      "title": "Задача № 362",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "362",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          99
+        ],
+        "pdfPages": [
+          101
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0363",
+      "kind": "exercise",
+      "title": "Задача № 363",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "363",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          99
+        ],
+        "pdfPages": [
+          101
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0364",
+      "kind": "exercise",
+      "title": "Задача № 364",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "364",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          99
+        ],
+        "pdfPages": [
+          101
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0365",
+      "kind": "exercise",
+      "title": "Задача № 365",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "365",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          99
+        ],
+        "pdfPages": [
+          101
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0366",
+      "kind": "exercise",
+      "title": "Задача № 366",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "366",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          99
+        ],
+        "pdfPages": [
+          101
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0367",
+      "kind": "exercise",
+      "title": "Задача № 367",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "367",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          99
+        ],
+        "pdfPages": [
+          101
+        ]
+      },
+      "sourceSubparts": [
+        "а",
+        "б"
+      ]
+    },
+    {
+      "id": "source-main-0368",
+      "kind": "exercise",
+      "title": "Задача № 368",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "368",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          100
+        ],
+        "pdfPages": [
+          102
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0369",
+      "kind": "exercise",
+      "title": "Задача № 369",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "369",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          100
+        ],
+        "pdfPages": [
+          102
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0370",
+      "kind": "exercise",
+      "title": "Задача № 370",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "370",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          100
+        ],
+        "pdfPages": [
+          102
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0371",
+      "kind": "exercise",
+      "title": "Задача № 371",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "371",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          100
+        ],
+        "pdfPages": [
+          102
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-theory-040",
+      "kind": "theory",
+      "title": "40. Понятие конуса",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "40",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          94,
+          95
+        ],
+        "pdfPages": [
+          96,
+          97
+        ]
+      }
+    },
+    {
+      "id": "source-theory-041",
+      "kind": "theory",
+      "title": "41. Площадь поверхности конуса",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "41",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          95,
+          96
+        ],
+        "pdfPages": [
+          97,
+          98
+        ]
+      }
+    },
+    {
+      "id": "source-theory-042",
+      "kind": "theory",
+      "title": "42. Усечённый конус",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "42",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          96,
+          97
+        ],
+        "pdfPages": [
+          98,
+          99
+        ]
+      }
+    }
+  ]
+}

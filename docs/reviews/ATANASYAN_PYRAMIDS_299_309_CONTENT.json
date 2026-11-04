@@ -1,0 +1,325 @@
+{
+  "reviewer": "Codex independent_review (no lesson authorship)",
+  "reviewedAt": "2026-10-26T13:29:38.661Z",
+  "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+  "authorBase": "6c7339a730ba3591859bd4c8c0d8ce9be64efd7c",
+  "authorReviewerSeparation": {
+    "reviewerAuthoredLessons": false,
+    "lessonAuthors": [
+      "author_299_302",
+      "author_303_306",
+      "author_307_309"
+    ],
+    "finalAdjustmentAuthors": [
+      {
+        "agent": "root",
+        "scope": "Minimal final caption, mathematical formatting, and model rotation adjustments; independently reviewed before this content binding."
+      }
+    ]
+  },
+  "scope": "All twelve source-specific cards for eleven main exercises299–309,including both actual subparts307а/б. Independently inspected the supplied2024 edition printed page87/PDF page89,all conditions,77 explanations and their justifications,all help/final prompts,68 theory references,and89 coordinate-model states. This is source,mathematics and written-pedagogy review; actual rendered pixels require separate evidence.",
+  "sourceSHA256": "bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770",
+  "canonicalization": "Remove top-level status and review; recursively sort object keys; JSON.stringify UTF-8; SHA256. Same algorithm as repository content-review.",
+  "cards": [
+    {
+      "id": "ex-main-0299",
+      "sha256": "b21bb41b7d0ed276b6c50d58fb5f622be789a4ccc01e587948d7f7d40cc19cb7",
+      "steps": 5,
+      "modelStates": 6,
+      "findings": [],
+      "verification": "The given lateral/base area ratio gives apothem m/√3, inradius m√3/6 and height m/2. The actual m=6 model realizes this ratio, and the height is distinguished from the apothem.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0300",
+      "sha256": "23a6b2f7ca9022ffb9402069d963d02c3c16d4371e87d9c3bdca71864b1b2881",
+      "steps": 6,
+      "modelStates": 7,
+      "findings": [],
+      "verification": "All four section sides are constructed in named faces. Their midpoint relations make a parallelogram; AC is perpendicular to the plane BDM by two intersecting medians, so it is a rectangle with area ab/4. Domain a>0,b>a/√3 is retained. The actual four-vertex section and every midpoint are verified.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0301",
+      "sha256": "2af6e779a33894cdb207efabc5f161b6051af6183bddbaaa9f6624797a800454",
+      "steps": 6,
+      "modelStates": 7,
+      "findings": [],
+      "verification": "The 120-degree interior dihedral angle gives BC=16√3. The common perpendicular foot H lies on the supporting line AD beyond D: AH=16√2,AD=12√2,DH=4√2. The use of |AH−AD| avoids assuming an interior foot; the apothem is4√6cm. Actual model projections have parameter4/3, distances16 and cosine−1/2.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0302",
+      "sha256": "3a71e79307e0432351fa6c520ddfe9843d1927fbd484b4a72cedf3f8b650d498",
+      "steps": 5,
+      "modelStates": 6,
+      "findings": [],
+      "verification": "The parallelogram law gives the second diagonal4√5. Half-diagonals3 and2√5 combine with the common height4 to yield two lateral edges5 and two6. The actual base has sides3,7 and is nonrectangular; all four edges agree.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0303",
+      "sha256": "d36cf49bea631faac004074ce0c14cb58ba1f926064b8270e45382d450777d5f",
+      "steps": 8,
+      "modelStates": 9,
+      "findings": [],
+      "verification": "The two perpendicular faces must be adjacent and meet along the height above a rhombus vertex. The source120-degree angle is the rhombus angle, while the other face/base angles are30degrees. Side24, base area288√3, two vertical-face areas144 each and two inclined-face areas288 each give total288(3+√3). Actual perpendicular feet and all source angles are checked.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0304",
+      "sha256": "9629aa41126d45e4c5217f6d440cfe9541816b1f3542ed9452513625968a64bf",
+      "steps": 8,
+      "modelStates": 9,
+      "findings": [],
+      "verification": "The source60-degree apical angle makes all lateral faces equilateral. Both interior dihedral angles are constructed by explicit perpendiculars. H is the midpoint of SA; HO bisects BHD. Right triangles SKO and BHO have equal pairs of legs, so the base dihedral equals half the lateral dihedral. This synthetic proof avoids any ambiguous choice of inverse trigonometric angle.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0305",
+      "sha256": "2f539360f10bb81c9156a1b238ef91423f6aa643942f32c1751739d8d7fc8a2a",
+      "steps": 7,
+      "modelStates": 8,
+      "findings": [],
+      "verification": "The apothem l and vertical height h remain distinct. With t=tan(α/2), a=2lt and h²=l²(1−t²), the four face areas give2h²tanα. The positivity argument establishes h>0 and0<α<90degrees; the actual model independently verifies the formula.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0306",
+      "sha256": "9727399b903fd6ac5869ba20ea843a6645da5eff13159f859507859930cac31e",
+      "steps": 7,
+      "modelStates": 8,
+      "findings": [],
+      "verification": "The normal section and foot T prove OT perpendicular to the side-face plane using two intersecting directions. Thus the source angle is OSK, not the base dihedral. The derivation a=2h tanφ,l=h/cosφ gives full area4h²sinφ/(1−sinφ), for h>0 and0<φ<90degrees. The actual T is the orthogonal projection of O onto the face.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0307-a",
+      "sha256": "cc83cfd1282febb96c7881f0749d448419ff440ac3b36d4058a04466a1d60a3c",
+      "steps": 6,
+      "modelStates": 7,
+      "findings": [],
+      "verification": "The plane through BD parallel to MA meets MC at its midpoint K. Each section edge is constructed in its containing face. BD is perpendicular to the diagonal plane MAC, giving section altitude OK=b/2 and area ab√2/4. Domain b>a/√2 is explicit; actual plane incidence,parallelism and area agree.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0307-b",
+      "sha256": "ff026090bacdb4b78656fa3d5634c0ad83b8326a04233deba61a1ff7265bfd5b",
+      "steps": 5,
+      "modelStates": 6,
+      "findings": [],
+      "verification": "This part independently reconstructs midpoint K and proves M,C lie on opposite sides. Perpendicular feet U,V are built in MAC with an explicit line-plane criterion. Central symmetry about K fixes the plane and maps MU to CV, including the case U=V=K. Actual feet,opposite signed distances and symmetry are verified.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0308",
+      "sha256": "189912d850f7fd7b0f94ec7095a15211ede97ab458e3a19b900a749ba3f18290",
+      "steps": 6,
+      "modelStates": 7,
+      "findings": [],
+      "verification": "The rhombus diagonals are6 and8; area24 and perimeter20 give common centre-to-side distance2.4. Three perpendiculars show that each face altitude is√(3.2²+2.4²)=4. The early area view no longer reveals K before its construction. Numeric answer checking concerns the MAB height; proofs for other faces are explicitly left to the draft.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0309",
+      "sha256": "c7eb431dd3feffb6f4c6171310c329855c9e907ea4b13a602cdd7e817e5cc638",
+      "steps": 8,
+      "modelStates": 9,
+      "findings": [],
+      "verification": "Equal lateral edges first locate the height above the rectangle centre. The normal section constructs P on the interior of MQ and R inside OQ, justifying both similarities. These give vertical PR=4,upper trapezoid side2 and slant altitude NP=20/3; section area80/3dm². All auxiliary lines have named planes and the vertical height is distinguished from the section altitude.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    }
+  ],
+  "numericalChecks": {
+    "independentSeed": 299309,
+    "parameterFamilies": 1320,
+    "familiesPerExercise": 120,
+    "actualCoordinateModels": 12,
+    "authoredPlanarConvexPolygons": 80,
+    "authoredNonzeroSegments": 287,
+    "theoryReferences": 68,
+    "sourceAndTheoryMetadata": "PASS",
+    "actualCoordinateIncidencesAndSourceDimensions": "PASS",
+    "allSourceDomains": "PASS",
+    "oracle": "tools/stereo-textbook/additional299-math.test.py"
+  },
+  "aggregateSHA256": "ab551f451284e2fbbe2112af0ebde107f6fd3abcde332ba85d619b5feffb0da5",
+  "openFindings": [],
+  "resolvedFindings": [
+    {
+      "card": "ex-main-0301",
+      "field": "steps[1].justifications[1].text",
+      "finding": "The sine/cosine wording incorrectly described both as using the adjacent angle.",
+      "resolution": "Author now distinguishes sine of the opposite angle and cosine of the adjacent angle. Re-read exact correction; formula was already correct."
+    },
+    {
+      "card": "ex-main-0307-b",
+      "field": "steps[3] and visualization.model.views.feet",
+      "finding": "The standalone part used MO in the perpendicular-plane criterion before explicitly introducing that height.",
+      "resolution": "Author introduces MO in plane MAC and states perpendicularity to ABCD; the corresponding view includes MO and AC. Re-read and rechecked."
+    },
+    {
+      "card": "ex-main-0308",
+      "field": "visualization.model.views.base",
+      "finding": "The area step displayed OK and K before their construction in the following step.",
+      "resolution": "Author removed the premature segment and point. The area view keeps only the already introduced diagonals and centre."
+    },
+    {
+      "card": "ex-main-0308",
+      "field": "answer.prompt and visualization.model.note",
+      "finding": "The initial answer prompt disclosed equality of all four altitudes,and the note disclosed the derived second diagonal.",
+      "resolution": "Author uses a neutral numerical prompt for MAB with separate reasoning for the other faces and retains only given dimensions in the initial note."
+    },
+    {
+      "card": "ex-main-0309",
+      "field": "steps[2].explanation",
+      "finding": "The two similar-triangle arguments and NR+RQ decomposition needed the internal positions of P and R justified.",
+      "resolution": "Author establishes H inside triangle MNQ,ray NH meeting sideMQ internally,and orthogonal projectionR betweenO,Q before the similarity calculations."
+    },
+    {
+      "cards": [
+        "ex-main-0300",
+        "ex-main-0305",
+        "ex-main-0306",
+        "ex-main-0307-a",
+        "ex-main-0309"
+      ],
+      "field": "visualization.model.views.*.label and visualization.model.note",
+      "finding": "Nine authored model-caption/note strings contained slash fractions. These surfaces use plain text and bypass the mathematical fraction renderer,so testing their strings only through that renderer did not represent the actual display.",
+      "resolution": "The author replaced ratios with equivalent words or equal formulas. Independent review verified exactly nine string-leaf changes and no coordinate,construction,step,help,answer or source changes. Mounted renderer checks now inspect both actual .am-focus and .am-note nodes in every state; all89 current states pass,the prior content fails in19 states. The guard is additive and preserves all existing gates."
+    },
+    {
+      "cards": [
+        "ex-main-0305"
+      ],
+      "field": "steps[step-6].justifications[0].text",
+      "finding": "The ungrouped double-angle numerator rendered only x above the fraction bar, leaving 2tan outside.",
+      "resolution": "Parentheses now group the complete numerator 2tan x. The mathematical identity is unchanged. Independent actual-app DOM verification finds exactly one justification paragraph with numerator (2tan x) and denominator (1 − tan²x). Both new DOM and browser-layout assertions target that paragraph; the browser journey opens its explanation and nested justification details before checking layout and taking the screenshot."
+    }
+  ],
+  "pedagogicalAssessment": "Small named steps retain previous reasoning,construction lines are assigned to known planes,and each nontrivial perpendicularity is justified. Numeric checking does not certify a proof. The finite models are illustrations of parameterized statements; independent random-parameter tests separately verify the formulas. Learning efficacy still requires actual-pupil observation.",
+  "notRun": [
+    "Actual rendered-browser pixel inspection; required separately.",
+    "Real-pupil efficacy trial.",
+    "Physical-device or screen-reader trial.",
+    "Paid external Claude review; the existing course deferral is not provider approval."
+  ],
+  "modelRotationVerification": {
+    "changedCards": [
+      "ex-main-0308",
+      "ex-main-0309"
+    ],
+    "changedFields": [
+      "visualization.model.points"
+    ],
+    "change": "Final rigid rotations about the vertical axis,relative to the original authored coordinates:308 by330degrees,309 by185degrees. Every named point is transformed. Connectivity,source,proof,help and answers remain unchanged.",
+    "verification": "Independently recomputed all10 points of308 and all13 points of309 with the rotation matrices,tolerance1e-10. Re-ran all1320 independent parameter families and every actual-model dimension,midpoint,perpendicularity,area and plane-incidence assertion. PASS source/mathematics/written pedagogy. All nine other canonical cards are unchanged from the preceding reviewed snapshot;306 has the separate format-only change below.",
+    "reason": "Author reports earlier orientations made other highlighted planes too thin. This review establishes geometric identity and content validity,not a rendered-pixel pass."
+  },
+  "reviewHistory": [
+    {
+      "reviewedAt": "2026-10-26T12:51:23.520Z",
+      "aggregateSHA256": "616f6e5a17524f01261c4d9782f97d9c7a6e2fc77c6ffd91b35d6e97efb77eb8",
+      "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+      "changedCardPreviousHashes": {
+        "ex-main-0306": "229634681986cfd96d11be1fac831125d73143b396581f70e147bede0af89ad0",
+        "ex-main-0308": "72eac9c1b2e3e68ff65d69fab84fb6b455acfb707b9c55bcf3ab8d5b58cbde1e",
+        "ex-main-0309": "65feb1df9b679fb297611c49a5af5537d23f7df009d75e1ec1afb7f21751c676"
+      }
+    },
+    {
+      "reviewedAt": "2026-10-26T12:53:28.840Z",
+      "aggregateSHA256": "d3cd2407dff7fa9d29ebb052a8f35658092757e0507773f1b581735e5d39d9d5",
+      "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+      "changedCardPreviousHashes": {
+        "ex-main-0300": "2c6e80c11dae78c7f1a906951b5c62f95f882e3930619ecd6d6667184e7bc1f3",
+        "ex-main-0305": "79f3ae2843e8f4c4d85edc7430af95dbd3cec79d31d3f809851991d8b26b1ab1",
+        "ex-main-0306": "5723aa5e01aef179712e95827619d823b2f8cd488ba930c24ed491a3140d817e",
+        "ex-main-0307-a": "015cb0a625b9f71f96c653f87336476e8c8034c96e8708982aeb5a5ae5be58d0",
+        "ex-main-0309": "0cc04e77e9aba3ab01fea9ad4fda9794bc0125b33b19324d5ef3a62683915d00"
+      },
+      "supersededBy": "Plain-text model-caption fraction correction; nine strings across five cards."
+    },
+    {
+      "reviewedAt": "2026-10-26T13:25:23.463Z",
+      "aggregateSHA256": "6fb10f66c25d59496b16e3d6f41a34c61a1329ddbb310e309375dca0acc98a1f",
+      "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+      "changedCardPreviousHashes": {
+        "ex-main-0305": "c0d803bd691b751d930262305dc9a5beb4753ba4c6e4a4ef4f5844f050d7eb0d"
+      },
+      "supersededBy": "Complete numerator grouping in the double-angle identity of 305, step 6."
+    }
+  ],
+  "revisionReview": {
+    "changedCard": "ex-main-0306",
+    "changedFields": [
+      "steps[6].explanation"
+    ],
+    "change": "In the intermediate surface-area expression,the common factor4h² moves outside the fraction. The final formula and all mathematics remain identical.",
+    "verification": "Re-read exact expression:4h²·[sinφ(1+sinφ)/cos²φ]. It is algebraically identical to the earlier full-numerator fraction. Re-ran independent and actual-model oracles. Mobile layout still requires actual browser evidence."
+  },
+  "captionRevisionReview": {
+    "changedCards": [
+      "ex-main-0300",
+      "ex-main-0305",
+      "ex-main-0306",
+      "ex-main-0307-a",
+      "ex-main-0309"
+    ],
+    "changedStringLeaves": 9,
+    "mathematicalVerification": [
+      "300:half of a and half of b preserve the rectangle side lengths; multiplying b>a/√3 by positive√3 gives the equivalent b√3>a.",
+      "305:ASK remains half ofα,AK half ofa; OK=a/2 in the square,so l²=h²+OK² is exactly the same Pythagorean relation. The apothem label still asks for l² via h andtan(α/2).",
+      "306:the verbal apothem h divided bycosφ is identical to h/cosφ,on the already established acute-angle domain.",
+      "307а:the midpoint segment still has length half ofb; b√2>a is equivalent to b>a/√2 because√2>0.",
+      "309:the ordered triangles MEF andMCD have similarity coefficient one third,as already established byMP/MQ=1/3."
+    ],
+    "actualMountedSurfaceChecks": {
+      "currentStates": 89,
+      "currentFailures": 0,
+      "previousStatesFailingNewGuard": 19,
+      "captionAndNoteNodesPerState": 2
+    },
+    "scope": "Source/mathematics/written-pedagogy rebind and focused actual-DOM caption regression. Browser pixel inspection of the corrected captures remains separate.",
+    "unchanged": "All model coordinates,polygons,segments,steps,help,source metadata,answer contracts,and seven other canonical cards."
+  },
+  "justificationFormattingRevisionReview": {
+    "changedCards": [
+      "ex-main-0305"
+    ],
+    "changedStringLeaves": 1,
+    "mathematicalVerification": "tan(2x) = (2tan x)/(1 − tan²x) is the same double-angle identity; the relevant half-angle is between 0 and 45 degrees, so its denominator is positive.",
+    "actualAppDOM": {
+      "selector": "[data-step=\"step-6\"] > details > details > p",
+      "matchedParagraphs": 1,
+      "numerator": "(2tan x)",
+      "denominator": "(1 − tan²x)"
+    },
+    "regressionVerification": "The old string renders numerator x. The current string renders the complete numerator (2tan x). The actual-app guard and screenshot layout case both check complete numerator and denominator; existing browser flow opens both enclosing details before the check.",
+    "unchanged": "All geometry, lesson goals, calculations, answers, source metadata, and the other eleven canonical cards."
+  }
+}

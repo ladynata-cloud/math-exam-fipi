@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="140" viewBox="0 0 240 140" fill="none" stroke-linecap="round">
+<rect x="13" y="8" width="214" height="122" rx="10" fill="#edf3e7"/>
+<g stroke="#d6e2d0"><path d="M28 30H212M28 52H212M28 74H212M28 96H212M28 118H212M43 20V120M65 20V120M87 20V120M109 20V120M131 20V120M153 20V120M175 20V120M197 20V120"/></g>
+<g stroke="#93ab98" stroke-width="1.5"><path d="M28 75H212M120 20V120"/></g>
+<!-- Quadratic Bezier arcs: actual parabolas with opposite concavity. -->
+<path d="M34 29Q73 186 112 29" stroke="#23694b" stroke-width="5"/><path d="M132 111Q171-46 210 111" stroke="#bd7637" stroke-width="5"/>
+<g fill="#245439"><circle cx="64" cy="52" r="3"/><circle cx="82" cy="52" r="3"/><circle cx="162" cy="83" r="3"/><circle cx="180" cy="83" r="3"/></g>
+</svg>

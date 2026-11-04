@@ -1,0 +1,51 @@
+name: Task 9 transfer in every family
+
+on:
+  pull_request:
+    paths:
+      - 'trainers/oge-task9-equations.html'
+      - 'tools/task9-*.test.cjs'
+      - 'tools/task9-transfer-all.browser.cjs'
+      - '.github/workflows/task9-transfer-all.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: task9-transfer-all-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  transfer-and-discovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated browser tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/task9-transfer-browser" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/task9-transfer-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/task9-transfer-browser/node_modules" >> "$GITHUB_ENV"
+      - name: New and retained learner contracts and independent mathematics
+        run: |
+          node --test tools/task9-*.test.cjs
+          node tools/oge-algebra-contract.test.mjs
+          git diff --check
+      - name: Every bank family and generator, live completed steps and mobile discovery
+        env:
+          TASK9_TRANSFER_ARTIFACTS: artifacts/task9-transfer-all
+        run: node tools/task9-transfer-all.browser.cjs
+      - name: Save coverage, screenshots and browser traces
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: task9-transfer-all
+          path: artifacts/task9-transfer-all
+          if-no-files-found: ignore
+          retention-days: 7

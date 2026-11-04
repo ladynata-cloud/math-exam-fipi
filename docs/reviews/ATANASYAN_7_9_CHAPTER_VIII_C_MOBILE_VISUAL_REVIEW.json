@@ -1,0 +1,3115 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "root (not C content author)",
+  "status": "passed",
+  "complete": true,
+  "scope": "All29 C cards, every authored view and actual initial/last whole panel at320; final full-course dataset4 bound after actual inspection.",
+  "fullCourseGateApprovalGranted": false,
+  "releaseApprovalGranted": false,
+  "coverage": {
+    "cards": 29,
+    "views": 142,
+    "viewCaptures": 142,
+    "actualInitialLastCaptures": 58,
+    "totalCaptures": 200,
+    "uniqueFinalWholePngs": 132,
+    "exactPriorApprovedReuse": 132,
+    "newUniqueWholePngsActuallyInspected": 54,
+    "newContactSheetsActuallyInspected": 9
+  },
+  "method": "Whole PNG exact identity only; entire frames displayed at native size in variable-height contact sheets without cropping or resizing. All9 finaldelta sheets actually viewed. Previously rejected712/725/731/736 images excluded from reuse.",
+  "findings": [],
+  "resolvedFindings": [
+    "712 angle arcs now legible",
+    "725 exterior perpendicularfeet connected by dashedsideextensions",
+    "731 taller validexample keepsallsourcegivensandareas",
+    "736 eachgivenmedian on ownrow; constructioncircles early, large finaltriangle later, givenlengths retainedasaccessiblecase4",
+    "736 orphanlabels removed; productionengine openscard, all11views and6steps checked"
+  ],
+  "frozenContentHashes": {
+    "tools/geometry-textbook/models_ch8_c.py": "c9ac1c321be0262317da4f2231529727515d178c7d87ecdc67df0c97b27d325d",
+    "geometry-course/textbook/preparation/chapter-08-c.json": "af2d652b4ddb16ed1110b6b557d021a2c0aa1fe10e50813106b9bc20aadf4285",
+    "geometry-course/textbook/models/chapter-08-c.json": "9cc150634f3effb64179df3e3914800436245de38da70bd86a3b168819d9db1d",
+    "tools/geometry-textbook/chapter-08-source-map.json": "c8a03bfd554007d3a0b6f2ad0f8ecea08e28b4a647e943ddd7abccc599bfa3b0"
+  },
+  "diagnosticEvidence": [
+    {
+      "artifact": "viii-full-2/browser-evidence.json",
+      "sha256": "352eebfbbd6a8dea2e7850de312e5fd746e422db7f9045706afd0294fb7b02ee",
+      "wholeGateStatus": "failed elsewhere at736; only710–735 images reused"
+    },
+    {
+      "artifact": "viii-c736-mobile-3/browser-evidence.json",
+      "sha256": "0d9e6e637440474e1ce6c5f56c931a6995f1acbaf95cdcc56b04445c2421a94c",
+      "wholeGateStatus": "passed mobile736diagnostic; inherited consolemarker saysdesktop but evidencewidth is320"
+    }
+  ],
+  "framesReviewed": [
+    {
+      "file": "atanasyan-7-9-main-710-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-710-part-1-initial-320.png",
+      "sha256": "06ce1ba7853aceb495931303636df4c1e163f32554b5ae931e7cb3f0d264a092",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-710-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-710-part-1-neutral-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-710-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-710-part-1-last-320.png",
+      "sha256": "06ce1ba7853aceb495931303636df4c1e163f32554b5ae931e7cb3f0d264a092",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-710-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-710-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-710-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-710-part-1-neutral-320.png",
+      "sha256": "06ce1ba7853aceb495931303636df4c1e163f32554b5ae931e7cb3f0d264a092",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-710-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-710-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-710-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-710-part-1-step-1-320.png",
+      "sha256": "5ecd3927da2bb184592adf9f15a2c24fb01bd540edd8d5231a68e5894d610887",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-710-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-710-part-1-step-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-710-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-710-part-1-step-2-320.png",
+      "sha256": "5ecd3927da2bb184592adf9f15a2c24fb01bd540edd8d5231a68e5894d610887",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-710-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-710-part-1-step-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-710-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-710-part-1-step-3-320.png",
+      "sha256": "5ecd3927da2bb184592adf9f15a2c24fb01bd540edd8d5231a68e5894d610887",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-710-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-710-part-1-step-3-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-711-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-711-part-1-initial-320.png",
+      "sha256": "487481f8a585a0c8d86c8ca1f7aeebbab308509d4d38f08b0ed89ab64b91a0f1",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-711-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-711-part-1-neutral-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-711-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-711-part-1-last-320.png",
+      "sha256": "ab2dc14dc141975bec2f6a4047eb783d281b535ef203f0312945b912c4b53f4f",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-711-part-1-step-1-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-711-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-711-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-711-part-1-neutral-320.png",
+      "sha256": "487481f8a585a0c8d86c8ca1f7aeebbab308509d4d38f08b0ed89ab64b91a0f1",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-711-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-711-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-711-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-711-part-1-step-1-320.png",
+      "sha256": "732c888b7d1d28f079c745022999157c7dab81009a29b688395a4957ea432870",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-711-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-711-part-1-step-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-711-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-711-part-1-step-2-320.png",
+      "sha256": "732c888b7d1d28f079c745022999157c7dab81009a29b688395a4957ea432870",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-711-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-711-part-1-step-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-711-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-711-part-1-step-3-320.png",
+      "sha256": "732c888b7d1d28f079c745022999157c7dab81009a29b688395a4957ea432870",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-711-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-711-part-1-step-3-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-712-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-712-part-1-initial-320.png",
+      "sha256": "e969b69a2fcd0ff4f8c135f07a77c5a30fa22c50f1ce85516e88ba94a122c133",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-712-part-1-initial-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-712-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-712-part-1-last-320.png",
+      "sha256": "e969b69a2fcd0ff4f8c135f07a77c5a30fa22c50f1ce85516e88ba94a122c133",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-712-part-1-initial-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-712-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-712-part-1-neutral-320.png",
+      "sha256": "e969b69a2fcd0ff4f8c135f07a77c5a30fa22c50f1ce85516e88ba94a122c133",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-712-part-1-initial-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-712-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-712-part-1-step-1-320.png",
+      "sha256": "19ef5a8c59125d47380303dbd215522edf8555f22ca972f414915fe65501283b",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-712-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-712-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-712-part-1-step-2-320.png",
+      "sha256": "19ef5a8c59125d47380303dbd215522edf8555f22ca972f414915fe65501283b",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-712-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-712-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-712-part-1-step-3-320.png",
+      "sha256": "19ef5a8c59125d47380303dbd215522edf8555f22ca972f414915fe65501283b",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-712-part-1-step-1-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-713-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-713-part-1-initial-320.png",
+      "sha256": "235401b4218a61a2928146d0918edf556e646ad0972680a48cb0508a56c1871b",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-713-part-1-step-1-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-713-part-1-step-1-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-713-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-713-part-1-last-320.png",
+      "sha256": "235401b4218a61a2928146d0918edf556e646ad0972680a48cb0508a56c1871b",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-713-part-1-step-1-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-713-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-713-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-713-part-1-neutral-320.png",
+      "sha256": "235401b4218a61a2928146d0918edf556e646ad0972680a48cb0508a56c1871b",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-713-part-1-step-1-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-713-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-713-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-713-part-1-step-1-320.png",
+      "sha256": "d6a3de8812830a296df5333eac96ad7283c8f1b528625cf08b4589d2363d7b5f",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-713-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-713-part-1-step-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-713-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-713-part-1-step-2-320.png",
+      "sha256": "d6a3de8812830a296df5333eac96ad7283c8f1b528625cf08b4589d2363d7b5f",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-713-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-713-part-1-step-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-713-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-713-part-1-step-3-320.png",
+      "sha256": "d6a3de8812830a296df5333eac96ad7283c8f1b528625cf08b4589d2363d7b5f",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-713-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-713-part-1-step-3-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-714-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-714-part-1-initial-320.png",
+      "sha256": "1729657dbc911f0fbd87369193b4f4801210860a111f5ee59350f7d567fcff35",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-714-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-714-part-1-neutral-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-714-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-714-part-1-last-320.png",
+      "sha256": "1729657dbc911f0fbd87369193b4f4801210860a111f5ee59350f7d567fcff35",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-714-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-714-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-714-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-714-part-1-neutral-320.png",
+      "sha256": "1729657dbc911f0fbd87369193b4f4801210860a111f5ee59350f7d567fcff35",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-714-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-714-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-714-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-714-part-1-step-1-320.png",
+      "sha256": "a1d3571b508d5655be03c4d9b4709348a680ff6c614166d3f828991642d04518",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-714-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-714-part-1-step-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-714-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-714-part-1-step-2-320.png",
+      "sha256": "a1d3571b508d5655be03c4d9b4709348a680ff6c614166d3f828991642d04518",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-714-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-714-part-1-step-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-714-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-714-part-1-step-3-320.png",
+      "sha256": "a1d3571b508d5655be03c4d9b4709348a680ff6c614166d3f828991642d04518",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-714-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-714-part-1-step-3-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-715-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-715-part-1-initial-320.png",
+      "sha256": "6a6fc5cf6a871852806cca570b9f9d29c6656b89f6a0403b35e6f8af1b8f1a04",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-715-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-715-part-1-neutral-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-715-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-715-part-1-last-320.png",
+      "sha256": "ad07f593901319664f44e47bf2db824a14883f5399036f6252a211cd7a41425f",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-715-part-1-last-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-715-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-715-part-1-neutral-320.png",
+      "sha256": "6a6fc5cf6a871852806cca570b9f9d29c6656b89f6a0403b35e6f8af1b8f1a04",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-715-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-715-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-715-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-715-part-1-step-1-320.png",
+      "sha256": "7a7860a63796d298fd370952ebf92678971ac1bcd5dd00461c999a70fe561cf2",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-715-part-1-step-2-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-715-part-1-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-715-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-715-part-1-step-2-320.png",
+      "sha256": "7a7860a63796d298fd370952ebf92678971ac1bcd5dd00461c999a70fe561cf2",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-715-part-1-step-2-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-715-part-1-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-715-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-715-part-1-step-3-320.png",
+      "sha256": "fb596d7e46cf385ce8a0ca1bf52f7530fba22924b3fcc020ba0b2180d3d8ce4d",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-715-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-715-part-1-step-3-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-716-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-716-part-1-initial-320.png",
+      "sha256": "a96d7b747d03d6a84b4506a10b5661079d315eebdf05484249f705880151418d",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-716-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-716-part-1-neutral-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-716-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-716-part-1-last-320.png",
+      "sha256": "ef81981b4c5d6a44882fa3bb514e21c62cdc07de3aedf029c59639afd476364d",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-716-part-1-last-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-716-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-716-part-1-neutral-320.png",
+      "sha256": "a96d7b747d03d6a84b4506a10b5661079d315eebdf05484249f705880151418d",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-716-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-716-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-716-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-716-part-1-step-1-320.png",
+      "sha256": "885862856727cab1fca115c2ab00729ed9c0dc6a4dde151de838fdaa3bb54525",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-716-part-1-step-1-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-716-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-716-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-716-part-1-step-2-320.png",
+      "sha256": "246ec285e97792e391da332a1332fd93169b1088a3311fcebb42985cb43ac445",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-716-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-716-part-1-step-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-716-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-716-part-1-step-3-320.png",
+      "sha256": "246ec285e97792e391da332a1332fd93169b1088a3311fcebb42985cb43ac445",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-716-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-716-part-1-step-3-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-717-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-717-part-1-initial-320.png",
+      "sha256": "ac2d185924a89110b2585f73f90edcb58ff54ee30403b1fd1c488c99b5b0f600",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-717-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-717-part-1-neutral-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-717-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-717-part-1-last-320.png",
+      "sha256": "393504f16b3a30f45ed554c0414f6432a47339389a5b5f226e0871dcf85be696",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-717-part-1-last-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-717-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-717-part-1-neutral-320.png",
+      "sha256": "ac2d185924a89110b2585f73f90edcb58ff54ee30403b1fd1c488c99b5b0f600",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-717-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-717-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-717-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-717-part-1-step-1-320.png",
+      "sha256": "dd184c121ccb9ada3bc1c099a994620bfb6ad1951b0c17e6768704f84e2f3b2c",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-717-part-1-step-2-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-717-part-1-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-717-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-717-part-1-step-2-320.png",
+      "sha256": "dd184c121ccb9ada3bc1c099a994620bfb6ad1951b0c17e6768704f84e2f3b2c",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-717-part-1-step-2-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-717-part-1-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-717-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-717-part-1-step-3-320.png",
+      "sha256": "2ed8850ad6cb0f672c9fb3ea5889335e523735c2700734ac8f4bb508d82d4eb2",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-717-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-717-part-1-step-3-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-718-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-718-part-1-initial-320.png",
+      "sha256": "d7faaf7f0a0ae43a8a565a8f7e0a418b73f61aeeade8b28fcc6059861bbc4931",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-718-part-2-step-1-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-718-part-2-step-1-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-718-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-718-part-1-last-320.png",
+      "sha256": "7217f29f46e6a0c9ac21eee67dda0d1982900e5ab3fcc59cf10c8ae306280995",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-718-part-1-last-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-718-part-2-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-718-part-2-initial-320.png",
+      "sha256": "d7faaf7f0a0ae43a8a565a8f7e0a418b73f61aeeade8b28fcc6059861bbc4931",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-718-part-2-step-1-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-718-part-2-step-1-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-718-part-2-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-718-part-2-last-320.png",
+      "sha256": "c02dd1757679f52b062260679fa4f7b89838848d14b7738c54b6603ff419d992",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-718-part-2-last-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-718-part-1-case-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-718-part-1-case-1-320.png",
+      "sha256": "958f137687aae323272feacc2e2ac8a4a2913cce6f5fb60cb34610d1e1ca3e93",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-718-part-1-case-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-718-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-718-part-1-neutral-320.png",
+      "sha256": "d7faaf7f0a0ae43a8a565a8f7e0a418b73f61aeeade8b28fcc6059861bbc4931",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-718-part-2-step-1-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-718-part-2-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-718-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-718-part-1-step-1-320.png",
+      "sha256": "3fbed5cddf0485662aaa32f470fb7546c537e2dc81cbad90a639814c91ce64d0",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-718-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-718-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-718-part-1-step-2-320.png",
+      "sha256": "b3c67170719c1277efd46cd103e5011fcdce21b5ec567c0aac483423b330bdaf",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-718-part-1-step-2-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-718-part-1-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-718-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-718-part-1-step-3-320.png",
+      "sha256": "7217f29f46e6a0c9ac21eee67dda0d1982900e5ab3fcc59cf10c8ae306280995",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-718-part-1-last-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-718-part-2-case-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-718-part-2-case-1-320.png",
+      "sha256": "a156eaba7c7367de577fee6145d16f49d9004fe750be498d00dc8203003dfc78",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-718-part-2-case-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-718-part-2-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-718-part-2-neutral-320.png",
+      "sha256": "d7faaf7f0a0ae43a8a565a8f7e0a418b73f61aeeade8b28fcc6059861bbc4931",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-718-part-2-step-1-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-718-part-2-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-718-part-2-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-718-part-2-step-1-320.png",
+      "sha256": "d7faaf7f0a0ae43a8a565a8f7e0a418b73f61aeeade8b28fcc6059861bbc4931",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-718-part-2-step-1-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-718-part-2-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-718-part-2-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-718-part-2-step-2-320.png",
+      "sha256": "da1ecf3daa15e7466ed75099112edd551aa568d5f28cd70654cf539f44b2e940",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-718-part-2-step-2-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-718-part-2-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-718-part-2-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-718-part-2-step-3-320.png",
+      "sha256": "c02dd1757679f52b062260679fa4f7b89838848d14b7738c54b6603ff419d992",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-718-part-2-last-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-719-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-719-part-1-initial-320.png",
+      "sha256": "88da52a86f57204ce982defa74b538c20f8cd4eda741c413ff830f1d18c9ea93",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-719-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-719-part-1-neutral-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-719-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-719-part-1-last-320.png",
+      "sha256": "f71e64346f0272bbfc94f4c07f113dc9b97627eea794f1af1c7e28ab23af724e",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-719-part-1-last-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-719-part-2-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-719-part-2-initial-320.png",
+      "sha256": "a592ac60920ee41c0c97543921d0b647272feb9b67b761bddea5ac160dfe7212",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-719-part-2-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-719-part-2-neutral-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-719-part-2-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-719-part-2-last-320.png",
+      "sha256": "5451e0a20a710cd0fb698bd80c6fffdd0f22a51679bc5c8df268aeb308220194",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-719-part-2-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-719-part-2-step-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-719-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-719-part-1-neutral-320.png",
+      "sha256": "88da52a86f57204ce982defa74b538c20f8cd4eda741c413ff830f1d18c9ea93",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-719-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-719-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-719-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-719-part-1-step-1-320.png",
+      "sha256": "c367ca8606b9da32a4a13e87da2705e21c45bc7456a37840b2dbf58f95d5bc0a",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-719-part-1-step-1-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-719-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-719-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-719-part-1-step-2-320.png",
+      "sha256": "1c394d7edcf7ac30adf8d705053b7c50f9e8b0b8ae4136cb18a6c0daa587f246",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-719-part-1-step-2-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-719-part-1-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-719-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-719-part-1-step-3-320.png",
+      "sha256": "7b7bd2e4698d02178fa71efd05033fb1f22c1a6192eb5d45f10b007cf072a22c",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-719-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-719-part-1-step-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-719-part-2-case-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-719-part-2-case-1-320.png",
+      "sha256": "f731aad94217023c235aaa33b45cada7fa76d086c761b7ecb74a6e525499ae5a",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-719-part-2-case-1-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-719-part-2-case-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-719-part-2-case-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-719-part-2-case-2-320.png",
+      "sha256": "8b6d075296627ea9aad7ba18c96c1e424c62404c2b6893499a2a8e281bb2fe4d",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-719-part-2-case-2-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-719-part-2-case-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-719-part-2-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-719-part-2-neutral-320.png",
+      "sha256": "a592ac60920ee41c0c97543921d0b647272feb9b67b761bddea5ac160dfe7212",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-719-part-2-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-719-part-2-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-719-part-2-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-719-part-2-step-1-320.png",
+      "sha256": "5657827e2735141456b62fbcb5caac73ab15334c0c2e029d2fed16e987116848",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-719-part-2-step-1-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-719-part-2-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-719-part-2-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-719-part-2-step-2-320.png",
+      "sha256": "5451e0a20a710cd0fb698bd80c6fffdd0f22a51679bc5c8df268aeb308220194",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-719-part-2-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-719-part-2-step-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-719-part-2-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-719-part-2-step-3-320.png",
+      "sha256": "5451e0a20a710cd0fb698bd80c6fffdd0f22a51679bc5c8df268aeb308220194",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-719-part-2-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-719-part-2-step-3-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-720-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-720-part-1-initial-320.png",
+      "sha256": "f91a3f2fa5a9b49a83d0b41affc9b55defba4da74e2e7f6d8fff4df51660135e",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-720-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-720-part-1-neutral-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-720-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-720-part-1-last-320.png",
+      "sha256": "75db4388ac289bc6518ef719cf902d2c7fb6c04bcc318380d96204bc607d87b5",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-720-part-1-last-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-720-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-720-part-1-neutral-320.png",
+      "sha256": "f91a3f2fa5a9b49a83d0b41affc9b55defba4da74e2e7f6d8fff4df51660135e",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-720-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-720-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-720-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-720-part-1-step-1-320.png",
+      "sha256": "5774779457a476d9b1d99b5bbc607d72dd6a2397cfd99776f9edfde46525091a",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-720-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-720-part-1-step-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-720-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-720-part-1-step-2-320.png",
+      "sha256": "5774779457a476d9b1d99b5bbc607d72dd6a2397cfd99776f9edfde46525091a",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-720-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-720-part-1-step-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-720-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-720-part-1-step-3-320.png",
+      "sha256": "5774779457a476d9b1d99b5bbc607d72dd6a2397cfd99776f9edfde46525091a",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-720-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-720-part-1-step-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-720-part-1-step-4-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-720-part-1-step-4-320.png",
+      "sha256": "07dfac3e1191416b993e75e7ee164406b34576732b409c3ea53fdb630a7b35f2",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-720-part-1-step-4-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-720-part-1-step-4-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-721-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-721-part-1-initial-320.png",
+      "sha256": "4ae837a1bd7aa6dc2aa507a3c84f3cb4c7861c99fc4a37b4e95a00f9e3c083e4",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-721-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-721-part-1-neutral-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-721-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-721-part-1-last-320.png",
+      "sha256": "7d193458633e4dec337eada882e87158400509f135c033e634887c0ab813c051",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-721-part-1-last-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-721-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-721-part-1-neutral-320.png",
+      "sha256": "4ae837a1bd7aa6dc2aa507a3c84f3cb4c7861c99fc4a37b4e95a00f9e3c083e4",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-721-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-721-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-721-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-721-part-1-step-1-320.png",
+      "sha256": "5a18c22bedba0c18c3dc60b294370949b985a01d6a24e0d7afb56091748cb637",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-721-part-1-step-1-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-721-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-721-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-721-part-1-step-2-320.png",
+      "sha256": "ba366f19e5e4dea8952506ca0744c05ba1940735a7c985c61a241c9d080f6207",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-721-part-1-step-2-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-721-part-1-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-721-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-721-part-1-step-3-320.png",
+      "sha256": "e950588d1f8b2aee89dab6789b58b7fe31d270486da82697ca5771f378552e09",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-721-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-721-part-1-step-3-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-722-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-722-part-1-initial-320.png",
+      "sha256": "608b440bc5126df48882a86e6493bd79341a0d32bd36e096324ef731f13718f3",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-722-part-1-initial-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-722-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-722-part-1-last-320.png",
+      "sha256": "9d40f2e9136e3f784b2b23e9370fbec4766e1de4c75003b0902815f0817415f7",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-722-part-1-last-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-722-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-722-part-1-neutral-320.png",
+      "sha256": "608b440bc5126df48882a86e6493bd79341a0d32bd36e096324ef731f13718f3",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-722-part-1-initial-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-722-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-722-part-1-step-1-320.png",
+      "sha256": "242e7147e081e4ca017a24dfc4e63833df543a5c8678b1a9532f5c293fc1f833",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-722-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-722-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-722-part-1-step-2-320.png",
+      "sha256": "5325b6dbc7e4ff843b905ee87e2366df47c706b6e93a4c33c131ccca97067d19",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-722-part-1-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-722-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-722-part-1-step-3-320.png",
+      "sha256": "4fe25511053a379c34b0793f61015aae6df2145d305e065efaa8ccb46b954c51",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-722-part-1-step-3-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-723-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-723-part-1-initial-320.png",
+      "sha256": "a736c9accf90d822b18becc14f790a489a2ce581caaa0f9c580d8df42368d9ea",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-723-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-723-part-1-neutral-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-723-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-723-part-1-last-320.png",
+      "sha256": "a9549fbddd9f6f14e93ffdce937620602ed2e6261d7b71188288f12b5c80934c",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-723-part-1-last-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-723-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-723-part-1-neutral-320.png",
+      "sha256": "a736c9accf90d822b18becc14f790a489a2ce581caaa0f9c580d8df42368d9ea",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-723-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-723-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-723-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-723-part-1-step-1-320.png",
+      "sha256": "fc0d0fe22fdff272a9ada2665ec8a209b715d1ddb4039a16702b98076a4b3250",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-723-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-723-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-723-part-1-step-2-320.png",
+      "sha256": "8f40be92440b3609c5a0d4705b33b376f11b2f207b04e319518e827fba917320",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-723-part-1-step-2-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-723-part-1-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-723-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-723-part-1-step-3-320.png",
+      "sha256": "a874ad51391f39b8f394fb6418f83f597265842400dc5a13759d3a12ba177625",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-723-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-723-part-1-step-3-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-724-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-724-part-1-initial-320.png",
+      "sha256": "319d72ebb20c24d8f109674ce59ca2c98387061ca4866003880e20463f947bc0",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-724-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-724-part-1-neutral-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-724-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-724-part-1-last-320.png",
+      "sha256": "7369e8957d1272668e736f2746158df2ad436010f3d51ed20bb8b48422329a59",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-724-part-1-last-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-724-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-724-part-1-neutral-320.png",
+      "sha256": "319d72ebb20c24d8f109674ce59ca2c98387061ca4866003880e20463f947bc0",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-724-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-724-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-724-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-724-part-1-step-1-320.png",
+      "sha256": "dcb8c1c097eb856451bfe01aafea229120ac14805ba509ed5205e82c2a01d370",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-724-part-1-step-1-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-724-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-724-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-724-part-1-step-2-320.png",
+      "sha256": "f0f54d7bfc76c9892e81641e37324720430d9bcabd2b5154210f75cade9b9f2f",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-724-part-1-step-2-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-724-part-1-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-724-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-724-part-1-step-3-320.png",
+      "sha256": "7ec7e017affa37f68fda0888fa97e9d9fb334d6f5511dca1dc9083bfb444693d",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-724-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-724-part-1-step-3-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-725-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-725-part-1-initial-320.png",
+      "sha256": "a72b0199c7e4194788b76765f90ad4a9503bb919748b883f86d94f2c54016767",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-725-part-1-initial-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-725-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-725-part-1-last-320.png",
+      "sha256": "002e953d42638429ec2ac88d4adeed3670e7dc72ef3693cf92c541ae99636bcf",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-725-part-1-last-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-725-part-1-case-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-725-part-1-case-1-320.png",
+      "sha256": "9d231da226bcd4c4607a7459289a08d6470f7d25c5badfe74bea1f10edc4da3b",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-725-part-1-case-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-725-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-725-part-1-neutral-320.png",
+      "sha256": "a72b0199c7e4194788b76765f90ad4a9503bb919748b883f86d94f2c54016767",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-725-part-1-initial-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-725-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-725-part-1-step-1-320.png",
+      "sha256": "0f3dedd8b518b2f4b490287c07c699d35d167399c1f33ae48cab38e1599b167f",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-725-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-725-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-725-part-1-step-2-320.png",
+      "sha256": "521c3920b8496e1a78ca823f000e54fba8551ed6fe8adbfe540489f481a4dbef",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-725-part-1-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-725-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-725-part-1-step-3-320.png",
+      "sha256": "521c3920b8496e1a78ca823f000e54fba8551ed6fe8adbfe540489f481a4dbef",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-725-part-1-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-725-part-1-step-4-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-725-part-1-step-4-320.png",
+      "sha256": "002e953d42638429ec2ac88d4adeed3670e7dc72ef3693cf92c541ae99636bcf",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-725-part-1-last-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-726-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-726-part-1-initial-320.png",
+      "sha256": "20aa12c3cb4b84ce8fb7398e3a3b994c82007108f4ae553dbdc978470e614880",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-726-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-726-part-1-neutral-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-726-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-726-part-1-last-320.png",
+      "sha256": "512b652bd719ddb4228a57c9412cde2cb586fab1ab85e5e2231efdba915c568a",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-726-part-1-step-4-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-726-part-1-step-4-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-726-part-1-case-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-726-part-1-case-1-320.png",
+      "sha256": "c5e27ef5181c87f1d72e37392c9984ca286ab87fa6f8a82802309e0efc190d60",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-726-part-1-case-1-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-726-part-1-case-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-726-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-726-part-1-neutral-320.png",
+      "sha256": "20aa12c3cb4b84ce8fb7398e3a3b994c82007108f4ae553dbdc978470e614880",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-726-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-726-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-726-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-726-part-1-step-1-320.png",
+      "sha256": "33a12a16f47a95b0a2f41225e767cf567ab18afdcc2c9d027fd30a6278b033af",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-726-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-726-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-726-part-1-step-2-320.png",
+      "sha256": "385efc481dfb179570f5770d3044f870edad98e96c8ad979e062615b4139603c",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-726-part-1-step-2-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-726-part-1-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-726-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-726-part-1-step-3-320.png",
+      "sha256": "de846930dbdde53c48f46014326485a816a7a2a21e6afb8a3ac843b161479e49",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-726-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-726-part-1-step-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-726-part-1-step-4-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-726-part-1-step-4-320.png",
+      "sha256": "512b652bd719ddb4228a57c9412cde2cb586fab1ab85e5e2231efdba915c568a",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-726-part-1-step-4-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-726-part-1-step-4-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-727-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-727-part-1-initial-320.png",
+      "sha256": "f29d90de7c688a09c40fad2ff56b81ed000057f6a70e6ce0c275f19d02b50bae",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-727-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-727-part-1-neutral-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-727-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-727-part-1-last-320.png",
+      "sha256": "2f8916914b7f6070b5a535c0290704895bf6dcc3743a304e7fd47efb442609c0",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-727-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-727-part-1-step-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-727-part-1-case-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-727-part-1-case-1-320.png",
+      "sha256": "d1240acdc710f587ec522b55ba70a68e51bddb316f2df603da17d42d23dd68b7",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-727-part-1-case-1-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-727-part-1-case-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-727-part-1-case-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-727-part-1-case-2-320.png",
+      "sha256": "0cabd71abe5afaf7c83b824cda20849ab4cbe88c97945eb59194d55ecac18fe0",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-727-part-1-case-2-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-727-part-1-case-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-727-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-727-part-1-neutral-320.png",
+      "sha256": "f29d90de7c688a09c40fad2ff56b81ed000057f6a70e6ce0c275f19d02b50bae",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-727-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-727-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-727-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-727-part-1-step-1-320.png",
+      "sha256": "1c6e664684bab8fa7ff3300bd715d78c2ee90860e700ff880b177404bcfe1d42",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-727-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-727-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-727-part-1-step-2-320.png",
+      "sha256": "f3d438c5c31c324d7d7691c4a4c7873c483c268a68ea70af6d91676d66c235af",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-727-part-1-step-2-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-727-part-1-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-727-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-727-part-1-step-3-320.png",
+      "sha256": "2f8916914b7f6070b5a535c0290704895bf6dcc3743a304e7fd47efb442609c0",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-727-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-727-part-1-step-3-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-728-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-728-part-1-initial-320.png",
+      "sha256": "e29acf56000f5ca91ba902d3b8df60b3f8ce9bc2513909ecc0e5d3da37b31e25",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-728-part-1-step-1-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-728-part-1-step-1-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-728-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-728-part-1-last-320.png",
+      "sha256": "c4fd206b910f51926f2e73db09bf0d931af6f3cf9e97990d970d7378f10163ac",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-728-part-1-last-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-728-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-728-part-1-neutral-320.png",
+      "sha256": "e29acf56000f5ca91ba902d3b8df60b3f8ce9bc2513909ecc0e5d3da37b31e25",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-728-part-1-step-1-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-728-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-728-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-728-part-1-step-1-320.png",
+      "sha256": "f58dbceb22f22b9879fded2d2021e048bdf9f8740b4d25ea45b4416ed9abfced",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-728-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-728-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-728-part-1-step-2-320.png",
+      "sha256": "608100fdd79f07dbfe0986bbbd37adb99e6c8cf9058dfd84872b855ff1e9b6dd",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-728-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-728-part-1-step-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-728-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-728-part-1-step-3-320.png",
+      "sha256": "608100fdd79f07dbfe0986bbbd37adb99e6c8cf9058dfd84872b855ff1e9b6dd",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-728-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-728-part-1-step-3-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-729-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-729-part-1-initial-320.png",
+      "sha256": "72d8f1e2fb4a44005f43bf87a7c23e6ded76127e4204be770619e192e519be77",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-729-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-729-part-1-neutral-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-729-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-729-part-1-last-320.png",
+      "sha256": "fbf731ca8a661dd70c9c926b0b602b967a12c61ff76a0074a58811f63173bb89",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-729-part-1-last-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-729-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-729-part-1-neutral-320.png",
+      "sha256": "72d8f1e2fb4a44005f43bf87a7c23e6ded76127e4204be770619e192e519be77",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-729-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-729-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-729-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-729-part-1-step-1-320.png",
+      "sha256": "08a26f12342d99bba6fdcc33a7d3df181c2db3d658ff8a0b526f3fc9648f0b79",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-729-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-729-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-729-part-1-step-2-320.png",
+      "sha256": "d4fe0098cd8ec71381e857f53fa095a0836c2f38ba03be932cdba069c5793d40",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-729-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-729-part-1-step-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-729-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-729-part-1-step-3-320.png",
+      "sha256": "d4fe0098cd8ec71381e857f53fa095a0836c2f38ba03be932cdba069c5793d40",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-729-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-729-part-1-step-3-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-730-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-730-part-1-initial-320.png",
+      "sha256": "7bb350f29faab3027aef4297d7bee46c220fd802441fe030786bc305c4e691e0",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-730-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-730-part-1-neutral-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-730-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-730-part-1-last-320.png",
+      "sha256": "1bcd465971b87bd1f7195e44b007c5177e3569a7577e0ac1d36d5bd7faabfde8",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-730-part-1-last-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-730-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-730-part-1-neutral-320.png",
+      "sha256": "7bb350f29faab3027aef4297d7bee46c220fd802441fe030786bc305c4e691e0",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-730-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-730-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-730-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-730-part-1-step-1-320.png",
+      "sha256": "ee63ec84f79a1f549cac6db67e5c3d0a6d1f3b9602a9b2a5c292f9804e0434ae",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-730-part-1-step-1-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-730-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-730-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-730-part-1-step-2-320.png",
+      "sha256": "21cb4f360f097b2549e4d30e9fbf6de91cf87da7f821551f5af33ef4e785b3bf",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-730-part-1-step-2-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-730-part-1-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-730-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-730-part-1-step-3-320.png",
+      "sha256": "0c429e770dfdeab105a5f632c7266b5137f3268f67ad40af66af1f89b30021e9",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-730-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-730-part-1-step-3-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-731-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-731-part-1-initial-320.png",
+      "sha256": "909248fb47a5f13d9dfbf2bf5a061a082e469f689208e12a95e77b8e78169e0d",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-731-part-1-initial-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-731-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-731-part-1-last-320.png",
+      "sha256": "21d75d0baa5c2f5fc7e60d722abfeff8ce5e0b1c50beb741fd105ec854bdae3b",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-731-part-1-last-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-731-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-731-part-1-neutral-320.png",
+      "sha256": "909248fb47a5f13d9dfbf2bf5a061a082e469f689208e12a95e77b8e78169e0d",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-731-part-1-initial-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-731-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-731-part-1-step-1-320.png",
+      "sha256": "dadc4015bddb8ab643393f3b1aacf50f465f1e81717940aaf838f1478cfa7126",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-731-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-731-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-731-part-1-step-2-320.png",
+      "sha256": "2f61b56b1433da0ed45b364f79592823add4b27df98328ef250f10d978c665d3",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-731-part-1-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-731-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-731-part-1-step-3-320.png",
+      "sha256": "2f61b56b1433da0ed45b364f79592823add4b27df98328ef250f10d978c665d3",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-731-part-1-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-731-part-1-step-4-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-731-part-1-step-4-320.png",
+      "sha256": "2f61b56b1433da0ed45b364f79592823add4b27df98328ef250f10d978c665d3",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-731-part-1-step-2-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-732-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-732-part-1-initial-320.png",
+      "sha256": "25515feeb2c8c9b0a695a87f1d53efe38c7ec29d6cefb6e1e0c969b59fb2874e",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-732-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-732-part-1-neutral-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-732-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-732-part-1-last-320.png",
+      "sha256": "ccbb46b08485f52ef23affa229aa3148123260f18c39a9a83c5637a9594877e6",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-732-part-1-last-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-732-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-732-part-1-neutral-320.png",
+      "sha256": "25515feeb2c8c9b0a695a87f1d53efe38c7ec29d6cefb6e1e0c969b59fb2874e",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-732-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-732-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-732-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-732-part-1-step-1-320.png",
+      "sha256": "163b7a6c500b80cc506cf070a0cd498c1028a4f5d0bdab7f73c26b2c5be2bff9",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-732-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-732-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-732-part-1-step-2-320.png",
+      "sha256": "4bcaab7d00d011e1ce6b167828823ad402253dd41feac291e134da127ef173d5",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-732-part-1-step-2-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-732-part-1-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-732-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-732-part-1-step-3-320.png",
+      "sha256": "63e9fdf408aefe877a33be9d356e61dc16d560f9362e094a8135fcf9ef3eb838",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-732-part-1-step-5-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-732-part-1-step-5-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-732-part-1-step-4-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-732-part-1-step-4-320.png",
+      "sha256": "63e9fdf408aefe877a33be9d356e61dc16d560f9362e094a8135fcf9ef3eb838",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-732-part-1-step-5-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-732-part-1-step-5-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-732-part-1-step-5-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-732-part-1-step-5-320.png",
+      "sha256": "63e9fdf408aefe877a33be9d356e61dc16d560f9362e094a8135fcf9ef3eb838",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-732-part-1-step-5-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-732-part-1-step-5-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-733-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-733-part-1-initial-320.png",
+      "sha256": "6edfa642ba10dfa24e068d39b0e3e84c320f4608154313c73f40d95f6146751e",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-733-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-733-part-1-neutral-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-733-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-733-part-1-last-320.png",
+      "sha256": "d6b29a92797ccabd312982d1a20145f7a3768114813a8a6b5ddd619044195d19",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-733-part-1-last-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-733-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-733-part-1-neutral-320.png",
+      "sha256": "6edfa642ba10dfa24e068d39b0e3e84c320f4608154313c73f40d95f6146751e",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-733-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-733-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-733-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-733-part-1-step-1-320.png",
+      "sha256": "d8280c44f5827ef29a9dce7fd8c6b0f352f1d8544b2cc8d2db3b1782975902e9",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/review-atanasyan-7-9-main-733-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-733-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-733-part-1-step-2-320.png",
+      "sha256": "b2d4f238050e00835a826f2351725342a40fb576af31ef41b6119ae52a8629e0",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-733-part-1-step-2-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-733-part-1-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-733-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-733-part-1-step-3-320.png",
+      "sha256": "ac9b6aba38b57a70a92ed3ae62c1d6217af5293668b746e31adb8d5f86917ebb",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-733-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-733-part-1-step-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-733-part-1-step-4-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-733-part-1-step-4-320.png",
+      "sha256": "f890c7d61110e3060b45e2ee539107debfc919e3b45ba8a2f02b8782f54a81d8",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-733-part-1-step-5-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-733-part-1-step-5-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-733-part-1-step-5-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-733-part-1-step-5-320.png",
+      "sha256": "f890c7d61110e3060b45e2ee539107debfc919e3b45ba8a2f02b8782f54a81d8",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-733-part-1-step-5-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-733-part-1-step-5-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-734-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-734-part-1-initial-320.png",
+      "sha256": "e903b0e179b65b27557ac07d0a4532eacd0b46dcb781601dcb69cda594f1cc86",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-734-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-734-part-1-neutral-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-734-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-734-part-1-last-320.png",
+      "sha256": "a11ec990e1288ffd3069fbae8ff1dc8efbf8623bdb23a035079f9f9be722f750",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-734-part-1-step-4-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-734-part-1-step-4-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-734-part-1-case-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-734-part-1-case-1-320.png",
+      "sha256": "9a0c458fb80e5cd679af0545150dff71bd62500290d3402f96ca43763565a829",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-734-part-1-case-1-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-734-part-1-case-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-734-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-734-part-1-neutral-320.png",
+      "sha256": "e903b0e179b65b27557ac07d0a4532eacd0b46dcb781601dcb69cda594f1cc86",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-734-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-734-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-734-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-734-part-1-step-1-320.png",
+      "sha256": "e903b0e179b65b27557ac07d0a4532eacd0b46dcb781601dcb69cda594f1cc86",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-734-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-734-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-734-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-734-part-1-step-2-320.png",
+      "sha256": "25e4ddf6cb99a886ae9502b8aacf2a11424a65e40854c73de5757ee73d3537c7",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-734-part-1-step-2-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-734-part-1-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-734-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-734-part-1-step-3-320.png",
+      "sha256": "64a37bd7fa607a7d092ef3a6fe3f7bec0a20699a496c28e035f4fad8b7914b64",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-734-part-1-step-3-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-734-part-1-step-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-734-part-1-step-4-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-734-part-1-step-4-320.png",
+      "sha256": "a11ec990e1288ffd3069fbae8ff1dc8efbf8623bdb23a035079f9f9be722f750",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-734-part-1-step-4-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-734-part-1-step-4-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-735-part-1-initial-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-735-part-1-initial-320.png",
+      "sha256": "5208d40eb6ad11f9f7be3ea69c8073aa9f444643a34f0004fc3de1de5b1ab500",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-735-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-735-part-1-neutral-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-735-part-1-last-320.png",
+      "path": "viii-full-2/atanasyan-7-9-main-735-part-1-last-320.png",
+      "sha256": "9b5a6c7e67c86c4f56e0cfcfcb403f306dfb3c1b6f517c2c9d8927f6d62dfa8e",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-full-2/atanasyan-7-9-main-735-part-1-last-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-735-part-1-neutral-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-735-part-1-neutral-320.png",
+      "sha256": "5208d40eb6ad11f9f7be3ea69c8073aa9f444643a34f0004fc3de1de5b1ab500",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-735-part-1-neutral-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-735-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-735-part-1-step-1-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-735-part-1-step-1-320.png",
+      "sha256": "c1e6ceb0ba6baf1c4b42cc5d8c66cd074302f0ef7556881cdb1a167eca22a603",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-735-part-1-step-1-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-735-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-735-part-1-step-2-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-735-part-1-step-2-320.png",
+      "sha256": "e16f341c34d44efd07e7121a8902c6e5e15ab2d9a807126eaf6f5f8eae72cb20",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-735-part-1-step-2-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-735-part-1-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-735-part-1-step-3-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-735-part-1-step-3-320.png",
+      "sha256": "b39164f50ca8685a7818ed53eef512eb5986276bf95ce7a4c9a6b958da3f1e2e",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-735-part-1-step-4-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-735-part-1-step-4-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-735-part-1-step-4-320.png",
+      "path": "viii-full-2/review-atanasyan-7-9-main-735-part-1-step-4-320.png",
+      "sha256": "b39164f50ca8685a7818ed53eef512eb5986276bf95ce7a4c9a6b958da3f1e2e",
+      "reuse": "viii-focused-1/review-atanasyan-7-9-main-735-part-1-step-4-320.png",
+      "review": "PASS",
+      "representative": "viii-focused-1/review-atanasyan-7-9-main-735-part-1-step-4-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-736-part-1-initial-320.png",
+      "path": "viii-c736-mobile-3/atanasyan-7-9-main-736-part-1-initial-320.png",
+      "sha256": "e6353d626505a6faf6b1012a37a860be552df8072382f681bb15f1545d33e781",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-c736-mobile-3/atanasyan-7-9-main-736-part-1-initial-320.png"
+    },
+    {
+      "file": "atanasyan-7-9-main-736-part-1-last-320.png",
+      "path": "viii-c736-mobile-3/atanasyan-7-9-main-736-part-1-last-320.png",
+      "sha256": "b896b5f9dc737ba0ab1c19e87c83f9fdaf2ae5e908a2487657b16589f07c3433",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-c736-mobile-3/atanasyan-7-9-main-736-part-1-last-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-736-part-1-case-1-320.png",
+      "path": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-case-1-320.png",
+      "sha256": "563201ec5f8c357f9bd824879845ab602914e82320bf8f4977eab6bc7a7ac932",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-case-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-736-part-1-case-2-320.png",
+      "path": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-case-2-320.png",
+      "sha256": "83ab1cd03dafc36e955a62848a6af268ad691ac258d8428ec4370ea465c0584a",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-case-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-736-part-1-case-3-320.png",
+      "path": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-case-3-320.png",
+      "sha256": "cbe91b66e3e3294a04a9bf0c7e1831ade29848f7afa55abe596ff16e918e4343",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-case-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-736-part-1-case-4-320.png",
+      "path": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-case-4-320.png",
+      "sha256": "159918f77175013c6f053b835b5263038ba502ddac0c1dc0350ff65e97cb8dd5",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-case-4-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-736-part-1-neutral-320.png",
+      "path": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-neutral-320.png",
+      "sha256": "d0566b20441595b97495208aba873755606b7b14884d119d02f59395017fd5ef",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-neutral-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-736-part-1-step-1-320.png",
+      "path": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-step-1-320.png",
+      "sha256": "5dbd08ebd91f719a516a7d2c89300a5335de2516052f1e34701400fa04575f6c",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-step-1-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-736-part-1-step-2-320.png",
+      "path": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-step-2-320.png",
+      "sha256": "b43a9ddf93a9874a5900e9bfbd0060df2a26f9d7993d7b28d4c5d8f83687c863",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-step-2-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-736-part-1-step-3-320.png",
+      "path": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-step-3-320.png",
+      "sha256": "a3bae05aebf39fa299a993a16e68f250789c41e7df6e404c1c2f534dda8d9958",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-step-3-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-736-part-1-step-4-320.png",
+      "path": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-step-4-320.png",
+      "sha256": "a61a057b566eef93cf941aab8c6e95804c80811aacf22e6d8a4adf45e3d3cfb8",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-step-4-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-736-part-1-step-5-320.png",
+      "path": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-step-5-320.png",
+      "sha256": "de8fabf327e599953ead9cf5f65946be5f5713ad4aefc5cdbefe82ea59eed8c7",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-step-5-320.png"
+    },
+    {
+      "file": "review-atanasyan-7-9-main-736-part-1-step-6-320.png",
+      "path": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-step-6-320.png",
+      "sha256": "b896b5f9dc737ba0ab1c19e87c83f9fdaf2ae5e908a2487657b16589f07c3433",
+      "reuse": null,
+      "review": "PASS",
+      "representative": "viii-c736-mobile-3/atanasyan-7-9-main-736-part-1-last-320.png"
+    }
+  ],
+  "contactSheets": [
+    {
+      "file": "01.png",
+      "sha256": "79414efa2f504a121d2f0fb48f177efc1c2fbea93090922e744889967f2440ab",
+      "actuallyViewed": true
+    },
+    {
+      "file": "02.png",
+      "sha256": "3ef345930c0874ed1ef36f74d04662f10a31b3d77377b68fc6e7aa8e3111ffa2",
+      "actuallyViewed": true
+    },
+    {
+      "file": "03.png",
+      "sha256": "ae7cd06ba36643209de4a457cadb096424effac747afe33de65ef1c88981d83c",
+      "actuallyViewed": true
+    },
+    {
+      "file": "04.png",
+      "sha256": "80d708ed7bb687e177261e3913ac9a1e311a2345c447ce4eab6890c83378e531",
+      "actuallyViewed": true
+    },
+    {
+      "file": "05.png",
+      "sha256": "dc42153eb5cab320a1ec84918a2f420bd00dfaa8d4a461e582e582bb0d52a2e1",
+      "actuallyViewed": true
+    },
+    {
+      "file": "06.png",
+      "sha256": "858be025a48b3ad7531bbd90c4165b488af1875790f15ebebdf31bd9936343f8",
+      "actuallyViewed": true
+    },
+    {
+      "file": "07.png",
+      "sha256": "9518e877eba6498f6f20f65abdd2fe166e5a125260e64017ed3d92d2f3891926",
+      "actuallyViewed": true
+    },
+    {
+      "file": "08.png",
+      "sha256": "3773aa2763eb92d3c5583c79c1f93db53cf526fcb25974bc840b91a905decfcd",
+      "actuallyViewed": true
+    },
+    {
+      "file": "09.png",
+      "sha256": "0c84c0d806a436c4ff627feb2a9b36f7b0d73e1c9f79831e6e601d2d7c6b5d44",
+      "actuallyViewed": true
+    }
+  ],
+  "finalFullCourseBinding": {
+    "dataset": "viii-full-5",
+    "rawEvidenceSha256": "21dbd56b2bbf74c3b720561fadbd13456c4107fb688fadb541bc89e4a2e14827",
+    "completed": true,
+    "bundleSha256": "8e6d98e500a96b3db5bd120362195da000955d790699c8fa73433f60ab4c5d24",
+    "totalCaptures": 200,
+    "unknownHashes": 0
+  },
+  "finalFrames": [
+    {
+      "file": "atanasyan-7-9-main-710-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-710-part-1-initial-320.png",
+      "sha256": "06ce1ba7853aceb495931303636df4c1e163f32554b5ae931e7cb3f0d264a092",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-710-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-710-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-710-part-1-last-320.png",
+      "sha256": "06ce1ba7853aceb495931303636df4c1e163f32554b5ae931e7cb3f0d264a092",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-710-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-710-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-710-part-1-neutral-320.png",
+      "sha256": "06ce1ba7853aceb495931303636df4c1e163f32554b5ae931e7cb3f0d264a092",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-710-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-710-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-710-part-1-step-1-320.png",
+      "sha256": "5ecd3927da2bb184592adf9f15a2c24fb01bd540edd8d5231a68e5894d610887",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-710-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-710-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-710-part-1-step-2-320.png",
+      "sha256": "5ecd3927da2bb184592adf9f15a2c24fb01bd540edd8d5231a68e5894d610887",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-710-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-710-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-710-part-1-step-3-320.png",
+      "sha256": "5ecd3927da2bb184592adf9f15a2c24fb01bd540edd8d5231a68e5894d610887",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-710-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-711-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-711-part-1-initial-320.png",
+      "sha256": "487481f8a585a0c8d86c8ca1f7aeebbab308509d4d38f08b0ed89ab64b91a0f1",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-711-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-711-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-711-part-1-last-320.png",
+      "sha256": "ab2dc14dc141975bec2f6a4047eb783d281b535ef203f0312945b912c4b53f4f",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-711-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-711-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-711-part-1-neutral-320.png",
+      "sha256": "487481f8a585a0c8d86c8ca1f7aeebbab308509d4d38f08b0ed89ab64b91a0f1",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-711-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-711-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-711-part-1-step-1-320.png",
+      "sha256": "732c888b7d1d28f079c745022999157c7dab81009a29b688395a4957ea432870",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-711-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-711-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-711-part-1-step-2-320.png",
+      "sha256": "732c888b7d1d28f079c745022999157c7dab81009a29b688395a4957ea432870",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-711-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-711-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-711-part-1-step-3-320.png",
+      "sha256": "732c888b7d1d28f079c745022999157c7dab81009a29b688395a4957ea432870",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-711-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-712-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-712-part-1-initial-320.png",
+      "sha256": "e969b69a2fcd0ff4f8c135f07a77c5a30fa22c50f1ce85516e88ba94a122c133",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-712-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-712-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-712-part-1-last-320.png",
+      "sha256": "e969b69a2fcd0ff4f8c135f07a77c5a30fa22c50f1ce85516e88ba94a122c133",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-712-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-712-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-712-part-1-neutral-320.png",
+      "sha256": "e969b69a2fcd0ff4f8c135f07a77c5a30fa22c50f1ce85516e88ba94a122c133",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-712-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-712-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-712-part-1-step-1-320.png",
+      "sha256": "19ef5a8c59125d47380303dbd215522edf8555f22ca972f414915fe65501283b",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-712-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-712-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-712-part-1-step-2-320.png",
+      "sha256": "19ef5a8c59125d47380303dbd215522edf8555f22ca972f414915fe65501283b",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-712-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-712-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-712-part-1-step-3-320.png",
+      "sha256": "19ef5a8c59125d47380303dbd215522edf8555f22ca972f414915fe65501283b",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-712-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-713-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-713-part-1-initial-320.png",
+      "sha256": "235401b4218a61a2928146d0918edf556e646ad0972680a48cb0508a56c1871b",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-713-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-713-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-713-part-1-last-320.png",
+      "sha256": "235401b4218a61a2928146d0918edf556e646ad0972680a48cb0508a56c1871b",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-713-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-713-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-713-part-1-neutral-320.png",
+      "sha256": "235401b4218a61a2928146d0918edf556e646ad0972680a48cb0508a56c1871b",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-713-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-713-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-713-part-1-step-1-320.png",
+      "sha256": "d6a3de8812830a296df5333eac96ad7283c8f1b528625cf08b4589d2363d7b5f",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-713-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-713-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-713-part-1-step-2-320.png",
+      "sha256": "d6a3de8812830a296df5333eac96ad7283c8f1b528625cf08b4589d2363d7b5f",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-713-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-713-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-713-part-1-step-3-320.png",
+      "sha256": "d6a3de8812830a296df5333eac96ad7283c8f1b528625cf08b4589d2363d7b5f",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-713-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-714-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-714-part-1-initial-320.png",
+      "sha256": "1729657dbc911f0fbd87369193b4f4801210860a111f5ee59350f7d567fcff35",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-714-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-714-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-714-part-1-last-320.png",
+      "sha256": "1729657dbc911f0fbd87369193b4f4801210860a111f5ee59350f7d567fcff35",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-714-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-714-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-714-part-1-neutral-320.png",
+      "sha256": "1729657dbc911f0fbd87369193b4f4801210860a111f5ee59350f7d567fcff35",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-714-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-714-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-714-part-1-step-1-320.png",
+      "sha256": "a1d3571b508d5655be03c4d9b4709348a680ff6c614166d3f828991642d04518",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-714-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-714-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-714-part-1-step-2-320.png",
+      "sha256": "a1d3571b508d5655be03c4d9b4709348a680ff6c614166d3f828991642d04518",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-714-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-714-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-714-part-1-step-3-320.png",
+      "sha256": "a1d3571b508d5655be03c4d9b4709348a680ff6c614166d3f828991642d04518",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-714-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-715-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-715-part-1-initial-320.png",
+      "sha256": "6a6fc5cf6a871852806cca570b9f9d29c6656b89f6a0403b35e6f8af1b8f1a04",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-715-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-715-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-715-part-1-last-320.png",
+      "sha256": "ad07f593901319664f44e47bf2db824a14883f5399036f6252a211cd7a41425f",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-715-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-715-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-715-part-1-neutral-320.png",
+      "sha256": "6a6fc5cf6a871852806cca570b9f9d29c6656b89f6a0403b35e6f8af1b8f1a04",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-715-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-715-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-715-part-1-step-1-320.png",
+      "sha256": "7a7860a63796d298fd370952ebf92678971ac1bcd5dd00461c999a70fe561cf2",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-715-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-715-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-715-part-1-step-2-320.png",
+      "sha256": "7a7860a63796d298fd370952ebf92678971ac1bcd5dd00461c999a70fe561cf2",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-715-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-715-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-715-part-1-step-3-320.png",
+      "sha256": "fb596d7e46cf385ce8a0ca1bf52f7530fba22924b3fcc020ba0b2180d3d8ce4d",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-715-part-1-step-3-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-716-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-716-part-1-initial-320.png",
+      "sha256": "a96d7b747d03d6a84b4506a10b5661079d315eebdf05484249f705880151418d",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-716-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-716-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-716-part-1-last-320.png",
+      "sha256": "ef81981b4c5d6a44882fa3bb514e21c62cdc07de3aedf029c59639afd476364d",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-716-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-716-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-716-part-1-neutral-320.png",
+      "sha256": "a96d7b747d03d6a84b4506a10b5661079d315eebdf05484249f705880151418d",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-716-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-716-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-716-part-1-step-1-320.png",
+      "sha256": "885862856727cab1fca115c2ab00729ed9c0dc6a4dde151de838fdaa3bb54525",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-716-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-716-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-716-part-1-step-2-320.png",
+      "sha256": "246ec285e97792e391da332a1332fd93169b1088a3311fcebb42985cb43ac445",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-716-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-716-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-716-part-1-step-3-320.png",
+      "sha256": "246ec285e97792e391da332a1332fd93169b1088a3311fcebb42985cb43ac445",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-716-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-717-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-717-part-1-initial-320.png",
+      "sha256": "ac2d185924a89110b2585f73f90edcb58ff54ee30403b1fd1c488c99b5b0f600",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-717-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-717-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-717-part-1-last-320.png",
+      "sha256": "393504f16b3a30f45ed554c0414f6432a47339389a5b5f226e0871dcf85be696",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-717-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-717-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-717-part-1-neutral-320.png",
+      "sha256": "ac2d185924a89110b2585f73f90edcb58ff54ee30403b1fd1c488c99b5b0f600",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-717-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-717-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-717-part-1-step-1-320.png",
+      "sha256": "dd184c121ccb9ada3bc1c099a994620bfb6ad1951b0c17e6768704f84e2f3b2c",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-717-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-717-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-717-part-1-step-2-320.png",
+      "sha256": "dd184c121ccb9ada3bc1c099a994620bfb6ad1951b0c17e6768704f84e2f3b2c",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-717-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-717-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-717-part-1-step-3-320.png",
+      "sha256": "2ed8850ad6cb0f672c9fb3ea5889335e523735c2700734ac8f4bb508d82d4eb2",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-717-part-1-step-3-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-718-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-718-part-1-initial-320.png",
+      "sha256": "d7faaf7f0a0ae43a8a565a8f7e0a418b73f61aeeade8b28fcc6059861bbc4931",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-718-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-718-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-718-part-1-last-320.png",
+      "sha256": "7217f29f46e6a0c9ac21eee67dda0d1982900e5ab3fcc59cf10c8ae306280995",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-718-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-718-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-718-part-1-neutral-320.png",
+      "sha256": "d7faaf7f0a0ae43a8a565a8f7e0a418b73f61aeeade8b28fcc6059861bbc4931",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-718-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-718-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-718-part-1-step-1-320.png",
+      "sha256": "3fbed5cddf0485662aaa32f470fb7546c537e2dc81cbad90a639814c91ce64d0",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-718-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-718-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-718-part-1-step-2-320.png",
+      "sha256": "b3c67170719c1277efd46cd103e5011fcdce21b5ec567c0aac483423b330bdaf",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-718-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-718-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-718-part-1-step-3-320.png",
+      "sha256": "7217f29f46e6a0c9ac21eee67dda0d1982900e5ab3fcc59cf10c8ae306280995",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-718-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-718-part-1-case-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-718-part-1-case-1-320.png",
+      "sha256": "958f137687aae323272feacc2e2ac8a4a2913cce6f5fb60cb34610d1e1ca3e93",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-718-part-1-case-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-718-part-2-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-718-part-2-initial-320.png",
+      "sha256": "d7faaf7f0a0ae43a8a565a8f7e0a418b73f61aeeade8b28fcc6059861bbc4931",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-718-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-718-part-2-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-718-part-2-last-320.png",
+      "sha256": "c02dd1757679f52b062260679fa4f7b89838848d14b7738c54b6603ff419d992",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-718-part-2-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-718-part-2-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-718-part-2-neutral-320.png",
+      "sha256": "d7faaf7f0a0ae43a8a565a8f7e0a418b73f61aeeade8b28fcc6059861bbc4931",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-718-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-718-part-2-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-718-part-2-step-1-320.png",
+      "sha256": "d7faaf7f0a0ae43a8a565a8f7e0a418b73f61aeeade8b28fcc6059861bbc4931",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-718-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-718-part-2-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-718-part-2-step-2-320.png",
+      "sha256": "da1ecf3daa15e7466ed75099112edd551aa568d5f28cd70654cf539f44b2e940",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-718-part-2-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-718-part-2-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-718-part-2-step-3-320.png",
+      "sha256": "c02dd1757679f52b062260679fa4f7b89838848d14b7738c54b6603ff419d992",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-718-part-2-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-718-part-2-case-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-718-part-2-case-1-320.png",
+      "sha256": "a156eaba7c7367de577fee6145d16f49d9004fe750be498d00dc8203003dfc78",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-718-part-2-case-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-719-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-719-part-1-initial-320.png",
+      "sha256": "88da52a86f57204ce982defa74b538c20f8cd4eda741c413ff830f1d18c9ea93",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-719-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-719-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-719-part-1-last-320.png",
+      "sha256": "f71e64346f0272bbfc94f4c07f113dc9b97627eea794f1af1c7e28ab23af724e",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-719-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-719-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-719-part-1-neutral-320.png",
+      "sha256": "88da52a86f57204ce982defa74b538c20f8cd4eda741c413ff830f1d18c9ea93",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-719-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-719-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-719-part-1-step-1-320.png",
+      "sha256": "c367ca8606b9da32a4a13e87da2705e21c45bc7456a37840b2dbf58f95d5bc0a",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-719-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-719-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-719-part-1-step-2-320.png",
+      "sha256": "1c394d7edcf7ac30adf8d705053b7c50f9e8b0b8ae4136cb18a6c0daa587f246",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-719-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-719-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-719-part-1-step-3-320.png",
+      "sha256": "7b7bd2e4698d02178fa71efd05033fb1f22c1a6192eb5d45f10b007cf072a22c",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-719-part-1-step-3-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-719-part-2-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-719-part-2-initial-320.png",
+      "sha256": "a592ac60920ee41c0c97543921d0b647272feb9b67b761bddea5ac160dfe7212",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-719-part-2-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-719-part-2-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-719-part-2-last-320.png",
+      "sha256": "5451e0a20a710cd0fb698bd80c6fffdd0f22a51679bc5c8df268aeb308220194",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-719-part-2-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-719-part-2-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-719-part-2-neutral-320.png",
+      "sha256": "a592ac60920ee41c0c97543921d0b647272feb9b67b761bddea5ac160dfe7212",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-719-part-2-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-719-part-2-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-719-part-2-step-1-320.png",
+      "sha256": "5657827e2735141456b62fbcb5caac73ab15334c0c2e029d2fed16e987116848",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-719-part-2-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-719-part-2-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-719-part-2-step-2-320.png",
+      "sha256": "5451e0a20a710cd0fb698bd80c6fffdd0f22a51679bc5c8df268aeb308220194",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-719-part-2-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-719-part-2-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-719-part-2-step-3-320.png",
+      "sha256": "5451e0a20a710cd0fb698bd80c6fffdd0f22a51679bc5c8df268aeb308220194",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-719-part-2-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-719-part-2-case-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-719-part-2-case-1-320.png",
+      "sha256": "f731aad94217023c235aaa33b45cada7fa76d086c761b7ecb74a6e525499ae5a",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-719-part-2-case-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-719-part-2-case-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-719-part-2-case-2-320.png",
+      "sha256": "8b6d075296627ea9aad7ba18c96c1e424c62404c2b6893499a2a8e281bb2fe4d",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-719-part-2-case-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-720-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-720-part-1-initial-320.png",
+      "sha256": "f91a3f2fa5a9b49a83d0b41affc9b55defba4da74e2e7f6d8fff4df51660135e",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-720-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-720-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-720-part-1-last-320.png",
+      "sha256": "75db4388ac289bc6518ef719cf902d2c7fb6c04bcc318380d96204bc607d87b5",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-720-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-720-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-720-part-1-neutral-320.png",
+      "sha256": "f91a3f2fa5a9b49a83d0b41affc9b55defba4da74e2e7f6d8fff4df51660135e",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-720-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-720-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-720-part-1-step-1-320.png",
+      "sha256": "5774779457a476d9b1d99b5bbc607d72dd6a2397cfd99776f9edfde46525091a",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-720-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-720-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-720-part-1-step-2-320.png",
+      "sha256": "5774779457a476d9b1d99b5bbc607d72dd6a2397cfd99776f9edfde46525091a",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-720-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-720-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-720-part-1-step-3-320.png",
+      "sha256": "5774779457a476d9b1d99b5bbc607d72dd6a2397cfd99776f9edfde46525091a",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-720-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-720-part-1-step-4-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-720-part-1-step-4-320.png",
+      "sha256": "07dfac3e1191416b993e75e7ee164406b34576732b409c3ea53fdb630a7b35f2",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-720-part-1-step-4-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-721-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-721-part-1-initial-320.png",
+      "sha256": "4ae837a1bd7aa6dc2aa507a3c84f3cb4c7861c99fc4a37b4e95a00f9e3c083e4",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-721-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-721-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-721-part-1-last-320.png",
+      "sha256": "7d193458633e4dec337eada882e87158400509f135c033e634887c0ab813c051",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-721-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-721-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-721-part-1-neutral-320.png",
+      "sha256": "4ae837a1bd7aa6dc2aa507a3c84f3cb4c7861c99fc4a37b4e95a00f9e3c083e4",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-721-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-721-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-721-part-1-step-1-320.png",
+      "sha256": "5a18c22bedba0c18c3dc60b294370949b985a01d6a24e0d7afb56091748cb637",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-721-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-721-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-721-part-1-step-2-320.png",
+      "sha256": "ba366f19e5e4dea8952506ca0744c05ba1940735a7c985c61a241c9d080f6207",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-721-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-721-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-721-part-1-step-3-320.png",
+      "sha256": "e950588d1f8b2aee89dab6789b58b7fe31d270486da82697ca5771f378552e09",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-721-part-1-step-3-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-722-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-722-part-1-initial-320.png",
+      "sha256": "608b440bc5126df48882a86e6493bd79341a0d32bd36e096324ef731f13718f3",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-722-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-722-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-722-part-1-last-320.png",
+      "sha256": "9d40f2e9136e3f784b2b23e9370fbec4766e1de4c75003b0902815f0817415f7",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-722-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-722-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-722-part-1-neutral-320.png",
+      "sha256": "608b440bc5126df48882a86e6493bd79341a0d32bd36e096324ef731f13718f3",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-722-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-722-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-722-part-1-step-1-320.png",
+      "sha256": "242e7147e081e4ca017a24dfc4e63833df543a5c8678b1a9532f5c293fc1f833",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-722-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-722-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-722-part-1-step-2-320.png",
+      "sha256": "5325b6dbc7e4ff843b905ee87e2366df47c706b6e93a4c33c131ccca97067d19",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-722-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-722-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-722-part-1-step-3-320.png",
+      "sha256": "4fe25511053a379c34b0793f61015aae6df2145d305e065efaa8ccb46b954c51",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-722-part-1-step-3-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-723-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-723-part-1-initial-320.png",
+      "sha256": "a736c9accf90d822b18becc14f790a489a2ce581caaa0f9c580d8df42368d9ea",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-723-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-723-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-723-part-1-last-320.png",
+      "sha256": "a9549fbddd9f6f14e93ffdce937620602ed2e6261d7b71188288f12b5c80934c",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-723-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-723-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-723-part-1-neutral-320.png",
+      "sha256": "a736c9accf90d822b18becc14f790a489a2ce581caaa0f9c580d8df42368d9ea",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-723-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-723-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-723-part-1-step-1-320.png",
+      "sha256": "fc0d0fe22fdff272a9ada2665ec8a209b715d1ddb4039a16702b98076a4b3250",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-723-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-723-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-723-part-1-step-2-320.png",
+      "sha256": "8f40be92440b3609c5a0d4705b33b376f11b2f207b04e319518e827fba917320",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-723-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-723-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-723-part-1-step-3-320.png",
+      "sha256": "a874ad51391f39b8f394fb6418f83f597265842400dc5a13759d3a12ba177625",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-723-part-1-step-3-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-724-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-724-part-1-initial-320.png",
+      "sha256": "319d72ebb20c24d8f109674ce59ca2c98387061ca4866003880e20463f947bc0",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-724-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-724-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-724-part-1-last-320.png",
+      "sha256": "7369e8957d1272668e736f2746158df2ad436010f3d51ed20bb8b48422329a59",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-724-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-724-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-724-part-1-neutral-320.png",
+      "sha256": "319d72ebb20c24d8f109674ce59ca2c98387061ca4866003880e20463f947bc0",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-724-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-724-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-724-part-1-step-1-320.png",
+      "sha256": "dcb8c1c097eb856451bfe01aafea229120ac14805ba509ed5205e82c2a01d370",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-724-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-724-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-724-part-1-step-2-320.png",
+      "sha256": "f0f54d7bfc76c9892e81641e37324720430d9bcabd2b5154210f75cade9b9f2f",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-724-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-724-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-724-part-1-step-3-320.png",
+      "sha256": "7ec7e017affa37f68fda0888fa97e9d9fb334d6f5511dca1dc9083bfb444693d",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-724-part-1-step-3-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-725-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-725-part-1-initial-320.png",
+      "sha256": "a72b0199c7e4194788b76765f90ad4a9503bb919748b883f86d94f2c54016767",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-725-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-725-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-725-part-1-last-320.png",
+      "sha256": "002e953d42638429ec2ac88d4adeed3670e7dc72ef3693cf92c541ae99636bcf",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-725-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-725-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-725-part-1-neutral-320.png",
+      "sha256": "a72b0199c7e4194788b76765f90ad4a9503bb919748b883f86d94f2c54016767",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-725-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-725-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-725-part-1-step-1-320.png",
+      "sha256": "0f3dedd8b518b2f4b490287c07c699d35d167399c1f33ae48cab38e1599b167f",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-725-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-725-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-725-part-1-step-2-320.png",
+      "sha256": "521c3920b8496e1a78ca823f000e54fba8551ed6fe8adbfe540489f481a4dbef",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-725-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-725-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-725-part-1-step-3-320.png",
+      "sha256": "521c3920b8496e1a78ca823f000e54fba8551ed6fe8adbfe540489f481a4dbef",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-725-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-725-part-1-step-4-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-725-part-1-step-4-320.png",
+      "sha256": "002e953d42638429ec2ac88d4adeed3670e7dc72ef3693cf92c541ae99636bcf",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-725-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-725-part-1-case-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-725-part-1-case-1-320.png",
+      "sha256": "9d231da226bcd4c4607a7459289a08d6470f7d25c5badfe74bea1f10edc4da3b",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-725-part-1-case-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-726-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-726-part-1-initial-320.png",
+      "sha256": "20aa12c3cb4b84ce8fb7398e3a3b994c82007108f4ae553dbdc978470e614880",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-726-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-726-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-726-part-1-last-320.png",
+      "sha256": "512b652bd719ddb4228a57c9412cde2cb586fab1ab85e5e2231efdba915c568a",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-726-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-726-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-726-part-1-neutral-320.png",
+      "sha256": "20aa12c3cb4b84ce8fb7398e3a3b994c82007108f4ae553dbdc978470e614880",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-726-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-726-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-726-part-1-step-1-320.png",
+      "sha256": "33a12a16f47a95b0a2f41225e767cf567ab18afdcc2c9d027fd30a6278b033af",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-726-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-726-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-726-part-1-step-2-320.png",
+      "sha256": "385efc481dfb179570f5770d3044f870edad98e96c8ad979e062615b4139603c",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-726-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-726-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-726-part-1-step-3-320.png",
+      "sha256": "de846930dbdde53c48f46014326485a816a7a2a21e6afb8a3ac843b161479e49",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-726-part-1-step-3-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-726-part-1-step-4-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-726-part-1-step-4-320.png",
+      "sha256": "512b652bd719ddb4228a57c9412cde2cb586fab1ab85e5e2231efdba915c568a",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-726-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-726-part-1-case-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-726-part-1-case-1-320.png",
+      "sha256": "c5e27ef5181c87f1d72e37392c9984ca286ab87fa6f8a82802309e0efc190d60",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-726-part-1-case-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-727-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-727-part-1-initial-320.png",
+      "sha256": "f29d90de7c688a09c40fad2ff56b81ed000057f6a70e6ce0c275f19d02b50bae",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-727-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-727-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-727-part-1-last-320.png",
+      "sha256": "2f8916914b7f6070b5a535c0290704895bf6dcc3743a304e7fd47efb442609c0",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-727-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-727-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-727-part-1-neutral-320.png",
+      "sha256": "f29d90de7c688a09c40fad2ff56b81ed000057f6a70e6ce0c275f19d02b50bae",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-727-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-727-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-727-part-1-step-1-320.png",
+      "sha256": "1c6e664684bab8fa7ff3300bd715d78c2ee90860e700ff880b177404bcfe1d42",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-727-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-727-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-727-part-1-step-2-320.png",
+      "sha256": "f3d438c5c31c324d7d7691c4a4c7873c483c268a68ea70af6d91676d66c235af",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-727-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-727-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-727-part-1-step-3-320.png",
+      "sha256": "2f8916914b7f6070b5a535c0290704895bf6dcc3743a304e7fd47efb442609c0",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-727-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-727-part-1-case-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-727-part-1-case-1-320.png",
+      "sha256": "d1240acdc710f587ec522b55ba70a68e51bddb316f2df603da17d42d23dd68b7",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-727-part-1-case-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-727-part-1-case-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-727-part-1-case-2-320.png",
+      "sha256": "0cabd71abe5afaf7c83b824cda20849ab4cbe88c97945eb59194d55ecac18fe0",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-727-part-1-case-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-728-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-728-part-1-initial-320.png",
+      "sha256": "e29acf56000f5ca91ba902d3b8df60b3f8ce9bc2513909ecc0e5d3da37b31e25",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-728-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-728-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-728-part-1-last-320.png",
+      "sha256": "c4fd206b910f51926f2e73db09bf0d931af6f3cf9e97990d970d7378f10163ac",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-728-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-728-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-728-part-1-neutral-320.png",
+      "sha256": "e29acf56000f5ca91ba902d3b8df60b3f8ce9bc2513909ecc0e5d3da37b31e25",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-728-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-728-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-728-part-1-step-1-320.png",
+      "sha256": "f58dbceb22f22b9879fded2d2021e048bdf9f8740b4d25ea45b4416ed9abfced",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-728-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-728-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-728-part-1-step-2-320.png",
+      "sha256": "608100fdd79f07dbfe0986bbbd37adb99e6c8cf9058dfd84872b855ff1e9b6dd",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-728-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-728-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-728-part-1-step-3-320.png",
+      "sha256": "608100fdd79f07dbfe0986bbbd37adb99e6c8cf9058dfd84872b855ff1e9b6dd",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-728-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-729-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-729-part-1-initial-320.png",
+      "sha256": "72d8f1e2fb4a44005f43bf87a7c23e6ded76127e4204be770619e192e519be77",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-729-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-729-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-729-part-1-last-320.png",
+      "sha256": "fbf731ca8a661dd70c9c926b0b602b967a12c61ff76a0074a58811f63173bb89",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-729-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-729-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-729-part-1-neutral-320.png",
+      "sha256": "72d8f1e2fb4a44005f43bf87a7c23e6ded76127e4204be770619e192e519be77",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-729-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-729-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-729-part-1-step-1-320.png",
+      "sha256": "08a26f12342d99bba6fdcc33a7d3df181c2db3d658ff8a0b526f3fc9648f0b79",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-729-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-729-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-729-part-1-step-2-320.png",
+      "sha256": "d4fe0098cd8ec71381e857f53fa095a0836c2f38ba03be932cdba069c5793d40",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-729-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-729-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-729-part-1-step-3-320.png",
+      "sha256": "d4fe0098cd8ec71381e857f53fa095a0836c2f38ba03be932cdba069c5793d40",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-729-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-730-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-730-part-1-initial-320.png",
+      "sha256": "7bb350f29faab3027aef4297d7bee46c220fd802441fe030786bc305c4e691e0",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-730-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-730-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-730-part-1-last-320.png",
+      "sha256": "1bcd465971b87bd1f7195e44b007c5177e3569a7577e0ac1d36d5bd7faabfde8",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-730-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-730-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-730-part-1-neutral-320.png",
+      "sha256": "7bb350f29faab3027aef4297d7bee46c220fd802441fe030786bc305c4e691e0",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-730-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-730-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-730-part-1-step-1-320.png",
+      "sha256": "ee63ec84f79a1f549cac6db67e5c3d0a6d1f3b9602a9b2a5c292f9804e0434ae",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-730-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-730-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-730-part-1-step-2-320.png",
+      "sha256": "21cb4f360f097b2549e4d30e9fbf6de91cf87da7f821551f5af33ef4e785b3bf",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-730-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-730-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-730-part-1-step-3-320.png",
+      "sha256": "0c429e770dfdeab105a5f632c7266b5137f3268f67ad40af66af1f89b30021e9",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-730-part-1-step-3-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-731-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-731-part-1-initial-320.png",
+      "sha256": "909248fb47a5f13d9dfbf2bf5a061a082e469f689208e12a95e77b8e78169e0d",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-731-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-731-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-731-part-1-last-320.png",
+      "sha256": "21d75d0baa5c2f5fc7e60d722abfeff8ce5e0b1c50beb741fd105ec854bdae3b",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-731-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-731-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-731-part-1-neutral-320.png",
+      "sha256": "909248fb47a5f13d9dfbf2bf5a061a082e469f689208e12a95e77b8e78169e0d",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-731-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-731-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-731-part-1-step-1-320.png",
+      "sha256": "dadc4015bddb8ab643393f3b1aacf50f465f1e81717940aaf838f1478cfa7126",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-731-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-731-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-731-part-1-step-2-320.png",
+      "sha256": "2f61b56b1433da0ed45b364f79592823add4b27df98328ef250f10d978c665d3",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-731-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-731-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-731-part-1-step-3-320.png",
+      "sha256": "2f61b56b1433da0ed45b364f79592823add4b27df98328ef250f10d978c665d3",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-731-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-731-part-1-step-4-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-731-part-1-step-4-320.png",
+      "sha256": "f18d3379a25efc36849db67c2d519aa8300fba515567d492b58f721ae8a63b74",
+      "exactPriorWholePng": null,
+      "manuallyInspectedNovel": true
+    },
+    {
+      "file": "atanasyan-7-9-main-732-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-732-part-1-initial-320.png",
+      "sha256": "25515feeb2c8c9b0a695a87f1d53efe38c7ec29d6cefb6e1e0c969b59fb2874e",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-732-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-732-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-732-part-1-last-320.png",
+      "sha256": "ccbb46b08485f52ef23affa229aa3148123260f18c39a9a83c5637a9594877e6",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-732-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-732-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-732-part-1-neutral-320.png",
+      "sha256": "25515feeb2c8c9b0a695a87f1d53efe38c7ec29d6cefb6e1e0c969b59fb2874e",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-732-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-732-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-732-part-1-step-1-320.png",
+      "sha256": "4bcaab7d00d011e1ce6b167828823ad402253dd41feac291e134da127ef173d5",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-732-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-732-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-732-part-1-step-2-320.png",
+      "sha256": "4bcaab7d00d011e1ce6b167828823ad402253dd41feac291e134da127ef173d5",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-732-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-732-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-732-part-1-step-3-320.png",
+      "sha256": "63e9fdf408aefe877a33be9d356e61dc16d560f9362e094a8135fcf9ef3eb838",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-732-part-1-step-3-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-732-part-1-step-4-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-732-part-1-step-4-320.png",
+      "sha256": "63e9fdf408aefe877a33be9d356e61dc16d560f9362e094a8135fcf9ef3eb838",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-732-part-1-step-3-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-732-part-1-step-5-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-732-part-1-step-5-320.png",
+      "sha256": "63e9fdf408aefe877a33be9d356e61dc16d560f9362e094a8135fcf9ef3eb838",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-732-part-1-step-3-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-733-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-733-part-1-initial-320.png",
+      "sha256": "6edfa642ba10dfa24e068d39b0e3e84c320f4608154313c73f40d95f6146751e",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-733-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-733-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-733-part-1-last-320.png",
+      "sha256": "d6b29a92797ccabd312982d1a20145f7a3768114813a8a6b5ddd619044195d19",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-733-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-733-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-733-part-1-neutral-320.png",
+      "sha256": "6edfa642ba10dfa24e068d39b0e3e84c320f4608154313c73f40d95f6146751e",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-733-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-733-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-733-part-1-step-1-320.png",
+      "sha256": "29078a490d67805ff83513f73d2f9b029a04e5b513d4d68d088bbaa1312e3f50",
+      "exactPriorWholePng": "viii-full-4/review-atanasyan-7-9-main-733-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-733-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-733-part-1-step-2-320.png",
+      "sha256": "b2d4f238050e00835a826f2351725342a40fb576af31ef41b6119ae52a8629e0",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-733-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-733-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-733-part-1-step-3-320.png",
+      "sha256": "ac9b6aba38b57a70a92ed3ae62c1d6217af5293668b746e31adb8d5f86917ebb",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-733-part-1-step-3-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-733-part-1-step-4-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-733-part-1-step-4-320.png",
+      "sha256": "f890c7d61110e3060b45e2ee539107debfc919e3b45ba8a2f02b8782f54a81d8",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-733-part-1-step-4-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-733-part-1-step-5-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-733-part-1-step-5-320.png",
+      "sha256": "f890c7d61110e3060b45e2ee539107debfc919e3b45ba8a2f02b8782f54a81d8",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-733-part-1-step-4-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-734-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-734-part-1-initial-320.png",
+      "sha256": "e903b0e179b65b27557ac07d0a4532eacd0b46dcb781601dcb69cda594f1cc86",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-734-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-734-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-734-part-1-last-320.png",
+      "sha256": "a11ec990e1288ffd3069fbae8ff1dc8efbf8623bdb23a035079f9f9be722f750",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-734-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-734-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-734-part-1-neutral-320.png",
+      "sha256": "e903b0e179b65b27557ac07d0a4532eacd0b46dcb781601dcb69cda594f1cc86",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-734-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-734-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-734-part-1-step-1-320.png",
+      "sha256": "e903b0e179b65b27557ac07d0a4532eacd0b46dcb781601dcb69cda594f1cc86",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-734-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-734-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-734-part-1-step-2-320.png",
+      "sha256": "25e4ddf6cb99a886ae9502b8aacf2a11424a65e40854c73de5757ee73d3537c7",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-734-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-734-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-734-part-1-step-3-320.png",
+      "sha256": "64a37bd7fa607a7d092ef3a6fe3f7bec0a20699a496c28e035f4fad8b7914b64",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-734-part-1-step-3-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-734-part-1-step-4-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-734-part-1-step-4-320.png",
+      "sha256": "a11ec990e1288ffd3069fbae8ff1dc8efbf8623bdb23a035079f9f9be722f750",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-734-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-734-part-1-case-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-734-part-1-case-1-320.png",
+      "sha256": "9a0c458fb80e5cd679af0545150dff71bd62500290d3402f96ca43763565a829",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-734-part-1-case-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-735-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-735-part-1-initial-320.png",
+      "sha256": "5208d40eb6ad11f9f7be3ea69c8073aa9f444643a34f0004fc3de1de5b1ab500",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-735-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-735-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-735-part-1-last-320.png",
+      "sha256": "9b5a6c7e67c86c4f56e0cfcfcb403f306dfb3c1b6f517c2c9d8927f6d62dfa8e",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-735-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-735-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-735-part-1-neutral-320.png",
+      "sha256": "5208d40eb6ad11f9f7be3ea69c8073aa9f444643a34f0004fc3de1de5b1ab500",
+      "exactPriorWholePng": "viii-full-2/atanasyan-7-9-main-735-part-1-initial-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-735-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-735-part-1-step-1-320.png",
+      "sha256": "c1e6ceb0ba6baf1c4b42cc5d8c66cd074302f0ef7556881cdb1a167eca22a603",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-735-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-735-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-735-part-1-step-2-320.png",
+      "sha256": "e16f341c34d44efd07e7121a8902c6e5e15ab2d9a807126eaf6f5f8eae72cb20",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-735-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-735-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-735-part-1-step-3-320.png",
+      "sha256": "b39164f50ca8685a7818ed53eef512eb5986276bf95ce7a4c9a6b958da3f1e2e",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-735-part-1-step-3-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-735-part-1-step-4-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-735-part-1-step-4-320.png",
+      "sha256": "b39164f50ca8685a7818ed53eef512eb5986276bf95ce7a4c9a6b958da3f1e2e",
+      "exactPriorWholePng": "viii-full-2/review-atanasyan-7-9-main-735-part-1-step-3-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-736-part-1-initial-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-736-part-1-initial-320.png",
+      "sha256": "d0566b20441595b97495208aba873755606b7b14884d119d02f59395017fd5ef",
+      "exactPriorWholePng": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-neutral-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "atanasyan-7-9-main-736-part-1-last-320.png",
+      "path": "viii-full-5/atanasyan-7-9-main-736-part-1-last-320.png",
+      "sha256": "b896b5f9dc737ba0ab1c19e87c83f9fdaf2ae5e908a2487657b16589f07c3433",
+      "exactPriorWholePng": "viii-c736-mobile-3/atanasyan-7-9-main-736-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-736-part-1-neutral-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-736-part-1-neutral-320.png",
+      "sha256": "d0566b20441595b97495208aba873755606b7b14884d119d02f59395017fd5ef",
+      "exactPriorWholePng": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-neutral-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-736-part-1-step-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-736-part-1-step-1-320.png",
+      "sha256": "5dbd08ebd91f719a516a7d2c89300a5335de2516052f1e34701400fa04575f6c",
+      "exactPriorWholePng": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-step-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-736-part-1-step-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-736-part-1-step-2-320.png",
+      "sha256": "b43a9ddf93a9874a5900e9bfbd0060df2a26f9d7993d7b28d4c5d8f83687c863",
+      "exactPriorWholePng": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-step-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-736-part-1-step-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-736-part-1-step-3-320.png",
+      "sha256": "a3bae05aebf39fa299a993a16e68f250789c41e7df6e404c1c2f534dda8d9958",
+      "exactPriorWholePng": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-step-3-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-736-part-1-step-4-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-736-part-1-step-4-320.png",
+      "sha256": "a61a057b566eef93cf941aab8c6e95804c80811aacf22e6d8a4adf45e3d3cfb8",
+      "exactPriorWholePng": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-step-4-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-736-part-1-step-5-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-736-part-1-step-5-320.png",
+      "sha256": "de8fabf327e599953ead9cf5f65946be5f5713ad4aefc5cdbefe82ea59eed8c7",
+      "exactPriorWholePng": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-step-5-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-736-part-1-step-6-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-736-part-1-step-6-320.png",
+      "sha256": "b896b5f9dc737ba0ab1c19e87c83f9fdaf2ae5e908a2487657b16589f07c3433",
+      "exactPriorWholePng": "viii-c736-mobile-3/atanasyan-7-9-main-736-part-1-last-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-736-part-1-case-1-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-736-part-1-case-1-320.png",
+      "sha256": "563201ec5f8c357f9bd824879845ab602914e82320bf8f4977eab6bc7a7ac932",
+      "exactPriorWholePng": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-case-1-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-736-part-1-case-2-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-736-part-1-case-2-320.png",
+      "sha256": "83ab1cd03dafc36e955a62848a6af268ad691ac258d8428ec4370ea465c0584a",
+      "exactPriorWholePng": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-case-2-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-736-part-1-case-3-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-736-part-1-case-3-320.png",
+      "sha256": "cbe91b66e3e3294a04a9bf0c7e1831ade29848f7afa55abe596ff16e918e4343",
+      "exactPriorWholePng": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-case-3-320.png",
+      "manuallyInspectedNovel": false
+    },
+    {
+      "file": "review-atanasyan-7-9-main-736-part-1-case-4-320.png",
+      "path": "viii-full-5/review-atanasyan-7-9-main-736-part-1-case-4-320.png",
+      "sha256": "159918f77175013c6f053b835b5263038ba502ddac0c1dc0350ff65e97cb8dd5",
+      "exactPriorWholePng": "viii-c736-mobile-3/review-atanasyan-7-9-main-736-part-1-case-4-320.png",
+      "manuallyInspectedNovel": false
+    }
+  ],
+  "finalNovelSheets": [
+    {
+      "path": "viii-c-mobile-full5-delta/01.png",
+      "sha256": "06ae80c6337e9cecacb48ef7424c1114786371f655c8b29d07f029fc69beec17",
+      "frames": [
+        "f18d3379a25efc36849db67c2d519aa8300fba515567d492b58f721ae8a63b74"
+      ]
+    }
+  ]
+}

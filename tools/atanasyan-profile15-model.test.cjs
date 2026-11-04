@@ -31,7 +31,16 @@ const course = path.resolve(__dirname, '../ege-profil/atanasyan-10-11');
     assert.equal(await page.locator('[data-point="M"]').count(), 1);
     assert.equal(await page.evaluate(() => viewer.getState().yaw), rotated.yaw, 'step highlight preserves camera');
     assert.equal(await page.locator('[data-highlight="plane"]').count(), 1);
-    assert.equal(await page.locator('[data-highlight="segment"]').count(), 1);
+    // One logical highlight may have multiple SVG paths after depth splitting.
+    // M--C1 lies inside the cube until it reaches the surface at C1.
+    const highlighted = await page.locator('[data-highlight="segment"]').evaluateAll(nodes => nodes.map(node => ({
+      id: node.dataset.segment, start: Number(node.dataset.partStart), end: Number(node.dataset.partEnd), hidden: node.dataset.hidden === 'true'
+    })).sort((a, b) => a.start - b.start));
+    assert.deepEqual([...new Set(highlighted.map(part => part.id))], ['M-C1']);
+    assert.equal(highlighted[0].start, 0);
+    assert.equal(highlighted.at(-1).end, 1);
+    highlighted.slice(1).forEach((part, i) => assert.equal(part.start, highlighted[i].end, 'highlight has no omitted or overlapping interval'));
+    assert(highlighted.filter(part => part.hidden).reduce((sum, part) => sum + part.end - part.start, 0) > 1 - 1e-7, 'interior highlight is dashed up to its surface endpoint');
     const box = await page.locator('svg').boundingBox();
     await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
     await page.mouse.down();

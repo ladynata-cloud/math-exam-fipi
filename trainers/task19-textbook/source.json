@@ -1,0 +1,86 @@
+{
+  "checkedAt": "2026-10-21",
+  "note": "Two minimal theorem excerpts only, linked to the exact verified editions. External archive hosts are not publishers. No book pages or full proofs are republished. Crop coordinates are pixels after explicit page scaling.",
+  "excerpts": [
+    {
+      "id": "atanasyan-parallel-third",
+      "bookId": "atanasyan2010",
+      "sourceUrl": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf",
+      "printedPage": 62,
+      "pdfPage": 64,
+      "section": "п. 28, следствие 2°",
+      "scaledPage": [
+        768,
+        1152
+      ],
+      "crop": [
+        48,
+        712,
+        460,
+        60
+      ],
+      "sourceSha256": "16291c4d869762b277447f856c05dcc097bf85efb53931db0e7d1d15b8774cb9",
+      "file": "atanasyan-parallel-third.png",
+      "imageSha256": "fae64a45bab806469f728e8031cdba1482edddce8b95d4aab3a15ef8fb668b8d",
+      "quote": "Если две прямые параллельны третьей прямой, то они параллельны.",
+      "quotedWords": 9
+    },
+    {
+      "id": "merzlyak-parallel-third",
+      "bookId": "merzlyak7_2015",
+      "sourceUrl": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf",
+      "printedPage": 85,
+      "pdfPage": 86,
+      "section": "§ 13, теорема 13.2",
+      "scaledPage": [
+        888,
+        1204
+      ],
+      "crop": [
+        205,
+        1052,
+        610,
+        56
+      ],
+      "sourceSha256": "8d0d6bc8d49b00442f3c49fbdf7468e0881d9d2b1ce36590d25a6d3e374e0eff",
+      "file": "merzlyak-parallel-third.png",
+      "imageSha256": "2612335291710d4a97d4421efa7edd597ff02f3b5097345d2039ea55ed0989a7",
+      "quote": "Если две прямые параллельны третьей прямой, то они параллельны.",
+      "quotedWords": 9
+    }
+  ],
+  "books": [
+    {
+      "id": "atanasyan2010",
+      "fileSha256": "16291c4d869762b277447f856c05dcc097bf85efb53931db0e7d1d15b8774cb9",
+      "fileBytes": 9156033,
+      "pdfPageOffset": 2
+    },
+    {
+      "id": "merzlyak7_2015",
+      "fileSha256": "8d0d6bc8d49b00442f3c49fbdf7468e0881d9d2b1ce36590d25a6d3e374e0eff",
+      "fileBytes": 32222489,
+      "pdfPageOffset": 1
+    },
+    {
+      "id": "merzlyak8_2013",
+      "fileSha256": "c794fdb51f1e67c28a64f1687437260bbbdd062a6a1409ef927a022e909caa58",
+      "fileBytes": 24040918,
+      "pdfPageOffset": 1
+    },
+    {
+      "id": "merzlyak9_2022",
+      "fileSha256": "fb18a90457f65c75d79ee277e6530f6d7eafc0020ad57eedad843334a710c8da",
+      "fileBytes": 3825827,
+      "pdfPageOffset": 1
+    }
+  ],
+  "coverage": {
+    "topics": 54,
+    "cards": 234,
+    "authorsPerCard": [
+      "Atanasyan",
+      "Merzlyak"
+    ]
+  }
+}

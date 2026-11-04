@@ -1,0 +1,31 @@
+{
+  "scope": "independent-runtime-navigation-and-storage",
+  "scriptSha256": "e037a9663707e9acf8a61af604713cb39503b64b929b319d0ce6c99383840485",
+  "bundleSha256": "688d6ed94e00c1a52ea7dfb48de069002a4b8392dfaa9ac8f627273ab1cfcc1d",
+  "sourceInventorySha256": "96ab32a3b61bbac81432e6dc6c003cdbcf998e39b8ea3000254689f73ab88cf3",
+  "implementationSha256": "04e5a58da99bf68421e8f7aa9baccd8c3b2054766dab4141f912a46eba7690ec",
+  "authoredContentSha256": "6fb96430059d3256887035dbac6fffd3220178272f575932eb51521f215fa9c6",
+  "started": "2026-10-29T13:28:59.151Z",
+  "completed": true,
+  "coldLinks": 138,
+  "sourceLabels": 138,
+  "sourceDisclosures": 138,
+  "publicBarrierChecks": 138,
+  "catalogNavigations": [
+    "atanasyan-7-9-main-462-part-1",
+    "atanasyan-7-9-theory-46-part-1",
+    "atanasyan-7-9-selfcheck-chapter-6-1-part-1",
+    "atanasyan-7-9-main-520-part-1"
+  ],
+  "questionDraftReloads": 6,
+  "storageConflictChecks": 1,
+  "consoleErrors": [],
+  "limitations": [
+    "No mathematical/pedagogical or PDF review",
+    "No exhaustive visual review of views",
+    "Not the repository full-course browser gate"
+  ],
+  "browser": "153.0.8010.0",
+  "entry": "review.html",
+  "finished": "2026-10-29T13:29:16.807Z"
+}

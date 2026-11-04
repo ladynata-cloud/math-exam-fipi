@@ -1,0 +1,414 @@
+{
+  "reviewer": "/root/viii_a",
+  "independentOfTheoryAuthor": true,
+  "scope": "mathematics and pedagogy of theory63–75 and selfchecks1–18; no rendered-image verdict",
+  "result": "pass",
+  "cards": 31,
+  "coordinateClaimsIndependentlyRecomputed": 546,
+  "markersRecomputed": 214,
+  "assertions": 2632,
+  "coverage": [
+    {
+      "collection": "selfcheck",
+      "number": 1,
+      "result": "pass"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 2,
+      "result": "pass"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 3,
+      "result": "pass"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 4,
+      "result": "pass"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 5,
+      "result": "pass"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 6,
+      "result": "pass"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 7,
+      "result": "pass"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 8,
+      "result": "pass"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 9,
+      "result": "pass"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 10,
+      "result": "pass"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 11,
+      "result": "pass"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 12,
+      "result": "pass"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 13,
+      "result": "pass"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 14,
+      "result": "pass"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 15,
+      "result": "pass"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 16,
+      "result": "pass"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 17,
+      "result": "pass"
+    },
+    {
+      "collection": "selfcheck",
+      "number": 18,
+      "result": "pass"
+    },
+    {
+      "collection": "theory",
+      "number": 63,
+      "result": "pass"
+    },
+    {
+      "collection": "theory",
+      "number": 64,
+      "result": "pass"
+    },
+    {
+      "collection": "theory",
+      "number": 65,
+      "result": "pass"
+    },
+    {
+      "collection": "theory",
+      "number": 66,
+      "result": "pass"
+    },
+    {
+      "collection": "theory",
+      "number": 67,
+      "result": "pass"
+    },
+    {
+      "collection": "theory",
+      "number": 68,
+      "result": "pass"
+    },
+    {
+      "collection": "theory",
+      "number": 69,
+      "result": "pass"
+    },
+    {
+      "collection": "theory",
+      "number": 70,
+      "result": "pass"
+    },
+    {
+      "collection": "theory",
+      "number": 71,
+      "result": "pass"
+    },
+    {
+      "collection": "theory",
+      "number": 72,
+      "result": "pass"
+    },
+    {
+      "collection": "theory",
+      "number": 73,
+      "result": "pass"
+    },
+    {
+      "collection": "theory",
+      "number": 74,
+      "result": "pass"
+    },
+    {
+      "collection": "theory",
+      "number": 75,
+      "result": "pass"
+    }
+  ],
+  "payloadSha256": {
+    "geometry-course/textbook/preparation/chapter-08-theory.json": "48d07f10f635bbcb11b6f6044ae15c89daef3f1a05f47c87776587368b11f6d1",
+    "geometry-course/textbook/models/chapter-08-theory.json": "b3ad223e3aec5a4d8b4920b799fba81a1797ae07ba7cefc6cbf023bf4d45a819"
+  },
+  "sourceDiscrepancy73": {
+    "printedABmetres": 153,
+    "recomputedABmetres": 146.0777171633721,
+    "retainedAndExplicit": true
+  },
+  "limitations": [
+    "A finite coordinate oracle supplements, rather than replaces, manual reading of every proof.",
+    "No external Claude review is claimed.",
+    "No browser or image review is claimed by this test."
+  ],
+  "schemaVersion": 1,
+  "reviewedAtUtc": "2026-10-29T23:00:06.602811+00:00",
+  "source": {
+    "edition": "Atanasyan7–9,2023,14th revised",
+    "sha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+    "actualPageImagesInspected": [
+      163,
+      164,
+      165,
+      166,
+      167,
+      168,
+      169,
+      170,
+      171,
+      172,
+      173,
+      174,
+      175,
+      176,
+      177,
+      178,
+      181,
+      182,
+      183,
+      184,
+      185,
+      186
+    ]
+  },
+  "manualProofReview": {
+    "theory": [
+      {
+        "number": 63,
+        "verdict": "pass",
+        "manualProofReview": "Definition uses common length unit, nonzero denominator, fixed correspondence, and equal scale for each of three pairs. All unit-segment ratios verified."
+      },
+      {
+        "number": 64,
+        "verdict": "pass",
+        "manualProofReview": "Both angle equality and three side ratios are required by the definition. Direction k=3/2 and reciprocal2/3 are consistent. k=1 justified by SSS congruence."
+      },
+      {
+        "number": 65,
+        "verdict": "pass",
+        "manualProofReview": "Area ratio k² derived from earlier equal-angle area theorem58; no circular AA assumption."
+      },
+      {
+        "number": 66,
+        "verdict": "pass",
+        "manualProofReview": "Third angle from angle sum; equal-angle area comparisons yield all side ratios. Acute, right and obtuse exact cases included."
+      },
+      {
+        "number": 67,
+        "verdict": "pass",
+        "manualProofReview": "Auxiliary ABC₂ built from two angles on opposite side of AB; appears step2. AA gives AC₂=AC, SAS congruence gives second angle, then AA completes proof. Included angle condition explicit."
+      },
+      {
+        "number": 68,
+        "verdict": "pass",
+        "manualProofReview": "Auxiliary triangle first established by AA; equal side lengths follow from three ratios; SSS congruence and then SAS similarity complete proof without circular use of SSS similarity."
+      },
+      {
+        "number": 69,
+        "verdict": "pass",
+        "manualProofReview": "Midline proved through SAS similarity and converse angle criterion for parallel lines. Median proof has correct GAB↔GDE correspondence, ratio2:1 from vertex, and uniqueness along BE proves third-median concurrence."
+      },
+      {
+        "number": 70,
+        "verdict": "pass",
+        "manualProofReview": "Incenter/circumcenter equidistance arguments are self-contained. Outer parallel triangle has original vertices as side midpoints; original altitude lines are its perpendicular bisectors. Correct acute/right/obtuse orthocenter cases. Author added separately reachable auxiliary case7 after review request so final focus does not remove access to the construction."
+      },
+      {
+        "number": 71,
+        "verdict": "pass",
+        "manualProofReview": "All three ordered similarities independently verified. CD²=AD·DB; AC²=AB·AD; BC²=AB·BD use correct own projections. Positive geometric mean and interior foot conditions explicit. Unequal/equal projection cases verified."
+      },
+      {
+        "number": 72,
+        "verdict": "pass",
+        "manualProofReview": "Positive-angle and angle-sum existence requirements, positive prescribed bisector, construction on rays for enlargement or reduction, and congruence uniqueness are justified. Neutral scene has only given angles/segment; constructions reveal in order. Both1.6 and0.6 cases verified."
+      },
+      {
+        "number": 73,
+        "verdict": "pass",
+        "manualProofReview": "Horizontal ground, vertical objects and collinear sightline are explicitly required. Height5.1m correct. Scale1:1000 uses130m↔130mm. Independent tangent-ray intersection gives146.077717m for73°/58°, rejecting printed153m; discrepancy retained explicitly rather than altering source angles."
+      },
+      {
+        "number": 74,
+        "verdict": "pass",
+        "manualProofReview": "Correct adjacent/opposite catets for angleA, ratio definitions, independence via AA, positive denominator in tg=sin/cos, and Pythagorean identity. Actual printed181–182 inspected; no invented typo."
+      },
+      {
+        "number": 75,
+        "verdict": "pass",
+        "manualProofReview": "All nine30°/45°/60° values derived from equilateral construction and equal-leg right triangle, including rationalization and positive roots. Correct side/angle assignments independently checked."
+      }
+    ],
+    "selfchecks": [
+      {
+        "number": 1,
+        "verdict": "pass",
+        "proofFamily": 63,
+        "manualReview": "Statement demand and answer/proof checked independently against actual printed question and related theory; no missing subrequest."
+      },
+      {
+        "number": 2,
+        "verdict": "pass",
+        "proofFamily": 63,
+        "manualReview": "Statement demand and answer/proof checked independently against actual printed question and related theory; no missing subrequest."
+      },
+      {
+        "number": 3,
+        "verdict": "pass",
+        "proofFamily": 64,
+        "manualReview": "Statement demand and answer/proof checked independently against actual printed question and related theory; no missing subrequest."
+      },
+      {
+        "number": 4,
+        "verdict": "pass",
+        "proofFamily": 65,
+        "manualReview": "Statement demand and answer/proof checked independently against actual printed question and related theory; no missing subrequest."
+      },
+      {
+        "number": 5,
+        "verdict": "pass",
+        "proofFamily": 66,
+        "manualReview": "Statement demand and answer/proof checked independently against actual printed question and related theory; no missing subrequest."
+      },
+      {
+        "number": 6,
+        "verdict": "pass",
+        "proofFamily": 67,
+        "manualReview": "Statement demand and answer/proof checked independently against actual printed question and related theory; no missing subrequest."
+      },
+      {
+        "number": 7,
+        "verdict": "pass",
+        "proofFamily": 68,
+        "manualReview": "Statement demand and answer/proof checked independently against actual printed question and related theory; no missing subrequest."
+      },
+      {
+        "number": 8,
+        "verdict": "pass",
+        "proofFamily": 69,
+        "manualReview": "Statement demand and answer/proof checked independently against actual printed question and related theory; no missing subrequest."
+      },
+      {
+        "number": 9,
+        "verdict": "pass",
+        "proofFamily": 69,
+        "manualReview": "Statement demand and answer/proof checked independently against actual printed question and related theory; no missing subrequest."
+      },
+      {
+        "number": 10,
+        "verdict": "pass",
+        "proofFamily": 71,
+        "manualReview": "Statement demand and answer/proof checked independently against actual printed question and related theory; no missing subrequest."
+      },
+      {
+        "number": 11,
+        "verdict": "pass",
+        "proofFamily": 71,
+        "manualReview": "Statement demand and answer/proof checked independently against actual printed question and related theory; no missing subrequest."
+      },
+      {
+        "number": 12,
+        "verdict": "pass",
+        "proofFamily": 72,
+        "manualReview": "Statement demand and answer/proof checked independently against actual printed question and related theory; no missing subrequest."
+      },
+      {
+        "number": 13,
+        "verdict": "pass",
+        "proofFamily": 73,
+        "manualReview": "Statement demand and answer/proof checked independently against actual printed question and related theory; no missing subrequest."
+      },
+      {
+        "number": 14,
+        "verdict": "pass",
+        "proofFamily": null,
+        "manualReview": "Own general-figure definition is correctly stronger than proportional polygon sides. Explicit affine map scales every pairwise distance, including tested interior points; square-versus-rhombus counterexample is valid."
+      },
+      {
+        "number": 15,
+        "verdict": "pass",
+        "proofFamily": 74,
+        "manualReview": "Statement demand and answer/proof checked independently against actual printed question and related theory; no missing subrequest."
+      },
+      {
+        "number": 16,
+        "verdict": "pass",
+        "proofFamily": 74,
+        "manualReview": "Statement demand and answer/proof checked independently against actual printed question and related theory; no missing subrequest."
+      },
+      {
+        "number": 17,
+        "verdict": "pass",
+        "proofFamily": 74,
+        "manualReview": "Statement demand and answer/proof checked independently against actual printed question and related theory; no missing subrequest."
+      },
+      {
+        "number": 18,
+        "verdict": "pass",
+        "proofFamily": 75,
+        "manualReview": "Statement demand and answer/proof checked independently against actual printed question and related theory; no missing subrequest."
+      }
+    ],
+    "resolvedFindings": [
+      {
+        "card": "theory70",
+        "issue": "Auxiliary construction disappeared from final focus view.",
+        "resolution": "Separate case7 now retains full auxiliary construction from step6; proof steps5/6 remain available."
+      }
+    ],
+    "unresolvedMathematicalFindings": []
+  },
+  "artifactSha256": {
+    "geometry-course/textbook/preparation/chapter-08-theory.json": "48d07f10f635bbcb11b6f6044ae15c89daef3f1a05f47c87776587368b11f6d1",
+    "geometry-course/textbook/models/chapter-08-theory.json": "b3ad223e3aec5a4d8b4920b799fba81a1797ae07ba7cefc6cbf023bf4d45a819",
+    "tools/geometry-textbook/models_ch8_theory.py": "81ff22e843d95c4ae4ab2aa6715baf8a75f7d73c983b04b1ac287fa648295f97",
+    "tools/geometry-textbook/chapter08-theory-independent.test.py": "2380a975b67ba4f0acb32f75b292f0492e19276d1597ffd600dfd3f7894d5a82"
+  },
+  "oracle": {
+    "path": "tools/geometry-textbook/chapter08-theory-independent.test.py",
+    "sha256": "2380a975b67ba4f0acb32f75b292f0492e19276d1597ffd600dfd3f7894d5a82",
+    "command": "python tools/geometry-textbook/chapter08-theory-independent.test.py",
+    "assertions": 2632,
+    "claims": 546,
+    "markers": 214
+  },
+  "externalProviderReview": false,
+  "externalReviewClaims": 0
+}

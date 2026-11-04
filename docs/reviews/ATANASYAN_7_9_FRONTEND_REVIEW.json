@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "task": "ATANASYAN_7_9_COMPLETE_COURSE",
+  "pullRequest": 302,
+  "date": "2026-10-23",
+  "timezone": "Asia/Novosibirsk",
+  "reviewer": {
+    "role": "Independent AI technical reviewer; separate from frontend author",
+    "provider": "OpenAI collaborative agent",
+    "scope": "Independent code, DOM and focused real-Chromium behavior review. This is not an external Claude review and not a release authorization."
+  },
+  "verdict": "passed-code-dom-focused-and-full-real-browser-evidence",
+  "reviewedFiles": [
+    {
+      "path": "geometry-course/textbook/assets/engine.js",
+      "sha256": "a774e1204d0b26b2969589cfcff28b70cc8c8841f33230c1d511e3d7c4ee2c28"
+    },
+    {
+      "path": "geometry-course/textbook/assets/planar-viewer.js",
+      "sha256": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061"
+    },
+    {
+      "path": "geometry-course/textbook/assets/style.css",
+      "sha256": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b"
+    },
+    {
+      "path": "geometry-course/textbook/assets/math-text.js",
+      "sha256": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b"
+    },
+    {
+      "path": "geometry-course/textbook/index.html",
+      "sha256": "4ad96a76e0b5e3f791aca172a884a2e66c93fcd75cb2efd83cbfb393a7a8fe5b"
+    },
+    {
+      "path": "tools/geometry-textbook/browser_check.js",
+      "sha256": "4b3a08ac710668c0b894ec1c39280e4bc9ce69f83d0b4a5ca5b23d714d00b427"
+    },
+    {
+      "path": "tools/geometry-textbook/runtime_check.cjs",
+      "sha256": "fa63abb955c7004ade1fed49fa5464939ac970da735b011f66f9b228a731b2d8"
+    },
+    {
+      "path": "tools/geometry-textbook/reviewer_runtime_check.cjs",
+      "sha256": "9b7028f3c32bbbfd170ebaf84139a8c0f2ab91f511e16239e1a342418eea271d"
+    }
+  ],
+  "resolvedFindings": [
+    {
+      "id": "storage-unavailable-honesty",
+      "severity": "medium",
+      "location": "assets/engine.js:createApp/save/manual answer feedback",
+      "problem": "A SecurityError from the localStorage getter silently selected a memory-only cache while manual submission said the answer was saved. A reload would lose that answer without warning.",
+      "resolution": "The frontend author added a persistent warning when durable storage is unavailable and durability-aware manual feedback. The reviewer reproduced the corrected behavior and the runtime gate now includes both the getter-error and quota cases."
+    },
+    {
+      "id": "restored-help-noop-cross-tab-overwrite",
+      "severity": "high",
+      "location": "assets/engine.js:save and restored disclosure toggle",
+      "problem": "An actual two-tab Chromium reproduction showed a queued help-restoration toggle writing an unchanged stale snapshot over the other tab’s newer draft before storage events arrived. The first tab froze and the stale second tab remained editable.",
+      "resolution": "The author added a byte-identical-state no-op guard after the latest-versus-expected conflict check. The independent reviewer then passed 30 instrumented Chromium reproduction cycles; unchanged restored help and unchanged manual submissions are also covered by the reviewer DOM regression."
+    }
+  ],
+  "checks": [
+    {
+      "name": "independent initial/step/case/nested theory DOM review",
+      "command": "node tools/geometry-textbook/reviewer_runtime_check.cjs",
+      "result": "passed",
+      "lessons": 173,
+      "stepTransitions": 499,
+      "assertions": [
+        "Every fresh card starts on neutral view with zero revealed steps.",
+        "Every authored step appends without removing prior steps.",
+        "Only case views whose unlock step has been reached are visible.",
+        "Actual selected view matches the authored step view.",
+        "Nested theory12→theory1→back restores selected step4, open explanation, task answer, original task SVG and return focus.",
+        "Restored help and an unchanged manual submission perform no Storage.setItem call.",
+        "No DOM runtime errors."
+      ]
+    },
+    {
+      "name": "retained work regressions",
+      "command": "node tools/geometry-textbook/runtime_check.cjs",
+      "result": "passed",
+      "checks": 10
+    },
+    {
+      "name": "bundle/edition/part completeness",
+      "command": "node tools/geometry-textbook/check_course.cjs",
+      "result": "passed",
+      "publicationReviewMatches": false
+    },
+    {
+      "name": "JavaScript syntax",
+      "command": "node --check (engine.js, planar-viewer.js, browser_check.js)",
+      "result": "passed"
+    },
+    {
+      "name": "whitespace",
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "name": "independent instrumented real-browser two-tab race stress",
+      "result": "passed",
+      "browser": "Chromium",
+      "cycles": 30,
+      "pageErrors": 0,
+      "scenario": "Restore two revealed steps and open help, open a second tab, then edit the first tab immediately; the older second tab freezes. Instrumented Storage.setItem distinguishes no-op writes from changed writes.",
+      "engineSha256": "a774e1204d0b26b2969589cfcff28b70cc8c8841f33230c1d511e3d7c4ee2c28"
+    },
+    {
+      "name": "independent real-browser responsive and scene-return repeatability",
+      "result": "passed",
+      "browser": "Chromium",
+      "cards": 173,
+      "scenes": 346,
+      "widthSequence": [
+        320,
+        1280,
+        320
+      ],
+      "pageErrors": 0,
+      "assertions": [
+        "Every initial and final scene renders from a recursively frozen model.",
+        "Resizing changes no SVG geometry primitive or input model data.",
+        "Returning to 320 px exactly restores label coordinates, text anchor, font size and placement classification.",
+        "Returning through neutral to the chosen scene exactly restores the prior rendering.",
+        "No unresolved label placement in these inspected scenes."
+      ],
+      "rendererSha256": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061"
+    },
+    {
+      "name": "independent final full-browser evidence audit",
+      "result": "passed-for-frozen-candidate",
+      "evidenceSha256": "859d72f106c2c37363ddf93deeee17095148ec27480c6f60cb6030e49b951a0b",
+      "authoredContentSha256": "12525e9093c143c4ee6570a9fea00c7f9ccf15eb0a7ef4ab274cc62a982fa4da",
+      "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
+      "bundleSha256": "4453db2a52e310aa5f0335da2221794713759f09f6e980f565b673ab29afff90",
+      "head": null,
+      "cards": 173,
+      "renderedViews": 1690,
+      "completeStepJourneys": 346,
+      "initialFinalScreenshots": 692,
+      "interactions": 7,
+      "pageErrors": 0,
+      "layoutIssues": 0,
+      "assertions": [
+        "The full expected view × card × width matrix contains no missing, extra or duplicate entry.",
+        "The 692 initial/final screenshot files exist and cover every card at both widths.",
+        "Every complete step journey includes all authored steps and opened explanations without document overflow.",
+        "The recorded bundle, authored content and implementation hashes match the frozen candidate.",
+        "The two-tab diagnostics show the newer first-tab draft retained and the stale second-tab input frozen."
+      ],
+      "scopeLimitation": "This is a hash-bound cloud-development run with head=null, not an exact-Git-head CI or publication verdict."
+    }
+  ],
+  "codeInspection": [
+    "Public entry point never enables allowInReview; unavailable cards are withheld from the public catalog.",
+    "The renderer consumes only the active scene, does not accumulate other cases, and uses plain arcs unless equality ticks are explicitly specified.",
+    "Label placement reads only current-scene SVG lines, markers, circles and visible points. It changes text positions and anchors without mutating model coordinates or geometry primitives.",
+    "Clean authored label positions stay fixed. Remaining candidates are ranked deterministically by authored displacement, bounded radial distance and preference for outside positions; proximity to another named point is rejected.",
+    "The bounded search reports unresolved labels explicitly. The browser gate rejects unresolved labels, edge/marker crossings, overlap, clipping, small text, unexpected labels and document overflow rather than accepting a partial placement.",
+    "ResizeObserver redraws the current scene using the same algorithm with the current rendered font size. No hidden future scene data affects placement.",
+    "The no-op storage guard runs after the stale-save check, retains persistent-save feedback and prevents queued disclosure restoration from writing unchanged snapshots.",
+    "Source page mapping uses the 2023 edition offset of 1.",
+    "All student text is appended as text through the formatter, not injected as HTML.",
+    "Manual proof saving does not claim mathematical correctness.",
+    "Known newer saves from another tab freeze stale input and retain a copy before recovery.",
+    "Theory popup and task views retain separate geometry state; restored theory unlock progress is passed to the renderer.",
+    "Responsive CSS stacks lesson/help at narrow widths. The separate final complete browser evidence passed against the frozen implementation and authored-content hashes."
+  ],
+  "advisoryFindings": [
+    {
+      "id": "self-theory-reference",
+      "location": "tools/geometry-textbook/build_course.py generated help/justifications",
+      "recommendation": "Omit links from a theory card to itself while retaining the explanation text and source reference. Cross-theory links should remain.",
+      "ownerNotified": true,
+      "notPartOfFrontendCodeVerdict": true,
+      "resolved": true,
+      "resolution": "The builder excludes the current theory id from generated theory references; the frozen candidate contains no self-theory links."
+    }
+  ],
+  "notRun": [
+    "Independent manual visual inspection of every scene and viewport by this frontend reviewer. Separate visual reviewers cover initial/final images.",
+    "Exact-Git-head CI and production deployment verification.",
+    "Actual pupil trial."
+  ],
+  "limitations": [
+    "JSDOM proves event/state behavior, not real font geometry, clipping, layout or native fullscreen behavior.",
+    "The earlier full run exposed label collisions and the reproduced two-tab race. Those historical failures are resolved by the current changes and verified by the completed final 1690-view run; exact-head CI, visual review and release approval remain separate evidence.",
+    "localStorage is not a transactional collaborative store. The guard prevents the reproduced stale no-op overwrite and the app freezes known stale saves; truly simultaneous independent edits are not server-synchronized.",
+    "Any material edit to a reviewed file invalidates its hash-bound finding until reviewed again."
+  ],
+  "readyToPublish": false
+}

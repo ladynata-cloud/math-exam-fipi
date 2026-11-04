@@ -1,0 +1,16 @@
+{
+  "gate": "CHAPTER_VII_INDEPENDENT_THEORY_MATH_OK",
+  "assertions": 12468,
+  "parameterFamilies": 300,
+  "actualTheoryCards": 21,
+  "actualTheoryViews": 147,
+  "sourceIssues": [
+    "560в",
+    "570"
+  ],
+  "limits": "Not a source, image or publication approval.",
+  "reviewer": "root: independent of theory author vii_theory",
+  "preparationSha256": "7ad100d65e400e93f6541301f966c0d57458b3ddb410a416b7c6d2745df93aa7",
+  "modelSha256": "83f86c8ba72c86370ca6434bdae78f177e2cc376f6819a233b30f9a5c5af9cdb",
+  "testSha256": "ca26ce10ad71c94bb4388df11eed73bafb4762d044ecb5adbecdc60983915a98"
+}

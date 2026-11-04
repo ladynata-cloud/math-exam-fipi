@@ -1,0 +1,1545 @@
+{
+  "schemaVersion": 1,
+  "verdict": "PASS",
+  "status": "final-independent-integration-and-image-review-complete",
+  "reviewedAt": "2026-10-26",
+  "reviewer": {
+    "agent": "chapter4_architecture",
+    "independentOfChapterIVContentAuthors": true,
+    "role": "Independent integration, evidence-identity and cross-group review-coverage auditor; attributed source and pixel reviewers remain identified in their records."
+  },
+  "scope": {
+    "chapter": "IV",
+    "numberedExercises": [
+      228,
+      330
+    ],
+    "numberedExerciseCount": 103,
+    "exerciseParts": 135,
+    "theoryPoints": [
+      31,
+      38
+    ],
+    "selfcheckQuestions": [
+      1,
+      23
+    ],
+    "newCards": 166,
+    "priorPublishedCardsPreserved": 403,
+    "combinedCards": 569,
+    "fullTextbookComplete": false,
+    "grade7StillIncludesChapterVAndAdvancedExercisesThrough": 461
+  },
+  "capturedCandidate": {
+    "head": "29a65c6919b6898e15c21492ec39fff4aac41531",
+    "runUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008",
+    "sourceModelsJobUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008/job/121574829337",
+    "browserJobUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008/job/121575069439",
+    "sourceModelsJob": "passed",
+    "browserJob": "passed",
+    "authoredContentSha256": "57e036673efee3099103f024581cd91d3dbe5640b2f8e8febdcfef0f02e391e5",
+    "chapterIVAuthoredContentSha256": "d91cd2b399443c8581732596858ec01b8ca58e0cfa57230297154602c1d51bff",
+    "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
+    "bundleSha256": "a5cc2e908baf766d66c0dcb9f50fb8a57e1ce98b84a89bb7d459742bd045af69",
+    "gateScriptSha256": "07b49df556ebb6ee97ddcabbd3a4e3d12d570c7d4816446555356e214fd12577"
+  },
+  "browserEvidence": {
+    "file": "browser-evidence.json",
+    "sha256": "4f936b120ed407ad0f58238e1db710694bae29f0d2240e45d44bc8ec014d766d",
+    "completed": true,
+    "scope": "full-course",
+    "lessons": 569,
+    "viewWidthInspections": 5812,
+    "chapterIVReviewCaptures": 1728,
+    "stepFlows": 1138,
+    "interactions": 14,
+    "pageErrors": [],
+    "geometryIssueViews": 0,
+    "geometryIssueCount": 0
+  },
+  "captureCoverage": {
+    "complete": true,
+    "cards": 166,
+    "viewWidthPairs": 1728,
+    "widths": [
+      320,
+      1280
+    ],
+    "byteIdenticalToInitiallyInspectedPNG": 1465,
+    "freshlyInspectedChangedPNG": 263,
+    "uninspectedPairs": 0,
+    "missingPairs": 0,
+    "duplicatePairs": 0,
+    "widthAsymmetries": [],
+    "sourceMapChecked": true,
+    "groups": {
+      "A": {
+        "cards": 44,
+        "viewWidthPairs": 368,
+        "byteIdentical": 361,
+        "freshlyViewedChanged": 7,
+        "resolvedFindingGroups": 1
+      },
+      "B": {
+        "cards": 33,
+        "viewWidthPairs": 308,
+        "byteIdentical": 248,
+        "freshlyViewedChanged": 60,
+        "resolvedFindingGroups": 10
+      },
+      "C": {
+        "cards": 58,
+        "viewWidthPairs": 604,
+        "byteIdentical": 423,
+        "freshlyViewedChanged": 181,
+        "resolvedFindingGroups": 5
+      },
+      "T": {
+        "cards": 31,
+        "viewWidthPairs": 448,
+        "byteIdentical": 433,
+        "freshlyViewedChanged": 15,
+        "resolvedFindingGroups": 5
+      }
+    }
+  },
+  "preservation": {
+    "publishedBase": "9cf995d30c400a6e581a3168bb8ef8f5c76ed945",
+    "all403PriorLessonObjectsIdentical": true,
+    "all403PriorCatalogObjectsIdentical": true,
+    "firstThreeChapterBuildRecordsIdentical": true,
+    "changedIVCardsSinceInitialCapture": 35,
+    "all1912GeometryAssertionArraysIdenticalToInitialCapture": true,
+    "runtimeFilesUnchanged": true,
+    "method": "Direct comparison against original Git objects, plus captured/current exact file hashes; independent of the added preservation test."
+  },
+  "sourceAndModelReviews": [
+    {
+      "group": "A",
+      "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_A_REVIEW.md",
+      "sha256": "fd46986818ecadbe565e3543d88e8cbe47bec361f09a713cf9e78d53d9524864",
+      "verdict": "PASS-source-mathematics-pedagogy-model-consistency",
+      "reviewedFiles": [
+        {
+          "file": "tools/geometry-textbook/models_ch4_a.py",
+          "sha256": "a6b89164596335e71e90582ae4a6022ded2631dade9d52ed5c75e163baa5008b"
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-04-a.json",
+          "sha256": "27c3bb48a30576e7070c8c5ea3f9732724950f2e4fe7e82ccd3680edaacedd2b"
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-04-a.json",
+          "sha256": "f31f566850547741205b60dedfebf7994e7a6264a19ca14604b63594f2f7d8d8"
+        }
+      ]
+    },
+    {
+      "group": "B",
+      "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_B_REVIEW.md",
+      "sha256": "0a82ee1cd6fc4ecd9495cc0ec9506029063c95a8bd705c69da7c2709ab0ebef8",
+      "verdict": "PASS-source-mathematics-pedagogy-model-consistency",
+      "reviewedFiles": [
+        {
+          "file": "tools/geometry-textbook/models_ch4_b.py",
+          "sha256": "cbd00fab2276f72bf04c43e9fc3d93c63a11109a11de10fa9ad5bf4de57d5f1c"
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-04-b.json",
+          "sha256": "280634e5e55c283761fed8d6b0084fa678b38985cf08f5eaf734a12887704a9c"
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-04-b.json",
+          "sha256": "114a278f8eda45c80d3dfa8167ae93e9177883d04205cd2eb2aeac77391b3a4d"
+        }
+      ]
+    },
+    {
+      "group": "C",
+      "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_C_REVIEW.md",
+      "sha256": "f66e8ace322027a7f3d2e44ca3877b6b9e0ecc8b509a8996b47ff151120ee600",
+      "verdict": "PASS-source-mathematics-pedagogy-model-consistency",
+      "reviewedFiles": [
+        {
+          "file": "tools/geometry-textbook/models_ch4_c.py",
+          "sha256": "b794ce2b79ccdee464fb9bc262bf8b0b6996807ce56250fbb5743656fee81fac"
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-04-c.json",
+          "sha256": "932b282663c84a09e68799629871ecf6881be1cf636c4e4ea4412c8fd0d29f44"
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-04-c.json",
+          "sha256": "97d3bdd8de484f766aa3b75061d6c08fad9df0d4738c3beaa93d2a80c26b00cf"
+        }
+      ]
+    },
+    {
+      "group": "T",
+      "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_THEORY_REVIEW.md",
+      "sha256": "2c1357c8091b9f49dbc30ead39e5efb9ada047b60cda7f26d643ae743a5c7121",
+      "verdict": "PASS-source-mathematics-pedagogy-model-consistency",
+      "reviewedFiles": [
+        {
+          "file": "tools/geometry-textbook/models_ch4_theory.py",
+          "sha256": "6ae1afd084a64a2da48fb4857fb5bc5be9827a13d38cba2bc82a0b5d0aa501bb"
+        },
+        {
+          "file": "geometry-course/textbook/preparation/chapter-04-theory.json",
+          "sha256": "d2a7d2dbe4fedb3ba5e6b961679dffdecd3193d6c6ba24a7d2fbef62bdaed094"
+        },
+        {
+          "file": "geometry-course/textbook/models/chapter-04-theory.json",
+          "sha256": "01f22365db641b2363fbcf03f88898f4aae004aecda0b302c3bb94b2eafad474"
+        }
+      ]
+    }
+  ],
+  "sourceInventoryReview": {
+    "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_SOURCE_INVENTORY.md",
+    "sha256": "8f489e9dfc40661a5494034f6e6cfec6398bd821a9253ca3758718a3c905fc68",
+    "sourceMapSha256": "66bc5870902488e0a18fab436b5eaac0bcccb92acbae7766ffde4dd3666163ad",
+    "sourcePdfSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72"
+  },
+  "visualReviews": [
+    {
+      "group": "A",
+      "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_A_VISUAL_REVIEW.json",
+      "sha256": "afce9e075f3d651c1481cb1ea23f3253d2dcc8089ca1399ffe833e339f83b5d5",
+      "verdict": "PASS",
+      "initialReportSha256": "80e4574a1c05e7428ed494dd27ec8ef647c4552e659865aef825210c4d2713a0",
+      "coverage": {
+        "cards": 44,
+        "viewWidthPairs": 368,
+        "byteIdentical": 361,
+        "freshlyViewedChanged": 7,
+        "resolvedFindingGroups": 1
+      }
+    },
+    {
+      "group": "B",
+      "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_B_VISUAL_REVIEW.json",
+      "sha256": "dfa3d988fa28436d48dd010380660a972b16553aaeb2a5bfc573d5ef5b07a3bc",
+      "verdict": "PASS",
+      "initialReportSha256": "777fdc4156418b501e56e4e5ab92f82b60573cec3155f38018d19f50754ac1fa",
+      "coverage": {
+        "cards": 33,
+        "viewWidthPairs": 308,
+        "byteIdentical": 248,
+        "freshlyViewedChanged": 60,
+        "resolvedFindingGroups": 10
+      }
+    },
+    {
+      "group": "C",
+      "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_C_VISUAL_REVIEW.json",
+      "sha256": "a9690b805b8ff972ed5e430acc76c9c1b290533c9bdc7218b850a40a565c5e8b",
+      "verdict": "PASS",
+      "initialReportSha256": "29b6500f7ccc852f898f1c1e3451dd78b283345929a36ed9f18780704c5862e7",
+      "coverage": {
+        "cards": 58,
+        "viewWidthPairs": 604,
+        "byteIdentical": 423,
+        "freshlyViewedChanged": 181,
+        "resolvedFindingGroups": 5
+      }
+    },
+    {
+      "group": "T",
+      "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_THEORY_VISUAL_REVIEW.json",
+      "sha256": "22d1dd31e3a8c19acb2bf30e92185dac770b4f1730a9ff04194b9698541e2638",
+      "verdict": "PASS",
+      "initialReportSha256": "5c2d40614859317910c21b507507855b7930552e6338ebcc8e12971017d0197f",
+      "coverage": {
+        "cards": 31,
+        "viewWidthPairs": 448,
+        "byteIdentical": 433,
+        "freshlyViewedChanged": 15,
+        "resolvedFindingGroups": 5
+      }
+    }
+  ],
+  "findingClosure": {
+    "initialGroupedFindings": 21,
+    "resolvedGroupedFindings": 21,
+    "openGroupedFindings": 0,
+    "records": [
+      {
+        "id": "A-VIS-001",
+        "group": "A",
+        "status": "resolved",
+        "resolution": "The final view retains ABC, O and M with AM, the right-angle marker and equal BM/MC marks. Earlier P/Q auxiliary segments are absent from this final summary view. B is outside the triangle, O is clearly beside AM, M is clear of the base and right-angle marker, and the source point associations remain legible at both widths. No line crosses a label.",
+        "freshResolutionEvidence": [
+          {
+            "id": "atanasyan-7-9-main-252-part-2",
+            "view": "step-5",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-252-part-2-step-5-320.png",
+            "sha256": "2b1f9345ce86d9af2399541255cf34d114710635685108782838ae27beaf14c5"
+          },
+          {
+            "id": "atanasyan-7-9-main-252-part-2",
+            "view": "step-5",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-252-part-2-step-5-1280.png",
+            "sha256": "c5578a3ee03d7c7dc4d65027ae419ecc75c62a3d1ebb9b18a204a30a80063fcb"
+          }
+        ],
+        "finalVisualReport": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_A_VISUAL_REVIEW.json",
+        "finalVisualReportSha256": "afce9e075f3d651c1481cb1ea23f3253d2dcc8089ca1399ffe833e339f83b5d5",
+        "finalFindingStatus": "resolved-by-fresh-actual-pixel-review",
+        "reviewRunUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008"
+      },
+      {
+        "id": "B-VIS-01",
+        "group": "B",
+        "status": "resolved",
+        "resolution": "A is now above the obtuse vertex, outside the original ABC, with clear separation from the extensions at both widths.",
+        "freshResolutionEvidence": [
+          {
+            "id": "atanasyan-7-9-main-266-part-1",
+            "view": "case-1",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-266-part-1-case-1-320.png",
+            "sha256": "93f78f4128d2719a09778b20b7906274114a674927f8042055df61572d98725b"
+          },
+          {
+            "id": "atanasyan-7-9-main-266-part-1",
+            "view": "case-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-266-part-1-case-1-1280.png",
+            "sha256": "f3d34820e2a726f4213949f6042f0de8f47ee5a50ee60a9989cf02004d3ad585"
+          }
+        ],
+        "finalVisualReport": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_B_VISUAL_REVIEW.json",
+        "finalVisualReportSha256": "dfa3d988fa28436d48dd010380660a972b16553aaeb2a5bfc573d5ef5b07a3bc",
+        "finalFindingStatus": "resolved",
+        "reviewRunUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008"
+      },
+      {
+        "id": "B-VIS-02",
+        "group": "B",
+        "status": "resolved",
+        "resolution": "F is above/outside BC in neutral and all steps at both widths, clear of the edge and equality tick.",
+        "freshResolutionEvidence": [
+          {
+            "id": "atanasyan-7-9-main-270-part-1",
+            "view": "neutral",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-270-part-1-neutral-320.png",
+            "sha256": "558efe9d7adb39e1ca0936bf69546e89d1939947742a1c1f74389aa0f71f0a98"
+          },
+          {
+            "id": "atanasyan-7-9-main-270-part-1",
+            "view": "step-1",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-270-part-1-step-1-320.png",
+            "sha256": "804a5c3fa23aba6c4da7d57545e83b11fd1eea9ce00c381511282cd25e5f480a"
+          },
+          {
+            "id": "atanasyan-7-9-main-270-part-1",
+            "view": "step-2",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-270-part-1-step-2-320.png",
+            "sha256": "804a5c3fa23aba6c4da7d57545e83b11fd1eea9ce00c381511282cd25e5f480a"
+          },
+          {
+            "id": "atanasyan-7-9-main-270-part-1",
+            "view": "step-3",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-270-part-1-step-3-320.png",
+            "sha256": "804a5c3fa23aba6c4da7d57545e83b11fd1eea9ce00c381511282cd25e5f480a"
+          },
+          {
+            "id": "atanasyan-7-9-main-270-part-1",
+            "view": "step-4",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-270-part-1-step-4-320.png",
+            "sha256": "804a5c3fa23aba6c4da7d57545e83b11fd1eea9ce00c381511282cd25e5f480a"
+          },
+          {
+            "id": "atanasyan-7-9-main-270-part-1",
+            "view": "neutral",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-270-part-1-neutral-1280.png",
+            "sha256": "1540e6a59e6a8ba179be79e57314c6400426ae25b3f2a05e4babe00d7ed5de26"
+          },
+          {
+            "id": "atanasyan-7-9-main-270-part-1",
+            "view": "step-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-270-part-1-step-1-1280.png",
+            "sha256": "5a97533b3c4568af5e40fc806fe3ab50f2cafa9f7f3a80c88f2536e15aa559f2"
+          },
+          {
+            "id": "atanasyan-7-9-main-270-part-1",
+            "view": "step-2",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-270-part-1-step-2-1280.png",
+            "sha256": "5a97533b3c4568af5e40fc806fe3ab50f2cafa9f7f3a80c88f2536e15aa559f2"
+          },
+          {
+            "id": "atanasyan-7-9-main-270-part-1",
+            "view": "step-3",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-270-part-1-step-3-1280.png",
+            "sha256": "5a97533b3c4568af5e40fc806fe3ab50f2cafa9f7f3a80c88f2536e15aa559f2"
+          },
+          {
+            "id": "atanasyan-7-9-main-270-part-1",
+            "view": "step-4",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-270-part-1-step-4-1280.png",
+            "sha256": "5a97533b3c4568af5e40fc806fe3ab50f2cafa9f7f3a80c88f2536e15aa559f2"
+          }
+        ],
+        "finalVisualReport": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_B_VISUAL_REVIEW.json",
+        "finalVisualReportSha256": "dfa3d988fa28436d48dd010380660a972b16553aaeb2a5bfc573d5ef5b07a3bc",
+        "finalFindingStatus": "resolved",
+        "reviewRunUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008"
+      },
+      {
+        "id": "B-VIS-03",
+        "group": "B",
+        "status": "resolved",
+        "resolution": "K₁ is outside A₁C₁ at both widths; all five views remain legible and free of line/label overlap.",
+        "freshResolutionEvidence": [
+          {
+            "id": "atanasyan-7-9-main-272-part-1",
+            "view": "neutral",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-272-part-1-neutral-320.png",
+            "sha256": "ad28ef753785356c7d63d6f00f0f7364f674d6f4962bef7bdee7d2ff8af3f03c"
+          },
+          {
+            "id": "atanasyan-7-9-main-272-part-1",
+            "view": "step-1",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-272-part-1-step-1-320.png",
+            "sha256": "ededfe9e28aa2423a3ef46caa381c38c16dc156ad3e986bb5301a0ae6c075ab9"
+          },
+          {
+            "id": "atanasyan-7-9-main-272-part-1",
+            "view": "step-2",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-272-part-1-step-2-320.png",
+            "sha256": "ededfe9e28aa2423a3ef46caa381c38c16dc156ad3e986bb5301a0ae6c075ab9"
+          },
+          {
+            "id": "atanasyan-7-9-main-272-part-1",
+            "view": "step-3",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-272-part-1-step-3-320.png",
+            "sha256": "ededfe9e28aa2423a3ef46caa381c38c16dc156ad3e986bb5301a0ae6c075ab9"
+          },
+          {
+            "id": "atanasyan-7-9-main-272-part-1",
+            "view": "step-4",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-272-part-1-step-4-320.png",
+            "sha256": "ededfe9e28aa2423a3ef46caa381c38c16dc156ad3e986bb5301a0ae6c075ab9"
+          },
+          {
+            "id": "atanasyan-7-9-main-272-part-1",
+            "view": "neutral",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-272-part-1-neutral-1280.png",
+            "sha256": "0716acc27bff465e3762155b2d246fcb1d1cfc84d663a07558e470a774edef1e"
+          },
+          {
+            "id": "atanasyan-7-9-main-272-part-1",
+            "view": "step-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-272-part-1-step-1-1280.png",
+            "sha256": "0716acc27bff465e3762155b2d246fcb1d1cfc84d663a07558e470a774edef1e"
+          },
+          {
+            "id": "atanasyan-7-9-main-272-part-1",
+            "view": "step-2",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-272-part-1-step-2-1280.png",
+            "sha256": "0716acc27bff465e3762155b2d246fcb1d1cfc84d663a07558e470a774edef1e"
+          },
+          {
+            "id": "atanasyan-7-9-main-272-part-1",
+            "view": "step-3",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-272-part-1-step-3-1280.png",
+            "sha256": "0716acc27bff465e3762155b2d246fcb1d1cfc84d663a07558e470a774edef1e"
+          },
+          {
+            "id": "atanasyan-7-9-main-272-part-1",
+            "view": "step-4",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-272-part-1-step-4-1280.png",
+            "sha256": "0716acc27bff465e3762155b2d246fcb1d1cfc84d663a07558e470a774edef1e"
+          }
+        ],
+        "finalVisualReport": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_B_VISUAL_REVIEW.json",
+        "finalVisualReportSha256": "dfa3d988fa28436d48dd010380660a972b16553aaeb2a5bfc573d5ef5b07a3bc",
+        "finalFindingStatus": "resolved",
+        "reviewRunUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008"
+      },
+      {
+        "id": "B-VIS-04",
+        "group": "B",
+        "status": "resolved",
+        "resolution": "The smaller BMC angle arc stays entirely above BC, with no unintended base intersections at either width.",
+        "freshResolutionEvidence": [
+          {
+            "id": "atanasyan-7-9-main-268-part-1",
+            "view": "neutral",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-268-part-1-neutral-320.png",
+            "sha256": "08fb99faaff584090747467c62c8d92a3b012957476e07e518e96489f37c2e64"
+          },
+          {
+            "id": "atanasyan-7-9-main-268-part-1",
+            "view": "step-1",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-268-part-1-step-1-320.png",
+            "sha256": "1a38328918f23e67ac9158ec7f8c7c61436cfa7a94017cfbc9244d8adaa585cd"
+          },
+          {
+            "id": "atanasyan-7-9-main-268-part-1",
+            "view": "step-2",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-268-part-1-step-2-320.png",
+            "sha256": "1a38328918f23e67ac9158ec7f8c7c61436cfa7a94017cfbc9244d8adaa585cd"
+          },
+          {
+            "id": "atanasyan-7-9-main-268-part-1",
+            "view": "step-3",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-268-part-1-step-3-320.png",
+            "sha256": "1a38328918f23e67ac9158ec7f8c7c61436cfa7a94017cfbc9244d8adaa585cd"
+          },
+          {
+            "id": "atanasyan-7-9-main-268-part-1",
+            "view": "neutral",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-268-part-1-neutral-1280.png",
+            "sha256": "465dd27e20827d602926cb2eec8a7fb73ab9a7cca0ffeefff4bc1c3316dd5d51"
+          },
+          {
+            "id": "atanasyan-7-9-main-268-part-1",
+            "view": "step-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-268-part-1-step-1-1280.png",
+            "sha256": "465dd27e20827d602926cb2eec8a7fb73ab9a7cca0ffeefff4bc1c3316dd5d51"
+          },
+          {
+            "id": "atanasyan-7-9-main-268-part-1",
+            "view": "step-2",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-268-part-1-step-2-1280.png",
+            "sha256": "465dd27e20827d602926cb2eec8a7fb73ab9a7cca0ffeefff4bc1c3316dd5d51"
+          },
+          {
+            "id": "atanasyan-7-9-main-268-part-1",
+            "view": "step-3",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-268-part-1-step-3-1280.png",
+            "sha256": "465dd27e20827d602926cb2eec8a7fb73ab9a7cca0ffeefff4bc1c3316dd5d51"
+          }
+        ],
+        "finalVisualReport": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_B_VISUAL_REVIEW.json",
+        "finalVisualReportSha256": "dfa3d988fa28436d48dd010380660a972b16553aaeb2a5bfc573d5ef5b07a3bc",
+        "finalFindingStatus": "resolved",
+        "reviewRunUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008"
+      },
+      {
+        "id": "B-VIS-05",
+        "group": "B",
+        "status": "resolved",
+        "resolution": "Step1 displays an unlabeled bisector ray without H. H and the perpendicular through A appear from step2; later labels remain clear.",
+        "freshResolutionEvidence": [
+          {
+            "id": "atanasyan-7-9-main-275-part-1",
+            "view": "step-1",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-275-part-1-step-1-320.png",
+            "sha256": "ae0957a10062ce87237e707a0ab84d1dddd05061d58b796905b9f82b14893f50"
+          },
+          {
+            "id": "atanasyan-7-9-main-275-part-1",
+            "view": "step-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-275-part-1-step-1-1280.png",
+            "sha256": "dc570f51abf1393134df8dc955e9edc9d74a6d4a868716819bf68c88f586ca69"
+          }
+        ],
+        "finalVisualReport": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_B_VISUAL_REVIEW.json",
+        "finalVisualReportSha256": "dfa3d988fa28436d48dd010380660a972b16553aaeb2a5bfc573d5ef5b07a3bc",
+        "finalFindingStatus": "resolved",
+        "reviewRunUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008"
+      },
+      {
+        "id": "B-VIS-06",
+        "group": "B",
+        "status": "resolved",
+        "resolution": "Step1 displays only DE and DF. AD appears in step2, whose text now explicitly introduces it. No premature median is visible.",
+        "freshResolutionEvidence": [
+          {
+            "id": "atanasyan-7-9-main-282-part-1",
+            "view": "step-1",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-282-part-1-step-1-320.png",
+            "sha256": "4b72537b15aa68a8bd80c7ce22fe61baa22a9aebcb170b88de320a789fc9099b"
+          },
+          {
+            "id": "atanasyan-7-9-main-282-part-1",
+            "view": "step-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-282-part-1-step-1-1280.png",
+            "sha256": "e45180914d96f8879092a710664e7d9eb14cf90b6c2f361993f024b076882155"
+          }
+        ],
+        "finalVisualReport": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_B_VISUAL_REVIEW.json",
+        "finalVisualReportSha256": "dfa3d988fa28436d48dd010380660a972b16553aaeb2a5bfc573d5ef5b07a3bc",
+        "finalFindingStatus": "resolved",
+        "reviewRunUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008"
+      },
+      {
+        "id": "B-VIS-07",
+        "group": "B",
+        "status": "resolved",
+        "resolution": "Step1 shows the full parallel without D. Step2 introduces the restricted ray and D; step3 adds the distance illustration. D has no filled dot, and a visible caption explicitly excludes D from the locus at both widths.",
+        "freshResolutionEvidence": [
+          {
+            "id": "atanasyan-7-9-main-288-part-1",
+            "view": "step-1",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-288-part-1-step-1-320.png",
+            "sha256": "6e0a102a77cb8a745893c0d92b7eb7591a3bcea7342055e50d79502f55e147ca"
+          },
+          {
+            "id": "atanasyan-7-9-main-288-part-1",
+            "view": "step-2",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-288-part-1-step-2-320.png",
+            "sha256": "94302f3c5d092ed3b59217faa23b6b271050711b8da4569860d3d0769af58c3e"
+          },
+          {
+            "id": "atanasyan-7-9-main-288-part-1",
+            "view": "step-3",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-288-part-1-step-3-320.png",
+            "sha256": "ee51a33bd56c365237eb296ad71679e2a5099bc10e91a9007ec436bba875a94c"
+          },
+          {
+            "id": "atanasyan-7-9-main-288-part-1",
+            "view": "step-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-288-part-1-step-1-1280.png",
+            "sha256": "8ceac00a32b75a17773de5c3d05a9813a5fcf910f00a5deeab0a091f97686cb5"
+          },
+          {
+            "id": "atanasyan-7-9-main-288-part-1",
+            "view": "step-2",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-288-part-1-step-2-1280.png",
+            "sha256": "d8c3f24c0771834877d4bf0cbd50815dfc2f71790b95f15f3ba281aab6467195"
+          },
+          {
+            "id": "atanasyan-7-9-main-288-part-1",
+            "view": "step-3",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-288-part-1-step-3-1280.png",
+            "sha256": "33e32604849a185e478a9b32bbcecf65fd48188cf22712e8ef15600c8c8154a9"
+          }
+        ],
+        "finalVisualReport": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_B_VISUAL_REVIEW.json",
+        "finalVisualReportSha256": "dfa3d988fa28436d48dd010380660a972b16553aaeb2a5bfc573d5ef5b07a3bc",
+        "finalFindingStatus": "resolved",
+        "reviewRunUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008"
+      },
+      {
+        "id": "B-VIS-08",
+        "group": "B",
+        "status": "resolved",
+        "resolution": "Step2 shows only an interior point and its two equal distances. Midpoint M and middle parallel m remain delayed to step3.",
+        "freshResolutionEvidence": [
+          {
+            "id": "atanasyan-7-9-main-289-part-1",
+            "view": "step-2",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-289-part-1-step-2-320.png",
+            "sha256": "6db4bdcfe9e540774ef785c01a9e044e774da1c5da4510dac28c1821e50a548c"
+          },
+          {
+            "id": "atanasyan-7-9-main-289-part-1",
+            "view": "step-2",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-289-part-1-step-2-1280.png",
+            "sha256": "06a0cf5aae80da121836ba763587a7cd487da036d9f5388abe4facab4bdf3307"
+          }
+        ],
+        "finalVisualReport": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_B_VISUAL_REVIEW.json",
+        "finalVisualReportSha256": "dfa3d988fa28436d48dd010380660a972b16553aaeb2a5bfc573d5ef5b07a3bc",
+        "finalFindingStatus": "resolved",
+        "reviewRunUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008"
+      },
+      {
+        "id": "B-VIS-09",
+        "group": "B",
+        "status": "resolved",
+        "resolution": "Step1 shows m through M without the perpendicular distance segments; XH/YK are introduced from step2.",
+        "freshResolutionEvidence": [
+          {
+            "id": "atanasyan-7-9-main-290-part-1",
+            "view": "step-1",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-290-part-1-step-1-320.png",
+            "sha256": "7dfb458127c4a6c4990b86a40a675c6bbc53a11a420ebe329cb2b9060156985a"
+          },
+          {
+            "id": "atanasyan-7-9-main-290-part-1",
+            "view": "step-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-290-part-1-step-1-1280.png",
+            "sha256": "a44fb4ce4eafaa9be67fa81e85bdd2e7c8547d688078a4db274a3e094cc658fb"
+          }
+        ],
+        "finalVisualReport": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_B_VISUAL_REVIEW.json",
+        "finalVisualReportSha256": "dfa3d988fa28436d48dd010380660a972b16553aaeb2a5bfc573d5ef5b07a3bc",
+        "finalFindingStatus": "resolved",
+        "reviewRunUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008"
+      },
+      {
+        "id": "B-VIS-10",
+        "group": "B",
+        "status": "resolved",
+        "resolution": "Step1 shows only one offset parallel and its distance. The second parallel appears from step2.",
+        "freshResolutionEvidence": [
+          {
+            "id": "atanasyan-7-9-main-291-part-1",
+            "view": "step-1",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-291-part-1-step-1-320.png",
+            "sha256": "280e74738f01c0e44d484f62c8c3cb7ea358116a6c893e2cdfd167838ebec57e"
+          },
+          {
+            "id": "atanasyan-7-9-main-291-part-1",
+            "view": "step-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-291-part-1-step-1-1280.png",
+            "sha256": "e573492747c162c98a9c561a00dfbf72f18cfad96cbd8c18b7e9426d5459e82e"
+          }
+        ],
+        "finalVisualReport": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_B_VISUAL_REVIEW.json",
+        "finalVisualReportSha256": "dfa3d988fa28436d48dd010380660a972b16553aaeb2a5bfc573d5ef5b07a3bc",
+        "finalFindingStatus": "resolved",
+        "reviewRunUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008"
+      },
+      {
+        "id": "C-DESKTOP-325-EXTENSION",
+        "group": "C",
+        "status": "resolved",
+        "resolution": "The supporting line BC now reaches the exterior foot H, and the right-angle marker at H is present. Both flagged views were inspected at both widths, including separate original PNGs.",
+        "freshResolutionEvidence": [
+          {
+            "id": "atanasyan-7-9-main-325-part-1",
+            "view": "step-4",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-325-part-1-step-4-320.png",
+            "sha256": "4304ea8bb92a53e1545c07f125d2bf84e5b97aacab47f2370b676337d4f1fb28"
+          },
+          {
+            "id": "atanasyan-7-9-main-325-part-1",
+            "view": "case-1",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-325-part-1-case-1-320.png",
+            "sha256": "2bb17d6e48cbd66aad634a1559b3e02fd2616b1f02407accf95aa806695d5f18"
+          },
+          {
+            "id": "atanasyan-7-9-main-325-part-1",
+            "view": "step-4",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-325-part-1-step-4-1280.png",
+            "sha256": "899d05d658c98ae9def9c981bb0a8eaa0766a2ffa75546aee93f4d8053bd49f0"
+          },
+          {
+            "id": "atanasyan-7-9-main-325-part-1",
+            "view": "case-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-325-part-1-case-1-1280.png",
+            "sha256": "8131879092b913dbdd11b1b494771d8f2f2fb2434fb6cca6d25b849b072c6781"
+          }
+        ],
+        "finalVisualReport": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_C_VISUAL_REVIEW.json",
+        "finalVisualReportSha256": "a9690b805b8ff972ed5e430acc76c9c1b290533c9bdc7218b850a40a565c5e8b",
+        "finalFindingStatus": "resolved-after-fresh-pixel-and-content-review",
+        "reviewRunUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008"
+      },
+      {
+        "id": "C-DESKTOP-328-EXTENSION",
+        "group": "C",
+        "status": "resolved",
+        "resolution": "Supporting lines BC/B₁C₁ now pass through H/H₁ in every flagged step and alternative case. All four states were inspected at both widths, including separate original PNGs.",
+        "freshResolutionEvidence": [
+          {
+            "id": "atanasyan-7-9-main-328-part-1",
+            "view": "step-3",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-328-part-1-step-3-320.png",
+            "sha256": "6991be4288ee1b811b19b7f3a1b52d03b74c80a887b25a3603474571cbeffee0"
+          },
+          {
+            "id": "atanasyan-7-9-main-328-part-1",
+            "view": "step-4",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-328-part-1-step-4-320.png",
+            "sha256": "6991be4288ee1b811b19b7f3a1b52d03b74c80a887b25a3603474571cbeffee0"
+          },
+          {
+            "id": "atanasyan-7-9-main-328-part-1",
+            "view": "step-6",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-328-part-1-step-6-320.png",
+            "sha256": "e67db987ab27bf41f9857641c825dac68ea74ba16d67f41770610355dd1081ab"
+          },
+          {
+            "id": "atanasyan-7-9-main-328-part-1",
+            "view": "case-1",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-328-part-1-case-1-320.png",
+            "sha256": "1e70d58865226d4e0589dbca3cb5d51007447307571229234a2fda5c8033082e"
+          },
+          {
+            "id": "atanasyan-7-9-main-328-part-1",
+            "view": "step-3",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-328-part-1-step-3-1280.png",
+            "sha256": "d63e8f66c5732b0d3682fc2143385593422bfce4335c8ba0881397df7ccb69df"
+          },
+          {
+            "id": "atanasyan-7-9-main-328-part-1",
+            "view": "step-4",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-328-part-1-step-4-1280.png",
+            "sha256": "d63e8f66c5732b0d3682fc2143385593422bfce4335c8ba0881397df7ccb69df"
+          },
+          {
+            "id": "atanasyan-7-9-main-328-part-1",
+            "view": "step-6",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-328-part-1-step-6-1280.png",
+            "sha256": "cfb8770383068592f8840f325b70922a069d9f3f6f6f712346e0206ee41569a9"
+          },
+          {
+            "id": "atanasyan-7-9-main-328-part-1",
+            "view": "case-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-328-part-1-case-1-1280.png",
+            "sha256": "adf4358b69adef2f0843a726b3772aeb5869c14144ba2dcdb3579fd1ad9a4462"
+          }
+        ],
+        "finalVisualReport": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_C_VISUAL_REVIEW.json",
+        "finalVisualReportSha256": "a9690b805b8ff972ed5e430acc76c9c1b290533c9bdc7218b850a40a565c5e8b",
+        "finalFindingStatus": "resolved-after-fresh-pixel-and-content-review",
+        "reviewRunUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008"
+      },
+      {
+        "id": "C-DESKTOP-OUTSIDE-LABELS",
+        "group": "C",
+        "status": "resolved",
+        "resolution": "Every listed desktop boundary-label instance is corrected with clear point association. All changed desktop images were personally inspected by the independent desktop reviewer.",
+        "freshResolutionEvidence": [
+          {
+            "id": "atanasyan-7-9-main-299-part-5",
+            "view": "step-3",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-299-part-5-step-3-1280.png",
+            "sha256": "06f5e6b43d9c97a43d79e00d4bbf751daaa20735f7b68c4cdff479989ddfa3c5"
+          },
+          {
+            "id": "atanasyan-7-9-main-303-part-1",
+            "view": "step-3",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-303-part-1-step-3-1280.png",
+            "sha256": "290313da492aefe051976dd842aec9fc6bf2c09e299299c460958dfcd990172a"
+          },
+          {
+            "id": "atanasyan-7-9-main-303-part-1",
+            "view": "step-4",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-303-part-1-step-4-1280.png",
+            "sha256": "290313da492aefe051976dd842aec9fc6bf2c09e299299c460958dfcd990172a"
+          },
+          {
+            "id": "atanasyan-7-9-main-305-part-1",
+            "view": "neutral",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-305-part-1-neutral-1280.png",
+            "sha256": "dd4aaf79d4cf5e682ead4dc55d551d811a15901204be3a27fb3f65f719b2938f"
+          },
+          {
+            "id": "atanasyan-7-9-main-305-part-1",
+            "view": "step-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-305-part-1-step-1-1280.png",
+            "sha256": "1d781e7ef35d709ac897a92757bd598b3434f34c3c5c0d3fa0ffe4ac6ba9df44"
+          },
+          {
+            "id": "atanasyan-7-9-main-305-part-1",
+            "view": "step-2",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-305-part-1-step-2-1280.png",
+            "sha256": "d5de62b4416eb376e9a430a3ded8c753e380f987998ae8e7459271a145857449"
+          },
+          {
+            "id": "atanasyan-7-9-main-307-part-1",
+            "view": "neutral",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-307-part-1-neutral-1280.png",
+            "sha256": "031af11c8aaeeac7347a408ecb294e1068f7c2ede5a74c80bf317b1acd36f516"
+          },
+          {
+            "id": "atanasyan-7-9-main-307-part-1",
+            "view": "step-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-307-part-1-step-1-1280.png",
+            "sha256": "ab11397fb40fe717958b5967a4627ac7ab4e2d5f7429ca64f64df3fe6d3c4b07"
+          },
+          {
+            "id": "atanasyan-7-9-main-307-part-1",
+            "view": "step-2",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-307-part-1-step-2-1280.png",
+            "sha256": "2763eb9f70dc7fbb527606dcc35377bf219a0fa80d031c016bd34b4a44e0df3c"
+          },
+          {
+            "id": "atanasyan-7-9-main-307-part-1",
+            "view": "step-5",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-307-part-1-step-5-1280.png",
+            "sha256": "2a3c29169973c036ef21b696fa0d1bcfcc6399b90e3bc6c374977e001f6f6a83"
+          },
+          {
+            "id": "atanasyan-7-9-main-307-part-1",
+            "view": "step-6",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-307-part-1-step-6-1280.png",
+            "sha256": "2a3c29169973c036ef21b696fa0d1bcfcc6399b90e3bc6c374977e001f6f6a83"
+          },
+          {
+            "id": "atanasyan-7-9-main-307-part-1",
+            "view": "case-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-307-part-1-case-1-1280.png",
+            "sha256": "4b47996e87c039e450d45664f9e5b41b8fb10f54103e4444a2c82cf5fc56b5c8"
+          },
+          {
+            "id": "atanasyan-7-9-main-307-part-1",
+            "view": "case-2",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-307-part-1-case-2-1280.png",
+            "sha256": "be1b878db4f00ea7ef0753a956cf70880a236fbf1e063456c40c0e3dd7ac003a"
+          },
+          {
+            "id": "atanasyan-7-9-main-308-part-1",
+            "view": "step-2",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-308-part-1-step-2-1280.png",
+            "sha256": "491336753c7a4aed82ab4f982bb08df25fe9ff5884f520b4164efc5a9bea8074"
+          },
+          {
+            "id": "atanasyan-7-9-main-310-part-2",
+            "view": "neutral",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-310-part-2-neutral-1280.png",
+            "sha256": "705e0ee7c0b16a71823ff4ca5fc865b45fc107967c5f0b624d234dbcb76b081f"
+          },
+          {
+            "id": "atanasyan-7-9-main-310-part-2",
+            "view": "step-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-310-part-2-step-1-1280.png",
+            "sha256": "705e0ee7c0b16a71823ff4ca5fc865b45fc107967c5f0b624d234dbcb76b081f"
+          },
+          {
+            "id": "atanasyan-7-9-main-310-part-2",
+            "view": "step-2",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-310-part-2-step-2-1280.png",
+            "sha256": "705e0ee7c0b16a71823ff4ca5fc865b45fc107967c5f0b624d234dbcb76b081f"
+          },
+          {
+            "id": "atanasyan-7-9-main-310-part-2",
+            "view": "step-3",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-310-part-2-step-3-1280.png",
+            "sha256": "705e0ee7c0b16a71823ff4ca5fc865b45fc107967c5f0b624d234dbcb76b081f"
+          },
+          {
+            "id": "atanasyan-7-9-main-318-part-1",
+            "view": "neutral",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-318-part-1-neutral-1280.png",
+            "sha256": "4aa5dc5cd6edb94cf11ba1fe162f32c9433e0e06887d17ccacf39c01e216f29f"
+          },
+          {
+            "id": "atanasyan-7-9-main-318-part-1",
+            "view": "step-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-318-part-1-step-1-1280.png",
+            "sha256": "4aa5dc5cd6edb94cf11ba1fe162f32c9433e0e06887d17ccacf39c01e216f29f"
+          },
+          {
+            "id": "atanasyan-7-9-main-318-part-1",
+            "view": "step-2",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-318-part-1-step-2-1280.png",
+            "sha256": "8503cc0ebe80b9aeecbf0c16e702e0a47cc235f684bf8db6fd214402cb55b9a7"
+          },
+          {
+            "id": "atanasyan-7-9-main-318-part-1",
+            "view": "step-3",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-318-part-1-step-3-1280.png",
+            "sha256": "8503cc0ebe80b9aeecbf0c16e702e0a47cc235f684bf8db6fd214402cb55b9a7"
+          },
+          {
+            "id": "atanasyan-7-9-main-318-part-1",
+            "view": "step-4",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-318-part-1-step-4-1280.png",
+            "sha256": "72466ef5fe5fce83da74786964fc7590ce520c80aa19643288324d12237664c1"
+          },
+          {
+            "id": "atanasyan-7-9-main-318-part-1",
+            "view": "step-5",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-318-part-1-step-5-1280.png",
+            "sha256": "72466ef5fe5fce83da74786964fc7590ce520c80aa19643288324d12237664c1"
+          },
+          {
+            "id": "atanasyan-7-9-main-319-part-1",
+            "view": "step-2",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-319-part-1-step-2-1280.png",
+            "sha256": "d831bfa72a920351b5e0983feaeaabcb65371f1085e0d1a33f2a15f521f367f4"
+          },
+          {
+            "id": "atanasyan-7-9-main-319-part-1",
+            "view": "step-3",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-319-part-1-step-3-1280.png",
+            "sha256": "d831bfa72a920351b5e0983feaeaabcb65371f1085e0d1a33f2a15f521f367f4"
+          },
+          {
+            "id": "atanasyan-7-9-main-320-part-1",
+            "view": "neutral",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-320-part-1-neutral-1280.png",
+            "sha256": "67e51be3bb061f8a811c3e730ef74d2d3207e5679f350b45310487e31ef713e3"
+          },
+          {
+            "id": "atanasyan-7-9-main-320-part-1",
+            "view": "step-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-320-part-1-step-1-1280.png",
+            "sha256": "2b7c4865aa2c6f77a1453adb656a69bcc1b1a5a6b0ae1847296411a7edd3cbbc"
+          },
+          {
+            "id": "atanasyan-7-9-main-320-part-1",
+            "view": "step-2",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-320-part-1-step-2-1280.png",
+            "sha256": "2b7c4865aa2c6f77a1453adb656a69bcc1b1a5a6b0ae1847296411a7edd3cbbc"
+          },
+          {
+            "id": "atanasyan-7-9-main-321-part-1",
+            "view": "neutral",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-321-part-1-neutral-1280.png",
+            "sha256": "78450808e7341fb37dbbff93ac4ca024a1a4a93c8f7e6c2b3e70691dbdd66dd2"
+          },
+          {
+            "id": "atanasyan-7-9-main-321-part-1",
+            "view": "step-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-321-part-1-step-1-1280.png",
+            "sha256": "78450808e7341fb37dbbff93ac4ca024a1a4a93c8f7e6c2b3e70691dbdd66dd2"
+          },
+          {
+            "id": "atanasyan-7-9-main-321-part-1",
+            "view": "step-4",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-321-part-1-step-4-1280.png",
+            "sha256": "28b3cb8b9ed705cd503dd172647bbd212f572275dc1f8277e52564777676ce8f"
+          },
+          {
+            "id": "atanasyan-7-9-main-322-part-1",
+            "view": "step-4",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-322-part-1-step-4-1280.png",
+            "sha256": "9a1a61fdf15d50ddf3308d4ee7310f6576343286ffeee9f49f3851f35dfb1a50"
+          },
+          {
+            "id": "atanasyan-7-9-main-322-part-1",
+            "view": "step-5",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-322-part-1-step-5-1280.png",
+            "sha256": "9a1a61fdf15d50ddf3308d4ee7310f6576343286ffeee9f49f3851f35dfb1a50"
+          },
+          {
+            "id": "atanasyan-7-9-main-325-part-1",
+            "view": "step-4",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-325-part-1-step-4-1280.png",
+            "sha256": "899d05d658c98ae9def9c981bb0a8eaa0766a2ffa75546aee93f4d8053bd49f0"
+          },
+          {
+            "id": "atanasyan-7-9-main-325-part-1",
+            "view": "case-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-325-part-1-case-1-1280.png",
+            "sha256": "8131879092b913dbdd11b1b494771d8f2f2fb2434fb6cca6d25b849b072c6781"
+          },
+          {
+            "id": "atanasyan-7-9-main-327-part-1",
+            "view": "step-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-327-part-1-step-1-1280.png",
+            "sha256": "086d0ba42611de0fb429a01233db188983b6a0bf563f0437e59d93a303d57933"
+          },
+          {
+            "id": "atanasyan-7-9-main-327-part-1",
+            "view": "step-2",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-327-part-1-step-2-1280.png",
+            "sha256": "dff37445cec387b0c46aa36bcd0d613e2f986992870bb391787d32559197eb1f"
+          },
+          {
+            "id": "atanasyan-7-9-main-327-part-1",
+            "view": "step-3",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-327-part-1-step-3-1280.png",
+            "sha256": "db5d922742cefd6e0e8e36fdbfaf853248a6e10e44de699b88624c30445bceb7"
+          },
+          {
+            "id": "atanasyan-7-9-main-327-part-1",
+            "view": "step-4",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-327-part-1-step-4-1280.png",
+            "sha256": "db5d922742cefd6e0e8e36fdbfaf853248a6e10e44de699b88624c30445bceb7"
+          },
+          {
+            "id": "atanasyan-7-9-main-329-part-1",
+            "view": "step-3",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-329-part-1-step-3-1280.png",
+            "sha256": "f7aee54393d3f650dffa19bef6f35b131b90696a8fbf6b3598c42d6862842464"
+          },
+          {
+            "id": "atanasyan-7-9-main-329-part-1",
+            "view": "step-4",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-329-part-1-step-4-1280.png",
+            "sha256": "f7aee54393d3f650dffa19bef6f35b131b90696a8fbf6b3598c42d6862842464"
+          },
+          {
+            "id": "atanasyan-7-9-main-329-part-1",
+            "view": "step-5",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-329-part-1-step-5-1280.png",
+            "sha256": "cbfe178bc6ad49b6b67e1e910e329cb594f1ebf0252b53a7091aaa8644077c40"
+          },
+          {
+            "id": "atanasyan-7-9-main-329-part-1",
+            "view": "case-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-329-part-1-case-1-1280.png",
+            "sha256": "2c223eba9f3baf84f521d7631da239185c5a83c7688d70bfff927350d2969b5b"
+          },
+          {
+            "id": "atanasyan-7-9-main-329-part-1",
+            "view": "case-2",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-329-part-1-case-2-1280.png",
+            "sha256": "284c535b39de70b436329a444402b96609c6be0fd7ed6d2326c1ebcd64182f38"
+          },
+          {
+            "id": "atanasyan-7-9-main-329-part-1",
+            "view": "case-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-329-part-1-case-1-1280.png",
+            "sha256": "2c223eba9f3baf84f521d7631da239185c5a83c7688d70bfff927350d2969b5b"
+          },
+          {
+            "id": "atanasyan-7-9-main-330-part-1",
+            "view": "step-2",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-330-part-1-step-2-1280.png",
+            "sha256": "8ccf301bca0548b924b9f5348481eb59c1e98c477b8f8fb796ce8fc3c6a5e6bb"
+          }
+        ],
+        "finalVisualReport": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_C_VISUAL_REVIEW.json",
+        "finalVisualReportSha256": "a9690b805b8ff972ed5e430acc76c9c1b290533c9bdc7218b850a40a565c5e8b",
+        "finalFindingStatus": "resolved-after-fresh-pixel-and-content-review",
+        "reviewRunUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008"
+      },
+      {
+        "id": "C-MOBILE-BOUNDARY-LABELS",
+        "group": "C",
+        "status": "resolved",
+        "resolution": "Every listed mobile boundary-label instance is corrected. Labels are outside the relevant triangle where practical, remain associated with their point, and do not cross strokes or clip.",
+        "freshResolutionEvidence": [
+          {
+            "id": "atanasyan-7-9-main-299-part-5",
+            "view": "step-3",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-299-part-5-step-3-320.png",
+            "sha256": "0829c5e2e2fb6aee088e5265e263701036e772892eb9d65c835bb247ba0102dd"
+          },
+          {
+            "id": "atanasyan-7-9-main-301-part-1",
+            "view": "step-3",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-301-part-1-step-3-320.png",
+            "sha256": "1600733822b8ba227389dbd0cdb3517822f57c1e1ef3b52872e86ed985d0bd3d"
+          },
+          {
+            "id": "atanasyan-7-9-main-301-part-1",
+            "view": "case-1",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-301-part-1-case-1-320.png",
+            "sha256": "6f2f4bce1fb73057cf24c50949e46dedb793f83f6c1a8c1fc32b027e07f4ad97"
+          },
+          {
+            "id": "atanasyan-7-9-main-308-part-1",
+            "view": "step-2",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-308-part-1-step-2-320.png",
+            "sha256": "8f849863b1dae13cfc680e94193f149ba123241f56918fa2fc644ba18ada6d25"
+          },
+          {
+            "id": "atanasyan-7-9-main-309-part-1",
+            "view": "neutral",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-309-part-1-neutral-320.png",
+            "sha256": "b42b10bca17062443d05aee86384b6f857e086a00c73b583b68d4679979a9642"
+          },
+          {
+            "id": "atanasyan-7-9-main-309-part-2",
+            "view": "case-1",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-309-part-2-case-1-320.png",
+            "sha256": "3271d758be6a9a8c91ebadcde1b77185507b4f023db14c300ffc96d0507ed64b"
+          },
+          {
+            "id": "atanasyan-7-9-main-310-part-1",
+            "view": "neutral",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-310-part-1-neutral-320.png",
+            "sha256": "c0b61cf272280b01e8113070e8a4e3cb2cfddbae7608a7f088ea96a47d1d1b8c"
+          },
+          {
+            "id": "atanasyan-7-9-main-310-part-2",
+            "view": "step-1",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-310-part-2-step-1-320.png",
+            "sha256": "b3ed5d3c26ac7d0ea7ff60dc716899bfc1c152ff6c2261af733508ac04256c09"
+          },
+          {
+            "id": "atanasyan-7-9-main-311-part-1",
+            "view": "neutral",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-311-part-1-neutral-320.png",
+            "sha256": "5cfba8e174a10c60ece41392ed1acb2a9360948a179f1fd762c4a0fcf93122e2"
+          },
+          {
+            "id": "atanasyan-7-9-main-311-part-1",
+            "view": "step-3",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-311-part-1-step-3-320.png",
+            "sha256": "c77fc9c6266036e5fd9389103285014d6122813d1c3df3f5c7806ece029a416c"
+          },
+          {
+            "id": "atanasyan-7-9-main-318-part-1",
+            "view": "neutral",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-318-part-1-neutral-320.png",
+            "sha256": "eafaf7e0404b785850834a575846b92a097874a1403db50d8430bdbe8f69ad53"
+          },
+          {
+            "id": "atanasyan-7-9-main-320-part-1",
+            "view": "neutral",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-320-part-1-neutral-320.png",
+            "sha256": "3403441b2a2a7e237628e5af594bc5118dbcb7628386dc308cb73c6d4cd6f698"
+          },
+          {
+            "id": "atanasyan-7-9-main-321-part-1",
+            "view": "neutral",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-321-part-1-neutral-320.png",
+            "sha256": "8ce7341163e325c5074ce34f4e8a41a312ae8c5c9fbcdf1619086482956f5f4d"
+          },
+          {
+            "id": "atanasyan-7-9-main-322-part-1",
+            "view": "step-4",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-322-part-1-step-4-320.png",
+            "sha256": "ebcb9b9a96a3d62e585aa43499c14bda859e9ed1b1b23d1b69deb7510b41c8f8"
+          },
+          {
+            "id": "atanasyan-7-9-main-327-part-1",
+            "view": "step-1",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-327-part-1-step-1-320.png",
+            "sha256": "16493208b638a18a494c95e4be668ac64d65ac2466bdcb6a83770a3576689ad5"
+          },
+          {
+            "id": "atanasyan-7-9-main-329-part-1",
+            "view": "case-2",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-329-part-1-case-2-320.png",
+            "sha256": "eed67d6e1e358b061b69bd093925f9f102e2e5ffcb335d685a5c2c6cf4ee7b0a"
+          },
+          {
+            "id": "atanasyan-7-9-main-330-part-1",
+            "view": "step-2",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-330-part-1-step-2-320.png",
+            "sha256": "dc9a77e4cff2fe6e92fbb252f45d7349b0dddd59dca2e204e14e4e1cf1b73e65"
+          }
+        ],
+        "finalVisualReport": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_C_VISUAL_REVIEW.json",
+        "finalVisualReportSha256": "a9690b805b8ff972ed5e430acc76c9c1b290533c9bdc7218b850a40a565c5e8b",
+        "finalFindingStatus": "resolved-after-fresh-pixel-and-content-review",
+        "reviewRunUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008"
+      },
+      {
+        "id": "C-MOBILE-327-CONSTRUCTION-TIMING",
+        "group": "C",
+        "status": "resolved",
+        "resolution": "Step 2 now explicitly starts with “Соединим A₁, B₁ и C₁.” The displayed three connecting segments therefore match the construction introduced in that step. Both the corrected preparation text and fresh step-2 pixels were inspected.",
+        "freshResolutionEvidence": [
+          {
+            "id": "atanasyan-7-9-main-327-part-1",
+            "view": "step-2",
+            "width": 320,
+            "file": "review-atanasyan-7-9-main-327-part-1-step-2-320.png",
+            "sha256": "1b30116c70e45b855ec517c143c422925e77fd3dbeda2ab6aeca2ba07bf45b3d"
+          },
+          {
+            "id": "atanasyan-7-9-main-327-part-1",
+            "view": "step-2",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-main-327-part-1-step-2-1280.png",
+            "sha256": "dff37445cec387b0c46aa36bcd0d613e2f986992870bb391787d32559197eb1f"
+          }
+        ],
+        "finalVisualReport": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_C_VISUAL_REVIEW.json",
+        "finalVisualReportSha256": "a9690b805b8ff972ed5e430acc76c9c1b290533c9bdc7218b850a40a565c5e8b",
+        "finalFindingStatus": "resolved-after-fresh-pixel-and-content-review",
+        "reviewRunUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008"
+      },
+      {
+        "id": "T31_EXTERNAL_CASE_MISSING",
+        "group": "T",
+        "status": "resolved",
+        "resolution": "Both widths visibly show D, extension CD and the exterior-angle arc with the selected «Внешний угол» case. Labels are legible and associated with the correct points.",
+        "freshResolutionEvidence": [
+          {
+            "id": "atanasyan-7-9-theory-31-part-1",
+            "view": "case-1",
+            "width": 320,
+            "file": "review-atanasyan-7-9-theory-31-part-1-case-1-320.png",
+            "sha256": "030232e18ebcbe4d30824896013862b4b1740b26207d0ed56834b9e7d5998145"
+          },
+          {
+            "id": "atanasyan-7-9-theory-31-part-1",
+            "view": "case-1",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-theory-31-part-1-case-1-1280.png",
+            "sha256": "f9c2468f481ed999177ed2a2abb8e3b2cdc40c614b92aa2434211977128605d3"
+          }
+        ],
+        "finalVisualReport": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_THEORY_VISUAL_REVIEW.json",
+        "finalVisualReportSha256": "22d1dd31e3a8c19acb2bf30e92185dac770b4f1730a9ff04194b9698541e2638",
+        "finalFindingStatus": "resolved-by-fresh-actual-pixel-inspection",
+        "reviewRunUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008"
+      },
+      {
+        "id": "T35_MEDIAN_CASE_MISSING",
+        "group": "T",
+        "status": "resolved",
+        "resolution": "Both widths visibly show M on BC and AM, the right-angle marker and the chosen equal-angle marks. No midpoint-segment equality conclusion has appeared prematurely.",
+        "freshResolutionEvidence": [
+          {
+            "id": "atanasyan-7-9-theory-35-part-1",
+            "view": "case-3",
+            "width": 320,
+            "file": "review-atanasyan-7-9-theory-35-part-1-case-3-320.png",
+            "sha256": "1dcd66c58f2da953810f24d7fad911bb42523d341b98a3a74a809ae37766f399"
+          },
+          {
+            "id": "atanasyan-7-9-theory-35-part-1",
+            "view": "case-3",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-theory-35-part-1-case-3-1280.png",
+            "sha256": "3c53323cad6ed4d975cde9ca9de954bdeffdfa97a4822929755f4c5d32c5c19c"
+          }
+        ],
+        "finalVisualReport": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_THEORY_VISUAL_REVIEW.json",
+        "finalVisualReportSha256": "22d1dd31e3a8c19acb2bf30e92185dac770b4f1730a9ff04194b9698541e2638",
+        "finalFindingStatus": "resolved-by-fresh-actual-pixel-inspection",
+        "reviewRunUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008"
+      },
+      {
+        "id": "T37_NAMED_CASE_MISSING_2",
+        "group": "T",
+        "status": "resolved",
+        "resolution": "Both widths visibly show both parallel lines and perpendiculars AB and XY, with the right-angle markers. No equality-of-length marks or later proof diagonal are introduced.",
+        "freshResolutionEvidence": [
+          {
+            "id": "atanasyan-7-9-theory-37-part-1",
+            "view": "case-2",
+            "width": 320,
+            "file": "review-atanasyan-7-9-theory-37-part-1-case-2-320.png",
+            "sha256": "561feef7900029c3a4d737c44a269b22e4c1aae0f5dc01549bc1d742a3b39b63"
+          },
+          {
+            "id": "atanasyan-7-9-theory-37-part-1",
+            "view": "case-2",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-theory-37-part-1-case-2-1280.png",
+            "sha256": "17adb31e42df813207d4f83d32497bb03c72c89f3fdcddd3c4a0f6e859e483db"
+          }
+        ],
+        "finalVisualReport": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_THEORY_VISUAL_REVIEW.json",
+        "finalVisualReportSha256": "22d1dd31e3a8c19acb2bf30e92185dac770b4f1730a9ff04194b9698541e2638",
+        "finalFindingStatus": "resolved-by-fresh-actual-pixel-inspection",
+        "reviewRunUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008"
+      },
+      {
+        "id": "T37_NAMED_CASE_MISSING_3",
+        "group": "T",
+        "status": "resolved",
+        "resolution": "Both widths visibly show the two perpendicular distances AB and XY between the parallel lines, matching the selected distance-definition case.",
+        "freshResolutionEvidence": [
+          {
+            "id": "atanasyan-7-9-theory-37-part-1",
+            "view": "case-3",
+            "width": 320,
+            "file": "review-atanasyan-7-9-theory-37-part-1-case-3-320.png",
+            "sha256": "4df1cb6896a91cf768655b31b6ee87b895c3b7441a2fc6489c33b3808016b561"
+          },
+          {
+            "id": "atanasyan-7-9-theory-37-part-1",
+            "view": "case-3",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-theory-37-part-1-case-3-1280.png",
+            "sha256": "cbdd2872e35377afca3f737973f332d1ba9d621ab81f196eadfb4147d7c21848"
+          }
+        ],
+        "finalVisualReport": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_THEORY_VISUAL_REVIEW.json",
+        "finalVisualReportSha256": "22d1dd31e3a8c19acb2bf30e92185dac770b4f1730a9ff04194b9698541e2638",
+        "finalFindingStatus": "resolved-by-fresh-actual-pixel-inspection",
+        "reviewRunUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008"
+      },
+      {
+        "id": "T37_NAMED_CASE_MISSING_4",
+        "group": "T",
+        "status": "resolved",
+        "resolution": "Both widths visibly show a, b, P, H and PH with its right-angle marker. Arbitrary X and the final locus conclusion are absent at this construction stage.",
+        "freshResolutionEvidence": [
+          {
+            "id": "atanasyan-7-9-theory-37-part-1",
+            "view": "case-4",
+            "width": 320,
+            "file": "review-atanasyan-7-9-theory-37-part-1-case-4-320.png",
+            "sha256": "b96fc7e6e55d69cc63eb259903971c2e650dfbcf150e79f1113464c23a14047c"
+          },
+          {
+            "id": "atanasyan-7-9-theory-37-part-1",
+            "view": "case-4",
+            "width": 1280,
+            "file": "review-atanasyan-7-9-theory-37-part-1-case-4-1280.png",
+            "sha256": "3bb0a2ee7c2f8de9f5b5775804a9aa24fa788db8196908f8efe063e741e0aa79"
+          }
+        ],
+        "finalVisualReport": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_THEORY_VISUAL_REVIEW.json",
+        "finalVisualReportSha256": "22d1dd31e3a8c19acb2bf30e92185dac770b4f1730a9ff04194b9698541e2638",
+        "finalFindingStatus": "resolved-by-fresh-actual-pixel-inspection",
+        "reviewRunUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40323700008"
+      }
+    ]
+  },
+  "historicalFailurePreserved": {
+    "runUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40318034439",
+    "head": "2f8b1217d651ff32bf90583642171dbe538f1e7e",
+    "browserCompleted": false,
+    "meaning": "The initial failed run and its image findings remain historical evidence. The clean run and explicit reviewer resolutions establish the final result."
+  },
+  "currentFileBindings": [
+    {
+      "file": "geometry-course/textbook/data/course.json",
+      "sha256": "a5cc2e908baf766d66c0dcb9f50fb8a57e1ce98b84a89bb7d459742bd045af69"
+    },
+    {
+      "file": "tools/geometry-textbook/chapter-04-source-map.json",
+      "sha256": "66bc5870902488e0a18fab436b5eaac0bcccb92acbae7766ffde4dd3666163ad"
+    },
+    {
+      "file": "tools/geometry-textbook/published-chapters-01-03.json",
+      "sha256": "dcb53e7b35d2b70947e079394ac8c47ae60b58e4859480868d6063959f746fd6"
+    },
+    {
+      "file": "tools/geometry-textbook/review_scope_test.py",
+      "sha256": "c45c1074161e7be22616ea8ef2406d4e4d3ffe13e7b360fa725406a22b32e1e9"
+    },
+    {
+      "file": "tools/geometry-textbook/browser_check.js",
+      "sha256": "07b49df556ebb6ee97ddcabbd3a4e3d12d570c7d4816446555356e214fd12577"
+    },
+    {
+      "file": ".github/workflows/atanasyan-planimetry.yml",
+      "sha256": "91f8b1ab37378fd3aee0b5a1a674a5166412522bde6df05448c022a20a1ca462"
+    },
+    {
+      "file": "geometry-course/textbook/index.html",
+      "sha256": "4ad96a76e0b5e3f791aca172a884a2e66c93fcd75cb2efd83cbfb393a7a8fe5b"
+    },
+    {
+      "file": "geometry-course/textbook/assets/engine.js",
+      "sha256": "a774e1204d0b26b2969589cfcff28b70cc8c8841f33230c1d511e3d7c4ee2c28"
+    },
+    {
+      "file": "geometry-course/textbook/assets/planar-viewer.js",
+      "sha256": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061"
+    },
+    {
+      "file": "geometry-course/textbook/assets/style.css",
+      "sha256": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b"
+    },
+    {
+      "file": "geometry-course/textbook/assets/math-text.js",
+      "sha256": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b"
+    }
+  ],
+  "limitations": [
+    "This record covers the captured chapter-IV content and shared runtime at the exact listed hashes.",
+    "The captured bundle predates the chapter-IV publication manifest; release status changes and subsequent deployment are separate operations.",
+    "No whole-book completion, external-provider review, merge, deployment or pupil pilot is claimed."
+  ],
+  "acceptedNonBlockingObservations": [
+    {
+      "id": "C-DESKTOP-309B-M1-EXISTING",
+      "group": "C",
+      "description": "M1 is readable above the baseline, to the right of the vertex and outside its own smaller triangle AHM1, although within the larger comparison triangle AHM2 (AHN in case-1). Its placement is exactly unchanged from the reviewed baseline; the scoped correction moved H. Association with the vertex is clear, with no stroke overlap or autoplace regression. Moving M1 below the baseline would be an optional presentation refinement.",
+      "scopeDecision": "The supervising reviewers independently accepted this unchanged, readable placement as nonblocking because it is outside the smaller triangle associated with M1 and remains clearly associated with its vertex. The frozen model scope is retained.",
+      "reviewReport": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_C_VISUAL_REVIEW.json",
+      "reviewReportSha256": "a9690b805b8ff972ed5e430acc76c9c1b290533c9bdc7218b850a40a565c5e8b"
+    }
+  ],
+  "imageTransferAudit": {
+    "file": "docs/reviews/ATANASYAN_7_9_CHAPTER_IV_IMAGE_TRANSFER.json",
+    "sha256": "969b1a303f162abc34efc00aaab21fedc03c9967232c2af24fe49975e2337fe8",
+    "entries": 1728
+  }
+}

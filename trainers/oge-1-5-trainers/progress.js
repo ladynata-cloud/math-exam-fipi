@@ -7,8 +7,8 @@
 (function(){
   'use strict';
   var KEY='mathExamCourseProgress.v1', SCHEMA=1;
-  function read(){ try{ var d=JSON.parse(localStorage.getItem(KEY)||'{}'); return (d&&typeof d==='object')?d:{}; }catch(e){ return {}; } }
-  function commit(d){ try{ localStorage.setItem(KEY, JSON.stringify(d)); }catch(e){} }
+  function read(){ if(window.OgeCourseSharedMode)return {};try{ var d=JSON.parse(localStorage.getItem(KEY)||'{}'); return (d&&typeof d==='object')?d:{}; }catch(e){ return {}; } }
+  function commit(d){ if(window.OgeCourseSharedMode)return;try{ localStorage.setItem(KEY, JSON.stringify(d)); }catch(e){} }
   window.CourseProgress={
     KEY:KEY, SCHEMA:SCHEMA,
     readAll:read,

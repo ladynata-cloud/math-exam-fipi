@@ -1,0 +1,2618 @@
+{
+  "schema": 1,
+  "edition": "2027-104-v1",
+  "date": "2026-11-01",
+  "total": 104,
+  "family_counts": {
+    "tires": 13,
+    "plot": 13,
+    "flat": 13,
+    "roads_grid": 13,
+    "roads_schema": 13,
+    "furnace": 13,
+    "tariffs": 13,
+    "paper": 13
+  },
+  "variants": [
+    {
+      "number": 1,
+      "type": "tires",
+      "type_label": "Шины",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_001_variant.pdf",
+          "pages": 4,
+          "bytes": 701351,
+          "sha256": "af6cab7323f112a234f733c298029f052b0583f81f0f7f0434dbed7f35b728ad"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_001_otvety.pdf",
+          "pages": 1,
+          "bytes": 39233,
+          "sha256": "6247c9a58e5cb46f7a1c72a04457ecbcd993f0abef70f41246d0c231fc51d07a"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_001_reshenie.pdf",
+          "pages": 5,
+          "bytes": 94282,
+          "sha256": "ece723b57a3c01ee36e9d093f51311064f9b08e6d428bad0f6bb7f453f6cd6ef"
+        }
+      }
+    },
+    {
+      "number": 2,
+      "type": "plot",
+      "type_label": "Участок",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_002_variant.pdf",
+          "pages": 5,
+          "bytes": 163468,
+          "sha256": "287d7034a1397a208e813fc19218de510dd352e63d2b5e497c2133c6ad3235cf"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_002_otvety.pdf",
+          "pages": 1,
+          "bytes": 39032,
+          "sha256": "d56f60ff44a11cafe9ceb5e0d3e48ddcdfafd22289ba58ef8cab792cdd8a4860"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_002_reshenie.pdf",
+          "pages": 4,
+          "bytes": 72367,
+          "sha256": "d92311985adeaada1ec82a5dbaa44dc4cb047d5556dfe6c665952e98ef2d4d41"
+        }
+      }
+    },
+    {
+      "number": 3,
+      "type": "plot",
+      "type_label": "Участок",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_003_variant.pdf",
+          "pages": 5,
+          "bytes": 165283,
+          "sha256": "19579b4389c7cf92ae859343645b2137b9a386e69c0e9c4e5fb5fd0c46c70973"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_003_otvety.pdf",
+          "pages": 1,
+          "bytes": 39200,
+          "sha256": "2941365d488e55875d0c9de6d2a415297fdee2c597d559ceeeede5616f2f9f28"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_003_reshenie.pdf",
+          "pages": 4,
+          "bytes": 72674,
+          "sha256": "accc047379d7ed2a378a3e8ce9b3b0c3d426febd8d9818c308dae836b5a67f3a"
+        }
+      }
+    },
+    {
+      "number": 4,
+      "type": "flat",
+      "type_label": "Квартира",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_004_variant.pdf",
+          "pages": 4,
+          "bytes": 853255,
+          "sha256": "ccf3274bd7be3b8d8ee55913ed710d2765db78450539972a9010fee61fbed442"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_004_otvety.pdf",
+          "pages": 1,
+          "bytes": 38474,
+          "sha256": "d4380232a61b8bdf961944962d2c873e96db31ae56284c466f23d6ecf01c8d49"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_004_reshenie.pdf",
+          "pages": 4,
+          "bytes": 74844,
+          "sha256": "df2a91d134d69e3526898acc8859ef1b9d06d7e43007564a9317a3c8f8de8679"
+        }
+      }
+    },
+    {
+      "number": 5,
+      "type": "roads_grid",
+      "type_label": "Дороги по клеткам",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_005_variant.pdf",
+          "pages": 5,
+          "bytes": 756780,
+          "sha256": "54d4a82e361d3ca58179f0336fa9df9ba90f8d42acd83d5d299f651159cb630e"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_005_otvety.pdf",
+          "pages": 1,
+          "bytes": 39582,
+          "sha256": "48980083dc796c7fb23a8cdc9e21dda303cd3920d68ac391cb7ea96b4918c1f2"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_005_reshenie.pdf",
+          "pages": 4,
+          "bytes": 73971,
+          "sha256": "ba62d29b58bf7b42107d0361b22e366884581da9ead5c60d96defd92e1d0dda3"
+        }
+      }
+    },
+    {
+      "number": 6,
+      "type": "tires",
+      "type_label": "Шины",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_006_variant.pdf",
+          "pages": 4,
+          "bytes": 701428,
+          "sha256": "ff053764111652106cd92486d5c18ffe26baf37995400fb5fb403c7de804a339"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_006_otvety.pdf",
+          "pages": 1,
+          "bytes": 39603,
+          "sha256": "7fe2cf30edbb95e1c3db89f4f274d11bf8038bca1dda3763d0de0fe9804ad690"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_006_reshenie.pdf",
+          "pages": 4,
+          "bytes": 92933,
+          "sha256": "1d47e2a552e488873c432bc63f5e46e01063a3da8004a5b91b4c80bb4fdb932b"
+        }
+      }
+    },
+    {
+      "number": 7,
+      "type": "plot",
+      "type_label": "Участок",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_007_variant.pdf",
+          "pages": 5,
+          "bytes": 163690,
+          "sha256": "0764daf1645e9571e667f17835c2f5b59d48d5cb644e006c1dfdcdf9238e54ae"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_007_otvety.pdf",
+          "pages": 1,
+          "bytes": 38929,
+          "sha256": "d8f4f19bd95bc05d1255df82bee34aa8e79eebf370746fbd339d0effb00cf098"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_007_reshenie.pdf",
+          "pages": 4,
+          "bytes": 72419,
+          "sha256": "d6fc62edd0d460eb3f3862e3ab2dddf039d217814f07103386e5d383a894758d"
+        }
+      }
+    },
+    {
+      "number": 8,
+      "type": "plot",
+      "type_label": "Участок",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_008_variant.pdf",
+          "pages": 5,
+          "bytes": 165616,
+          "sha256": "83c1a0f3d0210174c5d53906eae684db3717dc074ba28554d5fb85e402bd19e9"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_008_otvety.pdf",
+          "pages": 1,
+          "bytes": 39177,
+          "sha256": "8e856c42f6251ad2787648f888643a42a3ea74bdef4ad95ccf5a337de4d47b7d"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_008_reshenie.pdf",
+          "pages": 4,
+          "bytes": 72547,
+          "sha256": "24dccc4070592bf5e797be911fa5986f1c42a2d1da5cc6d40d6520e22655b893"
+        }
+      }
+    },
+    {
+      "number": 9,
+      "type": "flat",
+      "type_label": "Квартира",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_009_variant.pdf",
+          "pages": 4,
+          "bytes": 884957,
+          "sha256": "15e3275cc99a6aaaca7ac0fc14a7a2e39c4c96be01ba3bfd416e6ef0b9370554"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_009_otvety.pdf",
+          "pages": 1,
+          "bytes": 38673,
+          "sha256": "7f5b2d87fe7ffb676172e29f595ea57e4c382192f1c93615a67fc4ec172af8da"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_009_reshenie.pdf",
+          "pages": 4,
+          "bytes": 75432,
+          "sha256": "4a587a4675196fb9ccf4998cceb11c9c327fd6c07dcd702f1b1a18a477fa94f6"
+        }
+      }
+    },
+    {
+      "number": 10,
+      "type": "roads_grid",
+      "type_label": "Дороги по клеткам",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_010_variant.pdf",
+          "pages": 5,
+          "bytes": 756949,
+          "sha256": "8ed5881a74b1f1abca6f11ab0fb8adc1e6b9a2461b042073f95deb9a236bc9e6"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_010_otvety.pdf",
+          "pages": 1,
+          "bytes": 39164,
+          "sha256": "54d3d9fde980149a5c86371ea03c478148dde9fc010dd60f6177a10173ac791a"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_010_reshenie.pdf",
+          "pages": 4,
+          "bytes": 74138,
+          "sha256": "0c34e600d6aa90b17dca4d815616653ec643deaa781df7736c969fe896c0ac64"
+        }
+      }
+    },
+    {
+      "number": 11,
+      "type": "roads_schema",
+      "type_label": "Дороги без клеток",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_011_variant.pdf",
+          "pages": 4,
+          "bytes": 213012,
+          "sha256": "af73ccbd12c458fbbf5890db8aa747e25dd42d54e9ac69ae33e6d4b859b0267f"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_011_otvety.pdf",
+          "pages": 1,
+          "bytes": 39061,
+          "sha256": "a119c3da38576dacd2de971af6585c535debdd1de973d3c5775710dca07e404a"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_011_reshenie.pdf",
+          "pages": 5,
+          "bytes": 73960,
+          "sha256": "3c7d71f30c5c6c0e4121731c840d59e78388bb692d9fefa88c6ad88a97e3e2d0"
+        }
+      }
+    },
+    {
+      "number": 12,
+      "type": "furnace",
+      "type_label": "Печки",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_012_variant.pdf",
+          "pages": 5,
+          "bytes": 230832,
+          "sha256": "1eb5e1e9cc01b6f1ca859507b00df2583cf1efd1459c7e3e769b05758054c127"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_012_otvety.pdf",
+          "pages": 1,
+          "bytes": 38909,
+          "sha256": "7c3c102688cda3026ed7cba7af4d32329e69ba309be285d0c8606d07c8534845"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_012_reshenie.pdf",
+          "pages": 5,
+          "bytes": 77049,
+          "sha256": "8f26a2e94af8333555cbede9203299e195bfcd82d28a04ae629f9c0d6fc36f4f"
+        }
+      }
+    },
+    {
+      "number": 13,
+      "type": "tariffs",
+      "type_label": "Тарифы",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_013_variant.pdf",
+          "pages": 4,
+          "bytes": 210469,
+          "sha256": "8803ed2654c5ca7248546ef1b0c57503b47276ac13d867f4e0c23b028ec6e153"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_013_otvety.pdf",
+          "pages": 1,
+          "bytes": 39155,
+          "sha256": "f00c62827f355a92e2c7c1fcf92429698304289ba54e739c0efbedff316f4f6f"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_013_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75900,
+          "sha256": "4bc79eb6f288492f8d7870c86b48013437539492fb165f43a9126cd6fab057e6"
+        }
+      }
+    },
+    {
+      "number": 14,
+      "type": "paper",
+      "type_label": "Листы бумаги",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_014_variant.pdf",
+          "pages": 5,
+          "bytes": 234962,
+          "sha256": "2fcb2faf319225bf5e0da5e2f17c5339b774721855b37dea16e173137887d2eb"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_014_otvety.pdf",
+          "pages": 1,
+          "bytes": 39286,
+          "sha256": "992f3fda47dd0d002f2fdd0537b8ff8d2d9c1c5464cb9628a22a26e46b459d6a"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_014_reshenie.pdf",
+          "pages": 5,
+          "bytes": 74724,
+          "sha256": "8aba02db189f5ff354830e33cee9e068b7e31c7339a11af00717d6670d74b360"
+        }
+      }
+    },
+    {
+      "number": 15,
+      "type": "roads_schema",
+      "type_label": "Дороги без клеток",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_015_variant.pdf",
+          "pages": 4,
+          "bytes": 209080,
+          "sha256": "2206acd5035a5a57b85173cdd27be5210444f977160077d0c047e3f0667eb770"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_015_otvety.pdf",
+          "pages": 1,
+          "bytes": 39771,
+          "sha256": "f656614382237baa625c1b97ed5529645a65e63d1308bed29ae6c2d8cf8c73c7"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_015_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75464,
+          "sha256": "47bd3695d74e77e5abdb0bbd47f6ba002181e235fda40c54a0e6dd50ddaca7d1"
+        }
+      }
+    },
+    {
+      "number": 16,
+      "type": "furnace",
+      "type_label": "Печки",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_016_variant.pdf",
+          "pages": 5,
+          "bytes": 232345,
+          "sha256": "423e4b9d8297acb91d2eca6558d0a65b5058fd4b60a6dc575cc16d7e51825cd4"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_016_otvety.pdf",
+          "pages": 1,
+          "bytes": 39657,
+          "sha256": "195670f3f27a85be904750088f890e06eb3d5201d5ac2f3b037f45a2d6c08866"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_016_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75784,
+          "sha256": "b67d7668ae9df8b2467a8a9048204bba5334dc6e89995e215c8fae76a17d9d0d"
+        }
+      }
+    },
+    {
+      "number": 17,
+      "type": "tariffs",
+      "type_label": "Тарифы",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_017_variant.pdf",
+          "pages": 4,
+          "bytes": 216123,
+          "sha256": "dbdd437010ead28e574cdb4d71867fa5381d26e7200bb5335d18f98062db6479"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_017_otvety.pdf",
+          "pages": 1,
+          "bytes": 38795,
+          "sha256": "ca17c3cc2ed51d81ec7a35040980267f27395fe0cc4aa352e08ca47aafcde902"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_017_reshenie.pdf",
+          "pages": 5,
+          "bytes": 74169,
+          "sha256": "f9286cf037dee4a37ff38a0108602a4ef0ee9b561c3626172d437fc056cae6de"
+        }
+      }
+    },
+    {
+      "number": 18,
+      "type": "paper",
+      "type_label": "Листы бумаги",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_018_variant.pdf",
+          "pages": 5,
+          "bytes": 210516,
+          "sha256": "679e4c59d4d024f6b9c05b0dd3cdba2b648c1fdbb69f03fd461e711af87b2511"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_018_otvety.pdf",
+          "pages": 1,
+          "bytes": 39152,
+          "sha256": "b255981e4203e0f104bcdfda221eb4b60f75e2da3c4da2cf6e193695223816e7"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_018_reshenie.pdf",
+          "pages": 5,
+          "bytes": 77779,
+          "sha256": "0a032846e1d7ef7054d3af1a902555d280750cd0e9958992577780ca4128fdfe"
+        }
+      }
+    },
+    {
+      "number": 19,
+      "type": "tires",
+      "type_label": "Шины",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_019_variant.pdf",
+          "pages": 4,
+          "bytes": 694995,
+          "sha256": "0ee3e8016d3f9a110dea43d18135feea3d3615f7497004f2ef82b4bc3bae4bf8"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_019_otvety.pdf",
+          "pages": 1,
+          "bytes": 39520,
+          "sha256": "4384d4c58c053bf58076d54a40dccbd5d02ce976d6ae022aa52c4036ed7a2c28"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_019_reshenie.pdf",
+          "pages": 5,
+          "bytes": 74602,
+          "sha256": "aebc56c167a05da3dda8bd28e766c6b401462820d941e46ff80b4ee3acb02b5b"
+        }
+      }
+    },
+    {
+      "number": 20,
+      "type": "flat",
+      "type_label": "Квартира",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_020_variant.pdf",
+          "pages": 5,
+          "bytes": 280897,
+          "sha256": "215924e8880b04f3eb4437011068db6e323bc66d1ddb95dadcfc0aa7c851f046"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_020_otvety.pdf",
+          "pages": 1,
+          "bytes": 39574,
+          "sha256": "143f3a81284b1fb623fd65a3890fc485e5f761c15a8aa39a7fd549d2076d9c58"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_020_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75419,
+          "sha256": "60b109b7d58447fe8f45c19d6a50167fe57314e9a59a787d60645ca769d16628"
+        }
+      }
+    },
+    {
+      "number": 21,
+      "type": "roads_grid",
+      "type_label": "Дороги по клеткам",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_021_variant.pdf",
+          "pages": 5,
+          "bytes": 191567,
+          "sha256": "9a37c808c117ed68eb6f5c6305a011f2b3facc86344fab84db838032dac93bf3"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_021_otvety.pdf",
+          "pages": 1,
+          "bytes": 39409,
+          "sha256": "53deab36cfbe33bed9fefc8f3eb53e617b18072f2e1782c6e2e8ec0497afde19"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_021_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75656,
+          "sha256": "de6f8d06772b17c3ad4661f7a2949c71d62b8372c99dc3ca176ac008e913bcde"
+        }
+      }
+    },
+    {
+      "number": 22,
+      "type": "roads_schema",
+      "type_label": "Дороги без клеток",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_022_variant.pdf",
+          "pages": 4,
+          "bytes": 209279,
+          "sha256": "20ba0ac16fe46722d6d4b8bddbd4f58164b5fa3a1825b077cbcb970582aa2b88"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_022_otvety.pdf",
+          "pages": 1,
+          "bytes": 38992,
+          "sha256": "8227b001dc55fd510fe84730e9015c1d148211ea30a93b17d3c7a31b037ba6d0"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_022_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75477,
+          "sha256": "97878c52dc12489331cdf2a7bd4d3ace9b96f61bc7ffb76cdbf01fcd5f7a4436"
+        }
+      }
+    },
+    {
+      "number": 23,
+      "type": "furnace",
+      "type_label": "Печки",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_023_variant.pdf",
+          "pages": 5,
+          "bytes": 237401,
+          "sha256": "88f9235389a902feb7fabd108025370049a4752e6723096b75522332d3485e37"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_023_otvety.pdf",
+          "pages": 1,
+          "bytes": 39267,
+          "sha256": "f10c3a116bf724bcd0c1fd8866141b5fe4098d57e19d00d72e3c73254354bf15"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_023_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75585,
+          "sha256": "86928c41317ac5b039ffb81a80aef3e74e262fae38f2ed8ed4d0fe27a23d5936"
+        }
+      }
+    },
+    {
+      "number": 24,
+      "type": "tariffs",
+      "type_label": "Тарифы",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_024_variant.pdf",
+          "pages": 4,
+          "bytes": 229771,
+          "sha256": "10b6f2b1aae0032731e2e482c8a0bbc486bd4efad55de3a7161ca740e0f4fcd6"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_024_otvety.pdf",
+          "pages": 1,
+          "bytes": 39120,
+          "sha256": "167d0eebcd06024098a12effe26f22d6f5927b4126b218cc2e60c436277ebef0"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_024_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75752,
+          "sha256": "479a35bbf241640f0acda49b28821ff164d823d507bdf5b076277ee084a702af"
+        }
+      }
+    },
+    {
+      "number": 25,
+      "type": "paper",
+      "type_label": "Листы бумаги",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_025_variant.pdf",
+          "pages": 5,
+          "bytes": 211953,
+          "sha256": "ff143341256a2b7dff07fab94415bd1b16a5cb75989d72978000a870a28e432f"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_025_otvety.pdf",
+          "pages": 1,
+          "bytes": 39795,
+          "sha256": "8468a5302ed4b04e2859d6938be70876839e98007b5b03be5df9d5e3adea0e24"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_025_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75002,
+          "sha256": "92dd384d448987aedad4ee4a4f6e959cba6bd0c03910814595e93ebeb14a080e"
+        }
+      }
+    },
+    {
+      "number": 26,
+      "type": "tires",
+      "type_label": "Шины",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_026_variant.pdf",
+          "pages": 5,
+          "bytes": 679248,
+          "sha256": "cbc5ed0197574f6ad6c22b5874251690e4b54a726d55b28790ef6e94dd712099"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_026_otvety.pdf",
+          "pages": 1,
+          "bytes": 39643,
+          "sha256": "409c955a274ffdd89497da7bd288c325e91a033f99cbc93bd3c4d836e7143e82"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_026_reshenie.pdf",
+          "pages": 5,
+          "bytes": 74935,
+          "sha256": "950a440d3ceb897ee8bd99b8d3845a01828fb64867b7416ae2c48b393b75fc94"
+        }
+      }
+    },
+    {
+      "number": 27,
+      "type": "flat",
+      "type_label": "Квартира",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_027_variant.pdf",
+          "pages": 4,
+          "bytes": 304289,
+          "sha256": "9f86784f8a7626dc9bafb74d1c6cb7e17223caa8bfc29ca98c67661b14695ef4"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_027_otvety.pdf",
+          "pages": 1,
+          "bytes": 38945,
+          "sha256": "724020d4a106251e4b55463022e27e79fbd0506fd450509e8794dd26302775eb"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_027_reshenie.pdf",
+          "pages": 5,
+          "bytes": 77065,
+          "sha256": "c4e95ff27d55e0bb951b2fe6be3a116dd35ecf75e69d4403b0a733e0da5ef549"
+        }
+      }
+    },
+    {
+      "number": 28,
+      "type": "roads_grid",
+      "type_label": "Дороги по клеткам",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_028_variant.pdf",
+          "pages": 5,
+          "bytes": 193891,
+          "sha256": "06e9491fa02e8779864aa48e1417dbd77b42fd129473a46c923e94aa268337d6"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_028_otvety.pdf",
+          "pages": 1,
+          "bytes": 39415,
+          "sha256": "af57dc29bfe864e8324962e6d15c07d6b034e83c656399614a3ef6ca4cbed31e"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_028_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75343,
+          "sha256": "9d88770100dd67e765fb40b9baedcd882552cf08acadbc7c88abb9bfe4844f88"
+        }
+      }
+    },
+    {
+      "number": 29,
+      "type": "roads_schema",
+      "type_label": "Дороги без клеток",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_029_variant.pdf",
+          "pages": 4,
+          "bytes": 233793,
+          "sha256": "a6e0bea2c33da68eb2e93e5a2707e700604f20c8c3073ce70ddc6047c9a7286b"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_029_otvety.pdf",
+          "pages": 1,
+          "bytes": 39333,
+          "sha256": "b23cc233f787b25b09b9edda49391bacf9c9e6137e600898d5027c9b1ec04b78"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_029_reshenie.pdf",
+          "pages": 5,
+          "bytes": 74016,
+          "sha256": "e7b1655c2a6d6257fcea3eb7dcaff4156237640e2e02f5f0b8fa0b7bb0051b51"
+        }
+      }
+    },
+    {
+      "number": 30,
+      "type": "furnace",
+      "type_label": "Печки",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_030_variant.pdf",
+          "pages": 5,
+          "bytes": 232365,
+          "sha256": "ca4adcbd5a8f98179b3245a92d61caf0ae4132a1dca04734d73a96fff91e0ad2"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_030_otvety.pdf",
+          "pages": 1,
+          "bytes": 39875,
+          "sha256": "8a5e7f0fe53e9a2fb7541e26dae0e1a72550596ecb9a8bb53ed4919b224d37f3"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_030_reshenie.pdf",
+          "pages": 5,
+          "bytes": 78002,
+          "sha256": "0a03a1f1fd202b982fdf05569b123394f45669b30ae1299dc85d6b37d473f200"
+        }
+      }
+    },
+    {
+      "number": 31,
+      "type": "tariffs",
+      "type_label": "Тарифы",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_031_variant.pdf",
+          "pages": 4,
+          "bytes": 210986,
+          "sha256": "312562ab7b0ea51d9dcb2226216aacf745c7666f1cd7cac48a13e58ca8577de6"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_031_otvety.pdf",
+          "pages": 1,
+          "bytes": 39666,
+          "sha256": "56f9cec7d014910ee9408488cb748f1bfe77ea47424f718552b0e50d1ffc463f"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_031_reshenie.pdf",
+          "pages": 5,
+          "bytes": 74868,
+          "sha256": "34f5e427a4fdb529430b27a5ba352bfd24b10caa9e49ff184c44dad398f7b1f0"
+        }
+      }
+    },
+    {
+      "number": 32,
+      "type": "paper",
+      "type_label": "Листы бумаги",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_032_variant.pdf",
+          "pages": 5,
+          "bytes": 216603,
+          "sha256": "8a5616f3ffe56a597ef0fa771adf9d2dff3432d37bed97f087bc48e27449374a"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_032_otvety.pdf",
+          "pages": 1,
+          "bytes": 39163,
+          "sha256": "1a1d91980fa761d92a5f8e4e2ae5527da889e51fd37324efdea08fa0491b44cb"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_032_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75901,
+          "sha256": "fddbe88fe1a4d9b80e6cf83bb2a345597cdc41765a1f9bcd15179f5ef2cb09d8"
+        }
+      }
+    },
+    {
+      "number": 33,
+      "type": "tires",
+      "type_label": "Шины",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_033_variant.pdf",
+          "pages": 4,
+          "bytes": 672248,
+          "sha256": "123d67fa71d16eedb85b80fa9df7ee3d7748c67906d8311e9f4c5f0df6c63ecd"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_033_otvety.pdf",
+          "pages": 1,
+          "bytes": 39020,
+          "sha256": "b42445a4a22eb74c7fe3691b1d43defec4e7acb3f217c0bd89d72839c97a4234"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_033_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75650,
+          "sha256": "92737bae74cddebf446d0f5439311012eb492ff7dce2e72778ab6cedcadfbcd6"
+        }
+      }
+    },
+    {
+      "number": 34,
+      "type": "plot",
+      "type_label": "Участок",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_034_variant.pdf",
+          "pages": 5,
+          "bytes": 220113,
+          "sha256": "9a616c456de20669026432db0725795f33d9a0edcbf1e917f839e279120b4a2f"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_034_otvety.pdf",
+          "pages": 1,
+          "bytes": 39689,
+          "sha256": "03117e3f2825f9ab303556ee57444b7f8968ae99c2ac6fa7e12c719e893c8713"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_034_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75179,
+          "sha256": "3eb2e4512b172dc9dbc2dc73a100ddfb5b07bad2c2db11d9eb48d04a47e2063b"
+        }
+      }
+    },
+    {
+      "number": 35,
+      "type": "flat",
+      "type_label": "Квартира",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_035_variant.pdf",
+          "pages": 4,
+          "bytes": 280484,
+          "sha256": "fdf4109050b7c59dfe75e17d953b06528ef75d1b797b4a097665245c5d1a06b3"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_035_otvety.pdf",
+          "pages": 1,
+          "bytes": 40110,
+          "sha256": "d91c412459513180d2e7bc2619066c1627256051800571b99ac9d60bcb8d2ee7"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_035_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75805,
+          "sha256": "d904ff4c27a5113a17b7c23a2c6722d38f164481891f12885cdacd1834c709cb"
+        }
+      }
+    },
+    {
+      "number": 36,
+      "type": "roads_grid",
+      "type_label": "Дороги по клеткам",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_036_variant.pdf",
+          "pages": 5,
+          "bytes": 192300,
+          "sha256": "0312d9c3cb1cabaa82aba623f696320fffb5f939db88bf4a4176176ae6681c5a"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_036_otvety.pdf",
+          "pages": 1,
+          "bytes": 39827,
+          "sha256": "b3bb100fc4e616664d02b37e185daf9eb473845e1217b0906e002767ed5f19a2"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_036_reshenie.pdf",
+          "pages": 5,
+          "bytes": 77129,
+          "sha256": "dbf4fca6f51d5078d8246565f7a6bca58af2909bb95be049b9e10688945379a6"
+        }
+      }
+    },
+    {
+      "number": 37,
+      "type": "roads_schema",
+      "type_label": "Дороги без клеток",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_037_variant.pdf",
+          "pages": 4,
+          "bytes": 208872,
+          "sha256": "bf6dfbabc066a9437fd758b159dca39fe6a67c30c625f4ffe7767bf688682cf5"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_037_otvety.pdf",
+          "pages": 1,
+          "bytes": 39233,
+          "sha256": "0790e7c6f4802e4dc170801ce69764f49505b7e45695b5edaeb80a7cb5f01716"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_037_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75247,
+          "sha256": "e8870f8ec5f681a5ab6e9f7a703be3b2eb0e502248e87cdc13bbde5a84f2862a"
+        }
+      }
+    },
+    {
+      "number": 38,
+      "type": "furnace",
+      "type_label": "Печки",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_038_variant.pdf",
+          "pages": 5,
+          "bytes": 236802,
+          "sha256": "9304f1c0f8573cc94791123cac0acf14b306f41562902946ba2267c7c234d813"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_038_otvety.pdf",
+          "pages": 1,
+          "bytes": 39421,
+          "sha256": "eaaca68a68945a47477dc8b3cffe0e85a2bcbc8ec3bd82d4289f6a1b86a5530e"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_038_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75946,
+          "sha256": "aa8ae1225c8c95921abccfb9704d96231ece80a05988865ec6c2cf55613471c9"
+        }
+      }
+    },
+    {
+      "number": 39,
+      "type": "tariffs",
+      "type_label": "Тарифы",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_039_variant.pdf",
+          "pages": 4,
+          "bytes": 229716,
+          "sha256": "dc309c4eb88a8ecd84926bf8b4aa8bc9654bc0aacea61084db89caa8670839a6"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_039_otvety.pdf",
+          "pages": 1,
+          "bytes": 39624,
+          "sha256": "2a85bde27511a8c06bb9882f1976d8ad231af0cf28711effafcf5443ad784fb1"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_039_reshenie.pdf",
+          "pages": 5,
+          "bytes": 74861,
+          "sha256": "10b3900e69e70578e60f0b8db6c940c99842650cd54425a2e6877a5feb76c4b5"
+        }
+      }
+    },
+    {
+      "number": 40,
+      "type": "paper",
+      "type_label": "Листы бумаги",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_040_variant.pdf",
+          "pages": 5,
+          "bytes": 212674,
+          "sha256": "6d39f97be06878a79e922570d3aa39d98a8561bb22cfb214864d6f9c364a79cf"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_040_otvety.pdf",
+          "pages": 1,
+          "bytes": 39830,
+          "sha256": "860290db56811ef6fea4fdf81109b19d48d71c3b62128c9d787c7c5977f67078"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_040_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75358,
+          "sha256": "bb9c0f37f9cc3629c01c1d2b965bb222f8468eedeb3ea2bde57e951435640c6a"
+        }
+      }
+    },
+    {
+      "number": 41,
+      "type": "tires",
+      "type_label": "Шины",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_041_variant.pdf",
+          "pages": 5,
+          "bytes": 679977,
+          "sha256": "162dfb37ac10c431e1aa160668b6abe81a00d65b794234d28db01b47d7d70aa2"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_041_otvety.pdf",
+          "pages": 1,
+          "bytes": 39338,
+          "sha256": "1e0ded568a1c568ba0ff7f2c5e93bb888d199322f876130b17f72eb8de404cd6"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_041_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75028,
+          "sha256": "1f00e421eab8e1c7ca0afc87b8692172fb34fe3826abe2ea100febb9f134f932"
+        }
+      }
+    },
+    {
+      "number": 42,
+      "type": "plot",
+      "type_label": "Участок",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_042_variant.pdf",
+          "pages": 4,
+          "bytes": 198501,
+          "sha256": "24e4a973bd22a653ca9a82b0a110b943c0beb5bf4342c0689be101f52f2b8e10"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_042_otvety.pdf",
+          "pages": 1,
+          "bytes": 38855,
+          "sha256": "8ad5399083e5fb4da68cde7d8cea58e524399b6a649c2ab6ad540e6e53be8442"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_042_reshenie.pdf",
+          "pages": 5,
+          "bytes": 77212,
+          "sha256": "06743c31223df2472e25530c1461c13b45a9f665a5ec00c408c750a24b13c5bc"
+        }
+      }
+    },
+    {
+      "number": 43,
+      "type": "flat",
+      "type_label": "Квартира",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_043_variant.pdf",
+          "pages": 4,
+          "bytes": 306026,
+          "sha256": "17184cb9d2d0ed1ed155f5244943fbe0cd9e47b87708845cd76ba56903f426dc"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_043_otvety.pdf",
+          "pages": 1,
+          "bytes": 39417,
+          "sha256": "71a160fa23f47aca4787b1c1d096544734ed1c53c194783c7caa980425ecdbb3"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_043_reshenie.pdf",
+          "pages": 4,
+          "bytes": 74934,
+          "sha256": "62ff9e07f269b8055f9d2a4e93235d1710c589d0c7a251276e17911861a23144"
+        }
+      }
+    },
+    {
+      "number": 44,
+      "type": "roads_grid",
+      "type_label": "Дороги по клеткам",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_044_variant.pdf",
+          "pages": 5,
+          "bytes": 218138,
+          "sha256": "fe0be57a4094d8196e0f2b52d4390579fb4e79634fd17341ed3eba171c09d9fb"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_044_otvety.pdf",
+          "pages": 1,
+          "bytes": 38851,
+          "sha256": "a1151b54d760543a0cbca9bb2c3537a915ca40b6d5b64334cce818ab5ca8aa29"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_044_reshenie.pdf",
+          "pages": 5,
+          "bytes": 73281,
+          "sha256": "95618d0551eea62b7cadd63f8e1802a8f0fe1cc44d3775a1b0e45c74b50b57c0"
+        }
+      }
+    },
+    {
+      "number": 45,
+      "type": "roads_schema",
+      "type_label": "Дороги без клеток",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_045_variant.pdf",
+          "pages": 4,
+          "bytes": 209320,
+          "sha256": "992f068f0285912ee3a7c26327081fd2a6fef5bffd5862758b8734e66b7ac7f3"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_045_otvety.pdf",
+          "pages": 1,
+          "bytes": 40098,
+          "sha256": "ed6ca4c40028b50a00c067e2463e43f7c6a36d57170c5c2fde8c6d0632db318a"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_045_reshenie.pdf",
+          "pages": 5,
+          "bytes": 77044,
+          "sha256": "ec079151d16e173adecc3a7ba32ea4b70975324bf551bbf2affaea02d7365e73"
+        }
+      }
+    },
+    {
+      "number": 46,
+      "type": "furnace",
+      "type_label": "Печки",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_046_variant.pdf",
+          "pages": 5,
+          "bytes": 232662,
+          "sha256": "a99a46bbef223394fd935e5bbf71cfeee4e430bdfc0e77987b136243a43e0d8a"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_046_otvety.pdf",
+          "pages": 1,
+          "bytes": 39851,
+          "sha256": "45089cf9054f406b122427e8e9e18ff90e46adc92e08c5676ea68569b33f6f07"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_046_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75802,
+          "sha256": "6c172806ad72ef6e0a41eb7aa84d24a99a5eef76c373a87ad54606f927bff211"
+        }
+      }
+    },
+    {
+      "number": 47,
+      "type": "tariffs",
+      "type_label": "Тарифы",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_047_variant.pdf",
+          "pages": 4,
+          "bytes": 217354,
+          "sha256": "b6cccada467fc2cce8436fe26c84b8cee6fb42792713f40da43c3a09e3d9f31a"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_047_otvety.pdf",
+          "pages": 1,
+          "bytes": 38995,
+          "sha256": "02235045ae348bfa1321872d2636f74048b39d0e00304d628de0dc77da7f0e6a"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_047_reshenie.pdf",
+          "pages": 5,
+          "bytes": 74647,
+          "sha256": "b7300fcce39c9a06560702815910e3c902cf5083e0e2bc2f1bf25fd98cfd7555"
+        }
+      }
+    },
+    {
+      "number": 48,
+      "type": "paper",
+      "type_label": "Листы бумаги",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_048_variant.pdf",
+          "pages": 5,
+          "bytes": 209589,
+          "sha256": "ff0a7dc1b97a65df598a4c3e574aea98c6b1a499984fe5e7fafa452d729eabfb"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_048_otvety.pdf",
+          "pages": 1,
+          "bytes": 39304,
+          "sha256": "1ceb906c6d05de7b023773f335e6649eee2b01d946e5d5b457e03ad88cbf7727"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_048_reshenie.pdf",
+          "pages": 4,
+          "bytes": 76589,
+          "sha256": "c75bb175b7c69d0767a19db8fa09ae8cf85f1a6fececea452e927ed0d43723d2"
+        }
+      }
+    },
+    {
+      "number": 49,
+      "type": "tires",
+      "type_label": "Шины",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_049_variant.pdf",
+          "pages": 4,
+          "bytes": 694760,
+          "sha256": "ed1efd1146f04f52cf97f26dcb93a08cd804ec6c8a2736fc8fcba7118e825f1f"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_049_otvety.pdf",
+          "pages": 1,
+          "bytes": 39713,
+          "sha256": "8366c1da3932cf9717ce3b0adf99fb23e9544d163beca7995e0ea5defa8dd3ee"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_049_reshenie.pdf",
+          "pages": 5,
+          "bytes": 74856,
+          "sha256": "62c3aa21811dfacfaa1633931b48005263a87a0cbb72cf00447b68301398100c"
+        }
+      }
+    },
+    {
+      "number": 50,
+      "type": "plot",
+      "type_label": "Участок",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_050_variant.pdf",
+          "pages": 4,
+          "bytes": 205163,
+          "sha256": "3a311c40ccc300d252a5dc02de97b194fe5264d144a7775f30bfe50b67b56cc4"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_050_otvety.pdf",
+          "pages": 1,
+          "bytes": 39873,
+          "sha256": "8d01f188e2d9e66bd6a221da7065f2cbb9859afa6e36f4f335692ec0cd421134"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_050_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75866,
+          "sha256": "22f1399cdee60b0d5e66bbba97480b402b235e861822fb6f833a63149a01e03e"
+        }
+      }
+    },
+    {
+      "number": 51,
+      "type": "flat",
+      "type_label": "Квартира",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_051_variant.pdf",
+          "pages": 4,
+          "bytes": 272670,
+          "sha256": "d7cdf561638f36dc9976a7cfdbd74c36a4926a0cf85901226546f41fe8860f0d"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_051_otvety.pdf",
+          "pages": 1,
+          "bytes": 39451,
+          "sha256": "c6a5ba7593468121e8bf201af6f84dfed3ca4dfe8cbfae9fc6766abe30c14c42"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_051_reshenie.pdf",
+          "pages": 5,
+          "bytes": 76510,
+          "sha256": "da8e21628cb86e84b6e3ec4d8db046a197b31798c0e53c8eecf640ddb2934283"
+        }
+      }
+    },
+    {
+      "number": 52,
+      "type": "roads_grid",
+      "type_label": "Дороги по клеткам",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_052_variant.pdf",
+          "pages": 5,
+          "bytes": 193892,
+          "sha256": "9220e2b8b28f2b9337ed89f70ac0538b0e7a0e8353f9a23d8306727b50b64e4a"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_052_otvety.pdf",
+          "pages": 1,
+          "bytes": 39277,
+          "sha256": "7a9d402b4f7cb8ae06b1cbfb09a5c9b760cfac61bb4fb99220384ac8f9e55db0"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_052_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75052,
+          "sha256": "dba5bea07ff0fe7fab748475f0cfa9529e3ce3d2fb83af816a29e3d9323c35f2"
+        }
+      }
+    },
+    {
+      "number": 53,
+      "type": "roads_schema",
+      "type_label": "Дороги без клеток",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_053_variant.pdf",
+          "pages": 4,
+          "bytes": 214194,
+          "sha256": "99ab60b2fdfbec44b9118895d25787c59f8fcdb60719c5371b9297457ed21c4c"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_053_otvety.pdf",
+          "pages": 1,
+          "bytes": 39343,
+          "sha256": "4868c7a13996385675f6e471b7df3fb04c2af5d72cdb5d7c8046621ab084a26e"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_053_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75469,
+          "sha256": "64fbe0c3f2053b2db77e77adbd9914456ce57e94c9d2e6c9bad30920aa0c6e6a"
+        }
+      }
+    },
+    {
+      "number": 54,
+      "type": "furnace",
+      "type_label": "Печки",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_054_variant.pdf",
+          "pages": 5,
+          "bytes": 251193,
+          "sha256": "4d37019702cef0c1fc570b2ee341befe38655d35f6d94098a84fe0dca3e8499d"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_054_otvety.pdf",
+          "pages": 1,
+          "bytes": 39539,
+          "sha256": "17987f66a225c766970a79c27dfc3ecc86bdeebfa15b215a3771ca1d500e1aba"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_054_reshenie.pdf",
+          "pages": 5,
+          "bytes": 76433,
+          "sha256": "8221da5b454550b3884cfb0077cb866a1f3749bf1e246e585f4327e2cf1001c6"
+        }
+      }
+    },
+    {
+      "number": 55,
+      "type": "tariffs",
+      "type_label": "Тарифы",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_055_variant.pdf",
+          "pages": 4,
+          "bytes": 212384,
+          "sha256": "c0b4c59aaee78d6bda989d722aabad417be1991bbd85b395fd60eda887fc98dd"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_055_otvety.pdf",
+          "pages": 1,
+          "bytes": 39723,
+          "sha256": "602f07a538537e798faf9844946a33e2533a663083698f351f36978c89328858"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_055_reshenie.pdf",
+          "pages": 5,
+          "bytes": 74695,
+          "sha256": "8f8baf4c9b617b6b48428fa33a06a4825543f1eb71666e706ec45d49d019737a"
+        }
+      }
+    },
+    {
+      "number": 56,
+      "type": "paper",
+      "type_label": "Листы бумаги",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_056_variant.pdf",
+          "pages": 5,
+          "bytes": 216553,
+          "sha256": "2e01038960b00f78607ccab8ca8c0f31e889e8c7512cef677dca7b4ab4b82f3b"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_056_otvety.pdf",
+          "pages": 1,
+          "bytes": 39720,
+          "sha256": "bbcdc58d657fdcc7c768f85f280b6ac560e7d8832a30bb9aad3e039111e4bacc"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_056_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75603,
+          "sha256": "2dc4c9e248ef0a773e2c08957a098a2da20a7d3a0617902fd7f54cd6c4ca548d"
+        }
+      }
+    },
+    {
+      "number": 57,
+      "type": "tires",
+      "type_label": "Шины",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_057_variant.pdf",
+          "pages": 4,
+          "bytes": 673060,
+          "sha256": "3ab61a58f17d606e0b7a01d484342e97a1c4582554357e09e56ea09e4cb29b79"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_057_otvety.pdf",
+          "pages": 1,
+          "bytes": 38990,
+          "sha256": "513dd27cc62ca347fbd9cc525caad759a4e907d31f6f2f718e1e29eec7385157"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_057_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75891,
+          "sha256": "c16f863d4e970fcbd90cd7bafb6c743d75efc12982b1dbd56f8f3bad604786ea"
+        }
+      }
+    },
+    {
+      "number": 58,
+      "type": "plot",
+      "type_label": "Участок",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_058_variant.pdf",
+          "pages": 5,
+          "bytes": 200398,
+          "sha256": "b95fff79d7b167c4d31b6350b44ffface919d8ad5e1cc7cb6d7e94cd7e2bbb0e"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_058_otvety.pdf",
+          "pages": 1,
+          "bytes": 39466,
+          "sha256": "ce2a5e4284eeb01abc4319c96383e4c6e1efc601c98f937b51333557e7c15228"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_058_reshenie.pdf",
+          "pages": 5,
+          "bytes": 76342,
+          "sha256": "7207b520f8202cec298174a4b8ad4711f98d63522aa6ae0a5347826ab87f5f28"
+        }
+      }
+    },
+    {
+      "number": 59,
+      "type": "flat",
+      "type_label": "Квартира",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_059_variant.pdf",
+          "pages": 5,
+          "bytes": 330940,
+          "sha256": "8ac7cf07d1b229dbf654fc997ef68ab23d6efe3387c401440c8a5c59dc1dfcbc"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_059_otvety.pdf",
+          "pages": 1,
+          "bytes": 39402,
+          "sha256": "a6aae5e58c98c869304e47883f293b352c43b0143587e79ba1cb7c12e2163b27"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_059_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75238,
+          "sha256": "ac796e0a05a09b866852e03c4187e6c9411e9acf111e393cf2d4fe784c568e09"
+        }
+      }
+    },
+    {
+      "number": 60,
+      "type": "roads_grid",
+      "type_label": "Дороги по клеткам",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_060_variant.pdf",
+          "pages": 5,
+          "bytes": 194245,
+          "sha256": "38e60488aff828f4ac9f295c4e3d780516674c10bf300d6c37c80333eb8dff53"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_060_otvety.pdf",
+          "pages": 1,
+          "bytes": 39979,
+          "sha256": "0a0876b7a34d79be99d92900964bbf5f8ca4a69f6433a3d7a0d73f2377def037"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_060_reshenie.pdf",
+          "pages": 5,
+          "bytes": 77891,
+          "sha256": "7f114fa544b564368fc8ec74df746c00c5ffed74abc006d180d087e034c0d96e"
+        }
+      }
+    },
+    {
+      "number": 61,
+      "type": "roads_schema",
+      "type_label": "Дороги без клеток",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_061_variant.pdf",
+          "pages": 4,
+          "bytes": 208132,
+          "sha256": "6549f900f6334d4a3fda6db4d59080dbe281e66e5f7ba0ba9f35a4482d962634"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_061_otvety.pdf",
+          "pages": 1,
+          "bytes": 39656,
+          "sha256": "734f77a40964a3dd927fd409e7103978802b8e2f6e55d586a51b31d738073733"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_061_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75302,
+          "sha256": "9b3f65f9ea8910975ca4995193d9a94610d99d61cbc677402c9650486a2e6b78"
+        }
+      }
+    },
+    {
+      "number": 62,
+      "type": "furnace",
+      "type_label": "Печки",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_062_variant.pdf",
+          "pages": 5,
+          "bytes": 236922,
+          "sha256": "bf0b564609c977991df3f6c04ce75560dfafbcb4abcfeeb8d8e8ef0f47e75d38"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_062_otvety.pdf",
+          "pages": 1,
+          "bytes": 39133,
+          "sha256": "610ea60107639aec28a4468c47363abf814c0b1554a9e20b5ed09a01011a1795"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_062_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75606,
+          "sha256": "48f89ecee19b6e8e52c8e8d906946b96b0e3676f3d6e4c408b3887f48d8a4610"
+        }
+      }
+    },
+    {
+      "number": 63,
+      "type": "tariffs",
+      "type_label": "Тарифы",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_063_variant.pdf",
+          "pages": 4,
+          "bytes": 209894,
+          "sha256": "42851ef9d697d0b3b500a3f912db32753a48da11da737de94b8a85c000700a4a"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_063_otvety.pdf",
+          "pages": 1,
+          "bytes": 39357,
+          "sha256": "4ba80e37f9fa069f2165ff86219629f5be12bee02e05e6c00d534db5c2d486a6"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_063_reshenie.pdf",
+          "pages": 4,
+          "bytes": 75041,
+          "sha256": "6d81c0ea4414e3ee723af9eb13a7975bc0ae2cf48833e95065d676ea4dbd050e"
+        }
+      }
+    },
+    {
+      "number": 64,
+      "type": "paper",
+      "type_label": "Листы бумаги",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_064_variant.pdf",
+          "pages": 5,
+          "bytes": 231453,
+          "sha256": "cfe4dd831ce7aa8aff78d9e85c3a40ea673b0b776b95a578a959d545ce63d246"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_064_otvety.pdf",
+          "pages": 1,
+          "bytes": 39667,
+          "sha256": "3fd94cb548edf1d6229d6010808372cd203075e7d01fd2887cb6b7b0fbd08085"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_064_reshenie.pdf",
+          "pages": 5,
+          "bytes": 74390,
+          "sha256": "4426e12bef9227c401be119d88a2f3eec4dffb5358318375113e690493c138fb"
+        }
+      }
+    },
+    {
+      "number": 65,
+      "type": "tires",
+      "type_label": "Шины",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_065_variant.pdf",
+          "pages": 5,
+          "bytes": 682065,
+          "sha256": "bcf6bdfc53d075d96b1fad0f1208e601f117af195134613c7a851e82c5acb1c6"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_065_otvety.pdf",
+          "pages": 1,
+          "bytes": 40090,
+          "sha256": "aee79f0d604dab782dabdb37c9d9b5c73cfa4c5eb07657825a848158233864ff"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_065_reshenie.pdf",
+          "pages": 5,
+          "bytes": 76626,
+          "sha256": "ce6dad58683c14eec5ef7d526111234ec99f40b2da97fb89aa057f10018b458e"
+        }
+      }
+    },
+    {
+      "number": 66,
+      "type": "plot",
+      "type_label": "Участок",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_066_variant.pdf",
+          "pages": 5,
+          "bytes": 199361,
+          "sha256": "3c2cc23c90b1abb0d68f9859cdaac837f8253acb0d341badb49bd48bfb40952a"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_066_otvety.pdf",
+          "pages": 1,
+          "bytes": 39293,
+          "sha256": "983225989779c664e64a72938ec01a691c664b69f4dcb84e501853468418a934"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_066_reshenie.pdf",
+          "pages": 5,
+          "bytes": 77047,
+          "sha256": "1287fb96c773d706ec54d8f89990f1db05e8104c96c3baec708a6b33bd4e70aa"
+        }
+      }
+    },
+    {
+      "number": 67,
+      "type": "flat",
+      "type_label": "Квартира",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_067_variant.pdf",
+          "pages": 4,
+          "bytes": 274985,
+          "sha256": "6ca756c5a3f13b73b276561646aebbd7e00cbb73843542e62a3f66a5c994f478"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_067_otvety.pdf",
+          "pages": 1,
+          "bytes": 39198,
+          "sha256": "ee54f74e03f66968aca57a1d79437b81b39f4ceed963ccc6ef28615548709569"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_067_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75980,
+          "sha256": "1b341ae0bfb2b599412c94f374048551215f127a0438e5f9a25dc2122612b058"
+        }
+      }
+    },
+    {
+      "number": 68,
+      "type": "roads_grid",
+      "type_label": "Дороги по клеткам",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_068_variant.pdf",
+          "pages": 5,
+          "bytes": 198879,
+          "sha256": "f543732d17c9e7ac37f75bbab8ea749c3620d943742f59b0916fa0d622a2ee9d"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_068_otvety.pdf",
+          "pages": 1,
+          "bytes": 39388,
+          "sha256": "5244820623ec77379e8e7ef84de2ef411fff23828d7918d7f2249a7c01fc00c6"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_068_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75338,
+          "sha256": "2e689ef6d75a10bb54f0b7ddf5ec339cfbbbc396d895e0aa7ab8ed54bad4db1b"
+        }
+      }
+    },
+    {
+      "number": 69,
+      "type": "roads_schema",
+      "type_label": "Дороги без клеток",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_069_variant.pdf",
+          "pages": 4,
+          "bytes": 227102,
+          "sha256": "20486bbb9eb5bc8174c1d7c80bceee2b8ce9ab7134ef3453e859b47558fbcc6b"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_069_otvety.pdf",
+          "pages": 1,
+          "bytes": 39614,
+          "sha256": "1f4ff2a5b8d687fd9a2766ac031fdb84e0176b6c55d307a50a06d07335245895"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_069_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75763,
+          "sha256": "91b48777392113d8ed35223355afdc4fbe6bdd28a014e17683fa5d8137723c89"
+        }
+      }
+    },
+    {
+      "number": 70,
+      "type": "furnace",
+      "type_label": "Печки",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_070_variant.pdf",
+          "pages": 5,
+          "bytes": 232773,
+          "sha256": "81cb08dc1d3eff5ffffa292183b0042c2d6336966356cc9ad0d070114da64d47"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_070_otvety.pdf",
+          "pages": 1,
+          "bytes": 39629,
+          "sha256": "973d7adb187d13256b4942a5cad001a2e42bcb0ff6e0aa61cd3a9be652add336"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_070_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75525,
+          "sha256": "365566ea60c6059860f9164fb6cd5cff0571c8622b30c321a935ff81523d724a"
+        }
+      }
+    },
+    {
+      "number": 71,
+      "type": "tariffs",
+      "type_label": "Тарифы",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_071_variant.pdf",
+          "pages": 4,
+          "bytes": 216605,
+          "sha256": "a414dde75afa3f04f86d68c7d0bcdb6635a9b10243f9a6db691f7dddc7b669ee"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_071_otvety.pdf",
+          "pages": 1,
+          "bytes": 39272,
+          "sha256": "c621eb53d5a377cc1464e0e1a8652aa723bb16f0324f110d80adc8c2206d6f26"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_071_reshenie.pdf",
+          "pages": 5,
+          "bytes": 74571,
+          "sha256": "a377cd4cbb3fe901d027cf442188f31160a38f2bb88da3d9551eaae93747bab0"
+        }
+      }
+    },
+    {
+      "number": 72,
+      "type": "paper",
+      "type_label": "Листы бумаги",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_072_variant.pdf",
+          "pages": 5,
+          "bytes": 210007,
+          "sha256": "c29ffce486bbd3a64c5cf54710ff033d17dce588ca7a422fb6141470e8d20168"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_072_otvety.pdf",
+          "pages": 1,
+          "bytes": 38888,
+          "sha256": "231b139d4206b0ed8b5415f199a33b1d4dbd093da5effc20d0801085a572911b"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_072_reshenie.pdf",
+          "pages": 5,
+          "bytes": 76661,
+          "sha256": "0dd1ad6355c59074d2c2d1c119af0b7e8debe4e2a2297711849f2c06b49cb1cc"
+        }
+      }
+    },
+    {
+      "number": 73,
+      "type": "tires",
+      "type_label": "Шины",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_073_variant.pdf",
+          "pages": 4,
+          "bytes": 674105,
+          "sha256": "5d9aee65a22b1cee4dece02815df1c5f74eac58075bbe10e373be893a9d8a400"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_073_otvety.pdf",
+          "pages": 1,
+          "bytes": 39288,
+          "sha256": "b98b1c427e7db500f9a4a6bed0e78a7913435c2a91ff46d26edee26bfb854505"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_073_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75819,
+          "sha256": "6a221e3b6e693f938bd4fffad3f6cad2d29b029534610a556d5789173af2d8ac"
+        }
+      }
+    },
+    {
+      "number": 74,
+      "type": "plot",
+      "type_label": "Участок",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_074_variant.pdf",
+          "pages": 5,
+          "bytes": 223960,
+          "sha256": "1294cd32616452d35f210aa50f9037a88a268c43bc24fc65d26f5067d8e0ef8b"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_074_otvety.pdf",
+          "pages": 1,
+          "bytes": 39144,
+          "sha256": "d55b2f2580ef71ff85889c0da2cbfc834e6eac5ac6e8f58dfd096de2dfe1ee26"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_074_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75615,
+          "sha256": "9462712398af09c08bd0184b036a113207129f5e8f6bb82b9239afbba65d68c5"
+        }
+      }
+    },
+    {
+      "number": 75,
+      "type": "flat",
+      "type_label": "Квартира",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_075_variant.pdf",
+          "pages": 4,
+          "bytes": 305831,
+          "sha256": "03b7862a641e6a00b82c7268d98453042eec0f06c90d5fe2b1df59c2acf41291"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_075_otvety.pdf",
+          "pages": 1,
+          "bytes": 39920,
+          "sha256": "91a38592d3ca378f33e0e459a21b2148dba58e74dc3530df190570b8cd495122"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_075_reshenie.pdf",
+          "pages": 5,
+          "bytes": 77042,
+          "sha256": "a9d20bbba1c307e57f43c986e94ff44352221cbeeae02f182b7979ab894df9c3"
+        }
+      }
+    },
+    {
+      "number": 76,
+      "type": "roads_grid",
+      "type_label": "Дороги по клеткам",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_076_variant.pdf",
+          "pages": 5,
+          "bytes": 193766,
+          "sha256": "5e6543d8cfcf37945032e1df8897db312281cfe7a8098272fccb344c57b83a39"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_076_otvety.pdf",
+          "pages": 1,
+          "bytes": 39637,
+          "sha256": "50efdd56125250d622a2f201f44bb091a0c684eaff9ad0457769220deda61a4d"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_076_reshenie.pdf",
+          "pages": 5,
+          "bytes": 74993,
+          "sha256": "5c43db9b2778d62cc604ea27621e2d873eab48e1fbb6b57b01afc854115127fa"
+        }
+      }
+    },
+    {
+      "number": 77,
+      "type": "roads_schema",
+      "type_label": "Дороги без клеток",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_077_variant.pdf",
+          "pages": 4,
+          "bytes": 213881,
+          "sha256": "b252517fbac7a2c076c8249dd80fa27b4832222677c0e8365edff818a520700e"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_077_otvety.pdf",
+          "pages": 1,
+          "bytes": 38731,
+          "sha256": "3b7bae5a81fc1ed68f067cfbd35f7ac64a54705316cdb979d9490c68efa6cc7c"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_077_reshenie.pdf",
+          "pages": 5,
+          "bytes": 73952,
+          "sha256": "41b0d84808e559f5a93899506b0eaac395474593873fbbedc5d4a10fc73011df"
+        }
+      }
+    },
+    {
+      "number": 78,
+      "type": "furnace",
+      "type_label": "Печки",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_078_variant.pdf",
+          "pages": 5,
+          "bytes": 231465,
+          "sha256": "f509fb15b9c9659e3ea8343e0129ef9e22c206fab2de828fe52686b440accbe9"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_078_otvety.pdf",
+          "pages": 1,
+          "bytes": 39198,
+          "sha256": "767f97901873c853f09aefd2333a1e4d0d839fb49859446ec2db97bd15bb8b95"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_078_reshenie.pdf",
+          "pages": 5,
+          "bytes": 77942,
+          "sha256": "14d5ddae3e3823b33efe0049267d3534e9942e2a9e62bdc278643da6c5862657"
+        }
+      }
+    },
+    {
+      "number": 79,
+      "type": "tariffs",
+      "type_label": "Тарифы",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_079_variant.pdf",
+          "pages": 4,
+          "bytes": 231498,
+          "sha256": "d0a524716d929993097028967a527339f5bda6355374ce77feb3308dff7d3691"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_079_otvety.pdf",
+          "pages": 1,
+          "bytes": 39467,
+          "sha256": "05c26553c12027d72f0b32f5bc909a5c4486100964c07a0f29be0ac17412c45c"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_079_reshenie.pdf",
+          "pages": 5,
+          "bytes": 74482,
+          "sha256": "c3180d989ae8e6ecbe95dfc69895fea5dcdebb6f0ae9bf4680a81a9ab32d4ffa"
+        }
+      }
+    },
+    {
+      "number": 80,
+      "type": "paper",
+      "type_label": "Листы бумаги",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_080_variant.pdf",
+          "pages": 5,
+          "bytes": 217759,
+          "sha256": "507afc6bdea03a6bf1bcab33bd628dbae29d7c9bc8284d819ab0d053c2380e0f"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_080_otvety.pdf",
+          "pages": 1,
+          "bytes": 39930,
+          "sha256": "3a1f08af275df2a1f5990dfbdb16604ba2049de0cf9c2242459988c605a0ce33"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_080_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75748,
+          "sha256": "43f7dbcb71a1cdb51f8430f9f160992cf40dee59e115ad0a98da30e6020069a0"
+        }
+      }
+    },
+    {
+      "number": 81,
+      "type": "tires",
+      "type_label": "Шины",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_081_variant.pdf",
+          "pages": 4,
+          "bytes": 672746,
+          "sha256": "829b0eb58cc58269965aed297ecdc6578c93edd0fe90a28058b2397aaef2ab4e"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_081_otvety.pdf",
+          "pages": 1,
+          "bytes": 39563,
+          "sha256": "55b12c315ee930bbf1f5ebfe19a6b428cfa61d0784f8c241e3ff7a79e9ad375d"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_081_reshenie.pdf",
+          "pages": 5,
+          "bytes": 76231,
+          "sha256": "66dc805c28bc21dcf5fdaabeaa8999fef24e58a8e99a356458d09a393e33eaeb"
+        }
+      }
+    },
+    {
+      "number": 82,
+      "type": "plot",
+      "type_label": "Участок",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_082_variant.pdf",
+          "pages": 5,
+          "bytes": 200772,
+          "sha256": "51daa2a9b1145db13a3ba61b824b5814a19f873a4e4b76fe78de73a16e384fc9"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_082_otvety.pdf",
+          "pages": 1,
+          "bytes": 39349,
+          "sha256": "19f3cb175e914b7be80b8c421ab5f996e0dc10017444aded80662b9f0905fe3b"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_082_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75957,
+          "sha256": "2f058b570562592fb743d06a01e960dc27f88405f65aa5efaa8017bc801b5b47"
+        }
+      }
+    },
+    {
+      "number": 83,
+      "type": "flat",
+      "type_label": "Квартира",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_083_variant.pdf",
+          "pages": 5,
+          "bytes": 280223,
+          "sha256": "4f09c068a287fbd616d7959d24022e8d21769ace476b5c0b0d1a7ed7805b2131"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_083_otvety.pdf",
+          "pages": 1,
+          "bytes": 39438,
+          "sha256": "b951c1fc0750aec0577237ace24b5e04401ee5e75a18b32529bba86611c874c4"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_083_reshenie.pdf",
+          "pages": 5,
+          "bytes": 76356,
+          "sha256": "f253d6ea7adeb2339f29e96dfe317e404c68077ab1734ddc7f6b904e0cba44c8"
+        }
+      }
+    },
+    {
+      "number": 84,
+      "type": "roads_grid",
+      "type_label": "Дороги по клеткам",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_084_variant.pdf",
+          "pages": 5,
+          "bytes": 211977,
+          "sha256": "db2b59e99aae0b25fd49f9787fa7695bf06e37b94af21ad7babc33ad658db46a"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_084_otvety.pdf",
+          "pages": 1,
+          "bytes": 39617,
+          "sha256": "7752775221c6bc4860566569eac2b4bbf0f1bcb3b7ea9392e7aa8e1f8dbe0350"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_084_reshenie.pdf",
+          "pages": 5,
+          "bytes": 76382,
+          "sha256": "e4f13afc17ea3e8209eed4a1bd96143662d6658de8dda8fb2e88b9da38952a9f"
+        }
+      }
+    },
+    {
+      "number": 85,
+      "type": "roads_schema",
+      "type_label": "Дороги без клеток",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_085_variant.pdf",
+          "pages": 4,
+          "bytes": 210092,
+          "sha256": "6940c6147be67120112065a08d3762522ed24b809bc2368955a78122e6f161fd"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_085_otvety.pdf",
+          "pages": 1,
+          "bytes": 40099,
+          "sha256": "42062e3d76eec0611e90d837cf0474fdcbabfd5212969cd7132d534b6f76cb81"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_085_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75274,
+          "sha256": "012177b430a68b4f7e9c11aca35bac9133db6d75cfdd9a2f2142472c5fa36b70"
+        }
+      }
+    },
+    {
+      "number": 86,
+      "type": "furnace",
+      "type_label": "Печки",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_086_variant.pdf",
+          "pages": 5,
+          "bytes": 236933,
+          "sha256": "24260bd8b1ba2d9c38ee2650c689efb770fc51134cc9262ea6781f51fcee0f72"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_086_otvety.pdf",
+          "pages": 1,
+          "bytes": 39805,
+          "sha256": "16bcfbb082ae3a02eb17652b5c45946a7e52738fb1892dc63d6363252540a90a"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_086_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75740,
+          "sha256": "e5e7be3706bc45f23227b92492c5538cf4cde021ded5c7a2bc629a2009dcd8b6"
+        }
+      }
+    },
+    {
+      "number": 87,
+      "type": "tariffs",
+      "type_label": "Тарифы",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_087_variant.pdf",
+          "pages": 4,
+          "bytes": 209724,
+          "sha256": "7ed5b84abfb6c8f6e09a044f341ea1aa427ea251309910a70e7c5b68434e57ef"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_087_otvety.pdf",
+          "pages": 1,
+          "bytes": 39062,
+          "sha256": "65f65b541d3e257048d575954a5412d1fa48154486d383dd9b3dfef95ec64f0e"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_087_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75399,
+          "sha256": "3675cdcf4559f50f05fb1ae1fd64e7e6dd6e5e644954eac16a4a0b512c585b0c"
+        }
+      }
+    },
+    {
+      "number": 88,
+      "type": "paper",
+      "type_label": "Листы бумаги",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_088_variant.pdf",
+          "pages": 5,
+          "bytes": 211612,
+          "sha256": "8b03d9a4350d3e988ca566b76caab33a96c04e0bed4a70819230229847fb949b"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_088_otvety.pdf",
+          "pages": 1,
+          "bytes": 39215,
+          "sha256": "da20008b0e9c63276dbea26481d2eb20bec81c3e12674703fd06423bd3e3aaa9"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_088_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75777,
+          "sha256": "c23b0cb2dea77b5fbd38e11a748f37873336c3c447f5b6cece796886797b9cc6"
+        }
+      }
+    },
+    {
+      "number": 89,
+      "type": "tires",
+      "type_label": "Шины",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_089_variant.pdf",
+          "pages": 5,
+          "bytes": 700998,
+          "sha256": "d8f6d4b1ecc7d96e36624f527c42cbb24d8312da5a752bf99f3d7dbd77bd5fec"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_089_otvety.pdf",
+          "pages": 1,
+          "bytes": 39644,
+          "sha256": "8c31142f2d2c5a3a2a8b0b0816e4dc0041245c5c49b33008d02655ee97410b37"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_089_reshenie.pdf",
+          "pages": 5,
+          "bytes": 74149,
+          "sha256": "faa99522a09c6578c22c1bad4f345d443a6ac93874a78349637013a9d0418c7b"
+        }
+      }
+    },
+    {
+      "number": 90,
+      "type": "plot",
+      "type_label": "Участок",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_090_variant.pdf",
+          "pages": 5,
+          "bytes": 200368,
+          "sha256": "f69f58e241a08c934ea757892f8e86a70aa518a1919e7e3c4f3f77a84feb470a"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_090_otvety.pdf",
+          "pages": 1,
+          "bytes": 39953,
+          "sha256": "9ea20cc672e490584108c739f1abcb5f8211f4fccd31bc5f5862137153d6364f"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_090_reshenie.pdf",
+          "pages": 5,
+          "bytes": 77372,
+          "sha256": "b97285ae938b410ad3e68bba72cbb711860b29d1eec188ff34d21a7ea18928ed"
+        }
+      }
+    },
+    {
+      "number": 91,
+      "type": "flat",
+      "type_label": "Квартира",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_091_variant.pdf",
+          "pages": 4,
+          "bytes": 305854,
+          "sha256": "5123d9c5766f32cacc3922f955eebac03a271349e0dc76a7f4fe8fa0f8df4738"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_091_otvety.pdf",
+          "pages": 1,
+          "bytes": 39677,
+          "sha256": "18b6e11aca028a6178770d40715e0c284569d9dbce05210f095bfbc708137cc7"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_091_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75321,
+          "sha256": "f421e2f26f7e3c7649652cc3d8f16a0246b5f2a9552898473aed2e75b033c56c"
+        }
+      }
+    },
+    {
+      "number": 92,
+      "type": "roads_grid",
+      "type_label": "Дороги по клеткам",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_092_variant.pdf",
+          "pages": 5,
+          "bytes": 198993,
+          "sha256": "ddff5c1a1826f21b95fc078ef36c8a4d865c9225d7d0eb4852e05a6c5a18e885"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_092_otvety.pdf",
+          "pages": 1,
+          "bytes": 39171,
+          "sha256": "1f8f0af310ca4082ea6d4a8095060195fff603063e41ac135c0b6a268f60aae5"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_092_reshenie.pdf",
+          "pages": 5,
+          "bytes": 74541,
+          "sha256": "25de9743544c7606a229511c0ac7df96128b258c0ca07f93162d113ccb221a4b"
+        }
+      }
+    },
+    {
+      "number": 93,
+      "type": "roads_schema",
+      "type_label": "Дороги без клеток",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_093_variant.pdf",
+          "pages": 4,
+          "bytes": 207749,
+          "sha256": "54b17759220295b85e0f967b9412b6c5aba451163333b81bb4641fbee461e50b"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_093_otvety.pdf",
+          "pages": 1,
+          "bytes": 39421,
+          "sha256": "7905747caf523909f79b4cbe33e8c7e72084cb3a3c7ea21ff9f03252d3c160f6"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_093_reshenie.pdf",
+          "pages": 5,
+          "bytes": 76900,
+          "sha256": "0f110354b34da38d3a6b4163c50cc0a78ae860a5c1fb90e3df8231ee789c46d4"
+        }
+      }
+    },
+    {
+      "number": 94,
+      "type": "furnace",
+      "type_label": "Печки",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_094_variant.pdf",
+          "pages": 5,
+          "bytes": 252727,
+          "sha256": "d3d5d5e7f2315593946098af38f8264475e90dff4f1554e2a6d52e1ad0f991e0"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_094_otvety.pdf",
+          "pages": 1,
+          "bytes": 39699,
+          "sha256": "67f9236388f4b025388072d27a0873828bfceae9403b7bfd174694f1212b902b"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_094_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75362,
+          "sha256": "1e732961fe0a4dbebdbe9ffbc6e31206955c400d73a11a7c179ef7c2ee0885e8"
+        }
+      }
+    },
+    {
+      "number": 95,
+      "type": "tariffs",
+      "type_label": "Тарифы",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_095_variant.pdf",
+          "pages": 4,
+          "bytes": 217818,
+          "sha256": "4b53fbbc972926a45e60126b853dcc645a5a5e8167a2c2b692123c92c67a5dc1"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_095_otvety.pdf",
+          "pages": 1,
+          "bytes": 40092,
+          "sha256": "a848e772e59b8020ead3678610e123926dfd64b6809e09cfe778bdfa949d7ea8"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_095_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75567,
+          "sha256": "3c5facdfdae79c6ae2a8f7b2839bc5cd1330329302dde36ecb03809cac8cdc27"
+        }
+      }
+    },
+    {
+      "number": 96,
+      "type": "paper",
+      "type_label": "Листы бумаги",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_096_variant.pdf",
+          "pages": 5,
+          "bytes": 210200,
+          "sha256": "a20a1d219ed44f948ffc576467078b8c62671d7a2ff2fa9e44cf937506d3ffd7"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_096_otvety.pdf",
+          "pages": 1,
+          "bytes": 39625,
+          "sha256": "c66dc341244fad0560d68deabe402bf47ffeb4c9f53dca76766ba96961cdec29"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_096_reshenie.pdf",
+          "pages": 5,
+          "bytes": 77510,
+          "sha256": "7735f1eb0894aa6874e91db4e01b731d1dfb683370463d1e84f42c81dcf924a6"
+        }
+      }
+    },
+    {
+      "number": 97,
+      "type": "tires",
+      "type_label": "Шины",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_097_variant.pdf",
+          "pages": 4,
+          "bytes": 675111,
+          "sha256": "4f6aeedd7c0376f7ef73f305e0cfc970468ebf544dc0091ccf6c2d03537f2e7d"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_097_otvety.pdf",
+          "pages": 1,
+          "bytes": 39231,
+          "sha256": "f6f6d76abfabb88b6da7f2f74430cf5cbcb210fb435e2c88b36bd3203ce2c507"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_097_reshenie.pdf",
+          "pages": 5,
+          "bytes": 75979,
+          "sha256": "8f771261b4187f97f6ac1cf9ba9c17a3691234963631804824b52bd2daf6d40a"
+        }
+      }
+    },
+    {
+      "number": 98,
+      "type": "plot",
+      "type_label": "Участок",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_098_variant.pdf",
+          "pages": 5,
+          "bytes": 204414,
+          "sha256": "b54fd628a5527e3c84947bacb68bc6675948c24f86a6cf24522ea77e300a24ff"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_098_otvety.pdf",
+          "pages": 1,
+          "bytes": 39373,
+          "sha256": "5f01b506e90d6a9c2ce023e46258fc785eee5c0aaf97de630b0347da5828bbc2"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_098_reshenie.pdf",
+          "pages": 5,
+          "bytes": 76782,
+          "sha256": "a7554e19f2cd732c3c3a2910b2cb5cd5e960194152704716ca73a156893c3999"
+        }
+      }
+    },
+    {
+      "number": 99,
+      "type": "flat",
+      "type_label": "Квартира",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_099_variant.pdf",
+          "pages": 4,
+          "bytes": 292887,
+          "sha256": "2ea42be800292a8f3ac701381997696c628ae991da9958996224e1e9f0dc953a"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_099_otvety.pdf",
+          "pages": 1,
+          "bytes": 39326,
+          "sha256": "a33ae823d54e6b6ce81bc1f6c38d386f9237a4133fda06866f42a4b68a496d95"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_099_reshenie.pdf",
+          "pages": 4,
+          "bytes": 75437,
+          "sha256": "d4737b4b9cb039aabe957017ca847e3bca3dfb7a50090576f1e98c6cb949eb9e"
+        }
+      }
+    },
+    {
+      "number": 100,
+      "type": "roads_grid",
+      "type_label": "Дороги по клеткам",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_100_variant.pdf",
+          "pages": 5,
+          "bytes": 194273,
+          "sha256": "91b57e6788c5f84fa743e0896927f34f472642870e18c89b0977c11fe5970b07"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_100_otvety.pdf",
+          "pages": 1,
+          "bytes": 39606,
+          "sha256": "d107d59a0cc79f48152af3d6e46f125bf047e64fa74a58476b7792b63b956039"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_100_reshenie.pdf",
+          "pages": 5,
+          "bytes": 74607,
+          "sha256": "dadc4d01fac226185d1a377bb3e303e370b9e60815bc64a97aa7680d196f5be5"
+        }
+      }
+    },
+    {
+      "number": 101,
+      "type": "roads_schema",
+      "type_label": "Дороги без клеток",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_101_variant.pdf",
+          "pages": 4,
+          "bytes": 212632,
+          "sha256": "45dc770eb3bd96186b3b915018a34e78576f7680a87ea8523b73c061212d2b45"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_101_otvety.pdf",
+          "pages": 1,
+          "bytes": 39283,
+          "sha256": "55936d7cbb0b89ff0933051a5124816d9ed71fb0c93e5f5567d4e2e8f3f95a84"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_101_reshenie.pdf",
+          "pages": 5,
+          "bytes": 74946,
+          "sha256": "7078cc23fc4feb178ced3ba97d7ccc0339a08d761071a63adf67ec1760f061ed"
+        }
+      }
+    },
+    {
+      "number": 102,
+      "type": "furnace",
+      "type_label": "Печки",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_102_variant.pdf",
+          "pages": 5,
+          "bytes": 231580,
+          "sha256": "eb06142ad935444116b46c567cd297d064dc133db3d5a4c608f34b4bdf59185d"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_102_otvety.pdf",
+          "pages": 1,
+          "bytes": 39034,
+          "sha256": "9d3d7ba6efbf74b6dc5229d1b202c28751c5fac146f9e6e02660aaa79c56375f"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_102_reshenie.pdf",
+          "pages": 5,
+          "bytes": 77592,
+          "sha256": "4bfe7bced87683676e8df96b652113080ea5c582e7f9478e0a30e52170d464b8"
+        }
+      }
+    },
+    {
+      "number": 103,
+      "type": "tariffs",
+      "type_label": "Тарифы",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_103_variant.pdf",
+          "pages": 4,
+          "bytes": 211218,
+          "sha256": "e13850fca7f26e083cf1054a2701326f1fe6e3a2d44046eb7bccf2a435eb09bd"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_103_otvety.pdf",
+          "pages": 1,
+          "bytes": 39324,
+          "sha256": "045aa2a837e7641e0a9b9061272b260489bac6a5076f9adc64800ce757d3c01a"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_103_reshenie.pdf",
+          "pages": 5,
+          "bytes": 76014,
+          "sha256": "ffd78e70b26e2b1eceddebf95e424a838265b222437106e2a78e3e3b6a0708f7"
+        }
+      }
+    },
+    {
+      "number": 104,
+      "type": "paper",
+      "type_label": "Листы бумаги",
+      "files": {
+        "variant": {
+          "path": "files/OGE_2027_104_variant.pdf",
+          "pages": 5,
+          "bytes": 236237,
+          "sha256": "507925b988726b331e8f97e46a502e50d22e6683d9b04ede2f70b4e7473680ba"
+        },
+        "otvety": {
+          "path": "files/OGE_2027_104_otvety.pdf",
+          "pages": 1,
+          "bytes": 39387,
+          "sha256": "bef26662150c9b8dabdeff19c3faba6a76459af57329a1893eb0d3d4c72c1d9e"
+        },
+        "reshenie": {
+          "path": "files/OGE_2027_104_reshenie.pdf",
+          "pages": 5,
+          "bytes": 74653,
+          "sha256": "18495d933518ffea606d2c9e4ab888a38eceb26ce2b9d41e87486255e6b20afe"
+        }
+      }
+    }
+  ]
+}

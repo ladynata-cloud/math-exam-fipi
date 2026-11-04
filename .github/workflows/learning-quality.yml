@@ -4,15 +4,36 @@ on:
   pull_request:
     paths:
       - 'board-server/**'
+      - 'assistant-service/public/practice-core.js'
+      - 'assistant-service/package.json'
       - 'learning/**'
+      - 'geometry-course/textbook/assets/math-text.js'
+      - 'geometry-course/textbook/assets/planar-viewer.js'
+      - 'geometry-course/assets/lab.js'
+      - 'geometry-course/data/course.json'
+      - 'geometry-course/atlas/**'
       - 'foundations/**'
+      - 'grade7/geometry-rebuild/**'
       - 'ege-baza/path/**'
       - 'trainers/learning-bridge.js'
       - 'trainers/oge-basics/**'
       - 'trainers/motion-grade6/**'
       - 'tools/motion-grade6-*'
       - 'tools/learning-*'
+      - 'tools/division-diagnostic*'
+      - 'tools/arithmetic-*'
+      - 'tools/fixtures/arithmetic-*'
+      - 'soviet-math/**'
+      - 'school/**'
+      - 'trainers/drobi-oge-trainer.html'
+      - 'trainers/oge-task6-fractions.html'
+      - 'trainers/rounding-stepwise.html'
+      - 'tools/rounding-stepwise.dom.cjs'
+      - 'tools/rounding-stepwise.browser.cjs'
       - 'tools/grade7-*'
+      - 'tools/geometry-object-labels.*'
+      - 'tools/geometry/object-labels.*'
+      - 'tools/photo-proof-*'
       - 'tools/pre7-*'
       - 'Dockerfile'
       - '.dockerignore'
@@ -51,6 +72,15 @@ jobs:
           node tools/learning-remediation-quality.cjs
           node tools/learning-remediation-checkpoint.cjs
           node tools/learning-scaffolds.test.cjs
+          node --test tools/learning-arithmetic-feedback.test.cjs
+          node tools/learning-arithmetic-robots-compare.cjs
+          node --test tools/quotient-estimate.test.cjs
+          node --test tools/division-course.test.cjs
+          node tools/division-diagnostic.test.cjs
+          node tools/arithmetic-foundations.test.cjs
+          node --test tools/arithmetic-division-generators.test.cjs tools/learning-arithmetic-generation-compat.test.cjs
+          node tools/multiplication-column.test.cjs
+          node --test tools/learning-multiplication-support.test.cjs
           node tools/learning-remediation-bank.cjs --check
           node tools/learning-catalog-reference-test.cjs
           node tools/grade7-algebra.test.cjs
@@ -60,18 +90,118 @@ jobs:
           node tools/pre7-applications.test.cjs
           node tools/pre7-models.test.cjs
           node tools/grade7-geometry-core.test.cjs
+          node tools/learning-assignment-geometry.test.cjs
           node tools/grade7-construction.test.cjs
           node tools/grade7-geometry-practice.test.cjs
+          node tools/grade7-rebuild-foundations.test.cjs
+          node tools/grade7-rebuild-triangles.test.cjs
+          node tools/grade7-rebuild-relations.test.cjs
+          node tools/grade7-rebuild-workbook.test.cjs
+          node tools/grade7-geometry-rebuild.integration.cjs
           node tools/grade7-route-map.test.cjs
+          node --test tools/grade7-geometry-journey.test.cjs
           node tools/learning-preparation.test.cjs
           node --test tools/motion-grade6-ui-test.cjs tools/motion-grade6-river-test.cjs
       - name: Install pinned browser test tools
+        id: browser_tools
         run: |
-          npm install --prefix "$RUNNER_TEMP/learning-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsqr@1.4.0 pngjs@7.0.0
+          npm install --prefix "$RUNNER_TEMP/learning-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsqr@1.4.0 pngjs@7.0.0 jsdom@26.1.0
           "$RUNNER_TEMP/learning-browser/node_modules/.bin/playwright" install --with-deps chromium
           echo "NODE_PATH=$RUNNER_TEMP/learning-browser/node_modules" >> "$GITHUB_ENV"
-      - name: Real classroom, trainer, homework and exam scenarios
+      - name: Assignment geometry DOM and saved-state regression
         run: |
+          node tools/learning-vertical-route.dom.cjs
+          node --test tools/learning-focus-links.dom.cjs
+          node tools/learning-plain-division.dom.cjs
+          node tools/learning-continuous-division.dom.cjs
+          node tools/learning-division-next.dom.cjs
+          node tools/learning-quotient-estimate.dom.cjs
+          node tools/learning-division-course.dom.cjs
+          node tools/division-diagnostic.dom.cjs
+          node tools/division-diagnostic-robots.dom.cjs
+          node tools/arithmetic-foundations.dom.cjs
+          node tools/fraction-notation.dom.cjs
+          node tools/learning-division-route.dom.cjs
+          node tools/learning-route-library.dom.cjs
+          node tools/learning-rounding-preparation.dom.cjs
+          node tools/rounding-stepwise.dom.cjs
+          node tools/rounding-stepwise.browser.cjs
+          node tools/learning-column-multiplication.dom.cjs
+          node tools/learning-parallel-public.dom.cjs
+          node tools/learning-public-continuation.dom.cjs
+          node --test tools/arithmetic-supplements.dom.cjs
+          node tools/arithmetic-practice-inventory.cjs --check
+          node tools/learning-multiplication-support.dom.cjs
+          node tools/learning-assignment-geometry.dom.cjs
+          node tools/photo-proof-clear.dom.cjs
+      - name: Source helper boundaries and complete geometry object naming audit
+        run: |
+          node --test tools/learning-assistant-local.test.cjs tools/learning-assistant-dialogue.test.cjs tools/learning-assistant-context-label.test.cjs
+          node --test tools/learning-legacy-geometry-helper.dom.cjs
+          node --test tools/geometry-object-labels.test.cjs
+          node --test tools/geometry/object-labels.test.cjs
+      - name: Division diagnostic mobile and saved-state regression
+        env:
+          DIVISION_DIAGNOSTIC_OUTPUT_DIR: ${{ runner.temp }}/division-diagnostic-evidence
+        run: |
+          node tools/division-diagnostic.browser.cjs
+          node tools/arithmetic-foundations.browser.cjs
+          node tools/fraction-notation.browser.cjs
+      - name: Division diagnostic visual evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: division-diagnostic-evidence
+          path: ${{ runner.temp }}/division-diagnostic-evidence/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Arithmetic learner robots with mistakes, help and saved work
+        run: |
+          mkdir -p "$RUNNER_TEMP/arithmetic-robots"
+          node tools/learning-arithmetic-robots.cjs --generator-version=1 --output="$RUNNER_TEMP/arithmetic-robots/legacy-after.json"
+          node tools/learning-arithmetic-robots.cjs --output="$RUNNER_TEMP/arithmetic-robots/current.json"
+          node tools/learning-arithmetic-robots.browser.cjs --output="$RUNNER_TEMP/arithmetic-robots/chromium.json"
+      - name: Arithmetic robot evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: arithmetic-learner-robots
+          path: ${{ runner.temp }}/arithmetic-robots/
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Geometry rebuild classroom and narrow-screen scenarios
+        env:
+          GEOMETRY_REBUILD_OUTPUT_DIR: ${{ runner.temp }}/geometry-rebuild-evidence
+          GEOMETRY_OBJECT_LABEL_ARTIFACTS: ${{ runner.temp }}/geometry-rebuild-evidence/object-names
+        run: |
+          node tools/grade7-geometry-rebuild.browser.cjs
+          node tools/grade7-active-practice.browser.cjs
+          node tools/grade7-geometry-journey.browser.cjs
+          node tools/photo-proof-clear.browser.cjs
+          node tools/geometry-object-labels.browser.cjs
+          node tools/geometry/object-labels.browser.cjs
+      - name: All geometry construction font layouts
+        if: ${{ !cancelled() && steps.browser_tools.outcome == 'success' }}
+        env:
+          GEOMETRY_REBUILD_OUTPUT_DIR: ${{ runner.temp }}/geometry-rebuild-evidence
+        run: node tools/grade7-construction-visual.browser.cjs
+      - name: Geometry rebuild visual evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: grade7-geometry-rebuild-evidence
+          path: ${{ runner.temp }}/geometry-rebuild-evidence/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Real classroom, trainer, homework and exam scenarios
+        env:
+          TMPDIR: ${{ runner.temp }}
+          LEARNING_ASSISTANT_BROWSER_ARTIFACTS: ${{ runner.temp }}/geometry-helper-evidence
+          LEARNING_ONBOARDING_OUTPUT_DIR: ${{ runner.temp }}/learning-onboarding-evidence
+        run: |
+          node --test --test-isolation=none tools/learning-assistant-browser.test.cjs
+          node tools/learning-assistant-e2e.browser.cjs
+          node tools/learning-assistant-dialogue.e2e.cjs
           node tools/learning-path.browser.cjs
           node tools/motion-grade6.browser.cjs
           node tools/learning-remediation-smoke.cjs
@@ -79,6 +209,7 @@ jobs:
           node tools/learning-oge-standard-route-robot.browser.cjs
           node tools/learning-auth.browser.cjs
           node tools/learning-simple-pupil-access.browser.cjs
+          node tools/learning-onboarding.browser.cjs
           node tools/learning-teacher-password.browser.cjs
           node tools/learning-quick-access.browser.cjs
           node tools/learning-parent.browser.cjs
@@ -97,17 +228,38 @@ jobs:
           node tools/profile-exam-first.browser.cjs
           node tools/pre7-foundations.browser.cjs
           node tools/grade7-geometry-core.browser.cjs
-          node tools/grade7-construction-visual.browser.cjs
-      - name: Keep river trainer desktop and mobile views
+      - name: Pupil onboarding desktop and mobile evidence
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: motion-river-views
-          path: test-results/motion-river-*.png
-          if-no-files-found: ignore
+          name: learning-onboarding-evidence
+          path: ${{ runner.temp }}/learning-onboarding-evidence/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Geometry helper desktop and mobile evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: geometry-helper-evidence
+          path: ${{ runner.temp }}/geometry-helper-evidence/
+          if-no-files-found: warn
           retention-days: 7
       - name: Final whitespace and patch check
         run: git diff --check
+      - name: Private practice, teacher policies and safe notes in real browsers
+        env:
+          BROWSER_SCREENSHOT_DIR: ${{ runner.temp }}/assistant-practice-evidence
+        run: node --test tools/learning-assistant-practice.browser.cjs
+      - name: Private practice synthetic browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: assistant-private-practice
+          path: ${{ runner.temp }}/assistant-practice-evidence
+          retention-days: 7
+          if-no-files-found: ignore
+      - name: Cabinet assistant preparation gate
+        run: echo MATHEXAM_ASSISTANT_CABINETS_PREPARED_OK
 
   container:
     runs-on: ubuntu-latest
@@ -118,16 +270,33 @@ jobs:
           persist-credentials: false
       - name: Build the production Alpine image
         run: docker build --tag mathexam-learning-qa:ci .
+      - name: Shared deterministic practice module is included in the cabinet image
+        run: docker run --rm --entrypoint node mathexam-learning-qa:ci --input-type=module -e 'import {generatePractice,gradePractice} from "../assistant-service/public/practice-core.js"; const d={skill:"fractions",level:2,seed:7}; if(gradePractice(d,generatePractice(d).expected).status!=="correct")process.exit(1);'
       - name: Verify actual SQLite and image codec in the production image
         run: |
           docker run --rm --entrypoint node mathexam-learning-qa:ci -e '
           const assert = require("node:assert/strict");
+          const fs = require("node:fs");
           const { LearningStore } = require("./learning-store");
           const contracts = require("./learning-contracts");
+          const { resolveCourseContext } = require("./assistant-course-context");
           const { initializeTeaching, inspectPhoto } = require("./learning-teaching");
           const { initializeRuns } = require("./learning-runs");
           const sharp = require("sharp");
           (async () => {
+            for (const file of ["../geometry-course/textbook/assets/math-text.js", "../geometry-course/textbook/assets/planar-viewer.js",
+              ...["app.js", "state.js", "style.css", "course.json"].map(file => "../learning/atanasyan-first-steps/" + file),
+              ...["app.js", "course.json", "source-manifest.json"].map(file => "../learning/ichenskaya-grade7-works/" + file)]) fs.accessSync(file, fs.constants.R_OK);
+            const courseContext = { courseId: "atanasyan-first-steps", lessonId: "atanasyan-7-9-main-160-part-2", stepIndex: 0 };
+            const resolvedCourse = resolveCourseContext(courseContext);
+            assert.deepEqual(resolvedCourse.courseContext, courseContext);
+            assert.match(resolvedCourse.question, /22°30′/);
+            assert.ok(resolvedCourse.stepCount > 0);
+            const companionContext = { courseId: "ichenskaya-grade7-works", lessonId: "ichenskaya-7-kr-06-v2-task-04", stepIndex: 0 };
+            const companion = resolveCourseContext(companionContext);
+            assert.deepEqual(companion.courseContext, companionContext);
+            assert.equal(companion.topic, "ichenskaya-course-step");
+            assert.ok(companion.stepCount > 0);
             const store = new LearningStore({ filePath: "/tmp/learning-container.sqlite", contracts });
             assert.equal(store.available, true);
             initializeTeaching(store); initializeRuns(store);

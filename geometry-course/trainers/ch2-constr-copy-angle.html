@@ -1,9 +1,12 @@
 <!doctype html>
 <html lang="ru">
 <head>
+<script src="/geometry-course/board/native-session.js"></script>
+<link rel="stylesheet" href="/geometry-course/board/native.css">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Угол, равный данному — циркуль и линейка</title>
+<link rel="canonical" href="https://mathexam.space/geometry-course/trainers/ch2-constr-copy-angle.html">
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
@@ -165,7 +168,7 @@ function loadSnap(s){ const o=JSON.parse(s); P.length=0;o.P.forEach(p=>P.push(p)
 function pushUndo(){ undoStack.push(takeSnap()); }
 
 /* ───────── ПРИВЯЗКА ───────── */
-function worldPos(e){ const r=cv.getBoundingClientRect(); const k=Math.max(1,W/r.width); return {x:(e.clientX-r.left)*k, y:(e.clientY-r.top)*k}; }
+function worldPos(e){ const r=cv.getBoundingClientRect(); const k=W/r.width; return {x:(e.clientX-r.left)*k, y:(e.clientY-r.top)*k}; }
 function pick(w){ const r=cv.getBoundingClientRect(); const k=Math.max(1,W/r.width); const R=28*k; let best=null,bd=R;
   for(const p of P){ const dd=Math.hypot(p.x-w.x,p.y-w.y); if(dd<bd){bd=dd;best=p;} } return best; }
 
@@ -334,9 +337,9 @@ function updateUI(){
   } else if(phase==='proof'){
     sc.style.display='none'; why.style.display='block'; pb.style.display='inline-block'; law.style.display='none'; succ.style.display='none';
     if(proofStep===0){ why.innerHTML='<b>Почему ∠DO′C = ∠AOB?</b><br>OA = OB = O′C = O′D — радиусы дуг одного раствора. AB = CD — это перенесённый раствор циркуля.'; pb.textContent='Дальше →'; }
-    else { why.innerHTML='Значит <b>△OAB = △O′CD</b> по трём сторонам ⟹ <b>∠AOB = ∠DO′C</b>. Угол перенесён точно — равные стороны дают равный угол.'; pb.textContent='Завершить →'; }
+    else { why.textContent='OA = OB = O′C = O′D — радиусы одного раствора. AB = CD — перенесённая циркулем длина. Поэтому △OAB = △O′CD по третьему признаку. Соответственные углы при O и O′ равны.'; pb.textContent='Завершить →'; }
   } else {
-    sc.style.display='none'; why.style.display='none'; pb.style.display='none'; law.style.display='block'; succ.style.display='block';
+    sc.style.display='none'; why.style.display='block'; why.textContent='OA = OB = O′C = O′D — радиусы одного раствора. AB = CD — перенесённая циркулем длина. Поэтому △OAB = △O′CD по третьему признаку. Соответственные углы при O и O′ равны.'; pb.style.display='none'; law.style.display='block'; succ.style.display='block';
     succ.textContent='Готово — угол перенесён точно.';
     law.innerHTML='<b>Закон.</b> Чтобы отложить угол, равный данному: дугой из вершины засечь обе стороны (A, B); <b>тем же раствором</b> — дугу из новой вершины O′ (точка C на луче); <b>перенести</b> раствором циркуля отрезок AB и засечь дугу из C (точка D); провести луч O′D. Равные стороны треугольника дают равный угол.'+
       '<div class="nb">По выбранную сторону от луча копия единственна (по другую сторону получится зеркальная — тоже равная).</div>'+
@@ -351,6 +354,7 @@ setMsg('Дано: угол при вершине O и луч при вершин
 updateUI();
 (function loop(){draw();requestAnimationFrame(loop)})();
 </script>
+<script src="/geometry-course/board/learning-support.js"></script>
 </body>
 </html>
 

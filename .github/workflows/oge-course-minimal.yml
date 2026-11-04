@@ -1,0 +1,92 @@
+name: OGE course minimal interface
+on:
+  pull_request:
+    paths:
+      - 'trainers/oge-task*.html'
+      - 'trainers/oge13-inequalities-series.html'
+      - 'trainers/oge-2027-analogue-1.html'
+      - 'trainers/oge-1-5-trainers/**'
+      - 'trainers/oge-course/index.html'
+      - 'trainers/arifmetika.html'
+      - 'trainers/drobi-oge-trainer.html'
+      - 'trainers/negative-numbers.html'
+      - 'trainers/rounding-stepwise.html'
+      - 'oge/index.html'
+      - 'oge/geometry/task-15-external-angle.html'
+      - 'tools/oge-*-minimal*'
+      - 'tools/oge-course-external-review.py'
+      - 'tools/oge-course-review.test.py'
+      - 'docs/tasks/OGE_COURSE_MINIMAL*'
+      - '.github/workflows/oge-course-minimal.yml'
+permissions:
+  contents: read
+concurrency:
+  group: oge-course-minimal-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  learner-and-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Fetch explicit comparison baseline
+        run: git fetch --no-tags --depth=1 origin 4b56350c35a67e41add8f2b25cf2bf7d73d1f71f
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated browser tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/oge-minimal" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/oge-minimal/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/oge-minimal/node_modules" >> "$GITHUB_ENV"
+      - name: Mathematical and learner contracts
+        run: |
+          python3 tools/oge-course-review.test.py
+          node tools/oge-algebra-contract.test.mjs
+          node tools/oge-geometry-contract.test.mjs
+          node --test tools/oge-*-minimal.test.cjs
+          node tools/oge-focus-navigation.test.cjs
+          git diff --check
+      - name: Mobile, desktop, hints and retained input
+        run: |
+          status=0
+          for family in algebra geometry part2 special practical foundations navigation; do
+            node "tools/oge-${family}-minimal.browser.cjs" || status=1
+          done
+          exit "$status"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: oge-course-visual-evidence
+          path: artifacts/oge-*-minimal
+          if-no-files-found: error
+          retention-days: 14
+  external-review:
+    if: github.event.pull_request.head.repo.full_name == github.repository && startsWith(github.head_ref, 'feat/oge-course-minimal')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Fetch exact reviewed base
+        env:
+          REVIEW_BASE: ${{ github.event.pull_request.base.sha }}
+        run: git fetch --no-tags --depth=1 origin "$REVIEW_BASE"
+      - name: Independent read-only Claude review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          REVIEW_BASE: ${{ github.event.pull_request.base.sha }}
+          REVIEW_HEAD: ${{ github.event.pull_request.head.sha }}
+          REVIEW_PR: ${{ github.event.pull_request.number }}
+        run: python3 tools/oge-course-external-review.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: oge-course-external-review
+          path: artifacts/oge-course-external-review.json
+          if-no-files-found: warn
+          retention-days: 30

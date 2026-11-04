@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "base": "6fb959fc0130a0bb8842601d19297e305ac91ac0",
+  "purpose": "Geometric hidden-line correction in the shared stereometry renderer and its styles. Every historical freeze retains the original hash and exact archived bytes; the replacement assets are pinned separately. Lesson identity, authored mathematics, source records and learner persistence are not migrated by this amendment.",
+  "files": {
+    "stereo-course/assets/task-scene-viewer.js": {
+      "beforeSHA256": "a3e470e55b45d658cb74b2e32b5f1e9479785fa9b014be3929591bdcd55cefe6",
+      "afterSHA256": "91ef00cd15e0e831fa835c089116e5150813ce0bd6554280d3e9f76a5c547f64",
+      "beforeFixture": "tools/stereo-textbook/fixtures/visibility-before/task-scene-viewer.js"
+    },
+    "stereo-course/assets/task-scenes.css": {
+      "beforeSHA256": "5dbecdc2c98fbb030bcc4dba224f3b4ae89af292579a5136942810be75fd2cbf",
+      "afterSHA256": "1100ff4d47f419db531fc8f08d923e910c297413de4ccc572abe340a18fe972d",
+      "beforeFixture": "tools/stereo-textbook/fixtures/visibility-before/task-scenes.css"
+    }
+  }
+}

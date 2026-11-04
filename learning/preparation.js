@@ -2,6 +2,79 @@
 (function(root){
 'use strict';
 const E=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+// These are separate public exercises, never managed assignments or progress.
+const focusPractices=Object.freeze({
+ 'https://mathexam.space/trainers/oge-task11-graphs-trainer.html':'ОГЭ №11: графики функций',
+ 'https://mathexam.space/stereo-course/merzlyak-10-base/':'10 класс · Геометрия Мерзляк',
+ 'https://mathexam.space/trainers/rounding-stepwise.html':'Округление по шагам',
+ 'https://mathexam.space/trainers/task19-trainer.html':'ОГЭ №19: геометрические утверждения'
+});
+function focusMarkup(value){
+ const text=String(value??'');if(!text)return '';
+ let html='',offset=0,linked=false;
+ for(const match of text.matchAll(/https:\/\/[^\s<>"']+/g)){
+  html+=E(text.slice(offset,match.index));
+  const token=match[0],url=token.replace(/[.,;:!?)\]}]+$/,'');
+  if(Object.hasOwn(focusPractices,url)){
+   html+=`<a class="button small" data-focus-practice href="${E(url)}" target="_blank" rel="noopener noreferrer">${E(focusPractices[url])} ↗</a>${E(token.slice(url.length))}`;linked=true;
+  }else html+=E(token);
+  offset=match.index+token.length;
+ }
+ html+=E(text.slice(offset));
+ return `<p class="prep-focus">${html}</p>${linked?'<p class="small" data-focus-practice-note>Тренажёры откроются в отдельной вкладке. Их результаты сохраняются в этом браузере и не входят в прогресс кабинета.</p>':''}`;
+}
+// Fixed course references are presentation only. A saved plan may link a public
+// course without creating a managed attempt or claiming its whole-course result.
+function planCoursesMarkup(value,{teacher=false}={}){
+ const canonical='https://mathexam.space/school/peterson6/';
+ const tokens=new Set((String(value??'').match(/https:\/\/[^\s<>"']+/g)||[]).map(token=>token.replace(/[.,;:!?)\]}]+$/,'')));
+ const cards=[];
+ const board='https://mathexam.space/trainers/trainer-board.html?trainer=%2Fschool%2Fpeterson6%2F';
+ if(tokens.has(canonical))cards.push(`<section class="panel prep-linked-course" data-plan-course="peterson6"><p class="eyebrow">КУРС В УЧЕБНОМ ПЛАНЕ</p><h2>Петерсон · 6 класс · часть 1</h2><p>Выбери тему, решай задачи и тренируй трудные вычисления отдельно. После тренировки можно вернуться к исходной задаче.</p><div class="actions"><a class="button primary" data-plan-course-open href="${canonical}" target="_blank" rel="noopener noreferrer">Открыть курс →</a><a class="button" data-plan-course-practice href="${canonical}#skills" target="_blank" rel="noopener noreferrer">Тренировка вычислений</a>${teacher?`<a class="button" data-plan-course-board href="${board}" target="_blank" rel="noopener noreferrer">Открыть на доске</a>`:''}</div><p class="small" data-plan-course-note>Личные решения курса сохраняются в этом браузере и не входят в итоги кабинета. Совместная работа на доске не считается самостоятельным решением.${teacher?' Для общего урока создайте комнату на доске и передайте ученику ссылку подключения.':' Для общего урока открой ссылку доски от преподавателя.'}</p></section>`);
+ cards.push(numberTheoryCardsMarkup({teacher,ids:['grade6-nok','grade6-nod'].filter(id=>tokens.has('https://mathexam.space/trainers/'+id+'.html'))}));
+ const geometryTokens=new Set([...String(value??'').matchAll(/(?:^|[\s([{])(https:\/\/[^\s<>"']+)/g)].map(match=>match[1].replace(/[.,;!)\]}]+$/,'')));
+ cards.push(ogeGeometryCardsMarkup({teacher,ids:ogeGeometryCards.map(card=>card[0]).filter(id=>geometryTokens.has('https://mathexam.space/trainers/'+id+'.html'))}));
+ return cards.join('');
+}
+const ogeGeometryCards=Object.freeze([
+ ['oge-task11-graphs-trainer','11','Графики функций','Сопоставляй графики и формулы. Если трудно — открой подсказку и пройди построение по шагам.'],
+ ['oge-task15-triangles','15','Треугольники','Находи стороны и углы. Используй рисунок, подсказки и разбор по шагам.'],
+ ['oge-task16-circle','16','Окружность','Разбирай углы, радиусы и фигуры, связанные с окружностью.'],
+ ['oge-task17-quadrilaterals','17','Четырёхугольники','Тренируй свойства четырёхугольников, среднюю линию и площади.'],
+ ['oge-task18-grid','18','Геометрия на клетчатой бумаге','Читай рисунок по клеткам, находи длины, углы и площади.'],
+ ['task19-trainer','19','Геометрические утверждения','Проверяй геометрические утверждения и разбирай, почему они верны или неверны.'],
+ ['oge-task23-geometry-calculations','23','Геометрические вычисления','Находи длины и площади. Записывай решение с обоснованием каждого шага.'],
+ ['oge-task24-proofs','24','Доказательства','Выстраивай доказательство и объясняй, какое свойство используешь на каждом шаге.'],
+ ['oge-task25-geometry','25','Сложные задачи по геометрии','Соединяй несколько свойств фигур, используй дополнительные построения и записывай полное решение.']
+]);
+// Public trainer references only: an allowlisted URL in the saved plan exposes
+// a fixed link, without creating managed attempts or changing learner progress.
+function ogeGeometryCardsMarkup({teacher=false,ids=ogeGeometryCards.map(card=>card[0])}={}){
+ const cards=[];
+ for(const [id,number,title,description] of ogeGeometryCards){
+  if(!ids.includes(id))continue;
+  const pathname='/trainers/'+id+'.html',href='https://mathexam.space'+pathname;
+  const shared='https://mathexam.space/trainers/trainer-board.html?trainer='+encodeURIComponent(pathname);
+  cards.push(`<section class="panel prep-linked-course" data-plan-course="${id}"><p class="eyebrow">ТРЕНАЖЁР · ОГЭ №${number}</p><h2>${title}</h2><p>${description}</p><div class="actions"><a class="button primary" data-plan-course-open href="${href}" target="_blank" rel="noopener noreferrer">Потренироваться →</a>${teacher?`<a class="button" data-plan-course-board href="${shared}" target="_blank" rel="noopener noreferrer">Открыть на доске</a>`:''}</div></section>`);
+ }
+ if(cards.length)cards.push(`<p class="small" data-oge-geometry-plan-note>Тренажёры открываются отдельно и не входят в прогресс кабинета. Совместная работа на доске не считается самостоятельным решением.${teacher?' Для общего урока создайте комнату на доске и передайте ученику ссылку подключения.':' Для общего урока открой ссылку доски от преподавателя.'}</p>`);
+ return cards.join('');
+}
+// The same fixed cards serve plan references and the explicit two-trainer route.
+// Caller-provided IDs can only select from this allowlist, never supply a URL.
+function numberTheoryCardsMarkup({teacher=false,ids=['grade6-nok','grade6-nod']}={}){
+ const cards=[];
+ for(const [id,title,description] of [
+  ['grade6-nok','НОК · наименьшее общее кратное','Разложи числа на простые множители и добавь недостающие. Разбери пример по шагам, затем потренируйся самостоятельно.'],
+  ['grade6-nod','НОД · наибольший общий делитель','Разложи числа на простые множители и найди общие пары. Разбери пример по шагам, затем потренируйся самостоятельно.']
+ ]){
+  const href='https://mathexam.space/trainers/'+id+'.html';
+  if(!ids.includes(id))continue;
+  const shared='https://mathexam.space/trainers/trainer-board.html?trainer='+encodeURIComponent('/trainers/'+id+'.html');
+  cards.push(`<section class="panel prep-linked-course" data-plan-course="${id}"><p class="eyebrow">ТРЕНАЖЁР · 6 КЛАСС</p><h2>${title}</h2><p>${description}</p><div class="actions"><a class="button primary" data-plan-course-open href="${href}" target="_blank" rel="noopener noreferrer">Потренироваться →</a>${teacher?`<a class="button" data-plan-course-board href="${shared}" target="_blank" rel="noopener noreferrer">Открыть на доске</a>`:''}</div></section>`);
+ }
+ return cards.join('');
+}
 const complete=new Set(['independent','repeated','hinted','together','practiced']);
 function publicHref(item){try{const url=new URL(item.publicUrl||item.url,'https://mathexam.space');return url.origin==='https://mathexam.space'?url.href:'';}catch(_){return '';}}
 function mountRoute(host,context){
@@ -17,7 +90,7 @@ function mountRoute(host,context){
  function hasCompleted(entry){return progress?!!progressFor(entry)?.completed:attemptsFor(entry).some(a=>complete.has(a.outcome));}
  function latest(entry){if(progress)return progressFor(entry)?.latest||null;return attemptsFor(entry).sort((a,b)=>String(b.updatedAt||b.createdAt).localeCompare(String(a.updatedAt||a.createdAt)))[0];}
  function state(entry){const a=latest(entry);return a?(context.labels[a.outcome]||'Начато'):progress?'Ещё не начинали':'История темы пока не загружена';}
- function openButton(entry){const a=latest(entry),done=a&&complete.has(a.outcome);return `<button type="button" data-prep-start="${E(entry.managedId)}" ${done?'data-prep-fresh="true"':''}>${teacher()?'Назначить ученику':done?(context.catalog.get(entry.managedId)?.trainerId==='motion-grade6'?'Повторить занятие':'Новый пример'):a?'Продолжить':'Начать задание'} →</button>${a?`<a class="button small" href="#attempt=${encodeURIComponent(a.id)}">Моё решение</a>`:''}`;}
+ function openButton(entry,primary=false){const a=latest(entry),done=a&&complete.has(a.outcome);return `<button type="button" ${primary?'class="primary"':''} data-prep-start="${E(entry.managedId)}" ${done?'data-prep-fresh="true"':''}>${teacher()?'Назначить ученику':done?(context.catalog.get(entry.managedId)?.trainerId==='motion-grade6'?'Повторить занятие':'Новый пример'):a?'Продолжить':'Начать задание'} →</button>${a?`<a class="button small" href="#attempt=${encodeURIComponent(a.id)}">Моё решение</a>`:''}`;}
  function publishedHomework(){return (context.assignments||[]).filter(a=>a.learnerId===context.account.id&&a.status==='published').sort((a,b)=>String(a.dueAt||'9999').localeCompare(String(b.dueAt||'9999')));}
  function nextMarkup(){
   if(teacher())return '';
@@ -53,6 +126,30 @@ function mountRoute(host,context){
   const ids=oge?map.goals[goalKey].managedIds:map.groups.flatMap(g=>g.items.filter(i=>i.tier==='core'&&i.managedId).map(i=>i.managedId));
   return [...new Set(ids)].map(id=>({entry:map.get(id),reason:''})).filter(x=>x.entry);
  }
+ function hasPersonalRoute(){return !teacher()&&!!plan?.items?.some(item=>entryFor(item.catalogId));}
+ function pendingHomework(){return publishedHomework().some(a=>!a.attempt?.submission||a.attempt.submission.stale||a.attempt.submission.status==='revise');}
+ function routeStage(entry){
+  const id=entry.managedId||entry.id;
+  if(/^oge-basics:multiplication-division\/(?:long-division|division-|decimal-division-natural|decimal-divisor-shift)/.test(id))return {id:'division',title:'Деление уголком'};
+  if(['oge-basics:order-of-operations','path:practice-fraction-expression'].includes(id))return {id:'expressions',title:'Выражения в несколько действий'};
+  if(['path:practice-decimals','path:practice-decimal-division'].includes(id))return {id:'decimals',title:'Десятичные дроби'};
+  if(['path:practice-fraction-add','path:practice-fraction-divide'].includes(id))return {id:'fractions',title:'Обыкновенные дроби'};
+  const group=map.groupFor(id);
+  return group?{id:group.id,title:group.title}:{id:'personal',title:'Шаги учебного плана'};
+ }
+ function personalRouteMarkup(){
+  const list=recommendations(),finished=list.filter(x=>hasCompleted(x.entry)).length;
+  // Only the complete server history can choose a next step reliably. A failed
+  // history read must not turn an old completed topic into a new starting point.
+  const current=progress?list.findIndex(x=>!hasCompleted(x.entry)):-1;
+  const homeworkFirst=pendingHomework();
+  let previousStage='';
+  return `<section class="prep-next prep-journey" aria-labelledby="prep-journey-title"><header class="prep-journey-head"><p class="eyebrow">ТВОЙ ПУТЬ · СВЕРХУ ВНИЗ</p><h2 id="prep-journey-title">Рекомендации преподавателя</h2><p>Проходи шаги по порядку. После разбора реши новый пример самостоятельно. К любому шагу можно вернуться.</p>${plan.note?`<p class="prep-route-note">${E(plan.note)}</p>`:''}${current>0?'<button type="button" data-prep-current>К текущему шагу ↓</button>':''}</header><p class="small">${progress?'Есть завершённые примеры у '+finished+' из '+list.length+' тренажёров. Это ещё не означает полного освоения тем.':progressError?'История сейчас не загрузилась. Порядок шагов сохранён; отметки по недавним работам могут быть неполными.':'Загружаем историю всех тем…'}</p>${progressError?'<button type="button" data-prep-retry>Обновить историю</button>':''}${progress&&current<0?'<p class="prep-route-finish">В каждом шаге есть завершённые примеры. Повтори трудные места с новыми числами и обсуди готовность с преподавателем.</p>':''}<ol class="prep-route-list">${list.map(({entry,reason},index)=>{
+   const stage=routeStage(entry),heading=stage.id!==previousStage;previousStage=stage.id;
+   const done=hasCompleted(entry),isCurrent=index===current;
+   return `<li class="prep-route-step${done?' is-done':''}${isCurrent?' is-current':''}" data-prep-item="${E(entry.id)}"${isCurrent?' aria-current="step" tabindex="-1"':''}${isCurrent&&!homeworkFirst?' data-prep-next':''}><span class="prep-route-number" aria-hidden="true">${index+1}</span><article class="prep-route-card">${heading?`<p class="prep-route-stage">${E(stage.title)}</p>`:''}<div class="prep-route-meta"><span>Шаг ${index+1} из ${list.length}</span><b>${isCurrent?'Текущий шаг':done?'Есть завершённые примеры':'Впереди'}</b></div><h3>${E(entry.title)}</h3>${reason?`<p>${E(reason)}</p>`:''}<p class="prep-task-status">${E(state(entry))}</p><div class="actions">${openButton(entry,isCurrent&&!homeworkFirst)}</div>${isCurrent?'<p class="prep-save-note">Ответы сохраняются в кабинете. Перед выходом дождись отметки «Сохранено».</p>':''}</article></li>`;
+  }).join('')}</ol>${list.some(x=>routeStage(x.entry).id==='division')?`<details class="prep-route-help"><summary>Нужна помощь с таблицей умножения?</summary><p>Повтори таблицу отдельно и вернись к текущему шагу деления.</p><button type="button" data-prep-start="oge-basics:multiplication-division/multiplication-mixed">Повторить таблицу умножения →</button></details>`:''}</section>`;
+ }
  function tasksMarkup(){
   const list=recommendations(),remaining=list.filter(x=>!hasCompleted(x.entry)),next=remaining.slice(0,3);
   const total=list.length,finished=total-remaining.length;
@@ -60,16 +157,17 @@ function mountRoute(host,context){
  }
  function labMarkup(){return `<section class="prep-lab"><h2>Выбрать и исследовать</h2><p>Здесь можно свободно пробовать модели и способы решения. Для сохранения результата и начисления баллов нажмите «Начать задание» у материала с отметкой «Результат в кабинете».</p><label class="prep-search">Найти тему<input type="search" data-prep-search placeholder="Деление, проценты, углы…"></label><div data-prep-lab-groups>${labGroups('')}</div></section>`;}
  function labGroups(query){return map.groups.map(g=>{const items=g.items.filter(i=>(g.title+' '+i.title).toLocaleLowerCase('ru').includes(query));return items.length?`<details class="prep-group" ${query?'open':''}><summary><span>${E(g.title)}</span><span class="prep-group-count">${items.length} материалов</span></summary><p>${E(g.lead)}</p><div class="prep-task-grid">${items.map(i=>entryCard(i)).join('')}</div></details>`:'';}).join('')||'<p>Такой темы пока не найдено. Попробуйте другое слово.</p>';}
- function homeMarkup(){return `${nextMarkup()}<div class="actions prep-home-links"><a class="button" href="#route">Мой маршрут</a><a class="button" href="#assignments">Мои задания</a></div>${publishedHomework().length?`<details class="prep-group"><summary>Все задания преподавателя</summary>${homeworkMarkup()}</details>`:''}<details class="prep-group"><summary>Мой учебный опыт</summary>${rewardsMarkup()}</details><p class="small prep-home-note">Вход на другом устройстве с тем же логином открывает ту же сохранённую работу. У свободных тренажёров на сайте отдельная история в браузере.</p>`;}
- function render(){if(!alive)return;section.innerHTML=`<div class="page-heading"><div><p class="eyebrow">${oge?'ПОДГОТОВКА К ОГЭ':'ОТДЕЛЬНЫЙ БАЗОВЫЙ КУРС'}</p><h1>${home?'Моё занятие':oge?'Мой маршрут ОГЭ':'Математические основы'}</h1><p class="lead">${oge?'Своя цель, свои задания и понятный следующий шаг.':'От понятного действия — к самостоятельному решению.'}</p>${oge?`<p class="prep-goal" data-prep-goal>${E(map.goals[goalKey].title)}${!profile.goal&&!teacher()?' · стартовый маршрут, цель можно уточнить с преподавателем':''}</p>`:''}${profile.focus?`<p class="prep-focus">${E(profile.focus)}</p>`:''}</div></div>${home?homeMarkup():`${teacher()&&oge?`<label>Посмотреть подборку<select data-prep-goal-select><option value="pass" ${goalKey==='pass'?'selected':''}>Уверенно сдать</option><option value="grade5" ${goalKey==='grade5'?'selected':''}>Подготовка на 5</option></select></label>`:''}${mode==='tasks'?nextMarkup():''}<div class="prep-modes segmented" role="group" aria-label="Режим курса"><button type="button" data-prep-mode="tasks" aria-pressed="${mode==='tasks'}">Задания</button><button type="button" data-prep-mode="lab" aria-pressed="${mode==='lab'}">Лаборатория</button></div><div data-prep-content>${mode==='tasks'?tasksMarkup():labMarkup()}</div>${rewardsMarkup()}<p class="prep-course-link"><a href="https://mathexam.space/foundations/" target="_blank" rel="noopener">Весь базовый курс без входа ↗</a></p>`}`;
+ function homeMarkup(){return `${hasPersonalRoute()?`${pendingHomework()?nextMarkup():''}${personalRouteMarkup()}`:nextMarkup()}<div class="actions prep-home-links"><a class="button" href="#route">Мой маршрут</a><a class="button" href="#assignments">Мои задания</a></div>${publishedHomework().length?`<details class="prep-group"><summary>Все задания преподавателя</summary>${homeworkMarkup()}</details>`:''}<details class="prep-group"><summary>Мой учебный опыт</summary>${rewardsMarkup()}</details><p class="small prep-home-note">Вход на другом устройстве с тем же логином открывает ту же сохранённую работу. У свободных тренажёров на сайте отдельная история в браузере.</p>`;}
+ function render(){if(!alive)return;section.innerHTML=`<div class="page-heading"><div><p class="eyebrow">${oge?'ПОДГОТОВКА К ОГЭ':'ОТДЕЛЬНЫЙ БАЗОВЫЙ КУРС'}</p><h1>${home?hasPersonalRoute()?'Мой путь в математике':'Моё занятие':oge?'Мой маршрут ОГЭ':'Математические основы'}</h1><p class="lead">${oge?'Своя цель, свои задания и понятный следующий шаг.':'От понятного действия — к самостоятельному решению.'}</p>${oge?`<p class="prep-goal" data-prep-goal>${E(map.goals[goalKey].title)}${!profile.goal&&!teacher()?' · стартовый маршрут, цель можно уточнить с преподавателем':''}</p>`:''}${focusMarkup(profile.focus)}</div></div>${planCoursesMarkup(plan?.note,{teacher:teacher()})}${home?homeMarkup():`${teacher()&&oge?`<label>Посмотреть подборку<select data-prep-goal-select><option value="pass" ${goalKey==='pass'?'selected':''}>Уверенно сдать</option><option value="grade5" ${goalKey==='grade5'?'selected':''}>Подготовка на 5</option></select></label>`:''}${mode==='tasks'&&(!hasPersonalRoute()||pendingHomework())?nextMarkup():''}<div class="prep-modes segmented" role="group" aria-label="Режим курса"><button type="button" data-prep-mode="tasks" aria-pressed="${mode==='tasks'}">Задания</button><button type="button" data-prep-mode="lab" aria-pressed="${mode==='lab'}">Лаборатория</button></div><div data-prep-content>${mode==='tasks'?hasPersonalRoute()?personalRouteMarkup()+`<details class="prep-group"><summary>Другие темы и тренажёры</summary>${labMarkup()}</details>`:tasksMarkup():labMarkup()}</div>${rewardsMarkup()}<p class="prep-course-link"><a href="https://mathexam.space/foundations/" target="_blank" rel="noopener">Весь базовый курс без входа ↗</a></p>`}`;
   section.querySelectorAll('[data-prep-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.prepMode;render();section.querySelector('[data-prep-mode="'+mode+'"]')?.focus();});
   section.querySelector('[data-prep-goal-select]')?.addEventListener('change',e=>{goalKey=e.target.value;render();});
   section.querySelector('[data-prep-search]')?.addEventListener('input',e=>{section.querySelector('[data-prep-lab-groups]').innerHTML=labGroups(e.target.value.trim().toLocaleLowerCase('ru'));bindStarts();});
-  section.querySelector('[data-prep-retry]')?.addEventListener('click',load);bindStarts();
+  section.querySelector('[data-prep-current]')?.addEventListener('click',()=>{const current=section.querySelector('[aria-current="step"]');current?.focus({preventScroll:true});current?.scrollIntoView({block:'start',behavior:'auto'});});
+  section.querySelectorAll('[data-prep-retry]').forEach(button=>button.addEventListener('click',load));bindStarts();
  }
  function bindStarts(){section.querySelectorAll('[data-prep-start]').forEach(button=>button.onclick=async()=>{button.disabled=true;const entry=entryFor(button.dataset.prepStart),a=entry&&latest(entry);try{await context.openContent(button.dataset.prepStart,button.dataset.prepFresh==='true'&&a?{fresh:true,sourceAttemptId:a.id}:{});}finally{if(button.isConnected)button.disabled=false;}});}
  async function load(){if(teacher())return;const result=await Promise.allSettled([context.api('/rewards'),context.api('/plan'),context.api('/progress')]);if(!alive)return;loaded=true;if(result[0].status==='fulfilled'){rewards=result[0].value.rewards||result[0].value;rewardsError=false;}else rewardsError=true;if(result[1].status==='fulfilled'){plan=result[1].value.plan||result[1].value;planError=false;}else planError=true;if(result[2].status==='fulfilled'){progress=result[2].value.progress;progressError=false;}else progressError=true;render();}
  render();load();return()=>{alive=false;section.remove();};
 }
-root.LearningPreparationUI={mountRoute};
+root.LearningPreparationUI={mountRoute,focusMarkup,planCoursesMarkup,numberTheoryCardsMarkup,ogeGeometryCardsMarkup};
 })(window);

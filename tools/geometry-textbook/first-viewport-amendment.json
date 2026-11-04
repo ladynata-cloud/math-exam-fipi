@@ -1,0 +1,30 @@
+{
+  "baseCommit": "01e412d4314445366bcd4773a3789129aa7264bd",
+  "scope": "Issue384: presentation-only amendment; historical content/runtime review receipts remain immutable. Current rendered bytes are tested by first-viewport.browser.cjs.",
+  "files": {
+    "assets/engine.js": {
+      "beforeSha256": "85d395dbfb66f8a1409f1d2f930fbb6f742c0085239d34d18ec2a901f3bd6492",
+      "afterSha256": "15511e2d45d3ab847ca31a9a65e2549245c17801021b35fce8ab08a5ef1c5817",
+      "changes": [
+        {
+          "before": "  const header=el('header');header.append(back,el('p','К учебнику Атанасяна и соавторов · Геометрия 7–9'),el('h1',lessonTitle(lesson)),el('p',sourceLocation(lesson.source,sourceInventory),{class:'source-context'}));const share=el('a','Ссылка на этот материал',{href:'#'+lesson.id,class:'lesson-permalink'});header.append(share);view.append(header);\n",
+          "after": "  const header=el('header',undefined,{class:'textbook-lesson-header'});header.append(back,el('h1',lessonTitle(lesson)));const share=el('a','Ссылка на этот материал',{href:'#'+lesson.id,class:'lesson-permalink'});view.append(header);\n"
+        },
+        {
+          "before": "  main.append(el('p',lesson.statement.text,{class:'textbook-condition'}));if(lesson.statement.givens?.length){const list=el('ul');for(const text of lesson.statement.givens)list.append(el('li',text));main.append(list);}main.append(el('p',lesson.statement.goal,{class:'textbook-goal'}),model,el('p',lesson.visualization.caption),sourceNode(lesson));\n",
+          "after": "  const condition=el('div',undefined,{class:'textbook-problem'});condition.append(el('p',lesson.statement.text,{class:'textbook-condition'}));if(lesson.statement.givens?.length){const list=el('ul');for(const text of lesson.statement.givens)list.append(el('li',text));condition.append(list);}\n  // A mathematical goal belongs with the givens. Only these exact generic UI\n  // instructions move below the figure; no authored task requirement is hidden.\n  const goal=el('p',lesson.statement.goal,{class:'textbook-goal'}),genericGoal=['Сначала предложи своё решение. Подсказки и разбор можно открыть рядом.','Рассмотри чертёж, ответь на вопрос каждого шага и проверь своё объяснение.'].includes(lesson.statement.goal);\n  if(!genericGoal)condition.append(goal);\n  const source=sourceNode(lesson);source.classList.add('textbook-source');source.append(el('p','К учебнику Атанасяна и соавторов · Геометрия 7–9'),el('p',sourceLocation(lesson.source,sourceInventory),{class:'source-context'}),share);\n  main.append(condition,model);if(genericGoal)main.append(goal);main.append(el('p',lesson.visualization.caption),source);\n"
+        }
+      ]
+    },
+    "assets/style.css": {
+      "beforeSha256": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b",
+      "afterSha256": "b7f5ef3408a2cd8c0fe82ba33f5a3bddc076b6b7bd6dd5f5424f6f9406dedee5",
+      "changes": [
+        {
+          "before": "",
+          "after": "\n/* #384: reserve the first viewport for the complete problem and its drawing.\n   Viewer widths, zoom, SVG minimum heights and label sizing stay unchanged. */\n.course-nav:has(+ #textbook-app .textbook-lesson-header){padding-block:.35rem;gap:.2rem 1.5rem}\n.textbook-lesson-header{margin:.35rem 0 .65rem}\n.textbook-lesson-header>button{padding:.4rem .7rem}\n.textbook-lesson-header h1{font-size:1.4rem;margin:.45rem 0 0;line-height:1.25}\n.textbook-lesson-header+.textbook-layout .textbook-main{padding-top:.65rem}\n.textbook-problem>.textbook-condition{margin:0 0 .6rem}\n.textbook-problem>ul{margin:.4rem 0 .6rem;padding-left:1.25rem}\n.textbook-problem li{margin:.35rem 0}\n.textbook-problem>.textbook-goal{margin:.5rem 0 .6rem}\n.textbook-problem+[data-main-model]{margin-top:.35rem}\n.textbook-source .lesson-permalink{margin:0 0 .5rem}\n.textbook-layout [data-main-model] .planar-viewer{display:flex;flex-direction:column}\n.textbook-layout [data-main-model] .planar-viewport{order:-1;max-height:none}\n.textbook-layout [data-main-model] .planar-tools{border-top:1px solid #dce7df;border-bottom:0}\n/* At requested zoom, retain the original inner scroll area. */\n.textbook-layout [data-main-model] .planar-viewer:not(:fullscreen):not(.planar-expanded):has(.planar-tools button[aria-label=\"Уменьшить чертёж\"]:enabled) .planar-viewport{max-height:70vh}\n@media(min-width:851px){\n .textbook-lesson-header{display:flex;align-items:flex-start;gap:.8rem}\n .textbook-lesson-header>button{flex-shrink:0}\n .textbook-lesson-header h1{margin:.3rem 0 0;flex:1}\n}\n"
+        }
+      ]
+    }
+  }
+}

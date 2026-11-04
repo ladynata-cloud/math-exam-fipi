@@ -1,0 +1,324 @@
+{
+  "schemaVersion": 1,
+  "task": "Whole stereometry course visibility correction",
+  "base": "6fb959fc0130a0bb8842601d19297e305ac91ac0",
+  "reviewedAt": "2026-10-29T18:50:37.844851+00:00",
+  "reviewer": "Codex /root/visibility_integration",
+  "role": "Integration author and legacy-canvas implementer; independent SVG visibility oracle and final visual review are separate evidence",
+  "status": "PASS_LOCAL_INTEGRATION_PENDING_EXACT_HEAD_CI_AND_VISUAL_REVIEW",
+  "sourceHashes": {
+    "stereo-course/assets/task-scene-viewer.js": "91ef00cd15e0e831fa835c089116e5150813ce0bd6554280d3e9f76a5c547f64",
+    "stereo-course/assets/task-scenes.css": "1100ff4d47f419db531fc8f08d923e910c297413de4ccc572abe340a18fe972d",
+    "stereo-course/assets/viewer.js": "73e5a58a693c56499bba10b5dc04346c6f8bcbe82a95673c8f177feca115aa6a",
+    "geometry-merzlyak/assets/viewer.js": "73e5a58a693c56499bba10b5dc04346c6f8bcbe82a95673c8f177feca115aa6a",
+    "geometry-pogorelov/assets/viewer.js": "73e5a58a693c56499bba10b5dc04346c6f8bcbe82a95673c8f177feca115aa6a",
+    "stereo-course/assets/task-scenes.js": "20241c175a0db6ba2bd05ab0e91f95871e5ad5c8a7bda59880ac6e7a847c9db0",
+    "stereo-course/assets/task-proof-scenes.js": "4de11c85ed423435219ff9d60b324c78a888c5db80785c2f33b86b33b3dc6f33",
+    "stereo-course/index.html": "4dde2007bb9bd96f451172d674314d5c8296c0f05f50dd7babb1455801c5ad2c",
+    "tools/stereo/sync_canvas_visibility.cjs": "3a0a1d2e41c81ce337762e6491095e8aea102d952dcb04259e61447e6c686f52",
+    "tools/stereo/canvas-visibility.test.cjs": "cb1372e66cd1b54632238c7e27f3ba5bf2a00e6e712cff2fe8c1cf768ccbf895",
+    "tools/stereo/canvas-visibility.browser.cjs": "a13b2143a536c7b2f7ded62c6200dbaeab34bd3141dcdf7cdcc66204b9a395fb",
+    "tools/stereo-textbook/visibility-migration.cjs": "e5f5df2ce29032cafa3653d9199d120389b82b5e7ae6dab5f12e59e507cc1171",
+    "tools/stereo-textbook/visibility-migration.json": "25ac1352722e33a862c24e647e67c4e31335fde2280d6c958784c95eac96412e",
+    "tools/stereo-textbook/visibility-migration.test.cjs": "17332e96d17bba039a4646e374dbdcaa6d0568d814175031ef726b9e26c89d2a",
+    "tools/stereo-textbook/companion-migration.cjs": "9a99c049b9c27e7d3db2167cc1c1e2280810035d9a483b3c989a73a1ddd637a3",
+    "tools/stereo-textbook/companion-migration.test.cjs": "34b7b4418cc9c5bfe964e6fb644bc4b46dd91130f6b0fad44848563cffa263cd",
+    "tools/stereo-textbook/cylinder-content.test.cjs": "7f31afd84702467c9c823f99bf373625f692781a2cb93873537111bc358dc976",
+    "tools/merzlyak-10-base/schema-runtime.test.cjs": "1866a8389a898f86e614bc00177c9e74ca22aee1f71b274b3c9a84508b408f15",
+    ".github/workflows/atanasyan-textbook.yml": "42666a9bc00bd634c6f10bfa1b0f4611485a39b1e1cf27a8fa134843f0813edc",
+    ".github/workflows/atanasyan-symmetry-draft.yml": "1651ef1000bff31b57860416eb42cad8db4d64013732aa48a9c9e215522bcac3",
+    ".github/workflows/stereo-task-first.yml": "a7f3702cc3bbf32afba50c53df90dbab39e643a3cd0a03f0365ee6e15ef28d2e"
+  },
+  "environment": {
+    "node": "24.22.1",
+    "numpy": "2.2.6",
+    "jsdom": "26.1.0",
+    "ciNode": "22",
+    "browserLocally": "NOT_RUN: actual browser/socket capability is unavailable in this host; only browser-free preflight ran here"
+  },
+  "executedCommandCount": 46,
+  "checks": [
+    {
+      "command": "python3 tools/stereo-textbook/build_textbook.py",
+      "status": "PASS"
+    },
+    {
+      "command": "git diff --exit-code -- stereo-course/textbook/data/course.json",
+      "status": "PASS"
+    },
+    {
+      "command": "python3 tools/stereo-textbook/catalog.test.py",
+      "status": "PASS"
+    },
+    {
+      "command": "node tools/stereo-textbook/schema.test.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tools/stereo-textbook/companion-labels.test.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tools/stereo-textbook/content.test.cjs",
+      "status": "PASS",
+      "initialResult": "FAIL: direct cylinder runtime freeze bypassed new visibility migration; corrected and complete chained suite rerun."
+    },
+    {
+      "command": "node tools/stereo-textbook/parallel-content.test.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tools/stereo-textbook/model-geometry.test.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tools/stereo-textbook/runtime.test.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tools/stereo-textbook/browser-shards.test.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "python3 tools/stereo-textbook/symmetry-math.test.py",
+      "status": "PASS"
+    },
+    {
+      "command": "python3 tools/stereo-textbook/regular-polyhedra-math.test.py",
+      "status": "PASS"
+    },
+    {
+      "command": "python3 tools/stereo-textbook/polyhedra-symmetry-math.test.py",
+      "status": "PASS"
+    },
+    {
+      "command": "python3 tools/stereo-textbook/polyhedra-selfcheck-math.test.py",
+      "status": "PASS"
+    },
+    {
+      "command": "python3 tools/stereo-textbook/polyhedra-practical-math.test.py",
+      "status": "PASS"
+    },
+    {
+      "command": "python3 tools/stereo-textbook/additional288-math.test.py",
+      "status": "PASS"
+    },
+    {
+      "command": "python3 tools/stereo-textbook/additional294-math.test.py",
+      "status": "PASS"
+    },
+    {
+      "command": "python3 tools/stereo-textbook/additional299-math.test.py",
+      "status": "PASS"
+    },
+    {
+      "command": "python3 tools/stereo-textbook/additional310-math.test.py",
+      "status": "PASS"
+    },
+    {
+      "command": "python3 tools/stereo-textbook/cylinder-math.test.py",
+      "status": "PASS"
+    },
+    {
+      "command": "node tools/stereo/check.js",
+      "status": "PASS"
+    },
+    {
+      "command": "node tools/stereo/regression-check.js",
+      "status": "PASS"
+    },
+    {
+      "command": "node tools/stereo/math-text.test.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tools/stereo/stale-state.test.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tools/stereo/task-first.test.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tools/stereo/task-first.integration.test.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tools/stereo/proof-choice-fractions.test.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tools/stereo/task-scenes-math.test.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tools/stereo/task-scenes.dom.test.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tools/stereo/task-scene-expansion.test.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tools/stereo/task-proof-scenes.test.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tools/stereo/task-proof-scenes.dom.test.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tools/stereo-textbook/visibility-migration.test.cjs",
+      "status": "PASS",
+      "evidence": "21 negative controls; six baseline sets; exact two archived and current assets"
+    },
+    {
+      "command": "node tools/stereo-textbook/companion-migration.test.cjs",
+      "status": "PASS",
+      "evidence": "16 negative controls; nine historical files; three original label migrations preserved"
+    },
+    {
+      "command": "node tools/stereo/canvas-visibility.test.cjs",
+      "status": "PASS",
+      "evidence": "82 canvas mounts; 4105 strokes; 11997 stable independent ray samples; 1278 hidden and 2827 visible intervals; 256 phase comparisons; three bug controls"
+    },
+    {
+      "command": "node tools/stereo/sync_canvas_visibility.cjs --check",
+      "status": "PASS",
+      "evidence": "Exact SVG core in three byte-identical offline canvas renderers"
+    },
+    {
+      "command": "node tools/stereo-textbook/build_visibility_profiles.cjs --check",
+      "status": "PASS",
+      "evidence": "245 exact geometry signatures"
+    },
+    {
+      "command": "VISIBILITY_CHECK_ONLY=1 node tools/stereo-textbook/visibility.browser.cjs",
+      "status": "PASS",
+      "evidence": "Nine actual cards and 28 reachable views; preflight only"
+    },
+    {
+      "command": "VISIBILITY_CANVAS_CHECK_ONLY=1 node tools/stereo/canvas-visibility.browser.cjs",
+      "status": "PASS",
+      "evidence": "Six actual lessons across three courses and two widths; preflight only"
+    },
+    {
+      "command": "node tools/merzlyak-10-base/schema-runtime.test.cjs",
+      "status": "PASS",
+      "evidence": "989 cards; source offset, exact search, review boundary and retained work"
+    },
+    {
+      "command": "node tools/merzlyak-10-base/reviewer-runtime-wrapper-checks.cjs",
+      "status": "PASS",
+      "evidence": "989 ready cards, zero forced-draft ready; wrapper state and failures"
+    },
+    {
+      "command": "node tools/shestakov-yaschenko/check.cjs",
+      "status": "PASS",
+      "evidence": "543 cards; exact source inventory and publication schema"
+    },
+    {
+      "command": "node tools/stereo-textbook/model-geometry.test.cjs stereo-course/merzlyak-10-base/data/course.json",
+      "status": "PASS",
+      "evidence": "989 cards; 3496 simple planar polygons; 12778 nonzero segments"
+    },
+    {
+      "command": "node tools/stereo-textbook/model-geometry.test.cjs stereo-course/shestakov-yaschenko-10-11/data/course.json",
+      "status": "PASS",
+      "evidence": "543 cards; 1212 simple planar polygons; 10940 nonzero segments"
+    },
+    {
+      "command": "node tools/merzlyak/check.cjs",
+      "status": "PASS",
+      "evidence": "84 legacy lessons; 149 source points; 39060 mathematical/state checks"
+    },
+    {
+      "command": "node tools/pogorelov/check.cjs",
+      "status": "PASS",
+      "evidence": "88 legacy lessons; 136 source points; 40740 mathematical/state checks"
+    }
+  ],
+  "frozenGroupRuns": [
+    {
+      "group": "textbook",
+      "startedAt": "2026-10-29T18:43:44.915143+00:00",
+      "completedAt": "2026-10-29T18:44:25.688556+00:00",
+      "sameRuntimeBytesBeforeAfter": true
+    },
+    {
+      "group": "math",
+      "startedAt": "2026-10-29T18:44:37.402829+00:00",
+      "completedAt": "2026-10-29T18:44:41.404696+00:00",
+      "sameRuntimeBytesBeforeAfter": true
+    },
+    {
+      "group": "stereo",
+      "startedAt": "2026-10-29T18:43:44.910124+00:00",
+      "completedAt": "2026-10-29T18:44:25.815140+00:00",
+      "sameRuntimeBytesBeforeAfter": true
+    }
+  ],
+  "staticChecks": {
+    "syntax": "PASS for new canvas generator, DOM oracle and browser gate",
+    "workflowYAML": "PASS for all three changed workflows",
+    "retainedWorkflowCommandsAndPins": "PASS: every original job, action pin and run line remains",
+    "whitespace": "PASS git diff --check",
+    "canvasBrowserReview": "Root inspected actual app navigation and added opening the existing More by topic disclosure before the workshop laboratory button; no runtime behavior changed."
+  },
+  "initialFailuresResolved": [
+    {
+      "finding": "Pre-existing Merzlyak isolated-engine test compared its original fork to the later caption-migrated Atanasyan engine.",
+      "resolution": "Compare against the exact archived parent after the same two permitted substitutions; verify archived and current parent bytes through the existing strict companion migration. Source engines unchanged.",
+      "retest": "PASS schema-runtime and independent wrapper checks"
+    },
+    {
+      "finding": "Cylinder batch used direct unchanged runtime assertions and initially rejected the authorized renderer correction.",
+      "resolution": "Only the two renderer/style paths use the exact visibility migration; all original baseline hashes and every other direct hash assertion remain unchanged.",
+      "retest": "PASS full content.test chain, including cylinder and all historical content batches"
+    },
+    {
+      "finding": "Canvas test rays sampled isolated projected-vertex and sphere tangencies as if they hid finite line intervals.",
+      "resolution": "Independent oracle verifies neighboring samples and excludes exact analytic tangent rays; production renderer was not changed for these test findings.",
+      "retest": "PASS 82 mounts, 11997 stable ray samples and three deliberate bug controls"
+    }
+  ],
+  "canvasEvidence": {
+    "type": "Observed CanvasRenderingContext2D calls under JSDOM stub, with independent ray oracle; not actual-browser pixels",
+    "mounts": 82,
+    "strokes": 4105,
+    "raySamples": 11997,
+    "hiddenIntervals": 1278,
+    "visibleIntervals": 2827,
+    "coincidentPhaseComparisons": 256,
+    "negativeControls": 3,
+    "offlineFallbackExactlyMatchesSharedCore": true,
+    "learnerStateMutatedByDrawing": false
+  },
+  "browserPlan": {
+    "status": "PENDING_CI",
+    "svgGate": "tools/stereo-textbook/visibility.browser.cjs",
+    "canvasGate": "tools/stereo/canvas-visibility.browser.cjs",
+    "canvasActualPageJourneys": 12,
+    "canvasPlannedScreenshots": 24,
+    "canvasCourses": [
+      "stereo-course",
+      "geometry-merzlyak",
+      "geometry-pogorelov"
+    ],
+    "widths": [
+      320,
+      1280
+    ],
+    "fullInheritedTextbookShards": 4,
+    "sharedConsumerModelCounts": {
+      "merzlyak-10-base": 989,
+      "shestakov-yaschenko-10-11": 543
+    },
+    "legacyActualLessonJourneys": {
+      "merzlyak": 84,
+      "pogorelov": 88
+    },
+    "noLocalBrowserPassClaimed": true
+  },
+  "releaseState": "No merge or deployment; final exact-head CI and actual screenshot review belong in the PR."
+}

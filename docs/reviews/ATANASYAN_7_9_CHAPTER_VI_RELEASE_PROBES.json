@@ -1,0 +1,374 @@
+{
+  "scriptSha256": "b1e99b5e9028d0efd2957feacdf80fa017f6bd9b53b6f810e660e4c8d64617bc",
+  "checks": 91,
+  "results": [
+    {
+      "case": "coherently rebound old title",
+      "rejected": true
+    },
+    {
+      "case": "coherently rebound old order",
+      "rejected": true
+    },
+    {
+      "case": "coherently rebound old other metadata",
+      "rejected": true
+    },
+    {
+      "case": "coherently rebound VI title",
+      "rejected": true
+    },
+    {
+      "case": "coherently rebound VI order",
+      "rejected": true
+    },
+    {
+      "case": "coherently rebound VI missing",
+      "rejected": true
+    },
+    {
+      "case": "coherently rebound VI extra",
+      "rejected": true
+    },
+    {
+      "case": "coherently rebound index.html",
+      "rejected": true
+    },
+    {
+      "case": "coherently rebound assets/engine.js",
+      "rejected": true
+    },
+    {
+      "case": "coherently rebound assets/planar-viewer.js",
+      "rejected": true
+    },
+    {
+      "case": "coherently rebound assets/style.css",
+      "rejected": true
+    },
+    {
+      "case": "coherently rebound assets/math-text.js",
+      "rejected": true
+    },
+    {
+      "case": "coherently rebound source-inventory.json",
+      "rejected": true
+    },
+    {
+      "case": "coherently rebound assets/board-adapter.js",
+      "rejected": true
+    },
+    {
+      "case": "exact git manifest reconstruction geometry-course/textbook/release-review-advanced-07.json",
+      "passed": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-advanced-07.json at",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-advanced-07.json reviewer",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-advanced-07.json status",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-advanced-07.json source",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-advanced-07.json mathematics",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-advanced-07.json models",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-advanced-07.json pedagogy",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-advanced-07.json browser",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-advanced-07.json new field",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-advanced-07.json binding missing",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-advanced-07.json binding stale",
+      "rejected": true
+    },
+    {
+      "case": "exact git manifest reconstruction geometry-course/textbook/release-review-chapter-02.json",
+      "passed": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-02.json at",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-02.json reviewer",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-02.json status",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-02.json source",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-02.json mathematics",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-02.json models",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-02.json pedagogy",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-02.json browser",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-02.json new field",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-02.json binding missing",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-02.json binding stale",
+      "rejected": true
+    },
+    {
+      "case": "exact git manifest reconstruction geometry-course/textbook/release-review-chapter-03.json",
+      "passed": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-03.json at",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-03.json reviewer",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-03.json status",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-03.json source",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-03.json mathematics",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-03.json models",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-03.json pedagogy",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-03.json browser",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-03.json new field",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-03.json binding missing",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-03.json binding stale",
+      "rejected": true
+    },
+    {
+      "case": "exact git manifest reconstruction geometry-course/textbook/release-review-chapter-04.json",
+      "passed": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-04.json at",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-04.json reviewer",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-04.json status",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-04.json source",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-04.json mathematics",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-04.json models",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-04.json pedagogy",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-04.json browser",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-04.json new field",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-04.json binding missing",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-04.json binding stale",
+      "rejected": true
+    },
+    {
+      "case": "exact git manifest reconstruction geometry-course/textbook/release-review-chapter-05.json",
+      "passed": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-05.json at",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-05.json reviewer",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-05.json status",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-05.json source",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-05.json mathematics",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-05.json models",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-05.json pedagogy",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-05.json browser",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-05.json new field",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-05.json binding missing",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review-chapter-05.json binding stale",
+      "rejected": true
+    },
+    {
+      "case": "exact git manifest reconstruction geometry-course/textbook/release-review.json",
+      "passed": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review.json at",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review.json reviewer",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review.json status",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review.json source",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review.json mathematics",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review.json models",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review.json pedagogy",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review.json browser",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review.json new field",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review.json binding missing",
+      "rejected": true
+    },
+    {
+      "case": "geometry-course/textbook/release-review.json binding stale",
+      "rejected": true
+    },
+    {
+      "case": "VI missing leaves exactly755 reviewed",
+      "passed": true
+    },
+    {
+      "case": "VI stale content leaves exactly755 reviewed",
+      "passed": true
+    },
+    {
+      "case": "VI stale runtime leaves exactly755 reviewed",
+      "passed": true
+    },
+    {
+      "case": "VI wrong chapter leaves exactly755 reviewed",
+      "passed": true
+    },
+    {
+      "case": "actual Git755 full records and order",
+      "passed": true
+    }
+  ],
+  "implementationSha256": "04e5a58da99bf68421e8f7aa9baccd8c3b2054766dab4141f912a46eba7690ec",
+  "authoredContentSha256": "eac1eb2b73cf13a6bd31c4524d4327be75d044f4a174bb7b7d9ff910d5c744e1",
+  "reviewedCards": 755,
+  "pendingCards": 138
+}

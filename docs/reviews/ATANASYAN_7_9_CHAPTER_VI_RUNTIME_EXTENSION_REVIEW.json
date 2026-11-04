@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "browser": "passed",
+  "reviewer": "Independent non-author OpenAI agent vi_runtime_final",
+  "at": "2026-10-29",
+  "previousSourceCommit": "d3122b9f3905cd8f7715cee6a873d031cdb43de4",
+  "preservedCards": 755,
+  "contentApprovalGranted": false,
+  "oldImplementationSha256": "f358f65b5955ad8ae2443bc8916aadda8f502a07e6274e90b9b21d727979813c",
+  "implementationSha256": "04e5a58da99bf68421e8f7aa9baccd8c3b2054766dab4141f912a46eba7690ec",
+  "implementationFiles": {
+    "index.html": "098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804",
+    "assets/engine.js": "85d395dbfb66f8a1409f1d2f930fbb6f742c0085239d34d18ec2a901f3bd6492",
+    "assets/planar-viewer.js": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061",
+    "assets/style.css": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b",
+    "assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+    "source-inventory.json": "96ab32a3b61bbac81432e6dc6c003cdbcf998e39b8ea3000254689f73ab88cf3",
+    "assets/board-adapter.js": "e1c366fd77f2cc822894be7e21139ce99b9e7b3c568392b122f2a3b386b7545b"
+  },
+  "paragraphsAdded": [
+    {
+      "chapter": 6,
+      "number": 1,
+      "title": "Многоугольники",
+      "pointNumbers": [
+        46,
+        47
+      ],
+      "exerciseNumbers": [
+        462,
+        470
+      ],
+      "printedPages": [
+        121,
+        123
+      ]
+    },
+    {
+      "chapter": 6,
+      "number": 2,
+      "title": "Параллелограмм и трапеция",
+      "pointNumbers": [
+        48,
+        50
+      ],
+      "exerciseNumbers": [
+        471,
+        501
+      ],
+      "printedPages": [
+        124,
+        131
+      ]
+    },
+    {
+      "chapter": 6,
+      "number": 3,
+      "title": "Прямоугольник, ромб, квадрат",
+      "pointNumbers": [
+        51,
+        53
+      ],
+      "exerciseNumbers": [
+        502,
+        519
+      ],
+      "printedPages": [
+        131,
+        135
+      ]
+    }
+  ],
+  "previousRuntimeReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_LABELS_RUNTIME_REVIEW.json",
+    "sha256": "0ade5dd181b4467a1af642d0bfa13e5192f64e3093e73035bf0835a10b1faf00"
+  },
+  "evidence": [
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_RUNTIME_REVIEW.md",
+      "sha256": "e3254f0837d89c54af0356315992a0e8e7a1c8326334bf17fc6075a0f5281f62"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VI_RUNTIME_BROWSER.json",
+      "sha256": "25897311ee48c734a13755334df4865c3f727f50da62b3f2bae98f8124b25eec"
+    }
+  ]
+}

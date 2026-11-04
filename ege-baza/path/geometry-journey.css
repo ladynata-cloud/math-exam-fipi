@@ -1,0 +1,76 @@
+/* Scoped presentation for the existing grade-7 geometry model. */
+.geometry-active-host{--journey-green:#246954;--journey-border:#d3dfd2;--journey-soft:#f4f8ee}
+.geometry-active-host .geometry-workshop-intro{font-size:1.05rem;line-height:1.65;padding:16px 18px;background:var(--journey-soft);border-radius:14px}
+.geometry-active-host .geometry-workshop-intro strong{display:block;margin-bottom:5px}
+.geometry-active-host .geometry-workbench{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.geometry-active-host .geometry-drawing-panel,.geometry-active-host .geometry-active{min-width:0;border:1px solid var(--journey-border);border-radius:16px;padding:18px;margin:0;background:#fff}
+.geometry-active-host .geometry-drawing-panel{position:sticky;top:12px}
+.geometry-active-host .geometry-drawing-panel h3{margin:0 0 10px;font-size:1.15rem}
+.geometry-active-host [data-core-read]{padding:10px 12px;background:var(--journey-soft);border-radius:10px;font-size:1rem;line-height:1.55}
+.geometry-active-host .geometry-element-buttons{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:8px}
+.geometry-active-host button{min-height:46px;max-width:100%;white-space:normal;overflow-wrap:anywhere;font-size:1rem;line-height:1.45}
+.geometry-active-host [data-core-select][aria-pressed=true],.geometry-active-host [data-core-build][aria-pressed=true]{background:#e4f0df;outline:2px solid var(--journey-green);outline-offset:1px}
+.geometry-active-host button:focus-visible,.geometry-active-host summary:focus-visible,.geometry-active-host input:focus-visible{outline:3px solid #9b5e15;outline-offset:3px}
+.geometry-active-host summary{cursor:pointer;min-height:44px;padding:10px 0;font-weight:650;line-height:1.5}
+.geometry-active-host .geometry-drawing-help,.geometry-active-host .geometry-build-tools{margin-top:12px;border-top:1px solid var(--journey-border);padding-top:6px}
+.geometry-active-host .geometry-active-heading .badge{background:#e4f0df;color:#174c36;font-size:1rem}
+.geometry-active-host .geometry-active-heading>span:last-child{font-size:.98rem;color:#365541}
+.geometry-active-host .geometry-one-step{line-height:1.5;margin-bottom:12px}
+.geometry-active-host .geometry-mission{margin-top:12px;padding:14px;background:var(--journey-soft)}
+.geometry-active-host .geometry-mission h3{margin-top:0;font-size:1.12rem}
+.geometry-active-host .geometry-hunt{background:#fff;border-style:dashed}
+.geometry-active-host .geometry-hunt summary{padding-top:0;padding-bottom:0;font-size:1rem}
+.geometry-active-host .geometry-mini-count{display:inline-block;color:#365541;padding:2px 8px;background:#edf4e8;border-radius:20px;white-space:nowrap}
+.geometry-active-host .geometry-small-note{font-size:.96rem;color:#3d5748;line-height:1.5}
+.geometry-active-host .geometry-step-question{line-height:1.6;margin:8px 0 16px}
+.geometry-active-host .geometry-step-question strong{display:block;font-size:1.1rem}
+.geometry-active-host .geometry-step-number{display:inline-block;background:#dfeeda;color:#164c34;border-radius:8px;padding:4px 9px;margin-bottom:10px;font-weight:650}
+.geometry-active-host .geometry-current-step .actions{gap:8px;margin-top:16px}
+.geometry-active-host .geometry-current-step .primary{background:var(--journey-green);color:white;border-color:var(--journey-green)}
+.geometry-active-host .geometry-proof-board{margin-top:22px;padding-right:0}
+.geometry-active-host .geometry-proof-board li{line-height:1.6;padding-bottom:12px;border-bottom:1px solid var(--journey-border)}
+.geometry-active-host .geometry-proof-board li:last-child{border-bottom:0}
+.geometry-active-host .geometry-board-question{display:block;color:#365541;font-size:.98rem;margin-bottom:5px}
+.geometry-active-host .geometry-proof-board li p{margin-top:5px;margin-bottom:0}
+.geometry-active-host .geometry-passive-help{margin-top:18px;padding:8px 18px;border:1px solid var(--journey-border);border-radius:12px;background:#f8faf5}
+.geometry-active-host .geometry-progress-note{margin-top:12px}
+.geometry-active-host .geometry-progress-note p,.geometry-active-host .geometry-passive-help p{line-height:1.6}
+.geometry-active-host .geometry-finish{background:#eaf3e5;padding:16px;line-height:1.6}
+.geometry-active-host .geometry-next-lesson{border-top:1px solid #bfd3b5;padding-top:12px}
+@media(max-width:850px){.geometry-active-host .geometry-workbench{grid-template-columns:minmax(0,1fr)}.geometry-active-host .geometry-drawing-panel{position:static}}
+@media(max-width:480px){.geometry-active-host .geometry-drawing-panel,.geometry-active-host .geometry-active{padding:12px}.geometry-active-host .geometry-workshop-intro{padding:12px}.geometry-active-host .geometry-element-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}.geometry-active-host .geometry-element-buttons button{padding:9px 6px}.geometry-active-host .geometry-mission{padding:12px}.geometry-active-host .geometry-passive-help{padding:6px 12px}.geometry-active-host .geometry-current-step .actions{display:grid;grid-template-columns:minmax(0,1fr)}}
+
+.geometry-entry{padding:16px 20px;margin:16px 0;background:#eff6e9;border:1px solid #c6d8bb;border-radius:16px;line-height:1.6}
+.geometry-entry p{margin:8px 0}.geometry-entry button{min-height:44px;white-space:normal}.geometry-entry .primary{background:#246954;color:#fff}
+
+/* The photo exercises use one drawing and one question, with no mode menu. */
+.photo-proof{font-size:1.25rem;line-height:1.55;color:#24382f;max-width:1200px;margin:auto}
+.photo-proof-heading{display:block;padding:0;margin:0 0 24px;background:none;border:0;position:static}
+.photo-proof-heading p,.photo-proof-progress{font-size:1.125rem;color:#486052;margin:0 0 8px}
+.photo-proof-heading h1{font-size:clamp(1.6rem,3vw,2.2rem);line-height:1.2;margin:0}
+.photo-proof-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.9fr);gap:24px;align-items:start}
+.photo-proof-left,.photo-proof-step{min-width:0}
+.photo-proof-given{padding:16px 20px;background:#f1f5ef;border-radius:12px;margin-bottom:12px}
+.photo-proof-drawing{border:1px solid #c8d5ca;border-radius:16px;overflow:hidden;background:#fbfdf9}
+.photo-proof-drawing svg{width:100%;height:auto;display:block}
+.photo-proof-drawing [data-core-part]{cursor:pointer}
+.photo-proof-drawing .photo-proof-focus path:not([stroke="transparent"]){stroke:#a34d15;stroke-width:5}
+.photo-proof-step{background:white;border:1px solid #c8d5ca;border-radius:16px;padding:24px}
+.photo-proof-step h2{font-size:1.5rem;line-height:1.4;margin:0 0 20px}
+.photo-proof-step button,.photo-proof-step textarea{font-size:1.25rem;line-height:1.45}
+.photo-proof-step button{min-height:52px;white-space:normal;overflow-wrap:anywhere}
+.photo-proof-choices{display:grid;gap:12px;margin-bottom:20px}
+.photo-proof-choices button{text-align:left;width:100%;padding:14px 16px;background:#fff;border:2px solid #c2d0c7}
+.photo-proof-choices button[aria-pressed="true"]{border-color:#286851;background:#eaf4ed;box-shadow:inset 4px 0 #286851}
+.photo-proof-choices button:focus-visible{outline:3px solid #b66a24;outline-offset:3px}
+.photo-proof-hint{margin-top:16px;background:transparent}
+.photo-proof-hint-text:empty,.photo-proof .feedback:empty{display:none}
+.photo-proof .feedback,.photo-proof-hint-text{font-size:1.125rem;line-height:1.55;margin:16px 0 0}
+.photo-proof-record{margin-top:20px;padding:18px 20px;border-left:4px solid #397859;background:#f0f7f0;border-radius:0 12px 12px 0}
+.photo-proof-record h2{font-size:1.25rem;margin:0 0 12px}
+.photo-proof-record ol{margin:0;padding-left:24px;font-size:1.125rem}
+.photo-proof-record li{padding:4px 0}
+.photo-proof-conclusion{font-size:1.5rem;font-weight:650}
+.photo-proof-note{font-size:1.125rem;color:#486052}
+.photo-proof-step textarea{width:100%;margin:12px 0;resize:vertical}
+@media(max-width:760px){.photo-proof-layout{grid-template-columns:minmax(0,1fr);gap:16px}.photo-proof-left{display:contents}.photo-proof-given{order:0;padding:12px 14px;margin:0}.photo-proof-drawing{order:1}.photo-proof-step{order:2;padding:18px}.photo-proof-record{order:3;padding:14px;margin:0}.photo-proof-heading{margin-bottom:16px}}

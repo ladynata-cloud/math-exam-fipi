@@ -1,0 +1,58 @@
+{
+  "author": "/root/chapter4",
+  "reviewer": "/root/chapter6",
+  "at": "2026-10-24T06:52:33.924196+00:00",
+  "verdict": "passed",
+  "remainingFindings": [],
+  "checkedIds": [
+    "1.4-A10-a",
+    "1.4-A10-b",
+    "1.4-A11-a",
+    "1.4-A11-b",
+    "1.4-A12-a",
+    "1.4-A12-b",
+    "1.4-A13-a",
+    "1.4-A13-b",
+    "1.4-A15-a",
+    "1.4-A15-b",
+    "1.4-A3-a",
+    "1.4-A3-b",
+    "1.4-A4-a",
+    "1.4-A4-b",
+    "1.4-A5-a",
+    "1.4-A5-b",
+    "1.4-A6-a",
+    "1.4-A6-b",
+    "1.4-A7-a",
+    "1.4-A7-b",
+    "1.4-A8-a",
+    "1.4-A8-b",
+    "1.4-A9-a",
+    "1.4-A9-b"
+  ],
+  "sha256": "af09376aaeaa8741a04a063da955dcdfa8405c6ecc76fdac277cfd0d0ca03355",
+  "recordsSHA256": "8feabc78341d46809e44de583a071d893c3a568cc2ce70ce50253717862f970c",
+  "sourcePages": [
+    19,
+    20
+  ],
+  "sourceSHA256": "bd125372e8cb96c0d99cb061f26eb6264ad66d0cd88bdf90484c52b11cb39115",
+  "method": [
+    "Independently read all 24 statements and complete explanation/reason sequences; compared every given number, requested quantity and page reference against rendered PDF pages 19–20.",
+    "Counted the source A15 cells directly: variant a has vertical base 6 and horizontal height 7; variant b has base 3 and height 8. Checked both reconstructed grids against source vertex coordinates.",
+    "Recomputed 18 numerical answers, four ordering answers and both manual existence arguments. Independently checked every finite alias, including reversed side names and Latin/Cyrillic typography.",
+    "Measured every model against its source conditions: side lengths, angle values, trigonometric ratios, perpendicularity, parallelism, incidence, midpoints, division ratios and areas. Checked all condition-given points and lines in the initial view and delayed auxiliary H/E labels.",
+    "Confirmed A8a is intentionally collinear with AC + CB = AB, while A8b satisfies strict triangle inequalities. Confirmed A9 models show a permissible free AC rather than asserting the extremal answer.",
+    "Ran shared-renderer engineering inspection on all 24 cards and all 116 view/width states at 320 and 1280 CSS pixels: no JavaScript errors, label overlaps, clipped labels or horizontal overflow. Visually inspected A8a and both A15 source/model screenshots."
+  ],
+  "fixes": [],
+  "checks": [
+    "python tools/shestakov-yaschenko/expansion-ch1/review-section-1-4-a-checks.py — PASS: all 24 variants; 142 numerical assertions plus every ordering alias and structural/visibility assertions.",
+    "Shared model-browser harness with a temporary review-only bundle — PASS: 24 cards, 116 view/width states."
+  ],
+  "limitations": [
+    "Covers only the 24 newly authored §1.4 A variants: A3–A13 and A15, both parts. Existing A1/A2/A14 are outside this review scope.",
+    "Review-only browser evidence and rendered source pages remain outside repository content; final aggregate and runtime gates belong to the root agent.",
+    "Independent AI-agent source, mathematical and pedagogical review; does not claim human-teacher approval, pupil testing or deployment permission."
+  ]
+}
