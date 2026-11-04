@@ -276,7 +276,7 @@ test('ordinary Vilenkin profiles and a refreshed ordinary profile retain courses
   assert.equal(selected.window.document.querySelector('.site-link').hidden, false);
   assert(selected.window.document.querySelector('[data-nav=division-course]'));
   assert.equal(selected.retained(), selected.before);
-  assert.equal(catalog.items.filter(item => item.trainerId !== 'vilenkin6-textbook').length, 378);
+  assert.equal(catalog.items.filter(item => item.trainerId !== 'vilenkin6-textbook').length, 382);
   assert.equal(catalog.items.filter(item => item.trainerId === 'vilenkin6-textbook').length, textbookCount);
   assert.equal(catalog.items.filter(item => item.trainerId === 'vilenkin6-part1').length, 27);
 });
