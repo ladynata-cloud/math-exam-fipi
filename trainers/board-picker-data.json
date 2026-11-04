@@ -7275,6 +7275,366 @@
       "title": "Колледж · Графики функций · 40 задач по шагам",
       "group": "Колледж / математика",
       "href": "/trainers/college-functions/index.html"
+    },
+    {
+      "title": "Атанасян · 7 класс · главы I–IV и задачи повышенной трудности",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/atanasyan-grade7.html"
+    },
+    {
+      "title": "Перегибание и отпечаток · лаборатория приёма",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch1-p3-t2-fold-imprint"
+    },
+    {
+      "title": "Смежные и вертикальные углы · лаборатория и доказательство",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch1-p6-t1-adjacent-vertical"
+    },
+    {
+      "title": "Задачи на смежные и вертикальные углы · генератор",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch1-p6-t2-angle-problems"
+    },
+    {
+      "title": "Два перпендикуляра к одной прямой · перегибание и доказательство от противного",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch1-p6-t3-two-perpendiculars"
+    },
+    {
+      "title": "Биссектриса угла — циркуль и линейка",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-constr-angle-bisector"
+    },
+    {
+      "title": "Угол, равный данному — циркуль и линейка",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-constr-copy-angle"
+    },
+    {
+      "title": "Серединный перпендикуляр — циркуль и линейка",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-constr-perp-bisector"
+    },
+    {
+      "title": "Перпендикуляр к прямой через точку — циркуль и линейка",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-constr-perpendicular-point"
+    },
+    {
+      "title": "Что значит — равные фигуры? · Наложение",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p1-t1-overlay-equality"
+    },
+    {
+      "title": "Наложи треугольник · путь к первому признаку",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p1-t2-overlay-sas"
+    },
+    {
+      "title": "Почему хватает трёх элементов · доказательство первого признака",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p1-t3-proof-sas"
+    },
+    {
+      "title": "Первый признак равенства треугольников: задачи по чертежу · MathExam",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p1-t4-find-equal"
+    },
+    {
+      "title": "Зачёт по параграфу · первый признак равенства треугольников",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p1-t5-quiz"
+    },
+    {
+      "title": "Медиана, биссектриса, высота · три разные линии",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p2-t0-three-cevians"
+    },
+    {
+      "title": "Перпендикуляр складыванием · из точки к прямой",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p2-t1-perp-fold"
+    },
+    {
+      "title": "Равнобедренный треугольник · устройство фигуры",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p2-t2-isosceles-intro"
+    },
+    {
+      "title": "Углы при основании равны · доказательство",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p2-t3-proof-base-angles"
+    },
+    {
+      "title": "Биссектриса = медиана = высота · равнобедренный",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p2-t4-three-in-one"
+    },
+    {
+      "title": "Равнобедренный в задачах · найди равные",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p2-t5-find-equal-iso"
+    },
+    {
+      "title": "Мини-зачёт · медианы, биссектрисы, высоты",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p2-t6-quiz"
+    },
+    {
+      "title": "Прилежащие и противолежащие · опорный словарь",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p3-t0-adjacent-opposite"
+    },
+    {
+      "title": "Наложи по стороне и двум углам · второй признак",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p3-t1-overlay-asa"
+    },
+    {
+      "title": "Почему точка C не может быть другой · второй признак",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p3-t2-proof-asa"
+    },
+    {
+      "title": "Первый или второй? · различение признаков",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p3-t3-which-sign"
+    },
+    {
+      "title": "Второй признак равенства треугольников: задачи по чертежу · MathExam",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p3-t4-find-equal-asa"
+    },
+    {
+      "title": "Мини-зачёт · второй признак",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p3-t5-quiz"
+    },
+    {
+      "title": "Почему хватает трёх сторон · жёсткость треугольника",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p4-t0-rigidity"
+    },
+    {
+      "title": "Наложи по трём сторонам · третий признак",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p4-t1-overlay-sss"
+    },
+    {
+      "title": "Доказательство третьего признака · конструктор",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p4-t2-proof-sss"
+    },
+    {
+      "title": "Какой признак? · различение трёх признаков",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p4-t3-which-sign"
+    },
+    {
+      "title": "Найди равные по трём сторонам · задачи по чертежу",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p4-t4-find-equal-sss"
+    },
+    {
+      "title": "Мини-зачёт · третий признак",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p4-t5-quiz"
+    },
+    {
+      "title": "Пересекающиеся и параллельные прямые",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch3-p1-t1-crossing-parallel"
+    },
+    {
+      "title": "Восемь углов при секущей",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch3-p1-t2-eight-angles"
+    },
+    {
+      "title": "Когда прямые параллельны",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch3-p1-t3-sign-lab"
+    },
+    {
+      "title": "Почему признак работает",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch3-p1-t4-proof-sign"
+    },
+    {
+      "title": "Ещё два признака",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch3-p1-t5-two-more-signs"
+    },
+    {
+      "title": "Угольник и линейка",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch3-p1-t6-practical"
+    },
+    {
+      "title": "Докажи, что a ∥ b",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch3-p1-t7-find-equal"
+    },
+    {
+      "title": "Через точку — одна параллель",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch3-p2-t1-parallel-axiom"
+    },
+    {
+      "title": "Свойство 1: накрест лежащие углы",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch3-p2-t4-property-alt-angles"
+    },
+    {
+      "title": "Свойства 2 и 3: соответственные и односторонние",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch3-p2-t5-properties-2-3"
+    },
+    {
+      "title": "Прямая и обратная теорема",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch3-p2-t6-direct-converse"
+    },
+    {
+      "title": "Сумма углов треугольника",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p1-t1-angle-sum-lab"
+    },
+    {
+      "title": "Почему сумма углов равна 180°",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p1-t2-proof-angle-sum"
+    },
+    {
+      "title": "Внешний угол треугольника",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p1-t3-exterior-angle"
+    },
+    {
+      "title": "Виды треугольников",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p1-t4-triangle-types"
+    },
+    {
+      "title": "Найди углы",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p1-t5-find-angles"
+    },
+    {
+      "title": "Зачёт §1",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p1-t6-quiz"
+    },
+    {
+      "title": "Сторона ↔ угол",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p2-t1-side-angle-lab"
+    },
+    {
+      "title": "Против большей стороны — больший угол",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p2-t2-proof-side-angle"
+    },
+    {
+      "title": "Против большего угла — большая сторона",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p2-t3-converse-iso"
+    },
+    {
+      "title": "Гипотенуза больше катета",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p2-t4-hypotenuse-leg"
+    },
+    {
+      "title": "Неравенство треугольника",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p2-t5-triangle-inequality"
+    },
+    {
+      "title": "Неравенство треугольника — доказательство",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p2-t6-prove-inequality"
+    },
+    {
+      "title": "Неравенство треугольника — генератор",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p2-t7-triangle-generator"
+    },
+    {
+      "title": "Зачёт §2",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p2-t8-quiz"
+    },
+    {
+      "title": "Два острых угла прямоугольного треугольника",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p3-t1-two-acute-angles"
+    },
+    {
+      "title": "Катет против угла в 30°",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p3-t2-leg-against-30"
+    },
+    {
+      "title": "Половина гипотенузы — значит 30°",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p3-t3-half-means-30"
+    },
+    {
+      "title": "Медиана к гипотенузе",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p3-t4-median-to-hypotenuse"
+    },
+    {
+      "title": "Медиана-половина — значит прямоугольный",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p3-t5-median-converse"
+    },
+    {
+      "title": "Признаки равенства прямоугольных треугольников",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p3-t6-which-sign"
+    },
+    {
+      "title": "Признак по гипотенузе и катету (HL)",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p3-t7-hyp-leg-congruence"
+    },
+    {
+      "title": "Расчёты в прямоугольном треугольнике — генератор §3",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p3-t8-generator"
+    },
+    {
+      "title": "Зачёт по §3 — прямоугольный треугольник",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p3-t9-quiz"
+    },
+    {
+      "title": "Расстояние от точки до прямой",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p4-t1-distance-point-line"
+    },
+    {
+      "title": "Расстояние между параллельными",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p4-t2-distance-parallels"
+    },
+    {
+      "title": "Построение треугольника по трём сторонам",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p4-t3-construct-sss"
+    },
+    {
+      "title": "Треугольник по двум сторонам и углу",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p4-t4-construct-two-sides-angle"
+    },
+    {
+      "title": "Геометрия · 7 класс · от первых понятий к доказательствам",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-rebuild.html"
     }
   ]
 }
